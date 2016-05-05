@@ -17,9 +17,9 @@ VertexShader * VertexShaderJsonFactory::Produce( qjson::Object json )
 	return new VertexShader( path, entry, profile, vertexDeclaration );
 }
 
-qjson::Object dxi::MakeVertexShaderJson( unify::Path path, std::string entry, std::string profile, qjson::Object vertexDeclaration )
+qjson::Object dxi::MakeVertexShaderJson( std::string name, unify::Path path, std::string entry, std::string profile, qjson::Object vertexDeclaration )
 {
-	return { { "source", path.ToString() },{ "entry", entry },{ "profile", profile }, { "vd", vertexDeclaration } };
+	return { { "name", name }, { "source", path.ToString() },{ "entry", entry },{ "profile", profile }, { "vd", vertexDeclaration } };
 }
 
 VertexShader * VertexShaderXMLFactory::Produce( const qxml::Element * node )

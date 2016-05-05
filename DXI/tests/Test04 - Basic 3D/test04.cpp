@@ -41,8 +41,8 @@ public:
 		qjson::Object colorVDJson;
 		colorVDJson.Add( { "Position", "Float3" } );
 		colorVDJson.Add( { "Diffuse", "D3DCOLOR" } );
-		GetManager< PixelShader >()->Add( "color_3d", MakePixelShaderJson( "media/shaders/color3d.shader", "ps_main", "ps_1_1" ) );
-		GetManager< VertexShader >()->Add( "color_3d", MakeVertexShaderJson( "media/shaders/color3d.shader", "vs_main", "vs_1_1", colorVDJson ) );
+		GetManager< PixelShader >()->Add( MakePixelShaderJson( "color_3d", "media/shaders/color3d.shader", "ps_main", "ps_1_1" ) );
+		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "color_3d", "media/shaders/color3d.shader", "vs_main", "vs_1_1", colorVDJson ) );
 		Effect::shared_ptr effect = GetManager< Effect >()->Add( "color_3d", new Effect );
 		effect->SetPixelShader( GetManager< PixelShader >()->Find( "color_3d" ) );
 		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color_3d" ) );
@@ -58,7 +58,7 @@ public:
 		RenderState::Set( RenderState::CullMode, RenderState::CullModeValues::None );
 
 		// Create a demonstration of 3d via a 3d rotating triangle...
-		m_triangleVB.Create( 6, colorVD );
+		m_triangleVB.Create( 6, VertexDeclaration( colorVDJson ) );
 		unify::DataLock vertexLock;
 		m_triangleVB.Lock( vertexLock );
 		struct MyVertex
@@ -96,7 +96,7 @@ public:
 	{
 		RenderInfo renderInfo;
 		renderInfo.SetFinalMatrix( m_view.Inverse() * m_projection );
-		Effect::shared_ptr effect = GetEffectManager()->Find( "color_3d" );
+		Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_3d" );
 		effect->Use( renderInfo );
 		m_triangleVB.Use();
 		m_triangleVB.GetVertexDeclaration().Use();

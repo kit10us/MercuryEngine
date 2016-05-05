@@ -27,6 +27,18 @@
 *.out
 *.app
 
+# Visual Studio User Files
+*.suo
+*.user
+*.sdf
+*.ncb
+*.ccscc
+*.cache
+*.db
+
+# Local Temporary files (suck as backup files)
+*.bak
+
 # Output Directories
 output/
 lib/

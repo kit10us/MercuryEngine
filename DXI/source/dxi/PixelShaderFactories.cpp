@@ -15,9 +15,9 @@ PixelShader * PixelShaderJsonFactory::Produce( qjson::Object json )
 	return new PixelShader( path, entry, profile );
 }
 
-qjson::Object dxi::MakePixelShaderJson( unify::Path path, std::string entry, std::string profile )
+qjson::Object dxi::MakePixelShaderJson( std::string name, unify::Path path, std::string entry, std::string profile )
 {
-	return { { "source", path.ToString()}, { "entry", entry}, { "profile" , profile } };
+	return { { "name", name }, { "source", path.ToString()}, { "entry", entry}, { "profile" , profile } };
 }
 
 PixelShader * PixelShaderXMLFactory::Produce( const qxml::Element * node )

@@ -12,7 +12,7 @@ namespace dxi
 		VertexShader * Produce( qjson::Object json ) override;
 	};
 
-	qjson::Object MakeVertexShaderJson( unify::Path path, std::string entry, std::string profile, qjson::Object vertexDeclaration );
+	qjson::Object MakeVertexShaderJson( std::string name, unify::Path path, std::string entry, std::string profile, qjson::Object vertexDeclaration );
 
 
 	class VertexShaderXMLFactory : public rm::IXMLFactory< VertexShader >

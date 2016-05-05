@@ -34,15 +34,17 @@ public:
 	{
 		Game::Startup();
 
-		qjson::Object vertexTextured2DVDJson;
-		vertexTextured2DVDJson.Add( { "Position", "Float3" } );
-		vertexTextured2DVDJson.Add( { "Tex1", "Float2" } );
-		GetManager< PixelShader >()->Add( "textured_2d", MakePixelShaderJson( "media/shaders/textured2d.shader", "ps_main", "ps_1_1" ) );
-		GetManager< VertexShader >()->Add( "textured_2d", MakeVertexShaderJson( "media/shaders/textured2d.shader", "vs_main", "vs_1_1", vertexTextured2DVDJson ) );
+		qjson::Object vertexTextured2DVDJson = { { "Position", "Float3" }, { "Tex1", "Float2" } };
+		VertexDeclaration texVd( vertexTextured2DVDJson );
+
+		GetManager< PixelShader >()->Add( MakePixelShaderJson( "textured_2d", "media/shaders/textured2d.shader", "ps_main", "ps_1_1" ) );
+		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "textured_2d", "media/shaders/textured2d.shader", "vs_main", "vs_1_1", vertexTextured2DVDJson ) );
 
 		qjson::Object vertexPlain2DVDJson = { { "Position", "Float3" }, { "Diffuse", "D3DCOLOR" } };
-		GetManager< PixelShader >()->Add( "color_2d", MakePixelShaderJson( "media/shaders/color2d.shader", "ps_main", "ps_1_1" ) );
-		GetManager< VertexShader >()->Add( "color_2d", MakeVertexShaderJson( "media/shaders/color2d.shader", "vs_main", "vs_1_1", vertexPlain2DVDJson ) );
+		VertexDeclaration colVd( vertexPlain2DVDJson );
+
+		GetManager< PixelShader >()->Add( MakePixelShaderJson( "color_2d", "media/shaders/color2d.shader", "ps_main", "ps_1_1" ) );
+		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "color_2d", "media/shaders/color2d.shader", "vs_main", "vs_1_1", vertexPlain2DVDJson ) );
 
 		// Effect with Texture, no color...
 		{
@@ -84,7 +86,7 @@ public:
 
 		// First two...
 		{
-			Effect::shared_ptr effect = GetEffectManager()->Find( "textured_2d" );
+			Effect::shared_ptr effect = GetManager< Effect >()->Find( "textured_2d" );
 
 			BufferSet & set = m_primitiveList.AddBufferSet();
 
@@ -140,7 +142,7 @@ public:
 
 		// A...
 		{
-			Effect::shared_ptr effect = GetEffectManager()->Find( "color_2d" );
+			Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_2d" );
 
 			BufferSet & set = m_primitiveListA.AddBufferSet();
 			VertexBuffer & vb = set.GetVertexBuffer();
@@ -169,7 +171,7 @@ public:
 
 		// B...
 		{
-			Effect::shared_ptr effect = GetEffectManager()->Find( "color_2d" );
+			Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_2d" );
 
 			BufferSet & set = m_primitiveListB.AddBufferSet();
 
@@ -222,7 +224,7 @@ public:
 	void Render()
 	{
 		RenderInfo renderInfo;
-		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
+		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS()->GetResolution().width ), static_cast< float >( GetOS()->GetResolution().height ), 0, 1, 1000 );
 		renderInfo.SetFinalMatrix( projectionMatrix );
 
 		m_primitiveList.Render( renderInfo );
