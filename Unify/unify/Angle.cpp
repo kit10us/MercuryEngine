@@ -1,0 +1,184 @@
+// Copyright (c) 2002 - 2014, Quentin S. Smith
+// All Rights Reserved
+
+#include <unify/Angle.h>
+#include <cmath>
+
+using namespace unify;
+
+Angle::Angle( float radians )
+: m_radians( radians )
+{
+}
+
+Angle Angle::AngleInRadians( float radians )
+{
+    return Angle( radians );
+}
+
+Angle Angle::AngleInDegrees( float degrees )
+{
+    return Angle( degrees * ( 3.14159265f / 180.0f ) );
+}
+
+Angle Angle::AnglePI()
+{
+    return AngleInRadians( 3.14159265f );
+}
+
+Angle Angle::AnglePI2()
+{
+    return AngleInRadians( 3.14159265f * 2.0f );
+}
+
+Angle Angle::AnglePIHalf()
+{
+    return AngleInRadians( 3.14159265f * 0.5f );
+}
+
+Angle::Angle()
+: m_radians( 0.0f )
+{
+}
+
+Angle & Angle::operator = ( const Angle & angle )
+{
+    m_radians = angle.m_radians;
+    return *this;
+}
+
+Angle & Angle::operator += ( const Angle & angle )
+{
+    m_radians += angle.m_radians;
+    return *this;
+}
+
+Angle & Angle::operator -= ( const Angle & angle )
+{
+    m_radians -= angle.m_radians;
+    return *this;
+}
+
+Angle & Angle::operator *= ( const Angle & angle )
+{
+    m_radians *= angle.m_radians;
+    return *this;
+}
+
+Angle & Angle::operator /= ( const Angle & angle )
+{
+    m_radians /= angle.m_radians;
+    return *this;
+}
+
+Angle Angle::operator + ( const Angle & angle) const
+{
+    Angle returnAngle( *this );
+    returnAngle += angle;
+    return returnAngle;
+}
+
+Angle Angle::operator - ( const Angle & angle ) const
+{
+    Angle returnAngle( *this );
+    returnAngle -= angle;
+    return returnAngle;
+}
+
+Angle Angle::operator * ( const Angle & angle ) const
+{
+    Angle returnAngle( *this );
+    returnAngle *= angle;
+    return returnAngle;
+}
+
+Angle Angle::operator / ( const Angle & angle ) const
+{
+    Angle returnAngle( *this );
+    returnAngle /= angle;
+    return returnAngle;
+}
+
+bool Angle::operator == ( const Angle & angle ) const
+{
+    return m_radians == angle.m_radians;
+}
+
+Angle & Angle::operator *= ( float scalar )
+{
+    m_radians *= scalar;
+    return *this;
+}
+
+Angle & Angle::operator /= ( float scalar )
+{
+    m_radians /= scalar;
+    return *this;
+}
+
+Angle Angle::operator * ( float scalar ) const
+{
+    Angle returnAngle( *this );
+    returnAngle.m_radians *= scalar;
+    return returnAngle;
+}
+
+Angle Angle::operator / ( float scalar ) const
+{
+    Angle returnAngle( *this );
+    returnAngle.m_radians /= scalar;
+    return returnAngle;
+}
+
+bool Angle::operator > ( const Angle & angle )
+{
+	return m_radians > angle.m_radians;
+}
+
+bool Angle::operator >= ( const Angle & angle )
+{
+	return m_radians >= angle.m_radians;
+}
+
+bool Angle::operator < ( const Angle & angle )
+{
+	return m_radians < angle.m_radians;
+}
+
+bool Angle::operator <= ( const Angle & angle )
+{
+	return m_radians <= angle.m_radians;
+}
+
+float Angle::GetRadians() const
+{
+    return m_radians;
+}
+
+float Angle::GetDegrees() const
+{
+    return m_radians * (3.14159265f / 180.0f);
+}
+
+void Angle::Fix360()
+{
+    const float pi2 = (3.14159265f * 2.0f);
+    while( m_radians > pi2 )
+    {
+        m_radians -= pi2;
+    }
+    while( m_radians < 0 )
+    {
+        m_radians += pi2;
+    }
+}
+
+float Angle::SinOf() const
+{
+	return (float)sin( m_radians );
+}
+
+float Angle::CosOf() const
+{
+	return (float)cos( m_radians );
+}

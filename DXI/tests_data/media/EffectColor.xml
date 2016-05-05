@@ -1,0 +1,7 @@
+<?xml profile="1.0" encoding="iso-8859-1"?>
+<effect>
+  <pixelshader name="color_3d" source="shaders/color3d.shader" entry="ps_main" profile="ps_1_1"/>
+  <vertexshader name="color_3d" source="shaders/color3d.shader" entry="vs_main" profile="vs_1_1">
+    <vd>{"Position":"Float3","Diffuse":"Color"}</vd>
+  </vertexshader>
+</effect>

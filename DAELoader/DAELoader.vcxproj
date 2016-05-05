@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\dae\Accessor.cpp" />
+    <ClCompile Include="source\dae\BindMaterial.cpp" />
+    <ClCompile Include="source\dae\BindMaterial_TechniqueCommon.cpp" />
+    <ClCompile Include="source\dae\Document.cpp" />
+    <ClCompile Include="source\dae\DocumentNode.cpp" />
+    <ClCompile Include="source\dae\Exceptions.cpp" />
+    <ClCompile Include="source\dae\Extra.cpp" />
+    <ClCompile Include="source\dae\FloatArray.cpp" />
+    <ClCompile Include="source\dae\Input_Shared.cpp" />
+    <ClCompile Include="source\dae\Input_Unshared.cpp" />
+    <ClCompile Include="source\dae\InstanceSet.cpp" />
+    <ClCompile Include="source\dae\InstanceVisualScene.cpp" />
+    <ClCompile Include="source\dae\NewParam.cpp" />
+    <ClCompile Include="source\dae\Node.cpp" />
+    <ClCompile Include="source\dae\Polylist.cpp" />
+    <ClCompile Include="source\dae\ProfileCommon.cpp" />
+    <ClCompile Include="source\dae\Profile_Technique.cpp" />
+    <ClCompile Include="source\dae\Scene.cpp" />
+    <ClCompile Include="source\dae\Source.cpp" />
+    <ClCompile Include="source\dae\Source_TechniqueCommon.cpp" />
+    <ClCompile Include="source\dae\Technique_Core.cpp" />
+    <ClCompile Include="source\dae\Triangles.cpp" />
+    <ClCompile Include="source\dae\Vertices.cpp" />
+    <ClCompile Include="source\dae\library_effects\Effect.cpp" />
+    <ClCompile Include="source\dae\library_effects\LibraryEffects.cpp" />
+    <ClCompile Include="source\dae\library_effects\Shading.cpp" />
+    <ClCompile Include="source\dae\library_geometries\Geometry.cpp" />
+    <ClCompile Include="source\dae\library_geometries\LibraryGeometries.cpp" />
+    <ClCompile Include="source\dae\library_geometries\Mesh.cpp" />
+    <ClCompile Include="source\dae\library_images\Image.cpp" />
+    <ClCompile Include="source\dae\library_images\LibraryImages.cpp" />
+    <ClCompile Include="source\dae\library_materials\LibraryMaterials.cpp" />
+    <ClCompile Include="source\dae\library_materials\Material.cpp" />
+    <ClCompile Include="source\dae\library_nodes\LibraryNodes.cpp" />
+    <ClCompile Include="source\dae\library_visual_scenes\InstanceEffect.cpp" />
+    <ClCompile Include="source\dae\library_visual_scenes\InstanceGeometry.cpp" />
+    <ClCompile Include="source\dae\library_visual_scenes\InstanceMaterial.cpp" />
+    <ClCompile Include="source\dae\library_visual_scenes\LibraryVisualScenes.cpp" />
+    <ClCompile Include="source\dae\library_visual_scenes\VisualScene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\dae\Accessor.h" />
+    <ClInclude Include="source\dae\BindMaterial.h" />
+    <ClInclude Include="source\dae\BindMaterial_TechniqueCommon.h" />
+    <ClInclude Include="source\dae\Document.h" />
+    <ClInclude Include="source\dae\DocumentNode.h" />
+    <ClInclude Include="source\dae\Exceptions.h" />
+    <ClInclude Include="source\dae\Extra.h" />
+    <ClInclude Include="source\dae\FloatArray.h" />
+    <ClInclude Include="source\dae\IDocument.h" />
+    <ClInclude Include="source\dae\Input_Shared.h" />
+    <ClInclude Include="source\dae\Input_Unshared.h" />
+    <ClInclude Include="source\dae\InstanceSet.h" />
+    <ClInclude Include="source\dae\InstanceVisualScene.h" />
+    <ClInclude Include="source\dae\Library.h" />
+    <ClInclude Include="source\dae\NewParam.h" />
+    <ClInclude Include="source\dae\Node.h" />
+    <ClInclude Include="source\dae\Polylist.h" />
+    <ClInclude Include="source\dae\ProfileCommon.h" />
+    <ClInclude Include="source\dae\Profile_Technique.h" />
+    <ClInclude Include="source\dae\Scene.h" />
+    <ClInclude Include="source\dae\Source.h" />
+    <ClInclude Include="source\dae\Source_TechniqueCommon.h" />
+    <ClInclude Include="source\dae\Technique_Core.h" />
+    <ClInclude Include="source\dae\Triangles.h" />
+    <ClInclude Include="source\dae\Vertices.h" />
+    <ClInclude Include="source\dae\library_effects\Effect.h" />
+    <ClInclude Include="source\dae\library_effects\LibraryEffects.h" />
+    <ClInclude Include="source\dae\library_effects\Shading.h" />
+    <ClInclude Include="source\dae\library_geometries\Geometry.h" />
+    <ClInclude Include="source\dae\library_geometries\LibraryGeometries.h" />
+    <ClInclude Include="source\dae\library_geometries\Mesh.h" />
+    <ClInclude Include="source\dae\library_images\Image.h" />
+    <ClInclude Include="source\dae\library_images\LibraryImages.h" />
+    <ClInclude Include="source\dae\library_materials\LibraryMaterials.h" />
+    <ClInclude Include="source\dae\library_materials\Material.h" />
+    <ClInclude Include="source\dae\library_nodes\LibraryNodes.h" />
+    <ClInclude Include="source\dae\library_visual_scenes\InstanceEffect.h" />
+    <ClInclude Include="source\dae\library_visual_scenes\InstanceGeometry.h" />
+    <ClInclude Include="source\dae\library_visual_scenes\InstanceMaterial.h" />
+    <ClInclude Include="source\dae\library_visual_scenes\LibraryVisualScenes.h" />
+    <ClInclude Include="source\dae\library_visual_scenes\VisualScene.h" />
+    <ClInclude Include="source\dae\util\IEffectSolver.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E58A71BD-1CFB-4388-86CE-09085321300D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DAELoader</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
+    <IntDir>..\..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
+    <IntDir>..\..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\source;..\unify\include;..\qlib\include;..\qxml\include;..\..\packages\boost_1_59_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\source;..\unify\include;..\qlib\include;..\qxml\include;..\..\packages\boost_1_59_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,10 @@
+<shape>
+<type>tube</type>
+<fvf>XYZ | Diffuse | Tex1</fvf>
+<texture name="borgcube" source="borgcube.bmp"/>
+<segments>24</segments>
+<majorradius>1</majorradius>
+<minorradius>0.5</minorradius>
+<height>.5</height>
+<diffuse>0,0,255,255</diffuse>
+</shape>

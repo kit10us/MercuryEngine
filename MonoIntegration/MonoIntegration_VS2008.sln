@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MonoIntegration", "MonoIntegration_VS2008.vcproj", "{1FC3535B-3DE8-4362-B74B-C8A5A5655E0B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4} = {904F038F-9550-4112-B7A1-3B160C2FF7F4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXI", "..\DXI\DXI_VS2008.vcproj", "{904F038F-9550-4112-B7A1-3B160C2FF7F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A1C518FB-8973-49C8-9D70-9C9FF06698A6} = {A1C518FB-8973-49C8-9D70-9C9FF06698A6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QLib", "..\QLib\QLib_VS2008.vcproj", "{E463E1EB-EA9F-4717-AE79-AF798B5F3EF6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AD285766-AD5F-4006-91AA-4919F27EF77B} = {AD285766-AD5F-4006-91AA-4919F27EF77B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QXML", "..\QXML\QXML.vcproj", "{A1C518FB-8973-49C8-9D70-9C9FF06698A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E463E1EB-EA9F-4717-AE79-AF798B5F3EF6} = {E463E1EB-EA9F-4717-AE79-AF798B5F3EF6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Unify", "..\Unify\Unify_VS2008.vcproj", "{AD285766-AD5F-4006-91AA-4919F27EF77B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RunScript", "RunScript\RunScript.vcproj", "{52517DD3-585A-4CC7-9DAB-569A3EF7FB58}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1FC3535B-3DE8-4362-B74B-C8A5A5655E0B} = {1FC3535B-3DE8-4362-B74B-C8A5A5655E0B}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FC3535B-3DE8-4362-B74B-C8A5A5655E0B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1FC3535B-3DE8-4362-B74B-C8A5A5655E0B}.Debug|Win32.Build.0 = Debug|Win32
+		{1FC3535B-3DE8-4362-B74B-C8A5A5655E0B}.Release|Win32.ActiveCfg = Release|Win32
+		{1FC3535B-3DE8-4362-B74B-C8A5A5655E0B}.Release|Win32.Build.0 = Release|Win32
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4}.Debug|Win32.Build.0 = Debug|Win32
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4}.Release|Win32.ActiveCfg = Release|Win32
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4}.Release|Win32.Build.0 = Release|Win32
+		{E463E1EB-EA9F-4717-AE79-AF798B5F3EF6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E463E1EB-EA9F-4717-AE79-AF798B5F3EF6}.Debug|Win32.Build.0 = Debug|Win32
+		{E463E1EB-EA9F-4717-AE79-AF798B5F3EF6}.Release|Win32.ActiveCfg = Release|Win32
+		{E463E1EB-EA9F-4717-AE79-AF798B5F3EF6}.Release|Win32.Build.0 = Release|Win32
+		{A1C518FB-8973-49C8-9D70-9C9FF06698A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1C518FB-8973-49C8-9D70-9C9FF06698A6}.Debug|Win32.Build.0 = Debug|Win32
+		{A1C518FB-8973-49C8-9D70-9C9FF06698A6}.Release|Win32.ActiveCfg = Release|Win32
+		{A1C518FB-8973-49C8-9D70-9C9FF06698A6}.Release|Win32.Build.0 = Release|Win32
+		{AD285766-AD5F-4006-91AA-4919F27EF77B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD285766-AD5F-4006-91AA-4919F27EF77B}.Debug|Win32.Build.0 = Debug|Win32
+		{AD285766-AD5F-4006-91AA-4919F27EF77B}.Release|Win32.ActiveCfg = Release|Win32
+		{AD285766-AD5F-4006-91AA-4919F27EF77B}.Release|Win32.Build.0 = Release|Win32
+		{52517DD3-585A-4CC7-9DAB-569A3EF7FB58}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52517DD3-585A-4CC7-9DAB-569A3EF7FB58}.Debug|Win32.Build.0 = Debug|Win32
+		{52517DD3-585A-4CC7-9DAB-569A3EF7FB58}.Release|Win32.ActiveCfg = Release|Win32
+		{52517DD3-585A-4CC7-9DAB-569A3EF7FB58}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

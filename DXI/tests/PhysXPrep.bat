@@ -1,0 +1,1 @@
+copy ..\..\PhysX\Bin\win32\*.dll "tests output"

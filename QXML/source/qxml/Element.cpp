@@ -1,0 +1,479 @@
+// Copyright (c) 2002 - 2014, Quentin S. Smith
+// All Rights Reserved
+
+#include <qxml/Element.h>
+#include <unify/String.h>
+#include <unify/Exception.h>
+#include <cassert>
+
+using namespace qxml;
+
+Element::Element()
+: m_index( 0 )
+, m_parent( 0 )
+, m_prevSibling( 0 )
+, m_nextSibling( 0 )
+, m_firstChild( 0 )
+, m_lastChild( 0 )
+, m_numChildren( 0 )
+, m_document( 0 )
+{
+}
+
+Element::Element( const std::string & name, NodeType::TYPE type, Document * document )
+: m_tagName( name )
+, m_index( 0 )
+, m_type( type )
+, m_parent( 0 )
+, m_prevSibling( 0 )
+, m_nextSibling( 0 )
+, m_firstChild( 0 )
+, m_lastChild( 0 )
+, m_numChildren( 0 )
+, m_document( document )
+{
+}
+
+Element::~Element()
+{
+}
+
+const std::string & Element::GetTagName() const
+{
+	return m_tagName;
+}
+
+bool Element::IsTagName( const std::string & tagName ) const
+{
+	return unify::StringIs( m_tagName, tagName );
+}
+
+unsigned int Element::NumAttributes() const
+{
+	return (unsigned int)m_attributeList.size();
+}
+
+bool Element::HasAttributes( const std::string & name ) const
+{
+	std::vector< std::string > names = unify::Split< std::string >( name, ',' );
+    for( std::vector< std::string >::const_iterator itrTok = names.begin(); itrTok != names.end(); ++itrTok )
+    {
+        bool foundMatch = false;
+		for( std::vector< Attribute::shared_ptr >::const_iterator itr = m_attributeList.begin(), end = m_attributeList.end(); itr != end; ++itr )
+		{
+            const Attribute & currentAttribute = *(*itr);
+            const std::string & attributeToFindText = *itrTok;
+            std::string left;
+            std::string right;
+            bool notLeft = false;
+            bool notRight = false;
+
+            // Attempt to find = outside of single or double quotes.
+            size_t pos = 0;
+            bool inQuotes = false;
+            char quoteType;
+            bool buildingLeft = true;
+            for ( pos; pos != attributeToFindText.size(); ++pos )
+            {
+                if ( inQuotes && attributeToFindText[ pos ] == quoteType )
+                {
+                    inQuotes = false;
+                    continue;
+                }
+                else if ( ! inQuotes && ( attributeToFindText.at( pos ) == '\'' || attributeToFindText.at( pos ) == '\"' ) )
+                {
+                    quoteType = attributeToFindText[ pos ];
+                    inQuotes = true;
+                    continue;
+                }
+
+                if ( ! inQuotes && attributeToFindText[ pos ] == '=' )
+                {
+                    assert( buildingLeft ); // We should not enconter an equals during building the r-param.
+                    buildingLeft = false;
+                    continue;
+                }
+
+                if ( ! inQuotes && attributeToFindText[ pos ] == '!' && ( buildingLeft && left.empty() || ! buildingLeft && right.empty() ) )
+                {
+                    if ( buildingLeft )
+                    {
+                        notLeft = true;
+                    }
+                    else
+                    {
+                        notRight = true;
+                    }
+                }
+
+                if ( buildingLeft )
+                {
+                    left += attributeToFindText[ pos ];
+                }
+                else
+                {
+                    right += attributeToFindText[ pos ];
+                }
+            }
+
+            if( unify::StringIs( left, currentAttribute.GetName() ) || notLeft )
+            {
+                if ( right.empty() || unify::StringIs( right, currentAttribute.GetString() ) || notRight ) 
+			    {
+                    foundMatch = true;
+				    continue;
+                }
+            }
+		}
+
+        // We track a bool because out text input can be delimited.
+        if ( ! foundMatch )
+        {
+            return false;
+        }
+	}	
+	return true;
+}
+
+bool Element::HasElements( const std::string & name ) const
+{
+	std::vector< std::string > names = unify::Split< std::string >( name, ',' );
+    for( std::vector< std::string >::const_iterator itrTok = names.begin(); itrTok != names.end(); ++itrTok )
+    {
+		bool found = false;
+		const Element * pElement = GetFirstChild();
+		while( pElement )
+		{
+			if( pElement->IsTagName( *itrTok ) ) 
+			{
+				found = true;
+				break;
+			}
+			pElement = pElement->GetNext();
+		}
+		if( ! found )
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+Attribute::shared_ptr Element::GetAttribute( unsigned int attribute ) const
+{
+	return m_attributeList[ attribute ];
+}
+
+Attribute::shared_ptr Element::GetAttribute( const std::string & attributeName ) const
+{
+	for( std::vector< Attribute::shared_ptr >::const_iterator itr = m_attributeList.begin(), end = m_attributeList.end(); itr != end; ++itr )
+	{
+		if( _stricmp( (*itr)->GetName().c_str(), attributeName.c_str() ) == 0 ) return (*itr);
+	}
+
+	assert( 0 );
+	throw unify::Exception( "Attribute \"" + attributeName + "\" was not found by name!" );
+}
+
+int Element::GetIntegerAttribute( const std::string & attribute ) const
+{
+	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+	return pAttribute->GetInteger();
+}
+
+float Element::GetFloatAttribute( const std::string & attribute ) const
+{
+	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+	return pAttribute->GetFloat();
+}
+
+std::string Element::GetStringAttribute( const std::string & attribute ) const
+{
+	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+	return pAttribute->GetString();
+}
+
+bool Element::GetBooleanAttribute( const std::string & attribute ) const
+{
+	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+	return pAttribute->GetBoolean();
+}
+
+int Element::GetIntegerAttributeElse( const std::string & attribute, int value ) const
+{
+	if( HasAttributes( attribute ) )
+	{
+		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+		return pAttribute->GetInteger();
+	}
+	else
+	{
+		return value;
+	}
+}
+
+float Element::GetFloatAttributeElse( const std::string & attribute, float value ) const
+{
+	if( HasAttributes( attribute ) )
+	{
+		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+		return pAttribute->GetFloat();
+	}
+	else
+	{
+		return value;
+	}
+}
+
+std::string Element::GetStringAttributeElse( const std::string & attribute, const std::string & value ) const
+{
+	if( HasAttributes( attribute ) )
+	{
+		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+		return pAttribute->GetString();
+	}
+	else
+	{
+		return value;
+	}
+}
+
+bool Element::GetBooleanAttributeElse( const std::string & attribute, bool value ) const
+{
+	if( HasAttributes( attribute ) )
+	{
+		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
+		return pAttribute->GetBoolean();
+	}
+	else
+	{
+		return value;
+	}
+}
+
+void Element::FindElements( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes ) const
+{
+	// Get the first child of our parent
+	const Element * element = GetFirstChild();
+	while( element )
+	{
+        if( element->IsTagName( tagName ) && element->HasAttributes( attributes ) ) 
+        {
+			elementList.push_back( element );
+		}
+		element = element->GetNext();
+	}
+}
+
+const Element * Element::FindFirstElement( const std::string tagName, const std::string & attributes ) const
+{
+	// Get the first child of our parent
+	const Element * element = GetFirstChild();
+	while( element )
+	{
+        if( element->IsTagName( tagName ) && element->HasAttributes( attributes ) ) 
+        {
+            return element;
+		}
+		element = element->GetNext();
+	}
+    return false;
+}
+
+void Element::FindElementsByTagName( ElementList & elementList, const std::string & tagName )
+{
+	// Get the first child of our parent
+	Element* pElement = GetFirstChild();
+	while( pElement )
+	{
+		if( pElement->IsTagName( tagName ) ) 
+		{
+			elementList.AddElement( pElement );
+		}
+		pElement = pElement->GetNext();
+	}
+}
+
+void Element::FindElementsByTagNameRecursive( ElementList & elementList, const std::string & tagName )
+{
+	// Get the first child of our parent (
+	Element * pElement = GetFirstChild();
+	while( pElement )
+	{
+		if( pElement->IsTagName( tagName ) ) 
+		{
+			elementList.AddElement( pElement );
+		}
+		// Call our child's recursive find...
+		pElement->FindElementsByTagNameRecursive( elementList, tagName );
+		pElement = pElement->GetNext();
+	}
+}
+
+// Search our children for elements with a given tag name...
+Element * Element::GetElement( const std::string & tagName )
+{
+	// Get the first child of our parent
+	Element* pElement = GetFirstChild();
+	while( pElement )
+	{
+		if( pElement->IsTagName( tagName ) )
+		{
+			return pElement;
+		}
+		pElement = pElement->GetNext();
+	}
+
+	return 0;
+}
+
+const Element * Element::GetElement( const std::string & tagName ) const
+{
+	// Get the first child of our parent
+	const Element * pElement = GetFirstChild();
+	while( pElement )
+	{
+		if( pElement->IsTagName( tagName ) )
+		{
+			return pElement;
+		}
+		pElement = pElement->GetNext();
+	}
+
+	return 0;
+}
+
+
+Element * Element::GetParent()
+{
+	return m_parent;
+}
+
+const Element * Element::GetParent() const
+{
+	return m_parent;
+}
+
+Element * Element::GetPrevious()
+{
+	return m_prevSibling;
+}
+
+const Element * Element::GetPrevious() const
+{
+	return m_prevSibling;
+}
+
+Element * Element::GetNext()
+{
+	return m_nextSibling;
+}
+
+const Element * Element::GetNext() const
+{
+	return m_nextSibling;
+}
+
+Element * Element::GetFirstChild()
+{
+	return m_firstChild;
+}
+
+const Element * Element::GetFirstChild() const
+{
+	return m_firstChild;
+}
+
+Element * Element::GetLastChild()
+{
+	return m_lastChild;
+}
+
+const Element * Element::GetLastChild() const
+{
+	return m_lastChild;
+}
+
+// Returns the text for an element...
+const std::string & Element::GetText() const
+{
+	return m_text;
+}
+
+unsigned int Element::NumChildren() const
+{
+	return m_numChildren;
+}
+
+unsigned int Element::Index() const
+{
+	return m_index;
+}
+
+// Assign a child to the linkage hierachy...
+void Element::TakeChild( Element * pElement )
+{
+	pElement->m_parent = this;
+	m_numChildren++;
+
+	if( m_firstChild == 0 ) {
+		m_firstChild = pElement;
+	} 
+	else {
+		m_lastChild->m_nextSibling = pElement;
+		pElement->m_prevSibling = m_lastChild;
+	}
+
+	// Last added child becomes last child alway...
+	m_lastChild = pElement;
+}
+
+// Assign a sibling (insert) to the linkage hierachy...
+void Element::TakeSibling( Element * pElement )
+{
+	pElement->m_parent = this->m_parent;
+	pElement->m_prevSibling = this;
+
+	if( this->m_nextSibling )
+	{
+		this->m_nextSibling->m_prevSibling = pElement;
+		pElement->m_nextSibling = this->m_nextSibling;
+	} else
+	{
+		this->m_parent->m_lastChild = pElement;
+	}
+
+	this->m_nextSibling = pElement;
+}
+
+void Element::AppendAttribute( Attribute::shared_ptr & attribute )
+{
+	return m_attributeList.push_back( attribute );
+}
+
+const std::string & Element::AddText( const std::string & text )
+{
+	m_text += unify::CleanWhitespace( text );
+	return m_text;
+}
+
+Element::NodeType::TYPE Element::GetType() const
+{
+	return m_type;
+}
+
+Document * Element::GetDocument() const
+{
+    return m_document;
+}
+
+
+//////////////////////////////////////////////////////////
+// ElementList
+//////////////////////////////////////////////////////////
+
+Element * ElementList::AddElement( Element * element )
+{
+	AddItem( element, element->GetTagName() );
+	return element;
+}

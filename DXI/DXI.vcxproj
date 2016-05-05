@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\dxi\animation\AnimationFrame.cpp" />
+    <ClCompile Include="source\dxi\animation\Group.cpp" />
+    <ClCompile Include="source\dxi\animation\Instance.cpp" />
+    <ClCompile Include="source\dxi\animation\Sequence.cpp" />
+    <ClCompile Include="source\dxi\animation\SpriteManager.cpp" />
+    <ClCompile Include="source\dxi\ASEDocument.cpp" />
+    <ClCompile Include="source\dxi\Blend.cpp" />
+    <ClCompile Include="source\dxi\BufferSet.cpp" />
+    <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp" />
+    <ClCompile Include="source\dxi\core\Game.cpp" />
+    <ClCompile Include="source\dxi\DataBuffer.cpp" />
+    <ClCompile Include="source\dxi\DirectXFile.cpp" />
+    <ClCompile Include="source\dxi\Effect.cpp" />
+    <ClCompile Include="source\dxi\EffectFactories.cpp" />
+    <ClCompile Include="source\dxi\events\ListenerContainer.cpp" />
+    <ClCompile Include="source\dxi\events\ListenerMap.cpp" />
+    <ClCompile Include="source\dxi\font\Character.cpp" />
+    <ClCompile Include="source\dxi\font\CharacterKey.cpp" />
+    <ClCompile Include="source\dxi\font\CharacterRender.cpp" />
+    <ClCompile Include="source\dxi\font\Font.cpp" />
+    <ClCompile Include="source\dxi\font\FontManager.cpp" />
+    <ClCompile Include="source\dxi\font\FontString.cpp" />
+    <ClCompile Include="source\dxi\font\TextBox.cpp" />
+    <ClCompile Include="source\dxi\font\TextBox3D.cpp" />
+    <ClCompile Include="source\dxi\frameanimation\FrameAnimation.cpp" />
+    <ClCompile Include="source\dxi\frameanimation\FrameAnimationKey.cpp" />
+    <ClCompile Include="source\dxi\frameanimation\FrameAnimationSet.cpp" />
+    <ClCompile Include="source\dxi\Frustum.cpp" />
+    <ClCompile Include="source\dxi\Geometry.cpp" />
+    <ClCompile Include="source\dxi\GeometryFactory.cpp" />
+    <ClCompile Include="source\dxi\GeometryGroup.cpp" />
+    <ClCompile Include="source\dxi\GeometryPlacement.cpp" />
+    <ClCompile Include="source\dxi\IndexBuffer.cpp" />
+    <ClCompile Include="source\dxi\IndexLock.cpp" />
+    <ClCompile Include="source\dxi\Input.cpp" />
+    <ClCompile Include="source\dxi\LOD.cpp" />
+    <ClCompile Include="source\dxi\Mesh.cpp" />
+    <ClCompile Include="source\dxi\MeshInstanceData.cpp" />
+    <ClCompile Include="source\dxi\pathing\general\Parallel.cpp" />
+    <ClCompile Include="source\dxi\pathing\general\Split.cpp" />
+    <ClCompile Include="source\dxi\pathing\orientation\LookAt.cpp" />
+    <ClCompile Include="source\dxi\pathing\orientation\XMLConvert.cpp" />
+    <ClCompile Include="source\dxi\pathing\Path.cpp" />
+    <ClCompile Include="source\dxi\pathing\PathController.cpp" />
+    <ClCompile Include="source\dxi\pathing\PathSystem.cpp" />
+    <ClCompile Include="source\dxi\pathing\position\AttachTo.cpp" />
+    <ClCompile Include="source\dxi\pathing\position\RotateAbout.cpp" />
+    <ClCompile Include="source\dxi\PixelShader.cpp" />
+    <ClCompile Include="source\dxi\PixelShaderFactories.cpp" />
+    <ClCompile Include="source\dxi\pi\EnvironmentBox.cpp" />
+    <ClCompile Include="source\dxi\pi\EnvironmentConstant.cpp" />
+    <ClCompile Include="source\dxi\pi\PhysicsEnvironment.cpp" />
+    <ClCompile Include="source\dxi\pi\PhysicsInstance.cpp" />
+    <ClCompile Include="source\dxi\pi\PhysicsScene.cpp" />
+    <ClCompile Include="source\dxi\PrimitiveList.cpp" />
+    <ClCompile Include="source\dxi\RenderInfo.cpp" />
+    <ClCompile Include="source\dxi\RenderMethod.cpp" />
+    <ClCompile Include="source\dxi\RenderMethodBuffer.cpp" />
+    <ClCompile Include="source\dxi\RenderState.cpp" />
+    <ClCompile Include="source\dxi\scene\Camera.cpp" />
+    <ClCompile Include="source\dxi\scene\DefaultLoaders.cpp" />
+    <ClCompile Include="source\dxi\scene\Object.cpp" />
+    <ClCompile Include="source\dxi\scene\ObjectGroup.cpp" />
+    <ClCompile Include="source\dxi\scene\Scene.cpp" />
+    <ClCompile Include="source\dxi\scene\SceneLoader.cpp" />
+    <ClCompile Include="source\dxi\scene\SceneManager.cpp" />
+    <ClCompile Include="source\dxi\ShaderBase.cpp" />
+    <ClCompile Include="source\dxi\ShapeFactory.cpp" />
+    <ClCompile Include="source\dxi\shapes\BeveledBoxParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\CircleParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\ConeParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\CubeParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\CylinderParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\DashRingParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\PlaneParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\PointFieldParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\PointRingParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\PyramidParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\ShapeBaseParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\ShapeCreators.cpp" />
+    <ClCompile Include="source\dxi\shapes\ShapeType.cpp" />
+    <ClCompile Include="source\dxi\shapes\SphereParameters.cpp" />
+    <ClCompile Include="source\dxi\shapes\TubeParameters.cpp" />
+    <ClCompile Include="source\dxi\Sprite.cpp" />
+    <ClCompile Include="source\dxi\SpriteList.cpp" />
+    <ClCompile Include="source\dxi\Terra.cpp" />
+    <ClCompile Include="source\dxi\Texture.cpp" />
+    <ClCompile Include="source\dxi\TextureFactory.cpp" />
+    <ClCompile Include="source\dxi\Transform.cpp" />
+    <ClCompile Include="source\dxi\Usage.cpp" />
+    <ClCompile Include="source\dxi\utils\SafeRelease.cpp" />
+    <ClCompile Include="source\dxi\VertexBuffer.cpp" />
+    <ClCompile Include="source\dxi\VertexDeclaration.cpp" />
+    <ClCompile Include="source\dxi\VertexShader.cpp" />
+    <ClCompile Include="source\dxi\VertexShaderFactory.cpp" />
+    <ClCompile Include="source\dxi\Viewport.cpp" />
+    <ClCompile Include="source\dxi\win\DXDevice.cpp" />
+    <ClCompile Include="source\dxi\win\DXRenderer.cpp" />
+    <ClCompile Include="source\dxi\win\WindowsOS.cpp" />
+    <ClCompile Include="source\dxi\win\WinMain.cpp" />
+    <ClCompile Include="source\dxi\win\WndProc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\dxi\animation\Frame.h" />
+    <ClInclude Include="source\dxi\animation\Group.h" />
+    <ClInclude Include="source\dxi\animation\Instance.h" />
+    <ClInclude Include="source\dxi\animation\Sequence.h" />
+    <ClInclude Include="source\dxi\animation\SpriteManager.h" />
+    <ClInclude Include="source\dxi\ASEDocument.h" />
+    <ClInclude Include="source\dxi\Blend.h" />
+    <ClInclude Include="source\dxi\BufferSet.h" />
+    <ClInclude Include="source\dxi\controllers\ControllerFactory.h" />
+    <ClInclude Include="source\dxi\controllers\IController.h" />
+    <ClInclude Include="source\dxi\controllers\PathController.h" />
+    <ClInclude Include="source\dxi\core\Game.h" />
+    <ClInclude Include="source\dxi\core\IGame.h" />
+    <ClInclude Include="source\dxi\core\IInput.h" />
+    <ClInclude Include="source\dxi\core\IOS.h" />
+    <ClInclude Include="source\dxi\core\IRenderer.h" />
+    <ClInclude Include="source\dxi\DataBuffer.h" />
+    <ClInclude Include="source\dxi\DirectXFile.h" />
+    <ClInclude Include="source\dxi\Effect.h" />
+    <ClInclude Include="source\dxi\EffectFactories.h" />
+    <ClInclude Include="source\dxi\events\Listener.h" />
+    <ClInclude Include="source\dxi\events\ListenerContainer.h" />
+    <ClInclude Include="source\dxi\events\ListenerMap.h" />
+    <ClInclude Include="source\dxi\exception\DeviceFailure.h" />
+    <ClInclude Include="source\dxi\exception\Exception.h" />
+    <ClInclude Include="source\dxi\exception\FailedToCreate.h" />
+    <ClInclude Include="source\dxi\exception\FailedToLock.h" />
+    <ClInclude Include="source\dxi\exception\NotImplemented.h" />
+    <ClInclude Include="source\dxi\exception\OutOfBounds.h" />
+    <ClInclude Include="source\dxi\exception\Render.h" />
+    <ClInclude Include="source\dxi\exception\ResourceNotFound.h" />
+    <ClInclude Include="source\dxi\exception\Startup.h" />
+    <ClInclude Include="source\dxi\exception\UnsupportedValue.h" />
+    <ClInclude Include="source\dxi\exception\Update.h" />
+    <ClInclude Include="source\dxi\font\Character.h" />
+    <ClInclude Include="source\dxi\font\CharacterKey.h" />
+    <ClInclude Include="source\dxi\font\CharacterRender.h" />
+    <ClInclude Include="source\dxi\font\Font.h" />
+    <ClInclude Include="source\dxi\font\FontManager.h" />
+    <ClInclude Include="source\dxi\font\FontString.h" />
+    <ClInclude Include="source\dxi\font\IText.h" />
+    <ClInclude Include="source\dxi\font\TextBox.h" />
+    <ClInclude Include="source\dxi\font\TextBox3D.h" />
+    <ClInclude Include="source\dxi\frameanimation\FrameAnimation.h" />
+    <ClInclude Include="source\dxi\frameanimation\FrameAnimationKey.h" />
+    <ClInclude Include="source\dxi\frameanimation\FrameAnimationSet.h" />
+    <ClInclude Include="source\dxi\Frustum.h" />
+    <ClInclude Include="source\dxi\Geometry.h" />
+    <ClInclude Include="source\dxi\GeometryFactory.h" />
+    <ClInclude Include="source\dxi\GeometryGroup.h" />
+    <ClInclude Include="source\dxi\GeometryInstanceData.h" />
+    <ClInclude Include="source\dxi\GeometryPlacement.h" />
+    <ClInclude Include="source\dxi\IndexBuffer.h" />
+    <ClInclude Include="source\dxi\IndexLock.h" />
+    <ClInclude Include="source\dxi\Input.h" />
+    <ClInclude Include="source\dxi\Keys.h" />
+    <ClInclude Include="source\dxi\Lockable.h" />
+    <ClInclude Include="source\dxi\LOD.h" />
+    <ClInclude Include="source\dxi\Material.h" />
+    <ClInclude Include="source\dxi\Mesh.h" />
+    <ClInclude Include="source\dxi\MeshAnimation.h" />
+    <ClInclude Include="source\dxi\MeshInstanceData.h" />
+    <ClInclude Include="source\dxi\null\Input.h" />
+    <ClInclude Include="source\dxi\pathing\general\Parallel.h" />
+    <ClInclude Include="source\dxi\pathing\general\Split.h" />
+    <ClInclude Include="source\dxi\pathing\Modifier.h" />
+    <ClInclude Include="source\dxi\pathing\orientation\LookAt.h" />
+    <ClInclude Include="source\dxi\pathing\Path.h" />
+    <ClInclude Include="source\dxi\pathing\PathController.h" />
+    <ClInclude Include="source\dxi\pathing\PathSystem.h" />
+    <ClInclude Include="source\dxi\pathing\position\AttachTo.h" />
+    <ClInclude Include="source\dxi\pathing\position\RotateAbout.h" />
+    <ClInclude Include="source\dxi\physics\IInstance.h" />
+    <ClInclude Include="source\dxi\physics\IObjectSyncer.h" />
+    <ClInclude Include="source\dxi\physics\IScene.h" />
+    <ClInclude Include="source\dxi\PixelShader.h" />
+    <ClInclude Include="source\dxi\PixelShaderFactories.h" />
+    <ClInclude Include="source\dxi\pi\EnvironmentBox.h" />
+    <ClInclude Include="source\dxi\pi\EnvironmentConstant.h" />
+    <ClInclude Include="source\dxi\pi\PhysicsEnvironment.h" />
+    <ClInclude Include="source\dxi\pi\PhysicsInstance.h" />
+    <ClInclude Include="source\dxi\pi\PhysicsScene.h" />
+    <ClInclude Include="source\dxi\PlacementEntry.h" />
+    <ClInclude Include="source\dxi\PrimitiveList.h" />
+    <ClInclude Include="source\dxi\QCommonShaders.h" />
+    <ClInclude Include="source\dxi\QDIK.h" />
+    <ClInclude Include="source\dxi\QGizmo.h" />
+    <ClInclude Include="source\dxi\QGizmoCommon.h" />
+    <ClInclude Include="source\dxi\QOverlay.h" />
+    <ClInclude Include="source\dxi\QRenderStatistics.h" />
+    <ClInclude Include="source\dxi\QShadowVolume.h" />
+    <ClInclude Include="source\dxi\RenderInfo.h" />
+    <ClInclude Include="source\dxi\RenderMethod.h" />
+    <ClInclude Include="source\dxi\RenderMethodBuffer.h" />
+    <ClInclude Include="source\dxi\RenderState.h" />
+    <ClInclude Include="source\dxi\scene\Camera.h" />
+    <ClInclude Include="source\dxi\scene\DefaultLoaders.h" />
+    <ClInclude Include="source\dxi\scene\Object.h" />
+    <ClInclude Include="source\dxi\scene\ObjectGroup.h" />
+    <ClInclude Include="source\dxi\scene\Scene.h" />
+    <ClInclude Include="source\dxi\scene\SceneLoader.h" />
+    <ClInclude Include="source\dxi\scene\SceneManager.h" />
+    <ClInclude Include="source\dxi\ShaderBase.h" />
+    <ClInclude Include="source\dxi\ShapeFactory.h" />
+    <ClInclude Include="source\dxi\shapes\BeveledBoxParameters.h" />
+    <ClInclude Include="source\dxi\shapes\CircleParameters.h" />
+    <ClInclude Include="source\dxi\shapes\ConeParameters.h" />
+    <ClInclude Include="source\dxi\shapes\CubeParameters.h" />
+    <ClInclude Include="source\dxi\shapes\CylinderParameters.h" />
+    <ClInclude Include="source\dxi\shapes\DashRingParameters.h" />
+    <ClInclude Include="source\dxi\shapes\PlaneParameters.h" />
+    <ClInclude Include="source\dxi\shapes\PointFieldParameters.h" />
+    <ClInclude Include="source\dxi\shapes\PointRingParameters.h" />
+    <ClInclude Include="source\dxi\shapes\PyramidParameters.h" />
+    <ClInclude Include="source\dxi\shapes\ShapeBaseParameters.h" />
+    <ClInclude Include="source\dxi\shapes\ShapeCreators.h" />
+    <ClInclude Include="source\dxi\shapes\ShapeType.h" />
+    <ClInclude Include="source\dxi\shapes\SphereParameters.h" />
+    <ClInclude Include="source\dxi\shapes\TubeParameters.h" />
+    <ClInclude Include="source\dxi\Sprite.h" />
+    <ClInclude Include="source\dxi\SpriteList.h" />
+    <ClInclude Include="source\dxi\Terra.h" />
+    <ClInclude Include="source\dxi\Texture.h" />
+    <ClInclude Include="source\dxi\TextureFactory.h" />
+    <ClInclude Include="source\dxi\Transform.h" />
+    <ClInclude Include="source\dxi\Usage.h" />
+    <ClInclude Include="source\dxi\utils\SafeRelease.h" />
+    <ClInclude Include="source\dxi\VertexBuffer.h" />
+    <ClInclude Include="source\dxi\VertexDeclaration.h" />
+    <ClInclude Include="source\dxi\VertexShader.h" />
+    <ClInclude Include="source\dxi\VertexShaderFactory.h" />
+    <ClInclude Include="source\dxi\Viewport.h" />
+    <ClInclude Include="source\dxi\win\DirectX.h" />
+    <ClInclude Include="source\dxi\win\DXDevice.h" />
+    <ClInclude Include="source\dxi\win\DXRenderer.h" />
+    <ClInclude Include="source\dxi\win\WindowsOS.h" />
+    <ClInclude Include="source\dxi\win\WndProc.h" />
+    <ClInclude Include="source\dxi\XMLConvert.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\dxi\frameanimation\FrameAnimationKey.inl" />
+    <None Include="source\dxi\QGizmoCommon.inl" />
+    <None Include="source\dxi\QOverlay.inl" />
+    <None Include="source\dxi\QPrimitiveGeometry.inl" />
+    <None Include="source\dxi\QRenderInfo.inl" />
+    <None Include="source\dxi\QRenderStatistics.inl" />
+    <None Include="source\dxi\QShadowVolume.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>DXI</ProjectName>
+    <ProjectGuid>{904F038F-9550-4112-B7A1-3B160C2FF7F4}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DXI</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\source;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.\source;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,73 @@
+// Copyright (c) 2003 - 2013, Quentin S. Smith
+// All Rights Reserved
+#pragma once
+
+#include <dxi/shapes/CubeParameters.h>
+
+using namespace dxi;
+using namespace shapes;
+
+CubeParameters::CubeParameters()
+: ShapeBaseParameters( Shape::Cube )
+{
+}
+
+unify::Parameters & CubeParameters::Reset()
+{
+    Reset();
+    Set< Shape::TYPE >( "type", Shape::Cube );
+    return *this;
+}
+
+CubeParameters & CubeParameters::SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation )
+{
+    Set< unify::V3< float > >( "inf", transformation.TransformCoord_Copy( bbox.inf ) );
+    Set< unify::V3< float > >( "sup", transformation.TransformCoord_Copy( bbox.sup ) );
+    return *this;
+} 
+
+CubeParameters & CubeParameters::SetInf( const unify::V3< float > & inf, unify::Matrix & transformation )
+{
+    Set< unify::V3< float > >( "inf", inf );
+    return *this;
+}
+
+CubeParameters & CubeParameters::SetSup( const unify::V3< float > & sup, unify::Matrix & transformation )
+{
+    Set< unify::V3< float > >( "sup", sup );
+    return *this;
+}
+
+CubeParameters & CubeParameters::SetSize( const unify::Size3< float > & size )
+{
+    Set< unify::Size3< float > >( "size3", size );
+    return *this;
+}
+
+CubeParameters & CubeParameters::SetDiffuseFaces( unify::Color one, unify::Color two, unify::Color three, unify::Color four, unify::Color five, unify::Color six )
+{
+    std::vector< unify::Color > diffuses;
+    diffuses.push_back( one );
+    diffuses.push_back( two );
+    diffuses.push_back( three );
+    diffuses.push_back( four );
+    diffuses.push_back( five );
+    diffuses.push_back( six );
+    Set< std::vector< unify::Color > >( "diffuses", diffuses );
+    return *this;
+}     
+
+CubeParameters & CubeParameters::SetDiffusePoints( unify::Color one, unify::Color two, unify::Color three, unify::Color four, unify::Color five, unify::Color six, unify::Color seven, unify::Color eight )
+{
+    std::vector< unify::Color > diffuses;
+    diffuses.push_back( one );
+    diffuses.push_back( two );
+    diffuses.push_back( three );
+    diffuses.push_back( four );
+    diffuses.push_back( five );
+    diffuses.push_back( six );
+    diffuses.push_back( seven );
+    diffuses.push_back( eight );
+    Set< std::vector< unify::Color > >( "diffuses", diffuses );
+    return *this;
+}      

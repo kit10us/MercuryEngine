@@ -1,0 +1,41 @@
+#include <dxi/dae/library_images/DAE_Image.h>
+
+using namespace dxi;
+using namespace dae;
+
+dae::Image::Image( IDocument & document, const qxml::Element * node )
+: DocumentNode( document, node )
+, m_id( node->GetStringAttributeElse( "id", std::string() ) )
+, m_sid( node->GetStringAttributeElse( "sid", std::string() ) )
+, m_name( node->GetStringAttributeElse( "name", std::string() ) )
+{
+	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
+	{
+		if ( childNode->IsTagName( "init_from" ) )
+		{
+			using namespace qlib::file;
+			qlib::file::Path source = Normalize( Combine( DirectoryOnly( childNode->GetDocument()->GetPath() ), childNode->GetText() ) );
+			m_texture.reset( new Texture( source ) );
+		}
+	}
+}
+
+const std::string & dae::Image::GetID() const
+{
+	return m_id;
+}
+
+const std::string & dae::Image::GetSID() const
+{
+	return m_sid;
+}
+
+const std::string & dae::Image::GetName() const
+{
+	return m_name;
+}
+
+Texture::shared_ptr dae::Image::GetTexture() const
+{
+	return m_texture;
+}

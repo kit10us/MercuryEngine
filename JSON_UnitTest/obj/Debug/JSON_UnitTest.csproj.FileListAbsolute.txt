@@ -1,0 +1,8 @@
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\bin\Debug\JSON_UnitTest.dll
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\bin\Debug\JSON_UnitTest.pdb
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\bin\Debug\JSON.dll
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\bin\Debug\JSON.pdb
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\obj\Debug\JSON_UnitTest.csprojResolveAssemblyReference.cache
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\obj\Debug\JSON_UnitTest.dll
+C:\ws\ValEnTrunk\libraries\JSON_UnitTest\obj\Debug\JSON_UnitTest.pdb

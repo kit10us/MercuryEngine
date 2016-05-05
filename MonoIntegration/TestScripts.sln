@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test01 - Empty workspace", "tests\Test01 - Empty workspace\Test01 - Empty workspace.csproj", "{E6219BFD-5CA8-439E-82AC-7113E680D327}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MercuryLib", "cs\MercuryLib.csproj", "{8EF69E60-B5DD-4F09-BBBE-AD4C7016BEA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test02 - Textured 2D", "tests\Test02 - Textured 2D\Test02 - Textured 2D.csproj", "{16721E00-A1B1-46D7-9AE3-588A5B39DD3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16721E00-A1B1-46D7-9AE3-588A5B39DD3C}.Debug|x86.ActiveCfg = Debug|x86
+		{16721E00-A1B1-46D7-9AE3-588A5B39DD3C}.Debug|x86.Build.0 = Debug|x86
+		{16721E00-A1B1-46D7-9AE3-588A5B39DD3C}.Release|x86.ActiveCfg = Release|x86
+		{16721E00-A1B1-46D7-9AE3-588A5B39DD3C}.Release|x86.Build.0 = Release|x86
+		{8EF69E60-B5DD-4F09-BBBE-AD4C7016BEA2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8EF69E60-B5DD-4F09-BBBE-AD4C7016BEA2}.Debug|x86.Build.0 = Debug|Any CPU
+		{8EF69E60-B5DD-4F09-BBBE-AD4C7016BEA2}.Release|x86.ActiveCfg = Release|Any CPU
+		{8EF69E60-B5DD-4F09-BBBE-AD4C7016BEA2}.Release|x86.Build.0 = Release|Any CPU
+		{E6219BFD-5CA8-439E-82AC-7113E680D327}.Debug|x86.ActiveCfg = Debug|x86
+		{E6219BFD-5CA8-439E-82AC-7113E680D327}.Debug|x86.Build.0 = Debug|x86
+		{E6219BFD-5CA8-439E-82AC-7113E680D327}.Release|x86.ActiveCfg = Release|x86
+		{E6219BFD-5CA8-439E-82AC-7113E680D327}.Release|x86.Build.0 = Release|x86
+		{AADC46D0-3710-4E52-8F95-AB31E20B233B}.Debug|x86.ActiveCfg = Debug|x86
+		{AADC46D0-3710-4E52-8F95-AB31E20B233B}.Debug|x86.Build.0 = Debug|x86
+		{AADC46D0-3710-4E52-8F95-AB31E20B233B}.Release|x86.ActiveCfg = Release|x86
+		{AADC46D0-3710-4E52-8F95-AB31E20B233B}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = tests\Test02 - Textured 2D\Test02 - Textured 2D.csproj
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,5 @@
+C:\ws\ValEnTrunk\libraries\JSON\bin\Debug\JSON.dll
+C:\ws\ValEnTrunk\libraries\JSON\bin\Debug\JSON.pdb
+C:\ws\ValEnTrunk\libraries\JSON\obj\Debug\JSON.csprojResolveAssemblyReference.cache
+C:\ws\ValEnTrunk\libraries\JSON\obj\Debug\JSON.dll
+C:\ws\ValEnTrunk\libraries\JSON\obj\Debug\JSON.pdb

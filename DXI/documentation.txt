@@ -1,0 +1,78 @@
+
+[namespaces]
+dxi - Root namespace that holds all components.
+dxi::core - Lowest level APIs used to build upon with other libraries.
+dxi::win - Windows specific implmentations.
+
+[Log]
+
+04/17/2013:
+* Removed unncessary FVFs for foward compatability with vertex definitions.
+* Removed T&L transformation code, ""
+* Removed T&L heavy transformation cache (might need to re-create, perhaps merge Animated Mesh frmae instance data).
+
+
+08/07/2012:
+* Removed ColorOp and added SumComponents (which was really the only reason for the ColorOp).
+* Improved XML loading.
+* Improved Effects, and other resource managers. Changes to effects (et al) moved vertex formating. Currently vertex format is tied to effects.
+* Integrated resource managers into the core systems, thus eliminating specific resource tests (such as the previous 8 - Resource Managers).
+* Integrated Scenes and the SceneManager into the core architecture, as it's the expected usage model.
+* Update mesh loading to use an EffectManager.
+* Added VertexShaderLoader.
+* Added PixelShaderLoader.
+* Removed direct shader loading from mesh loader as effect loader should now handle this.
+* TODO: Mesh loaders should support a "append mesh name to textures" feature allowing a mesh textures to have simple names internally (such as "boots"), yet not overwrite an existing texture that also has a simple name (thus, "solider01_mesh_boots").
+
+04/26/2011:
+* TODO ObjectSelectable: A container for an object that simplifies (encapsulates) selection, adds effects when selected.
+* Addition: Added IInput to reduce early dependencies.
+* Addition: Added IInput as a parameter to Update to promote paradigm.
+* Corrected defect: Removed unify::Float (hardware specific, so no need to encapsulate).
+* Corrected defectMoved QXML to seperate library, from QLib.
+
+04/16/2011:
+* Currently rewritting the mesh loading code. Need to support static meshes with 4+ vertices per poly (breaking it down to triangles of course), also support animations.
+  As a side effect of the code rewrite, I pulled out some stange code that post transforms the vertices based on an additive matrix. Normaly I'd need to post rotate and translate tiny, now it looks like I don't need to, so the previous code was likely defective.
+* Corrected defect: scene1.xml - tiny's orientation to compensate for corrected (?) tranformation on loading of static matrices.
+* Corrected defect: Seperated font offsets and scales based on 2D or 3D textbox.
+* Query: What is CharacterRender for? Can't we get away with just Character?
+* TODO: Search code for todos.
+* TODO: Reduce QLib.
+* Corrected defect: V2 and V3 Zero was bad math, renamed to V3Zero and V2Zero as accordance with Named Constructor standard.
+* Corrected defect:
+  
+[TODO]
+* Reduce Texture to simply a single texture class. Not a font class, no animation. No drawing functionality.
+* Locking: Support multiple read-only locks, read-only count keeping, etc. 
+(DONE) * Locking: Support write-only locks.
+(DONE) * Locking: Support a "Lockable" and push common VB and IB use there - directly connects with a "Lock".
+* Clean up PrimitiveList so that it isn't proxying for it's sub components (VB, IB, etc.)
+* GetRenderInfo returns a reference.
+* Add and implement a Scene Management test.
+* A Scene should logically know about it's resources, be associated with them so that we can unload all scene X exclusive resources.
+* Add JSON support for easier creation of objects and simpler integration with other facets.
+* Update resource managers to support JSON creation to remove specialized managers (eg. ensure all resource possible assets, such as PixelShader and Texture, accept JSON values ).
+* eliminate the geo namespace as unnecessarily verbose.
+* Possibly replace Parameters with JSON Object.
+
+[Sprite animation system]
+* A Texture holds the graphical data.
+* A SpriteAnimationFrame is an instance of a sprite animation, with duration.
+* A SpriteAnimation holds SpriteAnimationFrames.
+* A SpriteAnimationGroup holds grouped SpriteAnimations.
+
+[Geometry animation]
+* A geometry should not have any animation instane data.
+* Create an abstract GeometryAnimationInstance kind of class which keeps all instantaneous animation data, so we can use that to render our geo.
+
+[RANDOM NOTES TO BE USED TO DOCUMENTATION LATER]
+* MOVED QDisplay: Used to manage a display - obsolete at the moment. Some features moved to RenderInfo.
+* NOTE QSystem: Used to manage Windows variables.
+* IMPLEMENTATION Game: Using this to transport QSystem and QDisplay variables.
+* ? QDXIClass
+* TODO Effect: Allow switching on storing/restoring states, and just brute force.
+* TODO IndexBuffer (maybe more): Could make a more advanced locking implementation, supporting readonly lock referencs and keeping the lock dest. Perhaps inherit from a "Lockable" class.
+* TODO deprecate QDXIClass.
+Items pulled from engine that need resolution: SkinMesh*.*
+* TransformManager became TransformationCache. Needs to be relocated not as a global/singleton.

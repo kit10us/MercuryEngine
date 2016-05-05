@@ -1,0 +1,9 @@
+<shape>
+<type>cylinder</type>
+<fvf>XYZ | Diffuse | Tex1</fvf>
+<texture name="borgcube" source="borgcube.bmp"/>
+<segments>24</segments>
+<radius>1</radius>
+<height>2</height>
+<diffuse>255,0,255,255</diffuse>
+</shape>

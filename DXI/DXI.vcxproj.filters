@@ -1,0 +1,806 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="source\dxi\animation\SpriteManager.cpp">
+      <Filter>dxi\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\TextBox.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\TextBox3D.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\MeshInstanceData.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\Path.cpp">
+      <Filter>dxi\pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\PathController.cpp">
+      <Filter>dxi\pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\PathSystem.cpp">
+      <Filter>dxi\pathing</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\position\RotateAbout.cpp">
+      <Filter>dxi\pathing\position</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\PixelShader.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pi\PhysicsEnvironment.cpp">
+      <Filter>dxi\pi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pi\PhysicsInstance.cpp">
+      <Filter>dxi\pi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pi\PhysicsScene.cpp">
+      <Filter>dxi\pi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\PrimitiveList.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\RenderInfo.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\RenderMethod.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\RenderMethodBuffer.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\RenderState.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\ShaderBase.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Sprite.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\SpriteList.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Texture.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Transform.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Usage.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\VertexBuffer.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\VertexDeclaration.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\VertexShader.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\win\WindowsOS.cpp">
+      <Filter>dxi\win</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\win\WinMain.cpp">
+      <Filter>dxi\win</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\win\WndProc.cpp">
+      <Filter>dxi\win</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\animation\AnimationFrame.cpp">
+      <Filter>dxi\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\position\AttachTo.cpp">
+      <Filter>dxi\pathing\position</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\ASEDocument.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\BufferSet.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\Character.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\CharacterKey.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\CharacterRender.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp">
+      <Filter>dxi\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\DataBuffer.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\DirectXFile.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\win\DXDevice.cpp">
+      <Filter>dxi\win</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Effect.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pi\EnvironmentBox.cpp">
+      <Filter>dxi\pi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pi\EnvironmentConstant.cpp">
+      <Filter>dxi\pi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\Font.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\FontManager.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\font\FontString.cpp">
+      <Filter>dxi\font</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Blend.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\frameanimation\FrameAnimation.cpp">
+      <Filter>dxi\frameanimation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\frameanimation\FrameAnimationKey.cpp">
+      <Filter>dxi\frameanimation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\frameanimation\FrameAnimationSet.cpp">
+      <Filter>dxi\frameanimation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Frustum.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\core\Game.cpp">
+      <Filter>dxi\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\animation\Group.cpp">
+      <Filter>dxi\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\animation\Sequence.cpp">
+      <Filter>dxi\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\IndexBuffer.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\IndexLock.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Input.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\animation\Instance.cpp">
+      <Filter>dxi\animation</Filter>
+    </ClCompile>
+    <ClInclude Include="source\dxi\animation\SpriteManager.h">
+      <Filter>dxi\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\controllers\PathController.h">
+      <Filter>dxi\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\IOS.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\OutOfBounds.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\Render.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\Startup.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\Update.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\IText.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\TextBox.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\TextBox3D.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Keys.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Lockable.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Material.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\MeshAnimation.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\MeshInstanceData.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\Modifier.h">
+      <Filter>dxi\pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\Path.h">
+      <Filter>dxi\pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\PathController.h">
+      <Filter>dxi\pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\PathSystem.h">
+      <Filter>dxi\pathing</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\position\RotateAbout.h">
+      <Filter>dxi\pathing\position</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\physics\IObjectSyncer.h">
+      <Filter>dxi\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\PixelShader.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pi\PhysicsEnvironment.h">
+      <Filter>dxi\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pi\PhysicsInstance.h">
+      <Filter>dxi\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pi\PhysicsScene.h">
+      <Filter>dxi\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\PlacementEntry.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\PrimitiveList.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QCommonShaders.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QDIK.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QGizmo.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QGizmoCommon.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QOverlay.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QRenderStatistics.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\QShadowVolume.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\RenderInfo.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\RenderMethod.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\RenderMethodBuffer.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\RenderState.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\ShaderBase.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Sprite.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\SpriteList.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Texture.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Transform.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Usage.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\VertexBuffer.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\VertexDeclaration.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\VertexShader.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\win\WindowsOS.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\win\WndProc.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\XMLConvert.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\position\AttachTo.h">
+      <Filter>dxi\pathing\position</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\ASEDocument.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\BufferSet.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\Character.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\CharacterKey.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\CharacterRender.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\controllers\ControllerFactory.h">
+      <Filter>dxi\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\DataBuffer.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\DeviceFailure.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\win\DirectX.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\DirectXFile.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\win\DXDevice.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Effect.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pi\EnvironmentBox.h">
+      <Filter>dxi\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pi\EnvironmentConstant.h">
+      <Filter>dxi\pi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\FailedToCreate.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\FailedToLock.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\FontString.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\Font.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\font\FontManager.h">
+      <Filter>dxi\font</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Blend.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\animation\Frame.h">
+      <Filter>dxi\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\frameanimation\FrameAnimationSet.h">
+      <Filter>dxi\frameanimation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\frameanimation\FrameAnimation.h">
+      <Filter>dxi\frameanimation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\frameanimation\FrameAnimationKey.h">
+      <Filter>dxi\frameanimation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\Game.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\IGame.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\animation\Group.h">
+      <Filter>dxi\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\animation\Sequence.h">
+      <Filter>dxi\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\controllers\IController.h">
+      <Filter>dxi\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\IInput.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\IndexLock.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\IndexBuffer.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Input.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\physics\IInstance.h">
+      <Filter>dxi\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\GeometryInstanceData.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\animation\Instance.h">
+      <Filter>dxi\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\physics\IScene.h">
+      <Filter>dxi\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Frustum.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClCompile Include="source\dxi\events\ListenerContainer.cpp">
+      <Filter>dxi\events</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\events\ListenerMap.cpp">
+      <Filter>dxi\events</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\utils\SafeRelease.cpp">
+      <Filter>dxi\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\orientation\LookAt.cpp">
+      <Filter>dxi\pathing\orientation</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\general\Parallel.cpp">
+      <Filter>dxi\pathing\general</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\general\Split.cpp">
+      <Filter>dxi\pathing\general</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\pathing\orientation\XMLConvert.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\CubeParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\CylinderParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\DashRingParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\PlaneParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\PointFieldParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\PointRingParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\PyramidParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\ShapeBaseParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\ShapeCreators.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\ShapeType.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\SphereParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\TubeParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\BeveledBoxParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\CircleParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\shapes\ConeParameters.cpp">
+      <Filter>dxi\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\TextureFactory.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\VertexShaderFactory.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\LOD.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Mesh.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Terra.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Geometry.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\GeometryGroup.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\GeometryPlacement.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\Object.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\ObjectGroup.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\Scene.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\SceneLoader.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\SceneManager.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\Camera.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\DefaultLoaders.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\Viewport.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\win\DXRenderer.cpp">
+      <Filter>dxi\win</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\GeometryFactory.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\ShapeFactory.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\EffectFactories.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\PixelShaderFactories.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\dxi\QGizmoCommon.inl">
+      <Filter>dxi</Filter>
+    </None>
+    <None Include="source\dxi\QOverlay.inl">
+      <Filter>dxi</Filter>
+    </None>
+    <None Include="source\dxi\QPrimitiveGeometry.inl">
+      <Filter>dxi</Filter>
+    </None>
+    <None Include="source\dxi\QRenderInfo.inl">
+      <Filter>dxi</Filter>
+    </None>
+    <None Include="source\dxi\QRenderStatistics.inl">
+      <Filter>dxi</Filter>
+    </None>
+    <None Include="source\dxi\QShadowVolume.inl">
+      <Filter>dxi</Filter>
+    </None>
+    <None Include="source\dxi\frameanimation\FrameAnimationKey.inl">
+      <Filter>dxi\frameanimation</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dxi">
+      <UniqueIdentifier>{311f9848-f65a-49a7-98b6-69a52bb59494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\win">
+      <UniqueIdentifier>{73599d41-1b64-4fb1-b9df-d71a550efde9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\pathing">
+      <UniqueIdentifier>{4fdd4d24-d1be-4140-8171-5e698380afb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\pathing\position">
+      <UniqueIdentifier>{9f295a9d-d1ff-46a2-8809-738a0f5a9135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\scene">
+      <UniqueIdentifier>{a421d004-7084-401e-95a5-266259838ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\animation">
+      <UniqueIdentifier>{7b38b965-8172-4168-8994-8e89f7d413e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\font">
+      <UniqueIdentifier>{40d6ae4b-ba0e-45e5-8e9c-a33b38c3dab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\core">
+      <UniqueIdentifier>{4aebe0b8-19c6-4b04-abec-a08715641309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\controllers">
+      <UniqueIdentifier>{13f45424-afbd-44e5-89bb-849afe7cb8d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\exception">
+      <UniqueIdentifier>{f8a3a623-294e-4fca-adf9-a8d71ce5fe5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\pi">
+      <UniqueIdentifier>{ed590cb0-b8b3-4b59-b077-3ba6c0d81b06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\frameanimation">
+      <UniqueIdentifier>{02f9d20d-b0fa-459f-bcfd-de98e9707e91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\physics">
+      <UniqueIdentifier>{6c15dad2-8dfe-4fb9-8de9-530a2384f352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\events">
+      <UniqueIdentifier>{6f4dac3d-2f3d-44a5-a82d-c4524d044af5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\utils">
+      <UniqueIdentifier>{aa01f114-9e13-4351-8843-d7fa24e613af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\pathing\orientation">
+      <UniqueIdentifier>{ba7a2a07-099f-4faa-87a8-241cb03ffba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\pathing\general">
+      <UniqueIdentifier>{c85af193-a68e-489d-ad4f-84b694a3b012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\shapes">
+      <UniqueIdentifier>{6af56a8a-22bd-40e8-bf6f-66b059410a06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\null">
+      <UniqueIdentifier>{7ac1a0b5-601c-41c7-b36c-63857e04925c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\dxi\events\ListenerMap.h">
+      <Filter>dxi\events</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\events\Listener.h">
+      <Filter>dxi\events</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\events\ListenerContainer.h">
+      <Filter>dxi\events</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\utils\SafeRelease.h">
+      <Filter>dxi\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\orientation\LookAt.h">
+      <Filter>dxi\pathing\orientation</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\general\Split.h">
+      <Filter>dxi\pathing\general</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\pathing\general\Parallel.h">
+      <Filter>dxi\pathing\general</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\CubeParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\CylinderParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\DashRingParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\PlaneParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\PointFieldParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\PointRingParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\PyramidParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\ShapeBaseParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\ShapeCreators.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\ShapeType.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\SphereParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\TubeParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\BeveledBoxParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\CircleParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\shapes\ConeParameters.h">
+      <Filter>dxi\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\TextureFactory.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\VertexShaderFactory.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\UnsupportedValue.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\NotImplemented.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\ResourceNotFound.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\exception\Exception.h">
+      <Filter>dxi\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\LOD.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Mesh.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Terra.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Geometry.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\GeometryGroup.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\GeometryPlacement.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\Object.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\ObjectGroup.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\Scene.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\SceneLoader.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\SceneManager.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\Camera.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\DefaultLoaders.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Viewport.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\IRenderer.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\null\Input.h">
+      <Filter>dxi\null</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\win\DXRenderer.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\GeometryFactory.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\ShapeFactory.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\EffectFactories.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\PixelShaderFactories.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

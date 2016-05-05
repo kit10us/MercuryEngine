@@ -1,0 +1,7 @@
+<?xml profile="1.0" encoding="iso-8859-1"?>
+<effect name="textured_2d">
+  <pixelshader name="textured_2d" source="shaders/textured2d.shader" entry="ps_main" profile="ps_1_1"/>
+  <vertexshader name="textured_2d" source="shaders/textured2d.shader" entry="vs_main" profile="vs_1_1">
+    <vd>{"Position":"Float3","Tex":"TexCoord"}</vd>
+  </vertexshader>
+</effect>

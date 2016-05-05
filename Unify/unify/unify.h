@@ -1,0 +1,32 @@
+// Copyright (c) 2002 - 2014, Quentin S. Smith
+// All Rights Reserved
+
+#pragma once
+
+#pragma comment( lib, "unify" )
+
+#ifdef DIRECTX9
+#define WIN32_LEAN_AND_MEAN
+#include <d3dx9math.h>
+#else
+#include <d3d11_1.h>
+#include <DirectXMath.h>
+#endif
+
+// MS likes to macro max. We want to use max.
+#ifdef max
+#undef max
+#endif
+
+// MS likes to macro min. We want to use min.
+#ifdef min
+#undef min
+#endif
+
+// MS likes to macro RGB. We want to use RGB.
+#ifdef RGB
+#undef RGB
+#endif
+
+#include <limits>
+#include <string>

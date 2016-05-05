@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\..\dx\TestApp.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\dx\TestApp.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dx\Common.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dx">
+      <UniqueIdentifier>{ed698fca-d0a1-421b-a323-079af38f0a97}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

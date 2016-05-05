@@ -1,0 +1,34 @@
+// Copyright (c) 2002 - 2014, Quentin S. Smith
+// All Rights Reserved
+
+#pragma once
+
+#include <dae/Input_Unshared.h>
+#include <dae/DocumentNode.h>
+#include <qxml/QXML.h>
+#include <vector>
+#include <string>
+
+namespace dxi
+{
+	namespace dae
+	{
+		/// <summary>
+		/// DAE node: COLLADA->library_geometries->geometry->{mesh, convex_mesh, brep}->vertices (1 or more)
+		/// </summary>
+		class Vertices : public DocumentNode
+		{
+		public:
+			Vertices( IDocument & document, const qxml::Element * node );
+
+			const std::string & GetID() const;
+			const std::string & GetName() const;
+			const std::vector< std::shared_ptr< Input_Unshared > > & GetInput() const;
+
+		private:
+			std::string m_id;
+			std::string m_name;
+			std::vector< std::shared_ptr< Input_Unshared > > m_input;
+		};
+	}
+}

@@ -1,0 +1,2 @@
+"..\..\tests output\RunScriptDebug.exe" "${TargetFile}" MyGame game
+${TargetDir}

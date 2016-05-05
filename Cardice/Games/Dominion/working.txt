@@ -1,0 +1,17 @@
+Card Characteristics:
+	types
+	MoneyCost
+	PotionCost
+
+Copper:
+
+Silver:
+
+Gold:
+
+Adventurer:
+
+
+
+
+Card animation:
