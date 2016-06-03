@@ -475,7 +475,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	/// A shader-reflection interface accesses shader information.
 	CComPtr< ID3D11ShaderReflection > vertexShaderReflectionOffscreen;
 
-	CreateVertexShader( dxDevice, "offscreen.hlsl", "vs_main", "vs_4_0", vertexShaderOffscreen, vertexShaderBufferOffscreen, vertexShaderReflectionOffscreen );
+	CreateVertexShader( dxDevice, "test2DTextured.hlsl", "vs_main", "vs_4_0", vertexShaderOffscreen, vertexShaderBufferOffscreen, vertexShaderReflectionOffscreen );
 #pragma endregion
 
 #pragma region Create pixel shader for offscreen...
@@ -484,7 +484,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 	CComPtr< ID3D10Blob > pixelShaderBufferOffscreen;
 
-	CreatePixelShader( dxDevice, "offscreen.hlsl", "ps_main", "ps_4_0", pixelShaderOffscreen, pixelShaderBufferOffscreen );
+	CreatePixelShader( dxDevice, "test2DTextured.hlsl", "ps_main", "ps_4_0", pixelShaderOffscreen, pixelShaderBufferOffscreen );
 #pragma endregion
 
 #pragma region Setup shader constant transforms for CPU memory (non-GPU/uploaded to GPU), for _2D shader

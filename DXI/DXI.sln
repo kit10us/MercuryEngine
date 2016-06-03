@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DXI Tests", "DXI Tests", "{67F96AD7-6612-4145-84D8-4C51CDD1595D}"
 EndProject
@@ -137,6 +137,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QXML", "..\QXML\QXML.vcxpro
 	ProjectSection(ProjectDependencies) = postProject
 		{AD285766-AD5F-4006-91AA-4919F27EF77B} = {AD285766-AD5F-4006-91AA-4919F27EF77B}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test07b - Earth", "tests\Test07b - Earth\Test07b - Earth.vcxproj", "{FC67AF41-D55F-4699-95A9-4B33BDEE4437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -544,6 +546,20 @@ Global
 		{B6CB05B8-EB1E-4CC3-AE81-420763273E43}.RelWithDebInfo|Win32.Build.0 = Release|Win32
 		{B6CB05B8-EB1E-4CC3-AE81-420763273E43}.RelWithDebInfo|x64.ActiveCfg = Release|x64
 		{B6CB05B8-EB1E-4CC3-AE81-420763273E43}.RelWithDebInfo|x64.Build.0 = Release|x64
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.Debug|Win32.Build.0 = Debug|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.Debug|x64.ActiveCfg = Debug|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.MinSizeRel|Win32.ActiveCfg = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.MinSizeRel|Win32.Build.0 = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.MinSizeRel|x64.ActiveCfg = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.MinSizeRel|x64.Build.0 = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.Release|Win32.ActiveCfg = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.Release|Win32.Build.0 = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.Release|x64.ActiveCfg = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.RelWithDebInfo|Win32.Build.0 = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.RelWithDebInfo|x64.ActiveCfg = Release|Win32
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437}.RelWithDebInfo|x64.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -572,5 +588,6 @@ Global
 		{B7C0AA51-39A5-4AAD-BCC2-3C4C5CEB300B} = {B53C002C-5805-4652-8511-55E025B4C088}
 		{D9DB005B-F409-4488-BC7A-ED57DE081344} = {B53C002C-5805-4652-8511-55E025B4C088}
 		{5DB49525-24E7-4441-916D-E32BFA058AE9} = {D9DB005B-F409-4488-BC7A-ED57DE081344}
+		{FC67AF41-D55F-4699-95A9-4B33BDEE4437} = {67F96AD7-6612-4145-84D8-4C51CDD1595D}
 	EndGlobalSection
 EndGlobal

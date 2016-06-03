@@ -35,6 +35,7 @@
 *.ccscc
 *.cache
 *.db
+*.opendb
 
 # Local Temporary files (suck as backup files)
 *.bak

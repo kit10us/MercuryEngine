@@ -195,3 +195,11 @@ bool BBox< T >::RayTest( const Ray< T > & ray, V3< T > & hitPoint ) const
 {
     return false;
 }
+
+template< typename T >
+V3< T > BBox< T >::ToBarrycentric( const V3< T > & point ) const
+{
+	V3< T > size = Size();
+	V3< T > result( point - inf );
+	return V3< T >( size.x != 0 ? ( result.x / size.x ) : 0, size.y != 0 ? (result.y / size.y) : 0, size.z != 0 ? (result.z / size.z) : 0 );
+}

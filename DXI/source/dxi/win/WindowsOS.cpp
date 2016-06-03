@@ -265,6 +265,7 @@ void WindowsOS::CreateDirectX()
 	dx = 0;
 
 	DX::SetDxDevice( m_dxDevice );
+	m_renderer = new DXRenderer( this );
 
 	// Clear
 	GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET, D3DCOLOR_ARGB( 255, 0, 0, 0 ), 1.0f, 0 );

@@ -10,6 +10,7 @@ using namespace dxi;
 
 Sprite::Sprite()
 : m_center( 0, 0 )
+, m_size( 0, 0 )
 , m_rotations( unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ) )
 , m_scale( 1, 1 )
 , m_depth( 0 )
@@ -21,6 +22,7 @@ Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, an
 : m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
+, m_size( 0, 0 )
 , m_rotations( unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ) )
 , m_scale( 1, 1 )
 , m_sizeToPixels( true )
@@ -34,6 +36,7 @@ Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, co
 : m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
+, m_size( 0, 0 )
 , m_rotations( unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ) )
 , m_scale( scale )
 , m_sizeToPixels( true )
@@ -58,38 +61,6 @@ Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, co
 
 Sprite::~Sprite() throw ()
 {
-}
-
-void Sprite::Create( Effect::shared_ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
-{
-	m_effect = effect;
-	m_animationInstance = animationInstance;
-	m_center = center;
-	m_scale.x = m_scale.y = 1.0f;
-	m_depth = depth;
-	SizeToPixels( true );
-	Init();
-}
-
-void Sprite::Create( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
-{
-	m_effect = effect;
-	m_animationInstance = animationInstance;
-	m_center = center;
-	m_scale = scale;
-	m_depth = depth;
-	SizeToPixels( true );
-	Init();
-}
-
-void Sprite::Create( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
-{
-	m_effect = effect;
-	m_animationInstance = animationInstance;
-	m_center = center;
-	m_size = size;
-	m_depth = depth;
-	Init();
 }
 
 Effect::shared_ptr Sprite::GetEffect() const

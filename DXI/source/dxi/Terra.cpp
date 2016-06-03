@@ -169,85 +169,6 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 
 bool Terra::ApplyHeightMap( TextureOpMap tom )
 {
-	const unify::RowColumn< unsigned int > & rc = m_rc;
-
-	// Fill in vertices & Build depth buffer...
-
-	TextureLock textlock;
-	tom.texture->LockRect( 0, textlock, NULL, LOCK_READONLY );
-
-	unify::DataLock lock;
-	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
-	set.GetVertexBuffer().Lock( lock );
-
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	unsigned int* pBuffer;
-	unsigned int* pBufferColumnStart;
-	unsigned int uSurfaceOffsetH;
-	unsigned int uSurfaceOffsetV;
-	float fAverage = 0.0f;
-
-	unify::TexCoords uvHeight_Length;
-	unify::TexCoords height_uv;
-	uvHeight_Length = unify::TexCoords( tom.texArea.Size().width, tom.texArea.Size().height );
-
-	unify::Size< unsigned int > imageSize = tom.texture->ImageSize();
-
-	unsigned int r, c;
-	float h, v;	// % of image we are at (unit)
-	unsigned int uVert = 0;
-	for( c = 0; c < (rc.column + 1); c++ )
-	{
-		v = (1.0f / rc.column) * c;		// is unit
-		v = 1.0f - v;	// Invert (was bottom to top)
-
-		// Get the heightmap position...
-		height_uv.v = tom.texArea.ul.v + (v * uvHeight_Length.v);
-		while( height_uv.v > 1.0f ) height_uv.v -= 1.0f;
-		while( height_uv.v < 0.0f ) height_uv.v += 1.0f;
-
-		uSurfaceOffsetV = (unsigned int)( imageSize.height * height_uv.v );
-		
-		pBufferColumnStart = (unsigned int*)((unsigned int*)textlock.pBits + (uSurfaceOffsetV * textlock.uStride));
-
-		for( r = 0; r < (rc.row + 1); r++ )
-		{
-			h = (1.0f / rc.row) * r;	// is unit
-			height_uv.u = tom.texArea.ul.u + (h * uvHeight_Length.u);
-			while( height_uv.u > 1.0f ) height_uv.u -= 1.0f;
-			while( height_uv.u < 0.0f ) height_uv.u += 1.0f;
-
-			uSurfaceOffsetH = (unsigned int)( imageSize.width * height_uv.u );
-			pBuffer = pBufferColumnStart + uSurfaceOffsetH;
-			unify::Color pixel = *(unify::Color*)pBuffer;
-			
-			unify::V3< float > vPos;
-			vd.ReadVertex( lock, uVert, positionE, vPos );
-			vPos.y += unify::ColorUnit( tom.colorOp * pixel ).SumComponents();
-
-			vd.WriteVertex( lock, uVert, positionE, vPos );
-			uVert++;
-		}
-	}
-	tom.texture->UnlockRect( 0 );
-
-	set.GetVertexBuffer().Unlock();
-
-	GenerateNormals();
-	ComputeBounds();
-
-	return true;		
-}
-
-bool Terra::ApplyAlphaMap( TextureOpMap tom )
-{
-	unify::RowColumn< unsigned int > rc = m_rc;
-
 	// Fill in vertices & Build depth buffer...
 
 	TextureLock textlock;
@@ -258,6 +179,12 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+
+	D3DVERTEXELEMENT9 positionE = {};
+	positionE.Type = D3DDECLTYPE_FLOAT3;
+	positionE.Usage = D3DDECLUSAGE_POSITION;
+	positionE.UsageIndex = 0;
+
 	D3DVERTEXELEMENT9 diffuseE = {};
 	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
 	diffuseE.Usage = D3DDECLUSAGE_COLOR;
@@ -265,49 +192,55 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 
 	unsigned int* pBuffer;
 	unsigned int* pBufferColumnStart;
-	unsigned int uSurfaceOffsetH;
-	unsigned int uSurfaceOffsetV;
-	float fAverage = 0.0f;
 
 	unify::TexCoords uvHeight_Length;
 	unify::TexCoords height_uv;
 	uvHeight_Length = unify::TexCoords( tom.texArea.Size().width, tom.texArea.Size().height );
 
 	unify::Size< unsigned int > imageSize = tom.texture->ImageSize();
-
-	unsigned int r, c;
-	float h, v;	// % of image we are at (unit)
-	unsigned int uVert = 0;
-	for( c = 0; c < (rc.column + 1); c++ )
+	for( unsigned int vert = 0; vert < lock.Count(); ++vert )
 	{
-		v = (1.0f / rc.column) * c;		// is unit
-		v = 1.0f - v;	// Invert (was bottom to top)
+		unify::V3< float > vPos;
+		vd.ReadVertex( lock, vert, positionE, vPos );
 
-		// Get the heightmap position...
-		height_uv.v = tom.texArea.ul.v + (v * uvHeight_Length.v);
+		unify::V3< float > barry = GetBBox().ToBarrycentric( vPos );
+		barry.z = 1.0f - barry.z; // Reverse z so we match the orientation of the image.
 
-		uSurfaceOffsetV = (unsigned int)( imageSize.height * height_uv.v );
-		
+								  // Get the heightmap position...
+		height_uv.v = tom.texArea.ul.v + (barry.z * uvHeight_Length.v);
+		while( height_uv.v > 1.0f )
+		{
+			height_uv.v -= 1.0f;
+		}
+		while( height_uv.v < 0.0f )
+		{
+			height_uv.v += 1.0f;
+		}
+
+		height_uv.u = tom.texArea.ul.u + (barry.x * uvHeight_Length.u);
+		while( height_uv.u > 1.0f )
+		{
+			height_uv.u -= 1.0f;
+		}
+		while( height_uv.u < 0.0f )
+		{
+			height_uv.u += 1.0f;
+		}
+
+		unsigned int uSurfaceOffsetV = (unsigned int)(imageSize.height * height_uv.v);
 		pBufferColumnStart = (unsigned int*)((unsigned int*)textlock.pBits + (uSurfaceOffsetV * textlock.uStride));
 
-		for( r = 0; r < (rc.row + 1); r++ )
-		{
-			h = (1.0f / rc.row) * r;	// is unit
-			height_uv.u = tom.texArea.ul.u + (h * uvHeight_Length.u);
+		unsigned int uSurfaceOffsetH = (unsigned int)(imageSize.width * height_uv.u);
+		pBuffer = pBufferColumnStart + uSurfaceOffsetH;
+		unify::Color pixel = unify::Color::ColorARGB( *pBuffer );
+		unify::ColorUnit result( tom.colorOp * pixel );
 
-			uSurfaceOffsetH = (unsigned int)( imageSize.width * height_uv.u );
-			pBuffer = pBufferColumnStart + uSurfaceOffsetH;
-			unify::Color pixel = *(unify::Color*)pBuffer;
-			
-			unify::Color colDiffuse;
-			vd.ReadVertex( lock, uVert, diffuseE, colDiffuse );
-			unify::ColorUnit colUnit;
-			colUnit = colDiffuse;
-			colUnit.a = unify::ColorUnit( tom.colorOp * pixel ).SumComponents();
-			colDiffuse = colUnit;
-			vd.WriteVertex( lock, uVert, diffuseE, colDiffuse );
-			uVert++;
-		}
+		// Perform modification to vertex...
+		float sum = result.SumComponents();
+		vPos.y += sum;
+
+		// Update vertex in buffer...
+		vd.WriteVertex( lock, vert, positionE, vPos );
 	}
 	tom.texture->UnlockRect( 0 );
 
@@ -316,8 +249,101 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 	GenerateNormals();
 	ComputeBounds();
 
-	return true;		
+	return true;
 }
+
+
+bool Terra::ApplyAlphaMap( TextureOpMap tom )
+{
+	// Fill in vertices & Build depth buffer...
+
+	TextureLock textlock;
+	tom.texture->LockRect( 0, textlock, 0, LOCK_READONLY );
+
+	unify::DataLock lock;
+	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
+	set.GetVertexBuffer().Lock( lock );
+
+	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+
+	D3DVERTEXELEMENT9 positionE = {};
+	positionE.Type = D3DDECLTYPE_FLOAT3;
+	positionE.Usage = D3DDECLUSAGE_POSITION;
+	positionE.UsageIndex = 0;
+
+	D3DVERTEXELEMENT9 diffuseE = {};
+	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
+	diffuseE.Usage = D3DDECLUSAGE_COLOR;
+	diffuseE.UsageIndex = 0;
+
+	unsigned int* pBuffer;
+	unsigned int* pBufferColumnStart;
+
+	unify::TexCoords uvHeight_Length;
+	unify::TexCoords height_uv;
+	uvHeight_Length = unify::TexCoords( tom.texArea.Size().width, tom.texArea.Size().height );
+
+	unify::Size< unsigned int > imageSize = tom.texture->ImageSize();
+	for( unsigned int vert = 0; vert < lock.Count(); ++vert )
+	{
+		unify::V3< float > vPos;
+		vd.ReadVertex( lock, vert, positionE, vPos );
+
+		unify::V3< float > barry = GetBBox().ToBarrycentric( vPos );
+		barry.z = 1.0f - barry.z; // Reverse z so we match the orientation of the image.
+
+								  // Get the heightmap position...
+		height_uv.v = tom.texArea.ul.v + (barry.z * uvHeight_Length.v);
+		while( height_uv.v > 1.0f )
+		{
+			height_uv.v -= 1.0f;
+		}
+		while( height_uv.v < 0.0f )
+		{
+			height_uv.v += 1.0f;
+		}
+
+		height_uv.u = tom.texArea.ul.u + (barry.x * uvHeight_Length.u);
+		while( height_uv.u > 1.0f )
+		{
+			height_uv.u -= 1.0f;
+		}
+		while( height_uv.u < 0.0f )
+		{
+			height_uv.u += 1.0f;
+		}
+
+		unsigned int uSurfaceOffsetV = (unsigned int)(imageSize.height * height_uv.v);
+		pBufferColumnStart = (unsigned int*)((unsigned int*)textlock.pBits + (uSurfaceOffsetV * textlock.uStride));
+
+		unsigned int uSurfaceOffsetH = (unsigned int)(imageSize.width * height_uv.u);
+		pBuffer = pBufferColumnStart + uSurfaceOffsetH;
+		unify::Color pixel = unify::Color::ColorARGB( *pBuffer );
+		unify::ColorUnit result( tom.colorOp * pixel );
+
+		// Perform modification to vertex...
+		unify::Color colDiffuse;
+		vd.ReadVertex( lock, vert, diffuseE, colDiffuse );
+		unify::ColorUnit colUnit;
+		colUnit = colDiffuse;
+
+		colUnit.a = result.SumComponents();
+		colDiffuse = colUnit;
+
+		// Update vertex in buffer...
+		vd.WriteVertex( lock, vert, diffuseE, colDiffuse );
+
+	}
+	tom.texture->UnlockRect( 0 );
+
+	set.GetVertexBuffer().Unlock();
+
+	GenerateNormals();
+	ComputeBounds();
+
+	return true;
+}
+
 
 bool Terra::ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexArea )
 {

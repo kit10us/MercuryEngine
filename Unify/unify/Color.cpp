@@ -13,9 +13,27 @@ Color Color::ColorRGBA( Color::Component r, Color::Component g, Color::Component
 	return Color( r, g, b, a );
 }
 
+Color Color::ColorRGBA( unsigned int rgba )
+{
+	int r = (rgba >> 24) & 0x000000FF;
+	int g = (rgba >> 16) & 0x000000FF;
+	int b = (rgba >> 8) & 0x000000FF;
+	int a = (rgba >> 0) & 0x000000FF;
+	return Color::ColorRGBA( (Component)r, (Component)g, (Component)b, (Component)a );
+}
+
 Color Color::ColorARGB( Color::Component a, Color::Component r, Color::Component g, Color::Component b )
 {
 	return Color::ColorRGBA( r, g, b, a );
+}
+
+Color Color::ColorARGB( unsigned int argb )
+{
+	int a = (argb >> 24) & 0x000000FF;
+	int r = (argb >> 16) & 0x000000FF;
+	int g = (argb >> 8) & 0x000000FF;
+	int b = (argb >> 0) & 0x000000FF;
+	return Color::ColorARGB( (Component)a, (Component)r, (Component)g, (Component)b );
 }
 
 Color Color::ColorRGB( Color::Component r, Color::Component g, Color::Component b )

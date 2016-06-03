@@ -14,7 +14,9 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/RenderState.h>
-#include <dxi/loader/EffectLoader.h>
+#include <dxi/EffectFactories.h>
+#include <dxi/Mesh.h>
+#include <dxi/ShapeFactory.h>
 #include <dxi/pathing/Path.h>
 #include <dxi/pathing/general/Split.h>
 #include <dxi/pathing/general/Parallel.h>
@@ -32,7 +34,7 @@ protected:
 	scene::Object::shared_ptr m_cameraObject;
 	scene::Camera::shared_ptr m_camera;
 
-	geo::Mesh m_mesh;
+	dxi::Mesh::shared_ptr m_mesh;
 	unify::V3< float > m_position[ 2 ];
 	unify::Quaternion m_axis[ 3 ];
 
@@ -46,18 +48,18 @@ public:
 		// Create an object to use as a camera, and a camera interface. Set the projection to a default projection.
 		m_cameraObject.reset( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
 		m_camera.reset( new scene::Camera( m_cameraObject ) );
-		m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
+		m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
 		m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 0, 10 ) );
 
 		// Load effect
-		Effect::shared_ptr effect = loader::EffectLoader( "color_3d", "media/EffectColor.xml", GetManagers() );
+		Effect::shared_ptr effect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
 		
 		// Cube
         shapes::CubeParameters cubeParameters;
 		cubeParameters.SetEffect( effect );
         cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
         cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-		m_mesh.CreateFromShape( cubeParameters );
+		m_mesh = GetManager< Geometry >()->Add( "cube", dxi::shapes::CreateShape( cubeParameters ) );
 	}
 
 	bool Update( unify::Seconds elapsed, IInput & input )
@@ -79,7 +81,7 @@ public:
 		RenderInfo renderInfo;
 		renderInfo.SetFinalMatrix( m_camera->GetMatrix() );
 
-		m_mesh.Render( renderInfo, 0 );
+		m_mesh->Render( renderInfo, 0 );
 	}
 
 	void Shutdown()

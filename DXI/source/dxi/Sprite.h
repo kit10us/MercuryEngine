@@ -22,10 +22,6 @@ namespace dxi
 		Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
 		~Sprite() throw ();
 
-		void Create( Effect::shared_ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
-		void Create( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
-		void Create( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
-
 		Effect::shared_ptr GetEffect() const;
 
 		void SizeToPixels( bool sizeToPixels );

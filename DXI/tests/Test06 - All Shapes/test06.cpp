@@ -8,7 +8,8 @@
 /// </summary>
 
 #include <dxi/core/Game.h>
-#include <dxi/geo/GeometryGroup.h>
+#include <dxi/GeometryGroup.h>
+#include <dxi/shapes/ShapeCreators.h>
 
 using namespace dxi;
 using namespace core;
@@ -23,9 +24,9 @@ public:
 		Game::Startup();
 
 		// Load our effect from a file...
-		loader::EffectLoader( "textured_3d", "media/EffectTextured.xml", GetManagers() ); // Load an effect into the manager.
+		GetManager< Effect >()->Add( "textured_3d", "media/EffectTextured.xml" ); // Load an effect into the manager.
 
-		Effect::shared_ptr effect = GetEffectManager()->Find( "textured_3d" ); // Demonstrate how the effect is pulled from the manager by name.
+		Effect::shared_ptr effect = GetManager< Effect >()->Find( "textured_3d" ); // Demonstrate how the effect is pulled from the manager by name.
 
 		scene::Scene::shared_ptr mainScene = GetSceneManager()->Add( "main", new scene::Scene );
 
@@ -33,13 +34,13 @@ public:
 		mainScene->Add( "camera", cameraObject );		
 		scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 		mainScene->SetCamera( "camera" );
-		mainScene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
+		mainScene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
 		camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 		camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 		VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
 
-		geo::GeometryGroup * geometryGroup = new geo::GeometryGroup();
+		GeometryGroup * geometryGroup = new GeometryGroup();
 
 		// All shapes are created by hand to show the specific attributes.
 	
@@ -49,7 +50,7 @@ public:
         cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
         cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(),	unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
         cubeParameters.SetCenter( unify::V3< float >( -4.5f, 3.0f, 0.0f ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( cubeParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape(  cubeParameters ) ) );
   
 		shapes::PointFieldParameters pointFieldParameters;
 		pointFieldParameters.SetEffect( effect );
@@ -58,7 +59,7 @@ public:
         pointFieldParameters.SetCount( 1000 );
 		pointFieldParameters.SetCenter( unify::V3< float >( -1.5, 3, 0 ) );
 		pointFieldParameters.SetDiffuse( unify::Color::ColorWhite() );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( pointFieldParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( pointFieldParameters ) ) );
 
         shapes::PointRingParameters pointRingParameters;
 		pointRingParameters.SetEffect( effect );
@@ -67,7 +68,7 @@ public:
 		pointRingParameters.SetCount( 1000 );
 		pointRingParameters.SetCenter( unify::V3< float >( 1.5, 3, 0 ) );
 		pointRingParameters.SetDiffuse( unify::Color::ColorRed() );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( pointRingParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( pointRingParameters ) ) );
 
         shapes::DashRingParameters dashRingParameters;
         dashRingParameters.SetEffect( effect );
@@ -77,14 +78,14 @@ public:
 		dashRingParameters.SetCount( 5 );
 		dashRingParameters.SetDiffuse( unify::Color::ColorGreen() );
 		dashRingParameters.SetCenter( unify::V3< float >( 4.5, 3, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( dashRingParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( dashRingParameters ) ) );
 
 		shapes::PyramidParameters pyramidParameters; 
 		pyramidParameters.SetEffect( effect );
 		pyramidParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		pyramidParameters.SetDiffuse( unify::Color::ColorYellow() );
 		pyramidParameters.SetCenter( unify::V3< float >( -4.5, 0, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( pyramidParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( pyramidParameters ) ) );
 
 		shapes::CircleParameters circleParameters; 
 		circleParameters.SetEffect( effect );
@@ -92,7 +93,7 @@ public:
 		circleParameters.SetRadius( 1.0f );
 		circleParameters.SetDiffuse( unify::Color::ColorBlue() );
 		circleParameters.SetCenter( unify::V3< float >( -1.5, 0, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( circleParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( circleParameters ) ) );
 
 		shapes::SphereParameters sphereParameters; 
 		sphereParameters.SetEffect( effect );
@@ -100,7 +101,7 @@ public:
 		sphereParameters.SetRadius( 1.0f );
 		sphereParameters.SetDiffuse( unify::Color::ColorCyan() );
 		sphereParameters.SetCenter( unify::V3< float >( 1.5, 0, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( sphereParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( sphereParameters ) ) );
 
 		shapes::CylinderParameters cylinderParameters; 
 		cylinderParameters.SetEffect( effect );
@@ -109,7 +110,7 @@ public:
 		cylinderParameters.SetHeight( 2.0f );
 		cylinderParameters.SetDiffuse( unify::Color::ColorMagenta() );
 		cylinderParameters.SetCenter( unify::V3< float >( 4.5, 0, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( cylinderParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( cylinderParameters ) ) );
 
 		shapes::TubeParameters tubeParameters; 
 		tubeParameters.SetEffect( effect );
@@ -119,7 +120,7 @@ public:
 		tubeParameters.SetHeight( 2.0f );
 		tubeParameters.SetDiffuse( unify::Color::ColorRed() );
 		tubeParameters.SetCenter( unify::V3< float >( -4.5, -3, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( tubeParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( tubeParameters ) ) );
 
 		shapes::PlaneParameters planeParameters; 
 		planeParameters.SetEffect( effect );
@@ -127,7 +128,7 @@ public:
 		planeParameters.SetSize( unify::Size< float >( 2.0f, 2.0f ) );
 		planeParameters.SetDiffuse( unify::Color::ColorCyan() );
 		planeParameters.SetCenter( unify::V3< float >( -1.5, -3, 0 ) );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( planeParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( planeParameters ) ) );
 
 		shapes::ConeParameters coneParameters; 
 		coneParameters.SetEffect( effect );
@@ -137,9 +138,9 @@ public:
 		coneParameters.SetDiffuse( unify::Color::ColorGreen() );
 		coneParameters.SetCenter( unify::V3< float >( 1.5, -3, 0 ) );
 		coneParameters.SetCaps( true );
-		geometryGroup->Add( geo::Geometry::shared_ptr( new geo::Mesh( coneParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( coneParameters ) ) );
 		
-		scene::Object::shared_ptr object( new scene::Object( geo::Geometry::shared_ptr( geometryGroup ) ) );
+		scene::Object::shared_ptr object( new scene::Object( Geometry::shared_ptr( geometryGroup ) ) );
 		mainScene->Add( object );
 
 		//mainScene->GetRenderInfo().SetOption( RenderOption::NoFrame, true );

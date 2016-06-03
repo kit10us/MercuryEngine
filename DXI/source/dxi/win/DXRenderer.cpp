@@ -4,6 +4,7 @@
 #include <dxi/win/DXRenderer.h>
 #include <dxi/win/WindowsOS.h>
 #include <dxi/core/Game.h>
+#include <dxi/exception/NotImplemented.h>
 #include <cassert>
 
 using namespace dxi;
@@ -44,7 +45,14 @@ void DXRenderer::GetViewport( Viewport & viewport )
 	viewport.SetMinDepth( dxViewport[ 0 ].MinDepth );
 	viewport.SetMaxDepth( dxViewport[ 0 ].MaxDepth );
 #else
-	// TODO:
+	D3DVIEWPORT9 dxViewport = {};
+	win::DX::GetDxDevice()->GetViewport( &dxViewport );
+	viewport.SetTopLeftX( (float)dxViewport.X );
+	viewport.SetTopLeftY( (float)dxViewport.Y );
+	viewport.SetWidth( (float)dxViewport.Width );
+	viewport.SetHeight( (float)dxViewport.Height );
+	viewport.SetMinDepth( dxViewport.MinZ );
+	viewport.SetMaxDepth( dxViewport.MaxZ );
 #endif
 }
 
@@ -61,7 +69,14 @@ void DXRenderer::SetViewport( const Viewport & viewport )
 	dxViewport.MaxDepth = viewport.GetMaxDepth();
 	win::DX::GetDxContext()->RSSetViewports( numberOfViewports, &dxViewport );
 #else
-	// TODO:
+	D3DVIEWPORT9 dxViewport;
+	dxViewport.X = (DWORD)viewport.GetTopLeftX();
+	dxViewport.Y = (DWORD)viewport.GetTopLeftY();
+	dxViewport.Width = (DWORD)viewport.GetWidth();
+	dxViewport.Height = (DWORD)viewport.GetHeight();
+	dxViewport.MinZ = viewport.GetMinDepth();
+	dxViewport.MaxZ = viewport.GetMaxDepth();
+	win::DX::GetDxDevice()->SetViewport( &dxViewport );
 #endif
 }
 
@@ -82,7 +97,7 @@ void DXRenderer::GetViewports( size_t & numberOfViewports, Viewport * viewports 
 	}
 	numberOfViewports = realNumberOfViewports;
 #else
-	// TODO:
+	throw new exception::NotImplemented( "DXRenderer::GetViewport" );
 #endif
 }
 
@@ -101,6 +116,6 @@ void DXRenderer::SetViewports( size_t & numberOfViewports, const Viewport * view
 	}
 	win::DX::GetDxContext()->RSSetViewports( numberOfViewports, dxViewports );
 #else
-	// TODO:
+	throw new exception::NotImplemented( "DXRenderer::SetViewport" );
 #endif
 }

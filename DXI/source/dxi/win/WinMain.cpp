@@ -22,7 +22,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 
 		game.Startup();
 
-		while( 1 )
+		const bool forever = true;
+		while( forever )
 		{ 
 			while( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
 			{

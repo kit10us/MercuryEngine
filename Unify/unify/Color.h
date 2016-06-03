@@ -82,7 +82,9 @@ namespace unify
 
 		// Named constructors...
 		static Color ColorRGBA( Component r, Component g, Component b, Component a );
+		static Color ColorRGBA( unsigned int rgba );
 		static Color ColorARGB( Component a, Component r, Component g, Component b );
+		static Color ColorARGB( unsigned int argb );
 		static Color ColorRGB( Component r, Component g, Component b );
 		static Color ColorWhite( Component a = 255 );
 		static Color ColorRed( Component r = 255, Component a = 255 );

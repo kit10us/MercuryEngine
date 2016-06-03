@@ -52,6 +52,11 @@ namespace unify
 		// ... this version sets hitPoint to the first point of collision.
         bool RayTest( const Ray< T > & ray, V3< T > & hitPoint ) const;
 
+		/// <description>
+		/// Takes a point and returns a new point barrycentric to the bounding box.
+		/// </description>
+		V3< T > ToBarrycentric( const V3< T > & point ) const;
+
 	private:
 		void Fix(); // Ensures our sup is superior and our inf, inferior.
 	};
