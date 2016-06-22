@@ -268,6 +268,12 @@ void VertexNameToElement( const std::string & name, D3DDECLUSAGE & usageOut, uns
 		std::string n = name.substr( strlen( "TEXCOORD" ) ); 
 		usageIndexOut = unify::Cast< unsigned char >( n );
 	}
+	else if( unify::BeginsWith( name, "TEX" ) )
+	{
+		usageOut = D3DDECLUSAGE_TEXCOORD;
+		std::string n = name.substr( strlen( "TEX" ) );
+		usageIndexOut = unify::Cast< unsigned char >( n );
+	}
 	else if ( unify::StringIs( name, "TANGENT" ) )
 	{
 		usageOut = D3DDECLUSAGE_TANGENT;
@@ -288,7 +294,7 @@ void VertexNameToElement( const std::string & name, D3DDECLUSAGE & usageOut, uns
 		usageOut = D3DDECLUSAGE_POSITIONT;
 		usageIndexOut = 0;
 	}
-	else if ( unify::StringIs( name, "DIFFUSE" ) )
+	else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
 	{
 		usageOut = D3DDECLUSAGE_COLOR;
 		usageIndexOut = 0;
@@ -468,34 +474,7 @@ VertexDeclaration::VertexDeclaration( const qjson::Object & object )
 			std::string name = itr.GetName();
 			
 			D3DDECLUSAGE usage = D3DDECLUSAGE();
-			if( unify::StringIs( name, "Position" ) )
-			{
-				usage = D3DDECLUSAGE_POSITION;
-			}
-			else if( unify::StringIs( name, "Normal" ) )
-			{
-				usage = D3DDECLUSAGE_NORMAL;
-			}
-			else if( unify::StringIs( name, "Diffuse" ) || unify::StringIs( name, "Color" )  )
-			{
-				usage = D3DDECLUSAGE_COLOR;
-				usageIndex = 0;
-			}
-			else if( unify::StringIs( name, "Specular" ) )
-			{
-				usage = D3DDECLUSAGE_COLOR;
-				usageIndex = 1;
-			}
-			else if( unify::StringIs( name, "Tex" ) || unify::StringIs( name, "Tex1" ) || unify::StringIs( name, "TexCoord" ) || unify::StringIs( name, "TexCoord1" ) )
-			{
-				usage = D3DDECLUSAGE_TEXCOORD;
-				usageIndex = 0;
-			}
-			else if( unify::StringIs( name, "Tex2" ) || unify::StringIs( name, "TexCoord2" ) )
-			{
-				usage = D3DDECLUSAGE_TEXCOORD;
-				usageIndex = 1; // TODO: Verify this is correct.
-			}
+			VertexNameToElement( name, usage, usageIndex );
 
 			VertexElement element;
 			element.Stream = stream;
@@ -655,7 +634,7 @@ void VertexDeclaration::Use()
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V2< float > & v )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V2< float > & v ) const
 {
 	VertexElement elementFound = {};
 	if( ! GetElement( element, elementFound ) )
@@ -691,7 +670,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V3< float > & v )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V3< float > & v ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -724,7 +703,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V4< float > & v )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V4< float > & v ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -763,7 +742,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::TexCoords & tc )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::TexCoords & tc ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -802,7 +781,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::Color & c )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::Color & c ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -842,7 +821,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::ColorUnit & cu )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::ColorUnit & cu ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -882,7 +861,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	}
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, const void * vertex )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, const void * vertex ) const
 {
 	size_t result = 0;
 	for( auto e : inVD.m_elements )
@@ -920,7 +899,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::V2< float > & v )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::V2< float > & v )  const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -930,7 +909,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::V3< float > & v )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::V3< float > & v ) const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -940,7 +919,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::V4< float > & v )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::V4< float > & v ) const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -950,7 +929,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::TexCoords & tc )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::TexCoords & tc ) const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -960,7 +939,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::Color & c )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::Color & c ) const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -970,7 +949,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::ColorUnit & cu )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, VertexElement element, const unify::ColorUnit & cu ) const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -980,7 +959,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, const VertexDeclaration & inVD, const void * vertex )
+bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, const VertexDeclaration & inVD, const void * vertex ) const
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -990,7 +969,7 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, std::initializer_li
 	return result != 0;
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::V2< float > & v )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::V2< float > & v )	const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -1024,7 +1003,7 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::V3< float > & v )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::V3< float > & v )	const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -1059,7 +1038,7 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::V4< float > & v )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::V4< float > & v ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -1098,7 +1077,7 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::TexCoords & tc )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::TexCoords & tc ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -1134,7 +1113,7 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::Color & c )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::Color & c ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -1174,7 +1153,7 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::ColorUnit & cu )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, unify::ColorUnit & cu ) const
 {
 	VertexElement elementFound = {};
 	if( !GetElement( element, elementFound ) )
@@ -1214,7 +1193,7 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 }
 
-bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, void * vertex )
+bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, void * vertex )	const
 {
 	size_t result = 0;
 	for( auto e : inVD.m_elements )
