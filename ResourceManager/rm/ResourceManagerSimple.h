@@ -54,15 +54,13 @@ namespace rm
 
 	// A base for a resource list...
 	template< typename T >
-	class ResourceManagerSimple
+	class ResourceManagerSimple	: public IResourceManager< T >
 	{
 	private:
 		ResourceManagerSimple( const ResourceManagerSimple& ) {}
 		ResourceManagerSimple& operator=( const ResourceManagerSimple& ) {}
 
 	public:
-		typedef std::shared_ptr< T > ResourcePtr;
-
         class ForEachFunctor 
         {
         public:
@@ -70,17 +68,19 @@ namespace rm
             virtual void operator()( T & resource ) = 0;    
         };
 
+		typedef std::shared_ptr< T > ResourcePtr;
+
         ResourceManagerSimple( std::string resourceName );
 		~ResourceManagerSimple();
 
-		const std::string GetName() const;
+		std::string GetName() const override;
 
 		void Clear();
 
-		bool Exists( const ResourceID & id ) const;
+		bool Exists( const ResourceID & id ) const override;
 
 		// Add an entry for a resource.
-		ResourcePtr Add( const ResourceID & id, T * resource );
+		ResourcePtr Add( const ResourceID & id, T * resource ) override;
 
 		ResourcePtr Add( const ResourceID & id, unify::Path source );
 		
@@ -91,7 +91,7 @@ namespace rm
 		// Find an existing resource.
 		ResourcePtr Find( const ResourceID & id );
 
-		size_t Count() const;
+		size_t Count() const override;
 
         void ForEach( ForEachFunctor & functor );
 

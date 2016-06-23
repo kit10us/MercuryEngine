@@ -34,7 +34,7 @@ const InstanceVisualScene * Scene::GetInstanceVisualScene() const
 	return m_instance_visual_scene.get();
 }
 
-const boost::optional< InstanceSet > & Scene::GetInstanceKinematicsScene() const
+const unify::Optional< InstanceSet > & Scene::GetInstanceKinematicsScene() const
 {
 	return m_instance_kinematics_scene;
 }

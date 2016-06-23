@@ -56,7 +56,7 @@ void TextBox::Update( unify::Seconds elapsed )
 	}
 }
 
-void TextBox::Render( RenderInfo renderInfo, bool is3D )
+void TextBox::Render( RenderInfo & renderInfo, bool is3D )
 {
 	unify::Matrix oldProjection, oldView, oldWorld;
 	// TODO: Transform::Get( Transform::Index::World, oldWorld );

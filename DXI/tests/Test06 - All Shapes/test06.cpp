@@ -21,6 +21,7 @@ protected:
 public:
 	void Startup()
 	{
+		// Call base startup.
 		Game::Startup();
 
 		// Load our effect from a file...
@@ -50,7 +51,7 @@ public:
         cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
         cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(),	unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
         cubeParameters.SetCenter( unify::V3< float >( -4.5f, 3.0f, 0.0f ) );
-		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape(  cubeParameters ) ) );
+		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( cubeParameters ) ) );
   
 		shapes::PointFieldParameters pointFieldParameters;
 		pointFieldParameters.SetEffect( effect );

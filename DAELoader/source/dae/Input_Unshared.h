@@ -3,7 +3,6 @@
 
 #pragma once
 #include <dae/DocumentNode.h>
-#include <dxi/FVF.h>
 #include <qxml/QXML.h>
 #include <string>
 

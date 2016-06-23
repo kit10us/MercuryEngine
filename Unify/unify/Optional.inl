@@ -8,8 +8,8 @@ Optional< T >::Optional()
 }
 
 template< typename T >
-Optional< T >::Optional( const T & thing )
-	: m_thing( new T( thing ) )
+Optional< T >::Optional( const T & value )
+	: m_thing( new Keeper( value ) )
 {
 }
 
@@ -20,11 +20,11 @@ Optional< T >::~Optional()
 }
 
 template< typename T >
-const T & Optional< T >::operator()
+const T & Optional< T >::operator()() const
 {
 	if ( m_thing.empty() )
 	{
 		throw new unify::Exception( "Optional referenced when empty!" );
 	}
-	return m_thing;
+	return m_thing.value;
 }

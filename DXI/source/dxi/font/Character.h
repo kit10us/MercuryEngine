@@ -35,7 +35,7 @@ namespace dxi
 			bool empty() const;
 			const unify::Size< float > & GetSize() const;
 			void Update( unify::Seconds elapsed );
-			void Render( RenderInfo renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D );
+			void Render( RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D );
 
 		protected:
 			Source::TYPE m_source;

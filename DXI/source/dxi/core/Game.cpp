@@ -33,22 +33,31 @@ bool Game::Initialize( IOS * os )
 	// Create general asset managers...
 	if ( runGame )
 	{
-		m_textureManager.reset( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
-		m_textureManager->AddFactory( new TextureSourceFactory );
+		class A
+		{
+		public:
+			virtual ~A() {}
+		} a;
+		class B : public A
+		{
+		} b;
 
-		m_effectManager.reset( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
-		m_effectManager->AddFactory( new EffectSourceFactory );
+		GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
+		GetManager< Texture >()->AddFactory( new TextureSourceFactory );
 
-		m_pixelShaderManager.reset( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
-		m_pixelShaderManager->AddFactory( new PixelShaderJsonFactory );
-		m_pixelShaderManager->AddFactory( new PixelShaderXMLFactory );
+		GetResourceHub().AddManager( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
+		GetManager< Effect >()->AddFactory( new EffectSourceFactory );
 
-		m_vertexShaderManager.reset(  new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
-		m_vertexShaderManager->AddFactory( new VertexShaderJsonFactory );
-		m_vertexShaderManager->AddFactory( new VertexShaderXMLFactory );
+		GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
+		GetManager< PixelShader >()->AddFactory( new PixelShaderJsonFactory );
+		GetManager< PixelShader >()->AddFactory( new PixelShaderXMLFactory );
 
-		m_geometryManager.reset( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
-		m_geometryManager->AddFactory( new GeometryFactory );
+		GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
+		GetManager< VertexShader >()->AddFactory( new VertexShaderJsonFactory );
+		GetManager< VertexShader >()->AddFactory( new VertexShaderXMLFactory );
+
+		GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
+		GetManager< Geometry >()->AddFactory( new GeometryFactory );
 
 		m_sceneManager.reset( new scene::SceneManager );
 	}
@@ -116,11 +125,8 @@ void Game::Shutdown()
 {
 	// Release asset managers...
     m_sceneManager.reset();
-	m_geometryManager.reset();
-	m_vertexShaderManager.reset();
-	m_pixelShaderManager.reset();
-	m_effectManager.reset();
-	m_textureManager.reset();
+
+	m_resourceHub.Clear();
 
 	m_os->Shutdown();
 }
@@ -140,29 +146,46 @@ scene::Scene::shared_ptr Game::FindScene( const std::string & id )
 	return GetSceneManager() ? GetSceneManager()->Find( id ) : scene::Scene::shared_ptr();
 }
 
-template<> std::shared_ptr< rm::ResourceManagerSimple< Texture > > Game::GetManager()
+template<>
+rm::ResourceManagerSimple< Texture > * Game::GetManager()
 {
-	return m_textureManager;
+	auto rm = GetResourceHub().GetManager< Texture >( "texture" );
+	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< Texture > * >( rm );
+	return manager;
 }
 
-template<> std::shared_ptr< rm::ResourceManagerSimple< Effect > > Game::GetManager()
+template<> rm::ResourceManagerSimple< Effect > * Game::GetManager()
 {
-	return m_effectManager;
+	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< Effect > * >(GetResourceHub().GetManager< Effect >( "effect" ));
+	return manager;
 }
 
-template<> std::shared_ptr< rm::ResourceManagerSimple< PixelShader > > Game::GetManager()
+template<> rm::ResourceManagerSimple< PixelShader > * Game::GetManager()
 {
-	return m_pixelShaderManager;
+	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< PixelShader > * >(GetResourceHub().GetManager< PixelShader >( "PixelShader" ));
+	return manager;
 }
 
-template<> std::shared_ptr< rm::ResourceManagerSimple< VertexShader > > Game::GetManager()
+template<> rm::ResourceManagerSimple< VertexShader > * Game::GetManager()
 {
-	return m_vertexShaderManager;
+	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< VertexShader > * >(GetResourceHub().GetManager< VertexShader >( "VertexShader" ));
+	return manager;
 }
 
-template<> std::shared_ptr< rm::ResourceManagerSimple< Geometry > > Game::GetManager()
+template<> rm::ResourceManagerSimple< Geometry > * Game::GetManager()
 {
-	return m_geometryManager;
+	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< Geometry > * >(GetResourceHub().GetManager< Geometry >( "Geometry" ));
+	return manager;
+}
+
+rm::ResourceHub & Game::GetResourceHub()
+{
+	return m_resourceHub;
+}
+
+const rm::ResourceHub & Game::GetResourceHub() const
+{
+	return m_resourceHub;
 }
 
 void Game::RequestQuit()

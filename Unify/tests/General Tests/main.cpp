@@ -2,6 +2,7 @@
 #include <unify/ColorUnit.h>
 #include <unify/V2.h>
 #include <unify/Parameters.h>
+#include <unify/Optional.h>
 #include <iostream>
 #include <conio.h>
 
@@ -40,6 +41,17 @@ int main( int argc, char ** argv )
 
 	std::cout << "Value of \"first\" should be \"1234567\"... \"" << unify::Cast< std::string >( parameters.Get< int >( "first" ) ) << "\"" << std::endl;
 	std::cout << "\"second\" should exists... " << unify::Cast< std::string >( parameters.Exists( "second" ) ) << std::endl;
+
+	// Optional test...
+	{
+		/*
+		TODO: When used, so we know what we need to test.
+		unify::Optional< int > optionalInt12 = 12;
+		unify::Optional< int > optionalInt;
+		std::cout << "Optional< int >( ) == Not Set : " << (optionalInt.IsSet() ? "FAIL" : "PASS") << std::endl;
+		std::cout << "Optional< int >( 12 ) == 12 : " << (optionalInt12 == 12 ? "PASS" : "FAIL") << std::endl;
+		*/
+	}
 
 	while( ! _getch() );
 

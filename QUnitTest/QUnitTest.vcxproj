@@ -19,11 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\QUnitTest.h" />
-    <ClInclude Include="source\TestSuite.h" />
+    <ClCompile Include="source\qunit\TestSuite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\TestSuite.cpp" />
+    <ClInclude Include="source\qunit\QUnitTest.h" />
+    <ClInclude Include="source\qunit\TestBase.h" />
+    <ClInclude Include="source\qunit\TestSuite.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8021BA46-0EEE-4E34-8FC2-074A7A0B8FC0}</ProjectGuid>
@@ -91,7 +92,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,7 +124,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

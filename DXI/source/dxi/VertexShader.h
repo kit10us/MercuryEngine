@@ -9,6 +9,8 @@
 
 namespace dxi
 {
+	// TODO: Could it be possible to make this EVENMORE generic, so we can use it for all kinds of shaders, including Geometry, etc.?
+	// At least enough to support having ShaderBase in the ResourceManager?
 	class VertexShader : public ShaderBase
 	{
 	public:

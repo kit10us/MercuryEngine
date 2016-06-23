@@ -25,7 +25,7 @@ namespace dxi
 			const std::string & GetMaterial() const;
 			const std::vector< std::shared_ptr< Input_Shared > > & GetInput() const;
 			const std::vector< int > & GetP() const;
-			VertexFormat GetVertexFormat() const;
+			dxi::VertexDeclaration GetVertexFormat() const;
 
 		private:
 			std::string m_name;
@@ -33,7 +33,7 @@ namespace dxi
 			std::string m_material;
 			std::vector< std::shared_ptr< Input_Shared > > m_input;
 			std::vector< int > m_p;
-			VertexFormat m_vertexFormat;
+			dxi::VertexDeclaration m_vertexFormat;
 		};
 	}
 }

@@ -1,8 +1,8 @@
 ﻿#include <qjson/QJson.h>
-#include <QUnitTest.h>
+#include <qunit/QUnitTest.h>
 #include <conio.h>
 
-class JSON_UnitTest : public TestSuite
+class JSON_UnitTest : public qunit::TestSuite
 {
 public:
 	JSON_UnitTest()

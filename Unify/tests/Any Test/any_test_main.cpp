@@ -6,11 +6,12 @@
 
 int main( const int argc, const char ** argv )
 {
-	boost::any bany1 = 12;
-	unify::Any any1 = 12;
+	unify::Any anyInt12 = 12;
 
 	std::cout << "Begin Unify Any Tests:" << std::endl;
+	std::cout << "Is NOT empty: " << (anyInt12.empty() ? "FAIL" : "PASS") << std::endl;
 
+	std::cout << "Int match: " << (unify::any_cast< int >(anyInt12) == 12 ? "PASS" : "FAIL" ) << std::endl;
 
 	while( ! _getch() );
 

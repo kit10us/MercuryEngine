@@ -7,6 +7,8 @@
 using namespace dxi;
 
 Effect::Effect()
+	: m_culling( CullNone )
+	, m_blend( Usage::True, Blend::Effect::SrcAlpha, Blend::Effect::InvSrcAlpha )
 {
 }
 

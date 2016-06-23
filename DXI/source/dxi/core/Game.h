@@ -9,6 +9,7 @@
 #include <dxi/core/IOS.h>
 #include <dxi/exception/Exception.h>
 #include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceHub.h>
 #include <unify/TimeDelta.h>
 
 namespace dxi
@@ -54,7 +55,17 @@ namespace dxi
 			scene::Scene::shared_ptr FindScene( const std::string & id );
 
 			template< typename T > 
-			std::shared_ptr< rm::ResourceManagerSimple< T > > GetManager();
+			rm::ResourceManagerSimple< T > * GetManager();
+
+			template<> rm::ResourceManagerSimple< Texture > * GetManager();
+			template<> rm::ResourceManagerSimple< Effect > * GetManager();
+			template<> rm::ResourceManagerSimple< PixelShader > * GetManager();
+			template<> rm::ResourceManagerSimple< VertexShader > * GetManager();
+			template<> rm::ResourceManagerSimple< Geometry > * GetManager();
+
+
+			rm::ResourceHub & GetResourceHub();
+			const rm::ResourceHub & GetResourceHub() const;
 
 			void RequestQuit();
 			bool IsQuitting() const;
@@ -62,11 +73,18 @@ namespace dxi
 
 		private:
 			IOS::shared_ptr m_os;
+			rm::ResourceHub m_resourceHub;
+			
+			// TODO: Replace with m_resourceHub...
+			/*
 			std::shared_ptr< rm::ResourceManagerSimple< Texture > > m_textureManager;
 			std::shared_ptr< rm::ResourceManagerSimple< Effect > > m_effectManager;
 			std::shared_ptr< rm::ResourceManagerSimple< PixelShader > > m_pixelShaderManager;
 			std::shared_ptr< rm::ResourceManagerSimple< VertexShader > > m_vertexShaderManager;
 			std::shared_ptr< rm::ResourceManagerSimple< Geometry > > m_geometryManager;
+			*/
+			
+			// TODO: Can this become part of the resource management, so we can use the loading stuff?
 			scene::SceneManager::shared_ptr m_sceneManager;
 
 			bool m_isQuitting;

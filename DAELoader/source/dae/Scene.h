@@ -8,7 +8,7 @@
 #include <dae/InstanceSet.h>
 #include <dae/DocumentNode.h>
 #include <dae/InstanceVisualScene.h>
-#include <boost/optional.hpp>
+#include <unify/Optional.h>
 
 namespace dxi
 {
@@ -35,12 +35,12 @@ namespace dxi
 			/// <summary>
 			/// instance_kinematics_scene (0 or 1)
 			/// </summary>
-			const boost::optional< InstanceSet > & GetInstanceKinematicsScene() const;
+			const unify::Optional< InstanceSet > & GetInstanceKinematicsScene() const;
 
 		private:
 			std::vector< InstanceSet > m_instance_physics_scenes;
 			std::shared_ptr< InstanceVisualScene > m_instance_visual_scene;
-			boost::optional< InstanceSet > m_instance_kinematics_scene;
+			unify::Optional< InstanceSet > m_instance_kinematics_scene;
 		};
 	}
 }

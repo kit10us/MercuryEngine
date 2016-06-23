@@ -29,26 +29,7 @@ Source::Source( IDocument & document, const qxml::Element * node )
 
 	if ( m_float_array && m_technique_common )
 	{
-		if ( unify::StringIs( m_name, "position" ) )
-		{
-			m_FVF = FVF::XYZ;
-		}
-		else if ( unify::StringIs( m_name, "normal" ) )
-		{
-			m_FVF = FVF::Normal;
-		}
-		else if ( unify::StringIs( m_name, "map1" ) )
-		{
-			m_FVF = FVF::Tex1;
-		}
-		else if ( unify::StringIs( m_name, "map2" ) )
-		{
-			m_FVF = FVF::Tex3;
-		}
-		else if ( unify::StringIs( m_name, "map3" ) )
-		{
-			m_FVF = FVF::Tex3;
-		}
+		m_sourceType = m_name;
 	}
 }
 
@@ -72,7 +53,7 @@ const Source_TechniqueCommon & Source::GetTechniqueCommon() const
 	return *m_technique_common;
 }
 
-FVF::TYPE Source::GetFVF() const
+std::string Source::GetSourceType() const
 {
-	return m_FVF;
+	return m_sourceType;
 }

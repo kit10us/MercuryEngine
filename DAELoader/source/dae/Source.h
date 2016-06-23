@@ -9,7 +9,6 @@
 #include <dae/Exceptions.h>
 #include <dae/DocumentNode.h>
 #include <qxml/QXML.h>
-#include <boost/optional.hpp>
 #include <string>
 
 namespace dxi
@@ -28,14 +27,14 @@ namespace dxi
 			const std::string & GetName() const;
 			const FloatArray & GetFloatArray() const;
 			const Source_TechniqueCommon & GetTechniqueCommon() const;
-			FVF::TYPE GetFVF() const;
+			std::string GetSourceType() const;
 
 		private:
 			std::string m_id;
 			std::string m_name;
 			std::shared_ptr< FloatArray > m_float_array;
 			std::shared_ptr< Source_TechniqueCommon > m_technique_common;
-			FVF::TYPE m_FVF;
+			std::string m_sourceType;
 		};
 	}
 }

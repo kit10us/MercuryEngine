@@ -9,7 +9,7 @@ Polylist::Polylist( IDocument & document, const qxml::Element * node )
 , m_name( node->GetStringAttributeElse( "name", std::string() ) )
 , m_count( node->GetIntegerAttribute( "count" ) )
 , m_material( node->GetStringAttributeElse( "material", std::string() ) )
-, m_vertexFormat( 0 )
+, m_vertexFormat()
 {
 	std::vector< char > splitDelimitors;
 	splitDelimitors.push_back( ' ' );
@@ -51,11 +51,12 @@ Polylist::Polylist( IDocument & document, const qxml::Element * node )
 		}
 	}
 
-	for( size_t i = 0; i < m_input.size(); ++i )
+	qjson::Object format;
+	for( auto input : m_input )
 	{
-		const Input_Shared & input = *m_input[ i ];
-		m_vertexFormat |= input.GetFVFType();
+		format.Add( { input->GetSemantic(), input->GetSemantic() } );
 	}
+	m_vertexFormat = VertexDeclaration( format );
 }
 
 const std::string & Polylist::GetName() const
@@ -88,7 +89,7 @@ const std::vector< int > & Polylist::GetP() const
 	return m_p;
 }
 
-VertexFormat Polylist::GetVertexFormat() const
+dxi::VertexDeclaration Polylist::GetVertexFormat() const
 {
 	return m_vertexFormat;
 }

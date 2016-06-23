@@ -22,7 +22,7 @@ namespace dxi
 			const unify::Size< float > & GetSize() const;
 
 			void Update( unify::Seconds elapsed );
-			void Render( RenderInfo renderInfo, const unify::Matrix & origin, bool is3D );
+			void Render( RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D );
 		private:
 			Character m_character;
 			unify::V2< float > m_offset;

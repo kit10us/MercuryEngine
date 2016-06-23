@@ -27,7 +27,7 @@ namespace dxi
 
 			void SyncCharacterRenderList();
 			void Update( unify::Seconds elapsed );
-			void Render( RenderInfo renderInfo, bool is3D );
+			void Render( RenderInfo & renderInfo, bool is3D );
 
 		protected:
 			std::shared_ptr< Font > m_font;

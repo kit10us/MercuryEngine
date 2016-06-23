@@ -14,7 +14,7 @@ ResourceManagerSimple< T >::~ResourceManagerSimple()
 }
 
 template< class T >
-const std::string ResourceManagerSimple< T >::GetName() const
+std::string ResourceManagerSimple< T >::GetName() const
 {
 	return m_resourceName;
 }				  

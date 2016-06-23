@@ -40,16 +40,8 @@ void MyGame::Startup()
 {
 	Game::Startup();
 
-	// The vertex structure...
-	class Vertex
-	{
-	public:
-		unify::V3< float> pos;
-		unify::TexCoords tex;
-	};
-
 	// Load effect...
-	m_effect = GetManager< Effect >()->Add( "color_3d", "media/EffectTextured2D.xml" );
+	m_effect = GetManager< Effect >()->Add( "textured_2d", "media/EffectTextured2D.xml" );
 
 	// The particular effect we are loading is generic, and has no texture, so let's add one.
 	// Load a texture...

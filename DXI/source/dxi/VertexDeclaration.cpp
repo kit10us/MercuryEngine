@@ -438,7 +438,7 @@ VertexDeclaration::VertexDeclaration( const qjson::Object & object )
 	for( auto itr : object )
 	//for( const qxml::Element * itr = element.GetFirstChild(), *end = 0; itr != end; itr = itr->GetNext() )
 	{
-		size_t size = 0;
+		size_t elementSizeInBytes = 0;
 		const qjson::Object * member = dynamic_cast< const qjson::Object * >( itr.GetValue().get() );
 		if( member != nullptr )
 		{
@@ -486,10 +486,10 @@ VertexDeclaration::VertexDeclaration( const qjson::Object & object )
 			m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 			m_elements.push_back( element );
 
-			size = SizeOfVertexDeclarationElement( type );
+			elementSizeInBytes = SizeOfVertexDeclarationElement( type );
 		}
 		//m_totalSizeInBytes = offset + size;
-		m_totalSizeInBytes += size;
+		m_totalSizeInBytes += elementSizeInBytes;
 	}
 
 	if( m_elements.size() == 0 )

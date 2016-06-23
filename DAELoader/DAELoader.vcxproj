@@ -55,6 +55,7 @@
     <ClInclude Include="source\dae\Accessor.h" />
     <ClInclude Include="source\dae\BindMaterial.h" />
     <ClInclude Include="source\dae\BindMaterial_TechniqueCommon.h" />
+    <ClInclude Include="source\dae\Dae.h" />
     <ClInclude Include="source\dae\Document.h" />
     <ClInclude Include="source\dae\DocumentNode.h" />
     <ClInclude Include="source\dae\Exceptions.h" />
@@ -126,12 +127,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
-    <IntDir>..\..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+    <OutDir>..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
+    <IntDir>..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
-    <IntDir>..\..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+    <OutDir>..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
+    <IntDir>..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -139,8 +142,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\source;..\unify\include;..\qlib\include;..\qxml\include;..\..\packages\boost_1_59_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\source;..\unify;..\qlib\include;..\qxml\include;..\QJSON\source;..\ResourceManager;..\DXI\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,8 +158,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\source;..\unify\include;..\qlib\include;..\qxml\include;..\..\packages\boost_1_59_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\source;..\unify;..\qlib\include;..\qxml\include;..\QJSON\source;..\ResourceManager;..\DXI\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

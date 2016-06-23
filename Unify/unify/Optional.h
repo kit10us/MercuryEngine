@@ -14,12 +14,22 @@ namespace unify
 	{
 	public:
 		Optional();
-		Optional( const T & thing );
+		Optional( const T & value );
 		~Optional();
 
-		const T & operator() const;
+		const T & operator()() const;
+
 	private:
-		std::shared_ptr< T > m_thing;
+		struct Keeper
+		{
+			Keeper( const T & t )
+				: value( t )
+			{	
+			}
+			T value;
+		};
+
+		std::shared_ptr< Keeper > m_thing;
 	};
 	#include <unify/Optional.inl>
 }

@@ -9,7 +9,7 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 , m_name( node->GetStringAttributeElse( "name", std::string() ) )
 , m_count( node->GetIntegerAttribute( "count" ) )
 , m_material( node->GetStringAttributeElse( "material", std::string() ) )
-, m_vertexFormat( 0 )
+, m_vertexFormat()
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -23,11 +23,12 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 		}
 	}
 
-	for( size_t i = 0; i < m_input.size(); ++i )
+	qjson::Object format;
+	for( auto input : m_input )
 	{
-		const Input_Shared & input = *m_input[ i ];
-		m_vertexFormat |= input.GetFVFType();
+		format.Add( { input->GetSemantic(), input->GetSemantic() } );
 	}
+	m_vertexFormat = VertexDeclaration( format );
 }
 
 const std::string & Triangles::GetName() const
@@ -55,7 +56,7 @@ const std::vector< int > & Triangles::GetP() const
 	return m_p;
 }
 
-VertexFormat Triangles::GetVertexFormat() const
+dxi::VertexDeclaration Triangles::GetVertexFormat() const
 {
 	return m_vertexFormat;
 }

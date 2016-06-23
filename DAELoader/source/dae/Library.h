@@ -7,7 +7,6 @@
 #include <dae/Exceptions.h>
 #include <dae/InstanceSet.h>
 #include <dxi/core/Game.h>
-#include <boost/optional.hpp>
 #include <map>
 #include <vector>
 

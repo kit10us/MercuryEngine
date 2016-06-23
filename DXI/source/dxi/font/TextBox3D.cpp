@@ -19,7 +19,7 @@ TextBox3D::~TextBox3D()
 {
 }
 
-void TextBox3D::Render( RenderInfo renderInfo, GeometryInstanceData * instanceData )
+void TextBox3D::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( m_text.get() )
 	{

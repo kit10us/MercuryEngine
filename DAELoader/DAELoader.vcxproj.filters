@@ -28,6 +28,9 @@
     <Filter Include="dxi\dae\util">
       <UniqueIdentifier>{b268d23a-9fc4-4654-ad5d-ebce79ece791}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dae">
+      <UniqueIdentifier>{24844b91-c348-4260-a887-ad7087f22979}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dae\Accessor.cpp" />
@@ -115,5 +118,8 @@
     <ClInclude Include="source\dae\library_visual_scenes\InstanceMaterial.h" />
     <ClInclude Include="source\dae\library_visual_scenes\LibraryVisualScenes.h" />
     <ClInclude Include="source\dae\library_visual_scenes\VisualScene.h" />
+    <ClInclude Include="source\dae\Dae.h">
+      <Filter>dae</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

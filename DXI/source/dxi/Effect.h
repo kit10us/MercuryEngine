@@ -66,7 +66,6 @@ namespace dxi
 		std::shared_ptr< VertexBuffer > GetScratchVertexBuffer() const;
 
 	protected:
-		unsigned long m_effecFlags;
 		CullingMode m_culling;
 		Blend m_blend;
 		PixelShader::shared_ptr m_pixelShader;

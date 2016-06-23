@@ -73,7 +73,7 @@ void Character::Update( unify::Seconds elapsed )
 	}
 }
 
-void Character::Render( RenderInfo renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D )
+void Character::Render( RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D )
 {
 	unify::Matrix world( origin );
 

@@ -2,10 +2,10 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/geo/Mesh.h>
+#include <dxi/Mesh.h>
 #include <dxi/scene/Scene.h>
-#include <dxi/loader/MeshLoader.h>
-#include <dxi/loader/EffectLoader.h>
+#include <dxi/shapes/ShapeCreators.h>
+#include <dae/Dae.h>
 
 using namespace dxi;
 using namespace core;
@@ -38,8 +38,8 @@ public:
 
 	MyEffectSolver( Game & game )
 	{
-		m_color = loader::EffectLoader( "color", "media/EffectColor.xml", game.GetManagers() );
-		m_textured = loader::EffectLoader( "textured", "media/EffectTextured.xml", game.GetManagers() );
+		m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.xml" );
+		m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
 	}
 
 	dxi::Effect::shared_ptr GetEffect( const dae::Shading & shading ) const
@@ -63,24 +63,23 @@ void MyGame::Startup()
 	// Create an object to use as a camera, and a camera interface. Set the projection to a default projection.
 	m_cameraObject.reset( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
 	m_camera.reset( new scene::Camera( m_cameraObject ) );
-	m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
+	m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
 	m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, 13 ) );
 
-	loader::EffectLoader( "color_3d", "media/EffectColor.xml", GetManagers() );
-	Effect::shared_ptr color3DEffect = GetEffectManager()->Find( "color_3d" );
+	Effect::shared_ptr color3DEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
 
 	// From dynamically generated geometry (shape creator)...
 	shapes::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
     cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-	m_meshFromShape.reset( new scene::Object( geo::Geometry::shared_ptr( new geo::Mesh( cubeParameters ) ), unify::V3< float >( -5, 0, 0 ) ) );
+	m_meshFromShape.reset( new scene::Object( Geometry::shared_ptr( shapes::CreateShape( cubeParameters ) ), unify::V3< float >( -5, 0, 0 ) ) );
 	const unify::BBox< float > & bboxA = m_meshFromShape->GetGeometry()->ComputeBounds();
 	float scaleA = 3 / m_meshFromShape->GetGeometry()->ComputeBounds().Size().Length();
     m_meshFromShape->SetGeometryMatrix( unify::Matrix::MatrixScale( scaleA ) );
 
 	// From an XML file...
-	geo::Mesh::shared_ptr meshXML( new geo::Mesh( "media/cube.xml", 0, GetManagers() ) );
+	Mesh::shared_ptr meshXML( GetManager< Geometry >()->Add( "cube", "media/cube.xml" ) );
 	m_meshFromXML.reset( new scene::Object( meshXML, unify::V3< float >( -2.5, 0, 0 ) ) );
 	const unify::BBox< float > & bboxB = m_meshFromXML->GetGeometry()->ComputeBounds();
 	float scaleB = 3 / m_meshFromXML->GetGeometry()->ComputeBounds().Size().Length();
@@ -98,14 +97,14 @@ void MyGame::Startup()
 	m_meshFromASE->SetGeometryMatrix( m_meshFromASE->GetGeometryMatrix() * unify::Matrix::MatrixScale( 0.05f ) * unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 1, 0, 0 ), unify::Angle::AnglePIHalf() ));
 	*/
 
-	geo::Mesh::shared_ptr meshDAE( new geo::Mesh( "media/cube.dae", new MyEffectSolver( *this ), GetManagers() ) );
+	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cube_dae", "media/cube.dae" ) );// , new MyEffectSolver( *this ), GetManagers() ) );
 	m_meshFromDAE.reset( new scene::Object( meshDAE, unify::V3< float >( 5, 0, 0 ) ) );
 	const unify::BBox< float > & bboxD = m_meshFromShape->GetGeometry()->ComputeBounds();
 	float scaleE = 3 / m_meshFromDAE->GetGeometry()->ComputeBounds().Size().Length();
 	m_meshFromDAE->SetGeometryMatrix( unify::Matrix::MatrixScale( scaleE ) );
 	
-	const PrimitiveList & plA = ((geo::Mesh*) m_meshFromShape->GetGeometry().get() )->GetPrimitiveList();
-	const PrimitiveList & plB = ((geo::Mesh*) m_meshFromDAE->GetGeometry().get() )->GetPrimitiveList();
+	const PrimitiveList & plA = ((Mesh*) m_meshFromShape->GetGeometry().get() )->GetPrimitiveList();
+	const PrimitiveList & plB = ((Mesh*) m_meshFromDAE->GetGeometry().get() )->GetPrimitiveList();
 	int x(0);x;
 }
 

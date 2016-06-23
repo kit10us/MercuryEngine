@@ -16,8 +16,6 @@ namespace dxi
 			class IEffectSolver
 			{
 			public:
-				SharedType( IEffectSolver );
-
 				virtual ~IEffectSolver() {}
 				virtual dxi::Effect::shared_ptr GetEffect( const dxi::dae::Shading & shading ) const = 0;				
 			};

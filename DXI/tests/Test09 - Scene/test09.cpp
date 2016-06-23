@@ -22,7 +22,7 @@ public:
 		GetManager< Texture >()->Add( "borgcube", "media/borgcube.bmp" );
 
 		// Create a vertex declaration from JSON.
-		qjson::Object vertexJson = { {"Position", "Float3" }, { "Diffuse", "Color" }, { "Tex1", "Float2" } };
+		qjson::Object vertexJson = { {"Position", "Float3" }, { "Diffuse", "Color" }, { "Tex0", "Float2" } };
 		VertexDeclaration vd( vertexJson );
 
 		// Load shaders.

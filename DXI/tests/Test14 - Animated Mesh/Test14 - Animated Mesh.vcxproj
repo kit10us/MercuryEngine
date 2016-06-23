@@ -62,7 +62,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;..\..\..\DAELoader\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_WINDOWS;VS2012;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -83,7 +83,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;..\..\..\DAELoader\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_WINDOWS;VS2012;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

@@ -6,7 +6,6 @@
 #include <dae/DocumentNode.h>
 #include <qxml/QXML.h>
 #include <unify/Matrix.h>
-#include <boost/optional.hpp>
 #include <string>
 
 namespace dxi

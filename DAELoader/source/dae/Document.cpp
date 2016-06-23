@@ -16,7 +16,7 @@ Document::Document( const unify::Path & filePath, dae::util::IEffectSolver * eff
 	// Validity check...
 	if ( ! node->IsTagName( "COLLADA" ) )
 	{
-		throw Exception_MissingCOLLADA( node->GetDocument()->GetPath() );
+		throw Exception_MissingCOLLADA( node->GetDocument()->GetPath().ToString() );
 	}
 
 	// Attributes...

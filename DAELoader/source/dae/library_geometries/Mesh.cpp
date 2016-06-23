@@ -6,6 +6,7 @@
 #include <dae/Document.h>
 #include <unify/V3.h>
 #include <unify/TexCoords.h>
+#include <unify/DataLock.h>
 
 using namespace dxi;
 using namespace dae;
@@ -13,8 +14,10 @@ using namespace dae;
 typedef std::vector< float > VFloat;
 typedef std::vector< int > VInt;
 
+/*
+TODO: Is this used? Will find out soon.
 /// Integrates, into an existing vertex buffer, a component "dest", from "source", choriographed via "indices", offset by "indexOffset", every other "indexStride", until "count" is achieved.
-void Integrate( dxi::VertexLock & lock, FVF::TYPE type, const VFloat & source, const VInt & indices, int indexOffset, int indexStride, size_t count )
+void Integrate( unify::DataLock & lock, FVF::TYPE type, const VFloat & source, const VInt & indices, int indexOffset, int indexStride, size_t count )
 {
 	for( size_t i = 0; i < count; ++i )
 	{
@@ -41,6 +44,7 @@ void Integrate( dxi::VertexLock & lock, FVF::TYPE type, const VFloat & source, c
 		}
 	}
 }
+*/
 
 
 Mesh::Mesh( IDocument & document, const qxml::Element * node )
@@ -162,9 +166,40 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 		BufferSet & set = pl.AddBufferSet();
 		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), BufferUsage::Staging );
 
-		VertexWriter::shared_ptr vw = myEffect->GetVertexShader()->GetVertexDeclaration().GetVertexWriter();
+		const dxi::VertexDeclaration & vd = myEffect->GetVertexShader()->GetVertexDeclaration();
+		unsigned short stream = 0;
 
-		VertexLock lock;
+		D3DVERTEXELEMENT9 positionE = {};
+		positionE.Stream = stream;
+		positionE.Type = D3DDECLTYPE_FLOAT3;
+		positionE.Usage = D3DDECLUSAGE_POSITION;
+		positionE.UsageIndex = 0;
+
+		D3DVERTEXELEMENT9 normalE = {};
+		normalE.Stream = stream;
+		normalE.Type = D3DDECLTYPE_FLOAT3;
+		normalE.Usage = D3DDECLUSAGE_NORMAL;
+		normalE.UsageIndex = 0;
+
+		D3DVERTEXELEMENT9 diffuseE = {};
+		diffuseE.Stream = stream;
+		diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
+		diffuseE.Usage = D3DDECLUSAGE_COLOR;
+		diffuseE.UsageIndex = 0;
+
+		D3DVERTEXELEMENT9 specularE = {};
+		specularE.Stream = stream;
+		specularE.Type = D3DDECLTYPE_D3DCOLOR;
+		specularE.Usage = D3DDECLUSAGE_COLOR;
+		specularE.UsageIndex = 1;
+
+		D3DVERTEXELEMENT9 texE = {};
+		texE.Stream = stream;
+		texE.Type = D3DDECLTYPE_FLOAT2;
+		texE.Usage = D3DDECLUSAGE_TEXCOORD;
+		texE.UsageIndex = 0;
+
+		unify::DataLock lock;
 		set.GetVertexBuffer().Lock( lock );
 
 		// Iterate through the vertices...
@@ -186,17 +221,17 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 				{
 					unify::V3< float > val( floats[ offsetOfFloats + 0 ] * -1.0f, floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
 					matrix.TransformCoord( val );
-					vw->SetPosition( lock, vertexIndex, val );
-					vw->SetDiffuse( lock, vertexIndex, diffuse );
+					vd.WriteVertex( lock, vertexIndex, positionE, val );
+					vd.WriteVertex( lock, vertexIndex, diffuseE, diffuse );
 				}
 				else if ( unify::StringIs( metaType, "NORMAL" ) )
 				{
 					unify::V3< float > val( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
-					vw->SetNormal( lock, vertexIndex, val );
+					vd.WriteVertex( lock, vertexIndex, normalE, val );
 				}
 				else if ( unify::StringIs( metaType, "TEXCOORD" ) )
 				{
-					vw->SetTexCoordsN( lock, vertexIndex, 0, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
+					vd.WriteVertex( lock, vertexIndex, texE, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
 				}
 			}
 		}

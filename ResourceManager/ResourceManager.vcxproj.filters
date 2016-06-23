@@ -51,6 +51,9 @@
     <ClInclude Include="rm\ResourceManagerSimple.h">
       <Filter>rm</Filter>
     </ClInclude>
+    <ClInclude Include="rm\ResourceHub.h">
+      <Filter>rm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="rm\ResourceManagerBase.inl">
@@ -62,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dummy.cpp">
+      <Filter>rm</Filter>
+    </ClCompile>
+    <ClCompile Include="rm\ResourceHub.cpp">
       <Filter>rm</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,8 @@
 
 #include <unify/Unify.h>
 #include <string>
+#include <typeinfo>
+#include <cassert>
 
 ///<summary>
 /// Parsing relies heavily on the ability to cast to-and-from strings. This
@@ -50,4 +52,12 @@ namespace unify
 	template<> double Cast( const char * text );
 	template<> wchar_t * Cast( const char * text );
 
+	template< typename Target, typename Source >
+	Target polymorphic_downcast( Source source )
+	{
+#ifdef _DEBUG
+		assert( dynamic_cast< Target >( source ) == source );
+#endif
+		return static_cast<Target >( source );
+	}
 }

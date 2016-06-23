@@ -35,7 +35,7 @@ namespace dxi
 			const std::vector< std::shared_ptr< Input_Shared > > & GetInput() const;
 			const std::vector< int > & GetVCount() const;
 			const std::vector< int > & GetP() const;
-			VertexFormat GetVertexFormat() const;
+			dxi::VertexDeclaration GetVertexFormat() const;
 			Type GetType() const;
 
 		private:
@@ -45,7 +45,7 @@ namespace dxi
 			std::vector< std::shared_ptr< Input_Shared > > m_input;
 			std::vector< int > m_vcount;
 			std::vector< int > m_p;
-			VertexFormat m_vertexFormat;
+			dxi::VertexDeclaration m_vertexFormat;
 			Type m_type;
 		};
 	}

@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <dxi/loader/MeshLoaders.h>
 #include <dxi/Effect.h>
 #include <dae/library_nodes/LibraryNodes.h>
 #include <dae/library_images/LibraryImages.h>
@@ -15,6 +14,7 @@
 #include <dae/util/IEffectSolver.h>
 #include <dae/Exceptions.h>
 #include <qxml/QXML.h>
+#include <unify/Path.h>
 
 namespace dxi
 {

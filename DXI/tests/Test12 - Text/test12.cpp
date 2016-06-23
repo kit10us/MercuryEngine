@@ -17,6 +17,8 @@
 #include <dxi/font/TextBox3D.h>
 #include <dxi/win/DxDevice.h>
 #include <dxi/RenderState.h>
+#include <dxi/PixelShaderFactories.h>
+#include <dxi/VertexShaderFactory.h>
 
 using namespace dxi;
 using namespace core;
@@ -31,10 +33,10 @@ protected:
 	animation::SpriteManager::shared_ptr m_spriteManager;
 	font::FontManager::shared_ptr m_fontManager;
 	VertexBuffer m_triangleVB;
-	boost::shared_ptr< font::IText > m_textBoxSimple;
-	boost::shared_ptr< font::IText > m_textBoxSimpleWith3DCharacters;
-	boost::shared_ptr< font::TextBox3D > m_textBoxSimpleIn3D;
-	boost::shared_ptr< font::TextBox3D > m_textBoxSimpleWidth3DCharactersIn3D;
+	std::shared_ptr< font::IText > m_textBoxSimple;
+	std::shared_ptr< font::IText > m_textBoxSimpleWith3DCharacters;
+	std::shared_ptr< font::TextBox3D > m_textBoxSimpleIn3D;
+	std::shared_ptr< font::TextBox3D > m_textBoxSimpleWidth3DCharactersIn3D;
 
 public:
 	void Startup()
@@ -42,22 +44,25 @@ public:
 		Game::Startup();
 
 		// Color effect
-		VertexDeclaration colorVD( FVF::XYZ | FVF::Diffuse ); 
-		GetPixelShaderManager()->LoadFromFile( "color_3d", "media/shaders/color3d.shader", "ps_main", "ps_1_1" );
-		GetVertexShaderManager()->LoadFromFile( "color_3d", "media/shaders/color3d.shader", "vs_main", "vs_1_1", colorVD );
-		Effect::shared_ptr effect = GetEffectManager()->Add( "color_3d", new Effect );
-		effect->SetPixelShader( GetPixelShaderManager()->Find( "color_3d" ) );
-		effect->SetVertexShader( GetVertexShaderManager()->Find( "color_3d" ) );
+		qjson::Object colorVDJson = { { "Position", "float3" },{ "Diffuse", "Color" } };
+		VertexDeclaration colorVD( colorVDJson ); 
+		GetManager< PixelShader >()->Add( MakePixelShaderJson( "color_3d", "media/shaders/color3d.shader", "ps_main", "ps_1_1" ) );
+		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "color_3d", "media/shaders/color3d.shader", "vs_main", "vs_1_1", colorVDJson ) );
+		Effect::shared_ptr effect = GetManager< Effect >()->Add( "color_3d", new Effect );
+		effect->SetPixelShader( GetManager< PixelShader >()->Find( "color_3d" ) );
+		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color_3d" ) );
 
 		// Textured 2D
-		VertexDeclaration textured2DVD( FVF::XYZW | FVF::Tex1 );
-		GetPixelShaderManager()->LoadFromFile( "textured_2d", "media/shaders/textured2d.shader", "ps_main", "ps_1_1" );
-		GetVertexShaderManager()->LoadFromFile( "textured_2d", "media/shaders/textured2d.shader", "vs_main", "vs_1_1", textured2DVD );
+		qjson::Object textured2DVDJson = { { "Position", "float4" }, { "Tex1", "float2" } };
+		VertexDeclaration textured2DVD( textured2DVDJson );
+		GetManager< PixelShader >()->Add( MakePixelShaderJson( "textured_2d", "media/shaders/textured2d.shader", "ps_main", "ps_1_1" ) );
+		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "textured_2d", "media/shaders/textured2d.shader", "vs_main", "vs_1_1", textured2DVDJson ) );
 
 		// Plain (color) 2D
-		VertexDeclaration plain2DVD( FVF::XYZW | FVF::Diffuse );
-		GetPixelShaderManager()->LoadFromFile( "color_2d", "media/shaders/color2d.shader", "ps_main", "ps_1_1" );
-		GetVertexShaderManager()->LoadFromFile( "color_2d", "media/shaders/color2d.shader", "vs_main", "vs_1_1", plain2DVD );
+		qjson::Object plain2DVDJson = { { "Position", "float4" },{ "Diffuse", "Color" } };
+		VertexDeclaration plain2DVD( plain2DVDJson );
+		GetManager< PixelShader >()->Add( MakePixelShaderJson( "color_2d", "media/shaders/color2d.shader", "ps_main", "ps_1_1" ) );
+		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "color_2d", "media/shaders/color2d.shader", "vs_main", "vs_1_1", plain2DVDJson ) );
 
 		// Create view matrix for use as camera....
 		m_view.BecomeIdentity();
@@ -66,7 +71,7 @@ public:
 
 		// Create a demonstration of 3d via a 3d rotating triangle...
 		m_triangleVB.Create( 6, colorVD );
-		VertexLock vertexLock;
+		unify::DataLock vertexLock;
 		m_triangleVB.Lock( vertexLock );
 		struct MyVertex
 		{
@@ -86,8 +91,8 @@ public:
 		m_triangleVB.Unlock();
 
 		// Create managers...
-		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager( GetTextureManager() ) );
-		m_fontManager = font::FontManager::shared_ptr( new font::FontManager( GetManagers(), m_spriteManager ) );
+		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager );
+		m_fontManager = font::FontManager::shared_ptr( new font::FontManager( m_spriteManager ) );
 
 		m_fontManager->LoadFromFile( "font1_2D", "media/font1_2D.xml" );
 		m_fontManager->LoadFromFile( "font1_3D", "media/font1_3D.xml" );
@@ -130,15 +135,15 @@ public:
 	{
 	
 		RenderInfo renderInfo3D;
-		renderInfo3D.SetFinalMatrix( m_view.Inverse() * unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
-		Effect::shared_ptr effect = GetEffectManager()->Find( "color_3d" );
+		renderInfo3D.SetFinalMatrix( m_view.Inverse() * unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+		Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_3d" );
 		effect->Use( renderInfo3D );
 		m_triangleVB.Use();
 		m_triangleVB.GetVertexDeclaration().Use();
 		win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLELIST, 0, 2 );
 
 		RenderInfo renderInfo2D;
-		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
+		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS()->GetResolution().width ), static_cast< float >( GetOS()->GetResolution().height ), 0, 1, 1000 );
 		renderInfo2D.SetFinalMatrix( projectionMatrix );
 
 		if ( m_textBoxSimple ) m_textBoxSimple->Render( renderInfo2D );
