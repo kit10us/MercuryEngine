@@ -44,3 +44,6 @@
 output/
 lib/
 intermediate/
+
+## FORCED INCLUSIONS (our exclude exceptions)
+!DXI/tests_data/*

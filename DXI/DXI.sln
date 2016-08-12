@@ -107,6 +107,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test23 - NavMesh", "tests\T
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DAELoader", "..\DAELoader\DAELoader.vcxproj", "{E58A71BD-1CFB-4388-86CE-09085321300D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4} = {904F038F-9550-4112-B7A1-3B160C2FF7F4}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QJson", "..\QJson\QJson.vcxproj", "{F09333BB-5F8E-4FE5-9B2A-3489DFFD26A5}"
 EndProject
@@ -141,6 +144,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test07b - Earth", "tests\Test07b - Earth\Test07b - Earth.vcxproj", "{FC67AF41-D55F-4699-95A9-4B33BDEE4437}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DAELoader_UnitTest", "..\DAELoader_UnitTest\DAELoader_UnitTest.vcxproj", "{8ED59153-3308-4E4B-A561-DDDBB8063BCD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E58A71BD-1CFB-4388-86CE-09085321300D} = {E58A71BD-1CFB-4388-86CE-09085321300D}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unify", "Unify", "{B4799835-88EB-47D0-B34A-9486CB6AC67E}"
 EndProject

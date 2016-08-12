@@ -4,7 +4,7 @@
 #pragma once
 
 #include <dxi/core/IRenderer.h>
-#include <unify/Unify.h>
+#include <unify/unify.h>
 #include <unify/Size.h>
 #include <vector>
 #include <string>

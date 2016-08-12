@@ -1,9 +1,9 @@
-#include <QUnitTest.h>
+#include <qunit/QUnitTest.h>
 #include <dxi/VertexDeclaration.h>
 #include <dxi/win/WindowsOS.h>
 #include <conio.h>
 
-class DXI_UnitTest : public TestSuite
+class DXI_UnitTest : public qunit::TestSuite
 {
 public:
 	DXI_UnitTest()
