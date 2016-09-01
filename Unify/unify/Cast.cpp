@@ -81,7 +81,7 @@ std::string unify::Cast( const short in )
 template<> 
 bool unify::Cast( const std::string text )
 {
-	std::string temp = CleanWhitespace( text );
+	std::string temp = Trim( text );
 	if ( StringIs( temp, "false" ) || StringIs( temp, "f" ) || StringIs( temp, "0" ) || StringIs( temp, "no" ) )
 	{
 		return false;
@@ -167,6 +167,14 @@ std::wstring unify::Cast( const std::string text )
 }
 
 template<>
+const char * unify::Cast( const std::string text )
+{
+	static_assert(true, "Specialization of Cast to const char * failure; force specialization to std::string!" );
+	return text.c_str();
+}
+
+
+template<>
 bool unify::Cast( const char * text )
 {
 	return Cast< bool, std::string >( text );
@@ -214,4 +222,9 @@ wchar_t * unify::Cast( const char * text )
 	return Cast< wchar_t *, std::string >( text );
 }
 
+template<>
+std::string unify::Cast( const char * text )
+{
+	return std::string( text );
+}
 

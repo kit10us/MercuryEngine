@@ -10,7 +10,7 @@ using namespace dxi;
 
 Blend::Effect::TYPE Blend::Effect::FromString( const std::string text )
 {
-	std::string trimmedText = unify::CleanWhitespace( text );
+	std::string trimmedText = unify::Trim( text );
 	if ( unify::StringIs( trimmedText,  "Zero" ) ) return Blend::Effect::Zero;
 	else if ( unify::StringIs( trimmedText,  "One" ) ) return Blend::Effect::One;
 	else if ( unify::StringIs( trimmedText,  "SrcColor" ) ) return Blend::Effect::SrcColor;

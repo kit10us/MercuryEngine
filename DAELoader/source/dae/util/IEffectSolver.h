@@ -7,18 +7,15 @@
 #include <dae/library_effects/Shading.h>
 #include <unify/unify.h>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	namespace util
 	{
-		namespace util
+		class IEffectSolver
 		{
-			class IEffectSolver
-			{
-			public:
-				virtual ~IEffectSolver() {}
-				virtual dxi::Effect::shared_ptr GetEffect( const dxi::dae::Shading & shading ) const = 0;				
-			};
-		}
+		public:
+			virtual ~IEffectSolver() {}
+			virtual dxi::Effect::shared_ptr GetEffect( const dae::Shading & shading ) const = 0;				
+		};
 	}
 }

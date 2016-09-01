@@ -12,6 +12,14 @@
 #include <rm/ResourceHub.h>
 #include <unify/TimeDelta.h>
 
+/*
+  Start order:
+  * OS is created.
+  1. Setup; if false then we end immediately.
+  * Initialize
+  2. Startup
+*/
+
 namespace dxi
 {
 	namespace core
@@ -21,34 +29,35 @@ namespace dxi
 		public:
 			Game();
 			virtual ~Game();
-			
+						
 			/// <summary>
+			/// Perform necessary initialization.
 			/// Returns Setup: false ends the program immediately.
 			/// </summary>
-			bool Initialize( IOS * os );
+			bool Initialize( std::shared_ptr< IOS > os );
 			
 			/// <summary>
 			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 			/// </summary>
-			virtual bool Setup( IOS * os );
+			virtual bool Setup( IOS & os ) override;
 
-			virtual void Startup();
+			virtual void Startup() override;
 
 			/// <summary>
 			/// Optional function to be called on reciept of a drag-and-drop event.
 			virtual void OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point );
 
 			virtual void BeforeUpdate();
-			virtual bool Update( unify::Seconds elapsed, IInput & input );
+			virtual bool Update( unify::Seconds elapsed, IInput & input ) override;
 			virtual void AfterUpdate();
 
-			virtual void BeforeRender();
-			virtual void Render();
-			virtual void AfterRender();
+			virtual void BeforeRender() override;
+			virtual void Render() override;
+			virtual void AfterRender() override;
 
-			virtual void Shutdown();
+			virtual void Shutdown() override;
 
-			virtual IOS * GetOS();
+			virtual IOS & GetOS() final;
 			
 			virtual scene::SceneManager::shared_ptr GetSceneManager();
 
@@ -72,17 +81,8 @@ namespace dxi
 			IInput & GetInput();
 
 		private:
-			IOS::shared_ptr m_os;
+			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
-			
-			// TODO: Replace with m_resourceHub...
-			/*
-			std::shared_ptr< rm::ResourceManagerSimple< Texture > > m_textureManager;
-			std::shared_ptr< rm::ResourceManagerSimple< Effect > > m_effectManager;
-			std::shared_ptr< rm::ResourceManagerSimple< PixelShader > > m_pixelShaderManager;
-			std::shared_ptr< rm::ResourceManagerSimple< VertexShader > > m_vertexShaderManager;
-			std::shared_ptr< rm::ResourceManagerSimple< Geometry > > m_geometryManager;
-			*/
 			
 			// TODO: Can this become part of the resource management, so we can use the loading stuff?
 			scene::SceneManager::shared_ptr m_sceneManager;

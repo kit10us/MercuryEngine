@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<animations>
-
+<xml>
+<animation>
   <texture name="mainnpcs" source="sprites"/>
 
   <group name="cecil">
@@ -109,4 +109,5 @@ anim walkright = 70,0.25 , 71,0.25
 anim cheer = 66,0.25 , 73,0.25
 anim sad = 72
 -->
-</animations>
+</animation>
+</xml>

@@ -49,6 +49,7 @@ namespace rm
 	{
 	public:
 		~IXMLFactory() {}
+		virtual T * Produce( unify::Path path ) = 0;
 		virtual T * Produce( const qxml::Element * node ) = 0;
 	};
 

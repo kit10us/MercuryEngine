@@ -4,12 +4,11 @@
 #include <dae/NewParam.h>
 #include <unify/String.h>
 
-using namespace dxi;
 using namespace dae;
 
 NewParam::NewParam(  IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
-, m_sid( node->GetStringAttribute( "sid" ) )
+, m_sid( node->GetAttribute< std::string >( "sid" ) )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -29,7 +28,7 @@ NewParam::NewParam(  IDocument & document, const qxml::Element * node )
 		else if ( childNode->IsTagName( "surface" ) )
 		{
 			m_type = SurfaceType;
-			m_surface.type = childNode->GetStringAttributeElse( "type", std::string() );
+			m_surface.type = childNode->GetAttributeElse( "type", std::string() );
 			m_surface.init_from = childNode->GetElement( "init_from" )->GetText();
 			if ( childNode->HasElements( "format" ) )
 			{
@@ -53,17 +52,17 @@ const std::string & NewParam::GetSID() const
 	return m_sid;
 }
 
-dxi::dae::NewParam::Type NewParam::GetType() const
+dae::NewParam::Type NewParam::GetType() const
 {
 	return m_type;
 }
 
-const dxi::dae::NewParam::Surface & NewParam::GetSurface() const
+const dae::NewParam::Surface & NewParam::GetSurface() const
 {
 	return m_surface;
 }
 
-const dxi::dae::NewParam::Sampler2D & NewParam::GetSampler2D() const
+const dae::NewParam::Sampler2D & NewParam::GetSampler2D() const
 {
 	return m_sampler2D;
 }

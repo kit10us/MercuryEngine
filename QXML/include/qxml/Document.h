@@ -27,10 +27,6 @@ namespace qxml
 		Element * GetElement( unsigned int element );
 		Element * FindElement( const std::string & element );
 		Element * FindElement( const std::string & element, const std::string & attribute, const std::string & value );
-		void FindElementsByTagNameRecursive( ElementList & elementList, const std::string & tagName );
-		void FindElementsByTagName( ElementList & elementList, const std::string & tagName );
-		unsigned int CountElements( const std::string & element );
-		unsigned int NumElements();
 
         const unify::Path & GetPath() const;
 
@@ -41,8 +37,6 @@ namespace qxml
 		ElementList m_elementList;
 		Element * m_xml; // The XML header node.
 		Element * m_root;
-
-		unsigned int m_numChildren;
 
 		 unify::Path m_filePath;
 	};

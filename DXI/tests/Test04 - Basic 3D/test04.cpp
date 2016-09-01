@@ -48,7 +48,7 @@ public:
 		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color_3d" ) );
 
 		// Default projection matrix...
-		m_projection = unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 );
+		m_projection = unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 );
 
 		// Create view matrix for use as camera....
 		m_view.BecomeIdentity();

@@ -6,26 +6,23 @@
 #include <unify/Exception.h>
 #include <string>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	class Exception_MissingCOLLADA : public unify::Exception
 	{
-		class Exception_MissingCOLLADA : public unify::Exception
-		{
-		public:
-			Exception_MissingCOLLADA( const std::string & filename );
-		};
+	public:
+		Exception_MissingCOLLADA( const std::string & filename );
+	};
 
-		class Exception_NotSupported : public unify::Exception
-		{
-		public:
-			Exception_NotSupported( const std::string & feature );
-		};
+	class Exception_NotSupported : public unify::Exception
+	{
+	public:
+		Exception_NotSupported( const std::string & feature );
+	};
 
-		class Exception_MissingChildElement : public unify::Exception
-		{
-		public:
-			Exception_MissingChildElement( const std::string & parent, const std::string & child );
-		};
-	}
+	class Exception_MissingChildElement : public unify::Exception
+	{
+	public:
+		Exception_MissingChildElement( const std::string & parent, const std::string & child );
+	};
 }

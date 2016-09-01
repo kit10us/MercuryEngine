@@ -1,11 +1,10 @@
 #include <dae/ProfileCommon.h>
 
-using namespace dxi;
 using namespace dae;
 
 ProfileCOMMON::ProfileCOMMON( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
-, m_id( node->GetStringAttributeElse( "id", std::string() ) )
+, m_id( node->GetAttributeElse( "id", std::string() ) )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -13,7 +12,7 @@ ProfileCOMMON::ProfileCOMMON( IDocument & document, const qxml::Element * node )
 		{
 			std::shared_ptr< NewParam > newParam( new NewParam( document, childNode ) );
 			m_newParams.push_back( newParam );
-			m_newParamsMap[ childNode->GetStringAttribute( "sid" ) ] = newParam;
+			m_newParamsMap[ childNode->GetAttribute< std::string >( "sid" ) ] = newParam;
 		}
 		else if ( childNode->IsTagName( "technique" ) )
 		{

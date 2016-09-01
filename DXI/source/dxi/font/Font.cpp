@@ -37,7 +37,7 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 	{
         if ( leaf->IsTagName( "effect" ) )
         {
-			std::string name = leaf->GetStringAttributeElse( "name", filePath.FilenameNoExtension() );
+			std::string name = leaf->GetAttributeElse( "name", filePath.FilenameNoExtension() );
 			m_effect = effectManager->Add( name, filePath );
 			std::shared_ptr< VertexBuffer > scratchVB( new VertexBuffer( 6, m_effect->GetVertexShader()->GetVertexDeclaration() ) );
 			m_effect->SetScratchVertexBuffer( scratchVB );
@@ -45,7 +45,7 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 		else if( leaf->IsTagName( "character" ) )
 		{
 			// General attributes...
-			CharacterKey key( leaf->GetStringAttributeElse( "key", "" ) );
+			CharacterKey key( leaf->GetAttributeElse< std::string >( "key", "" ) );
 			if( key.empty() )
 			{
 				throw unify::Exception( "Font key is empty!" );
@@ -92,7 +92,7 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 					}
 
 					Texture::shared_ptr texture( textureManager->Find( textureName ) );
-					unsigned int sprite = leaf->GetIntegerAttributeElse( "sprite", 0 );
+					unsigned int sprite = leaf->GetAttributeElse< unsigned int >( "sprite", 0 );
 
 					animation::Frame frame( texture, texture->GetSprite( sprite ) );
 					character = Character( frame, m_effect );
@@ -116,20 +116,20 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 				}
 
 				unify::Size< float > size;
-				size.width = leaf->GetAttribute( "width" )->GetFloat();
-				size.height = leaf->GetAttribute( "height" )->GetFloat();
+				size.width = leaf->GetAttribute( "width" )->Get< float >();
+				size.height = leaf->GetAttribute( "height" )->Get< float >();
 
-				float geometryPostScale2D = leaf->GetFloatAttributeElse( "scale2d", 1 );
+				float geometryPostScale2D = leaf->GetAttributeElse< float >( "scale2d", 1 );
 				unify::V3< float > geometryPostOffset2D;
-				geometryPostOffset2D.x = leaf->GetFloatAttributeElse( "offset2dx", 0 );
-				geometryPostOffset2D.y = leaf->GetFloatAttributeElse( "offset2dy", 0 );
-				geometryPostOffset2D.z = leaf->GetFloatAttributeElse( "offset2dz", 0 );
+				geometryPostOffset2D.x = leaf->GetAttributeElse< float >( "offset2dx", 0 );
+				geometryPostOffset2D.y = leaf->GetAttributeElse< float >( "offset2dy", 0 );
+				geometryPostOffset2D.z = leaf->GetAttributeElse< float >( "offset2dz", 0 );
 
-				float geometryPostScale3D = leaf->GetFloatAttributeElse( "scale3d", 1 );
+				float geometryPostScale3D = leaf->GetAttributeElse< float >( "scale3d", 1 );
 				unify::V3< float > geometryPostOffset3D;
-				geometryPostOffset3D.x = leaf->GetFloatAttributeElse( "offset3dx", 0 );
-				geometryPostOffset3D.y = leaf->GetFloatAttributeElse( "offset3dy", 0 );
-				geometryPostOffset3D.z = leaf->GetFloatAttributeElse( "offset3dz", 0 );
+				geometryPostOffset3D.x = leaf->GetAttributeElse< float >( "offset3dx", 0 );
+				geometryPostOffset3D.y = leaf->GetAttributeElse< float >( "offset3dy", 0 );
+				geometryPostOffset3D.z = leaf->GetAttributeElse< float >( "offset3dz", 0 );
 
 				unify::Path geometryPath( filePath); 
 				geometryPath.ChangeFilename( leaf->GetAttribute("geometry")->GetString() );

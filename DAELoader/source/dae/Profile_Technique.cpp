@@ -1,11 +1,10 @@
 #include <dae/Profile_Technique.h>
 
-using namespace dxi;
 using namespace dae;
 
 Profile_Technique::Profile_Technique( const qxml::Element * node )
-: m_id( node->GetStringAttributeElse( "id", std::string() ) )
-, m_sid( node->GetStringAttribute( "sid" ) )
+: m_id( node->GetAttributeElse( "id", std::string() ) )
+, m_sid( node->GetAttribute< std::string >( "sid" ) )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{

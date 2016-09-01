@@ -11,7 +11,5 @@ namespace dxi
 	{
 	public:
 		void Load( const unify::Path & filePath );
-	protected:
-		void ProcessASEElement( qxml::Element * pElement, const std::string & sString );
 	};
 }

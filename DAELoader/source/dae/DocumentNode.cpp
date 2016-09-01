@@ -3,7 +3,6 @@
 
 #include <dae/DocumentNode.h>
 
-using namespace dxi;
 using namespace dae;
 
 DocumentNode::DocumentNode( IDocument & document, const qxml::Element * node )

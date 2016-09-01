@@ -8,10 +8,14 @@
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
 {
 	MSG msg;
+#define NO_TRY
+
+#ifndef NO_TRY
 	try
+#endif
 	{
 		// Windows OS specific...
-		dxi::win::WindowsOS * windowsOS = new dxi::win::WindowsOS( hInstance, hPrevInstance, lpszCmdLine, nCmdShow );
+		std::shared_ptr< dxi::win::WindowsOS > windowsOS { new dxi::win::WindowsOS( hInstance, hPrevInstance, lpszCmdLine, nCmdShow ) };
 
 		dxi::core::Game & game = *dxi::core::Game::GetGameInstance();
 
@@ -58,6 +62,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 
 		game.Shutdown();
 	}
+#ifndef NO_TRY
 	catch( std::exception & exception )
 	{
         OutputDebugStringA( "[" );
@@ -67,6 +72,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		MessageBoxA( 0, exception.what(), "Exception caught", MB_ICONEXCLAMATION );
 		return -1;
 	}
+#endif
  
     return msg.wParam; 
 } 

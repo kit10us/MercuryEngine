@@ -40,15 +40,12 @@ namespace dxi
 		virtual GeometryInstanceData * CreateInstanceData();
 		virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData ) = 0;
 		virtual void Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
-		const unify::BSphere & GetBSphere() const;
-		const unify::BBox< float > & GetBBox() const;
-		void SetBounds( const unify::BBox< float > & bbox );
-		virtual const unify::BBox< float > & ComputeBounds();
 
+		unify::BBox< float > & GetBBox();
+		const unify::BBox< float > & GetBBox() const;
 	protected:
 		bool m_created;
 		bool m_valid;
-		unify::BSphere m_BSphere;
 		unify::BBox< float > m_BBox;
 	};
 }

@@ -1,14 +1,13 @@
 #include <dae/Triangles.h>
 #include <unify/String.h>
 
-using namespace dxi;
 using namespace dae;
 
 Triangles::Triangles( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_count( node->GetIntegerAttribute( "count" ) )
-, m_material( node->GetStringAttributeElse( "material", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_count( node->GetAttribute< int >( "count" ) )
+, m_material( node->GetAttributeElse( "material", std::string() ) )
 , m_vertexFormat()
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
@@ -28,7 +27,7 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 	{
 		format.Add( { input->GetSemantic(), input->GetSemantic() } );
 	}
-	m_vertexFormat = VertexDeclaration( format );
+	m_vertexFormat = dxi::VertexDeclaration( format );
 }
 
 const std::string & Triangles::GetName() const

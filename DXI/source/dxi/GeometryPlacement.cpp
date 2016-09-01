@@ -69,8 +69,6 @@ void GeometryPlacement::Update( unify::Seconds elapsed, GeometryInstanceData * i
 void GeometryPlacement::AddPlace( const unify::V3< float > & position )
 {
 	m_BBox.AddBBoxWithPosition( m_geometry->GetBBox(), position );
-	m_BSphere.AddBSphereWithOffset( m_geometry->GetBSphere(), position.Length() );
-
 	m_objects.push_back( PlacementEntry( position ) );
 }
 

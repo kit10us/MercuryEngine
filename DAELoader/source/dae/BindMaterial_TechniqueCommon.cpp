@@ -3,7 +3,6 @@
 
 #include <dae/BindMaterial_TechniqueCommon.h>
 
-using namespace dxi;
 using namespace dae;
 
 BindMaterial_TechniqueCommon::BindMaterial_TechniqueCommon( const qxml::Element * node )

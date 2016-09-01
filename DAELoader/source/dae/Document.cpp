@@ -4,7 +4,6 @@
 #include <dae/Document.h>
 #include <dxi/core/Game.h>
 
-using namespace dxi;
 using namespace dae;
 
 Document::Document( const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
@@ -20,12 +19,12 @@ Document::Document( const unify::Path & filePath, dae::util::IEffectSolver * eff
 	}
 
 	// Attributes...
-	m_version = node->GetStringAttribute( "version" );
+	m_version = node->GetAttribute< std::string >( "version" );
 
 	// Child elements...
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
-		dxi::core::Game::GetGameInstance()->GetOS()->DebugWriteLine( "DAE: " + childNode->GetTagName() );
+		dxi::core::Game::GetGameInstance()->GetOS().DebugWriteLine( "DAE: " + childNode->GetTagName() );
 		if ( childNode->IsTagName( "asset" ) )
 		{
 			// TODO:

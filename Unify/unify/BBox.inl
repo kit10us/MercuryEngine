@@ -4,8 +4,9 @@
 
 template< typename T >
 BBox< T >::BBox()
+	: inf { V3< T >::V3Zero() }
+	, sup { V3< T >::V3Zero() }
 {
-	Initialize();
 }
 
 template< typename T >
@@ -202,4 +203,13 @@ V3< T > BBox< T >::ToBarrycentric( const V3< T > & point ) const
 	V3< T > size = Size();
 	V3< T > result( point - inf );
 	return V3< T >( size.x != 0 ? ( result.x / size.x ) : 0, size.y != 0 ? (result.y / size.y) : 0, size.z != 0 ? (result.z / size.z) : 0 );
+}
+
+template< typename  T >
+BSphere BBox< T >::MakeBSphere() const
+{
+	BSphere bsphere;
+	bsphere.AddPoint( sup );
+	bsphere.AddPoint( inf );
+	return bsphere;
 }

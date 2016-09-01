@@ -8,9 +8,9 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::V3< float > & v3, co
 {
 	if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix ) )
 	{
-		v3.x = element->GetFloatAttribute( "x" + postFix );
-		v3.y = element->GetFloatAttribute( "y" + postFix );
-		v3.z = element->GetFloatAttribute( "z" + postFix );
+		v3.x = element->GetAttribute( "x" + postFix )->Get< float >();
+		v3.y = element->GetAttribute( "y" + postFix )->Get< float >();
+		v3.z = element->GetAttribute( "z" + postFix )->Get< float >();
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix ) )
 	{
@@ -30,8 +30,8 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Quaternion & q, cons
 	// Rotation about an axis...
 	if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix ) )
 	{
-		unify::V3< float > v( element->GetFloatAttribute( "x" + postFix ), element->GetFloatAttribute( "y" + postFix ), element->GetFloatAttribute( "z" + postFix ) );
-		float rotation = element->GetFloatAttribute( "rotation" + postFix );
+		unify::V3< float > v( element->GetAttribute( "x" + postFix )->Get< float >(), element->GetAttribute( "y" + postFix )->Get< float >(), element->GetAttribute( "z" + postFix )->Get< float >() );
+		float rotation = element->GetAttribute( "rotation" + postFix )->Get< float >();
 		q = unify::Quaternion::QuaternionRotationAxis( v, rotation );
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix ) )
@@ -47,10 +47,10 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Quaternion & q, cons
 	// Explicit quaternion
 	else if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix + ",w" + postFix ) )
 	{
-		q.SetX( element->GetFloatAttribute( "x" + postFix ) );
-		q.SetY( element->GetFloatAttribute( "y" + postFix ) );
-		q.SetZ( element->GetFloatAttribute( "z" + postFix ) );
-		q.SetW( element->GetFloatAttribute( "w" + postFix ) );
+		q.SetX( element->GetAttribute( "x" + postFix )->Get< float >() );
+		q.SetY( element->GetAttribute( "y" + postFix )->Get< float >() );
+		q.SetZ( element->GetAttribute( "z" + postFix )->Get< float >() );
+		q.SetW( element->GetAttribute( "w" + postFix )->Get< float >() );
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix + ",w" + postFix ) )
 	{
@@ -109,8 +109,8 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::TexCoords & texCoord
 {
 	if( element->HasAttributes( "u" + postFix + ",v" + postFix ) )
 	{
-		texCoords.u = element->GetFloatAttribute( "u" + postFix );
-		texCoords.v = element->GetFloatAttribute( "v" + postFix );
+		texCoords.u = element->GetAttribute( "u" + postFix )->Get< float >();
+		texCoords.v = element->GetAttribute( "v" + postFix )->Get< float >();
 	}
 	else if( element->HasElements( "u" + postFix + ",v" + postFix ) )
 	{
@@ -128,12 +128,12 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::ColorUnit & color, c
 {
 	if( element->HasAttributes( "red" + postFix + ",green" + postFix + ",blue" + postFix ) )
 	{
-		color.SetRed( element->GetFloatAttribute( "red" + postFix ) );
-		color.SetGreen( element->GetFloatAttribute( "green" + postFix ) );
-		color.SetBlue( element->GetFloatAttribute( "blue" + postFix ) );
+		color.SetRed( element->GetAttribute( "red" + postFix )->Get< float >() );
+		color.SetGreen( element->GetAttribute( "green" + postFix )->Get< float >() );
+		color.SetBlue( element->GetAttribute( "blue" + postFix )->Get< float >() );
 		if( element->HasAttributes( "alpha" ) )
 		{
-			color.SetAlpha( element->GetFloatAttribute( "alpha" + postFix ) );
+			color.SetAlpha( element->GetAttribute( "alpha" + postFix )->Get< float >() );
 		}
 	}
 	else if( element->HasElements( "red" + postFix + ",green" + postFix + ",blue" + postFix ) )

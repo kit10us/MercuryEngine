@@ -18,7 +18,9 @@ namespace dxi
     {
         class Scene;
 
-        // Objects belong to Scenes. Scenes are collections of objects.
+		/// <notes>
+        /// Objects belong to Scenes. Scenes are collections of objects.
+		/// </notes>
         class Object : public physics::IObjectSyncer, public events::ListenerMapOwner
 	    {
 	    public:
@@ -77,21 +79,24 @@ namespace dxi
             void RenderBBox( bool bTF );
 		    bool RenderBBox() const;
 		    unify::BBox< float > GetBBoxXFormed();
-		    const unify::Frame & GetWorldFrame();
-		    const unify::BBox< float > & GetBBox();
+			const unify::BBox< float > & GetBBox();
 		    void SyncFrame( const unify::Frame & frame );
 		    void SyncBBox( const unify::BBox< float > & bbox );
-		    void SetGeometryMatrix( const unify::Matrix & matrix );
-		    const unify::Matrix & GetGeometryMatrix() const;
+		    
+			unify::Matrix & GetGeometryMatrix();
+			const unify::Matrix & GetGeometryMatrix() const;
 
 		    GeometryInstanceData::shared_ptr GetGeometryInstanceData();
 
-            // Tag is used to track information on the object, for instance, what it represents.
-            // It's mostly for testing, as there is no guarantee it's data wont be mangled by anyone else.
-            void SetTag( const std::string & tag );
-            std::string GetTag() const;
+			/// <summary>
+			/// Tags allow us to 'tag' objects, so we can find or filter on them.
+			/// </summary>
+			std::map< std::string, std::string > & GetTags();
+			const std::map< std::string, std::string > & GetTags() const;
 
 	    protected:
+			std::map< std::string, std::string > m_tags;
+
             Scene * m_scene;
 
             bool m_enabled;
@@ -103,13 +108,16 @@ namespace dxi
 
 		    size_t m_lastFrameID;
 		    bool m_checkFrame;
-		    unify::Frame m_frame;
-		    Effect m_effect; // Overrides geometry's effects (passed to)
 
-		    std::string m_name;
-			Geometry::shared_ptr m_geometry;
+		    unify::Frame m_frame;
+
 		    unify::Matrix m_geometryMatrix;
-		    GeometryInstanceData::shared_ptr m_geometryInstanceData;
+			
+			Geometry::shared_ptr m_geometry;
+			GeometryInstanceData::shared_ptr m_geometryInstanceData;
+
+			Effect m_effect; // Overrides geometry's effects (passed to)
+
 		    std::shared_ptr< physics::IInstance > m_physics;
 		    controllers::IController::shared_ptr m_controller;
 
@@ -121,8 +129,6 @@ namespace dxi
 
 		    bool m_renderBBox;
 		    bool m_renderFrame;
-
-            std::string m_tag;
 	    };
     }
 }

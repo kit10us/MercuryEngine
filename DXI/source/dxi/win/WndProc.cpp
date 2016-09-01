@@ -72,8 +72,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 		RECT clientRect;
 		GetClientRect( hWnd, &clientRect );
 
-		float width = static_cast< float >(game.GetOS()->GetResolution().width);
-		float height = static_cast< float >(game.GetOS()->GetResolution().height);
+		float width = static_cast< float >(game.GetOS().GetResolution().width);
+		float height = static_cast< float >(game.GetOS().GetResolution().height);
 		float clientWidth = static_cast< float >(clientRect.right);
 		float clientHeight = static_cast< float >(clientRect.bottom);
 
@@ -92,10 +92,10 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 		{
 		case WA_ACTIVE:
 		case WA_CLICKACTIVE:
-			game.GetOS()->SetHasFocus( true );
+			game.GetOS().SetHasFocus( true );
 			break;
 		case WA_INACTIVE:
-			game.GetOS()->SetHasFocus( false );
+			game.GetOS().SetHasFocus( false );
 			break;
 
 		default:

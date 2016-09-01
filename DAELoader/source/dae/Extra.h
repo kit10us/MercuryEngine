@@ -7,23 +7,20 @@
 #include <qxml/QXML.h>
 #include <vector>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	// TODO: Add to all possible parent elements (currently just adding as immediately usefull).
+	/// <summary>
+	/// DAE node: COLLADA->*extra (*)
+	/// </summary>
+	class Extra
 	{
-		// TODO: Add to all possible parent elements (currently just adding as immediately usefull).
-		/// <summary>
-		/// DAE node: COLLADA->*extra (*)
-		/// </summary>
-		class Extra
-		{
-		public:
-			Extra( const qxml::Element * node );
+	public:
+		Extra( const qxml::Element * node );
 
-			const std::vector< std::shared_ptr< Technique_Core > > & GetTechniques() const;
+		const std::vector< std::shared_ptr< Technique_Core > > & GetTechniques() const;
 
-		private:
-			std::vector< std::shared_ptr< Technique_Core > > m_techniques;
-		};
-	}
+	private:
+		std::vector< std::shared_ptr< Technique_Core > > m_techniques;
+	};
 }

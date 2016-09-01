@@ -16,7 +16,7 @@ namespace dxi
 			IObjectSyncer() {}
 			virtual ~IObjectSyncer() {}
 
-			virtual const unify::Frame & GetWorldFrame() = 0;
+			virtual const unify::Frame & GetFrame() = 0;
 			virtual const unify::BBox< float > & GetBBox() = 0;
 
 			virtual void SyncFrame( const unify::Frame & frame ) = 0;

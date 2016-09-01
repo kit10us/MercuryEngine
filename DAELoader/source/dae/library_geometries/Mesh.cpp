@@ -8,7 +8,6 @@
 #include <unify/TexCoords.h>
 #include <unify/DataLock.h>
 
-using namespace dxi;
 using namespace dae;
 
 typedef std::vector< float > VFloat;
@@ -126,17 +125,15 @@ std::shared_ptr< Source > Mesh::GetSource( const std::string & name ) const
 	return GetSource().at( itr->second );
 }
 
-void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
 {
-	for ( std::vector< std::shared_ptr< Polylist > >::const_iterator itr = m_polylist.begin(), end = m_polylist.end(); itr != end; ++itr )
+	for ( const auto polylist : m_polylist )
 	{
-		const Polylist & polylist = **itr;
-		PrimitiveList pl;
 		unify::Color diffuse = unify::Color::ColorWhite();
 		const NewParam * sampler2DParam = 0;
 		const NewParam * surfaceParam = 0;
 		
-		const std::string target = technique.GetInstanceMaterial( polylist.GetMaterial() ).GetTarget();
+		const std::string target = technique.GetInstanceMaterial( polylist->GetMaterial() ).GetTarget();
 		const Material * material = GetDocument().GetLibraryMaterials().Find( target );
 		std::string effectURL = material->GetInstanceEffect().GetURL();
 		const Effect * effect = GetDocument().GetLibraryEffects().Find( effectURL );
@@ -150,7 +147,7 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 		if ( shading.GetDiffuse().GetType() == Shading::Property::ColorType )
 		{
 			diffuse = unify::Color( shading.GetDiffuse().GetColor() );
-			myEffect->SetTexture( 0, Texture::shared_ptr() ); // Unset texture.
+			myEffect->SetTexture( 0, dxi::Texture::shared_ptr() ); // Unset texture.
 		}
 		else // Is texture...
 		{
@@ -162,9 +159,11 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 		}
 
 		// Create our primitive list...
-		size_t numberOfVertices = polylist.GetP().size() / polylist.GetInput().size();
-		BufferSet & set = pl.AddBufferSet();
-		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), BufferUsage::Staging );
+		size_t numberOfVertices = polylist->GetP().size() / polylist->GetInput().size();
+
+		dxi::BufferSet & set = accumulatedPL.AddBufferSet();
+
+		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), dxi::BufferUsage::Staging );
 
 		const dxi::VertexDeclaration & vd = myEffect->GetVertexShader()->GetVertexDeclaration();
 		unsigned short stream = 0;
@@ -204,14 +203,14 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 
 		// Iterate through the vertices...
 		size_t vertexIndex = 0;
-		for ( size_t pHead = 0; pHead < polylist.GetP().size(); pHead += polylist.GetInput().size(), ++vertexIndex )
+		for ( size_t pHead = 0; pHead < polylist->GetP().size(); pHead += polylist->GetInput().size(), ++vertexIndex )
 		{
-			for( size_t inputIndex = 0; inputIndex < polylist.GetInput().size(); ++inputIndex )
+			for( size_t inputIndex = 0; inputIndex < polylist->GetInput().size(); ++inputIndex )
 			{
 				size_t indexIntoP = pHead + inputIndex; // this is the actual index into the P array, recalling that p = { { vertex0.input0, vertex0.input1}, {vertex1.input0, vertex1.input1 }, etc... }
-				size_t indexOfAttribute = polylist.GetP()[ indexIntoP ];
+				size_t indexOfAttribute = polylist->GetP()[ indexIntoP ];
 
-				const dae::Input_Shared & input = *polylist.GetInput()[ inputIndex ];
+				const dae::Input_Shared & input = *polylist->GetInput()[ inputIndex ];
 				const dae::Source & source = *GetSource( input.GetSource() );
 				const std::string metaType = input.GetSemantic(); // Type of data, meta as it's an assumption.
 				const std::vector< float > & floats = source.GetFloatArray().GetArrayContents();
@@ -247,21 +246,21 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 
 
 		size_t numberOfIndices = 0;
-		for( size_t vci = 0; vci < polylist.GetVCount().size(); ++vci )
+		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
 		{
-			size_t vc = polylist.GetVCount()[ vci ];
+			size_t vc = polylist->GetVCount()[ vci ];
 			numberOfIndices += ( vc - 2 ) * 3;
 		}
 
-		set.GetIndexBuffer().Create( numberOfIndices, IndexFormat::Index32, BufferUsage::Staging );
-		IndexLock iLock;
+		set.GetIndexBuffer().Create( numberOfIndices, dxi::IndexFormat::Index32, dxi::BufferUsage::Staging );
+		dxi::IndexLock iLock;
 		set.GetIndexBuffer().Lock( iLock );
 
 		size_t vertexHead = 0; // Tracks the first vertex, increases by vc each iteration.
 		size_t index = 0;
-		for( size_t vci = 0; vci < polylist.GetVCount().size(); ++vci )
+		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
 		{
-			size_t vc = polylist.GetVCount()[ vci ];
+			size_t vc = polylist->GetVCount()[ vci ];
 			for( size_t indexOffset = 0; indexOffset < vc - 2; ++indexOffset )
 			{
 				iLock.SetIndex( index++, vertexHead + indexOffset );
@@ -273,8 +272,6 @@ void Mesh::Build( PrimitiveList & accumulatedPL, const unify::Matrix & matrix, c
 
 		set.GetIndexBuffer().Unlock();
 
-		set.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, numberOfVertices, numberOfIndices / 3, myEffect, true ) );
-
-		accumulatedPL.Append( pl );
+		set.GetRenderMethodBuffer().AddMethod( dxi::RenderMethod( dxi::PrimitiveType::TriangleList, 0, numberOfVertices, numberOfIndices / 3, myEffect, true ) );
 	}
 }

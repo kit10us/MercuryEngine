@@ -1,4 +1,11 @@
 
+[Principles]
+[Resources]
+* I find keeping loading code separate than the resource simplifies extensibility.
+* A resource should be able to load directly.
+* A resource should be able to be loaded from any file type.
+* A resource should be able to load from an XML as the whole of the document, or as a partial part of.
+
 [namespaces]
 dxi - Root namespace that holds all components.
 dxi::core - Lowest level APIs used to build upon with other libraries.

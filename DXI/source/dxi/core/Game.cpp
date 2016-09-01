@@ -2,12 +2,13 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/null/Input.h>
 #include <dxi/EffectFactories.h>
 #include <dxi/TextureFactory.h>
 #include <dxi/VertexShaderFactory.h>
 #include <dxi/PixelShaderFactories.h>
 #include <dxi/GeometryFactory.h>
+#include <dxi/null/Input.h>
+#include <dxi/Input.h>
 
 using namespace dxi;
 using namespace core;
@@ -24,50 +25,67 @@ Game::~Game()
 {
 }
 
-bool Game::Initialize( IOS * os )
+bool Game::Initialize( std::shared_ptr< IOS > os )
 {
-	m_os.reset( os );
+	m_os = os;
 
-	bool runGame = Setup( os );
-	
-	// Create general asset managers...
-	if ( runGame )
+	if ( ! Setup( GetOS() ) )
 	{
-		class A
-		{
-		public:
-			virtual ~A() {}
-		} a;
-		class B : public A
-		{
-		} b;
-
-		GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
-		GetManager< Texture >()->AddFactory( new TextureSourceFactory );
-
-		GetResourceHub().AddManager( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
-		GetManager< Effect >()->AddFactory( new EffectSourceFactory );
-
-		GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
-		GetManager< PixelShader >()->AddFactory( new PixelShaderJsonFactory );
-		GetManager< PixelShader >()->AddFactory( new PixelShaderXMLFactory );
-
-		GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
-		GetManager< VertexShader >()->AddFactory( new VertexShaderJsonFactory );
-		GetManager< VertexShader >()->AddFactory( new VertexShaderXMLFactory );
-
-		GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
-		GetManager< Geometry >()->AddFactory( new GeometryFactory );
-
-		m_sceneManager.reset( new scene::SceneManager );
+		return false;
 	}
+	
+	// Create asset managers...
 
-	return runGame;
+	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
+	GetManager< Texture >()->AddFactory( new TextureSourceFactory );
+
+	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
+	GetManager< Effect >()->AddFactory( new EffectSourceFactory );
+
+	GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
+	GetManager< PixelShader >()->AddFactory( new PixelShaderJsonFactory );
+	GetManager< PixelShader >()->AddFactory( new PixelShaderXMLFactory );
+
+	GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
+	GetManager< VertexShader >()->AddFactory( new VertexShaderJsonFactory );
+	GetManager< VertexShader >()->AddFactory( new VertexShaderXMLFactory );
+
+	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
+	GetManager< Geometry >()->AddFactory( new GeometryXMLFactory );
+
+	m_sceneManager.reset( new scene::SceneManager );
+
+	return true;
 }
 
-bool Game::Setup( IOS * os )
+bool Game::Setup( IOS & os )
 {
-	// Do nothing - stubbed.
+	if ( ! unify::Path( "setup.xml" ).Exists() )
+	{
+		return true; // Skip this setup step if there is no XML.
+	}
+	
+	qxml::Document doc( "setup.xml" );
+	
+	qxml::Element * setup = doc.FindElement( "setup" );
+	
+	if ( setup == nullptr )
+	{
+		return true; // Skip this setup step if there is no setup node in XML.
+	}
+
+	qxml::Element * fullscreen = setup->GetElement( "fullscreen" );
+	if( fullscreen != nullptr )
+	{
+		os.SetFullscreen( unify::Cast< bool, std::string >( fullscreen->GetText() ) );
+	}
+
+	qxml::Element * resolution = setup->GetElement( "resolution" );
+	if ( resolution != nullptr )
+	{
+		os.SetResolution( unify::Size< unsigned int >( resolution->GetAttribute< unsigned int >( "width" ), resolution->GetAttribute< unsigned int >( "height" ) ) );
+	}
+
 	return true;
 }
 
@@ -75,7 +93,8 @@ void Game::Startup()
 {
 	m_os->Startup();
 
-	m_input.reset( new null::Input );
+	// m_input.reset( new null::Input );
+	m_input.reset( new Input( *m_os ) );
 }
 
 void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point )
@@ -86,7 +105,7 @@ void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2
 
 void Game::BeforeUpdate()
 {
-	m_input->CallBeforeUpdate( GetOS()->GetResolution(), GetOS()->GetFullscreen() );
+	m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
 }
 
 bool Game::Update( unify::Seconds elapsed, IInput & input )
@@ -131,9 +150,9 @@ void Game::Shutdown()
 	m_os->Shutdown();
 }
 
-IOS * Game::GetOS()
+IOS & Game::GetOS()
 {
-	return m_os.get();
+	return *m_os.get();
 }
 
 scene::SceneManager::shared_ptr Game::GetSceneManager()

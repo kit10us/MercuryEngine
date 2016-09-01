@@ -74,7 +74,7 @@ Frame::Frame()
 , m_previous( 0 )
 , m_next( 0 )
 , m_parent( 0 )
-, m_model( Matrix::MatrixIdentity() )
+, m_matrix( Matrix::MatrixIdentity() )
 , m_finalCached( Matrix::MatrixIdentity() )
 , m_isDirty( true )
 {
@@ -86,7 +86,7 @@ Frame::Frame( const std::string & name )
 , m_next( 0 )
 , m_parent( 0 )
 , m_name( name )
-, m_model( Matrix::MatrixIdentity() )
+, m_matrix( Matrix::MatrixIdentity() )
 , m_finalCached( Matrix::MatrixIdentity() )
 , m_isDirty( true )
 {
@@ -98,7 +98,7 @@ Frame::Frame( const Frame & frame )
 , m_next( 0 )
 , m_parent( 0 )
 , m_name( frame.m_name )
-, m_model( frame.m_model )
+, m_matrix( frame.m_matrix )
 , m_finalCached( Matrix::MatrixIdentity() )
 , m_isDirty( true )
 {
@@ -116,14 +116,14 @@ Frame::~Frame()
 Frame & Frame::operator=( const Frame & frame )
 {
 	m_name = frame.m_name;
-	m_model = frame.m_model;
+	m_matrix = frame.m_matrix;
 	m_isDirty = true;
 	return *this;
 }
 
-void Frame::SetModelMatrix( const Matrix & matrix )
+void Frame::SetMatrix( const Matrix & matrix )
 {
-	m_model = matrix;
+	m_matrix = matrix;
 	MakeDirty();
 }
 
@@ -193,13 +193,13 @@ void Frame::Update()
 	else
 	{
 		// Update ourself
-		if( GetParent() )
+		if( GetParent() != nullptr )
 		{
-			m_finalCached = GetParent()->GetFinalMatrix() * m_model;
+			m_finalCached = GetParent()->GetFinalMatrix() * m_matrix;
 		}
 		else
 		{
-			m_finalCached = m_model;
+			m_finalCached = m_matrix;
 		}
 
 		m_isDirty = false;
@@ -291,8 +291,8 @@ Frame & Frame::LookAt( const V3< float > & at, const V3< float > & up )
 		mTrans.TransformCoord( atFinal );
 	}
 
-	V3< float > eyePosition = m_model.GetPosition();
-	m_model = unify::Matrix::MatrixLookAtLH( eyePosition, atFinal, up );
+	V3< float > eyePosition = m_matrix.GetPosition();
+	m_matrix = unify::Matrix::MatrixLookAtLH( eyePosition, atFinal, up );
 
 	MakeDirty();
 	return *this;
@@ -306,14 +306,14 @@ Frame & Frame::LookDirection( const V3< float > & direction, const V3< float > &
 	V3< float > leftNormalized = left;
 	directionNormalized.Normalize();
 	leftNormalized.Normalize();
-	m_model.SetForward( direction );
-	m_model.SetLeft( left );
+	m_matrix.SetForward( direction );
+	m_matrix.SetLeft( left );
 
 	// Figure our UP...
 	V3< float > up;
 	up.V3Cross( directionNormalized, leftNormalized );
 	up.Normalize();
-	m_model.SetUp( up );
+	m_matrix.SetUp( up );
 
 	MakeDirty();
 	return *this;
@@ -322,7 +322,7 @@ Frame & Frame::LookDirection( const V3< float > & direction, const V3< float > &
 // Move ou position by an amount
 Frame & Frame::MoveBy( const V3< float > & by )
 {
-	m_model.SetPosition( m_model.GetPosition() + by );
+	m_matrix.SetPosition( m_matrix.GetPosition() + by );
 	MakeDirty();
 	return *this;
 }
@@ -331,8 +331,8 @@ Frame & Frame::MoveBy( const V3< float > & by )
 Frame & Frame::Slide( const V3< float > & axis, float amount )
 {
 	V3< float > vTransAxis( axis );
-	m_model.TransformNormal( vTransAxis );
-	m_model.SetPosition( m_model.GetPosition() + (vTransAxis * amount) );
+	m_matrix.TransformNormal( vTransAxis );
+	m_matrix.SetPosition( m_matrix.GetPosition() + (vTransAxis * amount) );
 	MakeDirty();
 	return *this;
 }
@@ -358,7 +358,7 @@ Frame & Frame::Orbit( const V3< float > & origin, const V2< float > & direction,
 
 	Update();
 
-	// Compute our model coordinates, so all of our math is in model space.
+	// Compute our coordinates, so all of our math is in model space.
 	unify::V3< float > relativeOrigin = origin;
 	if ( GetParent() )
 	{
@@ -366,14 +366,14 @@ Frame & Frame::Orbit( const V3< float > & origin, const V2< float > & direction,
 	}
 
 	// Re-origin our position...
-	unify::V3< float > newPosition( GetModelMatrix().GetPosition() - relativeOrigin );
+	unify::V3< float > newPosition( GetMatrix().GetPosition() - relativeOrigin );
 	
 	// Create a matrix that has our position as it's Z axis, then rotate that axis...
 	unify::Matrix m;
 	unify::Matrix rotX = unify::Matrix::MatrixRotationX( angle.GetRadians() * direction.y );
 	unify::Matrix rotY = unify::Matrix::MatrixRotationY( angle.GetRadians() * direction.x );
 	m = rotX * rotY;
-	m_model = m_model * m;
+	m_matrix = m_matrix * m;
 	
 	MakeDirty();
 	return *this;
@@ -391,7 +391,7 @@ Frame & Frame::Orbit( const V3< float > & origin, const Quaternion & orbit, floa
 Frame & Frame::Rotate( const V3< float > & axis, Angle angle )
 {
 	Matrix matrix = unify::Matrix::MatrixRotationAboutAxis( axis, angle );
-	m_model = matrix * m_model;
+	m_matrix = matrix * m_matrix;
 	MakeDirty();
 	return *this;
 }
@@ -399,7 +399,7 @@ Frame & Frame::Rotate( const V3< float > & axis, Angle angle )
 Frame & Frame::Rotate( const Quaternion & q )
 {
 	Matrix matrix( q );
-	m_model = matrix * m_model;
+	m_matrix = matrix * m_matrix;
 	MakeDirty();
 	return *this;
 }
@@ -407,14 +407,14 @@ Frame & Frame::Rotate( const Quaternion & q )
 Frame & Frame::RotateAbout( const V3< float > & axis, Angle angle )
 {
 	Matrix mRot = Matrix::MatrixRotationAboutAxis( axis, angle );	
-	m_model *= m_model * mRot;
+	m_matrix *= m_matrix * mRot;
 	MakeDirty( false );
 	return *this;
 }
 
-const Matrix & Frame::GetModelMatrix() const
+const Matrix & Frame::GetMatrix() const
 {
-	return m_model;
+	return m_matrix;
 }
 
 const Matrix & Frame::GetFinalMatrix() const
@@ -449,43 +449,42 @@ V3< float > Frame::GetPosition() const
 
 Frame & Frame::SetLeft( const V3< float > & left )
 {
-	m_model.SetLeft( left );
+	m_matrix.SetLeft( left );
 	MakeDirty();
 	return *this;
 }
 
 Frame & Frame::SetUp( const V3< float > & up )
 {
-	m_model.SetUp( up );
+	m_matrix.SetUp( up );
 	MakeDirty();
 	return *this;
 }
 
 Frame & Frame::SetForward( const V3< float > & direction )
 {
-	m_model.SetForward( direction );
+	m_matrix.SetForward( direction );
 	MakeDirty();
 	return *this;
 }
 
 Frame & Frame::SetRotation( const Quaternion & rotation )
 {
-	m_model = Matrix( rotation, GetPosition(), unify::V3< float >( 1, 1, 1 ) );
+	m_matrix = Matrix( rotation, GetPosition(), unify::V3< float >( 1, 1, 1 ) );
 	MakeDirty();
 	return *this;
-}
-
+}			
 
 Frame & Frame::SetPosition( const V3< float > & position )
 {
-	m_model.SetPosition( position );
+	m_matrix.SetPosition( position );
 	MakeDirty();
 	return *this;
 }
 
 Frame & Frame::Set( const Quaternion & orientation, const V3< float > & position, const V3< float > & scale )
 {
-	m_model = Matrix( orientation, position, scale );
+	m_matrix = Matrix( orientation, position, scale );
 	MakeDirty();
 	return *this;
 }

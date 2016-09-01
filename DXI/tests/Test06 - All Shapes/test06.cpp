@@ -31,11 +31,10 @@ public:
 
 		scene::Scene::shared_ptr mainScene = GetSceneManager()->Add( "main", new scene::Scene );
 
-		scene::Object::shared_ptr cameraObject( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
-		mainScene->Add( "camera", cameraObject );		
+		scene::Object::shared_ptr cameraObject = mainScene->Add( "camera", new scene::Object );
 		scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 		mainScene->SetCamera( "camera" );
-		mainScene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+		mainScene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 		camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 		camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
@@ -141,8 +140,7 @@ public:
 		coneParameters.SetCaps( true );
 		geometryGroup->Add( Geometry::shared_ptr( shapes::CreateShape( coneParameters ) ) );
 		
-		scene::Object::shared_ptr object( new scene::Object( Geometry::shared_ptr( geometryGroup ) ) );
-		mainScene->Add( object );
+		mainScene->Add( new scene::Object( Geometry::shared_ptr( geometryGroup ) ) );
 
 		//mainScene->GetRenderInfo().SetOption( RenderOption::NoFrame, true );
 	}

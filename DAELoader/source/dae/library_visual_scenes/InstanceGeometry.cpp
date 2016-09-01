@@ -3,7 +3,6 @@
 
 #include <dae/library_visual_scenes/InstanceGeometry.h>
 
-using namespace dxi;
 using namespace dae;
 
 InstanceGeometry::InstanceGeometry( const qxml::Element * node )

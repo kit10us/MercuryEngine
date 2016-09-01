@@ -14,11 +14,10 @@ namespace dxi
 
 	qjson::Object MakePixelShaderJson( std::string name, unify::Path path, std::string entry, std::string profile );
 
-
 	class PixelShaderXMLFactory : public rm::IXMLFactory< PixelShader >
 	{
 	public:
+		PixelShader * Produce( unify::Path path ) override;
 		PixelShader * Produce( const qxml::Element * node ) override;
 	};
-
 }

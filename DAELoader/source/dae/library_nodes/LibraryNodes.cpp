@@ -1,6 +1,5 @@
 #include <dae/library_nodes/LibraryNodes.h>
 
-using namespace dxi;
 using namespace dae;
 
 LibraryNodes::LibraryNodes( IDocument & document, const qxml::Element * node )

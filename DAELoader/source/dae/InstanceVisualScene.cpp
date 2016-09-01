@@ -3,13 +3,12 @@
 
 #include <dae/InstanceVisualScene.h>
 
-using namespace dxi;
 using namespace dae;
 
 InstanceVisualScene::InstanceVisualScene( const qxml::Element * node )
-: m_sid( node->GetStringAttributeElse( "sid", "" ) )
-, m_name( node->GetStringAttributeElse( "name", "" ) )
-, m_url( node->GetStringAttribute( "url" ) )
+: m_sid( node->GetAttributeElse< std::string >( "sid", "" ) )
+, m_name( node->GetAttributeElse< std::string >( "name", "" ) )
+, m_url( node->GetAttribute< std::string >( "url" ) )
 {
 }
 

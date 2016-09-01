@@ -21,13 +21,7 @@ protected:
 	// Typically, we would use a higher level object, such as a PrimitiveList, which encapsulates these.
 	Effect::shared_ptr m_effect;
 	VertexBuffer m_VB;
-	IndexBuffer m_IB;
-
-
-
-
-
-
+	IndexBuffer m_IB;	  
 
 	PrimitiveList m_primitiveList;
 	PrimitiveList m_primitiveListA;
@@ -326,7 +320,7 @@ public:
 			// -- Render code goes here. --
 			RenderInfo renderInfo;
 
-			unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >(GetOS()->GetResolution().width), static_cast< float >(GetOS()->GetResolution().height), 0, 1, 1000 );
+			unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >(GetOS().GetResolution().width), static_cast< float >(GetOS().GetResolution().height), 0, 1, 1000 );
 			renderInfo.SetFinalMatrix( projectionMatrix );
 
 			m_VB.Use();
@@ -342,7 +336,7 @@ public:
 
 		if ( 1 ) {
 			RenderInfo renderInfo;
-			unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS()->GetResolution().width ), static_cast< float >( GetOS()->GetResolution().height ), 0, 1, 1000 );
+			unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
 			renderInfo.SetFinalMatrix( projectionMatrix );
 
 			m_primitiveList.Render( renderInfo );

@@ -17,13 +17,13 @@ ImportLF::ImportLF( SceneLoader & sceneLoader )
 
 void ImportLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetStringAttribute( "source" ) );
+	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
 	m_sceneLoader.LoadSceneFromXML( scene, source.ToString() );
 }
 
 void AddPathsLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
-	//unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetStringAttribute( "source" ) );
+	//unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute< std::string >( "source" ) );
 	//scene->GetPathSystem().LoadFromFile( source );
 	throw new exception::NotImplemented;
 }
@@ -35,8 +35,8 @@ void TextureLF::operator()( const qxml::Element * element, scene::Scene::shared_
 
 void ShapeLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
-	std::string name = element->GetStringAttribute( "name" );
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetStringAttribute( "source" ) );
+	std::string name = element->GetAttribute( "name" )->GetString();
+	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
 
 	auto & geometryManager = *core::Game::GetGameInstance()->GetManager< Geometry >();
 
@@ -48,8 +48,8 @@ void ShapeLF::operator()( const qxml::Element * element, scene::Scene::shared_pt
 
 void MeshLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
-	std::string name = element->GetStringAttribute( "name" );
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetStringAttribute( "source" ) );
+	std::string name = element->GetAttribute( "name" )->GetString();
+	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
 
 	auto & geometryManager = *core::Game::GetGameInstance()->GetManager< Geometry >();
 
@@ -61,8 +61,8 @@ void MeshLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr
 
 void TerraLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
-	std::string name = element->GetStringAttribute( "name" );
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetStringAttribute( "source" ) );
+	std::string name = element->GetAttribute( "name" )->GetString();
+	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
 
 	auto & geometryManager = *core::Game::GetGameInstance()->GetManager< Geometry >();
 
@@ -75,10 +75,10 @@ void TerraLF::operator()( const qxml::Element * element, scene::Scene::shared_pt
 
 void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
-	std::string name = element->GetStringAttribute( "name" );
-	std::string geometry = element->GetStringAttributeElse( "geometry", "" );
-	std::string physics = element->GetStringAttributeElse( "physics", "" );
-	scene::Object::shared_ptr object = scene->CreateObject( name, geometry, physics );
+	std::string name = element->GetAttribute( "name" )->GetString();
+	std::string geometry = element->GetAttributeElse< std::string >( "geometry", "" );
+	std::string physics = element->GetAttributeElse< std::string >( "physics", "" );
+	scene::Object::shared_ptr object; //TODO:  = scene->CreateObject( name, geometry, physics );
 
 	const qxml::Element * subNode = element->GetFirstChild();
 	while( subNode )
@@ -104,7 +104,7 @@ void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::share
 			XMLConvert( subNode, position );
 			unify::Matrix matrix = object->GetGeometryMatrix();
 			matrix.SetPosition( position );
-			object->SetGeometryMatrix( matrix );
+			object->GetGeometryMatrix() = matrix;
 		}
 		else if( subNode->GetTagName() == "geometryscale" )
 		{
@@ -112,18 +112,18 @@ void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::share
 			unify::V3< float > scale( 1.0f, 1.0f, 1.0f );
 			if( subNode->HasAttributes( "value" ) )
 			{
-				scale.x = subNode->GetFloatAttribute( "value" );
+				scale.x = subNode->GetAttribute( "value" )->Get< float >();
 				scale.y = scale.x;
 				scale.z = scale.x;
 			}
 			else
 			{
-				scale.x = subNode->GetFloatAttributeElse( "x", 1.0f );
-				scale.y = subNode->GetFloatAttributeElse( "y", 1.0f );
-				scale.z = subNode->GetFloatAttributeElse( "z", 1.0f );
+				scale.x = subNode->GetAttributeElse( "x", 1.0f );
+				scale.y = subNode->GetAttributeElse( "y", 1.0f );
+				scale.z = subNode->GetAttributeElse( "z", 1.0f );
 			}
 			matrix.Scale( scale );
-			object->SetGeometryMatrix( matrix );
+			object->GetGeometryMatrix() = matrix;
 		}
 		else if( subNode->GetTagName() == "geometryrotation" )
 		{
@@ -131,7 +131,7 @@ void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::share
 			XMLConvert( subNode, q );
 			unify::Matrix matrix = object->GetGeometryMatrix();
 			matrix.SetRotation( q );
-			object->SetGeometryMatrix( matrix );
+			object->GetGeometryMatrix() = matrix;
 		}
 		subNode = subNode->GetNext();
 	}
@@ -149,8 +149,8 @@ void SetCameraLF::operator()( const qxml::Element * element, scene::Scene::share
 void ControllerLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
 {
 	/*
-	std::string objectName = element->GetStringAttribute( "object" );
-	std::string typeName = element->GetStringAttribute( "type" );
+	std::string objectName = element->GetAttribute< std::string >( "object" );
+	std::string typeName = element->GetAttribute< std::string >( "type" );
 	scene::Object * object = scene.get()->FindObject( objectName ).get();
 	if( ! object )
 	{

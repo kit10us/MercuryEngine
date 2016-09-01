@@ -16,7 +16,7 @@
 namespace unify
 {
 	// The default cast will throw (not a supported cast).
-	template< typename TTo, class TFrom > TTo Cast( const TFrom in );
+	template< typename TTo, typename TFrom > TTo Cast( const TFrom in );
 
 	// From X to std::string...
 	template<> std::string Cast( const std::string in );
@@ -42,7 +42,8 @@ namespace unify
 	template<> short Cast( const std::string text );
 	template<> unsigned short Cast( const std::string text );
 	template<> std::wstring Cast( const std::string text );
-
+	template<> const char * Cast( const std::string text );
+	
 	template<> bool Cast( const char * text );
 	template<> char Cast( const char * text );
 	template<> unsigned char Cast( const char * text );
@@ -51,6 +52,7 @@ namespace unify
 	template<> float Cast( const char * text );
 	template<> double Cast( const char * text );
 	template<> wchar_t * Cast( const char * text );
+	template<> std::string Cast( const char * text );
 
 	template< typename Target, typename Source >
 	Target polymorphic_downcast( Source source )

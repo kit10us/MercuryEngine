@@ -1,15 +1,13 @@
 #include <dae/Polylist.h>
 #include <unify/String.h>
 
-using namespace dxi;
 using namespace dae;
 
 Polylist::Polylist( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_count( node->GetIntegerAttribute( "count" ) )
-, m_material( node->GetStringAttributeElse( "material", std::string() ) )
-, m_vertexFormat()
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_count( node->GetAttribute< int >( "count" ) )
+, m_material( node->GetAttributeElse( "material", std::string() ) )
 {
 	std::vector< char > splitDelimitors;
 	splitDelimitors.push_back( ' ' );
@@ -50,13 +48,6 @@ Polylist::Polylist( IDocument & document, const qxml::Element * node )
 			m_p = unify::SplitOnWhitespace< int >( childNode->GetText() );
 		}
 	}
-
-	qjson::Object format;
-	for( auto input : m_input )
-	{
-		format.Add( { input->GetSemantic(), input->GetSemantic() } );
-	}
-	m_vertexFormat = VertexDeclaration( format );
 }
 
 const std::string & Polylist::GetName() const
@@ -87,11 +78,6 @@ const std::vector< int > & Polylist::GetVCount() const
 const std::vector< int > & Polylist::GetP() const
 {
 	return m_p;
-}
-
-dxi::VertexDeclaration Polylist::GetVertexFormat() const
-{
-	return m_vertexFormat;
 }
 
 Polylist::Type Polylist::GetType() const

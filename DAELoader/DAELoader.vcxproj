@@ -18,6 +18,7 @@
     <ClCompile Include="source\dae\DocumentNode.cpp" />
     <ClCompile Include="source\dae\Exceptions.cpp" />
     <ClCompile Include="source\dae\Extra.cpp" />
+    <ClCompile Include="source\dae\GeometrySourceFactory.cpp" />
     <ClCompile Include="source\dae\FloatArray.cpp" />
     <ClCompile Include="source\dae\Input_Shared.cpp" />
     <ClCompile Include="source\dae\Input_Unshared.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="source\dae\DocumentNode.h" />
     <ClInclude Include="source\dae\Exceptions.h" />
     <ClInclude Include="source\dae\Extra.h" />
+    <ClInclude Include="source\dae\GeometrySourceFactory.h" />
     <ClInclude Include="source\dae\FloatArray.h" />
     <ClInclude Include="source\dae\IDocument.h" />
     <ClInclude Include="source\dae\Input_Shared.h" />
@@ -127,13 +129,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
-    <IntDir>..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\lib\$(Configuration)\$(DefaultPlatformToolset)\</OutDir>
-    <IntDir>..\intermediate\$(ProjectName)_$(Configuration)_$(DefaultPlatformToolset)\</IntDir>
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

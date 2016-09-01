@@ -3,14 +3,13 @@
 
 #include <dae/Accessor.h>
 
-using namespace dxi;
 using namespace dae;
 
 Accessor::Accessor( const qxml::Element * node )
-: m_count( node->GetIntegerAttribute( "count" ) )
-, m_offset( node->GetIntegerAttributeElse( "offset", 0 ) )
-, m_source( node->GetStringAttribute( "source" ) )
-, m_stride( node->GetIntegerAttributeElse( "stride", 1 ) )
+: m_count( node->GetAttribute< int >( "count" ) )
+, m_offset( node->GetAttributeElse< int >( "offset", 0 ) )
+, m_source( node->GetAttribute< std::string >( "source" ) )
+, m_stride( node->GetAttributeElse< int >( "stride", 1 ) )
 {
 }
 

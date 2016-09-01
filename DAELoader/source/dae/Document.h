@@ -16,49 +16,46 @@
 #include <qxml/QXML.h>
 #include <unify/Path.h>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA
+	/// The root element for a COLLADA DAE. To find the area of code where work is needed, identify the DAE node, then drill down from here.
+	/// See the "DAE node" appended to every DAE class.
+	/// </summary>
+	class Document : public IDocument
 	{
+	public:
+		Document( const unify::Path & filePath, util::IEffectSolver * effectSolver );
+
 		/// <summary>
-		/// DAE node: COLLADA
-		/// The root element for a COLLADA DAE. To find the area of code where work is needed, identify the DAE node, then drill down from here.
-		/// See the "DAE node" appended to every DAE class.
+		/// DAE attribute: version
 		/// </summary>
-		class Document : public IDocument
-		{
-		public:
-			Document( const unify::Path & filePath, util::IEffectSolver * effectSolver );
+		const std::string & GetVersion() const;
 
-			/// <summary>
-			/// DAE attribute: version
-			/// </summary>
-			const std::string & GetVersion() const;
+		dxi::Effect::shared_ptr GetEffect( const Shading & shading ) const;
 
-			dxi::Effect::shared_ptr GetEffect( const Shading & shading ) const;
+		const LibraryNodes & GetLibraryNodes() const;
+		const LibraryMaterials & GetLibraryMaterials() const;
+		const LibraryImages & GetLibraryImages() const;
+		const LibraryEffects & GetLibraryEffects() const;
+		const LibraryGeometries & GetLibraryGeometries() const;
+		const LibraryVisualScenes & GetLibraryVisualScenes() const;
+		const Scene & GetScene() const;
 
-			const LibraryNodes & GetLibraryNodes() const;
-			const LibraryMaterials & GetLibraryMaterials() const;
-			const LibraryImages & GetLibraryImages() const;
-			const LibraryEffects & GetLibraryEffects() const;
-			const LibraryGeometries & GetLibraryGeometries() const;
-			const LibraryVisualScenes & GetLibraryVisualScenes() const;
-			const Scene & GetScene() const;
+		void Add( const std::string & name, DocumentNode * node );
+		const DocumentNode * Find( const std::string & name ) const;
 
-			void Add( const std::string & name, DocumentNode * node );
-			const DocumentNode * Find( const std::string & name ) const;
-
-		private:
-			std::string m_version;
-			std::shared_ptr< LibraryNodes > m_library_nodes;
-			std::shared_ptr< LibraryMaterials > m_library_materials;
-			std::shared_ptr< LibraryEffects > m_library_effects;
-			std::shared_ptr< LibraryGeometries > m_library_geometries;
-			std::shared_ptr< LibraryVisualScenes > m_library_visual_scenes;
-			std::shared_ptr< LibraryImages > m_library_images;
-			std::shared_ptr< Scene > m_scene;
-			util::IEffectSolver * m_effectSolver;
-			std::map< const std::string, DocumentNode * > m_nodes;
-		};
-	}
+	private:
+		std::string m_version;
+		std::shared_ptr< LibraryNodes > m_library_nodes;
+		std::shared_ptr< LibraryMaterials > m_library_materials;
+		std::shared_ptr< LibraryEffects > m_library_effects;
+		std::shared_ptr< LibraryGeometries > m_library_geometries;
+		std::shared_ptr< LibraryVisualScenes > m_library_visual_scenes;
+		std::shared_ptr< LibraryImages > m_library_images;
+		std::shared_ptr< Scene > m_scene;
+		util::IEffectSolver * m_effectSolver;
+		std::map< const std::string, DocumentNode * > m_nodes;
+	};
 }

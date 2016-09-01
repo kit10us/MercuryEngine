@@ -7,22 +7,19 @@
 #include <qxml/QXML.h>
 #include <string>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->library_geometries->geometry->mesh->source->technique_common (0 or 1)
+	/// </summary>
+	class Source_TechniqueCommon
 	{
-		/// <summary>
-		/// DAE node: COLLADA->library_geometries->geometry->mesh->source->technique_common (0 or 1)
-		/// </summary>
-		class Source_TechniqueCommon
-		{
-		public:
-			Source_TechniqueCommon( const qxml::Element * node );
+	public:
+		Source_TechniqueCommon( const qxml::Element * node );
 
-			const std::shared_ptr< Accessor > & GetAccessor() const;
+		const std::shared_ptr< Accessor > & GetAccessor() const;
 
-		private:
-			std::shared_ptr< Accessor > m_accessor;
-		};
-	}
+	private:
+		std::shared_ptr< Accessor > m_accessor;
+	};
 }

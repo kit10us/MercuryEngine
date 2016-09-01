@@ -1,6 +1,5 @@
 #include <dae/Scene.h>
 
-using namespace dxi;
 using namespace dae;
 
 Scene::Scene( IDocument & document, const qxml::Element * node )

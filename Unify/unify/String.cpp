@@ -119,17 +119,35 @@ std::string unify::StringMinusRight( const std::string & sStringIn, unsigned int
 	return sStringIn.substr( 0, (unsigned int)sStringIn.length() - uLessLength );
 }
 
-// Returns a string where all sets (single or in a row) cariage returns, tabs or spaces are replaced with one space.
-// Doesn't reduce ANY single spaces.
 std::string unify::CleanWhitespace( const std::string & in )
 {
 	if ( in.empty() ) return std::string();
 
-	size_t left = 0, right = in.length() - 1;
-	for( left; left != right && ( in[ left ] == ' ' || in[ left ] == '\t' || in[ left ] == '\n' ); ++left );
-	for( right; left != right && ( in[ right ] == ' ' || in[ right ] == '\t' || in[ right ] == '\n' ); --right ); 
+	// Find the first and last non-whitespace character...
+	size_t left = 0, right = in.length();
+	for( left; left < right && ( in[ left ] == ' ' || in[ left ] == '\t' || in[ left ] == '\n' ); ++left );
+	for( right; left < ( right - 1 ) && ( in[ right - 1 ] == ' ' || in[ right - 1 ] == '\t' || in[ right - 1 ] == '\n' ); --right );
 
-	return left == right ? std::string() : in.substr( left, right - left + 1 );
+	if( left == right ) return std::string();
+
+	std::string out{};
+	bool skipSpace = false;
+	for( size_t i = left; i < right; ++i )
+	{
+		if ( in[ i ] == ' ' || in[ i ] == '\t' || in[ i ] == '\n' )
+		{
+			if( skipSpace ) continue;
+			out.push_back( ' ' );
+			skipSpace = true;
+		}
+		else
+		{
+			skipSpace = false;
+			out.push_back( in[i] );
+		}
+	}
+
+	return out;
 }
 
 std::string unify::ToLower( const std::string & in )
@@ -143,12 +161,12 @@ std::string unify::ToLower( const std::string & in )
 	return out;
 }
 
-// Considers a string as a part of a segmented list by chr, returns that part of the list...
-// The first iPartIndex is 0.
-std::string unify::ListPart( const std::string & sString, char chrSeperator, int iPartIndex )
+std::string unify::ListPart( const std::string & sString, std::vector< char > seperators, int iPartIndex )
 {
 	if( sString == "" ) return "";
 
+	auto isSeperator = [seperators]( char c ){ auto itr = seperators.begin(), end = seperators.end(); for( ; itr != end && c != *itr; ++itr ); return itr != end; };
+										 
 	int iInBrackets = 0;	// How deep in brackets we are
 	bool bInQuote = false;	// In quotations
 	int pc = 0;				//Part count ( part we are on)
@@ -162,7 +180,7 @@ std::string unify::ListPart( const std::string & sString, char chrSeperator, int
 		if( sString[c] == '\"' ) bInQuote = !bInQuote;
 		
 		// Check for the seperator...
-		if( !bInQuote && !iInBrackets && sString[c] == chrSeperator ) {
+		if( !bInQuote && !iInBrackets && isSeperator( sString[c]  ) ) {
 			pc++;
 
 			if( pc == iPartIndex ) {
@@ -179,9 +197,11 @@ std::string unify::ListPart( const std::string & sString, char chrSeperator, int
 	return sString.substr( iStart, iLenToCopy );
 }
 
-unsigned int unify::ListPartCount( const std::string & sString, const char chr )
+unsigned int unify::ListPartCount( const std::string & sString, std::vector< char > seperators )
 {
 	if( sString == "" ) return 0;
+
+	auto isSeperator = [ seperators ]( char c ) { auto itr = seperators.begin(), end = seperators.end(); for( ; itr != end && c != *itr; ++itr ); return itr != end; };
 
 	int iInBrackets = 0;
 	bool bInQuote = false; //in quotations
@@ -209,7 +229,7 @@ unsigned int unify::ListPartCount( const std::string & sString, const char chr )
 		
 		if( bInQuote ) continue;
 
-		if( sString[c] == chr ) pc++;
+		if( isSeperator( sString[c] ) ) pc++;
 	}
 	
 	return pc + 1;

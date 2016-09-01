@@ -54,7 +54,7 @@ const unify::V3< float > & EnvironmentBox::GetForce() const
 
 void EnvironmentBox::ApplyEffect( float delta, PhysicsInstance * object )
 {
-	unify::Matrix matrix = m_frame.GetModelMatrix();
+	unify::Matrix matrix = m_frame.GetMatrix();
 	matrix.Invert();
 	unify::V3< float > point( object->GetFrame()->GetPosition() );
 	matrix.TransformCoord( point );

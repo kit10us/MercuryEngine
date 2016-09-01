@@ -3,13 +3,12 @@
 
 #include <dae/library_visual_scenes/InstanceEffect.h>
 
-using namespace dxi;
 using namespace dae;
 
 InstanceEffect::InstanceEffect( const qxml::Element * node )
-: m_sid( node->GetStringAttributeElse( "sid", std::string() ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_url( node->GetStringAttribute( "url" ) )
+: m_sid( node->GetAttributeElse( "sid", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_url( node->GetAttribute< std::string >( "url" ) )
 {
 }
 

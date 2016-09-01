@@ -27,35 +27,33 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 	typedef std::string Name;
 	std::map< Name, Texture::shared_ptr > textureMapping;
 
-	qxml::Element * leaf = doc.GetRoot()->GetFirstChild();
-	while( leaf )
+	const qxml::Element * animation = doc.GetRoot()->FindFirstElement( "animation" );
+	for( const auto leaf : animation->Children() )
 	{
-		if( leaf->IsTagName( "texture" ) )
+		if( leaf.IsTagName( "texture" ) )
 		{
-			Texture::shared_ptr texture = textureManager->Find( leaf->GetAttribute( "source" )->GetString() );
-			textureMapping[ leaf->GetAttribute( "name" )->GetString() ] = texture;
+			Texture::shared_ptr texture = textureManager->Find( leaf.GetAttribute( "source" )->GetString() );
+			textureMapping[ leaf.GetAttribute( "name" )->GetString() ] = texture;
 		}
-		else if( leaf->IsTagName( "group" ) )
+		else if( leaf.IsTagName( "group" ) )
 		{
 			std::shared_ptr< animation::Group > group( new Group( this ) );
-			qxml::Element * sequenceLeaf = leaf->GetFirstChild();
-			while( sequenceLeaf )
+			for( const auto sequenceLeaf : leaf.Children() )
 			{
-				if( sequenceLeaf->IsTagName( "sequence" ) )
+				if( sequenceLeaf.IsTagName( "sequence" ) )
 				{
-					bool loop = sequenceLeaf->GetBooleanAttributeElse( "loop", defaultLoop );
+					bool loop = sequenceLeaf.GetAttributeElse< bool >( "loop", defaultLoop );
 					std::shared_ptr< animation::Sequence > sequence( new Sequence( group.get(), loop ) );
-					qxml::Element * frameLeaf = sequenceLeaf->GetFirstChild();
-					while( frameLeaf )
+					for( const auto frameLeaf : sequenceLeaf.Children() )
 					{
-						if( frameLeaf->IsTagName( "frame" ) )
+						if( frameLeaf.IsTagName( "frame" ) )
 						{
-							Texture::shared_ptr texture = textureMapping[ frameLeaf->GetAttribute( "texture" )->GetString() ];
+							Texture::shared_ptr texture = textureMapping[frameLeaf.GetAttribute( "texture" )->GetString() ];
 							unify::TexArea area( unify::TexArea::Full() );
-							if( frameLeaf->HasAttributes( "sprite" ) )
+							if( frameLeaf.HasAttributes( "sprite" ) )
 							{
-								int spriteIndex = frameLeaf->GetAttribute( "sprite" )->GetInteger();
-								std::string arrayName = frameLeaf->GetStringAttributeElse( "array", "" );
+								int spriteIndex = frameLeaf.GetAttribute( "sprite" )->Get< int >();
+								std::string arrayName = frameLeaf.GetAttributeElse< std::string >( "array", "" );
 								if( ! arrayName.empty() )
 								{
 									area = texture->GetSprite( arrayName, spriteIndex );
@@ -65,20 +63,16 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 									area = texture->GetSprite( spriteIndex );
 								}
 							}
-							unify::Seconds duration = static_cast< unify::Seconds >( frameLeaf->GetFloatAttributeElse( "duration", 0 ) );
+							unify::Seconds duration = static_cast< unify::Seconds >( frameLeaf.GetAttributeElse< float >( "duration", 0 ) );
 							animation::Frame frame( texture, area, duration );
 							sequence->Add( frame );
 						}
-						frameLeaf = frameLeaf->GetNext();
 					}
-					group->Add( sequenceLeaf->GetAttribute( "name" )->GetString(), sequence );
+					group->Add( sequenceLeaf.GetAttribute< std::string >( "name" ), sequence );
 				}
-				sequenceLeaf = sequenceLeaf->GetNext();
 			}
-			AddGroup( leaf->GetAttribute( "name" )->GetString(), group );
+			AddGroup( leaf.GetAttribute< std::string >( "name" ), group );
 		}
-
-		leaf = leaf->GetNext();
 	}
 }
 

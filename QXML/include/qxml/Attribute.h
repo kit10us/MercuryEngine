@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <unify/Cast.h>
 #include <string>
 #include <memory>
 
@@ -18,10 +19,7 @@ namespace qxml
 		Attribute( const std::string & name, const std::string & value );
 		~Attribute();
 		const std::string & GetName() const; 
-		float GetFloat() const;
 		const std::string & GetString() const;
-		int GetInteger() const;
-		bool GetBoolean() const;
 
 		template< typename T >
 		T Get() const
@@ -33,6 +31,4 @@ namespace qxml
 		std::string m_name;
 		std::string m_value;
 	};
-
-	template< > bool Attribute::Get< bool >() const;
 } // namespace qxml

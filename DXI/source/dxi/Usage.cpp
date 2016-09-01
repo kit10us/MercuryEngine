@@ -9,7 +9,7 @@ using namespace dxi;
 
 Usage::TYPE Usage::FromString( const std::string text )
 {
-	std::string trimmedText = unify::CleanWhitespace( text );
+	std::string trimmedText = unify::Trim( text );
     if ( unify::StringIs( trimmedText, "Ignore" ) ) return Usage::Ignore;
     else if ( unify::StringIs( trimmedText, "False" ) ) return Usage::False;
     else if ( unify::StringIs( trimmedText, "True" ) ) return Usage::True;

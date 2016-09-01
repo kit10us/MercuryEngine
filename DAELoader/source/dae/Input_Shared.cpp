@@ -1,17 +1,16 @@
 #include <dae/Input_Shared.h>
 #include <unify/String.h>
 
-using namespace dxi;
 using namespace dae;
 
 Input_Shared::Input_Shared( const qxml::Element * node )
-: m_offset( node->GetIntegerAttribute( "offset" ) )
-, m_semantic( node->GetStringAttribute( "semantic" ) )
-, m_source( node->GetStringAttribute( "source" ) )
+: m_offset( node->GetAttribute< int >( "offset" ) )
+, m_semantic( node->GetAttribute< std::string >( "semantic" ) )
+, m_source( node->GetAttribute< std::string >( "source" ) )
 {
 	if ( node->HasAttributes( "set" ) )
 	{
-		m_set = node->GetIntegerAttribute( "set" );
+		m_set = node->GetAttribute< int >( "set" );
 	}
 
 	if( unify::StringIs( m_semantic, "VERTEX" ) )

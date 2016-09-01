@@ -6,6 +6,7 @@
 #include <dxi/core/Game.h>
 #include <d3dx9tex.h>
 #include <qxml/Document.h>
+#include <qxml/AttributeCast.h>
 #include <unify/RowColumn.h>
 #include <unify/Path.h>
 
@@ -218,22 +219,18 @@ void Texture::LoadHeader()
 	qxml::Document document;
 	document.Load( imageHeaderFilepath );
 
-	qxml::ElementList sheets;
-	document.FindElementsByTagName( sheets, "addsheet" );
-	for( unsigned int i = 0; i < sheets.Count(); ++i )
+	for( const auto sheet : document.GetRoot()->Children( "addsheet" ) )
 	{
-		qxml::Element * element = sheets.Item( i );
-		
-		std::string name = element->GetStringAttributeElse( "name", "" );
-		unify::TexCoords arrayUL( element->GetFloatAttributeElse( "ulu", 0 ), element->GetFloatAttributeElse( "ulv", 0 ) );
+		std::string name = sheet.GetAttributeElse< std::string >( "name", "" );
+		unify::TexCoords arrayUL( sheet.GetAttributeElse< float >( "ulu", 0 ), sheet.GetAttributeElse< float >( "ulv", 0 ) );
 		unify::Size< float > size;
-		unify::RowColumn< unsigned int > arrayRC( element->GetAttribute( "r" )->GetInteger(), element->GetAttribute( "c" )->GetInteger() );
+		unify::RowColumn< unsigned int > arrayRC{ qxml::AttributeCast< unify::RowColumn< unsigned int >, unsigned int >( sheet, "r", "c" ) };
 		assert( arrayRC.row && arrayRC.column );
 
-		if( element->HasAttributes( "sizeu,sizev" ) )
+		if( sheet.HasAttributes( "sizeu,sizev" ) )
 		{
-			size.width = element->GetAttribute( "sizeu" )->GetFloat();
-			size.height = element->GetAttribute( "sizev" )->GetFloat();
+			size.width = sheet.GetAttribute( "sizeu" )->Get< float >();
+			size.height = sheet.GetAttribute( "sizev" )->Get< float >();
 		}
 		else
 		{

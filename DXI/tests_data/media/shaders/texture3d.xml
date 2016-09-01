@@ -1,0 +1,9 @@
+<xml>
+  <pixelshader name="textured3D" source="shaders/textured3d.shader" entry="ps_main" profile="ps_1_1"/>
+  <vertexshader name="textured3D" source="shaders/textured3d.shader" entry="vs_main" profile="vs_1_1">
+    <vd>
+	  <element name="Position" type="Float3"/>
+	  <element name="Tex" type="TexCoord"/>
+	</vd>
+  </vertexshader>
+</xml>

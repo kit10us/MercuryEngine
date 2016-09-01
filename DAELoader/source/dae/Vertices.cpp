@@ -1,12 +1,14 @@
+// Copyright (c) 2002 - 2014, Quentin S. Smith
+// All Rights Reserved
+
 #include <dae/Vertices.h>
 
-using namespace dxi;
 using namespace dae;
 
 Vertices::Vertices( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
-, m_id( node->GetStringAttribute( "id" ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
+, m_id( node->GetAttribute< std::string >( "id" ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{

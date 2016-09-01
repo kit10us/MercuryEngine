@@ -26,6 +26,8 @@ namespace dxi
 		PrimitiveList();
 		~PrimitiveList();
 
+		PrimitiveList( const PrimitiveList & ) = delete;
+
 		/// <summary>
 		/// Append an existing PrimtiveList onto this one.
 		/// </summary>
@@ -48,7 +50,7 @@ namespace dxi
 		frameanimation::AnimationSet & GetAnimationSet();
 		const frameanimation::AnimationSet & GetAnimationSet() const;
 
-		const unify::BBox< float > & ComputeBounds( unify::BBox< float > & boundingBox, unify::BSphere & boundingSphere ) const;
+		const unify::BBox< float > & ComputeBounds( unify::BBox< float > & boundingBox ) const;
 
 	protected:
 		std::vector< BufferSet::shared_ptr > m_buffers;

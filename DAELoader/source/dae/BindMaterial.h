@@ -6,24 +6,21 @@
 #include <qxml/QXML.h>
 #include <string>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->library_visual_scenes->visual_scene->node->instance_geometry->bind_material (0 or 1)
+	/// </summary>
+	class BindMaterial
 	{
-		/// <summary>
-		/// DAE node: COLLADA->library_visual_scenes->visual_scene->node->instance_geometry->bind_material (0 or 1)
-		/// </summary>
-		class BindMaterial
-		{
-		public:
-			BindMaterial( const qxml::Element * node );
-			const BindMaterial_TechniqueCommon & GetTechniqueCommon() const;
-			const std::vector< InstanceMaterial > & GetInstanceMaterials() const;
+	public:
+		BindMaterial( const qxml::Element * node );
+		const BindMaterial_TechniqueCommon & GetTechniqueCommon() const;
+		const std::vector< InstanceMaterial > & GetInstanceMaterials() const;
 
-		private:
-			std::shared_ptr< BindMaterial_TechniqueCommon > m_technique_common; // (1)
-			std::vector< InstanceMaterial > m_instance_material; // (1 or more)
+	private:
+		std::shared_ptr< BindMaterial_TechniqueCommon > m_technique_common; // (1)
+		std::vector< InstanceMaterial > m_instance_material; // (1 or more)
 
-		};
-	}
+	};
 }

@@ -1,12 +1,11 @@
 #include <dae/library_geometries/Geometry.h>
 
-using namespace dxi;
 using namespace dae;
 
 Geometry::Geometry( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
-, m_id( node->GetStringAttributeElse( "id", std::string() ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
+, m_id( node->GetAttributeElse( "id", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -50,7 +49,7 @@ const Mesh & Geometry::GetMesh() const
 	return *m_mesh;
 }
 
-void Geometry::Build( PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Geometry::Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
 {
 	GetMesh().Build( pl, matrix, technique );
 }

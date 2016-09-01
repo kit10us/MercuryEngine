@@ -59,9 +59,8 @@ namespace dxi
 		    void UpdatePhysics();
 		    RenderInfo & GetRenderInfo();
 		    void Render();
-		    void Add( Object::shared_ptr object );
-		    void Add( const std::string & name, Object::shared_ptr object );
-		    Object::shared_ptr CreateObject( const std::string & name, const std::string & geometry = std::string(), const std::string & physics = std::string() );
+		    std::shared_ptr< Object > Add( Object * object );
+		    std::shared_ptr< Object > Add( const std::string & name, Object *object );
 		    Object::shared_ptr FindObject( const std::string & name );
 		    bool FindPosition( const std::string & name, unify::V3< float > & position ) const;
 		    void SetCamera( const std::string & name );

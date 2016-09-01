@@ -6,6 +6,7 @@
 #include <unify/Unify.h>
 #include <unify/V3.h>
 #include <unify/Ray.h>
+#include <unify/BSphere.h>
 
 #ifdef min
 #undef min
@@ -56,6 +57,8 @@ namespace unify
 		/// Takes a point and returns a new point barrycentric to the bounding box.
 		/// </description>
 		V3< T > ToBarrycentric( const V3< T > & point ) const;
+
+		BSphere MakeBSphere() const;
 
 	private:
 		void Fix(); // Ensures our sup is superior and our inf, inferior.

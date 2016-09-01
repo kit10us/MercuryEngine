@@ -59,6 +59,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test11 - Loading Meshes", "tests\Test11 - Loading Meshes\Test11 - Loading Meshes.vcxproj", "{93A57954-6E78-4D41-9866-6F869E915BC8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{904F038F-9550-4112-B7A1-3B160C2FF7F4} = {904F038F-9550-4112-B7A1-3B160C2FF7F4}
+		{E58A71BD-1CFB-4388-86CE-09085321300D} = {E58A71BD-1CFB-4388-86CE-09085321300D}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test12 - Text", "tests\Test12 - Text\Test12 - Text.vcxproj", "{82D38BBE-2012-44C2-B205-8017C3E4F6AD}"
@@ -142,6 +143,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QXML", "..\QXML\QXML.vcxpro
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test07b - Earth", "tests\Test07b - Earth\Test07b - Earth.vcxproj", "{FC67AF41-D55F-4699-95A9-4B33BDEE4437}"
+	ProjectSection(ProjectDependencies) = postProject
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4} = {904F038F-9550-4112-B7A1-3B160C2FF7F4}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DAELoader_UnitTest", "..\DAELoader_UnitTest\DAELoader_UnitTest.vcxproj", "{8ED59153-3308-4E4B-A561-DDDBB8063BCD}"
 	ProjectSection(ProjectDependencies) = postProject

@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #pragma once
+
 #include <dae/DocumentNode.h>
 #include <dae/Profile_Technique.h>
 #include <dae/NewParam.h>
@@ -9,28 +10,25 @@
 #include <vector>
 #include <map>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->library_effects->effect->profile_COMMON (0 or more)
+	/// </summary>
+	class ProfileCOMMON : public DocumentNode
 	{
-		/// <summary>
-		/// DAE node: COLLADA->library_effects->effect->profile_COMMON (0 or more)
-		/// </summary>
-		class ProfileCOMMON : public DocumentNode
-		{
-		public:
-			ProfileCOMMON( IDocument & document, const qxml::Element * node );
+	public:
+		ProfileCOMMON( IDocument & document, const qxml::Element * node );
 
-			const std::string & GetID() const;
-			const Profile_Technique & GetTechnique() const;
-			const std::vector< std::shared_ptr< NewParam > > & GetNewParams() const;
-			const NewParam * FindNewParam( const std::string & sid ) const;
+		const std::string & GetID() const;
+		const Profile_Technique & GetTechnique() const;
+		const std::vector< std::shared_ptr< NewParam > > & GetNewParams() const;
+		const NewParam * FindNewParam( const std::string & sid ) const;
 
-		private:
-			std::string m_id;
-			std::vector< std::shared_ptr< NewParam > > m_newParams;
-			std::map< std::string, std::shared_ptr< NewParam > > m_newParamsMap;
-			std::shared_ptr< Profile_Technique > m_technique;
-		};
-	}
+	private:
+		std::string m_id;
+		std::vector< std::shared_ptr< NewParam > > m_newParams;
+		std::map< std::string, std::shared_ptr< NewParam > > m_newParamsMap;
+		std::shared_ptr< Profile_Technique > m_technique;
+	};
 }

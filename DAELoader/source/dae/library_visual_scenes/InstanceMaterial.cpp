@@ -3,14 +3,13 @@
 
 #include <dae/library_visual_scenes/InstanceMaterial.h>
 
-using namespace dxi;
 using namespace dae;
 
 InstanceMaterial::InstanceMaterial( const qxml::Element * node )
-: m_sid( node->GetStringAttributeElse( "sid", std::string() ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_target( node->GetStringAttribute( "target" ) )
-, m_symbol( node->GetStringAttribute( "symbol" ) )
+: m_sid( node->GetAttributeElse( "sid", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_target( node->GetAttribute< std::string >( "target" ) )
+, m_symbol( node->GetAttribute< std::string >( "symbol" ) )
 {
 }
 

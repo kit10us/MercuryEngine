@@ -48,7 +48,7 @@ public:
 		// Create an object to use as a camera, and a camera interface. Set the projection to a default projection.
 		m_cameraObject.reset( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
 		m_camera.reset( new scene::Camera( m_cameraObject ) );
-		m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+		m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 		m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 0, 10 ) );
 
 		// Load effect
@@ -68,7 +68,7 @@ public:
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
 		rotation.TransformCoord( eyePosition );
 		unify::Matrix view = unify::Matrix::MatrixLookAtLH( eyePosition, unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
-		m_camera->GetObject()->GetFrame().SetModelMatrix( view );
+		m_camera->GetObject()->GetFrame().SetMatrix( view );
 
 		m_rotation += unify::Angle::AngleInRadians( elapsed );
 		m_rotation.Fix360();

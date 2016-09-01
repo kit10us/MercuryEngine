@@ -1,4 +1,5 @@
 <?xml version="1" encoding="iso-8859-1"?>
+<xml>
 <font>
   <effect>
     <texture name="fonttexture1" source="fonttexture1.png"/>
@@ -75,3 +76,4 @@
   <character key="y" texture="fonttexture1" sprite="89"/>
   <character key="z" texture="fonttexture1" sprite="90"/>
 </font>
+</xml>

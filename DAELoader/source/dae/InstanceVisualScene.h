@@ -4,26 +4,23 @@
 #pragma once
 #include <qxml/QXML.h>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->scene->instance_visual_scene (0 or 1)
+	/// </summary>
+	class InstanceVisualScene
 	{
-		/// <summary>
-		/// DAE node: COLLADA->scene->instance_visual_scene (0 or 1)
-		/// </summary>
-		class InstanceVisualScene
-		{
-		public:
-			InstanceVisualScene( const qxml::Element * node );
+	public:
+		InstanceVisualScene( const qxml::Element * node );
 
-			std::string GetSID() const;
-			std::string GetName() const;
-			std::string GetURL() const;
+		std::string GetSID() const;
+		std::string GetName() const;
+		std::string GetURL() const;
 
-		private:
-			std::string m_sid;
-			std::string m_name;
-			std::string m_url;
-		};
-	}
+	private:
+		std::string m_sid;
+		std::string m_name;
+		std::string m_url;
+	};
 }

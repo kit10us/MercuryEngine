@@ -3,7 +3,6 @@
 
 #include <dae/library_materials/LibraryMaterials.h>
 
-using namespace dxi;
 using namespace dae;
 
 LibraryMaterials::LibraryMaterials( IDocument & document, const qxml::Element * node )

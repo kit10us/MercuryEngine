@@ -5,15 +5,14 @@
 #include <dae/library_visual_scenes/InstanceGeometry.h>
 #include <unify/String.h>
 
-using namespace dxi;
 using namespace dae;
 
 Node::Node( IDocument & document, const dae::Node * parent, const qxml::Element * node )
 : DocumentNode( document, node )
 , m_parent( parent )
-, m_id( node->GetStringAttributeElse( "id", std::string() ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_sid( node->GetStringAttributeElse( "sid", std::string() ) )
+, m_id( node->GetAttributeElse( "id", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_sid( node->GetAttributeElse( "sid", std::string() ) )
 , m_matrix( unify::Matrix::MatrixIdentity() )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
@@ -95,9 +94,9 @@ Node::Node( IDocument & document, const dae::Node * parent, const qxml::Element 
 Node::Node( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
 , m_parent( 0 )
-, m_id( node->GetStringAttributeElse( "id", std::string() ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_sid( node->GetStringAttributeElse( "sid", std::string() ) )
+, m_id( node->GetAttributeElse( "id", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_sid( node->GetAttributeElse( "sid", std::string() ) )
 , m_matrix( unify::Matrix::MatrixIdentity() )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )

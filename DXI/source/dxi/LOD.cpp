@@ -78,11 +78,9 @@ const unify::BBox< float > & QLOD::ComputeBounds()
 {
 	// Merge all bouns into our bounds...
 	m_BBox.Initialize();
-	Geometry::ComputeBounds();
 	for( std::list< LODNode >::iterator itr = m_list.begin(); itr != m_list.end(); ++itr )
 	{
-		m_BBox.AddBBox( itr->GetGeometry()->ComputeBounds() );
-		m_BSphere.AddBSphere( itr->GetGeometry()->GetBSphere() );
+		m_BBox.AddBBox( itr->GetGeometry()->GetBBox() );
 	}
 
 	return m_BBox;

@@ -10,37 +10,34 @@
 #include <dae/InstanceVisualScene.h>
 #include <unify/Optional.h>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->scene (0 or 1)
+	/// </summary>
+	class Scene : public DocumentNode
 	{
+	public:
+		Scene( IDocument & document, const qxml::Element * node );
+
 		/// <summary>
-		/// DAE node: COLLADA->scene (0 or 1)
+		/// instance_physics_scene (0 or more)
 		/// </summary>
-		class Scene : public DocumentNode
-		{
-		public:
-			Scene( IDocument & document, const qxml::Element * node );
+		const std::vector< InstanceSet > & GetInstancePhysicsScenes() const;
 
-			/// <summary>
-			/// instance_physics_scene (0 or more)
-			/// </summary>
-			const std::vector< InstanceSet > & GetInstancePhysicsScenes() const;
+		/// <summary>
+		/// instance_visual_scene (0 or 1)
+		/// </summary>
+		const InstanceVisualScene * GetInstanceVisualScene() const;
 
-			/// <summary>
-			/// instance_visual_scene (0 or 1)
-			/// </summary>
-			const InstanceVisualScene * GetInstanceVisualScene() const;
+		/// <summary>
+		/// instance_kinematics_scene (0 or 1)
+		/// </summary>
+		const unify::Optional< InstanceSet > & GetInstanceKinematicsScene() const;
 
-			/// <summary>
-			/// instance_kinematics_scene (0 or 1)
-			/// </summary>
-			const unify::Optional< InstanceSet > & GetInstanceKinematicsScene() const;
-
-		private:
-			std::vector< InstanceSet > m_instance_physics_scenes;
-			std::shared_ptr< InstanceVisualScene > m_instance_visual_scene;
-			unify::Optional< InstanceSet > m_instance_kinematics_scene;
-		};
-	}
+	private:
+		std::vector< InstanceSet > m_instance_physics_scenes;
+		std::shared_ptr< InstanceVisualScene > m_instance_visual_scene;
+		unify::Optional< InstanceSet > m_instance_kinematics_scene;
+	};
 }

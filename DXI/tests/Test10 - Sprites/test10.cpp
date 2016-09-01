@@ -32,7 +32,7 @@ public:
 		// Create an object to use as a camera, and a camera interface. Set the projection to a default projection.
 		m_cameraObject.reset( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
 		m_camera.reset( new scene::Camera( m_cameraObject ) );
-		m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+		m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 		m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 0, 10 ) );
 
 		// Create managers...
@@ -127,7 +127,7 @@ public:
 
 		// Render the sprite objects...
 		RenderInfo renderInfo2D;
-		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS()->GetResolution().width ), static_cast< float >( GetOS()->GetResolution().height ), 0, 1, 1000 );
+		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
 		renderInfo2D.SetFinalMatrix( projectionMatrix );
 		m_spriteStatic.Render( renderInfo2D );
 		m_spriteAnimated.Render( renderInfo2D );

@@ -1,6 +1,5 @@
 #include <dae/library_geometries/LibraryGeometries.h>
 
-using namespace dxi;
 using namespace dae;
 
 LibraryGeometries::LibraryGeometries( IDocument & document, const qxml::Element * node )

@@ -31,9 +31,12 @@ public:
 
 bool MyGame::Setup( core::IOS & os )
 {
+	// Note: We automatically load "setup.xml" after this function, which is likely a better place to do this.
+	// Values in setup.xml will supercede these, thus, these might make for okay defaults.
+
 	os.SetResolution( unify::Size< unsigned int >( 800, 600 ) );
 	os.SetFullscreen( false );
-	return true;
+	return Game::Setup( os );
 }
 
 void MyGame::Startup()
@@ -123,7 +126,7 @@ void MyGame::Render()
 	// -- Render code goes here. --
 	RenderInfo renderInfo;
 
-	unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS()->GetResolution().width ), static_cast< float >( GetOS()->GetResolution().height ), 0, 1, 1000 );
+	unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
 	renderInfo.SetFinalMatrix( projectionMatrix );
 
 	m_VB.Use();

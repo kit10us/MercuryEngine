@@ -5,7 +5,14 @@
 #include <dxi/Mesh.h>
 #include <dxi/scene/Scene.h>
 #include <dxi/shapes/ShapeCreators.h>
-#include <dae/Dae.h>
+#include <dxi/PixelShaderFactories.h>
+#include <dxi/VertexShaderFactory.h>
+#include <dxi/ShapeFactory.h>
+
+#include <dxi/GeometryASEFactory.h>
+#include <dae/DAE.h>
+
+#include <chrono>
 
 using namespace dxi;
 using namespace core;
@@ -13,15 +20,6 @@ using namespace core;
 class MyGame : public Game
 {
 protected:
-	scene::Object::shared_ptr m_cameraObject;
-	scene::Camera::shared_ptr m_camera;
-	scene::Object::shared_ptr m_meshFromShape;
-	scene::Object::shared_ptr m_meshFromXML;
-	scene::Object::shared_ptr m_meshFromX;
-	scene::Object::shared_ptr m_meshFromASE;
-    scene::Object::shared_ptr m_meshFromDAE;
-	unify::Angle m_rotation;
-
 public:
 	void Startup();
 	bool Update( unify::Seconds elapsed, IInput & input );
@@ -30,86 +28,200 @@ public:
 
 } game;
 
-class MyEffectSolver : public dae::util::IEffectSolver
+#include <regex>
+
+void Take( std::vector< char > things )
 {
-	Effect::shared_ptr m_color;
-	Effect::shared_ptr m_textured;
-public:
-
-	MyEffectSolver( Game & game )
-	{
-		m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.xml" );
-		m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
-	}
-
-	dxi::Effect::shared_ptr GetEffect( const dae::Shading & shading ) const
-	{
-		if ( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
-		{
-			return m_color;
-		}
-		else
-		{
-			return m_textured;
-		}
-	}
-};
+}
 
 void MyGame::Startup()
 {
 	Game::Startup();
-	
-	// Setup camera...
-	// Create an object to use as a camera, and a camera interface. Set the projection to a default projection.
-	m_cameraObject.reset( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
-	m_camera.reset( new scene::Camera( m_cameraObject ) );
-	m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
-	m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, 13 ) );
 
-	Effect::shared_ptr color3DEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
+	// Add common effects...
+	Effect::shared_ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.xml" );
+	Effect::shared_ptr textured3DEffect = GetManager< Effect >()->Add( "textured3d", "media/EffectTextured.xml" );
+
+	// Load shaders.
+	PixelShader::shared_ptr ps = GetManager< PixelShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
+	VertexShader::shared_ptr vs = GetManager< VertexShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
+
+	// Add a texture.
+	GetManager< Texture >()->Add( "borgcube", "media/borgcube.bmp" );
+
+	// Create an effect.
+	Effect::shared_ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
+	borgCubeEffect->SetVertexShader( vs );
+	borgCubeEffect->SetPixelShader( ps );
+	borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
+
+	// Setup ASE factories.
+	GeometryASEFactory * aseFactory = new GeometryASEFactory;
+	aseFactory->SetVertexShader( vs );
+	aseFactory->SetPixelShader( ps );
+	GetManager< Geometry >()->AddFactory( aseFactory );
+
+	// Setup DAE factory.
+	class MyEffectSolver : public dae::util::IEffectSolver
+	{
+		Effect::shared_ptr m_color;
+		Effect::shared_ptr m_textured;
+	public:
+
+		MyEffectSolver( Game & game )
+		{
+			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.xml" );
+			m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
+		}
+
+		dxi::Effect::shared_ptr GetEffect( const dae::Shading & shading ) const
+		{
+			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
+			{
+				return m_color;
+			}
+			else
+			{
+				return m_textured;
+			}
+		}
+	};
+	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( new MyEffectSolver( *this ) );
+	GetManager< Geometry >()->AddFactory( daeFactory );
+
+	// Add a scene.
+	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene", new scene::Scene );
+
+	// Add a camera...
+	scene::Object::shared_ptr cameraObject = scene->Add( "camera", new scene::Object );
+	scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
+	scene->SetCamera( "camera" );
+	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
+	camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
+	camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 	// From dynamically generated geometry (shape creator)...
 	shapes::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
     cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-	m_meshFromShape.reset( new scene::Object( Geometry::shared_ptr( shapes::CreateShape( cubeParameters ) ), unify::V3< float >( -5, 0, 0 ) ) );
-	const unify::BBox< float > & bboxA = m_meshFromShape->GetGeometry()->ComputeBounds();
-	float scaleA = 3 / m_meshFromShape->GetGeometry()->ComputeBounds().Size().Length();
-    m_meshFromShape->SetGeometryMatrix( unify::Matrix::MatrixScale( scaleA ) );
-
+	Geometry::shared_ptr meshProg( shapes::CreateShape( cubeParameters ) );
+	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
+	auto progObject = scene->Add( "cubeDyna", new scene::Object( meshProg, unify::V3< float >( 0 - 0.0f, 0, 0 ) ) );
+	progObject->SetVisible( false );
+				  
 	// From an XML file...
-	Mesh::shared_ptr meshXML( GetManager< Geometry >()->Add( "cube", "media/cube.xml" ) );
-	m_meshFromXML.reset( new scene::Object( meshXML, unify::V3< float >( -2.5, 0, 0 ) ) );
-	const unify::BBox< float > & bboxB = m_meshFromXML->GetGeometry()->ComputeBounds();
-	float scaleB = 3 / m_meshFromXML->GetGeometry()->ComputeBounds().Size().Length();
-    m_meshFromXML->SetGeometryMatrix( unify::Matrix::MatrixScale( scaleB ) );
+	Mesh::shared_ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
+	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
+	auto xmlObject = scene->Add( "XMLObject", new scene::Object( meshXML, unify::V3< float >( 0 - 2.5f, 0, 0 ) ) );
+	xmlObject->GetGeometryMatrix().Scale( 0.10f );
+	xmlObject->SetVisible( false );
 	
+	// From an ASE file...
+	Mesh::shared_ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
+	//Mesh::shared_ptr meshASE( GetManager< Geometry >()->Add( "cubeASE", "media/borgcube.ase" ) );
+	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
+	auto aseObject = scene->Add( "swordASE", new scene::Object( meshASE, unify::V3< float >( 0 + 2.5f, 0, 0 ) ) );
+	aseObject->GetGeometryMatrix().Scale( 0.090f );
+	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
+	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+	aseObject->SetVisible( false );
+
+
+
+	std::chrono::time_point< std::chrono::system_clock > start, end;
+	start = std::chrono::system_clock::now();
+	
+	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/borgcube.dae" ) );
+	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/IcoSphereTest.dae" ) );
+	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/CubeSphereCylinder.dae" ) );
+	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
+	PrimitiveList & plDAE = ((Mesh*)meshDAE.get())->GetPrimitiveList();
+
+	end = std::chrono::system_clock::now();
+	std::chrono::duration< double > elapsed = end - start;
+	double elapsed_count = elapsed.count();
+			
+	scene->Add( "cubeDAE", new scene::Object( meshDAE, unify::V3< float >( 0 /*- 5.0f*/, 0, 0 ) ) );
+	auto daeObject = scene->FindObject( "cubeDAE" );
+	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
+
+	float size = meshDAE->GetBBox().Size().Length();
+	float scaleE = 12.0f / meshDAE->GetBBox().Size().Length();
+	daeObject->GetGeometryMatrix().Scale( scaleE );
+	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
+
+
+	auto progBB = meshProg->GetBBox();
+	auto xmlBB = meshXML->GetBBox();
+	auto aseBB = meshASE->GetBBox();
+	auto daeBB = meshDAE->GetBBox();
+
+	size_t progBufferSetCount = plProg.GetBufferSetCount();
+	size_t xmlBufferSetCount = plXML.GetBufferSetCount();
+	size_t aseBufferSetCount = plASE.GetBufferSetCount();
+	size_t daeBufferSetCount = plDAE.GetBufferSetCount();
+
+
+	size_t daeVertexCount {};
+	for( size_t i = 0; i < plDAE.GetBufferSetCount(); ++i )
+	{
+		BufferSet & bs = plDAE.GetBufferSet( i );
+		daeVertexCount += plDAE.GetBufferSet( i ).GetVertexBuffer().GetSize();
+		//bs.SetEnabled( false );
+	}
+
 	/*
 	m_meshFromX.reset( new scene::Object( geo::Geometry::shared_ptr( loader::LoadMesh( "media/tiny2.x", GetManagers() ) ), unify::V3< float >( 0, 0, 0 ) ) );
 	float scaleC = m_meshFromX->GetGeometry()->ComputeBounds().Size().Length();
-    m_meshFromX->SetGeometryMatrix( unify::Matrix::MatrixScale( 0.005f ) );
-	*/
-	
-	/*
-	m_meshFromASE.reset( new scene::Object( geo::Geometry::shared_ptr( loader::LoadMesh( "media/ASE_SwordTextured.ASE", GetManagers() ) ), unify::V3< float >( 2.5 * 0.5f, 0, 0 ) ) );
-	float scaleD = m_meshFromASE->GetGeometry()->ComputeBounds().Size().Length();
-	m_meshFromASE->SetGeometryMatrix( m_meshFromASE->GetGeometryMatrix() * unify::Matrix::MatrixScale( 0.05f ) * unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 1, 0, 0 ), unify::Angle::AnglePIHalf() ));
+	m_meshFromX->SetGeometryMatrix( unify::Matrix::MatrixScale( 0.005f ) );
 	*/
 
-	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cube_dae", "media/cube.dae" ) );// , new MyEffectSolver( *this ), GetManagers() ) );
-	m_meshFromDAE.reset( new scene::Object( meshDAE, unify::V3< float >( 5, 0, 0 ) ) );
-	const unify::BBox< float > & bboxD = m_meshFromShape->GetGeometry()->ComputeBounds();
-	float scaleE = 3 / m_meshFromDAE->GetGeometry()->ComputeBounds().Size().Length();
-	m_meshFromDAE->SetGeometryMatrix( unify::Matrix::MatrixScale( scaleE ) );
-	
-	const PrimitiveList & plA = ((Mesh*) m_meshFromShape->GetGeometry().get() )->GetPrimitiveList();
-	const PrimitiveList & plB = ((Mesh*) m_meshFromDAE->GetGeometry().get() )->GetPrimitiveList();
-	int x(0);x;
+	//int x( 0 ); x;
 }
 
 bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 {
+	static int state = -1;
+	if ( input.KeyPressed( Key::RightArrow ) || input.KeyPressed( Key::LeftArrow ) )
+	{
+		auto scene = GetSceneManager()->Find( "scene" );
+		auto daeObject = scene->FindObject( "cubeDAE" );
+		PrimitiveList & plDAE = ((Mesh*)daeObject->GetGeometry().get())->GetPrimitiveList();
+
+		if( input.KeyPressed( Key::RightArrow ) )
+		{
+			state++;
+			if( state >= (int)plDAE.GetBufferSetCount() )
+			{
+				state = -1;
+			}
+		}
+		if( input.KeyPressed( Key::LeftArrow ) )
+		{
+			state--;
+			if( state < -1 )
+			{
+				state = plDAE.GetBufferSetCount() - 1;
+			}
+		}				  
+			
+		for( size_t i = 0; i < plDAE.GetBufferSetCount(); ++i )
+		{
+			BufferSet & bs = plDAE.GetBufferSet( i );
+			bs.SetEnabled( ( state == -1 || state == i ) ? true : false );
+		}
+	}
+	
+
+	// Use of camera controls to simplify camera movement...
+	scene::Object::shared_ptr cameraObject = GetSceneManager()->Find( "scene" )->GetCamera().GetObject();
+	cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
+	cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+
+	return Game::Update( elapsed, input );
+
+	/*
 	m_camera->GetObject()->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
 	m_camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
@@ -120,10 +232,12 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 	if ( m_meshFromDAE ) m_meshFromDAE->Update( elapsed, input );
 
 	return Game::Update( elapsed, input );
+	*/
 }
 
 void MyGame::Render()
 {
+	/*
 	RenderInfo renderInfo;
 	renderInfo.SetFinalMatrix( m_camera->GetMatrix() );
 
@@ -132,14 +246,19 @@ void MyGame::Render()
 	if ( m_meshFromX ) m_meshFromX->Render( renderInfo );
 	if ( m_meshFromASE ) m_meshFromASE->Render( renderInfo );
 	if ( m_meshFromDAE ) m_meshFromDAE->Render( renderInfo );
+	*/
+
+	Game::Render();
 }
 
 void MyGame::Shutdown()
 {
+	/*
 	m_meshFromASE.reset();
 	m_meshFromX.reset();
 	m_meshFromXML.reset();
 	m_meshFromShape.reset();
+	*/
 
 	Game::Shutdown();
 }

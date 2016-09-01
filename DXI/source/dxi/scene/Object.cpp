@@ -207,6 +207,8 @@ void Object::Render( RenderInfo & renderInfo )
 		renderInfo.SetWorldMatrix( m_geometryMatrix * m_frame.GetFinalMatrix() );
 	}
 
+	std::string name = m_tags["name"];
+
 	m_geometry->Render( renderInfo, m_geometryInstanceData.get() );
 
 	/* TODO: DX11:
@@ -252,11 +254,6 @@ unify::BBox< float > Object::GetBBoxXFormed()
 	return bboxTrans;
 }
 
-const unify::Frame & Object::GetWorldFrame()
-{
-	return m_frame;
-}
-
 const unify::BBox< float > & Object::GetBBox()
 {
 	return m_geometry->GetBBox();
@@ -269,13 +266,14 @@ void Object::SyncFrame( const unify::Frame & frame )
 
 void Object::SyncBBox( const unify::BBox< float > & bbox )
 {
-	m_geometry->SetBounds( bbox );
+	m_geometry->GetBBox() = bbox;
 }
 
-void Object::SetGeometryMatrix( const unify::Matrix & matrix )
+unify::Matrix & Object::GetGeometryMatrix()
 {
-	m_geometryMatrix = matrix;
+	return m_geometryMatrix;
 }
+
 const unify::Matrix & Object::GetGeometryMatrix() const
 {
 	return m_geometryMatrix;
@@ -286,12 +284,12 @@ GeometryInstanceData::shared_ptr Object::GetGeometryInstanceData()
 	return m_geometryInstanceData;
 }
 
-void Object::SetTag( const std::string & tag )
+std::map< std::string, std::string > & Object::GetTags()
 {
-    m_tag = tag;
+	return m_tags;
 }
 
-std::string Object::GetTag() const
+const std::map< std::string, std::string > & Object::GetTags() const
 {
-    return m_tag;
+	return m_tags;
 }

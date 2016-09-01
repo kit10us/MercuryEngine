@@ -22,7 +22,7 @@ namespace dxi
 			/// <summary>
 			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 			/// </summary>
-			virtual bool Setup( IOS * config ) = 0;
+			virtual bool Setup( IOS & os ) = 0;
 
 			/// <summary>
 			/// Startup is called to load assets and setup before Updating and Rendering. It is called once.
@@ -39,7 +39,7 @@ namespace dxi
 			virtual void AfterRender() = 0;
 			virtual void Shutdown() = 0;
 
-			virtual IOS * GetOS() = 0;
+			virtual IOS & GetOS() = 0;
 		};
 	}
 }

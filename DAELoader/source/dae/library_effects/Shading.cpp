@@ -4,7 +4,6 @@
 #include <dae/library_effects/Shading.h>
 #include <unify/Cast.h>
 
-using namespace dxi;
 using namespace dae;
 
 Shading::Property::Property()
@@ -29,8 +28,8 @@ Shading::Property::Property( const qxml::Element * node )
 	else if ( node->HasElements( "texture" ) )
 	{
 		m_type = TextureType;
-		m_texture = node->GetElement( "texture" )->GetStringAttribute( "texture" );
-		m_texCoord = node->GetElement( "texture" )->GetStringAttribute( "texcoord" );
+		m_texture = node->GetElement( "texture" )->GetAttribute< std::string >( "texture" );
+		m_texCoord = node->GetElement( "texture" )->GetAttributeElse< std::string >( "texcoord", std::string() );
 	}
 	else
 	{

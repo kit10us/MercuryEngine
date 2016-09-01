@@ -6,60 +6,48 @@
 #include <dxi/VertexShaderFactory.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/core/Game.h>
-#include <qxml/Document.h>
 
 using namespace dxi;
 
-Effect * dxi::ProduceEffect( const qxml::Element * childNode )
+Effect * dxi::ProduceEffect( const qxml::Element * effectNode )
 {
+	assert( effectNode );
+
 	auto textureManager = dxi::core::Game::GetGameInstance()->GetManager< Texture >();
 	auto pixelShaderManager = dxi::core::Game::GetGameInstance()->GetManager< PixelShader >();
 	auto vertexShaderManager = dxi::core::Game::GetGameInstance()->GetManager< VertexShader >();
 
 	Effect * effect = new Effect;
 
-	while( childNode )
+	for( auto&& child : effectNode->Children() )
 	{
 		//void SetName( const std::string & sName );
 		//void SetFlags( unsigned int dwFlags );
 
-		if( childNode->IsTagName( "texture" ) )
+		if( child.IsTagName( "texture" ) )
 		{
-			std::string name = childNode->GetStringAttribute( "name" );
-			unsigned char stage = static_cast< unsigned char >(childNode->GetIntegerAttributeElse( "stage", 0 ));
-			unify::Path source = childNode->GetDocument()->GetPath().DirectoryOnly() + childNode->GetStringAttribute( "source" );
+			std::string name = child.GetAttribute< std::string >( "name" );
+			unsigned char stage = static_cast< unsigned char >(child.GetAttributeElse< int >( "stage", 0 ));
+			unify::Path source = child.GetDocument()->GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" );
 			effect->SetTexture( stage, textureManager->Add( name, source ) );
 		}
-		else if( childNode->IsTagName( "blend" ) )
+		else if( child.IsTagName( "blend" ) )
 		{
-			std::string blend = childNode->GetText();
+			std::string blend = child.GetText();
 			effect->SetBlend( Blend( blend ) );
 		}
 
 		//void SetCulling( unsigned int dwValue );
 		//void SetLighting( unsigned int dwValue );
-		else if( childNode->IsTagName( "pixelshader" ) )
+		else if( child.IsTagName( "pixelshader" ) )
 		{
-			std::string name = childNode->GetStringAttribute( "name" );
-			unify::Path source = childNode->GetDocument()->GetPath().DirectoryOnly() + childNode->GetStringAttribute( "source" );
-			std::string entry = childNode->GetStringAttribute( "entry" );
-			std::string profile = childNode->GetStringAttribute( "profile" );
-			qjson::Object json = { { "name", name } , { "source", source.ToString() } , { "entry", entry }, { "profile", profile } };
-			effect->SetPixelShader( pixelShaderManager->Add( json ) );
+			effect->SetPixelShader( pixelShaderManager->Add( &child ) );
 		}
-		else if( childNode->IsTagName( "vertexshader" ) )
+		else if( child.IsTagName( "vertexshader" ) )
 		{
-			std::string name = childNode->GetStringAttribute( "name" );
-			unify::Path source = childNode->GetDocument()->GetPath().DirectoryOnly() + childNode->GetStringAttribute( "source" );
-			std::string entry = childNode->GetStringAttribute( "entry" );
-			std::string profile = childNode->GetStringAttribute( "profile" );
-			qjson::Object vd( std::string( childNode->FindFirstElement( "vd" )->GetText() ) );
-			qjson::Object json = { { "name", name } ,{ "source", source.ToString() } ,{ "entry", entry },{ "profile", profile }, { "vd", vd } };
-			effect->SetVertexShader( vertexShaderManager->Add( json ) );
+			effect->SetVertexShader( vertexShaderManager->Add( &child ) );
 		}
 		//void AddFrame( size_t frameIndex, float influence );
-
-		childNode = childNode->GetNext();
 	}
 
 	return effect;
@@ -68,6 +56,6 @@ Effect * dxi::ProduceEffect( const qxml::Element * childNode )
 Effect * EffectSourceFactory::Produce( unify::Path path )
 {
 	qxml::Document doc( path );
-	const qxml::Element * childNode = doc.GetRoot()->GetFirstChild();
+	const qxml::Element * childNode = doc.GetRoot()->FindFirstElement( "effect" );
 	return ProduceEffect( childNode );
 }

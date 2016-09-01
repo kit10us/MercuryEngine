@@ -571,6 +571,12 @@
     <ClCompile Include="source\dxi\PixelShaderFactories.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\GeometryASEFactory.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\GeometryInstanceData.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -800,6 +806,9 @@
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\PixelShaderFactories.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\GeometryASEFactory.h">
       <Filter>dxi</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,7 @@
 int main( int argc, char ** argv )
 {
 	std::cout << "String unit tests:" << std::endl;
-	std::cout << "CleanWhitespace text: expected \"no whitespace\", is \"" << unify::CleanWhitespace( " \t \t \n  no whitespace \t \t \n \n  " ) << "\"" << std::endl;
+	std::cout << "CleanWhitespace text: expected \"no whitespace\", is \"" << unify::CleanWhitespace( " \t \t \n  no \t  \t whitespace \t \t \n \n  " ) << "\"" << std::endl;
 	std::cout << "float conversion: expected 12.21, is \"" << unify::Cast< std::string >( unify::Cast< float >( "   12.21  " ) ) << "\"" << std::endl;
 	std::cout << "unsigned char conversion: expected 12, is \"" << unify::Cast< std::string >( unify::Cast< unsigned char >( "   12  " ) ) << "\"" << std::endl;
 	std::cout << "int conversion: expected 12, is \"" << unify::Cast< std::string >( unify::Cast< int >( "   12  " ) ) << "\"" << std::endl;

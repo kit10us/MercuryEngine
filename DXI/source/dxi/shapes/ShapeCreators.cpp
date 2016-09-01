@@ -17,6 +17,7 @@ Mesh * shapes::CreateShape( unify::Parameters & parameters )
 {
 	Mesh * mesh = new Mesh;
     CreateShape( mesh->GetPrimitiveList(), parameters );
+	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
     return mesh;
 }
 

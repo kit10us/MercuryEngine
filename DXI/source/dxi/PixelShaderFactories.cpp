@@ -4,6 +4,7 @@
 #include <dxi/core/Game.h>
 #include <dxi/PixelShaderFactories.h>
 #include <dxi/exception/FailedToCreate.h>
+#include <qxml/Document.h>
 
 using namespace dxi;
 
@@ -20,9 +21,16 @@ qjson::Object dxi::MakePixelShaderJson( std::string name, unify::Path path, std:
 	return { { "name", name }, { "source", path.ToString()}, { "entry", entry}, { "profile" , profile } };
 }
 
+PixelShader * PixelShaderXMLFactory::Produce( unify::Path path )
+{
+	qxml::Document doc( path );
+	qxml::Element * element = doc.FindElement( "pixelshader" );
+	return Produce( element );
+}
+
 PixelShader * PixelShaderXMLFactory::Produce( const qxml::Element * node )
 {
-	unify::Path path = node->GetAttribute( "source" )->GetString();
+	unify::Path path { node->GetDocument()->GetPath().DirectoryOnly() + node->GetAttribute( "source" )->GetString() };
 	std::string entry = node->GetAttribute( "entry" )->GetString();
 	std::string profile = node->GetAttribute( "profile" )->GetString();
 	return new PixelShader( path, entry, profile );

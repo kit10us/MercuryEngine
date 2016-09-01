@@ -53,8 +53,10 @@ void PrimitiveList::Destroy()
 
 void PrimitiveList::Render( RenderInfo & renderInfo ) const
 {
-	for( auto set : m_buffers )
+	for( const auto & set : m_buffers )
 	{
+		if( ! set->GetEnabled() ) continue;
+
 		set->GetVertexBuffer().Use( 0, 0 );
 		set->GetIndexBuffer().Use();
 		set->GetRenderMethodBuffer().Render( renderInfo );
@@ -103,7 +105,7 @@ const frameanimation::AnimationSet & PrimitiveList::GetAnimationSet() const
 	return m_animationSet;
 }
 
-const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > & boundingBox, unify::BSphere & boundingSphere ) const
+const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > & boundingBox ) const
 {
 	boundingBox.Initialize();
 
@@ -114,10 +116,11 @@ const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > 
 	positionE.UsageIndex = 0;
 
 	// Loop through vertices for largest radius
-	for( std::vector< BufferSet::shared_ptr >::const_iterator itr = m_buffers.begin(), end = m_buffers.end(); itr != end; ++itr )
+	for( const auto & bs : m_buffers )
 	{
 		unify::DataLock lock;
-		const VertexBuffer & vb = itr->get()->GetVertexBuffer();
+		const VertexBuffer & vb = bs->GetVertexBuffer();
+
 		vb.LockReadOnly( lock );
 		VertexDeclaration vd = vb.GetVertexDeclaration();
 
@@ -126,7 +129,6 @@ const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > 
 			unify::V3< float > pos;
 			vd.ReadVertex( lock, index, positionE, pos );
 			boundingBox.AddPoint( pos );
-			boundingSphere.AddPoint( pos );
 		}
 		vb.Unlock();
 	}

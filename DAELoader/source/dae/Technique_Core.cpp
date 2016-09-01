@@ -2,12 +2,11 @@
 // All Rights Reserved
 #include <dae/Technique_Core.h>
 
-using namespace dxi;
 using namespace dae;
 
 Technique_Core::Technique_Core( const qxml::Element * node )
 : m_xmlNode( node )
-, m_profile( node->GetStringAttribute( "profile" ) )
+, m_profile( node->GetAttribute< std::string >( "profile" ) )
 {
 }
 

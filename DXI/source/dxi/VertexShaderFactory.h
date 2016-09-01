@@ -18,6 +18,7 @@ namespace dxi
 	class VertexShaderXMLFactory : public rm::IXMLFactory< VertexShader >
 	{
 	public:
+		VertexShader * Produce( unify::Path path ) override;
 		VertexShader * Produce( const qxml::Element * node ) override;
 	};
 }

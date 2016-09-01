@@ -2,7 +2,6 @@
 // All Rights Reserved
 #include <dae/Extra.h>
 
-using namespace dxi;
 using namespace dae;
 
 Extra::Extra( const qxml::Element * node )

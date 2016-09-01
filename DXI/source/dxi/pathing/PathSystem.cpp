@@ -181,18 +181,18 @@ void PathSystem::LoadFromFile( const unify::Path & path )
 		{
 			unify::V3< float > position;
 			XMLConvert( node, position );
-			AddPosition( node->GetStringAttribute( "name" ), position );
+			AddPosition( node->GetAttribute( "name" )->GetString(), position );
 		}
 		else if( node->GetTagName() == "axis" )
 		{
 			unify::Quaternion axis;
 			XMLConvert( node, axis );
-			AddAxis( node->GetStringAttribute( "name" ), axis );
+			AddAxis( node->GetAttribute( "name" )->GetString(), axis );
 		}
 		else if( node->GetTagName() == "path" )
 		{
-			std::string name = node->GetStringAttribute( "name" );
-			unify::Seconds duration = node->GetFloatAttribute( "duration" );
+			std::string name = node->GetAttribute( "name" )->GetString();
+			unify::Seconds duration = node->GetAttribute( "duration" )->Get< float >();
 			Modifier::shared_ptr modifier = FactoryModifierFromXMLElement( node->GetFirstChild() );
 			Path * path = new Path( modifier, duration );
 			AddPath( name, Path::shared_ptr( path ) ); 
@@ -212,7 +212,7 @@ PathController::shared_ptr PathSystem::CreatePathController( const std::string &
 
 Modifier::shared_ptr PathSystem::FactoryModifierFromXMLElement( const qxml::Element * node ) const
 {
-	std::string type = node->GetStringAttribute( "type" );
+	std::string type = node->GetAttribute( "type" )->GetString();
 	Modifier::shared_ptr modifier;
 	if( unify::StringIs( type, "parallel" ) )
 	{
@@ -257,7 +257,7 @@ Modifier::shared_ptr PathSystem::CreateModifierParallelFromXMLElement( const qxm
 
 Modifier::shared_ptr PathSystem::CreateModifierSplitFromXMLElement( const qxml::Element * node ) const
 {
-	unify::Seconds timeSpentOnA = node->GetFloatAttribute( "timeSpentOnA" );
+	unify::Seconds timeSpentOnA = node->GetAttribute( "timeSpentOnA" )->Get< float >();
 	Modifier::shared_ptr modifierA;
 	Modifier::shared_ptr modifierB;
 	int modifiers = 0;
@@ -288,10 +288,10 @@ Modifier::shared_ptr PathSystem::CreateModifierSplitFromXMLElement( const qxml::
 
 Modifier::shared_ptr PathSystem::CreateModifierRotateAboutFromXMLElement( const qxml::Element * node ) const
 {
-	std::string positionName = node->GetStringAttribute( "position" );
-	float distance = node->GetFloatAttribute( "distance" );
-	std::string axisFromName = node->GetStringAttribute( "axisFrom" );
-	std::string axisToName = node->GetStringAttribute( "axisTo" );
+	std::string positionName = node->GetAttribute( "position" )->GetString();
+	float distance = node->GetAttribute( "distance" )->Get< float >();
+	std::string axisFromName = node->GetAttribute( "axisFrom" )->GetString();
+	std::string axisToName = node->GetAttribute( "axisTo" )->GetString();
 
 	const unify::V3< float > * position;
 	const unify::Quaternion * axisFrom;
@@ -305,10 +305,10 @@ Modifier::shared_ptr PathSystem::CreateModifierRotateAboutFromXMLElement( const 
 
 Modifier::shared_ptr PathSystem::CreateModifierAttachToFromXMLElement( const qxml::Element * node ) const
 {
-	float distance = node->GetFloatAttribute( "distance" );
-	std::string axisFromTargetName = node->GetStringAttribute( "axisFromTarget" );
-	std::string targetFrameName = node->GetStringAttributeElse( "targetFrame", std::string() );
-	std::string targetPositionName = node->GetStringAttributeElse( "targetPosition", std::string() );
+	float distance = node->GetAttribute( "distance" )->Get< float >();
+	std::string axisFromTargetName = node->GetAttribute( "axisFromTarget" )->GetString();
+	std::string targetFrameName = node->GetAttributeElse< std::string >( "targetFrame", std::string() );
+	std::string targetPositionName = node->GetAttributeElse< std::string >( "targetPosition", std::string() );
 
 	const unify::Quaternion * axisFromTarget;
 	if( ! FindAxis( axisFromTargetName, axisFromTarget ) )
@@ -341,7 +341,7 @@ Modifier::shared_ptr PathSystem::CreateModifierLookAtFromXMLElement( const qxml:
 	if( node->HasAttributes( "position" ) )
 	{
 		const unify::V3< float > * position;
-		if(  ! FindPosition( node->GetStringAttribute( "position" ), position ) )
+		if(  ! FindPosition( node->GetAttribute( "position" )->GetString(), position ) )
 		{
 			throw unify::Exception( "Could not find properties for Modifier::LookAt!" );
 		}
@@ -350,7 +350,7 @@ Modifier::shared_ptr PathSystem::CreateModifierLookAtFromXMLElement( const qxml:
 	else if( node->HasAttributes( "frame" ) )
 	{
 		const unify::Frame * frame;
-		if(  ! FindFrame( node->GetStringAttribute( "frame" ), frame ) )
+		if(  ! FindFrame( node->GetAttribute( "frame" )->GetString(), frame ) )
 		{
 			throw unify::Exception( "Could not find properties for Modifier::LookAt!" );
 		}

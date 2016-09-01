@@ -444,7 +444,7 @@ bool Input::MouseJustDown( int iButton ) const
 	return( m_mouseStatus[iButton] == STATUS_JUSTDOWN );
 }
 
-bool Input::MouseDown( int iButton )
+bool Input::MouseDown( int iButton ) const
 {
 	if( m_diMouseState.rgbButtons[iButton] & 0x80 )
 	{

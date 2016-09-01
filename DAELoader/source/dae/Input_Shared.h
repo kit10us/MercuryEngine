@@ -7,31 +7,28 @@
 #include <unify/Optional.h>
 #include <string>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->library_geometries->geometry (1 or more)
+	/// </summary>
+	class Input_Shared
 	{
-		/// <summary>
-		/// DAE node: COLLADA->library_geometries->geometry (1 or more)
-		/// </summary>
-		class Input_Shared
-		{
-		public:
-			Input_Shared( const qxml::Element * node );
+	public:
+		Input_Shared( const qxml::Element * node );
 
-			const int GetOffset() const;
-			const std::string & GetSemantic() const;
-			const std::string & GetSource() const;
-			const unify::Optional< int > & GetSet() const;
-			size_t GetStride() const;
+		const int GetOffset() const;
+		const std::string & GetSemantic() const;
+		const std::string & GetSource() const;
+		const unify::Optional< int > & GetSet() const;
+		size_t GetStride() const;
 			
-		private:
-			int m_offset;
-			std::string m_semantic;
-			std::string m_source;
-			unify::Optional< int > m_set;
-			std::string m_type;
-			size_t m_stride;
-		};
-	}
+	private:
+		int m_offset;
+		std::string m_semantic;
+		std::string m_source;
+		unify::Optional< int > m_set;
+		std::string m_type;
+		size_t m_stride;
+	};
 }

@@ -30,12 +30,22 @@ namespace unify
 	std::string LeftString( std::string stringIn, unsigned int uLength );
 	std::string StringMinusLeft( const std::string & sStringIn, unsigned int uLessLength );
 	std::string StringMinusRight( const std::string & sStringIn, unsigned int uLessLength );
+	
+	/// <summary>
+	/// Returns a string where all sets (single or in a row) cariage returns, tabs or spaces are replaced with one space.
+	/// For example, "\n\n\n  \t\tHello,  \tWorld\n!     \t\n "  >>  "Hello, World!" (note: no leading or training spaces either)
+    /// Doesn't reduce ANY single spaces.
+	/// </summary>
 	std::string CleanWhitespace( const std::string & sIn );
+
 	std::string ToLower( const std::string & in );
 
-	// List
-	std::string ListPart( const std::string & sString, char chrSeperator, int iPartIndex );
-	unsigned int ListPartCount(const std::string & sString, const char chr);
+	
+	// Considers a string as a part of a segmented list by a character, returns that part of the list...
+	// Returns ASAP.
+	// The first iPartIndex is 0.
+	std::string ListPart( const std::string & sString, std::vector< char > seperators, int iPartIndex );	
+	unsigned int ListPartCount(const std::string & sString, std::vector< char > seperators );
 
 	// Binary functor for case insensitive string compares. Useful for maps.
     class CaseInsensitiveLessThanTest

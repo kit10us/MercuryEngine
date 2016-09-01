@@ -1,6 +1,8 @@
+// Copyright (c) 2002 - 2014, Quentin S. Smith
+// All Rights Reserved
+
 #include <dae/Source_TechniqueCommon.h>
 
-using namespace dxi;
 using namespace dae;
 
 Source_TechniqueCommon::Source_TechniqueCommon( const qxml::Element * node )

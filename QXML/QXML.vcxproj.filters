@@ -24,6 +24,12 @@
     <ClInclude Include="include\qxml\Document.h">
       <Filter>qxml</Filter>
     </ClInclude>
+    <ClInclude Include="include\qxml\XPath.h">
+      <Filter>qxml</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qxml\AttributeCast.h">
+      <Filter>qxml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\qxml\Element.inl">

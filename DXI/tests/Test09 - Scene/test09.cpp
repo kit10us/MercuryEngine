@@ -114,23 +114,22 @@ public:
 		{
 			scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene", new scene::Scene );
 
-			scene->Add( "cube", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "cube" ), unify::V3< float >( -4.5f, 3, 0 ) ) ) );
-			scene->Add( "pointfield", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "pointfield" ), unify::V3< float >( -1.5f, 3, 0 ) ) ) );
-			scene->Add( "pointring", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "pointring" ), unify::V3< float >( 1.5f, 3, 0 ) ) ) );
-			scene->Add( "dashring", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "dashring" ), unify::V3< float >( 4.5f, 3, 0 ) ) ) );
-			scene->Add( "pyramid", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "pyramid" ), unify::V3< float >( -4.5f, 0, 0 ) ) ) );
-			scene->Add( "circle", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "circle" ), unify::V3< float >( -1.5f, 0, 0 ) ) ) );
-			scene->Add( "sphere", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "sphere" ), unify::V3< float >( 1.5f, 0, 0 ) ) ) );
-			scene->Add( "cylinder", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "cylinder" ), unify::V3< float >( 4.5f, 0, 0 ) ) ) );
-			scene->Add( "tube", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "tube" ), unify::V3< float >( -4.5f, -3, 0 ) ) ) );
-			scene->Add( "plane", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "plane" ), unify::V3< float >( -1.5f, -3, 0 ) ) ) );
-			scene->Add( "cone", scene::Object::shared_ptr( new scene::Object( GetManager< Geometry >()->Find( "cone" ), unify::V3< float >( 1.5f, -3, 0 ) ) ) );
+			scene->Add( "cube", new scene::Object( GetManager< Geometry >()->Find( "cube" ), unify::V3< float >( -4.5f, 3, 0 ) ) );
+			scene->Add( "pointfield", new scene::Object( GetManager< Geometry >()->Find( "pointfield" ), unify::V3< float >( -1.5f, 3, 0 ) ) );
+			scene->Add( "pointring", new scene::Object( GetManager< Geometry >()->Find( "pointring" ), unify::V3< float >( 1.5f, 3, 0 ) ) );
+			scene->Add( "dashring", new scene::Object( GetManager< Geometry >()->Find( "dashring" ), unify::V3< float >( 4.5f, 3, 0 ) ) );
+			scene->Add( "pyramid", new scene::Object( GetManager< Geometry >()->Find( "pyramid" ), unify::V3< float >( -4.5f, 0, 0 ) ) );
+			scene->Add( "circle", new scene::Object( GetManager< Geometry >()->Find( "circle" ), unify::V3< float >( -1.5f, 0, 0 ) ) );
+			scene->Add( "sphere", new scene::Object( GetManager< Geometry >()->Find( "sphere" ), unify::V3< float >( 1.5f, 0, 0 ) ) );
+			scene->Add( "cylinder", new scene::Object( GetManager< Geometry >()->Find( "cylinder" ), unify::V3< float >( 4.5f, 0, 0 ) ) );
+			scene->Add( "tube", new scene::Object( GetManager< Geometry >()->Find( "tube" ), unify::V3< float >( -4.5f, -3, 0 ) ) );
+			scene->Add( "plane", new scene::Object( GetManager< Geometry >()->Find( "plane" ), unify::V3< float >( -1.5f, -3, 0 ) ) );
+			scene->Add( "cone", new scene::Object( GetManager< Geometry >()->Find( "cone" ), unify::V3< float >( 1.5f, -3, 0 ) ) );
 
-			scene::Object::shared_ptr cameraObject( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.
-			scene->Add( "camera", cameraObject );
+			scene::Object::shared_ptr cameraObject( scene->Add( "camera", new scene::Object ) );
 			scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 			scene->SetCamera( "camera" );
-			scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+			scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 			camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 			camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 		}

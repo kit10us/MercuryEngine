@@ -10,7 +10,14 @@
 
 namespace dxi
 {
+	// TODO: Divide into seperate inpuy types (Keyboard, Mouse), this will allow us to progress into allowing inputs to 
+	// deliver similar yet different content; and allow for more various input types (joysticks, etc.).
 	// TODO: namespace win, and move to win folder.
+	// TODO: Wrap inputs into seperate classes with access such as:
+	// float Get( METHOD ) --->  float Get( "X" );
+	// This would optimize scripted posibilities.
+	// Also allow custom methods (X(), Y(), ChangeX(), KeyPressed(), etc.) but encourage their use of the standard access method Get()
+	// Also allow a capabilities interface as such: CheckCapabilities( CAP_X | CAP_Y | CAP_Z | CAP_ASCII ), etc.
 	class Input : public core::IInput
 	{
 	public:
@@ -34,49 +41,41 @@ namespace dxi
 		void CallAfterUpdate();
 
         // OS feedback...
-        void SetMouseUnavailable();
-        void SetMousePosition( unify::V2< int > position );
-        void SetLeftMouse( bool down );
-        void SetRightMouse( bool down );
+        void SetMouseUnavailable() override;
+        void SetMousePosition( unify::V2< int > position ) override;
+        void SetLeftMouse( bool down ) override;
+        void SetRightMouse( bool down ) override;
 
 		// Keyboard...
-		bool KeyState( Key::TYPE key ) const;
-		InputStatus KeyStatus( Key::TYPE key ) const;
-		bool KeyJustDown( Key::TYPE key ) const;
-		bool KeyDown( Key::TYPE key ) const;
-		bool KeyPressed( Key::TYPE key ) const;
-		void ClearKey( Key::TYPE key );
-		bool AnyKeyStatus( InputStatus status );
-
-		// TODO: Wrap inputs into seperate classes with access such as:
-		// float Get( METHOD ) --->  float Get( "X" );
-		// This would optimize scripted posibilities.
-		// Also allow custom methods (X(), Y(), ChangeX(), KeyPressed(), etc.) but encourage their use of the standard access method Get()
-		// Also allow a capabilities interface as such: CheckCapabilities( CAP_X | CAP_Y | CAP_Z | CAP_ASCII ), etc.
+		bool KeyState( Key::TYPE key ) const override;
+		InputStatus KeyStatus( Key::TYPE key ) const override;
+		bool KeyJustDown( Key::TYPE key ) const override;
+		bool KeyDown( Key::TYPE key ) const override;
+		bool KeyPressed( Key::TYPE key ) const override;
+		void ClearKey( Key::TYPE key ) override;
+		bool AnyKeyStatus( InputStatus status ) override;
+		bool Capslock() const override;
+		bool Numlock() const override;
+		bool Scrolllock() const override;
+		bool Insert() const; //TODO: Should this be in IInput?
 
 		// Mouse...
-        bool IsMouseAvailable() const;
-		int MouseChangeX() const;
-		int MouseChangeY() const;
-		int MouseChangeZ() const;
+        bool IsMouseAvailable() const override;
+		int MouseChangeX() const override;
+		int MouseChangeY() const override;
+		int MouseChangeZ() const override;
 		
-		int MouseX() const;
-		int MouseY() const;
-		int MouseZ() const;
+		int MouseX() const override;
+		int MouseY() const override;
+		int MouseZ() const override;
 
-		bool MouseJustDown( int iButton ) const;
-		bool MousePressed( int iButton ) const;
-		bool MouseDown( int iButton );
+		bool MouseJustDown( int iButton ) const override;
+		bool MousePressed( int iButton ) const override;
+		bool MouseDown( int iButton ) const override;
 
-		bool AnyMouseStatus( InputStatus status );
+		bool AnyMouseStatus( InputStatus status ) override;
 
-		// Same as mouse down
-		bool MouseButton( int iButton );
-
-		bool Capslock() const;
-		bool Numlock() const;
-		bool Scrolllock() const;
-		bool Insert() const;
+		bool MouseButton( int iButton ) override;
 
 	protected:
 		core::IOS & m_os;

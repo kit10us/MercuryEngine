@@ -175,82 +175,6 @@ Attribute::shared_ptr Element::GetAttribute( const std::string & attributeName )
 	throw unify::Exception( "Attribute \"" + attributeName + "\" was not found by name!" );
 }
 
-int Element::GetIntegerAttribute( const std::string & attribute ) const
-{
-	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-	return pAttribute->GetInteger();
-}
-
-float Element::GetFloatAttribute( const std::string & attribute ) const
-{
-	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-	return pAttribute->GetFloat();
-}
-
-std::string Element::GetStringAttribute( const std::string & attribute ) const
-{
-	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-	return pAttribute->GetString();
-}
-
-bool Element::GetBooleanAttribute( const std::string & attribute ) const
-{
-	Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-	return pAttribute->GetBoolean();
-}
-
-int Element::GetIntegerAttributeElse( const std::string & attribute, int value ) const
-{
-	if( HasAttributes( attribute ) )
-	{
-		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-		return pAttribute->GetInteger();
-	}
-	else
-	{
-		return value;
-	}
-}
-
-float Element::GetFloatAttributeElse( const std::string & attribute, float value ) const
-{
-	if( HasAttributes( attribute ) )
-	{
-		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-		return pAttribute->GetFloat();
-	}
-	else
-	{
-		return value;
-	}
-}
-
-std::string Element::GetStringAttributeElse( const std::string & attribute, const std::string & value ) const
-{
-	if( HasAttributes( attribute ) )
-	{
-		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-		return pAttribute->GetString();
-	}
-	else
-	{
-		return value;
-	}
-}
-
-bool Element::GetBooleanAttributeElse( const std::string & attribute, bool value ) const
-{
-	if( HasAttributes( attribute ) )
-	{
-		Attribute::shared_ptr pAttribute = GetAttribute( attribute );
-		return pAttribute->GetBoolean();
-	}
-	else
-	{
-		return value;
-	}
-}
-
 void Element::FindElements( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes ) const
 {
 	// Get the first child of our parent
@@ -261,6 +185,21 @@ void Element::FindElements( std::list< const Element * > & elementList, const st
         {
 			elementList.push_back( element );
 		}
+		element = element->GetNext();
+	}
+}
+
+void Element::FindElementsRecursive( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes ) const
+{
+	// Get the first child of our parent
+	const Element * element = GetFirstChild();
+	while( element )
+	{
+		if( element->IsTagName( tagName ) && element->HasAttributes( attributes ) )
+		{
+			elementList.push_back( element );
+		}
+		element->FindElementsRecursive( elementList, tagName, attributes );
 		element = element->GetNext();
 	}
 }
@@ -278,36 +217,6 @@ const Element * Element::FindFirstElement( const std::string tagName, const std:
 		element = element->GetNext();
 	}
     return false;
-}
-
-void Element::FindElementsByTagName( ElementList & elementList, const std::string & tagName )
-{
-	// Get the first child of our parent
-	Element* pElement = GetFirstChild();
-	while( pElement )
-	{
-		if( pElement->IsTagName( tagName ) ) 
-		{
-			elementList.AddElement( pElement );
-		}
-		pElement = pElement->GetNext();
-	}
-}
-
-void Element::FindElementsByTagNameRecursive( ElementList & elementList, const std::string & tagName )
-{
-	// Get the first child of our parent (
-	Element * pElement = GetFirstChild();
-	while( pElement )
-	{
-		if( pElement->IsTagName( tagName ) ) 
-		{
-			elementList.AddElement( pElement );
-		}
-		// Call our child's recursive find...
-		pElement->FindElementsByTagNameRecursive( elementList, tagName );
-		pElement = pElement->GetNext();
-	}
 }
 
 // Search our children for elements with a given tag name...

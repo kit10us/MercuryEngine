@@ -11,7 +11,7 @@
 namespace unify
 {
 	///
-	/// Frame provides a hierarchical relationship structure for the purpose of prodividing relative transformation in a rendering or physics pipeline.
+	/// Frame provides a hierarchical relationship structure for the purpose of providing relative transformation in a rendering or physics pipeline.
 	///
 	class Frame
 	{
@@ -31,7 +31,7 @@ namespace unify
 
 		Frame & operator=( const Frame & frame );
 
-		void SetModelMatrix( const Matrix & matrix );
+		void SetMatrix( const Matrix & matrix );
 
 		void AttachTo( Frame * newParent );
 		
@@ -54,10 +54,10 @@ namespace unify
 		Frame & Rotate( const Quaternion & q );
 		Frame & RotateAbout( const V3< float > & axis, Angle angle );
 
-		const Matrix & GetModelMatrix() const;
+		const Matrix & GetMatrix() const;
 
 		/// <summary>
-		/// Final matrix is the result of the parent and model matrix.
+		/// Final matrix is the result of the parent matrix combined with our matrix.
 		/// </summary>
 		const Matrix & GetFinalMatrix() const;
 
@@ -99,7 +99,7 @@ namespace unify
 
 		std::string m_name;
 
-		Matrix m_model;
+		Matrix m_matrix;
 		Matrix m_finalCached;
 
 		bool	m_isDirty;

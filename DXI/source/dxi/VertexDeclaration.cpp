@@ -388,17 +388,29 @@ VertexDeclaration::VertexDeclaration( const qxml::Element & element )
 {
 	// Accumulate elements.
 	m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
-	for( const qxml::Element * itr = element.GetFirstChild(), * end = 0; itr != end; itr = itr->GetNext() )
+	for( const auto child : element.Children() )
 	{
-		if ( itr->IsTagName( "element" ) )
+		if ( child.IsTagName( "element" ) )
 		{
-			unsigned short stream = itr->GetAttributeElse< unsigned short >( "stream", 0 );
-			//unsigned short offset = itr->GetAttributeElse< unsigned short >( "offset", m_totalSizeInBytes );
-			D3DDECLTYPE type = ConvertVertexDeclarationType( itr->GetAttribute( "type" )->GetString() );
-			D3DDECLMETHOD method = itr->HasAttributes( "method" ) ? ConvertVertexDeclarationMethod( itr->GetAttribute( "method" )->GetString() ) : D3DDECLMETHOD_DEFAULT;
-			D3DDECLUSAGE usage = ConvertVertexDeclarationUsage( itr->GetAttribute( "usage" )->GetString() );
-			unsigned char usageIndex = itr->GetAttributeElse< unsigned char >( "usageindex", 0 );
-			std::string name = element.HasAttributes( "name" ) ? element.GetAttribute( "name" )->GetString() : VertexElementToName( usage, usageIndex );
+			unsigned short stream = child.GetAttributeElse< unsigned short >( "stream", 0 );
+			//unsigned short offset = child.GetAttributeElse< unsigned short >( "offset", m_totalSizeInBytes );
+			D3DDECLTYPE type = ConvertVertexDeclarationType( child.GetAttribute( "type" )->GetString() );
+			D3DDECLMETHOD method = child.HasAttributes( "method" ) ? ConvertVertexDeclarationMethod( child.GetAttribute( "method" )->GetString() ) : D3DDECLMETHOD_DEFAULT;
+
+			std::string name = child.GetAttribute( "name" )->GetString();
+
+			D3DDECLUSAGE usage = D3DDECLUSAGE();
+
+			unsigned char usageIndex = child.GetAttributeElse< unsigned char >( "usageindex", 0 );
+
+			if ( child.HasAttributes( "usage" ) )
+			{
+				usage = ConvertVertexDeclarationUsage( child.GetAttribute( "usage" )->GetString() );
+			}
+			else // Get the usage from the name...
+			{
+				VertexNameToElement( name, usage, usageIndex );
+			}
 
 			VertexElement element;
 			element.Stream = stream;

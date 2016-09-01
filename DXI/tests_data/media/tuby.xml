@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<xml>
 <!-- Note: Index in vertex definition is arbatrary, and if included (which is suggested) is used as checking AND should start 0-->
-
 <geometry>
   <frames>
     <frame name="0" index="0" parent="0">
@@ -177,3 +177,4 @@
   </methodlist>
 
 </geometry>
+</xml>

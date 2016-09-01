@@ -29,8 +29,7 @@ void Terra::Destroy()
 
 const unify::BBox< float > & Terra::ComputeBounds()
 {
-	m_BSphere = unify::BSphere( 0 );
-	return m_primitiveList.ComputeBounds( m_BBox, m_BSphere );
+	return m_primitiveList.ComputeBounds( m_BBox );
 }
 
 void Terra::CreateFromParameters( unify::Parameters & parameters )

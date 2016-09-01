@@ -32,7 +32,7 @@ Texture * TextureJsonFactory::Produce( qjson::Object json )
 
 Texture * TextureXmlNodeFactory::Produce( const qxml::Element * node )
 {
-	unify::Path source( unify::Path( node->GetDocument()->GetPath() ).DirectoryOnly() + node->GetStringAttribute( "source" ) );
+	unify::Path source( unify::Path( node->GetDocument()->GetPath() ).DirectoryOnly() + node->GetAttribute< std::string >( "source" ) );
 
 	unsigned int flags = 0;
 	if( node->HasAttributes( "lockable" ) )

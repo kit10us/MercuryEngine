@@ -41,7 +41,9 @@
     <ClCompile Include="source\dxi\Frustum.cpp" />
     <ClCompile Include="source\dxi\Geometry.cpp" />
     <ClCompile Include="source\dxi\GeometryFactory.cpp" />
+    <ClCompile Include="source\dxi\GeometryASEFactory.cpp" />
     <ClCompile Include="source\dxi\GeometryGroup.cpp" />
+    <ClCompile Include="source\dxi\GeometryInstanceData.cpp" />
     <ClCompile Include="source\dxi\GeometryPlacement.cpp" />
     <ClCompile Include="source\dxi\IndexBuffer.cpp" />
     <ClCompile Include="source\dxi\IndexLock.cpp" />
@@ -163,6 +165,7 @@
     <ClInclude Include="source\dxi\Frustum.h" />
     <ClInclude Include="source\dxi\Geometry.h" />
     <ClInclude Include="source\dxi\GeometryFactory.h" />
+    <ClInclude Include="source\dxi\GeometryASEFactory.h" />
     <ClInclude Include="source\dxi\GeometryGroup.h" />
     <ClInclude Include="source\dxi\GeometryInstanceData.h" />
     <ClInclude Include="source\dxi\GeometryPlacement.h" />

@@ -123,7 +123,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( qjson::Object json )
 template< class T >
 std::shared_ptr< T > ResourceManagerSimple< T >::Add( const qxml::Element * node )
 {
-	std::string id = node->GetStringAttribute( "name" );
+	std::string id = node->GetAttribute( "name" )->GetString();
 
 	// Attempt to find the existing resource.
 	ResourcePtr existingResource = Find( id );

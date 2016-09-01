@@ -25,8 +25,6 @@ namespace dxi
 		class IOS
 		{
 		public:
-			typedef std::shared_ptr< IOS > shared_ptr;
-
 			virtual ~IOS() { }
 
 			/// <summary>

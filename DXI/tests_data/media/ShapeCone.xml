@@ -1,9 +1,11 @@
-<shape>
-<type>cone</type>
-<fvf>XYZ | Diffuse | Tex1</fvf>
-<texture name="borgcube" source="borgcube.bmp"/>
-<segments>24</segments>
-<radius>1</radius>
-<height>2</height>
-<diffuse>255,0,0,255</diffuse>
-</shape>
+<xml>
+  <shape>
+    <type>cone</type>
+    <fvf>XYZ | Diffuse | Tex1</fvf>
+    <texture name="borgcube" source="borgcube.bmp"/>
+    <segments>24</segments>
+    <radius>1</radius>
+    <height>2</height>
+    <diffuse>255,0,0,255</diffuse>
+  </shape>
+</xml>

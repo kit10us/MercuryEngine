@@ -1,15 +1,14 @@
 #include <dae/FloatArray.h>
 #include <unify/String.h>
 
-using namespace dxi;
 using namespace dae;
 
 FloatArray::FloatArray( const qxml::Element * node )
-: m_count( node->GetIntegerAttribute( "count" ) )
-, m_id( node->GetStringAttributeElse( "id", std::string() ) )
-, m_name( node->GetStringAttributeElse( "name", std::string() ) )
-, m_digits( node->GetIntegerAttributeElse( "digits", 6 ) )
-, m_magnitude( node->GetIntegerAttributeElse( "magnitude", 38 ) )
+: m_count( node->GetAttribute< int >( "count" ) )
+, m_id( node->GetAttributeElse( "id", std::string() ) )
+, m_name( node->GetAttributeElse( "name", std::string() ) )
+, m_digits( node->GetAttributeElse< int >( "digits", 6 ) )
+, m_magnitude( node->GetAttributeElse< int >( "magnitude", 38 ) )
 {
 	m_stringContents = node->GetText();
 	m_arrayContents = unify::SplitOnWhitespace< float >( m_stringContents );

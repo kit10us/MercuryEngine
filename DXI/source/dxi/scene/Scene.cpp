@@ -21,7 +21,7 @@ Scene::Scene()
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_viewport( core::Game::GetGameInstance()->GetOS()->GetDefaultViewport() )
+, m_viewport( core::Game::GetGameInstance()->GetOS().GetDefaultViewport() )
 , m_color( 0, 0, 180, 255 )
 , m_renderPhysics( false )
 , m_hasFocus( false )
@@ -58,49 +58,34 @@ const physics::IScene * Scene::GetPhysicsScene() const
 	return m_physicsScene.get();
 }
 
-void Scene::Add( Object::shared_ptr object )
+std::shared_ptr< Object > Scene::Add( Object * object )
 {
-	m_objectList.push_back( object );
+	std::shared_ptr< Object > object_ptr( object );
+	m_objectList.push_back( object_ptr );
     object->SetScene( this );
 	if( m_physicsScene && object->GetPhysics() )
 	{
 		m_physicsScene->Add( object->GetPhysics() );
 	}
+	return object_ptr;
 }
 
-void Scene::Add( const std::string & name, Object::shared_ptr object )
+std::shared_ptr< Object > Scene::Add( const std::string & name, Object * object )
 {
-    object->SetTag( name );
-    object->SetScene( this );
-	m_objectList.push_back( object );
-	m_objectMap[ name ] = object;
-	if( m_physicsScene && object->GetPhysics() )
+	std::shared_ptr< Object > object_ptr( object );
+
+	object_ptr->GetTags()[ "name" ] = name;
+    
+	object_ptr->SetScene( this );
+	m_objectList.push_back( object_ptr );
+	m_objectMap[ name ] = object_ptr;
+	if( m_physicsScene && object_ptr->GetPhysics() )
 	{
-		m_physicsScene->Add( object->GetPhysics() );
+		m_physicsScene->Add( object_ptr->GetPhysics() );
 	}
+	return object_ptr;
 }
 
-Object::shared_ptr Scene::CreateObject( const std::string & name, const std::string & geometry, const std::string & physics )
-{
-	Object::shared_ptr object( new Object() );
-
-	if( ! geometry.empty() )
-	{
-		object->SetGeometry( core::Game::GetGameInstance()->GetManager< Geometry >()->Find( geometry ) );
-	}
-
-	if( ! physics.empty() )
-	{
-		if( ! GetPhysicsScene() )
-		{
-			throw unify::Exception( "Scene attempted to create object and failed: physics specified without a valid physics manager!" );
-		}
-		GetPhysicsScene()->Add( object, physics );
-	}
-
-	Add( name, object );
-	return object;
-}
 
 Object::shared_ptr Scene::FindObject( const std::string & name )
 {
@@ -165,7 +150,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
 
         Frustum frustum( camera.GetMatrix() );
 
-        unify::Size< float > resolution = core::Game::GetGameInstance()->GetOS()->GetResolution();
+        unify::Size< float > resolution = core::Game::GetGameInstance()->GetOS().GetResolution();
         unify::V2< float > mouseUnit = input.MouseV2< float >();
         mouseUnit /= unify::V2< float >( resolution.width, resolution.height );
 
@@ -315,10 +300,10 @@ void Scene::Render()
 	}
 
 	Viewport viewportBackup;
-	core::Game::GetGameInstance()->GetOS()->GetRenderer()->GetViewport( viewportBackup );
+	core::Game::GetGameInstance()->GetOS().GetRenderer()->GetViewport( viewportBackup );
 
 	Viewport viewport;
-	core::Game::GetGameInstance()->GetOS()->GetRenderer()->SetViewport( m_viewport );
+	core::Game::GetGameInstance()->GetOS().GetRenderer()->SetViewport( m_viewport );
 
 	// TODO: DX11 (this is moved to the begin scene, so we need to figure this out): win::DX::GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_color, 1.0f, 0 );
 	// TODO: DX11: win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
@@ -326,9 +311,9 @@ void Scene::Render()
 	m_renderInfo.SetViewMatrix( m_camera.GetMatrix() );
 
 #if 1 // Straight render (no culling or depth sorting for transparencies)...
-	for( ObjectList::iterator itrObject = m_objectList.begin(), end = m_objectList.end(); itrObject != end; ++itrObject )
+	for( auto && object : m_objectList )
 	{
-		(*itrObject)->Render( m_renderInfo );
+		object->Render( m_renderInfo );
 	}
 
 #else // Standard rendering... 
@@ -447,7 +432,7 @@ void Scene::Render()
 		m_physicsScene->Render();
 	}
 
-	core::Game::GetGameInstance()->GetOS()->GetRenderer()->SetViewport( viewportBackup );
+	core::Game::GetGameInstance()->GetOS().GetRenderer()->SetViewport( viewportBackup );
 
 	m_renderInfo.IncrementFrameID();
 }

@@ -42,7 +42,7 @@ void MyGame::Startup()
 	m_cameraObject.reset( new scene::Object );
 	m_camera.reset( new scene::Camera );
 	m_camera->SetObject( m_cameraObject );
-	m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+	m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 
 	// Add textures we will need for our effects, and terrain generation/modification.
 	GetManager< Texture >()->Add( "test256", new Texture( "media/test256.png", TEXTURE_LOCKABLE ) );
@@ -90,7 +90,7 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 	rotation.TransformCoord( eyePosition );
 	unify::Matrix view = unify::Matrix::MatrixLookAtLH( eyePosition, unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-	m_camera->GetObject()->GetFrame().SetModelMatrix( view );
+	m_camera->GetObject()->GetFrame().SetMatrix( view );
 
 	m_rotation += unify::Angle::AngleInRadians( elapsed );
 

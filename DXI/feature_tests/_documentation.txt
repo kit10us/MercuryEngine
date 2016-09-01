@@ -1,1 +1,0 @@
-Feature Tests are tests specific to individual classes and features. Like unit tests, they don't rely on entire libraries, only pieces from those libraries.

@@ -58,5 +58,5 @@ PrimitiveList & Mesh::GetPrimitiveList()
 
 const unify::BBox< float > & Mesh::ComputeBounds()
 {
-	return m_primitiveList.ComputeBounds( m_BBox, m_BSphere );
+	return m_primitiveList.ComputeBounds( m_BBox );
 }

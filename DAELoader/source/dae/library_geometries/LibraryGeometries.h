@@ -2,20 +2,18 @@
 // All Rights Reserved
 
 #pragma once
+
 #include <dae/Library.h>
 #include <dae/library_geometries/Geometry.h>
 
-namespace dxi
+namespace dae
 {
-	namespace dae
+	/// <summary>
+	/// DAE node: COLLADA->library_geometries (0 or more)
+	/// </summary>
+	class LibraryGeometries : public Library< Geometry >
 	{
-		/// <summary>
-		/// DAE node: COLLADA->library_geometries (0 or more)
-		/// </summary>
-		class LibraryGeometries : public Library< Geometry >
-		{
-		public:
-			LibraryGeometries( IDocument & document, const qxml::Element * node );
-		};
-	}
+	public:
+		LibraryGeometries( IDocument & document, const qxml::Element * node );
+	};
 }

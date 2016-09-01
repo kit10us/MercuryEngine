@@ -149,11 +149,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\qxml\Attribute.h" />
+    <ClInclude Include="include\qxml\AttributeCast.h" />
     <ClInclude Include="include\qxml\Document.h" />
     <ClInclude Include="include\qxml\Element.h" />
     <ClInclude Include="include\qxml\ExportDocument.h" />
     <ClInclude Include="include\qxml\QXML.h" />
     <ClInclude Include="include\qxml\XMLParameters.h" />
+    <ClInclude Include="include\qxml\XPath.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\qxml\Element.inl" />

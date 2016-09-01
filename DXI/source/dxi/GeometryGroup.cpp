@@ -60,7 +60,6 @@ void GeometryGroup::Update( unify::Seconds elapsed, GeometryInstanceData * insta
 void GeometryGroup::Add( dxi::Geometry::shared_ptr geometry )
 {
 	m_BBox.AddBBox( geometry->GetBBox() );
-	m_BSphere.AddBSphere( geometry->GetBSphere() );
 	m_geometryList.push_back( geometry );
 }
 
@@ -71,7 +70,6 @@ const unify::BBox< float > & GeometryGroup::ComputeBounds()
 	for( std::vector< Geometry::shared_ptr >::iterator itr = m_geometryList.begin(); itr != m_geometryList.end(); ++itr )
 	{
 		m_BBox.AddBBox( (*itr)->GetBBox() );
-		m_BSphere.AddBSphere( (*itr)->GetBSphere() );
 	}
 	return m_BBox;
 }

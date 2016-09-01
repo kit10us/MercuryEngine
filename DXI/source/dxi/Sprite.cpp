@@ -179,8 +179,8 @@ void Sprite::Render( RenderInfo renderInfo )
 	vb.Unlock();
 	vb.Use();
 
-	float width = static_cast< float >( core::Game::GetGameInstance()->GetOS()->GetResolution().width );
-	float height = static_cast< float >( core::Game::GetGameInstance()->GetOS()->GetResolution().height );
+	float width = static_cast< float >( core::Game::GetGameInstance()->GetOS().GetResolution().width );
+	float height = static_cast< float >( core::Game::GetGameInstance()->GetOS().GetResolution().height );
 	unify::Matrix matrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.0f, 1000.0f );
 	renderInfo.SetFinalMatrix( matrix );
 

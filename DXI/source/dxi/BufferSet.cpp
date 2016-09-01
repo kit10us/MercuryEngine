@@ -6,6 +6,7 @@
 using namespace dxi;
 
 BufferSet::BufferSet()
+	: m_enabled( true )
 {
 }
 
@@ -41,4 +42,14 @@ RenderMethodBuffer & BufferSet::GetRenderMethodBuffer()
 const RenderMethodBuffer & BufferSet::GetRenderMethodBuffer() const
 {
 	return m_RB;
+}
+
+void BufferSet::SetEnabled( bool enabled )
+{
+	m_enabled = enabled;
+}
+
+bool BufferSet::GetEnabled() const
+{
+	return m_enabled;
 }

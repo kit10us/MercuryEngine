@@ -9,7 +9,7 @@ using namespace pi;
 
 PhysicsInstance::PhysicsInstance( physics::IObjectSyncer * syncer )
 : m_syncer( syncer )
-, m_frame( syncer->GetWorldFrame() )
+, m_frame( syncer->GetFrame() )
 , m_bbox( syncer->GetBBox() )
 , m_previousFrame( m_frame )
 , m_moveable( false )

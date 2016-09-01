@@ -20,6 +20,8 @@ namespace dxi
 		BufferSet();
 		~BufferSet();
 
+		BufferSet( const BufferSet & ) = delete;
+
 		VertexBuffer & BufferSet::GetVertexBuffer();
 		const VertexBuffer & BufferSet::GetVertexBuffer() const;
 
@@ -29,7 +31,11 @@ namespace dxi
 		RenderMethodBuffer & BufferSet::GetRenderMethodBuffer();
 		const RenderMethodBuffer & BufferSet::GetRenderMethodBuffer() const;
 
+		void SetEnabled( bool enabled );
+		bool GetEnabled() const;
+
 	private:
+		bool m_enabled;
 		VertexBuffer m_VB;
 		IndexBuffer m_IB;
 		RenderMethodBuffer m_RB;

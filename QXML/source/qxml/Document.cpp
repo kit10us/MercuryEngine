@@ -9,14 +9,12 @@ using namespace qxml;
 Document::Document()
 : m_xml( 0 )
 , m_root( 0 )
-, m_numChildren( 0 )
 {
 }
 
 Document::Document( const unify::Path & filePath )
 : m_xml( 0 )
 , m_root( 0 )
-, m_numChildren( 0 )
 {
 	Load( filePath );
 }
@@ -140,13 +138,13 @@ void Document::Load( const unify::Path & filePath )
 					}
 
 					Element::NodeType::TYPE type = bCommand ? Element::NodeType::Command : Element::NodeType::Element  ;
-					std::string tagName = unify::ListPart( data, ' ', 0 );
+					std::string tagName = unify::ListPart( data, {' '}, 0 );
 					pElement = AddElement( new Element( tagName, type, this ), tagName );
 
 					// Process out attributes...
-					for( unsigned int i = 1; i < unify::ListPartCount( data, ' ' ); i++ )
+					for( unsigned int i = 1; i < unify::ListPartCount( data, {' '} ); i++ )
 					{
-						std::string attribute = unify::ListPart( data, ' ', i );
+						std::string attribute = unify::ListPart( data, {' '}, i );
 						if( attribute == "" ) continue;
 						pElement->AppendAttribute( Attribute::shared_ptr( new Attribute( attribute ) ) );
 					}
@@ -235,39 +233,6 @@ Element * Document::FindElement( const std::string & sElement, const std::string
 	}
 
 	return NULL;
-}
-
-void Document::FindElementsByTagNameRecursive( ElementList & elementList, const std::string & tagName )
-{
-	m_root->FindElementsByTagNameRecursive( elementList, tagName );
-}
-
-void Document::FindElementsByTagName( ElementList & elementList, const std::string & tagName )
-{
-	m_root->FindElementsByTagName( elementList, tagName );
-}
-
-// Count all elements with a given name...
-unsigned int Document::CountElements( const std::string & element )
-{
-	unsigned int uCount = 0;
-	unify::Query< Element > query;
-	Element * pElement = m_elementList.GotoFirst( &query );
-	while( pElement ) 
-	{
-		if( pElement->IsTagName( element ) )
-		{
-			uCount++;
-		}
-		pElement = m_elementList.GotoNext( &query );
-	}
-
-	return uCount;
-}
-
-unsigned int Document::NumElements()
-{
-	return m_elementList.Count();
 }
 
 const unify::Path & Document::GetPath() const
