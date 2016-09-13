@@ -8,12 +8,13 @@
 
 #pragma once
 
-#include <unify/Stream.h>
-#include <unify/Exception.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <qjson/Object.h>
-#include <qxml/Element.h>
+#include <qxml/Document.h>
 #include <rm/ResourceManagerBase.h>
+#include <unify/Stream.h>
+#include <unify/Exception.h>
+#include <unify/Stream.h>
 #include <map>
 #include <memory>
 
@@ -49,8 +50,7 @@ namespace rm
 	{
 	public:
 		~IXMLFactory() {}
-		virtual T * Produce( unify::Path path ) = 0;
-		virtual T * Produce( const qxml::Element * node ) = 0;
+		virtual T * Produce( const qxml::Element & node ) = 0;
 	};
 
 	// A base for a resource list...
@@ -78,34 +78,44 @@ namespace rm
 
 		void Clear();
 
-		bool Exists( const ResourceID & id ) const override;
+		bool Exists( std::string name ) const override;
 
 		// Add an entry for a resource.
-		ResourcePtr Add( const ResourceID & id, T * resource ) override;
+		ResourcePtr Add( std::string name, T * resource ) override;
 
-		ResourcePtr Add( const ResourceID & id, unify::Path source );
+		ResourcePtr Add( std::string name, unify::Path source );
 		
 		ResourcePtr Add( qjson::Object json );
-		
-		ResourcePtr Add( const qxml::Element * node );
+	
+		/// <summary>
+		/// 1. Accepts a node, which expects to be consumed by an XML Factory.
+		/// 2. In the case that there is both a 'name' and a 'source', it then performs Add( name, source ).
+		/// </summary>
+		ResourcePtr Add( std::string name, const qxml::Element & node );
+		ResourcePtr Add( const qxml::Element & node );
+
+		void AddResource( std::string name, const qxml::Element & element ) override;
+		void AddResource( const qxml::Element & element ) override;
+		void AddResource( std::string name, unify::Path path ) override;
 
 		// Find an existing resource.
-		ResourcePtr Find( const ResourceID & id );
+		ResourcePtr Find( std::string name );
 
 		size_t Count() const override;
 
         void ForEach( ForEachFunctor & functor );
 
 		void AddFactory( IJsonFactory< T > * factory );
-		void AddFactory( ISourceFactory< T > * factory );
-		void AddFactory( IXMLFactory< T > * factory );
+		void AddFactory( std::string extension, ISourceFactory< T > * factory );
+		void AddFactory( std::string tagName, IXMLFactory< T > * factory );
 
 	protected:
 		std::string m_resourceName;
-		std::map< ResourceID, ResourcePtr > m_resourceList; 
+		std::map< std::string, ResourcePtr > m_resourceList; 
 		std::list< std::shared_ptr< IJsonFactory< T > > > m_jsonFactories;
-		std::list< std::shared_ptr< ISourceFactory< T > > > m_sourceFactories;
+		std::map< std::string, std::shared_ptr< ISourceFactory< T > >, unify::CaseInsensitiveLessThanTest > m_sourceFactories;
 		std::list< std::shared_ptr< IXMLFactory< T > > > m_xmlFactories;
+		std::map< std::string, std::shared_ptr< IXMLFactory< T > >, unify::CaseInsensitiveLessThanTest > m_xmlFactoriesMap;
 	};
 
 	#include <rm/ResourceManagerSimple.inl>

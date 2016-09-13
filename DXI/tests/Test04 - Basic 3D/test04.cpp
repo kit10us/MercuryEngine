@@ -10,8 +10,8 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/RenderState.h>
-#include <dxi/PixelShaderFactories.h>
-#include <dxi/VertexShaderFactory.h>
+#include <dxi/factory/PixelShaderFactories.h>
+#include <dxi/factory/VertexShaderFactory.h>
 
 using namespace dxi;
 using namespace core;

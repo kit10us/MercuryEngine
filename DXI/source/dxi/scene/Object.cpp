@@ -181,16 +181,18 @@ void Object::Update( unify::Seconds elapsed, core::IInput & input )
     int x(0);x;
 }
 
-void Object::Render( RenderInfo & renderInfo )
-{
+void Object::Render( const RenderInfo & renderInfo )
+{	
 	// Do nothing if we have no geometry to render, or are not visible...
 	if( ! m_geometry || ! m_visible )
 	{
         return;
 	}
 
+	RenderInfo myRenderInfo( renderInfo );
+
     // Prevent rendering if we have already render this frame, and are flagged to do such a check. 
-	if( renderInfo.IsOptionTrue( RenderOption::FrameCheck ) && m_checkFrame )
+	if( myRenderInfo.IsOptionTrue( RenderOption::FrameCheck ) && m_checkFrame )
 	{
 		if( m_lastFrameID == renderInfo.FrameID() ) 
         {
@@ -199,17 +201,16 @@ void Object::Render( RenderInfo & renderInfo )
 	}
 	m_lastFrameID = renderInfo.FrameID(); // Regardless, note that we have rendered this render frame.
 
-
 	// Use matrix...
-	if( ! renderInfo.IsOptionTrue( RenderOption::NoFrame ) )
+	if( !myRenderInfo.IsOptionTrue( RenderOption::NoFrame ) )
 	{
 		m_frame.Update();
-		renderInfo.SetWorldMatrix( m_geometryMatrix * m_frame.GetFinalMatrix() );
+		myRenderInfo.SetWorldMatrix( m_geometryMatrix * m_frame.GetFinalMatrix() );
 	}
 
 	std::string name = m_tags["name"];
 
-	m_geometry->Render( renderInfo, m_geometryInstanceData.get() );
+	m_geometry->Render( myRenderInfo, m_geometryInstanceData.get() );
 
 	/* TODO: DX11:
 	if( renderInfo.IsOptionTrue( RenderOption::RenderAllBBox ) || renderInfo.IsOptionTrue( RenderOption::RenderBBox ) )

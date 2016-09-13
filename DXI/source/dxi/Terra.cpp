@@ -900,7 +900,7 @@ void Terra::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData 
 {
 }
 
-void Terra::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void Terra::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	m_primitiveList.Render( renderInfo );
 

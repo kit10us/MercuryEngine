@@ -1,15 +1,16 @@
 <?xml version="1" encoding="iso-8859-1"?>
 <xml>
 <font>
-  <effect>
+  <effect name="font1_2d">
     <texture name="fonttexture1" source="fonttexture1.png"/>
-    <vertexshader name="textured2d" source="shaders/textured2d.shader" entry="vs_main" version="vs_1_1">
-	<vd>{"Position":"Float3","Tex":"TexCoord"}</vd>
-	</vertexshader>
-	
-    <pixelshader name="textured2d" source="shaders/textured2d.shader" entry="ps_main" version="ps_1_1"/>
+    <vertexshader name="textured2d" source="shaders/textured2d.shader" entry="vs_main" profile="vs_1_1">
+	  <vd>
+	    <element name="Position" type="Float3"/>
+		<element name="Tex" type="TexCoord"/>
+      </vd>
+	</vertexshader>	
+    <pixelshader name="textured2d" source="shaders/textured2d.shader" entry="ps_main" profile="ps_1_1"/>
 	<blend>True, SrcAlpha, InvSrcAlpha</blend>
-
   </effect>
   <character key="invalid" texture="fonttexture1" sprite="99"/>
   <character key=" " texture="fonttexture1" sprite="0"/>

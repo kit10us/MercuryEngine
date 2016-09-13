@@ -1,8 +1,7 @@
 <xml>
   <shape>
     <type>cube</type>
-    <fvf>XYZ | Diffuse | Tex1</fvf>
-    <texture name="borgcube" source="borgcube.bmp"/>
+    <effect name="cube" source="EffectTextured.xml"/>
     <size3>2,2,2</size3>
     <diffuse>255,0,0,255</diffuse>
     <center>-4.5, 3, 0</center>

@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/TextureFactory.h>
+#include <dxi/factory/TextureFactory.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <qxml/Document.h>
 
@@ -30,12 +30,12 @@ Texture * TextureJsonFactory::Produce( qjson::Object json )
 	return new Texture( source, flags );
 }
 
-Texture * TextureXmlNodeFactory::Produce( const qxml::Element * node )
+Texture * TextureXmlNodeFactory::Produce( const qxml::Element & node )
 {
-	unify::Path source( unify::Path( node->GetDocument()->GetPath() ).DirectoryOnly() + node->GetAttribute< std::string >( "source" ) );
+	unify::Path source( unify::Path( node.GetDocument()->GetPath() ).DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
 
 	unsigned int flags = 0;
-	if( node->HasAttributes( "lockable" ) )
+	if( node.HasAttributes( "lockable" ) )
 	{
 		flags |= TEXTURE_LOCKABLE;
 	}

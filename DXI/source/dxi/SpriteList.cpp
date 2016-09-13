@@ -18,7 +18,7 @@ void SpriteList::AddSprite( const Sprite & sprite )
 	m_sprites.push_back( sprite );
 }
 
-void SpriteList::Render( RenderInfo renderInfo )
+void SpriteList::Render( const RenderInfo & renderInfo )
 {
 	for( auto & sprite : m_sprites )
 	{

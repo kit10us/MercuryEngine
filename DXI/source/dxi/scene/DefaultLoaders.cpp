@@ -15,72 +15,36 @@ ImportLF::ImportLF( SceneLoader & sceneLoader )
 {
 }
 
-void ImportLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
+void ImportLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
+	unify::Path source( unify::Path( element.GetDocument()->GetPath() ).DirectoryOnly() + element.GetAttribute( "source" )->GetString() );
 	m_sceneLoader.LoadSceneFromXML( scene, source.ToString() );
 }
 
-void AddPathsLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
+void ResourcesLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
-	//unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute< std::string >( "source" ) );
+	core::Game::GetInstance()->GetResourceHub().Load( element );
+}																	
+
+void AddPathsLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
+{
+	//unify::Path source( unify::Path( element.GetDocument()->GetPath() ).DirectoryOnly() + element.GetAttribute< std::string >( "source" ) );
 	//scene->GetPathSystem().LoadFromFile( source );
 	throw new exception::NotImplemented;
 }
 
-void TextureLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
+void AddObjectLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
-	core::Game::GetGameInstance()->GetManager< Texture >()->Add( element );
-}
+	core::Game & game = *core::Game::GetInstance();
+	auto & geometryManager = *core::Game::GetInstance()->GetManager< Geometry >();
 
-void ShapeLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
-{
-	std::string name = element->GetAttribute( "name" )->GetString();
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
+	std::string name = element.GetAttribute( "name" )->GetString();
+	std::string geometry = element.GetAttributeElse< std::string >( "geometry", "" );
+	// TODO: std::string physics = element.GetAttributeElse< std::string >( "physics", "" );
+	scene::Object::shared_ptr object { scene->Add( name, new Object /*, physics )*/ ) };
+	object->SetGeometry( geometryManager.Find( geometry ) );
 
-	auto & geometryManager = *core::Game::GetGameInstance()->GetManager< Geometry >();
-
-	/* TODO:
-	Geometry * geometry = new Mesh( source, 0 );
-	geometryManager.Add( name, geometry );
-	*/
-}
-
-void MeshLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
-{
-	std::string name = element->GetAttribute( "name" )->GetString();
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
-
-	auto & geometryManager = *core::Game::GetGameInstance()->GetManager< Geometry >();
-
-	/* TODO:
-	Geometry * geometry = new Mesh( source, 0 );
-	geometryManager.Add( name, geometry );
-	*/
-}
-
-void TerraLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
-{
-	std::string name = element->GetAttribute( "name" )->GetString();
-	unify::Path source( unify::Path( element->GetDocument()->GetPath() ).DirectoryOnly() + element->GetAttribute( "source" )->GetString() );
-
-	auto & geometryManager = *core::Game::GetGameInstance()->GetManager< Geometry >();
-
-	qxml::Document document( source );
-    qxml::Element * rootNode = document.GetRoot();
-	/* TODO:
-    TerraLoader( rootNode );
-	*/
-}
-
-void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
-{
-	std::string name = element->GetAttribute( "name" )->GetString();
-	std::string geometry = element->GetAttributeElse< std::string >( "geometry", "" );
-	std::string physics = element->GetAttributeElse< std::string >( "physics", "" );
-	scene::Object::shared_ptr object; //TODO:  = scene->CreateObject( name, geometry, physics );
-
-	const qxml::Element * subNode = element->GetFirstChild();
+	const qxml::Element * subNode = element.GetFirstChild();
 	while( subNode )
 	{
 		if( subNode->GetTagName() == "position" )
@@ -91,6 +55,15 @@ void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::share
 				scene->FindPosition( subNode->GetText(), position );
 			}
 			object->GetFrame().SetPosition( position );
+		}
+		else if( subNode->GetTagName() == "lookat" )
+		{
+			unify::V3< float > position;
+			if( !XMLConvert( subNode, position ) )
+			{
+				scene->FindPosition( subNode->GetText(), position );
+			}
+			object->GetFrame().LookAt( position );
 		}
 		else if( subNode->GetTagName() == "rotation" )
 		{
@@ -141,16 +114,22 @@ void AddObjectLF::operator()( const qxml::Element * element, scene::Scene::share
 	}
 }
 
-void SetCameraLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
+void SetCameraLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
-	scene->SetCamera( element->GetText() );
+	core::Game & game = *core::Game::GetInstance();
+
+	scene->SetCamera( element.GetText() );
+
+	// TODO: This is a hack. It is a larger problem to solve this: variables/functions in scene.xml, math in scene.xml, migration to a scripting language, custom functions.
+	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, game.GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
+
 }
 
-void ControllerLF::operator()( const qxml::Element * element, scene::Scene::shared_ptr scene )
+void ControllerLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
 	/*
-	std::string objectName = element->GetAttribute< std::string >( "object" );
-	std::string typeName = element->GetAttribute< std::string >( "type" );
+	std::string objectName = element.GetAttribute< std::string >( "object" );
+	std::string typeName = element.GetAttribute< std::string >( "type" );
 	scene::Object * object = scene.get()->FindObject( objectName ).get();
 	if( ! object )
 	{

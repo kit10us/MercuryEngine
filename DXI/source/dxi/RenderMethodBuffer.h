@@ -35,6 +35,6 @@ namespace dxi
 
 		size_t GetSize() const;
 
-		void Render( RenderInfo renderInfo ) const;
+		void Render( const RenderInfo & renderInfo ) const;
 	};
 }

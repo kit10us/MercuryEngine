@@ -28,7 +28,7 @@ namespace dxi
 		void Invalidate();
 
 		// Geometry HAS TO Render
-		virtual void Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		// Geometry CAN Update, but doesn't have to
 		virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );

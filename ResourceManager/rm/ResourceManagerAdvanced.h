@@ -29,7 +29,7 @@ namespace rm
 		/// it's lifetime is not incremented.
 		/// createImmediately: true to load the resource from source immediately, if we expect to use it immediately.
 		/// </summary>
-		std::shared_ptr< ResourcePack< T > > AddResource( ResourceID id, std::shared_ptr< IFactoryFunctor< T > > factory, bool createImmediately = false );
+		std::shared_ptr< ResourcePack< T > > AddResource( std::string name, std::shared_ptr< IFactoryFunctor< T > > factory, bool createImmediately = false );
 
 		/// <summary>
 		/// Add resource with a specific ID via a source path.
@@ -39,7 +39,7 @@ namespace rm
 		/// without loading the texture more than once.
 		/// createImmediately: true to load the resource from source immediately, if we expect to use it immediately.
 		/// </summary>
- 		std::shared_ptr< ResourcePack< T > > AddResource( ResourceID id, unify::Path source, bool createImmediately = false );
+ 		std::shared_ptr< ResourcePack< T > > AddResource( std::string name, unify::Path source, bool createImmediately = false );
 
 		/// <summary>
 		/// Add a factory which takes in a path as a source, so that we can enable the use of the

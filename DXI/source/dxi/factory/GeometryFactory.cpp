@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/GeometryFactory.h>
+#include <dxi/factory/GeometryFactory.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/XMLConvert.h>
 #include <qxml/Document.h>
@@ -11,22 +11,19 @@ using namespace dxi;
 
 void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh );
 
-Geometry * GeometryXMLFactory::Produce( unify::Path source )
+Geometry * GeometryXMLFactory::Produce( const qxml::Element & geometryElement )
 {
-	if ( ! source.IsExtension( "xml" ) )   // TODO: Should push extension tests to the manager.
+	if ( ! geometryElement.HasAttributes( "version" ) )
 	{
-		return nullptr;
+		return 0;
 	}
 
 	Mesh * mesh = new Mesh;
 
-	qxml::Document doc( source );
-	const qxml::Element * geometryElement = doc.GetRoot()->FindFirstElement( "geometry" );
-
-	std::string version{ geometryElement->GetAttribute< std::string >( "version" ) };
-	if ( version == "1.2" )
+	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
+	if( version == "1.2" )
 	{
-		LoadMesh_1_2( *geometryElement, mesh );
+		LoadMesh_1_2( geometryElement, mesh );
 	}
 	else
 	{
@@ -38,9 +35,10 @@ Geometry * GeometryXMLFactory::Produce( unify::Path source )
 	return mesh;
 }
 
+
 void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 {
-	core::Game & game = *dxi::core::Game::GetGameInstance();
+	core::Game & game = *dxi::core::Game::GetInstance();
 
 	// Managers to store sub-resources.
 	auto textureManager = game.GetManager< Texture >();

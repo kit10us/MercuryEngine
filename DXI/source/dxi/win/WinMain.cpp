@@ -17,7 +17,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		// Windows OS specific...
 		std::shared_ptr< dxi::win::WindowsOS > windowsOS { new dxi::win::WindowsOS( hInstance, hPrevInstance, lpszCmdLine, nCmdShow ) };
 
-		dxi::core::Game & game = *dxi::core::Game::GetGameInstance();
+		dxi::core::Game & game = *dxi::core::Game::GetInstance();
 
 		if ( ! game.Initialize( windowsOS ) )
 		{

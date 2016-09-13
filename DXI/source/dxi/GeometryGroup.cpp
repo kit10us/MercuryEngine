@@ -39,7 +39,7 @@ void GeometryGroup::Clear()
 	m_geometryList.clear();
 }
 
-void GeometryGroup::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void GeometryGroup::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	// Render all geometry...
 	for( std::vector< Geometry::shared_ptr >::iterator itr = m_geometryList.begin(); itr != m_geometryList.end(); ++itr )

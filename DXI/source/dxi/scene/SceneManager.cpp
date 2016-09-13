@@ -2,7 +2,10 @@
 // All Rights Reserved
 
 #include <dxi/scene/SceneManager.h>
+#include <dxi/core/Game.h>
+#include <qxml/Document.h>
 #include <dxi/exception/NotImplemented.h>
+#include <dxi/exception/FailedToCreate.h>
 
 using namespace dxi;
 using namespace scene;
@@ -33,19 +36,36 @@ bool SceneManager::GetEnabled() const
 	return m_enabled;
 }
 
-Scene::shared_ptr SceneManager::Add( const std::string & name, scene::Scene * scene )
+SceneLoader & SceneManager::GetSceneLoader()
+{
+	return m_sceneLoader;
+}
+
+Scene::shared_ptr SceneManager::Add( std::string name, scene::Scene * scene )
 {
     Scene::shared_ptr sceneSharedPtr( scene );
 	m_scenes[ name ] = sceneSharedPtr;
     return sceneSharedPtr;
 }
 
-Scene::shared_ptr SceneManager::Load( const std::string & sceneName, const unify::Path & scenePath )
+Scene::shared_ptr SceneManager::Load( std::string name, unify::Path scenePath )
 {
-	throw exception::NotImplemented( "SceneManager::Load" );
+	Scene::shared_ptr scene = Find( name ); 
+	if ( scene.get() )
+	{
+		throw exception::FailedToCreate( "Scene \"" + name + "\" already exists!" );
+	}
+
+	scene.reset( new Scene );
+
+	m_sceneLoader.LoadSceneFromXML( scene, scenePath );
+
+	m_scenes[name] = scene;
+
+	return scene;
 }
 
-Scene::shared_ptr SceneManager::Find( const std::string & name )
+Scene::shared_ptr SceneManager::Find( std::string name )
 {
 	std::map< std::string, Scene::shared_ptr >::iterator itr = m_scenes.find( name );
 	return itr == m_scenes.end() ? Scene::shared_ptr() : itr->second;

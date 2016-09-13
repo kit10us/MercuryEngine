@@ -17,7 +17,6 @@ namespace dxi
 	class PixelShaderXMLFactory : public rm::IXMLFactory< PixelShader >
 	{
 	public:
-		PixelShader * Produce( unify::Path path ) override;
-		PixelShader * Produce( const qxml::Element * node ) override;
+		PixelShader * Produce( const qxml::Element & node ) override;
 	};
 }

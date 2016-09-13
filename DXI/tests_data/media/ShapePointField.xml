@@ -1,8 +1,7 @@
 <xml>
   <shape>
     <type>pointfield</type>
-    <fvf>XYZ | Diffuse | Tex1</fvf>
-    <texture name="borgcube" source="borgcube.bmp"/>
+    <effect name="cube" source="EffectTextured.xml"/>
     <majorradius>1</majorradius>
     <minorradius>.5</minorradius>
     <count>1000</count>

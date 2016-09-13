@@ -35,19 +35,21 @@ void Mesh::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
 	}
 }
 
-void Mesh::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
+	RenderInfo myRenderInfo( renderInfo );
+
 	if( instanceData )
 	{
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		renderInfo.SetFrameSetInstance( &meshInstanceData->GetFrameSetInstance() );
+		myRenderInfo.SetFrameSetInstance( &meshInstanceData->GetFrameSetInstance() );
 	}
-	m_primitiveList.Render( renderInfo );
+	m_primitiveList.Render( myRenderInfo );
 
-	if( instanceData && renderInfo.IsOptionTrue( RenderOption::RenderFrames ) )
+	if( instanceData && myRenderInfo.IsOptionTrue( RenderOption::RenderFrames ) )
 	{
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		meshInstanceData->RenderFrames( renderInfo.GetFinalMatrix(), true, true );
+		meshInstanceData->RenderFrames( myRenderInfo.GetFinalMatrix(), true, true );
 	}
 }
 

@@ -145,8 +145,10 @@ void Sprite::Update( unify::Seconds elapsed )
 	SyncSizeToPixels();
 }
 
-void Sprite::Render( RenderInfo renderInfo )
+void Sprite::Render( const RenderInfo & renderInfo )
 {
+	RenderInfo myRenderInfo( renderInfo );
+
 	// Get our writers...
 	VertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
 	VertexDeclaration vd = vb.GetVertexDeclaration();
@@ -179,13 +181,13 @@ void Sprite::Render( RenderInfo renderInfo )
 	vb.Unlock();
 	vb.Use();
 
-	float width = static_cast< float >( core::Game::GetGameInstance()->GetOS().GetResolution().width );
-	float height = static_cast< float >( core::Game::GetGameInstance()->GetOS().GetResolution().height );
+	float width = static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().width );
+	float height = static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().height );
 	unify::Matrix matrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.0f, 1000.0f );
-	renderInfo.SetFinalMatrix( matrix );
+	myRenderInfo.SetFinalMatrix( matrix );
 
 	// Use effect before setting the texture explicitly, as this effect will attempt to set the texture (likely unset it as it's probably empty).
-	m_effect->Use( renderInfo ); 
+	m_effect->Use( myRenderInfo );
 	m_blend.Use();
 	m_animationInstance.GetFrame().GetTexture()->Use( 0 );
 	

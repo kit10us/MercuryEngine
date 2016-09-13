@@ -1,8 +1,7 @@
 <xml>
   <shape>
     <type>plane</type>
-    <fvf>XYZ | Diffuse | Tex1</fvf>
-    <texture name="borgcube" source="borgcube.bmp"/>
+    <effect name="cube" source="EffectTextured.xml"/>
     <segments>2</segments>
     <size2>2,2</size2>
     <diffuse>0,255,255,255</diffuse>

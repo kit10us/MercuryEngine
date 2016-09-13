@@ -51,7 +51,7 @@ void MyGame::Startup()
 	Texture::shared_ptr texture = GetManager< Texture >()->Add( "image", new Texture( "media/Sig10_1024.jpg" ) );
 	m_effect->SetTexture( 0, texture );
 
-	// Get the vertex declaration...
+	// Get the vertex declaration, which describes the layout for the vertex...
 	VertexDeclaration vd = m_effect->GetVertexShader()->GetVertexDeclaration();
 
 	// Create a vertex buffer...
@@ -124,20 +124,20 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 void MyGame::Render()
 {
 	// -- Render code goes here. --
-	RenderInfo renderInfo;
+	RenderInfo renderInfo2D;
 
 	unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
-	renderInfo.SetFinalMatrix( projectionMatrix );
+	renderInfo2D.SetFinalMatrix( projectionMatrix );
 
 	m_VB.Use();
-	m_effect->Use( renderInfo );
+	m_effect->Use( renderInfo2D );
 
 	RenderMethod methodNoIB = RenderMethod( PrimitiveType::TriangleList, 0, 3, 2, m_effect );
-	methodNoIB.Render( renderInfo );
+	methodNoIB.Render( renderInfo2D );
 
 	RenderMethod methodWithIB = RenderMethod(  PrimitiveType::TriangleList, 0, 6, 4, 0, 2, m_effect );
 	m_IB.Use();
-	methodWithIB.Render( renderInfo );
+	methodWithIB.Render( renderInfo2D );
 
 	Game::Render();
 }

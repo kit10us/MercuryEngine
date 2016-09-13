@@ -25,9 +25,12 @@ namespace dxi
 			TextBox( std::shared_ptr< Font > font, const unify::V2< float > & position, const FontString & fontString, float scale = float( 1.0f ) );
 			virtual ~TextBox();
 
+			std::shared_ptr< Font > GetFont();
+			const std::shared_ptr< Font > GetFont() const;
+
 			void SyncCharacterRenderList();
 			void Update( unify::Seconds elapsed );
-			void Render( RenderInfo & renderInfo, bool is3D );
+			void Render( const RenderInfo & renderInfo, bool is3D = false );
 
 		protected:
 			std::shared_ptr< Font > m_font;

@@ -1,8 +1,7 @@
 <xml>
   <shape>
     <type>circle</type>
-    <fvf>XYZ | Diffuse | Tex1</fvf>
-    <texture name="borgcube" source="borgcube.bmp"/>
+    <effect name="cube" source="EffectTextured.xml"/>
     <segments>24</segments>
     <radius>1</radius>
     <diffuse>255,0,0,255</diffuse>

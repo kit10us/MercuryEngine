@@ -9,11 +9,9 @@
 
 namespace dxi
 {
-	Effect * ProduceEffect( const qxml::Element * childNode );
-
-	class EffectSourceFactory : public rm::ISourceFactory< Effect >
+	class EffectXMLFactory : public rm::IXMLFactory< Effect >
 	{
 	public:
-		virtual Effect * Produce( unify::Path path ) override;
+		virtual Effect * Produce( const qxml::Element & element ) override;
 	};
 }

@@ -93,7 +93,7 @@ namespace dxi
 			static Game * s_gameInstance;
 
 		public:
-			static Game * GetGameInstance();
+			static Game * GetInstance();
 		};
 	}
 }

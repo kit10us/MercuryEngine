@@ -25,7 +25,7 @@ namespace dxi
             void Clear();
             void ForEach( IObjectFunctor & functor );
 			void Update( unify::Seconds elapsed, core::IInput & input );
-		    void Render( RenderInfo & renderInfo );
+		    void Render( const RenderInfo & renderInfo );
 
         private:
             // Consider weak_ptr.

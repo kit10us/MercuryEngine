@@ -43,7 +43,7 @@ void QLOD::Add( Geometry::shared_ptr geometry, float distanceStart )
 	ComputeBounds();
 }
 
-void QLOD::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void QLOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( m_list.empty() )
 	{

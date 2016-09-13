@@ -2,11 +2,12 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/EffectFactories.h>
-#include <dxi/TextureFactory.h>
-#include <dxi/VertexShaderFactory.h>
-#include <dxi/PixelShaderFactories.h>
-#include <dxi/GeometryFactory.h>
+#include <dxi/factory/EffectFactories.h>
+#include <dxi/factory/TextureFactory.h>
+#include <dxi/factory/VertexShaderFactory.h>
+#include <dxi/factory/PixelShaderFactories.h>
+#include <dxi/factory/GeometryFactory.h>
+#include <dxi/factory/ShapeFactory.h>
 #include <dxi/null/Input.h>
 #include <dxi/Input.h>
 
@@ -37,21 +38,24 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	// Create asset managers...
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
-	GetManager< Texture >()->AddFactory( new TextureSourceFactory );
+	GetManager< Texture >()->AddFactory( "dds", new TextureSourceFactory );
+	GetManager< Texture >()->AddFactory( "bmp", new TextureSourceFactory );
+	GetManager< Texture >()->AddFactory( "jpg", new TextureSourceFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
-	GetManager< Effect >()->AddFactory( new EffectSourceFactory );
+	GetManager< Effect >()->AddFactory( "effect", new EffectXMLFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
 	GetManager< PixelShader >()->AddFactory( new PixelShaderJsonFactory );
-	GetManager< PixelShader >()->AddFactory( new PixelShaderXMLFactory );
+	GetManager< PixelShader >()->AddFactory( "pixelshader", new PixelShaderXMLFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
 	GetManager< VertexShader >()->AddFactory( new VertexShaderJsonFactory );
-	GetManager< VertexShader >()->AddFactory( new VertexShaderXMLFactory );
+	GetManager< VertexShader >()->AddFactory( "vertexshader", new VertexShaderXMLFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
-	GetManager< Geometry >()->AddFactory( new GeometryXMLFactory );
+	GetManager< Geometry >()->AddFactory( "geometry", new GeometryXMLFactory );
+	GetManager< Geometry >()->AddFactory( "shape", new ShapeXMLFactory );
 
 	m_sceneManager.reset( new scene::SceneManager );
 
@@ -222,7 +226,7 @@ IInput & Game::GetInput()
 	return *m_input;
 }
 
-Game * Game::GetGameInstance()
+Game * Game::GetInstance()
 {
 	return s_gameInstance;
 }

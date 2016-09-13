@@ -3,18 +3,22 @@
 
 #pragma once
 
-#include <qxml/Attribute.h>
-#include <unify/FStream.h>
-#include <unify/LinkList.h>
-#include <unify/unify.h>
-#include <vector>
-#include <list>
+#include <qxml/Element.h>
 
 namespace qxml
 {
 	class XPath
 	{
 	public:
-		// TODO:
+		XPath();
+		XPath( std::string path );
+		~XPath();
+
+		std::string GetPath() const;
+
+		bool Test( const qxml::Element & element ) const;
+
+	private:
+		std::string m_path;		
 	};
 }

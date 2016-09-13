@@ -59,9 +59,9 @@ bool Element::HasAttributes( const std::string & name ) const
     for( std::vector< std::string >::const_iterator itrTok = names.begin(); itrTok != names.end(); ++itrTok )
     {
         bool foundMatch = false;
-		for( std::vector< Attribute::shared_ptr >::const_iterator itr = m_attributeList.begin(), end = m_attributeList.end(); itr != end; ++itr )
+		for( auto & itr : m_attributeList )
 		{
-            const Attribute & currentAttribute = *(*itr);
+            const Attribute & currentAttribute = *itr;
             const std::string & attributeToFindText = *itrTok;
             std::string left;
             std::string right;

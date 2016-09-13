@@ -12,7 +12,7 @@ namespace dxi
 {
 	namespace font
 	{
-                // Contains attributes on a single character, where it came from, and how to render it.
+        // Contains attributes on a single character, where it came from, and how to render it.
 		class Character
 		{
 		public:
@@ -32,10 +32,21 @@ namespace dxi
 			Character( Geometry::shared_ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset3D );
 			~Character() throw ();
 
+			Source::TYPE GetSource() const;
+
+			std::shared_ptr< Effect > GetEffect();
+			const std::shared_ptr< Effect > GetEffect() const;
+
+			const animation::Instance & GetAnimationInstance() const;
+
+			std::shared_ptr< Geometry > GetGeometry();
+			const std::shared_ptr< Geometry > GetGeometry() const;
+
+			unify::Size< float > GetSize() const;
+
 			bool empty() const;
-			const unify::Size< float > & GetSize() const;
 			void Update( unify::Seconds elapsed );
-			void Render( RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D );
+			void Render( const RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D );
 
 		protected:
 			Source::TYPE m_source;

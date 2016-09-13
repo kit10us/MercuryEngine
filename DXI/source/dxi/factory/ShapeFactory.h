@@ -11,4 +11,10 @@ namespace dxi
 	public:
 		Geometry * Produce( qjson::Object json ) override;
 	};
+
+	class ShapeXMLFactory : public rm::IXMLFactory< Geometry >
+	{
+	public:
+		Geometry * Produce( const qxml::Element & element ) override;
+	};
 }

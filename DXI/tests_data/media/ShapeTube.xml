@@ -1,8 +1,7 @@
 <xml>
   <shape>
     <type>tube</type>
-    <fvf>XYZ | Diffuse | Tex1</fvf>
-    <texture name="borgcube" source="borgcube.bmp"/>
+    <effect name="cube" source="EffectTextured.xml"/>
     <segments>24</segments>
     <majorradius>1</majorradius>
     <minorradius>0.5</minorradius>

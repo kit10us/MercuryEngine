@@ -69,7 +69,7 @@ namespace dxi
 		void Invalidate();
 
 		// ::Geometry...
-		void Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 		void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
 
 		void Add( Geometry::shared_ptr geometry, float distance );

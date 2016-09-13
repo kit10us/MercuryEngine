@@ -74,7 +74,7 @@ namespace dxi
 		    void SetController( controllers::IController::shared_ptr controller );
 			
 			void Update( unify::Seconds elapsed, core::IInput & input );
-		    void Render( RenderInfo & renderInfo = RenderInfo::RenderInfoStandalone() );
+		    void Render( const RenderInfo & renderInfo = RenderInfo::RenderInfoStandalone() );
 		    
             void RenderBBox( bool bTF );
 		    bool RenderBBox() const;

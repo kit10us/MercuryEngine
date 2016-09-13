@@ -6,7 +6,7 @@
 #include <dxi/Mesh.h>
 #include <dxi/GeometryGroup.h>
 #include <dxi/Terra.h>
-#include <dxi/EffectFactories.h>
+#include <dxi/factory/EffectFactories.h>
 
 /// <summary>
 /// "Terra geometry creation"

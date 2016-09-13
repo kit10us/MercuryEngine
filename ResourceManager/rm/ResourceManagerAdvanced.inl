@@ -11,18 +11,18 @@ ResourceManagerAdvanced< T >::~ResourceManagerAdvanced()
 }
 
 template< typename T >
-std::shared_ptr< ResourcePack< T > > ResourceManagerAdvanced< T >::AddResource( ResourceID id, std::shared_ptr< IFactoryFunctor< T > > factory, bool createImmediately )
+std::shared_ptr< ResourcePack< T > > ResourceManagerAdvanced< T >::AddResource( std::string name, std::shared_ptr< IFactoryFunctor< T > > factory, bool createImmediately )
 {
 	ResourcePack< T > pack;
 	bool exists = false;
 
 	// Attempt to find the resource ifit already exists...
-	auto itr = m_resources.find( id );
+	auto itr = m_resources.find( name );
 	if ( itr == m_resources.end() )
 	{
 		// Resource was not found, add a new one.
 		pack = ResourcePack< T >( factory );
-		m_resources[id] = pack;
+		m_resources[ name ] = pack;
 	}
 	else
 	{
@@ -41,7 +41,7 @@ std::shared_ptr< ResourcePack< T > > ResourceManagerAdvanced< T >::AddResource( 
 }
 
 template< typename T >
-std::shared_ptr< ResourcePack< T > > ResourceManagerAdvanced< T >::AddResource( ResourceID id, unify::Path source, bool createImmediately )
+std::shared_ptr< ResourcePack< T > > ResourceManagerAdvanced< T >::AddResource( std::string name, unify::Path source, bool createImmediately )
 {
 	return AddResource( id, new SourceFactoryFunctor< T >( this, source ), createImmediately );
 }

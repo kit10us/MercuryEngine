@@ -2,9 +2,9 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/PixelShaderFactories.h>
-#include <dxi/VertexShaderFactory.h>
-#include <dxi/ShapeFactory.h>
+#include <dxi/factory/PixelShaderFactories.h>
+#include <dxi/factory/VertexShaderFactory.h>
+#include <dxi/factory/ShapeFactory.h>
 
 using namespace dxi;
 using namespace core;
@@ -18,27 +18,10 @@ public:
 		// Call base startup.
 		Game::Startup();
 
-		// Add a texture.
-		GetManager< Texture >()->Add( "borgcube", "media/borgcube.bmp" );
-
-		// Create a vertex declaration from JSON.
-		qjson::Object vertexJson = { {"Position", "Float3" }, { "Diffuse", "Color" }, { "Tex0", "Float2" } };
-		VertexDeclaration vd( vertexJson );
-
-		// Load shaders.
-		PixelShader::shared_ptr ps = GetManager< PixelShader >()->Add( MakePixelShaderJson( "textured_2d",  "media/shaders/textured2d.shader", "ps_main", "ps_1_1" ) );
-		VertexShader::shared_ptr vs = GetManager< VertexShader >()->Add( MakeVertexShaderJson( "textured_2d", "media/shaders/textured2d.shader", "vs_main", "vs_1_1", vertexJson ) );
-
-		// Create an effect.
-		Effect::shared_ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
-		borgCubeEffect->SetVertexShader( vs );
-		borgCubeEffect->SetPixelShader( ps );
-		borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
-		
         // Create geometry.
 		{
 			shapes::ShapeBaseParameters commonParameters;
-			commonParameters.SetEffect( GetManager< Effect >()->Find( "borgcube" ) );
+			commonParameters.SetEffect( GetManager< Effect >()->Add( "borgcube", "media/EffectBorgCube.xml" ) );
 
 			shapes::CubeParameters cubeParameters;
 			cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
@@ -137,10 +120,12 @@ public:
 
 	bool Update( unify::Seconds elapsed, IInput & input )
 	{
+		/*
 		// Use of camera controls to simplify camera movement...
 		scene::Object::shared_ptr cameraObject = GetSceneManager()->Find( "scene" )->GetCamera().GetObject();
 		cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
 		cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+		*/
 
 		return Game::Update( elapsed, input );
 	}

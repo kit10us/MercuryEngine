@@ -113,7 +113,7 @@ RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned i
 	return RenderMethod( PrimitiveType::PointList, startVertex, pointCount, pointCount, effect, false );
 }
 
-void RenderMethod::Render( RenderInfo & renderInfo ) const
+void RenderMethod::Render( const RenderInfo & renderInfo ) const
 {
 	HRESULT hr = S_OK;
 

@@ -13,7 +13,7 @@ namespace dxi
 		SpriteList();
 		~SpriteList() throw ();
 		void AddSprite( const Sprite & sprite );
-		void Render( RenderInfo renderInfo );
+		void Render( const RenderInfo & renderInfo );
 		void Update( unify::Seconds elapsed );
 
 	private:

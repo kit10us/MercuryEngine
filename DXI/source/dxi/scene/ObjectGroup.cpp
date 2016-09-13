@@ -45,7 +45,7 @@ void ObjectGroup::Update( unify::Seconds elapsed, core::IInput & input )
     }
 }
 
-void ObjectGroup::Render( RenderInfo & renderInfo )
+void ObjectGroup::Render( const RenderInfo & renderInfo )
 {
     for ( size_t index = 0, count = m_objects.size(); index != count; ++index )
     {

@@ -99,7 +99,7 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
-	int textureMode = parameters.Get( "texturemode", TM_TEXTURECORRECT );
+	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::shared_ptr effect = parameters.Get< Effect::shared_ptr >( "effect" );
 	VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
@@ -262,7 +262,7 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 	// Set the vertices texture coords...
 	switch( textureMode )
 	{
-	case TM_TEXTURECORRECT:
+	case TextureMode::Correct:
 	{
 		int v, h;
 		for( v = 0; v < 4; v++ )
@@ -284,7 +284,7 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 		vd.WriteVertex( lock, 23, texE, unify::TexCoords( 1, 1 ) );
 	} break;
 
-	case TM_TEXTUREWRAPPED:
+	case TextureMode::Wrapped:
 	{
 		float l1 = 0, l2 = 0.33f;
 		float m1 = 0.33f, m2 = 0.66f;
@@ -771,7 +771,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 	unify::Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
-	int textureMode = parameters.Get( "texturemode", TM_TEXTURECORRECT );
+	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::shared_ptr effect = parameters.Get< Effect::shared_ptr >( "effect" );
 	VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
@@ -915,7 +915,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 	// Set the vertices texture coords...
 	switch( textureMode )
 	{
-	case TM_TEXTURECORRECT:
+	case TextureMode::Correct:
 		{
 		// Sides
 		for( int s = 0; s < 4; s++ )
@@ -933,7 +933,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 
 		} break;
 
-	case TM_TEXTUREWRAPPED:
+	case TextureMode::Wrapped:
 		{
 		float l1 = 0,		l2 = 0.33f;
 		float m1 = 0.33f,	m2 = 0.66f;
@@ -1867,7 +1867,7 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 	float radius = parameters.Get( "radius", 1.0f );
 	float height = parameters.Get( "height", 1.0f );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
-	int textureMode = parameters.Get( "texturemode", TM_TEXTURECORRECT );
+	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	Effect::shared_ptr effect = parameters.Get< Effect::shared_ptr >( "effect" );
 	VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -2070,7 +2070,7 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
-	int textureMode = parameters.Get( "texturemode", TM_TEXTURECORRECT );
+	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::shared_ptr effect = parameters.Get< Effect::shared_ptr >( "effect" );
 	VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
@@ -2235,7 +2235,7 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 	// Set the vertices texture coords...
 	switch( textureMode )
 	{
-	case TM_TEXTURECORRECT:
+	case TextureMode::Correct:
 		{
 		int v, h;
 		for( v = 0; v < 4; v++ )
@@ -2257,7 +2257,7 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 		vd.WriteVertex( lock, 23, texE, unify::TexCoords( 1, 1 ) );
 		} break;
 
-	case TM_TEXTUREWRAPPED:
+	case TextureMode::Wrapped:
 		{
 		float l1 = 0,		l2 = 0.33f;
 		float m1 = 0.33f,	m2 = 0.66f;

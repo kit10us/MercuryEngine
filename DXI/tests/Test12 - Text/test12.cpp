@@ -17,8 +17,8 @@
 #include <dxi/font/TextBox3D.h>
 #include <dxi/win/DxDevice.h>
 #include <dxi/RenderState.h>
-#include <dxi/PixelShaderFactories.h>
-#include <dxi/VertexShaderFactory.h>
+#include <dxi/factory/PixelShaderFactories.h>
+#include <dxi/factory/VertexShaderFactory.h>
 
 using namespace dxi;
 using namespace core;
@@ -33,7 +33,7 @@ protected:
 	animation::SpriteManager::shared_ptr m_spriteManager;
 	font::FontManager::shared_ptr m_fontManager;
 	VertexBuffer m_triangleVB;
-	std::shared_ptr< font::IText > m_textBoxSimple;
+	std::shared_ptr< font::TextBox > m_textBoxSimple;
 	std::shared_ptr< font::IText > m_textBoxSimpleWith3DCharacters;
 	std::shared_ptr< font::TextBox3D > m_textBoxSimpleIn3D;
 	std::shared_ptr< font::TextBox3D > m_textBoxSimpleWidth3DCharactersIn3D;
@@ -133,9 +133,9 @@ public:
 
 	void Render()
 	{
-	
 		RenderInfo renderInfo3D;
-		renderInfo3D.SetFinalMatrix( m_view.Inverse() * unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS()->GetResolution().AspectRatioHW(), 1, 1000 ) );
+		renderInfo3D.SetViewMatrix( m_view.Inverse() );
+		renderInfo3D.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 		Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_3d" );
 		effect->Use( renderInfo3D );
 		m_triangleVB.Use();
@@ -143,10 +143,10 @@ public:
 		win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLELIST, 0, 2 );
 
 		RenderInfo renderInfo2D;
-		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS()->GetResolution().width ), static_cast< float >( GetOS()->GetResolution().height ), 0, 1, 1000 );
-		renderInfo2D.SetFinalMatrix( projectionMatrix );
+		unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( GetOS().GetResolution().width ), static_cast< float >( GetOS().GetResolution().height ), 0, 1, 1000 );
+		renderInfo2D.SetProjectionMatrix( projectionMatrix );
 
-		if ( m_textBoxSimple ) m_textBoxSimple->Render( renderInfo2D );
+		if ( m_textBoxSimple ) 	m_textBoxSimple->Render( renderInfo2D, false );
 		if ( m_textBoxSimpleIn3D ) m_textBoxSimpleIn3D->Render( renderInfo3D, 0 );
 		if ( m_textBoxSimpleWidth3DCharactersIn3D )m_textBoxSimpleWidth3DCharactersIn3D->Render( renderInfo3D, 0 );
 		if ( m_textBoxSimpleWith3DCharacters ) m_textBoxSimpleWith3DCharacters->Render( renderInfo3D );

@@ -14,9 +14,9 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/RenderState.h>
-#include <dxi/EffectFactories.h>
+#include <dxi/factory/EffectFactories.h>
 #include <dxi/Mesh.h>
-#include <dxi/ShapeFactory.h>
+#include <dxi/factory/ShapeFactory.h>
 #include <dxi/pathing/Path.h>
 #include <dxi/pathing/general/Split.h>
 #include <dxi/pathing/general/Parallel.h>

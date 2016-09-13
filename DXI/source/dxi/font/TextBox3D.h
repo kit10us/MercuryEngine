@@ -21,7 +21,7 @@ namespace dxi
 			TextBox3D();
 			TextBox3D( IText * text );
 			virtual ~TextBox3D();
-			virtual void Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+			virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 			virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
 
 		protected:

@@ -56,7 +56,7 @@ size_t RenderMethodBuffer::GetSize() const
 	return m_methodList.size();
 }
 
-void RenderMethodBuffer::Render( RenderInfo renderInfo ) const
+void RenderMethodBuffer::Render( const RenderInfo &renderInfo ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )

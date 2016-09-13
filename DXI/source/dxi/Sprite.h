@@ -46,7 +46,7 @@ namespace dxi
 		unify::Size< float > GetPixelSize() const;
 
 		void Update( unify::Seconds elapsed );
-		void Render( RenderInfo renderInfo );
+		void Render( const RenderInfo & renderInfo );
 
 	private:
 		void SyncSizeToPixels();

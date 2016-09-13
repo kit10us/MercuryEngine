@@ -32,7 +32,7 @@ void CharacterRender::Update( unify::Seconds elapsed )
 	m_character.Update( elapsed );
 }
 
-void CharacterRender::Render( RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D )
+void CharacterRender::Render( const RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D )
 {
 	m_character.Render( renderInfo, origin, m_offset, m_scale, is3D );
 }

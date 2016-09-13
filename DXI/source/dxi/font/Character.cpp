@@ -49,14 +49,44 @@ Character::~Character() throw ()
 {
 }
 
+Character::Source::TYPE Character::GetSource() const
+{
+	return m_source;
+}
+
+std::shared_ptr< Effect > Character::GetEffect()
+{
+	return m_effect;
+}
+
+const std::shared_ptr< Effect > Character::GetEffect() const
+{
+	return m_effect;
+}
+
+const animation::Instance & Character::GetAnimationInstance() const
+{
+	return m_animationInstance;
+}
+
+std::shared_ptr< Geometry > Character::GetGeometry()
+{
+	return m_geometry;					  
+}
+
+const std::shared_ptr< Geometry > Character::GetGeometry() const
+{
+	return m_geometry;
+}
+
+unify::Size< float > Character::GetSize() const
+{
+	return m_size;
+}
+
 bool Character::empty() const
 {
 	return m_source == Source::Invalid;
-}
-
-const unify::Size< float > & Character::GetSize() const
-{
-	return m_size;
 }
 
 void Character::Update( unify::Seconds elapsed )
@@ -73,7 +103,7 @@ void Character::Update( unify::Seconds elapsed )
 	}
 }
 
-void Character::Render( RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D )
+void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D )
 {
 	unify::Matrix world( origin );
 
@@ -110,10 +140,11 @@ void Character::Render( RenderInfo & renderInfo, const unify::Matrix & origin, c
 			vb.Use();
 
 			world.Translate( unify::V3< float >( offset.x, offset.y, 0 ) );
-			
-			renderInfo.SetWorldMatrix( world * renderInfo.GetWorldMatrix() );
 
-			m_effect->Use( renderInfo );
+			RenderInfo myRenderInfo( renderInfo );
+			myRenderInfo.SetWorldMatrix( world * renderInfo.GetWorldMatrix() );
+
+			m_effect->Use( myRenderInfo );
 			m_animationInstance.GetFrame().GetTexture()->Use( 0 );
 
 			win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );

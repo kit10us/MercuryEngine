@@ -2,8 +2,8 @@
 // All Rights Reserved
 
 #include <dxi/font/Font.h>
-#include <dxi/EffectFactories.h>
-#include <dxi/GeometryFactory.h>
+#include <dxi/factory/EffectFactories.h>
+#include <dxi/factory/GeometryFactory.h>
 #include <dxi/core/Game.h>
 #include <qxml/Document.h>
 
@@ -28,24 +28,22 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 	// Check if the file exists...
 	qxml::Document doc( filePath );
 
-	auto textureManager = core::Game::GetGameInstance()->GetManager< Texture >();
-	auto effectManager = core::Game::GetGameInstance()->GetManager< Effect >();
-	auto geometryManager = core::Game::GetGameInstance()->GetManager< Geometry >();
+	auto textureManager = core::Game::GetInstance()->GetManager< Texture >();
+	auto effectManager = core::Game::GetInstance()->GetManager< Effect >();
+	auto geometryManager = core::Game::GetInstance()->GetManager< Geometry >();
 
-	qxml::Element * leaf = doc.GetRoot()->GetFirstChild();
-	while( leaf )
+	for( const auto & leaf : doc.GetRoot()->FindFirstElement( "font" )->Children() )
 	{
-        if ( leaf->IsTagName( "effect" ) )
+        if ( leaf.IsTagName( "effect" ) )
         {
-			std::string name = leaf->GetAttributeElse( "name", filePath.FilenameNoExtension() );
-			m_effect = effectManager->Add( name, filePath );
+			m_effect = effectManager->Add( leaf );
 			std::shared_ptr< VertexBuffer > scratchVB( new VertexBuffer( 6, m_effect->GetVertexShader()->GetVertexDeclaration() ) );
 			m_effect->SetScratchVertexBuffer( scratchVB );
         }
-		else if( leaf->IsTagName( "character" ) )
+		else if( leaf.IsTagName( "character" ) )
 		{
 			// General attributes...
-			CharacterKey key( leaf->GetAttributeElse< std::string >( "key", "" ) );
+			CharacterKey key( leaf.GetAttributeElse< std::string >( "key", "" ) );
 			if( key.empty() )
 			{
 				throw unify::Exception( "Font key is empty!" );
@@ -54,12 +52,12 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 			Character character;
 
 			// Textured...
-			if( leaf->HasAttributes( "texture" ) )
+			if( leaf.HasAttributes( "texture" ) )
 			{
 				// Animation...
-				if( leaf->HasAttributes( "group,sequence" ) )
+				if( leaf.HasAttributes( "group,sequence" ) )
 				{
-					std::string textureName( leaf->GetAttribute( "texture" )->GetString() );
+					std::string textureName( leaf.GetAttribute( "texture" )->GetString() );
 					if( ! textureManager->Exists( textureName ) )
 					{
 						throw unify::Exception( "Specfied texture for character font does not exist!" );
@@ -67,13 +65,13 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 
 					auto texture = { textureManager->Find( textureName ) };
 
-					std::string groupName( leaf->GetAttribute( "group" )->GetString() );
+					std::string groupName( leaf.GetAttribute( "group" )->GetString() );
 					if( ! spriteManager->GroupExists( groupName ) )
 					{
 						throw unify::Exception( "Specfied animation group for character font does not exist!" );
 					}
 
-					std::string sequenceName( leaf->GetAttribute( "sequence" )->GetString() );
+					std::string sequenceName( leaf.GetAttribute( "sequence" )->GetString() );
 					if( ! spriteManager->FindGroup( groupName )->SequenceExists( sequenceName ) )
 					{
 						throw unify::Exception( "Specfied animation sequece for character font does not exist!" );
@@ -83,16 +81,16 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 					character = Character( animationInstance, m_effect );
 				}
 				// Single frame...
-				else if( leaf->HasAttributes( "sprite" ) )
+				else if( leaf.HasAttributes( "sprite" ) )
 				{
-					std::string textureName( leaf->GetAttribute( "texture" )->GetString() );
+					std::string textureName( leaf.GetAttribute( "texture" )->GetString() );
 					if( ! textureManager->Exists( textureName ) )
 					{
 						throw unify::Exception( "Specfied texture for character font does not exist!" );
 					}
 
 					Texture::shared_ptr texture( textureManager->Find( textureName ) );
-					unsigned int sprite = leaf->GetAttributeElse< unsigned int >( "sprite", 0 );
+					unsigned int sprite = leaf.GetAttributeElse< unsigned int >( "sprite", 0 );
 
 					animation::Frame frame( texture, texture->GetSprite( sprite ) );
 					character = Character( frame, m_effect );
@@ -104,35 +102,35 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 
 			}
 			// Geometry...
-			else if( leaf->HasAttributes( "geometry" ) )
+			else if( leaf.HasAttributes( "geometry" ) )
 			{
-				if( ! leaf->HasAttributes( "width" ) )
+				if( ! leaf.HasAttributes( "width" ) )
 				{
 					throw unify::Exception( "Geometry font missing 'width' attribute!" );
 				}
-				if( ! leaf->HasAttributes( "height" ) )
+				if( ! leaf.HasAttributes( "height" ) )
 				{
 					throw unify::Exception( "Geometry font missing 'height' attribute!" );
 				}
 
 				unify::Size< float > size;
-				size.width = leaf->GetAttribute( "width" )->Get< float >();
-				size.height = leaf->GetAttribute( "height" )->Get< float >();
+				size.width = leaf.GetAttribute( "width" )->Get< float >();
+				size.height = leaf.GetAttribute( "height" )->Get< float >();
 
-				float geometryPostScale2D = leaf->GetAttributeElse< float >( "scale2d", 1 );
+				float geometryPostScale2D = leaf.GetAttributeElse< float >( "scale2d", 1 );
 				unify::V3< float > geometryPostOffset2D;
-				geometryPostOffset2D.x = leaf->GetAttributeElse< float >( "offset2dx", 0 );
-				geometryPostOffset2D.y = leaf->GetAttributeElse< float >( "offset2dy", 0 );
-				geometryPostOffset2D.z = leaf->GetAttributeElse< float >( "offset2dz", 0 );
+				geometryPostOffset2D.x = leaf.GetAttributeElse< float >( "offset2dx", 0 );
+				geometryPostOffset2D.y = leaf.GetAttributeElse< float >( "offset2dy", 0 );
+				geometryPostOffset2D.z = leaf.GetAttributeElse< float >( "offset2dz", 0 );
 
-				float geometryPostScale3D = leaf->GetAttributeElse< float >( "scale3d", 1 );
+				float geometryPostScale3D = leaf.GetAttributeElse< float >( "scale3d", 1 );
 				unify::V3< float > geometryPostOffset3D;
-				geometryPostOffset3D.x = leaf->GetAttributeElse< float >( "offset3dx", 0 );
-				geometryPostOffset3D.y = leaf->GetAttributeElse< float >( "offset3dy", 0 );
-				geometryPostOffset3D.z = leaf->GetAttributeElse< float >( "offset3dz", 0 );
+				geometryPostOffset3D.x = leaf.GetAttributeElse< float >( "offset3dx", 0 );
+				geometryPostOffset3D.y = leaf.GetAttributeElse< float >( "offset3dy", 0 );
+				geometryPostOffset3D.z = leaf.GetAttributeElse< float >( "offset3dz", 0 );
 
 				unify::Path geometryPath( filePath); 
-				geometryPath.ChangeFilename( leaf->GetAttribute("geometry")->GetString() );
+				geometryPath.ChangeFilename( leaf.GetAttribute("geometry")->GetString() );
 				std::string geometryName = geometryPath.FilenameNoExtension();
 				Geometry::shared_ptr geometry( geometryManager->Add( geometryName, geometryPath ) );
 				character = Character( geometry, size, geometryPostScale2D, geometryPostOffset2D, geometryPostScale3D, geometryPostOffset3D );
@@ -150,7 +148,6 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 				m_characterMap[ key ] = character;
 			}		
 		}
-		leaf = leaf->GetNext();
 	}
 
 	m_filePath = filePath;

@@ -17,7 +17,7 @@ std::string ResourceManagerBase< T >::GetName() const
 }
 
 template< typename T >
-void ResourceManagerBase< T >::AddResource( ResourceID id, T * resource )
+void ResourceManagerBase< T >::AddResource( std::string name, T * resource )
 {
 	if( Exists( id ) )
 	{
@@ -30,20 +30,20 @@ void ResourceManagerBase< T >::AddResource( ResourceID id, T * resource )
 }
 
 template< typename T >
-bool ResourceManagerBase< T >::Exists( ResourceID id ) const
+bool ResourceManagerBase< T >::Exists( std::string name ) const
 {
 	auto itr = m_resources.find( id );
 	return !(itr == m_resources.end());
 }
 
 template< typename T >
-std::shared_ptr< ResourcePack< T > > ResourceManagerBase< T >::Find( ResourceID id )
+std::shared_ptr< ResourcePack< T > > ResourceManagerBase< T >::Find( std::string name )
 {
 	return m_resources[ id ];
 }
 
 template< typename T >
-std::shared_ptr< const ResourcePack< T > > ResourceManagerBase< T >::Find( ResourceID id ) const
+std::shared_ptr< const ResourcePack< T > > ResourceManagerBase< T >::Find( std::string name ) const
 {
 	return m_resources[id];
 }

@@ -35,7 +35,7 @@ namespace dxi
 
 		void Destroy();
 
-		void Render( RenderInfo & renderInfo ) const;
+		void Render( const RenderInfo & renderInfo ) const;
 		
 		BufferSet & AddBufferSet();
 		size_t GetBufferSetCount() const;

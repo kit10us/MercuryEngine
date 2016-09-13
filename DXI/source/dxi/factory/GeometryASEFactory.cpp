@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/GeometryASEFactory.h>
+#include <dxi/factory/GeometryASEFactory.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/ASEDocument.h>
 #include <unify/String.h>
@@ -28,7 +28,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 		return nullptr;
 	}
 
-	core::Game & game = *dxi::core::Game::GetGameInstance();
+	core::Game & game = *dxi::core::Game::GetInstance();
 
 	// Managers to store sub-resources.
 	auto textureManager = game.GetManager< Texture >();

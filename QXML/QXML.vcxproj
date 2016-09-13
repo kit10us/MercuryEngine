@@ -166,6 +166,7 @@
     <ClCompile Include="source\qxml\Element.cpp" />
     <ClCompile Include="source\qxml\ExportDocument.cpp" />
     <ClCompile Include="source\qxml\XMLParameters.cpp" />
+    <ClCompile Include="source\qxml\XPath.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

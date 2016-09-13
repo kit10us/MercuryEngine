@@ -508,12 +508,6 @@
     <ClCompile Include="source\dxi\shapes\ConeParameters.cpp">
       <Filter>dxi\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\TextureFactory.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\VertexShaderFactory.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\LOD.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -559,23 +553,29 @@
     <ClCompile Include="source\dxi\win\DXRenderer.cpp">
       <Filter>dxi\win</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\GeometryFactory.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\ShapeFactory.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\EffectFactories.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\PixelShaderFactories.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\GeometryASEFactory.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\GeometryInstanceData.cpp">
       <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\EffectFactories.cpp">
+      <Filter>dxi\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\GeometryASEFactory.cpp">
+      <Filter>dxi\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\GeometryFactory.cpp">
+      <Filter>dxi\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\PixelShaderFactories.cpp">
+      <Filter>dxi\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\ShapeFactory.cpp">
+      <Filter>dxi\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\TextureFactory.cpp">
+      <Filter>dxi\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\factory\VertexShaderFactory.cpp">
+      <Filter>dxi\factory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -659,6 +659,9 @@
     <Filter Include="dxi\null">
       <UniqueIdentifier>{7ac1a0b5-601c-41c7-b36c-63857e04925c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dxi\factory">
+      <UniqueIdentifier>{cc686d27-8bb0-4cd9-ba25-ac3afa496a50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\dxi\events\ListenerMap.h">
@@ -727,12 +730,6 @@
     <ClInclude Include="source\dxi\shapes\ConeParameters.h">
       <Filter>dxi\shapes</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\TextureFactory.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\VertexShaderFactory.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\exception\UnsupportedValue.h">
       <Filter>dxi\exception</Filter>
     </ClInclude>
@@ -796,20 +793,26 @@
     <ClInclude Include="source\dxi\win\DXRenderer.h">
       <Filter>dxi\win</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\GeometryFactory.h">
-      <Filter>dxi</Filter>
+    <ClInclude Include="source\dxi\factory\EffectFactories.h">
+      <Filter>dxi\factory</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\ShapeFactory.h">
-      <Filter>dxi</Filter>
+    <ClInclude Include="source\dxi\factory\GeometryASEFactory.h">
+      <Filter>dxi\factory</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\EffectFactories.h">
-      <Filter>dxi</Filter>
+    <ClInclude Include="source\dxi\factory\GeometryFactory.h">
+      <Filter>dxi\factory</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\PixelShaderFactories.h">
-      <Filter>dxi</Filter>
+    <ClInclude Include="source\dxi\factory\PixelShaderFactories.h">
+      <Filter>dxi\factory</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\GeometryASEFactory.h">
-      <Filter>dxi</Filter>
+    <ClInclude Include="source\dxi\factory\ShapeFactory.h">
+      <Filter>dxi\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\factory\TextureFactory.h">
+      <Filter>dxi\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\factory\VertexShaderFactory.h">
+      <Filter>dxi\factory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -60,7 +60,7 @@ namespace dxi
 		size_t GetVertexBufferIndex() const;
 		size_t GetIndexBufferIndex() const;
 
-		void Render( RenderInfo & renderInfo ) const;
+		void Render( const RenderInfo & renderInfo ) const;
 
 	public:
 		PrimitiveType::TYPE primitiveType;

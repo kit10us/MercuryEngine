@@ -21,7 +21,7 @@ namespace dxi
 	class TextureXmlNodeFactory : public rm::IXMLFactory< Texture >
 	{
 	public:
-		Texture * Produce( const qxml::Element * node ) override;
+		Texture * Produce( const qxml::Element & node ) override;
 	};
 
 }

@@ -34,7 +34,7 @@ void GeometryPlacement::Invalidate()
 {
 }
 
-void GeometryPlacement::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void GeometryPlacement::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	// Render all geometry...
 	unify::Matrix mWorldOriginal;

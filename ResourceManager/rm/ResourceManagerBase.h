@@ -49,22 +49,22 @@ namespace rm
 		/// Throws an exception if a resource already exists with the same ID, since we are passing in an already allocated resource,
 		/// this could lead to a unmanaged resource pointer.
 		/// </summary>
-		void AddResource( ResourceID id, T * resource ) override;
+		void AddResource( std::string name, T * resource ) override;
 
 		/// <summary>
 		/// Returns true if a resource exists with the specified ID.
 		/// </summary>
-		bool Exists( ResourceID id ) const override;
+		bool Exists( std::string name ) const override;
 
 		/// <summary>
 		/// Find and return a resource.
 		/// </summary>
-		std::shared_ptr< ResourcePack< T > > Find( ResourceID id ) override;
+		std::shared_ptr< ResourcePack< T > > Find( std::string name ) override;
 
 		/// <summary>
 		/// Find and return a resource.
 		/// </summary>
-		std::shared_ptr< const ResourcePack< T > > Find( ResourceID id ) const override;
+		std::shared_ptr< const ResourcePack< T > > Find( std::string name ) const override;
 
 		/// <summary>
 		/// Return the number of resources.
@@ -73,7 +73,7 @@ namespace rm
 
 	private:
 		std::string m_resourceName;
-		std::map< ResourceID, std::shared_ptr< ResourcePack< T > >, ci_less > m_resources;
+		std::map< std::string, std::shared_ptr< ResourcePack< T > >, ci_less > m_resources;
 	};
 
 	#include <rm/ResourceManagerBase.inl>

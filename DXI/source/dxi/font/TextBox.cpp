@@ -26,6 +26,16 @@ TextBox::~TextBox()
 {
 }
 
+std::shared_ptr< Font > TextBox::GetFont()
+{
+	return m_font;
+}
+
+const std::shared_ptr< Font > TextBox::GetFont() const
+{
+	return m_font;
+}			  
+
 void TextBox::SyncCharacterRenderList()
 {
 	m_characterRenderList.clear();
@@ -35,7 +45,7 @@ void TextBox::SyncCharacterRenderList()
 	}
 
 	unify::V2< float > offset( m_position );
-        m_totalSize.Zero();
+    m_totalSize.Zero();
 	for( unsigned int i = 0; i < m_string.Size(); ++i )
 	{
 		CharacterKey key = m_string.GetKey( i );
@@ -56,7 +66,7 @@ void TextBox::Update( unify::Seconds elapsed )
 	}
 }
 
-void TextBox::Render( RenderInfo & renderInfo, bool is3D )
+void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 {
 	unify::Matrix oldProjection, oldView, oldWorld;
 	// TODO: Transform::Get( Transform::Index::World, oldWorld );
@@ -71,7 +81,7 @@ void TextBox::Render( RenderInfo & renderInfo, bool is3D )
 		// TODO: Transform::Get( Transform::Index::Projection, oldProjection );
 		// TODO: Transform::Get( Transform::Index::View, oldView );
 
-		unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( core::Game::GetGameInstance()->GetOS().GetResolution().width ), static_cast< float >( core::Game::GetGameInstance()->GetOS().GetResolution().height ), 0, -1, 1000 ) );
+		unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().width ), static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().height ), 0, -1, 1000 ) );
 		// TODO: Transform::Set( Transform::Index::Projection, projection );
 
 		RenderState::Set( RenderState::Clipping, false );
@@ -92,10 +102,9 @@ void TextBox::Render( RenderInfo & renderInfo, bool is3D )
 		win::DX::GetDxDevice()->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
 	}
 
-	CharacterRenderList::iterator itrEnd = m_characterRenderList.end();
-	for( CharacterRenderList::iterator itr = m_characterRenderList.begin(); itr != itrEnd; ++itr )
+	for( auto character : m_characterRenderList )
 	{
-		itr->Render( renderInfo, origin, is3D );
+		character.Render( renderInfo, origin, is3D );
 	}
 
 	// Restore matrices...

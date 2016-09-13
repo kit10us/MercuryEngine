@@ -26,11 +26,6 @@ namespace dxi
 
     namespace scene
     {
-        // Utility function to create an Object shared pointer from geometry pointer.
-		Object::shared_ptr MakeObject( Geometry * geometry );
-
-	    class Scene;
-
         class Scene : public events::ListenerMapOwner
 	    {
 	    public:

@@ -36,6 +36,16 @@ namespace rm
 		template< typename T >
 		rm::IResourceManager< T > * GetManager( std::string name );
 
+		///<summary>
+		/// Load a resource file.
+		///</summary>
+		void Load( unify::Path path );
+
+		///<summary>
+		/// Load a resource file.
+		///</summary>
+		void Load( const qxml::Element & element );
+
 	private:
 		/*
 		struct CompareNoCase

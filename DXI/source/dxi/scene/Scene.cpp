@@ -6,11 +6,6 @@
 #include <dxi/core/Game.h>
 #include <map>
 
-dxi::scene::Object::shared_ptr dxi::scene::MakeObject( dxi::Geometry * geometry )
-{
-	return dxi::scene::Object::shared_ptr( new dxi::scene::Object( dxi::Geometry::shared_ptr( geometry ) ) );
-}
-
 using namespace dxi;
 using namespace scene;
 
@@ -21,7 +16,7 @@ Scene::Scene()
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_viewport( core::Game::GetGameInstance()->GetOS().GetDefaultViewport() )
+, m_viewport( core::Game::GetInstance()->GetOS().GetDefaultViewport() )
 , m_color( 0, 0, 180, 255 )
 , m_renderPhysics( false )
 , m_hasFocus( false )
@@ -150,7 +145,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
 
         Frustum frustum( camera.GetMatrix() );
 
-        unify::Size< float > resolution = core::Game::GetGameInstance()->GetOS().GetResolution();
+        unify::Size< float > resolution = core::Game::GetInstance()->GetOS().GetResolution();
         unify::V2< float > mouseUnit = input.MouseV2< float >();
         mouseUnit /= unify::V2< float >( resolution.width, resolution.height );
 
@@ -300,10 +295,10 @@ void Scene::Render()
 	}
 
 	Viewport viewportBackup;
-	core::Game::GetGameInstance()->GetOS().GetRenderer()->GetViewport( viewportBackup );
+	core::Game::GetInstance()->GetOS().GetRenderer()->GetViewport( viewportBackup );
 
 	Viewport viewport;
-	core::Game::GetGameInstance()->GetOS().GetRenderer()->SetViewport( m_viewport );
+	core::Game::GetInstance()->GetOS().GetRenderer()->SetViewport( m_viewport );
 
 	// TODO: DX11 (this is moved to the begin scene, so we need to figure this out): win::DX::GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_color, 1.0f, 0 );
 	// TODO: DX11: win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
@@ -326,7 +321,7 @@ void Scene::Render()
 	Frustum frustum;
 	unify::Matrix view, projection;
 	
-	core::Game & game = *core::Game::GetGameInstance();
+	core::Game & game = *core::Game::GetInstance();
 
 	game.GetTransformManager()->CopyTransformFromTo( Transform::Index::View, view );
 	game.GetTransformManager()->CopyTransformFromTo( Transform::Index::Projection, projection );
@@ -432,7 +427,7 @@ void Scene::Render()
 		m_physicsScene->Render();
 	}
 
-	core::Game::GetGameInstance()->GetOS().GetRenderer()->SetViewport( viewportBackup );
+	core::Game::GetInstance()->GetOS().GetRenderer()->SetViewport( viewportBackup );
 
 	m_renderInfo.IncrementFrameID();
 }

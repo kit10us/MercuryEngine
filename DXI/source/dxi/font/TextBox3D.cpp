@@ -19,13 +19,14 @@ TextBox3D::~TextBox3D()
 {
 }
 
-void TextBox3D::Render( RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void TextBox3D::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
+	RenderInfo myRenderInfo( renderInfo );
 	if( m_text.get() )
 	{
-		renderInfo.SetOption( RenderOption::NoFrame, true );
-		renderInfo.SetOption( RenderOption::NoEffectSet, true );
-		m_text->Render( renderInfo, true );
+		myRenderInfo.SetOption( RenderOption::NoFrame, true );
+		myRenderInfo.SetOption( RenderOption::NoEffectSet, true );
+		m_text->Render( myRenderInfo, true );
 	}
 }
 

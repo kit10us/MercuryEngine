@@ -8,7 +8,7 @@ extern "C"
 LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	static bool trackingMouse = false;
-	static dxi::core::Game & game = *dxi::core::Game::GetGameInstance();
+	static dxi::core::Game & game = *dxi::core::Game::GetInstance();
 
 	switch( message )
 	{

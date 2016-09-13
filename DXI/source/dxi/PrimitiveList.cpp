@@ -51,7 +51,7 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( RenderInfo & renderInfo ) const
+void PrimitiveList::Render( const RenderInfo & renderInfo ) const
 {
 	for( const auto & set : m_buffers )
 	{

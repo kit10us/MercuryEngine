@@ -12,11 +12,8 @@ SceneLoader::SceneLoader()
 {
     // Add default loaders...
     AddLoaderFunctor( "import", LoaderFunctor::shared_ptr( new ImportLF( *this ) ) );
+	AddLoaderFunctor( "resources", LoaderFunctor::shared_ptr( new ResourcesLF ) );
 	AddLoaderFunctor( "addpaths", LoaderFunctor::shared_ptr( new AddPathsLF ) );
-    AddLoaderFunctor( "texture", LoaderFunctor::shared_ptr( new TextureLF ) );
-	AddLoaderFunctor( "shape", LoaderFunctor::shared_ptr( new ShapeLF ) );
-	AddLoaderFunctor( "mesh", LoaderFunctor::shared_ptr( new MeshLF ) );
-	AddLoaderFunctor( "terra", LoaderFunctor::shared_ptr( new TerraLF ) );
 	AddLoaderFunctor( "addobject", LoaderFunctor::shared_ptr( new AddObjectLF ) );
 	AddLoaderFunctor( "setcamera", LoaderFunctor::shared_ptr( new SetCameraLF ) );
 	AddLoaderFunctor( "controller", LoaderFunctor::shared_ptr( new ControllerLF ) );
@@ -51,14 +48,16 @@ void SceneLoader::LoadSceneFromXML( Scene::shared_ptr scene, const unify::Path p
 	qxml::Document doc( path );
     qxml::Element * node = doc.GetRoot()->GetFirstChild();
 
-    LoadSceneFromNode( scene, node );
+    LoadSceneFromNode( scene, *node );
 }
 
-void SceneLoader::LoadSceneFromNode( Scene::shared_ptr scene, qxml::Element * node )
+void SceneLoader::LoadSceneFromNode( Scene::shared_ptr scene, const qxml::Element & sceneNode )
 {
-	while( node )
+	for( const auto & node : sceneNode.Children() )
 	{
-		std::string key = node->GetTagName();
+		if( node.GetType() != qxml::Element::NodeType::Element ) continue;
+
+		std::string key = node.GetTagName();
 		auto itr = m_loaderFunctors.find( unify::ToLower( key ) );
 		if( itr != m_loaderFunctors.end() )
 		{
@@ -68,7 +67,5 @@ void SceneLoader::LoadSceneFromNode( Scene::shared_ptr scene, qxml::Element * no
 		{
 			// No loader functor, ignore.
 		}
-
-		node = node->GetNext();
 	}
 }

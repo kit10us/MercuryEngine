@@ -18,11 +18,27 @@ namespace dxi
 	#define TEXTURE_LOCKABLE		FLAG01	// D3DPOOL_MANAGED
 	#define TEXTURE_NORENDER		FLAG02	// D3DPOOL_SCRATCH
 
-	typedef enum TextureMode
+	// TODO: Re-arch...
+	struct TextureMode
 	{
-		TM_TEXTURECORRECT,	// Repeats the same texture on all sides, identically
-		TM_TEXTUREWRAPPED	// Wraps the texture around the object so it uses only a portion on each side
-	} TextureMode;
+		enum TYPE
+		{
+			Correct,	// Repeats the same texture on all sides, identically
+			Wrapped		// Wraps the texture around the object so it uses only a portion on each side
+		};
+
+		static TYPE FromString( std::string mode )
+		{
+			if( unify::StringIs( mode, "CORRECT" ) )
+			{
+				return Correct;
+			}
+			else if( unify::StringIs( mode, "WRAPPED" ) )
+			{
+				return Wrapped;
+			}
+		}
+	};
     
     //////////////////////////////////
 	// Font definitions...

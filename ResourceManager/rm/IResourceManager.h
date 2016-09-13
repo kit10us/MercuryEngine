@@ -2,6 +2,7 @@
 
 #include <rm/ResourcePack.h>
 #include <rm/ISourceFactoryFunctor.h>
+#include <qxml/Element.h>
 #include <unify/Path.h>
 #include <map>
 #include <list>
@@ -10,11 +11,6 @@
 
 namespace rm
 {
-	/// <summary>
-	/// Used to reference a resouce.
-	/// </summary>
-	typedef std::string ResourceID;
-
 	class IResourceManagerEarly
 	{
 	public:
@@ -25,6 +21,14 @@ namespace rm
 		/// Returns the name of the resource being managed.
 		/// </summary>
 		virtual std::string GetName() const = 0;
+
+		/// <summary>
+		/// Add resource without return. This allows us to 
+		/// add resources in bulk, regardless of type (not template at this point, so we don't have to know the resource type).
+		/// </summary>
+		virtual void AddResource( std::string name, const qxml::Element & element ) = 0;
+		virtual void AddResource( const qxml::Element & element ) = 0;
+		virtual void AddResource( std::string name, unify::Path path ) = 0;
 	};
 
 	template< typename T >
@@ -38,23 +42,23 @@ namespace rm
 		/// Throws an exception if a resource already exists with the same ID, since we are passing in an already allocated resource,
 		/// this could lead to a unmanaged resource pointer.
 		/// </summary>
-		virtual ResourcePtr Add( const ResourceID & id, T * resource ) = 0;
+		virtual ResourcePtr Add( std::string name, T * resource ) = 0;
 
 		/// <summary>
 		/// Returns true if a resource exists with the specified ID.
 		/// </summary>
-		virtual bool Exists( const ResourceID & id ) const = 0;
+		virtual bool Exists( std::string name ) const = 0;
 
 		/*
 		/// <summary>
 		/// Find and return a resource.
 		/// </summary>
-		virtual std::shared_ptr< ResourcePack< T > > Find( ResourceID id ) = 0;
+		virtual std::shared_ptr< ResourcePack< T > > Find( std::string name ) = 0;
 
 		/// <summary>
 		/// Find and return a resource.
 		/// </summary>
-		virtual std::shared_ptr< const ResourcePack< T > > Find( ResourceID id ) const = 0;
+		virtual std::shared_ptr< const ResourcePack< T > > Find( std::string name ) const = 0;
 		*/
 										 
 		/// <summary>

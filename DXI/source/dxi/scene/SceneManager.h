@@ -4,6 +4,7 @@
 #pragma once
 #include <dxi/events/ListenerMap.h>
 #include <dxi/scene/Scene.h>
+#include <dxi/scene/SceneLoader.h>
 
 namespace dxi
 {
@@ -26,10 +27,12 @@ namespace dxi
 
 			void SetEnabled( bool enabled );
 			bool GetEnabled() const;
+			
+			SceneLoader & GetSceneLoader();
 
-            Scene::shared_ptr Add( const std::string & name, scene::Scene * scene );
-            Scene::shared_ptr Load( const std::string & name, const unify::Path & path );
-		    Scene::shared_ptr Find( const std::string & name );
+            Scene::shared_ptr Add( std::string name, scene::Scene * scene );
+            Scene::shared_ptr Load( std::string name, unify::Path path );
+		    Scene::shared_ptr Find( std::string name );
 
             std::map< std::string, Scene::shared_ptr > & GetScenes();
             const std::map< std::string, Scene::shared_ptr > & GetScenes() const;
@@ -38,6 +41,7 @@ namespace dxi
 		    void Render();
 
 	    private:
+			SceneLoader m_sceneLoader;
 			std::map< std::string, Scene::shared_ptr > m_scenes;
             Scene * m_focusScene;
 			unsigned long long m_updateTick;

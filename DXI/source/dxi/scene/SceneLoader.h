@@ -8,7 +8,9 @@ namespace dxi
 {
 	namespace scene
 	{
-		// Combining lower level loaders, this loader packages all loadable content into a scene, and the scene's various managers.
+		/// <summary>
+		/// Combining lower level loaders, this loader packages all loadable content into a scene, and the scene's various managers.
+		/// </summary>
 		class SceneLoader
 		{
 		public:
@@ -16,7 +18,7 @@ namespace dxi
 			{
 			public:
 				typedef std::shared_ptr< LoaderFunctor > shared_ptr;
-				virtual void operator()( const qxml::Element * element, scene::Scene::shared_ptr scene ) = 0;
+				virtual void operator()( const qxml::Element & element, scene::Scene::shared_ptr scene ) = 0;
 			};
             
 			SceneLoader();
@@ -30,7 +32,7 @@ namespace dxi
 
 			std::string ListLoaderFunctors() const;
 			void LoadSceneFromXML( Scene::shared_ptr scene, const unify::Path path );
-			void LoadSceneFromNode( Scene::shared_ptr scene, qxml::Element * node );
+			void LoadSceneFromNode( Scene::shared_ptr scene, const qxml::Element & sceneNode );
 
 		public:
 			std::map< std::string, std::shared_ptr< LoaderFunctor > > m_loaderFunctors;

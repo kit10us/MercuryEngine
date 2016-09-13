@@ -52,5 +52,8 @@
     <ClCompile Include="source\qxml\Document.cpp">
       <Filter>qxml</Filter>
     </ClCompile>
+    <ClCompile Include="source\qxml\XPath.cpp">
+      <Filter>qxml</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
