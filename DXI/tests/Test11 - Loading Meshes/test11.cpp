@@ -89,10 +89,10 @@ void MyGame::Startup()
 	GetManager< Geometry >()->AddFactory( "dae", daeFactory );
 
 	// Add a scene.
-	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene", new scene::Scene );
+	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
 
 	// Add a camera...
-	scene::Object::shared_ptr cameraObject = scene->Add( "camera", new scene::Object );
+	scene::Object::shared_ptr cameraObject = scene->Add( "camera" );
 	scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 	scene->SetCamera( "camera" );
 	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
@@ -106,18 +106,24 @@ void MyGame::Startup()
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::shared_ptr meshProg( shapes::CreateShape( cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = scene->Add( "cubeDyna", new scene::Object( meshProg, unify::V3< float >( 0 - 0.0f, 0, 0 ) ) );
+	auto progObject = scene->Add( "cubeDyna" );
+	progObject->SetGeometry( meshProg );
+	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 				  
 	// From an XML file...
 	Mesh::shared_ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
-	auto xmlObject = scene->Add( "XMLObject", new scene::Object( meshXML, unify::V3< float >( 0 - 2.5f, 0, 0 ) ) );
+	auto xmlObject = scene->Add( "XMLObject" );
+	xmlObject->SetGeometry( meshXML );
+	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	xmlObject->GetGeometryMatrix().Scale( 0.10f );
 	
 	// From an ASE file...
 	Mesh::shared_ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
-	auto aseObject = scene->Add( "swordASE", new scene::Object( meshASE, unify::V3< float >( 0 + 2.5f, 0, 0 ) ) );
+	auto aseObject = scene->Add( "swordASE" );
+	aseObject->SetGeometry( meshASE );
+	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	aseObject->GetGeometryMatrix().Scale( 0.090f );
 	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
@@ -135,7 +141,9 @@ void MyGame::Startup()
 	std::chrono::duration< double > elapsed = end - start;
 	double elapsed_count = elapsed.count();
 			
-	scene->Add( "cubeDAE", new scene::Object( meshDAE, unify::V3< float >( 0 - 5.0f, 0, 0 ) ) );
+	auto cubeDAE = scene->Add( "cubeDAE" );
+	cubeDAE->SetGeometry( meshDAE );
+	cubeDAE->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	auto daeObject = scene->FindObject( "cubeDAE" );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 

@@ -9,14 +9,15 @@
 using namespace dxi;
 using namespace scene;
 
-Scene::Scene()
-: m_lastCullCount( 0 )
+Scene::Scene( dxi::core::IGame & game )
+: GameDependant( game )
+, m_lastCullCount( 0 )
 , m_renderSolids( true )
 , m_renderTrans( true )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_viewport( core::Game::GetInstance()->GetOS().GetDefaultViewport() )
+, m_viewport( Game().GetOS().GetDefaultViewport() )
 , m_color( 0, 0, 180, 255 )
 , m_renderPhysics( false )
 , m_hasFocus( false )
@@ -65,9 +66,9 @@ std::shared_ptr< Object > Scene::Add( Object * object )
 	return object_ptr;
 }
 
-std::shared_ptr< Object > Scene::Add( const std::string & name, Object * object )
+std::shared_ptr< Object > Scene::Add( const std::string & name )
 {
-	std::shared_ptr< Object > object_ptr( object );
+	std::shared_ptr< Object > object_ptr( new Object );
 
 	object_ptr->GetTags()[ "name" ] = name;
     
@@ -145,7 +146,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
 
         Frustum frustum( camera.GetMatrix() );
 
-        unify::Size< float > resolution = core::Game::GetInstance()->GetOS().GetResolution();
+        unify::Size< float > resolution = Game().GetOS().GetResolution();
         unify::V2< float > mouseUnit = input.MouseV2< float >();
         mouseUnit /= unify::V2< float >( resolution.width, resolution.height );
 
@@ -295,10 +296,10 @@ void Scene::Render()
 	}
 
 	Viewport viewportBackup;
-	core::Game::GetInstance()->GetOS().GetRenderer()->GetViewport( viewportBackup );
+	Game().GetOS().GetRenderer()->GetViewport( viewportBackup );
 
 	Viewport viewport;
-	core::Game::GetInstance()->GetOS().GetRenderer()->SetViewport( m_viewport );
+	Game().GetOS().GetRenderer()->SetViewport( m_viewport );
 
 	// TODO: DX11 (this is moved to the begin scene, so we need to figure this out): win::DX::GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_color, 1.0f, 0 );
 	// TODO: DX11: win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
@@ -427,7 +428,7 @@ void Scene::Render()
 		m_physicsScene->Render();
 	}
 
-	core::Game::GetInstance()->GetOS().GetRenderer()->SetViewport( viewportBackup );
+	Game().GetOS().GetRenderer()->SetViewport( viewportBackup );
 
 	m_renderInfo.IncrementFrameID();
 }

@@ -5,12 +5,13 @@
 #include <dxi/events/ListenerMap.h>
 #include <dxi/scene/Scene.h>
 #include <dxi/scene/SceneLoader.h>
+#include <dxi/core/GameDependant.h>
 
 namespace dxi
 {
     namespace scene
     {
-        class SceneManager : public events::ListenerMapOwner
+        class SceneManager : public events::ListenerMapOwner, public core::GameDependant
 	    {
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;
@@ -20,7 +21,7 @@ namespace dxi
 				typedef std::tuple< SceneManager *, std::list< Scene * > &, unify::Seconds, core::IInput & > OnUpdate;
             };
 
-		    SceneManager();
+		    SceneManager( core::IGame & game );
 		    virtual ~SceneManager();
 
             void Destroy();
@@ -30,7 +31,7 @@ namespace dxi
 			
 			SceneLoader & GetSceneLoader();
 
-            Scene::shared_ptr Add( std::string name, scene::Scene * scene );
+            Scene::shared_ptr Add( std::string name );
             Scene::shared_ptr Load( std::string name, unify::Path path );
 		    Scene::shared_ptr Find( std::string name );
 

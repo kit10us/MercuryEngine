@@ -10,6 +10,7 @@
 #include <unify/MinMax.h>
 #include <vector>
 #include <map>
+#include <dxi/core/GameDependant.h>
 
 #pragma comment( lib, "winmm" )
 
@@ -26,7 +27,7 @@ namespace dxi
 
     namespace scene
     {
-        class Scene : public events::ListenerMapOwner
+        class Scene : public events::ListenerMapOwner, public core::GameDependant
 	    {
 	    public:
 		    typedef std::shared_ptr< Scene > shared_ptr;
@@ -41,7 +42,7 @@ namespace dxi
 				typedef std::tuple< Scene *, ObjectList &, unify::Seconds, core::IInput & > OnUpdate;
             };
 
-		    Scene();
+		    Scene( core::IGame & game );
 		    virtual ~Scene();
 
 		    void Clear();
@@ -55,7 +56,7 @@ namespace dxi
 		    RenderInfo & GetRenderInfo();
 		    void Render();
 		    std::shared_ptr< Object > Add( Object * object );
-		    std::shared_ptr< Object > Add( const std::string & name, Object *object );
+		    std::shared_ptr< Object > Add( const std::string & name );
 		    Object::shared_ptr FindObject( const std::string & name );
 		    bool FindPosition( const std::string & name, unify::V3< float > & position ) const;
 		    void SetCamera( const std::string & name );

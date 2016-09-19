@@ -41,7 +41,7 @@ void AddObjectLF::operator()( const qxml::Element & element, scene::Scene::share
 	std::string name = element.GetAttribute( "name" )->GetString();
 	std::string geometry = element.GetAttributeElse< std::string >( "geometry", "" );
 	// TODO: std::string physics = element.GetAttributeElse< std::string >( "physics", "" );
-	scene::Object::shared_ptr object { scene->Add( name, new Object /*, physics )*/ ) };
+	scene::Object::shared_ptr object { scene->Add( name ) };
 	object->SetGeometry( geometryManager.Find( geometry ) );
 
 	const qxml::Element * subNode = element.GetFirstChild();

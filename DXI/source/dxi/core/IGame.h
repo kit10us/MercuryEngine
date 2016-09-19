@@ -5,12 +5,24 @@
 
 #include <dxi/core/IOS.h>
 #include <dxi/core/IInput.h>
+#include <dxi/scripting/IScriptEngine.h>
 #include <unify/TimeDelta.h>
+//#include <rm/ResourceHub.h>
+//#include <dxi/scene/SceneManager.h>
 
 namespace dxi
 {
 	namespace core
 	{
+		class Extension
+		{
+		public:
+			virtual ~Extension()
+			{
+			}
+		};
+
+
 		/// <summary>
 		/// A game, inheriting from this class, enables support of the necessary major game events.
 		/// </summary>
@@ -39,7 +51,32 @@ namespace dxi
 			virtual void AfterRender() = 0;
 			virtual void Shutdown() = 0;
 
+			/// <summary>
+			/// Get our OS interface.
+			/// </summary>
 			virtual IOS & GetOS() = 0;
+
+			/// <summary>
+			/// Add a script engine.
+			/// </summary>
+			virtual void AddScriptEngine( std::string name, scripting::IScriptEngine * se ) = 0;
+
+			/// <summary>
+			/// Get a script engine by name.
+			/// </summary>
+			virtual scripting::IScriptEngine * GetScriptEngine( std::string name ) = 0;
+
+			/// <summary>
+			/// Add an extension.
+			/// </summary>
+			virtual void AddExtension( std::shared_ptr< Extension > extension ) = 0;
+
+			/*
+			virtual rm::ResourceHub & GetResourceHub() = 0;
+			virtual const rm::ResourceHub & GetResourceHub() const = 0;
+
+			virtual scene::SceneManager::shared_ptr GetSceneManager() = 0;
+			*/
 		};
 	}
 }

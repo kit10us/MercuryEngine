@@ -577,6 +577,9 @@
     <ClCompile Include="source\dxi\factory\VertexShaderFactory.cpp">
       <Filter>dxi\factory</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\core\GameDependant.cpp">
+      <Filter>dxi\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -661,6 +664,9 @@
     </Filter>
     <Filter Include="dxi\factory">
       <UniqueIdentifier>{cc686d27-8bb0-4cd9-ba25-ac3afa496a50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\scipting">
+      <UniqueIdentifier>{3cdd9f4f-b083-4ca2-ba05-41854c386bcb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -813,6 +819,12 @@
     </ClInclude>
     <ClInclude Include="source\dxi\factory\VertexShaderFactory.h">
       <Filter>dxi\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scripting\IScriptEngine.h">
+      <Filter>dxi\scipting</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\GameDependant.h">
+      <Filter>dxi\core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

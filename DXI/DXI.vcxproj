@@ -21,6 +21,7 @@
     <ClCompile Include="source\dxi\BufferSet.cpp" />
     <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp" />
     <ClCompile Include="source\dxi\core\Game.cpp" />
+    <ClCompile Include="source\dxi\core\GameDependant.cpp" />
     <ClCompile Include="source\dxi\DataBuffer.cpp" />
     <ClCompile Include="source\dxi\DirectXFile.cpp" />
     <ClCompile Include="source\dxi\Effect.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="source\dxi\controllers\IController.h" />
     <ClInclude Include="source\dxi\controllers\PathController.h" />
     <ClInclude Include="source\dxi\core\Game.h" />
+    <ClInclude Include="source\dxi\core\GameDependant.h" />
     <ClInclude Include="source\dxi\core\IGame.h" />
     <ClInclude Include="source\dxi\core\IInput.h" />
     <ClInclude Include="source\dxi\core\IOS.h" />
@@ -219,6 +221,7 @@
     <ClInclude Include="source\dxi\scene\Scene.h" />
     <ClInclude Include="source\dxi\scene\SceneLoader.h" />
     <ClInclude Include="source\dxi\scene\SceneManager.h" />
+    <ClInclude Include="source\dxi\scripting\IScriptEngine.h" />
     <ClInclude Include="source\dxi\ShaderBase.h" />
     <ClInclude Include="source\dxi\factory\ShapeFactory.h" />
     <ClInclude Include="source\dxi\shapes\BeveledBoxParameters.h" />

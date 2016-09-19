@@ -44,8 +44,10 @@ bool Effect::operator != ( const Effect & effect ) const
 	return !( *this == effect );
 }
 
-void Effect::Use( RenderInfo renderInfo )
+void Effect::Use( const RenderInfo & renderInfoIn )
 {
+	RenderInfo renderInfo( renderInfoIn );
+
 	switch( m_culling )
 	{
 	case CullNone:

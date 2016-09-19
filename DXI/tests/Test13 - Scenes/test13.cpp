@@ -12,15 +12,6 @@ using namespace core;
 
 class MyGame : public Game
 {
-protected:
-	/*
-	scene::Scene::shared_ptr m_scene1;
-	scene::Scene::shared_ptr m_scene2;
-	scene::Object::shared_ptr m_camera1;
-	scene::Object::shared_ptr m_camera2;
-	float m_rotation;
-	*/
-
 public:
 	bool Setup( core::IOS & os )
 	{
@@ -35,8 +26,7 @@ public:
 
 		GetSceneManager()->Load( "scene1", "media/scene1.xml" );
 
-		/*
-
+		/*		 
 		// Scene 1...
 		m_scene1.reset( new scene::Scene );
 
@@ -140,92 +130,71 @@ public:
 		m_scene1->Add( "camera", m_camera1 );
 		m_scene1->SetCamera( "camera" );
 		m_scene1->SetSize( GetOS().GetResolution() );
-
+		*/
 
 		// Scene 2...
-		m_scene2.reset( new scene::Scene );
+		auto scene2 = GetSceneManager()->Add( "scene2" );
 
-		GetTextureManager()->Add( "land", new Texture( "media/earthb.bmp", TEXTURE_LOCKABLE ) );
-		GetTextureManager()->Add( "cutout", new Texture( "media/EarthWaterCutoutMap.bmp", TEXTURE_LOCKABLE ) );
+		GetManager< Texture >()->Add( "land", new Texture( "media/earthb.bmp", TEXTURE_LOCKABLE ) );
+		GetManager< Texture >()->Add( "cutout", new Texture( "media/EarthWaterCutoutMap.bmp", TEXTURE_LOCKABLE ) );
 
-		Effect::shared_ptr landEffect = loader::EffectLoader( "land", "media/EffectTextured.xml", GetManagers() );
+		/*
+		GetResourceHub().Load( "effect", "land", "media/EffectLand.xml" );
+		GetResourceHub().Load( "effect", "cutout", "media/EffectCutout.xml" );
+		*/
+
+		Effect::shared_ptr landEffect = GetManager< Effect>()->Add( "land", "media/EffectTextured.xml" );
 		landEffect->SetBlend( Blend( Usage::False ) );
-		landEffect->SetTexture( 0, FindTexture( "land" ) );
+		landEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
-		Effect::shared_ptr cutoutEffect = loader::EffectLoader( "cutout", "media/EffectTextured.xml", GetManagers() );
+		Effect::shared_ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
 		cutoutEffect->SetBlend( Blend( Usage::True, Blend::Effect::One, Blend::Effect::One ) );
-		cutoutEffect->SetTexture( 0, FindTexture( "land" ) );
+		cutoutEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
 		GeometryGroup * geometryGroup = new GeometryGroup();
 		Terra * terra;
 
         Terra::Parameters terraParameters;
 		terraParameters.SetSize( unify::Size< float >( 10, 7 ) );
-		terraParameters.SetEffect( FindEffect( "land" ) );
+		terraParameters.SetEffect( GetManager< Effect >()->Find( "land" ) );
 		terraParameters.SetRowsColumns( unify::RowColumn< unsigned int >( 200, 140 ) );
 		terraParameters.SetConstant( 0.0f );
 		terraParameters.SetTexArea( unify::TexArea::Full() );
-		terraParameters.SetHeightMap( Terra::TextureOpMap( FindTexture( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 0.7f, 0.25f, -1.0f ) ) );
+		terraParameters.SetHeightMap( Terra::TextureOpMap( GetManager< Texture >()->Find( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 0.7f, 0.25f, -1.0f ) ) );
 		terra = new Terra( terraParameters );
 		geometryGroup->Add( Geometry::shared_ptr( terra ) );
 
 		terraParameters.Reset();
 		terraParameters.SetSize( unify::Size< float >( 10, 7 ) );
-		terraParameters.SetEffect( FindEffect( "cutout" ) );
+		terraParameters.SetEffect( GetManager< Effect >()->Find( "cutout" ) );
 		terraParameters.SetRowsColumns( unify::RowColumn< unsigned int >( 10, 7 ) );
 		terraParameters.SetConstant( 0.1f );
 		terraParameters.SetTexArea( unify::TexArea::Full() );
-		terraParameters.SetAlphaMap( Terra::TextureOpMap( FindTexture( "cutout" ), unify::ColorUnit::ColorUnitRed( 1.0f, 0.0f ) ) );
+		terraParameters.SetAlphaMap( Terra::TextureOpMap( GetManager< Texture >()->Find( "cutout" ), unify::ColorUnit::ColorUnitRed( 1.0f, 0.0f ) ) );
 		terra = new Terra( terraParameters );
 		geometryGroup->Add( Geometry::shared_ptr( terra ) );
 
-		m_scene2->Add( "terrain", new scene::Object( geometryGroup ) );
+		scene2->Add( "terrain" )->SetGeometry( std::shared_ptr< Geometry >( geometryGroup ) );
 
-		m_camera2.reset( new scene::Object );
-		m_scene2->Add( "camera2", m_camera2 );
-		m_scene2->SetCamera( "camera2" );
-		m_scene2->SetSize( GetOS().GetResolution() / 3 );
-		m_scene2->SetPosition( unify::V2< int >( 20, GetOS().GetResolution().height - ( GetOS().GetResolution().height / 3 ) - 20 ) );
-
-		m_rotation = 0;
-		*/
+		auto camera2 = scene2->Add( "camera2" );
+		scene2->SetCamera( "camera2" );
+		scene2->SetSize( GetOS().GetResolution() / 3 );
+		scene2->SetPosition( unify::V2< float >( 20, GetOS().GetResolution().height - ( GetOS().GetResolution().height / 3 ) - 20 ) );
+		scene2->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, game.GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 	}
 
 	bool Update( unify::Seconds elapsed, IInput & input )
 	{
-		/*
-		unify::V3< float > eye( 10.0f * sin( m_rotation ), 10.0f * sin( m_rotation ), 10.0f * cos( m_rotation ) );
-		m_camera1->GetFrame().SetPosition( eye );
-		m_camera1->GetFrame().LookAt( unify::V3< float >(0, 0, 0) );
-		m_camera2->GetFrame().SetPosition( eye );
-		m_camera2->GetFrame().LookAt( unify::V3< float >(0, 0, 0) );
-
-		m_rotation += 0.01f;
-		if ( m_rotation > 3.1415936535f * 2 )
-		{
-			m_rotation -= 3.1415936545f * 2;
-		}
-		*/
-
 		return Game::Update( elapsed, input );
 	}
 
 	void Render()
 	{
-		/*
-		m_scene1->Render();
-		m_scene2->Render();
-		*/
 		Game::Render();
 	}
 
 	void Shutdown()
 	{
-		/*
-		m_scene1.reset();
-		m_scene2.reset();
-		*/
-		
 		Game::Shutdown();
 	}
 } game;

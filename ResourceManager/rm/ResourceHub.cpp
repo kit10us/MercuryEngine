@@ -30,6 +30,11 @@ void ResourceHub::Load( unify::Path path )
 	}
 
 	qxml::Document doc( path );
+}		  
+
+void ResourceHub::Load( std::string type, std::string name, unify::Path path )
+{
+	m_resourceManagers[type]->AddResource( name, path );
 }
 
 void ResourceHub::Load( const qxml::Element & element )

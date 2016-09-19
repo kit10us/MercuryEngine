@@ -43,7 +43,7 @@ namespace dxi
 		bool operator ==( const Effect & effect ) const;
 		bool operator !=( const Effect & effect ) const;
 
-		void Use( RenderInfo renderInfo );
+		void Use( const RenderInfo & renderInfo );
 		bool HasBlend() const;
 		void SetTransformConstant( Transform::Index::TYPE trans, int iConstant );
 		void SetTexture( unsigned char stage, Texture::shared_ptr texture );

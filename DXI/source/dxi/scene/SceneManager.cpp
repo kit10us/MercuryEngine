@@ -10,8 +10,9 @@
 using namespace dxi;
 using namespace scene;
 
-SceneManager::SceneManager()
-: m_focusScene( 0 )
+SceneManager::SceneManager( dxi::core::IGame & game )
+: GameDependant( game )
+, m_focusScene( 0 )
 , m_enabled( true )
 {
 }
@@ -41,9 +42,9 @@ SceneLoader & SceneManager::GetSceneLoader()
 	return m_sceneLoader;
 }
 
-Scene::shared_ptr SceneManager::Add( std::string name, scene::Scene * scene )
+Scene::shared_ptr SceneManager::Add( std::string name )
 {
-    Scene::shared_ptr sceneSharedPtr( scene );
+    Scene::shared_ptr sceneSharedPtr( new Scene( Game() ) );
 	m_scenes[ name ] = sceneSharedPtr;
     return sceneSharedPtr;
 }
@@ -56,7 +57,7 @@ Scene::shared_ptr SceneManager::Load( std::string name, unify::Path scenePath )
 		throw exception::FailedToCreate( "Scene \"" + name + "\" already exists!" );
 	}
 
-	scene.reset( new Scene );
+	scene.reset( new Scene(  Game() ) );
 
 	m_sceneLoader.LoadSceneFromXML( scene, scenePath );
 

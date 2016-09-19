@@ -39,12 +39,17 @@ namespace rm
 		///<summary>
 		/// Load a resource file.
 		///</summary>
-		void Load( unify::Path path );
+		void Load( unify::Path path ); // TODO: Junk this? I think it's stubbed anyhow.
 
 		///<summary>
 		/// Load a resource file.
 		///</summary>
-		void Load( const qxml::Element & element );
+		void Load( std::string type, std::string name, unify::Path path );
+			 
+		///<summary>
+		/// Load a resource file.
+		///</summary>
+ 		void Load( const qxml::Element & element );
 
 	private:
 		/*

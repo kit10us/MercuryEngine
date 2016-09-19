@@ -1,7 +1,9 @@
 <xml>
   <scene>
-    
+
+	<!-- ???
     <addcustomcontrollers/>
+	-->
     
 	<!-- ???
     <addpaths source="paths1.xml"/>

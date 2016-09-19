@@ -95,21 +95,53 @@ public:
 
 		// Add a scene.
 		{
-			scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene", new scene::Scene );
+			scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
 
-			scene->Add( "cube", new scene::Object( GetManager< Geometry >()->Find( "cube" ), unify::V3< float >( -4.5f, 3, 0 ) ) );
-			scene->Add( "pointfield", new scene::Object( GetManager< Geometry >()->Find( "pointfield" ), unify::V3< float >( -1.5f, 3, 0 ) ) );
-			scene->Add( "pointring", new scene::Object( GetManager< Geometry >()->Find( "pointring" ), unify::V3< float >( 1.5f, 3, 0 ) ) );
-			scene->Add( "dashring", new scene::Object( GetManager< Geometry >()->Find( "dashring" ), unify::V3< float >( 4.5f, 3, 0 ) ) );
-			scene->Add( "pyramid", new scene::Object( GetManager< Geometry >()->Find( "pyramid" ), unify::V3< float >( -4.5f, 0, 0 ) ) );
-			scene->Add( "circle", new scene::Object( GetManager< Geometry >()->Find( "circle" ), unify::V3< float >( -1.5f, 0, 0 ) ) );
-			scene->Add( "sphere", new scene::Object( GetManager< Geometry >()->Find( "sphere" ), unify::V3< float >( 1.5f, 0, 0 ) ) );
-			scene->Add( "cylinder", new scene::Object( GetManager< Geometry >()->Find( "cylinder" ), unify::V3< float >( 4.5f, 0, 0 ) ) );
-			scene->Add( "tube", new scene::Object( GetManager< Geometry >()->Find( "tube" ), unify::V3< float >( -4.5f, -3, 0 ) ) );
-			scene->Add( "plane", new scene::Object( GetManager< Geometry >()->Find( "plane" ), unify::V3< float >( -1.5f, -3, 0 ) ) );
-			scene->Add( "cone", new scene::Object( GetManager< Geometry >()->Find( "cone" ), unify::V3< float >( 1.5f, -3, 0 ) ) );
+			auto cube = scene->Add( "cube" );
+			cube->SetGeometry( GetManager< Geometry >()->Find( "cube" ) );
+			cube->GetFrame().SetPosition( unify::V3< float >( -4.5f, 3, 0 ) );
 
-			scene::Object::shared_ptr cameraObject( scene->Add( "camera", new scene::Object ) );
+			auto pointfield = scene->Add( "pointfield" );
+			pointfield->SetGeometry( GetManager< Geometry >()->Find( "pointfield" ) );
+			pointfield->GetFrame().SetPosition( unify::V3< float >( -1.5f, 3, 0 ) );
+
+			auto pointring = scene->Add( "pointring" );
+			pointring->SetGeometry( GetManager< Geometry >()->Find( "pointring" ) );
+			pointring->GetFrame().SetPosition( unify::V3< float >( 1.5f, 3, 0 ) );
+			
+			auto dashring = scene->Add( "dashring" );
+			dashring->SetGeometry( GetManager< Geometry >()->Find( "dashring" ) );
+			dashring->GetFrame().SetPosition( unify::V3< float >( 4.5f, 3, 0 ) );
+			
+			auto pyramid = scene->Add( "pyramid" );
+			pyramid->SetGeometry( GetManager< Geometry >()->Find( "pyramid" ) );
+			pyramid->GetFrame().SetPosition( unify::V3< float >( -4.5f, 0, 0 ) );
+			
+			auto circle = scene->Add( "circle" );
+			circle->SetGeometry( GetManager< Geometry >()->Find( "circle" ) );
+			circle->GetFrame().SetPosition( unify::V3< float >( -1.5f, 0, 0 ) );
+			
+			auto sphere = scene->Add( "sphere" );
+			sphere->SetGeometry( GetManager< Geometry >()->Find( "sphere" ) );
+			sphere->GetFrame().SetPosition( unify::V3< float >( 1.5f, 0, 0 ) );
+			
+			auto cylinder = scene->Add( "cylinder" );
+			cylinder->SetGeometry( GetManager< Geometry >()->Find( "cylinder" ) );
+			cylinder->GetFrame().SetPosition( unify::V3< float >( 4.5f, 0, 0 ) );
+			
+			auto tube = scene->Add( "tube" );
+			tube->SetGeometry( GetManager< Geometry >()->Find( "tube" ) );
+			tube->GetFrame().SetPosition( unify::V3< float >( -4.5f, -3, 0 ) );
+			
+			auto plane = scene->Add( "plane" );
+			plane->SetGeometry( GetManager< Geometry >()->Find( "plane" ) );
+			plane->GetFrame().SetPosition( unify::V3< float >( -1.5f, -3, 0 ) );
+			
+			auto cone = scene->Add( "cone" );
+			cone->SetGeometry( GetManager< Geometry >()->Find( "cone" ) );
+			cone->GetFrame().SetPosition( unify::V3< float >( 1.5f, -3, 0 ) );
+
+			scene::Object::shared_ptr cameraObject( scene->Add( "camera" ) );
 			scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 			scene->SetCamera( "camera" );
 			scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
@@ -120,12 +152,10 @@ public:
 
 	bool Update( unify::Seconds elapsed, IInput & input )
 	{
-		/*
 		// Use of camera controls to simplify camera movement...
 		scene::Object::shared_ptr cameraObject = GetSceneManager()->Find( "scene" )->GetCamera().GetObject();
 		cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
 		cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
-		*/
 
 		return Game::Update( elapsed, input );
 	}

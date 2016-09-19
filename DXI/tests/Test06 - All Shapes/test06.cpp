@@ -29,9 +29,9 @@ public:
 
 		Effect::shared_ptr effect = GetManager< Effect >()->Find( "textured_3d" ); // Demonstrate how the effect is pulled from the manager by name.
 
-		scene::Scene::shared_ptr mainScene = GetSceneManager()->Add( "main", new scene::Scene );
+		scene::Scene::shared_ptr mainScene = GetSceneManager()->Add( "main" );
 
-		scene::Object::shared_ptr cameraObject = mainScene->Add( "camera", new scene::Object );
+		scene::Object::shared_ptr cameraObject = mainScene->Add( "camera" );
 		scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 		mainScene->SetCamera( "camera" );
 		mainScene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );

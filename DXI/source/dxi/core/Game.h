@@ -58,7 +58,11 @@ namespace dxi
 			virtual void Shutdown() override;
 
 			virtual IOS & GetOS() final;
-			
+
+			void AddScriptEngine( std::string name, scripting::IScriptEngine * se ) override;
+
+			scripting::IScriptEngine * GetScriptEngine( std::string name ) override;
+
 			virtual scene::SceneManager::shared_ptr GetSceneManager();
 
 			scene::Scene::shared_ptr FindScene( const std::string & id );
@@ -80,6 +84,8 @@ namespace dxi
 			bool IsQuitting() const;
 			IInput & GetInput();
 
+			void AddExtension( std::shared_ptr< Extension > extension ) override;
+
 		private:
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
@@ -89,6 +95,10 @@ namespace dxi
 
 			bool m_isQuitting;
 			std::shared_ptr< IInput > m_input;
+
+			std::map < std::string, std::shared_ptr< scripting::IScriptEngine > > m_scriptEngines;
+
+			std::list< std::shared_ptr< Extension > > m_extensions;
 
 			static Game * s_gameInstance;
 

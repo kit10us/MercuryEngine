@@ -37,6 +37,8 @@ namespace dxi
 			{
 				return Wrapped;
 			}
+			assert( 0 );
+			throw 0;
 		}
 	};
     
