@@ -23,6 +23,7 @@
 #include <dxi/pathing/position/RotateAbout.h>
 #include <dxi/pathing/orientation/LookAt.h>
 #include <dxi/pathing/PathController.h>
+#include <dxi/win/DXILib.h>
 
 using namespace dxi;
 using namespace core;

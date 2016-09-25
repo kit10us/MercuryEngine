@@ -88,6 +88,11 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 	{
 		std::string extension = source.ExtensionOnly();
 		auto factory = m_sourceFactories.find( extension );
+		if( factory == m_sourceFactories.end() )
+		{
+			throw exception::FailedToCreate( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
+		}
+
 		T * product = factory->second->Produce( source );
 		if( product != nullptr )
 		{

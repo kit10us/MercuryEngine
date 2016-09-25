@@ -1,0 +1,8 @@
+<xml>
+<setup>
+<fullscreen>false</fullscreen>
+<resolution width="800" height="640"/>
+<extension>DXILuaDLL.dll</extension>
+<startupscript type="LUA" source="media/scene1.lua"/>
+</setup>
+</xml>

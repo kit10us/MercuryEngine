@@ -255,7 +255,9 @@
     <ClInclude Include="source\dxi\factory\VertexShaderFactory.h" />
     <ClInclude Include="source\dxi\Viewport.h" />
     <ClInclude Include="source\dxi\win\DirectX.h" />
+    <ClInclude Include="source\dxi\win\DirectXLibs.h" />
     <ClInclude Include="source\dxi\win\DXDevice.h" />
+    <ClInclude Include="source\dxi\win\DXILib.h" />
     <ClInclude Include="source\dxi\win\DXRenderer.h" />
     <ClInclude Include="source\dxi\win\WindowsOS.h" />
     <ClInclude Include="source\dxi\win\WndProc.h" />

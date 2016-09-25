@@ -16,6 +16,13 @@ namespace dxi
 			Pending
 		};
 
+		struct Execute
+		{
+			std::string type;
+			unify::Path source;
+			std::string line;
+		};
+
 		/// <summary>
 		/// Provides common script engine features.
 		/// </summary>

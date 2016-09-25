@@ -39,7 +39,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		return -1;
 	}
 
-
 	typedef bool (__cdecl *Startup)( HWND hwnd );
 	typedef bool (__cdecl *Tick )( HWND hwnd );
 	typedef void (__cdecl *Shutdown)( HWND hwnd );

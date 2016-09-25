@@ -832,5 +832,11 @@
     <ClInclude Include="source\dxi\core\Extension.h">
       <Filter>dxi\core</Filter>
     </ClInclude>
+    <ClInclude Include="source\dxi\win\DirectXLibs.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\win\DXILib.h">
+      <Filter>dxi\win</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

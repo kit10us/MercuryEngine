@@ -11,13 +11,16 @@
 #include <dxi/null/Input.h>
 #include <dxi/Input.h>
 
+#include <fstream>
+
 using namespace dxi;
 using namespace core;
 
 Game * Game::s_gameInstance = 0;
 
-Game::Game()
-: m_isQuitting( false )
+Game::Game( unify::Path setup )
+: m_setup( setup )
+, m_isQuitting( false )
 {
 	s_gameInstance = this;
 }
@@ -70,25 +73,39 @@ bool Game::Setup( IOS & os )
 		return true; // Skip this setup step if there is no XML.
 	}
 	
-	qxml::Document doc( "setup.xml" );
+	qxml::Document doc( m_setup );
 	
-	qxml::Element * setup = doc.FindElement( "setup" );
-	
+	qxml::Element * setup = doc.FindElement( "setup" );	 	
 	if ( setup == nullptr )
 	{
 		return true; // Skip this setup step if there is no setup node in XML.
 	}
 
-	qxml::Element * fullscreen = setup->GetElement( "fullscreen" );
-	if( fullscreen != nullptr )
+	for( auto && node : setup->Children() )
 	{
-		os.SetFullscreen( unify::Cast< bool, std::string >( fullscreen->GetText() ) );
-	}
+		if ( node.IsTagName( "fullscreen" ) )
+		{
+			os.SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
+		}
+		else if ( node.IsTagName( "resolution" ) )
+		{
+			os.SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
+		}
+		else if ( node.IsTagName( "extension" ) )
+		{		   
+			unify::Path path( node.GetText() );
+			AddExtension( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
+		}
+		else if ( node.IsTagName( "startupscript" ) )
+		{
+			m_startupExecute.type = node.GetAttribute< std::string >( "type" );
 
-	qxml::Element * resolution = setup->GetElement( "resolution" );
-	if ( resolution != nullptr )
-	{
-		os.SetResolution( unify::Size< unsigned int >( resolution->GetAttribute< unsigned int >( "width" ), resolution->GetAttribute< unsigned int >( "height" ) ) );
+			if ( node.HasAttributes( "source" ) )
+			{
+				m_startupExecute.source = node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" );
+			}
+			m_startupExecute.line = node.GetText();
+		}
 	}
 
 	return true;
@@ -97,6 +114,24 @@ bool Game::Setup( IOS & os )
 void Game::Startup()
 {
 	m_os->Startup();
+
+	if ( ! m_startupExecute.type.empty() )
+	{
+		auto se = GetScriptEngine( m_startupExecute.type );
+		assert( se ); //TODO: Handle error better.
+
+		// Execute a file if specfied...
+		if ( ! m_startupExecute.source.Empty() )
+		{
+			se->ExecuteFile( m_startupExecute.source );
+		}
+
+		// Execute a line if specified (support both, just in case we want to use a script AND do something extra)...
+		if( ! m_startupExecute.line.empty() )
+		{
+			se->ExecuteString( m_startupExecute.line );
+		}
+	}
 
 	// m_input.reset( new null::Input );
 	m_input.reset( new Input( *m_os ) );
@@ -255,4 +290,16 @@ void Game::AddExtension( std::shared_ptr< Extension > extension )
 	{
 		throw exception::FailedToCreate( "Failed to load extension!" );
 	}
+}
+
+void Game::Log( std::string text )
+{
+	using namespace std;
+	ofstream out( "log.txt", ios_base::out | ios_base::app  );
+	out << text;
+}
+
+void Game::LogLine( std::string line )
+{
+	Log( line + "\n" );
 }

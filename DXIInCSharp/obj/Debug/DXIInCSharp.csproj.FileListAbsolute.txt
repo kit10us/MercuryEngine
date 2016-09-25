@@ -1,0 +1,1 @@
+E:\dev\ws\DXIInCSharp\bin\Debug\DXIInCSharp.exe.config

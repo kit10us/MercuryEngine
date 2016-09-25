@@ -17,15 +17,22 @@ using namespace win;
 
 extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
-WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
-: m_hInstance( hInstance )
-, m_nCmdShow( nCmdShow )
-, m_defaultViewport( 0, 0, 800.0f, 600.0f, 0, 1 )
-, m_fullscreen( false )
-, m_hasFocus( false )
-, m_hWnd( 0 )
-, m_renderer( 0 )
+WindowsOS::WindowsOS()
+: m_defaultViewport( 0, 0, 800.0f, 600.0f, 0, 1 )
+, m_fullscreen{}
+, m_hasFocus{}
+, m_renderer{}
+, m_hInstance{}
+, m_nCmdShow{}
+, m_hWnd{}
 {
+}
+
+WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
+: WindowsOS()
+{
+	m_hInstance = hInstance;
+	m_nCmdShow = nCmdShow;
 	hPrevInstance; // NOT USED
 
 	// Parse the commandline...
@@ -41,7 +48,7 @@ WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCm
 		{
 			if ( l != r )
 			{
-				working += commandLineString.substr( l, r - l );
+ 				working += commandLineString.substr( l, r - l );
 			}
 			if ( working.empty() == false )
 			{
@@ -58,6 +65,13 @@ WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCm
 			inQuote = !inQuote;
 		}
 	}
+}
+
+WindowsOS::WindowsOS( HWND hWnd )
+: WindowsOS()
+{
+	m_hWnd = hWnd;
+	m_hInstance = (HINSTANCE)GetWindowLong( m_hWnd, GWL_HINSTANCE );
 }
 
 WindowsOS::~WindowsOS()
@@ -128,7 +142,11 @@ IDirect3DDevice9 * WindowsOS::GetDxDevice()
 
 void WindowsOS::Startup()
 {
-	CreateWindow( m_hWnd );
+	if ( ! m_hWnd )
+	{
+		CreateWindow( m_hWnd );
+	}
+
 	DragAcceptFiles( this->GetHWnd(), true );
 	CreateDirectX();
 	DX::SetDxDevice( m_dxDevice );

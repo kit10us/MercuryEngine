@@ -27,7 +27,7 @@ namespace dxi
 		class Game : public IGame
 		{
 		public:
-			Game();
+			Game( unify::Path setup = "setup.xml" );
 			virtual ~Game();
 						
 			/// <summary>
@@ -86,7 +86,12 @@ namespace dxi
 
 			void AddExtension( std::shared_ptr< Extension > extension ) override;
 
+			void Log( std::string text );
+			void LogLine( std::string line );
+
 		private:
+			unify::Path m_setup;
+			scripting::Execute m_startupExecute;
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
 			
@@ -95,7 +100,7 @@ namespace dxi
 			bool m_isQuitting;
 			std::shared_ptr< IInput > m_input;
 
-			std::map < std::string, std::shared_ptr< scripting::IScriptEngine > > m_scriptEngines;
+			std::map < std::string, std::shared_ptr< scripting::IScriptEngine >, unify::CaseInsensitiveLessThanTest > m_scriptEngines;
 
 			std::list< std::shared_ptr< Extension > > m_extensions;
 

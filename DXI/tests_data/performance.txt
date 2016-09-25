@@ -1,0 +1,13 @@
+SpeedTest_CubeMT: Elapsed run time = 2.843000, frames = 0
+SpeedTest_CubeMT: Elapsed run time = 2.867000, frames = 0
+SpeedTest_CubeMT: Elapsed run time = 2.832000, frames = 0
+SpeedTest_CubeMT: Elapsed run time = 2.870000, frames = 0
+SpeedTest_CubeMT: Elapsed run time = 2.857000, frames = 0
+SpeedTest_CubeMT: Elapsed run time = 2.841000, frames = 7180
+SpeedTest_CubeMT: Elapsed run time = 2.810000, frames = 7180 - No updating of constant buffer
+SpeedTest_CubeMT: Elapsed run time = 1.576000, frames = 7180 - No updating of constant buffer, order render of geometry (however, still presenting)
+SpeedTest_CubeMT: Elapsed run time = 1.555000, frames = 7180 - Updating constant buffer, no rendering (still presenting).
+SpeedTest_CubeMT: Elapsed run time = 2.872000, frames = 7180 - Put back as before.
+SpeedTest_CubeMT: Elapsed run time = 2.889000, frames = 7180 - Moved all but the draw call in rendering outside forever loop.
+SpeedTest_CubeMT: Elapsed run time = 2.871000, frames = 7180
+SpeedTest_CubeMT: Elapsed run time = 2.970000, frames = 7180

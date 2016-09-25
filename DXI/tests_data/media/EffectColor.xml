@@ -1,8 +1,15 @@
 <?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
   <effect>
-    <pixelshader name="color_3d" source="shaders/color3d.shader" entry="ps_main" profile="ps_1_1"/>
-    <vertexshader name="color_3d" source="shaders/color3d.shader" entry="vs_main" profile="vs_1_1">
+    <pixelshader name="color_3d">
+	  <source>shaders/color3d.shader</source>
+	  <entry>ps_main</entry>
+	  <profile>ps_1_1</profile>
+	</pixelshader>
+    <vertexshader name="color_3d">
+	  <source>shaders/color3d.shader</source>
+	  <entry>vs_main</entry>
+      <profile>vs_1_1</profile>
       <vd>
 	    <element name="Position" type="Float3"/>
 		<element name="Diffuse" type="Color"/>

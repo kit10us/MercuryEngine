@@ -6,6 +6,7 @@
 #include <dxi/Terra.h>
 #include <dxi/shapes/ShapeCreators.h>
 #include <unify/Size3.h>
+#include <dxi/win/DXILib.h>
 
 #include <dxilua/DXILua.h>
 

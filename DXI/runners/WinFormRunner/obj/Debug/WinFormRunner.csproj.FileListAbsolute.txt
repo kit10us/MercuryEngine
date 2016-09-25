@@ -1,0 +1,11 @@
+E:\dev\ws\DXI\runners\WinFormRunner\bin\Debug\WinFormRunner.exe.config
+E:\dev\ws\DXI\runners\WinFormRunner\bin\Debug\WinFormRunner.exe
+E:\dev\ws\DXI\runners\WinFormRunner\bin\Debug\WinFormRunner.pdb
+E:\dev\ws\DXI\runners\WinFormRunner\obj\Debug\WinFormRunner.csprojResolveAssemblyReference.cache
+E:\dev\ws\DXI\runners\WinFormRunner\obj\Debug\WinFormRunner.Form1.resources
+E:\dev\ws\DXI\runners\WinFormRunner\obj\Debug\WinFormRunner.Properties.Resources.resources
+E:\dev\ws\DXI\runners\WinFormRunner\obj\Debug\WinFormRunner.csproj.GenerateResource.Cache
+E:\dev\ws\DXI\runners\WinFormRunner\obj\Debug\WinFormRunner.exe
+E:\dev\ws\DXI\runners\WinFormRunner\obj\Debug\WinFormRunner.pdb
+E:\dev\ws\DXI\runners\WinFormRunner\bin\Debug\DXICSWrapper.dll
+E:\dev\ws\DXI\runners\WinFormRunner\bin\Debug\DXICSWrapper.pdb

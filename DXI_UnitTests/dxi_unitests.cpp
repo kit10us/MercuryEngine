@@ -2,6 +2,7 @@
 #include <dxi/VertexDeclaration.h>
 #include <dxi/win/WindowsOS.h>
 #include <conio.h>
+#include <dxi/win/DXILib.h>
 
 class DXI_UnitTest : public qunit::TestSuite
 {

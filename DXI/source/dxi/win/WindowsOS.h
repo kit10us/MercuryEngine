@@ -23,20 +23,11 @@ namespace dxi
 	{
 		class WindowsOS : public core::IOS
 		{
-			HINSTANCE m_hInstance;
-			int m_nCmdShow;
-			std::vector< std::string > m_commandLine;
-			Viewport m_defaultViewport;
-			bool m_fullscreen;
-			bool m_hasFocus;
-			HWND m_hWnd;
-			std::list< HWND > m_additionalHandles; // Handles to be serviced.
-			IDirect3DDevice9 * m_dxDevice;
-			D3DPRESENT_PARAMETERS m_pp;
-			DXRenderer * m_renderer;
-
+			WindowsOS();
 		public:
 			WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow );
+			WindowsOS( HWND hWnd );
+
 			virtual ~WindowsOS();
 
 			virtual const std::vector< std::string > & GetCommandLine() const;
@@ -69,6 +60,18 @@ namespace dxi
 			void CreateDirectX();
 			void DestroyDirectX();
 
+		private:
+			HINSTANCE m_hInstance;
+			int m_nCmdShow;
+			std::vector< std::string > m_commandLine;
+			Viewport m_defaultViewport;
+			bool m_fullscreen;
+			bool m_hasFocus;
+			HWND m_hWnd;
+			std::list< HWND > m_additionalHandles; // Handles to be serviced.
+			IDirect3DDevice9 * m_dxDevice;
+			D3DPRESENT_PARAMETERS m_pp;
+			DXRenderer * m_renderer;
 		};
 	}
 }

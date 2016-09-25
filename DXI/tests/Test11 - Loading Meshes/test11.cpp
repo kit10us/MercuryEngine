@@ -9,7 +9,8 @@
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/factory/ShapeFactory.h>
 #include <dxi/factory/GeometryASEFactory.h>
-#include <dae/DAE.h>
+#include <dae/DAELib.h>
+#include <dxi/win/DXILib.h>
 
 #include <chrono>
 

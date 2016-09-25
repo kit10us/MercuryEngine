@@ -12,15 +12,4 @@
 
 #include <dxi/core/Game.h>
 
-// This class is exported from the DXILuaDLL.dll
-class DXILUADLL_API CDXILuaDLL {
-public:
-	CDXILuaDLL(void);
-	// TODO: add your methods here.
-};
-
-extern DXILUADLL_API int nDXILuaDLL;
-
-DXILUADLL_API int fnDXILuaDLL(void);
-
 extern "C" DXILUADLL_API bool DXILoader( dxi::core::Game * game );

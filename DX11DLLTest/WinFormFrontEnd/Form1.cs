@@ -26,11 +26,6 @@ namespace WinFormFrontEnd
         [DllImport("DX11DLL.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern bool IsShutdown(IntPtr hwnd);
 
-        [DllImport("user32")]
-        static extern IntPtr FindWindowEx(IntPtr hwndParent, String hwndChildAfter, String lpszClass, String lpszWindow);
-
-        [DllImport("user32")]
-        static extern IntPtr GetWindow(IntPtr hWnd, UInt32 uCmd);
 
         IntPtr hWnd;
 

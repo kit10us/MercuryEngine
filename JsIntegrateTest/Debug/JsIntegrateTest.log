@@ -1,0 +1,4 @@
+﻿main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) char const * __cdecl JS::detail::InitWithFailureDiagnostic(bool)" (__imp_?InitWithFailureDiagnostic@detail@JS@@YAPBD_N@Z) referenced in function "bool __cdecl JS_Init(void)" (?JS_Init@@YA_NXZ)
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) struct JSContext * __cdecl JS_NewContext(unsigned int,unsigned int,struct JSContext *)" (__imp_?JS_NewContext@@YAPAUJSContext@@IIPAU1@@Z) referenced in function _main
+main.obj : error LNK2019: unresolved external symbol "__declspec(dllimport) void __cdecl JS_DestroyContext(struct JSContext *)" (__imp_?JS_DestroyContext@@YAXPAUJSContext@@@Z) referenced in function _main
+E:\dev\ws\JsIntegrateTest\Debug\JsIntegrateTest.exe : fatal error LNK1120: 3 unresolved externals

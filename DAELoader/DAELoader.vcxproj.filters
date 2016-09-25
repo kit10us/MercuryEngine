@@ -149,9 +149,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\dae\Dae.h">
-      <Filter>dae</Filter>
-    </ClInclude>
     <ClInclude Include="source\dae\Accessor.h">
       <Filter>dae</Filter>
     </ClInclude>
@@ -279,6 +276,9 @@
       <Filter>dae</Filter>
     </ClInclude>
     <ClInclude Include="source\dae\GeometrySourceFactory.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\DaeLib.h">
       <Filter>dae</Filter>
     </ClInclude>
   </ItemGroup>

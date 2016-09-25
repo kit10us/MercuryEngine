@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../packages/lua-5.3.3_pre;..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,7 +131,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../packages/lua-5.3.3_pre;..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

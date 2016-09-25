@@ -1,8 +1,8 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
-
+#include <dxi/core/Game.h>		   
+#include <dxi/win/DXILib.h>
 #include <dxi/GeometryGroup.h>
 #include <dxi/Terra.h>
 #include <dxi/shapes/ShapeCreators.h>

@@ -7,6 +7,7 @@
 #include <dxi/SpriteList.h>
 #include <dxi/win/DXDevice.h>
 #include <dxi/RenderState.h>
+#include <dxi/win/DXILib.h>
 
 using namespace dxi;
 using namespace core;
