@@ -23,4 +23,4 @@ extern DXILUADLL_API int nDXILuaDLL;
 
 DXILUADLL_API int fnDXILuaDLL(void);
 
-extern "C" DXILUADLL_API bool DXILoader( dxi::core::Game & game );
+extern "C" DXILUADLL_API bool DXILoader( dxi::core::Game * game );

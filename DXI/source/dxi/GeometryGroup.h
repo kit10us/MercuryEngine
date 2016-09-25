@@ -18,12 +18,6 @@ namespace dxi
 		GeometryGroup();
 		~GeometryGroup();
 
-		// ::Resource...
-		void Create();
-		void Destroy();
-		void Validate();
-		void Invalidate();
-
 		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 		virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
 		virtual void Add( Geometry::shared_ptr geometry );

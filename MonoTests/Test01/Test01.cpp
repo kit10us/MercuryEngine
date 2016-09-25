@@ -6,7 +6,7 @@
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-config.h>
 
-#pragma comment( lib, "mono.lib" )
+#pragma comment( lib, "mono-2.0.lib" )
 
 //__declspec( dllexport ) 
 
@@ -22,7 +22,7 @@ int main( int argc, char ** argv )
 	std::cout << "Testing Mono..." << std::endl;
 
 	mono_config_parse( 0 );
-	mono_set_dirs( "D:\\workspaces\\quentin_dxi\\Mono\\lib", "D:\\workspaces\\quentin_dxi\\Mono\\etc" );
+	mono_set_dirs( "..\\..\\..\\packages\\Mono\\lib", "..\\..\\..\\packages\\Mono\\etc" );
 	
 	MonoDomain * domain = 0;
 	domain = mono_jit_init( "App" );

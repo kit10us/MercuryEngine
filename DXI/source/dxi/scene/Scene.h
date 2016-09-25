@@ -42,7 +42,7 @@ namespace dxi
 				typedef std::tuple< Scene *, ObjectList &, unify::Seconds, core::IInput & > OnUpdate;
             };
 
-		    Scene( core::IGame & game );
+		    Scene( core::IGame * game );
 		    virtual ~Scene();
 
 		    void Clear();

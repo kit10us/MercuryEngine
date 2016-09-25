@@ -20,6 +20,7 @@
     <ClCompile Include="source\dxi\Blend.cpp" />
     <ClCompile Include="source\dxi\BufferSet.cpp" />
     <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp" />
+    <ClCompile Include="source\dxi\core\Extension.cpp" />
     <ClCompile Include="source\dxi\core\Game.cpp" />
     <ClCompile Include="source\dxi\core\GameDependant.cpp" />
     <ClCompile Include="source\dxi\DataBuffer.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="source\dxi\controllers\ControllerFactory.h" />
     <ClInclude Include="source\dxi\controllers\IController.h" />
     <ClInclude Include="source\dxi\controllers\PathController.h" />
+    <ClInclude Include="source\dxi\core\Extension.h" />
     <ClInclude Include="source\dxi\core\Game.h" />
     <ClInclude Include="source\dxi\core\GameDependant.h" />
     <ClInclude Include="source\dxi\core\IGame.h" />

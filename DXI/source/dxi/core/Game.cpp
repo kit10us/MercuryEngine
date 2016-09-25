@@ -24,6 +24,7 @@ Game::Game()
 
 Game::~Game()
 {
+	Shutdown();
 }
 
 bool Game::Initialize( std::shared_ptr< IOS > os )
@@ -57,7 +58,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	GetManager< Geometry >()->AddFactory( "geometry", new GeometryXMLFactory );
 	GetManager< Geometry >()->AddFactory( "shape", new ShapeXMLFactory );
 
-	m_sceneManager.reset( new scene::SceneManager( *this ) );
+	m_sceneManager.reset( new scene::SceneManager( this ) );
 
 	return true;
 }
@@ -151,6 +152,11 @@ void Game::Shutdown()
 
 	m_resourceHub.Clear();
 
+	m_scriptEngines.clear();
+
+	// Remove extensions...
+	m_extensions.clear();
+
 	m_os->Shutdown();
 }
 
@@ -159,9 +165,9 @@ IOS & Game::GetOS()
 	return *m_os.get();
 }
 
-void Game::AddScriptEngine( std::string name, scripting::IScriptEngine * se )
+void Game::AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se )
 {
-	m_scriptEngines[name] = std::shared_ptr< scripting::IScriptEngine >{ se };
+	m_scriptEngines[name] = se;
 }
 
 scripting::IScriptEngine * Game::GetScriptEngine( std::string name )
@@ -245,4 +251,8 @@ Game * Game::GetInstance()
 void Game::AddExtension( std::shared_ptr< Extension > extension )
 {
 	m_extensions.push_back( extension );
+	if ( ! extension->Load( this ) )
+	{
+		throw exception::FailedToCreate( "Failed to load extension!" );
+	}
 }

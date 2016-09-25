@@ -23,11 +23,6 @@ void GeometryASEFactory::SetPixelShader( dxi::PixelShader::shared_ptr pixelShade
 
 Geometry * GeometryASEFactory::Produce( unify::Path source )
 {
-	if( !source.IsExtension( "ase" ) )   // TODO: Should push extension tests to the manager.
-	{
-		return nullptr;
-	}
-
 	core::Game & game = *dxi::core::Game::GetInstance();
 
 	// Managers to store sub-resources.

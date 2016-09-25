@@ -580,6 +580,9 @@
     <ClCompile Include="source\dxi\core\GameDependant.cpp">
       <Filter>dxi\core</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\core\Extension.cpp">
+      <Filter>dxi\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -824,6 +827,9 @@
       <Filter>dxi\scipting</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\core\GameDependant.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\Extension.h">
       <Filter>dxi\core</Filter>
     </ClInclude>
   </ItemGroup>

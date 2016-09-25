@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxilua/DXILua.h>
-#include <dxi/core/Game.h>
 
 #pragma comment( lib, "lua53" )
 
@@ -14,7 +13,7 @@ ScriptEngine * ScriptEngine::s_se;
 //TODO: Replace asserts with runtime errors.
 
 ///////////////////////
-// Game...
+// game->..
 
 extern "C"
 int Game_GetWidth( lua_State * state )
@@ -22,9 +21,9 @@ int Game_GetWidth( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game.GetOS().GetResolution().width );
+	lua_pushnumber( state, game->GetOS().GetResolution().width );
 
 	return 1;
 }
@@ -35,9 +34,9 @@ int Game_GetHeight( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game.GetOS().GetResolution().height );
+	lua_pushnumber( state, game->GetOS().GetResolution().height );
 
 	return 1;
 }
@@ -48,9 +47,9 @@ int Game_GetAspectRatioHW( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game.GetOS().GetResolution().AspectRatioHW() );
+	lua_pushnumber( state, game->GetOS().GetResolution().AspectRatioHW() );
 
 	return 1;
 }
@@ -83,9 +82,9 @@ int Resources_AddResource( lua_State * state )
 	std::string name = lua_tostring( state, 2 );
 	std::string path = lua_tostring( state, 3 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	game.GetResourceHub().Load( type, name, path );
+	game->GetResourceHub().Load( type, name, path );
 
 	return 0;
 }
@@ -115,9 +114,9 @@ int Scenes_LoadScene( lua_State * state )
 	std::string name = lua_tostring( state, 1 );
 	std::string path = lua_tostring( state, 2 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	game.GetSceneManager()->Load( name, path );
+	game->GetSceneManager()->Load( name, path );
 
 	return 0;
 }
@@ -130,9 +129,9 @@ int Scenes_AddScene( lua_State * state )
 
 	std::string name = lua_tostring( state, 1 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	game.GetSceneManager()->Add( name );
+	game->GetSceneManager()->Add( name );
 
 	return 0;
 }	
@@ -163,9 +162,9 @@ int Scene_AddObject( lua_State * state )
 	std::string sceneName = lua_tostring( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	scene->Add( name );
 
 	return 0;
@@ -180,9 +179,9 @@ int Scene_SetCamera( lua_State * state )
 	std::string sceneName = lua_tostring( state, 1 );
 	std::string camera = lua_tostring( state, 2 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	scene->SetCamera( camera );
 
 	return 0;
@@ -198,9 +197,9 @@ int Scene_SetSize( lua_State * state )
 	float width = (float)lua_tonumber( state, 2 );
 	float height = (float)lua_tonumber( state, 3 );
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	scene->SetSize( unify::Size< float >( width, height ) );
 
 	return 0;
@@ -247,15 +246,15 @@ int Object_SetGeometry( lua_State * state )
 		objectName = std::string( objectPathName.begin() + i + 1, objectPathName.end() );
 	}
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	assert( scene );
 
 	scene::Object * object = scene->FindObject( objectName ).get();
 	assert( object );
 
-	auto geometry = game.GetManager< Geometry >()->Find( geometryName );
+	auto geometry = game->GetManager< Geometry >()->Find( geometryName );
 
 	object->SetGeometry( geometry );
 
@@ -287,9 +286,9 @@ int Object_SetPosition( lua_State * state )
 		objectName = std::string( objectPathName.begin() + i + 1, objectPathName.end() );
 	}
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	assert( scene );
 
 	scene::Object * object = scene->FindObject( objectName ).get();
@@ -325,9 +324,9 @@ int Object_LookAt( lua_State * state )
 		objectName = std::string( objectPathName.begin() + i + 1, objectPathName.end() );
 	}
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	assert( scene );
 
 	scene::Object * object = scene->FindObject( objectName ).get();
@@ -378,7 +377,7 @@ int Camera_SetProjection( lua_State * state )
 		}
 	}
 
-	auto & game = ScriptEngine::GetGame();
+	auto game = ScriptEngine::GetGame();
 
 	std::string sceneName;
 	std::string objectName;
@@ -394,7 +393,7 @@ int Camera_SetProjection( lua_State * state )
 		objectName = std::string( objectPathName.begin() + i + 1, objectPathName.end() );
 	}
 
-	scene::Scene * scene = game.GetSceneManager()->Find( sceneName ).get();
+	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	assert( scene );
 
 	scene->GetCamera().SetProjection( mat );
@@ -545,7 +544,7 @@ int luaopen_debug( lua_State * state )
 ///////////////////////
 ///////////////////////
 
-ScriptEngine::ScriptEngine( dxi::core::Game & game )
+ScriptEngine::ScriptEngine( dxi::core::Game * game )
 	: m_game( game ),
 	m_state{ luaL_newstate() }
 {
@@ -612,7 +611,7 @@ scripting::ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 }
 
 
-dxi::core::Game & ScriptEngine::GetGame()
+dxi::core::Game * ScriptEngine::GetGame()
 {
 	return ScriptEngine::s_se->m_game;
 }

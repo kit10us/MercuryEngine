@@ -16,8 +16,6 @@ namespace dxi
 {
     namespace scene
     {
-        class Scene;
-
 		/// <notes>
         /// Objects belong to Scenes. Scenes are collections of objects.
 		/// </notes>
@@ -43,9 +41,6 @@ namespace dxi
 			explicit Object( Geometry::shared_ptr geometry, std::shared_ptr< physics::IInstance > physics = std::shared_ptr< physics::IInstance >() );
 			Object( Geometry::shared_ptr geometry, const unify::V3< float > position );
 		    virtual ~Object();
-
-            void SetScene( Scene * scene );
-            Scene * GetScene() const;
 
             void SetEnabled( bool enabled );
             bool GetEnabled() const;
@@ -96,8 +91,6 @@ namespace dxi
 
 	    protected:
 			std::map< std::string, std::string > m_tags;
-
-            Scene * m_scene;
 
             bool m_enabled;
             bool m_visible;

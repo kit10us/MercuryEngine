@@ -30,28 +30,11 @@ public:
 	void Startup()
 	{
 		Game::Startup();
-
-		AddScriptEngine( "lua2", new dxilua::ScriptEngine( *this ) );
-
-		HMODULE mh = LoadLibraryA( "DXILuaDLL.dll" );
-		assert( mh );
-
-		typedef bool ( __cdecl *LoaderFunction )(dxi::core::Game &);
-
-		LoaderFunction loader = (LoaderFunction)GetProcAddress( mh, "DXILoader" );
-		assert( loader );
-
-		loader( *this );
+		AddExtension( std::shared_ptr< core::Extension >( new Extension( "DXILuaDLL.dll" ) ) );
 
 		scripting::IScriptEngine * luaDLL = GetScriptEngine( "lua" );
-		scripting::IScriptEngine * luaLIB = GetScriptEngine( "lua2" );
 
-		luaDLL->ExecuteFile( "media/scene1.lua" );
-		luaLIB->ExecuteFile( "media/scene1_2.lua" );
-
-
-		FreeLibrary( mh );
-
+		luaDLL->ExecuteFile( "media/scene1.lua" );	
 	}
 
 	bool Update( unify::Seconds elapsed, IInput & input )

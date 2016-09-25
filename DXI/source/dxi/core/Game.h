@@ -59,7 +59,7 @@ namespace dxi
 
 			virtual IOS & GetOS() final;
 
-			void AddScriptEngine( std::string name, scripting::IScriptEngine * se ) override;
+			void AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se ) override;
 
 			scripting::IScriptEngine * GetScriptEngine( std::string name ) override;
 
@@ -90,7 +90,6 @@ namespace dxi
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
 			
-			// TODO: Can this become part of the resource management, so we can use the loading stuff?
 			scene::SceneManager::shared_ptr m_sceneManager;
 
 			bool m_isQuitting;

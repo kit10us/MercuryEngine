@@ -91,7 +91,7 @@ public:
 		m_triangleVB.Unlock();
 
 		// Create managers...
-		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager );
+		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager( this ) );
 		m_fontManager = font::FontManager::shared_ptr( new font::FontManager( m_spriteManager ) );
 
 		m_fontManager->LoadFromFile( "font1_2D", "media/font1_2D.xml" );

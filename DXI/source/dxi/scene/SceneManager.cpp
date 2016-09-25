@@ -10,7 +10,7 @@
 using namespace dxi;
 using namespace scene;
 
-SceneManager::SceneManager( dxi::core::IGame & game )
+SceneManager::SceneManager( dxi::core::IGame * game )
 : GameDependant( game )
 , m_focusScene( 0 )
 , m_enabled( true )

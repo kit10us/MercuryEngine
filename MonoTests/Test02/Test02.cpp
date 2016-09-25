@@ -6,28 +6,19 @@
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-config.h>
 
-#pragma comment( lib, "mono.lib" )
-
-//__declspec( dllexport ) 
-
-extern "C" {
-	__declspec( dllexport ) void DoSomething()
-	{
-		std::cout << "I did something!" << std::endl;
-	}
-}
+#pragma comment( lib, "mono-2.0.lib" )
 
 int main( int argc, char ** argv )
 {
 	std::cout << "Testing Mono..." << std::endl;
 
 	mono_config_parse( 0 );
-	mono_set_dirs( "D:\\workspaces\\quentin_dxi\\Mono\\lib", "D:\\workspaces\\quentin_dxi\\Mono\\etc" );
-	
+	mono_set_dirs( "..\\..\\..\\packages\\Mono\\lib", "..\\..\\..\\packages\\Mono\\etc" );
+
 	MonoDomain * domain = 0;
 	domain = mono_jit_init( "App" );
 
-	MonoAssembly * assembly = mono_domain_assembly_open( domain, "hello.cs" );
+	MonoAssembly * assembly = mono_domain_assembly_open( domain, "hello.exe" );
 	if ( ! assembly )
 	{
 		std::cout << "Failed to load \"hello.exe\"!" << std::endl;

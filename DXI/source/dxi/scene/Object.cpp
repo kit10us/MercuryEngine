@@ -16,7 +16,6 @@ Object::Object()
 , m_lastFrameID( 0 )
 , m_renderBBox( false )
 , m_geometryMatrix( unify::Matrix::MatrixIdentity() )
-, m_scene( 0 )
 {
 }
 
@@ -28,7 +27,6 @@ Object::Object( Geometry::shared_ptr geometry, std::shared_ptr< physics::IInstan
 , m_renderBBox( false )
 , m_physics( physics )
 , m_geometryMatrix( unify::Matrix::MatrixIdentity() )
-, m_scene( 0 )
 {
 }
 
@@ -39,23 +37,12 @@ Object::Object( Geometry::shared_ptr geometry, const unify::V3< float > position
 , m_geometryInstanceData( geometry->CreateInstanceData() )
 , m_renderBBox( false )
 , m_geometryMatrix( unify::Matrix::MatrixIdentity() )
-, m_scene( 0 )
 {
     GetFrame().SetPosition( position );
 }
 
 Object::~Object()
 {
-}
-
-void Object::SetScene( Scene * scene )
-{
-    m_scene = scene;
-}
-
-Scene * Object::GetScene() const
-{
-    return m_scene;
 }
 
 void Object::SetEnabled( bool enabled )

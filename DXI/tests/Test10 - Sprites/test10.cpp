@@ -36,7 +36,7 @@ public:
 		m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 0, 10 ) );
 
 		// Create managers...
-		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager );
+		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager( this ) );
 
 		// Color 3D effect...
 		Effect::shared_ptr color3DEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );

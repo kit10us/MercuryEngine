@@ -9,7 +9,7 @@
 using namespace dxi;
 using namespace scene;
 
-Scene::Scene( dxi::core::IGame & game )
+Scene::Scene( dxi::core::IGame * game )
 : GameDependant( game )
 , m_lastCullCount( 0 )
 , m_renderSolids( true )
@@ -17,7 +17,7 @@ Scene::Scene( dxi::core::IGame & game )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_viewport( Game().GetOS().GetDefaultViewport() )
+, m_viewport( Game()->GetOS().GetDefaultViewport() )
 , m_color( 0, 0, 180, 255 )
 , m_renderPhysics( false )
 , m_hasFocus( false )
@@ -58,7 +58,6 @@ std::shared_ptr< Object > Scene::Add( Object * object )
 {
 	std::shared_ptr< Object > object_ptr( object );
 	m_objectList.push_back( object_ptr );
-    object->SetScene( this );
 	if( m_physicsScene && object->GetPhysics() )
 	{
 		m_physicsScene->Add( object->GetPhysics() );
@@ -72,7 +71,6 @@ std::shared_ptr< Object > Scene::Add( const std::string & name )
 
 	object_ptr->GetTags()[ "name" ] = name;
     
-	object_ptr->SetScene( this );
 	m_objectList.push_back( object_ptr );
 	m_objectMap[ name ] = object_ptr;
 	if( m_physicsScene && object_ptr->GetPhysics() )
@@ -146,7 +144,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
 
         Frustum frustum( camera.GetMatrix() );
 
-        unify::Size< float > resolution = Game().GetOS().GetResolution();
+        unify::Size< float > resolution = Game()->GetOS().GetResolution();
         unify::V2< float > mouseUnit = input.MouseV2< float >();
         mouseUnit /= unify::V2< float >( resolution.width, resolution.height );
 
@@ -186,9 +184,8 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
             // Create a list of objects that were hit...
             Object::shared_ptr closestObject;
             float closestObjectDistance = 0.0f;
-            for ( std::list< Object::shared_ptr >::iterator itr = m_objectList.begin(), end = m_objectList.end(); itr != end; ++itr )
+            for ( auto object : m_objectList )
             {
-                Object::shared_ptr object = *itr;
                 if ( ! object->GetGeometry() )
                 {
                     continue;
@@ -296,10 +293,10 @@ void Scene::Render()
 	}
 
 	Viewport viewportBackup;
-	Game().GetOS().GetRenderer()->GetViewport( viewportBackup );
+	Game()->GetOS().GetRenderer()->GetViewport( viewportBackup );
 
 	Viewport viewport;
-	Game().GetOS().GetRenderer()->SetViewport( m_viewport );
+	Game()->GetOS().GetRenderer()->SetViewport( m_viewport );
 
 	// TODO: DX11 (this is moved to the begin scene, so we need to figure this out): win::DX::GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_color, 1.0f, 0 );
 	// TODO: DX11: win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
@@ -428,7 +425,7 @@ void Scene::Render()
 		m_physicsScene->Render();
 	}
 
-	Game().GetOS().GetRenderer()->SetViewport( viewportBackup );
+	Game()->GetOS().GetRenderer()->SetViewport( viewportBackup );
 
 	m_renderInfo.IncrementFrameID();
 }

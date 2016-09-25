@@ -21,7 +21,7 @@ namespace dxi
 				typedef std::tuple< SceneManager *, std::list< Scene * > &, unify::Seconds, core::IInput & > OnUpdate;
             };
 
-		    SceneManager( core::IGame & game );
+		    SceneManager( core::IGame * game );
 		    virtual ~SceneManager();
 
             void Destroy();

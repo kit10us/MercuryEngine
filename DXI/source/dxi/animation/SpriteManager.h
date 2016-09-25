@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/GameDependant.h>
 #include <dxi/animation/Group.h>
 #include <map>
 #include <memory>
@@ -14,13 +15,13 @@ namespace dxi
 		typedef std::string GroupName;
 		typedef std::map< GroupName, std::shared_ptr< Group > > GroupMap;
 
-		class SpriteManager
+		class SpriteManager : public core::GameDependant
 		{
 		public:
 			typedef std::shared_ptr< SpriteManager > shared_ptr;
 			typedef std::weak_ptr< SpriteManager > weak_ptr;
 
-			SpriteManager();
+			SpriteManager( dxi::core::IGame * game );
 			~SpriteManager();
 			void LoadFromFile( const unify::Path & filePath );
 			void AddGroup( const GroupName & name, std::shared_ptr< Group > group );

@@ -8,7 +8,8 @@
 using namespace dxi;
 using namespace animation;
 
-SpriteManager::SpriteManager()
+SpriteManager::SpriteManager( dxi::core::IGame * game )
+	: GameDependant( game )
 {
 }
 

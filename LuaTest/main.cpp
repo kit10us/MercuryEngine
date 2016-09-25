@@ -1,75 +1,38 @@
 #include <iostream>
 #include <conio.h>
-
 #include <lua.hpp>
+
+#include <test-01.h>
+#include <test-02.h>
+#include <test-03.h>
+#include <test-04.h>
 
 #pragma comment( lib, "lua53" )
 
-extern "C"
-int HelloLua( lua_State * state )
-{
-	using namespace std;
-	cout << "Hello, Lua!" << endl;
-	return 0;
-}
-
-void print_error( lua_State * state )
-{
-	const char * message = lua_tostring( state, -1 );
-	std::cout << "Lua Error: " << message << std::endl;
-	lua_pop( state, 1 );
-}
 
 int main( int argc, char ** argv )
 {
 	using namespace std;
 
-	cout << "Hello, World!" << endl;
+	cout << "BEGIN LUA TESTS..." << endl << endl;
 
-	lua_State * state = luaL_newstate();
+	test01::main( argc, argv );
 
-	luaL_openlibs( state );
+	cout << endl << endl;
 
-	// Load my libraries...
-	lua_register( state, "HelloLua", HelloLua );
+	test02::main( argc, argv );
 
-	{
-		int result = luaL_loadstring( state, "print(\"Hello, from inside Lua!\")" );
-		if ( result != LUA_OK )
-		{
-			print_error( state );
-			return 1;
-		}
+	cout << endl << endl;
 
-		result = lua_pcall( state, 0, LUA_MULTRET, 0 );
-		if( result != LUA_OK )
-		{
-			print_error( state );
-			return 1;
-		}
-	}
+	test03::main( argc, argv );		  
 
-	{
-		int result = luaL_loadstring( state, "HelloLua()" );
-		if( result != LUA_OK )
-		{
-			print_error( state );
-			return 1;
-		}
+	cout << endl << endl;
 
-		result = lua_pcall( state, 0, LUA_MULTRET, 0 );
-		if( result != LUA_OK )
-		{
-			print_error( state );
-			return 1;
-		}
-	}
+	test04::main( argc, argv );
 
-
-	cout << "Program done, press any key..." << endl;
+	cout << "END LUA TESTS." << endl;
 
 	while( !_getch() );
-	lua_close( state );
 
 	return 0;
 }

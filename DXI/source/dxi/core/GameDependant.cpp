@@ -6,7 +6,7 @@
 using namespace dxi;
 using namespace core;
 
-GameDependant::GameDependant( IGame & game )
+GameDependant::GameDependant( IGame * game )
 	: m_game( game )
 {
 }
@@ -15,7 +15,7 @@ GameDependant::~GameDependant()
 {
 }
 
-IGame & GameDependant::Game()
+IGame * GameDependant::Game()
 {
 	return m_game;
 }

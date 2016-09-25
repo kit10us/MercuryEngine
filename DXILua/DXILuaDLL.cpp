@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "DXILuaDLL.h"
 #include <dxilua/DXILua.h>
+#include <memory.h>
 
 
 // This is an example of an exported variable
@@ -22,8 +23,14 @@ CDXILuaDLL::CDXILuaDLL()
     return;
 }
 
-DXILUADLL_API bool DXILoader( dxi::core::Game & game )
+void Deleter( dxi::scripting::IScriptEngine * se )
 {
-	game.AddScriptEngine( "lua", new dxilua::ScriptEngine( game ) );
+	delete se;
+}
+
+DXILUADLL_API bool DXILoader( dxi::core::Game * game )
+{
+	game->AddScriptEngine( "lua", std::shared_ptr< dxi::scripting::IScriptEngine >( new dxilua::ScriptEngine( game ), Deleter ) );
 	return true;
 }
+

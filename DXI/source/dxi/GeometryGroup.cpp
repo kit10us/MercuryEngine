@@ -11,27 +11,7 @@ GeometryGroup::GeometryGroup()
 
 GeometryGroup::~GeometryGroup()
 {
-	Destroy();
-}
-
-void GeometryGroup::Create()
-{
-	// TODO:
-}
-
-void GeometryGroup::Destroy()
-{
 	Clear();
-}
-
-void GeometryGroup::Validate()
-{
-	// TODO:
-}
-
-void GeometryGroup::Invalidate()
-{
-	// TODO:
 }
 
 void GeometryGroup::Clear()

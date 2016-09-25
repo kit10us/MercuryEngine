@@ -1,9 +1,11 @@
 #include <iostream>
-#include <conio.h>
-
+#include <conio.h>				  
 #include <lua.hpp>
 
 #pragma comment( lib, "lua53" )
+
+namespace test02
+{
 
 void HelloLua()
 {
@@ -44,9 +46,12 @@ int main( int argc, char ** argv )
 		return 1;
 	}
 
+	cout << "Press any key to continue..." << endl;
 
 	while( !_getch() );
 	lua_close( state );
 
 	return 0;
+}
+
 }

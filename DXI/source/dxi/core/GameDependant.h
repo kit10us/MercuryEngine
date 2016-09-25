@@ -12,14 +12,14 @@ namespace dxi
 		class GameDependant
 		{
 		public:
-			GameDependant( dxi::core::IGame & game );
+			GameDependant( dxi::core::IGame * game );
 			virtual ~GameDependant();
 
 		protected:
-			IGame & Game();
+			IGame * Game();
 
 		private:
-			IGame & m_game;
+			IGame * m_game;
 		};
 	}
 }

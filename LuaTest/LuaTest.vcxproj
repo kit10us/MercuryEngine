@@ -88,7 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../packages/lua-5.3.3_pre/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../packages/lua-5.3.3_pre/include;.</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,7 +118,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../packages/lua-5.3.3_pre/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../packages/lua-5.3.3_pre/include;.</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +147,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="test-01.cpp" />
+    <ClCompile Include="test-02.cpp" />
+    <ClCompile Include="test-03.cpp" />
+    <ClCompile Include="test-04.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="test-01.h" />
+    <ClInclude Include="test-02.h" />
+    <ClInclude Include="test-03.h" />
+    <ClInclude Include="test-04.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
