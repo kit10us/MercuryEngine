@@ -109,11 +109,7 @@ const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > 
 {
 	boundingBox.Initialize();
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = 0;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();
 
 	// Loop through vertices for largest radius
 	for( const auto & bs : m_buffers )

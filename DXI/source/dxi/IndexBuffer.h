@@ -9,21 +9,12 @@
 #include <dxi/win/DirectX.h>
 #include <unify/Flags.h>
 #include <memory>
+#include <atlbase.h>
 
 namespace dxi
 {
 	// Typedefs...
-	typedef unsigned short			Index16;
 	typedef unsigned long			Index32;
-
-	struct IndexFormat
-	{
-		enum TYPE
-		{
-			Index16,
-			Index32
-		};
-	};
 
 	class IndexBuffer : public DataBuffer
 	{
@@ -47,7 +38,7 @@ namespace dxi
 		IndexBuffer();
 		~IndexBuffer();
 
-		void Create( unsigned int numIndices, IndexFormat::TYPE format = IndexFormat::Index32, BufferUsage::TYPE usage = BufferUsage::Default, unify::Flags flags = 0 );
+		void Create( unsigned int numIndices, BufferUsage::TYPE usage = BufferUsage::Default, Index32 * source = nullptr, unify::Flags flags = 0 );
 		void Resize( unsigned int numIndices );
 
 		/// <summary>
@@ -64,12 +55,14 @@ namespace dxi
 		unsigned int GetCreateFlags() const;
 		bool Valid() const;
 		void Use() const;
-		void Disuse() const;
-		IndexFormat::TYPE GetFormat() const;
 
 	protected:
-		IndexFormat::TYPE m_format;
 		unsigned int m_createFlags;
-		IDirect3DIndexBuffer9 *	m_IB;
+
+#if defined( DIRECTX9 )
+		CComPtr< IDirect3DIndexBuffer9 > m_IB;
+#elif defined( DIRECTX11 )
+		CComPtr< ID3D11Buffer > m_IB;
+#endif
 	};
 }

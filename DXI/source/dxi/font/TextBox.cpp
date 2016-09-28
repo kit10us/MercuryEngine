@@ -71,7 +71,10 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 	unify::Matrix oldProjection, oldView, oldWorld;
 	// TODO: Transform::Get( Transform::Index::World, oldWorld );
 
+	/*
+	DX11 porting
 	bool oldClipping = RenderState::Get( RenderState::Clipping ) == 0 ? false : true;
+	*/
 
 	unify::Matrix origin( unify::Matrix::MatrixIdentity() );
 
@@ -84,7 +87,10 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 		unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().width ), static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().height ), 0, -1, 1000 ) );
 		// TODO: Transform::Set( Transform::Index::Projection, projection );
 
+		/*
+		DX11 porting
 		RenderState::Set( RenderState::Clipping, false );
+		*/
 
 		unify::Matrix view( unify::Matrix::MatrixIdentity() );
 		// TODO: Transform::Set( Transform::Index::View, view );
@@ -98,8 +104,11 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 
 	if( renderInfo.IsOptionFalse( RenderOption::NoEffectSet ) )
 	{
+		/*
+		// TODO:
 		win::DX::GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
 		win::DX::GetDxDevice()->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
+		*/
 	}
 
 	for( auto character : m_characterRenderList )
@@ -111,7 +120,7 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 	// TODO: Transform::Set( Transform::Index::World, oldWorld );
 	if( renderInfo.IsOptionFalse( RenderOption::NoFrame ) )
 	{
-		RenderState::Set( RenderState::Clipping, oldClipping );
+		// DX11 porting: RenderState::Set( RenderState::Clipping, oldClipping );
 		// TODO: Transform::Set( Transform::Index::Projection, oldProjection );
 		// TODO: Transform::Set( Transform::Index::View, oldView );
 	}

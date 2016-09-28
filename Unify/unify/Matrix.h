@@ -1,6 +1,6 @@
 /* Copyright (c) 2002 - 2014, Quentin S. Smith
- * All Rights Reserved
- */
+* All Rights Reserved
+*/
 
 #pragma once
 
@@ -15,27 +15,27 @@
 
 namespace unify
 {
-	class Matrix
+	__declspec(align(16)) class Matrix
 	{
 	public:
-#ifdef DIRECTX9
+#if defined ( DIRECTX9 )
 		typedef D3DXMATRIX DXMatrix;
-#else
+#elif defined( DIRECTX11 )
 		typedef DirectX::XMMATRIX DXMatrix;
 #endif
 
 		static Matrix MatrixIdentity();
 		static Matrix MatrixTranslate( const V3< float > & vector );
 		static Matrix MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar );
-        static Matrix MatrixScale( const unify::V3< float > & scale );
-        static Matrix MatrixScale( float x, float y, float z );
-        static Matrix MatrixScale( float scale );
-        static Matrix MatrixRotationAboutAxis( const V3< float > & axis, Angle angle ); 
+		static Matrix MatrixScale( const unify::V3< float > & scale );
+		static Matrix MatrixScale( float x, float y, float z );
+		static Matrix MatrixScale( float scale );
+		static Matrix MatrixRotationAboutAxis( const V3< float > & axis, Angle angle );
 		static Matrix MatrixPerspectiveFovLH( float w, float h, float zn, float zf );
 		static Matrix MatrixRotationX( const float & x );
 		static Matrix MatrixRotationY( const float & y );
 		static Matrix MatrixRotationZ( const float & z );
-		static Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up  );
+		static Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up );
 
 		Matrix();
 		Matrix( const Matrix & matrix );
@@ -112,26 +112,29 @@ namespace unify
 
 		DXMatrix * unify::Matrix::GetD3DXMatrix();
 		const DXMatrix * unify::Matrix::GetD3DXMatrix() const;
-		
-        void TransformCoord( V2< float > & v2 ) const;
+
+		void TransformCoord( V2< float > & v2 ) const;
 		void TransformCoord( V3< float > & v3 ) const;
 		V2< float > TransformCoord_Copy( const V2< float > & v2 ) const;
-        V3< float > TransformCoord_Copy( const V3< float > & v3 ) const;
+		V3< float > TransformCoord_Copy( const V3< float > & v3 ) const;
 		void TransformNormal( V2< float > & v2 ) const;
 		void TransformNormal( V3< float > & v3 ) const;
 
-        void Transform( V4< float > & v4 ) const;
+		void Transform( V4< float > & v4 ) const;
 		void RotateAboutAxis( const V3< float > & axis, Angle angle );
-		
+
 		void LookAtLH( const V3< float > & at, const V3< float > & up );
 
 		std::string ToString() const;
 
 	protected:
-#ifdef DIRECTX9
+		/*
+		#if defined( DIRECTX9 )
 		std::shared_ptr< DXMatrix > m_matrix;
-#else
-		DXMatrix m_matrix;
-#endif
+		#elif defined( DIRECTX11 )
+		std::shared_ptr< DXMatrix > m_matrix;
+		#endif
+		*/
+		float m_matrix[4][4];
 	};
 }

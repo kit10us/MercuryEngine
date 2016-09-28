@@ -48,8 +48,6 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 
 	BufferSet & set = m_primitiveList.AddBufferSet();
 	set.GetVertexBuffer().Create( iNumVerts, vd, BufferUsage::Default );
-	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( iNumIndices, IndexFormat::Index16, BufferUsage::Default );
 
 	// Method 1 - Triangle Strip...
 	set.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleStrip, 0 /*baseVertexIndex*/, 0 /*minIndex*/, iNumVerts, 0 /*startIndex*/, iNumIndices - 2, effect, true ) );
@@ -59,35 +57,11 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_FLOAT3;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_FLOAT3;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	unify::DataLock lock;
 	set.GetVertexBuffer().Lock( lock );
@@ -127,26 +101,26 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	set.GetVertexBuffer().Unlock();
 
 	// Fill in indices...
-	IndexLock indexLock;
-	ib.Lock( indexLock );
-	Index16 * pIndices = (Index16 *)indexLock.GetData();
+	std::vector< Index32 > indices( iNumIndices );
 
-	unsigned int uInd = 0;	
+	unsigned int uInd = 0;
 	unsigned int uSegmentsH = rc.row + 1;	// Number of segments
 	for( c = 0; c < rc.column; c++ )
 	{
 		for( r = 0; r < (int)uSegmentsH; r++ )
 		{
-			pIndices[uInd++] =  (Index16)( (uSegmentsH * c) + r );
-			pIndices[uInd++] =  (Index16)( (uSegmentsH * (c + 1)) + r );
+			indices[uInd++] = (Index32)((uSegmentsH * c) + r);
+			indices[uInd++] = (Index32)((uSegmentsH * (c + 1)) + r);
 		}
 		if( c < (rc.column - 1) )
 		{
-			pIndices[uInd++] =  (Index16)( (uSegmentsH * (c + 2)) - 1 );
-			pIndices[uInd++] =  (Index16)( uSegmentsH * (c + 1) );
+			indices[uInd++] = (Index32)((uSegmentsH * (c + 2)) - 1);
+			indices[uInd++] = (Index32)(uSegmentsH * (c + 1));
 		}
 	}
-	ib.Unlock();
+
+	IndexBuffer & ib = set.GetIndexBuffer();
+	ib.Create( iNumIndices, BufferUsage::Default, (Index32*)&indices[ 0 ] );
 
 	m_rc = rc;
 
@@ -179,15 +153,8 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();
+	VertexElement diffuseE = CommonVertexElement::Diffuse();
 
 	unsigned int* pBuffer;
 	unsigned int* pBufferColumnStart;
@@ -265,15 +232,8 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();
+	VertexElement diffuseE = CommonVertexElement::Diffuse();
 
 	unsigned int* pBuffer;
 	unsigned int* pBufferColumnStart;
@@ -350,11 +310,7 @@ bool Terra::ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexA
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();
 
 	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
 
@@ -385,15 +341,8 @@ void Terra::GenerateNormals( bool bUseSelf )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();
+	VertexElement normalE = CommonVertexElement::Normal();
 
 	unsigned int h, v;
 
@@ -479,10 +428,7 @@ bool Terra::Smooth( unsigned int uFlags )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();	
 	
 	// Compute new smoothed depth...
 	unsigned int r, c;
@@ -564,15 +510,9 @@ bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fToleranc
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
 
-	D3DVERTEXELEMENT9 diffuseE = {};
-	positionE.Type = D3DDECLTYPE_D3DCOLOR;
-	positionE.Usage = D3DDECLUSAGE_COLOR;
-	positionE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position();
+	VertexElement diffuseE = CommonVertexElement::Diffuse();
 
 	// ...
 	unsigned int r, c;
@@ -622,10 +562,8 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+
+	VertexElement positionE = CommonVertexElement::Position();
 
 	// Compute new wrapped depths...
 	unsigned int r, c;
@@ -704,10 +642,8 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+
+	VertexElement positionE = CommonVertexElement::Position();
 
 	// Compute new wrapped depths...
 	unsigned int r, c;
@@ -766,10 +702,8 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+
+	VertexElement positionE = CommonVertexElement::Position();
 
 	unify::DataLock lockIn;
 	BufferSet & setIn = pTerraIn->m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
@@ -840,10 +774,8 @@ bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 	set.GetVertexBuffer().Lock( lock );
 
 	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
+
+	VertexElement positionE = CommonVertexElement::Position();
 
 	D3DVERTEXELEMENT9 normalE = {};
 	normalE.Type = D3DDECLTYPE_FLOAT3;

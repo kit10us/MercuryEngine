@@ -131,11 +131,6 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 	dxi::VertexDeclaration vFormat( jsonFormat );
 
 	BufferSet & set = primitiveList.AddBufferSet();
-	VertexBuffer & vb = set.GetVertexBuffer();
-	vb.Create( totalVertices, vd, bufferUsage );
-	
-	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( totalIndices, IndexFormat::Index16, bufferUsage );
 
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, effect, true  ) );
@@ -215,40 +210,17 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 		vertices[ 7 ].diffuse = diffuse;
 	}
 
-	unify::DataLock lock;
-	vb.Lock( lock );
+	char * verticesFinal = new char[totalVertices * vd.GetSize()];
+
+	unify::DataLock lock( verticesFinal, vd.GetSize(), totalVertices, false );
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-	
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	vd.WriteVertex( lock, { 0, 14, 17 }, vFormat, (void*)&vertices[0] );
 	vd.WriteVertex( lock, { 1, 15, 20 }, vFormat, (void*)&vertices[1] );
@@ -353,11 +325,12 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 		vd.WriteVertex( lock, { 20, 21, 22, 23 }, diffuseE, diffuses[5] );
 	}
 
-	vb.Unlock();
-
+	VertexBuffer & vb = set.GetVertexBuffer();
+	vb.Create( totalVertices, vd, bufferUsage, verticesFinal );
+	delete [] verticesFinal;
 
 	// Set the Indices..
-	Index16 indices[36] =
+	Index32 indices[36] =
 	{
 		// Front
 		0, 2, 1,
@@ -384,11 +357,8 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 		22, 23, 21
 	};
 
-	// Copy the Indices
-	IndexLock indexLock;
-	ib.Lock( indexLock );
-	indexLock.CopyBytesFrom( &indices, 0, 36 * 2 );
-	ib.Unlock();
+	IndexBuffer & ib = set.GetIndexBuffer();
+	ib.Create( totalIndices, bufferUsage, indices );
 }
 
 void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -404,8 +374,6 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
-	VertexBuffer & vb = set.GetVertexBuffer();
-	vb.Create( count, vd, bufferUsage );
 
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 
@@ -415,40 +383,12 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 	// Randomize the vertices positions...
 	unify::V3< float > vec, norm;
 	
-	unify::DataLock lock;
-	vb.Lock( lock );
-
-	unsigned short stream = 0;
-
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	unsigned short stream = 0;			
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -466,6 +406,9 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
 	dxi::VertexDeclaration vFormat( jsonFormat );
+
+	char * vertices = new char[vd.GetSize() * count];
+	unify::DataLock lock( vertices, vd.GetSize(), count, false );
 
 	float distance;
 	unsigned int v;
@@ -488,7 +431,11 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 		vd.WriteVertex( lock, v, diffuseE, diffuse );
 		vd.WriteVertex( lock, v, specularE, specular );
 	}
-	vb.Unlock();
+
+	VertexBuffer & vb = set.GetVertexBuffer();
+	vb.Create( count, vd, bufferUsage, vertices );
+
+	delete[] vertices;
 }
 
 void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -504,8 +451,6 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 	
 	BufferSet & set = primitiveList.AddBufferSet();
-	VertexBuffer & vb = set.GetVertexBuffer();
-	vb.Create( count,  vd, bufferUsage );
 
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();	
 	rb.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
@@ -515,40 +460,16 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 	unify::V3< float > vPos3;
 	unify::V3< float > norm;
 
-	unify::DataLock lock;
-	vb.Lock( lock );
+	char * vertices = new char[vd.GetSize() * count];
+	unify::DataLock lock( vertices, vd.GetSize(), count, false );
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -608,7 +529,9 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 		vd.WriteVertex( lock, v, specularE, specular );
 
 	}
-	vb.Unlock();
+	VertexBuffer & vb = set.GetVertexBuffer();
+	vb.Create( count, vd, bufferUsage, vertices );
+	delete[] vertices;
 }
 
 void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -634,52 +557,23 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 	unsigned int totalTriangles = facesPerSegment * count;
 
 	BufferSet & set = primitiveList.AddBufferSet();
-	VertexBuffer & vb = set.GetVertexBuffer();
-	vb.Create( totalVertices, vd, bufferUsage );
-
-	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( totalIndices, IndexFormat::Index16, bufferUsage );
 
 	// Method 1 - Triangle List...
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	RenderMethod renderMethod( PrimitiveType::TriangleList, 0, totalVertices, totalTriangles, effect, true );
 	rb.AddMethod( renderMethod );
 	
-	unify::DataLock lock;
-	vb.Lock( lock );
+	char * vertices = new char[vd.GetSize() * totalVertices];
+	unify::DataLock lock( vertices, vd.GetSize(), totalVertices, false );
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
-
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
+	  
 	class V
 	{
 	public:
@@ -740,30 +634,32 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 		fRad += fRadChangeSeg;
 	}
 
-	vb.Unlock();
+	VertexBuffer & vb = set.GetVertexBuffer();
+	vb.Create( totalVertices, vd, bufferUsage, vertices );
+	delete[] vertices;
 
 	// Create the index list...
-	IndexLock indexLock;
-	ib.Lock( indexLock );
-	Index16* pIndices = (Index16 *)indexLock.GetData();
-	Index16 io = 0, vo = 0;	// Index and vertex offset
+	std::vector< Index32 > indices( totalIndices );
+	Index32 io = 0, vo = 0;	// Index and vertex offset
 	for( unsigned int segment = 0; segment < count; ++segment )
 	{
 		for( int iDef = 0; iDef < (int)definition; ++iDef )
 		{
-			pIndices[io++] = 0 + vo;
-			pIndices[io++] = 1 + vo;
-			pIndices[io++] = 2 + vo;
+			indices[io++] = 0 + vo;
+			indices[io++] = 1 + vo;
+			indices[io++] = 2 + vo;
 			
-			pIndices[io++] = 1 + vo;
-			pIndices[io++] = 3 + vo;
-			pIndices[io++] = 2 + vo;
+			indices[io++] = 1 + vo;
+			indices[io++] = 3 + vo;
+			indices[io++] = 2 + vo;
 
 			vo += 2;
 		}
 		vo += 2;
 	}
-	ib.Unlock();
+
+	IndexBuffer & ib = set.GetIndexBuffer();
+	ib.Create( totalIndices, bufferUsage, (Index32*)&indices[ 0 ] );  
 }
 
 void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -784,43 +680,16 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( 16, vd, bufferUsage );
 
-	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( 18, IndexFormat::Index16, bufferUsage );
-
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 16, 6, effect, true ) );
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -973,7 +842,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 	vb.Unlock();
 
 	// Set the Indices..
-	Index16 indices[18] = 
+	Index32 indices[18] = 
 	{
 		// Front
 		0, 2, 1,
@@ -992,11 +861,8 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 		14, 15, 13
 	};
 
-	// Copy the Indices
-	IndexLock indexLock;
-	ib.Lock( indexLock );
-	indexLock.CopyBytesFrom( &indices, 0, 18 * 2 );
-	ib.Unlock();
+	IndexBuffer & ib = set.GetIndexBuffer();
+	ib.Create( 18, bufferUsage, indices );
 }
 
 
@@ -1029,35 +895,11 @@ void shapes::CreateShape_Circle( PrimitiveList & primitiveList, unify::Parameter
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -1132,47 +974,21 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 		BufferSet & set = primitiveList.AddBufferSet();
 		VertexBuffer & vb = set.GetVertexBuffer();
 		vb.Create( numberOfVertices, vd, bufferUsage );
-		IndexBuffer & ib = set.GetIndexBuffer();
-		ib.Create( iNumIndices, IndexFormat::Index16, bufferUsage );
 	
 		// Method 1 - Triangle List...
 		RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 		rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, numberOfVertices, iNumFaces, effect,  true ) );
-		
+
 		unify::DataLock lock;
 		vb.Lock( lock );
 
 		unsigned short stream = 0;
 
-		D3DVERTEXELEMENT9 positionE = {};
-		positionE.Stream = stream;
-		positionE.Type = D3DDECLTYPE_FLOAT3;
-		positionE.Usage = D3DDECLUSAGE_POSITION;
-		positionE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 normalE = {};
-		normalE.Stream = stream;
-		normalE.Type = D3DDECLTYPE_FLOAT3;
-		normalE.Usage = D3DDECLUSAGE_NORMAL;
-		normalE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 diffuseE = {};
-		diffuseE.Stream = stream;
-		diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-		diffuseE.Usage = D3DDECLUSAGE_COLOR;
-		diffuseE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 specularE = {};
-		specularE.Stream = stream;
-		specularE.Type = D3DDECLTYPE_D3DCOLOR;
-		specularE.Usage = D3DDECLUSAGE_COLOR;
-		specularE.UsageIndex = 1;
-
-		D3DVERTEXELEMENT9 texE = {};
-		texE.Stream = stream;
-		texE.Type = D3DDECLTYPE_FLOAT2;
-		texE.Usage = D3DDECLUSAGE_TEXCOORD;
-		texE.UsageIndex = 0;
+		VertexElement positionE = CommonVertexElement::Position( stream );
+		VertexElement normalE = CommonVertexElement::Normal( stream );
+		VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+		VertexElement specularE = CommonVertexElement::Specular( stream );
+		VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 		class V
 		{
@@ -1225,27 +1041,26 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 		}
 		vb.Unlock();
 
-		IndexLock indexLock;
-		ib.Lock( indexLock );
-		Index16 * pIndices = (Index16 *)indexLock.GetData();
-
 		// Indices...
-		Index16 io = 0;
+		std::vector< Index32 > indices( iNumIndices );
+		Index32 io = 0;
 		for( v = 0; v < iFacesV; v++ )
 		{
 			for( h = 0; h < iFacesH; h++ )
 			{
 				//						V							H
-				pIndices[io++] = (Index16)((v * (iFacesH + 1))			+ h);
-				pIndices[io++] = (Index16)((v * (iFacesH + 1))			+ h + 1);
-				pIndices[io++] = (Index16)(((v + 1) * (iFacesH + 1))	+ h);
+				indices[io++] = (Index32)((v * (iFacesH + 1))			+ h);
+				indices[io++] = (Index32)((v * (iFacesH + 1))			+ h + 1);
+				indices[io++] = (Index32)(((v + 1) * (iFacesH + 1))	+ h);
 
-				pIndices[io++] = (Index16)((v * (iFacesH + 1))			+ h + 1);
-				pIndices[io++] = (Index16)(((v + 1) * (iFacesH + 1))	+ h + 1);
-				pIndices[io++] = (Index16)(((v + 1) * (iFacesH + 1))	+ h);
+				indices[io++] = (Index32)((v * (iFacesH + 1))			+ h + 1);
+				indices[io++] = (Index32)(((v + 1) * (iFacesH + 1))	+ h + 1);
+				indices[io++] = (Index32)(((v + 1) * (iFacesH + 1))	+ h);
 			}
 		}
-		ib.Unlock();
+
+		IndexBuffer & ib = set.GetIndexBuffer();
+		ib.Create( iNumIndices, bufferUsage, (Index32*)indices[0] );
 	}
 	
 	else 
@@ -1256,50 +1071,21 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 		int iNumIndices = (iColumns * (2 * (iRows + 1))) + (((iColumns - 1) * 2));
 
 		BufferSet & set = primitiveList.AddBufferSet();
-		VertexBuffer & vb = set.GetVertexBuffer();
-		vb.Create( numberOfVertices, vd, bufferUsage );
-		IndexBuffer & ib = set.GetIndexBuffer();
-		ib.Create( iNumIndices, IndexFormat::Index16, bufferUsage );
 		
 		// Method 1 - Triangle Strip...
 		RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 		RenderMethod renderMethod( PrimitiveType::TriangleStrip, 0, numberOfVertices, iNumIndices - 2, effect, true );
 		rb.AddMethod( renderMethod );
 
-		unify::DataLock lock;
-		vb.Lock( lock );
+		char * vertices = new char[vd.GetSize() * numberOfVertices];
 
 		unsigned short stream = 0;
 
-		D3DVERTEXELEMENT9 positionE = {};
-		positionE.Stream = stream;
-		positionE.Type = D3DDECLTYPE_FLOAT3;
-		positionE.Usage = D3DDECLUSAGE_POSITION;
-		positionE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 normalE = {};
-		normalE.Stream = stream;
-		normalE.Type = D3DDECLTYPE_FLOAT3;
-		normalE.Usage = D3DDECLUSAGE_NORMAL;
-		normalE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 diffuseE = {};
-		diffuseE.Stream = stream;
-		diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-		diffuseE.Usage = D3DDECLUSAGE_COLOR;
-		diffuseE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 specularE = {};
-		specularE.Stream = stream;
-		specularE.Type = D3DDECLTYPE_D3DCOLOR;
-		specularE.Usage = D3DDECLUSAGE_COLOR;
-		specularE.UsageIndex = 1;
-
-		D3DVERTEXELEMENT9 texE = {};
-		texE.Stream = stream;
-		texE.Type = D3DDECLTYPE_FLOAT2;
-		texE.Usage = D3DDECLUSAGE_TEXCOORD;
-		texE.UsageIndex = 0;
+		VertexElement positionE = CommonVertexElement::Position( stream );
+		VertexElement normalE = CommonVertexElement::Normal( stream );
+		VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+		VertexElement specularE = CommonVertexElement::Specular( stream );
+		VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 		class V
 		{
@@ -1322,6 +1108,7 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 		unify::TexCoords coords;
 
 		// Set the vertices...
+		unify::DataLock lock( vertices, vd.GetSize(), numberOfVertices, false );
 		float fRadH, fRadV;
 		int iVert = 0;
 		int v, h;
@@ -1354,29 +1141,33 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 				iVert++;
 			}
 		}
-		vb.Unlock();
 
-		IndexLock indexLock;
-		ib.Lock( indexLock );
-		Index16 * pIndices = (Index16 *)indexLock.GetData();
+		VertexBuffer & vb = set.GetVertexBuffer();
+		vb.Create( numberOfVertices, vd, bufferUsage, vertices );
+
+		delete[] vertices;	   
+
+		std::vector< Index32 > indices( iNumIndices );
 
 		// Indices...
-		Index16 io = 0;
+		Index32 io = 0;
 		int segmentmentsH = iRows + 1;	// Number of segments
 		for( v = 0; v < iColumns; v++ )
 		{
 			for( h = 0; h < segmentmentsH; h++ )
 			{
-				pIndices[io++] =  (Index16)( (segmentmentsH * v) + h );
-				pIndices[io++] =  (Index16)( (segmentmentsH * (v + 1)) + h );
+				indices[io++] = (Index32)((segmentmentsH * v) + h);
+				indices[io++] = (Index32)((segmentmentsH * (v + 1)) + h);
 			}
 			if( v < (iColumns - 1) )
 			{
-				pIndices[io++] =  (Index16)( (segmentmentsH * (v + 2)) - 1 );
-				pIndices[io++] =  (Index16)( segmentmentsH * (v + 1) );
+				indices[io++] = (Index32)((segmentmentsH * (v + 2)) - 1);
+				indices[io++] = (Index32)(segmentmentsH * (v + 1));
 			}
 		}
-		ib.Unlock();
+
+		IndexBuffer & ib = set.GetIndexBuffer();
+		ib.Create( iNumIndices, bufferUsage, (Index32*)&indices[0] );
 	}
 }
 
@@ -1420,35 +1211,11 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -1590,35 +1357,11 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -1759,9 +1502,6 @@ void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters
 	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( (segments + 1) * (segments + 1), vd, bufferUsage );
 	
-	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( 6 * segments * segments, IndexFormat::Index16, bufferUsage );
-	
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, vb.GetLength(), 0, segments * segments * 2, effect, true ) );
 
@@ -1770,35 +1510,11 @@ void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -1837,25 +1553,23 @@ void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters
 	}
 	vb.Unlock();
 
-	IndexLock indexLock;
-	ib.Lock( indexLock );
-
-	Index16 indices[ 6 ];
+	std::vector< Index32 > indices( 6 * segments * segments );
 	for( unsigned int v = 0; v < segments; ++v )
 	{
 		for( unsigned int h = 0; h < segments; ++h )
 		{
-			indices[ 0 ] = 0 + (segments + 1) * v + h;
-			indices[ 1 ] = 1 + (segments + 1) * v + h;
-			indices[ 2 ] = 0 + (segments + 1) * (v + 1) + h;
-			indices[ 3 ] = 0 + (segments + 1) * (v + 1) + h;
-			indices[ 4 ] = 1 + (segments + 1) * v + h;
-			indices[ 5 ] = 1 + (segments + 1) * (v + 1) + h;
-			indexLock.CopyBytesFrom( (void *)indices, 6 * (h + (v * segments)) * sizeof( Index16 ), sizeof( indices ) );
+			Index32 offset = 6 * (h + (v * segments));
+			indices[ offset + 0 ] = 0 + (segments + 1) * v + h;
+			indices[ offset + 1 ] = 1 + (segments + 1) * v + h;
+			indices[ offset + 2 ] = 0 + (segments + 1) * (v + 1) + h;
+			indices[ offset + 3 ] = 0 + (segments + 1) * (v + 1) + h;
+			indices[ offset + 4 ] = 1 + (segments + 1) * v + h;
+			indices[ offset + 5 ] = 1 + (segments + 1) * (v + 1) + h;
 		}
 	}
 
-	ib.Unlock();
+	IndexBuffer & ib = set.GetIndexBuffer();
+	ib.Create( 6 * segments * segments, bufferUsage, (Index32*)&indices[0] );
 }
 
 // A cone...
@@ -1891,35 +1605,11 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -2088,43 +1778,16 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( totalVertices, vd, bufferUsage );
 	
-	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( totalIndices, IndexFormat::Index16, bufferUsage );
-
 	RenderMethodBuffer & rb = primitiveList.GetBufferSet( 0 ).GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, effect, true  ) );
 
 	unsigned short stream = 0;
 
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Stream = stream;
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 diffuseE = {};
-	diffuseE.Stream = stream;
-	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-	diffuseE.Usage = D3DDECLUSAGE_COLOR;
-	diffuseE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 specularE = {};
-	specularE.Stream = stream;
-	specularE.Type = D3DDECLTYPE_D3DCOLOR;
-	specularE.Usage = D3DDECLUSAGE_COLOR;
-	specularE.UsageIndex = 1;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	class V
 	{
@@ -2329,7 +1992,7 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 	vb.Unlock();
 
 	// Set the Indices..
-	Index16 indices[36] =
+	Index32 indices[36] =
 	{
 		// Front
 		0, 2, 1,
@@ -2356,9 +2019,6 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 		22, 23, 21
 	};
 
-	// Copy the Indices
-	IndexLock indexLock;
-	ib.Lock( indexLock );
-	indexLock.CopyBytesFrom( &indices, 0, 36 * 2 );
-	ib.Unlock();
+	IndexBuffer & ib = set.GetIndexBuffer();
+	ib.Create( totalIndices, bufferUsage, indices );
 }

@@ -154,17 +154,8 @@ void Sprite::Render( const RenderInfo & renderInfo )
 	VertexDeclaration vd = vb.GetVertexDeclaration();
 
 	WORD stream = 0;
-	D3DVERTEXELEMENT9 positionE = {};
-	positionE.Stream = stream;
-	positionE.Type = D3DDECLTYPE_FLOAT3;
-	positionE.Usage = D3DDECLUSAGE_POSITION;
-	positionE.UsageIndex = 0;
-
-	D3DVERTEXELEMENT9 texE = {};
-	texE.Stream = stream;
-	texE.Type = D3DDECLTYPE_FLOAT2;
-	texE.Usage = D3DDECLUSAGE_TEXCOORD;
-	texE.UsageIndex = 0;
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	unify::DataLock lock;
 	vb.Lock( lock );

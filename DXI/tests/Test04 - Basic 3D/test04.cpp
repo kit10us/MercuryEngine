@@ -56,7 +56,7 @@ public:
 		m_view.Translate( unify::V3< float >( 0, 0, 10 ) );
 		m_view.LookAtLH( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-		RenderState::Set( RenderState::CullMode, RenderState::CullModeValues::None );
+		GetOS().GetRenderer()->SetCullMode( CullMode::None );
 
 		// Create a demonstration of 3d via a 3d rotating triangle...
 		m_triangleVB.Create( 6, VertexDeclaration( colorVDJson ) );

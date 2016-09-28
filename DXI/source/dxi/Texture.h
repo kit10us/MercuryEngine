@@ -2,10 +2,7 @@
 // All Rights Reserved
 
 #pragma once
-#include <dxi/win/DirectX.h>
 #include <unify/Rect.h>
-#include <unify/Flags.h>
-#include <unify/Size.h>
 #include <unify/Color.h>
 #include <unify/TexArea.h>
 #include <unify/Path.h>
@@ -13,10 +10,16 @@
 #include <memory>
 #include <map>
 
+// MS agressive macros.
+#ifdef LoadImage
+#undef LoadImage
+#endif
+
+
 namespace dxi
 {
-	#define TEXTURE_LOCKABLE		FLAG01	// D3DPOOL_MANAGED
-	#define TEXTURE_NORENDER		FLAG02	// D3DPOOL_SCRATCH
+#define TEXTURE_LOCKABLE		FLAG01	// D3DPOOL_MANAGED
+#define TEXTURE_NORENDER		FLAG02	// D3DPOOL_SCRATCH
 
 	// TODO: Re-arch...
 	struct TextureMode
@@ -41,25 +44,25 @@ namespace dxi
 			throw 0;
 		}
 	};
-    
-    //////////////////////////////////
+
+	//////////////////////////////////
 	// Font definitions...
 
-	#define FONT_BOLD        0x0001
-	#define FONT_ITALIC      0x0002
-	#define FONT_ZENABLE     0x0004
+#define FONT_BOLD        0x0001
+#define FONT_ITALIC      0x0002
+#define FONT_ZENABLE     0x0004
 
 	// Font rendering flags
-	#define FONT_CENTERED_X  0x0001
-	#define FONT_CENTERED_Y  0x0002
-	#define FONT_TWOSIDED    0x0004
-	#define FONT_FILTERED    0x0008
+#define FONT_CENTERED_X  0x0001
+#define FONT_CENTERED_Y  0x0002
+#define FONT_TWOSIDED    0x0004
+#define FONT_FILTERED    0x0008
 
-	#define SPRITEANIMLOOP_NONE			0
-	#define SPRITEANIMLOOP_REPEAT		1	// 1 loop period
-	#define SPRITEANIMLOOP_FORWARDBACK	2	// 2 loop periods
+#define SPRITEANIMLOOP_NONE			0
+#define SPRITEANIMLOOP_REPEAT		1	// 1 loop period
+#define SPRITEANIMLOOP_FORWARDBACK	2	// 2 loop periods
 
-	#define LOCK_READONLY	D3DLOCK_READONLY
+#define LOCK_READONLY	D3DLOCK_READONLY
 
 	// TODO: Move to its own file and remove hung
 	struct TextureLock
@@ -106,7 +109,7 @@ namespace dxi
 
 		void ClearHeader();
 
-		void CreateFromFile( const unify::Path & filePath, unsigned long flags = FLAGNULL );
+		void CreateFromFile( const unify::Path & filePath, unsigned long flags = 0 );
 
 		const unsigned int FileWidth() const;
 		const unsigned int FileHeight() const;
@@ -115,13 +118,12 @@ namespace dxi
 		const unify::Size< unsigned int > & ImageSize() const;
 
 		bool Use( unsigned int stage );
-		static void UnsetTexture( unsigned int name );
 
 		void SetFlags( unsigned long flags );
 
 		const unsigned long GetFlags()	const;
 
-		void LockRect(unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unsigned long flags );
+		void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unsigned long flags );
 		void UnlockRect( unsigned int level );
 
 		bool HasSpriteArray( const std::string & name ) const;
@@ -138,20 +140,18 @@ namespace dxi
 
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();
-	
+
 		unify::Size< unsigned int > m_fileSize;
 		unify::Size< unsigned int > m_imageSize;
-		
+
 		bool m_useColorKey;
 		unify::Color m_colorKey;
 		unsigned long m_flags;
-		
+
 		SpriteArrayMap m_spriteArrayMap;
 		SpriteMasterList m_spriteMasterList;
 
-		// DirectX Specific Data
-		IDirect3DTexture9 * m_texture;
-		D3DPOOL	m_pool;
-		D3DFORMAT m_textureFormat;
+		class Pimpl;
+		std::shared_ptr< class Pimpl > m_pimpl;
 	};
 } // namespace dxi

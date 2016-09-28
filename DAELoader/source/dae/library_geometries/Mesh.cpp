@@ -168,35 +168,11 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		const dxi::VertexDeclaration & vd = myEffect->GetVertexShader()->GetVertexDeclaration();
 		unsigned short stream = 0;
 
-		D3DVERTEXELEMENT9 positionE = {};
-		positionE.Stream = stream;
-		positionE.Type = D3DDECLTYPE_FLOAT3;
-		positionE.Usage = D3DDECLUSAGE_POSITION;
-		positionE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 normalE = {};
-		normalE.Stream = stream;
-		normalE.Type = D3DDECLTYPE_FLOAT3;
-		normalE.Usage = D3DDECLUSAGE_NORMAL;
-		normalE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 diffuseE = {};
-		diffuseE.Stream = stream;
-		diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-		diffuseE.Usage = D3DDECLUSAGE_COLOR;
-		diffuseE.UsageIndex = 0;
-
-		D3DVERTEXELEMENT9 specularE = {};
-		specularE.Stream = stream;
-		specularE.Type = D3DDECLTYPE_D3DCOLOR;
-		specularE.Usage = D3DDECLUSAGE_COLOR;
-		specularE.UsageIndex = 1;
-
-		D3DVERTEXELEMENT9 texE = {};
-		texE.Stream = stream;
-		texE.Type = D3DDECLTYPE_FLOAT2;
-		texE.Usage = D3DDECLUSAGE_TEXCOORD;
-		texE.UsageIndex = 0;
+		dxi::VertexElement positionE = dxi::CommonVertexElement::Position( stream );
+		dxi::VertexElement normalE = dxi::CommonVertexElement::Normal( stream );
+		dxi::VertexElement diffuseE = dxi::CommonVertexElement::Diffuse( stream );
+		dxi::VertexElement specularE = dxi::CommonVertexElement::Specular( stream );
+		dxi::VertexElement texE = dxi::CommonVertexElement::TexCoords( stream );
 
 		unify::DataLock lock;
 		set.GetVertexBuffer().Lock( lock );
@@ -244,7 +220,6 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		VT * vt = (VT*)lock.GetData();
 		set.GetVertexBuffer().Unlock();
 
-
 		size_t numberOfIndices = 0;
 		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
 		{
@@ -252,10 +227,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 			numberOfIndices += ( vc - 2 ) * 3;
 		}
 
-		set.GetIndexBuffer().Create( numberOfIndices, dxi::IndexFormat::Index32, dxi::BufferUsage::Staging );
-		dxi::IndexLock iLock;
-		set.GetIndexBuffer().Lock( iLock );
-
+		std::vector< dxi::Index32 > indices( numberOfIndices );
 		size_t vertexHead = 0; // Tracks the first vertex, increases by vc each iteration.
 		size_t index = 0;
 		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
@@ -263,14 +235,14 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 			size_t vc = polylist->GetVCount()[ vci ];
 			for( size_t indexOffset = 0; indexOffset < vc - 2; ++indexOffset )
 			{
-				iLock.SetIndex( index++, vertexHead + indexOffset );
-				iLock.SetIndex( index++, vertexHead + indexOffset + 1 );
-				iLock.SetIndex( index++, vertexHead + vc - 1 );
+				indices[ index++ ] = vertexHead + indexOffset;
+				indices[ index++ ] = vertexHead + indexOffset + 1;
+				indices[ index++ ] = vertexHead + vc - 1;
 			}
 			vertexHead += vc;
 		}
 
-		set.GetIndexBuffer().Unlock();
+		set.GetIndexBuffer().Create( numberOfIndices, dxi::BufferUsage::Staging, (dxi::Index32*)&indices[0] );
 
 		set.GetRenderMethodBuffer().AddMethod( dxi::RenderMethod( dxi::PrimitiveType::TriangleList, 0, numberOfVertices, numberOfIndices / 3, myEffect, true ) );
 	}

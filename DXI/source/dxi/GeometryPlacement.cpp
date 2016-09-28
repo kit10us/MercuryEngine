@@ -36,6 +36,9 @@ void GeometryPlacement::Invalidate()
 
 void GeometryPlacement::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
+	/*
+	TODO:
+
 	// Render all geometry...
 	unify::Matrix mWorldOriginal;
 	unify::Matrix mWorldNew;
@@ -58,6 +61,7 @@ void GeometryPlacement::Render( const RenderInfo & renderInfo, GeometryInstanceD
 	}
 
 	win::DX::GetDxDevice()->SetTransform( D3DTS_WORLD, (D3DMATRIX*)&mWorldOriginal );
+	*/
 }
 
 void GeometryPlacement::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )

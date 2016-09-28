@@ -12,6 +12,9 @@ namespace unify
 	{
 	public:
 		DataLock();
+		DataLock( void * data, unsigned int stride, unsigned int count, bool readonly );
+		DataLock( void * data, unsigned int sizeInBytes, bool readonly );
+
 		virtual ~DataLock();
 
 		virtual void SetLock( void * data, unsigned int stride, unsigned int count, bool readonly );

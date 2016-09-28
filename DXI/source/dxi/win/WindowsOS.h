@@ -32,8 +32,7 @@ namespace dxi
 
 			virtual const std::vector< std::string > & GetCommandLine() const;
 
-			virtual core::IRenderer * GetRenderer() const;
-
+			virtual core::IRenderer * GetRenderer() const;	   
 
 			virtual void SetResolution( const unify::Size< unsigned int > & resolution );
 			virtual void SetFullscreen( bool fullscreen );
@@ -47,11 +46,8 @@ namespace dxi
 
 			HINSTANCE GetHInstance();
 			HWND GetHWnd();
-			IDirect3DDevice9 * GetDxDevice();
 
 			virtual void Startup();
-			virtual void BeforeRender();
-			virtual void AfterRender();
 			virtual void Shutdown();
 			virtual void DebugWrite( const std::string & text );
 			virtual void DebugWriteLine( const std::string & line );
@@ -69,9 +65,7 @@ namespace dxi
 			bool m_hasFocus;
 			HWND m_hWnd;
 			std::list< HWND > m_additionalHandles; // Handles to be serviced.
-			IDirect3DDevice9 * m_dxDevice;
-			D3DPRESENT_PARAMETERS m_pp;
-			DXRenderer * m_renderer;
+			std::shared_ptr< DXRenderer > m_renderer;
 		};
 	}
 }

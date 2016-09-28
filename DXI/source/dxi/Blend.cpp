@@ -22,8 +22,10 @@ Blend::Effect::TYPE Blend::Effect::FromString( const std::string text )
 	else if ( unify::StringIs( trimmedText,  "DestColor" ) ) return Blend::Effect::DestColor;
 	else if ( unify::StringIs( trimmedText,  "InvDestColor" ) ) return Blend::Effect::InvDestColor;
 	else if ( unify::StringIs( trimmedText,  "SrcAlphaSat" ) ) return Blend::Effect::SrcAlphaSat;
+	/*
 	else if ( unify::StringIs( trimmedText,  "BothSrcAlpha" ) ) return Blend::Effect::BothSrcAlpha;
 	else if ( unify::StringIs( trimmedText,  "BothInvSrcAlpha" ) ) return Blend::Effect::BothInvSrcAlpha;
+	*/
 	else if ( unify::StringIs( trimmedText,  "BlendFactor" ) ) return Blend::Effect::BlendFactor;
 	else if ( unify::StringIs( trimmedText,  "InvBlendFactor" ) ) return Blend::Effect::InvBlendFactor;
     else
@@ -39,9 +41,12 @@ Blend::Effect::TYPE Blend::Effect::FromString( const std::string text )
 
 void Blend::UseDefault()
 {
+	/*
+	// TODO:
 	win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE,	FALSE );
 	win::DX::GetDxDevice()->SetRenderState( D3DRS_SRCBLEND,			Blend::Effect::One );
 	win::DX::GetDxDevice()->SetRenderState( D3DRS_DESTBLEND,		Blend::Effect::Zero );
+	*/
 }
 
 Blend::Blend( Usage::TYPE usage, Blend::Effect::TYPE source, Blend::Effect::TYPE destination )
@@ -88,6 +93,8 @@ bool Blend::operator != ( const Blend & blend ) const
 
 void Blend::Use()
 {
+	/*
+	TODO:
 	switch( m_usage )
 	{
 	default:
@@ -111,10 +118,13 @@ void Blend::Use()
 		win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
 		break;
 	}
+	*/
 }
 
 void Blend::Unuse()
 {
+	/*
+	TODO:
 	switch( m_usage )
 	{
 	default:
@@ -131,6 +141,7 @@ void Blend::Unuse()
 		win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, m_usageBackup );
 		break;
 	}
+	*/
 }
 
 bool Blend::IsSet() const

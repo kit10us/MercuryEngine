@@ -106,36 +106,11 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 
 					unsigned short stream = 0;
 
-					D3DVERTEXELEMENT9 positionE = {};
-					positionE.Stream = stream;
-					positionE.Type = D3DDECLTYPE_FLOAT3;
-					positionE.Usage = D3DDECLUSAGE_POSITION;
-					positionE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 normalE = {};
-					normalE.Stream = stream;
-					normalE.Type = D3DDECLTYPE_FLOAT3;
-					normalE.Usage = D3DDECLUSAGE_NORMAL;
-					normalE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 diffuseE = {};
-					diffuseE.Stream = stream;
-					diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-					diffuseE.Usage = D3DDECLUSAGE_COLOR;
-					diffuseE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 specularE = {};
-					specularE.Stream = stream;
-					specularE.Type = D3DDECLTYPE_D3DCOLOR;
-					specularE.Usage = D3DDECLUSAGE_COLOR;
-					specularE.UsageIndex = 1;
-
-					D3DVERTEXELEMENT9 texE = {};
-					texE.Stream = stream;
-					texE.Type = D3DDECLTYPE_FLOAT2;
-					texE.Usage = D3DDECLUSAGE_TEXCOORD;
-					texE.UsageIndex = 0;
-
+					VertexElement positionE = CommonVertexElement::Position( stream );
+					VertexElement normalE = CommonVertexElement::Normal( stream );
+					VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+					VertexElement specularE = CommonVertexElement::Specular( stream );
+					VertexElement texE = CommonVertexElement::TexCoords( stream );
 					
 					unsigned int mesh_numfaces = unify::Cast< unsigned int >( mesh.GetElement( "MESH_NUMFACES" )->GetText() );
 					unsigned int uNumPVertices; // Positional "MESH_VERTEX"
@@ -225,11 +200,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 					unify::DataLock lock;
 					vb.Lock( lock );
 
-					IndexBuffer & ib = bufferSet.GetIndexBuffer();
-					ib.Create( (unsigned int)listPTP.size() * 3, IndexFormat::Index16 );
-					IndexLock indexLock;
-					ib.Lock( indexLock );
-					Index16* pIndex = (Index16 *)indexLock.GetData();
+					std::vector< Index32 > indices( (unsigned int)listPTP.size() * 3 );
 
 					const qxml::Element * mesh_normals = mesh.GetElement( "MESH_NORMALS" );																					
 					for( const auto mesh_facenormal : mesh_normals->Children( "MESH_FACENORMAL" ) )
@@ -251,13 +222,15 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 							vd.WriteVertex( lock, index * 3 + normalIndex++, normalE, vNormal );
 						}						
 
-						pIndex[index * 3 + 0] = (Index16)index * 3 + 0;
-						pIndex[index * 3 + 1] = (Index16)index * 3 + 1;
-						pIndex[index * 3 + 2] = (Index16)index * 3 + 2;
+						indices[index * 3 + 0] = (Index32)index * 3 + 0;
+						indices[index * 3 + 1] = (Index32)index * 3 + 1;
+						indices[index * 3 + 2] = (Index32)index * 3 + 2;
 					}
 
+					IndexBuffer & ib = bufferSet.GetIndexBuffer();
+					ib.Create( (unsigned int)listPTP.size() * 3, dxi::BufferUsage::Default, (Index32*)&indices[ 0 ] );
+												
 					vb.Unlock();
-					ib.Unlock();
 
 					bufferSet.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, mesh_numfaces * 3, mesh_numfaces, effect, true /*useIB*/ ) );
 				}

@@ -27,10 +27,10 @@ namespace dxi
 		float GetMinDepth() const;
 		float GetMaxDepth() const;
 	private:
-#ifdef DX11
-		D3D11_VIEWPORT m_dxViewport;
-#else
+#if defined( DIRECTX9 )
 		D3DVIEWPORT9 m_dxViewport;
+#elif defined( DIRECTX11 )
+		D3D11_VIEWPORT m_dxViewport;
 #endif
 	};
 }

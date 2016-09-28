@@ -91,6 +91,7 @@ namespace dxi
 
 		private:
 			unify::Path m_setup;
+			unify::Path m_logFile;
 			scripting::Execute m_startupExecute;
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;

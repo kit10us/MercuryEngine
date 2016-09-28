@@ -3,35 +3,54 @@
 
 #pragma once
 
-#include <dxi/ShaderBase.h>
+#include <dxi/RenderInfo.h>
+#include <unify/Path.h>
 
 namespace dxi
 {
-	class PixelShader : public dxi::ShaderBase
+	class PixelShader
 	{
 	public:
 		typedef std::shared_ptr< PixelShader > shared_ptr;
 
+		static void DisuseShader();
+
 		PixelShader();
 		PixelShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
 
-		// ::ShaderBase::QResource...
-		virtual void Destroy();
+		~PixelShader();
+		
+		void Destroy();
 
-		// ::ShaderBase...
-		virtual void Use( const RenderInfo * renderInfo );
+		void CreateFromFile( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
+
+		void CreateFromCode( const std::string & code, const std::string & entryPointName, const std::string & profile );
+
+		void Create();
+
+		void Use( const RenderInfo & renderInfo );
 
 		void SetTrans( bool bTrans );
+
 		bool IsTrans();
+		
+		std::string GetError();
 
-		static void DisuseShader();
-
+		ID3DXConstantTable * GetConstantTable();
+						
 	protected:
-		// ::ShaderBase...
-		void CreateThisShader();
-
+					
+		unify::Path m_filePath;
+		std::string m_code;
+		bool m_assembly;
+		std::string m_entryPointName;
+		std::string m_profile;
+		std::string m_errorMessage;
+		bool m_created;
+								 
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 
-		IDirect3DPixelShader9 * m_shader;
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
 	};
 }

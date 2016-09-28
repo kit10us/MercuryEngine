@@ -19,18 +19,25 @@
 
 namespace dxi
 {
-#ifdef DX11
-	typedef D3D11_INPUT_ELEMENT_DESC VertexElement;
-#else
+#if defined( DIRECTX9 )
 	typedef D3DVERTEXELEMENT9 VertexElement;
+#elif defined( DIRECTX11 )
+	typedef D3D11_INPUT_ELEMENT_DESC VertexElement;
 #endif
+
+	struct CommonVertexElement
+	{
+		static VertexElement Position( unsigned int slot = 0 );
+		static VertexElement Normal( unsigned int slot = 0 );
+		static VertexElement Diffuse( unsigned int slot = 0 );
+		static VertexElement Specular( unsigned int slot = 0 );
+		static VertexElement TexCoords( unsigned int slot = 0 );
+		static VertexElement TexCoords2( unsigned int slot = 0 );
+	};
 
 	/// <summary> 
 	/// Defines the structure of the data in a vertex. 
 	/// </summary>
-	/// <notes>
-	/// Replaces FVF use, which was legacy DX8 vertex format specification that was superceeded by Vertex Declarations in DX9, and completely obsolete by DX10+.
-	/// </notes>
 	class VertexDeclaration
 	{
 	public:
@@ -104,7 +111,12 @@ namespace dxi
 
 		std::vector< VertexElement > m_elements;
 		ElementMap m_elementMap;
+
+#if defined( DIRECTX9 )
 		CComPtr< IDirect3DVertexDeclaration9 > m_vertexDeclaration;
+#elif defined( DIRECTX11 )
+		CComPtr< ID3D11InputLayout > m_vertexLayout;
+#endif
 		size_t m_totalSizeInBytes;
 	};
 }

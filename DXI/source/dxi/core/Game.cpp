@@ -83,6 +83,10 @@ bool Game::Setup( IOS & os )
 
 	for( auto && node : setup->Children() )
 	{
+		if ( node.IsTagName( "logfile" ) )
+		{
+			m_logFile = node.GetText();
+		}
 		if ( node.IsTagName( "fullscreen" ) )
 		{
 			os.SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
@@ -167,7 +171,7 @@ void Game::AfterUpdate()
 
 void Game::BeforeRender()
 {
-	m_os->BeforeRender();
+	m_os->GetRenderer()->BeforeRender();
 }
 
 void Game::Render()
@@ -177,7 +181,7 @@ void Game::Render()
 
 void Game::AfterRender()
 {
-	m_os->AfterRender();
+	m_os->GetRenderer()->AfterRender();
 }
 
 void Game::Shutdown()
@@ -295,7 +299,10 @@ void Game::AddExtension( std::shared_ptr< Extension > extension )
 void Game::Log( std::string text )
 {
 	using namespace std;
-	ofstream out( "log.txt", ios_base::out | ios_base::app  );
+
+	if( m_logFile.Empty() ) return;
+
+	ofstream out( m_logFile.ToString(), ios_base::out | ios_base::app  );
 	out << text;
 }
 

@@ -7,6 +7,16 @@
 
 namespace dxi
 {
+	struct CullMode
+	{
+		enum TYPE
+		{
+			None,
+			Clockwise,
+			CounteClockwise
+		};
+	};
+
 	namespace core
 	{
 		/// <summary>
@@ -44,6 +54,21 @@ namespace dxi
 			/// Set viewports from an array of viewports.
 			/// </summary>
 			virtual void SetViewports( size_t & numberOfViewports, const Viewport * viewports ) = 0;
+
+			/// <summary>
+			/// Called before render to allow renderer to perapre.
+			/// </summary>
+			virtual void BeforeRender() = 0;
+
+			/// <summary>
+			/// Called after render to allow renderer to cleanup.
+			/// </summary>
+			virtual void AfterRender() = 0;
+
+
+
+			// New support for render states
+			virtual void SetCullMode( CullMode::TYPE mode ) = 0;
 		};
 	}
 }

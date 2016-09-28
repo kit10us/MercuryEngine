@@ -14,12 +14,6 @@
 namespace dxi
 {
 	// Quick encapsulation of vertex and index buffers...
-	//										---EXCLUSIVE---
-	#define TRANSFORM_COORD		FLAG01	//	*
-	#define TRANSFORM_NORMAL	FLAG02	//	*
-	#define TRANSFORM_2D		FLAG03	//		*
-	#define TRANSFORM_4D		FLAG04	//		*
-
 	class VertexBuffer : public DataBuffer
 	{
 	public:
@@ -38,10 +32,10 @@ namespace dxi
 		};
 
 		VertexBuffer();
-		VertexBuffer( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage = BufferUsage::Default, unify::Flags flags = FLAGNULL );
+		VertexBuffer( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage = BufferUsage::Default, const void * source = nullptr, unify::Flags flags = FLAGNULL );
 		~VertexBuffer();
 
-		void Create( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage = BufferUsage::Default, unify::Flags flags = FLAGNULL );
+		void Create( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage = BufferUsage::Default, const void * source = nullptr, unify::Flags flags = FLAGNULL );
 
 		void Resize( unsigned int numVertices );
 
@@ -66,7 +60,11 @@ namespace dxi
 		void Disuse() const;
 		
 	protected:
-		IDirect3DVertexBuffer9 * m_VB;
+#if defined( DIRECTX9 )
+		CComPtr< IDirect3DVertexBuffer9 > m_VB;
+#elif defined( DIRECTX11 )
+		CComPtr< ID3D11Buffer > m_VB;
+#endif								 
 		unify::Flags m_createFlags;
 		VertexDeclaration m_vertexDeclaration;
 	};

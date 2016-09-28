@@ -113,15 +113,9 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 		{
 			VertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
 			VertexDeclaration vd = vb.GetVertexDeclaration();
-			D3DVERTEXELEMENT9 positionE = {};
-			positionE.Type = D3DDECLTYPE_FLOAT3;
-			positionE.Usage = D3DDECLUSAGE_POSITION;
-			positionE.UsageIndex = 0;
 
-			D3DVERTEXELEMENT9 texE = {};
-			texE.Type = D3DDECLTYPE_FLOAT2;
-			texE.Usage = D3DDECLUSAGE_TEXCOORD;
-			texE.UsageIndex = 0;
+			VertexElement positionE = CommonVertexElement::Position();
+			VertexElement texE = CommonVertexElement::TexCoords();
 
 			unify::DataLock lock;
 			vb.Lock( lock );
@@ -147,7 +141,10 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 			m_effect->Use( myRenderInfo );
 			m_animationInstance.GetFrame().GetTexture()->Use( 0 );
 
+			/*
+			//TODO:
 			win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
+			*/
 		}
 		break;
 	case Source::Geometry: // In screen coordinates

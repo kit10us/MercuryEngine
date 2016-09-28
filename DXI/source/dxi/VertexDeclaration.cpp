@@ -7,6 +7,67 @@
 
 using namespace dxi;
 
+VertexElement CommonVertexElement::Position( unsigned int slot )
+{
+	VertexElement positionE = {};
+	positionE.Stream = slot;
+	positionE.Type = D3DDECLTYPE_FLOAT3;
+	positionE.Usage = D3DDECLUSAGE_POSITION;
+	positionE.UsageIndex = 0;
+	return positionE;
+}
+
+VertexElement CommonVertexElement::Normal( unsigned int slot )
+{
+	VertexElement normalE = {};
+	normalE.Stream = slot;
+	normalE.Type = D3DDECLTYPE_FLOAT3;
+	normalE.Usage = D3DDECLUSAGE_NORMAL;
+	normalE.UsageIndex = 0;
+	return normalE;
+}
+
+VertexElement CommonVertexElement::Diffuse( unsigned int slot )
+{
+	VertexElement diffuseE = {};
+	diffuseE.Stream = slot;
+	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
+	diffuseE.Usage = D3DDECLUSAGE_COLOR;
+	diffuseE.UsageIndex = 0;
+	return diffuseE;
+}
+
+VertexElement CommonVertexElement::Specular( unsigned int slot )
+{
+	VertexElement specularE = {};
+	specularE.Stream = slot;
+	specularE.Type = D3DDECLTYPE_D3DCOLOR;
+	specularE.Usage = D3DDECLUSAGE_COLOR;
+	specularE.UsageIndex = 1;
+	return specularE;
+}
+
+VertexElement CommonVertexElement::TexCoords( unsigned int slot )
+{
+	VertexElement texE = {};
+	texE.Stream = slot;
+	texE.Type = D3DDECLTYPE_FLOAT2;
+	texE.Usage = D3DDECLUSAGE_TEXCOORD;
+	texE.UsageIndex = 0;
+	return texE;
+}
+
+VertexElement CommonVertexElement::TexCoords2( unsigned int slot )
+{
+	VertexElement texE2 = {};
+	texE2.Stream = slot;
+	texE2.Type = D3DDECLTYPE_FLOAT2;
+	texE2.Usage = D3DDECLUSAGE_TEXCOORD;
+	texE2.UsageIndex = 1;
+	return texE2;
+}
+
+
 // Convert from a string to a D3DDECLTYPE. Used to enable loading from text based sources.
 D3DDECLTYPE ConvertVertexDeclarationType( const std::string & type )
 {
@@ -1242,3 +1303,6 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	}
 	return result != 0;
 }
+
+
+

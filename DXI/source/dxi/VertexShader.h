@@ -3,15 +3,13 @@
 
 #pragma once
 
-#include <dxi/ShaderBase.h>
+#include <dxi/RenderInfo.h>
+#include <unify/Path.h>
 #include <dxi/VertexDeclaration.h>
-#include <qjson/Object.h>
 
 namespace dxi
 {
-	// TODO: Could it be possible to make this EVENMORE generic, so we can use it for all kinds of shaders, including Geometry, etc.?
-	// At least enough to support having ShaderBase in the ResourceManager?
-	class VertexShader : public ShaderBase
+	class VertexShader
 	{
 	public:
 		typedef std::shared_ptr< VertexShader > shared_ptr;
@@ -19,22 +17,41 @@ namespace dxi
 		static void DisuseShader();
 
 		VertexShader();
+		
 		VertexShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration vertexDeclaration );
+		
+		~VertexShader();
 
-		void SetVertexDeclaration( VertexDeclaration vertexDeclaration );
-		VertexDeclaration GetVertexDeclaration() const;
-
-		// ::ShaderBase::QResource...
 		void Destroy();
 
-		// ::ShaderBase...
-		void Use( const RenderInfo * renderInfo );
+		void Create();
+
+		void CreateFromFile( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
+
+		void CreateFromCode( const std::string & code, const std::string & entryPointName, const std::string & profile );
+
+		void SetVertexDeclaration( VertexDeclaration vertexDeclaration );
+
+		VertexDeclaration GetVertexDeclaration() const;
+
+		void Use( const RenderInfo & renderInfo );
+
+		std::string GetError();
+
+		ID3DXConstantTable * GetConstantTable();
 
 	protected:
-		void CreateThisShader();
 
-		IDirect3DVertexShader9 * m_shader;
+		unify::Path m_filePath;
+		std::string m_code;
+		bool m_assembly;
+		std::string m_entryPointName;
+		std::string m_profile;
+		std::string m_errorMessage;
+		bool m_created;
 		VertexDeclaration m_vertexDeclaration;
-		D3DXHANDLE m_finalMatrixHandle; // Combination Model * View * Projection matrix location in shader.
+
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
 	};
 }

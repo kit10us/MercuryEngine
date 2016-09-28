@@ -21,7 +21,7 @@ Matrix Matrix::MatrixTranslate( const V3< float > & vector )
 #ifdef DIRECTX9
 	D3DXMatrixTranslation( matrix.GetD3DXMatrix(), vector.x, vector.y, vector.z );
 #else
-	matrix.m_matrix = DirectX::XMMatrixTranslation( vector.x, vector.y, vector.z );
+	*(DirectX::XMMATRIX*)&matrix.m_matrix = DirectX::XMMatrixTranslation( vector.x, vector.y, vector.z );
 #endif
 	return matrix;
 }
@@ -32,33 +32,33 @@ Matrix Matrix::MatrixOrthoOffCenterLH( float left, float right, float bottom, fl
 #ifdef DIRECTX9
 	D3DXMatrixOrthoOffCenterLH( matrix.GetD3DXMatrix(), left, right, bottom, top, znear, zfar );
 #else
-	matrix.m_matrix = DirectX::XMMatrixOrthographicOffCenterLH( left, right, bottom, top, znear, zfar );
+	*(DirectX::XMMATRIX*)&matrix.m_matrix = DirectX::XMMatrixOrthographicOffCenterLH( left, right, bottom, top, znear, zfar );
 #endif
 	return matrix;
 }
 
 Matrix Matrix::MatrixScale( const unify::V3< float > & scale )
 {
-    Matrix matrix;
+	Matrix matrix;
 	matrix.BecomeIdentity();
-    matrix.Scale( scale );
-    return matrix;
+	matrix.Scale( scale );
+	return matrix;
 }
 
 Matrix Matrix::MatrixScale( float x, float y, float z )
 {
-    Matrix matrix;
+	Matrix matrix;
 	matrix.BecomeIdentity();
-    matrix.Scale( unify::V3< float >( x, y, z ) );
-    return matrix;
+	matrix.Scale( unify::V3< float >( x, y, z ) );
+	return matrix;
 }
 
 Matrix Matrix::MatrixScale( float scale )
 {
-    Matrix matrix;
+	Matrix matrix;
 	matrix.BecomeIdentity();
-    matrix.Scale( scale );
-    return matrix;
+	matrix.Scale( scale );
+	return matrix;
 }
 
 Matrix Matrix::MatrixRotationAboutAxis( const V3< float > & axis, Angle angle )
@@ -68,10 +68,10 @@ Matrix Matrix::MatrixRotationAboutAxis( const V3< float > & axis, Angle angle )
 	D3DXMatrixRotationAxis( matrix.GetD3DXMatrix(), (D3DXVECTOR3*)&axis, angle.GetRadians() );
 #else
 	DirectX::XMVECTOR axisD3D;
-	axisD3D.m128_f32[ 0 ] = axis[ 0 ];
-	axisD3D.m128_f32[ 1 ] = axis[ 1 ];
-	axisD3D.m128_f32[ 2 ] = axis[ 2 ];
-	matrix.m_matrix *= DirectX::XMMatrixRotationAxis( axisD3D, angle.GetRadians() );
+	axisD3D.m128_f32[0] = axis[0];
+	axisD3D.m128_f32[1] = axis[1];
+	axisD3D.m128_f32[2] = axis[2];
+	*(DirectX::XMMATRIX*)&matrix.m_matrix *= DirectX::XMMatrixRotationAxis( axisD3D, angle.GetRadians() );
 #endif
 	return matrix;
 }
@@ -82,7 +82,7 @@ Matrix Matrix::MatrixPerspectiveFovLH( float w, float h, float zn, float zf )
 #ifdef DIRECTX9
 	D3DXMatrixPerspectiveLH( matrix.GetD3DXMatrix(), w, h, zn, zf );
 #else
-	matrix.m_matrix = DirectX::XMMatrixPerspectiveFovLH( w, h, zn, zf );
+	*(DirectX::XMMATRIX*)&matrix.m_matrix = DirectX::XMMatrixPerspectiveFovLH( w, h, zn, zf );
 #endif
 	return matrix;
 }
@@ -93,7 +93,7 @@ Matrix Matrix::MatrixRotationX( const float & x )
 #ifdef DIRECTX9
 	D3DXMatrixRotationX( matrix.GetD3DXMatrix(), x );
 #else
-	matrix.m_matrix = DirectX::XMMatrixRotationX( x );
+	*(DirectX::XMMATRIX*)&matrix.m_matrix = DirectX::XMMatrixRotationX( x );
 #endif
 	return matrix;
 }
@@ -104,7 +104,7 @@ Matrix Matrix::MatrixRotationY( const float & y )
 #ifdef DIRECTX9
 	D3DXMatrixRotationY( matrix.GetD3DXMatrix(), y );
 #else
-	matrix.m_matrix = DirectX::XMMatrixRotationY( y );
+	*(DirectX::XMMATRIX*)&matrix.m_matrix = DirectX::XMMatrixRotationY( y );
 #endif
 	return matrix;
 }
@@ -115,21 +115,21 @@ Matrix Matrix::MatrixRotationZ( const float & z )
 #ifdef DIRECTX9
 	D3DXMatrixRotationZ( matrix.GetD3DXMatrix(), z );
 #else
-	matrix.m_matrix = DirectX::XMMatrixRotationZ( z );
+	*(DirectX::XMMATRIX*)&matrix.m_matrix = DirectX::XMMatrixRotationZ( z );
 #endif
 	return matrix;
 }
 
 /*
-	zaxis = normal( At - Eye )
-	xaxis = normal( cross( Up, zaxis ) )
-	yaxis = cross( zaxis, xaxis )
+zaxis = normal( At - Eye )
+xaxis = normal( cross( Up, zaxis ) )
+yaxis = cross( zaxis, xaxis )
 
-	xaxis.x				yaxis.x			zaxis.x				0
-	xaxis.x				yaxis.x			zaxis.x				0
-	xaxis.x				yaxis.x			zaxis.x				0
-	-dot( xaxis, eye )	-dot(yaxis,eye)	-dot(zaxis, eye)	1
-	*/
+xaxis.x				yaxis.x			zaxis.x				0
+xaxis.x				yaxis.x			zaxis.x				0
+xaxis.x				yaxis.x			zaxis.x				0
+-dot( xaxis, eye )	-dot(yaxis,eye)	-dot(zaxis, eye)	1
+*/
 Matrix Matrix::MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up )
 {
 	Matrix matrix = unify::Matrix::MatrixIdentity();
@@ -148,17 +148,12 @@ Matrix Matrix::MatrixLookAtLH( const V3< float > & eyePosition, const V3< float 
 
 
 Matrix::Matrix()
-#ifdef DIRECTX9
-	: m_matrix(new DXMatrix)
-#else
-#endif
 {
 }
 
 Matrix::Matrix( const Matrix & matrix )
-: m_matrix( new DXMatrix )
 {
-	*this = matrix;
+	memcpy( &m_matrix, &matrix.m_matrix, sizeof( float ) * 4 * 4 );
 }
 
 Matrix::Matrix( const Quaternion orientation, const V3< float > position, const V3< float > scale )
@@ -170,32 +165,32 @@ Matrix::Matrix( const Quaternion orientation, const V3< float > position, const 
 	D3DXMatrixTransformation( GetD3DXMatrix(), 0, 0, &scaleD3D, 0, &orientationD3D, &positionD3D );
 #else
 	DirectX::XMVECTOR scalingOrigin;
-	scalingOrigin.m128_f32[ 0 ] = 0;
-	scalingOrigin.m128_f32[ 1 ] = 0;
-	scalingOrigin.m128_f32[ 2 ] = 0;
-	scalingOrigin.m128_f32[ 3 ] = 0;
+	scalingOrigin.m128_f32[0] = 0;
+	scalingOrigin.m128_f32[1] = 0;
+	scalingOrigin.m128_f32[2] = 0;
+	scalingOrigin.m128_f32[3] = 0;
 
 	DirectX::XMVECTOR scalingOriginRotiation = DirectX::XMQuaternionIdentity();
 
 	DirectX::XMVECTOR scaleD3D;
-	scaleD3D.m128_f32[ 0 ] = scale[ 0 ];
-	scaleD3D.m128_f32[ 1 ] = scale[ 1 ];
-	scaleD3D.m128_f32[ 2 ] = scale[ 2 ];
-	scaleD3D.m128_f32[ 3 ] = 1.0f;
+	scaleD3D.m128_f32[0] = scale[0];
+	scaleD3D.m128_f32[1] = scale[1];
+	scaleD3D.m128_f32[2] = scale[2];
+	scaleD3D.m128_f32[3] = 1.0f;
 
 	DirectX::XMVECTOR rotationOrigin;
-	rotationOrigin.m128_f32[ 0 ] = 0;
-	rotationOrigin.m128_f32[ 1 ] = 0;
-	rotationOrigin.m128_f32[ 2 ] = 0;
-	rotationOrigin.m128_f32[ 3 ] = 0;
+	rotationOrigin.m128_f32[0] = 0;
+	rotationOrigin.m128_f32[1] = 0;
+	rotationOrigin.m128_f32[2] = 0;
+	rotationOrigin.m128_f32[3] = 0;
 
 	DirectX::XMVECTOR positionD3D;
-	positionD3D.m128_f32[ 0 ] = position[ 0 ];
-	positionD3D.m128_f32[ 1 ] = position[ 1 ];
-	positionD3D.m128_f32[ 2 ] = position[ 2 ];
-	positionD3D.m128_f32[ 3 ] = 0;
+	positionD3D.m128_f32[0] = position[0];
+	positionD3D.m128_f32[1] = position[1];
+	positionD3D.m128_f32[2] = position[2];
+	positionD3D.m128_f32[3] = 0;
 
-	m_matrix = DirectX::XMMatrixTransformation( scalingOrigin, scalingOriginRotiation, scaleD3D, rotationOrigin, orientation.GetD3DXQuaternion(), positionD3D );
+	*(DirectX::XMMATRIX*)&m_matrix = DirectX::XMMatrixTransformation( scalingOrigin, scalingOriginRotiation, scaleD3D, rotationOrigin, orientation.GetD3DXQuaternion(), positionD3D );
 #endif
 }
 
@@ -205,11 +200,7 @@ Matrix::~Matrix()
 
 Matrix & Matrix::operator = ( const Matrix & matrix )
 {
-#ifdef DIRECTX9
-	memcpy( GetD3DXMatrix(), matrix.GetD3DXMatrix(), sizeof( D3DXMATRIX ) );
-#else
-	m_matrix = matrix.m_matrix;
-#endif
+	memcpy( m_matrix, matrix.m_matrix, sizeof( float ) * 4 * 4 );
 	return *this;
 }
 
@@ -290,34 +281,41 @@ Matrix Matrix::operator / ( float divisor ) const
 	return result;
 }
 
-bool Matrix::operator == ( const Matrix & matrix) const
+bool Matrix::operator == ( const Matrix & matrix ) const
 {
-	return (*GetD3DXMatrix() == *matrix.GetD3DXMatrix()) ? true : false;
+	for( int y = 0; y < 4; ++y )
+	{
+		for( int x = 0; x < 4; ++x )
+		{
+			if( m_matrix[x][y] != matrix.m_matrix[x][y] ) return false;
+		}
+	}
+	return true;
 }
 
-bool Matrix::operator != ( const Matrix & matrix) const
+bool Matrix::operator != ( const Matrix & matrix ) const
 {
-	return ! (*this == matrix);
+	return !(*this == matrix);
 }
 
 float Matrix::operator()( const RowColumn< unsigned int > & rowColumn )
 {
-	return (*GetD3DXMatrix())( rowColumn.row, rowColumn.column );
+	return m_matrix[rowColumn.row][rowColumn.column];
 }
 
 float Matrix::operator()( unsigned int row, unsigned int column )
 {
-	return (*GetD3DXMatrix())( row, column );
+	return m_matrix[row][column];
 }
 
 float Matrix::operator()( const RowColumn< unsigned int > & rowColumn ) const
 {
-	return (*GetD3DXMatrix())( rowColumn.row, rowColumn.column );
+	return m_matrix[rowColumn.row][rowColumn.column];
 }
 
 float Matrix::operator()( unsigned int row, unsigned int column ) const
 {
-	return (*GetD3DXMatrix())( row, column );
+	return m_matrix[row][column];
 }
 
 Matrix & Matrix::SetRotation( const Quaternion & quaternion )
@@ -329,7 +327,7 @@ Matrix & Matrix::SetRotation( const Quaternion & quaternion )
 	D3DXQUATERNION q( quaternion.GetD3DXQuaternion() );
 	D3DXMatrixRotationQuaternion( GetD3DXMatrix(), &q );
 #else
-	m_matrix = DirectX::XMMatrixRotationQuaternion( quaternion.GetD3DXQuaternion() );
+	*(DirectX::XMMATRIX*)&m_matrix = DirectX::XMMatrixRotationQuaternion( quaternion.GetD3DXQuaternion() );
 #endif
 	SetPosition( position );
 	//Scale( scale );
@@ -370,11 +368,7 @@ Matrix & Matrix::Scale( const float & scale )
 
 void Matrix::Set( unsigned int row, unsigned int column, float value )
 {
-#ifdef DIRECTX9
-	GetD3DXMatrix()->m[ row ][ column ] = value;
-#else
-	m_matrix.r[ row ].m128_f32[ column ] = value;
-#endif
+	m_matrix[row][column] = value;
 }
 
 void Matrix::SetLeft( const V3< float > & vec )
@@ -382,9 +376,9 @@ void Matrix::SetLeft( const V3< float > & vec )
 #ifdef DIRECTX9
 	*(V3< float > *)GetD3DXMatrix()->m[0] = vec;
 #else
-	m_matrix.r[ 0 ].m128_f32[ 0 ] = vec[ 0 ];
-	m_matrix.r[ 0 ].m128_f32[ 1 ] = vec[ 1 ];
-	m_matrix.r[ 0 ].m128_f32[ 2 ] = vec[ 2 ];
+	m_matrix.r[0].m128_f32[0] = vec[0];
+	m_matrix.r[0].m128_f32[1] = vec[1];
+	m_matrix.r[0].m128_f32[2] = vec[2];
 #endif
 }
 
@@ -393,9 +387,9 @@ void Matrix::SetUp( const V3< float > & vec )
 #ifdef DIRECTX9
 	*(V3< float > *)GetD3DXMatrix()->m[1] = vec;
 #else
-	m_matrix.r[ 1 ].m128_f32[ 0 ] = vec[ 0 ];
-	m_matrix.r[ 1 ].m128_f32[ 1 ] = vec[ 1 ];
-	m_matrix.r[ 1 ].m128_f32[ 2 ] = vec[ 2 ];
+	m_matrix.r[1].m128_f32[0] = vec[0];
+	m_matrix.r[1].m128_f32[1] = vec[1];
+	m_matrix.r[1].m128_f32[2] = vec[2];
 #endif
 }
 
@@ -404,9 +398,9 @@ void Matrix::SetForward( const V3< float > & vec )
 #ifdef DIRECTX9
 	*(V3< float > *)GetD3DXMatrix()->m[2] = vec;
 #else
-	m_matrix.r[ 2 ].m128_f32[ 0 ] = vec[ 0 ];
-	m_matrix.r[ 2 ].m128_f32[ 1 ] = vec[ 1 ];
-	m_matrix.r[ 2 ].m128_f32[ 2 ] = vec[ 2 ];
+	m_matrix.r[2].m128_f32[0] = vec[0];
+	m_matrix.r[2].m128_f32[1] = vec[1];
+	m_matrix.r[2].m128_f32[2] = vec[2];
 #endif
 }
 
@@ -415,61 +409,61 @@ void Matrix::SetPosition( const V3< float > & vec )
 #ifdef DIRECTX9
 	*(V3< float > *)GetD3DXMatrix()->m[3] = vec;
 #else
-	m_matrix.r[ 3 ].m128_f32[ 0 ] = vec[ 0 ];
-	m_matrix.r[ 3 ].m128_f32[ 1 ] = vec[ 1 ];
-	m_matrix.r[ 3 ].m128_f32[ 2 ] = vec[ 2 ];
+	m_matrix.r[3].m128_f32[0] = vec[0];
+	m_matrix.r[3].m128_f32[1] = vec[1];
+	m_matrix.r[3].m128_f32[2] = vec[2];
 #endif
 }
 
 void Matrix::SetLeft( float x, float y, float z )
 {
 #ifdef DIRECTX9
-	GetD3DXMatrix()->m[ 0 ][ 0 ] = x;
-	GetD3DXMatrix()->m[ 0 ][ 1 ] = y;
-	GetD3DXMatrix()->m[ 0 ][ 2 ] = z;
+	GetD3DXMatrix()->m[0][0] = x;
+	GetD3DXMatrix()->m[0][1] = y;
+	GetD3DXMatrix()->m[0][2] = z;
 #else
-	m_matrix.r[ 0 ].m128_f32[ 0 ] = x;
-	m_matrix.r[ 0 ].m128_f32[ 1 ] = y;
-	m_matrix.r[ 0 ].m128_f32[ 2 ] = z;
+	m_matrix.r[0].m128_f32[0] = x;
+	m_matrix.r[0].m128_f32[1] = y;
+	m_matrix.r[0].m128_f32[2] = z;
 #endif
 }
 
 void Matrix::SetUp( float x, float y, float z )
 {
 #ifdef DIRECTX9
-	GetD3DXMatrix()->m[ 1 ][ 0 ] = x;
-	GetD3DXMatrix()->m[ 1 ][ 1 ] = y;
-	GetD3DXMatrix()->m[ 1 ][ 2 ] = z;
+	GetD3DXMatrix()->m[1][0] = x;
+	GetD3DXMatrix()->m[1][1] = y;
+	GetD3DXMatrix()->m[1][2] = z;
 #else
-	m_matrix.r[ 1 ].m128_f32[ 0 ] = x;
-	m_matrix.r[ 1 ].m128_f32[ 1 ] = y;
-	m_matrix.r[ 1 ].m128_f32[ 2 ] = z;
+	m_matrix.r[1].m128_f32[0] = x;
+	m_matrix.r[1].m128_f32[1] = y;
+	m_matrix.r[1].m128_f32[2] = z;
 #endif
 }
 
 void Matrix::SetForward( float x, float y, float z )
 {
 #ifdef DIRECTX9
-	GetD3DXMatrix()->m[ 2 ][ 0 ] = x;
-	GetD3DXMatrix()->m[ 2 ][ 1 ] = y;
-	GetD3DXMatrix()->m[ 2 ][ 2 ] = z;
+	GetD3DXMatrix()->m[2][0] = x;
+	GetD3DXMatrix()->m[2][1] = y;
+	GetD3DXMatrix()->m[2][2] = z;
 #else
-	m_matrix.r[ 2 ].m128_f32[ 0 ] = x;
-	m_matrix.r[ 2 ].m128_f32[ 1 ] = y;
-	m_matrix.r[ 2 ].m128_f32[ 2 ] = z;
+	m_matrix.r[2].m128_f32[0] = x;
+	m_matrix.r[2].m128_f32[1] = y;
+	m_matrix.r[2].m128_f32[2] = z;
 #endif
 }
 
 void Matrix::SetPosition( float x, float y, float z )
 {
 #ifdef DIRECTX9
-	GetD3DXMatrix()->m[ 3 ][ 0 ] = x;
-	GetD3DXMatrix()->m[ 3 ][ 1 ] = y;
-	GetD3DXMatrix()->m[ 3 ][ 2 ] = z;
+	GetD3DXMatrix()->m[3][0] = x;
+	GetD3DXMatrix()->m[3][1] = y;
+	GetD3DXMatrix()->m[3][2] = z;
 #else
-	m_matrix.r[ 3 ].m128_f32[ 0 ] = x;
-	m_matrix.r[ 3 ].m128_f32[ 1 ] = y;
-	m_matrix.r[ 3 ].m128_f32[ 2 ] = z;
+	m_matrix.r[3].m128_f32[0] = x;
+	m_matrix.r[3].m128_f32[1] = y;
+	m_matrix.r[3].m128_f32[2] = z;
 #endif
 }
 
@@ -478,7 +472,7 @@ V3< float > Matrix::GetLeft() const
 #ifdef DIRECTX9
 	return *(V3< float > *)GetD3DXMatrix()->m[0];
 #else
-	return V3< float >( m_matrix.r[ 0 ].m128_f32 );
+	return V3< float >( m_matrix.r[0].m128_f32 );
 #endif
 }
 
@@ -487,7 +481,7 @@ V3< float > Matrix::GetUp() const
 #ifdef DIRECTX9
 	return *(V3< float > *)GetD3DXMatrix()->m[1];
 #else
-	return V3< float >( m_matrix.r[ 1 ].m128_f32 );
+	return V3< float >( m_matrix.r[1].m128_f32 );
 #endif
 }
 
@@ -496,7 +490,7 @@ V3< float > Matrix::GetForward() const
 #ifdef DIRECTX9
 	return *(V3< float > *)GetD3DXMatrix()->m[2];
 #else
-	return V3< float >( m_matrix.r[ 2 ].m128_f32 );
+	return V3< float >( m_matrix.r[2].m128_f32 );
 #endif
 }
 
@@ -505,7 +499,7 @@ V3< float > Matrix::GetPosition() const
 #ifdef DIRECTX9
 	return *(V3< float > *)GetD3DXMatrix()->m[3];
 #else
-	return V3< float >( m_matrix.r[ 3 ].m128_f32 );
+	return V3< float >( m_matrix.r[3].m128_f32 );
 #endif
 }
 
@@ -517,18 +511,18 @@ Quaternion Matrix::GetRotation() const
 
 V3< float > Matrix::GetScale() const
 {
-	float l1 = V3< float >( (*this)( 0, 0 ), (*this)( 0, 1 ), (*this)( 0, 2 ) ).Length();
-	float l2 = V3< float >( (*this)( 1, 0 ), (*this)( 1, 1 ), (*this)( 1, 2 ) ).Length();
-	float l3 = V3< float >( (*this)( 2, 0 ), (*this)( 2, 1 ), (*this)( 2, 2 ) ).Length();
+	float l1 = V3< float >( (*this)(0, 0), (*this)(0, 1), (*this)(0, 2) ).Length();
+	float l2 = V3< float >( (*this)(1, 0), (*this)(1, 1), (*this)(1, 2) ).Length();
+	float l3 = V3< float >( (*this)(2, 0), (*this)(2, 1), (*this)(2, 2) ).Length();
 	return V3< float >( l1, l2, l3 );
 }
 
-float Matrix::Determinant()const 
+float Matrix::Determinant()const
 {
 #ifdef DIRECTX9
 	return D3DXMatrixDeterminant( GetD3DXMatrix() );
 #else
-	return DirectX::XMMatrixDeterminant( m_matrix ).m128_f32[ 0 ];
+	return DirectX::XMMatrixDeterminant( m_matrix ).m128_f32[0];
 #endif
 }
 
@@ -593,12 +587,12 @@ void Matrix::Transpose( const Matrix & matrix )
 
 Matrix::DXMatrix * Matrix::GetD3DXMatrix()
 {
-	return m_matrix.get();
+	return (Matrix::DXMatrix*)&m_matrix;
 }
 
 const Matrix::DXMatrix * Matrix::GetD3DXMatrix() const
 {
-	return m_matrix.get();
+	return (Matrix::DXMatrix*)&m_matrix;
 }
 
 void Matrix::TransformCoord( V2< float > & coord ) const
@@ -607,11 +601,11 @@ void Matrix::TransformCoord( V2< float > & coord ) const
 	D3DXVec2TransformCoord( (D3DXVECTOR2*)&coord, (D3DXVECTOR2*)&coord, GetD3DXMatrix() );
 #else
 	DirectX::XMVECTOR vector;
-	vector.m128_f32[ 0 ] = coord[ 0 ];
-	vector.m128_f32[ 1 ] = coord[ 1 ];
+	vector.m128_f32[0] = coord[0];
+	vector.m128_f32[1] = coord[1];
 	vector = DirectX::XMVector2TransformCoord( vector, m_matrix );
-	coord[ 0 ] = vector.m128_f32[ 0 ];
-	coord[ 1 ] = vector.m128_f32[ 1 ];
+	coord[0] = vector.m128_f32[0];
+	coord[1] = vector.m128_f32[1];
 #endif
 }
 
@@ -621,28 +615,28 @@ void Matrix::TransformCoord( V3< float > & coord ) const
 	D3DXVec3TransformCoord( (D3DXVECTOR3*)&coord, (D3DXVECTOR3*)&coord, GetD3DXMatrix() );
 #else
 	DirectX::XMVECTOR vector;
-	vector.m128_f32[ 0 ] = coord[ 0 ];
-	vector.m128_f32[ 1 ] = coord[ 1 ];
-	vector.m128_f32[ 2 ] = coord[ 2 ];
+	vector.m128_f32[0] = coord[0];
+	vector.m128_f32[1] = coord[1];
+	vector.m128_f32[2] = coord[2];
 	vector = DirectX::XMVector3TransformCoord( vector, m_matrix );
-	coord[ 0 ] = vector.m128_f32[ 0 ];
-	coord[ 1 ] = vector.m128_f32[ 1 ];
-	coord[ 2 ] = vector.m128_f32[ 2 ];
+	coord[0] = vector.m128_f32[0];
+	coord[1] = vector.m128_f32[1];
+	coord[2] = vector.m128_f32[2];
 #endif
 }
 
 unify::V2< float > Matrix::TransformCoord_Copy( const unify::V2< float > & coord ) const
 {
-    unify::V2< float > copy( coord );
-    TransformCoord( copy );
-    return copy;
+	unify::V2< float > copy( coord );
+	TransformCoord( copy );
+	return copy;
 }
 
 unify::V3< float > Matrix::TransformCoord_Copy( const unify::V3< float > & coord ) const
-{   
-    unify::V3< float > copy( coord );
-    TransformCoord( copy );
-    return copy;
+{
+	unify::V3< float > copy( coord );
+	TransformCoord( copy );
+	return copy;
 }
 
 void Matrix::TransformNormal( V2< float > & coord ) const
@@ -651,11 +645,11 @@ void Matrix::TransformNormal( V2< float > & coord ) const
 	D3DXVec2TransformNormal( (D3DXVECTOR2*)&coord, (D3DXVECTOR2*)&coord, GetD3DXMatrix() );
 #else
 	DirectX::XMVECTOR vector;
-	vector.m128_f32[ 0 ] = coord[ 0 ];
-	vector.m128_f32[ 1 ] = coord[ 1 ];
+	vector.m128_f32[0] = coord[0];
+	vector.m128_f32[1] = coord[1];
 	vector = DirectX::XMVector2TransformNormal( vector, m_matrix );
-	coord[ 0 ] = vector.m128_f32[ 0 ];
-	coord[ 1 ] = vector.m128_f32[ 1 ];
+	coord[0] = vector.m128_f32[0];
+	coord[1] = vector.m128_f32[1];
 #endif
 }
 
@@ -665,13 +659,13 @@ void Matrix::TransformNormal( V3< float > & coord ) const
 	D3DXVec3TransformNormal( (D3DXVECTOR3*)&coord, (D3DXVECTOR3*)&coord, GetD3DXMatrix() );
 #else
 	DirectX::XMVECTOR vector;
-	vector.m128_f32[ 0 ] = coord[ 0 ];
-	vector.m128_f32[ 1 ] = coord[ 1 ];
-	vector.m128_f32[ 2 ] = coord[ 2 ];
+	vector.m128_f32[0] = coord[0];
+	vector.m128_f32[1] = coord[1];
+	vector.m128_f32[2] = coord[2];
 	vector = DirectX::XMVector3TransformNormal( vector, m_matrix );
-	coord[ 0 ] = vector.m128_f32[ 0 ];
-	coord[ 1 ] = vector.m128_f32[ 1 ];
-	coord[ 2 ] = vector.m128_f32[ 2 ];
+	coord[0] = vector.m128_f32[0];
+	coord[1] = vector.m128_f32[1];
+	coord[2] = vector.m128_f32[2];
 #endif
 }
 
@@ -681,15 +675,15 @@ void Matrix::Transform( V4< float > & coord ) const
 	D3DXVec4Transform( (D3DXVECTOR4*)&coord, (D3DXVECTOR4*)&coord, GetD3DXMatrix() );
 #else
 	DirectX::XMVECTOR vector;
-	vector.m128_f32[ 0 ] = coord[ 0 ];
-	vector.m128_f32[ 1 ] = coord[ 1 ];
-	vector.m128_f32[ 2 ] = coord[ 2 ];
-	vector.m128_f32[ 3 ] = coord[ 3 ];
+	vector.m128_f32[0] = coord[0];
+	vector.m128_f32[1] = coord[1];
+	vector.m128_f32[2] = coord[2];
+	vector.m128_f32[3] = coord[3];
 	vector = DirectX::XMVector4Transform( vector, m_matrix );
-	coord[ 0 ] = vector.m128_f32[ 0 ];
-	coord[ 1 ] = vector.m128_f32[ 1 ];
-	coord[ 2 ] = vector.m128_f32[ 2 ];
-	coord[ 3 ] = vector.m128_f32[ 3 ];
+	coord[0] = vector.m128_f32[0];
+	coord[1] = vector.m128_f32[1];
+	coord[2] = vector.m128_f32[2];
+	coord[3] = vector.m128_f32[3];
 #endif
 }
 

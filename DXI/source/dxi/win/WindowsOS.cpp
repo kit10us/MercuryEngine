@@ -76,7 +76,7 @@ WindowsOS::WindowsOS( HWND hWnd )
 
 WindowsOS::~WindowsOS()
 {
-	DestroyDirectX();
+	m_renderer.reset();
 }
 
 const std::vector< std::string > & WindowsOS::GetCommandLine() const
@@ -86,7 +86,7 @@ const std::vector< std::string > & WindowsOS::GetCommandLine() const
 
 core::IRenderer * WindowsOS::GetRenderer() const
 {
-	return m_renderer;
+	return m_renderer.get();
 }
 
 void WindowsOS::SetResolution( const unify::Size< unsigned int > & resolution )
@@ -135,11 +135,6 @@ HWND WindowsOS::GetHWnd()
 	return m_hWnd;
 }
 
-IDirect3DDevice9 * WindowsOS::GetDxDevice()
-{
-	return m_dxDevice;
-}
-
 void WindowsOS::Startup()
 {
 	if ( ! m_hWnd )
@@ -149,41 +144,6 @@ void WindowsOS::Startup()
 
 	DragAcceptFiles( this->GetHWnd(), true );
 	CreateDirectX();
-	DX::SetDxDevice( m_dxDevice );
-}
-
-void WindowsOS::BeforeRender()
-{
-	HRESULT hr;
-
-	hr = GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,60), 1.0f, 0 );
-	if( FAILED( hr ) )
-	{
-		throw unify::Exception( "Failed to clear in BeforeRender!" );
-	}
-
-	hr = GetDxDevice()->BeginScene();
-	if( FAILED( hr ) )
-	{
-		throw unify::Exception( "Failed to BeginScene in BeforeRender!" );
-	}
-}
-
-void WindowsOS::AfterRender()
-{
-	HRESULT hr;
-	
-	hr = GetDxDevice()->EndScene();
-	if( FAILED(hr) )
-	{
-		throw unify::Exception( "Failed to EndScene in AfterRender!" );
-	}
-
-	hr = GetDxDevice()->Present( 0, 0, 0, 0 );
-	if( FAILED(hr) )
-	{
-		throw unify::Exception( "Failed to Present in AfterRender!" );
-	}
 }
 
 void WindowsOS::Shutdown()
@@ -239,76 +199,10 @@ void WindowsOS::CreateWindow( HWND & hwnd )
 
 void WindowsOS::CreateDirectX()
 {
-	bool debug =
-#if defined( DEBUG ) || defined( _DEBUG )
-		true;
-#else
-		false;
-#endif
-
-	IDirect3D9 * dx = Direct3DCreate9( D3D_SDK_VERSION );
-	if ( !dx )
-	{
-		throw unify::Exception( "Failed to create DX!" );
-	}
-
-	memset( &m_pp, 0, sizeof( m_pp ) );
-	m_pp.Windowed = GetFullscreen() ? 0 : 1;
-	m_pp.BackBufferWidth = GetResolution().width;
-	m_pp.BackBufferHeight = GetResolution().height;
-    m_pp.BackBufferFormat = D3DFMT_X8R8G8B8;
-    m_pp.EnableAutoDepthStencil = true;
-    m_pp.AutoDepthStencilFormat = D3DFMT_D16; // D3DFMT_D24S8
-    m_pp.BackBufferCount = 1;
-	m_pp.hDeviceWindow = m_hWnd;
-	
-    if( GetFullscreen() )
-    {
-	    m_pp.FullScreen_RefreshRateInHz = 60;
-		m_pp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
-		m_pp.SwapEffect = D3DSWAPEFFECT_COPY;
-    }
-    else
-    {
-        m_pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-    }
-
-	HRESULT result = dx->CreateDevice( 0, D3DDEVTYPE_HAL, m_hWnd, D3DCREATE_HARDWARE_VERTEXPROCESSING, &m_pp, &m_dxDevice );
-	if ( ! m_dxDevice )
-	{
-		throw unify::Exception( "Failed to create Direct-X device!" );
-	}
-
-	dx->Release();
-	dx = 0;
-
-	DX::SetDxDevice( m_dxDevice );
-	m_renderer = new DXRenderer( this );
-
-	// Clear
-	GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET, D3DCOLOR_ARGB( 255, 0, 0, 0 ), 1.0f, 0 );
-	GetDxDevice()->Present( 0, 0, 0, 0 );
-
-	//TODO: Working on a no render state, shader friendly version
-	// Default projection matrix
-	D3DXMATRIX projectionMatrix;
-	float aspectRatio = (float)GetResolution().width / GetResolution().height;
-	D3DXMatrixPerspectiveFovLH( &projectionMatrix, D3DX_PI / 4.0f, aspectRatio, 1, 1000 );
-	GetDxDevice()->SetTransform( D3DTS_PROJECTION, &projectionMatrix );
-	GetDxDevice()->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
-	GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	GetDxDevice()->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	GetDxDevice()->SetRenderState( D3DRS_COLORVERTEX, 1 );
-	GetDxDevice()->SetRenderState( D3DRS_LIGHTING, 0 );
+	m_renderer.reset( new DXRenderer( this ) );
 }
 
 void WindowsOS::DestroyDirectX()
 {
-	if ( m_renderer )
-	{
-		delete m_renderer;
-		m_renderer = 0;
-	}
-
-	m_dxDevice = 0;
+	m_renderer.reset();
 }

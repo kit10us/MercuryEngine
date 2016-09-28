@@ -8,6 +8,7 @@
 
 namespace dxi
 {
+	/*
 	// Render states..
 	struct RenderState
 	{
@@ -172,4 +173,5 @@ namespace dxi
 		static void Set( RenderState::TYPE, unsigned long value );
 		static unsigned long Get( RenderState::TYPE );
 	};
+	*/
 }

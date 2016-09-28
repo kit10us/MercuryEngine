@@ -80,16 +80,6 @@ namespace dxi
 			virtual void Startup() = 0;
 
 			/// <summary>
-			/// Called before render to allow Operating System to perapre.
-			/// </summary>
-			virtual void BeforeRender() = 0;
-
-			/// <summary>
-			/// Called after render to allow Operating System to cleanup.
-			/// </summary>
-			virtual void AfterRender() = 0;
-
-			/// <summary>
 			/// Cleanup up and unitialize Operating System specific dependencies.
 			/// </summary>
 			virtual void Shutdown() = 0;

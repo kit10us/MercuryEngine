@@ -15,6 +15,16 @@ DataLock::DataLock()
 {
 }
 
+DataLock::DataLock( void * data, unsigned int stride, unsigned int count, bool readonly )
+{
+	SetLock( data, stride, count, readonly );
+}
+
+DataLock::DataLock( void * data, unsigned int sizeInBytes, bool readonly )
+{
+	SetLock( data, sizeInBytes, readonly );
+}
+
 DataLock::~DataLock()
 {
 }

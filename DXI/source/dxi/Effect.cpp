@@ -48,6 +48,8 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 {
 	RenderInfo renderInfo( renderInfoIn );
 
+	/*
+	TODO:
 	switch( m_culling )
 	{
 	case CullNone:
@@ -62,6 +64,7 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 	case CullIgnore:
 		break;
 	}
+	*/
 
 	m_blend.Use();
 
@@ -94,17 +97,18 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 
 	if( m_pixelShader )
 	{
-		m_pixelShader->Use( &renderInfo );
+		m_pixelShader->Use( renderInfo );
 	}
 
 	if( m_vertexShader )
 	{
-		m_vertexShader->Use( &renderInfo );
+		m_vertexShader->Use( renderInfo );
 	}
 
 	if ( m_textures.empty() )
 	{
-		Texture::UnsetTexture( 0 );
+		// TODO: DX11
+		//Texture::UnsetTexture( 0 );
 	}
 
 	for( size_t i = 0; i < m_textures.size(); ++i )
@@ -115,7 +119,8 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 		}
 		else
 		{
-			Texture::UnsetTexture( i );
+			// TODO: DX11
+			//Texture::UnsetTexture( i );
 		}
 	}
 }

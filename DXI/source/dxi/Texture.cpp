@@ -4,28 +4,179 @@
 
 #include <dxi/Texture.h>
 #include <dxi/core/Game.h>
-#include <d3dx9tex.h>
-#include <qxml/Document.h>
-#include <qxml/AttributeCast.h>
-#include <unify/RowColumn.h>
-#include <unify/Path.h>
+#include <dxi/exception/NotImplemented.h>
+#include <atlbase.h>
 
 using namespace dxi;
+
+
+class Texture::Pimpl
+{
+public:
+	Pimpl( Texture & owner )
+		: m_owner( owner )
+#if defined( DIRECTX9 )
+		, m_pool{ D3DPOOL_DEFAULT }
+		, m_textureFormat{ D3DFMT_UNKNOWN }
+#elif defined( DIRECTX11 )
+#endif
+	{
+	}
+
+	~Pimpl()
+	{
+	}
+
+	void Destroy()
+	{
+		m_texture = nullptr;
+	}
+
+	void Set( bool renderable, bool lockable )
+	{
+#if defined( DIRECTX9 )
+		m_pool = D3DPOOL_DEFAULT;
+
+		// Texture is NOT renderable, and is lockable.
+		if( lockable )
+		{
+			m_pool = renderable ? D3DPOOL_MANAGED : D3DPOOL_SCRATCH;
+		}
+#elif defined( DIRECTX11 )
+		throw exception::NotImplemented( "DX11" );
+#endif
+	}
+
+	void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unsigned long flags )
+	{
+#if defined( DIRECTX9 )
+		// Allow us to convert from our flag type to DX.
+		unsigned int dxFlags = flags;
+
+		D3DLOCKED_RECT d3dLockedRect;
+		if( FAILED( m_texture->LockRect( level, &d3dLockedRect, (RECT*)rect, dxFlags ) ) )
+		{
+			lock.pBits = 0;
+			lock.uStride = 0;
+			throw unify::Exception( "Failed to lock texture: \"" + m_owner.m_filePath.ToString() + "\"" );
+		}
+
+		lock.pBits = (unsigned char*)d3dLockedRect.pBits;
+		lock.uStride = d3dLockedRect.Pitch / 4;
+		if( rect )
+		{
+			lock.uWidth = rect->right - rect->left;
+			lock.uHeight = rect->bottom - rect->top;
+		}
+		else
+		{
+			lock.uWidth = m_owner.m_imageSize.width;
+			lock.uHeight = m_owner.m_imageSize.height;
+		}
+#elif defined( DIRECTX11 )
+		throw exception::NotImplemented( "DX11" );
+#endif
+
+	}
+
+	void UnlockRect( unsigned int level )
+	{
+#if defined( DIRECTX9 )
+		m_texture->UnlockRect( level );
+#elif defined( DIRECTX11 )
+		throw exception::NotImplemented( "DX11" );
+#endif
+	}
+
+	void LoadImage( unify::Path filePath )
+	{
+#if defined( DIRECTX9 )
+		// Set defaults that can be overrided by texture...
+		m_textureFormat = D3DFMT_UNKNOWN;
+
+		// First, load the file to find out it's sizes...	
+		D3DXIMAGE_INFO fileDesc;
+		unsigned int dwFilter = D3DX_FILTER_NONE;
+
+		HRESULT hr;
+		hr = D3DXCreateTextureFromFileExA(
+			win::DX::GetDxDevice(),
+			(LPCSTR)filePath.ToString().c_str(),
+			D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2,
+			D3DX_DEFAULT,
+			0,
+			m_textureFormat,
+			m_pool,
+			dwFilter,
+			D3DX_FILTER_NONE,// (mip filter): D3DX_FILTER_TRIANGLE|D3DX_FILTER_MIRROR,
+			m_owner.m_colorKey,
+			&fileDesc,
+			NULL,
+			&m_texture );
+
+		if( FAILED( hr ) )
+		{
+			Destroy();
+			throw unify::Exception( "Failed to load image\"" + filePath.ToString() + "\"!" );
+		}
+
+		// Handle the colorkey
+		if( m_owner.m_useColorKey )	// D3DUSAGE_DYNAMIC must be set for D3DPOOL_DEFAULT textures (else D3DPOOL_MANAGED)
+		{
+			//D3DUtil_SetColorKey( m_texture[0][0], m_colorKey );
+		}
+
+		// Get the file dimensions...
+		m_owner.m_fileSize.width = fileDesc.Width;
+		m_owner.m_fileSize.height = fileDesc.Height;
+
+		// Get the ACTUAL description of the Texture...
+		D3DSURFACE_DESC textureDesc;
+		m_texture->GetLevelDesc( 0, &textureDesc );
+		m_owner.m_imageSize.width = textureDesc.Width;
+		m_owner.m_imageSize.height = textureDesc.Height;
+#elif defined( DIRECTX11 )
+		throw exception::NotImplemented( "DX11" );
+#endif
+	}
+
+	bool Use( unsigned int stage )
+	{
+#if defined( DIRECTX9 )
+		HRESULT hr = win::DX::GetDxDevice()->SetTexture( stage, m_texture );
+		return SUCCEEDED( hr );
+#elif defined( DIRECTX11 )
+		throw exception::NotImplemented( "DX11" );
+#endif
+	}
+
+private:
+	Texture & m_owner;
+
+#if defined( DIRECTX9 )
+	CComPtr< IDirect3DTexture9 > m_texture;
+	D3DPOOL	m_pool;
+	D3DFORMAT m_textureFormat;
+#elif defined( DIRECTX11 )
+	CComPtr< ID3D11Resource > m_texture;
+#endif
+};
+
+
+
 
 bool Texture::s_allowTextureUses = true;
 
 Texture::Texture()
-: m_texture( 0 )
-, m_useColorKey( false )
-, m_flags( 0 )
-, m_pool( D3DPOOL_DEFAULT )
-, m_textureFormat( D3DFMT_UNKNOWN )
-, m_created( false )
+	: m_useColorKey( false )
+	, m_flags( 0 )
+	, m_created( false )
+	, m_pimpl( new Pimpl( *this ) )
 {
 }
 
 Texture::Texture( const unify::Path & filePath, unsigned long flags )
-: Texture()
+	: Texture()
 {
 	SetFlags( flags );
 
@@ -49,7 +200,7 @@ void Texture::Create()
 
 	LoadHeader();
 
-	LoadImage( m_filePath );
+	m_pimpl->LoadImage( m_filePath );
 
 	m_created = true;
 }
@@ -68,11 +219,7 @@ void Texture::Destroy()
 {
 	if( m_created )
 	{
-		if ( m_texture )
-		{
-			m_texture->Release();
-			m_texture = 0;
-		}
+		m_pimpl->Destroy();
 		m_created = false;
 	}
 }
@@ -91,7 +238,7 @@ const unsigned int Texture::FileWidth() const
 	return m_fileSize.width;
 }
 
-const unsigned int Texture::FileHeight() const	
+const unsigned int Texture::FileHeight() const
 {
 	return m_fileSize.height;
 }
@@ -107,19 +254,19 @@ void Texture::SetFlags( unsigned long dwFlags )
 
 	m_flags = dwFlags;
 
-	m_pool = D3DPOOL_DEFAULT;
-
-	// Texture is NOT renderable, and is lockable.
-	if( unify::CheckFlag(m_flags, TEXTURE_NORENDER) )
+	bool renderable = true;
+	bool lockable = false;
+	if( unify::CheckFlag( m_flags, TEXTURE_NORENDER ) )
 	{
-		m_pool = D3DPOOL_SCRATCH;
+		renderable = false;
+		lockable = true;
 	}
-	
-	// Texture is renderable an is lockable.
-	else if( unify::CheckFlag(m_flags, TEXTURE_LOCKABLE) )
+	else if( unify::CheckFlag( m_flags, TEXTURE_LOCKABLE ) )
 	{
-		m_pool = D3DPOOL_MANAGED;
+		renderable = true;
+		lockable = true;
 	}
+	m_pimpl->Set( renderable, lockable );
 }
 const unsigned long Texture::GetFlags()	const
 {
@@ -129,45 +276,22 @@ const unsigned long Texture::GetFlags()	const
 void Texture::LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unsigned long flags )
 {
 	// Ensure texture is loaded first...
-	if( ! m_created )
+	if( !m_created )
 	{
 		Create();
 	}
 
-	// Allow us to convert from our flag type to DX.
-	unsigned int dxFlags = flags;
-
-	D3DLOCKED_RECT d3dLockedRect;
-	if( FAILED(m_texture->LockRect( level, &d3dLockedRect, (RECT*)rect, dxFlags ) ) )
-	{
-		lock.pBits = 0;
-		lock.uStride = 0;
-		throw unify::Exception( "Failed to lock texture: \"" + m_filePath.ToString() + "\"" );
-	}
-
-	lock.pBits = (unsigned char*)d3dLockedRect.pBits;
-	lock.uStride = d3dLockedRect.Pitch / 4;
-	if( rect )
-	{
-		lock.uWidth = rect->right - rect->left;
-		lock.uHeight = rect->bottom - rect->top;
-	}
-	else
-	{
-		lock.uWidth = m_imageSize.width;
-		lock.uHeight = m_imageSize.height;
-
-	}
+	m_pimpl->LockRect( level, lock, rect, flags );
 }
 
 void Texture::UnlockRect( unsigned int level )
 {
-	m_texture->UnlockRect( level );
+	m_pimpl->UnlockRect( level );
 }
 
 bool Texture::Use( unsigned int stage )
 {
-	if( ! s_allowTextureUses )
+	if( !s_allowTextureUses )
 	{
 		return true;
 	}
@@ -176,14 +300,7 @@ bool Texture::Use( unsigned int stage )
 	// TODO: ...find all places and investigate
 	//GetDisplay()->GetStatistics()->Increment( Statistic_SetTexture );
 
-	HRESULT hr = win::DX::GetDxDevice()->SetTexture( stage, m_texture );
-	return SUCCEEDED( hr );
-}
-
-void Texture::UnsetTexture( unsigned int name )
-{
-	//GetDisplay()->GetStatistics()->Increment( Statistic_UnsetTexture );
-	win::DX::GetDxDevice()->SetTexture( name, 0 );
+	return m_pimpl->Use( stage );
 }
 
 // Load all possible info (short of bits) about the texture
@@ -191,9 +308,6 @@ void Texture::Preload()
 {
 	// Clear the header file
 	ClearHeader();
-
-	// Set defaults that can be overrided by texture...
-	m_textureFormat = D3DFMT_UNKNOWN;
 
 	// Load any new image header file if there
 	LoadHeader();
@@ -207,11 +321,11 @@ void Texture::Preload()
 
 void Texture::LoadHeader()
 {
-	unify::Path imageHeaderFilepath(m_filePath);
+	unify::Path imageHeaderFilepath( m_filePath );
 	imageHeaderFilepath.ChangeExtension( ".xml" );
 
 	// Check if the file exists...
-	if( ! imageHeaderFilepath.Exists() )
+	if( !imageHeaderFilepath.Exists() )
 	{
 		return;	// It's ok to not have an IHF file.
 	}
@@ -237,10 +351,10 @@ void Texture::LoadHeader()
 			size = unify::Size< float >( (1 - arrayUL.u) / arrayRC.column, (1 - arrayUL.v) / arrayRC.column );
 		}
 
-		if( ! name.empty() )
+		if( !name.empty() )
 		{
-			unsigned int head = static_cast< unsigned int >( m_spriteMasterList.size() );
-			m_spriteArrayMap[ name ] = SpriteArray( head, head + arrayRC.row * arrayRC.column );
+			unsigned int head = static_cast< unsigned int >(m_spriteMasterList.size());
+			m_spriteArrayMap[name] = SpriteArray( head, head + arrayRC.row * arrayRC.column );
 		}
 
 		unify::RowColumn< unsigned int > rc;
@@ -259,57 +373,16 @@ void Texture::LoadHeader()
 // Load the actual image file...
 void Texture::LoadImage( const unify::Path & filePath )
 {
-	unsigned int dwFilter = D3DX_FILTER_NONE;;
-	
 	// Release any previous texture
 	Destroy();
 
 	// Verify file exists
-	if( ! filePath.Exists() )
+	if( !filePath.Exists() )
 	{
 		throw unify::Exception( "Failed to load image, file not found! (" + filePath.ToString() + ")" );
 	}
-	
-	// First, load the file to find out it's sizes...	
-	D3DXIMAGE_INFO fileDesc;
 
-	HRESULT hr;
-	hr = D3DXCreateTextureFromFileExA(
-		win::DX::GetDxDevice(),
-		(LPCSTR)filePath.ToString().c_str(),
-		D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2,		
-		D3DX_DEFAULT,
-		0,
-		m_textureFormat,
-		m_pool,
-		dwFilter,
-		D3DX_FILTER_NONE,// (mip filter): D3DX_FILTER_TRIANGLE|D3DX_FILTER_MIRROR,
-		m_colorKey,
-		&fileDesc,
-		NULL,
-		&m_texture);
-
-	if( FAILED(hr) )
-	{
-		Destroy();
-		throw unify::Exception( "Failed to load image\"" + filePath.ToString() + "\"!" );
-	}
-
-	// Handle the colorkey
-	if( m_useColorKey )	// D3DUSAGE_DYNAMIC must be set for D3DPOOL_DEFAULT textures (else D3DPOOL_MANAGED)
-	{
-		//D3DUtil_SetColorKey( m_texture[0][0], m_colorKey );
-	}
-
-	// Get the file dimensions...
-	m_fileSize.width	= fileDesc.Width;
-	m_fileSize.height	= fileDesc.Height;
-
-	// Get the ACTUAL description of the Texture...
-	D3DSURFACE_DESC textureDesc;
-	m_texture->GetLevelDesc(0, &textureDesc);
-	m_imageSize.width = textureDesc.Width;
-	m_imageSize.height = textureDesc.Height;
+	m_pimpl->LoadImage( filePath );
 }
 
 bool Texture::HasSpriteArray( const std::string & name ) const
@@ -343,13 +416,13 @@ const Texture::SpriteArray & Texture::GetSpriteArray( unsigned int index ) const
 
 unsigned int Texture::SpriteArrayCount() const
 {
-	return static_cast< unsigned int >( m_spriteArrayMap.size() );
+	return static_cast< unsigned int >(m_spriteArrayMap.size());
 }
 
 const unify::TexArea & Texture::GetSprite( unsigned int index ) const
 {
 	assert( index < m_spriteMasterList.size() );
-	return m_spriteMasterList[ index ];
+	return m_spriteMasterList[index];
 }
 
 const unify::TexArea & Texture::GetSprite( const std::string & arrayName, unsigned int index ) const
@@ -362,11 +435,11 @@ const unify::TexArea & Texture::GetSprite( const std::string & arrayName, unsign
 
 	assert( index < itr->second.tail );
 
-	return m_spriteMasterList[ itr->second.head + index ];
+	return m_spriteMasterList[itr->second.head + index];
 }
 
 unsigned int Texture::SpriteCount() const
 {
-	return static_cast< unsigned int >( m_spriteMasterList.size() );
+	return static_cast< unsigned int >(m_spriteMasterList.size());
 }
 

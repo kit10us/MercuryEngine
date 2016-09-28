@@ -80,41 +80,12 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 
 					unsigned short stream = 0;
 
-					D3DVERTEXELEMENT9 positionE = {};
-					positionE.Stream = stream;
-					positionE.Type = D3DDECLTYPE_FLOAT3;
-					positionE.Usage = D3DDECLUSAGE_POSITION;
-					positionE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 normalE = {};
-					normalE.Stream = stream;
-					normalE.Type = D3DDECLTYPE_FLOAT3;
-					normalE.Usage = D3DDECLUSAGE_NORMAL;
-					normalE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 diffuseE = {};
-					diffuseE.Stream = stream;
-					diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
-					diffuseE.Usage = D3DDECLUSAGE_COLOR;
-					diffuseE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 specularE = {};
-					specularE.Stream = stream;
-					specularE.Type = D3DDECLTYPE_D3DCOLOR;
-					specularE.Usage = D3DDECLUSAGE_COLOR;
-					specularE.UsageIndex = 1;
-
-					D3DVERTEXELEMENT9 texE = {};
-					texE.Stream = stream;
-					texE.Type = D3DDECLTYPE_FLOAT2;
-					texE.Usage = D3DDECLUSAGE_TEXCOORD;
-					texE.UsageIndex = 0;
-
-					D3DVERTEXELEMENT9 texE2 = {};
-					texE2.Stream = stream;
-					texE2.Type = D3DDECLTYPE_FLOAT2;
-					texE2.Usage = D3DDECLUSAGE_TEXCOORD;
-					texE2.UsageIndex = 1;
+					VertexElement positionE = CommonVertexElement::Position( stream );
+					VertexElement normalE = CommonVertexElement::Normal( stream );
+					VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+					VertexElement specularE = CommonVertexElement::Specular( stream );
+					VertexElement texE = CommonVertexElement::TexCoords( stream );
+					VertexElement texE2 = CommonVertexElement::TexCoords2( stream );
 
 					for( auto vertex : buffersetChild.Children( "vertex" ) )
 					{  		
@@ -200,19 +171,17 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 				{
 					unsigned int numIndices = unify::ListPartCount( buffersetChild.GetText(), {','} );
 
-					IndexBuffer & ib = bufferset.GetIndexBuffer();
-					ib.Create( numIndices, IndexFormat::Index16 );
-					IndexLock indexLock;
-					ib.Lock( indexLock );
-					Index16* pIndex = (Index16 *)indexLock.GetData();
+					std::vector< Index32 > indices( numIndices );
 
 					// Load indices...
 					for( unsigned int u = 0; u < numIndices; u++ )
 					{
-						pIndex[u] = (Index16)unify::Cast< int >( unify::ListPart( buffersetChild.GetText(), {','}, u ) );
+						indices[u] = (Index32)unify::Cast< int >( unify::ListPart( buffersetChild.GetText(), {','}, u ) );
 					}
-					ib.Unlock();
-				}	 	
+
+					IndexBuffer & ib = bufferset.GetIndexBuffer();
+					ib.Create( numIndices, dxi::BufferUsage::Default, (Index32*)&indices[0] );
+				}
 				else if( buffersetChild.IsTagName( "methodlist" ) )
 				{
 					for( auto methodElement : buffersetChild.Children( "addmethod" ) )

@@ -122,6 +122,7 @@ void RenderMethod::Render( const RenderInfo & renderInfo ) const
 		effect->Use( renderInfo );
 	}
 
+#if defined( DIRECTX9 )
 	// Draw Primitive...
 	if( useIB == false )
 	{
@@ -132,4 +133,7 @@ void RenderMethod::Render( const RenderInfo & renderInfo ) const
 		hr = win::DX::GetDxDevice()->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primitiveType, baseVertexIndex, minIndex, vertexCount, startIndex, primitiveCount );
 	}
 	OnFailedThrow( hr, "Failed to render vertex buffer!" );
+#elif defined( DIRECTX11 )
+	throw exception::NotImplemented( "DirectX11" );
+#endif
 }

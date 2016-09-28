@@ -52,9 +52,6 @@
     <ClCompile Include="source\dxi\RenderState.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\ShaderBase.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\Sprite.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -287,9 +284,6 @@
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\RenderState.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\ShaderBase.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\Sprite.h">

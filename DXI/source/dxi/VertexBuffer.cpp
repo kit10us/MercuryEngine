@@ -15,14 +15,12 @@
 using namespace dxi;
 
 VertexBuffer::VertexBuffer()
-: m_VB( 0 )
 {
 }
 
-VertexBuffer::VertexBuffer( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage, unify::Flags flags )
-: m_VB( 0 )
+VertexBuffer::VertexBuffer( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage, const void * source, unify::Flags flags )
 {
-	Create( numVertices, vertexDeclaration, usage, flags );
+	Create( numVertices, vertexDeclaration, usage, source, flags );
 }
 
 VertexBuffer::~VertexBuffer()
@@ -30,7 +28,7 @@ VertexBuffer::~VertexBuffer()
 	Release();
 }
 
-void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage, unify::Flags flags )
+void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage, const void * source, unify::Flags flags )
 {
 	Release();
 
@@ -88,6 +86,13 @@ void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration vertexDe
 	HRESULT hr;
 	hr = win::DX::GetDxDevice()->CreateVertexBuffer( GetSize(), createFlags, 0, pool, &m_VB, 0 );
 	OnFailedThrow( hr, "Failed to create vertex buffer!" );
+
+	if( source )
+	{
+		unify::DataLock lock;
+		Lock( lock );
+		lock.CopyBytesFrom( source, 0, GetSize() );
+	}
 }
 
 void VertexBuffer::Resize( unsigned int numVertices )
@@ -103,7 +108,7 @@ void VertexBuffer::Resize( unsigned int numVertices )
 	m_VB = 0;
 	m_length = 0;
 
-	Create( numVertices, GetVertexDeclaration(), GetUsage(), GetCreateFlags() );
+	Create( numVertices, GetVertexDeclaration(), GetUsage(), nullptr, GetCreateFlags() );
 
 	HRESULT hr;
 	unsigned char * oldData;
@@ -150,7 +155,7 @@ size_t VertexBuffer::Append( const VertexBuffer & from )
 		VertexDeclaration vd = from.GetVertexDeclaration();
 		BufferUsage::TYPE usage = from.GetUsage();
 		unsigned int createFlags = from.GetCreateFlags();
-		Create( length, vd, usage, createFlags );
+		Create( length, vd, usage, nullptr, createFlags );
 	}
 	else
 	{
@@ -180,11 +185,7 @@ size_t VertexBuffer::Append( const VertexBuffer & from )
 
 void VertexBuffer::Release()
 {
-	if( m_VB )
-	{
-		m_VB->Release();
-		m_VB = 0;
-	}
+	m_VB = nullptr;
 	m_length = 0;
 	m_stride = 0;
 }

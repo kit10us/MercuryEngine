@@ -81,7 +81,6 @@
     <ClCompile Include="source\dxi\scene\Scene.cpp" />
     <ClCompile Include="source\dxi\scene\SceneLoader.cpp" />
     <ClCompile Include="source\dxi\scene\SceneManager.cpp" />
-    <ClCompile Include="source\dxi\ShaderBase.cpp" />
     <ClCompile Include="source\dxi\factory\ShapeFactory.cpp" />
     <ClCompile Include="source\dxi\shapes\BeveledBoxParameters.cpp" />
     <ClCompile Include="source\dxi\shapes\CircleParameters.cpp" />
@@ -224,7 +223,6 @@
     <ClInclude Include="source\dxi\scene\SceneLoader.h" />
     <ClInclude Include="source\dxi\scene\SceneManager.h" />
     <ClInclude Include="source\dxi\scripting\IScriptEngine.h" />
-    <ClInclude Include="source\dxi\ShaderBase.h" />
     <ClInclude Include="source\dxi\factory\ShapeFactory.h" />
     <ClInclude Include="source\dxi\shapes\BeveledBoxParameters.h" />
     <ClInclude Include="source\dxi\shapes\CircleParameters.h" />

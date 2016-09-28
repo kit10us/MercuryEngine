@@ -15,6 +15,7 @@ namespace dxi
 		struct Effect
 		{
 			enum TYPE {
+#if defined( DIRECTX9 )
 				Zero = D3DBLEND_ZERO,
 				One = D3DBLEND_ONE,
 				SrcColor = D3DBLEND_SRCCOLOR,
@@ -31,6 +32,26 @@ namespace dxi
 				BlendFactor = D3DBLEND_BLENDFACTOR,
 				InvBlendFactor = D3DBLEND_INVBLENDFACTOR,
 				INVALID
+#elif defined( DIRECTX11 )
+				Zero = D3D11_BLEND_ZERO,
+				One = D3D11_BLEND_ONE,
+				SrcColor = D3D11_BLEND_SRC_COLOR,
+				InvSrcColor = D3D11_BLEND_INV_SRC_COLOR,
+				SrcAlpha = D3D11_BLEND_SRC_ALPHA,
+				InvSrcAlpha = D3D11_BLEND_INV_SRC_ALPHA,
+				DestAlpha = D3D11_BLEND_DEST_ALPHA,
+				InvDestAlpha = D3D11_BLEND_INV_DEST_ALPHA,
+				DestColor = D3D11_BLEND_DEST_COLOR,
+				InvDestColor = D3D11_BLEND_INV_DEST_COLOR,
+				SrcAlphaSat = D3D11_BLEND_SRC_ALPHA_SAT,
+				/* Not available
+				BothSrcAlpha = D3D11_BLEND_BOTH_SRC_ALPHA,
+				BothInvSrcAlpha = D3D11_BLEND_BOTH_INV_SRC_ALPHA,
+				*/
+				BlendFactor = D3D11_BLEND_BLEND_FACTOR,
+				InvBlendFactor = D3D11_BLEND_INV_BLEND_FACTOR,
+				INVALID
+#endif
 			};
 
             static TYPE FromString( const std::string text );
