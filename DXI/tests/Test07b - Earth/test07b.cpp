@@ -29,7 +29,7 @@ protected:
 
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, IInput & input );
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
 	void Render();
 	void Shutdown();
 } game;
@@ -50,11 +50,11 @@ void MyGame::Startup()
 	GetManager< Texture >()->Add( "cutout", new Texture( "media/EarthWaterCutoutMap.bmp", TEXTURE_LOCKABLE ) );
 
 	// Load an effect, then modify it to fit our needs.
-	Effect::shared_ptr landEffect = GetManager< Effect >()->Add( "land", "media/EffectTextured.xml" );
+	Effect::ptr landEffect = GetManager< Effect >()->Add( "land", "media/EffectTextured.xml" );
 	landEffect->SetBlend( Blend( Usage::False ) );
 	landEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
-	Effect::shared_ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
+	Effect::ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
 	cutoutEffect->SetBlend( Blend( Usage::True, Blend::Effect::One, Blend::Effect::One ) );
 	cutoutEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
@@ -96,7 +96,7 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 
 	m_rotation += unify::Angle::AngleInRadians( elapsed );
 
-	return Game::Update( elapsed, input );
+	return Game::Update( elapsed, renderInfo, input );
 }
 
 void MyGame::Render()

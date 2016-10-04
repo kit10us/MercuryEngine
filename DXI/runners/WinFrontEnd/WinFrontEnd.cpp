@@ -57,17 +57,13 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			unify::Seconds elapsed = micro * 0.000001;
 			lastTime = currentTime;
 
-			game.BeforeUpdate();
-			game.Update( elapsed, game.GetInput() );
-			game.AfterUpdate();
+			game.Tick();
 			if( game.IsQuitting() )
 			{
 				break;
 			}
 
-			game.BeforeRender();
-			game.Render();
-			game.AfterRender();
+			game.Draw();
 		}
 
 		game.Shutdown();

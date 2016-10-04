@@ -1,8 +1,9 @@
-#include <QUnitTest.h>
-#include <DAE/Dae.h>
+#include <qunit/QUnitTest.h>
+#include <qjson/QJson.h>
+#include <DAE/DaeLib.h>
 #include <conio.h>
 
-class DAE_UnitTest : public TestSuite
+class DAE_UnitTest : public qunit::TestSuite
 {
 public:
 	DAE_UnitTest()

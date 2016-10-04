@@ -22,7 +22,7 @@ class MyGame : public Game
 protected:
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, IInput & input );
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
 	void Render();
 	void Shutdown();
 
@@ -161,7 +161,7 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 	cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
 	cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-	return Game::Update( elapsed, input );
+	return Game::Update( elapsed, renderInfo, input );
 }
 
 void MyGame::Render()

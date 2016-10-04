@@ -163,9 +163,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 
 		dxi::BufferSet & set = accumulatedPL.AddBufferSet();
 
-		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), dxi::BufferUsage::Staging );
-
-		const dxi::VertexDeclaration & vd = myEffect->GetVertexShader()->GetVertexDeclaration();
+		const dxi::VertexDeclaration::ptr vd = myEffect->GetVertexShader()->GetVertexDeclaration();
 		unsigned short stream = 0;
 
 		dxi::VertexElement positionE = dxi::CommonVertexElement::Position( stream );
@@ -174,8 +172,8 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		dxi::VertexElement specularE = dxi::CommonVertexElement::Specular( stream );
 		dxi::VertexElement texE = dxi::CommonVertexElement::TexCoords( stream );
 
-		unify::DataLock lock;
-		set.GetVertexBuffer().Lock( lock );
+		std::shared_ptr< unsigned char > vertices( new unsigned char[ vd->GetSize() * numberOfVertices ] );
+		unify::DataLock lock( vertices.get(), vd->GetSize(), numberOfVertices, false );
 
 		// Iterate through the vertices...
 		size_t vertexIndex = 0;
@@ -196,17 +194,17 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 				{
 					unify::V3< float > val( floats[ offsetOfFloats + 0 ] * -1.0f, floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
 					matrix.TransformCoord( val );
-					vd.WriteVertex( lock, vertexIndex, positionE, val );
-					vd.WriteVertex( lock, vertexIndex, diffuseE, diffuse );
+					vd->WriteVertex( lock, vertexIndex, positionE, val );
+					vd->WriteVertex( lock, vertexIndex, diffuseE, diffuse );
 				}
 				else if ( unify::StringIs( metaType, "NORMAL" ) )
 				{
 					unify::V3< float > val( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
-					vd.WriteVertex( lock, vertexIndex, normalE, val );
+					vd->WriteVertex( lock, vertexIndex, normalE, val );
 				}
 				else if ( unify::StringIs( metaType, "TEXCOORD" ) )
 				{
-					vd.WriteVertex( lock, vertexIndex, texE, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
+					vd->WriteVertex( lock, vertexIndex, texE, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
 				}
 			}
 		}
@@ -218,7 +216,8 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		};
 
 		VT * vt = (VT*)lock.GetData();
-		set.GetVertexBuffer().Unlock();
+
+		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), vertices.get(), dxi::BufferUsage::Staging );
 
 		size_t numberOfIndices = 0;
 		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
@@ -242,7 +241,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 			vertexHead += vc;
 		}
 
-		set.GetIndexBuffer().Create( numberOfIndices, dxi::BufferUsage::Staging, (dxi::Index32*)&indices[0] );
+		set.GetIndexBuffer().Create( numberOfIndices, (dxi::Index32*)&indices[0], dxi::BufferUsage::Staging );
 
 		set.GetRenderMethodBuffer().AddMethod( dxi::RenderMethod( dxi::PrimitiveType::TriangleList, 0, numberOfVertices, numberOfIndices / 3, myEffect, true ) );
 	}

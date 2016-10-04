@@ -264,7 +264,7 @@ protected:
 
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, IInput & input );
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
 	void Render();
 	void Shutdown();
 } game;
@@ -274,7 +274,7 @@ void MyGame::Startup()
 	Game::Startup();
 
 	Texture::shared_ptr texture = GetTextureManager()->Add( "borgcube", new Texture( "media/borgcube.bmp" ) );
-	Effect::shared_ptr effect = GetEffectManager()->Add( "default", new Effect );
+	Effect::ptr effect = GetEffectManager()->Add( "default", new Effect );
 	effect->SetFVF( FVF::XYZ | FVF::Tex1 | FVF::Diffuse );
 	effect->SetTexture( 0, texture );
 
@@ -344,7 +344,7 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 		m_rotation -= 3.1415936545f * 2;
 	}
 
-	return Game::Update( elapsed, input );
+	return Game::Update( elapsed, renderInfo, input );
 }
 
 void MyGame::Render()

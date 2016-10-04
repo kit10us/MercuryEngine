@@ -40,15 +40,15 @@ public:
 		m_spriteManager = animation::SpriteManager::shared_ptr( new animation::SpriteManager( this ) );
 
 		// Color 3D effect...
-		Effect::shared_ptr color3DEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
+		Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
 
 		// Textured 2D effect...
-		Effect::shared_ptr textured2DEffect = GetManager< Effect >()->Add( "textured_2d", "media/EffectTextured2D.xml" );
+		Effect::ptr textured2DEffect = GetManager< Effect >()->Add( "textured_2d", "media/EffectTextured2D.xml" );
 		
-		VertexBuffer::shared_ptr scratchVBForTextured2D( new VertexBuffer( 6, textured2DEffect->GetVertexShader()->GetVertexDeclaration() ) );
+		VertexBuffer::ptr scratchVBForTextured2D( new VertexBuffer( 6, textured2DEffect->GetVertexShader()->GetVertexDeclaration() ) );
 		textured2DEffect->SetScratchVertexBuffer( scratchVBForTextured2D );
 
-		RenderState::Set( RenderState::CullMode, RenderState::CullModeValues::None );
+		GetOS().GetRenderer()->SetCullMode( CullMode::None );
 
 		// Setup a 3D geometry for relative comparisons.
 		m_triangleVB.Create( 6, color3DEffect->GetVertexShader()->GetVertexDeclaration() );
@@ -100,7 +100,7 @@ public:
 		}
 	}
 
-	bool Update( unify::Seconds elapsed, IInput & input )
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 	{
 		m_camera->GetObject()->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
 		m_camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
@@ -110,7 +110,7 @@ public:
 		m_spriteAnimatedSized.Update( elapsed );
 		m_spriteList.Update( elapsed );
 
-		return Game::Update( elapsed, input );
+		return Game::Update( elapsed, renderInfo, input );
 	}
 
 	void Render()
@@ -120,7 +120,7 @@ public:
 		// Render the 3D screen comparison object...
 		RenderInfo renderInfo;
 		renderInfo.SetFinalMatrix( m_camera->GetMatrix() );
-		Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_3d" );
+		Effect::ptr effect = GetManager< Effect >()->Find( "color_3d" );
 		effect->Use( renderInfo );
 		m_triangleVB.Use();
 		m_triangleVB.GetVertexDeclaration().Use();

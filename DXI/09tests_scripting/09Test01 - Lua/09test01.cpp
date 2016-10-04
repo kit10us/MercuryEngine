@@ -35,20 +35,5 @@ public:
 
 		lua->ExecuteFile( "media/scene1.lua" );
 	}
-
-	bool Update( unify::Seconds elapsed, IInput & input )
-	{
-		return Game::Update( elapsed, input );
-	}
-
-	void Render()
-	{
-		Game::Render();
-	}
-
-	void Shutdown()
-	{
-		Game::Shutdown();
-	}
 } game;
 

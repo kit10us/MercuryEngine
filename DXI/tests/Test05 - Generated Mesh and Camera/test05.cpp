@@ -53,7 +53,7 @@ public:
 		m_camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 0, 10 ) );
 
 		// Load effect
-		Effect::shared_ptr effect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
+		Effect::ptr effect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
 		
 		// Cube
         shapes::CubeParameters cubeParameters;
@@ -63,7 +63,7 @@ public:
 		m_mesh = GetManager< Geometry >()->Add( "cube", dxi::shapes::CreateShape( cubeParameters ) );
 	}
 
-	bool Update( unify::Seconds elapsed, IInput & input )
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 	{
 		unify::V3< float > eyePosition( 0, 0, -7 );
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -74,14 +74,13 @@ public:
 		m_rotation += unify::Angle::AngleInRadians( elapsed );
 		m_rotation.Fix360();
 
-		return Game::Update( elapsed, input );
+		renderInfo.SetViewMatrix( m_camera->GetMatrix() );
+
+		return Game::Update( elapsed, renderInfo, input );
 	}
 
-	void Render()
+	void Render( const RenderInfo & renderInfo )
 	{
-		RenderInfo renderInfo;
-		renderInfo.SetFinalMatrix( m_camera->GetMatrix() );
-
 		m_mesh->Render( renderInfo, 0 );
 	}
 

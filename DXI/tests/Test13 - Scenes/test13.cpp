@@ -31,7 +31,7 @@ public:
 		// Scene 1...
 		m_scene1.reset( new scene::Scene );
 
-		Effect::shared_ptr colorEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
+		Effect::ptr colorEffect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
 
 		shapes::CubeParameters cubeParameters;
         cubeParameters.SetEffect( colorEffect );
@@ -144,11 +144,11 @@ public:
 		GetResourceHub().Load( "effect", "cutout", "media/EffectCutout.xml" );
 		*/
 
-		Effect::shared_ptr landEffect = GetManager< Effect>()->Add( "land", "media/EffectTextured.xml" );
+		Effect::ptr landEffect = GetManager< Effect>()->Add( "land", "media/EffectTextured.xml" );
 		landEffect->SetBlend( Blend( Usage::False ) );
 		landEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
-		Effect::shared_ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
+		Effect::ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
 		cutoutEffect->SetBlend( Blend( Usage::True, Blend::Effect::One, Blend::Effect::One ) );
 		cutoutEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
@@ -184,9 +184,9 @@ public:
 		scene2->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, game.GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 	}
 
-	bool Update( unify::Seconds elapsed, IInput & input )
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 	{
-		return Game::Update( elapsed, input );
+		return Game::Update( elapsed, renderInfo, input );
 	}
 
 	void Render()

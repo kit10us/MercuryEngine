@@ -49,7 +49,7 @@ public:
 		VertexDeclaration colorVD( colorVDJson ); 
 		GetManager< PixelShader >()->Add( MakePixelShaderJson( "color_3d", "media/shaders/color3d.shader", "ps_main", "ps_1_1" ) );
 		GetManager< VertexShader >()->Add( MakeVertexShaderJson( "color_3d", "media/shaders/color3d.shader", "vs_main", "vs_1_1", colorVDJson ) );
-		Effect::shared_ptr effect = GetManager< Effect >()->Add( "color_3d", new Effect );
+		Effect::ptr effect = GetManager< Effect >()->Add( "color_3d", new Effect );
 		effect->SetPixelShader( GetManager< PixelShader >()->Find( "color_3d" ) );
 		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color_3d" ) );
 
@@ -114,7 +114,7 @@ public:
 		*/
 	}
 
-	bool Update( unify::Seconds elapsed, IInput & input )
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 	{
 		unify::V3< float > eyePosition( 0, 5, -10 );
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -129,7 +129,7 @@ public:
 		if ( m_textBoxSimpleIn3D ) m_textBoxSimpleIn3D->Update( elapsed, 0 );
 		if ( m_textBoxSimpleWidth3DCharactersIn3D ) m_textBoxSimpleWidth3DCharactersIn3D->Update( elapsed, 0 );
 
-		return Game::Update( elapsed, input );
+		return Game::Update( elapsed, renderInfo, input );
 	}
 
 	void Render()
@@ -137,7 +137,7 @@ public:
 		RenderInfo renderInfo3D;
 		renderInfo3D.SetViewMatrix( m_view.Inverse() );
 		renderInfo3D.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
-		Effect::shared_ptr effect = GetManager< Effect >()->Find( "color_3d" );
+		Effect::ptr effect = GetManager< Effect >()->Find( "color_3d" );
 		effect->Use( renderInfo3D );
 		m_triangleVB.Use();
 		m_triangleVB.GetVertexDeclaration().Use();

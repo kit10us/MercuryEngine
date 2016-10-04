@@ -45,17 +45,13 @@ bool __cdecl Tick( HWND hwnd )
 		unify::Seconds elapsed = micro * 0.000001f;
 		lastTime = currentTime;
 
-		game.BeforeUpdate();
-		game.Update( elapsed, game.GetInput() );
-		game.AfterUpdate();
+		game.Tick();
 		if( game.IsQuitting() )
 		{
 			return false;
 		}
+		game.Draw();
 
-		game.BeforeRender();
-		game.Render();
-		game.AfterRender();
 	}
 	catch( std::exception ex )
 	{
