@@ -10,9 +10,9 @@
 #include <dxi/factory/ShapeFactory.h>
 #include <dxi/null/Input.h>
 #include <dxi/Input.h>
-
 #include <fstream>
 #include <chrono>
+#include <ctime>
 
 using namespace dxi;
 using namespace core;
@@ -101,17 +101,19 @@ bool Game::Setup( IOS & os )
 			unify::Path path( node.GetText() );
 			AddExtension( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
 		}
-		else if ( node.IsTagName( "startupscript" ) )
+		else if ( node.IsTagName( "gamemodule" ) )
 		{
-			m_startupExecute.type = node.GetAttribute< std::string >( "type" );
-
-			if ( node.HasAttributes( "source" ) )
-			{
-				m_startupExecute.source = node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" );
-			}
-			m_startupExecute.line = node.GetText();
+			std::string type = node.GetAttribute< std::string >( "type" );
+			auto se = GetScriptEngine( type );
+			assert( se ); //TODO: Handle error better.
+			m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
 		}
 	}
+
+	// Log start of program.
+	auto now = std::chrono::system_clock::now();
+	std::time_t t = std::chrono::system_clock::to_time_t( now );
+	Log( "Startup: " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
 
 	return true;
 }
@@ -120,22 +122,9 @@ void Game::Startup()
 {
 	m_os->Startup();
 
-	if ( ! m_startupExecute.type.empty() )
+	if ( m_gameModule )
 	{
-		auto se = GetScriptEngine( m_startupExecute.type );
-		assert( se ); //TODO: Handle error better.
-
-		// Execute a file if specfied...
-		if ( ! m_startupExecute.source.Empty() )
-		{
-			se->ExecuteFile( m_startupExecute.source );
-		}
-
-		// Execute a line if specified (support both, just in case we want to use a script AND do something extra)...
-		if( ! m_startupExecute.line.empty() )
-		{
-			se->ExecuteString( m_startupExecute.line );
-		}
+		m_gameModule->OnStart();
 	}
 
 	// m_input.reset( new null::Input );
@@ -159,6 +148,7 @@ void Game::Tick()
 	lastTime = currentTime;
 
 	BeforeUpdate();
+	m_renderInfo.SetDelta( elapsed ); // TODO: Pull elapsed from Update, since it's now in RenderInfo.
 	bool run = Update( elapsed, m_renderInfo, GetInput() );
 	AfterUpdate();
 }
@@ -170,7 +160,12 @@ void Game::BeforeUpdate()
 
 bool Game::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 {
-    if ( input.KeyPressed( Key::Escape ) )
+	if( m_gameModule )
+	{
+		m_gameModule->OnUpdate();
+	}
+	
+	if ( input.KeyPressed( Key::Escape ) )
     {
         RequestQuit();
     }
@@ -204,11 +199,15 @@ void Game::Render( const RenderInfo & renderInfo )
 
 void Game::AfterRender()
 {
+	m_renderInfo.IncrementFrameID();
 	m_os->GetRenderer()->AfterRender();
 }
 
 void Game::Shutdown()
 {
+	// Release scripts first...
+	m_gameModule.reset();
+
 	// Release asset managers...
     m_sceneManager.reset();
 
@@ -219,12 +218,23 @@ void Game::Shutdown()
 	// Remove extensions...
 	m_extensions.clear();
 
+	auto now = std::chrono::system_clock::now();
+	std::time_t t = std::chrono::system_clock::to_time_t( now );
+	Log( "Shutdown: " + ( ( ! m_os->GetName().empty() ) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
+	LogLine( "  frames: " + unify::Cast< std::string >( m_renderInfo.FrameID() ) );
+	LogLine( "" );
+
 	m_os->Shutdown();
 }
 
 IOS & Game::GetOS()
 {
 	return *m_os.get();
+}
+
+const RenderInfo & Game::GetRenderInfo() const
+{
+	return m_renderInfo;
 }
 
 void Game::AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se )

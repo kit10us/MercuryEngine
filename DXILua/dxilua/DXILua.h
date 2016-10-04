@@ -20,6 +20,8 @@ namespace dxilua
 		dxi::scripting::ExecuteResult ExecuteString( std::string line ) override;
 		dxi::scripting::ExecuteResult ExecuteFile( unify::Path path ) override;
 
+		dxi::scripting::IModule::ptr LoadModule( unify::Path path ) override;
+
 		static dxi::core::Game * GetGame();
 
 	private:

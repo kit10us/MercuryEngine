@@ -173,7 +173,7 @@ public:
 	{
 		static size_t axis = 0;
 		static unify::Angle totalRotation{};
-		unify::Angle rotation = unify::Angle::AngleInRadians( elapsed );
+		unify::Angle rotation = unify::Angle::AngleInRadians( renderInfo.GetDelta() );
 		totalRotation += rotation;
 		if( totalRotation.Fix360() != 0 )
 		{

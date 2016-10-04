@@ -1,8 +1,13 @@
 <xml>
 <setup>
+<logfile>log.txt</logfile>
 <fullscreen>false</fullscreen>
 <resolution width="800" height="640"/>
 <extension>DXILuaDLL.dll</extension>
+<gamemodule type="LUA" source="game.lua"/>
+<!--
 <startupscript type="LUA" source="media/scene1.lua"/>
+<updatescript type="LUA" source="update.lua"/>
+-->
 </setup>
 </xml>

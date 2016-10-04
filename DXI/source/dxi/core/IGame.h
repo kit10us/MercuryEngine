@@ -8,6 +8,7 @@
 #include <dxi/scripting/IScriptEngine.h>
 #include <unify/TimeDelta.h>
 #include <dxi/core/Extension.h>
+#include <dxi/RenderInfo.h>
 
 namespace dxi
 {
@@ -41,6 +42,11 @@ namespace dxi
 			/// Get our OS interface.
 			/// </summary>
 			virtual IOS & GetOS() = 0;
+
+			/// <summary>
+			/// Get our RenderInfo.
+			/// </summary>
+			virtual const RenderInfo & GetRenderInfo() const = 0;
 
 			/// <summary>
 			/// Add a script engine.

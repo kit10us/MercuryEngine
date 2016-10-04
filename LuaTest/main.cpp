@@ -6,6 +6,8 @@
 #include <test-02.h>
 #include <test-03.h>
 #include <test-04.h>
+#include <test-05.h>
+#include <test-06.h>
 
 #pragma comment( lib, "lua53" )
 
@@ -16,6 +18,7 @@ int main( int argc, char ** argv )
 
 	cout << "BEGIN LUA TESTS..." << endl << endl;
 
+	/*
 	test01::main( argc, argv );
 
 	cout << endl << endl;
@@ -29,6 +32,15 @@ int main( int argc, char ** argv )
 	cout << endl << endl;
 
 	test04::main( argc, argv );
+
+	cout << endl << endl;
+
+	test05::main( argc, argv );
+
+	cout << endl << endl;
+	*/
+
+	test06::main( argc, argv );
 
 	cout << "END LUA TESTS." << endl;
 

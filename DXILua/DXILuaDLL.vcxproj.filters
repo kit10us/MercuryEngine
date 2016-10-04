@@ -21,6 +21,42 @@
     <ClInclude Include="dxilua\DXILua.h">
       <Filter>dxilua</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportObject.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportGame.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportResources.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportScenes.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportScene.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportCamera.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportMatrix.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportDebug.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportUpdate.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\Module.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportV3.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportV2.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -33,6 +69,42 @@
       <Filter>dll</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\DXILua.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObject.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportGame.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportResources.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportScenes.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportScene.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportCamera.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportMatrix.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportDebug.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportUpdate.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\Module.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportV3.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportV2.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>

@@ -95,6 +95,16 @@ void RenderInfo::IncrementFrameID()
 	++m_frameID;
 }
 
+float RenderInfo::GetDelta() const
+{
+	return m_delta;
+}
+
+void RenderInfo::SetDelta( float delta )
+{
+	m_delta = delta;
+}
+
 void RenderInfo::SetWorldMatrix( const unify::Matrix & matrix )
 {
 	m_world = matrix;

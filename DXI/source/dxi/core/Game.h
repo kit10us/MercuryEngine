@@ -57,6 +57,8 @@ namespace dxi
 
 			virtual IOS & GetOS() final;
 
+			virtual const RenderInfo & GetRenderInfo() const final;
+
 			void AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se ) override;
 
 			scripting::IScriptEngine * GetScriptEngine( std::string name ) override;
@@ -73,7 +75,6 @@ namespace dxi
 			template<> rm::ResourceManagerSimple< PixelShader > * GetManager();
 			template<> rm::ResourceManagerSimple< VertexShader > * GetManager();
 			template<> rm::ResourceManagerSimple< Geometry > * GetManager();
-
 
 			rm::ResourceHub & GetResourceHub();
 			const rm::ResourceHub & GetResourceHub() const;
@@ -99,7 +100,8 @@ namespace dxi
 
 			unify::Path m_setup;
 			unify::Path m_logFile;
-			scripting::Execute m_startupExecute;
+			scripting::IModule::ptr m_gameModule;
+
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
 

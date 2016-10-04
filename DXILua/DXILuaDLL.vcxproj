@@ -154,6 +154,18 @@
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h" />
     <ClInclude Include="dxilua\DXILua.h" />
+    <ClInclude Include="dxilua\ExportCamera.h" />
+    <ClInclude Include="dxilua\ExportDebug.h" />
+    <ClInclude Include="dxilua\ExportGame.h" />
+    <ClInclude Include="dxilua\ExportMatrix.h" />
+    <ClInclude Include="dxilua\ExportObject.h" />
+    <ClInclude Include="dxilua\ExportResources.h" />
+    <ClInclude Include="dxilua\ExportScene.h" />
+    <ClInclude Include="dxilua\ExportScenes.h" />
+    <ClInclude Include="dxilua\ExportUpdate.h" />
+    <ClInclude Include="dxilua\ExportV2.h" />
+    <ClInclude Include="dxilua\ExportV3.h" />
+    <ClInclude Include="dxilua\Module.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -174,6 +186,18 @@
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp" />
     <ClCompile Include="dxilua\DXILua.cpp" />
+    <ClCompile Include="dxilua\ExportCamera.cpp" />
+    <ClCompile Include="dxilua\ExportDebug.cpp" />
+    <ClCompile Include="dxilua\ExportGame.cpp" />
+    <ClCompile Include="dxilua\ExportMatrix.cpp" />
+    <ClCompile Include="dxilua\ExportObject.cpp" />
+    <ClCompile Include="dxilua\ExportResources.cpp" />
+    <ClCompile Include="dxilua\ExportScene.cpp" />
+    <ClCompile Include="dxilua\ExportScenes.cpp" />
+    <ClCompile Include="dxilua\ExportUpdate.cpp" />
+    <ClCompile Include="dxilua\ExportV2.cpp" />
+    <ClCompile Include="dxilua\ExportV3.cpp" />
+    <ClCompile Include="dxilua\Module.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

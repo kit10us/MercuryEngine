@@ -28,6 +28,11 @@ namespace dxi
 			virtual ~IOS() { }
 
 			/// <summary>
+			/// Get name of our program.
+			/// </summary>
+			virtual std::string GetName() const = 0;
+
+			/// <summary>
 			/// Get a vector of command line arguments, where 0 is the first argument.
 			/// </summary>
 			virtual const std::vector< std::string > & GetCommandLine() const = 0;

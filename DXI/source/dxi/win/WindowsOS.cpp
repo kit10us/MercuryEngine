@@ -31,6 +31,17 @@ WindowsOS::WindowsOS()
 WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
 : WindowsOS()
 {
+	{
+		using namespace std;
+		char buffer[MAX_PATH];
+		GetModuleFileNameA( NULL, buffer, MAX_PATH );
+		string::size_type pos = string( buffer ).find_last_of( "\\/" );
+		if( pos != string::npos ) 
+		{
+			m_name = buffer;
+		}
+	}
+		
 	m_hInstance = hInstance;
 	m_nCmdShow = nCmdShow;
 	hPrevInstance; // NOT USED
@@ -77,6 +88,11 @@ WindowsOS::WindowsOS( HWND hWnd )
 WindowsOS::~WindowsOS()
 {
 	m_renderer.reset();
+}
+
+std::string WindowsOS::GetName() const
+{
+	return m_name;
 }
 
 const std::vector< std::string > & WindowsOS::GetCommandLine() const

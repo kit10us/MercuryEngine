@@ -56,6 +56,9 @@ namespace dxi
 		unsigned int FrameID() const;
 		void IncrementFrameID();
 
+		float GetDelta() const;
+		void SetDelta( float delta );
+
 		void SetWorldMatrix( const unify::Matrix & matrix );
 		const unify::Matrix & GetWorldMatrix() const;
 
@@ -73,6 +76,7 @@ namespace dxi
 		std::bitset< RenderOption::COUNT > m_optionIsSet;
 		float m_distanceFromCamera;		// Distance from camera
 		unsigned int m_frameID;
+		float m_delta;
 		unify::Matrix m_world;
 		unify::Matrix m_view;
 		unify::Matrix m_projection;

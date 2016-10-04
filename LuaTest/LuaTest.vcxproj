@@ -151,12 +151,16 @@
     <ClCompile Include="test-02.cpp" />
     <ClCompile Include="test-03.cpp" />
     <ClCompile Include="test-04.cpp" />
+    <ClCompile Include="test-05.cpp" />
+    <ClCompile Include="test-06.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="test-01.h" />
     <ClInclude Include="test-02.h" />
     <ClInclude Include="test-03.h" />
     <ClInclude Include="test-04.h" />
+    <ClInclude Include="test-05.h" />
+    <ClInclude Include="test-06.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

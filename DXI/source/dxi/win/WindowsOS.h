@@ -30,33 +30,44 @@ namespace dxi
 
 			virtual ~WindowsOS();
 
-			virtual const std::vector< std::string > & GetCommandLine() const;
+			std::string GetName() const override;
 
-			virtual core::IRenderer * GetRenderer() const;	   
+			const std::vector< std::string > & GetCommandLine() const override;
 
-			virtual void SetResolution( const unify::Size< unsigned int > & resolution );
-			virtual void SetFullscreen( bool fullscreen );
+			core::IRenderer * GetRenderer() const override;	   
 
-			virtual unify::Size< unsigned int > GetResolution() const;
-			virtual const Viewport & GetDefaultViewport() const;
-			virtual bool GetFullscreen() const;
+			void SetResolution( const unify::Size< unsigned int > & resolution ) override;
 
-			void SetHasFocus( bool hasFocus );
-			bool GetHasFocus() const;
+			void SetFullscreen( bool fullscreen ) override;
+
+			unify::Size< unsigned int > GetResolution() const override;
+			
+			const Viewport & GetDefaultViewport() const override;
+			
+			bool GetFullscreen() const override;
+
+			void SetHasFocus( bool hasFocus ) override;
+
+			bool GetHasFocus() const override;
 
 			HINSTANCE GetHInstance();
+
 			HWND GetHWnd();
 
-			virtual void Startup();
-			virtual void Shutdown();
-			virtual void DebugWrite( const std::string & text );
-			virtual void DebugWriteLine( const std::string & line );
+			void Startup() override;
+			
+			void Shutdown() override;
+			
+			void DebugWrite( const std::string & text ) override;
+
+			void DebugWriteLine( const std::string & line ) override;
 
 			void CreateWindow( HWND & hwnd );
 			void CreateDirectX();
 			void DestroyDirectX();
 
 		private:
+			std::string m_name;
 			HINSTANCE m_hInstance;
 			int m_nCmdShow;
 			std::vector< std::string > m_commandLine;
