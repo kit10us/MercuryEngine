@@ -7,12 +7,6 @@
 #include <unify/V3.h>
 #include <unify/V4.h>
 
-
-
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
-
 namespace unify
 {
 	class Matrix;
@@ -20,12 +14,6 @@ namespace unify
 	class Quaternion
 	{
 	public:
-#ifdef DIRECTX9
-		typedef D3DXQUATERNION DXQuaternion;
-#else
-		typedef DirectX::XMVECTOR DXQuaternion;
-#endif
-
 		static Quaternion QuaternionIdentity();
 		static Quaternion QuaternionFromEuler( const unify::V3< float > & euler );
 		static Quaternion QuaternionRotationAxis( const V3< float > & axis, float rotation );
@@ -36,6 +24,8 @@ namespace unify
 		Quaternion( const Quaternion & quaternion );
 		Quaternion::Quaternion( const Matrix & matrix );
 
+		bool IsIdentity() const;
+
 		// assignment operators
 		Quaternion & operator += ( const Quaternion & quaternion );
 		Quaternion & operator -= ( const Quaternion & quaternion );
@@ -44,8 +34,8 @@ namespace unify
 		Quaternion & operator /= ( float value );
 
 		// unary operators
-		Quaternion  operator + () const;
-		Quaternion  operator - () const;
+		Quaternion operator + () const;
+		Quaternion operator - () const;
 
 		// binary operators
 		Quaternion operator + ( const Quaternion & quaternion ) const;
@@ -57,23 +47,13 @@ namespace unify
 		bool operator == ( const Quaternion & quaternion ) const;
 		bool operator != ( const Quaternion & quaternion ) const;
 		
-		void SetX( float x );
-		void SetY( float y );
-		void SetZ( float z );
-		void SetW( float w );
-
-		float GetX() const;
-		float GetY() const;
-		float GetZ() const;
-		float GetW() const;
-
 		Quaternion Conjugate() const;
 
 		void TransformVector( V3< float > & vector ) const;
 
-		DXQuaternion GetD3DXQuaternion() const;
-
-	private:
-		V4< float > m_quaternion;
+		float x;
+		float y;
+		float z;
+		float w;
 	};
 }

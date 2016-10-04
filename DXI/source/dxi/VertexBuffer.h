@@ -4,12 +4,7 @@
 #pragma once
 
 #include <dxi/DataBuffer.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/VertexDeclaration.h>
-#include <unify/Flags.h>
-#include <unify/Matrix.h>
-#include <unify/DataLock.h>
-#include <memory>
 
 namespace dxi
 {
@@ -17,25 +12,27 @@ namespace dxi
 	class VertexBuffer : public DataBuffer
 	{
 	public:
-		typedef std::shared_ptr< VertexBuffer > shared_ptr;
+		typedef std::shared_ptr< VertexBuffer > ptr;
 
-		struct CreateFlags
-		{
-			enum TYPE
-			{
-				DoNotClip = FLAG01,
-				Dynamic = FLAG02,
-				NPatches = FLAG03,
-				Points = FLAG04,
-				RTPatches = FLAG05,
-			};
+		// TODO: Replace create to use this.  Move to DataBuffer???
+		struct BufferDesc
+		{		  
+			BufferDesc()
+				: byteWidth( 0 )
+				, usage( BufferUsage::Default )
+				, stride( 0 )
+			{}
+
+			size_t byteWidth;
+			BufferUsage::TYPE usage;
+			size_t stride;
 		};
 
 		VertexBuffer();
-		VertexBuffer( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage = BufferUsage::Default, const void * source = nullptr, unify::Flags flags = FLAGNULL );
+		VertexBuffer( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
 		~VertexBuffer();
 
-		void Create( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage = BufferUsage::Default, const void * source = nullptr, unify::Flags flags = FLAGNULL );
+		void Create( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
 
 		void Resize( unsigned int numVertices );
 
@@ -46,26 +43,21 @@ namespace dxi
 		/// </summary>
 		size_t Append( const VertexBuffer & vb );
 
-		void Release();
+		void Destroy();
 
 		void Lock( unify::DataLock & lock );
 		void LockReadOnly( unify::DataLock & lock ) const;
 		void Unlock();
 		void Unlock() const;
 		void Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts );
-		VertexDeclaration GetVertexDeclaration() const;
-		unsigned int GetCreateFlags() const;
+		VertexDeclaration::ptr GetVertexDeclaration() const;
 		bool Valid() const;
-		void Use( unsigned int streamNumber = 0, unsigned int offsetInBytes = 0, unsigned int stride = 0 ) const;
+		void Use() const;
 		void Disuse() const;
 		
-	protected:
-#if defined( DIRECTX9 )
-		CComPtr< IDirect3DVertexBuffer9 > m_VB;
-#elif defined( DIRECTX11 )
-		CComPtr< ID3D11Buffer > m_VB;
-#endif								 
-		unify::Flags m_createFlags;
-		VertexDeclaration m_vertexDeclaration;
+	protected:	   
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
+		VertexDeclaration::ptr m_vertexDeclaration;
 	};
 }

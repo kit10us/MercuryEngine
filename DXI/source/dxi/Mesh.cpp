@@ -48,8 +48,9 @@ void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 
 	if( instanceData && myRenderInfo.IsOptionTrue( RenderOption::RenderFrames ) )
 	{
+		assert( 0 ); // TODO: Updates to RenderInfo need to be vetted.
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		meshInstanceData->RenderFrames( myRenderInfo.GetFinalMatrix(), true, true );
+		meshInstanceData->RenderFrames( myRenderInfo.GetWorldMatrix(), true, true );
 	}
 }
 

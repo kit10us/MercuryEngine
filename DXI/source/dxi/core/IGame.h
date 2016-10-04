@@ -31,14 +31,10 @@ namespace dxi
 			/// </summary>
 			virtual void Startup() = 0;
 
-			/// <summary>
-			/// Called every game frame, Update allows processing input, and game time for physics and state changes.
-			/// </summary>
-			virtual bool Update( unify::Seconds elapsed, IInput & input ) = 0;
+			virtual void Tick() = 0;
 
-			virtual void BeforeRender() = 0;
-			virtual void Render() = 0;
-			virtual void AfterRender() = 0;
+			virtual void Draw() = 0;
+
 			virtual void Shutdown() = 0;
 
 			/// <summary>

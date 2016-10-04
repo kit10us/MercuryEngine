@@ -17,7 +17,6 @@ RenderInfo::RenderInfo()
 , m_world( unify::Matrix::MatrixIdentity() )
 , m_view( unify::Matrix::MatrixIdentity() )
 , m_projection( unify::Matrix::MatrixIdentity() )
-, m_final( unify::Matrix::MatrixIdentity() )
 , m_frameSetInstance( 0 )
 {
 }
@@ -30,7 +29,6 @@ RenderInfo::RenderInfo( const RenderInfo & info )
 , m_world( info.m_world )
 , m_view( info.m_view )
 , m_projection( info.m_projection )
-, m_final( info.m_final )
 , m_frameSetInstance( info.m_frameSetInstance )
 {
 }
@@ -84,7 +82,6 @@ RenderInfo & RenderInfo::operator=( const RenderInfo & info )
 	m_world = info.m_world;
 	m_view = info.m_view;
 	m_projection = info.m_projection;
-	m_final = info.m_final;
 	return *this;
 }
 
@@ -101,7 +98,6 @@ void RenderInfo::IncrementFrameID()
 void RenderInfo::SetWorldMatrix( const unify::Matrix & matrix )
 {
 	m_world = matrix;
-	m_final = m_world * m_view * m_projection;
 }
 
 const unify::Matrix & RenderInfo::GetWorldMatrix() const
@@ -112,7 +108,6 @@ const unify::Matrix & RenderInfo::GetWorldMatrix() const
 void RenderInfo::SetViewMatrix( const unify::Matrix & matrix )
 {
 	m_view = matrix;
-	m_final = m_world * m_view * m_projection;
 }
 
 const unify::Matrix & RenderInfo::GetViewMatrix() const
@@ -123,25 +118,11 @@ const unify::Matrix & RenderInfo::GetViewMatrix() const
 void RenderInfo::SetProjectionMatrix( const unify::Matrix & matrix )
 {
 	m_projection = matrix;
-	m_final = m_world * m_view * m_projection;
 }
 
 const unify::Matrix & RenderInfo::GetProjectionMatrix() const
 {
 	return m_projection;
-}
-
-void RenderInfo::SetFinalMatrix( const unify::Matrix & matrix )
-{
-	m_world = unify::Matrix::MatrixIdentity();
-	m_view = unify::Matrix::MatrixIdentity();
-	m_projection = unify::Matrix::MatrixIdentity();
-	m_final = matrix;
-}
-
-const unify::Matrix & RenderInfo::GetFinalMatrix() const
-{
-	return m_final;
 }
 
 void RenderInfo::SetFrameSetInstance( const unify::FrameSetInstance * frameSetInstance )

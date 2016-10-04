@@ -23,42 +23,39 @@ namespace dxi
 	{
 		enum TYPE
 		{
-			PointList = D3DPT_POINTLIST,
-			LineList = D3DPT_LINELIST,
-			LineStrip = D3DPT_LINESTRIP,
-			TriangleList = D3DPT_TRIANGLELIST,
-			TriangleStrip = D3DPT_TRIANGLESTRIP,
-			TriangleFan	= D3DPT_TRIANGLEFAN
+			PointList,
+			LineList,
+			LineStrip,
+			TriangleList,
+			TriangleStrip
 		};
 
-        static TYPE StringToPrimitiveType( const std::string & type );
-    };
+		static TYPE StringToPrimitiveType( const std::string & type );
+	};
 
-    const unsigned int NoEffect = std::numeric_limits< unsigned int >::max();
+	const unsigned int NoEffect = std::numeric_limits< unsigned int >::max();
 
 	class RenderMethod
 	{
 	public:
 		RenderMethod();
-		RenderMethod( PrimitiveType::TYPE primitiveType, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::shared_ptr, bool useIB = false, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
-		RenderMethod( PrimitiveType::TYPE primitiveType, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::shared_ptr effect, bool useIB = true, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
+		RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::ptr, bool useIB = false, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
+		RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::ptr effect, bool useIB = true, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
 
 		// Named constructors
 		// TODO: Add more low level named constructors.
 		// TODO: Replace 'Create' prefix with 'RenderMethod'.
 		// TODO: Support VB and IB indices.
 
-		// These assume non-index buffered...
-		static RenderMethod CreateFan( unsigned int startVertex, unsigned int segmentCount, Effect::shared_ptr effect );
-		static RenderMethod CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::shared_ptr effect );
-		static RenderMethod CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::shared_ptr effect );
+		static RenderMethod CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::ptr effect );
+		static RenderMethod CreateTriangleList( unsigned int startVertex, unsigned int triangleCount, Effect::ptr effect );
+		static RenderMethod CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::ptr effect );
 
-		static unsigned int VertexCountInAFan( unsigned int segmentCount );
+		static RenderMethod CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect );
+		static RenderMethod CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect );
+
 		static unsigned int VertexCountInATriangleStrip( unsigned int triangleCount );
 		static unsigned int VertexCountInATriangleList( unsigned int triangleCount );
-
-		size_t GetVertexBufferIndex() const;
-		size_t GetIndexBufferIndex() const;
 
 		void Render( const RenderInfo & renderInfo ) const;
 
@@ -70,7 +67,8 @@ namespace dxi
 		unsigned int vertexCount;
 		unsigned int startIndex;
 		unsigned int primitiveCount;
-		Effect::shared_ptr effect;
+		unsigned int indexCount;
+		Effect::ptr effect;
 		bool useIB;
 		size_t vertexBufferIndex;
 		size_t indexBufferIndex;

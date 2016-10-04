@@ -21,7 +21,7 @@ namespace dae
 		/// <summary>
 		/// Returns an effect which can best represent the shading's intention.
 		/// </summary>
-		virtual dxi::Effect::shared_ptr GetEffect( const Shading & shading ) const = 0;
+		virtual dxi::Effect::ptr GetEffect( const Shading & shading ) const = 0;
 
 		virtual const class LibraryNodes & GetLibraryNodes() const = 0;
 		virtual const class LibraryMaterials & GetLibraryMaterials() const = 0;

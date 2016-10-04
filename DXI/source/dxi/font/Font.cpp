@@ -37,8 +37,9 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
         if ( leaf.IsTagName( "effect" ) )
         {
 			m_effect = effectManager->Add( leaf );
-			std::shared_ptr< VertexBuffer > scratchVB( new VertexBuffer( 6, m_effect->GetVertexShader()->GetVertexDeclaration() ) );
-			m_effect->SetScratchVertexBuffer( scratchVB );
+			assert( 0 ); // TODO:
+			//std::shared_ptr< VertexBuffer > scratchVB( new VertexBuffer( 6, m_effect->GetVertexShader()->GetVertexDeclaration() ) );
+			//m_effect->SetScratchVertexBuffer( scratchVB );
         }
 		else if( leaf.IsTagName( "character" ) )
 		{
@@ -89,7 +90,7 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 						throw unify::Exception( "Specfied texture for character font does not exist!" );
 					}
 
-					Texture::shared_ptr texture( textureManager->Find( textureName ) );
+					Texture::ptr texture( textureManager->Find( textureName ) );
 					unsigned int sprite = leaf.GetAttributeElse< unsigned int >( "sprite", 0 );
 
 					animation::Frame frame( texture, texture->GetSprite( sprite ) );

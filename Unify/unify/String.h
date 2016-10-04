@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <list>
 
 namespace unify
 {
@@ -17,6 +18,7 @@ namespace unify
 
 	// Caseless compare.
 	bool StringIs( const std::string & a, const std::string & b );
+	bool StringIsAny( const std::string & a, const std::list< std::string > & list );
 	bool BeginsWith( const std::string & a, const std::string & b );
 	bool EndsWith( const std::string & a, const std::string & b );
 	

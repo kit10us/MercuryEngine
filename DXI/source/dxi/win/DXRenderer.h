@@ -38,6 +38,11 @@ namespace dxi
 #elif defined( DIRECTX11)
 #endif
 
+#if defined( DIRECTX9 )
+#elif defined( DIRECTX11)
+			IDXGISwapChain * GetSwapChain();
+#endif				
+
 		private:
 			win::WindowsOS * m_OS;
 			RenderInfo m_renderInfo2D;
@@ -47,6 +52,14 @@ namespace dxi
 			CComPtr< IDirect3DDevice9 > m_dxDevice;
 			D3DPRESENT_PARAMETERS m_pp;
 #elif defined( DIRECTX11 )
+			CComPtr< ID3D11DeviceContext > m_dxContext;
+			CComPtr< ID3D11Device > m_dxDevice;
+			DXGI_SWAP_CHAIN_DESC m_swapChainDesc;
+			CComPtr< IDXGISwapChain > m_swapChain;
+			CComPtr< ID3D11RenderTargetView > m_renderTargetView;
+			CComPtr< ID3D11Texture2D > m_depthStencilBuffer;
+			CComPtr< ID3D11DepthStencilView > m_depthStencilView;
+			CComPtr< ID3D11RasterizerState > m_rasterizerState;
 #endif
 		};
 	}

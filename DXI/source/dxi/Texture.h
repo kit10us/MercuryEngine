@@ -15,12 +15,8 @@
 #undef LoadImage
 #endif
 
-
 namespace dxi
 {
-#define TEXTURE_LOCKABLE		FLAG01	// D3DPOOL_MANAGED
-#define TEXTURE_NORENDER		FLAG02	// D3DPOOL_SCRATCH
-
 	// TODO: Re-arch...
 	struct TextureMode
 	{
@@ -62,8 +58,6 @@ namespace dxi
 #define SPRITEANIMLOOP_REPEAT		1	// 1 loop period
 #define SPRITEANIMLOOP_FORWARDBACK	2	// 2 loop periods
 
-#define LOCK_READONLY	D3DLOCK_READONLY
-
 	// TODO: Move to its own file and remove hung
 	struct TextureLock
 	{
@@ -82,8 +76,7 @@ namespace dxi
 	class Texture
 	{
 	public:
-		typedef std::shared_ptr< Texture > shared_ptr;
-		typedef std::weak_ptr< Texture > weak_ptr;
+		typedef std::shared_ptr< Texture > ptr;
 
 		struct SpriteArray
 		{
@@ -99,7 +92,7 @@ namespace dxi
 		static bool s_allowTextureUses;
 
 		Texture();
-		Texture( const unify::Path & filePath, unsigned long flags = 0 );
+		Texture( const unify::Path & filePath, bool renderable = true, bool lockable = false );
 		virtual ~Texture();
 
 		// ::Resource...
@@ -109,7 +102,7 @@ namespace dxi
 
 		void ClearHeader();
 
-		void CreateFromFile( const unify::Path & filePath, unsigned long flags = 0 );
+		void CreateFromFile( const unify::Path & filePath, bool renderable, bool lockable );
 
 		const unsigned int FileWidth() const;
 		const unsigned int FileHeight() const;
@@ -119,11 +112,15 @@ namespace dxi
 
 		bool Use( unsigned int stage );
 
-		void SetFlags( unsigned long flags );
+		void SetRenderable( bool renderable );
 
-		const unsigned long GetFlags()	const;
+		bool GetRenderable() const;
 
-		void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unsigned long flags );
+		void SetLockable( bool lockable );
+
+		bool GetLockable() const;
+
+		void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, bool readonly );
 		void UnlockRect( unsigned int level );
 
 		bool HasSpriteArray( const std::string & name ) const;
@@ -146,7 +143,8 @@ namespace dxi
 
 		bool m_useColorKey;
 		unify::Color m_colorKey;
-		unsigned long m_flags;
+		bool m_renderable;
+		bool m_lockable;
 
 		SpriteArrayMap m_spriteArrayMap;
 		SpriteMasterList m_spriteMasterList;

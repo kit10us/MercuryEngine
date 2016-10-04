@@ -26,7 +26,7 @@ Character::Character( const Character & character )
 {
 }
 
-Character::Character( const animation::Instance & animationInstance, Effect::shared_ptr effect )
+Character::Character( const animation::Instance & animationInstance, Effect::ptr effect )
 : m_source( Source::Sprite )
 , m_effect( effect )
 , m_animationInstance( animationInstance )
@@ -112,7 +112,7 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 	case Source::Sprite:
 		{
 			VertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
-			VertexDeclaration vd = vb.GetVertexDeclaration();
+			VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
 
 			VertexElement positionE = CommonVertexElement::Position();
 			VertexElement texE = CommonVertexElement::TexCoords();
@@ -122,14 +122,14 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 			const unify::TexArea & area = m_animationInstance.GetFrame().GetArea();
 			unify::Size< float > halfSize( m_size.width * scale * 0.5f, m_size.height * scale * 0.5f );
 			float depth = 1.0f;
-			vd.WriteVertex( lock, 0, positionE, unify::V3< float >( 0 - halfSize.width, 0 - halfSize.height, depth ) );
-			vd.WriteVertex( lock, 1, positionE, unify::V3< float >( 0 + halfSize.width, 0 - halfSize.height, depth ) );
-			vd.WriteVertex( lock, 2, positionE, unify::V3< float >( 0 - halfSize.width, 0 + halfSize.height, depth ) );
-			vd.WriteVertex( lock, 3, positionE, unify::V3< float >( 0 + halfSize.width, 0 + halfSize.height, depth ) );
-			vd.WriteVertex( lock, 0, texE, unify::TexCoords( area.UL() ) );
-			vd.WriteVertex( lock, 1, texE, unify::TexCoords( area.UR() ) );
-			vd.WriteVertex( lock, 2, texE, unify::TexCoords( area.DL() ) );
-			vd.WriteVertex( lock, 3, texE, unify::TexCoords( area.DR() ) );
+			vd->WriteVertex( lock, 0, positionE, unify::V3< float >( 0 - halfSize.width, 0 - halfSize.height, depth ) );
+			vd->WriteVertex( lock, 1, positionE, unify::V3< float >( 0 + halfSize.width, 0 - halfSize.height, depth ) );
+			vd->WriteVertex( lock, 2, positionE, unify::V3< float >( 0 - halfSize.width, 0 + halfSize.height, depth ) );
+			vd->WriteVertex( lock, 3, positionE, unify::V3< float >( 0 + halfSize.width, 0 + halfSize.height, depth ) );
+			vd->WriteVertex( lock, 0, texE, unify::TexCoords( area.UL() ) );
+			vd->WriteVertex( lock, 1, texE, unify::TexCoords( area.UR() ) );
+			vd->WriteVertex( lock, 2, texE, unify::TexCoords( area.DL() ) );
+			vd->WriteVertex( lock, 3, texE, unify::TexCoords( area.DR() ) );
 			vb.Unlock();
 			vb.Use();
 

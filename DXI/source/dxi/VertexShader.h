@@ -12,14 +12,14 @@ namespace dxi
 	class VertexShader
 	{
 	public:
-		typedef std::shared_ptr< VertexShader > shared_ptr;
+		typedef std::shared_ptr< VertexShader > ptr;
 
 		static void DisuseShader();
 
 		VertexShader();
-		
-		VertexShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration vertexDeclaration );
-		
+
+		VertexShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration::ptr vertexDeclaration );
+
 		~VertexShader();
 
 		void Destroy();
@@ -30,16 +30,23 @@ namespace dxi
 
 		void CreateFromCode( const std::string & code, const std::string & entryPointName, const std::string & profile );
 
-		void SetVertexDeclaration( VertexDeclaration vertexDeclaration );
+		void SetVertexDeclaration( VertexDeclaration::ptr vertexDeclaration );
 
-		VertexDeclaration GetVertexDeclaration() const;
+		VertexDeclaration::ptr GetVertexDeclaration() const;
+
+		const void * GetBytecode() const;
+
+		size_t GetBytecodeLength() const;
 
 		void Use( const RenderInfo & renderInfo );
 
 		std::string GetError();
 
+#if defined( DIRECTX9 )
 		ID3DXConstantTable * GetConstantTable();
-
+#elif defined( DIRECTX11 )
+		// TODO: DX11
+#endif
 	protected:
 
 		unify::Path m_filePath;
@@ -49,7 +56,7 @@ namespace dxi
 		std::string m_profile;
 		std::string m_errorMessage;
 		bool m_created;
-		VertexDeclaration m_vertexDeclaration;
+		VertexDeclaration::ptr m_vertexDeclaration;
 
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;

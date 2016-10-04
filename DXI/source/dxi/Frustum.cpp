@@ -18,16 +18,16 @@ bool dxi::EdgeIntersectsFace( unify::V3< float > * pEdges, unify::V3< float > * 
     if( fDist1 > 0 && fDist2 > 0 ||
         fDist1 < 0 && fDist2 < 0 )
     {
-        return FALSE;
+        return false;
     }
 
     // Find point of intersection between edge and face plane (if they're
     // parallel, edge does not intersect face and D3DXPlaneIntersectLine 
     // returns NULL)
     unify::V3< float > ptIntersection;
-	if( ! unify::PlaneIntersectLine( ptIntersection, *pPlane, pEdges[0], pEdges[1] ) )
+	if( ! pPlane->IntersectLine( ptIntersection, pEdges[0], pEdges[1] ) )
 	{
-        return FALSE;
+        return false;
 	}
 
     // Project onto a 2D plane to make the pt-in-poly test easier
@@ -93,7 +93,7 @@ bool dxi::EdgeIntersectsFace( unify::V3< float > * pEdges, unify::V3< float > * 
     y1 = facePoints[1].y;
     x2 = facePoints[2].x;
     y2 = facePoints[2].y;
-    bool bClockwise = FALSE;
+    bool bClockwise = false;
     if( x1*y2 - y1*x2 - x0*y2 + y0*x2 + x0*y1 - y0*x1 < 0 )
 	{
         bClockwise = true;
@@ -118,7 +118,7 @@ bool dxi::EdgeIntersectsFace( unify::V3< float > * pEdges, unify::V3< float > * 
 
         if( ( x1*y2 - y1*x2 - x0*y2 + y0*x2 + x0*y1 - y0*x1 > 0 ) == bClockwise )
 		{
-            return FALSE;
+            return false;
 		}
     }
 
@@ -158,12 +158,12 @@ void Frustum::Calculate( const unify::Matrix & worldViewProjection )
 		result.TransformCoord( m_vCorner[i] );
 	}
 
-	unify::PlaneFromPoints( m_Plane[ PLANE_NEAR ],		m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_Xyz ], m_vCorner[ CORNER_xYz ] );
-	unify::PlaneFromPoints( m_Plane[ PLANE_FAR ],		m_vCorner[ CORNER_xYZ ], m_vCorner[ CORNER_XYZ ], m_vCorner[ CORNER_XyZ ] );
-	unify::PlaneFromPoints( m_Plane[ PLANE_LEFT ],		m_vCorner[ CORNER_xYz ], m_vCorner[ CORNER_xYZ ], m_vCorner[ CORNER_xyZ ] );
-	unify::PlaneFromPoints( m_Plane[ PLANE_RIGHT ],		m_vCorner[ CORNER_XYZ ], m_vCorner[ CORNER_XYz ], m_vCorner[ CORNER_XyZ ] );
-	unify::PlaneFromPoints( m_Plane[ PLANE_TOP ],		m_vCorner[ CORNER_xYz ], m_vCorner[ CORNER_XYz ], m_vCorner[ CORNER_xYZ ] );
-	unify::PlaneFromPoints( m_Plane[ PLANE_BOTTOM ],	m_vCorner[ CORNER_Xyz ], m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_xyZ ] );
+	m_Plane[PLANE_NEAR] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_Xyz ], m_vCorner[ CORNER_xYz ] );
+	m_Plane[PLANE_FAR] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_xYZ ], m_vCorner[ CORNER_XYZ ], m_vCorner[ CORNER_XyZ ] );
+	m_Plane[PLANE_LEFT] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_xYz ], m_vCorner[ CORNER_xYZ ], m_vCorner[ CORNER_xyZ ] );
+	m_Plane[PLANE_RIGHT] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_XYZ ], m_vCorner[ CORNER_XYz ], m_vCorner[ CORNER_XyZ ] );
+	m_Plane[PLANE_TOP] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_xYz ], m_vCorner[ CORNER_XYz ], m_vCorner[ CORNER_xYZ ] );
+	m_Plane[PLANE_BOTTOM] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_Xyz ], m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_xyZ ] );
 }
 
 bool Frustum::CastPoint( const unify::V2< float > & unit, unify::Ray< float > & rayOut )
@@ -191,19 +191,19 @@ bool Frustum::CastPoint( const unify::V2< float > & unit, unify::Ray< float > & 
 CULLSTATE Frustum::CullBBox( unify::BBox< float > * pBBox/*, unify::Plane * BBPlane*/ )
 {
 	unsigned char outside[8];
-	ZeroMemory( &outside, sizeof( outside ) );
+	memset( &outside, 0, sizeof( outside ) );
 
 	unify::V3< float > vBounds[8];
 	pBBox->GenerateCorners( &vBounds[0] );
 	
 	unify::Plane BBPlane[6];
 
-    unify::PlaneFromPoints( BBPlane[0], vBounds[0], vBounds[1], vBounds[2] ); // Near
-    unify::PlaneFromPoints( BBPlane[1], vBounds[6], vBounds[7], vBounds[5] ); // Far
-    unify::PlaneFromPoints( BBPlane[2], vBounds[2], vBounds[6], vBounds[4] ); // Left
-    unify::PlaneFromPoints( BBPlane[3], vBounds[7], vBounds[3], vBounds[5] ); // Right
-    unify::PlaneFromPoints( BBPlane[4], vBounds[2], vBounds[3], vBounds[6] ); // Top
-    unify::PlaneFromPoints( BBPlane[5], vBounds[1], vBounds[0], vBounds[4] ); // Bottom
+	BBPlane[0] = unify::Plane::PlaneFromPoints( vBounds[0], vBounds[1], vBounds[2] ); // Near
+	BBPlane[1] = unify::Plane::PlaneFromPoints( vBounds[6], vBounds[7], vBounds[5] ); // Far
+	BBPlane[2] = unify::Plane::PlaneFromPoints( vBounds[2], vBounds[6], vBounds[4] ); // Left
+	BBPlane[3] = unify::Plane::PlaneFromPoints( vBounds[7], vBounds[3], vBounds[5] ); // Right
+	BBPlane[4] = unify::Plane::PlaneFromPoints( vBounds[2], vBounds[3], vBounds[6] ); // Top
+	BBPlane[5] = unify::Plane::PlaneFromPoints( vBounds[1], vBounds[0], vBounds[4] ); // Bottom
 
 	// Check boundary vertices against all 6 frustum planes, 
 	// and store result (1 if outside) in a bitfield

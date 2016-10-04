@@ -28,6 +28,7 @@ namespace unify
 		T Length() const;
 		bool IsZero() const;
 		void Normalize();
+		T Dot( const V4< T > & v2 ) const;
 		//void Transform( const TMatrix * pMat );
 
 		// OPERATOR OVERLOADING MEMBER FUNCTIONS
@@ -58,6 +59,8 @@ namespace unify
 
         T & operator[]( size_t i );
         const T & operator[]( size_t i ) const;
+
+		void Select( const V4< T > & v1, const V4< T > & v2, const V4< float > & control );
 
         std::string ToString() const;
 	};

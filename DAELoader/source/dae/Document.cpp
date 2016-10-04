@@ -73,7 +73,7 @@ const std::string & Document::GetVersion() const
 	return m_version;
 }
 
-dxi::Effect::shared_ptr Document::GetEffect( const Shading & shading ) const
+dxi::Effect::ptr Document::GetEffect( const Shading & shading ) const
 {
 	return m_effectSolver->GetEffect( shading );
 }

@@ -47,13 +47,11 @@ namespace dxi
 			/// Optional function to be called on reciept of a drag-and-drop event.
 			virtual void OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point );
 
-			virtual void BeforeUpdate();
-			virtual bool Update( unify::Seconds elapsed, IInput & input ) override;
-			virtual void AfterUpdate();
+			// Handles updating...
+			virtual void Tick() override;
 
-			virtual void BeforeRender() override;
-			virtual void Render() override;
-			virtual void AfterRender() override;
+			// Handles drawing...
+			virtual void Draw() override;
 
 			virtual void Shutdown() override;
 
@@ -89,12 +87,23 @@ namespace dxi
 			void Log( std::string text );
 			void LogLine( std::string line );
 
+		protected:
+			virtual bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
+			virtual void Render( const RenderInfo & renderInfo );
+
 		private:
+			void BeforeUpdate();
+			void AfterUpdate();
+			void BeforeRender();
+			void AfterRender();	
+
 			unify::Path m_setup;
 			unify::Path m_logFile;
 			scripting::Execute m_startupExecute;
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
+
+			RenderInfo m_renderInfo;
 			
 			scene::SceneManager::shared_ptr m_sceneManager;
 

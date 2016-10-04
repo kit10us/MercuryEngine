@@ -21,92 +21,100 @@ Viewport::Viewport( float topLeftX, float topLeftY, float width, float height, f
 
 void Viewport::SetTopLeftX( float topLeftX )
 {
-#ifdef DX11
+#if defined( DIRECTX9 )
+	m_dxViewport.X = static_cast< DWORD >(topLeftX);
+#elif defined( DIRECTX11 )
 	m_dxViewport.TopLeftX = topLeftX;
-#else
-	m_dxViewport.X = static_cast< DWORD >( topLeftX );
 #endif
 }
 
 void Viewport::SetTopLeftY( float topLeftY )
 {
-#ifdef DX11
+#if defined( DIRECTX9 )
+	m_dxViewport.Y = static_cast< DWORD >(topLeftY);
+#elif defined( DIRECTX11 )
 	m_dxViewport.TopLeftY = topLeftY;
-#else
-	m_dxViewport.Y = static_cast< DWORD >( topLeftY );
 #endif
 }
 
 void Viewport::SetWidth( float width )
 {
-	m_dxViewport.Width = static_cast< DWORD >( width );
+#if defined( DIRECTX9 )
+	m_dxViewport.Width = static_cast< DWORD >(width);
+#elif defined( DIRECTX11 )
+	m_dxViewport.Width = width;
+#endif
 }
 
 void Viewport::SetHeight( float height )
 {
-	m_dxViewport.Height = static_cast< DWORD >( height );
+#if defined( DIRECTX9 )
+	m_dxViewport.Height = static_cast< DWORD >(height);
+#elif defined( DIRECTX11 )
+	m_dxViewport.Height = height;
+#endif
 }
 
 void Viewport::SetMinDepth( float minDepth )
 {
-#ifdef DX11
-	m_dxViewport.MinDepth = minDepth;
-#else
+#if defined( DIRECTX9 )
 	m_dxViewport.MinZ = minDepth;
+#elif defined( DIRECTX11 )
+	m_dxViewport.MinDepth = minDepth;
 #endif
 }
 
 void Viewport::SetMaxDepth( float maxDepth )
 {
-#ifdef DX11
-	m_dxViewport.MaxDepth = maxDepth;
-#else
+#if defined( DIRECTX9 )
 	m_dxViewport.MaxZ = maxDepth;
+#elif defined( DIRECTX11 )
+	m_dxViewport.MaxDepth = maxDepth;
 #endif
 }
 
 float Viewport::GetTopLeftX() const
 {
-#ifdef DX11
+#if defined( DIRECTX9 )
+	return static_cast< float >(m_dxViewport.X);
+#elif defined( DIRECTX11 )
 	return m_dxViewport.TopLeftX;
-#else
-	return static_cast< float >( m_dxViewport.X );
 #endif
 }
 
 float Viewport::GetTopLeftY() const
 {
-#ifdef DX11
+#if defined( DIRECTX9 )
+	return static_cast< float >(m_dxViewport.Y);
+#elif defined( DIRECTX11 )
 	return m_dxViewport.TopLeftY;
-#else
-	return static_cast< float >( m_dxViewport.Y );
 #endif
 }
 
 float Viewport::GetWidth() const
 {
-	return static_cast< float >( m_dxViewport.Width );
+	return static_cast< float >(m_dxViewport.Width);
 }
 
 float Viewport::GetHeight() const
 {
-	return static_cast< float >( m_dxViewport.Height );
+	return static_cast< float >(m_dxViewport.Height);
 }
 
 float Viewport::GetMinDepth() const
 {
-#ifdef DX11
-	return m_dxViewport.MinDepth;
-#else
+#if defined( DIRECTX9 )
 	return m_dxViewport.MinZ;
+#elif defined( DIRECTX11 )
+	return m_dxViewport.MinDepth;
 #endif
 }
 
 float Viewport::GetMaxDepth() const
 {
-#ifdef DX11
-	return m_dxViewport.MaxDepth;
-#else
+#if defined( DIRECTX9 )
 	return m_dxViewport.MaxZ;
+#elif defined( DIRECTX11 )
+	return m_dxViewport.MaxDepth;
 #endif
 }

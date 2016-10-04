@@ -33,8 +33,7 @@ namespace dxi
 	class Effect
 	{
 	public:
-		typedef std::shared_ptr< Effect > shared_ptr;
-		typedef std::weak_ptr< Effect > weak_ptr;
+		typedef std::shared_ptr< Effect > ptr;
 
 		Effect();
 		~Effect();
@@ -45,19 +44,18 @@ namespace dxi
 
 		void Use( const RenderInfo & renderInfo );
 		bool HasBlend() const;
-		void SetTransformConstant( Transform::Index::TYPE trans, int iConstant );
-		void SetTexture( unsigned char stage, Texture::shared_ptr texture );
+		void SetTexture( unsigned char stage, Texture::ptr texture );
 		void ClearTextures();
 		void SetBlend( const Blend & blend );
 		void SetCulling( CullingMode mode );
-		void SetPixelShader( PixelShader::shared_ptr shader );
-		void SetVertexShader( VertexShader::shared_ptr shader );
+		void SetPixelShader( PixelShader::ptr shader );
+		void SetVertexShader( VertexShader::ptr shader );
 		void AddFrame( size_t frameIndex, float influence );
 		
 		Blend & GetBlend();
-		PixelShader::shared_ptr GetPixelShader();
-		VertexShader::shared_ptr GetVertexShader();
-		Texture::shared_ptr GetTexture( unsigned char stage );
+		PixelShader::ptr GetPixelShader();
+		VertexShader::ptr GetVertexShader();
+		Texture::ptr GetTexture( unsigned char stage );
 		bool UsesTransparency();
 
 		/// <summary>
@@ -68,9 +66,9 @@ namespace dxi
 	protected:
 		CullingMode m_culling;
 		Blend m_blend;
-		PixelShader::shared_ptr m_pixelShader;
-		VertexShader::shared_ptr m_vertexShader;
-		std::vector< Texture::shared_ptr > m_textures;
+		PixelShader::ptr m_pixelShader;
+		VertexShader::ptr m_vertexShader;
+		std::vector< Texture::ptr > m_textures;
 		std::vector< FrameIndexAndInfluence > m_frameIndexAndInfluence;
 		std::shared_ptr< VertexBuffer > m_scratchVertexBuffer;
 	};

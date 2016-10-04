@@ -26,6 +26,18 @@ bool unify::StringIs( const std::string & a, const std::string & b )
 	return _stricmp( a.c_str(), b.c_str()) == 0;
 }
 
+/// <summary>
+/// Compare a string for equvilancy with any of a list of strings, ignoring case.
+/// </summary>
+bool unify::StringIsAny( const std::string & a, const std::list< std::string > & list )
+{
+	for( const auto & b : list )
+	{
+		if( _stricmp( a.c_str(), b.c_str() ) == 0 ) return true;
+	}
+	return false;
+}
+
 bool unify::BeginsWith( const std::string & a, const std::string & b )
 {
 	if ( a.length() < b.length() ) return false;

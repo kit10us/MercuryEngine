@@ -41,6 +41,11 @@ Angle::Angle()
 {
 }
 
+Angle::Angle( const Angle & angle )
+	: m_radians( angle.m_radians )
+{
+}
+
 Angle & Angle::operator = ( const Angle & angle )
 {
     m_radians = angle.m_radians;
@@ -160,17 +165,21 @@ float Angle::GetDegrees() const
     return m_radians * (3.14159265f / 180.0f);
 }
 
-void Angle::Fix360()
+int Angle::Fix360()
 {
     const float pi2 = (3.14159265f * 2.0f);
+	int magnitude = 0;
     while( m_radians > pi2 )
     {
         m_radians -= pi2;
+		magnitude -= 1;
     }
     while( m_radians < 0 )
     {
         m_radians += pi2;
+		magnitude += 1;
     }
+	return magnitude;
 }
 
 float Angle::SinOf() const

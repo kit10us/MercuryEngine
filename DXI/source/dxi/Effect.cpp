@@ -72,7 +72,7 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 	const unify::FrameSetInstance * frameSetInstance = renderInfo.GetFrameSetInstance();
 	if( ! renderInfo.IsOptionTrue( RenderOption::NoFrame ) && frameSetInstance && m_frameIndexAndInfluence.size() > 0 )
 	{
-		unify::Matrix final = renderInfo.GetFinalMatrix();
+		unify::Matrix world = renderInfo.GetWorldMatrix();
 
 		// Get our animated frames lookup table. If it doesn't exist, then we don't want to use it.
 		for( size_t i = 0, end = m_frameIndexAndInfluence.size(); i != end; ++i )
@@ -89,10 +89,11 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 			
 			unify::Matrix immediate( inverseA * (b * influence) );
 
-			final *= immediate;
+			world *= immediate;
 		}
 
-		renderInfo.SetFinalMatrix( final );
+		assert( 0 ); // TODO:
+		renderInfo.SetWorldMatrix( world );
 	}
 
 	if( m_pixelShader )
@@ -135,12 +136,12 @@ void Effect::SetCulling( CullingMode mode )
 	m_culling = mode;
 }
 
-void Effect::SetTexture( unsigned char byteStage, Texture::shared_ptr texture )
+void Effect::SetTexture( unsigned char byteStage, Texture::ptr texture )
 {
 	// Ensure we have enough stages...
 	if ( m_textures.size() <= byteStage )
 	{
-		m_textures.resize( byteStage + 1, Texture::shared_ptr() );
+		m_textures.resize( byteStage + 1, Texture::ptr() );
 	}
 	m_textures[ byteStage ] = texture;
 }
@@ -159,29 +160,28 @@ bool Effect::HasBlend() const
 {
     return m_blend.IsSet();
 }
-
-
-void Effect::SetPixelShader( PixelShader::shared_ptr shader )
+					   
+void Effect::SetPixelShader( PixelShader::ptr shader )
 {
 	m_pixelShader = shader;
 }
 
-PixelShader::shared_ptr Effect::GetPixelShader()
+PixelShader::ptr Effect::GetPixelShader()
 {
 	return m_pixelShader;
 }
 
-void Effect::SetVertexShader( VertexShader::shared_ptr shader )
+void Effect::SetVertexShader( VertexShader::ptr shader )
 {
 	m_vertexShader = shader;
 }
 
-VertexShader::shared_ptr Effect::GetVertexShader()
+VertexShader::ptr Effect::GetVertexShader()
 {
 	return m_vertexShader;
 }
 
-Texture::shared_ptr Effect::GetTexture( unsigned char stage )
+Texture::ptr Effect::GetTexture( unsigned char stage )
 {
 	return m_textures[ stage ];
 }

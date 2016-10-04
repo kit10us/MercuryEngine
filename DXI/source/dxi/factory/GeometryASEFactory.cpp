@@ -11,12 +11,12 @@
 
 using namespace dxi;
 
-void GeometryASEFactory::SetVertexShader( dxi::VertexShader::shared_ptr vertexShader )
+void GeometryASEFactory::SetVertexShader( dxi::VertexShader::ptr vertexShader )
 {
 	m_vertexShader = vertexShader;
 }
 
-void GeometryASEFactory::SetPixelShader( dxi::PixelShader::shared_ptr pixelShader )
+void GeometryASEFactory::SetPixelShader( dxi::PixelShader::ptr pixelShader )
 {
 	m_pixelShader = pixelShader;
 }
@@ -35,7 +35,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 	PrimitiveList & primitiveList = mesh->GetPrimitiveList();
 
 	dxi::ASEDocument doc;
-	Texture::shared_ptr texture;
+	Texture::ptr texture;
 	unsigned int u = 0;
 	
 	doc.Load( source );	  
@@ -77,7 +77,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 				{
 					qxml::Element * bitmapElement = mapDiffuseElement->GetElement( "BITMAP" );
 					unify::Path texturePath = source.DirectoryOnly() + 	bitmapElement->GetText();
-					Texture::shared_ptr texture = textureManager->Add( bitmapElement->GetText(), texturePath );
+					Texture::ptr texture = textureManager->Add( bitmapElement->GetText(), texturePath );
 					effect->SetTexture( 0, texture );
 				}
 			}
@@ -91,7 +91,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 
 			unsigned int effectIndex = 0;
 			effectIndex = unify::Cast< unsigned int >( materialRef->GetText() );
-			Effect::shared_ptr effect = materialList[effectIndex];
+			Effect::ptr effect = materialList[effectIndex];
 
 			for( auto child : node.Children() )
 			{
@@ -102,7 +102,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 					BufferSet & bufferSet = primitiveList.AddBufferSet();
 
 					// Handle vertex format...
-					const VertexDeclaration & vd = effect->GetVertexShader()->GetVertexDeclaration();
+					const VertexDeclaration::ptr & vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 					unsigned short stream = 0;
 
@@ -196,7 +196,8 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 
 					// Create vertex and index buffer...
 					VertexBuffer & vb = bufferSet.GetVertexBuffer();
-					vb.Create( (unsigned int)listPTP.size(), vd );
+					assert( 0 );//TODO:
+					vb.Create( (unsigned int)listPTP.size(), vd, nullptr );
 					unify::DataLock lock;
 					vb.Lock( lock );
 
@@ -207,19 +208,19 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 					{
 						size_t index = mesh_facenormal.GetAttribute< size_t >( "index" );
 
-						vd.WriteVertex( lock, index * 3 + 0, positionE, positions[faces[index].mesh_face_A] );
-						vd.WriteVertex( lock, index * 3 + 1, positionE, positions[faces[index].mesh_face_B] );
-						vd.WriteVertex( lock, index * 3 + 2, positionE, positions[faces[index].mesh_face_C] );
+						vd->WriteVertex( lock, index * 3 + 0, positionE, positions[faces[index].mesh_face_A] );
+						vd->WriteVertex( lock, index * 3 + 1, positionE, positions[faces[index].mesh_face_B] );
+						vd->WriteVertex( lock, index * 3 + 2, positionE, positions[faces[index].mesh_face_C] );
 
-						vd.WriteVertex( lock, index * 3 + 0, texE, texCoords[faces[index].mesh_tface_A] );
-						vd.WriteVertex( lock, index * 3 + 1, texE, texCoords[faces[index].mesh_tface_B] );
-						vd.WriteVertex( lock, index * 3 + 2, texE, texCoords[faces[index].mesh_tface_C] );
+						vd->WriteVertex( lock, index * 3 + 0, texE, texCoords[faces[index].mesh_tface_A] );
+						vd->WriteVertex( lock, index * 3 + 1, texE, texCoords[faces[index].mesh_tface_B] );
+						vd->WriteVertex( lock, index * 3 + 2, texE, texCoords[faces[index].mesh_tface_C] );
 
 						size_t normalIndex = 0;
 						for( const auto mesh_vertexnormal : mesh_facenormal.Children( "MESH_VERTEXNORMAL" ) )
 						{
 							unify::V3< float > vNormal{ qxml::AttributeCast< unify::V3< float >, float >( mesh_vertexnormal, "x", "y", "z" ) };
-							vd.WriteVertex( lock, index * 3 + normalIndex++, normalE, vNormal );
+							vd->WriteVertex( lock, index * 3 + normalIndex++, normalE, vNormal );
 						}						
 
 						indices[index * 3 + 0] = (Index32)index * 3 + 0;
@@ -228,7 +229,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 					}
 
 					IndexBuffer & ib = bufferSet.GetIndexBuffer();
-					ib.Create( (unsigned int)listPTP.size() * 3, dxi::BufferUsage::Default, (Index32*)&indices[ 0 ] );
+					ib.Create( (unsigned int)listPTP.size() * 3, (Index32*)&indices[0], dxi::BufferUsage::Default );
 												
 					vb.Unlock();
 

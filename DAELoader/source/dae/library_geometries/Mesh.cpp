@@ -139,22 +139,22 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		const Effect * effect = GetDocument().GetLibraryEffects().Find( effectURL );
 
 		const Shading & shading = effect->GetProfileCOMMON()->GetTechnique().GetShading();
-		dxi::Effect::shared_ptr primitiveEffectBase = GetDocument().GetEffect( shading );
-		dxi::Effect::shared_ptr myEffect( new dxi::Effect() );
+		dxi::Effect::ptr primitiveEffectBase = GetDocument().GetEffect( shading );
+		dxi::Effect::ptr myEffect( new dxi::Effect() );
 		*myEffect = *primitiveEffectBase; // Copy.
 		myEffect->ClearTextures(); // Clear textures, as we don't want the default texture that might have come with the effect.
 
 		if ( shading.GetDiffuse().GetType() == Shading::Property::ColorType )
 		{
 			diffuse = unify::Color( shading.GetDiffuse().GetColor() );
-			myEffect->SetTexture( 0, dxi::Texture::shared_ptr() ); // Unset texture.
+			myEffect->SetTexture( 0, dxi::Texture::ptr() ); // Unset texture.
 		}
 		else // Is texture...
 		{
 			sampler2DParam = effect->GetProfileCOMMON()->FindNewParam( shading.GetDiffuse().GetTexture() );
 			surfaceParam = effect->GetProfileCOMMON()->FindNewParam( sampler2DParam->GetSampler2D().source );
 			const dae::Image * image = GetDocument().GetLibraryImages().Find( surfaceParam->GetSurface().init_from );
-			dxi::Texture::shared_ptr texture( image->GetTexture() );
+			dxi::Texture::ptr texture( image->GetTexture() );
 			myEffect->SetTexture( 0, texture );
 		}
 

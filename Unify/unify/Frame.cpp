@@ -281,8 +281,10 @@ Frame & Frame::LookAt( const Frame & frame, const V3< float > & up )
 }
 
 Frame & Frame::LookAt( const V3< float > & at, const V3< float > & up )
-{
+{	
 	V3< float > atFinal = at;
+
+	/*
 
 	if( GetParent() )
 	{
@@ -295,6 +297,25 @@ Frame & Frame::LookAt( const V3< float > & at, const V3< float > & up )
 	m_matrix = unify::Matrix::MatrixLookAtLH( eyePosition, atFinal, up );
 
 	MakeDirty();
+	*/
+	V3< float > eyePosition = m_matrix.GetPosition();
+
+	Matrix matrix = unify::Matrix::MatrixIdentity();
+	unify::V3< float > forward( at - eyePosition );
+	forward.Normalize();
+
+	unify::V3< float > left( unify::V3< float >::V3Cross( up, forward ) );
+
+	matrix.SetForward( forward );
+	matrix.SetLeft( left );
+	unify::V3< float > orientedUp = unify::V3< float >::V3Cross( forward, left ); // As the specified parameter up means the world's up, this is the relative up for the look at.
+	matrix.SetUp( orientedUp ); // Regenerate up.
+	//matrix.SetPosition( -left.Dot( eyePosition ), -up.Dot( eyePosition ), -forward.Dot( eyePosition ) );
+	matrix.SetPosition( eyePosition );
+
+	m_matrix = matrix;
+	MakeDirty();
+
 	return *this;
 }
 
@@ -370,8 +391,8 @@ Frame & Frame::Orbit( const V3< float > & origin, const V2< float > & direction,
 	
 	// Create a matrix that has our position as it's Z axis, then rotate that axis...
 	unify::Matrix m;
-	unify::Matrix rotX = unify::Matrix::MatrixRotationX( angle.GetRadians() * direction.y );
-	unify::Matrix rotY = unify::Matrix::MatrixRotationY( angle.GetRadians() * direction.x );
+	unify::Matrix rotX = unify::Matrix::MatrixRotationX( angle * direction.y );
+	unify::Matrix rotY = unify::Matrix::MatrixRotationY( angle * direction.x );
 	m = rotX * rotY;
 	m_matrix = m_matrix * m;
 	
@@ -407,7 +428,7 @@ Frame & Frame::Rotate( const Quaternion & q )
 Frame & Frame::RotateAbout( const V3< float > & axis, Angle angle )
 {
 	Matrix mRot = Matrix::MatrixRotationAboutAxis( axis, angle );	
-	m_matrix *= m_matrix * mRot;
+	m_matrix *= mRot;
 	MakeDirty( false );
 	return *this;
 }

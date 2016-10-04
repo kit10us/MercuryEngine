@@ -33,7 +33,7 @@ namespace dae
 		/// </summary>
 		const std::string & GetVersion() const;
 
-		dxi::Effect::shared_ptr GetEffect( const Shading & shading ) const;
+		dxi::Effect::ptr GetEffect( const Shading & shading ) const;
 
 		const LibraryNodes & GetLibraryNodes() const;
 		const LibraryMaterials & GetLibraryMaterials() const;

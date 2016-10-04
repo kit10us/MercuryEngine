@@ -4,11 +4,8 @@
 
 // A common header to include Direct-X and Windows in a clean manor.
 
-
-#if defined( DIRECTX9 )
-
-
 #define WIN32_LEAN_AND_MEAN // For winsock.
+
 #ifdef _DEBUG
 #define D3D_DEBUG_INFO
 #else // NDEBUG
@@ -17,9 +14,25 @@
 #pragma warning ( disable: 4221 ) // unused lib
 #pragma warning ( disable: 4006 ) // duplicate definition
 
+#ifdef _DEBUG
+#define D3D_DEBUG_INFO
+#pragma comment( lib, "d3d9" )
+#pragma comment( lib, "d3dx9d" )
+#else // NDEBUG
+#pragma comment( lib, "d3d9" )
+#pragma comment( lib, "d3dx9" )
+#endif
+
+#pragma comment(lib,"dxguid")
+#pragma comment(lib,"dinput8")
+
+#if defined( DIRECTX9 )
+
+
 #include <d3d9.h>
 #include <d3dx9core.h>
 #include <d3dx9shader.h>
+
 
 
 #elif defined(DIRECTX11)

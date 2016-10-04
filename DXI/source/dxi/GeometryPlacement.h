@@ -35,7 +35,7 @@ namespace dxi
 
 		void AddPlace( const unify::V3< float > & position );
 
-		void AddPlacesFromTexture( dxi::Texture::shared_ptr texture, const unify::TexArea & area, float depth, unify::Color color );
+		void AddPlacesFromTexture( dxi::Texture::ptr texture, const unify::TexArea & area, float depth, unify::Color color );
 
 	protected:
 		virtual const unify::BBox< float > & ComputeBounds();

@@ -40,14 +40,14 @@ namespace dxi
 	public:
 		struct TextureOpMap
 		{
-			TextureOpMap( Texture::shared_ptr texture, const unify::ColorUnit & colorOp, const unify::TexArea texArea = unify::TexArea::Full() )
+			TextureOpMap( Texture::ptr texture, const unify::ColorUnit & colorOp, const unify::TexArea texArea = unify::TexArea::Full() )
 				: texture( texture )
 				, colorOp( colorOp )
 				, texArea( texArea )
 			{
 			}
 
-			Texture::shared_ptr texture;
+			Texture::ptr texture;
 			unify::ColorUnit colorOp;
 			unify::TexArea texArea;
 		};
@@ -58,7 +58,7 @@ namespace dxi
 			{
 			}
 
-			Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > rc, const float constant, const unify::TexArea texArea, Effect::shared_ptr effect )
+			Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > rc, const float constant, const unify::TexArea texArea, Effect::ptr effect )
 			{
 				Set( "size", size );
 				Set( "effect", effect ); 
@@ -83,7 +83,7 @@ namespace dxi
 			{
 				Set( "texarea", texArea );
 			}
-			void SetEffect( Effect::shared_ptr effect )
+			void SetEffect( Effect::ptr effect )
 			{
 				Set( "effect", effect ); 
 			}

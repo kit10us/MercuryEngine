@@ -13,7 +13,7 @@ namespace unify
 	///
 	/// Frame provides a hierarchical relationship structure for the purpose of providing relative transformation in a rendering or physics pipeline.
 	///
-	class Frame
+	__declspec(align(16)) class Frame
 	{
 	public:
 		// Enabled or disables updating the entire tree if we are modified.

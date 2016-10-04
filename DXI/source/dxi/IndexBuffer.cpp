@@ -1,13 +1,14 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
+#include <dxi/IndexBuffer.h>
+#include <dxi/win/DXDevice.h>
+#include <unify/Flags.h>
+#include <dxi/core/Game.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/OutOfBounds.h>
 #include <dxi/exception/NotImplemented.h>
-#include <dxi/IndexBuffer.h>
-#include <unify/Flags.h>
-#include <dxi/core/Game.h>
 #include <assert.h>
 
 using namespace dxi;
@@ -21,7 +22,7 @@ IndexBuffer::~IndexBuffer()
 	Release();
 }
 
-void IndexBuffer::Create( unsigned int uNumIndices, BufferUsage::TYPE usage, Index32 * source, unify::Flags flags )
+void IndexBuffer::Create( unsigned int uNumIndices, Index32 * source, BufferUsage::TYPE usage, unify::Flags flags )
 {
 	Release();
 
@@ -98,9 +99,11 @@ void IndexBuffer::Create( unsigned int uNumIndices, BufferUsage::TYPE usage, Ind
 	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
+	D3D11_SUBRESOURCE_DATA initialData = D3D11_SUBRESOURCE_DATA();
+	initialData.pSysMem = source;
 
 	// Create the buffer with the device.
-	hr = win::DX::GetDxDevice()->CreateBuffer( &bufferDesc, nullptr, &m_IB );
+	hr = win::DX::GetDxDevice()->CreateBuffer( &bufferDesc, &initialData, &m_IB );
 	if( FAILED( hr ) )
 	{
 		throw exception::FailedToCreate( "Failed to create index buffer!" );
@@ -168,7 +171,8 @@ size_t IndexBuffer::Append( const IndexBuffer & from, size_t vertexOffset  )
 
 	if ( GetLength() == 0 )
 	{
-		Create( from.GetLength(), from.GetUsage(), nullptr, from.GetCreateFlags() );
+		assert( 0 ); // TODO:
+		Create( from.GetLength(), nullptr, from.GetUsage(), from.GetCreateFlags() );
 	}
 	else
 	{

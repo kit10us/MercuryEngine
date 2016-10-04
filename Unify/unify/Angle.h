@@ -27,7 +27,8 @@ namespace unify
         static Angle AnglePIHalf();
 
 		Angle();
-		
+		Angle( const Angle & angle );
+
 		// binary operators
 		Angle & operator = ( const Angle & angle );
 
@@ -58,8 +59,11 @@ namespace unify
 		float GetRadians() const;
         float GetDegrees() const;
 
+		///<summary>
 		/// Ensures our value is within 360 degress, without loss of precision (if we are 367, then we become 7, etc.).
-        void Fix360();
+		/// Returns the change in magnitude relative to 360 (367 returns 1, -728 returns -2, etc.).
+        ///</summary>
+        int Fix360();
 
 		/// <summary>
 		/// Returns the sine of this angle.

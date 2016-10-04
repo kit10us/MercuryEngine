@@ -10,7 +10,7 @@ using namespace dxi;
 
 Texture * TextureSourceFactory::Produce( unify::Path source )
 {
-	if ( ! source.Empty() )
+	if( !source.Empty() )
 	{
 		return new Texture( source );
 	}
@@ -20,24 +20,24 @@ Texture * TextureSourceFactory::Produce( unify::Path source )
 
 Texture * TextureJsonFactory::Produce( qjson::Object json )
 {
-	unify::Path source( json[ "source" ].ToString() );
+	unify::Path source( json["source"].ToString() );
 
-	unsigned int flags = 0;
+	bool lockable = false;
+	bool renderable = true; // TODO: support from json; likely need to make these bools.
 	if( json.Has( "lockable" ) )
 	{
-		flags |= TEXTURE_LOCKABLE;
+		lockable = true;
 	}
-	return new Texture( source, flags );
+	return new Texture( source, renderable, lockable );
 }
 
 Texture * TextureXmlNodeFactory::Produce( const qxml::Element & node )
 {
 	unify::Path source( unify::Path( node.GetDocument()->GetPath() ).DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
 
-	unsigned int flags = 0;
-	if( node.HasAttributes( "lockable" ) )
-	{
-		flags |= TEXTURE_LOCKABLE;
-	}
-	return new Texture( source, flags );
+	bool lockable = false;
+	bool renderable = true;
+	renderable = node.GetAttributeElse< bool >( "renderable", true );
+	lockable = node.GetAttributeElse< bool >( "lockable", false );
+	return new Texture( source, renderable, lockable );
 }

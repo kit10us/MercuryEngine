@@ -36,7 +36,7 @@ const std::string & Image::GetName() const
 	return m_name;
 }
 
-dxi::Texture::shared_ptr Image::GetTexture() const
+dxi::Texture::ptr Image::GetTexture() const
 {
 	return m_texture;
 }

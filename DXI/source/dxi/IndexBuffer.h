@@ -38,7 +38,7 @@ namespace dxi
 		IndexBuffer();
 		~IndexBuffer();
 
-		void Create( unsigned int numIndices, BufferUsage::TYPE usage = BufferUsage::Default, Index32 * source = nullptr, unify::Flags flags = 0 );
+		void Create( unsigned int numIndices, Index32 * source, BufferUsage::TYPE usage = BufferUsage::Default, unify::Flags flags = 0 );
 		void Resize( unsigned int numIndices );
 
 		/// <summary>
@@ -58,6 +58,8 @@ namespace dxi
 
 	protected:
 		unsigned int m_createFlags;
+
+		// TODO: PIMPL
 
 #if defined( DIRECTX9 )
 		CComPtr< IDirect3DIndexBuffer9 > m_IB;

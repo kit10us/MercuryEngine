@@ -26,9 +26,12 @@ namespace dxi
 		    Camera();
 		    Camera( Object::shared_ptr object );
 		    virtual ~Camera();
+
 		    bool HasObject() const;
-		    void SetObject( Object::shared_ptr object );
-            Object::shared_ptr GetObject();
+		    
+			void SetObject( Object::shared_ptr object );
+            
+			Object::shared_ptr GetObject();
 
 			/// <summary>
 			/// Returns a matrix which accumulates the entire camera view (including an optional projection).
@@ -40,18 +43,14 @@ namespace dxi
 			/// </summary>
 			void SetProjection( const unify::Matrix & projection );
 			
-			/// <summary>
-			/// Clear the projection matrix (equivalent to setting projection to identity).
-			/// </summary>
-			void ClearProjection();
-
+			unify::Matrix GetProjection() const;
+				
 			void LookAt( const unify::V3< float > & at );
 
 	    protected:
-		    Object::weak_ptr m_object; // As a weak pointer, the object the camera is pointing two's lifetime is outside the camera's control.
+		    Object::weak_ptr m_object; // As a weak pointer, the object the camera is pointing to's lifetime is outside the camera's control.
 			
 			unify::Matrix m_projection;
-			bool m_useProjection;
 	    };
     }
 }

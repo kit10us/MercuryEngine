@@ -17,12 +17,12 @@ namespace dxi
 	{
 	public:
 		Sprite();
-		Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
-		Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
-		Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
+		Sprite( Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
+		Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
+		Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
 		~Sprite() throw ();
 
-		Effect::shared_ptr GetEffect() const;
+		Effect::ptr GetEffect() const;
 
 		void SizeToPixels( bool sizeToPixels );
 		bool GetSizeToPixels() const;
@@ -56,7 +56,7 @@ namespace dxi
 		/// </summary>
 		void Init();
 
-		Effect::shared_ptr m_effect;
+		Effect::ptr m_effect;
 		animation::Instance m_animationInstance;
 		unify::V2< float > m_center;
 		unify::V3< unify::Angle > m_rotations;

@@ -5,13 +5,14 @@
 
 #include <dxi/RenderInfo.h>
 #include <unify/Path.h>
+#include <dxi/win/DirectX.h>
 
 namespace dxi
 {
 	class PixelShader
 	{
 	public:
-		typedef std::shared_ptr< PixelShader > shared_ptr;
+		typedef std::shared_ptr< PixelShader > ptr;
 
 		static void DisuseShader();
 
@@ -19,7 +20,7 @@ namespace dxi
 		PixelShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
 
 		~PixelShader();
-		
+
 		void Destroy();
 
 		void CreateFromFile( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
@@ -33,13 +34,17 @@ namespace dxi
 		void SetTrans( bool bTrans );
 
 		bool IsTrans();
-		
+
 		std::string GetError();
 
+#if defined( DIRECTX9 )
 		ID3DXConstantTable * GetConstantTable();
-						
+#elif defined( DIRECTX11 )
+		// TODO: DX11
+#endif
+
 	protected:
-					
+
 		unify::Path m_filePath;
 		std::string m_code;
 		bool m_assembly;
@@ -47,7 +52,7 @@ namespace dxi
 		std::string m_profile;
 		std::string m_errorMessage;
 		bool m_created;
-								 
+
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 
 		class Pimpl;

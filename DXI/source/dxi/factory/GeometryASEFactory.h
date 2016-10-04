@@ -9,14 +9,14 @@ namespace dxi
 	class GeometryASEFactory : public rm::ISourceFactory< Geometry >
 	{
 	public:
-		void SetVertexShader( dxi::VertexShader::shared_ptr vertexShader );
-		void SetPixelShader( dxi::PixelShader::shared_ptr pixelShader );
+		void SetVertexShader( dxi::VertexShader::ptr vertexShader );
+		void SetPixelShader( dxi::PixelShader::ptr pixelShader );
 
 		Geometry * Produce( unify::Path source ) override;
 
 	private:
 		// TODO: This will likely need to have multiple sets based on material needs - TBD.
-		dxi::VertexShader::shared_ptr m_vertexShader;
-		dxi::PixelShader::shared_ptr m_pixelShader;
+		dxi::VertexShader::ptr m_vertexShader;
+		dxi::PixelShader::ptr m_pixelShader;
 	};
 }

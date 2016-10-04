@@ -23,13 +23,26 @@ public:
 
 	void Destroy()
 	{
+#if defined( DIRECTX9 )
 		m_shader = nullptr;
 		m_codeBuffer = nullptr;
 		m_constantTable = nullptr;
+#elif defined( DIRECTX11 )
+		m_pixelShader = nullptr;
+		m_pixelShaderBuffer = nullptr;
+#endif
 	}
 
 	void Create()
 	{
+		bool debug =
+#if defined( DEBUG ) || defined( _DEBUG )
+			true;
+#else
+			false;
+#endif
+
+#if defined( DIRECTX9 )
 		HRESULT result = S_OK;
 		CComPtr< ID3DXBuffer > errorBuffer;
 		if( !m_owner.m_filePath.Empty() )
@@ -49,9 +62,6 @@ public:
 				m_owner.m_errorMessage = static_cast< char * >(errorBuffer->GetBufferPointer());
 				throw unify::Exception( "Failed to create shader \"" + m_owner.m_filePath.ToString() + "\": " + m_owner.m_errorMessage + "\n" );
 			}
-
-			CreateThisShader();
-			m_owner.m_created = true;
 		}
 		else if( m_owner.m_code.empty() )
 		{
@@ -71,14 +81,31 @@ public:
 				m_owner.m_errorMessage = static_cast< char * >(errorBuffer->GetBufferPointer());
 				throw unify::Exception( "Failed to create shader from code: " + m_owner.m_errorMessage + "\n" );
 			}
-
-			CreateThisShader();
-			m_owner.m_created = true;
 		}
 		else
 		{
 			throw unify::Exception( "Attempted to create shader from unknown source!" );
 		}
+#elif defined( DIRECTX11 )
+		HRESULT result;
+		CComPtr< ID3D10Blob > errorBlob; // Generic buffer for error data.
+		D3D_SHADER_MACRO * shaderMacros = 0;
+		unsigned int flags1 = D3DCOMPILE_ENABLE_STRICTNESS;
+		if( debug )
+		{
+			flags1 |= D3DCOMPILE_DEBUG;
+		}
+
+		unsigned int flags2 = 0; // Only used for effect compilation.
+		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_owner.m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
+		if( FAILED( result ) )
+		{
+			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
+			assert( !FAILED( result ) );
+		}
+
+#endif
+		CreateThisShader();
 	}
 
 	void CreateThisShader()
@@ -94,7 +121,10 @@ public:
 #if defined( DIRECTX9 )
 		win::DX::GetDxDevice()->CreatePixelShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
 #elif defined( DIRECTX11 )
-		throw exception::NotImplemented();
+		HRESULT result;
+		ID3D11ClassLinkage * classLinkage = nullptr;
+		result = win::DX::GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
+		assert( !FAILED( result ) );
 #endif	 
 	}
 
@@ -107,15 +137,17 @@ public:
 			throw unify::Exception( "Failed to set pixel shader!" );
 		}
 #elif defined( DIRECTX11 )
-		throw exception::NotImplemented();
+		win::DX::GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
 #endif
 	}
 
+#if defined( DIRECTX9 )
 	ID3DXConstantTable * GetConstantTable()
 	{
 		return m_constantTable;
 	}
-
+#elif defined( DIRECTX11 )
+#endif		 
 
 	PixelShader & m_owner;
 
@@ -124,8 +156,8 @@ public:
 	CComPtr< ID3DXConstantTable > m_constantTable;
 	CComPtr< IDirect3DPixelShader9 > m_shader;
 #elif defined( DIRECTX11 )
-	CComPtr< ID3D11PixelShader > pixelShader;
-	CComPtr< ID3D10Blob > pixelShaderBuffer;
+	CComPtr< ID3D11PixelShader > m_pixelShader;
+	CComPtr< ID3D10Blob > m_pixelShaderBuffer;
 #endif											  
 };
 
@@ -208,13 +240,16 @@ bool PixelShader::IsTrans()
 	return(this && m_isTrans) ? true : FALSE;
 }
 
-std::string PixelShader ::GetError()
+std::string PixelShader::GetError()
 {
 	return m_errorMessage;
 }
 
+#if defined( DIRECTX9 )
 ID3DXConstantTable * PixelShader::GetConstantTable()
 {
 	return m_pimpl->GetConstantTable();
 }
+#elif defined( DIRECTX11 )
+#endif
 

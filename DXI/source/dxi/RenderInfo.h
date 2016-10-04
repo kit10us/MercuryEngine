@@ -65,10 +65,6 @@ namespace dxi
 		void SetProjectionMatrix( const unify::Matrix & matrix );
 		const unify::Matrix & GetProjectionMatrix() const;
 
-		// Note that setting the final matrix will force all other matrices to identity, as we are bypassing all other matrices.
-		void SetFinalMatrix( const unify::Matrix & matrix );
-		const unify::Matrix & GetFinalMatrix() const;
-
 		void SetFrameSetInstance( const unify::FrameSetInstance * frameSetInstance );
 		const unify::FrameSetInstance * GetFrameSetInstance() const;
 
@@ -80,7 +76,6 @@ namespace dxi
 		unify::Matrix m_world;
 		unify::Matrix m_view;
 		unify::Matrix m_projection;
-		unify::Matrix m_final;
 		const unify::FrameSetInstance * m_frameSetInstance;
 	};
 }

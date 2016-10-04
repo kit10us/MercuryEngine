@@ -121,7 +121,7 @@ void SetCameraLF::operator()( const qxml::Element & element, scene::Scene::share
 	scene->SetCamera( element.GetText() );
 
 	// TODO: This is a hack. It is a larger problem to solve this: variables/functions in scene.xml, math in scene.xml, migration to a scripting language, custom functions.
-	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, game.GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
+	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, game.GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 
 }
 

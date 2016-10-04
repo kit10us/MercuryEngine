@@ -14,7 +14,7 @@ VertexShader * VertexShaderJsonFactory::Produce( qjson::Object json )
 	std::string entry = json["entry"].ToString();
 	std::string profile = json["profile"].ToString();
 	qjson::Object vd = { json["vd"] };
-	VertexDeclaration vertexDeclaration = VertexDeclaration( vd );
+	VertexDeclaration::ptr vertexDeclaration( new VertexDeclaration( vd ) );
 	return new VertexShader( path, entry, profile, vertexDeclaration );
 }
 
@@ -28,6 +28,6 @@ VertexShader * VertexShaderXMLFactory::Produce( const qxml::Element & node )
 	unify::Path source = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();
 	std::string entry = node.GetElement( "entry" )->GetText();
 	std::string profile = node.GetElement( "profile" )->GetText();
-	VertexDeclaration vertexDeclaration = VertexDeclaration( *node.GetElement( "vd" ) );
+	VertexDeclaration::ptr vertexDeclaration( new VertexDeclaration( *node.GetElement( "vd" ) ) );
 	return new VertexShader( source, entry, profile, vertexDeclaration );
 }

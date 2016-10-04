@@ -1,0 +1,9 @@
+<xml>
+<setup>
+<logfile>log.txt</logfile>
+<fullscreen>false</fullscreen>
+<resolution width="800" height="640"/>
+<!--<resolution width="3840" height="2160"/>-->
+<!--<extension></extension>-->
+</setup>
+</xml>

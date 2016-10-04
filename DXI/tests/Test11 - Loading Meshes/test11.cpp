@@ -39,18 +39,18 @@ void MyGame::Startup()
 	Game::Startup();
 
 	// Add common effects...
-	Effect::shared_ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.xml" );
-	Effect::shared_ptr textured3DEffect = GetManager< Effect >()->Add( "textured3d", "media/EffectTextured.xml" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.xml" );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "textured3d", "media/EffectTextured.xml" );
 
 	// Load shaders.
-	PixelShader::shared_ptr ps = GetManager< PixelShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
-	VertexShader::shared_ptr vs = GetManager< VertexShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
+	PixelShader::ptr ps = GetManager< PixelShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
+	VertexShader::ptr vs = GetManager< VertexShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
 
 	// Add a texture.
 	GetManager< Texture >()->Add( "borgcube", "media/borgcube.bmp" );
 
 	// Create an effect.
-	Effect::shared_ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
+	Effect::ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
 	borgCubeEffect->SetVertexShader( vs );
 	borgCubeEffect->SetPixelShader( ps );
 	borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
@@ -64,8 +64,8 @@ void MyGame::Startup()
 	// Setup DAE factory.
 	class MyEffectSolver : public dae::util::IEffectSolver
 	{
-		Effect::shared_ptr m_color;
-		Effect::shared_ptr m_textured;
+		Effect::ptr m_color;
+		Effect::ptr m_textured;
 	public:
 
 		MyEffectSolver( Game & game )
@@ -74,7 +74,7 @@ void MyGame::Startup()
 			m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
 		}
 
-		dxi::Effect::shared_ptr GetEffect( const dae::Shading & shading ) const
+		dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const
 		{
 			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
 			{

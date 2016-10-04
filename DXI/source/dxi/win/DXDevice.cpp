@@ -27,12 +27,12 @@ IDirect3DDevice9 * DX::GetDxDevice()
 
 ID3D11Device * s_dxDevice{};
 
-void SetDxDevice( ID3D11Device * dxDevice )
+void DX::SetDxDevice( ID3D11Device * dxDevice )
 {
 	s_dxDevice = dxDevice;
 }
 
-ID3D11Device * GetDxDevice()
+ID3D11Device * DX::GetDxDevice()
 {
 	return s_dxDevice;
 }					  

@@ -5,14 +5,6 @@
 
 #pragma comment( lib, "unify" )
 
-#ifdef DIRECTX9
-#define WIN32_LEAN_AND_MEAN
-#include <d3dx9math.h>
-#else
-#include <d3d11_1.h>
-#include <DirectXMath.h>
-#endif
-
 // MS likes to macro max. We want to use max.
 #ifdef max
 #undef max

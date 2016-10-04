@@ -381,8 +381,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	{
 		//DirectX::Image sourceImages{};
 		DirectX::TexMetadata texMetadata{};
-
-
+											
 		DirectX::ScratchImage scratch{};
 		result = DirectX::LoadFromDDSFile( L"borgcube.dds", 0, &texMetadata, scratch );
 		assert( !FAILED(result) );
@@ -454,9 +453,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 #pragma endregion
 
-#pragma region Create texture...
-#pragma endregion
-
 #pragma region The main loop...
 	float rotationInRadians = 0.0f;
 	float changeOverTime = 0.00525f *0.5f;
@@ -514,12 +510,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 			dxContext->Unmap( vertexShaderConstantBuffer, 0 );
 		}
 
-		unsigned int vertexStride = sizeof( Vertex );
-		unsigned int offset = 0;
 		dxContext->OMSetDepthStencilState( 0, 0 );
 		float blendFactors [] = { 0, 0, 0, 0 };
 		dxContext->OMSetBlendState( 0, blendFactors, std::numeric_limits< unsigned int >::max() );
 		dxContext->IASetInputLayout( vertexLayout );
+		unsigned int vertexStride = sizeof( Vertex );
+		unsigned int offset = 0;
 		dxContext->IASetVertexBuffers( 0, 1, &vertexBuffer.p, &vertexStride, &offset );
 		dxContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 		dxContext->VSSetConstantBuffers( 0, 1, &vertexShaderConstantBuffer.p );

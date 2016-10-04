@@ -21,7 +21,7 @@ namespace dxi
     	    ShapeBaseParameters & SetSpecular( unify::Color specular );
             ShapeBaseParameters & SetCenter( unify::V3< float > center );
 	        ShapeBaseParameters & SetTextureMode( int textureMode );
-			ShapeBaseParameters & SetEffect( Effect::shared_ptr effect );
+			ShapeBaseParameters & SetEffect( Effect::ptr effect );
         };
     }
 }

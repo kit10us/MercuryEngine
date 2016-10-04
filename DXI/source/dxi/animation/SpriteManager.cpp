@@ -26,14 +26,14 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 
 	// Table of texture mappings.
 	typedef std::string Name;
-	std::map< Name, Texture::shared_ptr > textureMapping;
+	std::map< Name, Texture::ptr > textureMapping;
 
 	const qxml::Element * animation = doc.GetRoot()->FindFirstElement( "animation" );
 	for( const auto leaf : animation->Children() )
 	{
 		if( leaf.IsTagName( "texture" ) )
 		{
-			Texture::shared_ptr texture = textureManager->Find( leaf.GetAttribute( "source" )->GetString() );
+			Texture::ptr texture = textureManager->Find( leaf.GetAttribute( "source" )->GetString() );
 			textureMapping[ leaf.GetAttribute( "name" )->GetString() ] = texture;
 		}
 		else if( leaf.IsTagName( "group" ) )
@@ -49,7 +49,7 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 					{
 						if( frameLeaf.IsTagName( "frame" ) )
 						{
-							Texture::shared_ptr texture = textureMapping[frameLeaf.GetAttribute( "texture" )->GetString() ];
+							Texture::ptr texture = textureMapping[frameLeaf.GetAttribute( "texture" )->GetString() ];
 							unify::TexArea area( unify::TexArea::Full() );
 							if( frameLeaf.HasAttributes( "sprite" ) )
 							{

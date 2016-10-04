@@ -301,7 +301,8 @@ void Scene::Render()
 	// TODO: DX11 (this is moved to the begin scene, so we need to figure this out): win::DX::GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_color, 1.0f, 0 );
 	// TODO: DX11: win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
 
-	m_renderInfo.SetViewMatrix( m_camera.GetMatrix() );
+	m_renderInfo.SetViewMatrix( m_camera.GetMatrix().Inverse() );
+	m_renderInfo.SetProjectionMatrix( m_camera.GetProjection() );
 
 #if 1 // Straight render (no culling or depth sorting for transparencies)...
 	for( auto && object : m_objectList )

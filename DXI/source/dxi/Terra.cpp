@@ -40,17 +40,18 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
     const unify::Size< float > size = parameters.Get< unify::Size< float > > ( "size" );
     const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea" );
 	const float constant = parameters.Get< float >( "constant" );
-	Effect::shared_ptr effect = parameters.Get< Effect::shared_ptr >( "effect" );
-	VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
+	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 
-	int iNumVerts	= (rc.row + 1) * (rc.column + 1 );
-	int iNumIndices	= (rc.column * (2 * (rc.row + 1))) + (((rc.column - 1) * 2));
+	int vertexCount = (rc.row + 1) * (rc.column + 1 );
+	int indexCount = (rc.column * (2 * (rc.row + 1))) + (((rc.column - 1) * 2));
 
 	BufferSet & set = m_primitiveList.AddBufferSet();
-	set.GetVertexBuffer().Create( iNumVerts, vd, BufferUsage::Default );
+
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * vertexCount] );
 
 	// Method 1 - Triangle Strip...
-	set.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleStrip, 0 /*baseVertexIndex*/, 0 /*minIndex*/, iNumVerts, 0 /*startIndex*/, iNumIndices - 2, effect, true ) );
+	set.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleStrip, 0 /*baseVertexIndex*/, 0 /*minIndex*/, vertexCount, 0 /*startIndex*/, indexCount - 2, effect, true ) );
 
 	// Fill in vertices & Build depth buffer...
 	unsigned int r, c;
@@ -63,8 +64,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
-	unify::DataLock lock;
-	set.GetVertexBuffer().Lock( lock );
+	unify::DataLock lock( vertices.get(), vd->GetSize(), vertexCount, false );
 
 	float fStartX = size.width * -0.5f;
 	float fStartY = size.height * -0.5f;
@@ -91,17 +91,18 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 			unify::V3< float > vPos( fStartX + (h * size.width), constant, fStartY + (v * size.height) );
 			unify::V3< float > vNormal( 0, 1, 0 );
 			unify::Color diffuse( unify::Color::ColorWhite() );
-			vd.WriteVertex( lock, uVert, positionE, vPos );
-			vd.WriteVertex( lock, uVert, normalE, vNormal );
-			vd.WriteVertex( lock, uVert, texE, uv );
-			vd.WriteVertex( lock, uVert, diffuseE, diffuse );
+			vd->WriteVertex( lock, uVert, positionE, vPos );
+			vd->WriteVertex( lock, uVert, normalE, vNormal );
+			vd->WriteVertex( lock, uVert, texE, uv );
+			vd->WriteVertex( lock, uVert, diffuseE, diffuse );
 			uVert++;
 		}
 	}
-	set.GetVertexBuffer().Unlock();
+
+	set.GetVertexBuffer().Create( vertexCount, vd, vertices.get() );
 
 	// Fill in indices...
-	std::vector< Index32 > indices( iNumIndices );
+	std::vector< Index32 > indices( indexCount );
 
 	unsigned int uInd = 0;
 	unsigned int uSegmentsH = rc.row + 1;	// Number of segments
@@ -120,7 +121,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	}
 
 	IndexBuffer & ib = set.GetIndexBuffer();
-	ib.Create( iNumIndices, BufferUsage::Default, (Index32*)&indices[ 0 ] );
+	ib.Create( indexCount, (Index32*)&indices[0], BufferUsage::Default );
 
 	m_rc = rc;
 
@@ -145,13 +146,13 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 	// Fill in vertices & Build depth buffer...
 
 	TextureLock textlock;
-	tom.texture->LockRect( 0, textlock, 0, LOCK_READONLY );
+	tom.texture->LockRect( 0, textlock, 0, true );
 
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement diffuseE = CommonVertexElement::Diffuse();
@@ -167,7 +168,7 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 	for( unsigned int vert = 0; vert < lock.Count(); ++vert )
 	{
 		unify::V3< float > vPos;
-		vd.ReadVertex( lock, vert, positionE, vPos );
+		vd->ReadVertex( lock, vert, positionE, vPos );
 
 		unify::V3< float > barry = GetBBox().ToBarrycentric( vPos );
 		barry.z = 1.0f - barry.z; // Reverse z so we match the orientation of the image.
@@ -206,7 +207,7 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 		vPos.y += sum;
 
 		// Update vertex in buffer...
-		vd.WriteVertex( lock, vert, positionE, vPos );
+		vd->WriteVertex( lock, vert, positionE, vPos );
 	}
 	tom.texture->UnlockRect( 0 );
 
@@ -224,13 +225,13 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 	// Fill in vertices & Build depth buffer...
 
 	TextureLock textlock;
-	tom.texture->LockRect( 0, textlock, 0, LOCK_READONLY );
+	tom.texture->LockRect( 0, textlock, 0, true );
 
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement diffuseE = CommonVertexElement::Diffuse();
@@ -246,7 +247,7 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 	for( unsigned int vert = 0; vert < lock.Count(); ++vert )
 	{
 		unify::V3< float > vPos;
-		vd.ReadVertex( lock, vert, positionE, vPos );
+		vd->ReadVertex( lock, vert, positionE, vPos );
 
 		unify::V3< float > barry = GetBBox().ToBarrycentric( vPos );
 		barry.z = 1.0f - barry.z; // Reverse z so we match the orientation of the image.
@@ -282,7 +283,7 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 
 		// Perform modification to vertex...
 		unify::Color colDiffuse;
-		vd.ReadVertex( lock, vert, diffuseE, colDiffuse );
+		vd->ReadVertex( lock, vert, diffuseE, colDiffuse );
 		unify::ColorUnit colUnit;
 		colUnit = colDiffuse;
 
@@ -290,7 +291,7 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 		colDiffuse = colUnit;
 
 		// Update vertex in buffer...
-		vd.WriteVertex( lock, vert, diffuseE, colDiffuse );
+		vd->WriteVertex( lock, vert, diffuseE, colDiffuse );
 
 	}
 	tom.texture->UnlockRect( 0 );
@@ -325,7 +326,7 @@ bool Terra::ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexA
 		for( r = 0; r < rc.row; r++ )
 		{
 			// TODO: Not yet supported.
-			//vertvd.WriteVertex( lock, uVert, &unify::TexCoords( pTexArea->ul.u + (cMul.u * r), pTexArea->dr.v - (cMul.v * c) ), (FVF::TYPE)dwMember );
+			//vertvd->WriteVertex( lock, uVert, &unify::TexCoords( pTexArea->ul.u + (cMul.u * r), pTexArea->dr.v - (cMul.v * c) ), (FVF::TYPE)dwMember );
 			uVert++;
 		}
 	}
@@ -340,7 +341,7 @@ void Terra::GenerateNormals( bool bUseSelf )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement normalE = CommonVertexElement::Normal();
 
@@ -357,18 +358,18 @@ void Terra::GenerateNormals( bool bUseSelf )
 			unify::V3< float > vPosCenter;
 			unify::V3< float > vPosX, vPosZ;
 
-			vd.ReadVertex( lock, (v * rc.row) + h, positionE, vPosCenter );
+			vd->ReadVertex( lock, (v * rc.row) + h, positionE, vPosCenter );
 	
 			// X
 			if( h == rc.row - 1 )	// At the far right edge...
 			{
-				vd.ReadVertex( lock, (v * rc.row) + (h - 1), positionE, vPosX );
+				vd->ReadVertex( lock, (v * rc.row) + (h - 1), positionE, vPosX );
 				vPosX.y = vPosCenter.y;
 				vAxis[0] = vPosCenter - vPosX;
 			}
 			else
 			{
-				vd.ReadVertex( lock, (v * rc.row) + (h + 1), positionE, vPosX );
+				vd->ReadVertex( lock, (v * rc.row) + (h + 1), positionE, vPosX );
 				if( h == 0 ) vPosX.y = vPosCenter.y;	// left column
 				vAxis[0] = vPosX - vPosCenter;
 			}
@@ -376,13 +377,13 @@ void Terra::GenerateNormals( bool bUseSelf )
 			// Z
 			if( v == rc.column - 1 )	// top row
 			{
-				vd.ReadVertex( lock, ((v - 1) * rc.row) + h, positionE, vPosZ );
+				vd->ReadVertex( lock, ((v - 1) * rc.row) + h, positionE, vPosZ );
 				vPosZ.y = vPosCenter.y;
 				vAxis[2] = vPosZ - vPosCenter;
 			}
 			else
 			{
-				vd.ReadVertex( lock, ((v + 1) * rc.row) + h, positionE, vPosZ );				
+				vd->ReadVertex( lock, ((v + 1) * rc.row) + h, positionE, vPosZ );				
 				if( v == 0 ) vPosZ.y = vPosCenter.y;	// bottom row		
 				vAxis[2] = vPosCenter - vPosZ;
 			}
@@ -406,7 +407,7 @@ void Terra::GenerateNormals( bool bUseSelf )
 			mRot.TransformCoord( vNormal );
 			vNormal.Normalize();
 			
-			vd.WriteVertex( lock, (v * rc.row) + h, normalE, vNormal );
+			vd->WriteVertex( lock, (v * rc.row) + h, normalE, vNormal );
 		}
 	}
 	set.GetVertexBuffer().Unlock();
@@ -427,7 +428,7 @@ bool Terra::Smooth( unsigned int uFlags )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 	VertexElement positionE = CommonVertexElement::Position();	
 	
 	// Compute new smoothed depth...
@@ -444,34 +445,34 @@ bool Terra::Smooth( unsigned int uFlags )
 			// Left vertex...
 			if( r > 0 )
 			{
-				vd.ReadVertex( lock, (r-1) + (c * rc.row), positionE, vVecIn );
+				vd->ReadVertex( lock, (r-1) + (c * rc.row), positionE, vVecIn );
 				fDepth += vVecIn.y;
 				fParts += 1;
 			}
 			// Right vertex...
 			if( r < (rc.row-1) )
 			{
-				vd.ReadVertex( lock, (r+1) + (c * rc.row), positionE, vVecIn );
+				vd->ReadVertex( lock, (r+1) + (c * rc.row), positionE, vVecIn );
 				fDepth += vVecIn.y;
 				fParts += 1;
 			}
 			// Up vertex...
 			if( c > 0 )
 			{
-				vd.ReadVertex( lock, (r) + ((c-1) * rc.row), positionE, vVecIn );
+				vd->ReadVertex( lock, (r) + ((c-1) * rc.row), positionE, vVecIn );
 				fDepth += vVecIn.y;
 				fParts += 1;
 			}
 			// Down vertex...
 			if( c < (rc.column-1) )
 			{
-				vd.ReadVertex( lock, (r) + ((c+1) * rc.row), positionE, vVecIn );
+				vd->ReadVertex( lock, (r) + ((c+1) * rc.row), positionE, vVecIn );
 				fDepth += vVecIn.y;
 				fParts += 1;
 			}
 
 			// Assign present vertex...
-			vd.ReadVertex( lock, (r + c * rc.row), positionE, vVecIn );
+			vd->ReadVertex( lock, (r + c * rc.row), positionE, vVecIn );
 
 			fDepth += vVecIn.y * 2;
 			fParts += 2;
@@ -487,9 +488,9 @@ bool Terra::Smooth( unsigned int uFlags )
 		{
 			// Assign present vertex...
 			unify::V3< float > vec;
-			vd.ReadVertex( lock, r + c * rc.row, positionE, vec );
+			vd->ReadVertex( lock, r + c * rc.row, positionE, vec );
 			vec.y = pfDepthArray[r + (c * rc.row)];
-			vd.WriteVertex( lock, r + c * rc.row, positionE, vec );
+			vd->WriteVertex( lock, r + c * rc.row, positionE, vec );
 		}
 	}
 
@@ -509,7 +510,7 @@ bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fToleranc
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement diffuseE = CommonVertexElement::Diffuse();
@@ -522,26 +523,26 @@ bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fToleranc
 		{
 			unify::V3< float > vVecIn;
 			float fDepth = 0.0f;
-			vd.ReadVertex( lock, r + c * rc.row, positionE, vVecIn );
+			vd->ReadVertex( lock, r + c * rc.row, positionE, vVecIn );
 			fDepth = vVecIn.y;
 
 			if( unify::CheckFlag( uFlags, TRANS_BELOW ) && fDepth < fValue )
 			{
 				unify::Color colorIn;
-				vd.ReadVertex( lock, r + c * rc.row, diffuseE, colorIn );
+				vd->ReadVertex( lock, r + c * rc.row, diffuseE, colorIn );
 				unify::ColorUnit colorMix = colorIn;
 				colorMix.a = 0.0f;
 				colorIn = colorMix;
-				vd.WriteVertex( lock, r + c * rc.row, diffuseE, colorIn );
+				vd->WriteVertex( lock, r + c * rc.row, diffuseE, colorIn );
 			}
 			else if( unify::CheckFlag( uFlags, TRANS_ABOVE ) && fDepth > fValue )
 			{
 				unify::Color colorIn;
-				vd.ReadVertex( lock, r + c * rc.row, diffuseE, colorIn );
+				vd->ReadVertex( lock, r + c * rc.row, diffuseE, colorIn );
 				unify::ColorUnit colorMix = colorIn;
 				colorMix.a = 0.0f;
 				colorIn = colorMix;
-				vd.WriteVertex( lock, r + c * rc.row, diffuseE, colorIn );
+				vd->WriteVertex( lock, r + c * rc.row, diffuseE, colorIn );
 			}
 		}
 	}
@@ -561,7 +562,7 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 
@@ -575,15 +576,15 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 		for( r = 0; r < rc.row; r++ )
 		{
 			unify::V3< float > vec1, vec2;
-			vd.ReadVertex( lock, (r) + (0 * rc.row), positionE, vec1 );
-			vd.ReadVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec2 );
+			vd->ReadVertex( lock, (r) + (0 * rc.row), positionE, vec1 );
+			vd->ReadVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec2 );
 
 			fDepth = (vec1.y + vec2.y) / 2.0f;
 			vec1.y = fDepth;
 			vec2.y = fDepth;
 
-			vd.WriteVertex( lock, (r) + (0 * rc.row), positionE, vec1 );
-			vd.WriteVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec2 );
+			vd->WriteVertex( lock, (r) + (0 * rc.row), positionE, vec1 );
+			vd->WriteVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec2 );
 		}
 	}
 
@@ -593,15 +594,15 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 		for( c = 0; c < rc.column; c++ )
 		{
 			unify::V3< float > vec1, vec2;
-			vd.ReadVertex( lock, (0) + (c * rc.row), positionE, vec1 );
-			vd.ReadVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec2 );
+			vd->ReadVertex( lock, (0) + (c * rc.row), positionE, vec1 );
+			vd->ReadVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec2 );
 			
 			fDepth = (vec1.y + vec2.y) / 2.0f;
 			vec1.y = fDepth;
 			vec2.y = fDepth;
 
-			vd.WriteVertex( lock, (0) + (c * rc.row), positionE, vec1);
-			vd.WriteVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec2 );
+			vd->WriteVertex( lock, (0) + (c * rc.row), positionE, vec1);
+			vd->WriteVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec2 );
 		}
 	}
 
@@ -609,10 +610,10 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 	if( unify::CheckFlag(uFlags,WRAP_ROWS) && unify::CheckFlag(uFlags,WRAP_COLUMNS) )
 	{
 		unify::V3< float > vec[4];
-		vd.ReadVertex( lock, (0) + (0 * rc.row), positionE, vec[0] );
-		vd.ReadVertex( lock, (rc.row - 1) + (0 * rc.row), positionE, vec[1] );
-		vd.ReadVertex( lock, (0) + ((rc.column - 1) * rc.row), positionE, vec[2] );
-		vd.ReadVertex( lock, (rc.row - 1) + ((rc.column - 1) * rc.row), positionE, vec[3] );
+		vd->ReadVertex( lock, (0) + (0 * rc.row), positionE, vec[0] );
+		vd->ReadVertex( lock, (rc.row - 1) + (0 * rc.row), positionE, vec[1] );
+		vd->ReadVertex( lock, (0) + ((rc.column - 1) * rc.row), positionE, vec[2] );
+		vd->ReadVertex( lock, (rc.row - 1) + ((rc.column - 1) * rc.row), positionE, vec[3] );
 
 		fDepth = (vec[0].y + vec[1].y + vec[2].y + vec[3].y) / 4.0f;
 
@@ -621,9 +622,9 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 		vec[2].y = fDepth;
 		vec[3].y = fDepth;
 
-		vd.WriteVertex( lock, (rc.row - 1) + (0 * rc.row), positionE, vec[1] );
-		vd.WriteVertex( lock, (0) + ((rc.column - 1) * rc.row), positionE, vec[2] );
-		vd.WriteVertex( lock, (rc.row - 1) + ((rc.column - 1) * rc.row), positionE, vec[3] );
+		vd->WriteVertex( lock, (rc.row - 1) + (0 * rc.row), positionE, vec[1] );
+		vd->WriteVertex( lock, (0) + ((rc.column - 1) * rc.row), positionE, vec[2] );
+		vd->WriteVertex( lock, (rc.row - 1) + ((rc.column - 1) * rc.row), positionE, vec[3] );
 	}
 
 	set.GetVertexBuffer().Unlock();
@@ -641,7 +642,7 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 
@@ -655,16 +656,16 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 	{
 		if( unify::CheckFlag(uFlags, SIDE_DOWN) )
 		{
-			vd.ReadVertex( lock, (r) + (0 * rc.row), positionE, vec );
+			vd->ReadVertex( lock, (r) + (0 * rc.row), positionE, vec );
 			vec.y = fToDepth;
-			vd.WriteVertex( lock, (r) + (0 * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (r) + (0 * rc.row), positionE, vec );
 		}
 
 		if( unify::CheckFlag(uFlags, SIDE_UP) )
 		{
-			vd.ReadVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec );
+			vd->ReadVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec );
 			vec.y = fToDepth;
-			vd.WriteVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (r) + ((rc.column - 1) * rc.row), positionE, vec );
 		}
 	}
 
@@ -673,16 +674,16 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 	{
 		if( unify::CheckFlag(uFlags, SIDE_LEFT) )
 		{
-			vd.ReadVertex( lock, (0) + (c * rc.row), positionE, vec );
+			vd->ReadVertex( lock, (0) + (c * rc.row), positionE, vec );
 			vec.y = fToDepth;
-			vd.WriteVertex( lock, (0) + (c * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (0) + (c * rc.row), positionE, vec );
 		}
 
 		if( unify::CheckFlag(uFlags, SIDE_RIGHT) )
 		{
-			vd.ReadVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec );
+			vd->ReadVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec );
 			vec.y = fToDepth;
-			vd.WriteVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (rc.row - 1) + (c * rc.row), positionE, vec );
 		}
 	}
 
@@ -701,7 +702,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 
@@ -709,7 +710,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	BufferSet & setIn = pTerraIn->m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	setIn.GetVertexBuffer().Lock( lockIn );
 
-	VertexDeclaration vdIn = setIn.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vdIn = setIn.GetVertexBuffer().GetVertexDeclaration();
 
 
 	// Compute new wrapped depths...
@@ -722,18 +723,18 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	{
 		if( unify::CheckFlag(uFlags, SIDE_DOWN) )
 		{
-			vd.ReadVertex( lock, (r) + (0 * rc.row), positionE, vec );
-			vdIn.ReadVertex( lockIn, (r) + ((rc.column-1) * rc.row), positionE, vecin );
+			vd->ReadVertex( lock, (r) + (0 * rc.row), positionE, vec );
+			vdIn->ReadVertex( lockIn, (r) + ((rc.column-1) * rc.row), positionE, vecin );
 			vec.y = vecin.y;
-			vd.WriteVertex( lock, (r) + (0 * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (r) + (0 * rc.row), positionE, vec );
 		}
 
 		if( unify::CheckFlag(uFlags, SIDE_UP) )
 		{
-			vd.ReadVertex( lock, (r) + ((rc.column-1) * rc.row), positionE, vec );
-			vdIn.ReadVertex( lockIn, (r) + (0 * rc.row), positionE, vecin );
+			vd->ReadVertex( lock, (r) + ((rc.column-1) * rc.row), positionE, vec );
+			vdIn->ReadVertex( lockIn, (r) + (0 * rc.row), positionE, vecin );
 			vec.y = vecin.y;
-			vd.WriteVertex( lock, (r) + ((rc.column-1) * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (r) + ((rc.column-1) * rc.row), positionE, vec );
 		}
 	}
 
@@ -742,18 +743,18 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	{
 		if( unify::CheckFlag(uFlags, SIDE_LEFT) )
 		{
-			vd.ReadVertex( lock, (0) + (c * rc.row), positionE, vec );
-			vdIn.ReadVertex( lockIn, (rc.row-1) + (c * rc.row), positionE, vecin );
+			vd->ReadVertex( lock, (0) + (c * rc.row), positionE, vec );
+			vdIn->ReadVertex( lockIn, (rc.row-1) + (c * rc.row), positionE, vecin );
 			vec.y = vecin.y;
-			vd.WriteVertex( lock, (0) + (c * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (0) + (c * rc.row), positionE, vec );
 		}
 
 		if( unify::CheckFlag(uFlags, SIDE_RIGHT) )
 		{
-			vd.ReadVertex( lock, (rc.row-1) + (c * rc.row), positionE, vec );
-			vdIn.ReadVertex( lockIn, (0) + (c * rc.row), positionE, vecin );
+			vd->ReadVertex( lock, (rc.row-1) + (c * rc.row), positionE, vec );
+			vdIn->ReadVertex( lockIn, (0) + (c * rc.row), positionE, vecin );
 			vec.y = vecin.y;
-			vd.WriteVertex( lock, (rc.row-1) + (c * rc.row), positionE, vec );
+			vd->WriteVertex( lock, (rc.row-1) + (c * rc.row), positionE, vec );
 		}
 	}
 
@@ -773,14 +774,10 @@ bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	VertexDeclaration vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
-
-	D3DVERTEXELEMENT9 normalE = {};
-	normalE.Type = D3DDECLTYPE_FLOAT3;
-	normalE.Usage = D3DDECLUSAGE_NORMAL;
-	normalE.UsageIndex = 0;
+	VertexElement normalE = CommonVertexElement::Normal();
 
 	// Compute new wrapped depths...
 	unsigned int r, c;
@@ -791,12 +788,12 @@ bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 	{
 		if( unify::CheckFlag(uFlags, SIDE_DOWN) )
 		{
-			vd.WriteVertex( lock, (r) + (0 * rc.row), normalE, normal );
+			vd->WriteVertex( lock, (r) + (0 * rc.row), normalE, normal );
 		}
 
 		if( unify::CheckFlag(uFlags, SIDE_UP) )
 		{
-			vd.WriteVertex( lock, (r) + ((rc.column-1) * rc.row), normalE, normal );
+			vd->WriteVertex( lock, (r) + ((rc.column-1) * rc.row), normalE, normal );
 		}
 	}
 
@@ -805,12 +802,12 @@ bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 	{
 		if( unify::CheckFlag(uFlags, SIDE_LEFT) )
 		{
-			vd.WriteVertex( lock, (0) + (c * rc.row), normalE, normal );
+			vd->WriteVertex( lock, (0) + (c * rc.row), normalE, normal );
 		}
 
 		if( unify::CheckFlag(uFlags, SIDE_RIGHT) )
 		{
-			vd.WriteVertex( lock, (rc.row-1) + (c * rc.row), normalE, normal );
+			vd->WriteVertex( lock, (rc.row-1) + (c * rc.row), normalE, normal );
 		}
 	}
 
@@ -871,8 +868,8 @@ bool Terra::RenderNormals()
 	dwNormal = 0;
 	for( dwVertex = 0; dwVertex < dwNumNormals; dwVertex++ )
 	{
-		vd.ReadVertex( lock, dwVertex, &vFromPos, FVF::XYZ );
-		vd.ReadVertex( lock, dwVertex, &vFromNorm, FVF::Normal );
+		vd->ReadVertex( lock, dwVertex, &vFromPos, FVF::XYZ );
+		vd->ReadVertex( lock, dwVertex, &vFromNorm, FVF::Normal );
 
 		pVertex[dwNormal].p = vFromPos;
 		pVertex[dwNormal].diffuse = unify::Color::White();

@@ -18,28 +18,23 @@ namespace unify
 	__declspec(align(16)) class Matrix
 	{
 	public:
-#if defined ( DIRECTX9 )
-		typedef D3DXMATRIX DXMatrix;
-#elif defined( DIRECTX11 )
-		typedef DirectX::XMMATRIX DXMatrix;
-#endif
-
 		static Matrix MatrixIdentity();
+		static Matrix MatrixZero();
 		static Matrix MatrixTranslate( const V3< float > & vector );
 		static Matrix MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar );
 		static Matrix MatrixScale( const unify::V3< float > & scale );
 		static Matrix MatrixScale( float x, float y, float z );
 		static Matrix MatrixScale( float scale );
 		static Matrix MatrixRotationAboutAxis( const V3< float > & axis, Angle angle );
-		static Matrix MatrixPerspectiveFovLH( float w, float h, float zn, float zf );
-		static Matrix MatrixRotationX( const float & x );
-		static Matrix MatrixRotationY( const float & y );
-		static Matrix MatrixRotationZ( const float & z );
+		static Matrix MatrixPerspectiveFovLH( float fovy, float apsect, float zn, float zf );
+		static Matrix MatrixRotationX( Angle angle );
+		static Matrix MatrixRotationY( Angle angle );
+		static Matrix MatrixRotationZ( Angle angle );
 		static Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up );
 
 		Matrix();
 		Matrix( const Matrix & matrix );
-		explicit Matrix( const Quaternion orientation, const V3< float > position = V3< float >( 0, 0, 0 ), const V3< float > scale = V3< float >( 1, 1, 1 ) );
+		explicit Matrix( Quaternion orientation, V3< float > position = V3< float >( 0, 0, 0 ), V3< float > scale = V3< float >( 1, 1, 1 ) );
 		~Matrix();
 
 		Matrix & operator = ( const Matrix & matrix );
@@ -71,7 +66,7 @@ namespace unify
 		Matrix & SetRotation( const Quaternion & quaternion );
 		Matrix & Translate( const V3< float > & vector );
 		Matrix & Scale( const V3< float > & vector );
-		Matrix & Scale( const float & scale );
+		Matrix & Scale( float scale );
 
 		void Set( unsigned int row, unsigned int column, float value );
 
@@ -110,9 +105,6 @@ namespace unify
 		void Transpose();
 		void Transpose( const Matrix & matrix );
 
-		DXMatrix * unify::Matrix::GetD3DXMatrix();
-		const DXMatrix * unify::Matrix::GetD3DXMatrix() const;
-
 		void TransformCoord( V2< float > & v2 ) const;
 		void TransformCoord( V3< float > & v3 ) const;
 		V2< float > TransformCoord_Copy( const V2< float > & v2 ) const;
@@ -127,14 +119,6 @@ namespace unify
 
 		std::string ToString() const;
 
-	protected:
-		/*
-		#if defined( DIRECTX9 )
-		std::shared_ptr< DXMatrix > m_matrix;
-		#elif defined( DIRECTX11 )
-		std::shared_ptr< DXMatrix > m_matrix;
-		#endif
-		*/
-		float m_matrix[4][4];
+		float m[4][4];
 	};
 }

@@ -13,7 +13,6 @@ Camera::Camera()
 Camera::Camera( Object::shared_ptr object )
 : m_object( object )
 , m_projection( unify::Matrix::MatrixIdentity() )
-, m_useProjection( false )
 {
 }
 
@@ -39,54 +38,26 @@ Object::shared_ptr Camera::GetObject()
 void Camera::SetProjection( const unify::Matrix & projection )
 {
 	m_projection = projection;
-	m_useProjection = true;
 }
 
-void Camera::ClearProjection()
+unify::Matrix Camera::GetProjection() const
 {
-	m_projection = unify::Matrix::MatrixIdentity();
-	m_useProjection = false;
+	return m_projection;
 }
 
 unify::Matrix Camera::GetMatrix() const
 {
-	unify::Matrix finalMatrix = unify::Matrix::MatrixIdentity();
 	if( ! m_object.expired() )
 	{
-		finalMatrix *= m_object.lock().get()->GetFrame().GetFinalMatrix();
-		finalMatrix.Invert();
+		return m_object.lock().get()->GetFrame().GetFinalMatrix();
 	}
 
-	if ( m_useProjection )
-	{
-		finalMatrix *= m_projection;
-	}
-
-    return finalMatrix;
+    return unify::Matrix::MatrixIdentity();
 }
 
 void Camera::LookAt( const unify::V3< float > & at )
 {
 	GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
-	/*/
-	const unify::Matrix & localMatrix = GetObject()->GetFrame().GetFinalMatrix();
-	unify::V3< float > up( 0, 1, 0 );
-	unify::V3< float > position( localMatrix.GetPosition() );
-	unify::V3< float > forward( at - localMatrix.GetPosition() );
-	forward.Normalize();
-
-	unify::V3< float > left( unify::V3< float >::V3Cross( forward, up ) );
-
-	unify::Matrix modelMatrix = unify::Matrix::MatrixIdentity();
-	modelMatrix.SetForward( forward );
-	modelMatrix.SetUp( up );
-	modelMatrix.SetLeft( left );
-	up = unify::V3< float >::V3Cross( forward, left );
-	modelMatrix.SetUp( up ); // Regenerate up.
-	modelMatrix.SetPosition( position );
-	// TODO: remove parent frames effect, if we have one (inverse parent's local).
-	GetObject()->GetFrame().SetModelMatrix( modelMatrix );
-	*/
 }
 
 

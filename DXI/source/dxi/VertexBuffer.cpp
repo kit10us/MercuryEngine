@@ -1,40 +1,360 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
+#include <dxi/VertexBuffer.h>
+#include <dxi/win/DXDevice.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/Exception.h>
-#include <assert.h>
-#include <dxi/VertexBuffer.h>
-#include <unify/TexCoords.h>
-#include <unify/V3.h>
-#include <unify/Color.h>
-#include <unify/V4.h>
-#include <dxi/core/Game.h>
 
 using namespace dxi;
 
+class VertexBuffer::Pimpl
+{
+public:
+	Pimpl( VertexBuffer & owner )
+		: m_owner( owner )
+	{
+	}
+	
+	~Pimpl()
+	{
+	}
+
+	void Destroy()
+	{
+		m_VB = nullptr;
+	}
+
+	void Create( unsigned int uNumVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage )
+	{
+#if defined( DIRECTX9 )
+		unsigned int createFlags = FLAGNULL;
+		/*
+		// TODO: To support for DX9 and DX11...
+		// Build Vertex Buffer usage...
+		if( unify::CheckFlag( m_owner.m_createFlags, VertexBuffer::CreateFlags::DoNotClip ) )
+		{
+			createFlags |= D3DUSAGE_DONOTCLIP;
+		}
+		if( unify::CheckFlag( m_owner.m_createFlags, VertexBuffer::CreateFlags::NPatches ) )
+		{
+			createFlags |= D3DUSAGE_NPATCHES;
+		}
+		if( unify::CheckFlag( m_owner.m_createFlags, VertexBuffer::CreateFlags::Points ) )
+		{
+			createFlags |= D3DUSAGE_POINTS;
+		}
+		if( unify::CheckFlag( m_owner.m_createFlags, VertexBuffer::CreateFlags::RTPatches ) )
+		{
+			createFlags |= D3DUSAGE_RTPATCHES;
+		}
+		*/
+
+		D3DPOOL pool = D3DPOOL_DEFAULT;
+		switch( m_owner.m_usage )
+		{
+		case BufferUsage::Default:
+			pool = D3DPOOL_MANAGED;
+			break;
+		case BufferUsage::Immutable:
+			pool = D3DPOOL_DEFAULT;
+			createFlags |= D3DUSAGE_WRITEONLY;
+			break;
+		case BufferUsage::Dynamic:
+			pool = D3DPOOL_MANAGED;
+			break;
+		case BufferUsage::Staging:
+			//pool = D3DPOOL_SCRATCH;
+			pool = D3DPOOL_SYSTEMMEM;
+			break;
+		}
+
+		// Create Vertex Buffer...
+		HRESULT hr;
+		hr = win::DX::GetDxDevice()->CreateVertexBuffer( m_owner.GetSize(), createFlags, 0, pool, &m_VB, 0 );
+		OnFailedThrow( hr, "Failed to create vertex buffer!" );
+
+		if( source )
+		{
+			unify::DataLock lock;
+			m_owner.Lock( lock );
+			lock.CopyBytesFrom( source, 0, m_owner.GetSize() );
+		}
+#elif defined( DIRECTX11 )
+		auto dxDevice = win::DX::GetDxDevice();
+
+		// Ensure that if we are BufferUsage::Immutable, then source is not null.
+		if ( BufferUsage::Immutable && source == nullptr )
+		{
+			throw exception::FailedToCreate( "Buffer is immutable, yet source is null!" );
+		}
+
+		D3D11_USAGE usageDX{};
+		switch( m_owner.m_usage )
+		{
+		case BufferUsage::Default:
+			usageDX = D3D11_USAGE_DEFAULT;
+			break;
+		case BufferUsage::Immutable:
+			usageDX = D3D11_USAGE_IMMUTABLE;
+			break;
+		case BufferUsage::Dynamic:
+			usageDX = D3D11_USAGE_DYNAMIC;
+			break;
+		case BufferUsage::Staging:
+			usageDX = D3D11_USAGE_STAGING;
+			break;
+		}
+			 
+		D3D11_BUFFER_DESC vertexBufferDesc {};
+		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		vertexBufferDesc.ByteWidth = vertexDeclaration->GetSize() * uNumVertices;
+		vertexBufferDesc.Usage = usageDX;
+
+		HRESULT result;
+		if ( source != nullptr )
+		{
+			D3D11_SUBRESOURCE_DATA initialData {};
+			initialData.pSysMem = source;
+			if ( usage == BufferUsage::Dynamic )
+			{
+				vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // TODO: make not hard coded.
+			}
+			result = dxDevice->CreateBuffer( &vertexBufferDesc, &initialData, &m_VB );
+		}
+		else
+		{
+			result = dxDevice->CreateBuffer( &vertexBufferDesc, nullptr, &m_VB );
+		}
+		OnFailedThrow( result, "Failed to create vertex buffer!" );
+#endif
+	}
+
+	void Resize( unsigned int numVertices )
+	{
+#if defined( DIRECTX9 )
+		unsigned int oldNumberOfVertices = m_owner.GetLength();
+		size_t oldSize = m_owner.GetSize();
+		IDirect3DVertexBuffer9 * oldVertexBuffer = m_VB;
+		m_VB = 0;
+		m_owner.m_length = 0;
+
+		Create( numVertices, m_owner.GetVertexDeclaration(), nullptr,  m_owner.GetUsage() );
+
+		HRESULT hr;
+		unsigned char * oldData;
+		hr = oldVertexBuffer->Lock( 0, 0, (void**)&oldData, D3DLOCK_READONLY );
+		if( FAILED( hr ) )
+		{
+			throw exception::FailedToLock( "Failed to lock vertex buffer!" );
+		}
+
+		unsigned char * newData;
+		hr = m_VB->Lock( 0, 0, (void**)&newData, D3DLOCK_DISCARD );
+		if( FAILED( hr ) )
+		{
+			oldVertexBuffer->Release();
+			oldVertexBuffer = 0;
+			throw exception::FailedToLock( "Failed to lock vertex buffer!" );
+		}
+
+		memcpy( newData, oldData, oldSize );
+		m_VB->Unlock();
+		oldVertexBuffer->Unlock();
+		oldVertexBuffer->Release();
+		oldVertexBuffer = 0;
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	size_t Append( const VertexBuffer & from )
+	{
+		size_t offset = m_owner.GetLength();
+		size_t originalSizeInBytes = m_owner.GetSize();
+
+		if( from.GetLength() == 0 )
+		{
+			return offset;
+		}
+
+		if( from.GetUsage() != BufferUsage::Staging )
+		{
+			throw unify::Exception( "From VertexBuffer's usage is not Staging!" );
+		}
+
+		if( m_owner.GetLength() == 0 )
+		{
+			unsigned int length = from.GetLength();
+			VertexDeclaration::ptr vd = from.GetVertexDeclaration();
+			BufferUsage::TYPE usage = from.GetUsage();
+			//unsigned int createFlags = from.GetCreateFlags();
+			assert( 0 ); // TOOD:
+			Create( length, vd, nullptr, usage /*, createFlags*/ );
+		}
+		else
+		{
+			if( m_owner.GetUsage() != BufferUsage::Staging )
+			{
+				throw unify::Exception( "VertexBuffer's usage is not Staging!" );
+			}
+			if( *m_owner.m_vertexDeclaration != *from.m_vertexDeclaration )
+			{
+				throw unify::Exception( "VertexBuffer's source and destination doesn't match for Append!" );
+			}
+
+			Resize( m_owner.GetLength() + from.GetLength() );
+		}
+
+		// Copy vertices.5..
+		unify::DataLock locksrc, lockdest;
+		Lock( lockdest );
+
+		from.LockReadOnly( locksrc );
+
+		lockdest.CopyBytesFrom( locksrc.GetDataReadOnly(), originalSizeInBytes, locksrc.GetSizeInBytes() );
+		Unlock();
+		from.Unlock();
+		return offset;
+	}
+
+
+	void Lock( unify::DataLock & lock )
+	{
+#if defined( DIRECTX9 )
+		HRESULT hr;
+		unsigned char * data;
+		hr = m_VB->Lock( 0, 0, (void**)&data, 0 );
+		if( FAILED( hr ) )
+		{
+			lock.Invalidate();
+			throw exception::FailedToLock( "Failed to lock vertex buffer!" );
+		}
+
+		lock.SetLock( data, m_owner.m_vertexDeclaration->GetSize(), m_owner.GetLength(), false );
+		m_owner.m_locked = true;
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	void LockReadOnly( unify::DataLock & lock ) const
+	{
+#if defined( DIRECTX9 )
+		HRESULT hr;
+		unsigned char * data;
+		hr = m_VB->Lock( 0, 0, (void**)&data, D3DLOCK_READONLY );
+		if( FAILED( hr ) )
+		{
+			lock.Invalidate();
+			throw exception::FailedToLock( "Failed to lock vertex buffer!" );
+		}
+
+		lock.SetLock( data, m_owner.m_vertexDeclaration->GetSize(), m_owner.GetLength(), true );
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	void Unlock()
+	{
+#if defined( DIRECTX9 )
+		if( !m_VB || !m_owner.m_locked ) return;
+		m_VB->Unlock();
+		m_owner.m_locked = FALSE;	// altering data in a constant function
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	void Unlock() const
+	{
+#if defined( DIRECTX9 )
+		if( !m_VB || !m_owner.m_locked ) return;
+		m_VB->Unlock();
+		bool & locked = *const_cast< bool* >(&m_owner.m_locked);
+		locked = false;
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	void Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts )
+	{
+#if defined( DIRECTX9 )
+		if( ((uStartVert + uNumVerts) - 1) >= m_owner.GetLength() )
+		{
+			throw unify::Exception( "Number of vertices to upload exceeds available area to upload to!" );
+		}
+
+		unify::DataLock lock;
+
+		Lock( lock );
+		lock.CopyBytesFrom( (unsigned char*)pVerticesIn, m_owner.GetStride() * uStartVert, uNumVerts * m_owner.GetStride() );
+		Unlock();
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	bool Valid() const
+	{
+		return m_VB != 0;
+	}
+
+	void Use() const
+	{
+		unsigned int streamNumber = 0;
+		unsigned int stride = m_owner.GetStride();
+		unsigned int offsetInBytes = 0;
+#if defined( DIRECTX9 )
+		HRESULT hr = S_OK;
+
+		hr = win::DX::GetDxDevice()->SetStreamSource( streamNumber, m_VB, offsetInBytes, stride );
+		if( FAILED( hr ) )
+		{
+			throw unify::Exception( "VertexBuffer: Failed to SetStreamSource!" );
+		}
+#elif defined( DIRECTX11 )
+		win::DX::GetDxContext()->IASetVertexBuffers( streamNumber, 1, &m_VB.p, &stride, &offsetInBytes );
+#endif
+	}
+
+	void Disuse() const
+	{
+#if defined( DIRECTX9 )
+		win::DX::GetDxDevice()->SetStreamSource( 0, 0, 0, 0 );
+#elif defined( DIRECTX11 )
+#endif
+	}
+
+	VertexBuffer & m_owner;
+
+#if defined( DIRECTX9 )
+	CComPtr< IDirect3DVertexBuffer9 > m_VB;
+#elif defined( DIRECTX11 )
+	CComPtr< ID3D11Buffer > m_VB;
+#endif	
+};
+
+
 VertexBuffer::VertexBuffer()
+	: m_pimpl( new Pimpl( *this ) )
 {
 }
 
-VertexBuffer::VertexBuffer( unsigned int numVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage, const void * source, unify::Flags flags )
+VertexBuffer::VertexBuffer( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage/*, unify::Flags flags*/ )
+	: m_pimpl( new Pimpl( *this ) )
 {
-	Create( numVertices, vertexDeclaration, usage, source, flags );
+	Create( numVertices, vertexDeclaration, source, usage/*, flags*/ );
 }
 
 VertexBuffer::~VertexBuffer()
 {
-	Release();
+	Destroy();
 }
 
-void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration vertexDeclaration, BufferUsage::TYPE usage, const void * source, unify::Flags flags )
+void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage )
 {
-	Release();
+	Destroy();
 
 	m_vertexDeclaration = vertexDeclaration;
-	m_createFlags = flags;
-	m_stride = m_vertexDeclaration.GetSize();
+	m_stride = m_vertexDeclaration->GetSize();
 	m_length = uNumVertices;
 	m_usage = usage;
 
@@ -44,55 +364,7 @@ void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration vertexDe
 		throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
 	}
 
-	// Build Vertex Buffer usage...
-	unsigned int createFlags = FLAGNULL;
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::DoNotClip ) )
-	{
-		createFlags |= D3DUSAGE_DONOTCLIP;
-	}
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::NPatches ) )
-	{
-		createFlags |= D3DUSAGE_NPATCHES;
-	}
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::Points ) )
-	{
-		createFlags |= D3DUSAGE_POINTS;
-	}
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::RTPatches ) )
-	{
-		createFlags |= D3DUSAGE_RTPATCHES;
-	}
-
-	D3DPOOL pool = D3DPOOL_DEFAULT;
-	switch( m_usage )
-	{
-	case BufferUsage::Default:
-		pool = D3DPOOL_MANAGED;
-		break;
-	case BufferUsage::Immutable:
-		pool = D3DPOOL_DEFAULT;
-		createFlags |= D3DUSAGE_WRITEONLY;
-		break;
-	case BufferUsage::Dynamic:
-		pool = D3DPOOL_MANAGED;
-		break;
-	case BufferUsage::Staging:
-		//pool = D3DPOOL_SCRATCH;
-		pool = D3DPOOL_SYSTEMMEM;
-		break;
-	}
-
-	// Create Vertex Buffer...
-	HRESULT hr;
-	hr = win::DX::GetDxDevice()->CreateVertexBuffer( GetSize(), createFlags, 0, pool, &m_VB, 0 );
-	OnFailedThrow( hr, "Failed to create vertex buffer!" );
-
-	if( source )
-	{
-		unify::DataLock lock;
-		Lock( lock );
-		lock.CopyBytesFrom( source, 0, GetSize() );
-	}
+	m_pimpl->Create( uNumVertices, vertexDeclaration, source, usage );
 }
 
 void VertexBuffer::Resize( unsigned int numVertices )
@@ -102,180 +374,62 @@ void VertexBuffer::Resize( unsigned int numVertices )
 		throw unify::Exception( "VertexBuffer's usage is not Staging! Cannot resize without CPU read and write access." );
 	}
 
-	unsigned int oldNumberOfVertices = GetLength();
-	size_t oldSize = GetSize();
-	IDirect3DVertexBuffer9 * oldVertexBuffer = m_VB;
-	m_VB = 0;
-	m_length = 0;
-
-	Create( numVertices, GetVertexDeclaration(), GetUsage(), nullptr, GetCreateFlags() );
-
-	HRESULT hr;
-	unsigned char * oldData;
-	hr = oldVertexBuffer->Lock( 0, 0, (void**)&oldData, D3DLOCK_READONLY );
-	if( FAILED(hr) )
-	{
-		throw exception::FailedToLock( "Failed to lock vertex buffer!" );
-	}
-
-	unsigned char * newData;
-	hr = m_VB->Lock( 0, 0, (void**)&newData, D3DLOCK_DISCARD );
-	if( FAILED(hr) )
-	{
-		oldVertexBuffer->Release();
-		oldVertexBuffer = 0;
-		throw exception::FailedToLock( "Failed to lock vertex buffer!" );
-	}
-
-	memcpy( newData, oldData, oldSize );
-	m_VB->Unlock();
-	oldVertexBuffer->Unlock();
-	oldVertexBuffer->Release();
-	oldVertexBuffer = 0;
+	m_pimpl->Resize( numVertices );
 }
 
 size_t VertexBuffer::Append( const VertexBuffer & from )
 {
-	size_t offset = GetLength();
-	size_t originalSizeInBytes = GetSize();
-
-	if ( from.GetLength() == 0 )
-	{
-		return offset;
-	}
-
-	if ( from.GetUsage() != BufferUsage::Staging )
-	{
-		throw unify::Exception( "From VertexBuffer's usage is not Staging!" );
-	}
-
-	if ( GetLength() == 0 )
-	{
-		unsigned int length = from.GetLength();
-		VertexDeclaration vd = from.GetVertexDeclaration();
-		BufferUsage::TYPE usage = from.GetUsage();
-		unsigned int createFlags = from.GetCreateFlags();
-		Create( length, vd, usage, nullptr, createFlags );
-	}
-	else
-	{
-		if ( GetUsage() != BufferUsage::Staging )
-		{
-			throw unify::Exception( "VertexBuffer's usage is not Staging!" );
-		}
-		if ( m_vertexDeclaration != from.m_vertexDeclaration )
-		{
-			throw unify::Exception( "VertexBuffer's source and destination doesn't match for Append!" );
-		}
-
-		Resize( GetLength() + from.GetLength() );
-	}
-
-	// Copy vertices.5..
-	unify::DataLock locksrc, lockdest;
-	Lock( lockdest );
-
-	from.LockReadOnly( locksrc );
-
-	lockdest.CopyBytesFrom( locksrc.GetDataReadOnly(), originalSizeInBytes, locksrc.GetSizeInBytes() );
-	Unlock();
-	from.Unlock();
-	return offset;
+	return m_pimpl->Append( from );
 }
 
-void VertexBuffer::Release()
+void VertexBuffer::Destroy()
 {
-	m_VB = nullptr;
+	m_pimpl->Destroy();
 	m_length = 0;
 	m_stride = 0;
 }
 
 void VertexBuffer::Lock( unify::DataLock & lock )
 {
-	HRESULT hr;
-	unsigned char * data;
-	hr = m_VB->Lock( 0, 0, (void**)&data, 0 );
-	if( FAILED( hr ) )
-	{
-		lock.Invalidate();
-		throw exception::FailedToLock( "Failed to lock vertex buffer!" );
-	}
-
-	lock.SetLock( data, m_vertexDeclaration.GetSize(), GetLength(), false );
-	m_locked = true;
+	m_pimpl->Lock( lock );
 }
 
 void VertexBuffer::LockReadOnly( unify::DataLock & lock ) const
 {
-	HRESULT hr;
-	unsigned char * data;
-	hr = m_VB->Lock( 0, 0, (void**)&data, D3DLOCK_READONLY );
-	if( FAILED( hr ) )
-	{
-		lock.Invalidate();
-		throw exception::FailedToLock( "Failed to lock vertex buffer!" );
-	}
-
-	lock.SetLock( data, m_vertexDeclaration.GetSize(), GetLength(), true );
+	m_pimpl->LockReadOnly( lock );
 }
 
 void VertexBuffer::Unlock()
 {
-	if( ! m_VB || ! m_locked ) return;
-	m_VB->Unlock();
-	m_locked = FALSE;	// altering data in a constant function
+	m_pimpl->Unlock();
 }
 
 void VertexBuffer::Unlock() const
 {
-	if( !m_VB || !m_locked ) return;
-	m_VB->Unlock();
-	bool & locked = *const_cast< bool* >( &m_locked );
-	locked = false;
+	m_pimpl->Unlock();
 }
 
 void VertexBuffer::Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts )
 {
-	if( ( ( uStartVert + uNumVerts ) - 1 ) >= GetLength() )
-	{
-		throw unify::Exception( "Number of vertices to upload exceeds available area to upload to!" );
-	}
-
-	unify::DataLock lock;
-
-	Lock( lock );
-	lock.CopyBytesFrom( (unsigned char*)pVerticesIn, GetStride() * uStartVert, uNumVerts * GetStride() );
-	Unlock();
+	m_pimpl->Upload( pVerticesIn, uStartVert, uNumVerts );
 }
 
-VertexDeclaration VertexBuffer::GetVertexDeclaration() const
+VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 {
 	return m_vertexDeclaration;
 }
 
-unify::Flags VertexBuffer::GetCreateFlags() const
-{
-	return m_createFlags;
-}
-
-// Checks if the vertex buffer has been created.
 bool VertexBuffer::Valid() const
 {
-	return m_VB != 0;
+	return m_pimpl->Valid();
 }
 
-void VertexBuffer::Use( unsigned int streamNumber, unsigned int offsetInBytes, unsigned int stride ) const
+void VertexBuffer::Use() const
 {
-	HRESULT hr = S_OK;
-	
-	hr = win::DX::GetDxDevice()->SetStreamSource( streamNumber, m_VB, offsetInBytes, stride != 0 ? stride : GetStride() );
-	if ( FAILED( hr ) )
-	{
-		throw unify::Exception( "VertexBuffer: Failed to SetStreamSource!" );
-	}
+	m_pimpl->Use();
 }
 
 void VertexBuffer::Disuse() const
 {
-	win::DX::GetDxDevice()->SetStreamSource( 0, 0, 0, 0 );
+	m_pimpl->Disuse();
 }

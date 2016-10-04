@@ -57,7 +57,7 @@ void PrimitiveList::Render( const RenderInfo & renderInfo ) const
 	{
 		if( ! set->GetEnabled() ) continue;
 
-		set->GetVertexBuffer().Use( 0, 0 );
+		set->GetVertexBuffer().Use();
 		set->GetIndexBuffer().Use();
 		set->GetRenderMethodBuffer().Render( renderInfo );
 	}
@@ -118,12 +118,12 @@ const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > 
 		const VertexBuffer & vb = bs->GetVertexBuffer();
 
 		vb.LockReadOnly( lock );
-		VertexDeclaration vd = vb.GetVertexDeclaration();
+		VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
 
 		for( size_t index = 0; index < vb.GetLength(); index++ )
 		{
 			unify::V3< float > pos;
-			vd.ReadVertex( lock, index, positionE, pos );
+			vd->ReadVertex( lock, index, positionE, pos );
 			boundingBox.AddPoint( pos );
 		}
 		vb.Unlock();

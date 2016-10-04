@@ -2,6 +2,8 @@
 // All Rights Reserved
 
 #include <dxi/VertexDeclaration.h>
+#include <dxi/VertexShader.h>
+#include <dxi/win/DXDevice.h>
 #include <dxi/core/Game.h>
 #include <unify/ColorUnit.h>
 
@@ -9,387 +11,188 @@ using namespace dxi;
 
 VertexElement CommonVertexElement::Position( unsigned int slot )
 {
+#if defined( DIRECTX9 )
 	VertexElement positionE = {};
 	positionE.Stream = slot;
 	positionE.Type = D3DDECLTYPE_FLOAT3;
 	positionE.Usage = D3DDECLUSAGE_POSITION;
 	positionE.UsageIndex = 0;
 	return positionE;
+#elif defined( DIRECTX11 )
+	VertexElement positionE = {};
+	positionE.InputSlot = slot;
+	positionE.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	positionE.SemanticName = "POSITION";
+	positionE.SemanticIndex = 0;
+	positionE.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	return positionE;
+#endif
 }
 
 VertexElement CommonVertexElement::Normal( unsigned int slot )
 {
+#if defined( DIRECTX9 )
 	VertexElement normalE = {};
 	normalE.Stream = slot;
 	normalE.Type = D3DDECLTYPE_FLOAT3;
 	normalE.Usage = D3DDECLUSAGE_NORMAL;
 	normalE.UsageIndex = 0;
 	return normalE;
+#elif defined( DIRECTX11 )
+	VertexElement normalE = {};
+	normalE.InputSlot = slot;
+	normalE.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	normalE.SemanticName = "NORMAL";
+	normalE.SemanticIndex = 0;
+	normalE.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	return normalE;
+#endif
 }
 
 VertexElement CommonVertexElement::Diffuse( unsigned int slot )
 {
+#if defined( DIRECTX9 )
 	VertexElement diffuseE = {};
 	diffuseE.Stream = slot;
 	diffuseE.Type = D3DDECLTYPE_D3DCOLOR;
 	diffuseE.Usage = D3DDECLUSAGE_COLOR;
 	diffuseE.UsageIndex = 0;
 	return diffuseE;
+#elif defined( DIRECTX11 )
+	VertexElement diffuseE = {};
+	diffuseE.InputSlot = slot;
+	diffuseE.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	diffuseE.SemanticName = "COLOR";
+	diffuseE.SemanticIndex = 0;
+	diffuseE.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	return diffuseE;
+#endif
 }
 
 VertexElement CommonVertexElement::Specular( unsigned int slot )
 {
+#if defined( DIRECTX9 )
 	VertexElement specularE = {};
 	specularE.Stream = slot;
 	specularE.Type = D3DDECLTYPE_D3DCOLOR;
 	specularE.Usage = D3DDECLUSAGE_COLOR;
 	specularE.UsageIndex = 1;
 	return specularE;
+#elif defined( DIRECTX11 )
+	VertexElement specularE = {};
+	specularE.InputSlot = slot;
+	specularE.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	specularE.SemanticName = "COLOR";
+	specularE.SemanticIndex = 1;
+	specularE.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	return specularE;
+#endif
 }
 
 VertexElement CommonVertexElement::TexCoords( unsigned int slot )
 {
+#if defined( DIRECTX9 )
 	VertexElement texE = {};
 	texE.Stream = slot;
 	texE.Type = D3DDECLTYPE_FLOAT2;
 	texE.Usage = D3DDECLUSAGE_TEXCOORD;
 	texE.UsageIndex = 0;
 	return texE;
+#elif defined( DIRECTX11 )
+	VertexElement texE = {};
+	texE.InputSlot = slot;
+	texE.Format = DXGI_FORMAT_R32G32_FLOAT;
+	texE.SemanticName = "TEXCOORD";
+	texE.SemanticIndex = 0;
+	texE.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	return texE;
+#endif
 }
 
 VertexElement CommonVertexElement::TexCoords2( unsigned int slot )
 {
+#if defined( DIRECTX9 )
 	VertexElement texE2 = {};
 	texE2.Stream = slot;
 	texE2.Type = D3DDECLTYPE_FLOAT2;
 	texE2.Usage = D3DDECLUSAGE_TEXCOORD;
 	texE2.UsageIndex = 1;
 	return texE2;
+#elif defined( DIRECTX11 )
+	VertexElement texE2 = {};
+	texE2.InputSlot = slot;
+	texE2.Format = DXGI_FORMAT_R32G32_FLOAT;
+	texE2.SemanticName = "TEXCOORD";
+	texE2.SemanticIndex = 1;
+	texE2.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	return texE2;
+#endif
 }
 
+#if defined( DIRECTX9 )
+typedef D3DDECLTYPE Format;
+#elif defined( DIRECTX11 )
+typedef DXGI_FORMAT Format;
+#endif
 
-// Convert from a string to a D3DDECLTYPE. Used to enable loading from text based sources.
-D3DDECLTYPE ConvertVertexDeclarationType( const std::string & type )
+struct WriteMethod
 {
-	if ( unify::StringIs( "FLOAT1", type ) || unify::StringIs( "FLOAT", type ) )
+	enum TYPE
 	{
-		return D3DDECLTYPE_FLOAT1;
-	}
-	else if ( unify::StringIs( "FLOAT2", type ) || unify::StringIs( "TEXCOORD", type ) )
-	{
-		return D3DDECLTYPE_FLOAT2;
-	}
-	else if ( unify::StringIs( "FLOAT3", type ) )
-	{
-		return D3DDECLTYPE_FLOAT3;
-	}
-	else if ( unify::StringIs( "FLOAT4", type ) || unify::StringIs( "COLORUNIT", type ) )
-	{
-		return D3DDECLTYPE_FLOAT4;
-	}
-	else if ( unify::StringIs( "D3DCOLOR", type ) || unify::StringIs( "COLOR", type ) )
-	{
-		return D3DDECLTYPE_D3DCOLOR;
-	}
-	else if ( unify::StringIs( "UBYTE4", type ) )
-	{
-		return D3DDECLTYPE_UBYTE4;
-	}
-	else if ( unify::StringIs( "SHORT2", type ) )
-	{
-		return D3DDECLTYPE_SHORT2;
-	}
-	else if ( unify::StringIs( "SHORT4", type ) )
-	{
-		return D3DDECLTYPE_SHORT4;
-	}
-	else if ( unify::StringIs( "UBYTE4N", type ) )
-	{
-		return D3DDECLTYPE_UBYTE4N;
-	}
-	else if ( unify::StringIs( "SHORT2N", type ) )
-	{
-		return D3DDECLTYPE_SHORT2N;
-	}
-	else if ( unify::StringIs( "SHORT4N", type ) )
-	{
-		return D3DDECLTYPE_SHORT4N;
-	}
-	else if ( unify::StringIs( "USHORT2N", type ) )
-	{
-		return D3DDECLTYPE_USHORT2N;
-	}
-	else if ( unify::StringIs( "USHORT4N", type ) )
-	{
-		return D3DDECLTYPE_USHORT4N;
-	}
-	/*
-	Deprecated in DirectX 10
-	else if ( unify::StringIs( "UDEC3", type ) )
-	{
-		return D3DDECLTYPE_UDEC3;
-	}
-	else if ( unify::StringIs( "DEC3N", type ) )
-	{
-		return D3DDECLTYPE_DEC3N;
-	}
-	*/
-	else if ( unify::StringIs( "FLOAT16_2", type ) )
-	{
-		return D3DDECLTYPE_FLOAT16_2;
-	}
-	else if ( unify::StringIs( "FLOAT16_4", type ) )
-	{
-		return D3DDECLTYPE_FLOAT16_4;
-	}
-	else if ( unify::StringIs( "UNUSED", type ) )
-	{
-		return D3DDECLTYPE_UNUSED;
-	}
-	else
-	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration Type!" );
-	}
-}
+		Float1,
+		Float2,
+		Float3,
+		Float4,
+		Color,
+		Unknown,
+	};
 
-D3DDECLMETHOD ConvertVertexDeclarationMethod( const std::string & method )
-{
-	if ( unify::StringIs( "DEFAULT", method ) )
+#if defined( DIRECTX9 )
+	static TYPE FromElement( const VertexElement & element )
 	{
-		return D3DDECLMETHOD_DEFAULT;
-	}
-	else if (  unify::StringIs( "PARTIALU", method ) )
-	{
-		return D3DDECLMETHOD_PARTIALU;
-	}
-	else if (  unify::StringIs( "PARTIALV", method ) )
-	{
-		return D3DDECLMETHOD_PARTIALV;
-	}
-	else if (  unify::StringIs( "CROSSUV", method ) )
-	{
-		return D3DDECLMETHOD_CROSSUV;
-	}
-	else if (  unify::StringIs( "UV", method ) )
-	{
-		return D3DDECLMETHOD_UV;
-	}
-	else if (  unify::StringIs( "LOOKUP", method ) )
-	{
-		return D3DDECLMETHOD_LOOKUP;
-	}
-	else if (  unify::StringIs( "LOOKUPPRESAMPLED", method ) )
-	{
-		return D3DDECLMETHOD_LOOKUPPRESAMPLED;
-	}
-	else
-	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration Method!" );
-	}
-}
-
-D3DDECLUSAGE ConvertVertexDeclarationUsage( const std::string & usage )
-{
-	if ( unify::StringIs( "POSITION", usage ) )
-	{
-		return D3DDECLUSAGE_POSITION;
-	}
-	else if (  unify::StringIs( "BLENDWEIGHT", usage ) )
-	{
-		return D3DDECLUSAGE_BLENDWEIGHT;
-	}
-	else if (  unify::StringIs( "BLENDINDICES", usage ) )
-	{
-		return D3DDECLUSAGE_BLENDINDICES;
-	}
-	else if (  unify::StringIs( "NORMAL", usage ) )
-	{
-		return D3DDECLUSAGE_NORMAL;
-	}
-	else if (  unify::StringIs( "PSIZE", usage ) )
-	{
-		return D3DDECLUSAGE_PSIZE;
-	}
-	else if (  unify::StringIs( "TEXCOORD", usage ) )
-	{
-		return D3DDECLUSAGE_TEXCOORD;
-	}
-	else if (  unify::StringIs( "TANGENT", usage ) )
-	{
-		return D3DDECLUSAGE_TANGENT;
-	}
-	else if (  unify::StringIs( "BINORMAL", usage ) )
-	{
-		return D3DDECLUSAGE_BINORMAL;
-	}
-	else if (  unify::StringIs( "TESSFACTOR", usage ) )
-	{
-		return D3DDECLUSAGE_TESSFACTOR;
-	}
-	else if (  unify::StringIs( "POSITIONT", usage ) )
-	{
-		return D3DDECLUSAGE_POSITIONT;
-	}
-	else if (  unify::StringIs( "COLOR", usage ) )
-	{
-		return D3DDECLUSAGE_COLOR;
-	}
-	else if (  unify::StringIs( "FOG", usage ) )
-	{
-		return D3DDECLUSAGE_FOG;
-	}
-	else if (  unify::StringIs( "DEPTH", usage ) )
-	{
-		return D3DDECLUSAGE_DEPTH;
-	}
-	else if (  unify::StringIs( "SAMPLE", usage ) )
-	{
-		return D3DDECLUSAGE_SAMPLE;
-	}
-	else
-	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration usage!" );
-	}
-}
-
-std::string VertexElementToName( D3DDECLUSAGE usage, unsigned char usageIndex )
-{
-	switch( usage )
-	{
-	case D3DDECLUSAGE_POSITION:
-		return "POSITION";
-	case D3DDECLUSAGE_BLENDWEIGHT:
-		return "BLENDWEIGHT";
-	case D3DDECLUSAGE_BLENDINDICES:
-		return "BLENDINDICES";
-	case D3DDECLUSAGE_NORMAL:
-		return "NORMAL";
-	case D3DDECLUSAGE_PSIZE:
-		return "PSIZE";
-	case D3DDECLUSAGE_TEXCOORD:
-		return std::string( "TEXCOORD" ) + unify::Cast< std::string >( usageIndex );
-	case D3DDECLUSAGE_TANGENT:
-		return "TANGENT";
-	case D3DDECLUSAGE_BINORMAL:
-		return "BINORMAL";
-	case D3DDECLUSAGE_TESSFACTOR:
-		return "TESSFACTOR";
-	case D3DDECLUSAGE_POSITIONT:
-		return "POSITIONT";
-	case D3DDECLUSAGE_COLOR:
-		switch( usageIndex )
+		switch( element.Type )
 		{
-		case 0:
-		default:
-			return "DIFFUSE";
-		case 1:
-			return "SPECULAR";
+		case D3DDECLTYPE_FLOAT1: return Float1;
+		case D3DDECLTYPE_FLOAT2: return Float2;
+		case D3DDECLTYPE_FLOAT3: return Float3;
+		case D3DDECLTYPE_FLOAT4: return Float4;
+		case D3DDECLTYPE_D3DCOLOR: return Color;
+		case D3DDECLTYPE_UNUSED: return Unknown;
 		}
-	case D3DDECLUSAGE_FOG:
-		return "FOG";
-	case D3DDECLUSAGE_DEPTH:
-		return "DEPTH";
-	case D3DDECLUSAGE_SAMPLE:
-		return "SAMPLE";
-	default:
-		throw unify::Exception( "Failed to convert string Vertex Declaration usage!" );
+		assert( 0 );
+		throw 0;
 	}
-}
+#elif defined( DIRECTX11 )
+	static TYPE FromElement( const VertexElement & element )
+	{
+		switch( element.Format )
+		{
+		case DXGI_FORMAT_R32_FLOAT: return Float1;
+		case DXGI_FORMAT_R32G32_FLOAT: return Float2;
+		case DXGI_FORMAT_R32G32B32_FLOAT: return Float3;
+		case DXGI_FORMAT_R32G32B32A32_FLOAT: return Float4;
+		case DXGI_FORMAT_R8G8B8A8_UNORM: return Color;
+		}
+		assert( 0 );
+		throw 0;
+	}
+#endif
+};
 
-void VertexNameToElement( const std::string & name, D3DDECLUSAGE & usageOut, unsigned char & usageIndexOut )
+size_t Offset( const VertexElement & element )
 {
-	if ( unify::StringIs( name, "POSITION" ) )
-	{
-		usageOut = D3DDECLUSAGE_POSITION;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
-	{
-		usageOut = D3DDECLUSAGE_BLENDWEIGHT;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "BLENDINDICES" ) )
-	{
-		usageOut = D3DDECLUSAGE_BLENDINDICES;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "NORMAL" ) )
-	{
-		usageOut = D3DDECLUSAGE_NORMAL;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "PSIZE" ) )
-	{
-		usageOut = D3DDECLUSAGE_PSIZE;
-		usageIndexOut = 0;
-	}
-	else if ( unify::BeginsWith( name, "TEXCOORD" ) )
-	{
-		usageOut = D3DDECLUSAGE_TEXCOORD;
-		std::string n = name.substr( strlen( "TEXCOORD" ) ); 
-		usageIndexOut = unify::Cast< unsigned char >( n );
-	}
-	else if( unify::BeginsWith( name, "TEX" ) )
-	{
-		usageOut = D3DDECLUSAGE_TEXCOORD;
-		std::string n = name.substr( strlen( "TEX" ) );
-		usageIndexOut = unify::Cast< unsigned char >( n );
-	}
-	else if ( unify::StringIs( name, "TANGENT" ) )
-	{
-		usageOut = D3DDECLUSAGE_TANGENT;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "BINORMAL" ) )
-	{
-		usageOut = D3DDECLUSAGE_BINORMAL;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "TESSFACTOR" ) )
-	{
-		usageOut = D3DDECLUSAGE_TESSFACTOR;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "POSITIONT" ) )
-	{
-		usageOut = D3DDECLUSAGE_POSITIONT;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
-	{
-		usageOut = D3DDECLUSAGE_COLOR;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "SPECULAR" ) )
-	{
-		usageOut = D3DDECLUSAGE_COLOR;
-		usageIndexOut = 1;
-	}
-	else if ( unify::StringIs( name, "FOG" ) )
-	{
-		usageOut = D3DDECLUSAGE_FOG;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "DEPTH" ) )
-	{
-		usageOut = D3DDECLUSAGE_DEPTH;
-		usageIndexOut = 0;
-	}
-	else if ( unify::StringIs( name, "SAMPLE" ) )
-	{
-		usageOut = D3DDECLUSAGE_SAMPLE;
-		usageIndexOut = 0;
-	}
-	else
-	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration usage!" );
-	}
+#if defined( DIRECTX9 )
+	return element.Offset;
+#elif defined( DIRECTX11 )
+	return element.AlignedByteOffset;
+#endif
 }
 
 // This is the automatically assumed size of the
-size_t SizeOfVertexDeclarationElement( D3DDECLTYPE type )
+size_t SizeOf( Format format )
 {
-	switch( type )
+#if defined( DIRECTX9 )
+	switch( format )
 	{
 	case D3DDECLTYPE_FLOAT1:
 		return sizeof( float );
@@ -417,10 +220,10 @@ size_t SizeOfVertexDeclarationElement( D3DDECLTYPE type )
 		return sizeof( unsigned short ) * 2;
 	case D3DDECLTYPE_USHORT4N:
 		return sizeof( unsigned short ) * 4;
-	/* Deprecated in DirectX 10
 	case D3DDECLTYPE_UDEC3:
+		return 4;
 	case D3DDECLTYPE_DEC3N:
-	*/
+		return 4;
 	case D3DDECLTYPE_FLOAT16_2:
 		return 2 * 2;
 	case D3DDECLTYPE_FLOAT16_4:
@@ -430,18 +233,581 @@ size_t SizeOfVertexDeclarationElement( D3DDECLTYPE type )
 	default:
 		throw unify::Exception( "Vertex declaration type not support!" );
 	}
+#elif defined( DIRECTX11 )	
+	switch( format )
+	{
+	case DXGI_FORMAT_R32_FLOAT:
+		return sizeof( float );
+	case DXGI_FORMAT_R32G32_FLOAT:
+		return sizeof( float ) * 2;
+	case DXGI_FORMAT_R32G32B32_FLOAT:
+		return sizeof( float ) * 3;
+	case DXGI_FORMAT_R32G32B32A32_FLOAT:
+		return sizeof( float ) * 4;
+	case DXGI_FORMAT_R8G8B8A8_UNORM:
+		return sizeof( unsigned int );
+	case DXGI_FORMAT_R8G8B8A8_UINT:
+		return sizeof( unsigned char ) * 4;
+	case DXGI_FORMAT_R16G16_SINT:
+		return sizeof( short ) * 2;
+	case DXGI_FORMAT_R16G16B16A16_SINT:
+		return sizeof( short ) * 4;
+	case DXGI_FORMAT_R16G16_SNORM:
+		return sizeof( short ) * 2;
+	case DXGI_FORMAT_R16G16B16A16_SNORM:
+		return sizeof( short ) * 4;
+	case DXGI_FORMAT_R16G16_UNORM:
+		return sizeof( unsigned short ) * 2;
+	case DXGI_FORMAT_R16G16B16A16_UNORM:
+		return sizeof( unsigned short ) * 4;
+	case DXGI_FORMAT_R10G10B10A2_UINT:
+		return 4;
+	case DXGI_FORMAT_R10G10B10A2_UNORM:
+		return 4;
+	case DXGI_FORMAT_R16G16_FLOAT:
+		return 4;
+	case DXGI_FORMAT_R16G16B16A16_FLOAT:
+		return 8;
+	case DXGI_FORMAT_UNKNOWN:
+		return 0;
+	default:
+		throw unify::Exception( "Vertex declaration type not support!" );
+	}
+#endif
 }
+
+size_t SizeOf( VertexElement element )
+{
+#if defined( DIRECTX9 )
+	return SizeOf( (Format)element.Type );
+#elif defined( DIRECTX11 )
+	return SizeOf( element.Format );
+#endif
+}
+
+void ConvertType( const std::string & type, Format & format, size_t & size )
+{
+	if( unify::StringIsAny( type, { "FLOAT1", "FLOAT", "R32_FLOAT" } ) )
+	{
+#if defined( DIRECT9 )
+		format = D3DDECLTYPE_FLOAT1;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R32_FLOAT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "FLOAT2", "TEXCOORD", "R32G32_FLOAT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_FLOAT2;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R32G32_FLOAT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "FLOAT3", "R32G32B32_FLOAT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_FLOAT3;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R32G32B32_FLOAT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "FLOAT4", "COLORUNIT", "R32G32B32A32_FLOAT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_FLOAT4;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "D3DCOLOR", "COLOR", "R8G8B8A8_UNORM" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_D3DCOLOR;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R8G8B8A8_UNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "UBYTE4", "R8G8B8A8_UINT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_UBYTE4;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R8G8B8A8_UINT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "SHORT2", "R16G16_SINT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_SHORT2;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16_SINT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "SHORT4", "R16G16B16A16_SINT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_SHORT4;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16B16A16_SINT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "UBYTE4N" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_UBYTE4N;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R8G8B8A8_UNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "SHORT2N", "R16G16_SNORM" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_SHORT2N;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16_SNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "SHORT4N", "R16G16B16A16_SNORM" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_SHORT4N;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16B16A16_SNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "USHORT2N", "R16G16_UNORM" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_USHORT2N;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16_UNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "USHORT4N", "R16G16B16A16_UNORM" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_USHORT4N;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16B16A16_UNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "UDEC3", "R10G10B10A2_UINT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_UDEC3;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R10G10B10A2_UINT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "DEC3N", "R10G10B10A2_UNORM" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_DEC3N;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R10G10B10A2_UNORM;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "FLOAT16_2", "R16G16_FLOAT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_FLOAT16_2;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16_FLOAT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "FLOAT16_4", "R16G16B16A16_FLOAT" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_FLOAT16_4;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+#endif
+	}
+	else if( unify::StringIsAny( type, { "UNUSED", "UNKNOWN" } ) )
+	{
+#if defined( DIRECTX9 )
+		format = D3DDECLTYPE_UNUSED;
+#elif defined( DIRECTX11 )
+		format = DXGI_FORMAT_UNKNOWN;
+#endif
+	}
+	else
+	{
+		throw unify::Exception( "Failed to convert string Vertex Declaration type!" );
+	}
+	size = SizeOf( format );
+}
+
+/*
+D3DDECLMETHOD ConvertVertexDeclarationMethod( const std::string & method )
+{
+if ( unify::StringIs( "DEFAULT", method ) )
+{
+return D3DDECLMETHOD_DEFAULT;
+}
+else if (  unify::StringIs( "PARTIALU", method ) )
+{
+return D3DDECLMETHOD_PARTIALU;
+}
+else if (  unify::StringIs( "PARTIALV", method ) )
+{
+return D3DDECLMETHOD_PARTIALV;
+}
+else if (  unify::StringIs( "CROSSUV", method ) )
+{
+return D3DDECLMETHOD_CROSSUV;
+}
+else if (  unify::StringIs( "UV", method ) )
+{
+return D3DDECLMETHOD_UV;
+}
+else if (  unify::StringIs( "LOOKUP", method ) )
+{
+return D3DDECLMETHOD_LOOKUP;
+}
+else if (  unify::StringIs( "LOOKUPPRESAMPLED", method ) )
+{
+return D3DDECLMETHOD_LOOKUPPRESAMPLED;
+}
+else
+{
+throw unify::Exception( "Failed to convert string Vertex Declaration Method!" );
+}
+}
+*/
+
+#if defined( DIRECTX9 )
+typedef D3DDECLUSAGE Semantic;
+#elif defined( DIRECTX11 )
+typedef char* Semantic;
+#endif
+
+Semantic ConvertUsage( const std::string & usage )
+{
+	if( unify::StringIs( "POSITION", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_POSITION;
+#elif defined( DIRECTX11 )
+		return "POSITION";
+#endif
+	}
+	else if( unify::StringIs( "BLENDWEIGHT", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_BLENDWEIGHT;
+#elif defined( DIRECTX11 )
+		return "BLENDWEIGHT";
+#endif
+	}
+	else if( unify::StringIs( "BLENDINDICES", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_BLENDINDICES;
+#elif defined( DIRECTX11 )
+		return "BLENDINDICES";
+#endif
+	}
+	else if( unify::StringIs( "NORMAL", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_NORMAL;
+#elif defined( DIRECTX11 )
+		return "NORMAL";
+#endif
+	}
+	else if( unify::StringIs( "PSIZE", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_PSIZE;
+#elif defined( DIRECTX11 )
+		return "PSIZE";
+#endif
+	}
+	else if( unify::StringIs( "TEXCOORD", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_TEXCOORD;
+#elif defined( DIRECTX11 )
+		return "TEXCOORD";
+#endif
+	}
+	else if( unify::StringIs( "TANGENT", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_TANGENT;
+#elif defined( DIRECTX11 )
+		return "TANGENT";
+#endif
+	}
+	else if( unify::StringIs( "BINORMAL", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_BINORMAL;
+#elif defined( DIRECTX11 )
+		return "BINORMAL";
+#endif
+	}
+	else if( unify::StringIs( "TESSFACTOR", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_TESSFACTOR;
+#elif defined( DIRECTX11 )
+		return "TESSFACTOR";
+#endif
+	}
+	else if( unify::StringIs( "POSITIONT", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_POSITIONT;
+#elif defined( DIRECTX11 )
+		return "POSITIONT";
+#endif
+	}
+	else if( unify::StringIs( "COLOR", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_COLOR;
+#elif defined( DIRECTX11 )
+		return "COLOR";
+#endif
+	}
+	else if( unify::StringIs( "FOG", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_FOG;
+#elif defined( DIRECTX11 )
+		return "FOG";
+#endif
+	}
+	else if( unify::StringIs( "DEPTH", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_DEPTH;
+#elif defined( DIRECTX11 )
+		return "DEPTH";
+#endif
+	}
+	else if( unify::StringIs( "SAMPLE", usage ) )
+	{
+#if defined( DIRECTX9 )
+		return D3DDECLUSAGE_SAMPLE;
+#elif defined( DIRECTX11 )
+		return "SAMPLE";
+#endif
+	}
+	else
+	{
+		throw unify::Exception( "Failed to convert string Vertex Declaration usage!" );
+	}
+}
+
+/*
+std::string VertexElementToName( D3DDECLUSAGE usage, unsigned char usageIndex )
+{
+switch( usage )
+{
+case D3DDECLUSAGE_POSITION:
+return "POSITION";
+case D3DDECLUSAGE_BLENDWEIGHT:
+return "BLENDWEIGHT";
+case D3DDECLUSAGE_BLENDINDICES:
+return "BLENDINDICES";
+case D3DDECLUSAGE_NORMAL:
+return "NORMAL";
+case D3DDECLUSAGE_PSIZE:
+return "PSIZE";
+case D3DDECLUSAGE_TEXCOORD:
+return std::string( "TEXCOORD" ) + unify::Cast< std::string >( usageIndex );
+case D3DDECLUSAGE_TANGENT:
+return "TANGENT";
+case D3DDECLUSAGE_BINORMAL:
+return "BINORMAL";
+case D3DDECLUSAGE_TESSFACTOR:
+return "TESSFACTOR";
+case D3DDECLUSAGE_POSITIONT:
+return "POSITIONT";
+case D3DDECLUSAGE_COLOR:
+switch( usageIndex )
+{
+case 0:
+default:
+return "DIFFUSE";
+case 1:
+return "SPECULAR";
+}
+case D3DDECLUSAGE_FOG:
+return "FOG";
+case D3DDECLUSAGE_DEPTH:
+return "DEPTH";
+case D3DDECLUSAGE_SAMPLE:
+return "SAMPLE";
+default:
+throw unify::Exception( "Failed to convert string Vertex Declaration usage!" );
+}
+}
+*/
+
+void VertexNameToElement( const std::string & name, Semantic & usageOut, unsigned char & usageIndexOut )
+{
+	if( unify::StringIs( name, "POSITION" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_POSITION;
+#elif defined( DIRECTX11 )
+		usageOut = "POSITION";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "BLENDWEIGHT" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_BLENDWEIGHT;
+#elif defined( DIRECTX11 )
+		usageOut = "BLENDWEIGHT";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "BLENDINDICES" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_BLENDINDICES;
+#elif defined( DIRECTX11 )
+		usageOut = "BLENDINDICES";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "NORMAL" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_NORMAL;
+#elif defined( DIRECTX11 )
+		usageOut = "NORMAL";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "PSIZE" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_PSIZE;
+#elif defined( DIRECTX11 )
+		usageOut = "PSIZE";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::BeginsWith( name, "TEXCOORD" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_TEXCOORD;
+#elif defined( DIRECTX11 )
+		usageOut = "TEXCOORD";
+#endif
+		std::string n = name.substr( strlen( "TEXCOORD" ) );
+		usageIndexOut = unify::Cast< unsigned char >( n );
+	}
+	else if( unify::BeginsWith( name, "TEX" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_TEXCOORD;
+#elif defined( DIRECTX11 )
+		usageOut = "TEXCOORD";
+#endif
+		std::string n = name.substr( strlen( "TEX" ) );
+		usageIndexOut = unify::Cast< unsigned char >( n );
+	}
+	else if( unify::StringIs( name, "TANGENT" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_TANGENT;
+#elif defined( DIRECTX11 )
+		usageOut = "TANGENT";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "BINORMAL" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_BINORMAL;
+#elif defined( DIRECTX11 )
+		usageOut = "BINORMAL";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "TESSFACTOR" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_TESSFACTOR;
+#elif defined( DIRECTX11 )
+		usageOut = "TESSFACTOR";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "POSITIONT" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_POSITIONT;
+#elif defined( DIRECTX11 )
+		usageOut = "POSITIONT";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_COLOR;
+#elif defined( DIRECTX11 )
+		usageOut = "COLOR";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "SPECULAR" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_COLOR;
+#elif defined( DIRECTX11 )
+		usageOut = "COLOR";
+#endif
+		usageIndexOut = 1;
+	}
+	else if( unify::StringIs( name, "FOG" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_FOG;
+#elif defined( DIRECTX11 )
+		usageOut = "FOG";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "DEPTH" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_DEPTH;
+#elif defined( DIRECTX11 )
+		usageOut = "DEPTH";
+#endif
+		usageIndexOut = 0;
+	}
+	else if( unify::StringIs( name, "SAMPLE" ) )
+	{
+#if defined( DIRECTX9 )
+		usageOut = D3DDECLUSAGE_SAMPLE;
+#elif defined( DIRECTX11 )
+		usageOut = "SAMPLE";
+#endif
+		usageIndexOut = 0;
+	}
+	else
+	{
+		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
+	}
+}
+
+
+
+
+
 
 VertexDeclaration::VertexDeclaration()
-: m_vertexDeclaration( 0 )
-{
-}
-
-VertexDeclaration::VertexDeclaration( const VertexDeclaration & from )
-: m_vertexDeclaration( from.m_vertexDeclaration )
-, m_elements( from.m_elements )
-, m_elementMap( from.m_elementMap )
-, m_totalSizeInBytes( from.m_totalSizeInBytes )
 {
 }
 
@@ -451,57 +817,74 @@ VertexDeclaration::VertexDeclaration( const qxml::Element & element )
 	m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
 	for( const auto child : element.Children() )
 	{
-		if ( child.IsTagName( "element" ) )
+		if( child.IsTagName( "element" ) )
 		{
-			unsigned short stream = child.GetAttributeElse< unsigned short >( "stream", 0 );
+			unsigned short slot = 0;
+			if( child.HasAttributes( "stream" ) )
+			{
+				slot = child.GetAttributeElse< unsigned short >( "stream", 0 );
+			}
+			else if( child.HasAttributes( "slot" ) )
+			{
+				slot = child.GetAttributeElse< unsigned short >( "slot", 0 );
+			}
+
 			//unsigned short offset = child.GetAttributeElse< unsigned short >( "offset", m_totalSizeInBytes );
-			D3DDECLTYPE type = ConvertVertexDeclarationType( child.GetAttribute( "type" )->GetString() );
-			D3DDECLMETHOD method = child.HasAttributes( "method" ) ? ConvertVertexDeclarationMethod( child.GetAttribute( "method" )->GetString() ) : D3DDECLMETHOD_DEFAULT;
+
+			Format format;
+			size_t size;
+			ConvertType( child.GetAttribute( "type" )->GetString(), format, size );
+
+			//D3DDECLMETHOD method = child.HasAttributes( "method" ) ? ConvertVertexDeclarationMethod( child.GetAttribute( "method" )->GetString() ) : D3DDECLMETHOD_DEFAULT;
 
 			std::string name = child.GetAttribute( "name" )->GetString();
 
-			D3DDECLUSAGE usage = D3DDECLUSAGE();
-
+			Semantic usage{};
 			unsigned char usageIndex = child.GetAttributeElse< unsigned char >( "usageindex", 0 );
-
-			if ( child.HasAttributes( "usage" ) )
+			if( child.HasAttributes( "usage" ) )
 			{
-				usage = ConvertVertexDeclarationUsage( child.GetAttribute( "usage" )->GetString() );
+				usage = ConvertUsage( child.GetAttribute( "usage" )->GetString() );
 			}
 			else // Get the usage from the name...
 			{
 				VertexNameToElement( name, usage, usageIndex );
 			}
 
-			VertexElement element;
-			element.Stream = stream;
+			VertexElement element{};
+#if defined( DIRECTX9 )
+			element.Stream = slot;
 			element.Offset = (WORD)m_totalSizeInBytes; //offset;
-			element.Type = type;
-			element.Method = method;
+			element.Type = format;
+			//element.Method = method;
 			element.Usage = usage;
 			element.UsageIndex = usageIndex;
-			m_elementMap[ name ] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
+#elif defined( DIRECTX11 )
+			element.InputSlot = slot;
+			element.AlignedByteOffset = m_totalSizeInBytes;
+			element.Format = format;
+			// TODO: method 
+			element.SemanticName = usage;
+			element.SemanticIndex = usageIndex;
+#endif
+			m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 			m_elements.push_back( element );
 
-			size_t size = SizeOfVertexDeclarationElement( type );
 			//m_totalSizeInBytes = offset + size;
 			m_totalSizeInBytes += size;
 		}
 	}
 
-	if ( m_elements.size() == 0 )
+	if( m_elements.size() == 0 )
 	{
 		throw unify::Exception( "No vertex elements found for vertex declaration!" );
 	}
 
+#if defined( DIRECTX9 )
 	VertexElement end = D3DDECL_END();
 	m_elements.push_back( end );
-
-	HRESULT hr = win::DX::GetDxDevice()->CreateVertexDeclaration( &m_elements[ 0 ], &m_vertexDeclaration );
-	if ( FAILED( hr ) )
-	{
-		throw unify::Exception( "Failed to create vertex declaration!" );
-	}
+#elif defined( DIRECTX11 )
+	// Size of array is passed in now.
+#endif 
 }
 
 VertexDeclaration::VertexDeclaration( const qjson::Object & object )
@@ -509,10 +892,10 @@ VertexDeclaration::VertexDeclaration( const qjson::Object & object )
 	// Accumulate elements.
 	m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
 	for( auto itr : object )
-	//for( const qxml::Element * itr = element.GetFirstChild(), *end = 0; itr != end; itr = itr->GetNext() )
+		//for( const qxml::Element * itr = element.GetFirstChild(), *end = 0; itr != end; itr = itr->GetNext() )
 	{
 		size_t elementSizeInBytes = 0;
-		const qjson::Object * member = dynamic_cast< const qjson::Object * >( itr.GetValue().get() );
+		const qjson::Object * member = dynamic_cast< const qjson::Object * >(itr.GetValue().get());
 		if( member != nullptr )
 		{
 			int x( 0 ); x;
@@ -540,26 +923,39 @@ VertexDeclaration::VertexDeclaration( const qjson::Object & object )
 		}
 		else // Simple string as type.
 		{
-			unsigned short stream = 0;
-			D3DDECLTYPE type = ConvertVertexDeclarationType( itr.GetValue()->ToString() );
-			D3DDECLMETHOD method = D3DDECLMETHOD_DEFAULT;
-			unsigned char usageIndex = 0;
+			unsigned short slot = 0;
+			Format format;
+			size_t size;
+			ConvertType( itr.GetValue()->ToString(), format, size );
+
+			//D3DDECLMETHOD method = D3DDECLMETHOD_DEFAULT;
 			std::string name = itr.GetName();
-			
-			D3DDECLUSAGE usage = D3DDECLUSAGE();
+
+			Semantic usage = {};
+			unsigned char usageIndex = 0;
 			VertexNameToElement( name, usage, usageIndex );
 
-			VertexElement element;
-			element.Stream = stream;
+			VertexElement element{};
+#if defined( DIRECTX9 )
+			element.Stream = slot;
 			element.Offset = (WORD)m_totalSizeInBytes; //offset;
-			element.Type = type;
-			element.Method = method;
+			element.Type = format;
+			//element.Method = method;
 			element.Usage = usage;
 			element.UsageIndex = usageIndex;
+#elif defined( DIRECTX11 )
+			element.InputSlot = slot;
+			element.AlignedByteOffset = m_totalSizeInBytes;
+			element.Format = format;
+			// TODO: method 
+			element.SemanticName = usage;
+			element.SemanticIndex = usageIndex;
+#endif
+
 			m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 			m_elements.push_back( element );
 
-			elementSizeInBytes = SizeOfVertexDeclarationElement( type );
+			elementSizeInBytes = size;
 		}
 		//m_totalSizeInBytes = offset + size;
 		m_totalSizeInBytes += elementSizeInBytes;
@@ -570,23 +966,12 @@ VertexDeclaration::VertexDeclaration( const qjson::Object & object )
 		throw unify::Exception( "No vertex elements found for vertex declaration!" );
 	}
 
+#if defined( DIRECTX9 )
 	VertexElement end = D3DDECL_END();
 	m_elements.push_back( end );
-
-	HRESULT hr = win::DX::GetDxDevice()->CreateVertexDeclaration( &m_elements[0], &m_vertexDeclaration );
-	if( FAILED( hr ) )
-	{
-		throw unify::Exception( "Failed to create vertex declaration!" );
-	}
-}
-
-VertexDeclaration & VertexDeclaration::operator=( const VertexDeclaration & from )
-{
-	m_vertexDeclaration = from.m_vertexDeclaration;
-	m_elements = from.m_elements;
-	m_elementMap = from.m_elementMap;
-	m_totalSizeInBytes = from.m_totalSizeInBytes;
-	return *this;
+#elif defined( DIRECTX11 )
+	// Size of array is passed in now.
+#endif 
 }
 
 VertexDeclaration::~VertexDeclaration()
@@ -594,21 +979,33 @@ VertexDeclaration::~VertexDeclaration()
 	Destroy();
 }
 
+void VertexDeclaration::Build( const VertexShader & vs )
+{
+#if defined( DIRECTX9 )
+	HRESULT hr = win::DX::GetDxDevice()->CreateVertexDeclaration( &m_elements[0], &m_layout );
+	if( FAILED( hr ) )
+	{
+		throw unify::Exception( "Failed to create vertex declaration!" );
+	}
+#elif defined( DIRECTX11 )
+	HRESULT hr = win::DX::GetDxDevice()->CreateInputLayout( &m_elements[0], m_elements.size(), vs.GetBytecode(), vs.GetBytecodeLength(), &m_layout );
+	if( FAILED( hr ) )
+	{
+		throw unify::Exception( "Failed to create vertex declaration!" );
+	}
+#endif
+}
+
 bool VertexDeclaration::operator==( const VertexDeclaration & b ) const
 {
-	if ( GetSize() != b.GetSize() || m_elements.size() != b.m_elements.size() ) 
+	if( GetSize() != b.GetSize() || m_elements.size() != b.m_elements.size() )
 	{
 		return false;
 	}
 
 	for( size_t i = 0; i < m_elements.size(); ++i )
 	{
-		if ( m_elements[ i ].Method != b.m_elements[ i ].Method || 
-			m_elements[ i ].Offset != b.m_elements[ i ].Offset ||
-			m_elements[ i ].Stream != b.m_elements[ i ].Stream ||
-			m_elements[ i ].Type != b.m_elements[ i ].Type ||
-			m_elements[ i ].Usage != b.m_elements[ i ].Usage || 
-			m_elements[ i ].UsageIndex != b.m_elements[ i ].UsageIndex )
+		if( memcmp( &m_elements[i], &b.m_elements[i], sizeof( VertexElement ) ) != 0 )
 		{
 			return false;
 		}
@@ -619,16 +1016,14 @@ bool VertexDeclaration::operator==( const VertexDeclaration & b ) const
 
 bool VertexDeclaration::operator!=( const VertexDeclaration & b ) const
 {
-	return !( operator==( b ) );
+	return !(operator==( b ));
 }
 
 void VertexDeclaration::Destroy()
 {
 	m_elements.clear();
 	m_elementMap.clear();
-
-	m_vertexDeclaration.Release();
-	m_vertexDeclaration = 0;
+	m_layout = nullptr;
 }
 
 size_t VertexDeclaration::GetNumberOfElements() const
@@ -639,7 +1034,7 @@ size_t VertexDeclaration::GetNumberOfElements() const
 bool VertexDeclaration::ElementExists( const std::string & name ) const
 {
 	ElementMap::const_iterator itr = m_elementMap.find( name );
-	return ! ( itr == m_elementMap.end() );
+	return !(itr == m_elementMap.end());
 }
 
 bool VertexDeclaration::GetElement( const std::string name, VertexElement & element ) const
@@ -663,7 +1058,16 @@ bool VertexDeclaration::GetElement( size_t index, VertexElement & element ) cons
 
 bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & element ) const
 {
-	auto elementItr = std::find_if( m_elements.begin(), m_elements.end(), [&]( auto & e ) { return e.Usage == toFind.Usage && e.UsageIndex == toFind.UsageIndex; } );
+	auto elementItr = std::find_if( 
+		m_elements.begin(), m_elements.end(), 
+		[ & ]( auto & e ) 
+	{ 
+#if defined( DIRECTX9 )
+		return e.Usage == toFind.Usage && e.UsageIndex == toFind.UsageIndex; 
+#elif defined( DIRECTX11 )
+		return e.SemanticName == toFind.SemanticName && e.SemanticIndex == toFind.SemanticIndex;
+#endif
+	} );
 	if( elementItr == m_elements.end() )
 	{
 		return false;
@@ -676,21 +1080,31 @@ bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & elemen
 size_t VertexDeclaration::GetElementOffset( const std::string & name ) const
 {
 	ElementMap::const_iterator itr = m_elementMap.find( name );
-	if ( itr == m_elementMap.end() )
+	if( itr == m_elementMap.end() )
 	{
 		throw unify::Exception( "VertexDeclaration: Element not found!" );
 	}
-	return m_elements[ itr->second ].Offset;
+
+#if defined( DIRECTX9 )
+	return m_elements[itr->second].Offset;
+#elif defined( DIRECTX11 )
+	return m_elements[itr->second].AlignedByteOffset;
+#endif
 }
 
 size_t VertexDeclaration::GetElementSize( const std::string & name ) const
 {
 	ElementMap::const_iterator itr = m_elementMap.find( name );
-	if ( itr == m_elementMap.end() )
+	if( itr == m_elementMap.end() )
 	{
 		throw unify::Exception( "VertexDeclaration: Element not found!" );
 	}
-	return SizeOfVertexDeclarationElement( static_cast< D3DDECLTYPE >( m_elements[ itr->second ].Type ) );
+
+#if defined( DIRECTX9 )
+	return SizeOf( static_cast< Format >(m_elements[itr->second].Type) );
+#elif defined( DIRECTX11 )
+	return SizeOf( static_cast< Format >(m_elements[itr->second].Format) );
+#endif
 }
 
 size_t VertexDeclaration::GetSize() const
@@ -700,38 +1114,44 @@ size_t VertexDeclaration::GetSize() const
 
 void VertexDeclaration::Use()
 {
-	HRESULT result = win::DX::GetDxDevice()->SetVertexDeclaration( m_vertexDeclaration );
+#if defined( DIRECTX9 )
+	HRESULT result = win::DX::GetDxDevice()->SetVertexDeclaration( m_layout );
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to set vertex declaration!" );
 	}
+#elif defined( DIRECTX11 )
+	win::DX::GetDxContext()->IASetInputLayout( m_layout );
+#endif
 }
 
 bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex, VertexElement element, const unify::V2< float > & v ) const
 {
 	VertexElement elementFound = {};
-	if( ! GetElement( element, elementFound ) )
+	if( !GetElement( element, elementFound ) )
 	{
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = v;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = v;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = v.x;
 		destItem->y = v.y;
 		destItem->z = 0;
@@ -751,23 +1171,25 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = v;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = v;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = v;
 		return true;
 	}
@@ -784,26 +1206,28 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = v.x;
 		destItem->y = v.y;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = v.x;
 		destItem->y = v.y;
 		destItem->z = v.z;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = v.x;
 		destItem->y = v.y;
 		destItem->z = v.z;
@@ -823,26 +1247,28 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * destItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = tc.u;
 		destItem->y = tc.v;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = tc.u;
 		destItem->y = tc.v;
 		destItem->z = 0;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = tc.u;
 		destItem->y = tc.v;
 		destItem->z = 0;
@@ -864,28 +1290,30 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 
 	unify::ColorUnit cu( c );
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = cu.r;
 		destItem->y = cu.g;
 		destItem->z = cu.b;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = cu.r;
 		destItem->y = cu.g;
 		destItem->z = cu.b;
 		destItem->w = cu.a;
 		return true;
 	}
-	case D3DDECLTYPE_D3DCOLOR:
+	case WriteMethod::Color:
 	{
-		unify::Color * destItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::Color * destItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = c;
 		return true;
 	}
@@ -901,31 +1329,33 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	{
 		return false;
 	}
-	
+
 	unify::Color c( cu );
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = cu.r;
 		destItem->y = cu.g;
 		destItem->z = cu.b;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		destItem->x = cu.r;
 		destItem->y = cu.g;
 		destItem->z = cu.b;
 		destItem->w = cu.a;
 		return true;
 	}
-	case D3DDECLTYPE_D3DCOLOR:
+	case WriteMethod::Color:
 	{
-		unify::Color * destItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::Color * destItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		*destItem = c;
 		return true;
 	}
@@ -939,29 +1369,30 @@ bool VertexDeclaration::WriteVertex( unify::DataLock & lock, size_t vertexIndex,
 	size_t result = 0;
 	for( auto e : inVD.m_elements )
 	{
-		switch( e.Type )
+		size_t offset = Offset( e );
+		switch( WriteMethod::FromElement( e ) )
 		{
-		case D3DDECLTYPE_FLOAT2:
+		case WriteMethod::Float2:
 		{
-			unify::V2< float > * d = reinterpret_cast<unify::V2< float > *>((unsigned char *)vertex + e.Offset);
+			unify::V2< float > * d = reinterpret_cast<unify::V2< float > *>((unsigned char *)vertex + offset);
 			result += WriteVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 			break;
 		}
-		case D3DDECLTYPE_FLOAT3:
+		case WriteMethod::Float3:
 		{
-			unify::V3< float > * d = reinterpret_cast<unify::V3< float > *>((unsigned char *)vertex + e.Offset);
+			unify::V3< float > * d = reinterpret_cast<unify::V3< float > *>((unsigned char *)vertex + offset);
 			result += WriteVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 		}
 		break;
-		case D3DDECLTYPE_FLOAT4:
+		case WriteMethod::Float4:
 		{
-			unify::V4< float > * d = reinterpret_cast<unify::V4< float > *>((unsigned char *)vertex + e.Offset);
+			unify::V4< float > * d = reinterpret_cast<unify::V4< float > *>((unsigned char *)vertex + offset);
 			result += WriteVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 			break;
 		}
-		case D3DDECLTYPE_D3DCOLOR:
+		case WriteMethod::Color:
 		{
-			unify::Color * d = reinterpret_cast<unify::Color *>((unsigned char *)vertex + e.Offset);
+			unify::Color * d = reinterpret_cast<unify::Color *>((unsigned char *)vertex + offset);
 			result += WriteVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 			break;
 		}
@@ -1050,23 +1481,25 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * sourceItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * sourceItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		v = *sourceItem;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		v = *sourceItem;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		v.x = sourceItem->x;
 		v.y = sourceItem->y;
 		return true;
@@ -1084,23 +1517,25 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		const unify::V2< float > * sourceItem = reinterpret_cast<const unify::V2< float > *>((const unsigned char *)lock.GetItemReadOnly( vertexIndex ) + elementFound.Offset);
+		const unify::V2< float > * sourceItem = reinterpret_cast<const unify::V2< float > *>((const unsigned char *)lock.GetItemReadOnly( vertexIndex ) + offset);
 		v = *sourceItem;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		const unify::V3< float > * sourceItem = reinterpret_cast<const unify::V3< float > *>((const unsigned char *)lock.GetItemReadOnly( vertexIndex ) + elementFound.Offset);
+		const unify::V3< float > * sourceItem = reinterpret_cast<const unify::V3< float > *>((const unsigned char *)lock.GetItemReadOnly( vertexIndex ) + offset);
 		v = *sourceItem;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		const unify::V4< float > * sourceItem = reinterpret_cast<const unify::V4< float > *>((const unsigned char *)lock.GetItemReadOnly( vertexIndex ) + elementFound.Offset);
+		const unify::V4< float > * sourceItem = reinterpret_cast<const unify::V4< float > *>((const unsigned char *)lock.GetItemReadOnly( vertexIndex ) + offset);
 		v.x = sourceItem->x;
 		v.y = sourceItem->y;
 		v.z = sourceItem->z;
@@ -1119,26 +1554,28 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * sourceItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * sourceItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		v.x = sourceItem->x;
 		v.y = sourceItem->y;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		v.x = sourceItem->x;
 		v.y = sourceItem->y;
 		v.z = sourceItem->z;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		v.x = sourceItem->x;
 		v.y = sourceItem->y;
 		v.z = sourceItem->z;
@@ -1158,25 +1595,27 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 		return false;
 	}
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT2:
+	case WriteMethod::Float2:
 	{
-		unify::V2< float > * sourceItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V2< float > * sourceItem = reinterpret_cast<unify::V2< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		tc.u = sourceItem->x;
 		tc.v = sourceItem->y;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		tc.u = sourceItem->x;
 		tc.v = sourceItem->y;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		tc.u = sourceItem->x;
 		tc.v = sourceItem->y;
 		return true;
@@ -1196,28 +1635,30 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 
 	unify::ColorUnit cu( c );
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		cu.r = sourceItem->x;
 		cu.g = sourceItem->y;
 		cu.b = sourceItem->z;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		cu.r = sourceItem->x;
 		cu.g = sourceItem->y;
 		cu.b = sourceItem->z;
 		cu.a = sourceItem->w;
 		return true;
 	}
-	case D3DDECLTYPE_D3DCOLOR:
+	case WriteMethod::Color:
 	{
-		unify::Color * sourceItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::Color * sourceItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		c = *sourceItem;
 		return true;
 	}
@@ -1236,28 +1677,30 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 
 	unify::Color c( cu );
 
-	switch( elementFound.Type )
+	size_t offset = Offset( elementFound );
+
+	switch( WriteMethod::FromElement( elementFound ) )
 	{
-	case D3DDECLTYPE_FLOAT3:
+	case WriteMethod::Float3:
 	{
-		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V3< float > * sourceItem = reinterpret_cast<unify::V3< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		cu.r = sourceItem->x;
 		cu.g = sourceItem->y;
 		cu.b = sourceItem->z;
 		return true;
 	}
-	case D3DDECLTYPE_FLOAT4:
+	case WriteMethod::Float4:
 	{
-		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::V4< float > * sourceItem = reinterpret_cast<unify::V4< float > *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		cu.r = sourceItem->x;
 		cu.g = sourceItem->y;
 		cu.b = sourceItem->z;
 		cu.a = sourceItem->w;
 		return true;
 	}
-	case D3DDECLTYPE_D3DCOLOR:
+	case WriteMethod::Color:
 	{
-		unify::Color * sourceItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + elementFound.Offset);
+		unify::Color * sourceItem = reinterpret_cast<unify::Color *>((unsigned char *)lock.GetItem( vertexIndex ) + offset);
 		c = *sourceItem;
 		return true;
 	}
@@ -1271,29 +1714,30 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 	size_t result = 0;
 	for( auto e : inVD.m_elements )
 	{
-		switch( e.Type )
+		size_t offset = Offset( e );
+		switch( WriteMethod::FromElement( e ) )
 		{
-		case D3DDECLTYPE_FLOAT2:
+		case WriteMethod::Float2:
 		{
-			unify::V2< float > * d = reinterpret_cast<unify::V2< float > *>((unsigned char *)vertex + e.Offset);
+			unify::V2< float > * d = reinterpret_cast<unify::V2< float > *>((unsigned char *)vertex + offset);
 			result += ReadVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 			break;
 		}
-		case D3DDECLTYPE_FLOAT3:
+		case WriteMethod::Float3:
 		{
-			unify::V3< float > * d = reinterpret_cast<unify::V3< float > *>((unsigned char *)vertex + e.Offset);
+			unify::V3< float > * d = reinterpret_cast<unify::V3< float > *>((unsigned char *)vertex + offset);
 			result += ReadVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 		}
 		break;
-		case D3DDECLTYPE_FLOAT4:
+		case WriteMethod::Float4:
 		{
-			unify::V4< float > * d = reinterpret_cast<unify::V4< float > *>((unsigned char *)vertex + e.Offset);
+			unify::V4< float > * d = reinterpret_cast<unify::V4< float > *>((unsigned char *)vertex + offset);
 			result += ReadVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 			break;
 		}
-		case D3DDECLTYPE_D3DCOLOR:
+		case WriteMethod::Color:
 		{
-			unify::Color * d = reinterpret_cast<unify::Color *>((unsigned char *)vertex + e.Offset);
+			unify::Color * d = reinterpret_cast<unify::Color *>((unsigned char *)vertex + offset);
 			result += ReadVertex( lock, vertexIndex, e, *d ) ? 1 : 0;
 			break;
 		}

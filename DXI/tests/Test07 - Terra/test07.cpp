@@ -28,10 +28,10 @@ protected:
 	scene::Camera::shared_ptr m_camera;
 
 public:
-	void Startup();
-	bool Update( unify::Seconds elapsed, IInput & input );
-	void Render();
-	void Shutdown();
+	void Startup() override;
+	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input ) override;
+	void Render( const RenderInfo & renderInfo ) override;
+	void Shutdown() override;
 } game;
 
 
@@ -46,14 +46,14 @@ void MyGame::Startup()
 	m_camera->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 
 	// Add textures we will need for our effects, and terrain generation/modification.
-	GetManager< Texture >()->Add( "test256", new Texture( "media/test256.png", TEXTURE_LOCKABLE ) );
+	GetManager< Texture >()->Add( "test256", new Texture( "media/test256.png", true, true ) );
 
 	// Load an effect, then modify it to fit our needs.
-	Effect::shared_ptr landEffect = GetManager< Effect >()->Add( "solid", "media/EffectTextured.xml" );
+	Effect::ptr landEffect = GetManager< Effect >()->Add( "solid", "media/EffectTextured.xml" );
 	landEffect->SetBlend( Blend( Usage::False ) );
 	landEffect->SetTexture( 0, GetManager< Texture >()->Find( "test256" ) );
 
-	Effect::shared_ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
+	Effect::ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.xml" );
 	cutoutEffect->SetBlend( Blend( Usage::True, Blend::Effect::One, Blend::Effect::One ) );
 	cutoutEffect->SetTexture( 0, GetManager< Texture >()->Find( "test256" ) );
 
@@ -84,7 +84,7 @@ void MyGame::Startup()
 	m_geometryGroup.Add( Geometry::shared_ptr( terra ) );
 }
 
-bool MyGame::Update( unify::Seconds elapsed, IInput & input )
+bool MyGame::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 {
 	unify::V3< float > eyePosition( 0, 16, 14 );
 	unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -92,16 +92,17 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 	unify::Matrix view = unify::Matrix::MatrixLookAtLH( eyePosition, unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
 	m_camera->GetObject()->GetFrame().SetMatrix( view );
+	//renderInfo.SetViewMatrix( m_camera->GetMatrix().Inverse() );
 
 	m_rotation += unify::Angle::AngleInRadians( elapsed );
 
-	return Game::Update( elapsed, input );
+	return Game::Update( elapsed, renderInfo, input );
 }
 
-void MyGame::Render()
+void MyGame::Render( const RenderInfo & renderInfo )
 {
-	RenderInfo renderInfo;
-	renderInfo.SetFinalMatrix( m_camera->GetMatrix() );
+	assert( 0 ); // TODO:
+	//renderInfo.SetFinalMatrix( m_camera->GetObjectMatrix() );
 	m_geometryGroup.Render( renderInfo, 0 );
 }
 

@@ -40,8 +40,8 @@ ShapeBaseParameters & ShapeBaseParameters::SetTextureMode( int textureMode )
 	return *this;
 }
 
-ShapeBaseParameters & ShapeBaseParameters::SetEffect( Effect::shared_ptr effect )
+ShapeBaseParameters & ShapeBaseParameters::SetEffect( Effect::ptr effect )
 {
-    Set< Effect::shared_ptr >( "effect", effect );
+    Set< Effect::ptr >( "effect", effect );
 	return *this;
 }

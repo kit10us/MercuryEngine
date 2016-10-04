@@ -42,8 +42,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 				}
 			}
 
-			using namespace std::chrono;
 
+			using namespace std::chrono;
 			static high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 			high_resolution_clock::time_point currentTime = high_resolution_clock::now();
 			duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
@@ -51,17 +51,23 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			unify::Seconds elapsed = micro * 0.000001f;
 			lastTime = currentTime;
 
-			game.BeforeUpdate();
-			game.Update( elapsed, game.GetInput() );
-			game.AfterUpdate();
+			static float totalElapsed = 0;
+			totalElapsed += elapsed;
+
+			static size_t ticks = 10000;
+			ticks--;
+			if ( ticks <= 1 )
+			{
+				ticks = 10000;
+			}
+			
+			game.Tick();
 			if( game.IsQuitting() )
 			{
 				break;
 			}
-
-			game.BeforeRender();
-			game.Render();
-			game.AfterRender();
+			
+			game.Draw();
 		} 
 
 		game.Shutdown();

@@ -3,7 +3,7 @@
 #pragma once
 
 // A common header to include Direct-X and Windows in a clean manor.
-
+						 /*
 
 #ifdef _DEBUG
 #define D3D_DEBUG_INFO
@@ -23,3 +23,4 @@
 #pragma comment(lib,"dinput8")
 
 
+*/

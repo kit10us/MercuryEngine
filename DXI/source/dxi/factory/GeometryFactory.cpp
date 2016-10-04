@@ -69,11 +69,12 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 				{	
 					std::string effectName = buffersetChild.GetAttribute< std::string >( "effect" );
 					auto effect = effectManager->Find( effectName );
-					VertexDeclaration vd = effect->GetVertexShader()->GetVertexDeclaration();
+					VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 					unsigned int vertexCount = buffersetChild.GetAttribute< unsigned int >( "count" );
 					VertexBuffer & vb = bufferset.GetVertexBuffer();
 
-					vb.Create( vertexCount, vd ); // TODO: Additional flags and parameter supports.
+					assert( 0 ); // TODO:
+					//vb.Create( vertexCount, vd, nullptr ); // TODO: Additional flags and parameter supports.
 
 					unify::DataLock lock;
 					vb.Lock( lock );
@@ -95,7 +96,7 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 						unify::V3< float > xyz;
 						if( XMLConvert( &vertex, xyz ) )
 						{
-							vd.WriteVertex( lock, index, positionE, xyz );
+							vd->WriteVertex( lock, index, positionE, xyz );
 						}
 	
 						// NORMAL
@@ -118,7 +119,7 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 						}
 						if( vertex.HasAttributes( "nx" ) || vertex.HasAttributes( "ny" ) || vertex.HasAttributes( "nz" ) || vertex.HasAttributes( "normal" ) )
 						{
-							vd.WriteVertex( lock, index, normalE, normal );
+							vd->WriteVertex( lock, index, normalE, normal );
 						}
 	
 						// TEXTURE 1
@@ -137,7 +138,7 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 						}
 						if( vertex.HasAttributes( "tu" ) || vertex.HasAttributes( "tv" ) || vertex.HasAttributes( "uv" ) )
 						{
-							vd.WriteVertex( lock, index, texE, uv );
+							vd->WriteVertex( lock, index, texE, uv );
 						}
 	
 						// TEXTURE 2
@@ -156,14 +157,14 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 						}
 						if( vertex.HasAttributes( "tu2" ) || vertex.HasAttributes( "tv2" ) || vertex.HasAttributes( "uv2" ) )
 						{
-							vd.WriteVertex( lock, index, texE2, uv2 );
+							vd->WriteVertex( lock, index, texE2, uv2 );
 						}
 	
 						unify::ColorUnit diffuseUnit;
 						if( XMLConvert( &vertex, diffuseUnit ) )
 						{
 							unify::Color diffuse( diffuseUnit );
-							vd.WriteVertex( lock, index, diffuseE, diffuse );
+							vd->WriteVertex( lock, index, diffuseE, diffuse );
 						}
 					}
 				}	 
@@ -180,7 +181,7 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 					}
 
 					IndexBuffer & ib = bufferset.GetIndexBuffer();
-					ib.Create( numIndices, dxi::BufferUsage::Default, (Index32*)&indices[0] );
+					ib.Create( numIndices, (Index32*)&indices[0], dxi::BufferUsage::Default );
 				}
 				else if( buffersetChild.IsTagName( "methodlist" ) )
 				{

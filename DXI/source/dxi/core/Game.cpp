@@ -12,6 +12,7 @@
 #include <dxi/Input.h>
 
 #include <fstream>
+#include <chrono>
 
 using namespace dxi;
 using namespace core;
@@ -147,12 +148,27 @@ void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2
 	point; // Not used.
 }
 
+void Game::Tick()
+{
+	using namespace std::chrono;
+	static high_resolution_clock::time_point lastTime = high_resolution_clock::now();
+	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
+	duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
+	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
+	unify::Seconds elapsed = micro * 0.000001f;
+	lastTime = currentTime;
+
+	BeforeUpdate();
+	bool run = Update( elapsed, m_renderInfo, GetInput() );
+	AfterUpdate();
+}
+
 void Game::BeforeUpdate()
 {
 	m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
 }
 
-bool Game::Update( unify::Seconds elapsed, IInput & input )
+bool Game::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
 {
     if ( input.KeyPressed( Key::Escape ) )
     {
@@ -169,12 +185,19 @@ void Game::AfterUpdate()
 	m_input->CallAfterUpdate();
 }
 
+void Game::Draw()
+{
+	BeforeRender();
+	Render( m_renderInfo );
+	AfterRender();
+}
+
 void Game::BeforeRender()
 {
 	m_os->GetRenderer()->BeforeRender();
 }
 
-void Game::Render()
+void Game::Render( const RenderInfo & renderInfo )
 {
     m_sceneManager->Render();
 }

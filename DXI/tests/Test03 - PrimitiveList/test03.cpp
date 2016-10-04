@@ -20,7 +20,7 @@ class MyGame : public Game
 protected:
 	// We intend to keep these and use them directly, in an attempt to illustrate their usages.
 	// Typically, we would use a higher level object, such as a PrimitiveList, which encapsulates these.
-	Effect::shared_ptr m_effect;
+	Effect::ptr m_effect;
 	VertexBuffer m_VB;
 	IndexBuffer m_IB;	  
 

@@ -47,17 +47,17 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Quaternion & q, cons
 	// Explicit quaternion
 	else if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix + ",w" + postFix ) )
 	{
-		q.SetX( element->GetAttribute( "x" + postFix )->Get< float >() );
-		q.SetY( element->GetAttribute( "y" + postFix )->Get< float >() );
-		q.SetZ( element->GetAttribute( "z" + postFix )->Get< float >() );
-		q.SetW( element->GetAttribute( "w" + postFix )->Get< float >() );
+		q.x = ( element->GetAttribute( "x" + postFix )->Get< float >() );
+		q.y = ( element->GetAttribute( "y" + postFix )->Get< float >() );
+		q.z = ( element->GetAttribute( "z" + postFix )->Get< float >() );
+		q.w = ( element->GetAttribute( "w" + postFix )->Get< float >() );
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix + ",w" + postFix ) )
 	{
-		q.SetX( unify::Cast< float >( element->GetElement( "x" + postFix )->GetText() ) );
-		q.SetY( unify::Cast< float >( element->GetElement( "y" + postFix )->GetText() ) );
-		q.SetZ( unify::Cast< float >( element->GetElement( "z" + postFix )->GetText() ) );
-		q.SetW( unify::Cast< float >( element->GetElement( "w" + postFix )->GetText() ) );
+		q.x = ( unify::Cast< float >( element->GetElement( "x" + postFix )->GetText() ) );
+		q.y = ( unify::Cast< float >( element->GetElement( "y" + postFix )->GetText() ) );
+		q.z = ( unify::Cast< float >( element->GetElement( "z" + postFix )->GetText() ) );
+		q.w = ( unify::Cast< float >( element->GetElement( "w" + postFix )->GetText() ) );
 	}
 	else
 	{

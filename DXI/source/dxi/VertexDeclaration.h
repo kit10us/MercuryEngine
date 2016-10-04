@@ -41,13 +41,15 @@ namespace dxi
 	class VertexDeclaration
 	{
 	public:
+		typedef std::shared_ptr< VertexDeclaration > ptr;
+
 		VertexDeclaration();
-		VertexDeclaration( const VertexDeclaration & from );
 		VertexDeclaration( const qxml::Element & element );
 		VertexDeclaration( const qjson::Object & object );
-		VertexDeclaration & operator=( const VertexDeclaration & from );
 
 		~VertexDeclaration();
+
+		void Build( const class VertexShader & vs );
 
 		bool operator==( const VertexDeclaration & b ) const;
 		bool operator!=( const VertexDeclaration & b ) const;
@@ -113,9 +115,9 @@ namespace dxi
 		ElementMap m_elementMap;
 
 #if defined( DIRECTX9 )
-		CComPtr< IDirect3DVertexDeclaration9 > m_vertexDeclaration;
+		CComPtr< IDirect3DVertexDeclaration9 > m_layout;
 #elif defined( DIRECTX11 )
-		CComPtr< ID3D11InputLayout > m_vertexLayout;
+		CComPtr< ID3D11InputLayout > m_layout;
 #endif
 		size_t m_totalSizeInBytes;
 	};

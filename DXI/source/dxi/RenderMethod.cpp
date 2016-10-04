@@ -3,6 +3,11 @@
 
 #include <dxi/RenderMethod.h>
 #include <dxi/core/Game.h>
+#include <dxi/win/DXDevice.h>
+#include <dxi/exception/NotImplemented.h>
+
+#include <dxi/win/DXRenderer.h> // TODO: Reduce this.
+
 
 dxi::PrimitiveType::TYPE dxi::PrimitiveType::StringToPrimitiveType( const std::string & type )
 {
@@ -26,18 +31,12 @@ dxi::PrimitiveType::TYPE dxi::PrimitiveType::StringToPrimitiveType( const std::s
 	{
 		return PrimitiveType::TriangleStrip;
 	}
-	else if( unify::StringIs( type, "TRIANGLEFAN" ) )
-	{
-		return PrimitiveType::TriangleFan;
-	}
 	else
 	{
 		return PrimitiveType::PointList; 
 	}
 }
-
-
-
+													
 using namespace dxi;
 
 RenderMethod::RenderMethod()
@@ -47,20 +46,22 @@ RenderMethod::RenderMethod()
 , vertexCount( 0 )
 , startIndex( 0 )
 , primitiveCount( 0 )
+, indexCount( 0 )
 , useIB( false )
 , vertexBufferIndex( 0 )
 , indexBufferIndex( 0 )
 {
 }
 
-RenderMethod::RenderMethod( PrimitiveType::TYPE primitiveType, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::shared_ptr effect, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
-: primitiveType( primitiveType )
+RenderMethod::RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::ptr effect, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
+: primitiveType( type )
 , startVertex( startVertex )
 , baseVertexIndex( 0 )
 , minIndex( 0 )
 , vertexCount( vertexCount )
 , startIndex( 0 )
 , primitiveCount( primitiveCount )
+, indexCount( 0 )
 , effect( effect )
 , useIB( useIB )
 , vertexBufferIndex( vertexBufferIndex )
@@ -68,24 +69,20 @@ RenderMethod::RenderMethod( PrimitiveType::TYPE primitiveType, unsigned int star
 {
 }
 
-RenderMethod::RenderMethod( PrimitiveType::TYPE primitiveType, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::shared_ptr effect, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
-: primitiveType( primitiveType )
+RenderMethod::RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::ptr effect, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
+: primitiveType( type )
 , startVertex( 0 )
 , baseVertexIndex( baseVertexIndex )
 , minIndex( minIndex )
 , vertexCount( vertexCount )
 , startIndex( startIndex )
 , primitiveCount( primitiveCount )
+, indexCount( 0 )
 , effect( effect )
 , useIB( useIB )
 , vertexBufferIndex( vertexBufferIndex )
 , indexBufferIndex( indexBufferIndex )
 {
-}
-
-unsigned int RenderMethod::VertexCountInAFan( unsigned int segmentCount )
-{
-	return segmentCount + 2;
 }
 
 unsigned int RenderMethod::VertexCountInATriangleStrip( unsigned int triangleCount )
@@ -98,20 +95,97 @@ unsigned int RenderMethod::VertexCountInATriangleList( unsigned int triangleCoun
 	return triangleCount * 3;
 }
 
-RenderMethod RenderMethod::CreateFan( unsigned int startVertex, unsigned int segmentCount, Effect::shared_ptr effect )
-{	
-	return RenderMethod( PrimitiveType::TriangleFan, startVertex, segmentCount + 1, segmentCount, effect, false );
+RenderMethod RenderMethod::CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::ptr effect )
+{
+	RenderMethod method;
+	method.primitiveType = PrimitiveType::TriangleStrip;
+	method.startVertex = startVertex;
+	method.baseVertexIndex = 0;
+	method.minIndex = 0;
+	method.vertexCount = VertexCountInATriangleStrip( segmentCount );
+	method.startIndex = 0;
+	method.primitiveCount = segmentCount;
+	method.indexCount = 0;
+	method.effect = effect;
+	method.useIB = false;
+	method.vertexBufferIndex = 0;
+	method.indexBufferIndex = 0;
+	return method;
 }
 
-RenderMethod RenderMethod::CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::shared_ptr effect )
+RenderMethod RenderMethod::CreateTriangleList( unsigned int startVertex, unsigned int triangleCount, Effect::ptr effect )
 {
-	return RenderMethod( PrimitiveType::TriangleStrip, startVertex, segmentCount + 2, segmentCount, effect, false );
+	RenderMethod method;
+	method.primitiveType = PrimitiveType::TriangleList;
+	method.startVertex = startVertex;
+	method.baseVertexIndex = 0;
+	method.minIndex = 0;
+	method.vertexCount = VertexCountInATriangleList( triangleCount );
+	method.startIndex = 0;
+	method.primitiveCount = triangleCount;
+	method.indexCount = 0;
+	method.effect = effect;
+	method.useIB = false;
+	method.vertexBufferIndex = 0;
+	method.indexBufferIndex = 0;
+	return method;
 }
 
-RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::shared_ptr effect )
+RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::ptr effect )
 {
-	return RenderMethod( PrimitiveType::PointList, startVertex, pointCount, pointCount, effect, false );
+	RenderMethod method;
+	method.primitiveType = PrimitiveType::PointList;
+	method.startVertex = startVertex;
+	method.baseVertexIndex = 0;
+	method.minIndex = 0;
+	method.vertexCount = pointCount;
+	method.startIndex = 0;
+	method.primitiveCount = pointCount;
+	method.indexCount = 0;
+	method.effect = effect;
+	method.useIB = false;
+	method.vertexBufferIndex = 0;
+	method.indexBufferIndex = 0;
+	return method;
 }
+
+// indexCount, startIndex, baseVertexIndex
+RenderMethod RenderMethod::CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect )
+{
+	RenderMethod method;
+	method.primitiveType = PrimitiveType::TriangleStrip;
+	method.startVertex = 0;
+	method.baseVertexIndex = baseVertexIndex;
+	method.minIndex = 0;
+	method.vertexCount = vertexCount;
+	method.startIndex = startIndex;
+	method.primitiveCount = indexCount - 2;
+	method.indexCount = indexCount;
+	method.effect = effect;
+	method.useIB = true;
+	method.vertexBufferIndex = 0;
+	method.indexBufferIndex = 0;
+	return method;
+}
+
+RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect )
+{
+	RenderMethod method;
+	method.primitiveType = PrimitiveType::TriangleList;
+	method.startVertex = 0;
+	method.baseVertexIndex = baseVertexIndex;
+	method.minIndex = 0;
+	method.vertexCount = vertexCount;
+	method.startIndex = startIndex;
+	method.primitiveCount = indexCount / 3;
+	method.indexCount = indexCount;
+	method.effect = effect;
+	method.useIB = true;
+	method.vertexBufferIndex = 0;
+	method.indexBufferIndex = 0;
+	return method;
+}
+
 
 void RenderMethod::Render( const RenderInfo & renderInfo ) const
 {
@@ -123,17 +197,57 @@ void RenderMethod::Render( const RenderInfo & renderInfo ) const
 	}
 
 #if defined( DIRECTX9 )
+	D3DPRIMITIVETYPE dxPrimitiveType {};
+	switch( primitiveType )
+	{
+	case PrimitiveType::PointList: dxPrimitiveType = D3DPT_POINTLIST; break;
+	case PrimitiveType::LineList: dxPrimitiveType = D3DPT_LINELIST; break;
+	case PrimitiveType::LineStrip: dxPrimitiveType = D3DPT_LINESTRIP; break;
+	case PrimitiveType::TriangleList: dxPrimitiveType = D3DPT_TRIANGLELIST;	break;
+	case PrimitiveType::TriangleStrip: dxPrimitiveType = D3DPT_TRIANGLESTRIP;  break;
+	}
+		
 	// Draw Primitive...
 	if( useIB == false )
 	{
-		hr = win::DX::GetDxDevice()->DrawPrimitive( (D3DPRIMITIVETYPE)primitiveType, startVertex, primitiveCount );
+		hr = win::DX::GetDxDevice()->DrawPrimitive( dxPrimitiveType, startVertex, primitiveCount );
 	}
 	else
 	{
-		hr = win::DX::GetDxDevice()->DrawIndexedPrimitive( (D3DPRIMITIVETYPE)primitiveType, baseVertexIndex, minIndex, vertexCount, startIndex, primitiveCount );
+		hr = win::DX::GetDxDevice()->DrawIndexedPrimitive( dxPrimitiveType, baseVertexIndex, minIndex, vertexCount, startIndex, primitiveCount );
 	}
 	OnFailedThrow( hr, "Failed to render vertex buffer!" );
 #elif defined( DIRECTX11 )
-	throw exception::NotImplemented( "DirectX11" );
+	auto dxContext = win::DX::GetDxContext();
+	
+	D3D11_PRIMITIVE_TOPOLOGY topology{};
+	switch( primitiveType )
+	{
+	case PrimitiveType::PointList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
+		break;
+	case PrimitiveType::LineList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
+		break;
+	case PrimitiveType::LineStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
+		break;
+	case PrimitiveType::TriangleList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
+		break;
+	case PrimitiveType::TriangleStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
+		break;
+	}
+	dxContext->IASetPrimitiveTopology( topology );
+
+	if( useIB == false )
+	{
+		dxContext->Draw( vertexCount,  startVertex );
+	}
+	else
+	{
+		dxContext->DrawIndexed( indexCount, startIndex, baseVertexIndex );
+	}
 #endif
 }

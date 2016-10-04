@@ -1,10 +1,12 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
 #include <dxi/Sprite.h>
+#include <dxi/core/Game.h>
+#include <dxi/win/DXDevice.h>
 #include <unify/V4.h>
 #include <dxi/Texture.h>
+#include <dxi/exception/NotImplemented.h>
 
 using namespace dxi;
 
@@ -18,7 +20,7 @@ Sprite::Sprite()
 {
 }
 
-Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
+Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
 : m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
@@ -32,7 +34,7 @@ Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, an
 	Init();
 }
 
-Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
+Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
 : m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
@@ -46,7 +48,7 @@ Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, co
 	Init();
 }
 
-Sprite::Sprite( Effect::shared_ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
+Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
 : m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
@@ -63,7 +65,7 @@ Sprite::~Sprite() throw ()
 {
 }
 
-Effect::shared_ptr Sprite::GetEffect() const
+Effect::ptr Sprite::GetEffect() const
 {
 	return m_effect;
 }
@@ -151,7 +153,7 @@ void Sprite::Render( const RenderInfo & renderInfo )
 
 	// Get our writers...
 	VertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
-	VertexDeclaration vd = vb.GetVertexDeclaration();
+	VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
 
 	WORD stream = 0;
 	VertexElement positionE = CommonVertexElement::Position( stream );
@@ -161,28 +163,34 @@ void Sprite::Render( const RenderInfo & renderInfo )
 	vb.Lock( lock );
 	const unify::TexArea & area = m_animationInstance.GetFrame().GetArea();
 	unify::Size< float > halfSize( m_size.width * m_scale.x * 0.5f, m_size.height * m_scale.y * 0.5f );
-	vd.WriteVertex( lock, 0, positionE, unify::V3< float >( m_center.x - halfSize.width, m_center.y - halfSize.height, m_depth ) );
-	vd.WriteVertex( lock, 0, texE, unify::TexCoords( area.UL() ) );
-	vd.WriteVertex( lock, 1, positionE, unify::V3< float >( m_center.x + halfSize.width, m_center.y - halfSize.height, m_depth ) );
-	vd.WriteVertex( lock, 1, texE, unify::TexCoords( area.UR() ) );
-	vd.WriteVertex( lock, 2, positionE, unify::V3< float >( m_center.x - halfSize.width, m_center.y + halfSize.height, m_depth ) );
-	vd.WriteVertex( lock, 2, texE, unify::TexCoords( area.DL() ) );
-	vd.WriteVertex( lock, 3, positionE, unify::V3< float >( m_center.x + halfSize.width, m_center.y + halfSize.height, m_depth ) );
-	vd.WriteVertex( lock, 3, texE, unify::TexCoords( area.DR() ) );
+	vd->WriteVertex( lock, 0, positionE, unify::V3< float >( m_center.x - halfSize.width, m_center.y - halfSize.height, m_depth ) );
+	vd->WriteVertex( lock, 0, texE, unify::TexCoords( area.UL() ) );
+	vd->WriteVertex( lock, 1, positionE, unify::V3< float >( m_center.x + halfSize.width, m_center.y - halfSize.height, m_depth ) );
+	vd->WriteVertex( lock, 1, texE, unify::TexCoords( area.UR() ) );
+	vd->WriteVertex( lock, 2, positionE, unify::V3< float >( m_center.x - halfSize.width, m_center.y + halfSize.height, m_depth ) );
+	vd->WriteVertex( lock, 2, texE, unify::TexCoords( area.DL() ) );
+	vd->WriteVertex( lock, 3, positionE, unify::V3< float >( m_center.x + halfSize.width, m_center.y + halfSize.height, m_depth ) );
+	vd->WriteVertex( lock, 3, texE, unify::TexCoords( area.DR() ) );
 	vb.Unlock();
 	vb.Use();
 
 	float width = static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().width );
 	float height = static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().height );
 	unify::Matrix matrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.0f, 1000.0f );
-	myRenderInfo.SetFinalMatrix( matrix );
+	
+	assert( 0 );// TODO:
+	//myRenderInfo.SetFinalMatrix( matrix );
 
 	// Use effect before setting the texture explicitly, as this effect will attempt to set the texture (likely unset it as it's probably empty).
 	m_effect->Use( myRenderInfo );
 	m_blend.Use();
 	m_animationInstance.GetFrame().GetTexture()->Use( 0 );
-	
+
+#if defined( DIRECTX9 )
 	win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
+#elif defined( DIRECTX11 )
+	throw exception::NotImplemented( "DX11" );
+#endif
 }
 
 void Sprite::SyncSizeToPixels()
