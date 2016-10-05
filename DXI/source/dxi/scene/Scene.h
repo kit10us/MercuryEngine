@@ -47,6 +47,9 @@ namespace dxi
 
 		    void Clear();
 
+			Object::shared_ptr GetRoot();
+			const Object::shared_ptr GetRoot() const;
+
 		    void SetPhysicsScene( std::shared_ptr< physics::IScene > scene );
 		    physics::IScene * GetPhysicsScene();
 		    const physics::IScene * GetPhysicsScene() const;
@@ -103,6 +106,8 @@ namespace dxi
             void SetObjectOver( Object::shared_ptr objectOver );
 
 	    private:
+			Object::shared_ptr m_root;
+
 		    ObjectList m_objectList;
 		    ObjectMap m_objectMap;
             std::string m_cameraName;

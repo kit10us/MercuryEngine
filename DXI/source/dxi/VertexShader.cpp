@@ -199,7 +199,6 @@ public:
 		unify::Matrix world = renderInfo.GetWorldMatrix();
 		unify::Matrix view = renderInfo.GetViewMatrix();
 		unify::Matrix projection = renderInfo.GetProjectionMatrix();
-		unify::Matrix final = world * view * projection;
 
 		if( m_worldMatrixHandle != 0 )
 		{
@@ -215,6 +214,7 @@ public:
 		}
 		if( m_finalMatrixHandle != 0 )
 		{
+			unify::Matrix final = world * view * projection;
 			result = GetConstantTable()->SetMatrix( win::DX::GetDxDevice(), m_finalMatrixHandle, (D3DXMATRIX*)&final.m );
 		}
 

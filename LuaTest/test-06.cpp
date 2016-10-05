@@ -51,7 +51,7 @@ int V3ToString( lua_State * state )
 	float z = (float)luaL_checknumber( state, -1 );
 
 
-	std::string out = "{ " + x + ", " + y + ", " + z + " }";
+	//std::string out = "{ " + x + ", " + y + ", " + z + " }";
 
 	lua_pushstring( state, "working on it" );
 	return 1;

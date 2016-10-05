@@ -58,13 +58,13 @@ int Camera_SetProjection( lua_State * state )
 
 static const luaL_Reg cameraFuncs[] =
 {
-	{ "setprojection", Camera_SetProjection },
+	{ "SetProjection", Camera_SetProjection },
 	{ nullptr, nullptr }
 };
 
 int ExportCamera( lua_State * state )
 {
 	luaL_newlib( state, cameraFuncs );
-	lua_setglobal( state, "camera" );
+	lua_setglobal( state, "Camera" );
 	return 1;
 }

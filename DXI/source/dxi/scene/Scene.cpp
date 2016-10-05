@@ -11,6 +11,7 @@ using namespace scene;
 
 Scene::Scene( dxi::core::IGame * game )
 : GameDependant( game )
+, m_root( new Object() )
 , m_lastCullCount( 0 )
 , m_renderSolids( true )
 , m_renderTrans( true )
@@ -28,6 +29,7 @@ Scene::Scene( dxi::core::IGame * game )
 , m_mouseDownTime( 0 )
 , m_mouseDrag( false )
 {
+	m_root->SetName( "root" );
 }
 
 Scene::~Scene()
@@ -37,6 +39,16 @@ Scene::~Scene()
 void Scene::Clear()
 {
 	m_objectList.clear();
+}
+
+Object::shared_ptr Scene::GetRoot()
+{
+	return m_root;
+}
+
+const Object::shared_ptr Scene::GetRoot() const
+{
+	return m_root;
 }
 
 void Scene::SetPhysicsScene( std::shared_ptr< physics::IScene > scene )
@@ -83,8 +95,25 @@ std::shared_ptr< Object > Scene::Add( const std::string & name )
 
 Object::shared_ptr Scene::FindObject( const std::string & name )
 {
+	/*
 	ObjectMap::iterator itr = m_objectMap.find( name );
 	return itr->second;
+	*/
+	if ( m_root )
+	{
+		if ( unify::StringIs( m_root->GetName(), name ) )
+		{
+			return m_root;
+		}
+		else
+		{
+			return m_root->FindObject( name );
+		}
+	}
+	else
+	{
+		return Object::shared_ptr();
+	}
 }
 
 bool Scene::FindPosition( const std::string & name, unify::V3< float > & position ) const
@@ -159,10 +188,10 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                 if ( m_objectOver )
                 {
                     unify::Any onDragStopData( Object::EventData::OnDragStop( m_objectOver.get(), input.MouseV3< float >(), ray ) );
-                    m_objectOver->GetListenerMap().Fire( "onDragStop", onDragStopData );
+                    //m_objectOver->GetListenerMap().Fire( "onDragStop", onDragStopData );
 
                     unify::Any onUpData( Object::EventData::OnUp( m_objectOver.get(), input.MouseV3< float >() ) );
-                    m_objectOver->GetListenerMap().Fire( "onUp", onUpData );
+                    //m_objectOver->GetListenerMap().Fire( "onUp", onUpData );
                 }
 
                 m_mouseDownTime = 0;
@@ -176,7 +205,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
             else
             {
                 unify::Any onDrag( Object::EventData::OnDrag( m_objectOver.get(), input.MouseV3< float >(), ray, false ) );
-                m_objectOver->GetListenerMap().Fire( "onDrag", onDrag );
+                //m_objectOver->GetListenerMap().Fire( "onDrag", onDrag );
             }
         }
         else
@@ -192,8 +221,8 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                 }
                 unify::BBox< > bbox = object->GetBBox();
                 
-                object->GetFrame().GetFinalMatrix().TransformCoord( bbox.sup );
-                object->GetFrame().GetFinalMatrix().TransformCoord( bbox.inf );
+                object->GetFrame().GetMatrix().TransformCoord( bbox.sup );
+                object->GetFrame().GetMatrix().TransformCoord( bbox.inf );
                 
 				unify::V3< float > hitPoint;
                 if ( bbox.RayTest( ray, hitPoint ) )
@@ -217,11 +246,11 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                     if ( m_objectOver )
                     {
                         unify::Any onOverExitData( Object::EventData::OnOverExit( m_objectOver.get(), closestObject.get() ) );
-                        m_objectOver->GetListenerMap().Fire( "onOverExit", onOverExitData );
+                        //m_objectOver->GetListenerMap().Fire( "onOverExit", onOverExitData );
                     }
                     m_objectOver = closestObject;
                     unify::Any onOverEnterData( Object::EventData::OnOverEnter( m_objectOver.get(), closestObjectDistance, input ) );
-                    m_objectOver->GetListenerMap().Fire( "onOverEnter", onOverEnterData );
+                    //m_objectOver->GetListenerMap().Fire( "onOverEnter", onOverEnterData );
                 }
                 else
                 {
@@ -240,24 +269,24 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                                     
                                     // We are past our down time limit, so we are no longer "over" the object, we are "drag".
                                     unify::Any onOverExitData( Object::EventData::OnOverExit( m_objectOver.get(), m_objectOver.get() ) );
-                                    m_objectOver->GetListenerMap().Fire( "onOverExit", onOverExitData );
+                                    //m_objectOver->GetListenerMap().Fire( "onOverExit", onOverExitData );
                                     
                                     // Initial calls
                                     unify::Any onDrag( Object::EventData::OnDrag( m_objectOver.get(), input.MouseV3< float >(), ray, true ) );
-                                    m_objectOver->GetListenerMap().Fire( "onDrag", onDrag );
+                                    //m_objectOver->GetListenerMap().Fire( "onDrag", onDrag );
                                 }
                             }
                             else
                             {
                                 unify::Any onDownData( Object::EventData::OnDown( m_objectOver.get(), input.MouseV3< float >() ) );
-                                m_objectOver->GetListenerMap().Fire( "onDown", onDownData );
+                                //m_objectOver->GetListenerMap().Fire( "onDown", onDownData );
                                 m_mouseDownTime += elapsed;
                             }
                         }
                         else if ( ! input.MouseDown( 0 ) )
                         {
                             unify::Any onUpData( Object::EventData::OnUp( m_objectOver.get(), input.MouseV3< float >() ) );
-                            m_objectOver->GetListenerMap().Fire( "onUp", onUpData );
+                            //m_objectOver->GetListenerMap().Fire( "onUp", onUpData );
                             m_mouseDownTime = 0;
                             m_mouseDrag = false;
                         }
@@ -272,7 +301,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                 if ( m_objectOver )
                 {
                     unify::Any eventData( Object::EventData::OnOverExit( m_objectOver.get(), closestObject.get() ) );
-                    m_objectOver->GetListenerMap().Fire( "onOverExit", eventData );
+                    //m_objectOver->GetListenerMap().Fire( "onOverExit", eventData );
                     m_objectOver.reset();
                 }
             }
@@ -304,11 +333,18 @@ void Scene::Render()
 	m_renderInfo.SetViewMatrix( m_camera.GetMatrix().Inverse() );
 	m_renderInfo.SetProjectionMatrix( m_camera.GetProjection() );
 
+	if ( GetRoot() )
+	{
+		GetRoot()->Render( m_renderInfo );
+	}	
+		
 #if 1 // Straight render (no culling or depth sorting for transparencies)...
+	/*
 	for( auto && object : m_objectList )
 	{
 		object->Render( m_renderInfo );
 	}
+	*/
 
 #else // Standard rendering... 
 	std::map< Geometry::shared_ptr, std::vector< Object::shared_ptr > > listObjects; // Non-culled objects

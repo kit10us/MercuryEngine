@@ -7,7 +7,6 @@
 using namespace dxilua;
 using namespace dxi;
 
-extern "C"
 int Update_GetDelta( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -22,14 +21,14 @@ int Update_GetDelta( lua_State * state )
 
 static const luaL_Reg updateFuncs[] =
 {
-	{ "getdelta", Update_GetDelta },
+	{ "GetDelta", Update_GetDelta },
 	{ nullptr, nullptr }
 };
 
 int ExportUpdate( lua_State * state )
 {
 	luaL_newlib( state, updateFuncs );
-	lua_setglobal( state, "update" );
+	lua_setglobal( state, "Update" );
 	return 1;
 }
 

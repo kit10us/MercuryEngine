@@ -26,24 +26,34 @@ int Debug_WriteLine( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
+	int type = lua_type( state, 1 );
+
 	std::string log = lua_tostring( state, 1 );
 
-	OutputDebugStringA( (log + "\n").c_str() );
+
+	if ( log.empty() )
+	{
+		OutputDebugStringA( "\n" );
+	}
+	else
+	{
+		OutputDebugStringA( (log + "\n").c_str() );
+	}
 
 	return 0;
 }
 
 static const luaL_Reg debugFuncs[] =
 {
-	{ "write", Debug_Write },
-	{ "writeline", Debug_WriteLine },
+	{ "Write", Debug_Write },
+	{ "WriteLine", Debug_WriteLine },
 	{ nullptr, nullptr }
 };
 
 int ExportDebug( lua_State * state )
 {
 	luaL_newlib( state, debugFuncs );
-	lua_setglobal( state, "debug" );
+	lua_setglobal( state, "Debug" );
 	return 1;
 }
 

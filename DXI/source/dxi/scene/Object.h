@@ -9,7 +9,7 @@
 #include <dxi/physics/IInstance.h>
 #include <dxi/physics/IObjectSyncer.h>
 #include <dxi/events/ListenerMap.h>
-#include <unify/Frame.h>
+#include <unify/FrameLite.h>
 #include <tuple>
 
 namespace dxi
@@ -19,7 +19,7 @@ namespace dxi
 		/// <notes>
         /// Objects belong to Scenes. Scenes are collections of objects.
 		/// </notes>
-        class Object : public physics::IObjectSyncer, public events::ListenerMapOwner
+        class Object //: public physics::IObjectSyncer, public events::ListenerMapOwner
 	    {
 	    public:
 		    typedef std::shared_ptr< Object > shared_ptr;
@@ -42,6 +42,9 @@ namespace dxi
 			Object( Geometry::shared_ptr geometry, const unify::V3< float > position );
 		    virtual ~Object();
 
+			void SetName( std::string name );
+			std::string GetName() const;
+
             void SetEnabled( bool enabled );
             bool GetEnabled() const;
 
@@ -53,8 +56,8 @@ namespace dxi
 			
 		    void CheckFrame( bool checkFrame );
 		    bool CheckFrame() const;
-		    unify::Frame & GetFrame();
-		    const unify::Frame & GetFrame() const;
+		    unify::FrameLite & GetFrame();
+		    const unify::FrameLite & GetFrame() const;
 		    void SetEffect( const Effect & pEffect );
 		    Effect & GetEffect();
 
@@ -89,7 +92,24 @@ namespace dxi
 			std::map< std::string, std::string > & GetTags();
 			const std::map< std::string, std::string > & GetTags() const;
 
-	    protected:
+			Object::shared_ptr GetPrevious();
+			const Object::shared_ptr GetPrevious() const;
+
+			Object::shared_ptr GetNext();
+			const Object::shared_ptr GetNext() const;
+
+			Object::shared_ptr GetParent();
+			const Object::shared_ptr GetParent() const;
+
+			Object::shared_ptr GetFirstChild();
+			const Object::shared_ptr GetFirstChild() const;
+
+			Object::shared_ptr AddChild( std::string name );
+
+			Object::shared_ptr FindObject( std::string name );
+
+		protected:
+			std::string m_name;
 			std::map< std::string, std::string > m_tags;
 
             bool m_enabled;
@@ -102,7 +122,7 @@ namespace dxi
 		    size_t m_lastFrameID;
 		    bool m_checkFrame;
 
-		    unify::Frame m_frame;
+		    unify::FrameLite m_frame;
 
 		    unify::Matrix m_geometryMatrix;
 			
@@ -122,6 +142,11 @@ namespace dxi
 
 		    bool m_renderBBox;
 		    bool m_renderFrame;
+
+			Object::shared_ptr m_previous;
+			Object::shared_ptr m_next;
+			Object::shared_ptr m_parent;
+			Object::shared_ptr m_firstChild;
 	    };
     }
 }

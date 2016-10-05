@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gui">
+      <UniqueIdentifier>{742400fa-4599-4933-9592-53e225e29891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media">
+      <UniqueIdentifier>{5ade899e-e13d-400e-b528-9400330a3326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dx">
+      <UniqueIdentifier>{5f7c8d6d-6daf-4ff4-8464-ac0eb6164332}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="code\gui\Button.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\gui\CycleButton.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\gui\DropDown.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\gui\picture.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\gui\Text.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\gui\Thing.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\gui\ThingGroup.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="code\media\ImageInstanceData.cpp">
+      <Filter>media</Filter>
+    </ClCompile>
+    <ClCompile Include="code\dx\Format.cpp">
+      <Filter>dx</Filter>
+    </ClCompile>
+    <ClCompile Include="code\DisplayDetails.cpp" />
+    <ClCompile Include="code\draw2d.cpp" />
+    <ClCompile Include="code\font.cpp" />
+    <ClCompile Include="code\Input.cpp" />
+    <ClCompile Include="code\testerbase.cpp" />
+    <ClCompile Include="code\Texture.cpp" />
+    <ClCompile Include="code\VectorArt.cpp" />
+    <ClCompile Include="code\DisplayActual.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="code\gui\Button.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\CycleButton.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\DropDown.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\Events.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\Picture.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\Text.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\Thing.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\gui\ThingGroup.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="code\media\ImageInstanceData.h">
+      <Filter>media</Filter>
+    </ClInclude>
+    <ClInclude Include="code\dx\DX.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="code\dx\Format.h">
+      <Filter>dx</Filter>
+    </ClInclude>
+    <ClInclude Include="code\DisplayDetails.h" />
+    <ClInclude Include="code\Draw2D.h" />
+    <ClInclude Include="code\font.h" />
+    <ClInclude Include="code\Graphic.h" />
+    <ClInclude Include="code\Input.h" />
+    <ClInclude Include="code\pod.h" />
+    <ClInclude Include="code\TesterBase.h" />
+    <ClInclude Include="code\Texture.h" />
+    <ClInclude Include="code\VectorArt.h" />
+    <ClInclude Include="code\DisplayActual.h" />
+  </ItemGroup>
+</Project>

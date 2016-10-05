@@ -5,4 +5,13 @@
 
 #include <lua.hpp>
 
-int ExportObject( lua_State * state );
+void RegisterObject( lua_State * state );
+
+struct ObjectProxy
+{
+	dxi::scene::Object::shared_ptr object;
+};
+
+ObjectProxy* CheckObject( lua_State* state, int index );
+
+

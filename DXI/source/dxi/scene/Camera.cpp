@@ -49,7 +49,7 @@ unify::Matrix Camera::GetMatrix() const
 {
 	if( ! m_object.expired() )
 	{
-		return m_object.lock().get()->GetFrame().GetFinalMatrix();
+		return m_object.lock().get()->GetFrame().GetMatrix();
 	}
 
     return unify::Matrix::MatrixIdentity();

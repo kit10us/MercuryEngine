@@ -5,4 +5,11 @@
 
 #include <lua.hpp>
 
-int ExportScene( lua_State * state );
+void RegisterScene( lua_State * state );
+
+struct SceneProxy
+{
+	dxi::scene::Scene::shared_ptr scene;
+};
+
+SceneProxy* CheckScene( lua_State* state, int index );

@@ -200,8 +200,7 @@ void WindowsOS::CreateWindow( HWND & hwnd )
 		throw unify::Exception( "Failed to register window class!" );
     } 
 
-    hwnd = CreateWindowW( 
-		L"MainWndClass", L"Sample", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+    hwnd = CreateWindowW( L"MainWndClass", L"Sample", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		GetResolution().width, GetResolution().height, (HWND) 0, (HMENU) 0, m_hInstance, (LPVOID) 0); 
  
     if ( !hwnd )

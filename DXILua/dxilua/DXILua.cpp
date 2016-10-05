@@ -76,8 +76,13 @@ ScriptEngine::ScriptEngine( dxi::core::Game * game )
 	ExportGame( m_state );
 	ExportResources( m_state );
 	ExportScenes( m_state );
-	ExportScene( m_state );
-	ExportObject( m_state );
+	
+	//ExportScene( m_state );
+	RegisterScene( m_state );
+
+	//ExportObject( m_state );
+	RegisterObject( m_state );
+
 	ExportCamera( m_state );
 	ExportMatrix( m_state );
 	ExportDebug( m_state );

@@ -45,6 +45,16 @@ Object::~Object()
 {
 }
 
+void Object::SetName( std::string name )
+{
+	m_name = name;
+}
+
+std::string Object::GetName() const
+{
+	return m_name;
+}
+
 void Object::SetEnabled( bool enabled )
 {
     m_enabled = enabled;
@@ -85,12 +95,12 @@ bool Object::CheckFrame() const
 	return m_checkFrame;
 }
 
-unify::Frame & Object::GetFrame()
+unify::FrameLite & Object::GetFrame()
 {
 	return m_frame;
 }
 
-const unify::Frame & Object::GetFrame() const
+const unify::FrameLite & Object::GetFrame() const
 {
 	return m_frame;
 }
@@ -149,9 +159,6 @@ void Object::Update( unify::Seconds elapsed, core::IInput & input )
         return;
     }
 
-    unify::Any onUpdateEventData( EventData::OnUpdate( this, elapsed, input ) );
-    GetListenerMap().Fire( "onUpdate", onUpdateEventData );
-
 	if( m_controller )
 	{
 		m_controller->Update( elapsed, input );
@@ -170,6 +177,34 @@ void Object::Update( unify::Seconds elapsed, core::IInput & input )
 
 void Object::Render( const RenderInfo & renderInfo )
 {	
+	// Render self and children...
+	if ( m_visible )
+	{
+		RenderInfo myRenderInfo( renderInfo );
+
+		myRenderInfo.SetWorldMatrix( m_geometryMatrix * m_frame.GetMatrix() * myRenderInfo.GetWorldMatrix() );
+
+		if ( m_geometry )
+		{
+			m_geometry->Render( myRenderInfo, m_geometryInstanceData.get() );
+		}	
+
+		if( GetFirstChild() )
+		{
+			GetFirstChild()->Render( myRenderInfo );
+		}
+	}
+
+	if( GetNext() )
+	{
+		GetNext()->Render( renderInfo );
+	}
+
+
+
+
+
+	/*
 	// Do nothing if we have no geometry to render, or are not visible...
 	if( ! m_geometry || ! m_visible )
 	{
@@ -198,6 +233,7 @@ void Object::Render( const RenderInfo & renderInfo )
 	std::string name = m_tags["name"];
 
 	m_geometry->Render( myRenderInfo, m_geometryInstanceData.get() );
+	*/
 
 	/* TODO: DX11:
 	if( renderInfo.IsOptionTrue( RenderOption::RenderAllBBox ) || renderInfo.IsOptionTrue( RenderOption::RenderBBox ) )
@@ -236,8 +272,8 @@ unify::BBox< float > Object::GetBBoxXFormed()
 
 	// Update BBox by render object...
 	bboxTrans = m_geometry->GetBBox();
-	GetFrame().GetFinalMatrix().TransformCoord( bboxTrans.inf );
-	GetFrame().GetFinalMatrix().TransformCoord( bboxTrans.sup );
+	GetFrame().GetMatrix().TransformCoord( bboxTrans.inf );
+	GetFrame().GetMatrix().TransformCoord( bboxTrans.sup );
 	//return m_Physics.GetBBox();
 	return bboxTrans;
 }
@@ -245,11 +281,6 @@ unify::BBox< float > Object::GetBBoxXFormed()
 const unify::BBox< float > & Object::GetBBox()
 {
 	return m_geometry->GetBBox();
-}
-
-void Object::SyncFrame( const unify::Frame & frame )
-{
-	m_frame = frame;
 }
 
 void Object::SyncBBox( const unify::BBox< float > & bbox )
@@ -280,4 +311,92 @@ std::map< std::string, std::string > & Object::GetTags()
 const std::map< std::string, std::string > & Object::GetTags() const
 {
 	return m_tags;
+}
+
+Object::shared_ptr Object::GetPrevious()
+{
+	return m_previous;
+}
+
+const Object::shared_ptr Object::GetPrevious() const
+{
+	return m_previous;
+}
+
+Object::shared_ptr Object::GetNext()
+{
+	return m_next;
+}
+
+const Object::shared_ptr Object::GetNext() const
+{
+	return m_next;
+}
+
+Object::shared_ptr Object::GetParent()
+{
+	return m_parent;
+}
+
+const Object::shared_ptr Object::GetParent() const
+{
+	return m_parent;
+}
+
+Object::shared_ptr Object::GetFirstChild()
+{
+	return m_firstChild;
+}
+
+const Object::shared_ptr Object::GetFirstChild() const
+{
+	return m_firstChild;
+}
+
+Object::shared_ptr Object::AddChild( std::string name )
+{
+	Object::shared_ptr lastChild = GetFirstChild();
+	if ( ! lastChild )
+	{
+		// No children...
+		m_firstChild.reset( new Object() );
+		lastChild = m_firstChild;
+	}
+	else
+	{
+		// Find our last child...
+		while( lastChild->GetNext() )
+		{
+			lastChild = lastChild->GetNext();
+		}
+		lastChild->m_next.reset( new Object() );
+		lastChild->m_next->m_previous = lastChild;
+		lastChild = lastChild->GetNext();	 
+	}
+	lastChild->m_parent.reset( this );
+	
+	// Last child is new child...
+	lastChild->SetName( name );
+	return lastChild;
+}
+
+Object::shared_ptr Object::FindObject( std::string name )
+{	
+	Object::shared_ptr child = GetFirstChild();
+	while( child )
+	{
+		if ( unify::StringIs( child->GetName(), name ) )
+		{
+			return child;
+		}
+		Object::shared_ptr found = child->FindObject( name );
+		if ( found )
+		{
+			return found;
+		}
+		child = child->GetNext();
+	}
+
+	// Not found...
+	return Object::shared_ptr();
 }

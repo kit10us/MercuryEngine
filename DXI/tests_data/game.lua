@@ -1,3 +1,6 @@
+axisIndex = 1
+totalRotation = 0
+
 function OnStart()
 	resources.add( "geometry", "cube", "media/ShapeCube.xml" )
 	resources.add( "geometry", "pointfield", "media/ShapePointField.xml" )
@@ -10,67 +13,94 @@ function OnStart()
 	resources.add( "geometry", "tube", "media/ShapeTube.xml" )
 	resources.add( "geometry", "plane", "media/ShapePlane.xml" )
 	resources.add( "geometry", "cone", "media/ShapeCone.xml" )
+	
+	scene1 = Scene( "scene1" )
+	root = scene1:FindObject( "root" )
+	
+	-- Add camera...
+	camera = root:AddChild( "camera" )
+	scene1:SetCamera( camera )
 
-	scenes.add( "scene1" )
+	camera:SetPosition( V3.New( 0, 5, -17 ) )
+	camera:LookAt( V3.Zero() ) 
 
-	scene.addobject( "scene1", "cube" )
-	object.setgeometry( "scene1:cube", "cube" )
-	object.setposition( "scene1:cube", V3.New( -4.5, 3, 0 ) )
+	scene1:SetSize( game.getwidth(), game.getheight() )
 
-	scene.addobject( "scene1", "pointfield" )
-	object.setgeometry( "scene1:pointfield", "pointfield" )
-	object.setposition( "scene1:pointfield", V3.New( -1.5, 3, 0 ) )
+	proj = matrix.makeperspectivefovlh( math.pi / 4.0, game.getwidth()/ game.getheight(), 1, 1000 )
+
+	--camera:SetProjection( proj ) 
+	Camera.SetProjection( "scene1", proj ) 
+
+	group = root:AddChild( "group" )
+	
+	cube = group:AddChild( "cube" )
+	cube:SetGeometry( "cube" )
+	cube:SetPosition( V3.New( -4.5, 3, 0 ) )	
+	
+	pointfield = group:AddChild( "pointfield" )
+	pointfield:SetGeometry( "pointfield" )
+	pointfield:SetPosition( V3.New( -1.5, 3, 0 ) )
 		
-	scene.addobject( "scene1", "pointring" )
-	object.setgeometry( "scene1:pointring", "pointring" )
-	object.setposition( "scene1:pointring", V3.New( 1.5, 3, 0 ) )
+	pointring = group:AddChild( "pointring" )
+	pointring:SetGeometry( "pointring" )
+	pointring:SetPosition( V3.New( 1.5, 3, 0 ) )
 
-	scene.addobject( "scene1", "dashring" )
-	object.setgeometry( "scene1:dashring", "dashring" )
-	object.setposition( "scene1:dashring", V3.New( 4.5, 3, 0 ) )
+	dashring = group:AddChild( "dashring" )
+	dashring:SetGeometry( "dashring" )
+	dashring:SetPosition( V3.New( 4.5, 3, 0 ) )
 
-	scene.addobject( "scene1", "pyramid" )
-	object.setgeometry( "scene1:pyramid", "pyramid" )
-	object.setposition( "scene1:pyramid", V3.New( -4.5, 0, 0 ) )
+	pyramid = group:AddChild( "pyramid" )
+	pyramid:SetGeometry( "pyramid" )
+	pyramid:SetPosition( V3.New( -4.5, 0, 0 ) )
 		
-	scene.addobject( "scene1", "circle" )
-	object.setgeometry( "scene1:circle", "circle" )
-	object.setposition( "scene1:circle", V3.New( -1.5, 0, 0 ) )
+	circle = group:AddChild( "circle" )
+	circle:SetGeometry( "circle" )
+	circle:SetPosition( V3.New( -1.5, 0, 0 ) )
 
-	scene.addobject( "scene1", "sphere" )
-	object.setgeometry( "scene1:sphere", "sphere" )
-	object.setposition( "scene1:sphere", V3.New( 1.5, 0, 0 ) )
+	sphere = group:AddChild( "sphere" )
+	sphere:SetGeometry( "sphere" )
+	sphere:SetPosition( V3.New( 1.5, 0, 0 ) )
 	   
-	scene.addobject( "scene1", "cylinder" )
-	object.setgeometry( "scene1:cylinder", "cylinder" )
-	object.setposition( "scene1:cylinder", V3.New( 4.5, 0, 0 ) )
+	cylinder = group:AddChild( "cylinder" )
+	cylinder:SetGeometry( "cylinder" )
+	cylinder:SetPosition( V3.New( 4.5, 0, 0 ) )
 
-	scene.addobject( "scene1", "tube" )
-	object.setgeometry( "scene1:tube", "tube" )
-	object.setposition( "scene1:tube", V3.New( -4.5, -3, 0 ) )
+	tube = group:AddChild( "tube" )
+	tube:SetGeometry( "tube" )
+	tube:SetPosition( V3.New( -4.5, -3, 0 ) )
 		
-	scene.addobject( "scene1", "plane" )
-	object.setgeometry( "scene1:plane", "plane" )
-	object.setposition( "scene1:plane", V3.New( -1.5, -3, 0 ) )
+	plane = group:AddChild( "plane" )
+	plane:SetGeometry( "plane" )
+	plane:SetPosition( V3.New( -1.5, -3, 0 ) )
 		
-	scene.addobject( "scene1", "cone" )
-	object.setgeometry( "scene1:cone", "cone" )
-	object.setposition( "scene1:cone", V3.New( 1.5, -3, 0 ) )
-
-	scene.addobject( "scene1", "camera" )
-	object.setposition( "scene1:camera", V3.New( 0, 5, -17 ) )
-	object.lookat( "scene1:camera", V3.Zero() ) 
-
-	scene.setcamera( "scene1", "camera" )
-
-	scene.setsize( "scene1", game.getwidth(), game.getheight() )
-
-	proj = matrix.makeperspectivefovlh( math.pi / 4.0, game.getaspectratiohw(), 1, 1000 )
-
-	camera.setprojection( "scene1", proj ) 
+	cone = group:AddChild( "cone" )
+	cone:SetGeometry( "cone" )
+	cone:SetPosition( V3.New( 1.5, -3, 0 ) )
 end
 
 function OnUpdate()
-	object.orbit( "scene1:camera", V3.New( 0, 0, 0 ), V2.New( 1, 0 ), update.getdelta() );
-	object.lookat( "scene1:camera", V3.Zero() );
+	rotation = Update.GetDelta()
+	
+	totalRotation = totalRotation + rotation
+	pi2 = 3.1415926535 * 2
+	if totalRotation > pi2 then
+		totalRotation = totalRotation - pi2
+		rotation = totalRotation -- Left over
+		axisIndex = axisIndex + 1
+		if axisIndex >= 3 then
+			axisIndex = 0
+		end
+	end
+
+	axis = V3.Zero()
+	if axisIndex == 0 then
+		axis.x = 1
+	elseif axisIndex == 1 then
+		axis.y = 1
+	elseif axisIndex == 2 then
+		axis.z = 1
+	end
+
+	--camera:RotateAbout( axis, rotation )
+	group:RotateAbout( axis, rotation )
 end

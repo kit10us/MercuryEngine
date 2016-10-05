@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TesterBase_VS2005", "TesterBase_VS2005.vcproj", "{4528D2B2-05AE-44AA-80DB-2AC913EE9567}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7AAD9FB4-9151-4456-A08C-3CD177B2BD40}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "efforts", "efforts", "{8EE4DB3C-70A1-48AB-9ADC-8F279B8C388A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01A-BasicWindowedDirectX_VS2005", "tests\01A-BasicWindowedDirectX\01A-BasicWindowedDirectX_VS2005.vcproj", "{648DCF7F-9E47-456E-82A2-215121A6045E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567} = {4528D2B2-05AE-44AA-80DB-2AC913EE9567}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "D3DXSpriteFlood_VS2005", "efforts\D3DXSpriteFlood\D3DXSpriteFlood_VS2005.vcproj", "{1B00645E-67B2-46F1-8C89-08559C46C3C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567} = {4528D2B2-05AE-44AA-80DB-2AC913EE9567}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03-Text_VS2005", "tests\03-Text\03-Text_VS2005.vcproj", "{5B117B15-34C6-4F93-840B-3A6D1A40EF26}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567} = {4528D2B2-05AE-44AA-80DB-2AC913EE9567}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeviceEnumerationTest_VS2005", "efforts\DeviceEnumerationTest\DeviceEnumerationTest_VS2005.vcproj", "{75A6A421-9A12-4965-9405-63DC62812950}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567} = {4528D2B2-05AE-44AA-80DB-2AC913EE9567}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02-BasicGraphics_VS2005", "tests\02-BasicGraphics\02-BasicGraphics_VS2005.vcproj", "{21967E04-1433-4936-B457-753B4031B7F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567} = {4528D2B2-05AE-44AA-80DB-2AC913EE9567}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567}.Debug|Win32.Build.0 = Debug|Win32
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567}.Release|Win32.ActiveCfg = Release|Win32
+		{4528D2B2-05AE-44AA-80DB-2AC913EE9567}.Release|Win32.Build.0 = Release|Win32
+		{648DCF7F-9E47-456E-82A2-215121A6045E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{648DCF7F-9E47-456E-82A2-215121A6045E}.Debug|Win32.Build.0 = Debug|Win32
+		{648DCF7F-9E47-456E-82A2-215121A6045E}.Release|Win32.ActiveCfg = Release|Win32
+		{648DCF7F-9E47-456E-82A2-215121A6045E}.Release|Win32.Build.0 = Release|Win32
+		{1B00645E-67B2-46F1-8C89-08559C46C3C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1B00645E-67B2-46F1-8C89-08559C46C3C0}.Debug|Win32.Build.0 = Debug|Win32
+		{1B00645E-67B2-46F1-8C89-08559C46C3C0}.Release|Win32.ActiveCfg = Release|Win32
+		{1B00645E-67B2-46F1-8C89-08559C46C3C0}.Release|Win32.Build.0 = Release|Win32
+		{5B117B15-34C6-4F93-840B-3A6D1A40EF26}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B117B15-34C6-4F93-840B-3A6D1A40EF26}.Debug|Win32.Build.0 = Debug|Win32
+		{5B117B15-34C6-4F93-840B-3A6D1A40EF26}.Release|Win32.ActiveCfg = Release|Win32
+		{5B117B15-34C6-4F93-840B-3A6D1A40EF26}.Release|Win32.Build.0 = Release|Win32
+		{75A6A421-9A12-4965-9405-63DC62812950}.Debug|Win32.ActiveCfg = Debug|Win32
+		{75A6A421-9A12-4965-9405-63DC62812950}.Debug|Win32.Build.0 = Debug|Win32
+		{75A6A421-9A12-4965-9405-63DC62812950}.Release|Win32.ActiveCfg = Release|Win32
+		{75A6A421-9A12-4965-9405-63DC62812950}.Release|Win32.Build.0 = Release|Win32
+		{21967E04-1433-4936-B457-753B4031B7F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{21967E04-1433-4936-B457-753B4031B7F1}.Debug|Win32.Build.0 = Debug|Win32
+		{21967E04-1433-4936-B457-753B4031B7F1}.Release|Win32.ActiveCfg = Release|Win32
+		{21967E04-1433-4936-B457-753B4031B7F1}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{648DCF7F-9E47-456E-82A2-215121A6045E} = {7AAD9FB4-9151-4456-A08C-3CD177B2BD40}
+		{5B117B15-34C6-4F93-840B-3A6D1A40EF26} = {7AAD9FB4-9151-4456-A08C-3CD177B2BD40}
+		{21967E04-1433-4936-B457-753B4031B7F1} = {7AAD9FB4-9151-4456-A08C-3CD177B2BD40}
+		{1B00645E-67B2-46F1-8C89-08559C46C3C0} = {8EE4DB3C-70A1-48AB-9ADC-8F279B8C388A}
+		{75A6A421-9A12-4965-9405-63DC62812950} = {8EE4DB3C-70A1-48AB-9ADC-8F279B8C388A}
+	EndGlobalSection
+EndGlobal
