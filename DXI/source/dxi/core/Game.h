@@ -26,6 +26,13 @@ namespace dxi
 	{
 		class Game : public IGame
 		{
+		protected: // User overrides...
+
+			virtual bool Setup( IOS & os ) override;  
+			virtual void Startup() override;		  
+			virtual bool Update( RenderInfo & renderInfo, IInput & input ) override;
+			virtual void Render( const RenderInfo & renderInfo ) override;			
+
 		public:
 			Game( unify::Path setup = "setup.xml" );
 			virtual ~Game();
@@ -35,13 +42,6 @@ namespace dxi
 			/// Returns Setup: false ends the program immediately.
 			/// </summary>
 			bool Initialize( std::shared_ptr< IOS > os );
-			
-			/// <summary>
-			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
-			/// </summary>
-			virtual bool Setup( IOS & os ) override;
-
-			virtual void Startup() override;
 
 			/// <summary>
 			/// Optional function to be called on reciept of a drag-and-drop event.
@@ -87,10 +87,6 @@ namespace dxi
 
 			void Log( std::string text );
 			void LogLine( std::string line );
-
-		protected:
-			virtual bool Update( RenderInfo & renderInfo, IInput & input );
-			virtual void Render( const RenderInfo & renderInfo );
 
 		private:
 			void BeforeUpdate();

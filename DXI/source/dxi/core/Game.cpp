@@ -19,6 +19,24 @@ using namespace core;
 
 Game * Game::s_gameInstance = 0;
 
+
+bool Game::Setup( IOS & os )
+{
+	return true;
+}
+
+void Game::Startup()
+{
+	// STUBBED - optional for derived game class.
+}
+
+bool Game::Update( RenderInfo & renderInfo, IInput & input )
+{
+	return true;
+}
+
+
+
 Game::Game( unify::Path setup )
 : m_setup( setup )
 , m_isQuitting( false )
@@ -35,11 +53,12 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 {
 	m_os = os;
 
+	// User setup...
 	if ( ! Setup( GetOS() ) )
 	{
 		return false;
 	}
-	
+
 	// Create asset managers...
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
@@ -62,53 +81,47 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 
 	m_sceneManager.reset( new scene::SceneManager( this ) );
 
-	return true;
-}
 
-bool Game::Setup( IOS & os )
-{
-	if ( ! unify::Path( "setup.xml" ).Exists() )
+	// Our setup...
+	if( m_setup.Exists() )
 	{
-		return true; // Skip this setup step if there is no XML.
-	}
-	
-	qxml::Document doc( m_setup );
-	
-	qxml::Element * setup = doc.FindElement( "setup" );	 	
-	if ( setup == nullptr )
-	{
-		return true; // Skip this setup step if there is no setup node in XML.
-	}
+		qxml::Document doc( m_setup );
 
-	for( auto && node : setup->Children() )
-	{
-		if ( node.IsTagName( "logfile" ) )
+		qxml::Element * setup = doc.FindElement( "setup" );
+		if( setup )
 		{
-			m_logFile = node.GetText();
-		}
-		if ( node.IsTagName( "fullscreen" ) )
-		{
-			os.SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
-		}
-		else if ( node.IsTagName( "resolution" ) )
-		{
-			os.SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
-		}
-		else if ( node.IsTagName( "extension" ) )
-		{		   
-			unify::Path path( node.GetText() );
-			AddExtension( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
-		}
-		else if ( node.IsTagName( "gamemodule" ) )
-		{
-			std::string type = node.GetAttribute< std::string >( "type" );
-			auto se = GetScriptEngine( type );
-			assert( se ); //TODO: Handle error better.
-			m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
+			for( auto && node : setup->Children() )
+			{
+				if( node.IsTagName( "logfile" ) )
+				{
+					m_logFile = node.GetText();
+				}
+				if( node.IsTagName( "fullscreen" ) )
+				{
+					GetOS().SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
+				}
+				else if( node.IsTagName( "resolution" ) )
+				{
+					GetOS().SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
+				}
+				else if( node.IsTagName( "extension" ) )
+				{
+					unify::Path path( node.GetText() );
+					//m_extensions.push_back( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
+					AddExtension( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
+				}
+				else if( node.IsTagName( "gamemodule" ) )
+				{
+					std::string type = node.GetAttribute< std::string >( "type" );
+					auto se = GetScriptEngine( type );
+					assert( se ); //TODO: Handle error better.
+					m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
+				}
+			}
 		}
 	}
 
-	m_os->Startup();
+	GetOS().Startup();
 
 	if( m_gameModule )
 	{
@@ -116,19 +129,17 @@ bool Game::Setup( IOS & os )
 	}
 
 	// m_input.reset( new null::Input );
-	m_input.reset( new Input( *m_os ) );
+	m_input.reset( new Input( GetOS() ) );
 
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
 	Log( "Startup: " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
 
-	return true;
-}
+	// User startup...
+	Startup();
 
-void Game::Startup()
-{
-	// STUBBED - optional for derived game class.
+	return true;
 }
 
 void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point )
@@ -149,6 +160,19 @@ void Game::Tick()
 
 	BeforeUpdate();
 	m_renderInfo.SetDelta( elapsed ); // TODO: Pull elapsed from Update, since it's now in RenderInfo.
+
+	if( m_gameModule )
+	{
+		m_gameModule->OnUpdate();
+	}
+
+	if( GetInput().KeyPressed( Key::Escape ) )
+	{
+		RequestQuit();
+	}
+
+	m_sceneManager->Update( m_renderInfo, GetInput() );
+
 	bool run = Update( m_renderInfo, GetInput() );
 	AfterUpdate();
 }
@@ -156,23 +180,6 @@ void Game::Tick()
 void Game::BeforeUpdate()
 {
 	m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
-}
-
-bool Game::Update( RenderInfo & renderInfo, IInput & input )
-{
-	if( m_gameModule )
-	{
-		m_gameModule->OnUpdate();
-	}
-	
-	if ( input.KeyPressed( Key::Escape ) )
-    {
-        RequestQuit();
-    }
-
-	m_sceneManager->Update( renderInfo, input );
-
-	return true;
 }
 
 void Game::AfterUpdate()

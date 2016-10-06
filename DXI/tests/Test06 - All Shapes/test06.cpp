@@ -17,14 +17,9 @@ using namespace core;
 
 class MyGame : public Game
 {
-protected:
-
 public:
 	void Startup()
 	{
-		// Call base startup.
-		Game::Startup();
-
 		// Load our effect from a file...
 		GetManager< Effect >()->Add( "textured_3d", "media/EffectTextured.xml" ); // Load an effect into the manager.
 

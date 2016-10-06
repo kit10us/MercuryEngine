@@ -29,7 +29,6 @@ public:
 
 	void Startup()
 	{
-		Game::Startup();
 		AddExtension( std::shared_ptr< core::Extension >( new Extension( "DXILuaDLL.dll" ) ) );
 
 		scripting::IScriptEngine * luaDLL = GetScriptEngine( "lua" );

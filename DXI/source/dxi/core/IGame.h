@@ -19,18 +19,29 @@ namespace dxi
 		/// </summary>
 		class IGame
 		{
-		public:
-			virtual ~IGame() {}
-
+		protected:
 			/// <summary>
 			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 			/// </summary>
 			virtual bool Setup( IOS & os ) = 0;
 
 			/// <summary>
-			/// Startup is called to load assets and setup before Updating and Rendering. It is called once.
+			/// Startup is called to load assets and create game objects before Updating and Rendering. It is called once.
 			/// </summary>
 			virtual void Startup() = 0;
+
+			/// <summary>
+			/// Update is called to enable objects to perform over-time operations.
+			/// </summary>
+			virtual bool Update( RenderInfo & renderInfo, IInput & input ) = 0;
+
+			/// <summary>
+			/// Render is called to draw graphics.
+			/// </summary>
+			virtual void Render( const RenderInfo & renderInfo ) = 0;
+
+		public:
+			virtual ~IGame() {}
 
 			virtual void Tick() = 0;
 

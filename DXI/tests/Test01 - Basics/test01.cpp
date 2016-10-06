@@ -31,8 +31,6 @@ public:
 
 void MyGame::Startup()
 {
-	Game::Startup();
-
 	// Load effect...
 	m_effect = GetManager< Effect >()->Add( "textured_2d", "media/EffectTextured2D.xml" );
 

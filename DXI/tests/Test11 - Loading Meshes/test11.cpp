@@ -21,6 +21,7 @@ class MyGame : public Game
 {
 protected:
 public:
+	//MyGame() : Game( "setup_dae.xml" ) {}
 	void Startup();
 	bool Update( RenderInfo & renderInfo, IInput & input );
 	void Render( const RenderInfo & renderInfo );
@@ -28,16 +29,9 @@ public:
 
 } game;
 
-#include <regex>
-
-void Take( std::vector< char > things )
-{
-}
 
 void MyGame::Startup()
 {
-	Game::Startup();
-
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.xml" );
 	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "textured3d", "media/EffectTextured.xml" );

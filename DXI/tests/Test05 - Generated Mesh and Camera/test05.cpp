@@ -43,8 +43,6 @@ public:
 
 	void Startup()
 	{
-		Game::Startup();
-
 		// Setup camera...
 		// Create an object to use as a camera, and a camera interface. Set the projection to a default projection.
 		m_cameraObject.reset( new scene::Object ); // Necessary to store the camera object -somewhere- outside of the camera, as is weak_ptr in camera.

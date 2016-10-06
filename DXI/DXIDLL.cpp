@@ -25,8 +25,6 @@ bool __cdecl Startup( HWND hWnd, char * setup )
 		return 0;
 	}
 
-	g_game->Startup();
-
 	return false;
 }
 

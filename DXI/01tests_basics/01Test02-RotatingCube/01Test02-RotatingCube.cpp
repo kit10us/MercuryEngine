@@ -28,8 +28,6 @@ public:
 
 void MyGame::Startup()
 {
-	Game::Startup();
-
 	effect = GetManager< Effect>()->Add( "textured_3d", "media/EffectColor.xml" );
 
 #pragma region Create vertex raw data as a C-style struct...

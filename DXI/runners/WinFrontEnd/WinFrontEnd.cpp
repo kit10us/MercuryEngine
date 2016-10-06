@@ -31,8 +31,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			return 0;
 		}
 
-		game.Startup();
-
 		const bool forever = true;
 		while( forever )
 		{

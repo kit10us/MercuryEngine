@@ -36,8 +36,6 @@ public:
 
 	void Startup() override
 	{
-		Game::Startup();
-
 		Effect::ptr effect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
 		effect->SetPixelShader( GetManager< PixelShader >()->Find( "color_3d" ) );
 		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color_3d" ) );
