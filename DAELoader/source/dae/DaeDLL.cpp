@@ -42,7 +42,7 @@ __declspec(dllexport) bool DXILoader( dxi::core::Game * game )
 		}
 	};
 	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( new MyEffectSolver( *game ) );
-	game->AddGeometryFactory( "dae", std::shared_ptr< rm::ISourceFactory< Geometry > >( daeFactory, Deleter ) );
+	game->GetManager< dxi::Geometry >()->AddFactory( "dae", daeFactory );
 
 	return true;
 }

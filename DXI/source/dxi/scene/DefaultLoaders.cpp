@@ -35,13 +35,15 @@ void AddPathsLF::operator()( const qxml::Element & element, scene::Scene::shared
 
 void AddObjectLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
+	assert( 0 ); // TODO: Likely ditch all off this...? 
+	/*
 	core::Game & game = *core::Game::GetInstance();
 	auto & geometryManager = *core::Game::GetInstance()->GetManager< Geometry >();
 
 	std::string name = element.GetAttribute( "name" )->GetString();
 	std::string geometry = element.GetAttributeElse< std::string >( "geometry", "" );
 	// TODO: std::string physics = element.GetAttributeElse< std::string >( "physics", "" );
-	scene::Object::shared_ptr object { scene->Add( name ) };
+	scene::Object::shared_ptr object { scene->GetRoot()->Add( name ) };
 	object->SetGeometry( geometryManager.Find( geometry ) );
 
 	const qxml::Element * subNode = element.GetFirstChild();
@@ -112,6 +114,7 @@ void AddObjectLF::operator()( const qxml::Element & element, scene::Scene::share
 	{
 		object->GetPhysics()->SyncPhysicsFromObject();
 	}
+	*/
 }
 
 void SetCameraLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )

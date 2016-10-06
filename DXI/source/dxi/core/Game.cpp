@@ -51,11 +51,9 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	GetManager< Effect >()->AddFactory( "effect", new EffectXMLFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
-	GetManager< PixelShader >()->AddFactory( new PixelShaderJsonFactory );
 	GetManager< PixelShader >()->AddFactory( "pixelshader", new PixelShaderXMLFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
-	GetManager< VertexShader >()->AddFactory( new VertexShaderJsonFactory );
 	GetManager< VertexShader >()->AddFactory( "vertexshader", new VertexShaderXMLFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
@@ -110,6 +108,16 @@ bool Game::Setup( IOS & os )
 		}
 	}
 
+	m_os->Startup();
+
+	if( m_gameModule )
+	{
+		m_gameModule->OnStart();
+	}
+
+	// m_input.reset( new null::Input );
+	m_input.reset( new Input( *m_os ) );
+
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
@@ -120,15 +128,7 @@ bool Game::Setup( IOS & os )
 
 void Game::Startup()
 {
-	m_os->Startup();
-
-	if ( m_gameModule )
-	{
-		m_gameModule->OnStart();
-	}
-
-	// m_input.reset( new null::Input );
-	m_input.reset( new Input( *m_os ) );
+	// STUBBED - optional for derived game class.
 }
 
 void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point )
@@ -149,7 +149,7 @@ void Game::Tick()
 
 	BeforeUpdate();
 	m_renderInfo.SetDelta( elapsed ); // TODO: Pull elapsed from Update, since it's now in RenderInfo.
-	bool run = Update( elapsed, m_renderInfo, GetInput() );
+	bool run = Update( m_renderInfo, GetInput() );
 	AfterUpdate();
 }
 
@@ -158,7 +158,7 @@ void Game::BeforeUpdate()
 	m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
 }
 
-bool Game::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+bool Game::Update( RenderInfo & renderInfo, IInput & input )
 {
 	if( m_gameModule )
 	{
@@ -170,7 +170,7 @@ bool Game::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & inp
         RequestQuit();
     }
 
-	m_sceneManager->Update( elapsed, input );
+	m_sceneManager->Update( renderInfo, input );
 
 	return true;
 }

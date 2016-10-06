@@ -90,7 +90,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		auto factory = m_sourceFactories.find( extension );
 		if( factory == m_sourceFactories.end() )
 		{
-			throw exception::FailedToCreate( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
+			throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
 		}
 
 		T * product = factory->second->Produce( source );
@@ -102,7 +102,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		}
 	}
 
-	throw exception::FailedToCreate( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
+	throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
 }
 
 template< class T >
@@ -126,7 +126,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, const qx
 		return resource;
 	}
 
-	throw exception::FailedToCreate( GetName() + " manager: No XML factory found that could produce \"" + name + "\"!" );
+	throw std::string( GetName() + " manager: No XML factory found that could produce \"" + name + "\"!" );
 }
 
 template< class T >
@@ -185,7 +185,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( qjson::Object json )
 		}
 	}
 
-	throw exception::FailedToCreate( GetName() + " manager: No JSON factory found that could produce \"" + name + "\"!" );
+	throw std::string( GetName() + " manager: No JSON factory found that could produce \"" + name + "\"!" );
 }
 
 template< class T >

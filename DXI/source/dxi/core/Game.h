@@ -89,7 +89,7 @@ namespace dxi
 			void LogLine( std::string line );
 
 		protected:
-			virtual bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
+			virtual bool Update( RenderInfo & renderInfo, IInput & input );
 			virtual void Render( const RenderInfo & renderInfo );
 
 		private:

@@ -4,6 +4,11 @@
 *.o
 *.obj
 
+# Mixed intermediate files
+*.exp
+*.ilk
+*.pdb
+
 # Precompiled Headers
 *.gch
 *.pch

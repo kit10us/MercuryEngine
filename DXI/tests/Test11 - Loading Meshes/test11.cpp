@@ -22,8 +22,8 @@ class MyGame : public Game
 protected:
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
-	void Render();
+	bool Update( RenderInfo & renderInfo, IInput & input );
+	void Render( const RenderInfo & renderInfo );
 	void Shutdown();
 
 } game;
@@ -93,7 +93,7 @@ void MyGame::Startup()
 	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
 
 	// Add a camera...
-	scene::Object::shared_ptr cameraObject = scene->Add( "camera" );
+	scene::Object::shared_ptr cameraObject = scene->GetRoot()->AddChild( "camera" );
 	scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
 	scene->SetCamera( "camera" );
 	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
@@ -107,14 +107,14 @@ void MyGame::Startup()
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::shared_ptr meshProg( shapes::CreateShape( cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = scene->Add( "cubeDyna" );
+	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
 	progObject->SetGeometry( meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 				  
 	// From an XML file...
 	Mesh::shared_ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
-	auto xmlObject = scene->Add( "XMLObject" );
+	auto xmlObject = scene->GetRoot()->AddChild( "XMLObject" );
 	xmlObject->SetGeometry( meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	xmlObject->GetGeometryMatrix().Scale( 0.10f );
@@ -122,7 +122,7 @@ void MyGame::Startup()
 	// From an ASE file...
 	Mesh::shared_ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
-	auto aseObject = scene->Add( "swordASE" );
+	auto aseObject = scene->GetRoot()->AddChild( "swordASE" );
 	aseObject->SetGeometry( meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	aseObject->GetGeometryMatrix().Scale( 0.090f );
@@ -142,7 +142,7 @@ void MyGame::Startup()
 	std::chrono::duration< double > elapsed = end - start;
 	double elapsed_count = elapsed.count();
 			
-	auto cubeDAE = scene->Add( "cubeDAE" );
+	auto cubeDAE = scene->GetRoot()->AddChild( "cubeDAE" );
 	cubeDAE->SetGeometry( meshDAE );
 	cubeDAE->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	auto daeObject = scene->FindObject( "cubeDAE" );
@@ -154,19 +154,19 @@ void MyGame::Startup()
 	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
 }
 
-bool MyGame::Update( unify::Seconds elapsed, IInput & input )
+bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 {
 	// Use of camera controls to simplify camera movement...
 	scene::Object::shared_ptr cameraObject = GetSceneManager()->Find( "scene" )->GetCamera().GetObject();
-	cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
+	cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
 	cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-	return Game::Update( elapsed, renderInfo, input );
+	return Game::Update( renderInfo, input );
 }
 
-void MyGame::Render()
+void MyGame::Render( const RenderInfo & renderInfo )
 {
-	Game::Render();
+	Game::Render( renderInfo );
 }
 
 void MyGame::Shutdown()
