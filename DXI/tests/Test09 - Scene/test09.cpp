@@ -151,19 +151,19 @@ public:
 		}
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
 		// Use of camera controls to simplify camera movement...
 		scene::Object::shared_ptr cameraObject = GetSceneManager()->Find( "scene" )->GetCamera().GetObject();
-		cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( elapsed ) );
+		cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
 		cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
-	void Render()
+	void Render( const RenderInfo & renderInfo )
 	{
-		Game::Render();
+		Game::Render( renderInfo );
 	}
 
 	void Shutdown()

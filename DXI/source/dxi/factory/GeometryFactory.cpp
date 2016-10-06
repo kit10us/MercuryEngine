@@ -71,13 +71,11 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 					auto effect = effectManager->Find( effectName );
 					VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 					unsigned int vertexCount = buffersetChild.GetAttribute< unsigned int >( "count" );
+					
 					VertexBuffer & vb = bufferset.GetVertexBuffer();
+					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * vertexCount] );
 
-					assert( 0 ); // TODO:
-					//vb.Create( vertexCount, vd, nullptr ); // TODO: Additional flags and parameter supports.
-
-					unify::DataLock lock;
-					vb.Lock( lock );
+					unify::DataLock lock( vertices.get(), vd->GetSize(), vertexCount, false );
 
 					unsigned short stream = 0;
 
@@ -167,6 +165,9 @@ void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
 							vd->WriteVertex( lock, index, diffuseE, diffuse );
 						}
 					}
+
+					vb.Create( vertexCount, vd, vertices.get() );
+
 				}	 
 				else if( buffersetChild.IsTagName( "indexlist" ) )
 				{

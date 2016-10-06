@@ -19,7 +19,7 @@ namespace dxi
 			PhysicsEnvironment();
 			virtual ~PhysicsEnvironment();
 
-			virtual void ApplyEffect( float delta, PhysicsInstance * object ) = 0;
+			virtual void ApplyEffect( const RenderInfo & renderInfo, PhysicsInstance * object ) = 0;
 		};
 	} // namespace pi
 } // namespace dxi

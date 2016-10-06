@@ -19,7 +19,7 @@ namespace dxi
 		~GeometryGroup();
 
 		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
-		virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
+		virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 		virtual void Add( Geometry::shared_ptr geometry );
 		virtual void Clear();
 

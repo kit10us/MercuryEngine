@@ -69,21 +69,21 @@ public:
 		m_triangleVB.Create( 6, vd, aTriangle );
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input ) override
+	bool Update( RenderInfo & renderInfo, IInput & input ) override
 	{
 		unify::V3< float > eyePosition( 0, 0, -7 );
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
 		rotation.TransformCoord( eyePosition );
 		m_view.SetPosition( eyePosition );
 		m_view.LookAtLH( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
-		m_rotation += unify::Angle::AngleInRadians( elapsed );
+		m_rotation += unify::Angle::AngleInRadians( renderInfo.GetDelta() );
 		m_rotation.Fix360();
 
 		renderInfo.SetWorldMatrix( unify::Matrix::MatrixIdentity() );
 		renderInfo.SetViewMatrix( m_view );
 		renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, GetOS().GetResolution().AspectRatioWH(), 1.0f, 1000.0f ) );
 
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render( const RenderInfo & renderInfo ) override

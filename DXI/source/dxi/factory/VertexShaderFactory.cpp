@@ -8,21 +8,6 @@
 
 using namespace dxi;
 
-VertexShader * VertexShaderJsonFactory::Produce( qjson::Object json )
-{
-	unify::Path path = json[ "source" ].ToString();
-	std::string entry = json["entry"].ToString();
-	std::string profile = json["profile"].ToString();
-	qjson::Object vd = { json["vd"] };
-	VertexDeclaration::ptr vertexDeclaration( new VertexDeclaration( vd ) );
-	return new VertexShader( path, entry, profile, vertexDeclaration );
-}
-
-qjson::Object dxi::MakeVertexShaderJson( std::string name, unify::Path path, std::string entry, std::string profile, qjson::Object vertexDeclaration )
-{
-	return { { "name", name }, { "source", path.ToString() },{ "entry", entry },{ "profile", profile }, { "vd", vertexDeclaration } };
-}
-
 VertexShader * VertexShaderXMLFactory::Produce( const qxml::Element & node )
 {
 	unify::Path source = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();

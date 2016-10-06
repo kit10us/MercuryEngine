@@ -9,11 +9,6 @@
 
 using namespace dxi;
 
-Geometry * ShapeJsonFactory::Produce( qjson::Object json )
-{
-	return shapes::CreateShape( json );
-}
-
 Geometry * ShapeXMLFactory::Produce( const qxml::Element & element )
 {	
 	auto game = core::Game::GetInstance();

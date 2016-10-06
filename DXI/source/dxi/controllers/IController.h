@@ -4,7 +4,7 @@
 
 #include <dxi/core/IInput.h>
 #include <unify/unify.h>
-#include <unify/TimeDelta.h>
+#include <dxi/RenderInfo.h>
 #include <memory>
 
 namespace dxi
@@ -17,7 +17,7 @@ namespace dxi
 			typedef std::shared_ptr< IController > shared_ptr;
 
 			virtual ~IController() {}
-			virtual void Update( unify::Seconds, core::IInput & input ) = 0;
+			virtual void Update( const RenderInfo & renderInfo, core::IInput & input ) = 0;
 		};
 	}
 }

@@ -63,7 +63,7 @@ public:
 		m_mesh = GetManager< Geometry >()->Add( "cube", dxi::shapes::CreateShape( cubeParameters ) );
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
 		unify::V3< float > eyePosition( 0, 0, -7 );
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -71,12 +71,12 @@ public:
 		unify::Matrix view = unify::Matrix::MatrixLookAtLH( eyePosition, unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 		m_camera->GetObject()->GetFrame().SetMatrix( view );
 
-		m_rotation += unify::Angle::AngleInRadians( elapsed );
+		m_rotation += unify::Angle::AngleInRadians( renderInfo.GetDelta() );
 		m_rotation.Fix360();
 
 		renderInfo.SetViewMatrix( m_camera->GetMatrix() );
 
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render( const RenderInfo & renderInfo )

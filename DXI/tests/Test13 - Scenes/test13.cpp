@@ -184,9 +184,9 @@ public:
 		scene2->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, game.GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render()

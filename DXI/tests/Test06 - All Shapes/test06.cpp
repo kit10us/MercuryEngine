@@ -178,7 +178,7 @@ public:
 		//mainScene->GetRenderInfo().SetOption( RenderOption::NoFrame, true );
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
 		static size_t axisIndex = 1;
 		static unify::Angle totalRotation{};
@@ -199,7 +199,7 @@ public:
 		auto group = GetSceneManager()->Find( "main" )->FindObject( "camera" );
 		group->GetFrame().RotateAbout( axis, rotation );
 
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render( const RenderInfo & renderInfo )

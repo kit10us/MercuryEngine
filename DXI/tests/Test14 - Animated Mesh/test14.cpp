@@ -264,7 +264,7 @@ protected:
 
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
+	bool Update( RenderInfo & renderInfo, IInput & input );
 	void Render();
 	void Shutdown();
 } game;
@@ -344,7 +344,7 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 		m_rotation -= 3.1415936545f * 2;
 	}
 
-	return Game::Update( elapsed, renderInfo, input );
+	return Game::Update( renderInfo, input );
 }
 
 void MyGame::Render()

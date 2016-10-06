@@ -28,7 +28,7 @@ namespace dxi
 		void Destroy();
 
 		// Overrides..
-		void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
+		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		const unify::BBox< float > & ComputeBounds();

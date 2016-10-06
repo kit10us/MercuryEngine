@@ -196,10 +196,10 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 
 					// Create vertex and index buffer...
 					VertexBuffer & vb = bufferSet.GetVertexBuffer();
-					assert( 0 );//TODO:
-					vb.Create( (unsigned int)listPTP.size(), vd, nullptr );
-					unify::DataLock lock;
-					vb.Lock( lock );
+					
+					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * listPTP.size()] );
+
+					unify::DataLock lock( vertices.get(), vd->GetSize(), listPTP.size(), false );
 
 					std::vector< Index32 > indices( (unsigned int)listPTP.size() * 3 );
 
@@ -227,11 +227,11 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 						indices[index * 3 + 1] = (Index32)index * 3 + 1;
 						indices[index * 3 + 2] = (Index32)index * 3 + 2;
 					}
+					
+					vb.Create( (unsigned int)listPTP.size(), vd, vertices.get() );
 
 					IndexBuffer & ib = bufferSet.GetIndexBuffer();
 					ib.Create( (unsigned int)listPTP.size() * 3, (Index32*)&indices[0], dxi::BufferUsage::Default );
-												
-					vb.Unlock();
 
 					bufferSet.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, mesh_numfaces * 3, mesh_numfaces, effect, true /*useIB*/ ) );
 				}

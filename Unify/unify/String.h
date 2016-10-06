@@ -56,6 +56,13 @@ namespace unify
         bool operator() (const std::string & string1, const std::string & string2) const;
     };  
 
+	// Binary functor for case insensitive string compares. Useful for maps.
+	class CaseInsensitiveLessThanTestCharPtr
+	{
+	public:
+		bool operator() ( char * string1, char * string2 ) const;
+	};
+
 	// TODO: For our needs, multiple spaces as delimitors need to be considered as one.
 	template< typename T >
 	std::vector< T > Split( const std::string & sourceString, const char delimitor );

@@ -11,7 +11,7 @@ using namespace scene;
 
 Scene::Scene( dxi::core::IGame * game )
 : GameDependant( game )
-, m_root( new Object() )
+, m_root( new Object )
 , m_lastCullCount( 0 )
 , m_renderSolids( true )
 , m_renderTrans( true )
@@ -34,11 +34,6 @@ Scene::Scene( dxi::core::IGame * game )
 
 Scene::~Scene()
 {
-}
-
-void Scene::Clear()
-{
-	m_objectList.clear();
 }
 
 Object::shared_ptr Scene::GetRoot()
@@ -66,33 +61,6 @@ const physics::IScene * Scene::GetPhysicsScene() const
 	return m_physicsScene.get();
 }
 
-std::shared_ptr< Object > Scene::Add( Object * object )
-{
-	std::shared_ptr< Object > object_ptr( object );
-	m_objectList.push_back( object_ptr );
-	if( m_physicsScene && object->GetPhysics() )
-	{
-		m_physicsScene->Add( object->GetPhysics() );
-	}
-	return object_ptr;
-}
-
-std::shared_ptr< Object > Scene::Add( const std::string & name )
-{
-	std::shared_ptr< Object > object_ptr( new Object );
-
-	object_ptr->GetTags()[ "name" ] = name;
-    
-	m_objectList.push_back( object_ptr );
-	m_objectMap[ name ] = object_ptr;
-	if( m_physicsScene && object_ptr->GetPhysics() )
-	{
-		m_physicsScene->Add( object_ptr->GetPhysics() );
-	}
-	return object_ptr;
-}
-
-
 Object::shared_ptr Scene::FindObject( const std::string & name )
 {
 	/*
@@ -116,17 +84,6 @@ Object::shared_ptr Scene::FindObject( const std::string & name )
 	}
 }
 
-bool Scene::FindPosition( const std::string & name, unify::V3< float > & position ) const
-{
-	ObjectMap::const_iterator itr = m_objectMap.find( name );
-	if( itr == m_objectMap.end() )
-	{
-		return false;
-	}
-	position = itr->second->GetFrame().GetPosition();
-	return true;
-}
-
 void Scene::SetCamera( const std::string & name )
 {
 	m_camera.SetObject( FindObject( name ) );
@@ -138,32 +95,23 @@ scene::Camera & Scene::GetCamera()
     return m_camera;
 }
 
-unsigned int Scene::ObjectCount() const
-{
-	return static_cast< unsigned int >( m_objectList.size() );
-}
-
-void Scene::Update( unify::Seconds elapsed, core::IInput & input )
+void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
 {
     if ( ! m_enabled )
     {
         return;
     }
 
-    unify::Any onUpdateEventData( Scene::EventData::OnUpdate( this, m_objectList, elapsed, input ) );
-    GetListenerMap().Fire( "OnUpdate", onUpdateEventData );
-
 	if ( m_physicsScene )
     {
-		m_physicsScene->Update( elapsed, input );
+		m_physicsScene->Update( renderInfo, input );
 	}
 
 	// Object updating (animation, independant physics)...
-	for( ObjectList::iterator itrObject = m_objectList.begin(), end = m_objectList.end(); itrObject != end; ++itrObject )
-	{
-		(*itrObject)->Update( elapsed, input );
-	}
-     
+	GetRoot()->Update( renderInfo, input );
+
+	/*
+	// TODO: Commented out due to changes of object lists into scene nodes.
 	unify::Rect< int > sceneRect( 
 		static_cast< int >( m_viewport.GetTopLeftX() ), static_cast< int >( m_viewport.GetTopLeftY() ), 
 		static_cast< int >( m_viewport.GetWidth() ), static_cast< int >( m_viewport.GetHeight() ) );
@@ -261,7 +209,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                         {
                             if ( m_mouseDownTime )
                             {
-                                m_mouseDownTime += elapsed;
+                                m_mouseDownTime += renderInfo.GetDelta();
                                 if ( m_mouseDownTime >= m_mouseDownTimeLimit )
                                 {
                                     m_mouseDrag = true;
@@ -280,7 +228,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
                             {
                                 unify::Any onDownData( Object::EventData::OnDown( m_objectOver.get(), input.MouseV3< float >() ) );
                                 //m_objectOver->GetListenerMap().Fire( "onDown", onDownData );
-                                m_mouseDownTime += elapsed;
+                                m_mouseDownTime += renderInfo.GetDelta();
                             }
                         }
                         else if ( ! input.MouseDown( 0 ) )
@@ -307,6 +255,7 @@ void Scene::Update( unify::Seconds elapsed, core::IInput & input )
             }
         }
     }
+	*/
 }
 
 RenderInfo & Scene::GetRenderInfo()

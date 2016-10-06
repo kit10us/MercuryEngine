@@ -31,7 +31,7 @@ namespace dxi
 		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		// Geometry CAN Update, but doesn't have to
-		virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
+		virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		void AddPlace( const unify::V3< float > & position );
 

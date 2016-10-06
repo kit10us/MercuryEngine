@@ -37,9 +37,9 @@ public:
 		luaDLL->ExecuteFile( "media/scene1.lua" );	
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render( const RenderInfo & renderInfo )

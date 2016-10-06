@@ -39,13 +39,11 @@ namespace dxi
             {
                 typedef std::tuple< Scene * /*new scene*/, Scene * /*prev scene*/ > OnFocus;
                 typedef std::tuple< Scene * /*prev scene*/ > OnFocusLost;
-				typedef std::tuple< Scene *, ObjectList &, unify::Seconds, core::IInput & > OnUpdate;
+				typedef std::tuple< Scene *, ObjectList &, const RenderInfo &, core::IInput & > OnUpdate;
             };
 
 		    Scene( core::IGame * game );
 		    virtual ~Scene();
-
-		    void Clear();
 
 			Object::shared_ptr GetRoot();
 			const Object::shared_ptr GetRoot() const;
@@ -54,17 +52,14 @@ namespace dxi
 		    physics::IScene * GetPhysicsScene();
 		    const physics::IScene * GetPhysicsScene() const;
 
-			void Update( unify::Seconds elapsed, core::IInput & input );
+			void Update( const RenderInfo & renderInfo, core::IInput & input );
 		    void UpdatePhysics();
 		    RenderInfo & GetRenderInfo();
 		    void Render();
-		    std::shared_ptr< Object > Add( Object * object );
-		    std::shared_ptr< Object > Add( const std::string & name );
 		    Object::shared_ptr FindObject( const std::string & name );
-		    bool FindPosition( const std::string & name, unify::V3< float > & position ) const;
-		    void SetCamera( const std::string & name );
+    
+			void SetCamera( const std::string & name );
             dxi::scene::Camera & GetCamera();
-		    unsigned int ObjectCount() const;
 		    unsigned int LastCullCount() const;
 		    void SetRenders( bool bSolids, bool bTrans );
 		    void SetCulling( bool bCulling );
@@ -107,9 +102,6 @@ namespace dxi
 
 	    private:
 			Object::shared_ptr m_root;
-
-		    ObjectList m_objectList;
-		    ObjectMap m_objectMap;
             std::string m_cameraName;
 		    Camera m_camera;
 		    std::shared_ptr< physics::IScene > m_physicsScene;

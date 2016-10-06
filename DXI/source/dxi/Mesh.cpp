@@ -26,12 +26,12 @@ void Mesh::Destroy()
 	m_primitiveList.Destroy();
 }
 
-void Mesh::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
+void Mesh::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( instanceData )
 	{
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		meshInstanceData->Update( elapsed );
+		meshInstanceData->Update( renderInfo );
 	}
 }
 

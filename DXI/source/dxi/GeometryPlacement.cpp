@@ -64,7 +64,7 @@ void GeometryPlacement::Render( const RenderInfo & renderInfo, GeometryInstanceD
 	*/
 }
 
-void GeometryPlacement::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
+void GeometryPlacement::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {	
 	// TODO: We need to keep seperate timing objects per each of these items.
 	//m_geometry->Update( elapsed, instanceData );

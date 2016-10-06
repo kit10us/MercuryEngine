@@ -6,12 +6,6 @@
 
 namespace dxi
 {
-	class ShapeJsonFactory : public rm::IJsonFactory< Geometry >
-	{
-	public:
-		Geometry * Produce( qjson::Object json ) override;
-	};
-
 	class ShapeXMLFactory : public rm::IXMLFactory< Geometry >
 	{
 	public:

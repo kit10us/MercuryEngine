@@ -151,7 +151,7 @@ void Object::SetController( controllers::IController::shared_ptr controller )
 	m_controller = controller;
 }
 
-void Object::Update( unify::Seconds elapsed, core::IInput & input )
+void Object::Update( const RenderInfo & renderInfo, core::IInput & input )
 {
     // Do not update if we are not enabled.
     if ( ! m_enabled )
@@ -161,12 +161,12 @@ void Object::Update( unify::Seconds elapsed, core::IInput & input )
 
 	if( m_controller )
 	{
-		m_controller->Update( elapsed, input );
+		m_controller->Update( renderInfo, input );
 	}
 
 	if( m_geometry )
 	{
-		m_geometry->Update( elapsed, m_geometryInstanceData.get() );
+		m_geometry->Update( renderInfo, m_geometryInstanceData.get() );
 	}
 
     unify::Matrix worldMatrix;
@@ -199,11 +199,7 @@ void Object::Render( const RenderInfo & renderInfo )
 	{
 		GetNext()->Render( renderInfo );
 	}
-
-
-
-
-
+								  
 	/*
 	// Do nothing if we have no geometry to render, or are not visible...
 	if( ! m_geometry || ! m_visible )
@@ -359,7 +355,7 @@ Object::shared_ptr Object::AddChild( std::string name )
 	if ( ! lastChild )
 	{
 		// No children...
-		m_firstChild.reset( new Object() );
+		m_firstChild.reset( new Object );
 		lastChild = m_firstChild;
 	}
 	else
@@ -369,7 +365,7 @@ Object::shared_ptr Object::AddChild( std::string name )
 		{
 			lastChild = lastChild->GetNext();
 		}
-		lastChild->m_next.reset( new Object() );
+		lastChild->m_next.reset( new Object );
 		lastChild->m_next->m_previous = lastChild;
 		lastChild = lastChild->GetNext();	 
 	}

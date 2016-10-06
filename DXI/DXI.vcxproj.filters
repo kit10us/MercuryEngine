@@ -523,9 +523,6 @@
     <ClCompile Include="source\dxi\scene\Object.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\scene\ObjectGroup.cpp">
-      <Filter>dxi\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\scene\Scene.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
@@ -764,9 +761,6 @@
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\scene\Object.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\scene\ObjectGroup.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\scene\Scene.h">

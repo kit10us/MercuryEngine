@@ -1,0 +1,8 @@
+<xml>
+<setup>
+<logfile>log.txt</logfile>
+<fullscreen>false</fullscreen>
+<resolution width="800" height="640"/>
+<extension>DXILuaDLL.dll</extension>
+</setup>
+</xml>

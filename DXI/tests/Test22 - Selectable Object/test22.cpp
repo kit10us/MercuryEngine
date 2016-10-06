@@ -18,7 +18,7 @@ class MyGame : public Game
 {
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
+	bool Update( RenderInfo & renderInfo, IInput & input );
 	void Render();
 	void Shutdown();
 } game;
@@ -312,7 +312,7 @@ void MyGame::Startup()
 
 bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 {
-	return Game::Update( elapsed, renderInfo, input );
+	return Game::Update( renderInfo, input );
 }
 
 void MyGame::Render()

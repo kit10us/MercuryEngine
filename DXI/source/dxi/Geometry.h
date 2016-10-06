@@ -38,7 +38,7 @@ namespace dxi
 		void Invalidate();
 
 		virtual GeometryInstanceData * CreateInstanceData();
-		virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData ) = 0;
+		virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
 		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
 
 		unify::BBox< float > & GetBBox();

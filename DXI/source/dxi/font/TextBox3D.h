@@ -22,7 +22,7 @@ namespace dxi
 			TextBox3D( IText * text );
 			virtual ~TextBox3D();
 			virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
-			virtual void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
+			virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		protected:
 			std::shared_ptr< IText > m_text;

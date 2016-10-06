@@ -65,12 +65,12 @@ void QLOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 	itr->GetGeometry()->Render( renderInfo, instanceData );
 }
 
-void QLOD::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
+void QLOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	// Update all geometry...
 	for( auto node : m_list )
 	{
-		node.GetGeometry()->Update( elapsed, instanceData );
+		node.GetGeometry()->Update( renderInfo, instanceData );
 	}
 }
 

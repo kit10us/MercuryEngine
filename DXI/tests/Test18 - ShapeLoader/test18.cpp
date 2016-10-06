@@ -63,7 +63,7 @@ public:
 		m_rotation = 0;
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
 		unify::V3< float > eye( 20.0f * sin( m_rotation ), 20.0f * sin( m_rotation ), 20.0f * cos( m_rotation ) );
 		m_camera->GetFrame().SetPosition( eye );
@@ -76,7 +76,7 @@ public:
 			m_rotation -= 3.1415936545f * 2;
 		}
 
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render()

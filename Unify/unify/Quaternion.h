@@ -9,8 +9,6 @@
 
 namespace unify
 {
-	class Matrix;
-
 	class Quaternion
 	{
 	public:
@@ -22,7 +20,6 @@ namespace unify
 		Quaternion();
 		Quaternion( float x, float y, float z, float w );
 		Quaternion( const Quaternion & quaternion );
-		Quaternion::Quaternion( const Matrix & matrix );
 
 		bool IsIdentity() const;
 

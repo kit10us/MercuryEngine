@@ -77,7 +77,6 @@
     <ClCompile Include="source\dxi\scene\Camera.cpp" />
     <ClCompile Include="source\dxi\scene\DefaultLoaders.cpp" />
     <ClCompile Include="source\dxi\scene\Object.cpp" />
-    <ClCompile Include="source\dxi\scene\ObjectGroup.cpp" />
     <ClCompile Include="source\dxi\scene\Scene.cpp" />
     <ClCompile Include="source\dxi\scene\SceneLoader.cpp" />
     <ClCompile Include="source\dxi\scene\SceneManager.cpp" />
@@ -218,7 +217,6 @@
     <ClInclude Include="source\dxi\scene\Camera.h" />
     <ClInclude Include="source\dxi\scene\DefaultLoaders.h" />
     <ClInclude Include="source\dxi\scene\Object.h" />
-    <ClInclude Include="source\dxi\scene\ObjectGroup.h" />
     <ClInclude Include="source\dxi\scene\Scene.h" />
     <ClInclude Include="source\dxi\scene\SceneLoader.h" />
     <ClInclude Include="source\dxi\scene\SceneManager.h" />

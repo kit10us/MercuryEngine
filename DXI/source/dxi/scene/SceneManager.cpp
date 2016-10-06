@@ -72,7 +72,7 @@ Scene::shared_ptr SceneManager::Find( std::string name )
 	return itr == m_scenes.end() ? Scene::shared_ptr() : itr->second;
 }
 
-void SceneManager::Update( unify::Seconds elapsed, core::IInput & input )
+void SceneManager::Update( const RenderInfo & renderInfo, core::IInput & input )
 {
 	if ( m_enabled == false )
 	{
@@ -89,7 +89,7 @@ void SceneManager::Update( unify::Seconds elapsed, core::IInput & input )
         }
     }
 
-    unify::Any onUpdateEventData( EventData::OnUpdate( this, sceneList, elapsed, input ) );
+    unify::Any onUpdateEventData( EventData::OnUpdate( this, sceneList, renderInfo, input ) );
     GetListenerMap().Fire( "onUpdate", onUpdateEventData );
         
     if ( ! m_focusScene || m_focusScene->CantLoseFocus() == false )
@@ -141,7 +141,7 @@ void SceneManager::Update( unify::Seconds elapsed, core::IInput & input )
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Update( elapsed, input );
+        scene->Update( renderInfo, input );
     }
 }
 

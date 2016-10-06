@@ -42,7 +42,7 @@ namespace dxi
 		void RemoveAnimation( const std::string & name );
 		void RemoveAllAnimations();
 
-		void Update( unify::Seconds elapsed );
+		void Update( const RenderInfo & renderInfo );
 		void RenderFrames( const unify::Matrix & world, bool major, bool minor );
 
 		unify::FrameSetInstance & GetFrameSetInstance();

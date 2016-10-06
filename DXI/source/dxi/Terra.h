@@ -105,7 +105,7 @@ namespace dxi
 
 		virtual const unify::BBox< float > & ComputeBounds();
 		void CreateFromParameters( unify::Parameters & parameters );
-		void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
+		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		// would be good to make these rely on a generic implementation (perhaps more complex with these as simplified front-ends)

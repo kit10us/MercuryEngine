@@ -24,7 +24,7 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input ) override;
+	bool Update( RenderInfo & renderInfo, IInput & input ) override;
 	void Render( const RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
@@ -104,12 +104,12 @@ void MyGame::Startup()
 	m_IB.Create( numberOfIndices, &indices[0] );
 }
 
-bool MyGame::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 {
 	// -- Update code goes here. --
 
 	// Return this.
-	return Game::Update( elapsed, renderInfo, input );
+	return Game::Update( renderInfo, input );
 }
 
 void MyGame::Render( const RenderInfo & renderInfo )

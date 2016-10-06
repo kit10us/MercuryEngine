@@ -825,7 +825,7 @@ void Terra::Offset( const unify::V3< float > & vec )
 	*/
 }
 
-void Terra::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
+void Terra::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 }
 

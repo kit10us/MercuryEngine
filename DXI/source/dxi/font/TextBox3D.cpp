@@ -30,10 +30,10 @@ void TextBox3D::Render( const RenderInfo & renderInfo, GeometryInstanceData * in
 	}
 }
 
-void TextBox3D::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
+void TextBox3D::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( m_text.get() )
 	{
-		m_text->Update( elapsed );
+		m_text->Update( renderInfo );
 	}
 }

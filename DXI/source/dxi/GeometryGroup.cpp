@@ -28,12 +28,12 @@ void GeometryGroup::Render( const RenderInfo & renderInfo, GeometryInstanceData 
 	}
 }
 
-void GeometryGroup::Update( unify::Seconds elapsed, GeometryInstanceData * instanceData )
+void GeometryGroup::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	// Update all geometry...
 	for( std::vector< Geometry::shared_ptr >::iterator itr = m_geometryList.begin(); itr != m_geometryList.end(); ++itr )
 	{
-		(*itr)->Update( elapsed, instanceData );
+		(*itr)->Update( renderInfo, instanceData );
 	}
 }
 

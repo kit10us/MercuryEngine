@@ -18,19 +18,6 @@ Texture * TextureSourceFactory::Produce( unify::Path source )
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );
 }
 
-Texture * TextureJsonFactory::Produce( qjson::Object json )
-{
-	unify::Path source( json["source"].ToString() );
-
-	bool lockable = false;
-	bool renderable = true; // TODO: support from json; likely need to make these bools.
-	if( json.Has( "lockable" ) )
-	{
-		lockable = true;
-	}
-	return new Texture( source, renderable, lockable );
-}
-
 Texture * TextureXmlNodeFactory::Produce( const qxml::Element & node )
 {
 	unify::Path source( unify::Path( node.GetDocument()->GetPath() ).DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );

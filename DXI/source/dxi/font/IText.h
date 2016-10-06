@@ -12,7 +12,7 @@ namespace dxi
 		class IText
 		{
 		public:
-			virtual void Update( unify::Seconds elapsed ) = 0;
+			virtual void Update( const RenderInfo & renderInfo ) = 0;
 			virtual void Render( const RenderInfo & renderInfo, bool is3D = false ) = 0;
 			virtual ~IText() {}
 

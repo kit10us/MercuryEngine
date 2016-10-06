@@ -18,6 +18,8 @@ RenderInfo::RenderInfo()
 , m_view( unify::Matrix::MatrixIdentity() )
 , m_projection( unify::Matrix::MatrixIdentity() )
 , m_frameSetInstance( 0 )
+, m_delta{}
+, m_averageDelta{}
 {
 }
 
@@ -30,6 +32,8 @@ RenderInfo::RenderInfo( const RenderInfo & info )
 , m_view( info.m_view )
 , m_projection( info.m_projection )
 , m_frameSetInstance( info.m_frameSetInstance )
+, m_delta{}
+, m_averageDelta{}
 {
 }
 
@@ -103,8 +107,21 @@ float RenderInfo::GetDelta() const
 void RenderInfo::SetDelta( float delta )
 {
 	m_delta = delta;
+	if ( m_averageDelta )
+	{
+		m_averageDelta = m_delta;
+	}
+	else
+	{
+		m_averageDelta = (m_averageDelta + m_delta) * 0.5f;
+	}
 }
 
+float RenderInfo::GetAverageDelta() const
+{
+	return m_averageDelta;
+}
+		 
 void RenderInfo::SetWorldMatrix( const unify::Matrix & matrix )
 {
 	m_world = matrix;

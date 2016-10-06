@@ -15,7 +15,7 @@
 
 namespace unify
 {
-	__declspec(align(16)) class Matrix
+	class Matrix
 	{
 	public:
 		static Matrix MatrixIdentity();

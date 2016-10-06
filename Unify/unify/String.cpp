@@ -252,6 +252,11 @@ bool unify::CaseInsensitiveLessThanTest::operator() (const std::string & string1
     return _stricmp(string1.c_str(), string2.c_str()) < 0;
 }
 
+bool unify::CaseInsensitiveLessThanTestCharPtr::operator() ( char * string1, char * string2 ) const
+{
+	return _stricmp( string1, string2 ) < 0;
+}
+
 std::vector< char > unify::SplitWhitespace()
 {
 	std::vector< char > splitDelimitors;

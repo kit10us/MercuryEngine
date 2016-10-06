@@ -6,15 +6,6 @@
 
 namespace dxi
 {
-	class VertexShaderJsonFactory : public rm::IJsonFactory< VertexShader >
-	{
-	public:
-		VertexShader * Produce( qjson::Object json ) override;
-	};
-
-	qjson::Object MakeVertexShaderJson( std::string name, unify::Path path, std::string entry, std::string profile, qjson::Object vertexDeclaration );
-
-
 	class VertexShaderXMLFactory : public rm::IXMLFactory< VertexShader >
 	{
 	public:

@@ -24,7 +24,7 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input ) override;
+	bool Update( RenderInfo & renderInfo, IInput & input ) override;
 	void Render( const RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
@@ -114,7 +114,7 @@ void MyGame::Startup()
 	m_camera.SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-bool MyGame::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 {
 	static unify::Angle rotation( unify::Angle::AngleInRadians( 0.0f ) );
 	static unify::Angle changeOverTime( unify::Angle::AngleInRadians( 0.00525f *0.5f ) );

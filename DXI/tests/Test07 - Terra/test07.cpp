@@ -29,7 +29,7 @@ protected:
 
 public:
 	void Startup() override;
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input ) override;
+	bool Update( RenderInfo & renderInfo, IInput & input ) override;
 	void Render( const RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
@@ -84,7 +84,7 @@ void MyGame::Startup()
 	m_geometryGroup.Add( Geometry::shared_ptr( terra ) );
 }
 
-bool MyGame::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 {
 	unify::V3< float > eyePosition( 0, 16, 14 );
 	unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -94,9 +94,9 @@ bool MyGame::Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & i
 	m_camera->GetObject()->GetFrame().SetMatrix( view );
 	//renderInfo.SetViewMatrix( m_camera->GetMatrix().Inverse() );
 
-	m_rotation += unify::Angle::AngleInRadians( elapsed );
+	m_rotation += unify::Angle::AngleInRadians( renderInfo.GetDelta() );
 
-	return Game::Update( elapsed, renderInfo, input );
+	return Game::Update( renderInfo, input );
 }
 
 void MyGame::Render( const RenderInfo & renderInfo )

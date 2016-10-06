@@ -231,7 +231,7 @@ int Object_Constructor( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	(*objectProxy)->object = sceneProxy->scene->Add( name );
+	(*objectProxy)->object = sceneProxy->scene->GetRoot()->AddChild( name );
 	return 1;
 }
 

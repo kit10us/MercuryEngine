@@ -28,7 +28,7 @@ protected:
 
 public:
 	void Startup();
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input );
+	bool Update( RenderInfo & renderInfo, IInput & input );
 	void Render();
 	void Shutdown();
 } game;
@@ -222,7 +222,7 @@ bool MyGame::Update( unify::Seconds elapsed, IInput & input )
 {
     m_navMesh.Update( elapsed );
 
-	return Game::Update( elapsed, renderInfo, input );
+	return Game::Update( renderInfo, input );
 }
 
 void MyGame::Render()

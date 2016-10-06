@@ -70,7 +70,7 @@ namespace dxi
 
 		// ::Geometry...
 		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
-		void Update( unify::Seconds elapsed, GeometryInstanceData * instanceData );
+		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
 		void Add( Geometry::shared_ptr geometry, float distance );
 		Geometry::shared_ptr GetLOD( unsigned int index );

@@ -55,11 +55,6 @@ Quaternion::Quaternion( const Quaternion & quaternion )
 {
 }
 
-Quaternion::Quaternion( const Matrix & matrix )
-{
-	assert( 0 );
-}
-
 bool Quaternion::IsIdentity() const
 {
 	return (x == y == z == 0.0f) && w == 1.0f;

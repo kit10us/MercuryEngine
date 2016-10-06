@@ -12,12 +12,6 @@ namespace dxi
 		Texture * Produce( unify::Path source ) override;
 	};
 
-	class TextureJsonFactory : public rm::IJsonFactory< Texture >
-	{
-	public:
-		Texture * Produce( qjson::Object json ) override;
-	};
-
 	class TextureXmlNodeFactory : public rm::IXMLFactory< Texture >
 	{
 	public:

@@ -30,7 +30,7 @@ protected:
 	unify::Matrix m_view;
 	unify::Angle m_rotation;
 
-	Texture::shared_ptr m_sprites;
+	Texture::ptr m_sprites;
 	animation::SpriteManager::shared_ptr m_spriteManager;
 	font::FontManager::shared_ptr m_fontManager;
 	VertexBuffer m_triangleVB;
@@ -114,7 +114,7 @@ public:
 		*/
 	}
 
-	bool Update( unify::Seconds elapsed, RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo, IInput & input )
 	{
 		unify::V3< float > eyePosition( 0, 5, -10 );
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -129,7 +129,7 @@ public:
 		if ( m_textBoxSimpleIn3D ) m_textBoxSimpleIn3D->Update( elapsed, 0 );
 		if ( m_textBoxSimpleWidth3DCharactersIn3D ) m_textBoxSimpleWidth3DCharactersIn3D->Update( elapsed, 0 );
 
-		return Game::Update( elapsed, renderInfo, input );
+		return Game::Update( renderInfo, input );
 	}
 
 	void Render()

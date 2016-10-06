@@ -63,7 +63,7 @@ void MeshInstanceData::RemoveAllAnimations()
 	m_activeAnimations.clear();
 }
 
-void MeshInstanceData::Update( unify::Seconds elapsed )
+void MeshInstanceData::Update( const RenderInfo & renderInfo )
 {
 	if( ! Paused() )
 	{
@@ -71,7 +71,7 @@ void MeshInstanceData::Update( unify::Seconds elapsed )
 		{
 			unify::Seconds & progress = itr->m_time;
 			frameanimation::Animation::const_shared_ptr animation = itr->m_animation;
-			progress += elapsed;
+			progress += renderInfo.GetDelta();
 			if( progress >= animation->Duration() )
 			{
 				if( animation->Loops() || itr->m_forceLoop )

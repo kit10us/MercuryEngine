@@ -14,7 +14,6 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 
 		case WM_CLOSE: // Fall through to WM_DESTROY...
 		case WM_DESTROY:
-		case VK_ESCAPE:
 			PostQuitMessage( 0 );
 			return 0;
 		}
@@ -77,7 +76,7 @@ int WINAPI WinMain( HINSTANCE instance, HINSTANCE prevInstance, char * cmdLine, 
 		{
 			while ( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
 			{
-				if ( IsDialogMessage( hWnd, &msg ) )
+				if ( !IsDialogMessage( hWnd, &msg ) )
 				{
 					if( msg.message == WM_QUIT )
 					{

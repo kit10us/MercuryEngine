@@ -6,17 +6,44 @@
 #include <memory.h>
 #include <dxi/win/DXILib.h>
 
-void Deleter( dxi::scripting::IScriptEngine * se )
+void Deleter( dae::GeometrySourceFactory * factory )
 {
-	delete se;
+	delete factory;
 }
 
-__declspec(dllexport) bool __cdecl DXILoader( dxi::core::Game * game )
+__declspec(dllexport) bool DXILoader( dxi::core::Game * game )
 {
-	/*
-	game->AddScriptEngine( "lua", std::shared_ptr< dxi::scripting::IScriptEngine >( new dxilua::ScriptEngine( game ), Deleter ) );
-	*/
+	using namespace dxi;
+	using namespace core;
+
+	// Setup DAE factory.
+	class MyEffectSolver : public dae::util::IEffectSolver
+	{
+		Effect::ptr m_color;
+		Effect::ptr m_textured;
+	public:
+
+		MyEffectSolver( Game & game )
+		{
+			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.xml" );
+			m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
+		}
+
+		dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const
+		{
+			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
+			{
+				return m_color;
+			}
+			else
+			{
+				return m_textured;
+			}
+		}
+	};
+	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( new MyEffectSolver( *game ) );
+	game->AddGeometryFactory( "dae", std::shared_ptr< rm::ISourceFactory< Geometry > >( daeFactory, Deleter ) );
+
 	return true;
 }
-
 

@@ -27,9 +27,10 @@ void PhysicsScene::AddEnvironment( PhysicsEnvironment::shared_ptr environment )
 	m_environments.push_back( environment );
 }
 
-void PhysicsScene::Update( unify::Seconds elapsed, core::IInput & input )
+void PhysicsScene::Update( const RenderInfo & renderInfo, core::IInput & input )
 {
 	// Prevent massive physics build up times.
+	float elapsed = renderInfo.GetDelta();
 	if( elapsed > m_maxElapsed )
 	{
 		elapsed = m_maxElapsed;
@@ -55,7 +56,7 @@ void PhysicsScene::Update( unify::Seconds elapsed, core::IInput & input )
 	{
 		for( auto environment : m_environments )
 		{
-			(environment)->ApplyEffect( elapsed, object );
+			(environment)->ApplyEffect( renderInfo, object );
 		}
 	}
 
