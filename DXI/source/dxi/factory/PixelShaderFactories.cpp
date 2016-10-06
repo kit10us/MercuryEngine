@@ -8,10 +8,12 @@
 
 using namespace dxi;
 
-PixelShader * PixelShaderXMLFactory::Produce( const qxml::Element & node )
+PixelShader * PixelShaderFactory::Produce( unify::Path source )
 {
-	unify::Path path { node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText() };
+	qxml::Document doc( source );
+	auto & node = *doc.GetRoot()->FindFirstElement( "pixelshader" );
+	unify::Path shaderSource{ node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText() };
 	std::string entry = node.GetElement( "entry" )->GetText();
 	std::string profile = node.GetElement( "profile" )->GetText();
-	return new PixelShader( path, entry, profile );
+	return new PixelShader( shaderSource, entry, profile );
 }

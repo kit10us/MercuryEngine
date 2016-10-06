@@ -6,9 +6,9 @@
 
 namespace dxi
 {
-	class VertexShaderXMLFactory : public rm::IXMLFactory< VertexShader >
+	class VertexShaderFactory : public rm::ISourceFactory< VertexShader >
 	{
 	public:
-		VertexShader * Produce( const qxml::Element & node ) override;
+		VertexShader * Produce( unify::Path source ) override;
 	};
 }

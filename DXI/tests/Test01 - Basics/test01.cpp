@@ -32,7 +32,7 @@ public:
 void MyGame::Startup()
 {
 	// Load effect...
-	m_effect = GetManager< Effect >()->Add( "textured_2d", "media/EffectTextured2D.xml" );
+	m_effect = GetManager< Effect >()->Add( "textured_2d", "media/EffectTextured2D.effect" );
 
 	// The particular effect we are loading is generic, and has no texture, so let's add one.
 	// Load a texture...

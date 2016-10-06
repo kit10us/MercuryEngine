@@ -33,12 +33,12 @@ public:
 void MyGame::Startup()
 {
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.xml" );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "textured3d", "media/EffectTextured.xml" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
 
 	// Load shaders.
-	PixelShader::ptr ps = GetManager< PixelShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
-	VertexShader::ptr vs = GetManager< VertexShader >()->Add( "textured3d", "media/shaders/textured3d.xml" );
+	PixelShader::ptr ps = GetManager< PixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	VertexShader::ptr vs = GetManager< VertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
 
 	// Add a texture.
 	GetManager< Texture >()->Add( "borgcube", "media/borgcube.bmp" );
@@ -64,8 +64,8 @@ void MyGame::Startup()
 
 		MyEffectSolver( Game & game )
 		{
-			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.xml" );
-			m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
+			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.effect" );
+			m_textured = game.GetManager< Effect >()->Add( "texture", "media/EffectTextured.effect" );
 		}
 
 		dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const

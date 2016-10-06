@@ -25,8 +25,8 @@ __declspec(dllexport) bool DXILoader( dxi::core::Game * game )
 
 		MyEffectSolver( Game & game )
 		{
-			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.xml" );
-			m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.xml" );
+			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.effect" );
+			m_textured = game.GetManager< Effect >()->Add( "textured", "media/EffectTextured.effect" );
 		}
 
 		dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const

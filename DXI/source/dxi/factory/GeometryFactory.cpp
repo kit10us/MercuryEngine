@@ -11,8 +11,11 @@ using namespace dxi;
 
 void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh );
 
-Geometry * GeometryXMLFactory::Produce( const qxml::Element & geometryElement )
+Geometry * GeometryFactory::Produce( unify::Path source )
 {
+	qxml::Document doc( source );
+	auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
+
 	if ( ! geometryElement.HasAttributes( "version" ) )
 	{
 		return 0;

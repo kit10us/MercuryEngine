@@ -21,9 +21,9 @@ public:
 	void Startup()
 	{
 		// Load our effect from a file...
-		GetManager< Effect >()->Add( "textured_3d", "media/EffectTextured.xml" ); // Load an effect into the manager.
+		GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" ); // Load an effect into the manager.
 
-		Effect::ptr effect = GetManager< Effect >()->Find( "textured_3d" ); // Demonstrate how the effect is pulled from the manager by name.
+		Effect::ptr effect = GetManager< Effect >()->Find( "texture3d" ); // Demonstrate how the effect is pulled from the manager by name.
 
 		scene::Scene::shared_ptr mainScene = GetSceneManager()->Add( "main" );
 

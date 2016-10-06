@@ -7,9 +7,9 @@
 
 namespace dxi
 {
-	class GeometryXMLFactory : public rm::IXMLFactory< Geometry >
+	class GeometryFactory : public rm::ISourceFactory< Geometry >
 	{
 	public:
-		 Geometry * Produce( const qxml::Element & geometryElement ) override;
+		 Geometry * Produce( unify::Path source ) override;
 	};
 }

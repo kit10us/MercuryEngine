@@ -9,11 +9,14 @@
 
 using namespace dxi;
 
-Effect * ProduceEffect( const qxml::Element & effectNode )
+Effect * EffectFactory::Produce( unify::Path source )
 {
 	auto textureManager = dxi::core::Game::GetInstance()->GetManager< Texture >();
 	auto pixelShaderManager = dxi::core::Game::GetInstance()->GetManager< PixelShader >();
 	auto vertexShaderManager = dxi::core::Game::GetInstance()->GetManager< VertexShader >();
+
+	qxml::Document doc( source );
+	auto & effectNode = *doc.GetRoot()->FindFirstElement( "effect" );
 
 	Effect * effect = new Effect;
 
@@ -49,9 +52,4 @@ Effect * ProduceEffect( const qxml::Element & effectNode )
 	}
 
 	return effect;
-}
-
-Effect * EffectXMLFactory::Produce( const qxml::Element & element )
-{
-	return ProduceEffect( element );
 }

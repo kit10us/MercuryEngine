@@ -1,13 +1,11 @@
-<?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
-<effect name="textured_2d">
-  <pixelshader name="textured_2d">
-    <source>shaders/textured2d.shader</source>
+  <pixelshader name="texture2d">
+    <source>texture2d.hlsl</source>
     <entry>ps_main</entry>
 	<profile>ps_1_1</profile>
   </pixelshader>
-  <vertexshader name="textured_2d">
-    <source>shaders/textured2d.shader</source>
+  <vertexshader name="texture2d">
+    <source>texture2d.hlsl</source>
 	<entry>vs_main</entry>
     <profile>vs_1_1</profile>
     <vd>
@@ -15,5 +13,4 @@
 	  <element name="Tex" type="TexCoord"/>
 	</vd>
   </vertexshader>
-</effect>
 </xml>

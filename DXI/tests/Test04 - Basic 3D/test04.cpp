@@ -36,9 +36,9 @@ public:
 
 	void Startup() override
 	{
-		Effect::ptr effect = GetManager< Effect >()->Add( "color_3d", "media/EffectColor.xml" );
-		effect->SetPixelShader( GetManager< PixelShader >()->Find( "color_3d" ) );
-		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color_3d" ) );
+		Effect::ptr effect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
+		effect->SetPixelShader( GetManager< PixelShader >()->Find( "color3d" ) );
+		effect->SetVertexShader( GetManager< VertexShader >()->Find( "color3d" ) );
 
 		// Create view matrix for use as camera....
 		m_view.BecomeIdentity();
@@ -47,7 +47,7 @@ public:
 
 		GetOS().GetRenderer()->SetCullMode( CullMode::None );
 
-		VertexDeclaration::ptr vd( GetManager< VertexShader >()->Find( "color_3d" )->GetVertexDeclaration() );
+		VertexDeclaration::ptr vd( GetManager< VertexShader >()->Find( "color3d" )->GetVertexDeclaration() );
 
 		// Create a demonstration of 3d via a 3d rotating triangle...
 		struct MyVertex
@@ -86,7 +86,7 @@ public:
 
 	void Render( const RenderInfo & renderInfo ) override
 	{
-		Effect::ptr effect = GetManager< Effect >()->Find( "color_3d" );
+		Effect::ptr effect = GetManager< Effect >()->Find( "color3d" );
 		m_triangleVB.Use();
 
 		RenderMethod method = RenderMethod::CreateTriangleList( 0, 2, effect );

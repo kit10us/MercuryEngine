@@ -6,9 +6,9 @@
 
 namespace dxi
 {
-	class PixelShaderXMLFactory : public rm::IXMLFactory< PixelShader >
+	class PixelShaderFactory : public rm::ISourceFactory< PixelShader >
 	{
 	public:
-		PixelShader * Produce( const qxml::Element & node ) override;
+		PixelShader * Produce( unify::Path source ) override;
 	};
 }

@@ -1,10 +1,11 @@
 <xml>
   <shape>
     <type>pointfield</type>
-    <effect name="cube" source="EffectTextured.xml"/>
+    <effect name="cube" source="EffectTextured.effect"/>
     <majorradius>1</majorradius>
     <minorradius>.5</minorradius>
     <count>1000</count>
     <diffuse>255,0,0,255</diffuse>
+    <center>-1.5, 3, 0</center>
   </shape>
 </xml>

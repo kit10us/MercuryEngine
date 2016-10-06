@@ -78,6 +78,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		return existingResource;
 	}
 
+	/*
 	if ( source.IsExtension( "xml" ) )
 	{
 		qxml::Document doc( source );
@@ -86,6 +87,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 	}
 	else
 	{
+	*/
 		std::string extension = source.ExtensionOnly();
 		auto factory = m_sourceFactories.find( extension );
 		if( factory == m_sourceFactories.end() )
@@ -100,7 +102,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 			m_resourceList[ name ] = resource;
 			return resource;
 		}
-	}
+	//}
 
 	throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
 }

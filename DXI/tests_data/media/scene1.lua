@@ -28,17 +28,17 @@ debug.writeline( data )
 
 --]]
 
-resources.add( "geometry", "cube", "media/ShapeCube.xml" )
-resources.add( "geometry", "pointfield", "media/ShapePointField.xml" )
-resources.add( "geometry", "pointring", "media/ShapePointRing.xml" )
-resources.add( "geometry", "dashring", "media/ShapeDashRing.xml" )
-resources.add( "geometry", "pyramid", "media/ShapePyramid.xml" )
-resources.add( "geometry", "circle", "media/ShapeCircle.xml" )
-resources.add( "geometry", "sphere", "media/ShapeSphere.xml" )
-resources.add( "geometry", "cylinder", "media/ShapeCylinder.xml" )
-resources.add( "geometry", "tube", "media/ShapeTube.xml" )
-resources.add( "geometry", "plane", "media/ShapePlane.xml" )
-resources.add( "geometry", "cone", "media/ShapeCone.xml" )
+resources.add( "geometry", "cube", "media/ShapeCube.shape" )
+resources.add( "geometry", "pointfield", "media/ShapePointField.shape" )
+resources.add( "geometry", "pointring", "media/ShapePointRing.shape" )
+resources.add( "geometry", "dashring", "media/ShapeDashRing.shape" )
+resources.add( "geometry", "pyramid", "media/ShapePyramid.shape" )
+resources.add( "geometry", "circle", "media/ShapeCircle.shape" )
+resources.add( "geometry", "sphere", "media/ShapeSphere.shape" )
+resources.add( "geometry", "cylinder", "media/ShapeCylinder.shape" )
+resources.add( "geometry", "tube", "media/ShapeTube.shape" )
+resources.add( "geometry", "plane", "media/ShapePlane.shape" )
+resources.add( "geometry", "cone", "media/ShapeCone.shape" )
 
 
 scenes.add( "scene1" )

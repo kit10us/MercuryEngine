@@ -8,11 +8,13 @@
 
 using namespace dxi;
 
-VertexShader * VertexShaderXMLFactory::Produce( const qxml::Element & node )
+VertexShader * VertexShaderFactory::Produce( unify::Path source )
 {
-	unify::Path source = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();
+	qxml::Document doc( source );
+	auto & node = *doc.GetRoot()->FindFirstElement( "vertexshader" );
+	unify::Path shaderSource = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();
 	std::string entry = node.GetElement( "entry" )->GetText();
 	std::string profile = node.GetElement( "profile" )->GetText();
 	VertexDeclaration::ptr vertexDeclaration( new VertexDeclaration( *node.GetElement( "vd" ) ) );
-	return new VertexShader( source, entry, profile, vertexDeclaration );
+	return new VertexShader( shaderSource, entry, profile, vertexDeclaration );
 }

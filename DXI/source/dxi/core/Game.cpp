@@ -35,8 +35,6 @@ bool Game::Update( RenderInfo & renderInfo, IInput & input )
 	return true;
 }
 
-
-
 Game::Game( unify::Path setup )
 : m_setup( setup )
 , m_isQuitting( false )
@@ -62,22 +60,22 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	// Create asset managers...
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
-	GetManager< Texture >()->AddFactory( "dds", new TextureSourceFactory );
-	GetManager< Texture >()->AddFactory( "bmp", new TextureSourceFactory );
-	GetManager< Texture >()->AddFactory( "jpg", new TextureSourceFactory );
+	GetManager< Texture >()->AddFactory( ".dds", new TextureSourceFactory );
+	GetManager< Texture >()->AddFactory( ".bmp", new TextureSourceFactory );
+	GetManager< Texture >()->AddFactory( ".jpg", new TextureSourceFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
-	GetManager< Effect >()->AddFactory( "effect", new EffectXMLFactory );
+	GetManager< Effect >()->AddFactory( ".effect", new EffectFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
-	GetManager< PixelShader >()->AddFactory( "pixelshader", new PixelShaderXMLFactory );
+	GetManager< PixelShader >()->AddFactory( ".xml", new PixelShaderFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
-	GetManager< VertexShader >()->AddFactory( "vertexshader", new VertexShaderXMLFactory );
+	GetManager< VertexShader >()->AddFactory( ".xml", new VertexShaderFactory );
 
 	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
-	GetManager< Geometry >()->AddFactory( "geometry", new GeometryXMLFactory );
-	GetManager< Geometry >()->AddFactory( "shape", new ShapeXMLFactory );
+	GetManager< Geometry >()->AddFactory( ".xml", new GeometryFactory );
+	GetManager< Geometry >()->AddFactory( ".shape", new ShapeFactory );
 
 	m_sceneManager.reset( new scene::SceneManager( this ) );
 
