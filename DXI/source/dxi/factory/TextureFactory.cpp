@@ -17,14 +17,3 @@ Texture * TextureSourceFactory::Produce( unify::Path source )
 
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );
 }
-
-Texture * TextureXmlNodeFactory::Produce( const qxml::Element & node )
-{
-	unify::Path source( unify::Path( node.GetDocument()->GetPath() ).DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
-
-	bool lockable = false;
-	bool renderable = true;
-	renderable = node.GetAttributeElse< bool >( "renderable", true );
-	lockable = node.GetAttributeElse< bool >( "lockable", false );
-	return new Texture( source, renderable, lockable );
-}

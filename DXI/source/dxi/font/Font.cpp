@@ -36,7 +36,7 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 	{
         if ( leaf.IsTagName( "effect" ) )
         {
-			m_effect = effectManager->Add( leaf );
+			m_effect = effectManager->Add( leaf.GetAttribute< std::string >( "name" ), doc.GetPath().DirectoryOnly() + leaf.GetAttribute< std::string >( "source" ) );
 			assert( 0 ); // TODO:
 			//std::shared_ptr< VertexBuffer > scratchVB( new VertexBuffer( 6, m_effect->GetVertexShader()->GetVertexDeclaration() ) );
 			//m_effect->SetScratchVertexBuffer( scratchVB );

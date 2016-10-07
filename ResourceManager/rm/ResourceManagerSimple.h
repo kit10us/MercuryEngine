@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include <dxi/exception/FailedToCreate.h>
-#include <qjson/Object.h>
 #include <qxml/Document.h>
 #include <rm/ResourceManagerBase.h>
 #include <unify/Stream.h>
@@ -29,28 +27,6 @@ namespace rm
 	public:
 		~ISourceFactory() {}
 		virtual T * Produce( unify::Path path ) = 0;
-	};
-
-	/// <summary> 
-	/// Factory from a Json object.
-	/// </summary>
-	template< typename T >
-	class IJsonFactory
-	{
-	public:
-		~IJsonFactory() {}
-		virtual T * Produce( qjson::Object json ) = 0;
-	};
-
-	/// <summary>
-	/// Factory from an XML node.
-	/// </summary>
-	template< typename T >
-	class IXMLFactory
-	{
-	public:
-		~IXMLFactory() {}
-		virtual T * Produce( const qxml::Element & node ) = 0;
 	};
 
 	// A base for a resource list...
@@ -84,18 +60,7 @@ namespace rm
 		ResourcePtr Add( std::string name, T * resource ) override;
 
 		ResourcePtr Add( std::string name, unify::Path source );
-		
-		ResourcePtr Add( qjson::Object json );
 	
-		/// <summary>
-		/// 1. Accepts a node, which expects to be consumed by an XML Factory.
-		/// 2. In the case that there is both a 'name' and a 'source', it then performs Add( name, source ).
-		/// </summary>
-		ResourcePtr Add( std::string name, const qxml::Element & node );
-		ResourcePtr Add( const qxml::Element & node );
-
-		void AddResource( std::string name, const qxml::Element & element ) override;
-		void AddResource( const qxml::Element & element ) override;
 		void AddResource( std::string name, unify::Path path ) override;
 
 		// Find an existing resource.
@@ -105,17 +70,12 @@ namespace rm
 
         void ForEach( ForEachFunctor & functor );
 
-		void AddFactory( IJsonFactory< T > * factory );
-		void AddFactory( std::string extension, ISourceFactory< T > * factory );
-		void AddFactory( std::string tagName, IXMLFactory< T > * factory );
+		void AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory );
 
 	protected:
 		std::string m_resourceName;
 		std::map< std::string, ResourcePtr > m_resourceList; 
-		std::list< std::shared_ptr< IJsonFactory< T > > > m_jsonFactories;
 		std::map< std::string, std::shared_ptr< ISourceFactory< T > >, unify::CaseInsensitiveLessThanTest > m_sourceFactories;
-		std::list< std::shared_ptr< IXMLFactory< T > > > m_xmlFactories;
-		std::map< std::string, std::shared_ptr< IXMLFactory< T > >, unify::CaseInsensitiveLessThanTest > m_xmlFactoriesMap;
 	};
 
 	#include <rm/ResourceManagerSimple.inl>

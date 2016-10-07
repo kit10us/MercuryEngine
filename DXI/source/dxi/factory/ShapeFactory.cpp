@@ -28,7 +28,7 @@ Geometry * ShapeFactory::Produce( unify::Path source )
 		}
 		else if( p.IsTagName( "effect" ) )
 		{
-			params.Set( p.GetTagName(), game->GetManager< Effect >()->Add( p ) );
+			params.Set( p.GetTagName(), game->GetManager< Effect >()->Add( p.GetAttribute< std::string >( "name" ), doc.GetPath().DirectoryOnly() + p.GetAttribute< std::string >( "source" ) ) );
 		}	 
         else if ( p.IsTagName( "inf" ) || p.IsTagName( "sup" ) || p.IsTagName( "center" ) || p.IsTagName( "offset" ) )
 		{

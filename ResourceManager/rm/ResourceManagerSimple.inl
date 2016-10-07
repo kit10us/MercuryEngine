@@ -28,11 +28,11 @@ void ResourceManagerSimple< T >::Clear()
 template< class T >
 std::shared_ptr< T > ResourceManagerSimple< T >::Find( std::string name )
 {
-	for( std::map< std::string, ResourcePtr >::iterator itr = m_resourceList.begin(); itr != m_resourceList.end(); ++itr )
+	for( auto resource : m_resourceList )
 	{
-		if( _stricmp( (*itr).first.c_str(), name.c_str() ) == 0 )
+		if( _stricmp( resource.first.c_str(), name.c_str() ) == 0 )
 		{
-			return (*itr).second;
+			return resource.second;
 		}
 	}
 
@@ -78,49 +78,14 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		return existingResource;
 	}
 
-	/*
-	if ( source.IsExtension( "xml" ) )
+	std::string extension = source.ExtensionOnly();
+	auto factory = m_sourceFactories.find( extension );
+	if( factory == m_sourceFactories.end() )
 	{
-		qxml::Document doc( source );
-		qxml::Element & element = *doc.GetRoot()->GetFirstChild();
-		return Add( name, element );
-	}
-	else
-	{
-	*/
-		std::string extension = source.ExtensionOnly();
-		auto factory = m_sourceFactories.find( extension );
-		if( factory == m_sourceFactories.end() )
-		{
-			throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
-		}
-
-		T * product = factory->second->Produce( source );
-		if( product != nullptr )
-		{
-			auto resource = std::shared_ptr< T >( product );
-			m_resourceList[ name ] = resource;
-			return resource;
-		}
-	//}
-
-	throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
-}
-
-template< class T >
-std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, const qxml::Element & node )
-{
-	// Attempt to find the existing resource.
-	ResourcePtr existingResource = Find( name );
-
-	// If exists, return the existing resource. Else create it.
-	if( existingResource )
-	{
-		return existingResource;
+		throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
 	}
 
-	auto factory = m_xmlFactoriesMap[node.GetTagName()];
-	T * product = factory->Produce( node );
+	T * product = factory->second->Produce( source );
 	if( product != nullptr )
 	{
 		auto resource = std::shared_ptr< T >( product );
@@ -128,66 +93,13 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, const qx
 		return resource;
 	}
 
-	throw std::string( GetName() + " manager: No XML factory found that could produce \"" + name + "\"!" );
-}
-
-template< class T >
-std::shared_ptr< T > ResourceManagerSimple< T >::Add( const qxml::Element & node )
-{
-	if( node.HasAttributes( "name,source" ) )
-	{
-		return Add( node.GetAttribute< std::string >( "name" ), unify::Path( node.GetDocument()->GetPath().DirectoryOnly(), node.GetAttribute< std::string >( "source" ) ) );
-	}
-
-	std::string name = node.GetAttribute( "name" )->GetString();
-
-	return Add( name, node );
-}
-
-template< typename T >
-void ResourceManagerSimple< T >::AddResource( const qxml::Element & element )
-{
-	Add( element );
-}
-
-template< typename T >
-void ResourceManagerSimple< T >::AddResource( std::string name, const qxml::Element & element )
-{
-	Add( name, element );
+	throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
 }
 
 template< typename T >
 void ResourceManagerSimple< T >::AddResource( std::string name, unify::Path path )
 {
 	Add( name, path );
-}
-
-template< class T >
-std::shared_ptr< T > ResourceManagerSimple< T >::Add( qjson::Object json )
-{
-	std::string name = json["name"].ToString();
-
-	// Attempt to find the existing resource.
-	ResourcePtr existingResource = Find( name );
-
-	// If exists, return the existing resource. Else create it.
-	if( existingResource )
-	{
-		return existingResource;
-	}
-
-	for( auto factory : m_jsonFactories )
-	{
-		T * product = factory->Produce( json );
-		if( product != nullptr )
-		{
-			auto resource = std::shared_ptr< T >( product );
-			m_resourceList[ name ] = resource;
-			return resource;
-		}
-	}
-
-	throw std::string( GetName() + " manager: No JSON factory found that could produce \"" + name + "\"!" );
 }
 
 template< class T >
@@ -207,21 +119,7 @@ void ResourceManagerSimple< T >::ForEach( ForEachFunctor & functor )
 }
 
 template< typename T >
-void ResourceManagerSimple< T >::AddFactory( IJsonFactory< T > * factory )
+void ResourceManagerSimple< T >::AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory )
 {
-	m_jsonFactories.push_back( std::shared_ptr< IJsonFactory < T > > ( factory ) );
-}
-
-template< typename T >
-void ResourceManagerSimple< T >::AddFactory( std::string extension, ISourceFactory< T > * factory )
-{
-	m_sourceFactories[ ( ( extension[ 0 ] != '.' ) ? "." : "") + extension ] = std::shared_ptr< ISourceFactory< T > >( factory );
-}
-
-template< typename T >
-void ResourceManagerSimple< T >::AddFactory( std::string tagName, IXMLFactory< T > * factory )
-{
-	std::shared_ptr< IXMLFactory< T > > sharedFactory( factory );
-	m_xmlFactories.push_back( sharedFactory );
-	m_xmlFactoriesMap[ tagName ] = sharedFactory;
+	m_sourceFactories[ ( ( extension[ 0 ] != '.' ) ? "." : "") + extension ] = factory;
 }

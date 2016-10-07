@@ -24,7 +24,6 @@ Document::Document( const unify::Path & filePath, dae::util::IEffectSolver * eff
 	// Child elements...
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
-		dxi::core::Game::GetInstance()->GetOS().DebugWriteLine( "DAE: " + childNode->GetTagName() );
 		if ( childNode->IsTagName( "asset" ) )
 		{
 			// TODO:

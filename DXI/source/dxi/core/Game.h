@@ -10,16 +10,13 @@
 #include <dxi/exception/Exception.h>
 #include <rm/ResourceManagerSimple.h>
 #include <rm/ResourceHub.h>
-#include <unify/TimeDelta.h>
 
-/*
-  Start order:
-  * OS is created.
-  1. Setup; if false then we end immediately.
-  * Initialize
-  2. Startup
-*/
-
+typedef std::shared_ptr< rm::ISourceFactory< dxi::Texture > > TextureFactoryPtr;
+typedef std::shared_ptr< rm::ISourceFactory< dxi::Effect > > EffectFactoryPtr;
+typedef std::shared_ptr< rm::ISourceFactory< dxi::PixelShader > > PixelShaderFactoryPtr;
+typedef std::shared_ptr< rm::ISourceFactory< dxi::VertexShader > > VertexShaderFactoryPtr;
+typedef std::shared_ptr< rm::ISourceFactory< dxi::Geometry > > GeometryFactoryPtr;
+																	   
 namespace dxi
 {
 	namespace core
@@ -91,6 +88,7 @@ namespace dxi
 		private:
 			void BeforeUpdate();
 			void AfterUpdate();
+
 			void BeforeRender();
 			void AfterRender();	
 

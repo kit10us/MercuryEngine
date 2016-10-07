@@ -23,7 +23,8 @@ void ImportLF::operator()( const qxml::Element & element, scene::Scene::shared_p
 
 void ResourcesLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )
 {
-	core::Game::GetInstance()->GetResourceHub().Load( element );
+	assert( 0 ); // TODO:
+	//core::Game::GetInstance()->GetResourceHub().Load( element );
 }																	
 
 void AddPathsLF::operator()( const qxml::Element & element, scene::Scene::shared_ptr scene )

@@ -44,7 +44,6 @@ namespace dae
 	{
 		for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 		{
-			dxi::core::Game::GetInstance()->GetOS().DebugWriteLine( "Library for " + tagName + ": " + childNode->GetTagName() + " - \"" + childNode->GetAttribute< std::string >( "id" ) + "\"" );
 			if ( childNode->IsTagName( tagName ) )
 			{
 				T * thing = new T( document, childNode );

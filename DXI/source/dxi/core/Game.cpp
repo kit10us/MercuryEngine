@@ -9,6 +9,7 @@
 #include <dxi/factory/GeometryFactory.h>
 #include <dxi/factory/ShapeFactory.h>
 #include <dxi/null/Input.h>
+#include <dxi/exception/FailedToCreate.h>
 #include <dxi/Input.h>
 #include <fstream>
 #include <chrono>
@@ -59,28 +60,28 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 
 	// Create asset managers...
 
-	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Texture >( "Texture" ) );
-	GetManager< Texture >()->AddFactory( ".dds", new TextureSourceFactory );
-	GetManager< Texture >()->AddFactory( ".bmp", new TextureSourceFactory );
-	GetManager< Texture >()->AddFactory( ".jpg", new TextureSourceFactory );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Texture >( "Texture" ) ) );
+	GetManager< Texture >()->AddFactory( ".dds", TextureFactoryPtr( new TextureSourceFactory ) );
+	GetManager< Texture >()->AddFactory( ".bmp", TextureFactoryPtr( new TextureSourceFactory ) );
+	GetManager< Texture >()->AddFactory( ".jpg", TextureFactoryPtr( new TextureSourceFactory ) );
 
-	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Effect >( "Effect" ) );
-	GetManager< Effect >()->AddFactory( ".effect", new EffectFactory );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Effect >( "Effect" ) ) );
+	GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory ) );
 
-	GetResourceHub().AddManager( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) );
-	GetManager< PixelShader >()->AddFactory( ".xml", new PixelShaderFactory );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) ) );
+	GetManager< PixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory ) );
 
-	GetResourceHub().AddManager( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) );
-	GetManager< VertexShader >()->AddFactory( ".xml", new VertexShaderFactory );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) ) );
+	GetManager< VertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory ) );
 
-	GetResourceHub().AddManager( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) );
-	GetManager< Geometry >()->AddFactory( ".xml", new GeometryFactory );
-	GetManager< Geometry >()->AddFactory( ".shape", new ShapeFactory );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) ) );
+	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory ) );
+	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new ShapeFactory ) );
 
 	m_sceneManager.reset( new scene::SceneManager( this ) );
 
 
-	// Our setup...
+	// Early setup...
 	if( m_setup.Exists() )
 	{
 		qxml::Document doc( m_setup );
@@ -102,7 +103,23 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				{
 					GetOS().SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
 				}
-				else if( node.IsTagName( "extension" ) )
+			}
+		}
+	}
+
+	GetOS().Startup();
+
+	// Our setup...
+	if( m_setup.Exists() )
+	{
+		qxml::Document doc( m_setup );
+
+		qxml::Element * setup = doc.FindElement( "setup" );
+		if( setup )
+		{
+			for( auto && node : setup->Children() )
+			{
+				if( node.IsTagName( "extension" ) )
 				{
 					unify::Path path( node.GetText() );
 					//m_extensions.push_back( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
@@ -118,8 +135,6 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 			}
 		}
 	}
-
-	GetOS().Startup();
 
 	if( m_gameModule )
 	{
@@ -188,6 +203,7 @@ void Game::AfterUpdate()
 void Game::Draw()
 {
 	BeforeRender();
+	m_sceneManager->Render();
 	Render( m_renderInfo );
 	AfterRender();
 }
@@ -199,7 +215,6 @@ void Game::BeforeRender()
 
 void Game::Render( const RenderInfo & renderInfo )
 {
-    m_sceneManager->Render();
 }
 
 void Game::AfterRender()
@@ -226,7 +241,7 @@ void Game::Shutdown()
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
 	Log( "Shutdown: " + ( ( ! m_os->GetName().empty() ) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
-	LogLine( "  frames: " + unify::Cast< std::string >( m_renderInfo.FrameID() ) );
+	LogLine( "  frames: " + unify::Cast< std::string >( m_renderInfo.FrameID() ) + ", average fps:" + unify::Cast< std::string >( 1.0f / m_renderInfo.GetAverageDelta() ) );
 	LogLine( "" );
 
 	m_os->Shutdown();

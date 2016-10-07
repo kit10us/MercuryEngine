@@ -11,11 +11,4 @@ namespace dxi
 	public:
 		Texture * Produce( unify::Path source ) override;
 	};
-
-	class TextureXmlNodeFactory : public rm::IXMLFactory< Texture >
-	{
-	public:
-		Texture * Produce( const qxml::Element & node ) override;
-	};
-
 }

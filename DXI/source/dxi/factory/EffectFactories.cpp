@@ -42,11 +42,11 @@ Effect * EffectFactory::Produce( unify::Path source )
 		//void SetLighting( unsigned int dwValue );
 		else if( child.IsTagName( "pixelshader" ) )
 		{
-			effect->SetPixelShader( pixelShaderManager->Add( child ) );
+			effect->SetPixelShader( pixelShaderManager->Add( child.GetAttribute< std::string >( "name" ), doc.GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" ) ) );
 		}
 		else if( child.IsTagName( "vertexshader" ) )
 		{
-			effect->SetVertexShader( vertexShaderManager->Add( child ) );
+			effect->SetVertexShader( vertexShaderManager->Add( child.GetAttribute< std::string >( "name" ), doc.GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" ) ) );
 		}
 		//void AddFrame( size_t frameIndex, float influence );
 	}

@@ -9,7 +9,6 @@
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/factory/ShapeFactory.h>
 #include <dxi/factory/GeometryASEFactory.h>
-#include <dae/DAELib.h>
 #include <dxi/win/DXILib.h>
 
 #include <chrono>
@@ -17,11 +16,13 @@
 using namespace dxi;
 using namespace core;
 
+//#define DAELIBVERSION
+
 class MyGame : public Game
 {
 protected:
 public:
-	//MyGame() : Game( "setup_dae.xml" ) {}
+	MyGame() : Game( "setup_dae.xml" ) {}
 	void Startup();
 	bool Update( RenderInfo & renderInfo, IInput & input );
 	void Render( const RenderInfo & renderInfo );
@@ -53,35 +54,7 @@ void MyGame::Startup()
 	GeometryASEFactory * aseFactory = new GeometryASEFactory;
 	aseFactory->SetVertexShader( vs );
 	aseFactory->SetPixelShader( ps );
-	GetManager< Geometry >()->AddFactory( "ase", aseFactory );
-
-	// Setup DAE factory.
-	class MyEffectSolver : public dae::util::IEffectSolver
-	{
-		Effect::ptr m_color;
-		Effect::ptr m_textured;
-	public:
-
-		MyEffectSolver( Game & game )
-		{
-			m_color = game.GetManager< Effect >()->Add( "color", "media/EffectColor.effect" );
-			m_textured = game.GetManager< Effect >()->Add( "texture", "media/EffectTextured.effect" );
-		}
-
-		dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const
-		{
-			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
-			{
-				return m_color;
-			}
-			else
-			{
-				return m_textured;
-			}
-		}
-	};
-	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( new MyEffectSolver( *this ) );
-	GetManager< Geometry >()->AddFactory( "dae", daeFactory );
+	GetManager< Geometry >()->AddFactory( "ase", GeometryFactoryPtr( aseFactory ) );
 
 	// Add a scene.
 	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
@@ -129,6 +102,7 @@ void MyGame::Startup()
 	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
 	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
 	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/UssEnterprise/models/model.dae" ) );
+	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
 
 	PrimitiveList & plDAE = ((Mesh*)meshDAE.get())->GetPrimitiveList();
 
@@ -144,7 +118,7 @@ void MyGame::Startup()
 
 	float size = meshDAE->GetBBox().Size().Length();
 	float scaleE = 8.0f / meshDAE->GetBBox().Size().Length();
-	daeObject->GetGeometryMatrix().Scale( scaleE );
+	daeObject->GetGeometryMatrix().Scale( scaleE * 0.25f );
 	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
 }
 

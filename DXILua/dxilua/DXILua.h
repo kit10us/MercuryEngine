@@ -3,8 +3,6 @@
 
 #pragma once
 
-//#pragma comment( lib, "DXILua" )
-
 #include <dxi/core/Game.h>
 #include <dxi/scripting/IScriptEngine.h>
 #include <lua.hpp>

@@ -26,7 +26,7 @@ namespace rm
 		/// <summary>
 		/// Add a resource manager.
 		/// </summary>
-		void AddManager( IResourceManagerEarly * manager );
+		void AddManager( std::shared_ptr< IResourceManagerEarly > manager );
 
 		/// <summary>
 		/// Remove all resource managers.
@@ -39,24 +39,9 @@ namespace rm
 		///<summary>
 		/// Load a resource file.
 		///</summary>
-		void Load( unify::Path path ); // TODO: Junk this? I think it's stubbed anyhow.
-
-		///<summary>
-		/// Load a resource file.
-		///</summary>
 		void Load( std::string type, std::string name, unify::Path path );
-			 
-		///<summary>
-		/// Load a resource file.
-		///</summary>
- 		void Load( const qxml::Element & element );
 
 	private:
-		/*
-		struct CompareNoCase
-		{
-			bool operator()( const std::string & a, const std::string & b ) const;
-		};*/
 		std::map< std::string /*Resource name*/, std::shared_ptr< IResourceManagerEarly >, unify::CaseInsensitiveLessThanTest > m_resourceManagers;
 	};
 

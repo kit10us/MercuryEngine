@@ -26,8 +26,6 @@ namespace rm
 		/// Add resource without return. This allows us to 
 		/// add resources in bulk, regardless of type (not template at this point, so we don't have to know the resource type).
 		/// </summary>
-		virtual void AddResource( std::string name, const qxml::Element & element ) = 0;
-		virtual void AddResource( const qxml::Element & element ) = 0;
 		virtual void AddResource( std::string name, unify::Path path ) = 0;
 	};
 
@@ -48,18 +46,6 @@ namespace rm
 		/// Returns true if a resource exists with the specified ID.
 		/// </summary>
 		virtual bool Exists( std::string name ) const = 0;
-
-		/*
-		/// <summary>
-		/// Find and return a resource.
-		/// </summary>
-		virtual std::shared_ptr< ResourcePack< T > > Find( std::string name ) = 0;
-
-		/// <summary>
-		/// Find and return a resource.
-		/// </summary>
-		virtual std::shared_ptr< const ResourcePack< T > > Find( std::string name ) const = 0;
-		*/
 										 
 		/// <summary>
 		/// Returns the number of resources being managed.
