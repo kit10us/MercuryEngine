@@ -10,16 +10,17 @@
 #include <dxi/RenderInfo.h>
 #include <dxi/Blend.h>
 #include <dxi/Effect.h>
+#include <dxi/core/Game.h>
 
 namespace dxi
 {
 	class Sprite
 	{
 	public:
-		Sprite();
-		Sprite( Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
-		Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
-		Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
+		Sprite( core::Game * game );
+		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
+		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
+		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
 		~Sprite() throw ();
 
 		Effect::ptr GetEffect() const;
@@ -55,6 +56,8 @@ namespace dxi
 		/// Initialization code. As there are so many constructors, this is to be called by all of them.
 		/// </summary>
 		void Init();
+
+		core::Game * m_game;
 
 		Effect::ptr m_effect;
 		animation::Instance m_animationInstance;

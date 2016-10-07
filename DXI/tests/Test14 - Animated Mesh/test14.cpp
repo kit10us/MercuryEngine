@@ -10,6 +10,7 @@
 #include <dxi/SkinMeshD3D.h>
 #include <boost/cast.hpp>
 #include <dxi/Exception.h>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -268,6 +269,8 @@ public:
 	void Render();
 	void Shutdown();
 } game;
+
+RegisterGame( game );
 
 void MyGame::Startup()
 {

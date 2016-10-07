@@ -16,7 +16,6 @@
     <ClCompile Include="source\dxi\animation\Instance.cpp" />
     <ClCompile Include="source\dxi\animation\Sequence.cpp" />
     <ClCompile Include="source\dxi\animation\SpriteManager.cpp" />
-    <ClCompile Include="source\dxi\ASEDocument.cpp" />
     <ClCompile Include="source\dxi\Blend.cpp" />
     <ClCompile Include="source\dxi\BufferSet.cpp" />
     <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp" />
@@ -43,7 +42,6 @@
     <ClCompile Include="source\dxi\Frustum.cpp" />
     <ClCompile Include="source\dxi\Geometry.cpp" />
     <ClCompile Include="source\dxi\factory\GeometryFactory.cpp" />
-    <ClCompile Include="source\dxi\factory\GeometryASEFactory.cpp" />
     <ClCompile Include="source\dxi\GeometryGroup.cpp" />
     <ClCompile Include="source\dxi\GeometryInstanceData.cpp" />
     <ClCompile Include="source\dxi\GeometryPlacement.cpp" />
@@ -112,8 +110,6 @@
     <ClCompile Include="source\dxi\win\DXDevice.cpp" />
     <ClCompile Include="source\dxi\win\DXRenderer.cpp" />
     <ClCompile Include="source\dxi\win\WindowsOS.cpp" />
-    <ClCompile Include="source\dxi\win\WinMain.cpp" />
-    <ClCompile Include="source\dxi\win\WndProc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\dxi\animation\Frame.h" />
@@ -121,7 +117,6 @@
     <ClInclude Include="source\dxi\animation\Instance.h" />
     <ClInclude Include="source\dxi\animation\Sequence.h" />
     <ClInclude Include="source\dxi\animation\SpriteManager.h" />
-    <ClInclude Include="source\dxi\ASEDocument.h" />
     <ClInclude Include="source\dxi\Blend.h" />
     <ClInclude Include="source\dxi\BufferSet.h" />
     <ClInclude Include="source\dxi\controllers\ControllerFactory.h" />
@@ -167,7 +162,6 @@
     <ClInclude Include="source\dxi\Frustum.h" />
     <ClInclude Include="source\dxi\Geometry.h" />
     <ClInclude Include="source\dxi\factory\GeometryFactory.h" />
-    <ClInclude Include="source\dxi\factory\GeometryASEFactory.h" />
     <ClInclude Include="source\dxi\GeometryGroup.h" />
     <ClInclude Include="source\dxi\GeometryInstanceData.h" />
     <ClInclude Include="source\dxi\GeometryPlacement.h" />
@@ -256,7 +250,6 @@
     <ClInclude Include="source\dxi\win\DXILib.h" />
     <ClInclude Include="source\dxi\win\DXRenderer.h" />
     <ClInclude Include="source\dxi\win\WindowsOS.h" />
-    <ClInclude Include="source\dxi\win\WndProc.h" />
     <ClInclude Include="source\dxi\XMLConvert.h" />
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,8 @@
 using namespace dxi;
 using namespace font;
 
-Font::Font()
+Font::Font( core::Game * game )
+	: m_game( game )
 {
 }
 
@@ -28,9 +29,9 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 	// Check if the file exists...
 	qxml::Document doc( filePath );
 
-	auto textureManager = core::Game::GetInstance()->GetManager< Texture >();
-	auto effectManager = core::Game::GetInstance()->GetManager< Effect >();
-	auto geometryManager = core::Game::GetInstance()->GetManager< Geometry >();
+	auto textureManager = m_game->GetManager< Texture >();
+	auto effectManager = m_game->GetManager< Effect >();
+	auto geometryManager = m_game->GetManager< Geometry >();
 
 	for( const auto & leaf : doc.GetRoot()->FindFirstElement( "font" )->Children() )
 	{

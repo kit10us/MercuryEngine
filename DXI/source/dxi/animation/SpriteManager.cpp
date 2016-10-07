@@ -19,7 +19,7 @@ SpriteManager::~SpriteManager()
 
 void SpriteManager::LoadFromFile( const unify::Path & filePath )
 {
-	auto textureManager = core::Game::GetInstance()->GetManager< Texture >();
+	auto textureManager = ((core::Game*)Game())->GetManager< Texture >();
 
 	bool defaultLoop = true;
 	qxml::Document doc( filePath );

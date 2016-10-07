@@ -3,6 +3,6 @@
 <logfile>log.txt</logfile>
 <fullscreen>false</fullscreen>
 <resolution width="800" height="640"/>
-<extension>DAELoaderDLL.dll</extension>
+<extension>DAELoader.dll</extension>
 </setup>
 </xml>

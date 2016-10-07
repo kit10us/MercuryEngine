@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <dxi/font/TextBox.h>
-#include <dxi/core/Game.h>
 #include <dxi/RenderState.h>
 
 using namespace dxi;
 using namespace font;
 
-TextBox::TextBox()
+TextBox::TextBox( core::Game * game )
+	: m_game( game )
 {
 }
 
@@ -84,7 +84,7 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 		// TODO: Transform::Get( Transform::Index::Projection, oldProjection );
 		// TODO: Transform::Get( Transform::Index::View, oldView );
 
-		unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().width ), static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().height ), 0, -1, 1000 ) );
+		unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( m_game->GetOS().GetResolution().width ), static_cast< float >( m_game->GetOS().GetResolution().height ), 0, -1, 1000 ) );
 		// TODO: Transform::Set( Transform::Index::Projection, projection );
 
 		/*

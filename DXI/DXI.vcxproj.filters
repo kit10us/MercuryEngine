@@ -79,20 +79,11 @@
     <ClCompile Include="source\dxi\win\WindowsOS.cpp">
       <Filter>dxi\win</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\win\WinMain.cpp">
-      <Filter>dxi\win</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\win\WndProc.cpp">
-      <Filter>dxi\win</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\animation\AnimationFrame.cpp">
       <Filter>dxi\animation</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\pathing\position\AttachTo.cpp">
       <Filter>dxi\pathing\position</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\ASEDocument.cpp">
-      <Filter>dxi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\BufferSet.cpp">
       <Filter>dxi</Filter>
@@ -313,17 +304,11 @@
     <ClInclude Include="source\dxi\win\WindowsOS.h">
       <Filter>dxi\win</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\win\WndProc.h">
-      <Filter>dxi\win</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\XMLConvert.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\pathing\position\AttachTo.h">
       <Filter>dxi\pathing\position</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\ASEDocument.h">
-      <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\BufferSet.h">
       <Filter>dxi</Filter>
@@ -548,9 +533,6 @@
       <Filter>dxi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\factory\EffectFactories.cpp">
-      <Filter>dxi\factory</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\factory\GeometryASEFactory.cpp">
       <Filter>dxi\factory</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\factory\GeometryFactory.cpp">
@@ -791,9 +773,6 @@
       <Filter>dxi\win</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\factory\EffectFactories.h">
-      <Filter>dxi\factory</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\factory\GeometryASEFactory.h">
       <Filter>dxi\factory</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\factory\GeometryFactory.h">

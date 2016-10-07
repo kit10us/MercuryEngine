@@ -5,6 +5,7 @@
 #include <dxi/geo/GeometryGroup.h>
 #include <dxi/geo/Terra.h>
 #include <boost/tuple/tuple.hpp>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -17,6 +18,8 @@ public:
 	void Render();
 	void Shutdown();
 } game;
+
+RegisterGame( game );
 
 class CameraRotation : public events::Listener
 {

@@ -8,6 +8,11 @@
 
 using namespace dxi;
 
+PixelShaderFactory::PixelShaderFactory( core::Game * game )
+	: m_game( game )
+{
+}
+
 PixelShader * PixelShaderFactory::Produce( unify::Path source )
 {
 	qxml::Document doc( source );

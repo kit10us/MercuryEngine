@@ -5,9 +5,9 @@
 
 #include <qxml/Document.h>
 
-namespace dxi
+namespace ase
 {
-	class ASEDocument : public qxml::Document
+	class Document : public qxml::Document
 	{
 	public:
 		void Load( const unify::Path & filePath );

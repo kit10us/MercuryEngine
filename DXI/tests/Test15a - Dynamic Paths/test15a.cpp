@@ -9,6 +9,7 @@
 #include <dxi/GeometryGroup.h>
 #include <dxi/geo/Terra.h>
 #include <dxi/pathing/PathSystem.h>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -31,6 +32,8 @@ public:
     void Render();
     void Shutdown();
 } game;
+
+RegisterGame( game );
 
 class ObjectPathController : public controllers::IController
 {

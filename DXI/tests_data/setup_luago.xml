@@ -3,7 +3,7 @@
 <logfile>log.txt</logfile>
 <fullscreen>false</fullscreen>
 <resolution width="800" height="640"/>
-<extension>DXILuaDLL.dll</extension>
+<extension>DXILua.dll</extension>
 <gamemodule type="LUA" source="game.lua"/>
 </setup>
 </xml>

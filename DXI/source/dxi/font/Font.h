@@ -7,6 +7,7 @@
 #include <dxi/font/CharacterKey.h>
 #include <dxi/font/Character.h>
 #include <dxi/animation/SpriteManager.h>
+#include <dxi/core/Game.h>
 
 namespace dxi
 {
@@ -17,7 +18,7 @@ namespace dxi
 		class Font
 		{
 		public:
-			Font();
+			Font( core::Game * game );
 			Font( const unify::Path & filePath, animation::SpriteManager::shared_ptr spriteManager );
 			~Font() throw ();
 
@@ -26,6 +27,7 @@ namespace dxi
 			unsigned int CharacterCount() const;
 
 		private:
+			core::Game * m_game;
 			unify::Path m_filePath;
 			CharacterMap m_characterMap;
 			Character m_invalidCharacter;

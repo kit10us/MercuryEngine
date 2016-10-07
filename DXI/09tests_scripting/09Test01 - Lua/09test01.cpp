@@ -3,6 +3,7 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/win/DXILib.h>
+#include <DXIWinMain.h>
 
 class MyGame : public dxi::core::Game
 {
@@ -12,4 +13,6 @@ public:
 	{
 	}
 } game;
+
+RegisterGame( game );
 

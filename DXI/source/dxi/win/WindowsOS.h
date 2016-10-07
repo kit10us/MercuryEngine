@@ -25,7 +25,7 @@ namespace dxi
 		{
 			WindowsOS();
 		public:
-			WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow );
+			WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow, WNDPROC wndProc );
 			WindowsOS( HWND hWnd );
 
 			virtual ~WindowsOS();
@@ -62,19 +62,22 @@ namespace dxi
 
 			void DebugWriteLine( const std::string & line ) override;
 
-			void CreateWindow( HWND & hwnd );
+			void CreateWindow( HWND & hwnd, WNDPROC wndProc );
 			void CreateDirectX();
 			void DestroyDirectX();
 
 		private:
 			std::string m_name;
+			
 			HINSTANCE m_hInstance;
 			int m_nCmdShow;
 			std::vector< std::string > m_commandLine;
+			HWND m_hWnd;
+			WNDPROC m_wndProc;
+
 			Viewport m_defaultViewport;
 			bool m_fullscreen;
 			bool m_hasFocus;
-			HWND m_hWnd;
 			std::list< HWND > m_additionalHandles; // Handles to be serviced.
 			std::shared_ptr< DXRenderer > m_renderer;
 		};

@@ -1,29 +1,34 @@
 // Copyright (c) 2003 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
-#include <dxi/factory/GeometryASEFactory.h>
+#include <ase/GeometryFactory.h>
+#include <ase/ASEDocument.h>
 #include <dxi/exception/FailedToCreate.h>
-#include <dxi/ASEDocument.h>
 #include <unify/String.h>
 #include <unify/FrameSet.h>
 #include <unify/ColorUnit.h>
 
+using namespace ase;
 using namespace dxi;
 
-void GeometryASEFactory::SetVertexShader( dxi::VertexShader::ptr vertexShader )
+GeometryFactory::GeometryFactory( dxi::core::Game * game )
+: m_game( game )
+{
+}
+
+void GeometryFactory::SetVertexShader( dxi::VertexShader::ptr vertexShader )
 {
 	m_vertexShader = vertexShader;
 }
 
-void GeometryASEFactory::SetPixelShader( dxi::PixelShader::ptr pixelShader )
+void GeometryFactory::SetPixelShader( dxi::PixelShader::ptr pixelShader )
 {
 	m_pixelShader = pixelShader;
 }
 
-Geometry * GeometryASEFactory::Produce( unify::Path source )
+Geometry * GeometryFactory::Produce( unify::Path source )
 {
-	core::Game & game = *dxi::core::Game::GetInstance();
+	core::Game & game = *m_game;
 
 	// Managers to store sub-resources.
 	auto textureManager = game.GetManager< Texture >();
@@ -34,7 +39,7 @@ Geometry * GeometryASEFactory::Produce( unify::Path source )
 	Mesh * mesh = new Mesh;
 	PrimitiveList & primitiveList = mesh->GetPrimitiveList();
 
-	dxi::ASEDocument doc;
+	ase::Document doc;
 	Texture::ptr texture;
 	unsigned int u = 0;
 	

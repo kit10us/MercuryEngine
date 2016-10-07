@@ -11,6 +11,7 @@
 #include <dxi/GeometryGroup.h>
 #include <dxi/shapes/ShapeCreators.h>
 #include <dxi/win/DXILib.h>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -208,3 +209,4 @@ public:
 	}
 } game;
 
+RegisterGame( game );

@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/Sprite.h>
-#include <dxi/core/Game.h>
 #include <dxi/win/DXDevice.h>
 #include <unify/V4.h>
 #include <dxi/Texture.h>
@@ -10,8 +9,9 @@
 
 using namespace dxi;
 
-Sprite::Sprite()
-: m_center( 0, 0 )
+Sprite::Sprite( core::Game * game )
+: m_game( game )
+, m_center( 0, 0 )
 , m_size( 0, 0 )
 , m_rotations( unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ) )
 , m_scale( 1, 1 )
@@ -20,8 +20,9 @@ Sprite::Sprite()
 {
 }
 
-Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
-: m_effect( effect )
+Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
+: m_game( game )
+, m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
 , m_size( 0, 0 )
@@ -34,8 +35,9 @@ Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, animation
 	Init();
 }
 
-Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
-: m_effect( effect )
+Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
+: m_game( game )
+, m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
 , m_size( 0, 0 )
@@ -48,8 +50,9 @@ Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, const uni
 	Init();
 }
 
-Sprite::Sprite( Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
-: m_effect( effect )
+Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
+: m_game( game )
+, m_effect( effect )
 , m_animationInstance( animationInstance )
 , m_center( center )
 , m_size( size )
@@ -174,8 +177,8 @@ void Sprite::Render( const RenderInfo & renderInfo )
 	vb.Unlock();
 	vb.Use();
 
-	float width = static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().width );
-	float height = static_cast< float >( core::Game::GetInstance()->GetOS().GetResolution().height );
+	float width = static_cast< float >( m_game->GetOS().GetResolution().width );
+	float height = static_cast< float >(m_game->GetOS().GetResolution().height );
 	unify::Matrix matrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.0f, 1000.0f );
 	
 	assert( 0 );// TODO:

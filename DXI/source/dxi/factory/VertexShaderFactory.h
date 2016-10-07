@@ -3,12 +3,17 @@
 #pragma once
 #include <dxi/VertexShader.h>
 #include <rm/ResourceManagerSimple.h>
+#include <dxi/core/Game.h>
 
 namespace dxi
 {
 	class VertexShaderFactory : public rm::ISourceFactory< VertexShader >
 	{
 	public:
+		VertexShaderFactory( core::Game * game );
 		VertexShader * Produce( unify::Path source ) override;
+
+	private:
+		core::Game * m_game;
 	};
 }

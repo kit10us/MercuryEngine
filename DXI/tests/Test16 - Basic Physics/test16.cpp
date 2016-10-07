@@ -7,6 +7,7 @@
 #include <dxi/pi/EnvironmentConstant.h>
 #include <dxi/pi/EnvironmentBox.h>
 #include <dxi/pi/PhysicsScene.h>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -261,3 +262,4 @@ public:
 	}
 } game;
 
+RegisterGame( game );

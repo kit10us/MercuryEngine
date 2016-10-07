@@ -9,6 +9,7 @@
 #include <unify/TimeDelta.h>
 #include <dxi/core/Extension.h>
 #include <dxi/RenderInfo.h>
+#include <rm/ResourceManagerSimple.h>
 
 namespace dxi
 {

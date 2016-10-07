@@ -1,16 +1,16 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/ASEDocument.h>
+#include <ase/ASEDocument.h>
 #include <unify/Path.h>
 #include <unify/String.h>
 #include <regex>
 
-using namespace dxi;
+using namespace ase;
 
 void ProcessASEElement( qxml::Element * pElement, std::string text );
 
-void ASEDocument::Load( const unify::Path & filePath )
+void Document::Load( const unify::Path & filePath )
 {
 	// Destroy existing document
 	Destroy();

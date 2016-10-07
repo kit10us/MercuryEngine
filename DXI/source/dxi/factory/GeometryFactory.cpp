@@ -9,7 +9,12 @@
 
 using namespace dxi;
 
-void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh );
+void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi::Mesh * mesh );
+
+GeometryFactory::GeometryFactory( core::Game * game )
+	: m_game( game )
+{
+}
 
 Geometry * GeometryFactory::Produce( unify::Path source )
 {
@@ -26,7 +31,7 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
 	if( version == "1.2" )
 	{
-		LoadMesh_1_2( geometryElement, mesh );
+		LoadMesh_1_2( m_game, geometryElement, mesh );
 	}
 	else
 	{
@@ -39,15 +44,13 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 }
 
 
-void LoadMesh_1_2( const qxml::Element & geometryElement, dxi::Mesh * mesh )
+void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi::Mesh * mesh )
 {
-	core::Game & game = *dxi::core::Game::GetInstance();
-
 	// Managers to store sub-resources.
-	auto textureManager = game.GetManager< Texture >();
-	auto pixelShaderManager = game.GetManager< PixelShader >();
-	auto vertexShaderManager = game.GetManager< VertexShader >();
-	auto effectManager = game.GetManager< Effect >();
+	auto textureManager = game->GetManager< Texture >();
+	auto pixelShaderManager = game->GetManager< PixelShader >();
+	auto vertexShaderManager = game->GetManager< VertexShader >();
+	auto effectManager = game->GetManager< Effect >();
 
 	for( const auto child : geometryElement.Children() )
 	{

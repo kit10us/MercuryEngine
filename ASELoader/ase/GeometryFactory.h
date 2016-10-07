@@ -3,18 +3,22 @@
 #pragma once
 #include <dxi/Mesh.h>
 #include <rm/ResourceManagerSimple.h>
+#include <dxi/core/Game.h>
 
-namespace dxi
+namespace ase
 {
-	class GeometryASEFactory : public rm::ISourceFactory< Geometry >
+	class GeometryFactory : public rm::ISourceFactory< dxi::Geometry >
 	{
 	public:
+		GeometryFactory( dxi::core::Game * game );
+
 		void SetVertexShader( dxi::VertexShader::ptr vertexShader );
 		void SetPixelShader( dxi::PixelShader::ptr pixelShader );
 
-		Geometry * Produce( unify::Path source ) override;
+		dxi::Geometry * Produce( unify::Path source ) override;
 
 	private:
+		dxi::core::Game * m_game;
 		// TODO: This will likely need to have multiple sets based on material needs - TBD.
 		dxi::VertexShader::ptr m_vertexShader;
 		dxi::PixelShader::ptr m_pixelShader;

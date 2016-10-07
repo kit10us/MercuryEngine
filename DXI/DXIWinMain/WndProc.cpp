@@ -4,11 +4,14 @@
 #include <dxi/core/Game.h>
 #include <shellapi.h>
 
+extern "C" dxi::core::Game * GetGameInstance();
+
 extern "C"
 LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	static bool trackingMouse = false;
-	static dxi::core::Game & game = *dxi::core::Game::GetInstance();
+	//static dxi::core::Game & game = *dxi::core::Game::GetInstance();
+	static dxi::core::Game & game = *GetGameInstance();
 
 	switch( message )
 	{

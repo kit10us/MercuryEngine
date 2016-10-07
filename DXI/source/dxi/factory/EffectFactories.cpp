@@ -5,15 +5,19 @@
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/exception/FailedToCreate.h>
-#include <dxi/core/Game.h>
 
 using namespace dxi;
 
+EffectFactory::EffectFactory( core::Game * game )
+	: m_game( game )
+{
+}
+	  
 Effect * EffectFactory::Produce( unify::Path source )
 {
-	auto textureManager = dxi::core::Game::GetInstance()->GetManager< Texture >();
-	auto pixelShaderManager = dxi::core::Game::GetInstance()->GetManager< PixelShader >();
-	auto vertexShaderManager = dxi::core::Game::GetInstance()->GetManager< VertexShader >();
+	auto textureManager = m_game->GetManager< Texture >();
+	auto pixelShaderManager = m_game->GetManager< PixelShader >();
+	auto vertexShaderManager = m_game->GetManager< VertexShader >();
 
 	qxml::Document doc( source );
 	auto & effectNode = *doc.GetRoot()->FindFirstElement( "effect" );

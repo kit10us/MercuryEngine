@@ -8,8 +8,8 @@
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/factory/ShapeFactory.h>
-#include <dxi/factory/GeometryASEFactory.h>
 #include <dxi/win/DXILib.h>
+#include <DXIWinMain.h>
 
 #include <chrono>
 
@@ -22,7 +22,7 @@ class MyGame : public Game
 {
 protected:
 public:
-	MyGame() : Game( "setup_dae.xml" ) {}
+	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup();
 	bool Update( RenderInfo & renderInfo, IInput & input );
 	void Render( const RenderInfo & renderInfo );
@@ -30,6 +30,7 @@ public:
 
 } game;
 
+RegisterGame( game );
 
 void MyGame::Startup()
 {
@@ -49,12 +50,6 @@ void MyGame::Startup()
 	borgCubeEffect->SetVertexShader( vs );
 	borgCubeEffect->SetPixelShader( ps );
 	borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
-
-	// Setup ASE factories.
-	GeometryASEFactory * aseFactory = new GeometryASEFactory;
-	aseFactory->SetVertexShader( vs );
-	aseFactory->SetPixelShader( ps );
-	GetManager< Geometry >()->AddFactory( "ase", GeometryFactoryPtr( aseFactory ) );
 
 	// Add a scene.
 	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
@@ -101,8 +96,8 @@ void MyGame::Startup()
 	
 	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
 	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
-	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/UssEnterprise/models/model.dae" ) );
-	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
+	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/UssEnterprise/models/model.dae" ) );
+	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
 
 	PrimitiveList & plDAE = ((Mesh*)meshDAE.get())->GetPrimitiveList();
 

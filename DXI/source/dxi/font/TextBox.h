@@ -21,7 +21,7 @@ namespace dxi
 		class TextBox : public IText
 		{
 		public:
-			TextBox();
+			TextBox( core::Game * game );
 			TextBox( std::shared_ptr< Font > font, const unify::V2< float > & position, const FontString & fontString, float scale = float( 1.0f ) );
 			virtual ~TextBox();
 
@@ -33,6 +33,7 @@ namespace dxi
 			void Render( const RenderInfo & renderInfo, bool is3D = false );
 
 		protected:
+			core::Game * m_game;
 			std::shared_ptr< Font > m_font;
 			unify::V2< float > m_position;
             unify::Rect< float > m_rectangle; // Used as position.

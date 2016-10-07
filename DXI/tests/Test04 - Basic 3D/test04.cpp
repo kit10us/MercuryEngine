@@ -14,6 +14,7 @@
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/win/DXILib.h>
 #include <dxi/win/DXDevice.h>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -98,4 +99,7 @@ public:
 		Game::Shutdown();
 	}
 } game;
+
+RegisterGame( game );
+
 

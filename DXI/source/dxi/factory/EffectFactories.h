@@ -5,13 +5,17 @@
 
 #include <dxi/Effect.h>
 #include <rm/ResourceManagerSimple.h>
-#include <qxml/Document.h>
+#include <dxi/core/Game.h>
 
 namespace dxi
 {
 	class EffectFactory : public rm::ISourceFactory< Effect >
 	{
 	public:
-		virtual Effect * Produce( unify::Path source ) override;
+		EffectFactory( core::Game * game );
+		Effect * Produce( unify::Path source ) override;
+
+	private:
+		core::Game * m_game;
 	};
 }

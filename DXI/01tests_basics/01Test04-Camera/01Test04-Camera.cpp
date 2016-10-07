@@ -10,6 +10,7 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/win/DXILib.h>
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -28,6 +29,8 @@ public:
 	void Render( const RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
+
+RegisterGame( game );
 
 void MyGame::Startup()
 {

@@ -18,35 +18,42 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DXIWinMain.cpp" />
+    <ClCompile Include="WndProc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DXIWinMain.h" />
+    <ClInclude Include="WndProc.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{335B7243-367C-4BA2-83E1-726EFED77CC7}</ProjectGuid>
+    <ProjectGuid>{73720105-DA19-43B7-A37A-3383ACDA63B4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DXILuaDLL</RootNamespace>
+    <RootNamespace>DXIWinMain</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>DXILua</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,136 +78,75 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
-    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir>..\DXI\tests_data\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
-    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir>..\DXI\tests_data\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\source;..\..\unify;..\..\QJson\source;..\..\qxml\include;..\..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\source;..\..\unify;..\..\QJson\source;..\..\qxml\include;..\..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="DXILuaDLL.h" />
-    <ClInclude Include="dxilua\DXILua.h" />
-    <ClInclude Include="dxilua\ExportCamera.h" />
-    <ClInclude Include="dxilua\ExportDebug.h" />
-    <ClInclude Include="dxilua\ExportGame.h" />
-    <ClInclude Include="dxilua\ExportMatrix.h" />
-    <ClInclude Include="dxilua\ExportObject.h" />
-    <ClInclude Include="dxilua\ExportResources.h" />
-    <ClInclude Include="dxilua\ExportScene.h" />
-    <ClInclude Include="dxilua\ExportScenes.h" />
-    <ClInclude Include="dxilua\ExportUpdate.h" />
-    <ClInclude Include="dxilua\ExportV2.h" />
-    <ClInclude Include="dxilua\ExportV3.h" />
-    <ClInclude Include="dxilua\Module.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="DXILuaDLL.cpp" />
-    <ClCompile Include="dxilua\DXILua.cpp" />
-    <ClCompile Include="dxilua\ExportCamera.cpp" />
-    <ClCompile Include="dxilua\ExportDebug.cpp" />
-    <ClCompile Include="dxilua\ExportGame.cpp" />
-    <ClCompile Include="dxilua\ExportMatrix.cpp" />
-    <ClCompile Include="dxilua\ExportObject.cpp" />
-    <ClCompile Include="dxilua\ExportResources.cpp" />
-    <ClCompile Include="dxilua\ExportScene.cpp" />
-    <ClCompile Include="dxilua\ExportScenes.cpp" />
-    <ClCompile Include="dxilua\ExportUpdate.cpp" />
-    <ClCompile Include="dxilua\ExportV2.cpp" />
-    <ClCompile Include="dxilua\ExportV3.cpp" />
-    <ClCompile Include="dxilua\Module.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

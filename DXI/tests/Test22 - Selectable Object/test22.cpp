@@ -8,6 +8,7 @@
 #include <dxi/geo/GeometryGroup.h>
 #include <dxi/geo/Terra.h>
 #include <dxi/Frustum.h>
+#include <DXIWinMain.h>
 
 #include "CustomEvents.h"
 
@@ -23,6 +24,7 @@ public:
 	void Shutdown();
 } game;
 
+RegisterGame( game );
 
 void MyGame::Startup()
 {

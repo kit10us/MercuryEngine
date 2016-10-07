@@ -16,6 +16,7 @@
 #include <unify/Triangle.h>
 #include <dxi/Exception.h>
 #include "NavMeshBulk.h"
+#include <DXIWinMain.h>
 
 using namespace dxi;
 using namespace core;
@@ -32,6 +33,8 @@ public:
 	void Render();
 	void Shutdown();
 } game;
+
+RegisterGame( game );
 
 class DebugRenderer : public IDebugRenderer
 {

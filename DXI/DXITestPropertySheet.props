@@ -9,7 +9,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;..\..\..\DAELoader\source;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\dxi\DXIWinMain;..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;..\..\..\DAELoader\source;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIRECTX9;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>

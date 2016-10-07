@@ -9,9 +9,14 @@
 
 using namespace dxi;
 
+ShapeFactory::ShapeFactory( core::Game * game )
+	: m_game( game )
+{
+}
+
 Geometry * ShapeFactory::Produce( unify::Path source )
 {	
-	auto game = core::Game::GetInstance();
+	auto game = m_game;
 
 	qxml::Document doc( source );
 	auto & element = *doc.GetRoot()->FindFirstElement( "shape" );

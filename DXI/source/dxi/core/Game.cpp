@@ -18,7 +18,7 @@
 using namespace dxi;
 using namespace core;
 
-Game * Game::s_gameInstance = 0;
+//Game * Game::s_gameInstance = 0;
 
 
 bool Game::Setup( IOS & os )
@@ -40,7 +40,7 @@ Game::Game( unify::Path setup )
 : m_setup( setup )
 , m_isQuitting( false )
 {
-	s_gameInstance = this;
+	//s_gameInstance = this;
 }
 
 Game::~Game()
@@ -61,22 +61,22 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	// Create asset managers...
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Texture >( "Texture" ) ) );
-	GetManager< Texture >()->AddFactory( ".dds", TextureFactoryPtr( new TextureSourceFactory ) );
-	GetManager< Texture >()->AddFactory( ".bmp", TextureFactoryPtr( new TextureSourceFactory ) );
-	GetManager< Texture >()->AddFactory( ".jpg", TextureFactoryPtr( new TextureSourceFactory ) );
+	GetManager< Texture >()->AddFactory( ".dds", TextureFactoryPtr( new TextureSourceFactory( this ) ) ); // TODO: Can't we just share this between types?
+	GetManager< Texture >()->AddFactory( ".bmp", TextureFactoryPtr( new TextureSourceFactory( this ) ) );
+	GetManager< Texture >()->AddFactory( ".jpg", TextureFactoryPtr( new TextureSourceFactory( this ) ) );
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Effect >( "Effect" ) ) );
-	GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory ) );
+	GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< PixelShader >( "PixelShader" ) ) );
-	GetManager< PixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory ) );
+	GetManager< PixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory( this ) ) );
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< VertexShader >( "VertexShader" ) ) );
-	GetManager< VertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory ) );
+	GetManager< VertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory( this ) ) );
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Geometry >( "Geometry" ) ) );
-	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory ) );
-	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new ShapeFactory ) );
+	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
+	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new ShapeFactory( this ) ) );
 
 	m_sceneManager.reset( new scene::SceneManager( this ) );
 
@@ -335,10 +335,12 @@ IInput & Game::GetInput()
 	return *m_input;
 }
 
+/*
 Game * Game::GetInstance()
 {
 	return s_gameInstance;
 }
+*/
 
 void Game::AddExtension( std::shared_ptr< Extension > extension )
 {

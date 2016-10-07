@@ -8,6 +8,11 @@
 
 using namespace dxi;
 
+VertexShaderFactory::VertexShaderFactory( core::Game * game )
+	: m_game( game )
+{
+}
+
 VertexShader * VertexShaderFactory::Produce( unify::Path source )
 {
 	qxml::Document doc( source );

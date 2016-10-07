@@ -110,10 +110,14 @@ namespace dxi
 
 			std::list< std::shared_ptr< Extension > > m_extensions;
 
-			static Game * s_gameInstance;
+			//static Game * s_gameInstance;
 
 		public:
-			static Game * GetInstance();
+			//static Game * GetInstance();
 		};
 	}
 }
+
+#define RegisterGame( GAME )														 \
+extern "C" dxi::core::Game * GetGameInstance() { return (dxi::core::Game*)&GAME; }
+

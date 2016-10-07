@@ -15,7 +15,7 @@ using namespace win;
 #undef GetCommandLine
 #endif
 
-extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
+//extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
 WindowsOS::WindowsOS()
 : m_defaultViewport( 0, 0, 800.0f, 600.0f, 0, 1 )
@@ -25,10 +25,11 @@ WindowsOS::WindowsOS()
 , m_hInstance{}
 , m_nCmdShow{}
 , m_hWnd{}
+, m_wndProc{}
 {
 }
 
-WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
+WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow, WNDPROC wndProc )
 : WindowsOS()
 {
 	{
@@ -45,6 +46,7 @@ WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCm
 	m_hInstance = hInstance;
 	m_nCmdShow = nCmdShow;
 	hPrevInstance; // NOT USED
+	m_wndProc = wndProc;
 
 	// Parse the commandline...
 	std::string commandLineString( lpszCmdLine );
@@ -155,7 +157,7 @@ void WindowsOS::Startup()
 {
 	if ( ! m_hWnd )
 	{
-		CreateWindow( m_hWnd );
+		CreateWindow( m_hWnd, m_wndProc );
 	}
 
 	DragAcceptFiles( this->GetHWnd(), true );
@@ -180,12 +182,12 @@ void WindowsOS::DebugWriteLine( const std::string & line )
 }
 
 
-void WindowsOS::CreateWindow( HWND & hwnd )
+void WindowsOS::CreateWindow( HWND & hwnd, WNDPROC wndProc )
 {
 	WNDCLASS wc;
 	memset( &wc, 0, sizeof( wc ) );
 	wc.style = 0;
-    wc.lpfnWndProc = (WNDPROC) WndProc;
+    wc.lpfnWndProc = wndProc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = m_hInstance;
