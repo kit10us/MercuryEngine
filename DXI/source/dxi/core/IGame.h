@@ -13,6 +13,13 @@
 
 namespace dxi
 {
+	enum class ErrorLevel
+	{
+		Critical, // System is left unstable, we should likely shutdown immediately.
+		Failure, // We have a failure, the module that reported it is likely corrupted.
+		Warning // Error might not be important - state is unknown.
+	};
+
 	namespace core
 	{
 		/// <summary>
@@ -39,7 +46,12 @@ namespace dxi
 			/// <summary>
 			/// Render is called to draw graphics.
 			/// </summary>
-			virtual void Render( const RenderInfo & renderInfo ) = 0;
+			virtual void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) = 0;
+
+			/// <summary>
+			/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.
+			/// </summary>
+			virtual void Shutdown() = 0;																				  
 
 		public:
 			virtual ~IGame() {}
@@ -47,8 +59,6 @@ namespace dxi
 			virtual void Tick() = 0;
 
 			virtual void Draw() = 0;
-
-			virtual void Shutdown() = 0;
 
 			/// <summary>
 			/// Get our OS interface.
@@ -74,6 +84,13 @@ namespace dxi
 			/// Add an extension.
 			/// </summary>
 			virtual void AddExtension( std::shared_ptr< Extension > extension ) = 0;
+
+			/// <summary>
+			/// This is our method of reporting issues, especially from modules.
+			/// </summary>
+			virtual void ReportError( ErrorLevel level, std::string source, std::string error ) = 0;
+
+			virtual bool HadCriticalError() const = 0;
 		};
 	}
 }

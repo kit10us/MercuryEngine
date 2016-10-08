@@ -19,7 +19,18 @@ int Resources_AddResource( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	game->GetResourceHub().Load( type, name, path );
+	try
+	{
+		game->GetResourceHub().Load( type, name, path );
+	}
+	catch( std::string ex )
+	{
+		game->ReportError( dxi::ErrorLevel::Failure, "Lua", ex );
+	}
+	catch( ... )
+	{
+		game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Unknown error" );
+	}
 
 	return 0;
 }

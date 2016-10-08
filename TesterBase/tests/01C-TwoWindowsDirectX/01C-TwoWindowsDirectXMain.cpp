@@ -23,8 +23,8 @@ void Tester::BeforeStartup( const std::string & commandLine )
 {
 	commandLine; // Not used
 
-    CreatePrimaryDisplay( DisplayDetails::CreateWindowedDirectXDisplay( Size( 800, 600 ), V2( 10, 10 ) ) );
-	AddAdditionalDisplay( DisplayDetails::CreateWindowedDirectXDisplay( Size( 800, 600 ), V2( 810, 10 ) ) );
+    AddDisplay( DisplayDetails::CreateWindowedDirectXDisplay( Size( 800, 600 ), V2( 10, 10 ) ) );
+	AddDisplay( DisplayDetails::CreateWindowedDirectXDisplay( Size( 800, 600 ), V2( 810, 10 ) ) );
 }
 
 void Tester::Startup()

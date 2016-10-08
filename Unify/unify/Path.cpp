@@ -224,7 +224,7 @@ bool Path::IsExtension( const std::string & extension ) const
 	}
 }
 
-Path & Path::ChangeExtension( const std::string & extension )
+Path Path::ChangeExtension( std::string extension ) const
 {
 	std::string pathOut;
 	size_t i = m_path.find_last_of( "./\\" );
@@ -244,8 +244,7 @@ Path & Path::ChangeExtension( const std::string & extension )
 	{
 		pathOut += ( extension.at( 0 ) == '.' ? "" : "." ) + extension;
 	}
-	m_path = pathOut;
-	return *this;
+	return Path( pathOut );
 }
 
 Path & Path::ChangeFilename( const Path & newFilename )

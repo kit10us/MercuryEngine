@@ -6,6 +6,7 @@
 #include <dxi/core/IOS.h>
 #include <dxi/win/DirectX.h>
 #include <dxi/win/DXRenderer.h>
+#include <dxi/core/Display.h>
 #include <list>
 
 // Undefine Microsoft clashing defines.
@@ -26,7 +27,7 @@ namespace dxi
 			WindowsOS();
 		public:
 			WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow, WNDPROC wndProc );
-			WindowsOS( HWND hWnd );
+			WindowsOS( HWND handle );
 
 			virtual ~WindowsOS();
 
@@ -34,25 +35,17 @@ namespace dxi
 
 			const std::vector< std::string > & GetCommandLine() const override;
 
-			core::IRenderer * GetRenderer() const override;	   
+			void AddDisplay( core::Display display );
+			void CreatePendingDisplays();
+			void CreateDisplay( core::Display display );
+			int RendererCount() const override;
+			core::IRenderer * GetRenderer( int index ) const override;
 
-			void SetResolution( const unify::Size< unsigned int > & resolution ) override;
-
-			void SetFullscreen( bool fullscreen ) override;
-
-			unify::Size< unsigned int > GetResolution() const override;
+			void SetHasFocus( bool hasFocus ) override;			 
+			bool GetHasFocus() const override;					 
 			
-			const Viewport & GetDefaultViewport() const override;
-			
-			bool GetFullscreen() const override;
-
-			void SetHasFocus( bool hasFocus ) override;
-
-			bool GetHasFocus() const override;
-
-			HINSTANCE GetHInstance();
-
-			HWND GetHWnd();
+			HINSTANCE GetHInstance() const;
+			HWND GetHandle() const;
 
 			void Startup() override;
 			
@@ -62,24 +55,24 @@ namespace dxi
 
 			void DebugWriteLine( const std::string & line ) override;
 
-			void CreateWindow( HWND & hwnd, WNDPROC wndProc );
-			void CreateDirectX();
-			void DestroyDirectX();
+			IDirect3DDevice9 * GetDxDevice();
 
 		private:
 			std::string m_name;
 			
+			HWND m_handle;
 			HINSTANCE m_hInstance;
-			int m_nCmdShow;
+			int m_cmdShow;
 			std::vector< std::string > m_commandLine;
-			HWND m_hWnd;
+
 			WNDPROC m_wndProc;
 
-			Viewport m_defaultViewport;
-			bool m_fullscreen;
+			CComPtr< IDirect3DDevice9 > m_dxDevice;
+			
 			bool m_hasFocus;
-			std::list< HWND > m_additionalHandles; // Handles to be serviced.
-			std::shared_ptr< DXRenderer > m_renderer;
+			std::list< HWND > m_childHandles; // Handles to be serviced.
+			std::vector< core::Display > m_pendingDisplays;
+			std::vector< std::shared_ptr< DXRenderer > > m_renderers;
 		};
 	}
 }

@@ -18,7 +18,8 @@ Scene::Scene( dxi::core::IGame * game )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_viewport( Game()->GetOS().GetDefaultViewport() )
+// TODO:, m_viewport( Game()->GetOS().GetDefaultViewport() )
+, m_viewport( Viewport( 0, 0, 800, 600,  0, 1000 ) )
 , m_color( 0, 0, 180, 255 )
 , m_renderPhysics( false )
 , m_hasFocus( false )
@@ -36,12 +37,12 @@ Scene::~Scene()
 {
 }
 
-Object::shared_ptr Scene::GetRoot()
+Object::ptr Scene::GetRoot()
 {
 	return m_root;
 }
 
-const Object::shared_ptr Scene::GetRoot() const
+const Object::ptr Scene::GetRoot() const
 {
 	return m_root;
 }
@@ -61,12 +62,8 @@ const physics::IScene * Scene::GetPhysicsScene() const
 	return m_physicsScene.get();
 }
 
-Object::shared_ptr Scene::FindObject( const std::string & name )
+Object::ptr Scene::FindObject( const std::string & name )
 {
-	/*
-	ObjectMap::iterator itr = m_objectMap.find( name );
-	return itr->second;
-	*/
 	if ( m_root )
 	{
 		if ( unify::StringIs( m_root->GetName(), name ) )
@@ -80,19 +77,8 @@ Object::shared_ptr Scene::FindObject( const std::string & name )
 	}
 	else
 	{
-		return Object::shared_ptr();
+		return Object::ptr();
 	}
-}
-
-void Scene::SetCamera( const std::string & name )
-{
-	m_camera.SetObject( FindObject( name ) );
-    m_cameraName = name;
-}
-
-scene::Camera & Scene::GetCamera()
-{
-    return m_camera;
 }
 
 void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
@@ -159,7 +145,7 @@ void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
         else
         {
             // Create a list of objects that were hit...
-            Object::shared_ptr closestObject;
+            Object::ptr closestObject;
             float closestObjectDistance = 0.0f;
             for ( auto object : m_objectList )
             {
@@ -263,155 +249,97 @@ RenderInfo & Scene::GetRenderInfo()
 	return m_renderInfo;
 }
 
-void Scene::Render()
+struct FinalObject
 {
-	if( ! m_camera.HasObject() )
+	Object::ptr object;	 // Replace with geometry.
+	unify::Matrix transform;
+	unify::Matrix geometry;
+};
+
+struct FinalCamera
+{
+	Object::ptr object;
+	unify::Matrix transform;
+	Camera * camera;
+};							  
+
+void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, unify::Matrix parentTransform )
+{
+	assert( current );
+	assert( current->GetEnabled() );
+
+	// Solve our transform.
+	unify::Matrix transform = current->GetFrame().GetMatrix(); 
+	transform *= parentTransform;
+
+	// Check for a camera...
+	Camera * camera{};
+	for( int i = 0; i < current->ComponentCount(); ++i )
 	{
-		return;
+		IComponent::ptr component = current->GetComponent( i );
+		if( !component->GetEnabled() ) continue;
+
+		camera = unify::polymorphic_downcast< Camera * >( component.get() );
+		if( camera != nullptr )
+		{
+			cameraList.push_back( { current, transform, camera } );
+		}
 	}
 
-	Viewport viewportBackup;
-	Game()->GetOS().GetRenderer()->GetViewport( viewportBackup );
-
-	Viewport viewport;
-	Game()->GetOS().GetRenderer()->SetViewport( m_viewport );
-
-	// TODO: DX11 (this is moved to the begin scene, so we need to figure this out): win::DX::GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_color, 1.0f, 0 );
-	// TODO: DX11: win::DX::GetDxDevice()->SetRenderState( D3DRS_ALPHABLENDENABLE, false );
-
-	m_renderInfo.SetViewMatrix( m_camera.GetMatrix().Inverse() );
-	m_renderInfo.SetProjectionMatrix( m_camera.GetProjection() );
-
-	if ( GetRoot() )
+	if( current->GetGeometry() != nullptr )
 	{
-		GetRoot()->Render( m_renderInfo );
-	}	
-		
-#if 1 // Straight render (no culling or depth sorting for transparencies)...
-	/*
-	for( auto && object : m_objectList )
+		renderList.push_back(
+		{
+			current,
+			transform,
+			current->GetGeometryMatrix()
+		} );
+	}				
+						   
+	// Handle children
+	Object::ptr child = current->GetFirstChild();
+	while( child )
 	{
-		object->Render( m_renderInfo );
+		if( child->GetEnabled() ) 
+		{
+			Accumulate( renderList, cameraList, child, transform );
+		}
+
+		child = child->GetNext();
 	}
-	*/
+}
 
-#else // Standard rendering... 
-	std::map< Geometry::shared_ptr, std::vector< Object::shared_ptr > > listObjects; // Non-culled objects
-
-	// Build Render list...
-	float fDistance;
-
-	// Create the view frustum...
-	Frustum frustum;
-	unify::Matrix view, projection;
+void Scene::Render( size_t index, const Viewport & viewport )
+{	
+	std::list< FinalObject > renderList;
+	std::list< FinalCamera > cameraList;
 	
-	core::Game & game = *core::Game::GetInstance();
+	unify::Matrix transform = unify::Matrix::MatrixIdentity();
 
-	game.GetTransformManager()->CopyTransformFromTo( Transform::Index::View, view );
-	game.GetTransformManager()->CopyTransformFromTo( Transform::Index::Projection, projection );
-
-	win::DX::GetDxDevice()->SetVertexShaderConstantF( 4, (float*)&view, 4 );
-
-	frustum.Calculate( view, projection );
-
-	m_lastCullCount = 0;
-
-	// Cull against the frustum...
-	for( ObjectList::iterator itrObject = m_objectList.begin(); itrObject != m_objectList.end(); ++itrObject )
+	if( GetRoot() && GetRoot()->GetEnabled() )
 	{
-		Object::shared_ptr object = *itrObject;
-
-		// Check if object want's to be rendered...
-		if( ! object->GetGeometry() || ! object->GetRender() ) continue;
-
-		// Compute distance from object to camera
-		fDistance = object->GetFrame()->GetPosition()->DistanceTo( *m_currentCamera->GetFrame()->GetPosition() );
-
-		// Cull against frustum...
-		if( m_cullingEnabled )
-		{
-			// This should be stored else where... (probably keep the ID of the screen when computed in both geo and physics (and use physics).
-			unify::BBox< float > bboxTrans = object->GetGeometry()->GetBBox();
-			object->GetFrame()->GetFinalMatrix().TransformCoord( bboxTrans.inf );
-			object->GetFrame()->GetFinalMatrix().TransformCoord( bboxTrans.sup );
-
-			if( CS_OUTSIDE == frustum.CullBBox( &bboxTrans ) )
-			{
-				m_lastCullCount++;
-				continue;
-			}
-		}
-
-		listObjects[ object->GetGeometry() ].push_back( object );
+		Accumulate( renderList, cameraList, GetRoot(), transform );
 	}
 
-	// Backup current states...
-	unsigned int dwInitState[2];
-	dwInitState[0] = RenderState::Get( RenderState::Lighting );
-	dwInitState[1] = RenderState::Get( RenderState::CullMode );
+	for( auto camera : cameraList )
+	{	
+		if( camera.camera->GetRenderer() != index ) continue;
 
-	// Set initial states...
-	unsigned int stateCatchList[ STATE_COUNT ];
-	stateCatchList[ STATE_LIGHTING ] = m_defaultLighting;
-	stateCatchList[ STATE_ZWRITEENABLE ] = m_defaultZWriteEnable;
+		RenderInfo renderInfo( m_renderInfo );
+		renderInfo.SetViewMatrix( camera.transform.Inverse() );
+		renderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 
-	RenderState::Set( RenderState::Lighting, stateCatchList[STATE_LIGHTING] );
-	RenderState::Set( RenderState::CullMode, stateCatchList[STATE_CULLMODE] );
-	RenderState::Set( RenderState::ZWriteEnable, stateCatchList[STATE_ZWRITEENABLE] );
-
-	// SOLIDS...
-	RenderState::Set( RenderState::ZWriteEnable, true );
-	if( m_renderSolids )
-	{
-		for( std::map< Geometry::shared_ptr, std::vector< Object::shared_ptr > >::iterator itrList = listObjects.begin(); itrList != listObjects.end(); ++itrList )
+		for( auto object : renderList )
 		{
-			Geometry::shared_ptr geometry = itrList->first;
-
-			// Allow reduced effect setting...
-			renderInfo.SetOption( RenderOption::SolidOnly, true );
-			renderInfo.SetOption( RenderOption::FrameCheck, false ); // Since we are rendering twice (solids, and trans) ignore frame check.
-
-			// TODO: Should allow setting the geometry once here
-
-			for( std::vector< Object::shared_ptr >::iterator itrObject = itrList->second.begin(); itrObject < itrList->second.end(); ++itrObject )
-			{
-				(*itrObject)->Render( m_renderInfo );
-			}
+ 			renderInfo.SetWorldMatrix( object.geometry * object.transform );
+			object.object->RenderSimple( renderInfo );
 		}
 	}
 
-	// TRANS...
-	RenderState::Set( RenderState::ZWriteEnable, false );
-	if( m_renderTrans )
-	{
-		renderInfo.SetOption( RenderOption::TransOnly, true );
-		renderInfo.SetOption( RenderOption::FrameCheck, false ); // Because we are rendering twice (solid, trans).
-		for( std::map< Geometry::shared_ptr, std::vector< Object::shared_ptr > >::iterator itrList = listObjects.begin(); itrList != listObjects.end(); ++itrList )
-		{
-			for( unsigned int u = 0; u < itrList->second.size(); u++ )
-			{
-				itrList->second[ u ]->Render( m_renderInfo );
-			}
-		}
-	}
-
-	// TODO: Commented out for now as probablly unnecessary and more costly than not doing so.
-	// Clean the effects left by the RENDER_RETAINEFFECT flag...
-	//PixelShader::DisuseShader();
-	//VertexShader::DisuseShader();
-
-	// Restore states...
-	RenderState::Set( RenderState::Lighting, dwInitState[0] );
-	RenderState::Set( RenderState::CullMode, dwInitState[1] );
-	//RenderState::Set( RenderState::ZWriteEnable, dwInitState[2] );
-
-#endif
 	if( m_renderPhysics && m_physicsScene )
 	{
 		m_physicsScene->Render();
 	}
-
-	Game()->GetOS().GetRenderer()->SetViewport( viewportBackup );
 
 	m_renderInfo.IncrementFrameID();
 }
@@ -535,12 +463,12 @@ bool Scene::GetRenderPhysics() const
 	return m_renderPhysics;
 }
 
-Object::shared_ptr Scene::GetObjectOver() const
+Object::ptr Scene::GetObjectOver() const
 {
     return m_objectOver;
 }
 
-void Scene::SetObjectOver( Object::shared_ptr objectOver )
+void Scene::SetObjectOver( Object::ptr objectOver )
 {
     m_objectOver = objectOver;
 }

@@ -24,6 +24,8 @@ namespace qxml
 		virtual void Load( const unify::Path & filePath );
 		void Destroy();
 		Element * GetRoot();
+		const Element * GetRoot() const;
+
 		Element * GetElement( unsigned int element );
 		Element * FindElement( const std::string & element );
 		Element * FindElement( const std::string & element, const std::string & attribute, const std::string & value );

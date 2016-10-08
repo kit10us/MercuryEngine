@@ -141,7 +141,12 @@ scripting::ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 scripting::IModule::ptr ScriptEngine::LoadModule( unify::Path path )
 {
 	int result = luaL_loadfile( m_state, path.ToString().c_str() );
-	if( result != LUA_OK )
+	if ( result == LUA_ERRSYNTAX )
+	{
+		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
+		return scripting::IModule::ptr();
+	}
+	else if( result != LUA_OK )
 	{
 		return scripting::IModule::ptr();
 	}

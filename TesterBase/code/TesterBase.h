@@ -34,10 +34,7 @@ protected:
 	virtual void BeforeStartup( const std::string & commandLine ) = 0;
 
     // Called by BeforeStartup to inform the system how we want to be created.
-    void CreatePrimaryDisplay( const DisplayDetails & displayDetails );
-
-    // Can be called after CreatePrimaryDisplay to add displays.
-    void AddAdditionalDisplay( const DisplayDetails & displayDetails );
+    void AddDisplay( const DisplayDetails & displayDetails );
 
 private:
     // Called before Startup to create our initial set of pending displays, and perform basic initialization as directed by BeforeStartup(...).

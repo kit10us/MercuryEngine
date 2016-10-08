@@ -59,6 +59,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 	case WM_MOUSEMOVE:
 	{
+		/* 
+		// TODO:
 		// Enable tracking when the mouse leaves the client area...
 		if( !trackingMouse )
 		{
@@ -84,6 +86,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 		mousePosition.x *= static_cast< int >(width / clientWidth);
 		mousePosition.y *= static_cast< int >(height / clientHeight);
 		input.SetMousePosition( mousePosition );
+		*/
 	}
 	break;
 

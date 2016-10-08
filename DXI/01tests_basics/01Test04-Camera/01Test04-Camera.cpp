@@ -20,13 +20,12 @@ class MyGame : public Game
 	Effect::ptr effect;
 	VertexBuffer::ptr vertexBuffer;
 
-	scene::Object::shared_ptr m_cameraObject;
-	scene::Camera m_camera;
+	scene::Object::ptr m_camera;
 
 public:
 	void Startup() override;
 	bool Update( RenderInfo & renderInfo, IInput & input ) override;
-	void Render( const RenderInfo & renderInfo ) override;
+	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -101,18 +100,26 @@ void MyGame::Startup()
 
 	vertexBuffer.reset( new VertexBuffer( numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), vbRaw, BufferUsage::Default ) );
 
+	assert( 0 );
+	/*																	  
+	// TODO: Test is probably invalid - need better objet component tests.
 	m_cameraObject.reset( new scene::Object() );
 	m_cameraObject->GetFrame().SetPosition( unify::V3< float >( 0.0f, 1.0f, -50.0f ) );
+	m_camrea
 	m_camera.SetObject( m_cameraObject );
+	*/
 
 	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
 	unify::V3< float > up( 0.0f, 1.0f, 0.0f );
 
-	m_camera.GetObject()->GetFrame().LookAt( at, up );
+	//m_camera.GetObject()->GetFrame().LookAt( at, up );
 
-	const float width = (float)GetOS().GetResolution().width;
-	const float height = (float)GetOS().GetResolution().height;
-	m_camera.SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	// TODO:
+	//const float width = (float)GetOS().GetResolution().width;
+	//const float height = (float)GetOS().GetResolution().height;
+	const float width = 800;
+	const float height = 600;
+	//m_camera.SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
@@ -137,30 +144,26 @@ bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
 	unify::V3< float > up( 0.0f, 1.0f, 0.0f );
 
-	m_camera.GetObject()->GetFrame().LookAt( at, up );
+	m_camera->GetFrame().LookAt( at, up );
 
 	renderInfo.SetWorldMatrix( worldMatrix );
-	renderInfo.SetViewMatrix( m_camera.GetMatrix().Inverse() );
-	renderInfo.SetProjectionMatrix( m_camera.GetProjection() );
+	//renderInfo.SetViewMatrix( m_camera.GetMatrix().Inverse() );
+	//renderInfo.SetProjectionMatrix( m_camera.GetProjection() );
 	
 	return true;
 }
 
-void MyGame::Render( const RenderInfo & renderInfo )
+void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
 {
 	//vertexBuffer->Use();
 
 	//RenderMethod method( PrimitiveType::TriangleList, 0, vertexBuffer->GetLength(), 12, effect );
 	//method.Render( renderInfo );
-
-	Game::Render( renderInfo );
 }
 
 void MyGame::Shutdown()
 {
 	effect.reset();
 	vertexBuffer.reset();
-
-	Game::Shutdown();
 }
 

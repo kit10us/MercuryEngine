@@ -55,6 +55,64 @@ std::string Object::GetName() const
 	return m_name;
 }
 
+std::map< std::string, std::string > & Object::GetTags()
+{
+	return m_tags;
+}
+
+const std::map< std::string, std::string > & Object::GetTags() const
+{
+	return m_tags;
+}
+
+int Object::ComponentCount() const
+{
+	return (int)m_components.size();
+}
+
+void Object::AddComponent( IComponent::ptr component )
+{
+	m_components.push_back( component );
+}
+
+void Object::RemoveComponent( IComponent::ptr component )
+{
+	m_components.remove( component );
+}
+
+IComponent::ptr Object::GetComponent( int index )
+{
+	if( index > (int)m_components.size() ) return IComponent::ptr();
+
+	int i = 0;
+	for( auto component : m_components )
+	{
+		if( index == i ) return component;
+		++i;
+	}
+
+	assert( 0 );
+	return IComponent::ptr(); // Should never hit here.
+}
+
+IComponent::ptr Object::GetComponent( std::string name, int startIndex )
+{
+	int index = FindComponent( name, startIndex );
+	if( index == -1 ) return IComponent::ptr();
+	return GetComponent( index );
+}
+	  
+int Object::FindComponent( std::string name, int startIndex ) const
+{
+	int i = 0;
+	for( auto component : m_components )
+	{
+		if( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		++i;
+	}		
+	return -1;
+}				  
+
 void Object::SetEnabled( bool enabled )
 {
     m_enabled = enabled;
@@ -175,7 +233,15 @@ void Object::Update( const RenderInfo & renderInfo, core::IInput & input )
     int x(0);x;
 }
 
-void Object::Render( const RenderInfo & renderInfo )
+void Object::RenderSimple( const RenderInfo & renderInfo )
+{
+	if( m_geometry )
+	{
+		m_geometry->Render( renderInfo, m_geometryInstanceData.get() );
+	}
+}
+
+void Object::RenderHierarchical( const RenderInfo & renderInfo )
 {	
 	// Render self and children...
 	if ( m_visible )
@@ -184,20 +250,17 @@ void Object::Render( const RenderInfo & renderInfo )
 
 		myRenderInfo.SetWorldMatrix( m_geometryMatrix * m_frame.GetMatrix() * myRenderInfo.GetWorldMatrix() );
 
-		if ( m_geometry )
-		{
-			m_geometry->Render( myRenderInfo, m_geometryInstanceData.get() );
-		}	
+		RenderSimple( renderInfo );
 
 		if( GetFirstChild() )
 		{
-			GetFirstChild()->Render( myRenderInfo );
+			GetFirstChild()->RenderHierarchical( myRenderInfo );
 		}
 	}
 
 	if( GetNext() )
 	{
-		GetNext()->Render( renderInfo );
+		GetNext()->RenderHierarchical( renderInfo );
 	}
 								  
 	/*
@@ -299,59 +362,49 @@ GeometryInstanceData::shared_ptr Object::GetGeometryInstanceData()
 	return m_geometryInstanceData;
 }
 
-std::map< std::string, std::string > & Object::GetTags()
-{
-	return m_tags;
-}
-
-const std::map< std::string, std::string > & Object::GetTags() const
-{
-	return m_tags;
-}
-
-Object::shared_ptr Object::GetPrevious()
+Object::ptr Object::GetPrevious()
 {
 	return m_previous;
 }
 
-const Object::shared_ptr Object::GetPrevious() const
+const Object::ptr Object::GetPrevious() const
 {
 	return m_previous;
 }
 
-Object::shared_ptr Object::GetNext()
+Object::ptr Object::GetNext()
 {
 	return m_next;
 }
 
-const Object::shared_ptr Object::GetNext() const
+const Object::ptr Object::GetNext() const
 {
 	return m_next;
 }
 
-Object::shared_ptr Object::GetParent()
+Object::ptr Object::GetParent()
 {
 	return m_parent;
 }
 
-const Object::shared_ptr Object::GetParent() const
+const Object::ptr Object::GetParent() const
 {
 	return m_parent;
 }
 
-Object::shared_ptr Object::GetFirstChild()
+Object::ptr Object::GetFirstChild()
 {
 	return m_firstChild;
 }
 
-const Object::shared_ptr Object::GetFirstChild() const
+const Object::ptr Object::GetFirstChild() const
 {
 	return m_firstChild;
 }
 
-Object::shared_ptr Object::AddChild( std::string name )
+Object::ptr Object::AddChild( std::string name )
 {
-	Object::shared_ptr lastChild = GetFirstChild();
+	Object::ptr lastChild = GetFirstChild();
 	if ( ! lastChild )
 	{
 		// No children...
@@ -376,16 +429,16 @@ Object::shared_ptr Object::AddChild( std::string name )
 	return lastChild;
 }
 
-Object::shared_ptr Object::FindObject( std::string name )
+Object::ptr Object::FindObject( std::string name )
 {	
-	Object::shared_ptr child = GetFirstChild();
+	Object::ptr child = GetFirstChild();
 	while( child )
 	{
 		if ( unify::StringIs( child->GetName(), name ) )
 		{
 			return child;
 		}
-		Object::shared_ptr found = child->FindObject( name );
+		Object::ptr found = child->FindObject( name );
 		if ( found )
 		{
 			return found;
@@ -394,5 +447,5 @@ Object::shared_ptr Object::FindObject( std::string name )
 	}
 
 	// Not found...
-	return Object::shared_ptr();
+	return Object::ptr();
 }

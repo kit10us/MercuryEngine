@@ -19,7 +19,7 @@ namespace dxi
 			~PhysicsScene();
 
 			void Add( std::shared_ptr< physics::IInstance > object );
-            virtual void Add( scene::Object::shared_ptr, const std::string & shape ) {}
+            virtual void Add( scene::Object::ptr, const std::string & shape ) {}
 			virtual void AddShape( qxml::Element * element ) {}
 
 			void AddEnvironment( PhysicsEnvironment::shared_ptr environment );

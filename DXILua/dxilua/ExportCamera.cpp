@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/ExportCamera.h>
+#include <dxilua/ExportMatrix.h>
 #include <dxilua/DXILua.h>
 
 using namespace dxilua;
@@ -10,7 +11,6 @@ using namespace dxi;
 ///////////////////////
 // Camera...
 
-extern "C"
 int Camera_SetProjection( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -18,6 +18,7 @@ int Camera_SetProjection( lua_State * state )
 
 	std::string objectPathName = lua_tostring( state, 1 );
 
+	/*
 	luaL_checktype( state, 2, LUA_TTABLE );
 
 	unify::Matrix mat;
@@ -30,7 +31,8 @@ int Camera_SetProjection( lua_State * state )
 			float value = (float)lua_tonumber( state, -1 );
 			mat.Set( r, c, value );
 		}
-	}
+	} */
+	unify::Matrix mat = CheckMatrix( state, 2 );
 
 	auto game = ScriptEngine::GetGame();
 
@@ -48,11 +50,13 @@ int Camera_SetProjection( lua_State * state )
 		objectName = std::string( objectPathName.begin() + i + 1, objectPathName.end() );
 	}
 
+	/*
 	scene::Scene * scene = game->GetSceneManager()->Find( sceneName ).get();
 	assert( scene );
 
-	scene->GetCamera().SetProjection( mat );
-
+	assert( 0 );
+	// TODO: scene->GetCamera().SetProjection( mat );
+	  */
 	return 0;
 }
 

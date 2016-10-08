@@ -19,6 +19,7 @@
     <ClCompile Include="source\dxi\Blend.cpp" />
     <ClCompile Include="source\dxi\BufferSet.cpp" />
     <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp" />
+    <ClCompile Include="source\dxi\core\Display.cpp" />
     <ClCompile Include="source\dxi\core\Extension.cpp" />
     <ClCompile Include="source\dxi\core\Game.cpp" />
     <ClCompile Include="source\dxi\core\GameDependant.cpp" />
@@ -73,12 +74,14 @@
     <ClCompile Include="source\dxi\RenderMethodBuffer.cpp" />
     <ClCompile Include="source\dxi\RenderState.cpp" />
     <ClCompile Include="source\dxi\scene\Camera.cpp" />
+    <ClCompile Include="source\dxi\scene\Component.cpp" />
     <ClCompile Include="source\dxi\scene\DefaultLoaders.cpp" />
     <ClCompile Include="source\dxi\scene\Object.cpp" />
     <ClCompile Include="source\dxi\scene\Scene.cpp" />
     <ClCompile Include="source\dxi\scene\SceneLoader.cpp" />
     <ClCompile Include="source\dxi\scene\SceneManager.cpp" />
     <ClCompile Include="source\dxi\factory\ShapeFactory.cpp" />
+    <ClCompile Include="source\dxi\scene\Script.cpp" />
     <ClCompile Include="source\dxi\shapes\BeveledBoxParameters.cpp" />
     <ClCompile Include="source\dxi\shapes\CircleParameters.cpp" />
     <ClCompile Include="source\dxi\shapes\ConeParameters.cpp" />
@@ -122,6 +125,7 @@
     <ClInclude Include="source\dxi\controllers\ControllerFactory.h" />
     <ClInclude Include="source\dxi\controllers\IController.h" />
     <ClInclude Include="source\dxi\controllers\PathController.h" />
+    <ClInclude Include="source\dxi\core\Display.h" />
     <ClInclude Include="source\dxi\core\Extension.h" />
     <ClInclude Include="source\dxi\core\Game.h" />
     <ClInclude Include="source\dxi\core\GameDependant.h" />
@@ -209,11 +213,16 @@
     <ClInclude Include="source\dxi\RenderMethodBuffer.h" />
     <ClInclude Include="source\dxi\RenderState.h" />
     <ClInclude Include="source\dxi\scene\Camera.h" />
+    <ClInclude Include="source\dxi\scene\Component.h" />
     <ClInclude Include="source\dxi\scene\DefaultLoaders.h" />
+    <ClInclude Include="source\dxi\scene\IComponent.h" />
     <ClInclude Include="source\dxi\scene\Object.h" />
     <ClInclude Include="source\dxi\scene\Scene.h" />
     <ClInclude Include="source\dxi\scene\SceneLoader.h" />
     <ClInclude Include="source\dxi\scene\SceneManager.h" />
+    <ClInclude Include="source\dxi\scene\Script.h" />
+    <ClInclude Include="source\dxi\scripting\ExecuteResult.h" />
+    <ClInclude Include="source\dxi\scripting\IModule.h" />
     <ClInclude Include="source\dxi\scripting\IScriptEngine.h" />
     <ClInclude Include="source\dxi\factory\ShapeFactory.h" />
     <ClInclude Include="source\dxi\shapes\BeveledBoxParameters.h" />

@@ -556,6 +556,15 @@
     <ClCompile Include="source\dxi\core\Extension.cpp">
       <Filter>dxi\core</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\core\Display.cpp">
+      <Filter>dxi\core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\Component.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\Script.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -804,6 +813,24 @@
     </ClInclude>
     <ClInclude Include="source\dxi\win\DXILib.h">
       <Filter>dxi\win</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\Display.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\IComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\Component.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\Script.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scripting\IModule.h">
+      <Filter>dxi\scipting</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scripting\ExecuteResult.h">
+      <Filter>dxi\scipting</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

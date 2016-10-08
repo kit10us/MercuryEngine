@@ -30,8 +30,11 @@ protected:
 public:
 	bool Setup( core::IOS & os ) override
 	{
+		/*
+		// TODO:
 		os.SetResolution( unify::Size< unsigned int >( 800, 600 ) );
 		os.SetFullscreen( false );
+		*/
 		return true;
 	}
 
@@ -46,7 +49,7 @@ public:
 		m_view.Translate( unify::V3< float >( 0, 0, 10 ) );
 		m_view.LookAtLH( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-		GetOS().GetRenderer()->SetCullMode( CullMode::None );
+		GetOS().GetRenderer( 0 )->SetCullMode( CullMode::None );
 
 		VertexDeclaration::ptr vd( GetManager< VertexShader >()->Find( "color3d" )->GetVertexDeclaration() );
 
@@ -80,12 +83,15 @@ public:
 
 		renderInfo.SetWorldMatrix( unify::Matrix::MatrixIdentity() );
 		renderInfo.SetViewMatrix( m_view );
-		renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, GetOS().GetResolution().AspectRatioWH(), 1.0f, 1000.0f ) );
+		renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, 
+			// TODO: GetOS().GetResolution().AspectRatioWH()
+			800.0f/600.0f
+			, 1.0f, 1000.0f ) );
 
 		return Game::Update( renderInfo, input );
 	}
 
-	void Render( const RenderInfo & renderInfo ) override
+	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override
 	{
 		Effect::ptr effect = GetManager< Effect >()->Find( "color3d" );
 		m_triangleVB.Use();
@@ -96,7 +102,6 @@ public:
 
 	void Shutdown()	override
 	{
-		Game::Shutdown();
 	}
 } game;
 

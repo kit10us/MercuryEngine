@@ -32,8 +32,8 @@ namespace dxi
 	    public:
 		    typedef std::shared_ptr< Scene > shared_ptr;
 		    typedef std::weak_ptr< Scene > weak_ptr;
-		    typedef std::list< Object::shared_ptr > ObjectList;
-		    typedef std::map< std::string, Object::shared_ptr > ObjectMap;
+		    typedef std::list< Object::ptr > ObjectList;
+		    typedef std::map< std::string, Object::ptr > ObjectMap;
 
             struct EventData
             {
@@ -45,8 +45,8 @@ namespace dxi
 		    Scene( core::IGame * game );
 		    virtual ~Scene();
 
-			Object::shared_ptr GetRoot();
-			const Object::shared_ptr GetRoot() const;
+			Object::ptr GetRoot();
+			const Object::ptr GetRoot() const;
 
 		    void SetPhysicsScene( std::shared_ptr< physics::IScene > scene );
 		    physics::IScene * GetPhysicsScene();
@@ -55,11 +55,9 @@ namespace dxi
 			void Update( const RenderInfo & renderInfo, core::IInput & input );
 		    void UpdatePhysics();
 		    RenderInfo & GetRenderInfo();
-		    void Render();
-		    Object::shared_ptr FindObject( const std::string & name );
+		    void Render( size_t renderer, const Viewport & viewport );
+		    Object::ptr FindObject( const std::string & name );
     
-			void SetCamera( const std::string & name );
-            dxi::scene::Camera & GetCamera();
 		    unsigned int LastCullCount() const;
 		    void SetRenders( bool bSolids, bool bTrans );
 		    void SetCulling( bool bCulling );
@@ -97,14 +95,14 @@ namespace dxi
 		    void SetRenderPhysics( bool renderPhysics );
 		    bool GetRenderPhysics() const;
     		
-            Object::shared_ptr GetObjectOver() const;
-            void SetObjectOver( Object::shared_ptr objectOver );
+            Object::ptr GetObjectOver() const;
+            void SetObjectOver( Object::ptr objectOver );
 
 	    private:
-			Object::shared_ptr m_root;
+			Object::ptr m_root;
             std::string m_cameraName;
-		    Camera m_camera;
-		    std::shared_ptr< physics::IScene > m_physicsScene;
+
+			std::shared_ptr< physics::IScene > m_physicsScene;
 		    unsigned int m_lastCullCount;
 
 		    // Flags...
@@ -128,7 +126,7 @@ namespace dxi
             bool m_enabled; // Updates
             bool m_visible; // Renders
 
-            Object::shared_ptr m_objectOver;
+            Object::ptr m_objectOver;
             float m_mouseDownTimeLimit;
             float m_mouseDownTime;
             bool m_mouseDrag;

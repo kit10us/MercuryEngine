@@ -239,23 +239,8 @@ LRESULT TesterBase::HandleWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARA
 
 // Note: BeforeStartup( ... ) is pure virtual at this level of inheritance.
 
-void TesterBase::CreatePrimaryDisplay( const DisplayDetails & displayDetails )
+void TesterBase::AddDisplay( const DisplayDetails & displayDetails )
 {
-    if( ! m_actualDisplays.empty() || ! m_pendingDisplays.empty() )
-    {
-        throw std::exception( "CreatePrimaryDisplay has been called when we already have called CreatePrimaryDisplay!" );
-    }
-
-    m_pendingDisplays.push_back( displayDetails );
-}
-
-void TesterBase::AddAdditionalDisplay( const DisplayDetails & displayDetails )
-{
-    if( m_actualDisplays.empty() && m_pendingDisplays.empty() )
-    {
-        throw std::exception( "AddAdditionalDisplay has been called before CreatePrimaryDisplay!" );
-    }
-
     m_pendingDisplays.push_back( displayDetails );
 }
 
@@ -393,7 +378,6 @@ void TesterBase::CreateDisplay( const DisplayDetails & details )
 
 		if ( m_dxDevice == 0 )
 		{
-			IDirect3DDevice9 * dxDevice{};
 			hr = dx->CreateDevice( 0, deviceType, actual.GetHandle(), behaviorFlags, &pp, &m_dxDevice );
 			if ( FAILED( hr ) )
 			{

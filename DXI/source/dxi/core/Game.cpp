@@ -18,11 +18,9 @@
 using namespace dxi;
 using namespace core;
 
-//Game * Game::s_gameInstance = 0;
-
-
 bool Game::Setup( IOS & os )
 {
+	// STUBBED - optional for derived game class.
 	return true;
 }
 
@@ -33,30 +31,101 @@ void Game::Startup()
 
 bool Game::Update( RenderInfo & renderInfo, IInput & input )
 {
+	// STUBBED - optional for derived game class.
 	return true;
+}
+
+void Game::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
+{
+	// STUBBED - optional for derived game class.
+}
+
+void Game::Shutdown()
+{
+	// STUBBED - Provided by user.
 }
 
 Game::Game( unify::Path setup )
 : m_setup( setup )
 , m_isQuitting( false )
+, m_totalStartupTime{}
 {
 	//s_gameInstance = this;
 }
 
 Game::~Game()
 {
+	// Call user shutdown.
 	Shutdown();
+
+	// Release scripts.
+	m_gameModule.reset();
+	m_scriptEngines.clear();
+
+	// Release asset managers...
+	m_sceneManager.reset();
+
+	m_resourceHub.Clear();
+
+	// Remove extensions...
+	m_extensions.clear();
+
+	auto now = std::chrono::system_clock::now();
+	std::time_t t = std::chrono::system_clock::to_time_t( now );
+	Log( "Shutdown: " + std::string( std::ctime( &t ) ) );
+	const RenderInfo & renderInfo = GetRenderInfo();
+	LogLine( "  frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
+	LogLine( "" );
+
+	m_os->Shutdown();
 }
 
 bool Game::Initialize( std::shared_ptr< IOS > os )
 {
-	m_os = os;
+	using namespace std::chrono;
+	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 
+	m_totalStartupTime = {};
+
+	m_os = os;
+					  	
 	// User setup...
 	if ( ! Setup( GetOS() ) )
 	{
 		return false;
 	}
+
+	// Early setup...
+	if( m_setup.Exists() )
+	{
+		qxml::Document doc( m_setup );
+
+		qxml::Element * setup = doc.FindElement( "setup" );
+		if( setup )
+		{
+			for( auto && node : setup->Children() )
+			{
+				if( node.IsTagName( "logfile" ) )
+				{
+					m_logFile = node.GetText();
+				}
+				if( node.IsTagName( "fullscreen" ) )
+				{
+					//GetOS().SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
+				}
+				else if( node.IsTagName( "resolution" ) )
+				{
+					//GetOS().SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
+				}
+			}
+		}
+	}
+																												
+	GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 10, 20 ) ) );
+	//GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 820, 20 ) ) );
+
+	// Creates displays...
+	GetOS().Startup();
 
 	// Create asset managers...
 
@@ -80,34 +149,10 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 
 	m_sceneManager.reset( new scene::SceneManager( this ) );
 
-
-	// Early setup...
-	if( m_setup.Exists() )
-	{
-		qxml::Document doc( m_setup );
-
-		qxml::Element * setup = doc.FindElement( "setup" );
-		if( setup )
-		{
-			for( auto && node : setup->Children() )
-			{
-				if( node.IsTagName( "logfile" ) )
-				{
-					m_logFile = node.GetText();
-				}
-				if( node.IsTagName( "fullscreen" ) )
-				{
-					GetOS().SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
-				}
-				else if( node.IsTagName( "resolution" ) )
-				{
-					GetOS().SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
-				}
-			}
-		}
-	}
-
-	GetOS().Startup();
+	// Log start of program.
+	auto now = std::chrono::system_clock::now();
+	std::time_t t = std::chrono::system_clock::to_time_t( now );
+	Log( "Startup: " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
 
 	// Our setup...
 	if( m_setup.Exists() )
@@ -144,13 +189,15 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	// m_input.reset( new null::Input );
 	m_input.reset( new Input( GetOS() ) );
 
-	// Log start of program.
-	auto now = std::chrono::system_clock::now();
-	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	Log( "Startup: " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
-
 	// User startup...
 	Startup();
+
+	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
+	duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
+	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
+	m_totalStartupTime = micro * 0.000001f;
+
+	LogLine( "  total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s" );
 
 	return true;
 }
@@ -172,7 +219,7 @@ void Game::Tick()
 	lastTime = currentTime;
 
 	BeforeUpdate();
-	m_renderInfo.SetDelta( elapsed ); // TODO: Pull elapsed from Update, since it's now in RenderInfo.
+	m_renderInfo.SetDelta( elapsed );
 
 	if( m_gameModule )
 	{
@@ -192,69 +239,35 @@ void Game::Tick()
 
 void Game::BeforeUpdate()
 {
-	m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
+	//m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
 }
 
 void Game::AfterUpdate()
 {
-	m_input->CallAfterUpdate();
+	//m_input->CallAfterUpdate();
 }
 
 void Game::Draw()
 {
-	BeforeRender();
-	m_sceneManager->Render();
-	Render( m_renderInfo );
-	AfterRender();
-}
-
-void Game::BeforeRender()
-{
-	m_os->GetRenderer()->BeforeRender();
-}
-
-void Game::Render( const RenderInfo & renderInfo )
-{
-}
-
-void Game::AfterRender()
-{
+	for( int index = 0; index < GetOS().RendererCount(); ++index )
+	{
+		IRenderer & renderer = *m_os->GetRenderer( index );
+		renderer.BeforeRender();
+		m_sceneManager->Render( index, renderer.GetViewport() );
+		Render( index, m_renderInfo, renderer.GetViewport() );	
+		renderer.AfterRender();
+	}
 	m_renderInfo.IncrementFrameID();
-	m_os->GetRenderer()->AfterRender();
-}
-
-void Game::Shutdown()
-{
-	// Release scripts first...
-	m_gameModule.reset();
-
-	// Release asset managers...
-    m_sceneManager.reset();
-
-	m_resourceHub.Clear();
-
-	m_scriptEngines.clear();
-
-	// Remove extensions...
-	m_extensions.clear();
-
-	auto now = std::chrono::system_clock::now();
-	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	Log( "Shutdown: " + ( ( ! m_os->GetName().empty() ) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
-	LogLine( "  frames: " + unify::Cast< std::string >( m_renderInfo.FrameID() ) + ", average fps:" + unify::Cast< std::string >( 1.0f / m_renderInfo.GetAverageDelta() ) );
-	LogLine( "" );
-
-	m_os->Shutdown();
-}
-
-IOS & Game::GetOS()
-{
-	return *m_os.get();
 }
 
 const RenderInfo & Game::GetRenderInfo() const
 {
 	return m_renderInfo;
+}
+
+IOS & Game::GetOS()
+{
+	return *m_os.get();
 }
 
 void Game::AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se )
@@ -335,13 +348,6 @@ IInput & Game::GetInput()
 	return *m_input;
 }
 
-/*
-Game * Game::GetInstance()
-{
-	return s_gameInstance;
-}
-*/
-
 void Game::AddExtension( std::shared_ptr< Extension > extension )
 {
 	m_extensions.push_back( extension );
@@ -364,4 +370,27 @@ void Game::Log( std::string text )
 void Game::LogLine( std::string line )
 {
 	Log( line + "\n" );
+}
+
+void Game::ReportError( ErrorLevel level, std::string source, std::string error )
+{
+	switch( level )
+	{
+	case ErrorLevel::Critical:
+		m_criticalErrors.push_back( "Critical Failure (" + source + "): \"" + error + "\"." );
+		LogLine( "Critical Failure (" + source + "): \"" + error + "\"." );
+		return;
+	case ErrorLevel::Failure:
+		LogLine( "Failure (" + source + "): \"" + error + "\"." );
+		break;
+	case ErrorLevel::Warning:
+		LogLine( "Warning (" + source + "): \"" + error + "\"." );
+		break;
+	}
+	return;
+}
+						   
+bool Game::HadCriticalError() const
+{
+	return m_criticalErrors.size() != 0;
 }

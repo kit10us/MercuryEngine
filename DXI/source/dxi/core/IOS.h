@@ -4,6 +4,7 @@
 #pragma once
 
 #include <dxi/core/IRenderer.h>
+#include <dxi/core/Display.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
 #include <vector>
@@ -38,34 +39,16 @@ namespace dxi
 			virtual const std::vector< std::string > & GetCommandLine() const = 0;
 
 			/// <summary>
+			/// Add a display.
+			/// </summary>	  
+			virtual void AddDisplay( core::Display display ) = 0;	
+
+			virtual int RendererCount() const = 0;
+
+			/// <summary>
 			/// Get the system Renderer interface.
 			/// </summary>
-			virtual IRenderer * GetRenderer() const = 0;
-
-			/// <summary>
-			// Set the resolution.
-			/// </summary>
-			virtual void SetResolution( const unify::Size< unsigned int > & resolution ) = 0;
-
-			/// <summary>
-			/// Set fullscreen mode enabled or disabled.
-			/// </summary>
-			virtual void SetFullscreen( bool fullscreen ) = 0;
-
-			/// <summary>
-			/// Get the resolution.
-			/// </summary>
-			virtual unify::Size< unsigned int > GetResolution() const = 0;
-
-			/// <summary>
-			/// Get the default viewport.
-			/// </summary>
-			virtual const Viewport & GetDefaultViewport() const = 0;
-
-			/// <summary>
-			/// Get fullscreen mode.
-			/// </summary>
-			virtual bool GetFullscreen() const = 0;
+			virtual IRenderer * GetRenderer( int index ) const = 0;
 
 			/// <summary>
 			/// Set if we have focus. This is dependant on the OS, focus means the user's input

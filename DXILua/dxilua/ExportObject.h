@@ -9,7 +9,7 @@ void RegisterObject( lua_State * state );
 
 struct ObjectProxy
 {
-	dxi::scene::Object::shared_ptr object;
+	dxi::scene::Object::ptr object;
 };
 
 ObjectProxy* CheckObject( lua_State* state, int index );

@@ -1,42 +1,23 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-///<summary>
-/// A camera object to give a view reference into the 3D space.
-///	Camera--->Object
-///</summary>
-
 #pragma once
 
-#include <dxi/scene/Object.h>
-
-#ifdef GetObject
-#undef GetObject
-#endif  
+#include <dxi/scene/Component.h>
+#include <unify/Matrix.h>
 
 namespace dxi
 {
     namespace scene
     {
-	    class Camera
+	    class Camera : public Component
 	    {
 	    public:
-		    typedef std::shared_ptr< Camera > shared_ptr;
-
 		    Camera();
-		    Camera( Object::shared_ptr object );
 		    virtual ~Camera();
 
-		    bool HasObject() const;
-		    
-			void SetObject( Object::shared_ptr object );
-            
-			Object::shared_ptr GetObject();
-
-			/// <summary>
-			/// Returns a matrix which accumulates the entire camera view (including an optional projection).
-			/// </summary>
-			unify::Matrix GetMatrix() const;
+			int GetRenderer() const;
+			void SetRenderer( int index );
 
 			/// <summary>
 			/// Set a projection matrix to use with this camera.
@@ -44,13 +25,10 @@ namespace dxi
 			void SetProjection( const unify::Matrix & projection );
 			
 			unify::Matrix GetProjection() const;
-				
-			void LookAt( const unify::V3< float > & at );
 
 	    protected:
-		    Object::weak_ptr m_object; // As a weak pointer, the object the camera is pointing to's lifetime is outside the camera's control.
-			
 			unify::Matrix m_projection;
+			int m_renderer;
 	    };
     }
 }

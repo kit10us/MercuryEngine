@@ -39,7 +39,7 @@ namespace dxi
             const std::map< std::string, Scene::shared_ptr > & GetScenes() const;
 
 			void Update( const RenderInfo & renderInfo, core::IInput & input );
-		    void Render();
+		    void Render( size_t renderer, const Viewport & viewport );
 
 	    private:
 			SceneLoader m_sceneLoader;

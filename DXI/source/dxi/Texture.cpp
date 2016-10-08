@@ -401,8 +401,7 @@ public:
 
 	void Texture::LoadHeader()
 	{
-		unify::Path imageHeaderFilepath( m_filePath );
-		imageHeaderFilepath.ChangeExtension( ".xml" );
+		unify::Path imageHeaderFilepath( m_filePath.ChangeExtension( ".xml" ) );
 
 		// Check if the file exists...
 		if( !imageHeaderFilepath.Exists() )

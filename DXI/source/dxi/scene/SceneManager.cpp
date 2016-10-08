@@ -145,7 +145,7 @@ void SceneManager::Update( const RenderInfo & renderInfo, core::IInput & input )
     }
 }
 
-void SceneManager::Render()
+void SceneManager::Render( size_t renderer, const Viewport & viewport )
 {
 	if ( m_enabled == false )
 	{
@@ -179,7 +179,7 @@ void SceneManager::Render()
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Render();
+        scene->Render( renderer, viewport );
     }
 }
 

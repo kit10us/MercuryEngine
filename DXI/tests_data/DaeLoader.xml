@@ -1,6 +1,4 @@
 <xml>
-<effect>
 <color name="color" source="media/EffectColor.effect"/>
 <texture name="texture" source="media/EffectTextured.effect"/>
-</effect>
 </xml>

@@ -5,6 +5,7 @@
 
 #include <unify/Unify.h>
 #include <unify/String.h>
+#include <algorithm>
 #include <cassert>
 
 namespace unify

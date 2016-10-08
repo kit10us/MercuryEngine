@@ -15,12 +15,12 @@ void Deleter( GeometryFactory * factory )
 	delete factory;
 }
 
-__declspec(dllexport) bool DXILoader( dxi::core::Game * game )
+__declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Document * doc )
 {
 	using namespace dxi;
 	using namespace core;
 
-	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS().GetRenderer();
+	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS().GetRenderer( 0 );
 	dxi::win::DX::SetDxDevice( dxRenderer->GetDxDevice() );
 
 	PixelShader::ptr ps = game->GetManager< PixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );

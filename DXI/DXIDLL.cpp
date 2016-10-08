@@ -55,9 +55,6 @@ bool __cdecl Tick( HWND hwnd )
 
 void __cdecl Shutdown( HWND hWnd )
 {
-	if( !g_game ) return;
-
-	g_game->Shutdown();
 	delete g_game;
 	g_game = nullptr;
 }

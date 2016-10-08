@@ -22,7 +22,7 @@ void Tester::BeforeStartup( const std::string & commandLine )
 {
 	commandLine; // Not used
 
-    CreatePrimaryDisplay( DisplayDetails::CreateFullscreenDirectXDisplay( Size( 1280, 800 ) ) );
+    AddDisplay( DisplayDetails::CreateFullscreenDirectXDisplay( Size( 1280, 800 ) ) );
 }
 
 void Tester::Startup()

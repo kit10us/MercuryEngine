@@ -17,19 +17,15 @@ function OnStart()
 	scene1 = Scene( "scene1" )
 	root = scene1:FindObject( "root" )
 	
+	proj = matrix.makeperspectivefovlh( math.pi / 4.0, game.getwidth()/ game.getheight(), 1, 1000 )
+	Camera.SetProjection( "x", proj )
+	
 	-- Add camera...
-	camera = root:AddChild( "camera" )
-	scene1:SetCamera( camera )
-
+	camera = root:AddCamera( "camera", proj )	
 	camera:SetPosition( V3.New( 0, 5, -17 ) )
 	camera:LookAt( V3.Zero() ) 
 
 	scene1:SetSize( game.getwidth(), game.getheight() )
-
-	proj = matrix.makeperspectivefovlh( math.pi / 4.0, game.getwidth()/ game.getheight(), 1, 1000 )
-
-	--camera:SetProjection( proj ) 
-	Camera.SetProjection( "scene1", proj ) 
 
 	group = root:AddChild( "group" )
 	

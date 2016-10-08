@@ -59,7 +59,13 @@ namespace dxi
 		float GetDelta() const;
 		void SetDelta( float delta );
 
+		float GetTotalDelta() const;
+
+		float GetDeltaCount() const;
+
 		float GetAverageDelta() const;
+
+		float GetFPS() const;
 
 		void SetWorldMatrix( const unify::Matrix & matrix );
 		const unify::Matrix & GetWorldMatrix() const;
@@ -79,7 +85,8 @@ namespace dxi
 		float m_distanceFromCamera;		// Distance from camera
 		unsigned int m_frameID;
 		float m_delta;
-		float m_averageDelta;
+		float m_totalDelta;
+		unsigned int m_deltaCount;
 		unify::Matrix m_world;
 		unify::Matrix m_view;
 		unify::Matrix m_projection;

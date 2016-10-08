@@ -12,122 +12,135 @@
 using namespace dxi;
 using namespace win;
 
-DXRenderer::DXRenderer( WindowsOS * os )
+DXRenderer::DXRenderer( WindowsOS * os, core::Display display )
 	: m_OS( os )
+	, m_display( display )
 #if defined( DIRECTX9 )
 #elif defined( DIRECTX11 )
 	, m_swapChainDesc {}
 #endif
 {
-	CreateDirectX();
+	m_dxDevice = os->GetDxDevice();
+
+	m_pp = {};
+	m_pp.BackBufferWidth = (UINT)display.GetSize().width;
+	m_pp.BackBufferHeight = (UINT)display.GetSize().height;
+	m_pp.BackBufferFormat = D3DFMT_X8R8G8B8;
+	m_pp.BackBufferCount = 1;
+	m_pp.MultiSampleType = D3DMULTISAMPLE_NONE;
+	m_pp.MultiSampleQuality = 0;
+	m_pp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	m_pp.hDeviceWindow = display.GetHandle();
+	m_pp.Windowed = display.IsFullscreen() ? 0 : 1;
+	m_pp.EnableAutoDepthStencil = true;
+	m_pp.AutoDepthStencilFormat = D3DFMT_D16; // D3DFMT_D24S8
+	m_pp.Flags = 0;
+
+	if( display.IsFullscreen() )
+	{
+		m_pp.FullScreen_RefreshRateInHz = 60;
+		m_pp.PresentationInterval = D3DPRESENT_INTERVAL_ONE;
+	}
+
+	IDirect3D9 * dx = Direct3DCreate9( D3D_SDK_VERSION );
+	if( !dx )
+	{
+		throw std::exception( "Failed to create DX!" );
+	}
+
+	bool hardwareAcceleration = true; // TODO: This should be configured elsewhere.
+	D3DDEVTYPE deviceType = hardwareAcceleration ? D3DDEVTYPE_HAL : D3DDEVTYPE_REF;
+	unsigned int behaviorFlags = 0;
+	behaviorFlags |= hardwareAcceleration ? D3DCREATE_HARDWARE_VERTEXPROCESSING : D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+
+	HRESULT hr = S_OK;
+
+	if( m_dxDevice == 0 )
+	{
+		hr = dx->CreateDevice( 0, deviceType, display.GetHandle(), behaviorFlags, &m_pp, &m_dxDevice );
+		if( FAILED( hr ) )
+		{
+			// Direct-X attempts to fix the presentation parameters, so a second attempt might resolve.
+			hr = dx->CreateDevice( 0, deviceType, display.GetHandle(), behaviorFlags, &m_pp, &m_dxDevice );
+			if( FAILED( hr ) )
+			{
+				throw std::exception( "Failed to create Direct-X device!" );
+			}
+		}
+
+		IDirect3DSwapChain9 * swapChain{};
+		m_dxDevice->GetSwapChain( 0, &swapChain );
+		SetSwapChain( swapChain );
+		DX::SetDxDevice( m_dxDevice );
+	}
+	else
+	{
+		IDirect3DSwapChain9 * swapChain{};
+		hr = m_dxDevice->CreateAdditionalSwapChain( &m_pp, &swapChain );
+		if( FAILED( hr ) )
+		{
+			throw std::exception( "Failed to create Direct-X swap chain!" );
+		}
+		SetSwapChain( swapChain );
+	}
+	SetDxDevice( m_dxDevice );
+
+	dx->Release();
+	dx = 0;
+
+	// Set our view matrix...
+	D3DXMATRIX finalMatrix;
+
+	D3DXMatrixOrthoOffCenterLH( &finalMatrix, 0, display.GetSize().width, display.GetSize().height, 0, display.GetDepth().Min(), display.GetDepth().Max() );
+	m_dxDevice->SetTransform( D3DTS_PROJECTION, &finalMatrix );
+
+	GetDxDevice()->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
+	GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	GetDxDevice()->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+	GetDxDevice()->SetRenderState( D3DRS_COLORVERTEX, 1 );
+	GetDxDevice()->SetRenderState( D3DRS_LIGHTING, 0 );
 }
 
 DXRenderer::~DXRenderer()
 {
-	DestroyDirectX();
-	m_OS = 0;
 }
 
-size_t DXRenderer::GetNumberOfViewports() const
+const core::Display & DXRenderer::GetDisplay() const
 {
-#if defined( DIRECTX9 )
-	return 1;
-#elif defined( DIRECTX11 )
-	unsigned int numberOfViewports = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE; // Can crash if this is above this value.
-	D3D11_VIEWPORT * viewports = 0;
-	win::DX::GetDxContext()->RSGetViewports( &numberOfViewports, viewports );
-	return numberOfViewports;
-#endif
+	return m_display;
 }
 
-void DXRenderer::GetViewport( Viewport & viewport )
+void DXRenderer::SetPP( D3DPRESENT_PARAMETERS pp )
 {
-#if defined( DIRECTX9 )
-	D3DVIEWPORT9 dxViewport = {};
-	win::DX::GetDxDevice()->GetViewport( &dxViewport );
-	viewport.SetTopLeftX( (float)dxViewport.X );
-	viewport.SetTopLeftY( (float)dxViewport.Y );
-	viewport.SetWidth( (float)dxViewport.Width );
-	viewport.SetHeight( (float)dxViewport.Height );
-	viewport.SetMinDepth( dxViewport.MinZ );
-	viewport.SetMaxDepth( dxViewport.MaxZ );
-#elif defined( DIRECTX11 )
-	unsigned int numberOfViewports = 1;
-	D3D11_VIEWPORT dxViewport[1];
-	win::DX::GetDxContext()->RSGetViewports( &numberOfViewports, dxViewport );
-	viewport.SetTopLeftX( dxViewport[0].TopLeftX );
-	viewport.SetTopLeftY( dxViewport[0].TopLeftY );
-	viewport.SetWidth( dxViewport[0].Width );
-	viewport.SetHeight( dxViewport[0].Height );
-	viewport.SetMinDepth( dxViewport[0].MinDepth );
-	viewport.SetMaxDepth( dxViewport[0].MaxDepth );
-#endif
+	m_pp = pp;
 }
 
-void DXRenderer::SetViewport( const Viewport & viewport )
+const D3DPRESENT_PARAMETERS & DXRenderer::GetPP() const
 {
-#if defined( DIRECTX9 )
-	D3DVIEWPORT9 dxViewport;
-	dxViewport.X = (DWORD)viewport.GetTopLeftX();
-	dxViewport.Y = (DWORD)viewport.GetTopLeftY();
-	dxViewport.Width = (DWORD)viewport.GetWidth();
-	dxViewport.Height = (DWORD)viewport.GetHeight();
-	dxViewport.MinZ = viewport.GetMinDepth();
-	dxViewport.MaxZ = viewport.GetMaxDepth();
-	win::DX::GetDxDevice()->SetViewport( &dxViewport );
-#elif defined( DIRECTX11 )
-	unsigned int numberOfViewports = 1;
-	D3D11_VIEWPORT dxViewport;
-	dxViewport.TopLeftX = viewport.GetTopLeftX();
-	dxViewport.TopLeftY = viewport.GetTopLeftY();
-	dxViewport.Width = viewport.GetWidth();
-	dxViewport.Height = viewport.GetHeight();
-	dxViewport.MinDepth = viewport.GetMinDepth();
-	dxViewport.MaxDepth = viewport.GetMaxDepth();
-	win::DX::GetDxContext()->RSSetViewports( numberOfViewports, &dxViewport );
-#endif
+	return m_pp;
 }
 
-void DXRenderer::GetViewports( size_t & numberOfViewports, Viewport * viewports )
+void DXRenderer::SetDxDevice( IDirect3DDevice9 * dxDevice )
 {
-#if defined( DIRECTX9 )
-	throw new exception::NotImplemented( "DXRenderer::GetViewport" );
-#elif defined( DIRECTX11 )
-	unsigned int realNumberOfViewports = GetNumberOfViewports();
-	D3D11_VIEWPORT dxViewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
-	win::DX::GetDxContext()->RSGetViewports( &realNumberOfViewports, dxViewports );
-	for( size_t v = 0; v < numberOfViewports && v < realNumberOfViewports; ++v )
-	{
-		viewports[v].SetTopLeftX( dxViewports[v].TopLeftX );
-		viewports[v].SetTopLeftY( dxViewports[v].TopLeftY );
-		viewports[v].SetWidth( dxViewports[v].Width );
-		viewports[v].SetHeight( dxViewports[v].Height );
-		viewports[v].SetMinDepth( dxViewports[v].MinDepth );
-		viewports[v].SetMaxDepth( dxViewports[v].MaxDepth );
-	}
-	numberOfViewports = realNumberOfViewports;
-#endif
+	m_dxDevice = dxDevice;
 }
 
-void DXRenderer::SetViewports( size_t & numberOfViewports, const Viewport * viewports )
+IDirect3DDevice9 * DXRenderer::GetDxDevice()
 {
-#if defined( DIRECTX9 )
-	throw new exception::NotImplemented( "DXRenderer::SetViewport" );
-#elif defined( DIRECTX11 )
-	D3D11_VIEWPORT dxViewports[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE];
-	for( size_t v = 0; v < numberOfViewports && v < numberOfViewports; ++v )
-	{
-		dxViewports[v].TopLeftX = viewports[0].GetTopLeftX();
-		dxViewports[v].TopLeftY = viewports[0].GetTopLeftY();
-		dxViewports[v].Width = viewports[0].GetWidth();
-		dxViewports[v].Height = viewports[0].GetHeight();
-		dxViewports[v].MinDepth = viewports[0].GetMinDepth();
-		dxViewports[v].MaxDepth = viewports[0].GetMaxDepth();
-	}
-	win::DX::GetDxContext()->RSSetViewports( numberOfViewports, dxViewports );
-#endif
+	return m_dxDevice;
 }
 
+void DXRenderer::SetSwapChain( IDirect3DSwapChain9 * swapChain )
+{
+	m_swapChain = swapChain;
+}
+
+IDirect3DSwapChain9 * DXRenderer::GetSwapChain()
+{
+	return m_swapChain;
+}
+	   
+/*
 void DXRenderer::CreateDirectX()
 {
 	bool debug =
@@ -138,7 +151,6 @@ void DXRenderer::CreateDirectX()
 #endif
 
 	auto && os = *m_OS;
-	HWND hWnd = os.GetHWnd();  // TODO: Will this support dual output?
 
 #if defined( DIRECTX9 )
 	IDirect3D9 * dx = Direct3DCreate9( D3D_SDK_VERSION );
@@ -146,6 +158,9 @@ void DXRenderer::CreateDirectX()
 	{
 		throw unify::Exception( "Failed to create DX!" );
 	}
+#endif 
+
+#if defined( DIRECTX9 )
 
 	memset( &m_pp, 0, sizeof( m_pp ) );
 	m_pp.Windowed = os.GetFullscreen() ? 0 : 1;
@@ -315,6 +330,7 @@ void DXRenderer::DestroyDirectX()
 	m_dxDevice = nullptr;
 #endif
 }
+*/
 
 void DXRenderer::BeforeRender()
 {
@@ -326,15 +342,20 @@ void DXRenderer::BeforeRender()
 		throw unify::Exception( "Failed to clear in BeforeRender!" );
 	}
 
+	IDirect3DSurface9 * backBuffer;
+	result = m_swapChain->GetBackBuffer( 0, D3DBACKBUFFER_TYPE_MONO, &backBuffer );
+	result = m_dxDevice->SetRenderTarget( 0, backBuffer );
+
 	result = GetDxDevice()->BeginScene();
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to BeginScene in BeforeRender!" );
 	}
+
 #elif defined( DIRECTX11 )	
 	float clearColor[] = { 0.1f, 0.0f, 0.2f, 1.0f };
 	m_dxContext->ClearRenderTargetView( m_renderTargetView, clearColor );
-	m_dxContext->ClearDepthStencilView( m_depthStencilView, D3D11_CLEAR_DEPTH /*| D3D11_CLEAR_STENCIL*/, 1.0f, 0 );
+	m_dxContext->ClearDepthStencilView( m_depthStencilView, D3D11_CLEAR_DEPTH , 1.0f, 0 );
 
 	m_dxContext->OMSetDepthStencilState( 0, 0 );
 	float blendFactors[] = { 0, 0, 0, 0 };
@@ -352,7 +373,8 @@ void DXRenderer::AfterRender()
 		throw unify::Exception( "Failed to EndScene in AfterRender!" );
 	}
 
-	result = GetDxDevice()->Present( 0, 0, 0, 0 );
+	result = m_swapChain->Present( 0, 0, 0, 0, 0 );
+
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to Present in AfterRender!" );
@@ -377,24 +399,10 @@ void DXRenderer::SetCullMode( CullMode::TYPE mode )
 #elif defined( DIRECTX11 )
 	// TODO: throw exception::NotImplemented( "DX11" );
 #endif
-
 }
 
-#if defined( DIRECTX9 )
-IDirect3DDevice9 * DXRenderer::GetDxDevice()
+Viewport DXRenderer::GetViewport() const
 {
-	return m_dxDevice;
+	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetDepth().Min(), GetDisplay().GetDepth().Max() );
 }
-#elif defined( DIRECTX11 )
-// TODO:
-#endif
 
-
-#if defined( DIRECTX9 )
-#elif defined( DIRECTX11 )
-IDXGISwapChain * DXRenderer::GetSwapChain()
-{
-	//m_swapChain
-	return m_swapChain;
-}
-#endif

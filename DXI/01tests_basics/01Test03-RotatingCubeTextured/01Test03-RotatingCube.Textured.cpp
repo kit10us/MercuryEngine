@@ -23,7 +23,7 @@ class MyGame : public Game
 public:
 	void Startup() override;
 	bool Update( RenderInfo & renderInfo, IInput & input ) override;
-	void Render( const RenderInfo & renderInfo ) override;
+	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -107,8 +107,13 @@ bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 
 	HRESULT result = S_OK;
 
+	/*
+	// TODO:
 	const float width = (float)GetOS().GetResolution().width;
 	const float height = (float)GetOS().GetResolution().height;
+	*/
+	const float width = 800;
+	const float height = 600;
 
 	rotation += changeOverTime;
 	if( rotation.Fix360() != 0 )
@@ -133,21 +138,17 @@ bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 	return true;
 }
 
-void MyGame::Render( const RenderInfo & renderInfo )
+void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
 {
 	vertexBuffer->Use();
 
 	RenderMethod method( PrimitiveType::TriangleList, 0, vertexBuffer->GetLength(), 12, effect );
 	method.Render( renderInfo );
-
-	Game::Render( renderInfo );
 }
 
 void MyGame::Shutdown()
 {
 	effect.reset();
 	vertexBuffer.reset();
-
-	Game::Shutdown();
 }
 

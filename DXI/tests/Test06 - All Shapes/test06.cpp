@@ -28,16 +28,17 @@ public:
 
 		scene::Scene::shared_ptr mainScene = GetSceneManager()->Add( "main" );
 
-		scene::Object::shared_ptr cameraObject = mainScene->GetRoot()->AddChild( "camera" );
+		scene::Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
+		camera->AddComponent( scene::IComponent::ptr( new scene::Camera ) );
+		scene::Camera * cameraComponent = unify::polymorphic_downcast< scene::Camera * >( camera->GetComponent( "Camera" ).get() );
+																			 
+		cameraComponent->SetProjection(
+			unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f,
+				800 / 600
+				, 1, 1000 ) );
 
-		scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
-		mainScene->SetCamera( "camera" );
-
-		mainScene->GetCamera().SetProjection(
-			unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, GetOS().GetResolution().AspectRatioWH(), 1, 1000 )
-		);
-		camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, -10 ) );
-		camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+		camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
+		camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 		VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 
@@ -69,8 +70,8 @@ public:
 		cubeParameters.SetEffect( effect );
 		cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-		cubeParameters.SetCenter( positions[shape++] );
 		cube.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( cubeParameters ) ) );
+		cube.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pointField = *group->AddChild( "pointField" );
 		shapes::PointFieldParameters pointFieldParameters;
@@ -78,9 +79,9 @@ public:
 		pointFieldParameters.SetMinorRadius( 0.5f );
 		pointFieldParameters.SetMajorRadius( 1.0f );
 		pointFieldParameters.SetCount( 1000 );
-		pointFieldParameters.SetCenter( positions[shape++] );
 		pointFieldParameters.SetDiffuse( unify::Color::ColorWhite() );
 		pointField.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( pointFieldParameters ) ) );
+		pointField.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pointRing = *group->AddChild( "pointRing" );
 		shapes::PointRingParameters pointRingParameters;
@@ -88,9 +89,9 @@ public:
 		pointRingParameters.SetMinorRadius( 0.25f );
 		pointRingParameters.SetMajorRadius( 0.75f );
 		pointRingParameters.SetCount( 1000 );
-		pointRingParameters.SetCenter( positions[shape++] );
 		pointRingParameters.SetDiffuse( unify::Color::ColorRed() );
 		pointRing.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( pointRingParameters ) ) );
+		pointRing.GetFrame().SetPosition( positions[shape++] );
 
 		auto & dashRing = *group->AddChild( "dashRing" );
 		shapes::DashRingParameters dashRingParameters;
@@ -100,16 +101,16 @@ public:
 		dashRingParameters.SetSize( 0.5f );
 		dashRingParameters.SetCount( 5 );
 		dashRingParameters.SetDiffuse( unify::Color::ColorGreen() );
-		dashRingParameters.SetCenter( positions[shape++] );
 		dashRing.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( dashRingParameters ) ) );
+		dashRing.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pyramid = *group->AddChild( "pyramid" );
 		shapes::PyramidParameters pyramidParameters;
 		pyramidParameters.SetEffect( effect );
 		pyramidParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		pyramidParameters.SetDiffuse( unify::Color::ColorYellow() );
-		pyramidParameters.SetCenter( positions[shape++] );
 		pyramid.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( pyramidParameters ) ) );
+		pyramid.GetFrame().SetPosition( positions[shape++] );
 
 		auto & circle = *group->AddChild( "circle" );
 		shapes::CircleParameters circleParameters;
@@ -117,8 +118,8 @@ public:
 		circleParameters.SetSegments( 24 );
 		circleParameters.SetRadius( 1.0f );
 		circleParameters.SetDiffuse( unify::Color::ColorBlue() );
-		circleParameters.SetCenter( positions[shape++] );
 		circle.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( circleParameters ) ) );
+		circle.GetFrame().SetPosition( positions[shape++] );
 
 		auto & sphere = *group->AddChild( "sphere" );
 		shapes::SphereParameters sphereParameters;
@@ -126,8 +127,8 @@ public:
 		sphereParameters.SetSegments( 24 );
 		sphereParameters.SetRadius( 1.0f );
 		sphereParameters.SetDiffuse( unify::Color::ColorCyan() );
-		sphereParameters.SetCenter( positions[shape++] );
 		sphere.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( sphereParameters ) ) );
+		sphere.GetFrame().SetPosition( positions[shape++] );
 
 		auto & cylinder = *group->AddChild( "cylinder" );
 		shapes::CylinderParameters cylinderParameters;
@@ -136,9 +137,9 @@ public:
 		cylinderParameters.SetRadius( 1.0f );
 		cylinderParameters.SetHeight( 2.0f );
 		cylinderParameters.SetDiffuse( unify::Color::ColorMagenta() );
-		cylinderParameters.SetCenter( positions[shape++] );
 		cylinderParameters.SetCaps( true );
 		cylinder.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( cylinderParameters ) ) );
+		cylinder.GetFrame().SetPosition( positions[shape++] );
 
 		auto & tube = *group->AddChild( "tube" );
 		shapes::TubeParameters tubeParameters;
@@ -148,8 +149,8 @@ public:
 		tubeParameters.SetMinorRadius( 0.5f );
 		tubeParameters.SetHeight( 2.0f );
 		tubeParameters.SetDiffuse( unify::Color::ColorRed() );
-		tubeParameters.SetCenter( positions[shape++] );
 		tube.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( tubeParameters ) ) );
+		tube.GetFrame().SetPosition( positions[shape++] );
 
 		auto & plane = *group->AddChild( "plane" );
 		shapes::PlaneParameters planeParameters;
@@ -157,8 +158,8 @@ public:
 		planeParameters.SetSegments( 2 );
 		planeParameters.SetSize( unify::Size< float >( 2.0f, 2.0f ) );
 		planeParameters.SetDiffuse( unify::Color::ColorCyan() );
-		planeParameters.SetCenter( positions[shape++] );
 		plane.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( planeParameters ) ) );
+		plane.GetFrame().SetPosition( positions[shape++] );
 
 		auto & cone = *group->AddChild( "cone" );
 		shapes::ConeParameters coneParameters;
@@ -167,9 +168,9 @@ public:
 		coneParameters.SetRadius( 1.0f );
 		coneParameters.SetHeight( 2.0f );
 		coneParameters.SetDiffuse( unify::Color::ColorGreen() );
-		coneParameters.SetCenter( positions[shape++] );
 		coneParameters.SetCaps( true );
 		cone.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( coneParameters ) ) );
+		cone.GetFrame().SetPosition( positions[shape++] );
 
 		//mainScene->GetRenderInfo().SetOption( RenderOption::NoFrame, true );
 	}
@@ -192,20 +193,10 @@ public:
 
 		unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 
-		auto group = GetSceneManager()->Find( "main" )->FindObject( "camera" );
+		auto group = GetSceneManager()->Find( "main" )->FindObject( "group" );
 		group->GetFrame().RotateAbout( axis, rotation );
 
 		return Game::Update( renderInfo, input );
-	}
-
-	void Render( const RenderInfo & renderInfo )
-	{
-		Game::Render( renderInfo );
-	}
-
-	void Shutdown()
-	{
-		Game::Shutdown();
 	}
 } game;
 

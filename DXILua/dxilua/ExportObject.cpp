@@ -6,6 +6,7 @@
 #include <dxilua/ExportScene.h>
 #include <dxilua/ExportV2.h>
 #include <dxilua/ExportV3.h>
+#include <dxilua/ExportMatrix.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -24,7 +25,32 @@ int Object_AddChild( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	dxi::scene::Object::shared_ptr child = objectProxy->object->AddChild( name );
+	dxi::scene::Object::ptr child = objectProxy->object->AddChild( name );
+
+	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
+	*childProxy = new ObjectProxy;
+	luaL_setmetatable( state, "Object" );
+	(*childProxy)->object = child;
+
+	return 1;
+}
+
+int Object_AddCamera( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 3 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	std::string name = lua_tostring( state, 2 );
+
+	int t = lua_type( state, 3 );
+	unify::Matrix mat = CheckMatrix( state, 3 );
+
+	dxi::scene::Object::ptr child = objectProxy->object->AddChild( name );
+	dxi::scene::Camera * cameraComponent = new scene::Camera;
+	child->AddComponent( scene::IComponent::ptr( cameraComponent ) );
+
+	cameraComponent->SetProjection( mat );
 
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -202,9 +228,34 @@ int Object_RotateAbout( lua_State * state )
 	return 0;
 }
 
+int Object_GetSize( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+
+	lua_pushnumber( state, objectProxy->object->GetBBox().Size().Length() );
+
+	return 1;
+}
+
+int Object_Scale( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	float scale = (float)lua_tonumber( state, 2 );
+
+	objectProxy->object->GetGeometryMatrix().Scale( scale );
+	return 0;
+}
+
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "AddChild", Object_AddChild },
+	{ "AddCamera", Object_AddCamera },
 	{ "Name", Object_Name },
 	{ "SetEnabled", Object_SetEnabled },
 	{ "GetEnabled", Object_GetEnabled },
@@ -217,6 +268,8 @@ static const luaL_Reg ObjectFunctions[] =
 	{ "LookAt", Object_LookAt },
 	{ "Orbit", Object_Orbit },
 	{ "RotateAbout", Object_RotateAbout },
+	{ "GetSize", Object_GetSize },
+	{ "Scale", Object_Scale },
 	{ nullptr, nullptr }
 };
 

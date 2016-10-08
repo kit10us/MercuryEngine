@@ -202,6 +202,11 @@ Element * Document::GetRoot()
 	return m_root;
 }
 
+const Element * Document::GetRoot() const
+{
+	return m_root;
+}
+
 Element * Document::GetElement( unsigned int uElement )
 {
 	return m_elementList.Item( uElement );

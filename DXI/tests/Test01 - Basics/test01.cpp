@@ -26,7 +26,7 @@ class MyGame : public Game
 public:
 	void Startup() override;
 	bool Update( RenderInfo & renderInfo, IInput & input ) override;
-	void Render( const RenderInfo & renderInfo ) override;
+	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -110,15 +110,19 @@ bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 	// -- Update code goes here. --
 
 	// Return this.
-	return Game::Update( renderInfo, input );
+	return true;
 }
 
-void MyGame::Render( const RenderInfo & renderInfo )
+void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
 {
 	// -- Render code goes here. --
 	RenderInfo renderInfo2D( renderInfo );
 
-	unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >(GetOS().GetResolution().width), static_cast< float >(GetOS().GetResolution().height), 0, 1, 1000 );
+	unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, 
+		// TODO: static_cast< float >(GetOS().GetResolution().width), static_cast< float >(GetOS().GetResolution().height)
+		800,
+		600
+		, 0, 1, 1000 );
 	renderInfo2D.SetProjectionMatrix( projectionMatrix );
 
 	m_VB.Use();
@@ -131,8 +135,6 @@ void MyGame::Render( const RenderInfo & renderInfo )
 	RenderMethod methodWithIB = RenderMethod::CreateTriangleListIndexed( numberOfVertices, 6, 0, 0, m_effect );
 	m_IB.Use();
 	methodWithIB.Render( renderInfo2D );
-
-	Game::Render( renderInfo );
 }
 
 void MyGame::Shutdown()
@@ -140,8 +142,5 @@ void MyGame::Shutdown()
 	// -- Shutdown code goes here. --
 
 	m_VB.Destroy();
-
-	// Do this last.
-	Game::Shutdown();
 }
 

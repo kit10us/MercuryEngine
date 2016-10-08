@@ -22,7 +22,7 @@ int Scene_FindObject( lua_State * state )
 
 	std::string name = lua_tostring( state, 2 );
 
-	scene::Object::shared_ptr object = sceneProxy->scene->FindObject( name );
+	scene::Object::ptr object = sceneProxy->scene->FindObject( name );
 
 	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*objectProxy = new ObjectProxy;
@@ -30,22 +30,6 @@ int Scene_FindObject( lua_State * state )
 	(*objectProxy)->object = object;
 
 	return 1;
-}
-
-					   
-extern "C"
-int Scene_SetCamera( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	SceneProxy * sceneProxy = CheckScene( state, 1 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 2 );
-
-	sceneProxy->scene->SetCamera( objectProxy->object->GetName() );
-
-	return 0;
 }
 
 extern "C"
@@ -69,7 +53,6 @@ int Scene_SetSize( lua_State * state )
 static const luaL_Reg SceneFunctions[] =
 {
 	{ "FindObject", Scene_FindObject },
-	{ "SetCamera", Scene_SetCamera },
 	{ "SetSize", Scene_SetSize },
 	{ nullptr, nullptr }
 };

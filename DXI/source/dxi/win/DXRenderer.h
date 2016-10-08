@@ -5,6 +5,7 @@
 
 #include <dxi/core/IRenderer.h>
 #include <dxi/RenderInfo.h>
+#include <dxi/core/Display.h>
 #include <atlbase.h>
 
 namespace dxi
@@ -16,41 +17,35 @@ namespace dxi
 		class DXRenderer : public core::IRenderer
 		{
 		public:
-			DXRenderer( WindowsOS * os );
+			DXRenderer( WindowsOS * os, core::Display display );
 			virtual ~DXRenderer();
 
-			virtual size_t GetNumberOfViewports() const;
-			virtual void GetViewport( Viewport & viewport );
-			virtual void SetViewport( const Viewport & viewport );
-			virtual void GetViewports( size_t & numberOfViewports, Viewport * viewports );
-			virtual void SetViewports( size_t & numberOfViewports, const Viewport * viewports );
+			const core::Display & GetDisplay() const;
 
-			void CreateDirectX();
-			void DestroyDirectX();
+			void SetPP( D3DPRESENT_PARAMETERS pp );
+			const D3DPRESENT_PARAMETERS & GetPP() const;
+
+			void SetDxDevice( IDirect3DDevice9 * dxDevice );
+			IDirect3DDevice9 * GetDxDevice();
+
+			void SetSwapChain( IDirect3DSwapChain9 * swapChain );
+			IDirect3DSwapChain9 * GetSwapChain();
+
+			void SetCullMode( CullMode::TYPE mode ) override;
 
 			void BeforeRender() override;
 			void AfterRender() override;
 
-			void SetCullMode( CullMode::TYPE mode ) override;
-
-#if defined( DIRECTX9 )
-			IDirect3DDevice9 * GetDxDevice();
-#elif defined( DIRECTX11)
-#endif
-
-#if defined( DIRECTX9 )
-#elif defined( DIRECTX11)
-			IDXGISwapChain * GetSwapChain();
-#endif				
+			Viewport GetViewport() const override;
 
 		private:
 			win::WindowsOS * m_OS;
-			RenderInfo m_renderInfo2D;
-			RenderInfo m_renderInfo3D;
+			core::Display m_display;
 
 #if defined( DIRECTX9 )
-			CComPtr< IDirect3DDevice9 > m_dxDevice;
 			D3DPRESENT_PARAMETERS m_pp;
+			CComPtr< IDirect3DDevice9 > m_dxDevice;
+			CComPtr< IDirect3DSwapChain9 > m_swapChain;
 #elif defined( DIRECTX11 )
 			CComPtr< ID3D11DeviceContext > m_dxContext;
 			CComPtr< ID3D11Device > m_dxDevice;

@@ -11,12 +11,8 @@
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
 
-#include <chrono>
-
 using namespace dxi;
 using namespace core;
-
-//#define DAELIBVERSION
 
 class MyGame : public Game
 {
@@ -25,9 +21,6 @@ public:
 	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup();
 	bool Update( RenderInfo & renderInfo, IInput & input );
-	void Render( const RenderInfo & renderInfo );
-	void Shutdown();
-
 } game;
 
 RegisterGame( game );
@@ -55,12 +48,14 @@ void MyGame::Startup()
 	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
 
 	// Add a camera...
-	scene::Object::shared_ptr cameraObject = scene->GetRoot()->AddChild( "camera" );
-	scene::Camera::shared_ptr camera( new scene::Camera( cameraObject ) );
-	scene->SetCamera( "camera" );
-	scene->GetCamera().SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, GetOS().GetResolution().AspectRatioHW(), 1, 1000 ) );
-	camera->GetObject()->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
-	camera->GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+	scene::Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
+	camera->AddComponent( scene::IComponent::ptr( new scene::Camera() ) );
+
+	scene::Camera * cameraComponent = unify::polymorphic_downcast< scene::Camera * >( camera->GetComponent( "camera" ).get() );
+
+	cameraComponent->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, 800/600, 1, 1000 ) );
+	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
+	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 	// From dynamically generated geometry (shape creator)...
 	shapes::CubeParameters cubeParameters;
@@ -91,24 +86,15 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 
-	std::chrono::time_point< std::chrono::system_clock > start, end;
-	start = std::chrono::system_clock::now();
-	
 	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
 	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
-	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/UssEnterprise/models/model.dae" ) );
-	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
-
-	PrimitiveList & plDAE = ((Mesh*)meshDAE.get())->GetPrimitiveList();
-
-	end = std::chrono::system_clock::now();
-	std::chrono::duration< double > elapsed = end - start;
-	double elapsed_count = elapsed.count();
-			
-	auto cubeDAE = scene->GetRoot()->AddChild( "cubeDAE" );
-	cubeDAE->SetGeometry( meshDAE );
-	cubeDAE->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	auto daeObject = scene->FindObject( "cubeDAE" );
+	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
+	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
+	
+	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
+	daeModel->SetGeometry( meshDAE );
+	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
+	auto daeObject = scene->FindObject( "daeModel" );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 
 	float size = meshDAE->GetBBox().Size().Length();
@@ -120,19 +106,9 @@ void MyGame::Startup()
 bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
 {
 	// Use of camera controls to simplify camera movement...
-	scene::Object::shared_ptr cameraObject = GetSceneManager()->Find( "scene" )->GetCamera().GetObject();
-	cameraObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
-	cameraObject->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+	scene::Object::ptr camera = GetSceneManager()->Find( "scene" )->GetRoot()->FindObject( "camera" );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
+	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
 	return Game::Update( renderInfo, input );
-}
-
-void MyGame::Render( const RenderInfo & renderInfo )
-{
-	Game::Render( renderInfo );
-}
-
-void MyGame::Shutdown()
-{
-	Game::Shutdown();
 }

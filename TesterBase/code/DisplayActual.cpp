@@ -162,7 +162,6 @@ void DisplayActual::AfterRender()
 		throw std::exception( "Failed to EndScene in AfterRender!" );
 	}
 
-	//hr = m_dxDevice->Present( 0, 0, 0, 0 );
 	hr = m_swapChain->Present( 0, 0, 0, 0, 0 );
 	if( FAILED( hr ) )
 	{

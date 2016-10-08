@@ -7,12 +7,9 @@ using namespace dxi;
 using namespace scene;
 
 Camera::Camera()
-{
-}
-
-Camera::Camera( Object::shared_ptr object )
-: m_object( object )
+: Component( "Camera" )
 , m_projection( unify::Matrix::MatrixIdentity() )
+, m_renderer( 0 )
 {
 }
 
@@ -20,19 +17,14 @@ Camera::~Camera()
 {
 }
 
-void Camera::SetObject( Object::shared_ptr object )
+int Camera::GetRenderer() const
 {
-	m_object = object;
+	return m_renderer;
 }
 
-bool Camera::HasObject() const
+void Camera::SetRenderer( int index )
 {
-	return ! m_object.expired();
-}
-
-Object::shared_ptr Camera::GetObject()
-{
-    return m_object.lock();
+	m_renderer = index;
 }
 
 void Camera::SetProjection( const unify::Matrix & projection )
@@ -44,20 +36,3 @@ unify::Matrix Camera::GetProjection() const
 {
 	return m_projection;
 }
-
-unify::Matrix Camera::GetMatrix() const
-{
-	if( ! m_object.expired() )
-	{
-		return m_object.lock().get()->GetFrame().GetMatrix();
-	}
-
-    return unify::Matrix::MatrixIdentity();
-}
-
-void Camera::LookAt( const unify::V3< float > & at )
-{
-	GetObject()->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
-}
-
-

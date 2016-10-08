@@ -59,6 +59,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 	case WM_MOUSEMOVE:
 	{
+		/*
+		// TODO:
 		// Enable tracking when the mouse leaves the client area...
 		if( !trackingMouse )
 		{
@@ -84,6 +86,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 		mousePosition.x *= static_cast< int >(width / clientWidth);
 		mousePosition.y *= static_cast< int >(height / clientHeight);
 		input.SetMousePosition( mousePosition );
+		*/
 	}
 	break;
 
@@ -139,11 +142,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
 {
 	MSG msg;
-#define NO_TRY
-
-#ifndef NO_TRY
 	try
-#endif
 	{
 		// Windows OS specific...
 		std::shared_ptr< dxi::win::WindowsOS > windowsOS { new dxi::win::WindowsOS( hInstance, hPrevInstance, lpszCmdLine, nCmdShow, WndProc ) };
@@ -161,7 +160,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		{ 
 			while( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
 			{
-				if ( ! IsDialogMessage( windowsOS->GetHWnd(), &msg ) )
+				if ( ! IsDialogMessage( windowsOS->GetHandle(), &msg ) )
 				{
 					if( msg.message == WM_QUIT )
 					{
@@ -180,12 +179,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			
 			game.Draw();
 		} 
-
-		game.Shutdown();
 	}
-#ifndef NO_TRY
 	catch( std::exception & exception )
 	{
+		// NOTE: Our goal is to never hit hear in release.
         OutputDebugStringA( "[" );
         OutputDebugStringA( "exception: " );
         OutputDebugStringA( exception.what() );
@@ -193,7 +190,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		MessageBoxA( 0, exception.what(), "Exception caught", MB_ICONEXCLAMATION );
 		return -1;
 	}
-#endif
  
     return msg.wParam; 
 } 

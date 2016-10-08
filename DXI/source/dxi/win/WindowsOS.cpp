@@ -6,6 +6,7 @@
 #include <dxi/win/WindowsOS.h>
 #include <dxi/win/DxDevice.h>
 #include <unify/Exception.h>
+#include <dxi/exception/FailedToCreate.h>
 #include <shellapi.h>
 
 using namespace dxi;
@@ -18,18 +19,21 @@ using namespace win;
 //extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
 WindowsOS::WindowsOS()
-: m_defaultViewport( 0, 0, 800.0f, 600.0f, 0, 1 )
-, m_fullscreen{}
+: m_handle{}
 , m_hasFocus{}
-, m_renderer{}
 , m_hInstance{}
-, m_nCmdShow{}
-, m_hWnd{}
+, m_cmdShow{}
 , m_wndProc{}
 {
 }
 
-WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow, WNDPROC wndProc )
+WindowsOS::WindowsOS( HWND handle )
+{
+	m_handle = handle;
+	m_hInstance = (HINSTANCE)GetWindowLong( handle, GWL_HINSTANCE );
+}
+
+WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int cmdShow, WNDPROC wndProc )
 : WindowsOS()
 {
 	{
@@ -44,7 +48,7 @@ WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCm
 	}
 		
 	m_hInstance = hInstance;
-	m_nCmdShow = nCmdShow;
+	m_cmdShow = cmdShow;
 	hPrevInstance; // NOT USED
 	m_wndProc = wndProc;
 
@@ -80,16 +84,9 @@ WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCm
 	}
 }
 
-WindowsOS::WindowsOS( HWND hWnd )
-: WindowsOS()
-{
-	m_hWnd = hWnd;
-	m_hInstance = (HINSTANCE)GetWindowLong( m_hWnd, GWL_HINSTANCE );
-}
-
 WindowsOS::~WindowsOS()
 {
-	m_renderer.reset();
+	m_renderers.clear();
 }
 
 std::string WindowsOS::GetName() const
@@ -102,37 +99,130 @@ const std::vector< std::string > & WindowsOS::GetCommandLine() const
 	return m_commandLine;
 }
 
-core::IRenderer * WindowsOS::GetRenderer() const
+void WindowsOS::AddDisplay( core::Display display )
 {
-	return m_renderer.get();
+	m_pendingDisplays.push_back( display );
 }
 
-void WindowsOS::SetResolution( const unify::Size< unsigned int > & resolution )
+void WindowsOS::CreatePendingDisplays()
 {
-	m_defaultViewport.SetWidth( static_cast< float >( resolution.width ) );
-	m_defaultViewport.SetHeight( static_cast< float >( resolution.height ) );
+	if( m_pendingDisplays.empty() )
+	{
+		return;
+	}
+
+	for( auto && display : m_pendingDisplays )
+	{
+		CreateDisplay( display );
+	}
+
+	m_pendingDisplays.clear();
 }
 
-void WindowsOS::SetFullscreen( bool fullscreen )
+void WindowsOS::CreateDisplay( core::Display display )
 {
-	m_fullscreen = fullscreen;
+	bool isPrimary = m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
+
+	std::shared_ptr< DXRenderer > renderer;
+
+	if( display.IsDialog() )
+	{
+		// Note: If we are a dialog, we do NOT have a Direct-X Display Device.
+		HINSTANCE hInstance = GetHInstance(); // [optional] A handle to the module whose executable file contains the dialog box template. 
+		LPCSTR lpName = display.GetDialogTemplateName();
+
+		//MAKEINTRESOURCEA( IDD_ENUM ); // The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of the dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter specifies a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can use the MAKEINTRESOURCE macro to create this value. 
+		HWND hWndParent = display.GetParentHandle(); // [optional] A handle to the window that owns the dialog box. 
+		DLGPROC lpDialogFunc = display.GetDialogProc() ? display.GetDialogProc() : (DLGPROC)m_wndProc; // [optional] A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.
+		HWND hwnd = CreateDialogA( hInstance, lpName, hWndParent, lpDialogFunc );
+		assert( hwnd );
+		if( hWndParent )
+		{
+			m_childHandles.push_back( hwnd );
+		}
+		ShowWindow( hwnd, SW_SHOW );
+	}
+	else
+	{
+		// If we have no handle, create a window...
+		if ( display.GetHandle() == 0 )
+		{
+			// Regardless of windowed or not, we need a window...
+			WNDCLASS wc;
+			memset( &wc, 0, sizeof( wc ) );
+			wc.style = 0;
+			wc.lpfnWndProc = (WNDPROC)m_wndProc;
+			wc.cbClsExtra = 0;
+			wc.cbWndExtra = 0;
+			wc.hInstance = GetHInstance();
+			wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
+			wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
+
+			if( isPrimary )
+			{
+				wc.lpszMenuName = L"MainMenu";
+				wc.lpszClassName = L"MainWndClass";
+			}
+			else		    // TODO: This worked, yet is dodgy...
+			{
+				wc.lpszMenuName = 0;
+				wc.lpszClassName = L"SecondWndClass";
+			}
+
+			if( !RegisterClass( &wc ) )
+			{
+				throw std::exception( "Failed to register window class!" );
+			}
+
+			int x = static_cast< int >(display.GetPosition().x);
+			int y = static_cast< int >(display.GetPosition().y);
+			int width = static_cast< int >(display.GetSize().width);
+			int height = static_cast< int >(display.GetSize().height);
+			HWND parentHandle = display.GetParentHandle();
+			HWND handle = CreateWindowA( "MainWndClass", "An Empty DirectX Project", WS_OVERLAPPEDWINDOW, x, y, width, height,
+				parentHandle, (HMENU)NULL, GetHInstance(), (LPVOID)NULL );
+
+			if( !handle )
+			{
+				throw exception::FailedToCreate( "Failed to create window!" );
+			}
+
+			{ // Resize window to ensure exact pixel match...
+				RECT windowRect;
+				GetWindowRect( handle, &windowRect );
+
+				RECT clientRect;
+				GetClientRect( handle, &clientRect );
+
+				long newWindowWidth = (windowRect.right - windowRect.left) + width - clientRect.right;
+				long newWindowHeight = (windowRect.bottom - windowRect.top) + height - clientRect.bottom;
+				MoveWindow( handle, windowRect.left, windowRect.top, newWindowWidth, newWindowHeight, false );
+			}
+
+			ShowWindow( handle, m_cmdShow );
+			UpdateWindow( handle );
+			display.SetHandle( handle );
+		}
+	}
+
+	renderer.reset( new DXRenderer( this, display ) );
+	m_renderers.push_back( renderer );
+	if ( renderer->GetDxDevice() )
+	{
+		m_dxDevice = renderer->GetDxDevice();
+	}
 }
 
-unify::Size< unsigned int > WindowsOS::GetResolution() const
+int WindowsOS::RendererCount() const
 {
-	return unify::Size< unsigned int >( static_cast< unsigned int >( m_defaultViewport.GetWidth() ), static_cast< unsigned int >( m_defaultViewport.GetHeight() ) );
+	return m_renderers.size();
 }
 
-const Viewport & WindowsOS::GetDefaultViewport() const
+core::IRenderer * WindowsOS::GetRenderer( int index) const
 {
-	return m_defaultViewport;
+	return m_renderers[ index ].get();
 }
 
-bool WindowsOS::GetFullscreen() const
-{
-	return m_fullscreen;
-}
-			
 void WindowsOS::SetHasFocus( bool hasFocus )
 {
 	m_hasFocus = hasFocus;
@@ -143,32 +233,29 @@ bool WindowsOS::GetHasFocus() const
 	return m_hasFocus;
 }
 
-HINSTANCE WindowsOS::GetHInstance()
+HINSTANCE WindowsOS::GetHInstance() const
 {
 	return m_hInstance;
 }
 
-HWND WindowsOS::GetHWnd()
+HWND WindowsOS::GetHandle() const
 {
-	return m_hWnd;
+	return m_renderers[0]->GetDisplay().GetHandle();
 }
 
 void WindowsOS::Startup()
-{
-	if ( ! m_hWnd )
-	{
-		CreateWindow( m_hWnd, m_wndProc );
-	}
-
-	DragAcceptFiles( this->GetHWnd(), true );
-	CreateDirectX();
+{		 
+	CreatePendingDisplays();
+	// TODO: DragAcceptFiles( this->GetHWnd(), true );
 }
 
 void WindowsOS::Shutdown()
 {
-	DragAcceptFiles( this->GetHWnd(), false );
 	DX::SetDxDevice( 0 );
+	/*
+	DragAcceptFiles( this->GetHWnd(), false );
 	DestroyDirectX();
+	*/
 }
 
 void WindowsOS::DebugWrite( const std::string & text )
@@ -181,45 +268,7 @@ void WindowsOS::DebugWriteLine( const std::string & line )
 	DebugWrite( line + "\n" );
 }
 
-
-void WindowsOS::CreateWindow( HWND & hwnd, WNDPROC wndProc )
+IDirect3DDevice9 * WindowsOS::GetDxDevice()
 {
-	WNDCLASS wc;
-	memset( &wc, 0, sizeof( wc ) );
-	wc.style = 0;
-    wc.lpfnWndProc = wndProc;
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    wc.hInstance = m_hInstance;
-    wc.hIcon = LoadIcon( (HINSTANCE) NULL,IDI_APPLICATION );
-    wc.hCursor = LoadCursor( (HINSTANCE) NULL, IDC_ARROW );
-    //wc.hbrBackground = GetStockObject(WHITE_BRUSH); 
-    wc.lpszMenuName =  L"MainMenu"; 
-    wc.lpszClassName = L"MainWndClass"; 
- 
-    if ( !RegisterClass( &wc ) )
-	{
-		throw unify::Exception( "Failed to register window class!" );
-    } 
-
-    hwnd = CreateWindowW( L"MainWndClass", L"Sample", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-		GetResolution().width, GetResolution().height, (HWND) 0, (HMENU) 0, m_hInstance, (LPVOID) 0); 
- 
-    if ( !hwnd )
-	{
-		throw unify::Exception( "Failed to create window!" );
-	}
-
-    ShowWindow( hwnd, m_nCmdShow ); 
-    UpdateWindow( hwnd ); 
-}
-
-void WindowsOS::CreateDirectX()
-{
-	m_renderer.reset( new DXRenderer( this ) );
-}
-
-void WindowsOS::DestroyDirectX()
-{
-	m_renderer.reset();
+	return m_dxDevice;
 }

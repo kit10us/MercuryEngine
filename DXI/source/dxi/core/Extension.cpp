@@ -2,12 +2,12 @@
 // All Rights Reserved
 
 #include <dxi/core/Extension.h>
-#include <cassert>
+#include <qxml/Document.h>
 
 using namespace dxi;
 using namespace core;
 
-typedef bool ( __cdecl *LoaderFunction )(dxi::core::IGame *);
+typedef bool ( __cdecl *LoaderFunction )(dxi::core::IGame *, const qxml::Document * doc );
 
 Extension::Extension( unify::Path source )
 	: m_source( source )
@@ -35,7 +35,15 @@ bool Extension::Load( IGame * game )
 		return false;
 	}
 
-	loader( game );
+	unify::Path config( m_source.ChangeExtension( ".xml" ) );
+	std::shared_ptr< qxml::Document > doc;
+	if ( config.Exists() )
+	{
+		doc.reset( new qxml::Document( config ) );
+	}
+
+	loader( game, doc.get() );
+
 	return true;
 }
 

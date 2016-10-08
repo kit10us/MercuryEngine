@@ -45,6 +45,7 @@ void Input::Acquire()
 {
 	win::WindowsOS & windowsOS = dynamic_cast< win::WindowsOS & >( m_os );
 
+	/* // TODO:
 	// Create the Direct Input device...
 	if( ! m_pdi )
 	{
@@ -57,7 +58,7 @@ void Input::Acquire()
 	// Create the Direct Input Keyboard device...
 	try
 	{
-		CreateKeyboardDevice( windowsOS.GetHInstance(), windowsOS.GetHWnd(), windowsOS.GetFullscreen() );
+		CreateKeyboardDevice( windowsOS.GetHInstance(), windowsOS.GetHandle(), windowsOS.GetFullscreen() );
 	}
 	catch( ... )
 	{
@@ -71,6 +72,7 @@ void Input::Acquire()
 	catch( ... )
 	{
 	}
+	*/
 }
 
 void Input::CreateKeyboardDevice( HINSTANCE hInstance, HWND hWnd, bool fullScreen )

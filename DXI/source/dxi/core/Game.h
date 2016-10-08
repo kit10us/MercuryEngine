@@ -8,6 +8,7 @@
 #include <dxi/scene/SceneManager.h>
 #include <dxi/core/IOS.h>
 #include <dxi/exception/Exception.h>
+#include <dxi/core/Display.h>
 #include <rm/ResourceManagerSimple.h>
 #include <rm/ResourceHub.h>
 
@@ -28,7 +29,8 @@ namespace dxi
 			virtual bool Setup( IOS & os ) override;  
 			virtual void Startup() override;		  
 			virtual bool Update( RenderInfo & renderInfo, IInput & input ) override;
-			virtual void Render( const RenderInfo & renderInfo ) override;			
+			virtual void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;			
+			virtual void Shutdown() override;
 
 		public:
 			Game( unify::Path setup = "setup.xml" );
@@ -50,11 +52,9 @@ namespace dxi
 			// Handles drawing...
 			virtual void Draw() override;
 
-			virtual void Shutdown() override;
+			virtual const RenderInfo & GetRenderInfo() const final;
 
 			virtual IOS & GetOS() final;
-
-			virtual const RenderInfo & GetRenderInfo() const final;
 
 			void AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se ) override;
 
@@ -85,22 +85,25 @@ namespace dxi
 			void Log( std::string text );
 			void LogLine( std::string line );
 
+			void ReportError( ErrorLevel level, std::string source, std::string error ) override;
+
+			bool HadCriticalError() const override;
+
 		private:
 			void BeforeUpdate();
 			void AfterUpdate();
-
-			void BeforeRender();
-			void AfterRender();	
 
 			unify::Path m_setup;
 			unify::Path m_logFile;
 			scripting::IModule::ptr m_gameModule;
 
+			float m_totalStartupTime;
+
 			std::shared_ptr< IOS > m_os;
 			rm::ResourceHub m_resourceHub;
 
 			RenderInfo m_renderInfo;
-			
+
 			scene::SceneManager::shared_ptr m_sceneManager;
 
 			bool m_isQuitting;
@@ -110,10 +113,7 @@ namespace dxi
 
 			std::list< std::shared_ptr< Extension > > m_extensions;
 
-			//static Game * s_gameInstance;
-
-		public:
-			//static Game * GetInstance();
+			std::list< std::string > m_criticalErrors;
 		};
 	}
 }

@@ -82,7 +82,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 	auto factory = m_sourceFactories.find( extension );
 	if( factory == m_sourceFactories.end() )
 	{
-		throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
+		throw std::string( GetName() + " manager: No factory found that cou	ld produce \"" + name + "\"!" );
 	}
 
 	T * product = factory->second->Produce( source );
@@ -93,7 +93,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		return resource;
 	}
 
-	throw std::string( GetName() + " manager: No source path factory found that could produce \"" + name + "\"!" );
+	throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );
 }
 
 template< typename T >
