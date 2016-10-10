@@ -79,7 +79,7 @@ void Module::OnUpdate()
 		}
 		int b = lua_gettop( m_state );
 		int c = b - a;
-	}
+	}																									
 }
 
 void Module::OnSuspend()

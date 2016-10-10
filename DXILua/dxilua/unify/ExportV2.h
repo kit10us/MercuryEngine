@@ -4,8 +4,9 @@
 #pragma once
 
 #include <lua.hpp>
+#include <unify/V2.h>
 
 int ExportV2( lua_State * state );
 
-unify::V2< float > lua_ToV2( lua_State * state, int index );
-int lua_PushV2( lua_State * state, unify::V3< float > v3 );
+unify::V2< float > CheckV2( lua_State * state, int index );
+int PushV2( lua_State * state, unify::V2< float > v2 );

@@ -565,6 +565,9 @@
     <ClCompile Include="source\dxi\scene\ScriptComponent.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\input\InputManager.cpp">
+      <Filter>dxi\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -652,6 +655,9 @@
     </Filter>
     <Filter Include="dxi\scipting">
       <UniqueIdentifier>{3cdd9f4f-b083-4ca2-ba05-41854c386bcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxi\input">
+      <UniqueIdentifier>{f6f9d7b6-4914-41fd-9af3-50200f72b014}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -831,6 +837,12 @@
     </ClInclude>
     <ClInclude Include="source\dxi\scene\ScriptComponent.h">
       <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\input\InputManager.h">
+      <Filter>dxi\input</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\input\IInputSource.h">
+      <Filter>dxi\input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

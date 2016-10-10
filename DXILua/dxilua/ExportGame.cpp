@@ -7,7 +7,6 @@
 using namespace dxilua;
 using namespace dxi;
 
-extern "C"
 int Game_GetWidth( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -24,7 +23,6 @@ int Game_GetWidth( lua_State * state )
 	return 1;
 }
 
-extern "C"
 int Game_GetHeight( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -41,7 +39,6 @@ int Game_GetHeight( lua_State * state )
 	return 1;
 }
 
-extern "C"
 int Game_GetRendererCount( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -56,11 +53,24 @@ int Game_GetRendererCount( lua_State * state )
 	return 1;
 }
 
+int Game_Quit( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 0 );
+
+	auto game = ScriptEngine::GetGame();
+
+	game->RequestQuit();
+
+	return 0;
+}
+
 static const luaL_Reg gameFuncs[] =
 {
 	{ "GetWidth", Game_GetWidth },
 	{ "GetHeight", Game_GetHeight },
 	{ "GetRendererCount", Game_GetRendererCount },
+	{ "Quit", Game_Quit },
 	{ nullptr, nullptr }
 };
 

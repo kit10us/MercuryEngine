@@ -14,16 +14,25 @@ namespace dxi
 		class IInput
 		{
 		public:
-			virtual ~IInput() {}
+			virtual ~IInput() {}			
+
+			// Status...
+
 			virtual bool IsReady() const = 0;
+
+
+
+
+
+
 			virtual void CallBeforeUpdate( const unify::Size< int > resolution, bool fullScreen ) = 0;
 			virtual void CallAfterUpdate() = 0;
 
 			// OS feedback...
 			virtual void SetMouseUnavailable() {};
-			virtual void SetMousePosition( unify::V2< int > position ) { position; }
-			virtual void SetLeftMouse( bool down ) { down; }
-			virtual void SetRightMouse( bool down ) { down; }
+			virtual void SetMousePosition( HWND handle, unify::V2< int > position ) { position; }
+			virtual void SetLeftMouse( HWND handle, bool down ) { down; }
+			virtual void SetRightMouse( HWND handle, bool down ) { down; }
 
 			// Keyboard...
 			virtual bool KeyState( Key::TYPE key ) const = 0;

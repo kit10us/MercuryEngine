@@ -78,6 +78,20 @@ std::string unify::Cast( const short in )
 	return std::string( _cast_buffer );
 }
 
+template<>
+std::string unify::Cast( const unsigned long in )
+{
+	sprintf_s( _cast_buffer, _cast_buffer_size, "%u", in );
+	return _cast_buffer;
+}
+
+template<>
+std::string unify::Cast( const long in )
+{
+	_ltoa_s( in, _cast_buffer, _cast_buffer_size, 10 );
+	return std::string( _cast_buffer );
+}
+
 template<> 
 bool unify::Cast( const std::string text )
 {

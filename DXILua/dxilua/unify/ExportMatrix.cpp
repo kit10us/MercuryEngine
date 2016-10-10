@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxilua/ExportMatrix.h>
+#include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/DXILua.h>
 

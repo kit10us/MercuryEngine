@@ -50,7 +50,6 @@ Game::Game( unify::Path setup )
 , m_isQuitting( false )
 , m_totalStartupTime{}
 {
-	//s_gameInstance = this;
 }
 
 Game::~Game()
@@ -66,6 +65,8 @@ Game::~Game()
 	m_sceneManager.reset();
 
 	m_resourceHub.Clear();
+
+	m_inputManager.Clear();
 
 	// Remove extensions...
 	m_extensions.clear();
@@ -194,8 +195,8 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 		m_gameModule->OnStart();
 	}
 
-	// m_input.reset( new null::Input );
-	m_input.reset( new Input( GetOS() ) );
+	m_input.reset( new null::Input );
+	//m_input.reset( new Input( GetOS() ) );
 
 	// User startup...
 	Startup();
@@ -227,6 +228,7 @@ void Game::Tick()
 	lastTime = currentTime;
 
 	BeforeUpdate();
+
 	m_renderInfo.SetDelta( elapsed );
 
 	if( m_gameModule )
@@ -247,12 +249,17 @@ void Game::Tick()
 
 void Game::BeforeUpdate()
 {
-	//m_input->CallBeforeUpdate( GetOS().GetResolution(), GetOS().GetFullscreen() );
+	m_os;
+
+	unify::Size< int > resolution( GetOS().GetRenderer( 0 )->GetViewport().GetWidth(), GetOS().GetRenderer( 0 )->GetViewport().GetHeight() );
+	m_input->CallBeforeUpdate( resolution, GetOS().GetRenderer(0)->IsFullscreen() );
+
+	m_inputManager.Update();
 }
 
 void Game::AfterUpdate()
 {
-	//m_input->CallAfterUpdate();
+	m_input->CallAfterUpdate();
 }
 
 void Game::Draw()
@@ -354,6 +361,16 @@ bool Game::IsQuitting() const
 IInput & Game::GetInput()
 {
 	return *m_input;
+}
+
+input::InputManager * Game::GetInputManager()
+{
+	return &m_inputManager;
+}
+
+const input::InputManager * Game::GetInputManager() const
+{
+	return &m_inputManager;
 }
 
 void Game::AddExtension( std::shared_ptr< Extension > extension )

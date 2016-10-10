@@ -10,7 +10,7 @@
 
 namespace dxi
 {
-	// TODO: Divide into seperate inpuy types (Keyboard, Mouse), this will allow us to progress into allowing inputs to 
+	// TODO: Divide into seperate input types (Keyboard, Mouse), this will allow us to progress into allowing inputs to 
 	// deliver similar yet different content; and allow for more various input types (joysticks, etc.).
 	// TODO: namespace win, and move to win folder.
 	// TODO: Wrap inputs into seperate classes with access such as:
@@ -42,9 +42,9 @@ namespace dxi
 
         // OS feedback...
         void SetMouseUnavailable() override;
-        void SetMousePosition( unify::V2< int > position ) override;
-        void SetLeftMouse( bool down ) override;
-        void SetRightMouse( bool down ) override;
+        void SetMousePosition( HWND handle, unify::V2< int > position ) override;
+        void SetLeftMouse( HWND handle, bool down ) override;
+        void SetRightMouse( HWND handle, bool down ) override;
 
 		// Keyboard...
 		bool KeyState( Key::TYPE key ) const override;

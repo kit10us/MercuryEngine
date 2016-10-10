@@ -5,6 +5,7 @@
 
 #include <dxi/core/IGame.h>
 #include <dxi/core/IInput.h>
+#include <dxi/input/InputManager.h>
 #include <dxi/scene/SceneManager.h>
 #include <dxi/core/IOS.h>
 #include <dxi/exception/Exception.h>
@@ -79,7 +80,11 @@ namespace dxi
 
 			void RequestQuit();
 			bool IsQuitting() const;
+
 			IInput & GetInput();
+
+			input::InputManager * GetInputManager();
+			const input::InputManager * GetInputManager() const;
 
 			void AddExtension( std::shared_ptr< Extension > extension ) override;
 
@@ -110,6 +115,9 @@ namespace dxi
 			scene::SceneManager::shared_ptr m_sceneManager;
 
 			bool m_isQuitting;
+			
+			input::InputManager m_inputManager;
+			
 			std::shared_ptr< IInput > m_input;
 
 			std::map < std::string, std::shared_ptr< scripting::IScriptEngine >, unify::CaseInsensitiveLessThanTest > m_scriptEngines;

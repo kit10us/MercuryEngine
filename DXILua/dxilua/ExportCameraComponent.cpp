@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/ExportCameraComponent.h>
-#include <dxilua/ExportMatrix.h>
+#include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/DXILua.h>
 
 using namespace dxilua;

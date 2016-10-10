@@ -3,7 +3,7 @@
 
 #include <dxilua/DXILua.h>
 #include <dxilua/shape/ExportShapeParameters.h>
-#include <dxilua/ExportMatrix.h>
+#include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportSize2.h>

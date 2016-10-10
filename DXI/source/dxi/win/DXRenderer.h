@@ -38,6 +38,10 @@ namespace dxi
 
 			Viewport GetViewport() const override;
 
+			bool IsFullscreen() const override;
+
+			HWND GetHandle() const override;
+
 		private:
 			win::WindowsOS * m_OS;
 			core::Display m_display;

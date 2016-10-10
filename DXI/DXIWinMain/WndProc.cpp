@@ -7,7 +7,7 @@
 extern "C" dxi::core::Game * GetGameInstance();
 
 extern "C"
-LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	static bool trackingMouse = false;
 	//static dxi::core::Game & game = *dxi::core::Game::GetInstance();
@@ -32,34 +32,33 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 	case WM_LBUTTONDOWN:
 	{
 		dxi::core::IInput & input = game.GetInput();
-		input.SetLeftMouse( true );
+		input.SetLeftMouse( handle, true );
 	}
 	break;
 
 	case WM_LBUTTONUP:
 	{
 		dxi::core::IInput & input = game.GetInput();
-		input.SetLeftMouse( false );
+		input.SetLeftMouse( handle, false );
 	}
 	break;
 
 	case WM_RBUTTONDOWN:
 	{
 		dxi::core::IInput & input = game.GetInput();
-		input.SetRightMouse( true );
+		input.SetRightMouse( handle, true );
 	}
 	break;
 
 	case WM_RBUTTONUP:
 	{
 		dxi::core::IInput & input = game.GetInput();
-		input.SetRightMouse( false );
+		input.SetRightMouse( handle, false );
 	}
 	break;
 
 	case WM_MOUSEMOVE:
 	{
-		/* 
 		// TODO:
 		// Enable tracking when the mouse leaves the client area...
 		if( !trackingMouse )
@@ -67,7 +66,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 			TRACKMOUSEEVENT trackMouseEvent = TRACKMOUSEEVENT();
 			trackMouseEvent.cbSize = sizeof TRACKMOUSEEVENT;
 			trackMouseEvent.dwFlags = TME_LEAVE;
-			trackMouseEvent.hwndTrack = hWnd;
+			trackMouseEvent.hwndTrack = handle;
 			trackMouseEvent.dwHoverTime = HOVER_DEFAULT;
 			TrackMouseEvent( &trackMouseEvent );
 		}
@@ -75,18 +74,27 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 		dxi::core::IInput & input = game.GetInput();
 
 		RECT clientRect;
-		GetClientRect( hWnd, &clientRect );
+		GetClientRect( handle, &clientRect );
 
-		float width = static_cast< float >(game.GetOS().GetResolution().width);
-		float height = static_cast< float >(game.GetOS().GetResolution().height);
+		dxi::core::IRenderer * renderer = {};
+		for ( int i = 0; i < game.GetOS().RendererCount(); ++i )
+		{
+			if ( game.GetOS().GetRenderer( i )->GetHandle() == handle )
+			{
+				renderer = game.GetOS().GetRenderer( i );
+				break;
+			}
+		}
+
+		float width = static_cast<float>(renderer->GetViewport().GetWidth());
+		float height = static_cast< float >(renderer->GetViewport().GetHeight());
 		float clientWidth = static_cast< float >(clientRect.right);
 		float clientHeight = static_cast< float >(clientRect.bottom);
 
 		unify::V2< int > mousePosition( static_cast< int >(LOWORD( lParam )), static_cast< int >(HIWORD( lParam )) );
 		mousePosition.x *= static_cast< int >(width / clientWidth);
 		mousePosition.y *= static_cast< int >(height / clientHeight);
-		input.SetMousePosition( mousePosition );
-		*/
+		input.SetMousePosition( handle, mousePosition );
 	}
 	break;
 
@@ -135,5 +143,5 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 	break;
 	}
 
-	return DefWindowProc( hWnd, message, wParam, lParam );
+	return DefWindowProc( handle, message, wParam, lParam );
 }

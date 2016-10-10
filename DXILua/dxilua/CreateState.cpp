@@ -2,24 +2,25 @@
 // All Rights Reserved
 
 #include <dxilua/CreateState.h>
+#include <dxilua/unify/ExportColor.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
+#include <dxilua/unify/ExportSize2.h>
+#include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/ExportCameraComponent.h>
 #include <dxilua/ExportDebug.h>
 #include <dxilua/ExportGame.h>
-#include <dxilua/ExportMatrix.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/ExportResources.h>
 #include <dxilua/ExportScene.h>
 #include <dxilua/ExportScenes.h>
 #include <dxilua/ExportUpdate.h>
-#include <dxilua/unify/ExportV2.h>
-#include <dxilua/unify/ExportV3.h>
-#include <dxilua/unify/ExportSize2.h>
-#include <dxilua/unify/ExportSize3.h>
-#include <dxilua/unify/ExportColor.h>
 #include <dxilua/ExportTransform.h>
 #include <dxilua/ExportEffect.h>
 #include <dxilua/shape/ExportShapeParameters.h>
 #include <dxilua/ExportGeometry.h>
+#include <dxilua/ExportInput.h>
 
 lua_State * dxilua::CreateState()
 {
@@ -46,6 +47,7 @@ lua_State * dxilua::CreateState()
 	RegisterShapeParameters( state );
 	RegisterGeometry( state );
 	RegisterEffect( state );
+	RegisterInput( state );
 
 	return state;
 }

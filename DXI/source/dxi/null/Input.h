@@ -20,7 +20,7 @@ namespace dxi
 			virtual void CallAfterUpdate() {}
 
 			// OS feedback...
-			virtual void SetMousePosition( unify::V2< int > position ) { position; }
+			virtual void SetMousePosition( HWND handle, unify::V2< int > position ) { position; }
 			virtual void SetMouseUnavailable() {};
 			virtual void SetLeftMouse( bool down ) { down; }
 			virtual void SetRightMouse( bool down ) { down; }

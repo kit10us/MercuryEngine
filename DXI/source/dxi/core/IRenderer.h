@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <windows.h> // TODO: Because of handle - fix?
 #include <dxi/Viewport.h>
 #include <dxi/RenderInfo.h>
 
@@ -42,6 +43,10 @@ namespace dxi
 
 			// New support for render states
 			virtual void SetCullMode( CullMode::TYPE mode ) = 0;
+
+			virtual bool IsFullscreen() const = 0;
+
+			virtual HWND GetHandle() const = 0;
 		};
 	}
 }

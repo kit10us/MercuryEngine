@@ -7,7 +7,7 @@
 #include <dxilua/ExportScene.h>
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
-#include <dxilua/ExportMatrix.h>
+#include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/ExportCameraComponent.h>
 #include <dxi/scene/ScriptComponent.h>
 #include <dxilua/ExportGeometry.h>

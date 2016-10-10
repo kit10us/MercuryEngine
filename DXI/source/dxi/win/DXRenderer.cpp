@@ -406,3 +406,13 @@ Viewport DXRenderer::GetViewport() const
 	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetDepth().Min(), GetDisplay().GetDepth().Max() );
 }
 
+bool DXRenderer::IsFullscreen() const
+{
+	return m_display.IsFullscreen();
+}
+
+HWND DXRenderer::GetHandle() const
+{
+	return  m_display.GetHandle();
+}
+

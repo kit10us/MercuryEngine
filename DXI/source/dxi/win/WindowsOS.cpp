@@ -240,7 +240,14 @@ HINSTANCE WindowsOS::GetHInstance() const
 
 HWND WindowsOS::GetHandle() const
 {
-	return m_renderers[0]->GetDisplay().GetHandle();
+	if ( m_handle )
+	{
+		return m_handle;
+	}
+	else
+	{
+		return m_renderers[0]->GetDisplay().GetHandle();
+	}
 }
 
 void WindowsOS::Startup()

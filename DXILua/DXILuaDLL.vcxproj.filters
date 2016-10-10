@@ -18,12 +18,6 @@
     <ClInclude Include="DXILuaDLL.h">
       <Filter>dll</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>dll</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>dll</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\DXILua.h">
       <Filter>dxilua</Filter>
     </ClInclude>
@@ -40,9 +34,6 @@
       <Filter>dxilua</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\ExportScene.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportMatrix.h">
       <Filter>dxilua</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\ExportDebug.h">
@@ -87,15 +78,18 @@
     <ClInclude Include="dxilua\ExportEffect.h">
       <Filter>dxilua</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportInput.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportMatrix.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>dll</Filter>
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp">
-      <Filter>dll</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
       <Filter>dll</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\DXILua.cpp">
@@ -114,9 +108,6 @@
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportScene.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportMatrix.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportDebug.cpp">
@@ -160,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="dxilua\ExportEffect.cpp">
       <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportInput.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportMatrix.cpp">
+      <Filter>dxilua\unify</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

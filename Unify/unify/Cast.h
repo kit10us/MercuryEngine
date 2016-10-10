@@ -29,6 +29,8 @@ namespace unify
 	template<> std::string Cast( const double in );
 	template<> std::string Cast( const unsigned short in );
 	template<> std::string Cast( const short in );
+	template<> std::string Cast( const unsigned long in );
+	template<> std::string Cast( const long in );
 
 	// From std::string to X...
 	template<> bool Cast( const std::string text );

@@ -1,7 +1,6 @@
 // DXILuaDLL.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "stdafx.h"
 #include "DXILuaDLL.h"
 #include <dxilua/DXILua.h>
 #include <memory.h>

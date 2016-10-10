@@ -30,57 +30,46 @@ function OnStart( me )
 	cube = group:AddChild( "cube" )
 	cube:SetGeometry( Geometry( "cube", "media/ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
-    cube:AddScript( "rotate", "lua", "script/rotate.lua" )
 	
 	pointfield = group:AddChild( "pointfield" )
 	pointfield:SetGeometry( Geometry( "pointfield", "media/ShapePointField.shape" ) )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
-    pointfield:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	pointring = group:AddChild( "pointring" )
 	pointring:SetGeometry( Geometry( "pointring", "media/ShapePointRing.shape" ) )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
-    pointring:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	dashring = group:AddChild( "dashring" )
 	dashring:SetGeometry( Geometry( "dashring", "media/ShapeDashRing.shape" ) )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
-    dashring:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	pyramid = group:AddChild( "pyramid" )
 	pyramid:SetGeometry( Geometry( "pyramid", "media/ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
-    pyramid:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	circle = group:AddChild( "circle" )
 	circle:SetGeometry( Geometry( "circle", "media/ShapeCircle.shape" ) )
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
-    circle:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	sphere = group:AddChild( "sphere" )
 	sphere:SetGeometry( Geometry( "sphere", "media/ShapeSphere.shape" ) )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
-    sphere:AddScript( "rotate", "lua", "script/rotate.lua" )
 	   
 	cylinder = group:AddChild( "cylinder" )
 	cylinder:SetGeometry( Geometry( "cylinder", "media/ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
-    cylinder:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	tube = group:AddChild( "tube" )
 	tube:SetGeometry( Geometry( "tube", "media/ShapeTube.shape" ) )
 	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
-    tube:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	plane = group:AddChild( "plane" )
 	plane:SetGeometry( Geometry( "plane", "media/ShapePlane.shape" ) )
 	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
-    plane:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	cone = group:AddChild( "cone" )
 	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
-    cone:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	
 	-- Front Back up down left right..
@@ -106,10 +95,7 @@ function OnStart( me )
 
 	down = root:AddChild( "down" )
 	down:SetGeometry( "cylinder" )
-	down:Transform():SetPosition( V3.New( 0, -10, 0 ) );
-	
-	
-	
+	down:Transform():SetPosition( V3.New( 0, -10, 0 ) );	
 end
 
 function OnUpdate( me )

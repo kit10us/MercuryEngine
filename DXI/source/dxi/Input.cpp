@@ -45,7 +45,6 @@ void Input::Acquire()
 {
 	win::WindowsOS & windowsOS = dynamic_cast< win::WindowsOS & >( m_os );
 
-	/* // TODO:
 	// Create the Direct Input device...
 	if( ! m_pdi )
 	{
@@ -58,7 +57,7 @@ void Input::Acquire()
 	// Create the Direct Input Keyboard device...
 	try
 	{
-		CreateKeyboardDevice( windowsOS.GetHInstance(), windowsOS.GetHandle(), windowsOS.GetFullscreen() );
+		CreateKeyboardDevice( windowsOS.GetHInstance(), windowsOS.GetHandle(), windowsOS.GetRenderer( 0 )->IsFullscreen() );
 	}
 	catch( ... )
 	{
@@ -67,12 +66,11 @@ void Input::Acquire()
 	// Setup the Direct Input Mouse device...
 	try 
 	{ 
-		CreateMouseDevice( windowsOS.GetHInstance(), windowsOS.GetHWnd(), windowsOS.GetFullscreen() );
+		CreateMouseDevice( windowsOS.GetHInstance(), windowsOS.GetHandle(), windowsOS.GetRenderer( 0 )->IsFullscreen() );
 	} 
 	catch( ... )
 	{
 	}
-	*/
 }
 
 void Input::CreateKeyboardDevice( HINSTANCE hInstance, HWND hWnd, bool fullScreen )
@@ -291,7 +289,6 @@ void Input::CallBeforeUpdate( const unify::Size< int > resolution, bool fullScre
 		m_uMouseStatusCount[m_mouseStatus[b]]++;
 	}
 
-    /*
     m_mouse += unify::V3< int >( m_diMouseState.lX, m_diMouseState.lY, m_diMouseState.lZ );
 
 	if( m_mouse.x < 0 ) m_mouse.x = 0;
@@ -305,8 +302,8 @@ void Input::CallBeforeUpdate( const unify::Size< int > resolution, bool fullScre
 	{
 		m_mouse.y = resolution.height - 1;
 	}
-    */
-    m_mouse.z += m_diMouseState.lZ;
+
+	m_mouse.z += m_diMouseState.lZ;
 
 	// Capslock, Scrolllock, Numlock, Insert...
 	m_bCapslock		= GetKeyState(VK_CAPITAL) & 0x0001;
@@ -324,18 +321,19 @@ void Input::SetMouseUnavailable()
     m_mouseAvailable = false;
 }
 
-void Input::SetMousePosition( unify::V2< int > position )
+void Input::SetMousePosition( HWND handle, unify::V2< int > position )
 {
+
     m_mouseAvailable = true;
     m_mouse.x = position.x;
     m_mouse.y = position.y;
 }
 
-void Input::SetLeftMouse( bool down )
+void Input::SetLeftMouse( HWND handle, bool down )
 {
 }
 
-void Input::SetRightMouse( bool down )
+void Input::SetRightMouse( HWND handle, bool down )
 {
 }
 

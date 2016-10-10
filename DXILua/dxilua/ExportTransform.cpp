@@ -7,7 +7,7 @@
 #include <dxilua/ExportScene.h>
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
-#include <dxilua/ExportMatrix.h>
+#include <dxilua/unify/ExportMatrix.h>
 #include <dxi/scene/ScriptComponent.h>
 
 using namespace dxilua;
@@ -60,7 +60,7 @@ int Transform_Orbit( lua_State * state )
 
 	unify::V3< float > origin( CheckV3( state, 2 ) );
 
-	unify::V2< float > axis( lua_ToV2( state, 3 ) );
+	unify::V2< float > axis( CheckV2( state, 3 ) );
 
 	float distance = (float)lua_tonumber( state, 4 );
 	
