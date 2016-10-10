@@ -2,23 +2,12 @@ local axisIndex = 1
 local totalRotation = 0
 
 function OnStart( me )
-	resources.add( "geometry", "cube", "media/ShapeCube.shape" )
-	resources.add( "geometry", "pointfield", "media/ShapePointField.shape" )
-	resources.add( "geometry", "pointring", "media/ShapePointRing.shape" )
-	resources.add( "geometry", "dashring", "media/ShapeDashRing.shape" )
-	resources.add( "geometry", "pyramid", "media/ShapePyramid.shape" )
-	resources.add( "geometry", "circle", "media/ShapeCircle.shape" )
-	resources.add( "geometry", "sphere", "media/ShapeSphere.shape" )
-	resources.add( "geometry", "cylinder", "media/ShapeCylinder.shape" )
-	resources.add( "geometry", "tube", "media/ShapeTube.shape" )
-	resources.add( "geometry", "plane", "media/ShapePlane.shape" )
-	resources.add( "geometry", "cone", "media/ShapeCone.shape" )
-	resources.add( "effect", "color3d", "media/EffectColor.effect" )
+	color3d = Effect( "color3d", "media/EffectColor.effect" )
 	
 	scene1 = Scene( "scene1" )
 	root = scene1:FindObject( "root" )
 	
-	proj = matrix.MakePerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
+	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
@@ -26,7 +15,7 @@ function OnStart( me )
 	camera:Transform():LookAt( V3.Zero() )
 
 	if game.GetRendererCount() > 1 then
-		proj2 = matrix.MakePerspectiveFovLH( 1, game.GetWidth()/ game.GetHeight(), 1, 1000 )		--proj2 = matrix.MatrixOrthoOffCenterLH( 0, game.GetWidth(), 0, game.GetHeight(), -100, 100 )
+		proj2 = Matrix.NewPerspectiveFovLH( 1, game.GetWidth()/ game.GetHeight(), 1, 1000 )		--proj2 = Matrix.NewOrthoOffCenterLH( 0, game.GetWidth(), 0, game.GetHeight(), -100, 100 )
 		camera2 = root:AddCamera( "Camera2", proj )
 		camera2:Transform():SetPosition( V3.New( 0, 0, -27 ) )
 		--camera2:Transform():LookAt( V3.Zero() )
@@ -39,64 +28,64 @@ function OnStart( me )
 	group = root:AddChild( "group" )
 	
 	cube = group:AddChild( "cube" )
-	cube:SetGeometry( "cube" )
+	cube:SetGeometry( Geometry( "cube", "media/ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
     cube:AddScript( "rotate", "lua", "script/rotate.lua" )
 	
 	pointfield = group:AddChild( "pointfield" )
-	pointfield:SetGeometry( "pointfield" )
+	pointfield:SetGeometry( Geometry( "pointfield", "media/ShapePointField.shape" ) )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
     pointfield:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	pointring = group:AddChild( "pointring" )
-	pointring:SetGeometry( "pointring" )
+	pointring:SetGeometry( Geometry( "pointring", "media/ShapePointRing.shape" ) )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
     pointring:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	dashring = group:AddChild( "dashring" )
-	dashring:SetGeometry( "dashring" )
+	dashring:SetGeometry( Geometry( "dashring", "media/ShapeDashRing.shape" ) )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
     dashring:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	pyramid = group:AddChild( "pyramid" )
-	pyramid:SetGeometry( "pyramid" )
+	pyramid:SetGeometry( Geometry( "pyramid", "media/ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
     pyramid:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	circle = group:AddChild( "circle" )
-	circle:SetGeometry( "circle" )
+	circle:SetGeometry( Geometry( "circle", "media/ShapeCircle.shape" ) )
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
     circle:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	sphere = group:AddChild( "sphere" )
-	sphere:SetGeometry( "sphere" )
+	sphere:SetGeometry( Geometry( "sphere", "media/ShapeSphere.shape" ) )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
     sphere:AddScript( "rotate", "lua", "script/rotate.lua" )
 	   
 	cylinder = group:AddChild( "cylinder" )
-	cylinder:SetGeometry( "cylinder" )
+	cylinder:SetGeometry( Geometry( "cylinder", "media/ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
     cylinder:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	tube = group:AddChild( "tube" )
-	tube:SetGeometry( "tube" )
+	tube:SetGeometry( Geometry( "tube", "media/ShapeTube.shape" ) )
 	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
     tube:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	plane = group:AddChild( "plane" )
-	plane:SetGeometry( "plane" )
+	plane:SetGeometry( Geometry( "plane", "media/ShapePlane.shape" ) )
 	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
     plane:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	cone = group:AddChild( "cone" )
-	cone:SetGeometry( "cone" )
+	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "script/rotate.lua" )
-	
+
 	
 	-- Front Back up down left right..
 	frontShapeParameters = ShapeParameters( "cone" )
-	frontShapeParameters:SetEffect( "color3d" )
+	frontShapeParameters:SetEffect( color3d )
 	frontShapeParameters:SetSegments( 24 )
 	frontShapeParameters:SetRadius( 1 )
 	frontShapeParameters:SetHeight( 2 )

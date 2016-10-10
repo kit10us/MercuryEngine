@@ -100,6 +100,65 @@ int Transform_Scale( lua_State * state )
 	return 0;
 }
 
+int Transform_GetMatrix( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+
+	PushMatrix( state, proxy->transform->GetMatrix() );
+
+	return 1;
+}
+
+int Transform_SetMatrix( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+
+	int type = lua_type( state, 2 );
+
+	unify::Matrix mat = CheckMatrix( state, 2 );
+
+	proxy->transform->SetMatrix( mat );
+
+	return 0;
+}
+
+int Transform_PreMul( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+	unify::Matrix mat = CheckMatrix( state, 2 );
+	
+	unify::Matrix myMatrix = proxy->transform->GetMatrix();
+
+	proxy->transform->SetMatrix( mat * myMatrix );
+
+	return 0;
+}
+
+int Transform_PostMul( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+	unify::Matrix mat = CheckMatrix( state, 2 );
+
+	unify::Matrix myMatrix = proxy->transform->GetMatrix();
+
+	proxy->transform->SetMatrix( myMatrix * mat );
+
+	return 0;
+}
+
+
 static const luaL_Reg TransformFunctions[] =
 {
 	{ "SetPosition", Transform_SetPosition },
@@ -107,6 +166,10 @@ static const luaL_Reg TransformFunctions[] =
 	{ "Orbit", Transform_Orbit },
 	{ "RotateAbout", Transform_RotateAbout },
 	{ "Scale", Transform_Scale },
+	{ "GetMatrix", Transform_GetMatrix },
+	{ "SetMatrix", Transform_SetMatrix },
+	{ "PreMul", Transform_PreMul },
+	{ "PostMul", Transform_PostMul },
 	{ nullptr, nullptr }
 };
 

@@ -2,13 +2,13 @@ local axisIndex = 1
 local totalRotation = 0
 
 function OnStart( me )
-	resources.add( "effect", "color3d", "media/EffectColor.effect" )
-	resources.add( "effect", "borgcube", "media/EffectBorgCube.effect" )
+	color3d = Effect( "color3d", "media/EffectColor.effect" )
+	borgcubeEffect = Effect( "borgcube", "media/EffectBorgCube.effect" )
 	
 	scene1 = Scene( "scene1" )
 	root = scene1:FindObject( "root" )
 	
-	proj = matrix.MakePerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
+	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
@@ -22,7 +22,7 @@ function OnStart( me )
 	Debug.WriteLine( "peter" )
 	
 	cubeParameters = ShapeParameters( "cube" )
-	cubeParameters:SetEffect( "color3d" )
+	cubeParameters:SetEffect( color3d )
 	cubeParameters:SetSize3( Size3.New( 2, 2, 2 ) )
 	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
 	cube = group:AddChild( "cube" )
@@ -31,7 +31,7 @@ function OnStart( me )
 
 
 	pointfieldParameters = ShapeParameters( "pointfield" )
-	pointfieldParameters:SetEffect( "color3d" )
+	pointfieldParameters:SetEffect( color3d )
 	pointfieldParameters:SetMinorRadius( 0.5 )
 	pointfieldParameters:SetMajorRadius( 1.0 )
 	pointfieldParameters:SetCount( 1000 )
@@ -41,7 +41,7 @@ function OnStart( me )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
 	
 	pointringParameters = ShapeParameters( "pointring" )
-	pointringParameters:SetEffect( "color3d" )
+	pointringParameters:SetEffect( color3d )
 	pointringParameters:SetMinorRadius( 0.25 )
 	pointringParameters:SetMajorRadius( 0.75 )
 	pointringParameters:SetCount( 1000 )
@@ -51,7 +51,7 @@ function OnStart( me )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
 
 	dashringParameters = ShapeParameters( "dashring" )
-	dashringParameters:SetEffect( "color3d" )
+	dashringParameters:SetEffect( color3d )
 	dashringParameters:SetMinorRadius( 0.5 )
 	dashringParameters:SetMajorRadius( 1.0 )
 	dashringParameters:SetSize( 0.5 )
@@ -62,7 +62,7 @@ function OnStart( me )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )	
 	
 	pyramidParameters = ShapeParameters( "pyramid" )
-	pyramidParameters:SetEffect( "color3d" )
+	pyramidParameters:SetEffect( color3d )
 	pyramidParameters:SetSize3( Size3.New( 2, 2, 2 ) )
 	pyramidParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
 	pyramid = group:AddChild( "pyramid" )
@@ -70,7 +70,7 @@ function OnStart( me )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )	
 	
 	circleParameters = ShapeParameters( "circle" )
-	circleParameters:SetEffect( "color3d" );
+	circleParameters:SetEffect( color3d );
 	circleParameters:SetSegments( 24 );
 	circleParameters:SetRadius( 1.0 );
 	circleParameters:SetDiffuse( Color.NewBlue() );
@@ -79,7 +79,7 @@ function OnStart( me )
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
 	
 	sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( "color3d" )
+	sphereParameters:SetEffect( color3d )
 	sphereParameters:SetSegments( 24 )
 	sphereParameters:SetRadius( 1.0 )
 	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
@@ -88,7 +88,7 @@ function OnStart( me )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
 
 	cylinderParameters = ShapeParameters( "cylinder" )
-	cylinderParameters:SetEffect( "color3d" )
+	cylinderParameters:SetEffect( color3d )
 	cylinderParameters:SetSegments( 24 )
 	cylinderParameters:SetRadius( 1.0 )
 	cylinderParameters:SetHeight( 2.0 )
@@ -99,7 +99,7 @@ function OnStart( me )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
 	
 	tubeParameters = ShapeParameters( "tube" )
-	tubeParameters:SetEffect( "color3d" )
+	tubeParameters:SetEffect( color3d )
 	tubeParameters:SetSegments( 24 )
 	tubeParameters:SetMajorRadius( 1.0 )
 	tubeParameters:SetMinorRadius( 0.5 )
@@ -112,7 +112,7 @@ function OnStart( me )
 	
 	
 	planeParameters = ShapeParameters( "plane" )
-	planeParameters:SetEffect( "color3d" )
+	planeParameters:SetEffect( color3d )
 	planeParameters:SetSegments( 2 )
 	planeParameters:SetSize2( Size2.New( 2.0, 2.0 ) )
 	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
@@ -122,7 +122,7 @@ function OnStart( me )
 	
 
 	coneParameters = ShapeParameters( "cone" )
-	coneParameters:SetEffect( "borgcube" )
+	coneParameters:SetEffect( borgcubeEffect )
 	coneParameters:SetSegments( 24 )
 	coneParameters:SetRadius( 1 )
 	coneParameters:SetHeight( 2 )

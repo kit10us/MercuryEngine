@@ -9,6 +9,7 @@
 #include <dxilua/unify/ExportSize2.h>
 #include <dxilua/unify/ExportSize3.h>
 #include <dxilua/ExportGeometry.h>
+#include <dxilua/ExportEffect.h>
 #include <dxi/shapes/ShapeCreators.h>
 
 using namespace dxilua;
@@ -73,16 +74,9 @@ int ShapeParameters_SetTextureMode( lua_State* state )
 int ShapeParameters_SetEffect( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	std::string name = lua_tostring( state, 2 );
-	auto game = ScriptEngine::GetGame();
-	Effect::ptr effect = game->GetManager< Effect >()->Find( name );
-	if ( ! effect )
-	{
-		game->ReportError( ErrorLevel::Failure, "LUA", "Effect \"" + name + "\" not found!" );
-		return 0;
-	}
+	EffectProxy * effectProxy = CheckEffect( state, 2 );
 
-	parameters->parameters.Set< Effect::ptr >( "effect", effect );
+	parameters->parameters.Set< Effect::ptr >( "effect", effectProxy->effect );
 	return 0;
 }		
 

@@ -53,7 +53,7 @@ int Size2_New( lua_State * state )
 	return 1;
 }
 
-int Size2_Zero( lua_State * state )
+int Size2_NewZero( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -140,7 +140,7 @@ int Size2_Units( lua_State * state )
 static const luaL_Reg SizeFunctions[] =
 {
 	{ "New", Size2_New },
-	{ "Zero", Size2_Zero },
+	{ "NewZero", Size2_NewZero },
 
 	{ "Add", Size2_Add },
 	{ "Sub", Size2_Sub },

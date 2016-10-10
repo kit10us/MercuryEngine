@@ -1,8 +1,7 @@
 <xml>
 <setup>
 <logfile>log.txt</logfile>
-<fullscreen>false</fullscreen>
-<resolution width="800" height="640"/>
+<display fullscreen="false" x="10" y="10" width="800" height="640"/>
 <!--<extension></extension>-->
 </setup>
 </xml>

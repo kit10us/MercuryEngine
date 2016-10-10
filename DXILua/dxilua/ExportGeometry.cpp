@@ -38,11 +38,17 @@ int Geometry_Constructor( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 	
-	// Allow pulling geometry from manager...
-	if ( type == LUA_TSTRING )
+	// Allow pulling existing from manager...
+	if ( top == 1 && type == LUA_TSTRING )
 	{
 		std::string name = lua_tostring( state, 1 );
 		geometry = game->GetManager< Geometry >()->Find( name );
+	}
+	else if ( top == 2)
+	{
+		std::string name = lua_tostring( state, 1 );
+		unify::Path source = lua_tostring( state, 2 );
+		geometry = game->GetManager< Geometry >()->Add( name, source );
 	}
 	else
 	{

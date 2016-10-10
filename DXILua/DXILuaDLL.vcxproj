@@ -158,6 +158,7 @@
     <ClInclude Include="dxilua\DXILua.h" />
     <ClInclude Include="dxilua\ExportCameraComponent.h" />
     <ClInclude Include="dxilua\ExportDebug.h" />
+    <ClInclude Include="dxilua\ExportEffect.h" />
     <ClInclude Include="dxilua\ExportGame.h" />
     <ClInclude Include="dxilua\ExportGeometry.h" />
     <ClInclude Include="dxilua\ExportMatrix.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="dxilua\DXILua.cpp" />
     <ClCompile Include="dxilua\ExportCameraComponent.cpp" />
     <ClCompile Include="dxilua\ExportDebug.cpp" />
+    <ClCompile Include="dxilua\ExportEffect.cpp" />
     <ClCompile Include="dxilua\ExportGame.cpp" />
     <ClCompile Include="dxilua\ExportGeometry.cpp" />
     <ClCompile Include="dxilua\ExportMatrix.cpp" />

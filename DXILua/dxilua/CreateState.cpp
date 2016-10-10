@@ -17,6 +17,7 @@
 #include <dxilua/unify/ExportSize3.h>
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/ExportTransform.h>
+#include <dxilua/ExportEffect.h>
 #include <dxilua/shape/ExportShapeParameters.h>
 #include <dxilua/ExportGeometry.h>
 
@@ -30,13 +31,8 @@ lua_State * dxilua::CreateState()
 	ExportGame( state );
 	ExportResources( state );
 	ExportScenes( state );
-	
-	//ExportScene( state );
 	RegisterScene( state );
-
-	//ExportObject( state );
 	RegisterObject( state );
-
 	RegisterCameraComponent( state );
 	ExportMatrix( state );
 	ExportDebug( state );
@@ -49,6 +45,7 @@ lua_State * dxilua::CreateState()
 	RegisterTransform( state );
 	RegisterShapeParameters( state );
 	RegisterGeometry( state );
+	RegisterEffect( state );
 
 	return state;
 }

@@ -84,6 +84,9 @@
     <ClInclude Include="dxilua\unify\ExportSize2.h">
       <Filter>dxilua\unify</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportEffect.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportSize2.cpp">
       <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportEffect.cpp">
+      <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

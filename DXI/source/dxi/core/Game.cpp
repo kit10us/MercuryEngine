@@ -109,21 +109,26 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				{
 					m_logFile = node.GetText();
 				}
-				if( node.IsTagName( "fullscreen" ) )
+				if( node.IsTagName( "display" ) )
 				{
-					//GetOS().SetFullscreen( unify::Cast< bool, std::string >( node.GetText() ) );
-				}
-				else if( node.IsTagName( "resolution" ) )
-				{
-					//GetOS().SetResolution( unify::Size< unsigned int >( node.GetAttribute< unsigned int >( "width" ), node.GetAttribute< unsigned int >( "height" ) ) );
+					bool fullscreen = node.GetAttributeElse< bool >( "fullscreen", false );
+					int width = node.GetAttribute< int >( "width" );
+					int height = node.GetAttribute< int >( "height" );
+					int x = node.GetAttributeElse< int >( "x", 0 );
+					int y = node.GetAttributeElse< int >( "y", 0 );
+
+					if ( fullscreen )
+					{
+						GetOS().AddDisplay( core::Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) ) );
+					}
+					else
+					{
+						GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) ) );
+					}
 				}
 			}
 		}
 	}
-			
-	// TODO: Make this dynamic from setup file.
-	GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 10, 20 ) ) );
-	//TODO: GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 820, 20 ) ) );
 
 	// Creates displays...
 	GetOS().Startup();

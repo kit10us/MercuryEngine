@@ -2,25 +2,13 @@ local axisIndex = 1
 local totalRotation = 0
 
 function OnStart( me )
-	resources.add( "geometry", "cube", "media/ShapeCube.shape" )
-	resources.add( "geometry", "pointfield", "media/ShapePointField.shape" )
-	resources.add( "geometry", "pointring", "media/ShapePointRing.shape" )
-	resources.add( "geometry", "dashring", "media/ShapeDashRing.shape" )
-	resources.add( "geometry", "pyramid", "media/ShapePyramid.shape" )
-	resources.add( "geometry", "circle", "media/ShapeCircle.shape" )
-	resources.add( "geometry", "sphere", "media/ShapeSphere.shape" )
-	resources.add( "geometry", "cylinder", "media/ShapeCylinder.shape" )
-	resources.add( "geometry", "tube", "media/ShapeTube.shape" )
-	resources.add( "geometry", "plane", "media/ShapePlane.shape" )
-	resources.add( "geometry", "cone", "media/ShapeCone.shape" )
+	local scene1 = Scene( "scene1" )
+	local root = scene1:FindObject( "root" )
 	
-	scene1 = Scene( "scene1" )
-	root = scene1:FindObject( "root" )
-	
-	proj = matrix.MakePerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
+	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
-	camera = root:AddCamera( "camera", proj )	
+	local camera = root:AddCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.Zero() ) 
 
@@ -28,67 +16,67 @@ function OnStart( me )
 
 	group = root:AddChild( "group" )
 	
-	cube = group:AddChild( "cube" )
-	cube:SetGeometry( "cube" )
+	local cube = group:AddChild( "cube" )
+	cube:SetGeometry( Geometry( "cube", "media/ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
-    cube:AddScript( "rotate", "lua", "script/rotate.lua" )
+    cube:AddScript( "rotate", "lua", "script/rotatex.lua" )
 	
-	pointfield = group:AddChild( "pointfield" )
-	pointfield:SetGeometry( "pointfield" )
+	local pointfield = group:AddChild( "pointfield" )
+	pointfield:SetGeometry( Geometry( "pointfield", "media/ShapePointField.shape" ) )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
-    pointfield:AddScript( "rotate", "lua", "script/rotate.lua" )
+    pointfield:AddScript( "rotate", "lua", "script/rotatey.lua" )
 		
-	pointring = group:AddChild( "pointring" )
-	pointring:SetGeometry( "pointring" )
+	local pointring = group:AddChild( "pointring" )
+	pointring:SetGeometry( Geometry( "pointring", "media/ShapePointRing.shape" ) )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
-    pointring:AddScript( "rotate", "lua", "script/rotate.lua" )
+    pointring:AddScript( "rotate", "lua", "script/rotatez.lua" )
 
-	dashring = group:AddChild( "dashring" )
-	dashring:SetGeometry( "dashring" )
+	local dashring = group:AddChild( "dashring" )
+	dashring:SetGeometry( Geometry( "dashring", "media/ShapeDashRing.shape" ) )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
-    dashring:AddScript( "rotate", "lua", "script/rotate.lua" )
+    dashring:AddScript( "rotate", "lua", "script/rotatex.lua" )
 
-	pyramid = group:AddChild( "pyramid" )
-	pyramid:SetGeometry( "pyramid" )
+	local pyramid = group:AddChild( "pyramid" )
+	pyramid:SetGeometry( Geometry( "pyramid", "media/ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
-    pyramid:AddScript( "rotate", "lua", "script/rotate.lua" )
+    pyramid:AddScript( "rotate", "lua", "script/rotatey.lua" )
 		
-	circle = group:AddChild( "circle" )
-	circle:SetGeometry( "circle" )
+	local circle = group:AddChild( "circle" )
+	circle:SetGeometry( Geometry( "circle", "media/ShapeCircle.shape" ) )
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
-    circle:AddScript( "rotate", "lua", "script/rotate.lua" )
+    circle:AddScript( "rotate", "lua", "script/rotatez.lua" )
 
-	sphere = group:AddChild( "sphere" )
-	sphere:SetGeometry( "sphere" )
+	local sphere = group:AddChild( "sphere" )
+	sphere:SetGeometry( Geometry( "sphere", "media/ShapeSphere.shape" ) )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
-    sphere:AddScript( "rotate", "lua", "script/rotate.lua" )
+    sphere:AddScript( "rotate", "lua", "script/rotatex.lua" )
 	   
-	cylinder = group:AddChild( "cylinder" )
-	cylinder:SetGeometry( "cylinder" )
+	local cylinder = group:AddChild( "cylinder" )
+	cylinder:SetGeometry( Geometry( "cylinder", "media/ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
-    cylinder:AddScript( "rotate", "lua", "script/rotate.lua" )
+    cylinder:AddScript( "rotate", "lua", "script/rotatey.lua" )
 
-	tube = group:AddChild( "tube" )
-	tube:SetGeometry( "tube" )
+	local tube = group:AddChild( "tube" )
+	tube:SetGeometry( Geometry( "tube", "media/ShapeTube.shape" ) )
 	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
-    tube:AddScript( "rotate", "lua", "script/rotate.lua" )
+    tube:AddScript( "rotate", "lua", "script/rotatez.lua" )
 		
-	plane = group:AddChild( "plane" )
-	plane:SetGeometry( "plane" )
+	local plane = group:AddChild( "plane" )
+	plane:SetGeometry( Geometry( "plane", "media/ShapePlane.shape" ) )
 	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
-    plane:AddScript( "rotate", "lua", "script/rotate.lua" )
+    plane:AddScript( "rotate", "lua", "script/rotatex.lua" )
 		
-	cone = group:AddChild( "cone" )
-	cone:SetGeometry( "cone" )
+	local cone = group:AddChild( "cone" )
+	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
-    cone:AddScript( "rotate", "lua", "script/rotate.lua" )
+    cone:AddScript( "rotate", "lua", "script/rotatey.lua" )
 end
 
 function OnUpdate( me )
-	rotation = Update.GetDelta()
+	local rotation = Update.GetDelta()
 	
 	totalRotation = totalRotation + rotation
-	pi2 = 3.1415926535 * 2
+	local pi2 = 3.1415926535 * 2
 	if totalRotation > pi2 then
 		totalRotation = totalRotation - pi2
 		rotation = totalRotation -- Left over
@@ -98,7 +86,7 @@ function OnUpdate( me )
 		end
 	end
 
-	axis = V3.Zero()
+	local axis = V3.Zero()
 	if axisIndex == 0 then
 		axis.x = 1
 	elseif axisIndex == 1 then
@@ -108,4 +96,7 @@ function OnUpdate( me )
 	end
 
 	group:Transform():RotateAbout( axis, rotation )
+	
+	Debug.WriteLine("niled references: size " .. tostring( collectgarbage("count") ))
+	
 end
