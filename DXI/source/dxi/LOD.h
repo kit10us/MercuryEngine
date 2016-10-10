@@ -22,7 +22,7 @@ namespace dxi
 	class LODNode
 	{
 	public:
-		LODNode( Geometry::shared_ptr geometry, float distanceStart )
+		LODNode( Geometry::ptr geometry, float distanceStart )
 			: m_geometry( geometry )
 			, m_distanceStart( distanceStart )
 		{
@@ -49,9 +49,9 @@ namespace dxi
 			return m_distanceStart;
 		}
 
-		Geometry::shared_ptr & GetGeometry() { return m_geometry; }
+		Geometry::ptr & GetGeometry() { return m_geometry; }
 
-		Geometry::shared_ptr m_geometry;
+		Geometry::ptr m_geometry;
 		float m_distanceStart;
 	};
 
@@ -72,8 +72,8 @@ namespace dxi
 		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
 
-		void Add( Geometry::shared_ptr geometry, float distance );
-		Geometry::shared_ptr GetLOD( unsigned int index );
+		void Add( Geometry::ptr geometry, float distance );
+		Geometry::ptr GetLOD( unsigned int index );
 
 		virtual const unify::BBox< float > & ComputeBounds();
 

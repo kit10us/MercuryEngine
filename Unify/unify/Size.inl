@@ -148,6 +148,12 @@ bool Size< T >::operator != ( const Size< T >& size ) const
 }
 
 template< typename T >
+std::string Size< T >::ToString() const
+{
+	return Cast< std::string >( width ) + ", " + Cast< std::string >( height );
+}
+
+template< typename T >
 T Size< T >::Units() const
 {
     return width * height;

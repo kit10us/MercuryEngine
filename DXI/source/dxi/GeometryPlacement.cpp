@@ -6,7 +6,7 @@
 
 using namespace dxi;
 
-GeometryPlacement::GeometryPlacement( Geometry::weak_ptr geometry )
+GeometryPlacement::GeometryPlacement( Geometry::ptr geometry )
 : m_geometry( geometry )
 {
 }

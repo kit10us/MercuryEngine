@@ -18,7 +18,7 @@ namespace dxi
 	class GeometryPlacement : public Geometry
 	{
 	public:
-		GeometryPlacement( Geometry::weak_ptr geometry );
+		GeometryPlacement( Geometry::ptr geometry );
 		~GeometryPlacement();
 
 		// ::Resource...
@@ -41,6 +41,6 @@ namespace dxi
 		virtual const unify::BBox< float > & ComputeBounds();
 
 		std::vector< PlacementEntry > m_objects;
-		Geometry::shared_ptr m_geometry;
+		Geometry::ptr m_geometry;
 	};
 }

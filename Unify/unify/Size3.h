@@ -4,6 +4,8 @@
 #pragma once
 
 #include <unify/Unify.h>
+#include <unify/V2.h>
+#include <unify/V3.h>
 
 namespace unify
 {
@@ -43,11 +45,14 @@ namespace unify
 		bool operator == ( const Size3< T > & size ) const;
 		bool operator != ( const Size3< T > & size ) const;
 
-            template< typename T2 >
+        template< typename T2 >
         operator Size< T2 >()
         {
             return Size< T2 >( static_cast< T2 >( width ), static_cast< T2 >( height ), static_cast< T2 >( depth ) );
         }
+
+		std::string ToString() const;
+
 
         T Units() const;
 

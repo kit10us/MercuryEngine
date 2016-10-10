@@ -11,6 +11,7 @@
 #include <dxi/core/Display.h>
 #include <rm/ResourceManagerSimple.h>
 #include <rm/ResourceHub.h>
+#include <unify/Parameters.h>
 
 typedef std::shared_ptr< rm::ISourceFactory< dxi::Texture > > TextureFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< dxi::Effect > > EffectFactoryPtr;
@@ -88,6 +89,8 @@ namespace dxi
 			void ReportError( ErrorLevel level, std::string source, std::string error ) override;
 
 			bool HadCriticalError() const override;
+
+			Geometry::ptr CreateShape( unify::Parameters parameters );
 
 		private:
 			void BeforeUpdate();

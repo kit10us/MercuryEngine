@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <dxi/core/IInput.h>
+#include <dxi/RenderInfo.h>
+
 #include <string>
 #include <memory>
 
@@ -20,8 +23,14 @@ namespace dxi
 			virtual std::string GetName() const = 0;
 			virtual void SetName( std::string name ) = 0;
 
-			virtual bool GetEnabled() const = 0;
+			virtual bool IsEnabled() const = 0;
 			virtual void SetEnabled( bool enabled ) = 0;
+
+			virtual void OnStart() = 0;
+			virtual void Update( const RenderInfo & renderInfo, core::IInput & input ) = 0;
+			virtual void Render( const RenderInfo & renderInfo ) = 0;
+			virtual void OnSuspend() = 0;
+			virtual void OnResune() = 0;
 
 		private:
 			std::string m_name;

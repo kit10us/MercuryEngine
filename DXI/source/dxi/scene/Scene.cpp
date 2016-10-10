@@ -10,22 +10,20 @@ using namespace dxi;
 using namespace scene;
 
 Scene::Scene( dxi::core::IGame * game )
-: GameDependant( game )
+: m_game( game )
 , m_root( new Object )
+, m_started( false )
 , m_lastCullCount( 0 )
 , m_renderSolids( true )
 , m_renderTrans( true )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-// TODO:, m_viewport( Game()->GetOS().GetDefaultViewport() )
-, m_viewport( Viewport( 0, 0, 800, 600,  0, 1000 ) )
 , m_color( 0, 0, 180, 255 )
 , m_renderPhysics( false )
 , m_hasFocus( false )
 , m_order( 0.0f )
 , m_enabled( true )
-, m_visible( true )
 , m_mouseDownTimeLimit( 0.025f )
 , m_mouseDownTime( 0 )
 , m_mouseDrag( false )
@@ -81,12 +79,24 @@ Object::ptr Scene::FindObject( const std::string & name )
 	}
 }
 
+void Scene::Start()
+{
+	GetRoot()->OnStart();
+}
+
 void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
 {
     if ( ! m_enabled )
     {
         return;
     }
+
+	// On first update, call start ONCE.
+	if ( ! m_started )
+	{
+		Start();
+		m_started = true;
+	}
 
 	if ( m_physicsScene )
     {
@@ -244,6 +254,16 @@ void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
 	*/
 }
 
+void Scene::Suspend()
+{
+	GetRoot()->OnSuspend();
+}
+
+void Scene::Resume()
+{
+	GetRoot()->OnResume();
+}						
+
 RenderInfo & Scene::GetRenderInfo()
 {
 	return m_renderInfo;
@@ -253,7 +273,6 @@ struct FinalObject
 {
 	Object::ptr object;	 // Replace with geometry.
 	unify::Matrix transform;
-	unify::Matrix geometry;
 };
 
 struct FinalCamera
@@ -266,41 +285,37 @@ struct FinalCamera
 void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, unify::Matrix parentTransform )
 {
 	assert( current );
-	assert( current->GetEnabled() );
+	assert( current->IsEnabled() );
 
 	// Solve our transform.
 	unify::Matrix transform = current->GetFrame().GetMatrix(); 
 	transform *= parentTransform;
 
 	// Check for a camera...
-	Camera * camera{};
+	scene::Camera * camera{};
 	for( int i = 0; i < current->ComponentCount(); ++i )
 	{
 		IComponent::ptr component = current->GetComponent( i );
-		if( !component->GetEnabled() ) continue;
+		if( !component->IsEnabled() ) continue;
 
-		camera = unify::polymorphic_downcast< Camera * >( component.get() );
+		camera = dynamic_cast< scene::Camera * >( component.get() );
 		if( camera != nullptr )
 		{
 			cameraList.push_back( { current, transform, camera } );
 		}
 	}
 
-	if( current->GetGeometry() != nullptr )
+	renderList.push_back(
 	{
-		renderList.push_back(
-		{
-			current,
-			transform,
-			current->GetGeometryMatrix()
-		} );
-	}				
+		current,
+		transform
+	} );
 						   
 	// Handle children
 	Object::ptr child = current->GetFirstChild();
 	while( child )
 	{
-		if( child->GetEnabled() ) 
+		if( child->IsEnabled() ) 
 		{
 			Accumulate( renderList, cameraList, child, transform );
 		}
@@ -316,7 +331,7 @@ void Scene::Render( size_t index, const Viewport & viewport )
 	
 	unify::Matrix transform = unify::Matrix::MatrixIdentity();
 
-	if( GetRoot() && GetRoot()->GetEnabled() )
+	if( GetRoot() && GetRoot()->IsEnabled() )
 	{
 		Accumulate( renderList, cameraList, GetRoot(), transform );
 	}
@@ -331,7 +346,7 @@ void Scene::Render( size_t index, const Viewport & viewport )
 
 		for( auto object : renderList )
 		{
- 			renderInfo.SetWorldMatrix( object.geometry * object.transform );
+ 			renderInfo.SetWorldMatrix( object.transform );
 			object.object->RenderSimple( renderInfo );
 		}
 	}
@@ -426,16 +441,6 @@ void Scene::SetEnabled( bool enabled )
 bool Scene::GetEnabled() const
 {
     return m_enabled;
-}
-
-void Scene::SetVisible( bool visible )
-{
-    m_visible = visible;
-}
-
-bool Scene::GetVisible() const
-{
-    return m_visible;
 }
 
 void Scene::SetFocus( bool focus )

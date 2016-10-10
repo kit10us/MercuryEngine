@@ -3,6 +3,7 @@
 #pragma once
 
 #include <dxi/scene/IComponent.h>
+#include <dxi/scene/GeometryComponent.h>
 #include <dxi/Effect.h>
 #include <dxi/RenderInfo.h>
 #include <dxi/Geometry.h>
@@ -38,8 +39,8 @@ namespace dxi
             };
 
 		    Object();
-			explicit Object( Geometry::shared_ptr geometry, std::shared_ptr< physics::IInstance > physics = std::shared_ptr< physics::IInstance >() );
-			Object( Geometry::shared_ptr geometry, const unify::V3< float > position );
+			explicit Object( Geometry::ptr geometry, std::shared_ptr< physics::IInstance > physics = std::shared_ptr< physics::IInstance >() );
+			Object( Geometry::ptr geometry, const unify::V3< float > position );
 		    virtual ~Object();
 
 			void SetName( std::string name );
@@ -60,49 +61,31 @@ namespace dxi
 			int FindComponent( std::string name, int startIndex = 0 ) const;
 
             void SetEnabled( bool enabled );
-            bool GetEnabled() const;
-
-            void SetVisible( bool visible );
-            bool GetVisible() const;
+            bool IsEnabled() const;
 
             void SetSelectable( bool selectable );
             bool GetSelectable() const;
 			
 		    void CheckFrame( bool checkFrame );
 		    bool CheckFrame() const;
+
 		    unify::FrameLite & GetFrame();
 		    const unify::FrameLite & GetFrame() const;
-		    void SetEffect( const Effect & pEffect );
-		    Effect & GetEffect();
 
-			Geometry::shared_ptr GetGeometry();
-			void SetGeometry( Geometry::shared_ptr geometry );
+			void SetGeometry( Geometry::ptr geometry );	
 
-		    std::shared_ptr< physics::IInstance > GetPhysics();
-		    std::shared_ptr< const physics::IInstance > GetPhysics() const;
-		    void SetPhysics( std::shared_ptr< physics::IInstance > physics );
+			unify::Matrix & GetGeometryMatrix();
 
 		    controllers::IController::shared_ptr GetController();
 		    void SetController( controllers::IController::shared_ptr controller );
 			
+			void OnStart();
 			void Update( const RenderInfo & renderInfo, core::IInput & input );
-
-
 			void RenderSimple( const RenderInfo & renderInfo );
 		    void RenderHierarchical( const RenderInfo & renderInfo );
+			void OnSuspend();
+			void OnResume();
 		    
-            void RenderBBox( bool bTF );
-		    bool RenderBBox() const;
-		    unify::BBox< float > GetBBoxXFormed();
-			const unify::BBox< float > & GetBBox();
-		    void SyncFrame( const unify::Frame & frame );
-		    void SyncBBox( const unify::BBox< float > & bbox );
-		    
-			unify::Matrix & GetGeometryMatrix();
-			const unify::Matrix & GetGeometryMatrix() const;
-
-		    GeometryInstanceData::shared_ptr GetGeometryInstanceData();
-
 			Object::ptr GetPrevious();
 			const Object::ptr GetPrevious() const;
 
@@ -124,7 +107,6 @@ namespace dxi
 			std::map< std::string, std::string > m_tags;
 
             bool m_enabled;
-            bool m_visible;
             bool m_selectable;	  
 
 			std::list< IComponent::ptr > m_components;
@@ -137,24 +119,7 @@ namespace dxi
 
 		    unify::FrameLite m_frame;
 
-		    unify::Matrix m_geometryMatrix;
-			
-			Geometry::shared_ptr m_geometry;
-			GeometryInstanceData::shared_ptr m_geometryInstanceData;
-
-			Effect m_effect; // Overrides geometry's effects (passed to)
-
-		    std::shared_ptr< physics::IInstance > m_physics;
 		    controllers::IController::shared_ptr m_controller;
-
-		    // Blending backup...
-		    bool		m_restoreBlend;
-		    unsigned long	m_backup_AB;
-		    unsigned long	m_backup_SB;
-		    unsigned long	m_backup_DB;
-
-		    bool m_renderBBox;
-		    bool m_renderFrame;
 
 			Object::ptr m_previous;
 			Object::ptr m_next;

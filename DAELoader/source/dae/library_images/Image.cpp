@@ -15,7 +15,14 @@ Image::Image( IDocument & document, const qxml::Element * node )
 	{
 		if ( childNode->IsTagName( "init_from" ) )
 		{
-			unify::Path source = unify::Path( childNode->GetDocument()->GetPath().DirectoryOnly(), childNode->GetText() ).Normalize();
+			std::string filename = childNode->GetText();
+			size_t p = filename.find( "file:///" );
+			if ( p == 0 )
+			{
+				filename = filename.erase( 0, strlen( "file:///" ) );
+			}
+																	 			
+			unify::Path source = unify::Path( childNode->GetDocument()->GetPath().DirectoryOnly(), filename ).Normalize();
 			m_texture.reset( new dxi::Texture( source ) );
 		}
 	}

@@ -18,7 +18,7 @@ namespace dxi
 			std::string GetName() const override;
 			void SetName( std::string name ) override;
 
-			bool GetEnabled() const override;
+			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 
 		private:

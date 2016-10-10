@@ -173,13 +173,13 @@ bool Frustum::CastPoint( const unify::V2< float > & unit, unify::Ray< float > & 
         return false;
     }
 
-    unify::V3< float > vNear1 = unify::V3< float >::V3Interpolate( m_vCorner[ CORNER_xYz ], m_vCorner[ CORNER_XYz ], unit.x );
-    unify::V3< float > vNear2 = unify::V3< float >::V3Interpolate( m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_Xyz ], unit.x );
-    unify::V3< float > vNear = unify::V3< float >::V3Interpolate( vNear1, vNear2, unit.y );
+    unify::V3< float > vNear1 = unify::V3< float >::V3Lerp( m_vCorner[ CORNER_xYz ], m_vCorner[ CORNER_XYz ], unit.x );
+    unify::V3< float > vNear2 = unify::V3< float >::V3Lerp( m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_Xyz ], unit.x );
+    unify::V3< float > vNear = unify::V3< float >::V3Lerp( vNear1, vNear2, unit.y );
 
-    unify::V3< float > vFar1 = unify::V3< float >::V3Interpolate( m_vCorner[ CORNER_xYZ ], m_vCorner[ CORNER_XYZ ], unit.x );
-    unify::V3< float > vFar2 = unify::V3< float >::V3Interpolate( m_vCorner[ CORNER_xyZ ], m_vCorner[ CORNER_XyZ ], unit.x );
-    unify::V3< float > vFar = unify::V3< float >::V3Interpolate( vFar1, vFar2, unit.y );
+    unify::V3< float > vFar1 = unify::V3< float >::V3Lerp( m_vCorner[ CORNER_xYZ ], m_vCorner[ CORNER_XYZ ], unit.x );
+    unify::V3< float > vFar2 = unify::V3< float >::V3Lerp( m_vCorner[ CORNER_xyZ ], m_vCorner[ CORNER_XyZ ], unit.x );
+    unify::V3< float > vFar = unify::V3< float >::V3Lerp( vFar1, vFar2, unit.y );
 
     rayOut.origin = vNear;
     rayOut.direction = vFar - vNear;

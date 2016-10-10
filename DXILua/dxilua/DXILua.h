@@ -18,13 +18,13 @@ namespace dxilua
 		dxi::scripting::ExecuteResult ExecuteString( std::string line ) override;
 		dxi::scripting::ExecuteResult ExecuteFile( unify::Path path ) override;
 
-		dxi::scripting::IModule::ptr LoadModule( unify::Path path ) override;
+		dxi::scripting::IModule::ptr LoadModule( unify::Path path, dxi::scene::Object::ptr object ) override;
 
 		static dxi::core::Game * GetGame();
 
 	private:
 		dxi::core::Game * m_game;		
-		lua_State * m_state;
+		//lua_State * m_state;
 
 		static ScriptEngine * s_se;
 	};

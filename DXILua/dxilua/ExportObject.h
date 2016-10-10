@@ -4,6 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
+#include <dxi/scene/Object.h>
 
 void RegisterObject( lua_State * state );
 

@@ -134,7 +134,7 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 				unify::Path geometryPath( filePath); 
 				geometryPath.ChangeFilename( leaf.GetAttribute("geometry")->GetString() );
 				std::string geometryName = geometryPath.FilenameNoExtension();
-				Geometry::shared_ptr geometry( geometryManager->Add( geometryName, geometryPath ) );
+				Geometry::ptr geometry( geometryManager->Add( geometryName, geometryPath ) );
 				character = Character( geometry, size, geometryPostScale2D, geometryPostOffset2D, geometryPostScale3D, geometryPostOffset3D );
 			}
 			else

@@ -32,6 +32,7 @@ namespace unify
 		static ColorUnit ColorUnitGrey( float grey, float a = 1.0f );
 		static ColorUnit ColorUnitBlack( float a = 1.0f);
 		static ColorUnit ColorUnitZero();
+		static ColorUnit ColorUnitLerp( ColorUnit l, ColorUnit r, float ratio );
 
         float r, g, b, a;
 
@@ -41,7 +42,7 @@ namespace unify
 		explicit ColorUnit( const std::string & text, Order order = RGBA, float defaultAlpha = 1.0f );
 
 		void SetRGBA( float r, float g, float b, float a );
-		void Normalize();
+		ColorUnit Normalize() const;
 
 		// CONVERSIONS
 		operator Color();

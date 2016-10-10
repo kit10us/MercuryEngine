@@ -1,5 +1,0 @@
-E:\dev\ws\DXI\DXICSWrapper\bin\Debug\DXICSWrapper.dll
-E:\dev\ws\DXI\DXICSWrapper\bin\Debug\DXICSWrapper.pdb
-E:\dev\ws\DXI\DXICSWrapper\obj\Debug\DXICSWrapper.csprojResolveAssemblyReference.cache
-E:\dev\ws\DXI\DXICSWrapper\obj\Debug\DXICSWrapper.dll
-E:\dev\ws\DXI\DXICSWrapper\obj\Debug\DXICSWrapper.pdb

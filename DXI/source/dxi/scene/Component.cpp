@@ -25,7 +25,7 @@ void Component::SetName( std::string name )
 	m_name = name;
 }
 
-bool Component::GetEnabled() const
+bool Component::IsEnabled() const
 {
 	return m_enabled;
 }

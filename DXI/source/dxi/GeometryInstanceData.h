@@ -18,7 +18,8 @@ namespace dxi
 	class GeometryInstanceData
 	{
 	public:
-		typedef std::shared_ptr< GeometryInstanceData > shared_ptr;
+		typedef std::shared_ptr< GeometryInstanceData > ptr;
+
 		GeometryInstanceData();
 		virtual ~GeometryInstanceData();
 

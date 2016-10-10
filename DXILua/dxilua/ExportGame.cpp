@@ -11,11 +11,15 @@ extern "C"
 int Game_GetWidth( lua_State * state )
 {
 	int args = lua_gettop( state );
-	assert( args == 0 );
+	int renderer = 0;
+	if ( args == 1 )
+	{
+		renderer = lua_tonumber( state, 1 );
+	}
 
 	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game->GetOS().GetRenderer( 0 )->GetViewport().GetWidth() );
+	lua_pushnumber( state, game->GetOS().GetRenderer( renderer )->GetViewport().GetWidth() );
 
 	return 1;
 }
@@ -24,35 +28,39 @@ extern "C"
 int Game_GetHeight( lua_State * state )
 {
 	int args = lua_gettop( state );
-	assert( args == 0 );
+	int renderer = 0;
+	if( args == 1 )
+	{
+		renderer = lua_tonumber( state, 1 );
+	}
 
 	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game->GetOS().GetRenderer( 0 )->GetViewport().GetHeight() );
+	lua_pushnumber( state, game->GetOS().GetRenderer( renderer )->GetViewport().GetHeight() );
 
 	return 1;
 }
 
 extern "C"
-int Game_GetAspectRatioHW( lua_State * state )
+int Game_GetRendererCount( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
 	auto game = ScriptEngine::GetGame();
 
-	float hw = game->GetOS().GetRenderer( 0 )->GetViewport().GetHeight() / game->GetOS().GetRenderer( 0 )->GetViewport().GetWidth();
+	float result = game->GetOS().RendererCount();
 
-	lua_pushnumber( state, hw );
+	lua_pushnumber( state, result );
 
 	return 1;
 }
 
 static const luaL_Reg gameFuncs[] =
 {
-	{ "getwidth", Game_GetWidth },
-	{ "getheight", Game_GetHeight },
-	{ "getaspectratiohw", Game_GetAspectRatioHW },
+	{ "GetWidth", Game_GetWidth },
+	{ "GetHeight", Game_GetHeight },
+	{ "GetRendererCount", Game_GetRendererCount },
 	{ nullptr, nullptr }
 };
 

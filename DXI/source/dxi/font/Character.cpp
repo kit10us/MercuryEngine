@@ -34,7 +34,7 @@ Character::Character( const animation::Instance & animationInstance, Effect::ptr
 {
 }
 
-Character::Character( Geometry::shared_ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset3D )
+Character::Character( Geometry::ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset3D )
 : m_source( Source::Geometry )
 , m_geometry( geometry )
 , m_size( sizeInPixels )

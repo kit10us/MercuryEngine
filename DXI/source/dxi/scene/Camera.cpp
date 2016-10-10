@@ -36,3 +36,23 @@ unify::Matrix Camera::GetProjection() const
 {
 	return m_projection;
 }
+
+void Camera::OnStart()
+{
+}
+
+void Camera::Update( const RenderInfo & renderInfo, core::IInput & input )
+{
+}
+
+void Camera::Render( const RenderInfo & renderInfo )
+{
+}
+
+void Camera::OnSuspend()
+{
+}
+
+void Camera::OnResune()
+{
+}

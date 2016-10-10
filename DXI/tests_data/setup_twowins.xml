@@ -4,6 +4,6 @@
 <fullscreen>false</fullscreen>
 <resolution width="800" height="640"/>
 <extension>DXILua.dll</extension>
-<gamemodule type="LUA" source="game.lua"/>
+<gamemodule type="LUA" source="twowins.lua"/>
 </setup>
 </xml>

@@ -499,9 +499,6 @@
     <ClCompile Include="source\dxi\Geometry.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\GeometryGroup.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\GeometryPlacement.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -562,7 +559,10 @@
     <ClCompile Include="source\dxi\scene\Component.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\scene\Script.cpp">
+    <ClCompile Include="source\dxi\scene\GeometryComponent.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\ScriptComponent.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -745,9 +745,6 @@
     <ClInclude Include="source\dxi\Geometry.h">
       <Filter>dxi</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\GeometryGroup.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\GeometryPlacement.h">
       <Filter>dxi</Filter>
     </ClInclude>
@@ -823,14 +820,17 @@
     <ClInclude Include="source\dxi\scene\Component.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\scene\Script.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\scripting\IModule.h">
       <Filter>dxi\scipting</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\scripting\ExecuteResult.h">
       <Filter>dxi\scipting</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\GeometryComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\ScriptComponent.h">
+      <Filter>dxi\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

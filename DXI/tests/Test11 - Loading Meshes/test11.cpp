@@ -62,14 +62,14 @@ void MyGame::Startup()
 	cubeParameters.SetEffect( color3DEffect );
     cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-	Geometry::shared_ptr meshProg( shapes::CreateShape( cubeParameters ) );
+	Geometry::ptr meshProg( shapes::CreateShape( cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
 	progObject->SetGeometry( meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 				  
 	// From an XML file...
-	Mesh::shared_ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
+	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = scene->GetRoot()->AddChild( "XMLObject" );
 	xmlObject->SetGeometry( meshXML );
@@ -77,7 +77,7 @@ void MyGame::Startup()
 	xmlObject->GetGeometryMatrix().Scale( 0.10f );
 	
 	// From an ASE file...
-	Mesh::shared_ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
+	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = scene->GetRoot()->AddChild( "swordASE" );
 	aseObject->SetGeometry( meshASE );
@@ -86,10 +86,12 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 
-	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
-	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
-	Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
-	//Mesh::shared_ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/borgcube.dae" ) );
 	
 	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
 	daeModel->SetGeometry( meshDAE );

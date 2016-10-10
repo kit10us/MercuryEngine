@@ -2,6 +2,7 @@
 // All Rights Reserved
 #pragma once
 
+#include <dxi/core/IGame.h>
 #include <dxi/scene/Object.h>
 #include <dxi/scene/Camera.h>
 #include <dxi/physics/IScene.h>
@@ -10,7 +11,6 @@
 #include <unify/MinMax.h>
 #include <vector>
 #include <map>
-#include <dxi/core/GameDependant.h>
 
 #pragma comment( lib, "winmm" )
 
@@ -27,7 +27,7 @@ namespace dxi
 
     namespace scene
     {
-        class Scene : public events::ListenerMapOwner, public core::GameDependant
+        class Scene : public events::ListenerMapOwner
 	    {
 	    public:
 		    typedef std::shared_ptr< Scene > shared_ptr;
@@ -52,10 +52,14 @@ namespace dxi
 		    physics::IScene * GetPhysicsScene();
 		    const physics::IScene * GetPhysicsScene() const;
 
+			RenderInfo & GetRenderInfo();
+
+			void Start();
 			void Update( const RenderInfo & renderInfo, core::IInput & input );
-		    void UpdatePhysics();
-		    RenderInfo & GetRenderInfo();
 		    void Render( size_t renderer, const Viewport & viewport );
+			void Suspend();
+			void Resume();
+
 		    Object::ptr FindObject( const std::string & name );
     
 		    unsigned int LastCullCount() const;
@@ -85,9 +89,6 @@ namespace dxi
             void SetEnabled( bool enabled );
             bool GetEnabled() const;
 
-            void SetVisible( bool visible );
-            bool GetVisible() const;
-
             void SetFocus( bool focus );
             bool HasFocus() const;
             bool CantLoseFocus() const;
@@ -99,8 +100,9 @@ namespace dxi
             void SetObjectOver( Object::ptr objectOver );
 
 	    private:
+			core::IGame * m_game;
 			Object::ptr m_root;
-            std::string m_cameraName;
+			bool m_started;
 
 			std::shared_ptr< physics::IScene > m_physicsScene;
 		    unsigned int m_lastCullCount;
@@ -123,8 +125,7 @@ namespace dxi
 
             bool m_hasFocus;
             float m_order;
-            bool m_enabled; // Updates
-            bool m_visible; // Renders
+            bool m_enabled;
 
             Object::ptr m_objectOver;
             float m_mouseDownTimeLimit;

@@ -120,9 +120,10 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 			}
 		}
 	}
-																												
+			
+	// TODO: Make this dynamic from setup file.
 	GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 10, 20 ) ) );
-	//GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 820, 20 ) ) );
+	//TODO: GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( 800, 600 ), unify::V2< float >( 820, 20 ) ) );
 
 	// Creates displays...
 	GetOS().Startup();
@@ -130,9 +131,11 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	// Create asset managers...
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Texture >( "Texture" ) ) );
-	GetManager< Texture >()->AddFactory( ".dds", TextureFactoryPtr( new TextureSourceFactory( this ) ) ); // TODO: Can't we just share this between types?
-	GetManager< Texture >()->AddFactory( ".bmp", TextureFactoryPtr( new TextureSourceFactory( this ) ) );
-	GetManager< Texture >()->AddFactory( ".jpg", TextureFactoryPtr( new TextureSourceFactory( this ) ) );
+
+	TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
+	GetManager< Texture >()->AddFactory( ".dds", textureFactoryPtr ); // TODO: Can't we just share this between types?
+	GetManager< Texture >()->AddFactory( ".bmp", textureFactoryPtr );
+	GetManager< Texture >()->AddFactory( ".jpg", textureFactoryPtr );
 
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Effect >( "Effect" ) ) );
 	GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
@@ -175,7 +178,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 					std::string type = node.GetAttribute< std::string >( "type" );
 					auto se = GetScriptEngine( type );
 					assert( se ); //TODO: Handle error better.
-					m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
+					m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ), scene::Object::ptr() );
 				}
 			}
 		}
@@ -393,4 +396,9 @@ void Game::ReportError( ErrorLevel level, std::string source, std::string error 
 bool Game::HadCriticalError() const
 {
 	return m_criticalErrors.size() != 0;
+}
+
+Geometry::ptr Game::CreateShape( unify::Parameters parameters )
+{
+	return Geometry::ptr( shapes::CreateShape( parameters ) );
 }

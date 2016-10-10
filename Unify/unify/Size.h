@@ -52,6 +52,8 @@ namespace unify
             return Size< T2 >( static_cast< T2 >( width ), static_cast< T2 >( height ) );
         }
 
+		std::string ToString() const;
+
         T Units() const;
 
         // Returns a linear index assuming horizontal major. 

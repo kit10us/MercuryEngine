@@ -28,8 +28,7 @@ int Debug_WriteLine( lua_State * state )
 
 	int type = lua_type( state, 1 );
 
-	std::string log = lua_tostring( state, 1 );
-
+	std::string log = lua_tostring( state, 1 );			  
 
 	if ( log.empty() )
 	{

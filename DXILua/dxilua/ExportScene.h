@@ -4,6 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
+#include <dxi/scene/Scene.h>
 
 void RegisterScene( lua_State * state );
 

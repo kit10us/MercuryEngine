@@ -3,10 +3,14 @@
 
 #include <dxilua/DXILua.h>
 #include <dxilua/ExportObject.h>
+#include <dxilua/ExportTransform.h>
 #include <dxilua/ExportScene.h>
-#include <dxilua/ExportV2.h>
-#include <dxilua/ExportV3.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
 #include <dxilua/ExportMatrix.h>
+#include <dxilua/ExportCameraComponent.h>
+#include <dxi/scene/ScriptComponent.h>
+#include <dxilua/ExportGeometry.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -60,6 +64,31 @@ int Object_AddCamera( lua_State * state )
 	return 1;
 }
 
+int Object_AddScript( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 4 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	std::string name = lua_tostring( state, 2 );
+	std::string type = lua_tostring( state, 3 );
+	unify::Path source = lua_tostring( state, 4 );
+
+	dxi::scene::ScriptComponent * component = new scene::ScriptComponent();
+
+	auto game = ScriptEngine::GetGame();
+	auto se = game->GetScriptEngine( type );
+	assert( se ); //TODO: Handle error better.
+
+	scripting::IModule::ptr module = se->LoadModule( source, objectProxy->object );
+
+	component->SetModule( module );
+
+	objectProxy->object->AddComponent( scene::IComponent::ptr( component ) );
+
+	return 0;
+}
+
 int Object_Name( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -84,38 +113,14 @@ int Object_SetEnabled( lua_State * state )
 	return 0;
 }
 
-int Object_GetEnabled( lua_State * state )
+int Object_IsEnabled( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 		 
-	lua_pushboolean( state, objectProxy->object->GetEnabled() );
-
-	return 1;
-}
-
-int Object_SetVisible( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	bool visible = lua_toboolean( state, 2 ) ? true : false;
-
-	objectProxy->object->SetVisible( visible );
-	return 0;
-}
-
-int Object_GetVisible( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-
-	lua_pushboolean( state, objectProxy->object->GetVisible() );
+	lua_pushboolean( state, objectProxy->object->IsEnabled() );
 
 	return 1;
 }
@@ -132,7 +137,7 @@ int Object_SetSelectable( lua_State * state )
 	return 0;
 }
 
-int Object_GetSelectable( lua_State * state )
+int Object_IsSelectable( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
@@ -150,80 +155,22 @@ int Object_SetGeometry( lua_State * state )
 	assert( args == 2 );
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
-																	
-	std::string geometryName = lua_tostring( state, 2 );
-
-	auto game = ScriptEngine::GetGame();
-
-	auto geometry = game->GetManager< Geometry >()->Find( geometryName );
+							
+	Geometry::ptr geometry;
+	
+	// If string, pull an existing resource...
+	if ( lua_type( state, 2 ) == LUA_TSTRING ) 
+	{
+		std::string geometryName = lua_tostring( state, 2 );
+		auto game = ScriptEngine::GetGame();
+		geometry = game->GetManager< Geometry >()->Find( geometryName );
+	}
+	else
+	{
+		geometry = CheckGeometry( state, 2 )->geometry;
+	}
 
 	objectProxy->object->SetGeometry( geometry );
-
-	return 0;
-}
-
-int Object_SetPosition( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-
-	unify::V3< float > position( lua_ToV3( state, 2 ) );
-
-	auto game = ScriptEngine::GetGame();
-
-	objectProxy->object->GetFrame().SetPosition( position );
-
-	return 0;
-}
-
-int Object_LookAt( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-
-	unify::V3< float > position( lua_ToV3( state, 2 ) );
-
-	auto game = ScriptEngine::GetGame();
-
-	objectProxy->object->GetFrame().LookAt( position );
-
-	return 0;
-}
-
-int Object_Orbit( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 4 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-
-	unify::V3< float > origin( lua_ToV3( state, 2 ) );
-
-	unify::V2< float > axis( lua_ToV2( state, 3 ) );
-
-	float distance = (float)lua_tonumber( state, 4 );
-	
-	objectProxy->object->GetFrame().Orbit( origin, axis, unify::Angle::AngleInRadians( distance ) );
-
-	return 0;
-}
-
-int Object_RotateAbout( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-
-	unify::V3< float > axis( lua_ToV3( state, 2 ) );
-
-	float rotation = (float)lua_tonumber( state, 3 );
-
-	objectProxy->object->GetFrame().RotateAbout( axis, unify::Angle::AngleInRadians( rotation ) );
 
 	return 0;
 }
@@ -235,41 +182,70 @@ int Object_GetSize( lua_State * state )
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 
-	lua_pushnumber( state, objectProxy->object->GetBBox().Size().Length() );
+	// TODO:
+	lua_pushnumber( state, /*objectProxy->object->GetBBox().Size().Length()*/ 1.0f );
 
 	return 1;
 }
 
-int Object_Scale( lua_State * state )
+int Object_Transform( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+
+	TransformProxy ** childProxy = (TransformProxy**)(lua_newuserdata( state, sizeof( TransformProxy* ) ));
+	*childProxy = new TransformProxy;
+	luaL_setmetatable( state, "Transform" );
+	(*childProxy)->object = objectProxy->object;
+	(*childProxy)->transform = &objectProxy->object->GetFrame();
+	return 1;
+}
+
+int Object_GetComponent( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	float scale = (float)lua_tonumber( state, 2 );
+	std::string name = lua_tostring( state, 2 );
 
-	objectProxy->object->GetGeometryMatrix().Scale( scale );
-	return 0;
+	dxi::scene::IComponent::ptr component = objectProxy->object->GetComponent( name );
+
+	if ( ! component )
+	{
+		lua_pushnil( state );
+		return 1;
+	}
+
+	// Camera..
+	dxi::scene::Camera * cameraComponent = dynamic_cast<dxi::scene::Camera *>( component.get() );
+	if ( cameraComponent )
+	{
+		CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
+		*proxy = new CameraComponentProxy;
+		luaL_setmetatable( state, "CameraComponent" );
+		(*proxy)->camera = cameraComponent; 
+	}
+
+	return 1;
 }
 
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "AddChild", Object_AddChild },
 	{ "AddCamera", Object_AddCamera },
+	{ "AddScript", Object_AddScript },
 	{ "Name", Object_Name },
 	{ "SetEnabled", Object_SetEnabled },
-	{ "GetEnabled", Object_GetEnabled },
-	{ "SetVisible", Object_SetVisible },
-	{ "GetVisible", Object_GetVisible },
+	{ "GetEnabled", Object_IsEnabled },
 	{ "SetSelectable", Object_SetSelectable },
-	{ "GetSelectable", Object_GetSelectable },
+	{ "GetSelectable", Object_IsSelectable },
 	{ "SetGeometry", Object_SetGeometry },
-	{ "SetPosition", Object_SetPosition },
-	{ "LookAt", Object_LookAt },
-	{ "Orbit", Object_Orbit },
-	{ "RotateAbout", Object_RotateAbout },
 	{ "GetSize", Object_GetSize },
-	{ "Scale", Object_Scale },
+	{ "Transform", Object_Transform },
+	{ "GetComponent", Object_GetComponent },
 	{ nullptr, nullptr }
 };
 

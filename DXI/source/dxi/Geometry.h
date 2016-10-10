@@ -15,6 +15,7 @@
 #include <dxi/GeometryInstanceData.h>
 #include <dxi/PrimitiveList.h>
 #include <dxi/RenderInfo.h>
+#include <dxi/scene/Component.h>
 #include <unify/Unify.h>
 #include <unify/BSphere.h>
 #include <unify/BBox.h>
@@ -26,16 +27,10 @@ namespace dxi
 	class Geometry
 	{
 	public:
-		typedef std::shared_ptr< Geometry > shared_ptr;
-		typedef std::weak_ptr< Geometry > weak_ptr;
+		typedef std::shared_ptr< Geometry > ptr;
 
 		Geometry();
 		virtual ~Geometry() {}
-
-		void Create();
-		void Destroy();
-		void Validate();
-		void Invalidate();
 
 		virtual GeometryInstanceData * CreateInstanceData();
 		virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;

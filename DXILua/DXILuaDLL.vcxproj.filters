@@ -7,6 +7,12 @@
     <Filter Include="dll">
       <UniqueIdentifier>{78801e60-d16a-47b3-b5c9-36c659836dad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dxilua\shape">
+      <UniqueIdentifier>{e20edaad-5782-46f5-a9cd-5270462efcbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxilua\unify">
+      <UniqueIdentifier>{f8591f8a-a2a8-4251-b642-f1e1f74015c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h">
@@ -36,9 +42,6 @@
     <ClInclude Include="dxilua\ExportScene.h">
       <Filter>dxilua</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportCamera.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\ExportMatrix.h">
       <Filter>dxilua</Filter>
     </ClInclude>
@@ -51,11 +54,35 @@
     <ClInclude Include="dxilua\Module.h">
       <Filter>dxilua</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportV3.h">
+    <ClInclude Include="dxilua\CreateState.h">
       <Filter>dxilua</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportV2.h">
+    <ClInclude Include="dxilua\ExportTransform.h">
       <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportCameraComponent.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\shape\ExportShapeParameters.h">
+      <Filter>dxilua\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportColor.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportV2.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportV3.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportGeometry.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportSize3.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportSize2.h">
+      <Filter>dxilua\unify</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,9 +113,6 @@
     <ClCompile Include="dxilua\ExportScene.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportCamera.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
     <ClCompile Include="dxilua\ExportMatrix.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
@@ -101,11 +125,35 @@
     <ClCompile Include="dxilua\Module.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportV3.cpp">
+    <ClCompile Include="dxilua\CreateState.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportV2.cpp">
+    <ClCompile Include="dxilua\ExportTransform.cpp">
       <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportCameraComponent.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\shape\ExportShapeParameters.cpp">
+      <Filter>dxilua\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportV2.cpp">
+      <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportV3.cpp">
+      <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportColor.cpp">
+      <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportGeometry.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportSize3.cpp">
+      <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportSize2.cpp">
+      <Filter>dxilua\unify</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

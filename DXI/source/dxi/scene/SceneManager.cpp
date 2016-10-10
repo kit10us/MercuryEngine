@@ -168,7 +168,7 @@ void SceneManager::Render( size_t renderer, const Viewport & viewport )
     for( std::map< std::string, Scene::shared_ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
 	{
         Scene * scene = (*itr).second.get();
-        if ( scene->GetVisible() )
+        if ( scene->GetEnabled() )
         {
             sceneList.push_back( scene );
         }

@@ -6,6 +6,7 @@
 #include <lua.hpp>
 #include <unify/Matrix.h>
 
-int ExportMatrix( lua_State * state );
-
 unify::Matrix CheckMatrix( lua_State* state, int index );
+int PushMatrix( lua_State* state, const unify::Matrix & mat );
+
+int ExportMatrix( lua_State * state );

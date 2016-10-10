@@ -1,7 +1,7 @@
-axisIndex = 1
-totalRotation = 0
+local axisIndex = 1
+local totalRotation = 0
 
-function OnStart()
+function OnStart( me )
 	resources.add( "geometry", "cube", "media/ShapeCube.shape" )
 	resources.add( "geometry", "pointfield", "media/ShapePointField.shape" )
 	resources.add( "geometry", "pointring", "media/ShapePointRing.shape" )
@@ -17,64 +17,74 @@ function OnStart()
 	scene1 = Scene( "scene1" )
 	root = scene1:FindObject( "root" )
 	
-	proj = matrix.makeperspectivefovlh( math.pi / 4.0, game.getwidth()/ game.getheight(), 1, 1000 )
-	Camera.SetProjection( "x", proj )
+	proj = matrix.MakePerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
-	camera:SetPosition( V3.New( 0, 5, -17 ) )
-	camera:LookAt( V3.Zero() ) 
+	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
+	camera:Transform():LookAt( V3.Zero() ) 
 
-	scene1:SetSize( game.getwidth(), game.getheight() )
+	scene1:SetSize( game.GetWidth(), game.GetHeight() )
 
 	group = root:AddChild( "group" )
 	
 	cube = group:AddChild( "cube" )
 	cube:SetGeometry( "cube" )
-	cube:SetPosition( V3.New( -4.5, 3, 0 ) )	
+	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
+    cube:AddScript( "rotate", "lua", "script/rotate.lua" )
 	
 	pointfield = group:AddChild( "pointfield" )
 	pointfield:SetGeometry( "pointfield" )
-	pointfield:SetPosition( V3.New( -1.5, 3, 0 ) )
+	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
+    pointfield:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	pointring = group:AddChild( "pointring" )
 	pointring:SetGeometry( "pointring" )
-	pointring:SetPosition( V3.New( 1.5, 3, 0 ) )
+	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
+    pointring:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	dashring = group:AddChild( "dashring" )
 	dashring:SetGeometry( "dashring" )
-	dashring:SetPosition( V3.New( 4.5, 3, 0 ) )
+	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
+    dashring:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	pyramid = group:AddChild( "pyramid" )
 	pyramid:SetGeometry( "pyramid" )
-	pyramid:SetPosition( V3.New( -4.5, 0, 0 ) )
+	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
+    pyramid:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	circle = group:AddChild( "circle" )
 	circle:SetGeometry( "circle" )
-	circle:SetPosition( V3.New( -1.5, 0, 0 ) )
+	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
+    circle:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	sphere = group:AddChild( "sphere" )
 	sphere:SetGeometry( "sphere" )
-	sphere:SetPosition( V3.New( 1.5, 0, 0 ) )
+	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
+    sphere:AddScript( "rotate", "lua", "script/rotate.lua" )
 	   
 	cylinder = group:AddChild( "cylinder" )
 	cylinder:SetGeometry( "cylinder" )
-	cylinder:SetPosition( V3.New( 4.5, 0, 0 ) )
+	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
+    cylinder:AddScript( "rotate", "lua", "script/rotate.lua" )
 
 	tube = group:AddChild( "tube" )
 	tube:SetGeometry( "tube" )
-	tube:SetPosition( V3.New( -4.5, -3, 0 ) )
+	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
+    tube:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	plane = group:AddChild( "plane" )
 	plane:SetGeometry( "plane" )
-	plane:SetPosition( V3.New( -1.5, -3, 0 ) )
+	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
+    plane:AddScript( "rotate", "lua", "script/rotate.lua" )
 		
 	cone = group:AddChild( "cone" )
 	cone:SetGeometry( "cone" )
-	cone:SetPosition( V3.New( 1.5, -3, 0 ) )
+	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
+    cone:AddScript( "rotate", "lua", "script/rotate.lua" )
 end
 
-function OnUpdate()
+function OnUpdate( me )
 	rotation = Update.GetDelta()
 	
 	totalRotation = totalRotation + rotation
@@ -97,6 +107,5 @@ function OnUpdate()
 		axis.z = 1
 	end
 
-	--camera:RotateAbout( axis, rotation )
-	group:RotateAbout( axis, rotation )
+	group:Transform():RotateAbout( axis, rotation )
 end

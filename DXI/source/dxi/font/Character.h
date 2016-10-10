@@ -29,7 +29,7 @@ namespace dxi
 			Character();
 			Character( const Character & character );
 			Character( const animation::Instance & animationInstance, std::shared_ptr< Effect > effect );
-			Character( Geometry::shared_ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset3D );
+			Character( Geometry::ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset3D );
 			~Character() throw ();
 
 			Source::TYPE GetSource() const;

@@ -8,7 +8,6 @@
 /// </summary>
 
 #include <dxi/core/Game.h>
-#include <dxi/GeometryGroup.h>
 #include <dxi/shapes/ShapeCreators.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
@@ -70,7 +69,7 @@ public:
 		cubeParameters.SetEffect( effect );
 		cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-		cube.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( cubeParameters ) ) );
+		cube.SetGeometry( Geometry::ptr( shapes::CreateShape( cubeParameters ) ) );
 		cube.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pointField = *group->AddChild( "pointField" );
@@ -80,7 +79,7 @@ public:
 		pointFieldParameters.SetMajorRadius( 1.0f );
 		pointFieldParameters.SetCount( 1000 );
 		pointFieldParameters.SetDiffuse( unify::Color::ColorWhite() );
-		pointField.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( pointFieldParameters ) ) );
+		pointField.SetGeometry( Geometry::ptr( shapes::CreateShape( pointFieldParameters ) ) );
 		pointField.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pointRing = *group->AddChild( "pointRing" );
@@ -90,7 +89,7 @@ public:
 		pointRingParameters.SetMajorRadius( 0.75f );
 		pointRingParameters.SetCount( 1000 );
 		pointRingParameters.SetDiffuse( unify::Color::ColorRed() );
-		pointRing.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( pointRingParameters ) ) );
+		pointRing.SetGeometry( Geometry::ptr( shapes::CreateShape( pointRingParameters ) ) );
 		pointRing.GetFrame().SetPosition( positions[shape++] );
 
 		auto & dashRing = *group->AddChild( "dashRing" );
@@ -101,7 +100,7 @@ public:
 		dashRingParameters.SetSize( 0.5f );
 		dashRingParameters.SetCount( 5 );
 		dashRingParameters.SetDiffuse( unify::Color::ColorGreen() );
-		dashRing.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( dashRingParameters ) ) );
+		dashRing.SetGeometry( Geometry::ptr( shapes::CreateShape( dashRingParameters ) ) );
 		dashRing.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pyramid = *group->AddChild( "pyramid" );
@@ -109,7 +108,7 @@ public:
 		pyramidParameters.SetEffect( effect );
 		pyramidParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		pyramidParameters.SetDiffuse( unify::Color::ColorYellow() );
-		pyramid.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( pyramidParameters ) ) );
+		pyramid.SetGeometry( Geometry::ptr( shapes::CreateShape( pyramidParameters ) ) );
 		pyramid.GetFrame().SetPosition( positions[shape++] );
 
 		auto & circle = *group->AddChild( "circle" );
@@ -118,7 +117,7 @@ public:
 		circleParameters.SetSegments( 24 );
 		circleParameters.SetRadius( 1.0f );
 		circleParameters.SetDiffuse( unify::Color::ColorBlue() );
-		circle.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( circleParameters ) ) );
+		circle.SetGeometry( Geometry::ptr( shapes::CreateShape( circleParameters ) ) );
 		circle.GetFrame().SetPosition( positions[shape++] );
 
 		auto & sphere = *group->AddChild( "sphere" );
@@ -127,7 +126,7 @@ public:
 		sphereParameters.SetSegments( 24 );
 		sphereParameters.SetRadius( 1.0f );
 		sphereParameters.SetDiffuse( unify::Color::ColorCyan() );
-		sphere.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( sphereParameters ) ) );
+		sphere.SetGeometry( Geometry::ptr( shapes::CreateShape( sphereParameters ) ) );
 		sphere.GetFrame().SetPosition( positions[shape++] );
 
 		auto & cylinder = *group->AddChild( "cylinder" );
@@ -138,7 +137,7 @@ public:
 		cylinderParameters.SetHeight( 2.0f );
 		cylinderParameters.SetDiffuse( unify::Color::ColorMagenta() );
 		cylinderParameters.SetCaps( true );
-		cylinder.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( cylinderParameters ) ) );
+		cylinder.SetGeometry( Geometry::ptr( shapes::CreateShape( cylinderParameters ) ) );
 		cylinder.GetFrame().SetPosition( positions[shape++] );
 
 		auto & tube = *group->AddChild( "tube" );
@@ -149,7 +148,7 @@ public:
 		tubeParameters.SetMinorRadius( 0.5f );
 		tubeParameters.SetHeight( 2.0f );
 		tubeParameters.SetDiffuse( unify::Color::ColorRed() );
-		tube.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( tubeParameters ) ) );
+		tube.SetGeometry( Geometry::ptr( shapes::CreateShape( tubeParameters ) ) );
 		tube.GetFrame().SetPosition( positions[shape++] );
 
 		auto & plane = *group->AddChild( "plane" );
@@ -158,7 +157,7 @@ public:
 		planeParameters.SetSegments( 2 );
 		planeParameters.SetSize( unify::Size< float >( 2.0f, 2.0f ) );
 		planeParameters.SetDiffuse( unify::Color::ColorCyan() );
-		plane.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( planeParameters ) ) );
+		plane.SetGeometry( Geometry::ptr( shapes::CreateShape( planeParameters ) ) );
 		plane.GetFrame().SetPosition( positions[shape++] );
 
 		auto & cone = *group->AddChild( "cone" );
@@ -169,7 +168,7 @@ public:
 		coneParameters.SetHeight( 2.0f );
 		coneParameters.SetDiffuse( unify::Color::ColorGreen() );
 		coneParameters.SetCaps( true );
-		cone.SetGeometry( Geometry::shared_ptr( shapes::CreateShape( coneParameters ) ) );
+		cone.SetGeometry( Geometry::ptr( shapes::CreateShape( coneParameters ) ) );
 		cone.GetFrame().SetPosition( positions[shape++] );
 
 		//mainScene->GetRenderInfo().SetOption( RenderOption::NoFrame, true );

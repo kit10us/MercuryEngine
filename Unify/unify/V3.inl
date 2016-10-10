@@ -249,7 +249,7 @@ std::string V3< T >::ToString() const
 }
 
 template< typename T >
-V3< T > V3< T >::V3Interpolate( V3< T > first, V3< T > second, float ratio )
+V3< T > V3< T >::V3Lerp( V3< T > first, V3< T > second, float ratio )
 {
     V3< T > point( first + (second - first) * ratio );
     return point;

@@ -25,15 +25,9 @@ unify::Matrix CheckMatrix( lua_State* state, int index )
 	return mat;
 }
 
-
-int Matrix_MakeIdentity( lua_State * state )
+int PushMatrix( lua_State* state, const unify::Matrix & mat )
 {
-	int args = lua_gettop( state );
-	assert( args == 0 );
-
 	lua_newtable( state );
-
-	unify::Matrix mat = unify::Matrix::MatrixIdentity();
 
 	int index = 1;
 	for( int c = 0; c < 4; ++c )
@@ -49,7 +43,19 @@ int Matrix_MakeIdentity( lua_State * state )
 	return 1;
 }
 
-extern "C"
+int Matrix_MakeIdentity( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 0 );
+
+	lua_newtable( state );
+
+	unify::Matrix mat = unify::Matrix::MatrixIdentity();
+	PushMatrix( state, mat );
+
+	return 1;
+}
+
 int Matrix_MakePerspectiveFovLH( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -63,25 +69,36 @@ int Matrix_MakePerspectiveFovLH( lua_State * state )
 	lua_newtable( state );
 
 	unify::Matrix mat = unify::Matrix::MatrixPerspectiveFovLH( w, h, zn, zf );
-
-	int index = 1;
-	for( int c = 0; c < 4; ++c )
-	{
-		for( int r = 0; r < 4; ++r )
-		{
-			double value = mat( r, c );
-			lua_pushnumber( state, value );
-			lua_rawseti( state, -2, index++ );
-		}
-	}
+	PushMatrix( state, mat );
 
 	return 1;
 }
 
+int Matrix_MatrixOrthoOffCenterLH( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 6 );
+
+	float left = (float)lua_tonumber( state, 1 );
+	float right = (float)lua_tonumber( state, 2 );
+	float bottom = (float)lua_tonumber( state, 3 );
+	float top = (float)lua_tonumber( state, 4 );
+	float zn = (float)lua_tonumber( state, 5 );
+	float zf = (float)lua_tonumber( state, 6 );
+
+	lua_newtable( state );
+
+	unify::Matrix mat = unify::Matrix::MatrixOrthoOffCenterLH( left, right, bottom, top, zn, zf );
+	PushMatrix( state, mat );
+
+	return 1;
+}
+											   																					   
 static const luaL_Reg matrixFuncs[] =
 {
 	{ "makeidentity", Matrix_MakeIdentity },
-	{ "makeperspectivefovlh", Matrix_MakePerspectiveFovLH },
+	{ "MakePerspectiveFovLH", Matrix_MakePerspectiveFovLH },
+	{ "MatrixOrthoOffCenterLH", Matrix_MatrixOrthoOffCenterLH },
 	{ nullptr, nullptr }
 };
 

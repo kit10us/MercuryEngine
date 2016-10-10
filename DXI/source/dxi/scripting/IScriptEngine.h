@@ -22,7 +22,7 @@ namespace dxi
 			
 			virtual ExecuteResult ExecuteFile( unify::Path path ) = 0;
 
-			virtual IModule::ptr LoadModule( unify::Path path ) = 0;
+			virtual IModule::ptr LoadModule( unify::Path path, scene::Object::ptr object ) = 0;
 		};
 	}
 }

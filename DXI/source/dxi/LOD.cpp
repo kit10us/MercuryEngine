@@ -35,7 +35,7 @@ void QLOD::Invalidate()
 	// TODO:
 }
 
-void QLOD::Add( Geometry::shared_ptr geometry, float distanceStart )
+void QLOD::Add( Geometry::ptr geometry, float distanceStart )
 {
 	m_list.push_back( LODNode( geometry, distanceStart ) );
 	m_list.sort();
@@ -86,12 +86,12 @@ const unify::BBox< float > & QLOD::ComputeBounds()
 	return m_BBox;
 }
 
-Geometry::shared_ptr QLOD::GetLOD( unsigned int index )
+Geometry::ptr QLOD::GetLOD( unsigned int index )
 {
 	// This should ensure the next step doesn't ever hit end (overflow).
 	if( index >= (unsigned int)m_list.size() )
 	{
-		return Geometry::shared_ptr();
+		return Geometry::ptr();
 	}
 
 	std::list< LODNode >::iterator itr;

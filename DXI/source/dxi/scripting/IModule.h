@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/scene/Object.h>
 #include <memory>
 
 namespace dxi
@@ -16,8 +17,12 @@ namespace dxi
 
 			virtual ~IModule() {}
 
+			virtual void BindToObject( scene::Object::ptr object ) = 0;
+
 			virtual void OnStart() = 0;
 			virtual void OnUpdate() = 0;
+			virtual void OnSuspend() = 0;
+			virtual void OnResume() = 0;
 		};
 	}
 }

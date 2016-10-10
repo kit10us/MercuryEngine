@@ -30,17 +30,17 @@ ColorUnit ColorUnit::ColorUnitWhite( float a )
 
 ColorUnit ColorUnit::ColorUnitRed( float r, float a )
 {
-	return ColorUnit::ColorUnitRGBA( r, 1.0f, 1.0f, a );
+	return ColorUnit::ColorUnitRGBA( r, 0.0f, 0.0f, a );
 }
 
 ColorUnit ColorUnit::ColorUnitGreen( float g, float a )
 {
-	return ColorUnit::ColorUnitRGBA( 1.0f, g, 1.0f, a );
+	return ColorUnit::ColorUnitRGBA( 0.0f, g, 0.0f, a );
 }
 
 ColorUnit ColorUnit::ColorUnitBlue( float b, float a )
 {
-	return ColorUnit::ColorUnitRGBA( 1.0f, 1.0f, b, a );
+	return ColorUnit::ColorUnitRGBA( 0.0f, 0.0f, b, a );
 }
 
 ColorUnit ColorUnit::ColorUnitGrey( float grey, float a )
@@ -57,6 +57,11 @@ ColorUnit ColorUnit::ColorUnitZero()
 {
 	return ColorUnit::ColorUnitRGBA( 0, 0, 0, 0 );
 }
+
+ColorUnit ColorUnit::ColorUnitLerp( ColorUnit l, ColorUnit r, float ratio )
+{
+	return l * (1.0f - ratio) + r * ratio;
+}																  
 
 ColorUnit::ColorUnit()
 {
@@ -284,13 +289,15 @@ void ColorUnit::SetRGBA( float ri, float gi, float bi, float ai )
 	a = ai;
 }
 
-
-void ColorUnit::Normalize()
+ColorUnit ColorUnit::Normalize() const
 {
-	r = std::min< float >( std::max< float >( r, 1.0f ), 0.0f );
-	g = std::min< float >( std::max< float >( r, 1.0f ), 0.0f );
-	b = std::min< float >( std::max< float >( r, 1.0f ), 0.0f );
-	a = std::min< float >( std::max< float >( r, 1.0f ), 0.0f );
+	ColorUnit result = ColorUnitRGBA(
+		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ),
+		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ),
+		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ),
+		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ) 
+	);
+	return result;
 }
 
 std::string ColorUnit::ToString( ColorUnit::Order order ) const

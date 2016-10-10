@@ -63,8 +63,7 @@ namespace unify
 
 		// Named constructors...
 		static V3< T > V3Zero();
-		static V3< T > V3FromString( const std::string & fromString );
-        static V3< T > V3Interpolate( V3< T > first, V3< T > second, float ratio );
+        static V3< T > V3Lerp( V3< T > first, V3< T > second, float ratio );
         static V3< T > V3Cross( const V3< T > & a, const V3< T > & b );
         static V3< T > V3X( T x );
         static V3< T > V3Y( T y );
