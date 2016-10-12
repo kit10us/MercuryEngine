@@ -8,9 +8,7 @@
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/factory/GeometryFactory.h>
 #include <dxi/factory/ShapeFactory.h>
-#include <dxi/null/Input.h>
 #include <dxi/exception/FailedToCreate.h>
-#include <dxi/Input.h>
 #include <fstream>
 #include <chrono>
 #include <ctime>
@@ -29,7 +27,7 @@ void Game::Startup()
 	// STUBBED - optional for derived game class.
 }
 
-bool Game::Update( RenderInfo & renderInfo, IInput & input )
+bool Game::Update( RenderInfo & renderInfo )
 {
 	// STUBBED - optional for derived game class.
 	return true;
@@ -96,6 +94,14 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 		return false;
 	}
 
+	for( auto && arg : GetOS().GetCommandLine() )
+	{
+		if ( unify::Path( arg ).IsExtension( ".xml" ) )
+		{
+			m_setup = arg;
+		}
+	}
+
 	// Early setup...
 	if( m_setup.Exists() )
 	{
@@ -117,22 +123,30 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 					int height = node.GetAttribute< int >( "height" );
 					int x = node.GetAttributeElse< int >( "x", 0 );
 					int y = node.GetAttributeElse< int >( "y", 0 );
+					float nearZ = node.GetAttributeElse< float >( "nearz", 0.0f );
+					float farZ = node.GetAttributeElse< float >( "farz", 1000.0f );
 
+					core::Display display {};
 					if ( fullscreen )
 					{
-						GetOS().AddDisplay( core::Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) ) );
+						display = core::Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
 					}
 					else
 					{
-						GetOS().AddDisplay( core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) ) );
+						display = core::Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
 					}
+
+					display.SetNearZ( nearZ );
+					display.SetFarZ( farZ );
+
+					GetOS().AddDisplay( display );
 				}
 			}
 		}
 	}
 
 	// Creates displays...
-	GetOS().Startup();
+	GetOS().BuildRenderers();
 
 	// Create asset managers...
 
@@ -195,8 +209,8 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 		m_gameModule->OnStart();
 	}
 
-	m_input.reset( new null::Input );
-	//m_input.reset( new Input( GetOS() ) );
+	m_os->Startup();
+
 
 	// User startup...
 	Startup();
@@ -227,7 +241,7 @@ void Game::Tick()
 	unify::Seconds elapsed = micro * 0.000001f;
 	lastTime = currentTime;
 
-	BeforeUpdate();
+	m_inputManager.Update();
 
 	m_renderInfo.SetDelta( elapsed );
 
@@ -236,30 +250,17 @@ void Game::Tick()
 		m_gameModule->OnUpdate();
 	}
 
+	// TODO:
+	/*
 	if( GetInput().KeyPressed( Key::Escape ) )
 	{
 		RequestQuit();
 	}
+	*/
 
-	m_sceneManager->Update( m_renderInfo, GetInput() );
+	m_sceneManager->Update( m_renderInfo );
 
-	bool run = Update( m_renderInfo, GetInput() );
-	AfterUpdate();
-}
-
-void Game::BeforeUpdate()
-{
-	m_os;
-
-	unify::Size< int > resolution( GetOS().GetRenderer( 0 )->GetViewport().GetWidth(), GetOS().GetRenderer( 0 )->GetViewport().GetHeight() );
-	m_input->CallBeforeUpdate( resolution, GetOS().GetRenderer(0)->IsFullscreen() );
-
-	m_inputManager.Update();
-}
-
-void Game::AfterUpdate()
-{
-	m_input->CallAfterUpdate();
+	bool run = Update( m_renderInfo );
 }
 
 void Game::Draw()
@@ -356,11 +357,6 @@ void Game::RequestQuit()
 bool Game::IsQuitting() const
 {
 	return m_isQuitting;
-}
-
-IInput & Game::GetInput()
-{
-	return *m_input;
 }
 
 input::InputManager * Game::GetInputManager()

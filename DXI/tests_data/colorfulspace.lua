@@ -6,14 +6,18 @@ function OnStart( me )
 	local scene1 = Scene( "scene1" )
 	local root = scene1:FindObject( "root" )
 	
-	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
+	color3d = Effect( "color3d", "media/EffectColor.effect" )
+	borgcubeEffect = Effect( "borgcube", "media/EffectBorgCube.effect" )
+	
+	
+	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1200 )
 	
 	-- Add camera...
-	local camera = root:AddCamera( "camera", proj )	
+	camera = root:AddCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.Zero() ) 
 
-	scene1:SetSize( game.GetWidth(), game.GetHeight() )
+	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
 	group = root:AddChild( "group" )
 	
@@ -71,20 +75,91 @@ function OnStart( me )
 	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "script/rotatey.lua" )
+	
+	local pointfieldParameters = ShapeParameters( "pointfield" )
+	pointfieldParameters:SetEffect( color3d )
+	pointfieldParameters:SetMinorRadius( 1000 )
+	pointfieldParameters:SetMajorRadius( 1001.0 )
+	pointfieldParameters:SetCount( 10000 )
+	pointfieldParameters:SetDiffuse( Color.NewWhite() )
+	local spacefield = root:AddChild( "spacefield" )
+	spacefield:SetGeometry( Geometry( pointfieldParameters ) )
+	
+	local pointringParameters = ShapeParameters( "pointring" )
+	pointringParameters:SetEffect( color3d )
+	pointringParameters:SetMinorRadius( 10 )
+	pointringParameters:SetMajorRadius( 100 )
+	pointringParameters:SetCount( 100000 )
+	pointringParameters:SetDiffuse( Color.NewRed() )
+	local myring = group:AddChild( "myring" )
+	myring:SetGeometry( Geometry( pointringParameters ) )
+	
+	local pointringParameters = ShapeParameters( "pointring" )
+	pointringParameters:SetEffect( color3d )
+	pointringParameters:SetMinorRadius( 5 )
+	pointringParameters:SetMajorRadius( 50 )
+	pointringParameters:SetCount( 100000 )
+	pointringParameters:SetDiffuse( Color.NewBlue() )
+	local myring2 = group:AddChild( "myring2" )
+	myring2:SetGeometry( Geometry( pointringParameters ) )
+	myring2:AddScript( "rotatex", "lua", "script/rotatex.lua" )
+	myring2:AddScript( "rotatez", "lua", "script/rotatez.lua" )
+	myring2:AddScript( "rotatey", "lua", "script/rotatey.lua" )
+
+	local pointringParameters = ShapeParameters( "pointring" )
+	pointringParameters:SetEffect( color3d )
+	pointringParameters:SetMinorRadius( 20 )
+	pointringParameters:SetMajorRadius( 150 )
+	pointringParameters:SetCount( 1000000 )
+	pointringParameters:SetDiffuse( Color.NewGreen() )
+	local myring3 = group:AddChild( "myring3" )
+	myring3:SetGeometry( Geometry( pointringParameters ) )
+	myring3:AddScript( "rotatey", "lua", "script/rotatey.lua" )
+	myring3:AddScript( "rotatex", "lua", "script/rotatex.lua" )
+	myring3:AddScript( "rotatez", "lua", "script/rotatez.lua" )
+	myring3:AddScript( "rotatey", "lua", "script/rotatey.lua" )
 end
 
 function OnUpdate( me )
 	local rotation = Update.GetDelta()
+	
+	local mouse = Input( "Mouse" )
+	if mouse then
+		if mouse:GetState( 0, "RightButton", "Pressed" ) == 1 then
+			autoRotate = not autoRotate
+		end
+		
+		if not autoRotate then
+			if mouse:GetState( 0, "LeftButton", "Down" ) == 1 then
+				local changeX = mouse:GetValue( 0, "ChangeX" )
+				local changeY = mouse:GetValue( 0, "ChangeY" )
+				
+				local rotation = Matrix.NewRotationY( Update.GetDelta() * changeX * 0.2 )
+				group:Transform():PostMul( rotation )
 
+				local rotation = Matrix.NewRotationX( Update.GetDelta() * changeY * 0.2 )
+				group:Transform():PostMul( rotation )			
+			end
+			
+			
+			local mouseWheel = mouse:GetValue( 0, "MouseWheel" )
+			if mouseWheel > 0 or mouseWheel < 0 then
+				local v = 1 + ( mouseWheel * Update.GetDelta() )
+				Debug.WriteLine( tostring( v ) ) 
+				local scale = Matrix.NewScale( v )
+				group:Transform():PostMul( scale )
+			end			
+		end
+	end	
+	
 	local gamepad = Input( "Gamepad" )
 	if gamepad then
 		if gamepad:GetState( 0, "Back", "Pressed" ) == 1 then
-			game.Quit()
+			Game.Quit()
 		end
 
 		if gamepad:GetState( 0, "Y", "Pressed" ) == 1 then
-			autoRotate = not autoRotate;
-			Debug.WriteLine( "autoRotate = " .. tostring( autoRotate ) )
+			autoRotate = not autoRotate
 		end
 		
 		if not autoRotate then
@@ -92,14 +167,14 @@ function OnUpdate( me )
 				local v = gamepad:GetValue( 0, "ThumbLX" )
 				if v > 0.1  or v < -0.1 then
 					local rotation = Matrix.NewRotationY( Update.GetDelta() * v * 2.0 )
-					group:Transform():PreMul( rotation )
+					group:Transform():PostMul( rotation )
 				end
 			end	
 			if gamepad:HasValue( 0, "ThumbLY" ) then
 				local v = gamepad:GetValue( 0, "ThumbLY" )
 				if v > 0.1  or v < -0.1 then
 					local rotation = Matrix.NewRotationX( Update.GetDelta() * v * 2.0 )
-					group:Transform():PreMul( rotation )
+					group:Transform():PostMul( rotation )
 				end
 			end	
 			
@@ -113,9 +188,37 @@ function OnUpdate( me )
 				local rotation = Matrix.NewRotationZ( Update.GetDelta() * v * -2.0 )
 				group:Transform():PreMul( rotation )				
 			end
+			
+			if gamepad:HasValue( 0, "ThumbRX" ) then
+				local v = gamepad:GetValue( 0, "ThumbRX" )
+				if v > 0.1  or v < -0.1 then
+					local rotation = Matrix.NewRotationY( Update.GetDelta() * v * 2.0 )
+					camera:Transform():PreMul( rotation )
+				end
+			end	
+			if gamepad:HasValue( 0, "ThumbRY" ) then
+				local v = gamepad:GetValue( 0, "ThumbRY" )
+				if v > 0.1  or v < -0.1 then
+					local rotation = Matrix.NewRotationX( Update.GetDelta() * v * -2.0 )
+					camera:Transform():PreMul( rotation )
+				end
+			end	
+
+			if gamepad:GetState( 0, "DPAD_DOWN", "Down" ) == 1 then
+				local v = 1 + ( -1 * Update.GetDelta() )
+				Debug.WriteLine( tostring( v ) ) 
+				local scale = Matrix.NewScale( v )
+				group:Transform():PostMul( scale )
+			end								
+			if gamepad:GetState( 0, "DPAD_UP", "Down" ) == 1 then
+				local v = 1 + ( 1 * Update.GetDelta() )
+				Debug.WriteLine( tostring( v ) ) 
+				local scale = Matrix.NewScale( v )
+				group:Transform():PostMul( scale )
+			end								
+			
 		end
-	end
-	
+	end	
 	
 	if autoRotate == true then
 		totalRotation = totalRotation + rotation
@@ -138,9 +241,16 @@ function OnUpdate( me )
 			axis.z = 1
 		end
 		group:Transform():RotateAbout( axis, rotation )
+		
+		if axisIndex == 0 then
+			axis.y = -1
+		elseif axisIndex == 1 then
+			axis.x = -1
+		elseif axisIndex == 2 then
+			axis.z = -1
+		end
+		
+		camera:Transform():RotateAbout( axis, rotation )
+		
 	end
-
-	
-	Debug.WriteLine("niled references: size " .. tostring( collectgarbage("count") ))
-	
 end

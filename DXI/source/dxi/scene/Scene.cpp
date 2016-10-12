@@ -84,7 +84,7 @@ void Scene::Start()
 	GetRoot()->OnStart();
 }
 
-void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
+void Scene::Update( const RenderInfo & renderInfo )
 {
     if ( ! m_enabled )
     {
@@ -100,11 +100,11 @@ void Scene::Update( const RenderInfo & renderInfo, core::IInput & input )
 
 	if ( m_physicsScene )
     {
-		m_physicsScene->Update( renderInfo, input );
+		m_physicsScene->Update( renderInfo );
 	}
 
 	// Object updating (animation, independant physics)...
-	GetRoot()->Update( renderInfo, input );
+	GetRoot()->Update( renderInfo );
 
 	/*
 	// TODO: Commented out due to changes of object lists into scene nodes.

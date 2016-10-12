@@ -8,14 +8,14 @@ function OnStart( me )
 	scene1 = Scene( "scene1" )
 	root = scene1:FindObject( "root" )
 	
-	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
+	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth() / Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.Zero() )
 
-	scene1:SetSize( game.GetWidth(), game.GetHeight() )
+	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
 	group = root:AddChild( "group" )
 	

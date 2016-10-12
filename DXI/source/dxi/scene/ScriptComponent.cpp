@@ -30,7 +30,7 @@ void ScriptComponent::OnStart()
 	m_module->OnStart();
 }
 
-void ScriptComponent::Update( const RenderInfo & renderInfo, core::IInput & input )
+void ScriptComponent::Update( const RenderInfo & renderInfo )
 {
 	m_module->OnUpdate();
 }

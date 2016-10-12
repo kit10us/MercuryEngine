@@ -72,7 +72,7 @@ Scene::shared_ptr SceneManager::Find( std::string name )
 	return itr == m_scenes.end() ? Scene::shared_ptr() : itr->second;
 }
 
-void SceneManager::Update( const RenderInfo & renderInfo, core::IInput & input )
+void SceneManager::Update( const RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{
@@ -88,6 +88,9 @@ void SceneManager::Update( const RenderInfo & renderInfo, core::IInput & input )
             sceneList.push_back( scene );
         }
     }
+
+	/*
+	// TODO:
 
     unify::Any onUpdateEventData( EventData::OnUpdate( this, sceneList, renderInfo, input ) );
     GetListenerMap().Fire( "onUpdate", onUpdateEventData );
@@ -136,12 +139,13 @@ void SceneManager::Update( const RenderInfo & renderInfo, core::IInput & input )
             m_focusScene = newFocusScene;
         }
     }
+	*/
 
     // Update all scenes...
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Update( renderInfo, input );
+        scene->Update( renderInfo );
     }
 }
 

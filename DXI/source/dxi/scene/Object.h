@@ -28,10 +28,10 @@ namespace dxi
 
             struct EventData // Grouping of event datas...
             {
-				typedef std::tuple< Object *, unify::Seconds, core::IInput & > OnUpdate;
-                typedef std::tuple< Object *, float /*distance*/, core::IInput & > OnOverEnter;
+				typedef std::tuple< Object *, unify::Seconds > OnUpdate;
+                typedef std::tuple< Object *, float /*distance*/ > OnOverEnter;
                 typedef std::tuple< Object * /*previous object*/, Object * /*new object*/ > OnOverExit;
-                typedef std::tuple< Object *, float /*distance*/, core::IInput & > OnSelect;
+                typedef std::tuple< Object *, float /*distance*/ > OnSelect;
                 typedef std::tuple< Object *, unify::V3< float > /*original mouse coordinates*/ > OnDown;
                 typedef std::tuple< Object *, unify::V3< float > /*final mouse coordinates*/ > OnUp;
                 typedef std::tuple< Object *, unify::V3< float > /*new mouse coordiantes*/, unify::Ray< float >, bool /*once*/ > OnDrag;
@@ -80,7 +80,7 @@ namespace dxi
 		    void SetController( controllers::IController::shared_ptr controller );
 			
 			void OnStart();
-			void Update( const RenderInfo & renderInfo, core::IInput & input );
+			void Update( const RenderInfo & renderInfo );
 			void RenderSimple( const RenderInfo & renderInfo );
 		    void RenderHierarchical( const RenderInfo & renderInfo );
 			void OnSuspend();

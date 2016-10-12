@@ -28,10 +28,13 @@ namespace dxigp
 
 		float GetValue( size_t subSource, std::string name ) const override;
 
+		bool SetState( size_t subSource, std::string name, std::string condition, bool set ) override;
+
+		bool SetValue( size_t subSource, std::string name, float value ) override;
+
 	private:
 		dxi::core::Game * m_game;
 		std::map< DWORD, XINPUT_STATE > m_states;
 		std::map< DWORD, XINPUT_STATE > m_prevStates;
-
 	};
 }

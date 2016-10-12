@@ -7,7 +7,7 @@ function OnStart( me )
 	scene1 = Scene( "scene1" )
 	root = scene1:FindObject( "root" )
 	
-	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, game.GetWidth()/ game.GetHeight(), 1, 1000 )
+	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
@@ -15,7 +15,7 @@ function OnStart( me )
 	camera:Transform():LookAt( V3.Zero() )
 
 	if game.GetRendererCount() > 1 then
-		proj2 = Matrix.NewPerspectiveFovLH( 1, game.GetWidth()/ game.GetHeight(), 1, 1000 )		--proj2 = Matrix.NewOrthoOffCenterLH( 0, game.GetWidth(), 0, game.GetHeight(), -100, 100 )
+		proj2 = Matrix.NewPerspectiveFovLH( 1, Game.GetWidth() / Game.GetHeight(), 1, 1000 )		--proj2 = Matrix.NewOrthoOffCenterLH( 0, Game.GetWidth(), 0, Game.GetHeight(), -100, 100 )
 		camera2 = root:AddCamera( "Camera2", proj )
 		camera2:Transform():SetPosition( V3.New( 0, 0, -27 ) )
 		--camera2:Transform():LookAt( V3.Zero() )
@@ -23,7 +23,7 @@ function OnStart( me )
 		cameraComponent:SetRenderer( 1 )
 	end
 
-	scene1:SetSize( game.GetWidth(), game.GetHeight() )
+	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
 	group = root:AddChild( "group" )
 	

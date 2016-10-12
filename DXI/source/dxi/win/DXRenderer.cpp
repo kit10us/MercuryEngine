@@ -91,7 +91,7 @@ DXRenderer::DXRenderer( WindowsOS * os, core::Display display )
 	// Set our view matrix...
 	D3DXMATRIX finalMatrix;
 
-	D3DXMatrixOrthoOffCenterLH( &finalMatrix, 0, display.GetSize().width, display.GetSize().height, 0, display.GetDepth().Min(), display.GetDepth().Max() );
+	D3DXMatrixOrthoOffCenterLH( &finalMatrix, 0, display.GetSize().width, display.GetSize().height, 0, display.GetNearZ(), display.GetFarZ() );
 	m_dxDevice->SetTransform( D3DTS_PROJECTION, &finalMatrix );
 
 	GetDxDevice()->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
@@ -403,7 +403,7 @@ void DXRenderer::SetCullMode( CullMode::TYPE mode )
 
 Viewport DXRenderer::GetViewport() const
 {
-	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetDepth().Min(), GetDisplay().GetDepth().Max() );
+	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetNearZ(), GetDisplay().GetFarZ() );
 }
 
 bool DXRenderer::IsFullscreen() const

@@ -18,10 +18,8 @@ namespace dxi
 	{
 		class Display
 		{
-		private:
-			Display();
-
 		public:
+			Display();
 			static Display CreateDialog( WORD dialogResourceID, HWND parent = HWND(), unify::V2< float > position = unify::V2< float >( 0.0f, 0.0f ), DLGPROC dialogProc = 0 );
 			static Display CreateWindowedDirectXDisplay( unify::Size< float > size, unify::V2< float > position = unify::V2< float >( 0.0f, 0.0f ), HWND handle = {}, HWND parent = {} );
 			static Display CreateFullscreenDirectXDisplay( unify::Size< float > size, HWND handle = {} );
@@ -36,7 +34,11 @@ namespace dxi
 
 			unify::V2< float > GetPosition() const;
 
-			unify::MinMax< float > GetDepth() const;
+			float GetNearZ() const;
+			float GetFarZ() const;
+
+			void SetNearZ( float z );
+			void SetFarZ( float z );
 
 			HWND GetHandle() const;
 			void SetHandle( HWND handle );
@@ -54,7 +56,8 @@ namespace dxi
 			HWND m_parentHandle;
 			unify::Size< float > m_size;
 			unify::V2< float > m_position;
-			unify::MinMax< float > m_depth;
+			float m_nearZ;
+			float m_farZ;
 
 			// Dialog only...
 			WORD m_resourceID;

@@ -4,7 +4,6 @@
 #pragma once
 
 #include <dxi/core/IGame.h>
-#include <dxi/core/IInput.h>
 #include <dxi/input/InputManager.h>
 #include <dxi/scene/SceneManager.h>
 #include <dxi/core/IOS.h>
@@ -30,7 +29,7 @@ namespace dxi
 
 			virtual bool Setup( IOS & os ) override;  
 			virtual void Startup() override;		  
-			virtual bool Update( RenderInfo & renderInfo, IInput & input ) override;
+			virtual bool Update( RenderInfo & renderInfo ) override;
 			virtual void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;			
 			virtual void Shutdown() override;
 
@@ -81,8 +80,6 @@ namespace dxi
 			void RequestQuit();
 			bool IsQuitting() const;
 
-			IInput & GetInput();
-
 			input::InputManager * GetInputManager();
 			const input::InputManager * GetInputManager() const;
 
@@ -98,9 +95,6 @@ namespace dxi
 			Geometry::ptr CreateShape( unify::Parameters parameters );
 
 		private:
-			void BeforeUpdate();
-			void AfterUpdate();
-
 			unify::Path m_setup;
 			unify::Path m_logFile;
 			scripting::IModule::ptr m_gameModule;
@@ -117,8 +111,6 @@ namespace dxi
 			bool m_isQuitting;
 			
 			input::InputManager m_inputManager;
-			
-			std::shared_ptr< IInput > m_input;
 
 			std::map < std::string, std::shared_ptr< scripting::IScriptEngine >, unify::CaseInsensitiveLessThanTest > m_scriptEngines;
 

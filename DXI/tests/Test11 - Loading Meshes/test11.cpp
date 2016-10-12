@@ -20,7 +20,7 @@ protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup();
-	bool Update( RenderInfo & renderInfo, IInput & input );
+	bool Update( RenderInfo & renderInfo );
 } game;
 
 RegisterGame( game );
@@ -105,12 +105,12 @@ void MyGame::Startup()
 	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
 }
 
-bool MyGame::Update( RenderInfo & renderInfo, IInput & input )
+bool MyGame::Update( RenderInfo & renderInfo )
 {
 	// Use of camera controls to simplify camera movement...
 	scene::Object::ptr camera = GetSceneManager()->Find( "scene" )->GetRoot()->FindObject( "camera" );
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-	return Game::Update( renderInfo, input );
+	return Game::Update( renderInfo );
 }

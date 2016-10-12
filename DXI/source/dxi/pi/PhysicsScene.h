@@ -23,7 +23,7 @@ namespace dxi
 			virtual void AddShape( qxml::Element * element ) {}
 
 			void AddEnvironment( PhysicsEnvironment::shared_ptr environment );
-			void Update( const RenderInfo & renderInfo, core::IInput & input );
+			void Update( const RenderInfo & renderInfo );
 			void Render();
 		private:
 			unsigned int m_lastTime;

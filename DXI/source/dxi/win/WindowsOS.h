@@ -4,6 +4,7 @@
 #pragma once
 
 #include <dxi/core/IOS.h>
+#include <dxi/core/IGame.h>
 #include <dxi/win/DirectX.h>
 #include <dxi/win/DXRenderer.h>
 #include <dxi/core/Display.h>
@@ -24,10 +25,10 @@ namespace dxi
 	{
 		class WindowsOS : public core::IOS
 		{
-			WindowsOS();
+			WindowsOS( core::IGame * game );
 		public:
-			WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow, WNDPROC wndProc );
-			WindowsOS( HWND handle );
+			WindowsOS( core::IGame * game, HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow, WNDPROC wndProc );
+			WindowsOS( core::IGame * game, HWND handle );
 
 			virtual ~WindowsOS();
 
@@ -47,6 +48,8 @@ namespace dxi
 			HINSTANCE GetHInstance() const;
 			HWND GetHandle() const;
 
+			void BuildRenderers() override;
+
 			void Startup() override;
 			
 			void Shutdown() override;
@@ -57,7 +60,10 @@ namespace dxi
 
 			IDirect3DDevice9 * GetDxDevice();
 
+			LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
+
 		private:
+			core::IGame * m_game;
 			std::string m_name;
 			
 			HWND m_handle;
@@ -68,6 +74,9 @@ namespace dxi
 			WNDPROC m_wndProc;
 
 			CComPtr< IDirect3DDevice9 > m_dxDevice;
+
+			input::IInputSource * m_keyboard;
+			input::IInputSource * m_mouse;
 			
 			bool m_hasFocus;
 			std::list< HWND > m_childHandles; // Handles to be serviced.

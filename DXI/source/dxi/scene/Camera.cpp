@@ -41,7 +41,7 @@ void Camera::OnStart()
 {
 }
 
-void Camera::Update( const RenderInfo & renderInfo, core::IInput & input )
+void Camera::Update( const RenderInfo & renderInfo )
 {
 }
 

@@ -217,3 +217,13 @@ float Gamepad::GetValue( size_t subSource, std::string name ) const
 
 	return false;
 }
+
+bool Gamepad::SetState( size_t subSource, std::string name, std::string condition, bool set )
+{
+	return false;
+}
+
+bool Gamepad::SetValue( size_t subSource, std::string name, float value )
+{
+	return false;
+}

@@ -13,7 +13,7 @@ int Game_GetWidth( lua_State * state )
 	int renderer = 0;
 	if ( args == 1 )
 	{
-		renderer = lua_tonumber( state, 1 );
+		renderer = (int)lua_tonumber( state, 1 );
 	}
 
 	auto game = ScriptEngine::GetGame();
@@ -29,7 +29,7 @@ int Game_GetHeight( lua_State * state )
 	int renderer = 0;
 	if( args == 1 )
 	{
-		renderer = lua_tonumber( state, 1 );
+		renderer = (int)lua_tonumber( state, 1 );
 	}
 
 	auto game = ScriptEngine::GetGame();
@@ -77,6 +77,6 @@ static const luaL_Reg gameFuncs[] =
 int ExportGame( lua_State * state )
 {
 	luaL_newlib( state, gameFuncs );
-	lua_setglobal( state, "game" );
+	lua_setglobal( state, "Game" );
 	return 1;
 }

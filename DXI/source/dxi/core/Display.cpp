@@ -60,7 +60,8 @@ Display::Display()
 , m_resourceID {}
 , m_isFullscreen {}
 , m_dialogProc {}	
-, m_depth{ 0.0f, 1000.0f }
+, m_nearZ{ 0.0f }
+, m_farZ{ 1000.0f }
 {
 }
 
@@ -84,9 +85,24 @@ unify::V2< float > Display::GetPosition() const
 	return m_position;
 }
 
-unify::MinMax< float > Display::GetDepth() const
+float Display::GetNearZ() const
 {
-	return m_depth;
+	return m_nearZ;
+}
+
+float Display::GetFarZ() const
+{
+	return m_farZ;
+}
+
+void Display::SetNearZ( float z )
+{
+	m_nearZ = z;
+}
+
+void Display::SetFarZ( float z )
+{
+	m_farZ = z;
 }
 
 HWND Display::GetHandle() const

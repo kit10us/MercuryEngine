@@ -71,7 +71,7 @@ public:
 		m_triangleVB.Create( 6, vd, aTriangle );
 	}
 
-	bool Update( RenderInfo & renderInfo, IInput & input ) override
+	bool Update( RenderInfo & renderInfo ) override
 	{
 		unify::V3< float > eyePosition( 0, 0, -7 );
 		unify::Matrix rotation = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), m_rotation );
@@ -88,7 +88,7 @@ public:
 			800.0f/600.0f
 			, 1.0f, 1000.0f ) );
 
-		return Game::Update( renderInfo, input );
+		return Game::Update( renderInfo );
 	}
 
 	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override

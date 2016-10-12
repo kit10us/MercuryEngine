@@ -62,8 +62,20 @@ namespace dxi
 			/// <summary>
 			/// Returns value of named input; use HasValue first to verify the named values exists (once true, will always be true).
 			/// If the named input doesn't exist, this will return 0.
+			/// Valid ranges are 0.0 to 1.0f
 			/// </summary>
-			virtual float GetValue( size_t subSource, std::string name ) const = 0;													
+			virtual float GetValue( size_t subSource, std::string name ) const = 0;	
+
+			/// <summary>
+			/// Sets a writeable state. Returns false if we can't write to the state.
+			/// </summary>
+			virtual bool SetState( size_t subSource, std::string name, std::string condition, bool set ) = 0;
+
+			/// <summary>
+			/// Sets a writeable value. Returns false if we can't write to the value.
+			/// Valid ranges are 0.0 to 1.0f
+			/// </summary>
+			virtual bool SetValue( size_t subSource, std::string name, float value ) = 0;
 		};
 	}
 }

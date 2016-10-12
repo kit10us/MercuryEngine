@@ -16,7 +16,7 @@ bool __cdecl Startup( HWND hWnd, char * setup )
 {
 	if( g_game ) return false;
 
-	auto os = std::shared_ptr< core::IOS >( new win::WindowsOS( hWnd ) );
+	auto os = std::shared_ptr< core::IOS >( new win::WindowsOS( g_game, hWnd ) );
 
 	g_game = new core::Game( setup );
 

@@ -39,7 +39,7 @@ namespace dxi
             {
                 typedef std::tuple< Scene * /*new scene*/, Scene * /*prev scene*/ > OnFocus;
                 typedef std::tuple< Scene * /*prev scene*/ > OnFocusLost;
-				typedef std::tuple< Scene *, ObjectList &, const RenderInfo &, core::IInput & > OnUpdate;
+				typedef std::tuple< Scene *, ObjectList &, const RenderInfo & > OnUpdate;
             };
 
 		    Scene( core::IGame * game );
@@ -55,7 +55,7 @@ namespace dxi
 			RenderInfo & GetRenderInfo();
 
 			void Start();
-			void Update( const RenderInfo & renderInfo, core::IInput & input );
+			void Update( const RenderInfo & renderInfo );
 		    void Render( size_t renderer, const Viewport & viewport );
 			void Suspend();
 			void Resume();

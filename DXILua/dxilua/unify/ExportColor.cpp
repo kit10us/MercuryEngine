@@ -122,7 +122,7 @@ int Color_NewRed( lua_State * state )
 		float a = (float)lua_tonumber( state, 2 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitRed( r, a ) );
+	PushColor( state, unify::ColorUnit::ColorUnitRGBA( r, 0.0f, 0.0f, a ) );
 
 	return 1;
 }
@@ -160,7 +160,7 @@ int Color_NewBlue( lua_State * state )
 		float a = (float)lua_tonumber( state, 2 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitBlue( b, a ) );
+	PushColor( state, unify::ColorUnit::ColorUnitRGBA( 0.0f, 0.0f, b, a ) );
 
 	return 1;
 }

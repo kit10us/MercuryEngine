@@ -27,7 +27,7 @@ void PhysicsScene::AddEnvironment( PhysicsEnvironment::shared_ptr environment )
 	m_environments.push_back( environment );
 }
 
-void PhysicsScene::Update( const RenderInfo & renderInfo, core::IInput & input )
+void PhysicsScene::Update( const RenderInfo & renderInfo )
 {
 	// Prevent massive physics build up times.
 	float elapsed = renderInfo.GetDelta();

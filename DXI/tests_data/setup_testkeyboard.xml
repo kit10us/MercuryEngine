@@ -5,6 +5,7 @@
 <extension>DXILua.dll</extension>
 <extension>DAELoader.dll</extension>
 <extension>ASELoader.dll</extension>
-<gamemodule type="LUA" source="testkeyboard.lua"/>
+<extension>DXIKeyboard.dll</extension>
+<gamemodule type="LUA" source="test_inputs.lua"/>
 </setup>
 </xml>

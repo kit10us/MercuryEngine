@@ -6,6 +6,7 @@
 #include <dxi/win/WindowsOS.h>
 #include <dxi/win/DxDevice.h>
 #include <unify/Exception.h>
+#include <unify/Path.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <shellapi.h>
 
@@ -18,23 +19,27 @@ using namespace win;
 
 //extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
-WindowsOS::WindowsOS()
-: m_handle{}
+WindowsOS::WindowsOS( core::IGame * game )
+: m_game( game )
+, m_handle{}
 , m_hasFocus{}
 , m_hInstance{}
 , m_cmdShow{}
 , m_wndProc{}
+, m_keyboard{}
+, m_mouse{}
 {
 }
 
-WindowsOS::WindowsOS( HWND handle )
+WindowsOS::WindowsOS( core::IGame * game, HWND handle )
+: WindowsOS( game )
 {
 	m_handle = handle;
 	m_hInstance = (HINSTANCE)GetWindowLong( handle, GWL_HINSTANCE );
 }
 
-WindowsOS::WindowsOS( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int cmdShow, WNDPROC wndProc )
-: WindowsOS()
+WindowsOS::WindowsOS( core::IGame * game, HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int cmdShow, WNDPROC wndProc )
+: WindowsOS( game )
 {
 	{
 		using namespace std;
@@ -250,10 +255,26 @@ HWND WindowsOS::GetHandle() const
 	}
 }
 
-void WindowsOS::Startup()
+void WindowsOS::BuildRenderers()
 {		 
 	CreatePendingDisplays();
+
 	// TODO: DragAcceptFiles( this->GetHWnd(), true );
+}
+
+void WindowsOS::Startup()
+{
+	auto keyboardItr = m_game->GetInputManager()->Find( "Keyboard" );
+	if ( keyboardItr )
+	{
+		m_keyboard = keyboardItr.get();
+	}
+
+	auto mouseItr = m_game->GetInputManager()->Find( "Mouse" );
+	if ( mouseItr )
+	{
+		m_mouse = mouseItr.get();
+	}
 }
 
 void WindowsOS::Shutdown()
@@ -278,4 +299,206 @@ void WindowsOS::DebugWriteLine( const std::string & line )
 IDirect3DDevice9 * WindowsOS::GetDxDevice()
 {
 	return m_dxDevice;
+}
+
+LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
+{
+	core::IGame & game = *m_game;
+	static bool trackingMouse = false;
+
+	switch ( message )
+	{
+	case WM_CLOSE: // Fall through to WM_DESTROY...
+	case WM_DESTROY:
+		game.RequestQuit();
+		return 0;
+
+	case WM_MOUSELEAVE:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_LBUTTONDOWN:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				m_mouse->SetState( renderer, "LeftButton", "Down", true );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_LBUTTONUP:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				m_mouse->SetState( renderer, "LeftButton", "Down", false );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_RBUTTONDOWN:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				m_mouse->SetState( renderer, "RightButton", "Down", true );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_RBUTTONUP:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				m_mouse->SetState( renderer, "RightButton", "Down", false );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_MOUSEWHEEL:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		short zDelta = GET_WHEEL_DELTA_WPARAM( wParam );
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				m_mouse->SetValue( renderer, "MouseWheel", zDelta / (float)WHEEL_DELTA );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_MOUSEMOVE:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		// TODO:
+		// Enable tracking when the mouse leaves the client area...
+		if ( !trackingMouse )
+		{
+			TRACKMOUSEEVENT trackMouseEvent = TRACKMOUSEEVENT();
+			trackMouseEvent.cbSize = sizeof TRACKMOUSEEVENT;
+			trackMouseEvent.dwFlags = TME_LEAVE;
+			trackMouseEvent.hwndTrack = handle;
+			trackMouseEvent.dwHoverTime = HOVER_DEFAULT;
+			TrackMouseEvent( &trackMouseEvent );
+		}
+
+
+		RECT clientRect;
+		GetClientRect( handle, &clientRect );
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;				
+								
+				float width = static_cast<float>(GetRenderer( renderer )->GetViewport().GetWidth());
+				float height = static_cast< float >(GetRenderer( renderer )->GetViewport().GetHeight());
+				float clientWidth = static_cast< float >(clientRect.right);
+				float clientHeight = static_cast< float >(clientRect.bottom);
+
+				unify::V2< int > mousePosition( static_cast< int >(LOWORD( lParam )), static_cast< int >(HIWORD( lParam )) );
+				mousePosition.x *= static_cast< int >(width / clientWidth);
+				mousePosition.y *= static_cast< int >(height / clientHeight);
+
+				m_mouse->SetValue( renderer, "PositionX", mousePosition.x );
+				m_mouse->SetValue( renderer, "PositionY", mousePosition.y );
+				break;
+			}
+		}
+	}
+	break;
+
+	case WM_ACTIVATE:
+	{
+		WORD lowOrder = wParam & 0x0000FFFF;
+		bool minimized = (wParam & 0xFFFF0000) != 0;
+		switch ( lowOrder )
+		{
+		case WA_ACTIVE:
+		case WA_CLICKACTIVE:
+			SetHasFocus( true );
+			break;
+		case WA_INACTIVE:
+			SetHasFocus( false );
+			break;
+
+		default:
+			assert( 0 && "Invalid activity state!" );
+		}
+	}
+	break;
+	/*
+
+	case WM_DROPFILES:
+	{
+		HDROP drop = reinterpret_cast< HDROP >(wParam);
+
+		std::vector< unify::Path > files;
+		unify::V2< float > point;
+
+		size_t numberOfFiles = DragQueryFile( drop, 0xFFFFFFFF, 0, 0 );
+		for ( size_t file = 0; file < numberOfFiles; ++file )
+		{
+			char filePath[260];
+			DragQueryFileA( drop, file, filePath, 260 );
+			files.push_back( filePath );
+		}
+
+		POINT pt;
+		DragQueryPoint( drop, &pt );
+		point.x = static_cast< float >(pt.x);
+		point.y = static_cast< float >(pt.y);
+
+		game.OnDragDrop( files, point );
+	}
+	break;
+	*/
+	}
+
+	return DefWindowProc( handle, message, wParam, lParam );
 }

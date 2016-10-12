@@ -174,7 +174,7 @@ public:
 		//mainScene->GetRenderInfo().SetOption( RenderOption::NoFrame, true );
 	}
 
-	bool Update( RenderInfo & renderInfo, IInput & input )
+	bool Update( RenderInfo & renderInfo )
 	{
 		static size_t axisIndex = 1;
 		static unify::Angle totalRotation{};
@@ -195,7 +195,7 @@ public:
 		auto group = GetSceneManager()->Find( "main" )->FindObject( "group" );
 		group->GetFrame().RotateAbout( axis, rotation );
 
-		return Game::Update( renderInfo, input );
+		return Game::Update( renderInfo );
 	}
 } game;
 

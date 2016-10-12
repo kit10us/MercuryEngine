@@ -60,7 +60,7 @@ void GeometryComponent::OnStart()
 {
 }
 
-void GeometryComponent::Update( const RenderInfo & renderInfo, core::IInput & input )
+void GeometryComponent::Update( const RenderInfo & renderInfo )
 {
 	m_geometry->Update( renderInfo, m_geometryInstanceData.get() );
 }

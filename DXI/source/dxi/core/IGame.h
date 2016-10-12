@@ -4,11 +4,11 @@
 #pragma once
 
 #include <dxi/core/IOS.h>
-#include <dxi/core/IInput.h>
 #include <dxi/scripting/IScriptEngine.h>
 #include <unify/TimeDelta.h>
 #include <dxi/core/Extension.h>
 #include <dxi/RenderInfo.h>
+#include <dxi/input/InputManager.h>
 #include <rm/ResourceManagerSimple.h>
 
 namespace dxi
@@ -41,7 +41,7 @@ namespace dxi
 			/// <summary>
 			/// Update is called to enable objects to perform over-time operations.
 			/// </summary>
-			virtual bool Update( RenderInfo & renderInfo, IInput & input ) = 0;
+			virtual bool Update( RenderInfo & renderInfo ) = 0;
 
 			/// <summary>
 			/// Render is called to draw graphics.
@@ -84,6 +84,13 @@ namespace dxi
 			/// Add an extension.
 			/// </summary>
 			virtual void AddExtension( std::shared_ptr< Extension > extension ) = 0;
+
+			virtual void RequestQuit() = 0;
+
+			virtual bool IsQuitting() const = 0;
+
+			virtual input::InputManager * GetInputManager() = 0;
+			virtual const input::InputManager * GetInputManager() const = 0;
 
 			/// <summary>
 			/// This is our method of reporting issues, especially from modules.

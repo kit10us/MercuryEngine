@@ -184,7 +184,7 @@ void Object::OnStart()
 	}	
 }
 
-void Object::Update( const RenderInfo & renderInfo, core::IInput & input )
+void Object::Update( const RenderInfo & renderInfo )
 {
     // Do not update if we are not enabled.
     if ( ! m_enabled )
@@ -197,18 +197,18 @@ void Object::Update( const RenderInfo & renderInfo, core::IInput & input )
 	{
 		if( component->IsEnabled() )
 		{
-			component->Update( renderInfo, input );
+			component->Update( renderInfo );
 		}
 	}
 
 	if( GetFirstChild() )
 	{
-		GetFirstChild()->Update( renderInfo, input );
+		GetFirstChild()->Update( renderInfo );
 	}
 
 	if ( GetNext() )
 	{
-		GetNext()->Update( renderInfo, input );
+		GetNext()->Update( renderInfo );
 	}
 }
 

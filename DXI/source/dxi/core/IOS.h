@@ -61,6 +61,11 @@ namespace dxi
 			/// is directed to us.
 			/// </summary>
 			virtual bool GetHasFocus() const = 0;
+						  
+			/// <summary>
+			/// Build renderers.
+			/// </summary>
+			virtual void BuildRenderers() = 0;
 
 			/// <summary>
 			/// Startup and initalize Operating System specific dependencies.

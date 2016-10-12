@@ -6,6 +6,6 @@
 <extension>DAELoader.dll</extension>
 <extension>ASELoader.dll</extension>
 <extension>DXIGamepad.dll</extension>
-<gamemodule type="LUA" source="testgamepad.lua"/>
+<gamemodule type="LUA" source="test_inputs.lua"/>
 </setup>
 </xml>

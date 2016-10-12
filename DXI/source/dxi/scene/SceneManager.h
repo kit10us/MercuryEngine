@@ -18,7 +18,7 @@ namespace dxi
 
             struct EventData
             {
-				typedef std::tuple< SceneManager *, std::list< Scene * > &, const RenderInfo &, core::IInput & > OnUpdate;
+				typedef std::tuple< SceneManager *, std::list< Scene * > &, const RenderInfo & > OnUpdate;
             };
 
 		    SceneManager( core::IGame * game );
@@ -38,7 +38,7 @@ namespace dxi
             std::map< std::string, Scene::shared_ptr > & GetScenes();
             const std::map< std::string, Scene::shared_ptr > & GetScenes() const;
 
-			void Update( const RenderInfo & renderInfo, core::IInput & input );
+			void Update( const RenderInfo & renderInfo );
 		    void Render( size_t renderer, const Viewport & viewport );
 
 	    private:

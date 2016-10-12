@@ -47,7 +47,6 @@
     <ClCompile Include="source\dxi\GeometryPlacement.cpp" />
     <ClCompile Include="source\dxi\IndexBuffer.cpp" />
     <ClCompile Include="source\dxi\IndexLock.cpp" />
-    <ClCompile Include="source\dxi\Input.cpp" />
     <ClCompile Include="source\dxi\input\InputManager.cpp" />
     <ClCompile Include="source\dxi\LOD.cpp" />
     <ClCompile Include="source\dxi\Mesh.cpp" />
@@ -131,7 +130,6 @@
     <ClInclude Include="source\dxi\core\Game.h" />
     <ClInclude Include="source\dxi\core\GameDependant.h" />
     <ClInclude Include="source\dxi\core\IGame.h" />
-    <ClInclude Include="source\dxi\core\IInput.h" />
     <ClInclude Include="source\dxi\core\IOS.h" />
     <ClInclude Include="source\dxi\core\IRenderer.h" />
     <ClInclude Include="source\dxi\DataBuffer.h" />
@@ -171,10 +169,8 @@
     <ClInclude Include="source\dxi\GeometryPlacement.h" />
     <ClInclude Include="source\dxi\IndexBuffer.h" />
     <ClInclude Include="source\dxi\IndexLock.h" />
-    <ClInclude Include="source\dxi\Input.h" />
     <ClInclude Include="source\dxi\input\IInputSource.h" />
     <ClInclude Include="source\dxi\input\InputManager.h" />
-    <ClInclude Include="source\dxi\Keys.h" />
     <ClInclude Include="source\dxi\Lockable.h" />
     <ClInclude Include="source\dxi\LOD.h" />
     <ClInclude Include="source\dxi\Material.h" />

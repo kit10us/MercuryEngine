@@ -157,9 +157,6 @@
     <ClCompile Include="source\dxi\IndexLock.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\Input.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\animation\Instance.cpp">
       <Filter>dxi\animation</Filter>
     </ClCompile>
@@ -192,9 +189,6 @@
     </ClInclude>
     <ClInclude Include="source\dxi\font\TextBox3D.h">
       <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Keys.h">
-      <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\Lockable.h">
       <Filter>dxi</Filter>
@@ -394,16 +388,10 @@
     <ClInclude Include="source\dxi\controllers\IController.h">
       <Filter>dxi\controllers</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\core\IInput.h">
-      <Filter>dxi\core</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\IndexLock.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\IndexBuffer.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Input.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\physics\IInstance.h">
