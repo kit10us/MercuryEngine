@@ -12,6 +12,7 @@ using namespace scene;
 Scene::Scene( dxi::core::IGame * game )
 : m_game( game )
 , m_root( new Object )
+, m_inited( false )
 , m_started( false )
 , m_lastCullCount( 0 )
 , m_renderSolids( true )
@@ -79,13 +80,24 @@ Object::ptr Scene::FindObject( const std::string & name )
 	}
 }
 
-void Scene::Start()
+void Scene::OnInit()
+{
+	GetRoot()->OnInit();
+}
+
+void Scene::OnStart()
 {
 	GetRoot()->OnStart();
 }
 
 void Scene::Update( const RenderInfo & renderInfo )
 {
+	if ( ! m_inited )
+	{
+		OnInit();
+		m_inited = true;
+	}
+
     if ( ! m_enabled )
     {
         return;
@@ -94,7 +106,7 @@ void Scene::Update( const RenderInfo & renderInfo )
 	// On first update, call start ONCE.
 	if ( ! m_started )
 	{
-		Start();
+		OnStart();
 		m_started = true;
 	}
 
@@ -117,7 +129,7 @@ void Scene::Update( const RenderInfo & renderInfo )
 
         Frustum frustum( camera.GetMatrix() );
 
-        unify::Size< float > resolution = Game()->GetOS().GetResolution();
+        unify::Size< float > resolution = Game()->GetOS()->GetResolution();
         unify::V2< float > mouseUnit = input.MouseV2< float >();
         mouseUnit /= unify::V2< float >( resolution.width, resolution.height );
 

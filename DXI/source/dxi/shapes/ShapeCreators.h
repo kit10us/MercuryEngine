@@ -14,7 +14,6 @@ namespace dxi
     namespace shapes
     {
 		Mesh * CreateShape( unify::Parameters & parameters );
-		Mesh * CreateShape( const qjson::Object & json );
 	    void CreateShape( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
 	    void CreateShape_Cube( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
 	    void CreateShape_PointField( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );

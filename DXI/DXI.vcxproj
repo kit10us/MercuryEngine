@@ -24,7 +24,6 @@
     <ClCompile Include="source\dxi\core\Game.cpp" />
     <ClCompile Include="source\dxi\core\GameDependant.cpp" />
     <ClCompile Include="source\dxi\DataBuffer.cpp" />
-    <ClCompile Include="source\dxi\DirectXFile.cpp" />
     <ClCompile Include="source\dxi\Effect.cpp" />
     <ClCompile Include="source\dxi\factory\EffectFactories.cpp" />
     <ClCompile Include="source\dxi\events\ListenerContainer.cpp" />
@@ -72,13 +71,12 @@
     <ClCompile Include="source\dxi\RenderMethod.cpp" />
     <ClCompile Include="source\dxi\RenderMethodBuffer.cpp" />
     <ClCompile Include="source\dxi\RenderState.cpp" />
+    <ClCompile Include="source\dxi\scene\BBoxRendererComponent.cpp" />
     <ClCompile Include="source\dxi\scene\Camera.cpp" />
     <ClCompile Include="source\dxi\scene\Component.cpp" />
-    <ClCompile Include="source\dxi\scene\DefaultLoaders.cpp" />
     <ClCompile Include="source\dxi\scene\GeometryComponent.cpp" />
     <ClCompile Include="source\dxi\scene\Object.cpp" />
     <ClCompile Include="source\dxi\scene\Scene.cpp" />
-    <ClCompile Include="source\dxi\scene\SceneLoader.cpp" />
     <ClCompile Include="source\dxi\scene\SceneManager.cpp" />
     <ClCompile Include="source\dxi\factory\ShapeFactory.cpp" />
     <ClCompile Include="source\dxi\scene\ScriptComponent.cpp" />
@@ -133,7 +131,6 @@
     <ClInclude Include="source\dxi\core\IOS.h" />
     <ClInclude Include="source\dxi\core\IRenderer.h" />
     <ClInclude Include="source\dxi\DataBuffer.h" />
-    <ClInclude Include="source\dxi\DirectXFile.h" />
     <ClInclude Include="source\dxi\Effect.h" />
     <ClInclude Include="source\dxi\factory\EffectFactories.h" />
     <ClInclude Include="source\dxi\events\Listener.h" />
@@ -171,13 +168,10 @@
     <ClInclude Include="source\dxi\IndexLock.h" />
     <ClInclude Include="source\dxi\input\IInputSource.h" />
     <ClInclude Include="source\dxi\input\InputManager.h" />
-    <ClInclude Include="source\dxi\Lockable.h" />
     <ClInclude Include="source\dxi\LOD.h" />
-    <ClInclude Include="source\dxi\Material.h" />
     <ClInclude Include="source\dxi\Mesh.h" />
     <ClInclude Include="source\dxi\MeshAnimation.h" />
     <ClInclude Include="source\dxi\MeshInstanceData.h" />
-    <ClInclude Include="source\dxi\null\Input.h" />
     <ClInclude Include="source\dxi\pathing\general\Parallel.h" />
     <ClInclude Include="source\dxi\pathing\general\Split.h" />
     <ClInclude Include="source\dxi\pathing\Modifier.h" />
@@ -200,24 +194,19 @@
     <ClInclude Include="source\dxi\PlacementEntry.h" />
     <ClInclude Include="source\dxi\PrimitiveList.h" />
     <ClInclude Include="source\dxi\QCommonShaders.h" />
-    <ClInclude Include="source\dxi\QDIK.h" />
     <ClInclude Include="source\dxi\QGizmo.h" />
     <ClInclude Include="source\dxi\QGizmoCommon.h" />
-    <ClInclude Include="source\dxi\QOverlay.h" />
-    <ClInclude Include="source\dxi\QRenderStatistics.h" />
-    <ClInclude Include="source\dxi\QShadowVolume.h" />
     <ClInclude Include="source\dxi\RenderInfo.h" />
     <ClInclude Include="source\dxi\RenderMethod.h" />
     <ClInclude Include="source\dxi\RenderMethodBuffer.h" />
     <ClInclude Include="source\dxi\RenderState.h" />
+    <ClInclude Include="source\dxi\scene\BBoxRendererComponent.h" />
     <ClInclude Include="source\dxi\scene\Camera.h" />
     <ClInclude Include="source\dxi\scene\Component.h" />
-    <ClInclude Include="source\dxi\scene\DefaultLoaders.h" />
     <ClInclude Include="source\dxi\scene\GeometryComponent.h" />
     <ClInclude Include="source\dxi\scene\IComponent.h" />
     <ClInclude Include="source\dxi\scene\Object.h" />
     <ClInclude Include="source\dxi\scene\Scene.h" />
-    <ClInclude Include="source\dxi\scene\SceneLoader.h" />
     <ClInclude Include="source\dxi\scene\SceneManager.h" />
     <ClInclude Include="source\dxi\scene\ScriptComponent.h" />
     <ClInclude Include="source\dxi\scripting\ExecuteResult.h" />
@@ -263,11 +252,7 @@
   <ItemGroup>
     <None Include="source\dxi\frameanimation\FrameAnimationKey.inl" />
     <None Include="source\dxi\QGizmoCommon.inl" />
-    <None Include="source\dxi\QOverlay.inl" />
     <None Include="source\dxi\QPrimitiveGeometry.inl" />
-    <None Include="source\dxi\QRenderInfo.inl" />
-    <None Include="source\dxi\QRenderStatistics.inl" />
-    <None Include="source\dxi\QShadowVolume.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>DXI</ProjectName>

@@ -15,6 +15,18 @@
 using namespace dxilua;
 using namespace dxi;
 
+static size_t g_objectCount = 0;
+
+int PushObject( lua_State * state, dxi::scene::Object::ptr object )
+{
+	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
+	*childProxy = new ObjectProxy;
+	luaL_setmetatable( state, "Object" );
+	(*childProxy)->object = object;
+	g_objectCount++;
+	return 1;
+}
+
 ObjectProxy* CheckObject( lua_State* state, int index )
 {
 	ObjectProxy* ud = *(ObjectProxy**)luaL_checkudata( state, index, "Object" );
@@ -251,6 +263,9 @@ static const luaL_Reg ObjectFunctions[] =
 
 int Object_Constructor( lua_State * state )
 {
+	assert( 0 ); // NOT SUPPORTED.
+
+	/*
 	SceneProxy * sceneProxy = CheckScene( state, -1 );
 
 	std::string name = luaL_checkstring( state, -2 );
@@ -261,6 +276,7 @@ int Object_Constructor( lua_State * state )
 	auto game = ScriptEngine::GetGame();
 
 	(*objectProxy)->object = sceneProxy->scene->GetRoot()->AddChild( name );
+	*/
 	return 1;
 }
 
@@ -268,6 +284,7 @@ int Object_Destructor( lua_State * state )
 {
 	ObjectProxy * ObjectProxy = CheckObject( state, 1 );
 	delete ObjectProxy;
+	g_objectCount--;
 	return 0;
 }
 

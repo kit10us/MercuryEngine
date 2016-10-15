@@ -12,6 +12,8 @@ namespace dxi
 {
 	namespace scene
 	{
+		class Object;
+
 		class IComponent
 		{
 		public:
@@ -25,10 +27,34 @@ namespace dxi
 			virtual bool IsEnabled() const = 0;
 			virtual void SetEnabled( bool enabled ) = 0;
 
-			virtual void OnStart() = 0;
+			/// <summary>
+			/// Called once, regardless of enabled or not, before all other events.
+			/// </summary>
+			virtual void OnInit( Object * object ) = 0;
+
+			/// <summary>
+			/// called once, when enabled, only immediatly before the first OnUpdate.
+			/// </summary>
+			virtual void OnStart( Object * object ) = 0;
+
+			/// <summary>
+			/// Called every game update cycle.
+			/// </summary>
 			virtual void Update( const RenderInfo & renderInfo ) = 0;
+
+			/// <summary>
+			/// Called during rendering.
+			/// </summary>
 			virtual void Render( const RenderInfo & renderInfo ) = 0;
+
+			/// <summary>
+			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).
+			/// </summary>
 			virtual void OnSuspend() = 0;
+
+			/// <summary>
+			/// Called when resuming from suspending.
+			/// </summary>
 			virtual void OnResune() = 0;
 
 		private:

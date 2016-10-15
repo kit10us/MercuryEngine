@@ -30,19 +30,24 @@ namespace unify
 		BBox();
 		BBox( const V3< T > & inf, const V3< T > & sup );
 
-		BBox< T > operator * ( const V3< T > & muliplcand ) const;
-		BBox< T > & operator *= ( const V3< T > & muliplcand );
+		BBox< T > operator * ( const V3< T > & multiplicand ) const;
+		BBox< T > & operator *= ( const V3< T > & multiplicand );
 
-		BBox< T > operator + ( const V3< T > & v3 ) const;
-		BBox< T > & operator += ( const V3< T > & v3 );
-		
-		BBox< T > operator - ( const V3< T > & v3 ) const;
-		BBox< T > & operator -= ( const V3< T > & v3 );
+		BBox< T > operator * ( T multiplicand ) const;
+		BBox< T > & operator *= ( T multiplicand );
+
+		BBox< T > operator + ( const V3< T > & point ) const;
+		BBox< T > & operator += ( const V3< T > & point );
+
+		BBox< T > operator + ( const BBox< T > & bbox ) const;
+		BBox< T > & operator += ( const BBox< T > & bbox );
 
 		void GenerateCorners( V3< T > * bounds );
-		void Initialize( const V3< T > & inf = V3< T >::V3Zero(), const V3< T > & sup = V3< T >::V3Zero() );
-		void AddPoint( const V3< T > & point );
-		BBox & AddBBox( const BBox< T > & boundingBox );
+		void Clear();
+
+		/// <summary>
+		/// Add bouding box with spatial locations (basically, just adds the corners + an offset). This allows us to be a BB of BBs.
+		/// </summary>
 		BBox & AddBBoxWithPosition( const BBox< T > & boundingBox, const V3< T > & position );  
 		bool ContainsPoint( const V3< T > & point );
 		const V3< T > Size() const;

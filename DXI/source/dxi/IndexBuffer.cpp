@@ -19,12 +19,12 @@ IndexBuffer::IndexBuffer()
 
 IndexBuffer::~IndexBuffer()
 {
-	Release();
+	Destroy();
 }
 
 void IndexBuffer::Create( unsigned int uNumIndices, Index32 * source, BufferUsage::TYPE usage, unify::Flags flags )
 {
-	Release();
+	Destroy();
 
 	HRESULT hr = S_OK;
 
@@ -211,7 +211,7 @@ size_t IndexBuffer::Append( const IndexBuffer & from, size_t vertexOffset  )
 	return offset;
 }
 
-void IndexBuffer::Release()
+void IndexBuffer::Destroy()
 {
 	m_IB = nullptr;
 	m_length = 0;

@@ -70,6 +70,16 @@ BufferSet & PrimitiveList::AddBufferSet()
 	return *newSet.get();
 }
 
+void PrimitiveList::RemoveBufferSet( size_t index )
+{
+	m_buffers.erase( m_buffers.begin() + index );
+}
+
+void PrimitiveList::RemoveAllBufferSets()
+{
+	m_buffers.clear();
+}
+
 size_t PrimitiveList::GetBufferSetCount() const
 {
 	return m_buffers.size();
@@ -105,10 +115,11 @@ const frameanimation::AnimationSet & PrimitiveList::GetAnimationSet() const
 	return m_animationSet;
 }
 
-const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > & boundingBox ) const
+void PrimitiveList::ComputeBounds( unify::BBox< float > & bbox ) const
 {
-	boundingBox.Initialize();
+	bbox.Clear();
 
+	/*
 	VertexElement positionE = CommonVertexElement::Position();
 
 	// Loop through vertices for largest radius
@@ -128,5 +139,11 @@ const unify::BBox< float > & PrimitiveList::ComputeBounds( unify::BBox< float > 
 		}
 		vb.Unlock();
 	}
-	return boundingBox;
+	*/
+
+	for ( const auto & bs : m_buffers )
+	{
+		const VertexBuffer & vb = bs->GetVertexBuffer();
+		bbox += vb.GetBBox();
+	}
 }

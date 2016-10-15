@@ -12,11 +12,6 @@
 
 namespace dxi
 {
-	// Optimization Flags...
-	#define IGNORENORMALS	FLAG01
-	#define IGNORETEXCOORDS	FLAG02
-	#define IGNOREDIFFUSE	FLAG03
-
 	///<summary>
 	/// Holds data on how to render a set of primitives.
 	///</summary>
@@ -38,11 +33,12 @@ namespace dxi
 		void Render( const RenderInfo & renderInfo ) const;
 		
 		BufferSet & AddBufferSet();
+		void RemoveBufferSet( size_t i );
+		void RemoveAllBufferSets();
+
 		size_t GetBufferSetCount() const;
 		BufferSet & GetBufferSet( size_t index );
 		const BufferSet & GetBufferSet( size_t index ) const;
-
-		void SetRootFrame( unify::Frame * frame );
 
 		unify::FrameSet & GetFrameSet();
 		const unify::FrameSet & GetFrameSet() const;
@@ -50,7 +46,7 @@ namespace dxi
 		frameanimation::AnimationSet & GetAnimationSet();
 		const frameanimation::AnimationSet & GetAnimationSet() const;
 
-		const unify::BBox< float > & ComputeBounds( unify::BBox< float > & boundingBox ) const;
+		void ComputeBounds( unify::BBox< float > & bbox ) const;
 
 	protected:
 		std::vector< BufferSet::shared_ptr > m_buffers;

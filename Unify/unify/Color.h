@@ -25,9 +25,9 @@ namespace unify
         union {
 		    unsigned int c;
             struct {
-                Component r;
+				Component b;
                 Component g;
-                Component b;
+				Component r;
                 Component a;
             } components;
         };

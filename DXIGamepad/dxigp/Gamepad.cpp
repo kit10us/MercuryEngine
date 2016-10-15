@@ -24,7 +24,6 @@ std::string Gamepad::Name() const
 
 void Gamepad::Update()
 {
-	auto & os = m_game->GetOS();
 	m_prevStates = m_states;
 	m_states.clear();
 	for ( DWORD i = 0; i < XUSER_MAX_COUNT; ++i )

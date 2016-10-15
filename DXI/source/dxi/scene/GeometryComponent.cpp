@@ -56,7 +56,11 @@ const unify::Matrix & GeometryComponent::GetModelMatrix() const
 	return m_modelMatrix;
 }
 
-void GeometryComponent::OnStart()
+void GeometryComponent::OnInit( Object * object )
+{
+}
+
+void GeometryComponent::OnStart( Object * object )
 {
 }
 

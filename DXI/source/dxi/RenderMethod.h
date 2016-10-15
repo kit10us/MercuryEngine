@@ -50,6 +50,7 @@ namespace dxi
 		static RenderMethod CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::ptr effect );
 		static RenderMethod CreateTriangleList( unsigned int startVertex, unsigned int triangleCount, Effect::ptr effect );
 		static RenderMethod CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::ptr effect );
+		static RenderMethod CreateLineList( unsigned int startVertex, unsigned int lineCount, Effect::ptr effect );
 
 		static RenderMethod CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect );
 		static RenderMethod CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect );

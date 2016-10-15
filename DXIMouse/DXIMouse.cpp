@@ -14,7 +14,7 @@ void DeleterMouse( dximouse::Mouse * mouse )
 
 __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Document * document )
 {
-	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS().GetRenderer( 0 );
+	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS()->GetRenderer( 0 );
 	dxi::win::DX::SetDxDevice( dxRenderer->GetDxDevice() );
 
 	game->GetInputManager()->AddInputSource( dxi::input::IInputSource::ptr( new dximouse::Mouse( game ), DeleterMouse ) );

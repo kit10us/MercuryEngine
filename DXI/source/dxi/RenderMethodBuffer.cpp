@@ -14,7 +14,7 @@ RenderMethodBuffer::RenderMethodBuffer()
 {
 }
 
-void RenderMethodBuffer::Release()
+void RenderMethodBuffer::Clear()
 {
 	m_methodList.clear();
 }

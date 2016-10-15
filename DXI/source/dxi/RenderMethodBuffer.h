@@ -19,7 +19,7 @@ namespace dxi
 
 		RenderMethodBuffer();
 		
-		void Release();
+		void Clear();
 		
 		void AddMethod( RenderMethod & method );
 

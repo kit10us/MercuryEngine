@@ -37,7 +37,11 @@ unify::Matrix Camera::GetProjection() const
 	return m_projection;
 }
 
-void Camera::OnStart()
+void Camera::OnInit( Object * object )
+{
+}
+
+void Camera::OnStart( Object * object )
 {
 }
 

@@ -31,7 +31,7 @@ namespace dxi
 			/// <summary>
 			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 			/// </summary>
-			virtual bool Setup( IOS & os ) = 0;
+			virtual bool Setup( IOS * os ) = 0;
 
 			/// <summary>
 			/// Startup is called to load assets and create game objects before Updating and Rendering. It is called once.
@@ -63,7 +63,7 @@ namespace dxi
 			/// <summary>
 			/// Get our OS interface.
 			/// </summary>
-			virtual IOS & GetOS() = 0;
+			virtual IOS * GetOS() = 0;
 
 			/// <summary>
 			/// Get our RenderInfo.
@@ -85,7 +85,7 @@ namespace dxi
 			/// </summary>
 			virtual void AddExtension( std::shared_ptr< Extension > extension ) = 0;
 
-			virtual void RequestQuit() = 0;
+			virtual void Quit() = 0;
 
 			virtual bool IsQuitting() const = 0;
 

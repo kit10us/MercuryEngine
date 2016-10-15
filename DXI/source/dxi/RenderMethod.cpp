@@ -149,6 +149,24 @@ RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned i
 	return method;
 }
 
+RenderMethod RenderMethod::CreateLineList( unsigned int startVertex, unsigned int lineCount, Effect::ptr effect )
+{
+	RenderMethod method;
+	method.primitiveType = PrimitiveType::LineList;
+	method.startVertex = startVertex;
+	method.baseVertexIndex = 0;
+	method.minIndex = 0;
+	method.vertexCount = lineCount * 2;
+	method.startIndex = 0;
+	method.primitiveCount = lineCount;
+	method.indexCount = 0;
+	method.effect = effect;
+	method.useIB = false;
+	method.vertexBufferIndex = 0;
+	method.indexBufferIndex = 0;
+	return method;
+}
+
 // indexCount, startIndex, baseVertexIndex
 RenderMethod RenderMethod::CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect )
 {

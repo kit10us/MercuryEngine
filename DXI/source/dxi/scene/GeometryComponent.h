@@ -30,7 +30,8 @@ namespace dxi
 			unify::Matrix & GetModelMatrix();
 			const unify::Matrix & GetModelMatrix() const;
 
-			void OnStart() override;
+			void OnInit( Object * object ) override;
+			void OnStart( Object * object ) override;
 			void Update( const RenderInfo & renderInfo ) override;
 			void Render( const RenderInfo & renderInfo ) override;
 			void OnSuspend() override;

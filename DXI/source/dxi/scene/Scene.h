@@ -54,7 +54,8 @@ namespace dxi
 
 			RenderInfo & GetRenderInfo();
 
-			void Start();
+			void OnInit();
+			void OnStart();
 			void Update( const RenderInfo & renderInfo );
 		    void Render( size_t renderer, const Viewport & viewport );
 			void Suspend();
@@ -102,6 +103,7 @@ namespace dxi
 	    private:
 			core::IGame * m_game;
 			Object::ptr m_root;
+			bool m_inited;
 			bool m_started;
 
 			std::shared_ptr< physics::IScene > m_physicsScene;

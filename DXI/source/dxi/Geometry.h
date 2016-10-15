@@ -39,8 +39,6 @@ namespace dxi
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;
 	protected:
-		bool m_created;
-		bool m_valid;
 		unify::BBox< float > m_BBox;
 	};
 }

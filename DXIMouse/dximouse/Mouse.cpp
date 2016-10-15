@@ -10,8 +10,8 @@ using namespace input;
 Mouse::Mouse( dxi::core::Game * game )
 	: m_game( game )
 {
-	m_subSources.resize( game->GetOS().RendererCount() );
-	m_subSourcesUpdated.resize( game->GetOS().RendererCount() );
+	m_subSources.resize( game->GetOS()->RendererCount() );
+	m_subSourcesUpdated.resize( game->GetOS()->RendererCount() );
 }
 
 Mouse::~Mouse()
@@ -25,8 +25,6 @@ std::string Mouse::Name() const
 
 void Mouse::Update()
 {
-	auto & os = m_game->GetOS();
-
 	for ( size_t i = 0; i < m_subSources.size(); ++i )
 	{
 		Source & updated = m_subSourcesUpdated[i];

@@ -2,5 +2,4 @@
 // All Rights Reserved
 #pragma once
 					
-#include <dxi/win/DirectXLibs.h>
 #pragma comment( lib, "dxi.lib" )

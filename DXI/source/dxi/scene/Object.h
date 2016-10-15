@@ -79,6 +79,7 @@ namespace dxi
 		    controllers::IController::shared_ptr GetController();
 		    void SetController( controllers::IController::shared_ptr controller );
 			
+			void OnInit();
 			void OnStart();
 			void Update( const RenderInfo & renderInfo );
 			void RenderSimple( const RenderInfo & renderInfo );

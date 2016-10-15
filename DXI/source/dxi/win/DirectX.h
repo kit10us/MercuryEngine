@@ -23,9 +23,6 @@
 #pragma comment( lib, "d3dx9" )
 #endif
 
-#pragma comment(lib,"dxguid")
-#pragma comment(lib,"dinput8")
-
 #if defined( DIRECTX9 )
 
 

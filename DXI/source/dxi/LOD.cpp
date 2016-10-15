@@ -77,10 +77,10 @@ void QLOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 const unify::BBox< float > & QLOD::ComputeBounds()
 {
 	// Merge all bouns into our bounds...
-	m_BBox.Initialize();
+	m_BBox.Clear();
 	for( std::list< LODNode >::iterator itr = m_list.begin(); itr != m_list.end(); ++itr )
 	{
-		m_BBox.AddBBox( itr->GetGeometry()->GetBBox() );
+		m_BBox +=itr->GetGeometry()->GetBBox();
 	}
 
 	return m_BBox;

@@ -433,3 +433,13 @@ void VertexBuffer::Disuse() const
 {
 	m_pimpl->Disuse();
 }
+
+unify::BBox< float > & VertexBuffer::GetBBox()
+{
+	return m_bbox;
+}
+
+const unify::BBox< float > & VertexBuffer::GetBBox() const
+{
+	return m_bbox;
+}

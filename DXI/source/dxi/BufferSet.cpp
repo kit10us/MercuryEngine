@@ -44,6 +44,13 @@ const RenderMethodBuffer & BufferSet::GetRenderMethodBuffer() const
 	return m_RB;
 }
 
+void BufferSet::Destroy()
+{
+	m_VB.Destroy();
+	m_IB.Destroy();
+	m_RB.Clear();
+}
+
 void BufferSet::SetEnabled( bool enabled )
 {
 	m_enabled = enabled;

@@ -103,9 +103,6 @@
     <ClCompile Include="source\dxi\DataBuffer.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\DirectXFile.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\win\DXDevice.cpp">
       <Filter>dxi\win</Filter>
     </ClCompile>
@@ -190,12 +187,6 @@
     <ClInclude Include="source\dxi\font\TextBox3D.h">
       <Filter>dxi\font</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\Lockable.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Material.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\MeshAnimation.h">
       <Filter>dxi</Filter>
     </ClInclude>
@@ -241,22 +232,10 @@
     <ClInclude Include="source\dxi\QCommonShaders.h">
       <Filter>dxi</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\QDIK.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\QGizmo.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\QGizmoCommon.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\QOverlay.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\QRenderStatistics.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\QShadowVolume.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\RenderInfo.h">
@@ -327,9 +306,6 @@
     </ClInclude>
     <ClInclude Include="source\dxi\win\DirectX.h">
       <Filter>dxi\win</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\DirectXFile.h">
-      <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\win\DXDevice.h">
       <Filter>dxi\win</Filter>
@@ -496,16 +472,10 @@
     <ClCompile Include="source\dxi\scene\Scene.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\scene\SceneLoader.cpp">
-      <Filter>dxi\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\scene\SceneManager.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\scene\Camera.cpp">
-      <Filter>dxi\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\scene\DefaultLoaders.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\Viewport.cpp">
@@ -556,24 +526,15 @@
     <ClCompile Include="source\dxi\input\InputManager.cpp">
       <Filter>dxi\input</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\scene\BBoxRendererComponent.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
       <Filter>dxi</Filter>
     </None>
-    <None Include="source\dxi\QOverlay.inl">
-      <Filter>dxi</Filter>
-    </None>
     <None Include="source\dxi\QPrimitiveGeometry.inl">
-      <Filter>dxi</Filter>
-    </None>
-    <None Include="source\dxi\QRenderInfo.inl">
-      <Filter>dxi</Filter>
-    </None>
-    <None Include="source\dxi\QRenderStatistics.inl">
-      <Filter>dxi</Filter>
-    </None>
-    <None Include="source\dxi\QShadowVolume.inl">
       <Filter>dxi</Filter>
     </None>
     <None Include="source\dxi\frameanimation\FrameAnimationKey.inl">
@@ -634,9 +595,6 @@
     </Filter>
     <Filter Include="dxi\shapes">
       <UniqueIdentifier>{6af56a8a-22bd-40e8-bf6f-66b059410a06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dxi\null">
-      <UniqueIdentifier>{7ac1a0b5-601c-41c7-b36c-63857e04925c}</UniqueIdentifier>
     </Filter>
     <Filter Include="dxi\factory">
       <UniqueIdentifier>{cc686d27-8bb0-4cd9-ba25-ac3afa496a50}</UniqueIdentifier>
@@ -748,16 +706,10 @@
     <ClInclude Include="source\dxi\scene\Scene.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\scene\SceneLoader.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\scene\SceneManager.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\scene\Camera.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\scene\DefaultLoaders.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\Viewport.h">
@@ -765,9 +717,6 @@
     </ClInclude>
     <ClInclude Include="source\dxi\core\IRenderer.h">
       <Filter>dxi\core</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\null\Input.h">
-      <Filter>dxi\null</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\win\DXRenderer.h">
       <Filter>dxi\win</Filter>
@@ -831,6 +780,9 @@
     </ClInclude>
     <ClInclude Include="source\dxi\input\IInputSource.h">
       <Filter>dxi\input</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\BBoxRendererComponent.h">
+      <Filter>dxi\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 
 #include <dxi/DataBuffer.h>
 #include <dxi/VertexDeclaration.h>
+#include <unify/BBox.h>
 
 namespace dxi
 {
@@ -54,10 +55,14 @@ namespace dxi
 		bool Valid() const;
 		void Use() const;
 		void Disuse() const;
-		
+
+		unify::BBox< float > & GetBBox();
+		const unify::BBox< float > & GetBBox() const;
+
 	protected:	   
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
 		VertexDeclaration::ptr m_vertexDeclaration;
+		unify::BBox< float > m_bbox;
 	};
 }

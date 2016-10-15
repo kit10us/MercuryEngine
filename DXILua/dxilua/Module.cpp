@@ -25,24 +25,47 @@ void Module::BindToObject( scene::Object::ptr object )
 	m_object = object;
 }
 
-void Module::OnStart()
+void Module::OnInit()
 {
-	int i = lua_getglobal( m_state, "OnStart" );
-
-	if( i != 0 )
+	int i = lua_getglobal( m_state, "OnInit" );
+	if ( i != 0 )
 	{
 		if ( m_object )
 		{
-			ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( m_state, sizeof( ObjectProxy* ) ));
-			*childProxy = new ObjectProxy;
-			luaL_setmetatable( m_state, "Object" );
-			(*childProxy)->object = m_object;
+			PushObject( m_state, m_object );
 		}
 		else
 		{
 			lua_pushnil( m_state );
 		}
-	
+
+		if ( lua_pcall( m_state, 1, 0, 0 ) != 0 )
+		{
+			std::string error = lua_tostring( m_state, 1 );
+			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnInit: " + error );
+			assert( 0 ); // TODO:
+		}
+	}
+	else
+	{
+		lua_pop( m_state, 1 );
+	}
+}
+
+void Module::OnStart()
+{
+	int i = lua_getglobal( m_state, "OnStart" );
+	if( i != 0 )
+	{
+		if ( m_object )
+		{
+			PushObject( m_state, m_object );
+		}
+		else
+		{
+			lua_pushnil( m_state );
+		}
+
 		if( lua_pcall( m_state, 1, 0, 0 ) != 0 )
 		{
 			std::string error = lua_tostring( m_state, 1 );									    
@@ -50,21 +73,21 @@ void Module::OnStart()
 			assert( 0 ); // TODO:
 		}
 	}
+	else
+	{
+		lua_pop( m_state, 1 );
+	}
 }
 
 void Module::OnUpdate()
 {
 	int i = lua_getglobal( m_state, "OnUpdate" );
-				  
 	if( i != 0 )
 	{
 		int a = lua_gettop( m_state );
 		if( m_object )
 		{
-			ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( m_state, sizeof( ObjectProxy* ) ));
-			*childProxy = new ObjectProxy;
-			luaL_setmetatable( m_state, "Object" );
-			(*childProxy)->object = m_object;
+			PushObject( m_state, m_object );
 		}
 		else
 		{
@@ -80,20 +103,20 @@ void Module::OnUpdate()
 		int b = lua_gettop( m_state );
 		int c = b - a;
 	}																									
+	else
+	{
+		lua_pop( m_state, 1 );
+	}
 }
 
 void Module::OnSuspend()
 {
 	int i = lua_getglobal( m_state, "OnSuspend" );
-
 	if( i != 0 )
 	{
 		if( m_object )
 		{
-			ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( m_state, sizeof( ObjectProxy* ) ));
-			*childProxy = new ObjectProxy;
-			luaL_setmetatable( m_state, "Object" );
-			(*childProxy)->object = m_object;
+			PushObject( m_state, m_object );
 		}
 		else
 		{
@@ -107,6 +130,10 @@ void Module::OnSuspend()
 			assert( 0 ); // TODO:
 		}
 	}
+	else
+	{
+		lua_pop( m_state, 1 );
+	}
 }
 
 void Module::OnResume()
@@ -117,10 +144,7 @@ void Module::OnResume()
 	{
 		if( m_object )
 		{
-			ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( m_state, sizeof( ObjectProxy* ) ));
-			*childProxy = new ObjectProxy;
-			luaL_setmetatable( m_state, "Object" );
-			(*childProxy)->object = m_object;
+			PushObject( m_state, m_object );
 		}
 		else
 		{
@@ -133,5 +157,9 @@ void Module::OnResume()
 			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnResume: " + error );
 			assert( 0 ); // TODO:
 		}
+	}
+	else
+	{
+		lua_pop( m_state, 1 );
 	}
 }

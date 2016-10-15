@@ -10,72 +10,25 @@ function OnStart( me )
 	borgcubeEffect = Effect( "borgcube", "media/EffectBorgCube.effect" )
 	
 	
-	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1200 )
+	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1600 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
-	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
+	camera:Transform():SetPosition( V3.New( 0, 5, -250 ) )
 	camera:Transform():LookAt( V3.Zero() ) 
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
 	group = root:AddChild( "group" )
 	
-	local cube = group:AddChild( "cube" )
-	cube:SetGeometry( Geometry( "cube", "media/ShapeCube.shape" ) )
-	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
-    cube:AddScript( "rotate", "lua", "script/rotatex.lua" )
-	
-	local pointfield = group:AddChild( "pointfield" )
-	pointfield:SetGeometry( Geometry( "pointfield", "media/ShapePointField.shape" ) )
-	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
-    pointfield:AddScript( "rotate", "lua", "script/rotatey.lua" )
-		
-	local pointring = group:AddChild( "pointring" )
-	pointring:SetGeometry( Geometry( "pointring", "media/ShapePointRing.shape" ) )
-	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
-    pointring:AddScript( "rotate", "lua", "script/rotatez.lua" )
+	cubeParameters = ShapeParameters( "cube" )
+	cubeParameters:SetEffect( color3d )
+	cubeParameters:SetSize3( Size3.New( 20, 20, 20 ) )
+	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
+	cube = group:AddChild( "cube" )
+	cube:SetGeometry( Geometry( cubeParameters ) )
+	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )	
 
-	local dashring = group:AddChild( "dashring" )
-	dashring:SetGeometry( Geometry( "dashring", "media/ShapeDashRing.shape" ) )
-	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
-    dashring:AddScript( "rotate", "lua", "script/rotatex.lua" )
-
-	local pyramid = group:AddChild( "pyramid" )
-	pyramid:SetGeometry( Geometry( "pyramid", "media/ShapePyramid.shape" ) )
-	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
-    pyramid:AddScript( "rotate", "lua", "script/rotatey.lua" )
-		
-	local circle = group:AddChild( "circle" )
-	circle:SetGeometry( Geometry( "circle", "media/ShapeCircle.shape" ) )
-	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
-    circle:AddScript( "rotate", "lua", "script/rotatez.lua" )
-
-	local sphere = group:AddChild( "sphere" )
-	sphere:SetGeometry( Geometry( "sphere", "media/ShapeSphere.shape" ) )
-	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
-    sphere:AddScript( "rotate", "lua", "script/rotatex.lua" )
-	   
-	local cylinder = group:AddChild( "cylinder" )
-	cylinder:SetGeometry( Geometry( "cylinder", "media/ShapeCylinder.shape" ) )
-	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
-    cylinder:AddScript( "rotate", "lua", "script/rotatey.lua" )
-
-	local tube = group:AddChild( "tube" )
-	tube:SetGeometry( Geometry( "tube", "media/ShapeTube.shape" ) )
-	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
-    tube:AddScript( "rotate", "lua", "script/rotatez.lua" )
-		
-	local plane = group:AddChild( "plane" )
-	plane:SetGeometry( Geometry( "plane", "media/ShapePlane.shape" ) )
-	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
-    plane:AddScript( "rotate", "lua", "script/rotatex.lua" )
-		
-	local cone = group:AddChild( "cone" )
-	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
-	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
-    cone:AddScript( "rotate", "lua", "script/rotatey.lua" )
-	
 	local pointfieldParameters = ShapeParameters( "pointfield" )
 	pointfieldParameters:SetEffect( color3d )
 	pointfieldParameters:SetMinorRadius( 1000 )
@@ -123,6 +76,38 @@ end
 function OnUpdate( me )
 	local rotation = Update.GetDelta()
 	
+	local keyboard = Input( "Keyboard" )
+	if keyboard then
+		if keyboard:GetState( 0, "ESCAPE", "Pressed" ) == 1 then
+			Game.Quit()
+		end
+		
+		if keyboard:GetState( 0, "Space", "Pressed" ) == 1 then
+			autoRotate = not autoRotate
+		end
+		
+		if not autoRotate then
+			if keyboard:GetState( 0, "Left", "Down" ) == 1 then
+				local change = 1.0
+				local rotation = Matrix.NewRotationY( Update.GetDelta() * change )
+				group:Transform():PostMul( rotation )
+			elseif keyboard:GetState( 0, "Right", "Down" ) == 1 then
+				local change = -1.0
+				local rotation = Matrix.NewRotationY( Update.GetDelta() * change )
+				group:Transform():PostMul( rotation )			
+			end			
+			if keyboard:GetState( 0, "Up", "Down" ) == 1 then
+				local change = 1.0
+				local rotation = Matrix.NewRotationX( Update.GetDelta() * change )
+				group:Transform():PostMul( rotation )
+			elseif keyboard:GetState( 0, "Down", "Down" ) == 1 then
+				local change = -1.0
+				local rotation = Matrix.NewRotationX( Update.GetDelta() * change )
+				group:Transform():PostMul( rotation )			
+			end			
+		end		
+	end
+	
 	local mouse = Input( "Mouse" )
 	if mouse then
 		if mouse:GetState( 0, "RightButton", "Pressed" ) == 1 then
@@ -139,8 +124,7 @@ function OnUpdate( me )
 
 				local rotation = Matrix.NewRotationX( Update.GetDelta() * changeY * 0.2 )
 				group:Transform():PostMul( rotation )			
-			end
-			
+			end			
 			
 			local mouseWheel = mouse:GetValue( 0, "MouseWheel" )
 			if mouseWheel > 0 or mouseWheel < 0 then

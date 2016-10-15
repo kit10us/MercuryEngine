@@ -29,7 +29,8 @@ void Terra::Destroy()
 
 const unify::BBox< float > & Terra::ComputeBounds()
 {
-	return m_primitiveList.ComputeBounds( m_BBox );
+	m_primitiveList.ComputeBounds( m_BBox );
+	return m_BBox;
 }
 
 void Terra::CreateFromParameters( unify::Parameters & parameters )
@@ -126,7 +127,6 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	m_rc = rc;
 
 	ComputeBounds();
-	m_created = true;
 
 	if ( parameters.Exists( "heightmap" ) )
 	{

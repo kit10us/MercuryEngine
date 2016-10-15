@@ -17,8 +17,6 @@ using namespace win;
 #undef GetCommandLine
 #endif
 
-//extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
-
 WindowsOS::WindowsOS( core::IGame * game )
 : m_game( game )
 , m_handle{}
@@ -310,7 +308,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 	{
 	case WM_CLOSE: // Fall through to WM_DESTROY...
 	case WM_DESTROY:
-		game.RequestQuit();
+		game.Quit();
 		return 0;
 
 	case WM_MOUSELEAVE:
@@ -445,8 +443,8 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				mousePosition.x *= static_cast< int >(width / clientWidth);
 				mousePosition.y *= static_cast< int >(height / clientHeight);
 
-				m_mouse->SetValue( renderer, "PositionX", mousePosition.x );
-				m_mouse->SetValue( renderer, "PositionY", mousePosition.y );
+				m_mouse->SetValue( renderer, "PositionX", (float)mousePosition.x );
+				m_mouse->SetValue( renderer, "PositionY", (float)mousePosition.y );
 				break;
 			}
 		}

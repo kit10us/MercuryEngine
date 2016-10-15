@@ -37,33 +37,11 @@ bool SceneManager::GetEnabled() const
 	return m_enabled;
 }
 
-SceneLoader & SceneManager::GetSceneLoader()
-{
-	return m_sceneLoader;
-}
-
 Scene::shared_ptr SceneManager::Add( std::string name )
 {
     Scene::shared_ptr sceneSharedPtr( new Scene( Game() ) );
 	m_scenes[ name ] = sceneSharedPtr;
     return sceneSharedPtr;
-}
-
-Scene::shared_ptr SceneManager::Load( std::string name, unify::Path scenePath )
-{
-	Scene::shared_ptr scene = Find( name ); 
-	if ( scene.get() )
-	{
-		throw exception::FailedToCreate( "Scene \"" + name + "\" already exists!" );
-	}
-
-	scene.reset( new Scene(  Game() ) );
-
-	m_sceneLoader.LoadSceneFromXML( scene, scenePath );
-
-	m_scenes[name] = scene;
-
-	return scene;
 }
 
 Scene::shared_ptr SceneManager::Find( std::string name )

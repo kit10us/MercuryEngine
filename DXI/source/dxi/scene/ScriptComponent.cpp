@@ -25,7 +25,12 @@ scripting::IModule::ptr ScriptComponent::GetModule()
 	return m_module;
 }
 
-void ScriptComponent::OnStart()
+void ScriptComponent::OnInit( Object * object )
+{
+	m_module->OnInit();
+}
+
+void ScriptComponent::OnStart( Object * object )
 {
 	m_module->OnStart();
 }

@@ -11,8 +11,10 @@ BBox< T >::BBox()
 
 template< typename T >
 BBox< T >::BBox( const V3< T > & inInf, const V3< T > & inSup )
+	: BBox()
 {
-	Initialize( inInf, inSup );
+	*this += inInf;
+	*this += inSup;
 }
 
 template< typename T >
@@ -30,30 +32,54 @@ BBox< T > & BBox< T >::operator *= ( const V3< T > & multiplicand )
 }
 
 template< typename T >
-BBox< T > BBox< T >::operator + ( const V3< T > & v3 ) const
+BBox< T > BBox< T >::operator * ( T multiplicand ) const
 {
-	return BBox< T >( this->inf + v3, this->sup + v3 );
+	BBox< T > bbox( *this );
+	bbox *= multiplicand;
+	return bbox;
 }
 
 template< typename T >
-BBox< T > & BBox< T >::operator += ( const V3< T > & v3 )
+BBox< T > & BBox< T >::operator *= ( T multiplicand )
 {
-	inf += v3;
-	sup += v3;
+	return *this *= unify::V3< T >( multiplicand, multiplicand, multiplicand );
+}																			   
+
+template< typename T >
+BBox< T > BBox< T >::operator + ( const V3< T > & point ) const
+{
+	BBox< T > bbox( *this );
+	bbox += point;
+	return bbox;
+}
+
+template< typename T >
+BBox< T > & BBox< T >::operator += ( const V3< T > & point )
+{
+	if ( point.x > sup.x ) sup.x = point.x;
+	else if ( point.x < inf.x ) inf.x = point.x;
+
+	if ( point.y > sup.y ) sup.y = point.y;
+	else if ( point.y < inf.y ) inf.y = point.y;
+
+	if ( point.z > sup.z ) sup.z = point.z;
+	else if ( point.z < inf.z ) inf.z = point.z;
 	return *this;
 }
 
 template< typename T >
-BBox< T > BBox< T >::operator - ( const V3< T > & v3 ) const
-{
-	return BBox< T >( this->inf - v3, this->sup - v3 );
+BBox< T > BBox< T >::operator + ( const BBox< T > & bbox ) const
+{		 
+	BBox< T > result( *this );
+	result += bbox;
+	return result;
 }
 
 template< typename T >
-BBox< T > & BBox< T >::operator -= ( const V3< T > & v3 )
+BBox< T > & BBox< T >::operator += ( const BBox< T > & bbox )
 {
-	inf -= v3;
-	sup -= v3;
+	*this += bbox.inf;
+	*this += bbox.sup;
 	return *this;
 }
 
@@ -72,24 +98,9 @@ void BBox< T >::GenerateCorners( V3< T > * bounds )
 }
 
 template< typename T >
-void BBox< T >::Initialize( const V3< T > & _inf, const V3< T > & _sup )
+void BBox< T >::Clear()
 {
-	inf = _inf;
-	sup = _sup;
-	Fix();
-}
-
-template< typename T >
-void BBox< T >::AddPoint( const V3< T > & point )
-{
-	if( point.x > sup.x ) sup.x = point.x;
-	else if( point.x < inf.x ) inf.x = point.x;
-
-	if( point.y > sup.y ) sup.y = point.y;
-	else if( point.y < inf.y ) inf.y = point.y;
-
-	if( point.z > sup.z ) sup.z = point.z;
-	else if( point.z < inf.z ) inf.z = point.z;
+	inf = sup = unify::V3< T >( T{}, T{}, T{} );
 }
 
 template< typename T >
@@ -104,28 +115,12 @@ bool BBox< T >::ContainsPoint( const V3< T > & point )
 }
 
 template< typename T >
-BBox< T > & BBox< T >::AddBBox( const BBox< T > & boundingBox )
-{
-	if( boundingBox.sup.x > sup.x ) sup.x = boundingBox.sup.x;
-	if( boundingBox.inf.x < inf.x ) inf.x = boundingBox.inf.x;
-
-	if( boundingBox.sup.y > sup.y ) sup.y = boundingBox.sup.y;
-	if( boundingBox.inf.y < inf.y ) inf.y = boundingBox.inf.y;
-
-	if( boundingBox.sup.z > sup.z ) sup.z = boundingBox.sup.z;
-	if( boundingBox.inf.z < inf.z ) inf.z = boundingBox.inf.z;
-
-	return *this;
-}
-
-template< typename T >
 BBox< T > & BBox< T >::AddBBoxWithPosition( const BBox< T > & boundingBox, const V3< T > & position )
 {
-	// Translate bounding box.
-	BBox< float > translatedBBox( boundingBox );
-	translatedBBox.sup += position;
-	translatedBBox.inf += position;
-	return AddBBox( translatedBBox );
+	*this += boundingBox.sup + position;
+	*this += boundingBox.inf + position;
+
+	return *this;
 }
 
 template< typename T >

@@ -15,7 +15,7 @@ public:
 	{	
 	}
 
-	bool Setup( core::IOS & os ) override
+	bool Setup( core::IOS * os ) override
 	{				  
 		return true;
 	}

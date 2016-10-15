@@ -46,7 +46,7 @@ namespace dxi
 		/// Returns the index offset for the first index from 'from'.
 		/// </summary>
 		size_t Append( const IndexBuffer & from, size_t vertexOffset = 0 );
-		void Release();
+		void Destroy();
 
 		void Lock( IndexLock & lock );
 		void LockReadOnly( IndexLock & lock ) const;

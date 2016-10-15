@@ -12,7 +12,7 @@ LRESULT CALLBACK WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPara
 {
 	static bool trackingMouse = false;
 	static dxi::core::Game & game = *GetGameInstance();
-	static dxi::win::WindowsOS * windowsOS = dynamic_cast< dxi::win::WindowsOS*>( &game.GetOS() );
+	static dxi::win::WindowsOS * windowsOS = dynamic_cast< dxi::win::WindowsOS*>( game.GetOS() );
 
 	return windowsOS->WndProc( handle, message, wParam, lParam );
 }

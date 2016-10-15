@@ -10,6 +10,8 @@ using namespace dxikeyboard;
 using namespace dxi;
 using namespace input;
 
+#pragma comment(lib,"dxguid")
+#pragma comment(lib,"dinput8")
   
 std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_KeyNameToIndex =
 {
@@ -372,13 +374,13 @@ std::string Keyboard::Name() const
 
 void Keyboard::Acquire()
 {
-	win::WindowsOS & windowsOS = dynamic_cast< win::WindowsOS & >(m_game->GetOS());
-	HWND handle = windowsOS.GetHandle();
+	win::WindowsOS * windowsOS = dynamic_cast< win::WindowsOS * >(m_game->GetOS());
+	HWND handle = windowsOS->GetHandle();
 
 	// Create the Direct Input device...
 	if ( ! m_pdi )
 	{
-		if ( FAILED( DirectInput8Create( windowsOS.GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&m_pdi, 0 ) ) )
+		if ( FAILED( DirectInput8Create( windowsOS->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&m_pdi, 0 ) ) )
 		{
 			throw dxi::exception::DeviceFailure( "DirectInput", "Couldn't Create a device!" );
 		}
@@ -411,8 +413,6 @@ void Keyboard::Acquire()
 
 void Keyboard::Update()
 {
-	auto & os = m_game->GetOS();
-
 	if ( !m_pdi )
 	{
 		Acquire();

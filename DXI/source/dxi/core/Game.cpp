@@ -16,7 +16,7 @@
 using namespace dxi;
 using namespace core;
 
-bool Game::Setup( IOS & os )
+bool Game::Setup( IOS * os )
 {
 	// STUBBED - optional for derived game class.
 	return true;
@@ -94,7 +94,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 		return false;
 	}
 
-	for( auto && arg : GetOS().GetCommandLine() )
+	for( auto && arg : GetOS()->GetCommandLine() )
 	{
 		if ( unify::Path( arg ).IsExtension( ".xml" ) )
 		{
@@ -139,14 +139,14 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 					display.SetNearZ( nearZ );
 					display.SetFarZ( farZ );
 
-					GetOS().AddDisplay( display );
+					GetOS()->AddDisplay( display );
 				}
 			}
 		}
 	}
 
 	// Creates displays...
-	GetOS().BuildRenderers();
+	GetOS()->BuildRenderers();
 
 	// Create asset managers...
 
@@ -265,7 +265,7 @@ void Game::Tick()
 
 void Game::Draw()
 {
-	for( int index = 0; index < GetOS().RendererCount(); ++index )
+	for( int index = 0; index < GetOS()->RendererCount(); ++index )
 	{
 		IRenderer & renderer = *m_os->GetRenderer( index );
 		renderer.BeforeRender();
@@ -281,9 +281,9 @@ const RenderInfo & Game::GetRenderInfo() const
 	return m_renderInfo;
 }
 
-IOS & Game::GetOS()
+IOS * Game::GetOS()
 {
-	return *m_os.get();
+	return m_os.get();
 }
 
 void Game::AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se )
@@ -349,7 +349,7 @@ const rm::ResourceHub & Game::GetResourceHub() const
 	return m_resourceHub;
 }
 
-void Game::RequestQuit()
+void Game::Quit()
 {
 	m_isQuitting = true;
 }

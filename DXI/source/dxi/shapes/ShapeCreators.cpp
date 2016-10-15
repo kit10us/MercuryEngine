@@ -7,6 +7,7 @@
 #include <unify/Size3.h>
 #include <unify/TexArea.h>
 #include <dxi/exception/NotImplemented.h>
+#include <unify/Angle.h>
 
 using namespace dxi;
 
@@ -20,16 +21,6 @@ Mesh * shapes::CreateShape( unify::Parameters & parameters )
 	CreateShape( mesh->GetPrimitiveList(), parameters );
 	//mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 	return mesh;
-}
-
-Mesh * shapes::CreateShape( const qjson::Object & json )
-{
-	unify::Parameters parameters;
-	for( auto value : json )
-	{
-		parameters.Set( value.GetName(), value.GetValue() );
-	}
-	return CreateShape( parameters );
 }
 
 void shapes::CreateShape( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -136,6 +127,8 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
 
+	VertexBuffer & vb = set.GetVertexBuffer();
+
 	// Set the TEMP vertices...
 	V vertices[8];
 
@@ -183,6 +176,7 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 	for( unsigned int i = 0; i < 8; ++i )
 	{
 		vertices[i].pos += center;
+		vb.GetBBox() += vertices[i].pos;
 	}
 
 	// Allow per-vertex diffuse...
@@ -326,7 +320,6 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 		vd->WriteVertex( lock, { 20, 21, 22, 23 }, diffuseE, diffuses[5] );
 	}
 
-	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( totalVertices, vd, verticesFinal, bufferUsage );
 	delete[] verticesFinal;
 
@@ -375,7 +368,7 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
-
+	VertexBuffer & vb = set.GetVertexBuffer();
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 
 	// Method 1 - Triangle List...
@@ -431,9 +424,10 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 		vd->WriteVertex( lock, v, normalE, norm );
 		vd->WriteVertex( lock, v, diffuseE, diffuse );
 		vd->WriteVertex( lock, v, specularE, specular );
+
+		vb.GetBBox() += vec;
 	}
 
-	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( count, vd, vertices, bufferUsage );
 
 	delete[] vertices;
@@ -452,8 +446,9 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
-
+	VertexBuffer & vb = set.GetVertexBuffer();
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
+
 	rb.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
 
 	unify::V3< float > vec;
@@ -527,10 +522,9 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 		vd->WriteVertex( lock, v, positionE, vec );
 		vd->WriteVertex( lock, v, normalE, norm );
 		vd->WriteVertex( lock, v, diffuseE, diffuse );
-		vd->WriteVertex( lock, v, specularE, specular );
-
+		vd->WriteVertex( lock, v, specularE, specular );   
+		vb.GetBBox() += vec;
 	}
-	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( count, vd, vertices, bufferUsage );
 	delete[] vertices;
 }
@@ -558,6 +552,7 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 	unsigned int totalTriangles = facesPerSegment * count;
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	VertexBuffer & vb = set.GetVertexBuffer();
 
 	// Method 1 - Triangle List...
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
@@ -625,6 +620,9 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 			vd->WriteVertex( lock, vertex + 1, specularE, specular );
 			vd->WriteVertex( lock, vertex + 1, texE, coordsInner );
 
+			vb.GetBBox() += vOuter + center;
+			vb.GetBBox() += vInner + center;
+
 			// Move to the next ver
 			vertex += 2;
 
@@ -634,7 +632,6 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 		fRad += fRadChangeSeg;
 	}
 
-	VertexBuffer & vb = set.GetVertexBuffer();
 	vb.Create( totalVertices, vd, vertices, bufferUsage );
 	delete[] vertices;
 
@@ -746,6 +743,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 	for( unsigned int i = 0; i < 5; ++i )
 	{
 		vertices[i].pos += center;
+		vb.GetBBox() += vertices[i].pos;
 	}
 
 	// Allow per-vertex diffuse...
@@ -926,6 +924,7 @@ void shapes::CreateShape_Circle( PrimitiveList & primitiveList, unify::Parameter
 	vd->WriteVertex( lock, 0, texE, unify::TexCoords( 0.5f, 0.5f ) );
 	vd->WriteVertex( lock, 0, diffuseE, diffuse );
 	vd->WriteVertex( lock, 0, specularE, specular );
+	vb.GetBBox() += center;
 
 	double dRad = 0;
 	double dRadChange = PI2 / segments;
@@ -940,6 +939,7 @@ void shapes::CreateShape_Circle( PrimitiveList & primitiveList, unify::Parameter
 		vd->WriteVertex( lock, v, texE, unify::TexCoords( 0.5f + (float)(sin( dRad ) * 0.5), 0.5f + (float)(cos( dRad ) * -0.5) ) );
 		vd->WriteVertex( lock, v, diffuseE, diffuse );
 		vd->WriteVertex( lock, v, specularE, specular );
+		vb.GetBBox() += pos;
 		dRad += dRadChange;
 	}
 
@@ -1048,6 +1048,7 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 				vd->WriteVertex( lock, iVert, diffuseE, diffuse );
 				vd->WriteVertex( lock, iVert, specularE, specular );
 				vd->WriteVertex( lock, iVert, texE, unify::TexCoords( h * (1.0f / iFacesH), v * (1.0f / iFacesV) ) );
+				vb.GetBBox() += vec;
 				iVert++;
 			}
 		}
@@ -1088,6 +1089,7 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 
 		// Method 1 - Triangle Strip...
 		RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
+		VertexBuffer & vb = set.GetVertexBuffer();
 		RenderMethod renderMethod( RenderMethod::CreateTriangleStripIndexed( vertexCount, indexCount, 0, 0, effect ) );
 		rb.AddMethod( renderMethod );
 
@@ -1135,11 +1137,11 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 				vd->WriteVertex( lock, iVert, diffuseE, diffuse );
 				vd->WriteVertex( lock, iVert, specularE, specular );
 				vd->WriteVertex( lock, iVert, texE, coords );
+				vb.GetBBox() += vec;
 				iVert++;
 			}
 		}
 
-		VertexBuffer & vb = set.GetVertexBuffer();
 		vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
 
 		std::vector< Index32 > indices( indexCount );
@@ -1258,6 +1260,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 		vd->WriteVertex( lock, (s * 2) + 0, texE, unify::TexCoords( cChange.u * s, texArea.dr.v ) );
 		vd->WriteVertex( lock, (s * 2) + 0, diffuseE, diffuse );
 		vd->WriteVertex( lock, (s * 2) + 0, specularE, specular );
+		vb.GetBBox() += pos + center;
 
 		pos = unify::V3< float >( sin( rad ) * radius, height, cos( rad ) * radius );
 		norm = pos;
@@ -1267,6 +1270,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 		vd->WriteVertex( lock, (s * 2) + 1, texE, unify::TexCoords( cChange.u * s, texArea.ul.v ) );
 		vd->WriteVertex( lock, (s * 2) + 1, diffuseE, diffuse );
 		vd->WriteVertex( lock, (s * 2) + 1, specularE, specular );
+		vb.GetBBox() += pos + center;
 
 		if( caps )
 		{
@@ -1278,6 +1282,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 			vd->WriteVertex( lock, (segments * 2 + 2) + s, texE, unify::TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
 			vd->WriteVertex( lock, (segments * 2 + 2) + s, diffuseE, diffuse );
 			vd->WriteVertex( lock, (segments * 2 + 2) + s, specularE, specular );
+			vb.GetBBox() += pos + center;
 
 			pos = unify::V3< float >( cos( rad ) * radius, -height, sin( rad ) * radius );
 			norm = pos;
@@ -1287,6 +1292,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 			vd->WriteVertex( lock, (segments * 2 + 2) + (segments + 2) + s, texE, unify::TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
 			vd->WriteVertex( lock, (segments * 2 + 2) + (segments + 2) + s, diffuseE, diffuse );
 			vd->WriteVertex( lock, (segments * 2 + 2) + (segments + 2) + s, specularE, specular );
+			vb.GetBBox() += pos + center;
 		}
 		rad += radChange;
 	}
@@ -1312,6 +1318,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 		vd->WriteVertex( lock, segments * 2 + 2 + segments + 1, texE, unify::TexCoords( 0.5f, 0.5f ) );
 		vd->WriteVertex( lock, segments * 2 + 2 + segments + 1, diffuseE, diffuse );
 		vd->WriteVertex( lock, segments * 2 + 2 + segments + 1, specularE, specular );
+		vb.GetBBox() += pos + center;
 
 		pos.y = -height;
 		norm = pos;
@@ -1321,6 +1328,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 		vd->WriteVertex( lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, texE, unify::TexCoords( 0.5f, 0.5f ) );
 		vd->WriteVertex( lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, diffuseE, diffuse );
 		vd->WriteVertex( lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, specularE, specular );
+		vb.GetBBox() += pos + center;
 	}
 
 	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
@@ -1419,6 +1427,8 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (0 * verticesPerSide) + (v * 2), vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
+
 
 		// Inside edge
 		vertex.pos = unify::V3< float >( coord.x * inner, height, coord.y * inner );
@@ -1428,6 +1438,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (0 * verticesPerSide) + (v * 2) + 1, vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 
 		// Method 2 - Triangle Strip (Bottom)
 		// Outside edge
@@ -1438,6 +1449,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (1 * verticesPerSide) + (v * 2), vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 
 		// Inside edge
 		vertex.pos = unify::V3< float >( coord.x * inner, -height, coord.y * inner );
@@ -1447,6 +1459,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (1 * verticesPerSide) + (v * 2) + 1, vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 
 		// Method 3 - Triangle Strip (Outside)
 		// Top
@@ -1457,6 +1470,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (2 * verticesPerSide) + (v * 2), vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 
 		// Bottom
 		vertex.pos = unify::V3< float >( coord.x * outer, -height, coord.y * outer );
@@ -1466,6 +1480,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (2 * verticesPerSide) + (v * 2) + 1, vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 
 		// Method 4 - Triangle Strip (Inside)
 		// Top
@@ -1476,6 +1491,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (3 * verticesPerSide) + (v * 2), vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 
 		// Bottom
 		vertex.pos = unify::V3< float >( coord.x * inner, -height, coord.y * inner );
@@ -1485,6 +1501,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 		vertex.diffuse = diffuse;
 		vertex.specular = specular;
 		vd->WriteVertex( lock, (3 * verticesPerSide) + (v * 2) + 1, vFormat, &vertex );
+		vb.GetBBox() += vertex.pos;
 	}
 
 	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
@@ -1553,6 +1570,7 @@ void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters
 			vd->WriteVertex( lock, index, diffuseE, diffuse );
 			vd->WriteVertex( lock, index, specularE, specular );
 			vd->WriteVertex( lock, index, texE, unify::TexCoords( factorX, factorY ) );
+			vb.GetBBox() += pos;
 		}
 		unify::V3< float > pos = center - unify::V3< float >( size.width * 0.5f, 0, size.height * 0.5f );
 	}
@@ -1671,6 +1689,8 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 		vd->WriteVertex( lock, (s * 2) + 0, texE, unify::TexCoords( cChange.u * s, texArea.dr.v ) );
 		vd->WriteVertex( lock, (s * 2) + 0, diffuseE, diffuse );
 		vd->WriteVertex( lock, (s * 2) + 0, specularE, specular );
+		vb.GetBBox() += center;
+
 
 		pos = unify::V3< float >( sin( rad ) * radius, height, cos( rad ) * radius );
 		norm = pos;
@@ -1680,6 +1700,7 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 		vd->WriteVertex( lock, (s * 2) + 1, texE, unify::TexCoords( cChange.u * s, texArea.ul.v ) );
 		vd->WriteVertex( lock, (s * 2) + 1, diffuseE, diffuse );
 		vd->WriteVertex( lock, (s * 2) + 1, specularE, specular );
+		vb.GetBBox() += pos + center;
 
 		if( caps )
 		{
@@ -1691,6 +1712,7 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 			vd->WriteVertex( lock, (segments * 2 + 2) + s, texE, unify::TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
 			vd->WriteVertex( lock, (segments * 2 + 2) + s, diffuseE, diffuse );
 			vd->WriteVertex( lock, (segments * 2 + 2) + s, specularE, specular );
+			vb.GetBBox() += pos + center;
 		}
 		rad += radChange;
 	}
@@ -1712,6 +1734,7 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 		vd->WriteVertex( lock, segments * 2 + 2 + segments + 1, texE, unify::TexCoords( 0.5f, 0.5f ) );
 		vd->WriteVertex( lock, segments * 2 + 2 + segments + 1, diffuseE, diffuse );
 		vd->WriteVertex( lock, segments * 2 + 2 + segments + 1, specularE, specular );
+		vb.GetBBox() += pos + center;
 	}
 
 	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
@@ -1720,163 +1743,6 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 	{
 		ib.Create( indexCount, &indices[0], bufferUsage );
 	}
-
-
-	/*
-
-	if( segments < 3 ) segments = 3;
-
-	// Half height for centered.
-	height *= 0.5f;
-
-	unsigned int vertexCount = 0;
-	vertexCount = (textureMode == 1 ? (2*((int)segments+1)) : RenderMethod::VertexCountInAFan( segments )) + (caps == true ? RenderMethod::VertexCountInAFan( segments ) : 0 );
-
-	BufferSet & set = primitiveList.AddBufferSet();
-	VertexBuffer & vb = set.GetVertexBuffer();
-	vb.Create( vertexCount, vd, bufferUsage );
-
-	unify::DataLock lock;
-	vb.Lock( lock );
-
-	unsigned short stream = 0;
-
-	VertexElement positionE = CommonVertexElement::Position( stream );
-	VertexElement normalE = CommonVertexElement::Normal( stream );
-	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
-	VertexElement specularE = CommonVertexElement::Specular( stream );
-	VertexElement texE = CommonVertexElement::TexCoords( stream );
-
-	class V
-	{
-	public:
-	unify::V3< float > pos;
-	unify::V3< float > normal;
-	unify::Color diffuse;
-	unify::Color specular;
-	unify::TexCoords coords;
-	};
-	qjson::Object jsonFormat;
-	jsonFormat.Add( { "Position", "Float3" } );
-	jsonFormat.Add( { "Normal", "Float3" } );
-	jsonFormat.Add( { "Diffuse", "Color" } );
-	jsonFormat.Add( { "Specular", "Color" } );
-	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
-
-	unify::V3< float > vec;
-	unsigned int uVert, v;
-	uVert = 0;
-
-	float fRad;
-	float fRadChange = PI2 / segments;
-
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-
-	switch( textureMode )
-	{
-	default:
-	case 0:
-	///////////////////////////////////////
-	// Method 1 - Cone (Fan)
-	///////////////////////////////////////
-	rb.AddMethod( RenderMethod::CreateFan( 0, segments , effect ) );
-
-	// Set the center
-	vec = unify::V3< float >(0,height,0) + center;
-	vd->WriteVertex( lock, uVert, positionE, vec );
-	vd->WriteVertex( lock, uVert, normalE, unify::V3< float >(0,1,0) );
-	vd->WriteVertex( lock, uVert, diffuseE, diffuse );
-	vd->WriteVertex( lock, uVert, specularE, specular );
-	vd->WriteVertex( lock, uVert, texE, unify::TexCoords( 0.5f, 0.5f ) );
-	uVert++;
-
-	fRad = 0;
-	for( v = 1; v <= (segments+1); v++ )
-	{
-	vec = unify::V3< float >( (float)sinf(fRad) * radius, -height, (float)cosf(fRad) * radius ) + center;
-	vd->WriteVertex( lock, uVert, positionE, vec );
-	vd->WriteVertex( lock, uVert, normalE, unify::V3< float >( 0, 1, 0 ) );
-	vd->WriteVertex( lock, uVert, diffuseE, diffuse );
-	vd->WriteVertex( lock, uVert, specularE, specular );
-	vd->WriteVertex( lock, uVert, texE, unify::TexCoords( 0.5f + (float) (sinf(fRad) * 0.5), 0.5f + (float) (cosf(fRad) * -0.5) ) );
-	uVert++;
-
-	fRad += fRadChange;
-	}
-	break;
-
-	case 1:
-	///////////////////////////////////////
-	// Method 1 - Strip (Fan)
-	///////////////////////////////////////
-	rb.AddMethod(
-	RenderMethod::CreateTriangleStrip(
-	uVert // ((int)segments + 2) * 2
-	, (int)segments * 2 // PrimitiveCount
-	, effect ) );
-
-	fRad = 0;
-	for( v = 1; v <= (segments+1); v++ )
-	{
-	// Top...
-	//vec = unify::V3< float >( (float)sinf(fRad) * radius, height, (float)cosf(fRad) * radius );
-	vec = unify::V3< float >( 0, height, 0 );
-	vd->WriteVertex( lock, uVert, positionE, vec + center );
-	vd->WriteVertex( lock, uVert, normalE, unify::V3< float >( 0, 1, 0 ) );
-	vd->WriteVertex( lock, uVert, diffuseE, diffuse );
-	vd->WriteVertex( lock, uVert, specularE, specular );
-	vd->WriteVertex( lock, uVert, texE, unify::TexCoords( fRad / PI2, 0 ) );
-	uVert++;
-
-	// Bottom...
-	vec = unify::V3< float >( (float)sinf(fRad) * radius, -height, (float)cosf(fRad) * radius );
-	vd->WriteVertex( lock, uVert, positionE, vec + center );
-	vd->WriteVertex( lock, uVert, normalE, unify::V3< float >::V3Normalized( vec ) );
-	vd->WriteVertex( lock, uVert, diffuseE, diffuse );
-	vd->WriteVertex( lock, uVert, specularE, specular );
-	vd->WriteVertex( lock, uVert, texE, unify::TexCoords( fRad / PI2, 1 ) );
-	uVert++;
-
-	fRad += fRadChange;
-	}
-	break;
-	}
-
-	if( caps )
-	{
-
-	///////////////////////////////////////
-	// Method 2 - Cap (Fan)
-	///////////////////////////////////////
-	rb.AddMethod( RenderMethod::CreateFan( uVert, segments, effect ) );
-
-	// Set the center
-	vec = unify::V3< float >(0,height,0) + center;
-	vd->WriteVertex( lock, uVert, positionE, vec );
-	vd->WriteVertex( lock, uVert, normalE, unify::V3< float >(0,1,0) );
-	vd->WriteVertex( lock, uVert, texE, unify::TexCoords( 0.5f, 0.5f ) );
-	vd->WriteVertex( lock, uVert, diffuseE, diffuse );
-	vd->WriteVertex( lock, uVert, specularE, specular );
-	uVert++;
-
-	fRad = PI2;
-	fRadChange = PI2 / segments;
-	for( v = 1; v <= (segments+1); v++ )
-	{
-	vec = unify::V3< float >( (float)sinf(fRad) * radius, -height, (float)cosf(fRad) * radius ) + center;
-	vd->WriteVertex( lock, uVert, positionE, vec );
-	vd->WriteVertex( lock, uVert, normalE, unify::V3< float >( 0, -1, 0 ) );
-	vd->WriteVertex( lock, uVert, texE, unify::TexCoords( 0.5f + (float) (sinf(fRad) * 0.5), 0.5f + (float) (cosf(fRad) * -0.5) ) );
-	vd->WriteVertex( lock, uVert, diffuseE, diffuse );
-	vd->WriteVertex( lock, uVert, specularE, specular );
-	uVert++;
-	fRad -= fRadChange;
-	}
-	}
-
-	vb.Unlock();
-	*/
 }
 
 void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -1995,6 +1861,7 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 	for( unsigned int i = 0; i < 8; ++i )
 	{
 		vertices[i].pos += center;
+		vb.GetBBox() += vertices[i].pos;
 	}
 
 	// Allow per-vertex diffuse...

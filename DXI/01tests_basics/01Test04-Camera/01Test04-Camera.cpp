@@ -115,8 +115,8 @@ void MyGame::Startup()
 	//m_camera.GetObject()->GetFrame().LookAt( at, up );
 
 	// TODO:
-	//const float width = (float)GetOS().GetResolution().width;
-	//const float height = (float)GetOS().GetResolution().height;
+	//const float width = (float)GetOS()->GetResolution().width;
+	//const float height = (float)GetOS()->GetResolution().height;
 	const float width = 800;
 	const float height = 600;
 	//m_camera.SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );

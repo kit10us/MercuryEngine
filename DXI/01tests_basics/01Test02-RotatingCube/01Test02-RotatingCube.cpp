@@ -107,8 +107,8 @@ bool MyGame::Update( RenderInfo & renderInfo )
 
 	/*
 	// TODO:
-	const float width = (float)GetOS().GetResolution().width;
-	const float height = (float)GetOS().GetResolution().height;
+	const float width = (float)GetOS()->GetResolution().width;
+	const float height = (float)GetOS()->GetResolution().height;
 	*/
 	const float width = 800;
 	const float height = 600;

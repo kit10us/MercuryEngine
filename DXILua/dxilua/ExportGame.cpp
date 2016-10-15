@@ -18,7 +18,7 @@ int Game_GetWidth( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game->GetOS().GetRenderer( renderer )->GetViewport().GetWidth() );
+	lua_pushnumber( state, game->GetOS()->GetRenderer( renderer )->GetViewport().GetWidth() );
 
 	return 1;
 }
@@ -34,7 +34,7 @@ int Game_GetHeight( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	lua_pushnumber( state, game->GetOS().GetRenderer( renderer )->GetViewport().GetHeight() );
+	lua_pushnumber( state, game->GetOS()->GetRenderer( renderer )->GetViewport().GetHeight() );
 
 	return 1;
 }
@@ -46,7 +46,7 @@ int Game_GetRendererCount( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	float result = game->GetOS().RendererCount();
+	float result = game->GetOS()->RendererCount();
 
 	lua_pushnumber( state, result );
 
@@ -60,7 +60,7 @@ int Game_Quit( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	game->RequestQuit();
+	game->Quit();
 
 	return 0;
 }

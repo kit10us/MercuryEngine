@@ -1,3 +1,8 @@
+--[[
+function OnInit( me )
+end
+--]]
+
 function OnStart( me )
 end
 

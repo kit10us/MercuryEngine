@@ -15,6 +15,7 @@ namespace dxilua
 
 		void BindToObject( dxi::scene::Object::ptr object ) override;
 
+		void OnInit() override;
 		void OnStart() override;
 		void OnUpdate() override;
 		void OnSuspend() override;

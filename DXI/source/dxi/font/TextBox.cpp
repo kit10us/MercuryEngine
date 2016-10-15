@@ -84,7 +84,7 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 		// TODO: Transform::Get( Transform::Index::Projection, oldProjection );
 		// TODO: Transform::Get( Transform::Index::View, oldView );
 
-		// TODO: unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( m_game->GetOS().GetResolution().width ), static_cast< float >( m_game->GetOS().GetResolution().height ), 0, -1, 1000 ) );
+		// TODO: unify::Matrix projection( unify::Matrix::MatrixOrthoOffCenterLH( 0, static_cast< float >( m_game->GetOS()->GetResolution().width ), static_cast< float >( m_game->GetOS()->GetResolution().height ), 0, -1, 1000 ) );
 		// TODO: Transform::Set( Transform::Index::Projection, projection );
 
 		/*

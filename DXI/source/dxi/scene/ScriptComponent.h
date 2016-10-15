@@ -19,7 +19,8 @@ namespace dxi
 			void SetModule( scripting::IModule::ptr module );
 			scripting::IModule::ptr GetModule();
 
-			void OnStart() override;
+			void OnInit( Object * object ) override;
+			void OnStart( Object * object ) override;
 			void Update( const RenderInfo & renderInfo ) override;
 			void Render( const RenderInfo & renderInfo ) override;
 			void OnSuspend() override;

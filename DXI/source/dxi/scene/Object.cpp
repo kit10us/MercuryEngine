@@ -161,14 +161,34 @@ void Object::SetController( controllers::IController::shared_ptr controller )
 	m_controller = controller;
 }
 
+void Object::OnInit()
+{
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnInit( this );
+		}
+	}
+
+	if ( GetFirstChild() )
+	{
+		GetFirstChild()->OnInit();
+	}
+
+	Object::ptr sibling = GetNext();
+	while ( sibling )
+	{
+		sibling->OnInit();
+		sibling = sibling->GetNext();
+	}
+}
+
 void Object::OnStart()
 {
 	for( auto && component : m_components )
 	{
-		if( component->IsEnabled() )
-		{
-			component->OnStart();
-		}
+		component->OnStart( this );
 	}
 
 	if ( GetFirstChild() )

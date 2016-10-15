@@ -18,7 +18,7 @@ int Scenes_LoadScene( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	game->GetSceneManager()->Load( name, path );
+	// TODO: game->GetSceneManager()->Load( name, path );
 
 	return 0;
 }

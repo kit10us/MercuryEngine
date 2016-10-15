@@ -179,8 +179,8 @@ void Sprite::Render( const RenderInfo & renderInfo )
 
 	// TODO:
 	/*
-	float width = static_cast< float >( m_game->GetOS().GetResolution().width );
-	float height = static_cast< float >(m_game->GetOS().GetResolution().height );
+	float width = static_cast< float >( m_game->GetOS()->GetResolution().width );
+	float height = static_cast< float >(m_game->GetOS()->GetResolution().height );
 	unify::Matrix matrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.0f, 1000.0f );
 	*/
 	

@@ -94,11 +94,11 @@ DXRenderer::DXRenderer( WindowsOS * os, core::Display display )
 	D3DXMatrixOrthoOffCenterLH( &finalMatrix, 0, display.GetSize().width, display.GetSize().height, 0, display.GetNearZ(), display.GetFarZ() );
 	m_dxDevice->SetTransform( D3DTS_PROJECTION, &finalMatrix );
 
-	GetDxDevice()->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
-	GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	GetDxDevice()->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	GetDxDevice()->SetRenderState( D3DRS_COLORVERTEX, 1 );
-	GetDxDevice()->SetRenderState( D3DRS_LIGHTING, 0 );
+	m_dxDevice->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
+	m_dxDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	m_dxDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+	m_dxDevice->SetRenderState( D3DRS_COLORVERTEX, 1 );
+	m_dxDevice->SetRenderState( D3DRS_LIGHTING, 0 );
 }
 
 DXRenderer::~DXRenderer()
@@ -195,20 +195,20 @@ void DXRenderer::CreateDirectX()
 	DX::SetDxDevice( m_dxDevice );
 
 	// Clear
-	GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET, D3DCOLOR_ARGB( 255, 0, 0, 0 ), 1.0f, 0 );
-	GetDxDevice()->Present( 0, 0, 0, 0 );
+	m_dxDevice->Clear( 0, 0, D3DCLEAR_TARGET, D3DCOLOR_ARGB( 255, 0, 0, 0 ), 1.0f, 0 );
+	m_dxDevice->Present( 0, 0, 0, 0 );
 
 	//TODO: Working on a no render state, shader friendly version
 	// Default projection matrix
 	D3DXMATRIX projectionMatrix;
 	float aspectRatio = (float)os.GetResolution().width / os.GetResolution().height;
 	D3DXMatrixPerspectiveFovLH( &projectionMatrix, D3DX_PI / 4.0f, aspectRatio, 1, 1000 );
-	GetDxDevice()->SetTransform( D3DTS_PROJECTION, &projectionMatrix );
-	GetDxDevice()->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
-	GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-	GetDxDevice()->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
-	GetDxDevice()->SetRenderState( D3DRS_COLORVERTEX, 1 );
-	GetDxDevice()->SetRenderState( D3DRS_LIGHTING, 0 );
+	m_dxDevice->SetTransform( D3DTS_PROJECTION, &projectionMatrix );
+	m_dxDevice->SetRenderState( D3DRS_AMBIENT, 0xFFFFFFFF );
+	m_dxDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
+	m_dxDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE );
+	m_dxDevice->SetRenderState( D3DRS_COLORVERTEX, 1 );
+	m_dxDevice->SetRenderState( D3DRS_LIGHTING, 0 );
 #elif defined( DIRECTX11 )
 	HRESULT result = S_OK;
 
@@ -336,7 +336,7 @@ void DXRenderer::BeforeRender()
 {
 #if defined( DIRECTX9 )
 	HRESULT result;
-	result = GetDxDevice()->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB( 0, 0, 60 ), 1.0f, 0 );
+	result = m_dxDevice->Clear( 0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB( 0, 0, 60 ), 1.0f, 0 );
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to clear in BeforeRender!" );
@@ -346,7 +346,7 @@ void DXRenderer::BeforeRender()
 	result = m_swapChain->GetBackBuffer( 0, D3DBACKBUFFER_TYPE_MONO, &backBuffer );
 	result = m_dxDevice->SetRenderTarget( 0, backBuffer );
 
-	result = GetDxDevice()->BeginScene();
+	result = m_dxDevice->BeginScene();
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to BeginScene in BeforeRender!" );
@@ -367,7 +367,7 @@ void DXRenderer::AfterRender()
 {
 #if defined( DIRECTX9 )
 	HRESULT result;
-	result = GetDxDevice()->EndScene();
+	result = m_dxDevice->EndScene();
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to EndScene in AfterRender!" );
@@ -395,7 +395,7 @@ void DXRenderer::SetCullMode( CullMode::TYPE mode )
 	case CullMode::CounteClockwise: dxCull = D3DCULL_CCW; break;
 	};
 
-	GetDxDevice()->SetRenderState( D3DRS_CULLMODE, dxCull );
+	m_dxDevice->SetRenderState( D3DRS_CULLMODE, dxCull );
 #elif defined( DIRECTX11 )
 	// TODO: throw exception::NotImplemented( "DX11" );
 #endif

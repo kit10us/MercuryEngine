@@ -33,6 +33,9 @@ void Mesh::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
 		meshInstanceData->Update( renderInfo );
 	}
+
+	// HACK: TODO:
+	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
 void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
@@ -61,5 +64,6 @@ PrimitiveList & Mesh::GetPrimitiveList()
 
 const unify::BBox< float > & Mesh::ComputeBounds()
 {
-	return m_primitiveList.ComputeBounds( m_BBox );
+	m_primitiveList.ComputeBounds( m_BBox );
+	return m_BBox;
 }

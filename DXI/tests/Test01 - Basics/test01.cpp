@@ -119,7 +119,7 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 	RenderInfo renderInfo2D( renderInfo );
 
 	unify::Matrix projectionMatrix = unify::Matrix::MatrixOrthoOffCenterLH( 0, 
-		// TODO: static_cast< float >(GetOS().GetResolution().width), static_cast< float >(GetOS().GetResolution().height)
+		// TODO: static_cast< float >(GetOS()->GetResolution().width), static_cast< float >(GetOS()->GetResolution().height)
 		800,
 		600
 		, 0, 1, 1000 );

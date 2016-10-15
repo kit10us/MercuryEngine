@@ -27,7 +27,7 @@ namespace dxi
 		{
 		protected: // User overrides...
 
-			virtual bool Setup( IOS & os ) override;  
+			virtual bool Setup( IOS * os ) override;  
 			virtual void Startup() override;		  
 			virtual bool Update( RenderInfo & renderInfo ) override;
 			virtual void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;			
@@ -55,7 +55,7 @@ namespace dxi
 
 			virtual const RenderInfo & GetRenderInfo() const final;
 
-			virtual IOS & GetOS() final;
+			virtual IOS * GetOS() final;
 
 			void AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se ) override;
 
@@ -77,7 +77,7 @@ namespace dxi
 			rm::ResourceHub & GetResourceHub();
 			const rm::ResourceHub & GetResourceHub() const;
 
-			void RequestQuit();
+			void Quit();
 			bool IsQuitting() const;
 
 			input::InputManager * GetInputManager();
