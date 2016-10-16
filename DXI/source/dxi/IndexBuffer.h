@@ -6,10 +6,8 @@
 #include <dxi/DataBuffer.h>
 #include <dxi/IndexLock.h>
 #include <unify/unify.h>
-#include <dxi/win/DirectX.h>
 #include <unify/Flags.h>
 #include <memory>
-#include <atlbase.h>
 
 namespace dxi
 {
@@ -59,12 +57,7 @@ namespace dxi
 	protected:
 		unsigned int m_createFlags;
 
-		// TODO: PIMPL
-
-#if defined( DIRECTX9 )
-		CComPtr< IDirect3DIndexBuffer9 > m_IB;
-#elif defined( DIRECTX11 )
-		CComPtr< ID3D11Buffer > m_IB;
-#endif
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
 	};
 }

@@ -13,7 +13,6 @@
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXDevice.h>
 #include <DXIWinMain.h>
 
 using namespace dxi;

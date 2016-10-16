@@ -3,7 +3,6 @@
 
 #include <dxi/font/Character.h>
 #include <dxi/core/Game.h>
-#include <dxi/win/DxDevice.h>
 
 using namespace dxi;
 using namespace font;

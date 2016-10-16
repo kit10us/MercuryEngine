@@ -9,11 +9,30 @@
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/OutOfBounds.h>
 #include <dxi/exception/NotImplemented.h>
+#include <atlbase.h>
 #include <assert.h>
 
 using namespace dxi;
 
+class IndexBuffer::Pimpl
+{
+public:
+	Pimpl( IndexBuffer & owner )
+		: m_owner( owner )
+	{
+	}
+
+	IndexBuffer & m_owner;
+#if defined( DIRECTX9 )
+	CComPtr< IDirect3DIndexBuffer9 > m_IB;
+#elif defined( DIRECTX11 )
+	CComPtr< ID3D11Buffer > m_IB;
+#endif					  
+};
+
+
 IndexBuffer::IndexBuffer()
+	: m_pimpl( new Pimpl( *this ) )
 {
 }
 
@@ -73,7 +92,7 @@ void IndexBuffer::Create( unsigned int uNumIndices, Index32 * source, BufferUsag
 		createFlags,
 		d3dFormat,
 		pool,
-		&m_IB,
+		&m_pimpl->m_IB,
 		NULL			
 	);
 	if( FAILED( hr ) )
@@ -213,7 +232,7 @@ size_t IndexBuffer::Append( const IndexBuffer & from, size_t vertexOffset  )
 
 void IndexBuffer::Destroy()
 {
-	m_IB = nullptr;
+	m_pimpl->m_IB = nullptr;
 	m_length = 0;
 }
 
@@ -222,7 +241,7 @@ void IndexBuffer::Lock( IndexLock & lock )
 #if defined( DIRECTX9 )
 	HRESULT hr;
 	unsigned char * data;
-	hr = m_IB->Lock( 0, 0, (void**)&data, 0 );
+	hr = m_pimpl-> m_IB->Lock( 0, 0, (void**)&data, 0 );
 	if( FAILED(hr) )
 	{
 		lock.Invalidate();
@@ -239,14 +258,14 @@ void IndexBuffer::Lock( IndexLock & lock )
 void IndexBuffer::LockReadOnly( IndexLock & lock ) const
 {
 #if defined( DIRECTX9 )
-	assert( m_IB != 0 );
+	assert( m_pimpl->m_IB != 0 );
 	if( m_locked )
 	{
 		throw exception::FailedToLock( "Index buffer already locked!" );
 	}
 
 	void * data = 0;
-	if( FAILED( m_IB->Lock( 0, 0, &data, D3DLOCK_READONLY ) ) )
+	if( FAILED( m_pimpl->m_IB->Lock( 0, 0, &data, D3DLOCK_READONLY ) ) )
 	{
 		throw exception::FailedToLock( "Failed to lock indices!" );
 	}
@@ -265,7 +284,7 @@ void IndexBuffer::Unlock()
 	{
 		return;
 	}
-	m_IB->Unlock();
+	m_pimpl->m_IB->Unlock();
 	m_locked = false;
 #elif defined( DIRECTX11 )
 	throw exception::NotImplemented( "Locking not supported in DX11!" );
@@ -279,7 +298,7 @@ void IndexBuffer::UnlockReadOnly() const
 	{
 		return;
 	}
-	m_IB->Unlock();
+	m_pimpl->m_IB->Unlock();
 	bool & locked = *const_cast<bool*>( &m_locked ); // Break const for locking.
 	locked = false;
 #elif defined( DIRECTX11 )
@@ -294,19 +313,19 @@ unsigned int IndexBuffer::GetCreateFlags() const
 
 bool IndexBuffer::Valid() const
 {
-	return m_IB != 0;
+	return m_pimpl->m_IB != 0;
 }
 
 void IndexBuffer::Use() const
 {
-	if( ! m_IB )
+	if( ! m_pimpl->m_IB )
 	{
 		return;
 	}	
 
 #if defined( DIRECTX9 )
 
-	HRESULT hr = win::DX::GetDxDevice()->SetIndices( m_IB );
+	HRESULT hr = win::DX::GetDxDevice()->SetIndices( m_pimpl->m_IB );
 	if ( FAILED( hr ) )
 	{
 		throw unify::Exception( "Failed to use index buffer!" );
