@@ -9,7 +9,6 @@
 /// </summary>
 
 #include <dxi/core/Game.h>
-#include <dxi/RenderState.h>
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/factory/VertexShaderFactory.h>
 #include <dxi/win/DXILib.h>

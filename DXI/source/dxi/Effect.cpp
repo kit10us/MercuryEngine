@@ -8,7 +8,6 @@ using namespace dxi;
 
 Effect::Effect()
 	: m_culling( CullNone )
-	, m_blend( Usage::True, Blend::Effect::SrcAlpha, Blend::Effect::InvSrcAlpha )
 {
 }
 
@@ -19,7 +18,6 @@ Effect::~Effect()
 Effect & Effect::operator = ( const Effect & effect )
 {
 	m_culling = effect.m_culling;
-	m_blend	= effect.m_blend;
 
 	m_frameIndexAndInfluence = effect.m_frameIndexAndInfluence;
 
@@ -32,7 +30,6 @@ Effect & Effect::operator = ( const Effect & effect )
 bool Effect::operator == ( const Effect & effect ) const
 {
 	if( m_culling != effect.m_culling ) return false;
-	if( m_blend	!= effect.m_blend ) return false;
 	if ( m_vertexShader != effect.m_vertexShader ) return false;
 	if ( m_pixelShader != effect.m_pixelShader ) return false;
 
@@ -66,7 +63,6 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 	}
 	*/
 
-	m_blend.Use();
 
 	// MATRIX...
 	const unify::FrameSetInstance * frameSetInstance = renderInfo.GetFrameSetInstance();
@@ -126,11 +122,6 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 	}
 }
 
-void Effect::SetBlend( const Blend & blend )
-{
-	m_blend = blend;
-}
-
 void Effect::SetCulling( CullingMode mode )
 {
 	m_culling = mode;
@@ -151,16 +142,6 @@ void Effect::ClearTextures()
 	m_textures.clear();
 }
 
-Blend & Effect::GetBlend()
-{
-	return m_blend;
-}
-
-bool Effect::HasBlend() const
-{
-    return m_blend.IsSet();
-}
-					   
 void Effect::SetPixelShader( PixelShader::ptr shader )
 {
 	m_pixelShader = shader;
@@ -194,7 +175,7 @@ void Effect::AddFrame( size_t frameIndex, float influence )
 
 bool Effect::UsesTransparency()
 {
-	return HasBlend() ? true : ( GetPixelShader() ? GetPixelShader()->IsTrans() : false );
+	return GetPixelShader() ? GetPixelShader()->IsTrans() : false;
 }
 
 void Effect::SetScratchVertexBuffer( std::shared_ptr< VertexBuffer > vertexBuffer )

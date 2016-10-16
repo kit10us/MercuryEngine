@@ -5,10 +5,10 @@
 
 #include <dxi/core/IOS.h>
 #include <dxi/core/IGame.h>
-#include <dxi/win/DirectX.h>
-#include <dxi/win/DXRenderer.h>
+#include <dxi/core/IRenderer.h>
 #include <dxi/core/Display.h>
 #include <list>
+#include <vector>
 
 // Undefine Microsoft clashing defines.
 #ifdef CreateWindow
@@ -58,30 +58,11 @@ namespace dxi
 
 			void DebugWriteLine( const std::string & line ) override;
 
-			IDirect3DDevice9 * GetDxDevice();
-
 			LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
 		private:
-			core::IGame * m_game;
-			std::string m_name;
-			
-			HWND m_handle;
-			HINSTANCE m_hInstance;
-			int m_cmdShow;
-			std::vector< std::string > m_commandLine;
-
-			WNDPROC m_wndProc;
-
-			CComPtr< IDirect3DDevice9 > m_dxDevice;
-
-			input::IInputSource * m_keyboard;
-			input::IInputSource * m_mouse;
-			
-			bool m_hasFocus;
-			std::list< HWND > m_childHandles; // Handles to be serviced.
-			std::vector< core::Display > m_pendingDisplays;
-			std::vector< std::shared_ptr< DXRenderer > > m_renderers;
+			class Pimpl;
+			std::shared_ptr< Pimpl > m_pimpl;
 		};
 	}
 }

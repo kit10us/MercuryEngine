@@ -19,7 +19,15 @@ DXRenderer::DXRenderer( WindowsOS * os, core::Display display )
 	, m_swapChainDesc {}
 #endif
 {
-	m_dxDevice = os->GetDxDevice();
+	m_dxDevice = 0;
+	for( int i = 0; i < os->RendererCount(); ++i )
+	{ 
+		auto dxRenderer = dynamic_cast<win::DXRenderer *>(os->GetRenderer( i ) );
+		if ( dxRenderer && dxRenderer->GetDxDevice() )
+		{
+			m_dxDevice = dxRenderer->GetDxDevice();
+		}
+	}
 
 	m_pp = {};
 	m_pp.BackBufferWidth = (UINT)display.GetSize().width;

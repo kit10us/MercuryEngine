@@ -8,7 +8,6 @@
 #include <unify/V3.h>
 #include <dxi/animation/Instance.h>
 #include <dxi/RenderInfo.h>
-#include <dxi/Blend.h>
 #include <dxi/Effect.h>
 #include <dxi/core/Game.h>
 
@@ -42,9 +41,6 @@ namespace dxi
 		float GetDepth() const;
 		void SetDepth( float depth );
 
-		const Blend & GetBlend() const;
-		void SetBlend( const Blend & blend );
-
 		unify::Size< float > GetPixelSize() const;
 
 		void Update( unify::Seconds elapsed );
@@ -68,6 +64,5 @@ namespace dxi
 		unify::Size< float > m_size;
 		float m_depth;
 		bool m_sizeToPixels;
-		Blend m_blend;
 	};
 }

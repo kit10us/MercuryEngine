@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/font/TextBox.h>
-#include <dxi/RenderState.h>
 
 using namespace dxi;
 using namespace font;

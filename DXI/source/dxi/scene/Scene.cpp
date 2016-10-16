@@ -405,24 +405,22 @@ bool Scene::RayTest( const unify::V3< float > * pFirst, const unify::V3< float >
 
 void Scene::SetSize( const unify::Size< float > & size )
 {
-	m_viewport.SetWidth( size.width );
-	m_viewport.SetHeight( size.height );
+	m_viewport.SetSize( size );
 }
 
 unify::Size< float > Scene::GetSize() const
 {
-	return unify::Size< float >( m_viewport.GetWidth(), m_viewport.GetHeight() );
+	return m_viewport.GetSize();
 }
 
 void Scene::SetPosition( const unify::V2< float > & position )
 {
-	m_viewport.SetTopLeftX( position.x );
-	m_viewport.SetTopLeftY( position.y );
+	m_viewport.SetUL( position );
 }
 
 unify::V2< float > Scene::GetPosition() const
 {
-	return unify::V2< float >( m_viewport.GetTopLeftX(), m_viewport.GetTopLeftY() );
+	return m_viewport.GetUL();
 }
 
 void Scene::SetZ( const unify::MinMax< float > & z )

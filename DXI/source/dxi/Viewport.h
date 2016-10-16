@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <dxi/win/DirectX.h>
+#include <unify/V2.h>
+#include <unify/Size.h>
 
 namespace dxi
 {
@@ -11,26 +12,22 @@ namespace dxi
 	{
 	public:
 		Viewport();
+		Viewport( unify::V2< float > ul, unify::Size< float > size, float minDepth, float maxDepth );
 		Viewport( float topLeftX, float topLeftY, float width, float height, float minDepth, float maxDepth );
 
-		void SetTopLeftX( float topLeftX );
-		void SetTopLeftY( float topLeftY );
-		void SetWidth( float width );
-		void SetHeight( float height );
+		void SetUL( unify::V2< float > ul );
+		void SetSize( unify::Size< float > size );
 		void SetMinDepth( float minDepth );
 		void SetMaxDepth( float maxDepth );
 
-		float GetTopLeftX() const;
-		float GetTopLeftY() const;
-		float GetWidth() const;
-		float GetHeight() const;
+		unify::V2< float > GetUL() const;
+		unify::Size< float > GetSize() const;
 		float GetMinDepth() const;
 		float GetMaxDepth() const;
 	private:
-#if defined( DIRECTX9 )
-		D3DVIEWPORT9 m_dxViewport;
-#elif defined( DIRECTX11 )
-		D3D11_VIEWPORT m_dxViewport;
-#endif
+		unify::V2< float > m_ul;
+		unify::Size< float > m_size;
+		float m_minDepth;
+		float m_maxDepth;
 	};
 }

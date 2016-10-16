@@ -5,116 +5,68 @@
 
 using namespace dxi;
 
+/* TODO: For reference.
+#if defined( DIRECTX9 )
+D3DVIEWPORT9 m_dxViewport;
+#elif defined( DIRECTX11 )
+D3D11_VIEWPORT m_dxViewport;
+#endif
+*/
+
+
 Viewport::Viewport()
 {
 }
 
-Viewport::Viewport( float topLeftX, float topLeftY, float width, float height, float minDepth, float maxDepth )
+Viewport::Viewport( unify::V2< float > ul, unify::Size< float > size, float minDepth, float maxDepth )
+	: m_ul( ul )
+	, m_size( size )
+	, m_minDepth( minDepth )
+	, m_maxDepth( maxDepth )
 {
-	SetTopLeftX( topLeftX );
-	SetTopLeftY( topLeftY );
-	SetWidth( width );
-	SetHeight( height );
-	SetMinDepth( minDepth );
-	SetMaxDepth( maxDepth );
 }
 
-void Viewport::SetTopLeftX( float topLeftX )
+Viewport::Viewport( float ulX, float ulY, float width, float height, float minDepth, float maxDepth )
+	: Viewport( unify::V2< float >( ulX, ulY ), unify::Size< float >( width, height ), minDepth, maxDepth )
 {
-#if defined( DIRECTX9 )
-	m_dxViewport.X = static_cast< DWORD >(topLeftX);
-#elif defined( DIRECTX11 )
-	m_dxViewport.TopLeftX = topLeftX;
-#endif
 }
 
-void Viewport::SetTopLeftY( float topLeftY )
+void Viewport::SetUL( unify::V2< float > ul )
 {
-#if defined( DIRECTX9 )
-	m_dxViewport.Y = static_cast< DWORD >(topLeftY);
-#elif defined( DIRECTX11 )
-	m_dxViewport.TopLeftY = topLeftY;
-#endif
+	m_ul = ul;
 }
 
-void Viewport::SetWidth( float width )
+void Viewport::SetSize( unify::Size< float > size )
 {
-#if defined( DIRECTX9 )
-	m_dxViewport.Width = static_cast< DWORD >(width);
-#elif defined( DIRECTX11 )
-	m_dxViewport.Width = width;
-#endif
-}
-
-void Viewport::SetHeight( float height )
-{
-#if defined( DIRECTX9 )
-	m_dxViewport.Height = static_cast< DWORD >(height);
-#elif defined( DIRECTX11 )
-	m_dxViewport.Height = height;
-#endif
+	m_size = size;
 }
 
 void Viewport::SetMinDepth( float minDepth )
 {
-#if defined( DIRECTX9 )
-	m_dxViewport.MinZ = minDepth;
-#elif defined( DIRECTX11 )
-	m_dxViewport.MinDepth = minDepth;
-#endif
+	m_minDepth = minDepth;
 }
 
 void Viewport::SetMaxDepth( float maxDepth )
 {
-#if defined( DIRECTX9 )
-	m_dxViewport.MaxZ = maxDepth;
-#elif defined( DIRECTX11 )
-	m_dxViewport.MaxDepth = maxDepth;
-#endif
+	m_maxDepth = maxDepth;
 }
 
-float Viewport::GetTopLeftX() const
+unify::V2< float > Viewport::GetUL() const
 {
-#if defined( DIRECTX9 )
-	return static_cast< float >(m_dxViewport.X);
-#elif defined( DIRECTX11 )
-	return m_dxViewport.TopLeftX;
-#endif
+	return m_ul;
 }
 
-float Viewport::GetTopLeftY() const
+unify::Size< float > Viewport::GetSize() const
 {
-#if defined( DIRECTX9 )
-	return static_cast< float >(m_dxViewport.Y);
-#elif defined( DIRECTX11 )
-	return m_dxViewport.TopLeftY;
-#endif
-}
-
-float Viewport::GetWidth() const
-{
-	return static_cast< float >(m_dxViewport.Width);
-}
-
-float Viewport::GetHeight() const
-{
-	return static_cast< float >(m_dxViewport.Height);
+	return m_size;
 }
 
 float Viewport::GetMinDepth() const
 {
-#if defined( DIRECTX9 )
-	return m_dxViewport.MinZ;
-#elif defined( DIRECTX11 )
-	return m_dxViewport.MinDepth;
-#endif
+	return m_minDepth;
 }
 
 float Viewport::GetMaxDepth() const
 {
-#if defined( DIRECTX9 )
-	return m_dxViewport.MaxZ;
-#elif defined( DIRECTX11 )
-	return m_dxViewport.MaxDepth;
-#endif
+	return m_maxDepth;
 }

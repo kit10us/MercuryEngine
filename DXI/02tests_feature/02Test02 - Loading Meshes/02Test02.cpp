@@ -53,7 +53,7 @@ void MyGame::Startup()
 	scene::Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
 	camera->AddComponent( scene::IComponent::ptr( new scene::Camera( GetOS() ) ) );	 
 	scene::Camera * cameraComponent = unify::polymorphic_downcast< scene::Camera * >( camera->GetComponent( "camera" ).get() );
-	cameraComponent->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, 800/600, 1, 1000 ) );
+	cameraComponent->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 

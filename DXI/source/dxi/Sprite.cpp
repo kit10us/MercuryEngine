@@ -16,7 +16,6 @@ Sprite::Sprite( core::Game * game )
 , m_rotations( unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ), unify::Angle::AngleInRadians( 0 ) )
 , m_scale( 1, 1 )
 , m_depth( 0 )
-, m_blend( Usage::True, Blend::Effect::SrcAlpha, Blend::Effect::InvSrcAlpha )
 {
 }
 
@@ -30,7 +29,6 @@ Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > 
 , m_scale( 1, 1 )
 , m_sizeToPixels( true )
 , m_depth( depth )
-, m_blend( Usage::True, Blend::Effect::SrcAlpha, Blend::Effect::InvSrcAlpha )
 {
 	Init();
 }
@@ -45,7 +43,6 @@ Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > 
 , m_scale( scale )
 , m_sizeToPixels( true )
 , m_depth( depth )
-, m_blend( Usage::True, Blend::Effect::SrcAlpha, Blend::Effect::InvSrcAlpha )
 {
 	Init();
 }
@@ -129,16 +126,6 @@ void Sprite::SetDepth( float depth )
 	m_depth = depth;
 }
 
-const Blend & Sprite::GetBlend() const
-{
-	return m_blend;
-}
-
-void Sprite::SetBlend( const Blend & blend )
-{
-	m_blend = blend;
-}
-
 unify::Size< float > Sprite::GetPixelSize() const
 {
 	return unify::Size< float >( m_size.width * m_scale.x, m_size.height * m_scale.y );
@@ -189,7 +176,6 @@ void Sprite::Render( const RenderInfo & renderInfo )
 
 	// Use effect before setting the texture explicitly, as this effect will attempt to set the texture (likely unset it as it's probably empty).
 	m_effect->Use( myRenderInfo );
-	m_blend.Use();
 	m_animationInstance.GetFrame().GetTexture()->Use( 0 );
 
 #if defined( DIRECTX9 )

@@ -4,10 +4,13 @@
 #pragma once
 
 #include <dxi/win/WindowsOS.h>
+#include <dxi/win/DXRenderer.h>
 #include <unify/Exception.h>
 #include <unify/Path.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <shellapi.h>
+
+#include <dxi/win/DirectX.h>
 
 using namespace dxi;
 using namespace win;
@@ -16,23 +19,57 @@ using namespace win;
 #undef GetCommandLine
 #endif
 
+class WindowsOS::Pimpl
+{
+public:
+	Pimpl( core::IGame * game )
+		: m_game( game )
+		, m_handle{}
+		, m_hasFocus{}
+		, m_hInstance{}
+		, m_cmdShow{}
+		, m_wndProc{}
+		, m_keyboard{}
+		, m_mouse{}
+	{
+	}
+
+	~Pimpl()
+	{
+	}
+
+	core::IGame * m_game;
+
+	std::string m_name;
+
+	HWND m_handle;
+	HINSTANCE m_hInstance;
+	int m_cmdShow;
+	std::vector< std::string > m_commandLine;
+
+	WNDPROC m_wndProc;
+
+	input::IInputSource * m_keyboard;
+	input::IInputSource * m_mouse;
+
+	bool m_hasFocus;
+	std::list< HWND > m_childHandles; // Handles to be serviced.
+	std::vector< core::Display > m_pendingDisplays;
+	std::vector< std::shared_ptr< DXRenderer > > m_renderers;
+};
+
+
 WindowsOS::WindowsOS( core::IGame * game )
-: m_game( game )
-, m_handle{}
-, m_hasFocus{}
-, m_hInstance{}
-, m_cmdShow{}
-, m_wndProc{}
-, m_keyboard{}
-, m_mouse{}
+: m_pimpl( new Pimpl( game ) )
+
 {
 }
 
 WindowsOS::WindowsOS( core::IGame * game, HWND handle )
 : WindowsOS( game )
 {
-	m_handle = handle;
-	m_hInstance = (HINSTANCE)GetWindowLong( handle, GWL_HINSTANCE );
+	m_pimpl->m_handle = handle;
+	m_pimpl->m_hInstance = (HINSTANCE)GetWindowLong( handle, GWL_HINSTANCE );
 }
 
 WindowsOS::WindowsOS( core::IGame * game, HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int cmdShow, WNDPROC wndProc )
@@ -45,14 +82,14 @@ WindowsOS::WindowsOS( core::IGame * game, HINSTANCE hInstance, HINSTANCE hPrevIn
 		string::size_type pos = string( buffer ).find_last_of( "\\/" );
 		if( pos != string::npos ) 
 		{
-			m_name = buffer;
+			m_pimpl->m_name = buffer;
 		}
 	}
 		
-	m_hInstance = hInstance;
-	m_cmdShow = cmdShow;
+	m_pimpl->m_hInstance = hInstance;
+	m_pimpl->m_cmdShow = cmdShow;
 	hPrevInstance; // NOT USED
-	m_wndProc = wndProc;
+	m_pimpl->m_wndProc = wndProc;
 
 	// Parse the commandline...
 	std::string commandLineString( lpszCmdLine );
@@ -71,7 +108,7 @@ WindowsOS::WindowsOS( core::IGame * game, HINSTANCE hInstance, HINSTANCE hPrevIn
 			}
 			if ( working.empty() == false )
 			{
-				m_commandLine.push_back( working );
+				m_pimpl->m_commandLine.push_back( working );
 				working.clear();
 			}
 			l = r + 1;
@@ -88,42 +125,42 @@ WindowsOS::WindowsOS( core::IGame * game, HINSTANCE hInstance, HINSTANCE hPrevIn
 
 WindowsOS::~WindowsOS()
 {
-	m_renderers.clear();
+	m_pimpl->m_renderers.clear();
 }
 
 std::string WindowsOS::GetName() const
 {
-	return m_name;
+	return m_pimpl->m_name;
 }
 
 const std::vector< std::string > & WindowsOS::GetCommandLine() const
 {
-	return m_commandLine;
+	return m_pimpl->m_commandLine;
 }
 
 void WindowsOS::AddDisplay( core::Display display )
 {
-	m_pendingDisplays.push_back( display );
+	m_pimpl->m_pendingDisplays.push_back( display );
 }
 
 void WindowsOS::CreatePendingDisplays()
 {
-	if( m_pendingDisplays.empty() )
+	if( m_pimpl->m_pendingDisplays.empty() )
 	{
 		return;
 	}
 
-	for( auto && display : m_pendingDisplays )
+	for( auto && display : m_pimpl->m_pendingDisplays )
 	{
 		CreateDisplay( display );
 	}
 
-	m_pendingDisplays.clear();
+	m_pimpl->m_pendingDisplays.clear();
 }
 
 void WindowsOS::CreateDisplay( core::Display display )
 {
-	bool isPrimary = m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
+	bool isPrimary = m_pimpl->m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
 
 	std::shared_ptr< DXRenderer > renderer;
 
@@ -135,12 +172,12 @@ void WindowsOS::CreateDisplay( core::Display display )
 
 		//MAKEINTRESOURCEA( IDD_ENUM ); // The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of the dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter specifies a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can use the MAKEINTRESOURCE macro to create this value. 
 		HWND hWndParent = display.GetParentHandle(); // [optional] A handle to the window that owns the dialog box. 
-		DLGPROC lpDialogFunc = display.GetDialogProc() ? display.GetDialogProc() : (DLGPROC)m_wndProc; // [optional] A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.
+		DLGPROC lpDialogFunc = display.GetDialogProc() ? display.GetDialogProc() : (DLGPROC)m_pimpl->m_wndProc; // [optional] A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.
 		HWND hwnd = CreateDialogA( hInstance, lpName, hWndParent, lpDialogFunc );
 		assert( hwnd );
 		if( hWndParent )
 		{
-			m_childHandles.push_back( hwnd );
+			m_pimpl->m_childHandles.push_back( hwnd );
 		}
 		ShowWindow( hwnd, SW_SHOW );
 	}
@@ -153,7 +190,7 @@ void WindowsOS::CreateDisplay( core::Display display )
 			WNDCLASS wc;
 			memset( &wc, 0, sizeof( wc ) );
 			wc.style = 0;
-			wc.lpfnWndProc = (WNDPROC)m_wndProc;
+			wc.lpfnWndProc = (WNDPROC)m_pimpl->m_wndProc;
 			wc.cbClsExtra = 0;
 			wc.cbWndExtra = 0;
 			wc.hInstance = GetHInstance();
@@ -201,54 +238,50 @@ void WindowsOS::CreateDisplay( core::Display display )
 				MoveWindow( handle, windowRect.left, windowRect.top, newWindowWidth, newWindowHeight, false );
 			}
 
-			ShowWindow( handle, m_cmdShow );
+			ShowWindow( handle, m_pimpl->m_cmdShow );
 			UpdateWindow( handle );
 			display.SetHandle( handle );
 		}
 	}
 
 	renderer.reset( new DXRenderer( this, display ) );
-	m_renderers.push_back( renderer );
-	if ( renderer->GetDxDevice() )
-	{
-		m_dxDevice = renderer->GetDxDevice();
-	}
+	m_pimpl->m_renderers.push_back( renderer );
 }
 
 int WindowsOS::RendererCount() const
 {
-	return m_renderers.size();
+	return m_pimpl->m_renderers.size();
 }
 
 core::IRenderer * WindowsOS::GetRenderer( int index) const
 {
-	return m_renderers[ index ].get();
+	return m_pimpl->m_renderers[ index ].get();
 }
 
 void WindowsOS::SetHasFocus( bool hasFocus )
 {
-	m_hasFocus = hasFocus;
+	m_pimpl->m_hasFocus = hasFocus;
 }
 
 bool WindowsOS::GetHasFocus() const
 {
-	return m_hasFocus;
+	return m_pimpl->m_hasFocus;
 }
 
 HINSTANCE WindowsOS::GetHInstance() const
 {
-	return m_hInstance;
+	return m_pimpl->m_hInstance;
 }
 
 HWND WindowsOS::GetHandle() const
 {
-	if ( m_handle )
+	if ( m_pimpl->m_handle )
 	{
-		return m_handle;
+		return m_pimpl->m_handle;
 	}
 	else
 	{
-		return m_renderers[0]->GetDisplay().GetHandle();
+		return m_pimpl->m_renderers[0]->GetDisplay().GetHandle();
 	}
 }
 
@@ -261,16 +294,16 @@ void WindowsOS::BuildRenderers()
 
 void WindowsOS::Startup()
 {
-	auto keyboardItr = m_game->GetInputManager()->Find( "Keyboard" );
+	auto keyboardItr = m_pimpl->m_game->GetInputManager()->Find( "Keyboard" );
 	if ( keyboardItr )
 	{
-		m_keyboard = keyboardItr.get();
+		m_pimpl->m_keyboard = keyboardItr.get();
 	}
 
-	auto mouseItr = m_game->GetInputManager()->Find( "Mouse" );
+	auto mouseItr = m_pimpl->m_game->GetInputManager()->Find( "Mouse" );
 	if ( mouseItr )
 	{
-		m_mouse = mouseItr.get();
+		m_pimpl->m_mouse = mouseItr.get();
 	}
 }
 
@@ -288,14 +321,9 @@ void WindowsOS::DebugWriteLine( const std::string & line )
 	DebugWrite( line + "\n" );
 }
 
-IDirect3DDevice9 * WindowsOS::GetDxDevice()
-{
-	return m_dxDevice;
-}
-
 LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	core::IGame & game = *m_game;
+	core::IGame & game = *m_pimpl->m_game;
 	static bool trackingMouse = false;
 
 	switch ( message )
@@ -307,14 +335,14 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_MOUSELEAVE:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		for( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
+				m_pimpl->m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
 				break;
 			}
 		}
@@ -323,14 +351,14 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_LBUTTONDOWN:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_mouse->SetState( renderer, "LeftButton", "Down", true );
+				m_pimpl->m_mouse->SetState( renderer, "LeftButton", "Down", true );
 				break;
 			}
 		}
@@ -339,14 +367,14 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_LBUTTONUP:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_mouse->SetState( renderer, "LeftButton", "Down", false );
+				m_pimpl->m_mouse->SetState( renderer, "LeftButton", "Down", false );
 				break;
 			}
 		}
@@ -355,14 +383,14 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_RBUTTONDOWN:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_mouse->SetState( renderer, "RightButton", "Down", true );
+				m_pimpl->m_mouse->SetState( renderer, "RightButton", "Down", true );
 				break;
 			}
 		}
@@ -371,14 +399,14 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_RBUTTONUP:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_mouse->SetState( renderer, "RightButton", "Down", false );
+				m_pimpl->m_mouse->SetState( renderer, "RightButton", "Down", false );
 				break;
 			}
 		}
@@ -387,7 +415,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_MOUSEWHEEL:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		short zDelta = GET_WHEEL_DELTA_WPARAM( wParam );
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
@@ -395,7 +423,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_mouse->SetValue( renderer, "MouseWheel", zDelta / (float)WHEEL_DELTA );
+				m_pimpl->m_mouse->SetValue( renderer, "MouseWheel", zDelta / (float)WHEEL_DELTA );
 				break;
 			}
 		}
@@ -404,7 +432,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_MOUSEMOVE:
 	{
-		if ( m_mouse == nullptr ) break;
+		if ( m_pimpl->m_mouse == nullptr ) break;
 
 		// TODO:
 		// Enable tracking when the mouse leaves the client area...
@@ -428,8 +456,8 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			{
 				trackingMouse = false;				
 								
-				float width = static_cast<float>(GetRenderer( renderer )->GetViewport().GetWidth());
-				float height = static_cast< float >(GetRenderer( renderer )->GetViewport().GetHeight());
+				float width = static_cast<float>(GetRenderer( renderer )->GetViewport().GetSize().width);
+				float height = static_cast< float >(GetRenderer( renderer )->GetViewport().GetSize().height);
 				float clientWidth = static_cast< float >(clientRect.right);
 				float clientHeight = static_cast< float >(clientRect.bottom);
 
@@ -437,8 +465,8 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				mousePosition.x *= static_cast< int >(width / clientWidth);
 				mousePosition.y *= static_cast< int >(height / clientHeight);
 
-				m_mouse->SetValue( renderer, "PositionX", (float)mousePosition.x );
-				m_mouse->SetValue( renderer, "PositionY", (float)mousePosition.y );
+				m_pimpl->m_mouse->SetValue( renderer, "PositionX", (float)mousePosition.x );
+				m_pimpl->m_mouse->SetValue( renderer, "PositionY", (float)mousePosition.y );
 				break;
 			}
 		}

@@ -5,7 +5,6 @@
 
 #include <dxi/input/IInputSource.h>
 #include <dxi/core/Game.h>
-#include <dxi/win/DirectX.h>
 
 #define DIRECTINPUT_VERSION		0x0800
 #include <dinput.h>

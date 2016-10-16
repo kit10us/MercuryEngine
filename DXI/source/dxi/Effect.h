@@ -3,12 +3,10 @@
 #pragma once
 
 #include <dxi/Texture.h>
-#include <dxi/Blend.h>
 #include <dxi/PixelShader.h>
 #include <dxi/VertexShader.h>
 #include <dxi/VertexDeclaration.h>
 #include <dxi/VertexBuffer.h>
-#include <dxi/Transform.h>
 #include <unify/Matrix.h>
 #include <unify/Frame.h>
 
@@ -43,16 +41,13 @@ namespace dxi
 		bool operator !=( const Effect & effect ) const;
 
 		void Use( const RenderInfo & renderInfo );
-		bool HasBlend() const;
 		void SetTexture( unsigned char stage, Texture::ptr texture );
 		void ClearTextures();
-		void SetBlend( const Blend & blend );
 		void SetCulling( CullingMode mode );
 		void SetPixelShader( PixelShader::ptr shader );
 		void SetVertexShader( VertexShader::ptr shader );
 		void AddFrame( size_t frameIndex, float influence );
 		
-		Blend & GetBlend();
 		PixelShader::ptr GetPixelShader();
 		VertexShader::ptr GetVertexShader();
 		Texture::ptr GetTexture( unsigned char stage );
@@ -65,7 +60,6 @@ namespace dxi
 
 	protected:
 		CullingMode m_culling;
-		Blend m_blend;
 		PixelShader::ptr m_pixelShader;
 		VertexShader::ptr m_vertexShader;
 		std::vector< Texture::ptr > m_textures;

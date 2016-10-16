@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <Windows.h>
 #include <dxi/Viewport.h>
 #include <unify/Size.h>
 #include <unify/V2.h>

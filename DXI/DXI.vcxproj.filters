@@ -49,9 +49,6 @@
     <ClCompile Include="source\dxi\RenderMethodBuffer.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\RenderState.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\Sprite.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -59,12 +56,6 @@
       <Filter>dxi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\Texture.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\Transform.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\Usage.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\VertexBuffer.cpp">
@@ -120,9 +111,6 @@
     </ClCompile>
     <ClCompile Include="source\dxi\font\FontString.cpp">
       <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\Blend.cpp">
-      <Filter>dxi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\frameanimation\FrameAnimation.cpp">
       <Filter>dxi\frameanimation</Filter>
@@ -244,9 +232,6 @@
     <ClInclude Include="source\dxi\RenderMethodBuffer.h">
       <Filter>dxi</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\RenderState.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\Sprite.h">
       <Filter>dxi</Filter>
     </ClInclude>
@@ -254,12 +239,6 @@
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\Texture.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Transform.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Usage.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\VertexBuffer.h">
@@ -327,9 +306,6 @@
     </ClInclude>
     <ClInclude Include="source\dxi\font\FontManager.h">
       <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Blend.h">
-      <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\animation\Frame.h">
       <Filter>dxi\animation</Filter>

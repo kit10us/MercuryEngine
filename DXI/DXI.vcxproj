@@ -16,7 +16,6 @@
     <ClCompile Include="source\dxi\animation\Instance.cpp" />
     <ClCompile Include="source\dxi\animation\Sequence.cpp" />
     <ClCompile Include="source\dxi\animation\SpriteManager.cpp" />
-    <ClCompile Include="source\dxi\Blend.cpp" />
     <ClCompile Include="source\dxi\BufferSet.cpp" />
     <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp" />
     <ClCompile Include="source\dxi\core\Display.cpp" />
@@ -70,7 +69,6 @@
     <ClCompile Include="source\dxi\RenderInfo.cpp" />
     <ClCompile Include="source\dxi\RenderMethod.cpp" />
     <ClCompile Include="source\dxi\RenderMethodBuffer.cpp" />
-    <ClCompile Include="source\dxi\RenderState.cpp" />
     <ClCompile Include="source\dxi\scene\BBoxRendererComponent.cpp" />
     <ClCompile Include="source\dxi\scene\Camera.cpp" />
     <ClCompile Include="source\dxi\scene\Component.cpp" />
@@ -100,8 +98,6 @@
     <ClCompile Include="source\dxi\Terra.cpp" />
     <ClCompile Include="source\dxi\Texture.cpp" />
     <ClCompile Include="source\dxi\factory\TextureFactory.cpp" />
-    <ClCompile Include="source\dxi\Transform.cpp" />
-    <ClCompile Include="source\dxi\Usage.cpp" />
     <ClCompile Include="source\dxi\utils\SafeRelease.cpp" />
     <ClCompile Include="source\dxi\VertexBuffer.cpp" />
     <ClCompile Include="source\dxi\VertexDeclaration.cpp" />
@@ -118,7 +114,6 @@
     <ClInclude Include="source\dxi\animation\Instance.h" />
     <ClInclude Include="source\dxi\animation\Sequence.h" />
     <ClInclude Include="source\dxi\animation\SpriteManager.h" />
-    <ClInclude Include="source\dxi\Blend.h" />
     <ClInclude Include="source\dxi\BufferSet.h" />
     <ClInclude Include="source\dxi\controllers\ControllerFactory.h" />
     <ClInclude Include="source\dxi\controllers\IController.h" />
@@ -199,7 +194,6 @@
     <ClInclude Include="source\dxi\RenderInfo.h" />
     <ClInclude Include="source\dxi\RenderMethod.h" />
     <ClInclude Include="source\dxi\RenderMethodBuffer.h" />
-    <ClInclude Include="source\dxi\RenderState.h" />
     <ClInclude Include="source\dxi\scene\BBoxRendererComponent.h" />
     <ClInclude Include="source\dxi\scene\Camera.h" />
     <ClInclude Include="source\dxi\scene\Component.h" />
@@ -233,8 +227,6 @@
     <ClInclude Include="source\dxi\Terra.h" />
     <ClInclude Include="source\dxi\Texture.h" />
     <ClInclude Include="source\dxi\factory\TextureFactory.h" />
-    <ClInclude Include="source\dxi\Transform.h" />
-    <ClInclude Include="source\dxi\Usage.h" />
     <ClInclude Include="source\dxi\utils\SafeRelease.h" />
     <ClInclude Include="source\dxi\VertexBuffer.h" />
     <ClInclude Include="source\dxi\VertexDeclaration.h" />

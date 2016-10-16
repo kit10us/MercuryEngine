@@ -14,7 +14,7 @@ function OnStart( me )
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.Zero() )
 
-	if game.GetRendererCount() > 1 then
+	if Game.GetRendererCount() > 1 then
 		proj2 = Matrix.NewPerspectiveFovLH( 1, Game.GetWidth() / Game.GetHeight(), 1, 1000 )		--proj2 = Matrix.NewOrthoOffCenterLH( 0, Game.GetWidth(), 0, Game.GetHeight(), -100, 100 )
 		camera2 = root:AddCamera( "Camera2", proj )
 		camera2:Transform():SetPosition( V3.New( 0, 0, -27 ) )

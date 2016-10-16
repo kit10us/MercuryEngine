@@ -39,7 +39,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source )
 		else if( child.IsTagName( "blend" ) )
 		{
 			std::string blend = child.GetText();
-			effect->SetBlend( Blend( blend ) );
+			// TODO:
 		}
 
 		//void SetCulling( unsigned int dwValue );

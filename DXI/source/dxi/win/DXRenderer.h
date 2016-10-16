@@ -5,6 +5,7 @@
 
 #include <dxi/RenderInfo.h>
 #include <dxi/core/Display.h>
+#include <dxi/win/DirectX.h>
 #include <atlbase.h>
 
 namespace dxi
