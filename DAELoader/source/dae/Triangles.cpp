@@ -8,7 +8,7 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 , m_name( node->GetAttributeElse( "name", std::string() ) )
 , m_count( node->GetAttribute< int >( "count" ) )
 , m_material( node->GetAttributeElse( "material", std::string() ) )
-, m_vertexFormat()
+, m_vertexFormat( document.GetRenderer() )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -27,7 +27,7 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 	{
 		format.Add( { input->GetSemantic(), input->GetSemantic() } );
 	}
-	m_vertexFormat = dxi::VertexDeclaration( format );
+	m_vertexFormat = dxi::VertexDeclaration( document.GetRenderer(), format );
 }
 
 const std::string & Triangles::GetName() const

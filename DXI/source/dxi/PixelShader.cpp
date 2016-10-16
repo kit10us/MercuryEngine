@@ -220,19 +220,6 @@ void PixelShader::Use( const RenderInfo & renderInfo )
 	m_pimpl->Use( renderInfo );
 }
 
-void PixelShader::DisuseShader()
-{
-#if defined( DIRECTX9 )
-	HRESULT result = win::DX::GetDxDevice()->SetPixelShader( 0 );
-	if( FAILED( result ) )
-	{
-		throw unify::Exception( "Failed to set null pixel shader!" );
-	}
-#elif defined( DIRECTX11 )
-	throw exception::NotImplemented();
-#endif
-}
-
 void PixelShader::SetTrans( bool bTrans )
 {
 	m_isTrans = bTrans;

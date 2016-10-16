@@ -20,7 +20,7 @@ namespace dxi
 	class Mesh : public Geometry
 	{
 	public:
-		Mesh();
+		Mesh( core::IRenderer * renderer );
 		~Mesh();
 
 		GeometryInstanceData * CreateInstanceData();

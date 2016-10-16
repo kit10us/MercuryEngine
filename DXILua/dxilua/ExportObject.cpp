@@ -62,8 +62,10 @@ int Object_AddCamera( lua_State * state )
 	int t = lua_type( state, 3 );
 	unify::Matrix mat = CheckMatrix( state, 3 );
 
+	auto game = ScriptEngine::GetGame();
+
 	dxi::scene::Object::ptr child = objectProxy->object->AddChild( name );
-	dxi::scene::Camera * cameraComponent = new scene::Camera;
+	dxi::scene::Camera * cameraComponent = new scene::Camera( game->GetOS() );
 	child->AddComponent( scene::IComponent::ptr( cameraComponent ) );
 
 	cameraComponent->SetProjection( mat );
@@ -86,9 +88,10 @@ int Object_AddScript( lua_State * state )
 	std::string type = lua_tostring( state, 3 );
 	unify::Path source = lua_tostring( state, 4 );
 
-	dxi::scene::ScriptComponent * component = new scene::ScriptComponent();
-
 	auto game = ScriptEngine::GetGame();
+
+	dxi::scene::ScriptComponent * component = new scene::ScriptComponent( game->GetOS() );
+
 	auto se = game->GetScriptEngine( type );
 	assert( se ); //TODO: Handle error better.
 

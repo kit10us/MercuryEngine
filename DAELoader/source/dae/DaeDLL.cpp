@@ -65,7 +65,7 @@ __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Docume
 	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS()->GetRenderer( 0 );
 	dxi::win::DX::SetDxDevice( dxRenderer->GetDxDevice() );
 
-	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( new MyEffectSolver( game, colorEffectName, colorEffectPath, textureEffectName, textureEffectPath ) );
+	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game->GetOS()->GetRenderer( 0 ), new MyEffectSolver( game, colorEffectName, colorEffectPath, textureEffectName, textureEffectPath ) );
 	game->GetManager< dxi::Geometry >()->AddFactory( "dae", GeometryFactoryPtr( daeFactory ) );
 
 	return true;

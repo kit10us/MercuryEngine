@@ -13,7 +13,7 @@ namespace dxi
 	    class Camera : public Component
 	    {
 	    public:
-		    Camera();
+		    Camera( core::IOS * os );
 		    virtual ~Camera();
 
 			int GetRenderer() const;

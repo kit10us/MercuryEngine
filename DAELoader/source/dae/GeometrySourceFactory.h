@@ -12,11 +12,12 @@ namespace dae
 	class GeometrySourceFactory : public rm::ISourceFactory< dxi::Geometry >
 	{
 	public:
-		GeometrySourceFactory( util::IEffectSolver * effectSolver );
+		GeometrySourceFactory( dxi::core::IRenderer * renderer, util::IEffectSolver * effectSolver );
 
-		virtual dxi::Geometry * Produce( unify::Path path ) override;
+		dxi::Geometry::ptr Produce( unify::Path path ) override;
 
 	private:
+		dxi::core::IRenderer * m_renderer;
 		std::shared_ptr< util::IEffectSolver > m_effectSolver;
 	};
 }

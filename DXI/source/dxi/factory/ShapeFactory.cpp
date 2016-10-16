@@ -14,7 +14,7 @@ ShapeFactory::ShapeFactory( core::Game * game )
 {
 }
 
-Geometry * ShapeFactory::Produce( unify::Path source )
+std::shared_ptr< Geometry > ShapeFactory::Produce( unify::Path source )
 {	
 	auto game = m_game;
 
@@ -77,6 +77,6 @@ Geometry * ShapeFactory::Produce( unify::Path source )
 			params.Set( p.GetTagName(), unify::Cast< bool >( p.GetText() ) );
 		}
 	}
-	return shapes::CreateShape( params );
+	return shapes::CreateShape( m_game->GetOS()->GetRenderer(0), params );
 }
 

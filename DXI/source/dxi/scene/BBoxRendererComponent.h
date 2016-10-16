@@ -13,7 +13,7 @@ namespace dxi
 	    class BBoxRendererComponent : public Component
 	    {
 	    public:
-			BBoxRendererComponent( Effect::ptr effect );
+			BBoxRendererComponent( core::IOS * os, Effect::ptr effect );
 			virtual ~BBoxRendererComponent();
 
 			/// <summary>

@@ -5,13 +5,14 @@
 
 using namespace dxi;
 
-Terra::Terra()
-: m_rc( 0, 0 )
+Terra::Terra( core::IRenderer * renderer )
+: m_primitiveList( renderer )
+, m_rc( 0, 0 )
 {
 }
 
-Terra::Terra( unify::Parameters & parameters )
-: Terra()
+Terra::Terra( core::IRenderer * renderer, unify::Parameters & parameters )
+: Terra( renderer )
 {
     CreateFromParameters( parameters );
 }

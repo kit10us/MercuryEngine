@@ -3,6 +3,7 @@
 
 #include <dxi/VertexBuffer.h>
 #include <dxi/win/DXDevice.h>
+#include <dxi/win/DXRenderer.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/Exception.h>
@@ -12,8 +13,9 @@ using namespace dxi;
 class VertexBuffer::Pimpl
 {
 public:
-	Pimpl( VertexBuffer & owner )
+	Pimpl( VertexBuffer & owner, core::IRenderer * renderer )
 		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
 	{
 	}
 	
@@ -29,6 +31,8 @@ public:
 	void Create( unsigned int uNumVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage )
 	{
 #if defined( DIRECTX9 )
+		auto dxDevice = m_renderer->GetDxDevice();
+
 		unsigned int createFlags = FLAGNULL;
 		/*
 		// TODO: To support for DX9 and DX11...
@@ -72,7 +76,7 @@ public:
 
 		// Create Vertex Buffer...
 		HRESULT hr;
-		hr = win::DX::GetDxDevice()->CreateVertexBuffer( m_owner.GetSize(), createFlags, 0, pool, &m_VB, 0 );
+		hr = dxDevice->CreateVertexBuffer( m_owner.GetSize(), createFlags, 0, pool, &m_VB, 0 );
 		OnFailedThrow( hr, "Failed to create vertex buffer!" );
 
 		if( source )
@@ -82,7 +86,7 @@ public:
 			lock.CopyBytesFrom( source, 0, m_owner.GetSize() );
 		}
 #elif defined( DIRECTX11 )
-		auto dxDevice = win::DX::GetDxDevice();
+		auto dxDevice = m_renderer->GetDxDevice();
 
 		// Ensure that if we are BufferUsage::Immutable, then source is not null.
 		if ( BufferUsage::Immutable && source == nullptr )
@@ -305,25 +309,21 @@ public:
 #if defined( DIRECTX9 )
 		HRESULT hr = S_OK;
 
-		hr = win::DX::GetDxDevice()->SetStreamSource( streamNumber, m_VB, offsetInBytes, stride );
+		auto dxDevice = m_renderer->GetDxDevice();
+
+		hr = dxDevice->SetStreamSource( streamNumber, m_VB, offsetInBytes, stride );
 		if( FAILED( hr ) )
 		{
 			throw unify::Exception( "VertexBuffer: Failed to SetStreamSource!" );
 		}
 #elif defined( DIRECTX11 )
-		win::DX::GetDxContext()->IASetVertexBuffers( streamNumber, 1, &m_VB.p, &stride, &offsetInBytes );
-#endif
-	}
-
-	void Disuse() const
-	{
-#if defined( DIRECTX9 )
-		win::DX::GetDxDevice()->SetStreamSource( 0, 0, 0, 0 );
-#elif defined( DIRECTX11 )
+		auto dxContext = m_renderer->GetDxContext();
+		dxContext->IASetVertexBuffers( streamNumber, 1, &m_VB.p, &stride, &offsetInBytes );
 #endif
 	}
 
 	VertexBuffer & m_owner;
+	win::DXRenderer * m_renderer;
 
 #if defined( DIRECTX9 )
 	CComPtr< IDirect3DVertexBuffer9 > m_VB;
@@ -333,13 +333,13 @@ public:
 };
 
 
-VertexBuffer::VertexBuffer()
-	: m_pimpl( new Pimpl( *this ) )
+VertexBuffer::VertexBuffer( core::IRenderer * renderer )
+	: m_pimpl( new Pimpl( *this, renderer ) )
 {
 }
 
-VertexBuffer::VertexBuffer( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage/*, unify::Flags flags*/ )
-	: m_pimpl( new Pimpl( *this ) )
+VertexBuffer::VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage/*, unify::Flags flags*/ )
+	: m_pimpl( new Pimpl( *this, renderer ) )
 {
 	Create( numVertices, vertexDeclaration, source, usage/*, flags*/ );
 }
@@ -427,11 +427,6 @@ bool VertexBuffer::Valid() const
 void VertexBuffer::Use() const
 {
 	m_pimpl->Use();
-}
-
-void VertexBuffer::Disuse() const
-{
-	m_pimpl->Disuse();
 }
 
 unify::BBox< float > & VertexBuffer::GetBBox()

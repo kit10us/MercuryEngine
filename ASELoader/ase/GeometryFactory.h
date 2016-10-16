@@ -15,7 +15,7 @@ namespace ase
 		void SetVertexShader( dxi::VertexShader::ptr vertexShader );
 		void SetPixelShader( dxi::PixelShader::ptr pixelShader );
 
-		dxi::Geometry * Produce( unify::Path source ) override;
+		dxi::Geometry::ptr Produce( unify::Path source ) override;
 
 	private:
 		dxi::core::Game * m_game;

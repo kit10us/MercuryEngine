@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <dxi/PrimitiveList.h>
-#include <dxi/core/Game.h>
 #include <unify/TexCoords.h>
 #include <unify/String.h>
 
 using namespace dxi;
 
-PrimitiveList::PrimitiveList()
+PrimitiveList::PrimitiveList( core::IRenderer * renderer )
+	: m_renderer( renderer )
 {
 }
 
@@ -65,7 +65,7 @@ void PrimitiveList::Render( const RenderInfo & renderInfo ) const
 
 BufferSet & PrimitiveList::AddBufferSet()
 {
-	BufferSet::shared_ptr newSet( new BufferSet );
+	BufferSet::shared_ptr newSet( new BufferSet( m_renderer ) );
 	m_buffers.push_back( newSet );
 	return *newSet.get();
 }

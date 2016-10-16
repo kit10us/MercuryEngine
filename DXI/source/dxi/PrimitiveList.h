@@ -18,7 +18,7 @@ namespace dxi
 	class PrimitiveList
 	{
 	public:
-		PrimitiveList();
+		PrimitiveList( core::IRenderer * renderer );
 		~PrimitiveList();
 
 		PrimitiveList( const PrimitiveList & ) = delete;
@@ -49,6 +49,7 @@ namespace dxi
 		void ComputeBounds( unify::BBox< float > & bbox ) const;
 
 	protected:
+		core::IRenderer * m_renderer;
 		std::vector< BufferSet::shared_ptr > m_buffers;
 		unify::FrameSet m_frameSet;
 		frameanimation::AnimationSet m_animationSet;

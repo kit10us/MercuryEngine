@@ -24,7 +24,7 @@ protected:
 	unify::Matrix m_view;
 	unify::Angle m_rotation;
 
-	VertexBuffer m_triangleVB;
+	std::shared_ptr< VertexBuffer > m_triangleVB;
 
 public:
 	bool Setup( core::IOS * os ) override
@@ -67,7 +67,7 @@ public:
 			{ 0, 4.0f, 0.0f, 0xff00ff00 },
 			{ 0, -4.0f, 2.0f, 0xff0000ff }
 		};
-		m_triangleVB.Create( 6, vd, aTriangle );
+		m_triangleVB.reset( new VertexBuffer( GetOS()->GetRenderer(0), 6, vd, aTriangle ) );
 	}
 
 	bool Update( RenderInfo & renderInfo ) override
@@ -93,7 +93,7 @@ public:
 	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override
 	{
 		Effect::ptr effect = GetManager< Effect >()->Find( "color3d" );
-		m_triangleVB.Use();
+		m_triangleVB->Use();
 
 		RenderMethod method = RenderMethod::CreateTriangleList( 0, 2, effect );
 		method.Render( renderInfo );
@@ -101,6 +101,7 @@ public:
 
 	void Shutdown()	override
 	{
+		m_triangleVB.reset();
 	}
 } game;
 

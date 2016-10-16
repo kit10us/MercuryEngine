@@ -248,6 +248,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXIGamepad", "..\DXIGamePad\DXIGamePad.vcxproj", "{5A01E2EE-39F1-488F-A6EC-0C0C60E06346}"
 	ProjectSection(ProjectDependencies) = postProject
 		{904F038F-9550-4112-B7A1-3B160C2FF7F4} = {904F038F-9550-4112-B7A1-3B160C2FF7F4}
+		{DC51AADC-51EE-4820-A187-58A0445BA2D2} = {DC51AADC-51EE-4820-A187-58A0445BA2D2}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "input", "input", "{C376D7D3-C837-479E-B410-DB79DCD504D1}"
@@ -299,6 +300,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXIPhysX", "..\DXIPhysX\DXI
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02Test02 - Loading Meshes", "02tests_feature\02Test02 - Loading Meshes\02Test02 - Loading Meshes.vcxproj", "{93A57954-6E78-4D41-9866-6F869E915BC8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{904F038F-9550-4112-B7A1-3B160C2FF7F4} = {904F038F-9550-4112-B7A1-3B160C2FF7F4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

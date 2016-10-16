@@ -6,14 +6,14 @@
 using namespace dxi;
 using namespace scene;
 
-GeometryComponent::GeometryComponent()
-	: Component( "Geometry" )
+GeometryComponent::GeometryComponent( core::IOS * os )
+	: Component( os, "Geometry" )
 	, m_modelMatrix( unify::Matrix::MatrixIdentity() )
 {
 }
 
-GeometryComponent::GeometryComponent( Geometry::ptr geometry )
-	: Component( "Geometry" )
+GeometryComponent::GeometryComponent( core::IOS * os, Geometry::ptr geometry )
+	: Component( os, "Geometry" )
 	, m_geometry( geometry )
 	, m_geometryInstanceData( geometry->CreateInstanceData() )
 	, m_modelMatrix( unify::Matrix::MatrixIdentity() )

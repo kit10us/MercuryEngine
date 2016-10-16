@@ -11,7 +11,7 @@ namespace dxi
 	{
 	public:
 		PixelShaderFactory( core::Game * game );
-		PixelShader * Produce( unify::Path source ) override;
+		PixelShader::ptr Produce( unify::Path source ) override;
 
 	public:
 		core::Game * m_game;

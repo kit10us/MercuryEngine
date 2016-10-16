@@ -13,7 +13,7 @@ EffectFactory::EffectFactory( core::Game * game )
 {
 }
 	  
-Effect * EffectFactory::Produce( unify::Path source )
+std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source )
 {
 	auto textureManager = m_game->GetManager< Texture >();
 	auto pixelShaderManager = m_game->GetManager< PixelShader >();
@@ -55,5 +55,5 @@ Effect * EffectFactory::Produce( unify::Path source )
 		//void AddFrame( size_t frameIndex, float influence );
 	}
 
-	return effect;
+	return Effect::ptr( effect );
 }

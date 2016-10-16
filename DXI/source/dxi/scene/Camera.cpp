@@ -6,8 +6,8 @@
 using namespace dxi;
 using namespace scene;
 
-Camera::Camera()
-: Component( "Camera" )
+Camera::Camera( core::IOS * os )
+: Component( os, "Camera" )
 , m_projection( unify::Matrix::MatrixIdentity() )
 , m_renderer( 0 )
 {

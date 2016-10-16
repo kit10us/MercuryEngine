@@ -96,7 +96,7 @@ void MyGame::Startup()
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer.reset( new VertexBuffer( numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), vbRaw, BufferUsage::Default ) );
+	vertexBuffer.reset( new VertexBuffer( GetOS()->GetRenderer(0), numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), vbRaw, BufferUsage::Default ) );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo )

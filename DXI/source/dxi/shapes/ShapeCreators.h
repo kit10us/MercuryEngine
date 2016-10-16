@@ -13,20 +13,20 @@ namespace dxi
 {
     namespace shapes
     {
-		Mesh * CreateShape( unify::Parameters & parameters );
-	    void CreateShape( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Cube( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_PointField( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_PointRing( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_DashRing( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Pyramid( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Circle( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Sphere( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Cylinder( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Tube( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Plane( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	    void CreateShape_Cone( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
-        void CreateShape_BeveledBox( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+		std::shared_ptr< Mesh > CreateShape( core::IRenderer * renderer, unify::Parameters & parameters );
+	    void CreateShape( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Cube( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_PointField( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_PointRing( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_DashRing( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Pyramid( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Circle( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Sphere( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Cylinder( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Tube( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Plane( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	    void CreateShape_Cone( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
+        void CreateShape_BeveledBox( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters );
 
 	    template< class T >
 	    class DistanceFunctor

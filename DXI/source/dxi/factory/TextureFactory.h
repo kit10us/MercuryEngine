@@ -11,8 +11,7 @@ namespace dxi
 	{
 	public:
 		TextureSourceFactory( core::Game * game );
-
-		Texture * Produce( unify::Path source ) override;
+		Texture::ptr Produce( unify::Path source ) override;
 
 	private:
 		core::Game * m_game;

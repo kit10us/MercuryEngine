@@ -13,12 +13,12 @@ PixelShaderFactory::PixelShaderFactory( core::Game * game )
 {
 }
 
-PixelShader * PixelShaderFactory::Produce( unify::Path source )
+PixelShader::ptr PixelShaderFactory::Produce( unify::Path source )
 {
 	qxml::Document doc( source );
 	auto & node = *doc.GetRoot()->FindFirstElement( "pixelshader" );
 	unify::Path shaderSource{ node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText() };
 	std::string entry = node.GetElement( "entry" )->GetText();
 	std::string profile = node.GetElement( "profile" )->GetText();
-	return new PixelShader( m_game->GetOS()->GetRenderer(0), shaderSource, entry, profile );
+	return PixelShader::ptr( new PixelShader( m_game->GetOS()->GetRenderer(0), shaderSource, entry, profile ) );
 }

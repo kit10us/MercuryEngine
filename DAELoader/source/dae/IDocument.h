@@ -3,6 +3,7 @@
 
 #pragma once
 #include <dxi/Effect.h>
+#include <dxi/core/IRenderer.h>
 #include <dae/library_effects/Shading.h>
 
 namespace dae
@@ -32,6 +33,6 @@ namespace dae
 		virtual const class Scene & GetScene() const = 0;
 		virtual void Add( const std::string & name, DocumentNode * node ) = 0;
 		virtual const DocumentNode * Find( const std::string & name ) const = 0;
-
+		virtual dxi::core::IRenderer * GetRenderer() = 0;
 	};
 }

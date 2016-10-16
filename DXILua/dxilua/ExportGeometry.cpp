@@ -53,7 +53,7 @@ int Geometry_Constructor( lua_State * state )
 	else
 	{
 		ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-		geometry = game->CreateShape( parameters->parameters );
+		geometry = shapes::CreateShape( game->GetOS()->GetRenderer(0), parameters->parameters );
 	}
 
 	GeometryProxy ** geometryProxy = (GeometryProxy**)(lua_newuserdata( state, sizeof( GeometryProxy* ) ));

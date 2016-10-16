@@ -11,7 +11,7 @@ using namespace scene;
 
 Scene::Scene( dxi::core::IGame * game )
 : m_game( game )
-, m_root( new Object )
+, m_root( new Object( game->GetOS() ) )
 , m_inited( false )
 , m_started( false )
 , m_lastCullCount( 0 )

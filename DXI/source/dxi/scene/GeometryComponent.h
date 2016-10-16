@@ -14,8 +14,8 @@ namespace dxi
 	    class GeometryComponent : public Component
 	    {
 	    public:
-			GeometryComponent();
-			GeometryComponent( Geometry::ptr geometry );
+			GeometryComponent( core::IOS * os );
+			GeometryComponent( core::IOS * os, Geometry::ptr geometry );
 			virtual ~GeometryComponent();
 
 			void SetGeometry( Geometry::ptr geometry );

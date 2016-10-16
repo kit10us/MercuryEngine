@@ -13,7 +13,7 @@ namespace dxi
 	    class ScriptComponent : public Component
 	    {
 	    public:
-			ScriptComponent();
+			ScriptComponent( core::IOS * os );
 		    virtual ~ScriptComponent();
 
 			void SetModule( scripting::IModule::ptr module );

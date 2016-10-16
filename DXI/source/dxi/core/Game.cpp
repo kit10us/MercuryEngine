@@ -415,8 +415,3 @@ bool Game::HadCriticalError() const
 {
 	return m_criticalErrors.size() != 0;
 }
-
-Geometry::ptr Game::CreateShape( unify::Parameters parameters )
-{
-	return Geometry::ptr( shapes::CreateShape( parameters ) );
-}

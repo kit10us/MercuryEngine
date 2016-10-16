@@ -97,8 +97,8 @@ namespace dxi
 			}
 		};
 
-		Terra();
-		Terra( unify::Parameters & parameters );
+		Terra( core::IRenderer * renderer );
+		Terra( core::IRenderer * renderer, unify::Parameters & parameters );
 		~Terra();
 
 		void Destroy();

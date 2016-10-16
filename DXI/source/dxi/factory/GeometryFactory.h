@@ -12,7 +12,7 @@ namespace dxi
 	{
 	public:
 		GeometryFactory( core::Game * game );
-		 Geometry * Produce( unify::Path source ) override;
+		 Geometry::ptr Produce( unify::Path source ) override;
 
 	private:
 		core::Game * m_game;

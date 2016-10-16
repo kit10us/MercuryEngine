@@ -6,7 +6,6 @@
 #include <dxi/RenderInfo.h>
 #include <dxi/core/IRenderer.h>
 #include <unify/Path.h>
-//#include <dxi/win/DirectX.h>
 
 namespace dxi
 {
@@ -14,8 +13,6 @@ namespace dxi
 	{
 	public:
 		typedef std::shared_ptr< PixelShader > ptr;
-
-		static void DisuseShader();
 
 		PixelShader( core::IRenderer * renderer );
 		PixelShader( core::IRenderer * renderer, const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );

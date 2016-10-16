@@ -7,7 +7,8 @@
 
 using namespace dxi;
 
-Mesh::Mesh()
+Mesh::Mesh( core::IRenderer * renderer )
+	: m_primitiveList( renderer )
 {
 }
 

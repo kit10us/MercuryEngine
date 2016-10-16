@@ -20,8 +20,8 @@ class MyGame : public Game
 	// We intend to keep these and use them directly, in an attempt to illustrate their usages.
 	// Typically, we would use a higher level object, such as a PrimitiveList, which encapsulates these.
 	Effect::ptr m_effect;
-	VertexBuffer m_VB;
-	IndexBuffer m_IB;
+	std::shared_ptr< VertexBuffer > m_VB;
+	std::shared_ptr< IndexBuffer > m_IB;
 
 public:
 	void Startup() override;
@@ -89,7 +89,7 @@ void MyGame::Startup()
 	vd->WriteVertex( vertexLock, 9, texE, unify::TexCoords( 1, 1 ) );
 
 	// Create a vertex buffer...
-	m_VB.Create( numberOfVertices, vd, vertices.get() );
+	m_VB.reset( new VertexBuffer( GetOS()->GetRenderer( 0 ), numberOfVertices, vd, vertices.get() ) );
 	vertices.reset();
 
 	size_t numberOfIndices = 6;
@@ -102,7 +102,8 @@ void MyGame::Startup()
 	indices[4] = 9;
 	indices[5] = 8;
 
-	m_IB.Create( numberOfIndices, &indices[0] );
+	m_IB.reset( new IndexBuffer( GetOS()->GetRenderer( 0 ) ) );
+	m_IB->Create( numberOfIndices, &indices[0] );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo )
@@ -125,7 +126,7 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 		, 0, 1, 1000 );
 	renderInfo2D.SetProjectionMatrix( projectionMatrix );
 
-	m_VB.Use();
+	m_VB->Use();
 	m_effect->Use( renderInfo2D );
 
 	RenderMethod methodNoIB = RenderMethod::CreateTriangleList( 0, 2, m_effect );
@@ -133,7 +134,7 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 
 	size_t numberOfVertices = 10;
 	RenderMethod methodWithIB = RenderMethod::CreateTriangleListIndexed( numberOfVertices, 6, 0, 0, m_effect );
-	m_IB.Use();
+	m_IB->Use();
 	methodWithIB.Render( renderInfo2D );
 }
 
@@ -141,6 +142,7 @@ void MyGame::Shutdown()
 {
 	// -- Shutdown code goes here. --
 
-	m_VB.Destroy();
+	m_VB.reset();
+	m_IB.reset();
 }
 

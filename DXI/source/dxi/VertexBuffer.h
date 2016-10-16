@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/IRenderer.h>
 #include <dxi/DataBuffer.h>
 #include <dxi/VertexDeclaration.h>
 #include <unify/BBox.h>
@@ -29,8 +30,8 @@ namespace dxi
 			size_t stride;
 		};
 
-		VertexBuffer();
-		VertexBuffer( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
+		VertexBuffer( core::IRenderer * renderer );
+		VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
 		~VertexBuffer();
 
 		void Create( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
@@ -54,7 +55,6 @@ namespace dxi
 		VertexDeclaration::ptr GetVertexDeclaration() const;
 		bool Valid() const;
 		void Use() const;
-		void Disuse() const;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;

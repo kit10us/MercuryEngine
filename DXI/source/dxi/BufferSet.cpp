@@ -5,8 +5,10 @@
 
 using namespace dxi;
 
-BufferSet::BufferSet()
+BufferSet::BufferSet( core::IRenderer * renderer )
 	: m_enabled( true )
+	, m_VB( renderer )
+	, m_IB( renderer )
 {
 }
 

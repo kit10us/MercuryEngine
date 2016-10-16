@@ -6,8 +6,8 @@
 using namespace dxi;
 using namespace scene;
 
-ScriptComponent::ScriptComponent()
-: Component( "Script" )
+ScriptComponent::ScriptComponent( core::IOS * os )
+: Component( os, "Script" )
 {
 }
 

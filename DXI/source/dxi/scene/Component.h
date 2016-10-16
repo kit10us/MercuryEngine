@@ -4,6 +4,7 @@
 #pragma once
 
 #include <dxi/scene/IComponent.h>
+#include <dxi/core/IOS.h>
 
 namespace dxi
 {
@@ -12,8 +13,11 @@ namespace dxi
 		class Component : public IComponent
 		{
 		public:
-			Component( std::string name );
+			Component( core::IOS * os, std::string name );
 			~Component();
+
+			core::IOS * GetOS();
+			const core::IOS * GetOS() const;
 
 			std::string GetName() const override;
 			void SetName( std::string name ) override;
@@ -22,6 +26,7 @@ namespace dxi
 			void SetEnabled( bool enabled ) override;
 
 		private:
+			core::IOS * m_os;
 			std::string m_name;
 			bool m_enabled;
 		};

@@ -85,12 +85,11 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );
 	}
 
-	T * product = factory->second->Produce( source );
-	if( product != nullptr )
+	auto product = factory->second->Produce( source );
+	if( product )
 	{
-		auto resource = std::shared_ptr< T >( product );
-		m_resourceList[ name ] = resource;
-		return resource;
+		m_resourceList[ name ] = product;
+		return product;
 	}
 
 	throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );

@@ -8,17 +8,18 @@
 
 using namespace dae;
 
-GeometrySourceFactory::GeometrySourceFactory( util::IEffectSolver * effectSolver )
-	: m_effectSolver( effectSolver )
+GeometrySourceFactory::GeometrySourceFactory( dxi::core::IRenderer * renderer, util::IEffectSolver * effectSolver )
+	: m_renderer( renderer )
+	, m_effectSolver( effectSolver )
 {
 }
 
-dxi::Geometry * GeometrySourceFactory::Produce( unify::Path path )
+dxi::Geometry::ptr GeometrySourceFactory::Produce( unify::Path path )
 {
-	dae::Document doc( path, m_effectSolver.get() );
-	dxi::Mesh * mesh = new dxi::Mesh;
+	dae::Document doc( m_renderer, path, m_effectSolver.get() );
+	dxi::Mesh * mesh = new dxi::Mesh( m_renderer );
 	const dae::VisualScene & visualScene = *dynamic_cast< const dae::VisualScene* >(doc.Find( doc.GetScene().GetInstanceVisualScene()->GetURL() ));
 	visualScene.Build( mesh->GetPrimitiveList() );
 	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
-	return mesh;
+	return dxi::Geometry::ptr( mesh );
 }

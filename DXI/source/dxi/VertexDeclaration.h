@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/IRenderer.h>
 #include <unify/unify.h>
 #include <unify/String.h>
 #include <unify/DataLock.h>
@@ -19,6 +20,28 @@
 
 namespace dxi
 {
+	/*
+	// TODO:
+	struct VertexElement
+	{
+		enum class Format
+		{
+			Float1,
+			Float2,
+			Float3,
+			Float4,
+			Color,
+			Unknown
+		};
+
+		const char *               SemanticName;			// Usage
+		unsigned int               SemanticIndex;			// UsageIndex
+		Format		               Format;					// Type
+		unsigned int               InputSlot;				// Stream
+		unsigned int               AlignedByteOffset;		// Offset
+	};
+	*/
+
 #if defined( DIRECTX9 )
 	typedef D3DVERTEXELEMENT9 VertexElement;
 #elif defined( DIRECTX11 )
@@ -43,9 +66,9 @@ namespace dxi
 	public:
 		typedef std::shared_ptr< VertexDeclaration > ptr;
 
-		VertexDeclaration();
-		VertexDeclaration( const qxml::Element & element );
-		VertexDeclaration( const qjson::Object & object );
+		VertexDeclaration( core::IRenderer * renderer );
+		VertexDeclaration( core::IRenderer * renderer, const qxml::Element & element );
+		VertexDeclaration( core::IRenderer * renderer, const qjson::Object & object );
 
 		~VertexDeclaration();
 
@@ -111,9 +134,13 @@ namespace dxi
 		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
 		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;
 
+		core::IRenderer * m_renderer;
+
 		std::vector< VertexElement > m_elements;
 		ElementMap m_elementMap;
 
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
 #if defined( DIRECTX9 )
 		CComPtr< IDirect3DVertexDeclaration9 > m_layout;
 #elif defined( DIRECTX11 )

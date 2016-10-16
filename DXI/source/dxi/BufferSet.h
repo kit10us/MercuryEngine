@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/IRenderer.h>
 #include <dxi/VertexBuffer.h>
 #include <dxi/IndexBuffer.h>
 #include <dxi/RenderMethodBuffer.h>
@@ -17,7 +18,7 @@ namespace dxi
 	public:
 		typedef std::shared_ptr< BufferSet > shared_ptr;
 
-		BufferSet();
+		BufferSet( core::IRenderer * renderer );
 		~BufferSet();
 
 		BufferSet( const BufferSet & ) = delete;

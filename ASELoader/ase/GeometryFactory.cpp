@@ -26,7 +26,7 @@ void GeometryFactory::SetPixelShader( dxi::PixelShader::ptr pixelShader )
 	m_pixelShader = pixelShader;
 }
 
-Geometry * GeometryFactory::Produce( unify::Path source )
+Geometry::ptr GeometryFactory::Produce( unify::Path source )
 {
 	core::Game & game = *m_game;
 
@@ -36,7 +36,7 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 	auto vertexShaderManager = game.GetManager< VertexShader >();
 	auto effectManager = game.GetManager< Effect >();
 
-	Mesh * mesh = new Mesh;
+	Mesh * mesh = new Mesh( m_game->GetOS()->GetRenderer( 0 ) );
 	PrimitiveList & primitiveList = mesh->GetPrimitiveList();
 
 	ase::Document doc;
@@ -249,5 +249,5 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 	}
 
 	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
-	return mesh;
+	return Geometry::ptr( mesh );
 }

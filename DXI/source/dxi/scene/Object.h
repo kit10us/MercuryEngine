@@ -38,9 +38,9 @@ namespace dxi
                 typedef std::tuple< Object *, unify::V3< float > /*new mouse coordiantes*/, unify::Ray< float > > OnDragStop;
             };
 
-		    Object();
-			explicit Object( Geometry::ptr geometry, std::shared_ptr< physics::IInstance > physics = std::shared_ptr< physics::IInstance >() );
-			Object( Geometry::ptr geometry, const unify::V3< float > position );
+		    explicit Object( core::IOS * os );
+			Object( core::IOS * os, Geometry::ptr geometry, std::shared_ptr< physics::IInstance > physics = std::shared_ptr< physics::IInstance >() );
+			Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float > position );
 		    virtual ~Object();
 
 			void SetName( std::string name );
@@ -104,6 +104,7 @@ namespace dxi
 			Object::ptr FindObject( std::string name );
 
 		protected:
+			core::IOS * m_os;
 			std::string m_name;
 			std::map< std::string, std::string > m_tags;
 

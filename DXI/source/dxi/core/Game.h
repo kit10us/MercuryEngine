@@ -92,8 +92,6 @@ namespace dxi
 
 			bool HadCriticalError() const override;
 
-			Geometry::ptr CreateShape( unify::Parameters parameters );
-
 		private:
 			unify::Path m_setup;
 			unify::Path m_logFile;

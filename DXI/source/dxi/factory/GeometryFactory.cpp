@@ -16,7 +16,7 @@ GeometryFactory::GeometryFactory( core::Game * game )
 {
 }
 
-Geometry * GeometryFactory::Produce( unify::Path source )
+Geometry::ptr GeometryFactory::Produce( unify::Path source )
 {
 	qxml::Document doc( source );
 	auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
@@ -26,7 +26,7 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 		return 0;
 	}
 
-	Mesh * mesh = new Mesh;
+	Mesh * mesh = new Mesh( m_game->GetOS()->GetRenderer(0) );
 
 	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
 	if( version == "1.2" )
@@ -40,7 +40,7 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 
 	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 
-	return mesh;
+	return Geometry::ptr( mesh );
 }
 
 

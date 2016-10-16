@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/IRenderer.h>
 #include <dxi/DataBuffer.h>
 #include <dxi/IndexLock.h>
 #include <unify/unify.h>
@@ -33,7 +34,7 @@ namespace dxi
 			};
 		};
 
-		IndexBuffer();
+		IndexBuffer( core::IRenderer * renderer );
 		~IndexBuffer();
 
 		void Create( unsigned int numIndices, Index32 * source, BufferUsage::TYPE usage = BufferUsage::Default, unify::Flags flags = 0 );

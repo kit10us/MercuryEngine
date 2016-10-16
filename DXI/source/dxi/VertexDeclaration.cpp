@@ -9,6 +9,7 @@
 
 using namespace dxi;
 
+
 VertexElement CommonVertexElement::Position( unsigned int slot )
 {
 #if defined( DIRECTX9 )
@@ -804,14 +805,93 @@ void VertexNameToElement( const std::string & name, Semantic & usageOut, unsigne
 
 
 
+// TODO:
+/*
+// DX9:
+WORD Stream;
+WORD Offset;
+BYTE Type;
+BYTE Method;
+BYTE Usage;
+BYTE UsageIndex;
+
+// DX11:
+LPCSTR                     SemanticName;
+UINT                       SemanticIndex;
+DXGI_FORMAT                Format;
+UINT                       InputSlot;
+UINT                       AlignedByteOffset;
+D3D11_INPUT_CLASSIFICATION InputSlotClass;
+UINT                       InstanceDataStepRate;
+*/
+
+/*
+struct VertexElement
+{
+const char *               SemanticName;			// Usage
+unsigned int               SemanticIndex;			// UsageIndex
+unsigned int               Format;					// Type
+unsigned int               InputSlot;				// Stream
+unsigned int               AlignedByteOffset;		// Offset
+//D3D11_INPUT_CLASSIFICATION InputSlotClass;	    // <NA>
+//UINT                       InstanceDataStepRate;	// <NA>
+};
+*/
+
+/*
+#if defined( DIRECTX9 )
+
+D3DVERTEXELEMENT9 ToDX( VertexElement element )
+{
+	D3DVERTEXELEMENT9 out;
+	out.Usage = ConvertUsage( element.SemanticName );
+	out.UsageIndex = element.SemanticIndex;
+	out.Offset = element.AlignedByteOffset;
+	out.Stream = element.InputSlot;
+	switch ( element.Format )
+	{
+	case VertexElement::Format::Float1: out.Type = D3DDECLTYPE_FLOAT1; break;
+	case VertexElement::Format::Float2: out.Type = D3DDECLTYPE_FLOAT2; break;
+	case VertexElement::Format::Float3: out.Type = D3DDECLTYPE_FLOAT3; break;
+	case VertexElement::Format::Float4: out.Type = D3DDECLTYPE_FLOAT4; break;
+	case VertexElement::Format::Color: out.Type = D3DDECLTYPE_D3DCOLOR; break;
+	case VertexElement::Format::Unknown: out.Type = D3DDECLTYPE_UNUSED; break;
+	}
+	return out;
+}
+
+#elif defined( DIRECTX11 )
+
+D3D11_INPUT_ELEMENT_DESC ToDX( VertexElement & elmenet )
+{
+	assert( 0 ); // TODO:
+}
+
+#endif
+*/
 
 
 
-VertexDeclaration::VertexDeclaration()
+
+class VertexDeclaration::Pimpl
+{
+public:
+#if defined( DIRECTX9 )
+	CComPtr< IDirect3DVertexDeclaration9 > m_layout;
+#elif defined( DIRECTX11 )
+	CComPtr< ID3D11InputLayout > m_layout;
+#endif
+};		
+
+VertexDeclaration::VertexDeclaration( core::IRenderer * renderer )
+	: m_pimpl( new Pimpl )
+	, m_renderer( renderer )
 {
 }
 
-VertexDeclaration::VertexDeclaration( const qxml::Element & element )
+VertexDeclaration::VertexDeclaration( core::IRenderer * renderer, const qxml::Element & element )
+	: m_pimpl( new Pimpl )
+	, m_renderer( renderer )
 {
 	// Accumulate elements.
 	m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
@@ -887,7 +967,9 @@ VertexDeclaration::VertexDeclaration( const qxml::Element & element )
 #endif 
 }
 
-VertexDeclaration::VertexDeclaration( const qjson::Object & object )
+VertexDeclaration::VertexDeclaration( core::IRenderer * renderer, const qjson::Object & object )
+	: m_pimpl( new Pimpl )
+	, m_renderer( renderer )
 {
 	// Accumulate elements.
 	m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.

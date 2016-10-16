@@ -15,61 +15,61 @@ const float PI = 3.14159265358979f;
 const float PI2 = 6.28318530717959f;
 const std::string DefaultBufferUsage = "Default";
 
-Mesh * shapes::CreateShape( unify::Parameters & parameters )
+std::shared_ptr< Mesh > shapes::CreateShape( core::IRenderer * renderer, unify::Parameters & parameters )
 {
-	Mesh * mesh = new Mesh;
-	CreateShape( mesh->GetPrimitiveList(), parameters );
+	std::shared_ptr< Mesh > mesh( new Mesh( renderer ) );
+	CreateShape( renderer, mesh->GetPrimitiveList(), parameters );
 	//mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 	return mesh;
 }
 
-void shapes::CreateShape( dxi::PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape( core::IRenderer * renderer, dxi::PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	Shape::TYPE type = parameters.Get< Shape::TYPE >( "type" );
 
 	switch( type )
 	{
 	case Shape::Cube:
-		CreateShape_Cube( primitiveList, parameters );
+		CreateShape_Cube( renderer, primitiveList, parameters );
 		break;
 	case Shape::PointField:
-		CreateShape_PointField( primitiveList, parameters );
+		CreateShape_PointField( renderer, primitiveList, parameters );
 		break;
 	case Shape::PointRing:
-		CreateShape_PointRing( primitiveList, parameters );
+		CreateShape_PointRing( renderer, primitiveList, parameters );
 		break;
 	case Shape::DashRing:
-		CreateShape_DashRing( primitiveList, parameters );
+		CreateShape_DashRing( renderer, primitiveList, parameters );
 		break;
 	case Shape::Pyramid:
-		CreateShape_Pyramid( primitiveList, parameters );
+		CreateShape_Pyramid( renderer, primitiveList, parameters );
 		break;
 	case Shape::Circle:
-		CreateShape_Circle( primitiveList, parameters );
+		CreateShape_Circle( renderer, primitiveList, parameters );
 		break;
 	case Shape::Sphere:
-		CreateShape_Sphere( primitiveList, parameters );
+		CreateShape_Sphere( renderer, primitiveList, parameters );
 		break;
 	case Shape::Cylinder:
-		CreateShape_Cylinder( primitiveList, parameters );
+		CreateShape_Cylinder( renderer, primitiveList, parameters );
 		break;
 	case Shape::Tube:
-		CreateShape_Tube( primitiveList, parameters );
+		CreateShape_Tube( renderer, primitiveList, parameters );
 		break;
 	case Shape::Plane:
-		CreateShape_Plane( primitiveList, parameters );
+		CreateShape_Plane( renderer, primitiveList, parameters );
 		break;
 	case Shape::Cone:
-		CreateShape_Cone( primitiveList, parameters );
+		CreateShape_Cone( renderer, primitiveList, parameters );
 		break;
 	case Shape::BeveledBox:
-		CreateShape_BeveledBox( primitiveList, parameters );
+		CreateShape_BeveledBox( renderer, primitiveList, parameters );
 	default:
 		throw unify::Exception( "Invalid Mesh m_shapeType! Failed to create m_shapeType!" );
 	}
 }
 
-void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Cube( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::V3< float > inf;
 	unify::V3< float > sup;
@@ -120,7 +120,7 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
@@ -355,7 +355,7 @@ void shapes::CreateShape_Cube( PrimitiveList & primitiveList, unify::Parameters 
 	ib.Create( totalIndices, indices, bufferUsage );
 }
 
-void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_PointField( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float majorRadius = parameters.Get( "majorradius", 1.0f );
 	float minorRadius = parameters.Get( "minorradius", 0.0f );
@@ -399,7 +399,7 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	char * vertices = new char[vd->GetSize() * count];
 	unify::DataLock lock( vertices, vd->GetSize(), count, false );
@@ -433,7 +433,7 @@ void shapes::CreateShape_PointField( PrimitiveList & primitiveList, unify::Param
 	delete[] vertices;
 }
 
-void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_PointRing( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float majorRadius = parameters.Get( "majorradius", 0.5f );	// Size radius
 	float minorRadius = parameters.Get( "minorradius", 1.0f );	// Radius of ring
@@ -482,7 +482,7 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	for( unsigned int v = 0; v < count; v++ )
 	{
@@ -529,7 +529,7 @@ void shapes::CreateShape_PointRing( PrimitiveList & primitiveList, unify::Parame
 	delete[] vertices;
 }
 
-void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_DashRing( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float radiusOuter = parameters.Get( "majorradius", 1.0f );
 	float radiusInner = parameters.Get( "minorradius", 0.9f );
@@ -584,7 +584,7 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	// Create all the segments (clockwise from top)
 	unify::V3< float > vOuter, vInner, vNorm;
@@ -659,7 +659,7 @@ void shapes::CreateShape_DashRing( PrimitiveList & primitiveList, unify::Paramet
 	ib.Create( totalIndices, (Index32*)&indices[0], bufferUsage );
 }
 
-void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Pyramid( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
@@ -704,7 +704,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	// Set the TEMP vertices...
 	V vertices[5];
@@ -866,7 +866,7 @@ void shapes::CreateShape_Pyramid( PrimitiveList & primitiveList, unify::Paramete
 
 
 // 2D circle in 3d space (filled)
-void shapes::CreateShape_Circle( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Circle( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
@@ -916,7 +916,7 @@ void shapes::CreateShape_Circle( PrimitiveList & primitiveList, unify::Parameter
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	// Set the center
 	vd->WriteVertex( lock, 0, positionE, center );
@@ -957,7 +957,7 @@ void shapes::CreateShape_Circle( PrimitiveList & primitiveList, unify::Parameter
 	ib.Create( indexCount, &indices[0] );
 }
 
-void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Sphere( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float radius = parameters.Get( "radius", 1.0f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
@@ -1017,7 +1017,7 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 		jsonFormat.Add( { "Diffuse", "Color" } );
 		jsonFormat.Add( { "Specular", "Color" } );
 		jsonFormat.Add( { "TexCoord", "TexCoord" } );
-		dxi::VertexDeclaration vFormat( jsonFormat );
+		dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 		unify::V3< float > vec, norm;
 
@@ -1168,7 +1168,7 @@ void shapes::CreateShape_Sphere( PrimitiveList & primitiveList, unify::Parameter
 	}
 }
 
-void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Cylinder( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float radius = parameters.Get( "radius", 0.5f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
@@ -1238,7 +1238,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	unify::V3< float > pos;
 	unify::V3< float > norm;
@@ -1339,7 +1339,7 @@ void shapes::CreateShape_Cylinder( PrimitiveList & primitiveList, unify::Paramet
 	}
 }
 
-void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Tube( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float outer = parameters.Get( "majorradius", 0.5f );
 	float inner = parameters.Get( "minorradius", 0.3f );
@@ -1390,7 +1390,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	unsigned int trianglesPerSide = segments * 2;
 	unsigned int verticesPerSide = segments * 2 + 2;
@@ -1507,7 +1507,7 @@ void shapes::CreateShape_Tube( PrimitiveList & primitiveList, unify::Parameters 
 	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
 }
 
-void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Plane( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::Size< float > size = parameters.Get( "size2", unify::Size< float >( 1.0f, 1.0f ) );
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
@@ -1550,7 +1550,7 @@ void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * vertexCount] );
 	unify::DataLock lock( vertices.get(), vd->GetSize(), vertexCount, false );
@@ -1596,7 +1596,7 @@ void shapes::CreateShape_Plane( PrimitiveList & primitiveList, unify::Parameters
 }
 
 // A cone...
-void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_Cone( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
@@ -1667,7 +1667,7 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	unify::V3< float > pos;
 	unify::V3< float > norm;
@@ -1745,7 +1745,7 @@ void shapes::CreateShape_Cone( PrimitiveList & primitiveList, unify::Parameters 
 	}
 }
 
-void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Parameters & parameters )
+void shapes::CreateShape_BeveledBox( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::V3< float > inf;
 	unify::V3< float > sup;
@@ -1812,7 +1812,7 @@ void shapes::CreateShape_BeveledBox( PrimitiveList & primitiveList, unify::Param
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	dxi::VertexDeclaration vFormat( jsonFormat );
+	dxi::VertexDeclaration vFormat( renderer, jsonFormat );
 
 	// Set the TEMP vertices...
 	V vertices[8];

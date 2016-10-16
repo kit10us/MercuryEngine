@@ -26,7 +26,7 @@ namespace rm
 	{
 	public:
 		~ISourceFactory() {}
-		virtual T * Produce( unify::Path path ) = 0;
+		virtual std::shared_ptr< T > Produce( unify::Path path ) = 0;
 	};
 
 	// A base for a resource list...

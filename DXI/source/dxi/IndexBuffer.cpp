@@ -3,6 +3,7 @@
 
 #include <dxi/IndexBuffer.h>
 #include <dxi/win/DXDevice.h>
+#include <dxi/win/DXRenderer.h>
 #include <unify/Flags.h>
 #include <dxi/core/Game.h>
 #include <dxi/exception/FailedToCreate.h>
@@ -17,12 +18,15 @@ using namespace dxi;
 class IndexBuffer::Pimpl
 {
 public:
-	Pimpl( IndexBuffer & owner )
+	Pimpl( IndexBuffer & owner, core::IRenderer * renderer )
 		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
 	{
 	}
 
 	IndexBuffer & m_owner;
+	win::DXRenderer * m_renderer;
+
 #if defined( DIRECTX9 )
 	CComPtr< IDirect3DIndexBuffer9 > m_IB;
 #elif defined( DIRECTX11 )
@@ -31,8 +35,8 @@ public:
 };
 
 
-IndexBuffer::IndexBuffer()
-	: m_pimpl( new Pimpl( *this ) )
+IndexBuffer::IndexBuffer( core::IRenderer * renderer )
+	: m_pimpl( new Pimpl( *this, renderer ) )
 {
 }
 
@@ -50,6 +54,7 @@ void IndexBuffer::Create( unsigned int uNumIndices, Index32 * source, BufferUsag
 	m_length = uNumIndices;
 
 #if defined( DIRECTX9 )
+	auto dxDevice = m_pimpl->m_renderer->GetDxDevice();
 
 	unsigned int createFlags = FLAGNULL;
 	// Some of these are not required.
@@ -87,7 +92,7 @@ void IndexBuffer::Create( unsigned int uNumIndices, Index32 * source, BufferUsag
 	}
 
 	// Create Index Buffer...
-	hr = win::DX::GetDxDevice()->CreateIndexBuffer(
+	hr = dxDevice->CreateIndexBuffer(
 		GetSize(),
 		createFlags,
 		d3dFormat,
@@ -122,7 +127,7 @@ void IndexBuffer::Create( unsigned int uNumIndices, Index32 * source, BufferUsag
 	initialData.pSysMem = source;
 
 	// Create the buffer with the device.
-	hr = win::DX::GetDxDevice()->CreateBuffer( &bufferDesc, &initialData, &m_IB );
+	hr = dxDevice->CreateBuffer( &bufferDesc, &initialData, &m_IB );
 	if( FAILED( hr ) )
 	{
 		throw exception::FailedToCreate( "Failed to create index buffer!" );
@@ -324,8 +329,9 @@ void IndexBuffer::Use() const
 	}	
 
 #if defined( DIRECTX9 )
+	auto dxDevice = m_pimpl->m_renderer->GetDxDevice();
 
-	HRESULT hr = win::DX::GetDxDevice()->SetIndices( m_pimpl->m_IB );
+	HRESULT hr = dxDevice->SetIndices( m_pimpl->m_IB );
 	if ( FAILED( hr ) )
 	{
 		throw unify::Exception( "Failed to use index buffer!" );
@@ -334,7 +340,7 @@ void IndexBuffer::Use() const
 #elif defined( DIRECTX11 )
 
 	// Set the buffer.
-	win::DX::GetDxContext()->IASetIndexBuffer( m_IB, DXGI_FORMAT_R32_UINT, 0 );
+	dxContext->IASetIndexBuffer( m_IB, DXGI_FORMAT_R32_UINT, 0 );
 
 #endif
 }

@@ -7,8 +7,9 @@
 using namespace dxi;
 using namespace scene;
 
-BBoxRendererComponent::BBoxRendererComponent( Effect::ptr effect )
-	: Component( "BBoxRenderer" )
+BBoxRendererComponent::BBoxRendererComponent( core::IOS * os, Effect::ptr effect )
+	: Component( os, "BBoxRenderer" )
+	, m_pl( os->GetRenderer(0) )
 	, m_effect( effect )
 	, m_padding( 0.1f )
 	, m_color( unify::Color::ColorBlue( 155 ) )

@@ -6,8 +6,9 @@
 
 using namespace dae;
 
-Document::Document( const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
-: m_effectSolver( effectSolver )
+Document::Document( dxi::core::IRenderer * renderer, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
+: m_renderer( renderer )
+, m_effectSolver( effectSolver )
 {
 	qxml::Document doc( filePath );
 	qxml::Element * node = doc.GetRoot();
@@ -145,4 +146,9 @@ const DocumentNode * Document::Find( const std::string & name ) const
 	{
 		return 0;
 	}
+}
+
+dxi::core::IRenderer * Document::GetRenderer()
+{
+	return m_renderer;
 }

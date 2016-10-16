@@ -7,24 +7,27 @@
 using namespace dxi;
 using namespace scene;
 
-Object::Object()
-: m_enabled( true )
+Object::Object( core::IOS * os )
+: m_os( os )
+, m_enabled( true )
 , m_selectable( false )
 , m_checkFrame( true )
 , m_lastFrameID( 0 )
 {
 }
 
-Object::Object( Geometry::ptr geometry, std::shared_ptr< physics::IInstance > physics )
-: m_enabled( true )
+Object::Object( core::IOS * os, Geometry::ptr geometry, std::shared_ptr< physics::IInstance > physics )
+: m_os( os )
+, m_enabled( true )
 {
-	AddComponent( scene::IComponent::ptr( new GeometryComponent( geometry ) ) );
+	AddComponent( scene::IComponent::ptr( new GeometryComponent( os, geometry ) ) );
 }
 
-Object::Object( Geometry::ptr geometry, const unify::V3< float > position )
-: m_enabled( true )
+Object::Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float > position )
+: m_os( os )
+, m_enabled( true )
 {
-	AddComponent( scene::IComponent::ptr( new GeometryComponent( geometry ) ) );
+	AddComponent( scene::IComponent::ptr( new GeometryComponent( os, geometry ) ) );
 	GetFrame().SetPosition( position );
 }
 
@@ -142,7 +145,7 @@ const unify::FrameLite & Object::GetFrame() const
 
 void Object::SetGeometry( Geometry::ptr geometry )
 {
-	AddComponent( scene::IComponent::ptr( new GeometryComponent( geometry ) ) );
+	AddComponent( scene::IComponent::ptr( new GeometryComponent( m_os, geometry ) ) );
 }
 
 unify::Matrix & Object::GetGeometryMatrix()
@@ -356,7 +359,7 @@ Object::ptr Object::AddChild( std::string name )
 	if ( ! lastChild )
 	{
 		// No children...
-		m_firstChild.reset( new Object );
+		m_firstChild.reset( new Object( m_os ) );
 		lastChild = m_firstChild;
 	}
 	else
@@ -366,7 +369,7 @@ Object::ptr Object::AddChild( std::string name )
 		{
 			lastChild = lastChild->GetNext();
 		}
-		lastChild->m_next.reset( new Object );
+		lastChild->m_next.reset( new Object( m_os ) );
 		lastChild->m_next->m_previous = lastChild;
 		lastChild = lastChild->GetNext();	 
 	}

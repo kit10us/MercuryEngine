@@ -11,11 +11,11 @@ TextureSourceFactory::TextureSourceFactory( core::Game * game )
 {
 }
 
-Texture * TextureSourceFactory::Produce( unify::Path source )
+Texture::ptr TextureSourceFactory::Produce( unify::Path source )
 {
 	if( !source.Empty() )
 	{
-		return new Texture( source );
+		return Texture::ptr( new Texture( source ) );
 	}
 
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );
