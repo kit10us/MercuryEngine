@@ -529,6 +529,9 @@
     <ClCompile Include="source\dxi\scene\BBoxRendererComponent.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\VertexElement.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -783,6 +786,9 @@
     </ClInclude>
     <ClInclude Include="source\dxi\scene\BBoxRendererComponent.h">
       <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\VertexElement.h">
+      <Filter>dxi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

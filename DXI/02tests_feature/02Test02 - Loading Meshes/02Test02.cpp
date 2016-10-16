@@ -51,10 +51,8 @@ void MyGame::Startup()
 
 	// Add a camera...
 	scene::Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
-	camera->AddComponent( scene::IComponent::ptr( new scene::Camera( GetOS() ) ) );
-
+	camera->AddComponent( scene::IComponent::ptr( new scene::Camera( GetOS() ) ) );	 
 	scene::Camera * cameraComponent = unify::polymorphic_downcast< scene::Camera * >( camera->GetComponent( "camera" ).get() );
-
 	cameraComponent->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( D3DX_PI / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
@@ -91,9 +89,9 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 	aseObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/USSVoyager.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/USSVoyager.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/borgcube.dae" ) );

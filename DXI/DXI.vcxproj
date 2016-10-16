@@ -105,6 +105,7 @@
     <ClCompile Include="source\dxi\utils\SafeRelease.cpp" />
     <ClCompile Include="source\dxi\VertexBuffer.cpp" />
     <ClCompile Include="source\dxi\VertexDeclaration.cpp" />
+    <ClCompile Include="source\dxi\VertexElement.cpp" />
     <ClCompile Include="source\dxi\VertexShader.cpp" />
     <ClCompile Include="source\dxi\factory\VertexShaderFactory.cpp" />
     <ClCompile Include="source\dxi\Viewport.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="source\dxi\utils\SafeRelease.h" />
     <ClInclude Include="source\dxi\VertexBuffer.h" />
     <ClInclude Include="source\dxi\VertexDeclaration.h" />
+    <ClInclude Include="source\dxi\VertexElement.h" />
     <ClInclude Include="source\dxi\VertexShader.h" />
     <ClInclude Include="source\dxi\factory\VertexShaderFactory.h" />
     <ClInclude Include="source\dxi\Viewport.h" />

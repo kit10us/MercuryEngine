@@ -4,60 +4,16 @@
 #pragma once
 
 #include <dxi/core/IRenderer.h>
+#include <dxi/VertexElement.h>
 #include <unify/unify.h>
 #include <unify/String.h>
 #include <unify/DataLock.h>
-#include <unify/V2.h>
-#include <unify/V3.h>
-#include <unify/V4.h>
-#include <unify/TexCoords.h>
-#include <unify/Color.h>
-#include <dxi/win/DirectX.h>
 #include <qxml/Element.h>
 #include <qjson/QJson.h>
 #include <map>
-#include <atlbase.h>
 
 namespace dxi
 {
-	/*
-	// TODO:
-	struct VertexElement
-	{
-		enum class Format
-		{
-			Float1,
-			Float2,
-			Float3,
-			Float4,
-			Color,
-			Unknown
-		};
-
-		const char *               SemanticName;			// Usage
-		unsigned int               SemanticIndex;			// UsageIndex
-		Format		               Format;					// Type
-		unsigned int               InputSlot;				// Stream
-		unsigned int               AlignedByteOffset;		// Offset
-	};
-	*/
-
-#if defined( DIRECTX9 )
-	typedef D3DVERTEXELEMENT9 VertexElement;
-#elif defined( DIRECTX11 )
-	typedef D3D11_INPUT_ELEMENT_DESC VertexElement;
-#endif
-
-	struct CommonVertexElement
-	{
-		static VertexElement Position( unsigned int slot = 0 );
-		static VertexElement Normal( unsigned int slot = 0 );
-		static VertexElement Diffuse( unsigned int slot = 0 );
-		static VertexElement Specular( unsigned int slot = 0 );
-		static VertexElement TexCoords( unsigned int slot = 0 );
-		static VertexElement TexCoords2( unsigned int slot = 0 );
-	};
-
 	/// <summary> 
 	/// Defines the structure of the data in a vertex. 
 	/// </summary>
@@ -134,18 +90,11 @@ namespace dxi
 		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
 		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;
 
-		core::IRenderer * m_renderer;
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
 
 		std::vector< VertexElement > m_elements;
 		ElementMap m_elementMap;
-
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
-#if defined( DIRECTX9 )
-		CComPtr< IDirect3DVertexDeclaration9 > m_layout;
-#elif defined( DIRECTX11 )
-		CComPtr< ID3D11InputLayout > m_layout;
-#endif
 		size_t m_totalSizeInBytes;
 	};
 }

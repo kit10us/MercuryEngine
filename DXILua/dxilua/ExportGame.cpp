@@ -46,7 +46,7 @@ int Game_GetRendererCount( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	float result = game->GetOS()->RendererCount();
+	float result = (float)game->GetOS()->RendererCount();
 
 	lua_pushnumber( state, result );
 

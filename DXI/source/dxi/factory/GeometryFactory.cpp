@@ -101,6 +101,7 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 						if( XMLConvert( &vertex, xyz ) )
 						{
 							vd->WriteVertex( lock, index, positionE, xyz );
+							vb.GetBBox() += xyz;
 						}
 	
 						// NORMAL
