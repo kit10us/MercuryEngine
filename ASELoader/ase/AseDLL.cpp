@@ -5,7 +5,6 @@
 #include <ase/GeometryFactory.h>
 #include <memory.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/win/DXRenderer.h>
 
 using namespace ase;
@@ -19,9 +18,6 @@ __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Docume
 {
 	using namespace dxi;
 	using namespace core;
-
-	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS()->GetRenderer( 0 );
-	dxi::win::DX::SetDxDevice( dxRenderer->GetDxDevice() );
 
 	PixelShader::ptr ps = game->GetManager< PixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
 	VertexShader::ptr vs = game->GetManager< VertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );

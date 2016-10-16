@@ -103,9 +103,6 @@
     <ClCompile Include="source\dxi\DataBuffer.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\win\DXDevice.cpp">
-      <Filter>dxi\win</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\Effect.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -305,9 +302,6 @@
       <Filter>dxi\exception</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\win\DirectX.h">
-      <Filter>dxi\win</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\win\DXDevice.h">
       <Filter>dxi\win</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\Effect.h">

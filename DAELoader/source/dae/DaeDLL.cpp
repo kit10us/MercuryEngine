@@ -5,7 +5,6 @@
 #include "DaeDLL.h"
 #include <memory.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/win/DXRenderer.h>
 
 void Deleter( dae::GeometrySourceFactory * factory )
@@ -60,10 +59,6 @@ __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Docume
 	const auto texture = doc->GetRoot()->FindFirstElement( "texture" );
 	std::string textureEffectName = texture->GetAttribute< std::string >( "name" );
 	unify::Path textureEffectPath = texture->GetAttribute< std::string >( "source" );
-
-
-	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS()->GetRenderer( 0 );
-	dxi::win::DX::SetDxDevice( dxRenderer->GetDxDevice() );
 
 	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game->GetOS()->GetRenderer( 0 ), new MyEffectSolver( game, colorEffectName, colorEffectPath, textureEffectName, textureEffectPath ) );
 	game->GetManager< dxi::Geometry >()->AddFactory( "dae", GeometryFactoryPtr( daeFactory ) );

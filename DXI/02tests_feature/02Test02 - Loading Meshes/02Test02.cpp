@@ -89,11 +89,11 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 	aseObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/models/Death Star II/models/Death Star II.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/cube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
 	
 	// Rigged...
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );

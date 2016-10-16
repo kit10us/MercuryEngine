@@ -3,7 +3,6 @@
 
 #include <dxi/win/DXRenderer.h>
 #include <dxi/win/WindowsOS.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/core/Game.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/NotImplemented.h>
@@ -71,7 +70,6 @@ DXRenderer::DXRenderer( WindowsOS * os, core::Display display )
 		IDirect3DSwapChain9 * swapChain{};
 		m_dxDevice->GetSwapChain( 0, &swapChain );
 		SetSwapChain( swapChain );
-		DX::SetDxDevice( m_dxDevice );
 	}
 	else
 	{

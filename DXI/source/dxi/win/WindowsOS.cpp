@@ -4,7 +4,6 @@
 #pragma once
 
 #include <dxi/win/WindowsOS.h>
-#include <dxi/win/DxDevice.h>
 #include <unify/Exception.h>
 #include <unify/Path.h>
 #include <dxi/exception/FailedToCreate.h>
@@ -277,11 +276,6 @@ void WindowsOS::Startup()
 
 void WindowsOS::Shutdown()
 {
-	DX::SetDxDevice( 0 );
-	/*
-	DragAcceptFiles( this->GetHWnd(), false );
-	DestroyDirectX();
-	*/
 }
 
 void WindowsOS::DebugWrite( const std::string & text )

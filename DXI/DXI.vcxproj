@@ -109,7 +109,6 @@
     <ClCompile Include="source\dxi\VertexShader.cpp" />
     <ClCompile Include="source\dxi\factory\VertexShaderFactory.cpp" />
     <ClCompile Include="source\dxi\Viewport.cpp" />
-    <ClCompile Include="source\dxi\win\DXDevice.cpp" />
     <ClCompile Include="source\dxi\win\DXRenderer.cpp" />
     <ClCompile Include="source\dxi\win\WindowsOS.cpp" />
   </ItemGroup>
@@ -245,7 +244,6 @@
     <ClInclude Include="source\dxi\Viewport.h" />
     <ClInclude Include="source\dxi\win\DirectX.h" />
     <ClInclude Include="source\dxi\win\DirectXLibs.h" />
-    <ClInclude Include="source\dxi\win\DXDevice.h" />
     <ClInclude Include="source\dxi\win\DXILib.h" />
     <ClInclude Include="source\dxi\win\DXRenderer.h" />
     <ClInclude Include="source\dxi\win\WindowsOS.h" />
