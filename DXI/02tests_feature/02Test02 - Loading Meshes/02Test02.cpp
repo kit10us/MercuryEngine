@@ -89,22 +89,25 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 	aseObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/USSVoyager.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/borgcube.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/models/Death Star II/models/Death Star II.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/cube.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
+	
+	// Rigged...
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/SuperMarioGalaxy_Mario/mario.dae" ) );
+
 	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
 	daeModel->SetGeometry( meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
-	auto daeObject = scene->FindObject( "daeModel" );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 
-	daeObject->GetGeometryMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
-	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
-	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::Angle::AngleInDegrees( -90.0f ) );
+	daeModel->GetGeometryMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
+	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
+	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::Angle::AngleInDegrees( -90.0f ) );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo )

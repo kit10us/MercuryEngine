@@ -10,8 +10,8 @@
 #endif
 
 #include <dxi/Texture.h>
-#include <dxi/win/DXDevice.h>
-#include <dxi/core/Game.h>
+#include <dxi/win/DXRenderer.h>
+#include <dxi/core/Game.h>	// tODO: Remove?
 #include <dxi/exception/NotImplemented.h>
 #include <atlbase.h>
 #include <dxi/exception/FailedToLock.h>
@@ -26,8 +26,9 @@ using namespace dxi;
 class Texture::Pimpl
 {
 public:
-	Pimpl( Texture & owner )
+	Pimpl( Texture & owner, core::IRenderer * renderer )
 		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
 	{
 	}
 
@@ -110,7 +111,7 @@ public:
 
 		HRESULT result;
 		result = D3DXCreateTextureFromFileExA(
-			win::DX::GetDxDevice(),
+			m_renderer->GetDxDevice(),
 			(LPCSTR)filePath.ToString().c_str(),
 			D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2,
 			D3DX_DEFAULT,
@@ -226,7 +227,7 @@ public:
 	bool Use( unsigned int stage )
 	{
 #if defined( DIRECTX9 )
-		HRESULT hr = win::DX::GetDxDevice()->SetTexture( stage, m_texture );
+		HRESULT hr = m_renderer->GetDxDevice()->SetTexture( stage, m_texture );
 		return SUCCEEDED( hr );
 #elif defined( DIRECTX11 )
 		win::DX::GetDxContext()->PSSetShaderResources( 0, 1, &m_colorMap.p );
@@ -237,6 +238,7 @@ public:
 
 	private:
 		Texture & m_owner;
+		win::DXRenderer * m_renderer;
 
 #if defined( DIRECTX9 )
 		CComPtr< IDirect3DTexture9 > m_texture;
@@ -248,19 +250,19 @@ public:
 	};
 		
 
-	bool Texture::s_allowTextureUses = true;
+	bool Texture::s_allowTextureUses = true; // TODO: Enable this via IRenderer? Perhaps also a "use this texture instread?" for TSing?
 
-	Texture::Texture()
-		: m_useColorKey( false )
+	Texture::Texture( core::IRenderer * renderer )
+		: m_pimpl( new Pimpl( *this, renderer ) )
+		, m_useColorKey( false )
 		, m_created( false )
 		, m_renderable( true )
 		, m_lockable( false )
-		, m_pimpl( new Pimpl( *this ) )
 	{
 	}
 
-	Texture::Texture( const unify::Path & filePath, bool renderable, bool lockable )
-		: Texture()
+	Texture::Texture( core::IRenderer * renderer, const unify::Path & filePath, bool renderable, bool lockable )
+		: Texture( renderer )
 	{
 		m_renderable = renderable;
 		m_lockable = lockable;

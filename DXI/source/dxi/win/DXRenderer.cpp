@@ -125,7 +125,7 @@ void DXRenderer::SetDxDevice( IDirect3DDevice9 * dxDevice )
 	m_dxDevice = dxDevice;
 }
 
-IDirect3DDevice9 * DXRenderer::GetDxDevice()
+IDirect3DDevice9 * DXRenderer::GetDxDevice() const
 {
 	return m_dxDevice;
 }
@@ -135,7 +135,7 @@ void DXRenderer::SetSwapChain( IDirect3DSwapChain9 * swapChain )
 	m_swapChain = swapChain;
 }
 
-IDirect3DSwapChain9 * DXRenderer::GetSwapChain()
+IDirect3DSwapChain9 * DXRenderer::GetSwapChain() const
 {
 	return m_swapChain;
 }

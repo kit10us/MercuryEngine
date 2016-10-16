@@ -39,7 +39,7 @@ void MyGame::Startup()
 
 	// The particular effect we are loading is generic, and has no texture, so let's add one.
 	// Load a texture...
-	Texture::ptr texture = GetManager< Texture >()->Add( "image", new Texture( "media/Sig10_1024.jpg" ) );
+	Texture::ptr texture = GetManager< Texture >()->Add( "image", new Texture( GetOS()->GetRenderer(0), "media/Sig10_1024.jpg" ) );
 	m_effect->SetTexture( 0, texture );
 
 	// Get the vertex declaration, which describes the layout for the vertex...

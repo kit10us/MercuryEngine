@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <dxi/core/IRenderer.h>
 #include <dxi/RenderInfo.h>
 #include <dxi/core/Display.h>
 #include <atlbase.h>
@@ -26,10 +25,10 @@ namespace dxi
 			const D3DPRESENT_PARAMETERS & GetPP() const;
 
 			void SetDxDevice( IDirect3DDevice9 * dxDevice );
-			IDirect3DDevice9 * GetDxDevice();
+			IDirect3DDevice9 * GetDxDevice() const;
 
 			void SetSwapChain( IDirect3DSwapChain9 * swapChain );
-			IDirect3DSwapChain9 * GetSwapChain();
+			IDirect3DSwapChain9 * GetSwapChain() const;
 
 			void SetCullMode( CullMode::TYPE mode ) override;
 

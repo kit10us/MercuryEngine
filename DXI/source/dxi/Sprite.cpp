@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/Sprite.h>
-#include <dxi/win/DXDevice.h>
+#include <dxi/win/DXRenderer.h>
 #include <unify/V4.h>
 #include <dxi/Texture.h>
 #include <dxi/exception/NotImplemented.h>
@@ -193,7 +193,10 @@ void Sprite::Render( const RenderInfo & renderInfo )
 	m_animationInstance.GetFrame().GetTexture()->Use( 0 );
 
 #if defined( DIRECTX9 )
-	win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
+	auto dxRenderer = dynamic_cast< const win::DXRenderer * >(renderInfo.GetRenderer());
+	auto dxDevice = dxRenderer->GetDxDevice();
+
+	dxDevice->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
 #elif defined( DIRECTX11 )
 	throw exception::NotImplemented( "DX11" );
 #endif

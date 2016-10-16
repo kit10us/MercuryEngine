@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/IRenderer.h>
 #include <unify/Unify.h>
 #include <unify/Matrix.h>
 #include <unify/FrameSet.h>
@@ -35,14 +36,14 @@ namespace dxi
 	class RenderInfo
 	{
 	public:
-		// This named constructor returns a RenderInfo for the situtation where we don't care to track
-		// data between renders in this RenderInfo. Mostly this is when we just want to render an object immediately.
-		static RenderInfo RenderInfoStandalone(); // TODO: Deprecate - this is likely not usefull for shaders (only FFP, which is obsolete). So if this is used, it's a defect.
-
 		RenderInfo();
 		RenderInfo( const RenderInfo & info );
 		~RenderInfo() throw ();
 		RenderInfo & operator=( const RenderInfo & info );
+
+		void SetRenderer( core::IRenderer * renderer );
+		core::IRenderer * GetRenderer();
+		const core::IRenderer * GetRenderer() const;
 
 		bool IsOptionSet( RenderOption::TYPE option ) const;
 		bool IsOptionTrue( RenderOption::TYPE option ) const;
@@ -80,6 +81,7 @@ namespace dxi
 		const unify::FrameSetInstance * GetFrameSetInstance() const;
 
 	protected:
+		core::IRenderer * m_renderer;
 		std::bitset< RenderOption::COUNT > m_optionValue;
 		std::bitset< RenderOption::COUNT > m_optionIsSet;
 		float m_distanceFromCamera;		// Distance from camera

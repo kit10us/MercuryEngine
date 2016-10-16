@@ -2,12 +2,9 @@
 // All Rights Reserved
 
 #include <dxi/RenderMethod.h>
-#include <dxi/core/Game.h>
-#include <dxi/win/DXDevice.h>
+#include <dxi/win/DXRenderer.h>
 #include <dxi/exception/NotImplemented.h>
-
-#include <dxi/win/DXRenderer.h> // TODO: Reduce this.
-
+#include <dxi/exception/Exception.h>
 
 dxi::PrimitiveType::TYPE dxi::PrimitiveType::StringToPrimitiveType( const std::string & type )
 {
@@ -224,15 +221,18 @@ void RenderMethod::Render( const RenderInfo & renderInfo ) const
 	case PrimitiveType::TriangleList: dxPrimitiveType = D3DPT_TRIANGLELIST;	break;
 	case PrimitiveType::TriangleStrip: dxPrimitiveType = D3DPT_TRIANGLESTRIP;  break;
 	}
+							   
+	auto dxRenderer = dynamic_cast<const win::DXRenderer *>(renderInfo.GetRenderer());
+	auto dxDevice = dxRenderer->GetDxDevice();
 		
 	// Draw Primitive...
 	if( useIB == false )
 	{
-		hr = win::DX::GetDxDevice()->DrawPrimitive( dxPrimitiveType, startVertex, primitiveCount );
+		hr = dxDevice->DrawPrimitive( dxPrimitiveType, startVertex, primitiveCount );
 	}
 	else
 	{
-		hr = win::DX::GetDxDevice()->DrawIndexedPrimitive( dxPrimitiveType, baseVertexIndex, minIndex, vertexCount, startIndex, primitiveCount );
+		hr = dxDevice->DrawIndexedPrimitive( dxPrimitiveType, baseVertexIndex, minIndex, vertexCount, startIndex, primitiveCount );
 	}
 	OnFailedThrow( hr, "Failed to render vertex buffer!" );
 #elif defined( DIRECTX11 )

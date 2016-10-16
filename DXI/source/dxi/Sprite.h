@@ -17,6 +17,7 @@ namespace dxi
 	class Sprite
 	{
 	public:
+		// TODO: Game here is a little heavy handed, right??? Why do we need this? Use an IRenderer, or rely on the one from RenderInfo?
 		Sprite( core::Game * game );
 		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
 		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );

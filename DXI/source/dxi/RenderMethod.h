@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <dxi/win/DirectX.h>
 #include <dxi/Effect.h>
 #include <unify/unify.h>
 #include <string>

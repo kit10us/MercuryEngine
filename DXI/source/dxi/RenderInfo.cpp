@@ -5,14 +5,9 @@
 
 using namespace dxi;
 
-RenderInfo RenderInfo::RenderInfoStandalone()
-{
-	RenderInfo renderInfo;
-	return renderInfo;
-}
-
 RenderInfo::RenderInfo()
-: m_distanceFromCamera( 0.0f )
+: m_renderer( 0 )
+, m_distanceFromCamera( 0.0f )
 , m_frameID( 0 )
 , m_world( unify::Matrix::MatrixIdentity() )
 , m_view( unify::Matrix::MatrixIdentity() )
@@ -25,7 +20,8 @@ RenderInfo::RenderInfo()
 }
 
 RenderInfo::RenderInfo( const RenderInfo & info )
-: m_distanceFromCamera( 0.0f )
+: m_renderer( info.m_renderer )
+, m_distanceFromCamera( 0.0f )
 , m_frameID( 0 )
 , m_optionIsSet( info.m_optionIsSet )
 , m_optionValue( info.m_optionValue )
@@ -41,6 +37,21 @@ RenderInfo::RenderInfo( const RenderInfo & info )
 
 RenderInfo::~RenderInfo() throw ()
 {
+}
+
+void RenderInfo::SetRenderer( core::IRenderer * renderer )
+{
+	m_renderer = renderer;
+}
+
+core::IRenderer * RenderInfo::GetRenderer()
+{
+	return m_renderer;
+}
+
+const core::IRenderer * RenderInfo::GetRenderer() const
+{
+	return m_renderer;
 }
 
 bool RenderInfo::IsOptionSet( RenderOption::TYPE option ) const
@@ -120,7 +131,7 @@ float RenderInfo::GetTotalDelta() const
 
 float RenderInfo::GetDeltaCount() const
 {
-	return m_deltaCount;
+	return (float)m_deltaCount;
 }
 
 float RenderInfo::GetAverageDelta() const

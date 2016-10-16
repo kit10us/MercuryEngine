@@ -15,7 +15,7 @@ Texture::ptr TextureSourceFactory::Produce( unify::Path source )
 {
 	if( !source.Empty() )
 	{
-		return Texture::ptr( new Texture( source ) );
+		return Texture::ptr( new Texture( m_game->GetOS()->GetRenderer(0), source ) );
 	}
 
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );

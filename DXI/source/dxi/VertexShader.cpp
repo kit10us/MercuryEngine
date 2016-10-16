@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/VertexShader.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/win/DXRenderer.h>
 #include <dxi/exception/NotImplemented.h>
 
@@ -280,14 +279,6 @@ public:
 #endif
 	}
 };
-
-void VertexShader::DisuseShader()
-{
-#if defined( DIRECTX9 )
-	win::DX::GetDxDevice()->SetVertexShader( 0 );
-#elif defined( DIRECTX11 )
-#endif
-}
 
 VertexShader::VertexShader( core::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )

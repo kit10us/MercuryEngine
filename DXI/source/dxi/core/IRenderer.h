@@ -5,7 +5,6 @@
 
 #include <windows.h> // TODO: Because of handle - fix?
 #include <dxi/Viewport.h>
-#include <dxi/RenderInfo.h>
 
 namespace dxi
 {

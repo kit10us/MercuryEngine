@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/VertexBuffer.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/win/DXRenderer.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>

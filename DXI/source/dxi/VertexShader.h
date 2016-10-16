@@ -15,8 +15,6 @@ namespace dxi
 	public:
 		typedef std::shared_ptr< VertexShader > ptr;
 
-		static void DisuseShader();
-
 		VertexShader( core::IRenderer * renderer );
 
 		VertexShader( core::IRenderer * renderer, const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration::ptr vertexDeclaration );

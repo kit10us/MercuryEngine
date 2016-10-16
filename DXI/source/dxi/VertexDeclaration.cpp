@@ -3,8 +3,6 @@
 
 #include <dxi/VertexDeclaration.h>
 #include <dxi/win/DXRenderer.h>
-#include <dxi/win/DXDevice.h>
-#include <dxi/core/Game.h>
 #include <unify/ColorUnit.h>
 
 using namespace dxi;
@@ -306,7 +304,7 @@ void VertexDeclaration::Build( const VertexShader & vs )
 
 	elements.push_back( D3DDECL_END() );
 
-	HRESULT hr = win::DX::GetDxDevice()->CreateVertexDeclaration( &elements[0], &m_pimpl->m_layout );
+	HRESULT hr = m_pimpl->m_renderer->GetDxDevice()->CreateVertexDeclaration( &elements[0], &m_pimpl->m_layout );
 	if( FAILED( hr ) )
 	{
 		throw unify::Exception( "Failed to create vertex declaration!" );
@@ -434,7 +432,7 @@ size_t VertexDeclaration::GetSize() const
 void VertexDeclaration::Use()
 {
 #if defined( DIRECTX9 )
-	HRESULT result = win::DX::GetDxDevice()->SetVertexDeclaration( m_pimpl->m_layout );
+	HRESULT result = m_pimpl->m_renderer->GetDxDevice()->SetVertexDeclaration( m_pimpl->m_layout );
 	if( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to set vertex declaration!" );

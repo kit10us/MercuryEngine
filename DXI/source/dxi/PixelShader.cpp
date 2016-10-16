@@ -2,9 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/PixelShader.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/win/DXRenderer.h>
-#include <atlbase.h>
 #include <dxi/exception/NotImplemented.h>
 
 using namespace dxi;

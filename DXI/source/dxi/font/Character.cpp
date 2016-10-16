@@ -165,7 +165,8 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 				temp.Translate( m_geometryPostOffset2D * scale );
 			}
 
-			RenderInfo renderInfo( RenderInfo::RenderInfoStandalone() );
+			assert( 0 ); // This was changed form the "standalone", ensure this works...
+			RenderInfo renderInfo( renderInfo );
 			renderInfo.SetWorldMatrix( temp );
 			m_geometry->Render( renderInfo, 0 );
 		}

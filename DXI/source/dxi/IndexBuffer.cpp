@@ -2,16 +2,11 @@
 // All Rights Reserved
 
 #include <dxi/IndexBuffer.h>
-#include <dxi/win/DXDevice.h>
 #include <dxi/win/DXRenderer.h>
-#include <unify/Flags.h>
-#include <dxi/core/Game.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/OutOfBounds.h>
 #include <dxi/exception/NotImplemented.h>
-#include <atlbase.h>
-#include <assert.h>
 
 using namespace dxi;
 

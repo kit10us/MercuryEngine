@@ -353,6 +353,7 @@ void Scene::Render( size_t index, const Viewport & viewport )
 		if( camera.camera->GetRenderer() != index ) continue;
 
 		RenderInfo renderInfo( m_renderInfo );
+		renderInfo.SetRenderer( m_game->GetOS()->GetRenderer( index ) ); // TODO: Likely renderer should know it's index, AND this Render function should take a IRenderer instead of an index.
 		renderInfo.SetViewMatrix( camera.transform.Inverse() );
 		renderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 

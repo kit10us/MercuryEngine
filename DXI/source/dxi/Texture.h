@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #pragma once
+#include <dxi/core/IRenderer.h>
 #include <unify/Rect.h>
 #include <unify/Color.h>
 #include <unify/TexArea.h>
@@ -91,8 +92,8 @@ namespace dxi
 
 		static bool s_allowTextureUses;
 
-		Texture();
-		Texture( const unify::Path & filePath, bool renderable = true, bool lockable = false );
+		Texture( core::IRenderer * renderer );
+		Texture( core::IRenderer * renderer, const unify::Path & filePath, bool renderable = true, bool lockable = false );
 		virtual ~Texture();
 
 		// ::Resource...
