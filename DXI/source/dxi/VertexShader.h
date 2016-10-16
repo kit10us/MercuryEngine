@@ -4,8 +4,9 @@
 #pragma once
 
 #include <dxi/RenderInfo.h>
-#include <unify/Path.h>
+#include <dxi/core/IRenderer.h>
 #include <dxi/VertexDeclaration.h>
+#include <unify/Path.h>
 
 namespace dxi
 {
@@ -16,9 +17,9 @@ namespace dxi
 
 		static void DisuseShader();
 
-		VertexShader();
+		VertexShader( core::IRenderer * renderer );
 
-		VertexShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration::ptr vertexDeclaration );
+		VertexShader( core::IRenderer * renderer, const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration::ptr vertexDeclaration );
 
 		~VertexShader();
 
@@ -42,13 +43,7 @@ namespace dxi
 
 		std::string GetError();
 
-#if defined( DIRECTX9 )
-		ID3DXConstantTable * GetConstantTable();
-#elif defined( DIRECTX11 )
-		// TODO: DX11
-#endif
-	protected:
-
+	protected:	   
 		unify::Path m_filePath;
 		std::string m_code;
 		bool m_assembly;

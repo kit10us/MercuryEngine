@@ -21,5 +21,5 @@ VertexShader * VertexShaderFactory::Produce( unify::Path source )
 	std::string entry = node.GetElement( "entry" )->GetText();
 	std::string profile = node.GetElement( "profile" )->GetText();
 	VertexDeclaration::ptr vertexDeclaration( new VertexDeclaration( *node.GetElement( "vd" ) ) );
-	return new VertexShader( shaderSource, entry, profile, vertexDeclaration );
+	return new VertexShader( m_game->GetOS()->GetRenderer(0), shaderSource, entry, profile, vertexDeclaration );
 }

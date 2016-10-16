@@ -55,10 +55,11 @@ void BBoxRendererComponent::Render( const RenderInfo & renderInfo )
 	if ( !m_effect || !m_geomertries.size() ) return;
 
 	RenderInfo myRenderInfo( renderInfo );
-	
-	unify::BBox< float > bbox;
+		
+	unify::BBox< float > bbox; // TODO: Should probably create a new bbox that includes the transformed bbox's of the individual geos, for more acuracy (when needed - so far one geo seems normal).
 	for( auto & geo : m_geomertries )
 	{
+		myRenderInfo.SetWorldMatrix( geo->GetModelMatrix() * renderInfo.GetWorldMatrix() );
 		bbox += ( geo->GetGeometry()->GetBBox().inf - unify::V3< float >( m_padding, m_padding, m_padding ) );
 		bbox += ( geo->GetGeometry()->GetBBox().sup + unify::V3< float >( m_padding, m_padding, m_padding ) );
 	}
@@ -127,7 +128,7 @@ void BBoxRendererComponent::Render( const RenderInfo & renderInfo )
 
 	bs.GetVertexBuffer().Create( vertexCount, vd, vertices.get() );
 	bs.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );
-	m_pl.Render( renderInfo );
+	m_pl.Render( myRenderInfo );
 }
 
 void BBoxRendererComponent::OnSuspend()

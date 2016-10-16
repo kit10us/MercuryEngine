@@ -20,5 +20,5 @@ PixelShader * PixelShaderFactory::Produce( unify::Path source )
 	unify::Path shaderSource{ node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText() };
 	std::string entry = node.GetElement( "entry" )->GetText();
 	std::string profile = node.GetElement( "profile" )->GetText();
-	return new PixelShader( shaderSource, entry, profile );
+	return new PixelShader( m_game->GetOS()->GetRenderer(0), shaderSource, entry, profile );
 }

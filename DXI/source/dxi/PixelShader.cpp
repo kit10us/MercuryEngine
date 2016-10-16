@@ -3,6 +3,7 @@
 
 #include <dxi/PixelShader.h>
 #include <dxi/win/DXDevice.h>
+#include <dxi/win/DXRenderer.h>
 #include <atlbase.h>
 #include <dxi/exception/NotImplemented.h>
 
@@ -11,8 +12,9 @@ using namespace dxi;
 class PixelShader::Pimpl
 {
 public:
-	Pimpl( PixelShader & owner )
+	Pimpl( PixelShader & owner, core::IRenderer * renderer )
 		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
 	{
 	}
 
@@ -119,11 +121,11 @@ public:
 		m_textureSize = m_constantTable->GetConstantByName( 0, "textureSize" );
 		*/
 #if defined( DIRECTX9 )
-		win::DX::GetDxDevice()->CreatePixelShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
+		m_renderer->GetDxDevice()->CreatePixelShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
 #elif defined( DIRECTX11 )
 		HRESULT result;
 		ID3D11ClassLinkage * classLinkage = nullptr;
-		result = win::DX::GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
+		result = m_renderer->GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
 		assert( !FAILED( result ) );
 #endif	 
 	}
@@ -131,7 +133,7 @@ public:
 	void Use( const RenderInfo & renderInfo )
 	{
 #if	defined( DIRECTX9 )
-		HRESULT result = win::DX::GetDxDevice()->SetPixelShader( m_shader );
+		HRESULT result = m_renderer->GetDxDevice()->SetPixelShader( m_shader );
 		if( FAILED( result ) )
 		{
 			throw unify::Exception( "Failed to set pixel shader!" );
@@ -147,9 +149,10 @@ public:
 		return m_constantTable;
 	}
 #elif defined( DIRECTX11 )
-#endif		 
+#endif
 
 	PixelShader & m_owner;
+	win::DXRenderer * m_renderer;
 
 #if defined( DIRECTX9 )
 	CComPtr< ID3DXBuffer > m_codeBuffer;
@@ -161,16 +164,16 @@ public:
 #endif											  
 };
 
-PixelShader::PixelShader()
-	: m_pimpl( new Pimpl( *this ) )
+PixelShader::PixelShader( core::IRenderer * renderer )
+	: m_pimpl( new Pimpl( *this, renderer  ) )
 	, m_assembly( false )
 	, m_created( false )
 	, m_isTrans( false )
 {
 }
 
-PixelShader::PixelShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile )
-	: PixelShader()
+PixelShader::PixelShader( core::IRenderer * renderer, const unify::Path & filePath, const std::string & entryPointName, const std::string & profile )
+	: PixelShader( renderer )
 {
 	CreateFromFile( filePath, entryPointName, profile );
 }
@@ -244,12 +247,3 @@ std::string PixelShader::GetError()
 {
 	return m_errorMessage;
 }
-
-#if defined( DIRECTX9 )
-ID3DXConstantTable * PixelShader::GetConstantTable()
-{
-	return m_pimpl->GetConstantTable();
-}
-#elif defined( DIRECTX11 )
-#endif
-

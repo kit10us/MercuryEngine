@@ -162,6 +162,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		size_t numberOfVertices = polylist->GetP().size() / polylist->GetInput().size();
 
 		dxi::BufferSet & set = accumulatedPL.AddBufferSet();
+		auto & vb = set.GetVertexBuffer();
 
 		const dxi::VertexDeclaration::ptr vd = myEffect->GetVertexShader()->GetVertexDeclaration();
 		unsigned short stream = 0;
@@ -194,6 +195,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 				{
 					unify::V3< float > val( floats[ offsetOfFloats + 0 ] * -1.0f, floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
 					matrix.TransformCoord( val );
+					vb.GetBBox() += val;
 					vd->WriteVertex( lock, vertexIndex, positionE, val );
 					vd->WriteVertex( lock, vertexIndex, diffuseE, diffuse );
 				}

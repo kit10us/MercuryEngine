@@ -3,6 +3,7 @@
 
 #include <dxi/VertexShader.h>
 #include <dxi/win/DXDevice.h>
+#include <dxi/win/DXRenderer.h>
 #include <dxi/exception/NotImplemented.h>
 
 using namespace dxi;
@@ -10,6 +11,7 @@ using namespace dxi;
 class VertexShader::Pimpl
 {
 	VertexShader & m_owner;
+	win::DXRenderer * m_renderer;
 
 #if defined( DIRECTX9 )
 #elif defined( DIRECTX11 )
@@ -40,8 +42,9 @@ class VertexShader::Pimpl
 #endif
 
 public:
-	Pimpl( VertexShader & owner )
+	Pimpl( VertexShader & owner, core::IRenderer * renderer )
 		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
 #if defined( DIRECTX9 )
 		, m_finalMatrixHandle( 0 )
 		, m_worldMatrixHandle( 0 )
@@ -148,7 +151,7 @@ public:
 	void CreateThisShader()
 	{
 #if defined( DIRECTX9 )
-		win::DX::GetDxDevice()->CreateVertexShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
+		m_renderer->GetDxDevice()->CreateVertexShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
 		m_finalMatrixHandle = m_constantTable->GetConstantByName( 0, "finalMatrix" );
 		m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "worldMatrix" );
 		m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "viewMatrix" );
@@ -202,30 +205,30 @@ public:
 
 		if( m_worldMatrixHandle != 0 )
 		{
-			result = GetConstantTable()->SetMatrix( win::DX::GetDxDevice(), m_worldMatrixHandle, (D3DXMATRIX*)&world.m );
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_worldMatrixHandle, (D3DXMATRIX*)&world.m );
 		}
 		if( m_viewMatrixHandle != 0 )
 		{
-			result = GetConstantTable()->SetMatrix( win::DX::GetDxDevice(), m_viewMatrixHandle, (D3DXMATRIX*)&view.m );
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_viewMatrixHandle, (D3DXMATRIX*)&view.m );
 		}
 		if( m_projectionMatrixHandle != 0 )
 		{
-			result = GetConstantTable()->SetMatrix( win::DX::GetDxDevice(), m_projectionMatrixHandle, (D3DXMATRIX*)&projection.m );
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_projectionMatrixHandle, (D3DXMATRIX*)&projection.m );
 		}
 		if( m_finalMatrixHandle != 0 )
 		{
 			unify::Matrix final = world * view * projection;
-			result = GetConstantTable()->SetMatrix( win::DX::GetDxDevice(), m_finalMatrixHandle, (D3DXMATRIX*)&final.m );
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_finalMatrixHandle, (D3DXMATRIX*)&final.m );
 		}
 
-		result = win::DX::GetDxDevice()->SetVertexShader( m_shader );
+		result = m_renderer->GetDxDevice()->SetVertexShader( m_shader );
 		if( FAILED( result ) )
 		{
 			throw unify::Exception( "Failed to set vertex shader!" );
 		}
 #elif defined( DIRECTX11 )
-		auto dxDevice = win::DX::GetDxDevice();
-		auto dxContext = win::DX::GetDxContext();
+		auto dxDevice = m_renderer->GetDxDevice();
+		auto dxContext = m_renderer->GetDxContext();
 
 		using namespace DirectX;
 		D3D11_MAPPED_SUBRESOURCE subResource = D3D11_MAPPED_SUBRESOURCE();
@@ -286,15 +289,15 @@ void VertexShader::DisuseShader()
 #endif
 }
 
-VertexShader::VertexShader()
-	: m_pimpl( new Pimpl( *this ) )
+VertexShader::VertexShader( core::IRenderer * renderer )
+	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_assembly( false )
 	, m_created( false )
 {
 }
 
-VertexShader::VertexShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration::ptr vertexDeclaration )
-	: m_pimpl( new Pimpl( *this ) )
+VertexShader::VertexShader( core::IRenderer * renderer, const unify::Path & filePath, const std::string & entryPointName, const std::string & profile, VertexDeclaration::ptr vertexDeclaration )
+	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_assembly( false )
 	, m_created( false )
 	, m_vertexDeclaration( vertexDeclaration )
@@ -369,11 +372,3 @@ std::string VertexShader::GetError()
 {
 	return m_errorMessage;
 }
-
-#if defined( DIRECTX9 )
-ID3DXConstantTable * VertexShader::GetConstantTable()
-{
-	return m_pimpl->GetConstantTable();
-}
-#elif defined( DIRECTX11 )
-#endif

@@ -217,6 +217,10 @@ Geometry * GeometryFactory::Produce( unify::Path source )
 						vd->WriteVertex( lock, index * 3 + 1, positionE, positions[faces[index].mesh_face_B] );
 						vd->WriteVertex( lock, index * 3 + 2, positionE, positions[faces[index].mesh_face_C] );
 
+						vb.GetBBox() += positions[faces[index].mesh_face_A];
+						vb.GetBBox() += positions[faces[index].mesh_face_B];
+						vb.GetBBox() += positions[faces[index].mesh_face_C];
+
 						vd->WriteVertex( lock, index * 3 + 0, texE, texCoords[faces[index].mesh_tface_A] );
 						vd->WriteVertex( lock, index * 3 + 1, texE, texCoords[faces[index].mesh_tface_B] );
 						vd->WriteVertex( lock, index * 3 + 2, texE, texCoords[faces[index].mesh_tface_C] );

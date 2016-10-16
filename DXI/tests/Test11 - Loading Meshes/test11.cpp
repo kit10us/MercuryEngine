@@ -11,6 +11,8 @@
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
 
+#include <dxi/scene/BBoxRendererComponent.h>
+
 using namespace dxi;
 using namespace core;
 
@@ -67,7 +69,8 @@ void MyGame::Startup()
 	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
 	progObject->SetGeometry( meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-				  
+	progObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( color3DEffect ) ) );
+
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
@@ -75,7 +78,8 @@ void MyGame::Startup()
 	xmlObject->SetGeometry( meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	xmlObject->GetGeometryMatrix().Scale( 0.10f );
-	
+	xmlObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( color3DEffect ) ) );
+
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
@@ -85,24 +89,24 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().Scale( 0.090f );
 	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+	aseObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( color3DEffect ) ) );
 
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/USS Voyager/models/USS Voyager.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/models/Death Star II/models/Death Star II.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/cube.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "cubeDAE", "media/borgcube.dae" ) );
-	
 	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
 	daeModel->SetGeometry( meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
+	daeModel->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( color3DEffect ) ) );
 	auto daeObject = scene->FindObject( "daeModel" );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 
-	float size = meshDAE->GetBBox().Size().Length();
-	float scaleE = 8.0f / meshDAE->GetBBox().Size().Length();
-	daeObject->GetGeometryMatrix().Scale( scaleE * 0.25f );
+	daeObject->GetGeometryMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
 	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
+	daeObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::Angle::AngleInDegrees( -90.0f ) );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo )

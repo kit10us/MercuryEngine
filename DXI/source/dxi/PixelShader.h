@@ -4,8 +4,9 @@
 #pragma once
 
 #include <dxi/RenderInfo.h>
+#include <dxi/core/IRenderer.h>
 #include <unify/Path.h>
-#include <dxi/win/DirectX.h>
+//#include <dxi/win/DirectX.h>
 
 namespace dxi
 {
@@ -16,8 +17,8 @@ namespace dxi
 
 		static void DisuseShader();
 
-		PixelShader();
-		PixelShader( const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
+		PixelShader( core::IRenderer * renderer );
+		PixelShader( core::IRenderer * renderer, const unify::Path & filePath, const std::string & entryPointName, const std::string & profile );
 
 		~PixelShader();
 
@@ -36,12 +37,6 @@ namespace dxi
 		bool IsTrans();
 
 		std::string GetError();
-
-#if defined( DIRECTX9 )
-		ID3DXConstantTable * GetConstantTable();
-#elif defined( DIRECTX11 )
-		// TODO: DX11
-#endif
 
 	protected:
 
