@@ -3,7 +3,6 @@
 
 #include "DXIMouse.h"
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXRenderer.h>
 #include <dximouse/Mouse.h>
 
 void DeleterMouse( dximouse::Mouse * mouse )

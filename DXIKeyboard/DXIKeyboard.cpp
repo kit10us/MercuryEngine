@@ -3,7 +3,6 @@
 
 #include "DXIKeyboard.h"
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXRenderer.h>
 #include <dxikeyboard/Keyboard.h>
 
 void DeleterKeyboard( dxikeyboard::Keyboard * keyboard )

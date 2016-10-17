@@ -3,7 +3,6 @@
 
 #include "DXIGamepad.h"
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXRenderer.h>
 #include <dxigp/Gamepad.h>
 
 void DeleterGamepad( dxigp::Gamepad * gamepad )
