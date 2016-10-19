@@ -18,7 +18,7 @@ namespace dxi
 		public:
 			typedef std::shared_ptr< FontManager > shared_ptr;
 
-			FontManager( animation::SpriteManager::shared_ptr spriteManager );
+			FontManager( animation::SpriteManager::ptr spriteManager );
 			~FontManager() throw ();
 			void LoadFromFile( const FontName & name, const unify::Path & filePath );
 			void AddFont( const FontName & name, std::shared_ptr< Font > font );
@@ -28,7 +28,7 @@ namespace dxi
 			const FontName & GetFontName( const unsigned int index ) const;
 			unsigned int Count() const;
 		private:
-			animation::SpriteManager::weak_ptr m_spriteManager;
+			animation::SpriteManager::ptr m_spriteManager;
 			FontMap m_fonts;
 		};
 	} // namespace font

@@ -7,22 +7,26 @@ using namespace dxi;
 using namespace scene;
 
 GeometryComponent::GeometryComponent( core::IOS * os )
-	: Component( os, "Geometry" )
+	: ObjectComponent( os )
 	, m_modelMatrix( unify::Matrix::MatrixIdentity() )
 {
 }
 
 GeometryComponent::GeometryComponent( core::IOS * os, Geometry::ptr geometry )
-	: Component( os, "Geometry" )
+	: ObjectComponent( os )
 	, m_geometry( geometry )
 	, m_geometryInstanceData( geometry->CreateInstanceData() )
 	, m_modelMatrix( unify::Matrix::MatrixIdentity() )
 {
 }
 
-
 GeometryComponent::~GeometryComponent()
 {
+}
+
+std::string GeometryComponent::GetName() const
+{
+	return "Geometry";
 }
 
 void GeometryComponent::SetGeometry( Geometry::ptr geometry )
@@ -64,12 +68,12 @@ void GeometryComponent::OnStart( Object * object )
 {
 }
 
-void GeometryComponent::Update( const RenderInfo & renderInfo )
+void GeometryComponent::OnUpdate( const RenderInfo & renderInfo )
 {
 	m_geometry->Update( renderInfo, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::Render( const RenderInfo & renderInfo )
+void GeometryComponent::OnRender( const RenderInfo & renderInfo )
 {
 	RenderInfo myRenderInfo( renderInfo );
 	myRenderInfo.SetWorldMatrix( m_modelMatrix * myRenderInfo.GetWorldMatrix() );
@@ -80,6 +84,6 @@ void GeometryComponent::OnSuspend()
 {
 }
 
-void GeometryComponent::OnResune()
+void GeometryComponent::OnResume()
 {
 }

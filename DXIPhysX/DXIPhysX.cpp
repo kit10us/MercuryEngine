@@ -3,24 +3,24 @@
 
 #include "DXIPhysX.h"
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXDevice.h>
-#include <dxi/win/DXRenderer.h>
-//#include <dxiphysx/Gamepad.h>
+#include <dxiphysx/SceneManagerComponent.h>
 
-/*
-void DeleterGamepad( dxigp::Gamepad * gamepad )
+#pragma comment( lib, "PhysX3DEBUG_x86.lib" )
+#pragma comment( lib, "PhysX3CommonDEBUG_x86.lib" )
+#pragma comment( lib, "PhysXProfileSDKDEBUG.lib" )
+#pragma comment( lib, "PhysX3CharacterKinematicDEBUG_x86.lib" )
+#pragma comment( lib, "PhysX3CookingDEBUG_x86.lib" )
+#pragma comment( lib, "PxTaskDEBUG.lib" )
+#pragma comment( lib, "PhysX3ExtensionsDEBUG.lib" )
+
+void DeleterSMC( dxiphysx::SceneManagerComponent * smc )
 {
-	delete gamepad;
+	delete smc;
 }
-*/
 
 __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Document * document )
 {
-	dxi::win::DXRenderer * dxRenderer = (dxi::win::DXRenderer *)(void*)game->GetOS()->GetRenderer( 0 );
-	dxi::win::DX::SetDxDevice( dxRenderer->GetDxDevice() );
-
-	//game->GetInputManager()->AddInputSource( dxi::input::IInputSource::ptr( new dxigp::Gamepad( game ), DeleterGamepad ) );
-
+	game->GetSceneManager()->AddComponent( dxi::scene::ISceneManagerComponent::ptr( new dxiphysx::SceneManagerComponent( game->GetOS() ), DeleterSMC ) );
 	return true;
 }
 

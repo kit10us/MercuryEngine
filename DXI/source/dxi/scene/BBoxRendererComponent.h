@@ -3,18 +3,20 @@
 
 #pragma once
 
-#include <dxi/scene/Component.h>
+#include <dxi/scene/ObjectComponent.h>
 #include <dxi/scene/GeometryComponent.h>
 
 namespace dxi
 {
     namespace scene
     {
-	    class BBoxRendererComponent : public Component
+	    class BBoxRendererComponent : public ObjectComponent
 	    {
 	    public:
-			BBoxRendererComponent( core::IOS * os, Effect::ptr effect );
+			BBoxRendererComponent( core::IOS * os, Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 			virtual ~BBoxRendererComponent();
+
+			std::string GetName() const override;
 
 			/// <summary>
 			/// Get padding: the amount added to each vertex to increase the size of the visual BBox over the acutal BBox (so we can actually see it).
@@ -26,14 +28,13 @@ namespace dxi
 			/// </summary>
 			void SetPadding( float padding );
 
-			void OnInit( Object * object ) override;
-			void OnStart( Object * object ) override;
-			void Update( const RenderInfo & renderInfo ) override;
-			void Render( const RenderInfo & renderInfo ) override;
-			void OnSuspend() override;
-			void OnResune() override;
+			void OnAttach( Object * object ) override;
+			void OnDetach( Object * object ) override;
+			void OnUpdate( const RenderInfo & renderInfo ) override;
+			void OnRender( const RenderInfo & renderInfo ) override;
    
 	    protected:
+			Object * m_object;
 			std::list< GeometryComponent * > m_geomertries;
 			PrimitiveList m_pl;
 			Effect::ptr m_effect;

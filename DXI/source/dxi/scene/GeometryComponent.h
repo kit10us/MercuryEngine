@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <dxi/scene/Component.h>
+#include <dxi/scene/ObjectComponent.h>
 #include <dxi/Geometry.h>
 #include <unify/Matrix.h>
 
@@ -11,12 +11,14 @@ namespace dxi
 {
     namespace scene
     {
-	    class GeometryComponent : public Component
+	    class GeometryComponent : public ObjectComponent
 	    {
 	    public:
 			GeometryComponent( core::IOS * os );
 			GeometryComponent( core::IOS * os, Geometry::ptr geometry );
 			virtual ~GeometryComponent();
+
+			std::string GetName() const override;
 
 			void SetGeometry( Geometry::ptr geometry );
 			Geometry::ptr GetGeometry();
@@ -32,10 +34,10 @@ namespace dxi
 
 			void OnInit( Object * object ) override;
 			void OnStart( Object * object ) override;
-			void Update( const RenderInfo & renderInfo ) override;
-			void Render( const RenderInfo & renderInfo ) override;
+			void OnUpdate( const RenderInfo & renderInfo ) override;
+			void OnRender( const RenderInfo & renderInfo ) override;
 			void OnSuspend() override;
-			void OnResune() override;
+			void OnResume() override;
 
 	    protected:
 			Geometry::ptr m_geometry;

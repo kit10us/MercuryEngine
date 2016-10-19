@@ -9,7 +9,7 @@ using namespace dxi;
 using namespace animation;
 
 SpriteManager::SpriteManager( dxi::core::IGame * game )
-	: GameDependant( game )
+	: m_game( game )
 {
 }
 
@@ -17,9 +17,19 @@ SpriteManager::~SpriteManager()
 {
 }
 
+core::IGame * SpriteManager::GetGame()
+{
+	return m_game;
+}
+
+const core::IGame * SpriteManager::GetGame() const
+{
+	return m_game;
+}
+
 void SpriteManager::LoadFromFile( const unify::Path & filePath )
 {
-	auto textureManager = ((core::Game*)Game())->GetManager< Texture >();
+	auto textureManager = ((core::Game*)GetGame())->GetManager< Texture >();
 
 	bool defaultLoop = true;
 	qxml::Document doc( filePath );

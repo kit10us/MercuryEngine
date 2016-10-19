@@ -204,8 +204,10 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 		}
 	}
 
+	// TODO: This is clearly a hack. Fix this.
 	if( m_gameModule )
 	{
+		m_gameModule->OnInit();
 		m_gameModule->OnStart();
 	}
 
@@ -249,14 +251,6 @@ void Game::Tick()
 	{
 		m_gameModule->OnUpdate();
 	}
-
-	// TODO:
-	/*
-	if( GetInput().KeyPressed( Key::Escape ) )
-	{
-		RequestQuit();
-	}
-	*/
 
 	m_sceneManager->Update( m_renderInfo );
 
@@ -302,9 +296,9 @@ scene::SceneManager::shared_ptr Game::GetSceneManager()
 	return m_sceneManager;
 }
 
-scene::Scene::shared_ptr Game::FindScene( const std::string & id )
+scene::Scene::ptr Game::FindScene( const std::string & id )
 {
-	return GetSceneManager() ? GetSceneManager()->Find( id ) : scene::Scene::shared_ptr();
+	return GetSceneManager() ? GetSceneManager()->Find( id ) : scene::Scene::ptr();
 }
 
 template<>
@@ -386,6 +380,7 @@ void Game::Log( std::string text )
 
 	ofstream out( m_logFile.ToString(), ios_base::out | ios_base::app  );
 	out << text;
+	OutputDebugStringA( text.c_str() );
 }
 
 void Game::LogLine( std::string line )
@@ -415,3 +410,54 @@ bool Game::HadCriticalError() const
 {
 	return m_criticalErrors.size() != 0;
 }
+
+int Game::ComponentCount() const
+{
+	return (int)m_components.size();
+}
+
+void Game::AddComponent( IGameComponent::ptr component )
+{
+	component->OnAttach( this );
+	m_components.push_back( component );
+}
+
+void Game::RemoveComponent( IGameComponent::ptr component )
+{
+	m_components.remove( component );
+	component->OnDetach( this );
+}
+
+IGameComponent::ptr Game::GetComponent( int index )
+{
+	if ( index > (int)m_components.size() ) return IGameComponent::ptr();
+
+	int i = 0;
+	for ( auto component : m_components )
+	{
+		if ( index == i ) return component;
+		++i;
+	}
+
+	assert( 0 );
+	return IGameComponent::ptr(); // Should never hit here.
+}
+
+IGameComponent::ptr Game::GetComponent( std::string name, int startIndex )
+{
+	int index = FindComponent( name, startIndex );
+	if ( index == -1 ) return IGameComponent::ptr();
+	return GetComponent( index );
+}
+
+int Game::FindComponent( std::string name, int startIndex ) const
+{
+	int i = 0;
+	for ( auto component : m_components )
+	{
+		if ( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		++i;
+	}
+	return -1;
+}
+

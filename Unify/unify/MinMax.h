@@ -32,6 +32,9 @@ namespace unify
 		MinMax & operator=( const MinMax & minMax );
 		bool operator==( const MinMax & minMax ) const;
 		bool operator!=( const MinMax & minMax ) const;
+
+		void operator+=( const T value );
+
 	private:
 		bool m_isSet;
 		T m_min, m_max;

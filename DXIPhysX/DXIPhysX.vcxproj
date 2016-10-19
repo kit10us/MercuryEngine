@@ -73,7 +73,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\DXI\tests_data\</OutDir>
     <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -82,7 +82,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\DXI\tests_data\</OutDir>
     <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -94,12 +94,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_WINDOWS;_USRDLL;DXIPHYSX_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/PhysXSDK/PhysXSDK/Lib/vc14win32;./</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/PhysXSDK/PhysXSDK/Include;./</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;../../packages/PhysXSDK/PhysXSDK/Lib/vc14win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy ..\..\packages\PhysXSDK\PhysXSDK\Bin\vc14win32 $(OutDir)
+
+)
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -123,13 +130,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_WINDOWS;_USRDLL;DXIPHYSX_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/PhysXSDK/PhysXSDK/Lib/vc14win32;./</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/PhysXSDK/PhysXSDK/Include;./</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;../../packages/PhysXSDK/PhysXSDK/Lib/vc14win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,9 +160,26 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DXIPhysX.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\BoxCollider.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\CapsuleCollider.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\ColliderBase.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\RigidBody.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\SphereCollider.cpp" />
+    <ClCompile Include="dxiphysx\SceneComponent.cpp" />
+    <ClCompile Include="dxiphysx\SceneManagerComponent.cpp" />
+    <ClCompile Include="dxiphysx\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXIPhysX.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\BoxCollider.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\CapsuleCollider.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\ColliderBase.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\RigidBody.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\SphereCollider.h" />
+    <ClInclude Include="dxiphysx\Releaser.h" />
+    <ClInclude Include="dxiphysx\SceneComponent.h" />
+    <ClInclude Include="dxiphysx\SceneManagerComponent.h" />
+    <ClInclude Include="dxiphysx\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

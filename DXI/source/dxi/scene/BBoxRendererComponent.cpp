@@ -7,12 +7,12 @@
 using namespace dxi;
 using namespace scene;
 
-BBoxRendererComponent::BBoxRendererComponent( core::IOS * os, Effect::ptr effect )
-	: Component( os, "BBoxRenderer" )
+BBoxRendererComponent::BBoxRendererComponent( core::IOS * os, Effect::ptr effect, unify::Color color )
+	: ObjectComponent( os )
 	, m_pl( os->GetRenderer(0) )
 	, m_effect( effect )
 	, m_padding( 0.1f )
-	, m_color( unify::Color::ColorBlue( 155 ) )
+	, m_color( color )
 {
 	m_pl.AddBufferSet();
 }
@@ -20,6 +20,11 @@ BBoxRendererComponent::BBoxRendererComponent( core::IOS * os, Effect::ptr effect
 BBoxRendererComponent::~BBoxRendererComponent()
 {
 }
+
+std::string BBoxRendererComponent::GetName() const
+{
+	return "BBoxRenderer";
+}	
 
 float BBoxRendererComponent::GetPadding() const
 {
@@ -31,7 +36,7 @@ void BBoxRendererComponent::SetPadding( float padding )
 	m_padding = padding;
 }
 
-void BBoxRendererComponent::OnInit( Object * object )
+void BBoxRendererComponent::OnAttach( Object * object )
 {
 	for ( int i = 0; i < object->ComponentCount(); ++i )
 	{
@@ -43,15 +48,16 @@ void BBoxRendererComponent::OnInit( Object * object )
 	}
 }
 
-void BBoxRendererComponent::OnStart( Object * object )
+void BBoxRendererComponent::OnDetach( Object * object )
+{
+	m_geomertries.clear();
+}
+
+void BBoxRendererComponent::OnUpdate( const RenderInfo & renderInfo )
 {
 }
 
-void BBoxRendererComponent::Update( const RenderInfo & renderInfo )
-{
-}
-
-void BBoxRendererComponent::Render( const RenderInfo & renderInfo )
+void BBoxRendererComponent::OnRender( const RenderInfo & renderInfo )
 {
 	if ( !m_effect || !m_geomertries.size() ) return;
 
@@ -130,12 +136,4 @@ void BBoxRendererComponent::Render( const RenderInfo & renderInfo )
 	bs.GetVertexBuffer().Create( vertexCount, vd, vertices.get() );
 	bs.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );
 	m_pl.Render( myRenderInfo );
-}
-
-void BBoxRendererComponent::OnSuspend()
-{
-}
-
-void BBoxRendererComponent::OnResune()
-{
 }

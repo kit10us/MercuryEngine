@@ -20,8 +20,6 @@ Scene::Scene( dxi::core::IGame * game )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_color( 0, 0, 180, 255 )
-, m_renderPhysics( false )
 , m_hasFocus( false )
 , m_order( 0.0f )
 , m_enabled( true )
@@ -46,21 +44,6 @@ const Object::ptr Scene::GetRoot() const
 	return m_root;
 }
 
-void Scene::SetPhysicsScene( std::shared_ptr< physics::IScene > scene )
-{
-	m_physicsScene = scene;
-}
-
-physics::IScene * Scene::GetPhysicsScene()
-{
-	return m_physicsScene.get();
-}
-
-const physics::IScene * Scene::GetPhysicsScene() const
-{
-	return m_physicsScene.get();
-}
-
 Object::ptr Scene::FindObject( const std::string & name )
 {
 	if ( m_root )
@@ -82,12 +65,24 @@ Object::ptr Scene::FindObject( const std::string & name )
 
 void Scene::OnInit()
 {
-	GetRoot()->OnInit();
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnInit( this );
+		}
+	}
 }
 
 void Scene::OnStart()
 {
-	GetRoot()->OnStart();
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnStart( this );
+		}
+	}
 }
 
 void Scene::Update( const RenderInfo & renderInfo )
@@ -110,171 +105,43 @@ void Scene::Update( const RenderInfo & renderInfo )
 		m_started = true;
 	}
 
-	if ( m_physicsScene )
-    {
-		m_physicsScene->Update( renderInfo );
-	}
+	for( auto && component : m_components )
+	{
+		if ( component->IsEnabled( ) )
+		{
+			component->OnUpdate( this, renderInfo );
+		}
+	}		   
 
 	// Object updating (animation, independant physics)...
 	GetRoot()->Update( renderInfo );
-
-	/*
-	// TODO: Commented out due to changes of object lists into scene nodes.
-	unify::Rect< int > sceneRect( 
-		static_cast< int >( m_viewport.GetTopLeftX() ), static_cast< int >( m_viewport.GetTopLeftY() ), 
-		static_cast< int >( m_viewport.GetWidth() ), static_cast< int >( m_viewport.GetHeight() ) );
-    if ( HasFocus() && input.IsMouseAvailable() && sceneRect.IsIn( input.MouseX(), input.MouseY() ) )
-    {
-        scene::Camera & camera = GetCamera();
-
-        Frustum frustum( camera.GetMatrix() );
-
-        unify::Size< float > resolution = Game()->GetOS()->GetResolution();
-        unify::V2< float > mouseUnit = input.MouseV2< float >();
-        mouseUnit /= unify::V2< float >( resolution.width, resolution.height );
-
-        unify::Ray< float > ray;
-        frustum.CastPoint( mouseUnit, ray );
-
-        if ( m_mouseDrag )
-        {
-            // Detect mouse not down (thus, stopping drag).
-            if ( ! input.MouseDown( 0 ) )
-            {
-                if ( m_objectOver )
-                {
-                    unify::Any onDragStopData( Object::EventData::OnDragStop( m_objectOver.get(), input.MouseV3< float >(), ray ) );
-                    //m_objectOver->GetListenerMap().Fire( "onDragStop", onDragStopData );
-
-                    unify::Any onUpData( Object::EventData::OnUp( m_objectOver.get(), input.MouseV3< float >() ) );
-                    //m_objectOver->GetListenerMap().Fire( "onUp", onUpData );
-                }
-
-                m_mouseDownTime = 0;
-                m_mouseDrag = false;
-            }            
-            
-            if ( ! m_objectOver )
-            {
-                m_mouseDrag = false;
-            }
-            else
-            {
-                unify::Any onDrag( Object::EventData::OnDrag( m_objectOver.get(), input.MouseV3< float >(), ray, false ) );
-                //m_objectOver->GetListenerMap().Fire( "onDrag", onDrag );
-            }
-        }
-        else
-        {
-            // Create a list of objects that were hit...
-            Object::ptr closestObject;
-            float closestObjectDistance = 0.0f;
-            for ( auto object : m_objectList )
-            {
-                if ( ! object->GetGeometry() )
-                {
-                    continue;
-                }
-                unify::BBox< > bbox = object->GetBBox();
-                
-                object->GetFrame().GetMatrix().TransformCoord( bbox.sup );
-                object->GetFrame().GetMatrix().TransformCoord( bbox.inf );
-                
-				unify::V3< float > hitPoint;
-                if ( bbox.RayTest( ray, hitPoint ) )
-                {
-                    float distance = ray.origin.DistanceTo( object->GetFrame().GetPosition() );
-                    if ( object->GetSelectable() && ( ! closestObject || distance < closestObjectDistance ) )
-                    {
-                        closestObjectDistance = distance;
-                        closestObject = object;
-                    }
-                }
-            }
-
-            // If we found a new closest object...
-            if ( closestObject )
-            {
-                // If we have a new object we are over...
-                if ( closestObject != m_objectOver )
-                {
-                    // Unselect previous object, if we had one...
-                    if ( m_objectOver )
-                    {
-                        unify::Any onOverExitData( Object::EventData::OnOverExit( m_objectOver.get(), closestObject.get() ) );
-                        //m_objectOver->GetListenerMap().Fire( "onOverExit", onOverExitData );
-                    }
-                    m_objectOver = closestObject;
-                    unify::Any onOverEnterData( Object::EventData::OnOverEnter( m_objectOver.get(), closestObjectDistance, input ) );
-                    //m_objectOver->GetListenerMap().Fire( "onOverEnter", onOverEnterData );
-                }
-                else
-                {
-                    if ( m_objectOver )
-                    {
-                        // We are over same object, allow more events...
-                        if ( input.MouseDown( 0 ) )
-                        {
-                            if ( m_mouseDownTime )
-                            {
-                                m_mouseDownTime += renderInfo.GetDelta();
-                                if ( m_mouseDownTime >= m_mouseDownTimeLimit )
-                                {
-                                    m_mouseDrag = true;
-                                    m_mouseDownTime = 0.0f;
-                                    
-                                    // We are past our down time limit, so we are no longer "over" the object, we are "drag".
-                                    unify::Any onOverExitData( Object::EventData::OnOverExit( m_objectOver.get(), m_objectOver.get() ) );
-                                    //m_objectOver->GetListenerMap().Fire( "onOverExit", onOverExitData );
-                                    
-                                    // Initial calls
-                                    unify::Any onDrag( Object::EventData::OnDrag( m_objectOver.get(), input.MouseV3< float >(), ray, true ) );
-                                    //m_objectOver->GetListenerMap().Fire( "onDrag", onDrag );
-                                }
-                            }
-                            else
-                            {
-                                unify::Any onDownData( Object::EventData::OnDown( m_objectOver.get(), input.MouseV3< float >() ) );
-                                //m_objectOver->GetListenerMap().Fire( "onDown", onDownData );
-                                m_mouseDownTime += renderInfo.GetDelta();
-                            }
-                        }
-                        else if ( ! input.MouseDown( 0 ) )
-                        {
-                            unify::Any onUpData( Object::EventData::OnUp( m_objectOver.get(), input.MouseV3< float >() ) );
-                            //m_objectOver->GetListenerMap().Fire( "onUp", onUpData );
-                            m_mouseDownTime = 0;
-                            m_mouseDrag = false;
-                        }
-                    }
-                }
-            }
-
-            // No new closest object, so no object selected either...
-            else
-            {
-                // If we have no object to be over, but we had one...
-                if ( m_objectOver )
-                {
-                    unify::Any eventData( Object::EventData::OnOverExit( m_objectOver.get(), closestObject.get() ) );
-                    //m_objectOver->GetListenerMap().Fire( "onOverExit", eventData );
-                    m_objectOver.reset();
-                }
-            }
-        }
-    }
-	*/
 }
 
 void Scene::Suspend()
 {
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnSuspend();
+		}
+	}	
+
 	GetRoot()->OnSuspend();
 }
 
 void Scene::Resume()
 {
 	GetRoot()->OnResume();
-}						
+
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnResume();
+		}
+	}
+}
 
 RenderInfo & Scene::GetRenderInfo()
 {
@@ -291,7 +158,7 @@ struct FinalCamera
 {
 	Object::ptr object;
 	unify::Matrix transform;
-	Camera * camera;
+	CameraComponent * camera;
 };							  
 
 void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, unify::Matrix parentTransform )
@@ -304,16 +171,16 @@ void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera >
 	transform *= parentTransform;
 
 	// Check for a camera...
-	scene::Camera * camera{};
+	scene::CameraComponent * camera{};
 	for( int i = 0; i < current->ComponentCount(); ++i )
 	{
-		IComponent::ptr component = current->GetComponent( i );
+		IObjectComponent::ptr component = current->GetComponent( i );
 		if( !component->IsEnabled() ) continue;
 
-		camera = dynamic_cast< scene::Camera * >( component.get() );
+		camera = dynamic_cast< scene::CameraComponent * >( component.get() );
 		if( camera != nullptr )
 		{
-			cameraList.push_back( { current, transform, camera } );
+			cameraList.push_back( FinalCamera{ current, transform, camera } );
 		}
 	}
 
@@ -338,6 +205,14 @@ void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera >
 
 void Scene::Render( size_t index, const Viewport & viewport )
 {	
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnRender( this, m_renderInfo );
+		}
+	}
+
 	std::list< FinalObject > renderList;
 	std::list< FinalCamera > cameraList;
 	
@@ -362,11 +237,6 @@ void Scene::Render( size_t index, const Viewport & viewport )
  			renderInfo.SetWorldMatrix( object.transform );
 			object.object->RenderSimple( renderInfo );
 		}
-	}
-
-	if( m_renderPhysics && m_physicsScene )
-	{
-		m_physicsScene->Render();
 	}
 
 	m_renderInfo.IncrementFrameID();
@@ -429,11 +299,6 @@ void Scene::SetZ( const unify::MinMax< float > & z )
 	m_viewport.SetMaxDepth( z.Max() );
 }
 
-void Scene::SetColor( const unify::Color & color )
-{
-	m_color = color;
-}
-
 void Scene::SetOrder( float order )
 {
     m_order = order;
@@ -469,16 +334,6 @@ bool Scene::CantLoseFocus() const
     return m_mouseDrag;
 }
 
-void Scene::SetRenderPhysics( bool renderPhysics )
-{
-	m_renderPhysics = renderPhysics;
-}
-
-bool Scene::GetRenderPhysics() const
-{
-	return m_renderPhysics;
-}
-
 Object::ptr Scene::GetObjectOver() const
 {
     return m_objectOver;
@@ -487,4 +342,55 @@ Object::ptr Scene::GetObjectOver() const
 void Scene::SetObjectOver( Object::ptr objectOver )
 {
     m_objectOver = objectOver;
+}																
+
+int Scene::ComponentCount() const
+{
+	return (int)m_components.size();
 }
+
+void Scene::AddComponent( ISceneComponent::ptr component )
+{
+	component->OnAttach( this );
+	m_components.push_back( component );
+}
+
+void Scene::RemoveComponent( ISceneComponent::ptr component )
+{
+	m_components.remove( component );
+	component->OnDetach( this );
+}
+
+ISceneComponent::ptr Scene::GetComponent( int index )
+{
+	if ( index > (int)m_components.size() ) return ISceneComponent::ptr();
+
+	int i = 0;
+	for ( auto component : m_components )
+	{
+		if ( index == i ) return component;
+		++i;
+	}
+
+	assert( 0 );
+	return ISceneComponent::ptr(); // Should never hit here.
+}
+
+ISceneComponent::ptr Scene::GetComponent( std::string name, int startIndex )
+{
+	int index = FindComponent( name, startIndex );
+	if ( index == -1 ) return ISceneComponent::ptr();
+	return GetComponent( index );
+}
+
+int Scene::FindComponent( std::string name, int startIndex ) const
+{
+	int i = 0;
+	for ( auto component : m_components )
+	{
+		if ( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		++i;
+	}
+	return -1;
+}
+

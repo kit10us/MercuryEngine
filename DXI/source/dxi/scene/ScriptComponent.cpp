@@ -7,12 +7,17 @@ using namespace dxi;
 using namespace scene;
 
 ScriptComponent::ScriptComponent( core::IOS * os )
-: Component( os, "Script" )
+: ObjectComponent( os )
 {
 }
 
 ScriptComponent::~ScriptComponent()
 {
+}
+
+std::string ScriptComponent::GetName() const
+{
+	return "Script";
 }
 
 void ScriptComponent::SetModule( scripting::IModule::ptr module )
@@ -35,12 +40,12 @@ void ScriptComponent::OnStart( Object * object )
 	m_module->OnStart();
 }
 
-void ScriptComponent::Update( const RenderInfo & renderInfo )
+void ScriptComponent::OnUpdate( const RenderInfo & renderInfo )
 {
 	m_module->OnUpdate();
 }
 
-void ScriptComponent::Render( const RenderInfo & renderInfo )
+void ScriptComponent::OnRender( const RenderInfo & renderInfo )
 {
 }
 
@@ -48,6 +53,6 @@ void ScriptComponent::OnSuspend()
 {
 }
 
-void ScriptComponent::OnResune()
+void ScriptComponent::OnResume()
 {
 }

@@ -1,6 +1,7 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
+#include <dxilua/Util.h>
 #include <dxilua/Module.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/CreateState.h>
@@ -8,158 +9,122 @@
 using namespace dxilua;
 using namespace dxi;
 
-Module::Module( lua_State * state, dxi::core::Game * game )
-	: m_state( state )
+Module::Module( dxi::scene::Object::ptr object, lua_State * state, dxi::core::Game * game, std::string name, unify::Path path )
+	: m_object( object )
+	, m_state( state )
 	, m_game( game )
+	, m_name( name )
+	, m_path( path )
 {
 }
 
 Module::~Module()
 {
-	lua_close( m_state );
 	m_state = 0;
 }
 
-void Module::BindToObject( scene::Object::ptr object )
+void Module::CallMember( std::string function )
 {
-	m_object = object;
+	// Get our _ENV...
+	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() ) )
+	{
+		m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Module not found! (" + m_name + ")" );
+		assert( 0 ); // TODO:
+	}
+
+	int r2 = lua_getfield( m_state, -1, function.c_str() );
+
+	if ( r2 != 0 )
+	{
+		if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
+		{
+			std::string error = lua_tostring( m_state, -1 );
+			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script " + function + ": " + error );
+			assert( 0 ); // TODO:
+		}
+	}
+	else
+	{
+		lua_pop( m_state, 1 );
+	}
+
+	// Pop our _ENV.
+	lua_pop( m_state, 1 );
 }
 
 void Module::OnInit()
 {
-	int i = lua_getglobal( m_state, "OnInit" );
-	if ( i != 0 )
+	// Setup the script...	
+	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
+	if ( result == LUA_ERRSYNTAX )
 	{
-		if ( m_object )
-		{
-			PushObject( m_state, m_object );
-		}
-		else
-		{
-			lua_pushnil( m_state );
-		}
+		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
+		assert( 0 );
+	}
+	else if ( result != LUA_OK )
+	{
+		assert( 0 );
+	}
 
-		if ( lua_pcall( m_state, 1, 0, 0 ) != 0 )
-		{
-			std::string error = lua_tostring( m_state, 1 );
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnInit: " + error );
-			assert( 0 ); // TODO:
-		}
+	// Create table for modules _ENV table.
+	lua_newtable( m_state );
+
+	// Add member variables.
+	lua_pushstring( m_state, m_name.c_str() );
+	lua_setfield( m_state, -2, "_name" );
+
+	if ( m_object )
+	{
+		PushObject( m_state, m_object );
 	}
 	else
 	{
-		lua_pop( m_state, 1 );
+		lua_pushnil( m_state );
 	}
+	lua_setfield( m_state, -2, "_object" );
+
+	// Create new metatable for __index to be _G (so missed functions, non-member functions, look in _G).
+	lua_newtable( m_state );
+	lua_getglobal( m_state, "_G" );
+	lua_setfield( m_state, -2, "__index" );
+	lua_setmetatable( m_state, -2 ); // Set global as the metatable
+
+	// Push to registery with a unique name.
+	lua_setfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() );
+
+	// Retrieve registry.
+	int i = lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() );
+
+	// Set the upvalue (_ENV)
+	const char * uv = lua_setupvalue( m_state, -2, 1 );
+
+	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
+	if ( result != LUA_OK )
+	{
+		std::string error = lua_tostring( m_state, -1 );
+		m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
+		assert( 0 ); // TODO:
+	}
+
+	CallMember( "OnInit" );
 }
 
 void Module::OnStart()
 {
-	int i = lua_getglobal( m_state, "OnStart" );
-	if( i != 0 )
-	{
-		if ( m_object )
-		{
-			PushObject( m_state, m_object );
-		}
-		else
-		{
-			lua_pushnil( m_state );
-		}
-
-		if( lua_pcall( m_state, 1, 0, 0 ) != 0 )
-		{
-			std::string error = lua_tostring( m_state, 1 );									    
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnStart: " + error  );
-			assert( 0 ); // TODO:
-		}
-	}
-	else
-	{
-		lua_pop( m_state, 1 );
-	}
+	CallMember( "OnStart" );
 }
 
 void Module::OnUpdate()
 {
-	int i = lua_getglobal( m_state, "OnUpdate" );
-	if( i != 0 )
-	{
-		int a = lua_gettop( m_state );
-		if( m_object )
-		{
-			PushObject( m_state, m_object );
-		}
-		else
-		{
-			lua_pushnil( m_state );
-		}
-
-		if( lua_pcall( m_state, 1, 0, 0 ) != 0 )
-		{
-			std::string error = lua_tostring( m_state, 1 );
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnUpdate: " + error );
-			assert( 0 ); // TODO:
-		}
-		int b = lua_gettop( m_state );
-		int c = b - a;
-	}																									
-	else
-	{
-		lua_pop( m_state, 1 );
-	}
+	CallMember( "OnUpdate" );
 }
 
 void Module::OnSuspend()
 {
-	int i = lua_getglobal( m_state, "OnSuspend" );
-	if( i != 0 )
-	{
-		if( m_object )
-		{
-			PushObject( m_state, m_object );
-		}
-		else
-		{
-			lua_pushnil( m_state );
-		}
-
-		if( lua_pcall( m_state, 1, 0, 0 ) != 0 )
-		{
-			std::string error = lua_tostring( m_state, 1 );
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnSuspend: " + error );
-			assert( 0 ); // TODO:
-		}
-	}
-	else
-	{
-		lua_pop( m_state, 1 );
-	}
+	CallMember( "OnSuspend" );
 }
 
 void Module::OnResume()
 {
-	int i = lua_getglobal( m_state, "OnResume" );
-
-	if( i != 0 )
-	{
-		if( m_object )
-		{
-			PushObject( m_state, m_object );
-		}
-		else
-		{
-			lua_pushnil( m_state );
-		}
-
-		if( lua_pcall( m_state, 1, 0, 0 ) != 0 )
-		{
-			std::string error = lua_tostring( m_state, 1 );
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script OnResume: " + error );
-			assert( 0 ); // TODO:
-		}
-	}
-	else
-	{
-		lua_pop( m_state, 1 );
-	}
+	CallMember( "OnResume" );
 }

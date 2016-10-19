@@ -28,15 +28,6 @@
     <ClCompile Include="source\dxi\PixelShader.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\pi\PhysicsEnvironment.cpp">
-      <Filter>dxi\pi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\pi\PhysicsInstance.cpp">
-      <Filter>dxi\pi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\pi\PhysicsScene.cpp">
-      <Filter>dxi\pi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\PrimitiveList.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -88,20 +79,11 @@
     <ClCompile Include="source\dxi\font\CharacterRender.cpp">
       <Filter>dxi\font</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\controllers\ControllerFactory.cpp">
-      <Filter>dxi\controllers</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\DataBuffer.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\Effect.cpp">
       <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\pi\EnvironmentBox.cpp">
-      <Filter>dxi\pi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\pi\EnvironmentConstant.cpp">
-      <Filter>dxi\pi</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\font\Font.cpp">
       <Filter>dxi\font</Filter>
@@ -144,9 +126,6 @@
     </ClCompile>
     <ClInclude Include="source\dxi\animation\SpriteManager.h">
       <Filter>dxi\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\controllers\PathController.h">
-      <Filter>dxi\controllers</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\core\IOS.h">
       <Filter>dxi\core</Filter>
@@ -193,20 +172,8 @@
     <ClInclude Include="source\dxi\pathing\position\RotateAbout.h">
       <Filter>dxi\pathing\position</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\physics\IObjectSyncer.h">
-      <Filter>dxi\physics</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\PixelShader.h">
       <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\pi\PhysicsEnvironment.h">
-      <Filter>dxi\pi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\pi\PhysicsInstance.h">
-      <Filter>dxi\pi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\pi\PhysicsScene.h">
-      <Filter>dxi\pi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\PlacementEntry.h">
       <Filter>dxi</Filter>
@@ -271,9 +238,6 @@
     <ClInclude Include="source\dxi\font\CharacterRender.h">
       <Filter>dxi\font</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\controllers\ControllerFactory.h">
-      <Filter>dxi\controllers</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\DataBuffer.h">
       <Filter>dxi</Filter>
     </ClInclude>
@@ -285,12 +249,6 @@
     </ClInclude>
     <ClInclude Include="source\dxi\Effect.h">
       <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\pi\EnvironmentBox.h">
-      <Filter>dxi\pi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\pi\EnvironmentConstant.h">
-      <Filter>dxi\pi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\exception\FailedToCreate.h">
       <Filter>dxi\exception</Filter>
@@ -331,17 +289,11 @@
     <ClInclude Include="source\dxi\animation\Sequence.h">
       <Filter>dxi\animation</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\controllers\IController.h">
-      <Filter>dxi\controllers</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\IndexLock.h">
       <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\IndexBuffer.h">
       <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\physics\IInstance.h">
-      <Filter>dxi\physics</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\GeometryInstanceData.h">
       <Filter>dxi</Filter>
@@ -349,18 +301,9 @@
     <ClInclude Include="source\dxi\animation\Instance.h">
       <Filter>dxi\animation</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\physics\IScene.h">
-      <Filter>dxi\physics</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\Frustum.h">
       <Filter>dxi</Filter>
     </ClInclude>
-    <ClCompile Include="source\dxi\events\ListenerContainer.cpp">
-      <Filter>dxi\events</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\events\ListenerMap.cpp">
-      <Filter>dxi\events</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\utils\SafeRelease.cpp">
       <Filter>dxi\utils</Filter>
     </ClCompile>
@@ -445,9 +388,6 @@
     <ClCompile Include="source\dxi\scene\SceneManager.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\scene\Camera.cpp">
-      <Filter>dxi\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\Viewport.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -475,17 +415,11 @@
     <ClCompile Include="source\dxi\factory\VertexShaderFactory.cpp">
       <Filter>dxi\factory</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\core\GameDependant.cpp">
-      <Filter>dxi\core</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\core\Extension.cpp">
       <Filter>dxi\core</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\core\Display.cpp">
       <Filter>dxi\core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\scene\Component.cpp">
-      <Filter>dxi\scene</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\scene\GeometryComponent.cpp">
       <Filter>dxi\scene</Filter>
@@ -501,6 +435,18 @@
     </ClCompile>
     <ClCompile Include="source\dxi\VertexElement.cpp">
       <Filter>dxi</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\SceneComponent.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\AutoBBoxSceneComponent.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\CameraComponent.cpp">
+      <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\scene\ObjectComponent.cpp">
+      <Filter>dxi\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -539,23 +485,11 @@
     <Filter Include="dxi\core">
       <UniqueIdentifier>{4aebe0b8-19c6-4b04-abec-a08715641309}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dxi\controllers">
-      <UniqueIdentifier>{13f45424-afbd-44e5-89bb-849afe7cb8d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dxi\exception">
       <UniqueIdentifier>{f8a3a623-294e-4fca-adf9-a8d71ce5fe5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dxi\pi">
-      <UniqueIdentifier>{ed590cb0-b8b3-4b59-b077-3ba6c0d81b06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dxi\frameanimation">
       <UniqueIdentifier>{02f9d20d-b0fa-459f-bcfd-de98e9707e91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dxi\physics">
-      <UniqueIdentifier>{6c15dad2-8dfe-4fb9-8de9-530a2384f352}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dxi\events">
-      <UniqueIdentifier>{6f4dac3d-2f3d-44a5-a82d-c4524d044af5}</UniqueIdentifier>
     </Filter>
     <Filter Include="dxi\utils">
       <UniqueIdentifier>{aa01f114-9e13-4351-8843-d7fa24e613af}</UniqueIdentifier>
@@ -580,15 +514,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\dxi\events\ListenerMap.h">
-      <Filter>dxi\events</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\events\Listener.h">
-      <Filter>dxi\events</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\events\ListenerContainer.h">
-      <Filter>dxi\events</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\utils\SafeRelease.h">
       <Filter>dxi\utils</Filter>
     </ClInclude>
@@ -682,9 +607,6 @@
     <ClInclude Include="source\dxi\scene\SceneManager.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\scene\Camera.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\Viewport.h">
       <Filter>dxi</Filter>
     </ClInclude>
@@ -715,20 +637,11 @@
     <ClInclude Include="source\dxi\scripting\IScriptEngine.h">
       <Filter>dxi\scipting</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\core\GameDependant.h">
-      <Filter>dxi\core</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\core\Extension.h">
       <Filter>dxi\core</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\core\Display.h">
       <Filter>dxi\core</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\scene\IComponent.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\scene\Component.h">
-      <Filter>dxi\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\scripting\IModule.h">
       <Filter>dxi\scipting</Filter>
@@ -753,6 +666,30 @@
     </ClInclude>
     <ClInclude Include="source\dxi\VertexElement.h">
       <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\ISceneComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\SceneComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\AutoBBoxSceneComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\ISceneManagerComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\core\IGameComponent.h">
+      <Filter>dxi\core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\CameraComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\IObjectComponent.h">
+      <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\scene\ObjectComponent.h">
+      <Filter>dxi\scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,10 +12,16 @@
 #include <dxi/scene/ScriptComponent.h>
 #include <dxilua/ExportGeometry.h>
 
+#include <dxilua/Matrix.h>
+#include <dxilua/Color.h>
+#include <dxilua/Size2.h>
+#include <dxilua/Size3.h>
+#include <dxilua/V2.h>
+#include <dxilua/V3.h>
+
+
 using namespace dxilua;
 using namespace dxi;
-
-static size_t g_objectCount = 0;
 
 int PushObject( lua_State * state, dxi::scene::Object::ptr object )
 {
@@ -23,7 +29,6 @@ int PushObject( lua_State * state, dxi::scene::Object::ptr object )
 	*childProxy = new ObjectProxy;
 	luaL_setmetatable( state, "Object" );
 	(*childProxy)->object = object;
-	g_objectCount++;
 	return 1;
 }
 
@@ -65,8 +70,8 @@ int Object_AddCamera( lua_State * state )
 	auto game = ScriptEngine::GetGame();
 
 	dxi::scene::Object::ptr child = objectProxy->object->AddChild( name );
-	dxi::scene::Camera * cameraComponent = new scene::Camera( game->GetOS() );
-	child->AddComponent( scene::IComponent::ptr( cameraComponent ) );
+	dxi::scene::CameraComponent * cameraComponent = new scene::CameraComponent( game->GetOS() );
+	child->AddComponent( scene::IObjectComponent::ptr( cameraComponent ) );
 
 	cameraComponent->SetProjection( mat );
 
@@ -99,7 +104,7 @@ int Object_AddScript( lua_State * state )
 
 	component->SetModule( module );
 
-	objectProxy->object->AddComponent( scene::IComponent::ptr( component ) );
+	objectProxy->object->AddComponent( scene::IObjectComponent::ptr( component ) );
 
 	return 0;
 }
@@ -218,6 +223,32 @@ int Object_Transform( lua_State * state )
 	return 1;
 }
 
+int Object_AddTag( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	std::string tag( lua_tostring( state, 2 ) );
+
+	objectProxy->object->AddTag( tag );
+
+	return 1;
+}
+
+int Object_HasTag( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	std::string tag( lua_tostring( state, 2 ) );
+
+	lua_pushboolean( state, objectProxy->object->HasTag( tag ) ? 1 : 0 );
+
+	return 1;
+}
+
 int Object_GetComponent( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -226,7 +257,7 @@ int Object_GetComponent( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	dxi::scene::IComponent::ptr component = objectProxy->object->GetComponent( name );
+	dxi::scene::IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
 
 	if ( ! component )
 	{
@@ -235,13 +266,14 @@ int Object_GetComponent( lua_State * state )
 	}
 
 	// Camera..
-	dxi::scene::Camera * cameraComponent = dynamic_cast<dxi::scene::Camera *>( component.get() );
-	if ( cameraComponent )
+	dxi::scene::CameraComponent * camera = dynamic_cast<dxi::scene::CameraComponent *>( component.get() );
+	if ( camera )
 	{
 		CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
 		*proxy = new CameraComponentProxy;
 		luaL_setmetatable( state, "CameraComponent" );
-		(*proxy)->camera = cameraComponent; 
+		(*proxy)->camera = camera;
+		(*proxy)->component = component;
 	}
 
 	return 1;
@@ -261,6 +293,8 @@ static const luaL_Reg ObjectFunctions[] =
 	{ "GetSize", Object_GetSize },
 	{ "Transform", Object_Transform },
 	{ "GetComponent", Object_GetComponent },
+	{ "AddTag", Object_AddTag },
+	{ "HasTag", Object_HasTag },
 	{ nullptr, nullptr }
 };
 
@@ -287,7 +321,6 @@ int Object_Destructor( lua_State * state )
 {
 	ObjectProxy * ObjectProxy = CheckObject( state, 1 );
 	delete ObjectProxy;
-	g_objectCount--;
 	return 0;
 }
 

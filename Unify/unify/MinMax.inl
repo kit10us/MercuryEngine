@@ -95,3 +95,9 @@ bool unify::MinMax< T >::operator!=( const MinMax< T > & minMax ) const
 {
 	return !( *this == minMax );
 }
+
+template< typename T >
+void unify::MinMax< T >::operator+=( const T value )
+{
+	Add( value );
+}

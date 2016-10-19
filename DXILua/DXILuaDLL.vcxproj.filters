@@ -84,6 +84,9 @@
     <ClInclude Include="dxilua\unify\ExportMatrix.h">
       <Filter>dxilua\unify</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\Util.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportMatrix.cpp">
       <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\Util.cpp">
+      <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

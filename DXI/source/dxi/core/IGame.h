@@ -10,6 +10,7 @@
 #include <dxi/RenderInfo.h>
 #include <dxi/input/InputManager.h>
 #include <rm/ResourceManagerSimple.h>
+#include <dxi/core/IGameComponent.h>
 
 namespace dxi
 {
@@ -98,6 +99,14 @@ namespace dxi
 			virtual void ReportError( ErrorLevel level, std::string source, std::string error ) = 0;
 
 			virtual bool HadCriticalError() const = 0;
+
+			virtual int ComponentCount() const = 0;
+			virtual void AddComponent( IGameComponent::ptr component ) = 0;
+			virtual void RemoveComponent( IGameComponent::ptr component ) = 0;
+			virtual IGameComponent::ptr GetComponent( int index ) = 0;
+			virtual IGameComponent::ptr GetComponent( std::string name, int startIndex ) = 0 ;
+			virtual int FindComponent( std::string name, int startIndex ) const = 0;		
+
 		};
 	}
 }

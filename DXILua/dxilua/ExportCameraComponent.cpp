@@ -2,8 +2,17 @@
 // All Rights Reserved
 
 #include <dxilua/ExportCameraComponent.h>
+#include <dxilua/ExportObject.h>
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/DXILua.h>
+
+#include <dxilua/Matrix.h>
+#include <dxilua/Color.h>
+#include <dxilua/Size2.h>
+#include <dxilua/Size3.h>
+#include <dxilua/V2.h>
+#include <dxilua/V3.h>
+
 
 using namespace dxilua;
 using namespace dxi;
@@ -14,16 +23,24 @@ CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 	return ud;
 }
 
-int CameraComponent_SetName( lua_State * state )
+int PushCameraComponent( lua_State * state, dxi::scene::ObjectComponent::ptr component )
+{
+	CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
+	*proxy = new CameraComponentProxy;
+	luaL_setmetatable( state, "CameraComponent" );
+	(*proxy)->component = component;
+	(*proxy)->camera = dynamic_cast<dxi::scene::CameraComponent *>(component.get());
+	return 1;
+}														
+
+int CameraComponent_AttachTo( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	CameraComponentProxy * componentProxy = CheckCameraComponent( state, 1 );
-	std::string name = lua_tostring( state, 2 );
-
-	componentProxy->camera->SetName( name );
-
+	CameraComponentProxy * cameraComponentProxy = CheckCameraComponent( state, 1 );
+	ObjectProxy * objectProxy = CheckObject( state, 2 );
+	objectProxy->object->AddComponent( cameraComponentProxy->component );
 	return 0;
 }
 
@@ -116,22 +133,23 @@ int CameraComponent_IsEnabled( lua_State * state )
 
 static const luaL_Reg CameraComponentFunctions[] =
 {
+	{ "AttachTo", CameraComponent_AttachTo },
 	{ "SetProjection", CameraComponent_SetProjection },
 	{ "GetProjection", CameraComponent_GetProjection },
-	{ "SetName", CameraComponent_SetName },
 	{ "Name", CameraComponent_Name },
 	{ "GetRenderer", CameraComponent_GetRenderer },
 	{ "IsEnabled", CameraComponent_IsEnabled } ,
 	{ "SetEnabled", CameraComponent_SetEnabled },
-	{ "SetName", CameraComponent_SetName },
 	{ "SetRenderer", CameraComponent_SetRenderer },
 	{ nullptr, nullptr }
 };
 
 int CameraComponent_Constructor( lua_State * state )
 {
-	ScriptEngine::GetGame()->ReportError( dxi::ErrorLevel::Failure, "LUA", "No support for creating new cameras directly!" );
-	return 0;
+	auto game = ScriptEngine::GetGame();
+
+	dxi::scene::IObjectComponent::ptr component( new dxi::scene::CameraComponent( game->GetOS( ) ) );
+	return PushCameraComponent( state, component );
 }
 
 int CameraComponent_Destructor( lua_State * state )

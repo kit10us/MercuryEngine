@@ -4,51 +4,16 @@
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/DXILua.h>
 
+#include <dxilua/Matrix.h>
+#include <dxilua/Color.h>
+#include <dxilua/Size2.h>
+#include <dxilua/Size3.h>
+#include <dxilua/V2.h>
+#include <dxilua/V3.h>
+
+
 using namespace dxilua;
 using namespace dxi;
-
-int PushColor( lua_State * state, unify::ColorUnit color )
-{
-	lua_newtable( state ); // Create table.
-
-	lua_pushstring( state, "r" );
-	lua_pushnumber( state, color.r );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "g" );
-	lua_pushnumber( state, color.g );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "b" );
-	lua_pushnumber( state, color.b );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "a" );
-	lua_pushnumber( state, color.a );
-	lua_settable( state, -3 );
-	return 1;
-}
-
-unify::ColorUnit CheckColor( lua_State * state, int index )
-{
-	luaL_checktype( state, index, LUA_TTABLE );
-	
-	lua_getfield( state, index, "r" );
-	float r = (float)luaL_checknumber( state, -1 );
-	
-	lua_getfield( state, index, "g" );
-	float g = (float)luaL_checknumber( state, -1 );
-
-	lua_getfield( state, index, "b" );
-	float b = (float)luaL_checknumber( state, -1 );
-
-	lua_getfield( state, index, "a" );
-	float a = (float)luaL_checknumber( state, -1 );
-
-	lua_pop( state, 4 );
-
-	return unify::ColorUnit::ColorUnitRGBA( r, g, b, a );
-}
 
 int Color_NewRGBA( lua_State * state )
 {

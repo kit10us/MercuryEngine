@@ -19,10 +19,10 @@ namespace dxi
 		{
 		public:
 			Font( core::Game * game );
-			Font( const unify::Path & filePath, animation::SpriteManager::shared_ptr spriteManager );
+			Font( const unify::Path & filePath, animation::SpriteManager::ptr spriteManager );
 			~Font() throw ();
 
-			void CreateFromFile( const unify::Path & filePath, animation::SpriteManager::shared_ptr spriteManager );
+			void CreateFromFile( const unify::Path & filePath, animation::SpriteManager::ptr spriteManager );
 			Character GetCharacter( const CharacterKey & key ) const;
 			unsigned int CharacterCount() const;
 

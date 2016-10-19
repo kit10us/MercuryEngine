@@ -3,10 +3,9 @@
 #pragma once
 
 #include <dxi/core/IGame.h>
+#include <dxi/scene/ISceneComponent.h>
 #include <dxi/scene/Object.h>
-#include <dxi/scene/Camera.h>
-#include <dxi/physics/IScene.h>
-#include <dxi/events/ListenerMap.h>
+#include <dxi/scene/CameraComponent.h>
 #include <dxi/Viewport.h>
 #include <unify/MinMax.h>
 #include <vector>
@@ -27,30 +26,16 @@ namespace dxi
 
     namespace scene
     {
-        class Scene : public events::ListenerMapOwner
+        class Scene
 	    {
 	    public:
-		    typedef std::shared_ptr< Scene > shared_ptr;
-		    typedef std::weak_ptr< Scene > weak_ptr;
-		    typedef std::list< Object::ptr > ObjectList;
-		    typedef std::map< std::string, Object::ptr > ObjectMap;
-
-            struct EventData
-            {
-                typedef std::tuple< Scene * /*new scene*/, Scene * /*prev scene*/ > OnFocus;
-                typedef std::tuple< Scene * /*prev scene*/ > OnFocusLost;
-				typedef std::tuple< Scene *, ObjectList &, const RenderInfo & > OnUpdate;
-            };
+		    typedef std::shared_ptr< Scene > ptr;
 
 		    Scene( core::IGame * game );
 		    virtual ~Scene();
 
 			Object::ptr GetRoot();
 			const Object::ptr GetRoot() const;
-
-		    void SetPhysicsScene( std::shared_ptr< physics::IScene > scene );
-		    physics::IScene * GetPhysicsScene();
-		    const physics::IScene * GetPhysicsScene() const;
 
 			RenderInfo & GetRenderInfo();
 
@@ -80,8 +65,6 @@ namespace dxi
             unify::V2< float > GetPosition() const;
 		    
             void SetZ( const unify::MinMax< float > & z );
-		    
-            void SetColor( const unify::Color & color );
 
             // Order amongst other scenes...
             void SetOrder( float order );
@@ -94,19 +77,25 @@ namespace dxi
             bool HasFocus() const;
             bool CantLoseFocus() const;
 
-		    void SetRenderPhysics( bool renderPhysics );
-		    bool GetRenderPhysics() const;
-    		
             Object::ptr GetObjectOver() const;
             void SetObjectOver( Object::ptr objectOver );
 
+			int ComponentCount() const;
+			void AddComponent( ISceneComponent::ptr component );
+			void RemoveComponent( ISceneComponent::ptr component );
+			ISceneComponent::ptr GetComponent( int index );
+			ISceneComponent::ptr GetComponent( std::string name, int startIndex = 0 );
+			int FindComponent( std::string name, int startIndex = 0 ) const;
+
 	    private:
 			core::IGame * m_game;
+
+			std::list< ISceneComponent::ptr > m_components;
+
 			Object::ptr m_root;
 			bool m_inited;
 			bool m_started;
 
-			std::shared_ptr< physics::IScene > m_physicsScene;
 		    unsigned int m_lastCullCount;
 
 		    // Flags...
@@ -121,9 +110,6 @@ namespace dxi
 
 		    // Viewport...
 			Viewport m_viewport;
-
-		    unify::Color m_color;
-		    bool m_renderPhysics;
 
             bool m_hasFocus;
             float m_order;

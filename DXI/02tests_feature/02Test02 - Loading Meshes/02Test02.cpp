@@ -47,12 +47,12 @@ void MyGame::Startup()
 	borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
 
 	// Add a scene.
-	scene::Scene::shared_ptr scene = GetSceneManager()->Add( "scene" );
+	scene::Scene::ptr scene = GetSceneManager()->Add( "scene" );
 
 	// Add a camera...
 	scene::Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
-	camera->AddComponent( scene::IComponent::ptr( new scene::Camera( GetOS() ) ) );	 
-	scene::Camera * cameraComponent = unify::polymorphic_downcast< scene::Camera * >( camera->GetComponent( "camera" ).get() );
+	camera->AddComponent( scene::IObjectComponent::ptr( new scene::CameraComponent( GetOS() ) ) );	 
+	scene::CameraComponent * cameraComponent = unify::polymorphic_downcast< scene::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
@@ -67,7 +67,7 @@ void MyGame::Startup()
 	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
 	progObject->SetGeometry( meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	progObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
@@ -76,7 +76,7 @@ void MyGame::Startup()
 	xmlObject->SetGeometry( meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	xmlObject->GetGeometryMatrix().Scale( 0.10f );
-	xmlObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	xmlObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
@@ -87,7 +87,7 @@ void MyGame::Startup()
 	aseObject->GetGeometryMatrix().Scale( 0.090f );
 	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-	aseObject->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	aseObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/models/Death Star II/models/Death Star II.dae" ) );
@@ -102,7 +102,7 @@ void MyGame::Startup()
 	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
 	daeModel->SetGeometry( meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	daeModel->AddComponent( scene::IComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	daeModel->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 
 	daeModel->GetGeometryMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );

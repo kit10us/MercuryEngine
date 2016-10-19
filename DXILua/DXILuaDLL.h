@@ -11,5 +11,3 @@
 #endif
 
 #include <dxi/core/Game.h>
-
-extern "C" DXILUADLL_API bool DXILoader( dxi::core::Game * game, const qxml::Document * doc );

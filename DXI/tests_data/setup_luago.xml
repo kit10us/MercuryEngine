@@ -5,6 +5,7 @@
 <extension>DXILua.dll</extension>
 <extension>DAELoader.dll</extension>
 <extension>ASELoader.dll</extension>
+<extension>DXILuaShapeExt.dll</extension>
 <gamemodule type="LUA" source="game.lua"/>
 </setup>
 </xml>

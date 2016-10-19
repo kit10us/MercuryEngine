@@ -17,8 +17,6 @@ namespace dxi
 
 			virtual ~IModule() {}
 
-			virtual void BindToObject( scene::Object::ptr object ) = 0;
-
 			virtual void OnInit() = 0;
 			virtual void OnStart() = 0;
 			virtual void OnUpdate() = 0;

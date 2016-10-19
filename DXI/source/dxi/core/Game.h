@@ -63,7 +63,7 @@ namespace dxi
 
 			virtual scene::SceneManager::shared_ptr GetSceneManager();
 
-			scene::Scene::shared_ptr FindScene( const std::string & id );
+			scene::Scene::ptr FindScene( const std::string & id );
 
 			template< typename T > 
 			rm::ResourceManagerSimple< T > * GetManager();
@@ -92,7 +92,16 @@ namespace dxi
 
 			bool HadCriticalError() const override;
 
+			int ComponentCount() const;
+			void AddComponent( IGameComponent::ptr component );
+			void RemoveComponent( IGameComponent::ptr component );
+			IGameComponent::ptr GetComponent( int index );
+			IGameComponent::ptr GetComponent( std::string name, int startIndex );
+			int FindComponent( std::string name, int startIndex ) const;
+
 		private:
+			std::list< core::IGameComponent::ptr > m_components;
+
 			unify::Path m_setup;
 			unify::Path m_logFile;
 			scripting::IModule::ptr m_gameModule;

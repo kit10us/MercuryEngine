@@ -15,7 +15,7 @@ Font::Font( core::Game * game )
 {
 }
 
-Font::Font( const unify::Path & filePath, animation::SpriteManager::shared_ptr spriteManager )
+Font::Font( const unify::Path & filePath, animation::SpriteManager::ptr spriteManager )
 {
 	CreateFromFile( filePath, spriteManager );
 }
@@ -24,7 +24,7 @@ Font::~Font() throw ()
 {
 }
 
-void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManager::shared_ptr spriteManager )
+void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManager::ptr spriteManager )
 {
 	// Check if the file exists...
 	qxml::Document doc( filePath );

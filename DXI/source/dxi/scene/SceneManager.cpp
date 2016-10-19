@@ -11,7 +11,7 @@ using namespace dxi;
 using namespace scene;
 
 SceneManager::SceneManager( dxi::core::IGame * game )
-: GameDependant( game )
+: m_game( game )
 , m_focusScene( 0 )
 , m_enabled( true )
 {
@@ -20,6 +20,16 @@ SceneManager::SceneManager( dxi::core::IGame * game )
 SceneManager::~SceneManager()
 {
     Destroy();
+}
+
+core::IGame * SceneManager::GetGame()
+{
+	return m_game;
+}
+
+const core::IGame * SceneManager::GetGame() const
+{
+	return m_game;
 }
 
 void SceneManager::Destroy()
@@ -37,17 +47,23 @@ bool SceneManager::GetEnabled() const
 	return m_enabled;
 }
 
-Scene::shared_ptr SceneManager::Add( std::string name )
+Scene::ptr SceneManager::Add( std::string name )
 {
-    Scene::shared_ptr sceneSharedPtr( new Scene( Game() ) );
-	m_scenes[ name ] = sceneSharedPtr;
-    return sceneSharedPtr;
+    Scene::ptr scene( new Scene( GetGame() ) );
+
+	for ( auto & component : m_components )
+	{
+		component->OnNewScene( scene.get() );
+	}
+
+	m_scenes[ name ] = scene;
+    return scene;
 }
 
-Scene::shared_ptr SceneManager::Find( std::string name )
+Scene::ptr SceneManager::Find( std::string name )
 {
-	std::map< std::string, Scene::shared_ptr >::iterator itr = m_scenes.find( name );
-	return itr == m_scenes.end() ? Scene::shared_ptr() : itr->second;
+	std::map< std::string, Scene::ptr >::iterator itr = m_scenes.find( name );
+	return itr == m_scenes.end() ? Scene::ptr() : itr->second;
 }
 
 void SceneManager::Update( const RenderInfo & renderInfo )
@@ -58,7 +74,7 @@ void SceneManager::Update( const RenderInfo & renderInfo )
 	}
 
     std::list< Scene * > sceneList;
-    for( std::map< std::string, Scene::shared_ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
+    for( std::map< std::string, Scene::ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr).second.get();
         if ( scene->GetEnabled() )
@@ -66,59 +82,7 @@ void SceneManager::Update( const RenderInfo & renderInfo )
             sceneList.push_back( scene );
         }
     }
-
-	/*
-	// TODO:
-
-    unify::Any onUpdateEventData( EventData::OnUpdate( this, sceneList, renderInfo, input ) );
-    GetListenerMap().Fire( "onUpdate", onUpdateEventData );
-        
-    if ( ! m_focusScene || m_focusScene->CantLoseFocus() == false )
-    {
-        // Verify or find the focus scene...
-
-        class SortSceneList
-        {
-        public:
-            bool operator()( Scene * a, Scene * b ) const
-            {
-                return a->GetOrder() > b->GetOrder(); // NOTE: reverse order
-            }
-        };
-        sceneList.sort( SortSceneList() );
-
-        // Find first window we are over (in order of top to bottom, so that becomes focus window)...
-        Scene * newFocusScene = 0;
-        for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
-        {
-            Scene * scene = (*itr);
-            unify::Rect< float > sceneRect( scene->GetPosition(), scene->GetSize() );
-			if ( sceneRect.IsIn( input.MouseV2< float >() ) )
-            {
-                newFocusScene = scene;
-                break;
-            }
-        }
-
-        if ( newFocusScene != m_focusScene )
-        {
-            if ( m_focusScene )
-            {
-                m_focusScene->SetFocus( false );
-                m_focusScene->GetListenerMap().Fire( "onFocusLost", unify::Any( scene::Scene::EventData::OnFocusLost( m_focusScene ) ) );
-            }
-
-            if ( newFocusScene )
-            {
-                newFocusScene->SetFocus( true );
-                newFocusScene->GetListenerMap().Fire( "onFocus", unify::Any( scene::Scene::EventData::OnFocus( newFocusScene, m_focusScene ) ) );
-            }
-
-            m_focusScene = newFocusScene;
-        }
-    }
-	*/
-
+ 
     // Update all scenes...
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
@@ -147,7 +111,7 @@ void SceneManager::Render( size_t renderer, const Viewport & viewport )
 
     std::list< Scene * > sceneList;
 
-    for( std::map< std::string, Scene::shared_ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
+    for( std::map< std::string, Scene::ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
 	{
         Scene * scene = (*itr).second.get();
         if ( scene->GetEnabled() )
@@ -163,5 +127,52 @@ void SceneManager::Render( size_t renderer, const Viewport & viewport )
         Scene * scene = (*itr);
         scene->Render( renderer, viewport );
     }
+}
+
+int SceneManager::ComponentCount() const
+{
+	return (int)m_components.size();
+}
+
+void SceneManager::AddComponent( ISceneManagerComponent::ptr component )
+{
+	m_components.push_back( component );
+}
+
+void SceneManager::RemoveComponent( ISceneManagerComponent::ptr component )
+{
+}
+
+ISceneManagerComponent::ptr SceneManager::GetComponent( int index )
+{
+	if ( index > (int)m_components.size() ) return ISceneManagerComponent::ptr();
+
+	int i = 0;
+	for ( auto component : m_components )
+	{
+		if ( index == i ) return component;
+		++i;
+	}
+
+	assert( 0 );
+	return ISceneManagerComponent::ptr(); // Should never hit here.
+}
+
+ISceneManagerComponent::ptr SceneManager::GetComponent( std::string name, int startIndex )
+{
+	int index = FindComponent( name, startIndex );
+	if ( index == -1 ) return ISceneManagerComponent::ptr();
+	return GetComponent( index );
+}
+
+int SceneManager::FindComponent( std::string name, int startIndex ) const
+{
+	int i = 0;
+	for ( auto component : m_components )
+	{
+		if ( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		++i;
+	}
+	return -1;
 }
 

@@ -3,6 +3,7 @@
 
 #include <dxi/scene/Object.h>
 #include <dxi/core/Game.h>
+#include <stack>
 
 using namespace dxi;
 using namespace scene;
@@ -16,18 +17,11 @@ Object::Object( core::IOS * os )
 {
 }
 
-Object::Object( core::IOS * os, Geometry::ptr geometry, std::shared_ptr< physics::IInstance > physics )
-: m_os( os )
-, m_enabled( true )
-{
-	AddComponent( scene::IComponent::ptr( new GeometryComponent( os, geometry ) ) );
-}
-
 Object::Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float > position )
 : m_os( os )
 , m_enabled( true )
 {
-	AddComponent( scene::IComponent::ptr( new GeometryComponent( os, geometry ) ) );
+	AddComponent( scene::IObjectComponent::ptr( new GeometryComponent( os, geometry ) ) );
 	GetFrame().SetPosition( position );
 }
 
@@ -45,14 +39,19 @@ std::string Object::GetName() const
 	return m_name;
 }
 
-std::map< std::string, std::string > & Object::GetTags()
+void Object::AddTag( std::string tag )
 {
-	return m_tags;
+	m_tags.push_back( tag );
+	m_tags.sort();
 }
 
-const std::map< std::string, std::string > & Object::GetTags() const
-{
-	return m_tags;
+bool Object::HasTag( std::string tag ) const
+{	
+	for( auto && item : m_tags )
+	{		  
+		if ( unify::StringIs( item, tag ) ) return true;
+	}
+	return false;
 }
 
 int Object::ComponentCount() const
@@ -60,35 +59,37 @@ int Object::ComponentCount() const
 	return (int)m_components.size();
 }
 
-void Object::AddComponent( IComponent::ptr component )
+void Object::AddComponent( IObjectComponent::ptr component )
 {
-	m_components.push_back( component );
+	component->OnAttach( this );
+	m_components.push_back( ComponentHolder( component ) );
 }
 
-void Object::RemoveComponent( IComponent::ptr component )
+void Object::RemoveComponent( IObjectComponent::ptr component )
 {
 	m_components.remove( component );
+	component->OnDetach( this );
 }
 
-IComponent::ptr Object::GetComponent( int index )
+IObjectComponent::ptr Object::GetComponent( int index )
 {
-	if( index > (int)m_components.size() ) return IComponent::ptr();
+	if( index > (int)m_components.size() ) return IObjectComponent::ptr();
 
 	int i = 0;
 	for( auto component : m_components )
 	{
-		if( index == i ) return component;
+		if( index == i ) return component.c;
 		++i;
 	}
 
 	assert( 0 );
-	return IComponent::ptr(); // Should never hit here.
+	return IObjectComponent::ptr(); // Should never hit here.
 }
 
-IComponent::ptr Object::GetComponent( std::string name, int startIndex )
+IObjectComponent::ptr Object::GetComponent( std::string name, int startIndex )
 {
 	int index = FindComponent( name, startIndex );
-	if( index == -1 ) return IComponent::ptr();
+	if( index == -1 ) return IObjectComponent::ptr();
 	return GetComponent( index );
 }
 	  
@@ -97,7 +98,7 @@ int Object::FindComponent( std::string name, int startIndex ) const
 	int i = 0;
 	for( auto component : m_components )
 	{
-		if( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		if( i >= startIndex && unify::StringIs( component.c->GetName(), name ) ) return i;
 		++i;
 	}		
 	return -1;
@@ -145,66 +146,13 @@ const unify::FrameLite & Object::GetFrame() const
 
 void Object::SetGeometry( Geometry::ptr geometry )
 {
-	AddComponent( scene::IComponent::ptr( new GeometryComponent( m_os, geometry ) ) );
+	AddComponent( scene::IObjectComponent::ptr( new GeometryComponent( m_os, geometry ) ) );
 }
 
 unify::Matrix & Object::GetGeometryMatrix()
 {
-	scene::GeometryComponent * geometry = dynamic_cast< scene::GeometryComponent *>( GetComponent( "Geometry" ).get() );
+	scene::GeometryComponent * geometry = dynamic_cast< scene::GeometryComponent *>( GetComponent( "Geometry", 0 ).get() );
 	return geometry->GetModelMatrix();
-}
-
-controllers::IController::shared_ptr Object::GetController()
-{
-	return m_controller;
-}
-
-void Object::SetController( controllers::IController::shared_ptr controller )
-{
-	m_controller = controller;
-}
-
-void Object::OnInit()
-{
-	for ( auto && component : m_components )
-	{
-		if ( component->IsEnabled() )
-		{
-			component->OnInit( this );
-		}
-	}
-
-	if ( GetFirstChild() )
-	{
-		GetFirstChild()->OnInit();
-	}
-
-	Object::ptr sibling = GetNext();
-	while ( sibling )
-	{
-		sibling->OnInit();
-		sibling = sibling->GetNext();
-	}
-}
-
-void Object::OnStart()
-{
-	for( auto && component : m_components )
-	{
-		component->OnStart( this );
-	}
-
-	if ( GetFirstChild() )
-	{
-		GetFirstChild()->OnStart();		
-	}
-
-	Object::ptr sibling = GetNext();
-	while( sibling )
-	{
-		sibling->OnStart();
-		sibling = sibling->GetNext();
-	}	
 }
 
 void Object::Update( const RenderInfo & renderInfo )
@@ -218,10 +166,24 @@ void Object::Update( const RenderInfo & renderInfo )
 	// Update components...
 	for( auto && component : m_components )
 	{
-		if( component->IsEnabled() )
+		// Regardless of enabled, ensure OnInit is always called.
+		if ( component.initDone == false )
 		{
-			component->Update( renderInfo );
+			component.c->OnInit( this );
+			component.initDone = true;
 		}
+
+		// Only start and update if enabled.
+		if ( !component.c->IsEnabled() ) continue;
+
+		// Start is basically a way to get us into a beginning state.
+		if ( component.startDone == false )
+		{
+			component.c->OnStart( this );
+			component.startDone = true;
+		}
+
+		component.c->OnUpdate( renderInfo );
 	}
 
 	if( GetFirstChild() )
@@ -240,10 +202,10 @@ void Object::RenderSimple( const RenderInfo & renderInfo )
 	// Update components...
 	for( auto && component : m_components )
 	{
-		if ( component->IsEnabled() )
-		{
-			component->Render( renderInfo );
-		}
+		// Don't try rendering if we haven't been properly setup...
+		if ( !component.initDone || !component.startDone || !component.c->IsEnabled() ) continue;
+
+		component.c->OnRender( renderInfo );
 	}
 }
 
@@ -271,9 +233,9 @@ void Object::OnSuspend()
 {
 	for( auto && component : m_components )
 	{
-		if( component->IsEnabled() )
+		if( component.c->IsEnabled() )
 		{
-			component->OnSuspend();
+			component.c->OnSuspend();
 		}
 	}
 
@@ -294,9 +256,9 @@ void Object::OnResume()
 {
 	for( auto && component : m_components )
 	{
-		if( component->IsEnabled() )
+		if( component.c->IsEnabled() )
 		{
-			component->OnResune();
+			component.c->OnResume();
 		}
 	}
 
@@ -399,4 +361,26 @@ Object::ptr Object::FindObject( std::string name )
 
 	// Not found...
 	return Object::ptr();
+}
+
+
+std::list< Object * > Object::AllChildren( bool recursive )
+{
+	std::list< Object * > objects;
+
+	std::stack< Object * > stack;
+	stack.push( this );
+
+	while( ! stack.empty() )
+	{	
+		Object * object = stack.top(); 
+		stack.pop();
+
+		objects.push_back( object );
+		
+		if ( object->GetNext() ) stack.push( object->GetNext().get() );
+		if ( object->GetFirstChild() ) stack.push( object->GetFirstChild().get() );
+	}
+
+	return objects;
 }

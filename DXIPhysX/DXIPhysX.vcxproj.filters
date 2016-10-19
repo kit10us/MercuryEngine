@@ -3,13 +3,67 @@
   <ItemGroup>
     <ClCompile Include="DXIPhysX.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="dxiphysx\SceneComponent.cpp">
+      <Filter>dxiphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\SceneManagerComponent.cpp">
+      <Filter>dxiphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\Util.cpp">
+      <Filter>dxiphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\RigidBody.cpp">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\BoxCollider.cpp">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\SphereCollider.cpp">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\ColliderBase.cpp">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\CapsuleCollider.cpp">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXIPhysX.h" />
+    <ClInclude Include="dxiphysx\SceneComponent.h">
+      <Filter>dxiphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\SceneManagerComponent.h">
+      <Filter>dxiphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\Releaser.h">
+      <Filter>dxiphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\Util.h">
+      <Filter>dxiphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\RigidBody.h">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\BoxCollider.h">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\SphereCollider.h">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\ColliderBase.h">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\CapsuleCollider.h">
+      <Filter>dxiphysx\objectcomponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dxiphysx">
       <UniqueIdentifier>{88641bfe-33ee-43fa-9834-4b8983ef042a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxiphysx\objectcomponent">
+      <UniqueIdentifier>{686e1551-6380-40b8-8ce8-c4e3c0905a7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

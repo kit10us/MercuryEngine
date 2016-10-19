@@ -1,7 +1,7 @@
-function OnStart( me )
+function OnStart()
 end
 
-function OnUpdate( me )
+function OnUpdate()
 	local rotMatrix = Matrix.NewRotationZ( Update.GetDelta() * 2 )
-	me:Transform():PreMul( rotMatrix )
+	_object:Transform():PreMul( rotMatrix )
 end

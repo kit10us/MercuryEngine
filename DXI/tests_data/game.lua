@@ -1,7 +1,7 @@
-local axisIndex = 1
+local axisIndex = 0
 local totalRotation = 0
 
-function OnStart( me )
+function OnStart()
 	local scene1 = Scene( "scene1" )
 	local root = scene1:FindObject( "root" )
 	
@@ -72,7 +72,7 @@ function OnStart( me )
     cone:AddScript( "rotate", "lua", "script/rotatey.lua" )
 end
 
-function OnUpdate( me )
+function OnUpdate()
 	local rotation = Update.GetDelta()
 	
 	totalRotation = totalRotation + rotation

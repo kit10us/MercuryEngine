@@ -2,7 +2,7 @@ local axisIndex = 1
 local totalRotation = 0
 local autoRotate = true
 
-function OnStart( me )
+function OnStart()
 	local scene1 = Scene( "scene1" )
 	local root = scene1:FindObject( "root" )
 	
@@ -73,7 +73,7 @@ function OnStart( me )
 	myring3:AddScript( "rotatey", "lua", "script/rotatey.lua" )
 end
 
-function OnUpdate( me )
+function OnUpdate()
 	local rotation = Update.GetDelta()
 	
 	local keyboard = Input( "Keyboard" )
@@ -234,7 +234,6 @@ function OnUpdate( me )
 			axis.z = -1
 		end
 		
-		camera:Transform():RotateAbout( axis, rotation )
-		
+		camera:Transform():RotateAbout( axis, rotation )		
 	end
 end

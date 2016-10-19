@@ -12,6 +12,14 @@
 #include <dxilua/ExportEffect.h>
 #include <dxi/shapes/ShapeCreators.h>
 
+#include <dxilua/Matrix.h>
+#include <dxilua/Color.h>
+#include <dxilua/Size2.h>
+#include <dxilua/Size3.h>
+#include <dxilua/V2.h>
+#include <dxilua/V3.h>
+
+
 using namespace dxilua;
 using namespace dxi;
 

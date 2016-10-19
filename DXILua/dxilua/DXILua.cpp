@@ -1,11 +1,14 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
+#include <dxilua/Util.h>
 #include <dxilua/DXILua.h>
 #include <dxilua/Module.h>
 #include <dxilua/CreateState.h>
+#include <dxilua/ExportObject.h>
 
 #pragma comment( lib, "lua53" )
+#pragma comment( lib, "DXILuaLib" )
 
 using namespace dxilua;
 using namespace dxi;
@@ -14,89 +17,90 @@ ScriptEngine * ScriptEngine::s_se;
 
 ScriptEngine::ScriptEngine( dxi::core::Game * game )
 	: m_game( game )
-	//, m_state{ CreateState() }
+	, m_state{ CreateState() }
 {
 	s_se = this;
 }
 
 ScriptEngine::~ScriptEngine()
 {
-	/*
 	if ( m_state != 0 )
 	{
 		lua_close( m_state );
 	}
-	*/
 }
 
 
 scripting::ExecuteResult ScriptEngine::ExecuteString( std::string line )
 {
-	/*
 	int result = luaL_loadstring( m_state, line.c_str() );
 	if( result != LUA_OK )
 	{
-		//print_error( state );
 		return scripting::ExecuteResult::Fail;
 	}
 
 	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
 	if( result != LUA_OK )
 	{
-		//print_error( state );
 		return scripting::ExecuteResult::Fail;
 	}
-	*/
 
 	return scripting::ExecuteResult::Pass;
 }
 
 scripting::ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 {
-	/*
 	int result = luaL_loadfile( m_state, path.ToString().c_str() );
 	if( result != LUA_OK )
 	{
-		//print_error( state );
 		return scripting::ExecuteResult::Fail;
 	}
 
 	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
 	if( result != LUA_OK )
 	{
-		//print_error( state );
 		return scripting::ExecuteResult::Fail;
 	}
-	*/
 
 	return scripting::ExecuteResult::Pass;
 }
 
 scripting::IModule::ptr ScriptEngine::LoadModule( unify::Path path, dxi::scene::Object::ptr object )
-{
-	lua_State * state = CreateState();
-	int result = luaL_loadfile( state, path.ToString().c_str() );
-	if ( result == LUA_ERRSYNTAX )
-	{
-		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", luaL_checkstring( state, -1 ) );
-		return scripting::IModule::ptr();
-	}
-	else if( result != LUA_OK )
-	{
-		return scripting::IModule::ptr();
-	}
+{					
+	int top = lua_gettop( m_state );
 
-	scripting::IModule::ptr module( new Module( state, m_game ) );
+	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_modules.size() );
 
-	result = lua_pcall( state, 0, LUA_MULTRET, 0 );
-	if( result != LUA_OK )
-	{
-		return scripting::IModule::ptr();
-	}
+	lua_State * state = m_state;
 
-	module->BindToObject( object );
+	scripting::IModule::ptr module( new Module( object, m_state, m_game, name, path ) );
+	m_modules.push_back( module );
 
 	return module;
+}
+
+lua_State * ScriptEngine::GetState()
+{
+	return m_state;
+}
+												 
+DXILUADLL_API void ScriptEngine::AddLibrary( const char * group, const luaL_Reg * list, int count )
+{
+	luaL_checkversion( m_state );
+	lua_createtable( m_state, 0, 1 );
+	luaL_setfuncs( m_state, list, 0 );
+
+	lua_setglobal( m_state, group );
+}
+
+DXILUADLL_API void ScriptEngine::AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector )
+{
+	lua_register( m_state, name, constructor );
+	luaL_newmetatable( m_state, name );
+	lua_pushcfunction( m_state, collector ); lua_setfield( m_state, -2, "__gc" );
+	lua_pushvalue( m_state, -1 ); lua_setfield( m_state, -2, "__index" );
+	luaL_setfuncs( m_state, functions, 0 );
+	lua_pop( m_state, 1 );
 }
 
 dxi::core::Game * ScriptEngine::GetGame()

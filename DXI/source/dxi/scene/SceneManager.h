@@ -2,44 +2,47 @@
 // All Rights Reserved
 
 #pragma once
-#include <dxi/events/ListenerMap.h>
 #include <dxi/scene/Scene.h>
-#include <dxi/core/GameDependant.h>
+#include <dxi/scene/ISceneManagerComponent.h>
 
 namespace dxi
 {
     namespace scene
     {
-        class SceneManager : public events::ListenerMapOwner, public core::GameDependant
+        class SceneManager
 	    {
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;
 
-            struct EventData
-            {
-				typedef std::tuple< SceneManager *, std::list< Scene * > &, const RenderInfo & > OnUpdate;
-            };
-
 		    SceneManager( core::IGame * game );
 		    virtual ~SceneManager();
+
+			core::IGame * GetGame();
+			const core::IGame * GetGame() const;
 
             void Destroy();
 
 			void SetEnabled( bool enabled );
-			bool GetEnabled() const;
-			
+			bool GetEnabled() const;			
 
-            Scene::shared_ptr Add( std::string name );
-		    Scene::shared_ptr Find( std::string name );
-
-            std::map< std::string, Scene::shared_ptr > & GetScenes();
-            const std::map< std::string, Scene::shared_ptr > & GetScenes() const;
+            Scene::ptr Add( std::string name );
+		    Scene::ptr Find( std::string name );
 
 			void Update( const RenderInfo & renderInfo );
 		    void Render( size_t renderer, const Viewport & viewport );
 
+			int ComponentCount() const;
+			void AddComponent( ISceneManagerComponent::ptr component );
+			void RemoveComponent( ISceneManagerComponent::ptr component );
+			ISceneManagerComponent::ptr GetComponent( int index );
+			ISceneManagerComponent::ptr GetComponent( std::string name, int startIndex = 0 );
+			int FindComponent( std::string name, int startIndex = 0 ) const;
+
 	    private:
-			std::map< std::string, Scene::shared_ptr > m_scenes;
+			core::IGame * m_game;
+			std::list< ISceneManagerComponent::ptr > m_components;
+
+			std::map< std::string, Scene::ptr > m_scenes;
             Scene * m_focusScene;
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;

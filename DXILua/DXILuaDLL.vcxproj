@@ -95,7 +95,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>DIRECTX9;WIN32;_DEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;../DXILuaLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +176,7 @@
     <ClInclude Include="dxilua\unify\ExportSize3.h" />
     <ClInclude Include="dxilua\unify\ExportV2.h" />
     <ClInclude Include="dxilua\unify\ExportV3.h" />
+    <ClInclude Include="dxilua\Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -215,6 +216,7 @@
     <ClCompile Include="dxilua\unify\ExportSize3.cpp" />
     <ClCompile Include="dxilua\unify\ExportV2.cpp" />
     <ClCompile Include="dxilua\unify\ExportV3.cpp" />
+    <ClCompile Include="dxilua\Util.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

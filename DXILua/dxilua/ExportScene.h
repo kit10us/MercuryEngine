@@ -10,7 +10,7 @@ void RegisterScene( lua_State * state );
 
 struct SceneProxy
 {
-	dxi::scene::Scene::shared_ptr scene;
+	dxi::scene::Scene::ptr scene;
 };
 
 SceneProxy* CheckScene( lua_State* state, int index );

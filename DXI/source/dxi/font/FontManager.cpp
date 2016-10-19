@@ -7,7 +7,7 @@
 using namespace dxi;
 using namespace font;
 
-FontManager::FontManager( animation::SpriteManager::shared_ptr spriteManager )
+FontManager::FontManager( animation::SpriteManager::ptr spriteManager )
 : m_spriteManager( spriteManager )
 {
 }
@@ -18,7 +18,7 @@ FontManager::~FontManager() throw ()
 
 void FontManager::LoadFromFile( const FontName & name, const unify::Path & filePath )
 {
-	m_fonts[ name ] = std::shared_ptr< Font >( new Font( filePath, m_spriteManager.lock() ) ); 
+	m_fonts[ name ] = std::shared_ptr< Font >( new Font( filePath, m_spriteManager ) ); 
 }
 
 void FontManager::AddFont( const FontName & name, std::shared_ptr< Font > font )
