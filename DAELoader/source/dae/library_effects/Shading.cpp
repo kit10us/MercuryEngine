@@ -23,7 +23,7 @@ Shading::Property::Property( const qxml::Element * node )
 	else if ( node->HasElements( "color" ) )
 	{
 		m_type = ColorType;
-		m_color = unify::ColorUnit( node->GetElement( "color" )->GetText(), unify::ColorUnit::BGRA );
+		m_color = unify::ColorUnit( node->GetElement( "color" )->GetText(), unify::ColorUnit::RGBA );
 	}
 	else if ( node->HasElements( "texture" ) )
 	{

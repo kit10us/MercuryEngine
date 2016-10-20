@@ -4,12 +4,12 @@
 #include <dxilua/DXILua.h>
 #include "luaphysx/ExportPxMaterial.h"
 
-#include <dxilua/Matrix.h>
-#include <dxilua/Color.h>
-#include <dxilua/Size2.h>
-#include <dxilua/Size3.h>
-#include <dxilua/V2.h>
-#include <dxilua/V3.h>
+#include <dxilua/unify/ExportMatrix.h>
+#include <dxilua/unify/ExportColor.h>
+#include <dxilua/unify/ExportSize2.h>
+#include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
 
 #include <PxPhysicsAPI.h>
 
@@ -17,6 +17,7 @@ using namespace dxilua;
 using namespace dxi;
 
 static dxilua::ScriptEngine * g_luaSE;
+static dxi::core::Game * g_game;
 
 int PushPxMaterial( lua_State * state, std::shared_ptr< physx::PxMaterial > material )
 {
@@ -78,9 +79,10 @@ int PxMaterial_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxMaterial( dxilua::ScriptEngine * luaSE )
+void RegisterPxMaterial( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
 {
 	g_luaSE = luaSE;
+	g_game = game;
 
 	luaSE->AddLibrary( "PxMaterial", PxMaterialFunctions, 1 );
 

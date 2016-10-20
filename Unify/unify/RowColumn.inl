@@ -150,3 +150,9 @@ bool RowColumn< T >::operator != ( const RowColumn& rc ) const
 	return( row != rc.row || column != rc.column );
 }
 
+template< typename T >
+T RowColumn< T >::CellCount() const
+{
+	return row * column;
+}
+

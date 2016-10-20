@@ -8,6 +8,6 @@
 <extension>DXIKeyboard.dll</extension>
 <extension>DXIMouse.dll</extension>
 <extension>DXIGamepad.dll</extension>
-<gamemodule type="LUA" source="test_inputs.lua"/>
+<gamemodule type="LUA" source="game_inputs.lua"/>
 </setup>
 </xml>

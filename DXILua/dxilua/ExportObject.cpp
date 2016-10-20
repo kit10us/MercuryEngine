@@ -11,13 +11,14 @@
 #include <dxilua/ExportCameraComponent.h>
 #include <dxi/scene/ScriptComponent.h>
 #include <dxilua/ExportGeometry.h>
+#include <dxilua/ExportTerra.h>
 
-#include <dxilua/Matrix.h>
-#include <dxilua/Color.h>
-#include <dxilua/Size2.h>
-#include <dxilua/Size3.h>
-#include <dxilua/V2.h>
-#include <dxilua/V3.h>
+#include <dxilua/unify/ExportMatrix.h>
+#include <dxilua/unify/ExportColor.h>
+#include <dxilua/unify/ExportSize2.h>
+#include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
 
 
 using namespace dxilua;
@@ -187,7 +188,16 @@ int Object_SetGeometry( lua_State * state )
 	}
 	else
 	{
-		geometry = CheckGeometry( state, 2 )->geometry;
+		GeometryProxy * geometryProxy = CheckGeometry( state, 2 );
+		if ( geometryProxy )
+		{
+			geometry = geometryProxy->geometry;
+		}
+		else
+		{
+			TerraProxy * terraProxy = CheckTerra( state, 2 );
+			geometry = terraProxy->geometry;
+		}
 	}
 
 	objectProxy->object->SetGeometry( geometry );

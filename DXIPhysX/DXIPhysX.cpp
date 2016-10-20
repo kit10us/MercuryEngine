@@ -3,8 +3,8 @@
 
 #include "DXIPhysX.h"
 #include <dxi/win/DXILib.h>
-#include <dxiphysx/SceneManagerComponent.h>
-
+#include <dxiphysx/GameComponent.h>
+					   
 #pragma comment( lib, "PhysX3DEBUG_x86.lib" )
 #pragma comment( lib, "PhysX3CommonDEBUG_x86.lib" )
 #pragma comment( lib, "PhysXProfileSDKDEBUG.lib" )
@@ -13,14 +13,14 @@
 #pragma comment( lib, "PxTaskDEBUG.lib" )
 #pragma comment( lib, "PhysX3ExtensionsDEBUG.lib" )
 
-void DeleterSMC( dxiphysx::SceneManagerComponent * smc )
+void Deleter( dxiphysx::GameComponent * component )
 {
-	delete smc;
+	delete component;
 }
 
-__declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Document * document )
+DXIPHYSX_API bool DXILoader( dxi::core::Game * game, const qxml::Document * document )
 {
-	game->GetSceneManager()->AddComponent( dxi::scene::ISceneManagerComponent::ptr( new dxiphysx::SceneManagerComponent( game->GetOS() ), DeleterSMC ) );
+	game->AddComponent( dxi::core::IGameComponent::ptr( new dxiphysx::GameComponent(), Deleter ) );
 	return true;
 }
 

@@ -9,13 +9,19 @@ using namespace dxi;
 using namespace scene;
 
 Object::Object( core::IOS * os )
-: m_os( os )
-, m_enabled( true )
-, m_selectable( false )
-, m_checkFrame( true )
-, m_lastFrameID( 0 )
+	: Object( os, 0 )
 {
 }
+
+Object::Object( core::IOS * os, Scene * scene )
+	: m_os( os )
+	, m_enabled( true )
+	, m_selectable( false )
+	, m_checkFrame( true )
+	, m_lastFrameID( 0 )
+	, m_scene( scene )
+{
+}			  
 
 Object::Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float > position )
 : m_os( os )
@@ -321,7 +327,7 @@ Object::ptr Object::AddChild( std::string name )
 	if ( ! lastChild )
 	{
 		// No children...
-		m_firstChild.reset( new Object( m_os ) );
+		m_firstChild.reset( new Object( m_os, m_scene ) );
 		lastChild = m_firstChild;
 	}
 	else
@@ -331,7 +337,7 @@ Object::ptr Object::AddChild( std::string name )
 		{
 			lastChild = lastChild->GetNext();
 		}
-		lastChild->m_next.reset( new Object( m_os ) );
+		lastChild->m_next.reset( new Object( m_os, m_scene ) );
 		lastChild->m_next->m_previous = lastChild;
 		lastChild = lastChild->GetNext();	 
 	}
@@ -383,4 +389,9 @@ std::list< Object * > Object::AllChildren( bool recursive )
 	}
 
 	return objects;
+}
+
+Scene * Object::GetScene()
+{
+	return m_scene;
 }

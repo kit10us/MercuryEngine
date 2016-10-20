@@ -2,6 +2,8 @@
 // All Rights Reserved
 #pragma once
 
+#include <DXIPhysX.h>
+#include <dxiphysx/GameComponent.h>
 #include <dxi/core/IOS.h>
 #include <dxi/scene/ISceneComponent.h>
 #include <PxPhysicsAPI.h>
@@ -12,7 +14,7 @@ namespace dxiphysx
 	class SceneComponent : public dxi::scene::ISceneComponent
 	{
 	public:
-		SceneComponent( dxi::core::IOS * os );
+		DXIPHYSX_API SceneComponent( dxi::core::IOS * os, GameComponent * gameComponent );
 		~SceneComponent();
 
 		const char * GetName() const override;
@@ -28,16 +30,14 @@ namespace dxiphysx
 		void OnSuspend() override;
 		void OnResume() override;
 
+		physx::PxScene * GetScene();
+		physx::PxMaterial * GetMaterial();
+
 	private:
 		dxi::core::IOS * m_os;
 		bool m_enabled;
 
-		std::shared_ptr< physx::PxErrorCallback > m_errorCallback;
-		physx::PxDefaultAllocator m_defaultAllocatorCallback;
-		std::shared_ptr< physx::PxFoundation > m_foundation;
-		physx::PxProfileZoneManager * m_profileZoneManager;
-		std::shared_ptr< physx::PxPhysics > m_physics;		
-		physx::PxDefaultCpuDispatcher * m_displatcher;
+		GameComponent * m_gameComponent;
 		std::shared_ptr< physx::PxScene > m_scene;
 		std::shared_ptr< physx::PxMaterial > m_material;
 	};

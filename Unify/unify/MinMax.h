@@ -19,6 +19,7 @@ namespace unify
 		MinMax( const MinMax & minMax );
 		explicit MinMax( const std::string & text );
 
+		void Clear();
 		void Add( T value );
 		bool IsSet() const;
 		T Min() const;

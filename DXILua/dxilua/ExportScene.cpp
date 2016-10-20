@@ -8,7 +8,7 @@
 using namespace dxilua;
 using namespace dxi;
 
-SceneProxy* CheckScene( lua_State* state, int index )
+DXILUADLL_API SceneProxy* CheckScene( lua_State* state, int index )
 {
 	SceneProxy* ud = *(SceneProxy**)luaL_checkudata( state, index, "Scene" );
 	return ud;

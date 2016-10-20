@@ -4,16 +4,57 @@
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/DXILua.h>
 
-#include <dxilua/Matrix.h>
-#include <dxilua/Color.h>
-#include <dxilua/Size2.h>
-#include <dxilua/Size3.h>
-#include <dxilua/V2.h>
-#include <dxilua/V3.h>
-
+#include <dxilua/unify/ExportMatrix.h>
+#include <dxilua/unify/ExportColor.h>
+#include <dxilua/unify/ExportSize2.h>
+#include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
 
 using namespace dxilua;
 using namespace dxi;
+int PushColor( lua_State * state, unify::ColorUnit color )
+{
+	lua_newtable( state ); // Create table.
+
+	lua_pushstring( state, "r" );
+	lua_pushnumber( state, color.r );
+	lua_settable( state, -3 );
+
+	lua_pushstring( state, "g" );
+	lua_pushnumber( state, color.g );
+	lua_settable( state, -3 );
+
+	lua_pushstring( state, "b" );
+	lua_pushnumber( state, color.b );
+	lua_settable( state, -3 );
+
+	lua_pushstring( state, "a" );
+	lua_pushnumber( state, color.a );
+	lua_settable( state, -3 );
+	return 1;
+}
+
+unify::ColorUnit CheckColor( lua_State * state, int index )
+{
+	luaL_checktype( state, index, LUA_TTABLE );
+
+	lua_getfield( state, index, "r" );
+	float r = (float)luaL_checknumber( state, -1 );
+
+	lua_getfield( state, index, "g" );
+	float g = (float)luaL_checknumber( state, -1 );
+
+	lua_getfield( state, index, "b" );
+	float b = (float)luaL_checknumber( state, -1 );
+
+	lua_getfield( state, index, "a" );
+	float a = (float)luaL_checknumber( state, -1 );
+
+	lua_pop( state, 4 );
+
+	return unify::ColorUnit::ColorUnitRGBA( r, g, b, a );
+}
 
 int Color_NewRGBA( lua_State * state )
 {
@@ -65,7 +106,7 @@ int Color_NewWhite( lua_State * state )
 	float a = 1.0f;
 	if ( args == 1 )
 	{
-		float a = (float)lua_tonumber( state, 1 );
+		a = (float)lua_tonumber( state, 1 );
 	}
 
 	PushColor( state, unify::ColorUnit::ColorUnitWhite( a ) );
@@ -78,13 +119,13 @@ int Color_NewRed( lua_State * state )
 	int args = lua_gettop( state );
 	float r = 1.0f;
 	float a = 1.0f;
-	if ( args > 1 )
+	if ( args >= 1 )
 	{
-		float r = (float)lua_tonumber( state, 1 );
+		r = (float)lua_tonumber( state, 1 );
 	}
-	if ( args > 2 )
+	if ( args >= 2 )
 	{
-		float a = (float)lua_tonumber( state, 2 );
+		a = (float)lua_tonumber( state, 2 );
 	}
 
 	PushColor( state, unify::ColorUnit::ColorUnitRGBA( r, 0.0f, 0.0f, a ) );
@@ -97,13 +138,13 @@ int Color_NewGreen( lua_State * state )
 	int args = lua_gettop( state );
 	float g = 1.0f;
 	float a = 1.0f;
-	if ( args > 1 )
+	if ( args >= 1 )
 	{
-		float g = (float)lua_tonumber( state, 1 );
+		g = (float)lua_tonumber( state, 1 );
 	}
-	if ( args > 2 )
+	if ( args >= 2 )
 	{
-		float a = (float)lua_tonumber( state, 2 );
+		a = (float)lua_tonumber( state, 2 );
 	}
 
 	PushColor( state, unify::ColorUnit::ColorUnitGreen( g, a ) );
@@ -116,13 +157,13 @@ int Color_NewBlue( lua_State * state )
 	int args = lua_gettop( state );
 	float b = 1.0f;
 	float a = 1.0f;
-	if ( args > 1 )
+	if ( args >= 1 )
 	{
-		float b = (float)lua_tonumber( state, 1 );
+		b = (float)lua_tonumber( state, 1 );
 	}
-	if ( args > 2 )
+	if ( args >= 2 )
 	{
-		float a = (float)lua_tonumber( state, 2 );
+		a = (float)lua_tonumber( state, 2 );
 	}
 
 	PushColor( state, unify::ColorUnit::ColorUnitRGBA( 0.0f, 0.0f, b, a ) );
@@ -135,13 +176,13 @@ int Color_NewGrey( lua_State * state )
 	int args = lua_gettop( state );
 	float grey = 1.0f;
 	float a = 1.0f;
-	if ( args > 1 )
+	if ( args >= 1 )
 	{
-		float grey = (float)lua_tonumber( state, 1 );
+		grey = (float)lua_tonumber( state, 1 );
 	}
-	if ( args > 2 )
+	if ( args >= 2 )
 	{
-		float a = (float)lua_tonumber( state, 2 );
+		a = (float)lua_tonumber( state, 2 );
 	}
 
 	PushColor( state, unify::ColorUnit::ColorUnitGrey( grey, a ) );
@@ -153,9 +194,9 @@ int Color_NewBlack( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float a = 1.0f;
-	if ( args > 1 )
+	if ( args >= 1 )
 	{
-		float a = (float)lua_tonumber( state, 1 );
+		a = (float)lua_tonumber( state, 1 );
 	}
 
 	PushColor( state, unify::ColorUnit::ColorUnitBlack( a ) );
@@ -274,6 +315,8 @@ static const luaL_Reg ColorFunctions[] =
 	{ "NewBlack", Color_NewBlack },
 	{ "NewZero", Color_NewZero },
 	{ "ToString", Color_ToString },
+	{ "__tostring", Color_ToString },
+
 
 	{ "Add", Color_Add },
 	{ "Sub", Color_Sub },

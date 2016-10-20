@@ -23,7 +23,7 @@ VS_OUT vs_main( in VS_IN vs_in )
 {
 	VS_OUT vs_out;
 	vs_out.position = mul( float4( vs_in.position, 1.0f ), finalMatrix );
-	vs_out.color = vs_in.color;
+	vs_out.color = vs_in.color.bgra;
 	return vs_out;
 }
 

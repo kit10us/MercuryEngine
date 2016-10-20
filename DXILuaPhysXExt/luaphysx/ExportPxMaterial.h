@@ -15,4 +15,4 @@ struct PxMaterialProxy
 PxMaterialProxy* CheckPxMaterial( lua_State* state, int index );
 int PushPxMaterial( lua_State * state, std::shared_ptr< physx::PxMaterial > shape );
 
-void RegisterPxMaterial( dxilua::ScriptEngine * luaSE );
+void RegisterPxMaterial( dxilua::ScriptEngine * luaSE, dxi::core::Game * game );

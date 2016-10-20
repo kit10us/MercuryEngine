@@ -3,10 +3,11 @@
 
 #pragma once
 
+#include <DXILuaDLL.h>
 #include <lua.hpp>
 #include <unify/Size3.h>
 
-unify::Size3< float > CheckSize3( lua_State * state, int index );
-int PushSize3( lua_State * state, unify::Size3< float > v3 );
+DXILUADLL_API unify::Size3< float > CheckSize3( lua_State * state, int index );
+DXILUADLL_API int PushSize3( lua_State * state, unify::Size3< float > v3 );
 
 void RegisterSize3( lua_State * state );

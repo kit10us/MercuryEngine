@@ -48,6 +48,7 @@
     <ClInclude Include="unify\DirectXConvert.h" />
     <ClInclude Include="unify\Exception.h" />
     <ClInclude Include="unify\FrameLite.h" />
+    <ClInclude Include="unify\Math.h" />
     <ClInclude Include="unify\Optional.h" />
     <ClInclude Include="unify\Path.h" />
     <ClInclude Include="unify\Flags.h" />
@@ -89,6 +90,7 @@
     <None Include="unify\Cast.inl" />
     <None Include="unify\LinkList.inl" />
     <None Include="unify\List.inl" />
+    <None Include="unify\Math.inl" />
     <None Include="unify\MinMax.inl" />
     <None Include="unify\Optional.inl" />
     <None Include="unify\Parameters.inl" />

@@ -16,6 +16,8 @@ namespace dxi
 {
     namespace scene
     {
+		class Scene;
+
 		/// <notes>
         /// Objects belong to Scenes. Scenes are collections of objects.
 		/// </notes>
@@ -25,6 +27,8 @@ namespace dxi
 		    typedef std::shared_ptr< Object > ptr;
 
 		    explicit Object( core::IOS * os );
+			Object( core::IOS * os, Scene * scene );
+
 			Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float > position );
 		    virtual ~Object();
 
@@ -88,9 +92,12 @@ namespace dxi
 		
 			std::list< Object * > AllChildren( bool recursive );
 
+			Scene * GetScene();
+
 		protected:
-			core::IOS * m_os;
 			std::string m_name;
+			core::IOS * m_os;
+			Scene * m_scene;
 			std::list< std::string > m_tags;
 
             bool m_enabled;

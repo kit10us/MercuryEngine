@@ -26,7 +26,7 @@ Module::~Module()
 void Module::CallMember( std::string function )
 {
 	// Get our _ENV...
-	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() ) )
+	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() ) )						   
 	{
 		m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Module not found! (" + m_name + ")" );
 		assert( 0 ); // TODO:

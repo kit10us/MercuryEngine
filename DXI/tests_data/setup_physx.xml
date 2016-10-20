@@ -1,0 +1,18 @@
+<xml>
+<setup>
+<logfile>log.txt</logfile>
+<display fullscreen="false" x="10" y="10" width="1920" height="1080"/>
+<extension>DXILua.dll</extension>
+<extension>DAELoader.dll</extension>
+<extension>ASELoader.dll</extension>
+<extension>DXIPhysx.dll</extension>
+<extension>DXILuaPhysXExt.dll</extension>
+
+<extension>DXIKeyboard.dll</extension>
+<extension>DXIMouse.dll</extension>
+<extension>DXIGamepad.dll</extension>
+
+
+<gamemodule type="LUA" source="game_physx.lua"/>
+</setup>
+</xml>

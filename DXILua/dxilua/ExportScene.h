@@ -13,4 +13,4 @@ struct SceneProxy
 	dxi::scene::Scene::ptr scene;
 };
 
-SceneProxy* CheckScene( lua_State* state, int index );
+DXILUADLL_API SceneProxy* CheckScene( lua_State* state, int index );

@@ -8,10 +8,10 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
-SphereCollider::SphereCollider( core::IOS * os, physx::PxPhysics * physics, float radius )
-: ColliderBase( os, physics )
+SphereCollider::SphereCollider( core::IOS * os, GameComponent * gameComponent, float radius )
+: ColliderBase( os, gameComponent )
 {
-	m_shape.reset( physics->createShape( PxSphereGeometry( radius ), *m_material ), Releaser< PxShape > );
+	m_shape.reset( gameComponent->GetPhysics()->createShape( PxSphereGeometry( radius ), *m_material ), Releaser< PxShape > );
 }
 
 SphereCollider::~SphereCollider()

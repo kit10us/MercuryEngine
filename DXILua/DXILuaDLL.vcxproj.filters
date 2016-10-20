@@ -87,6 +87,18 @@
     <ClInclude Include="dxilua\Util.h">
       <Filter>dxilua</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportTexCoords.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTerraParameters.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTerra.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTexture.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -162,6 +174,18 @@
       <Filter>dxilua\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\Util.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportTexCoords.cpp">
+      <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTerraParameters.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTerra.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTexture.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>

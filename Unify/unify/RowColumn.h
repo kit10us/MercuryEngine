@@ -43,6 +43,8 @@ namespace unify
 
 		bool operator == ( const RowColumn< T > & rc ) const;
 		bool operator != ( const RowColumn< T > & rc ) const;
+
+		T CellCount() const;
 	};
 	#include <unify/RowColumn.inl>
 }

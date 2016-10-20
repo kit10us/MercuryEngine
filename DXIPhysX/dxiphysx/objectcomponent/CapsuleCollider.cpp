@@ -8,10 +8,10 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
-CapsuleCollider::CapsuleCollider( core::IOS * os, physx::PxPhysics * physics, float radius, float halfHeight )
-: ColliderBase( os, physics )
+CapsuleCollider::CapsuleCollider( core::IOS * os, GameComponent * gameComponent, float radius, float halfHeight )
+: ColliderBase( os, gameComponent )
 {
-	m_shape.reset( physics->createShape( PxCapsuleGeometry( radius, halfHeight ), *m_material ), Releaser< PxShape > );
+	m_shape.reset( gameComponent->GetPhysics()->createShape( PxCapsuleGeometry( radius, halfHeight ), *m_material ), Releaser< PxShape > );
 }
 
 CapsuleCollider::~CapsuleCollider()

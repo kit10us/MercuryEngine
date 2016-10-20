@@ -2,12 +2,14 @@
 // All Rights Reserved
  
 #include <dxi/Terra.h>
+#include <unify/Math.h>
 
 using namespace dxi;
 
 Terra::Terra( core::IRenderer * renderer )
 : m_primitiveList( renderer )
-, m_rc( 0, 0 )
+, m_depth{}
+, m_pointCount( 0, 0 )
 {
 }
 
@@ -24,7 +26,8 @@ Terra::~Terra()
 
 void Terra::Destroy()
 {
-    m_depth.clear();
+	delete[] m_depth;
+	m_depth = 0;
 	m_primitiveList.Destroy();
 }
 
@@ -38,26 +41,51 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 {
 	Destroy();
 
-    const unify::RowColumn< unsigned int > rc = parameters.Get< unify::RowColumn< unsigned int > >( "rowscolumns" );
-    const unify::Size< float > size = parameters.Get< unify::Size< float > > ( "size" );
-    const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea" );
+	unify::RowColumn< unsigned int > faces;
+	if ( parameters.Exists( "faces" ) )
+	{
+		faces = parameters.Get< unify::RowColumn< unsigned int > >( "faces" );
+		m_pointCount = faces + unify::RowColumn< unsigned int >( 1, 1 );
+	}
+	else if ( parameters.Exists( "points" ) )
+	{
+		m_pointCount = parameters.Get< unify::RowColumn< unsigned int > >( "points" );
+		faces = m_pointCount - unify::RowColumn< unsigned int >( 1, 1 );
+	}
+	else
+	{
+		throw unify::Exception( "Terra requires either faces or points!" );
+	}
+
+    m_size = parameters.Get< unify::Size< float > > ( "size" );
+    const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea::Full() );
 	const float constant = parameters.Get< float >( "constant" );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 
-	int vertexCount = (rc.row + 1) * (rc.column + 1 );
-	int indexCount = (rc.column * (2 * (rc.row + 1))) + (((rc.column - 1) * 2));
+	unify::ColorUnit diffuseUL = parameters.Get< unify::ColorUnit >( "diffuseul", unify::ColorUnit::ColorUnitWhite() );
+	unify::ColorUnit diffuseUR = parameters.Get< unify::ColorUnit >( "diffuseur", unify::ColorUnit::ColorUnitWhite() );
+	unify::ColorUnit diffuseDL = parameters.Get< unify::ColorUnit >( "diffusedl", unify::ColorUnit::ColorUnitWhite() );
+	unify::ColorUnit diffuseDR = parameters.Get< unify::ColorUnit >( "diffusedr", unify::ColorUnit::ColorUnitWhite() );
+
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+		  
+	const size_t && IndicesPerTriangle = 3;
+	const size_t && TrianglesPerCell = 2;
+	const size_t && IndicesPerCell = IndicesPerTriangle * TrianglesPerCell;
+	const size_t && IndicesPerRow = IndicesPerCell * faces.row;
+
+	int vertexCount = (faces.row + 1 ) * (faces.column + 1);
+	//int indexCount = (faces.row * (2 * (faces.row + 1))) + (((faces.column - 1) * 2));
+	int indexCount = faces.CellCount() * 3 * 2;
+
+	m_depth = new float[vertexCount];
+	m_minmax.Clear();
 
 	BufferSet & set = m_primitiveList.AddBufferSet();
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * vertexCount] );
-
-	// Method 1 - Triangle Strip...
-	set.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleStrip, 0 /*baseVertexIndex*/, 0 /*minIndex*/, vertexCount, 0 /*startIndex*/, indexCount - 2, effect, true ) );
+	set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 	// Fill in vertices & Build depth buffer...
-	unsigned int r, c;
-
 	unsigned short stream = 0;
 
 	VertexElement positionE = CommonVertexElement::Position( stream );
@@ -66,37 +94,108 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * vertexCount] );
 	unify::DataLock lock( vertices.get(), vd->GetSize(), vertexCount, false );
 
-	float fStartX = size.width * -0.5f;
-	float fStartY = size.height * -0.5f;
-	float fRatioForRows = size.width / rc.row;
-	float fRatioForColumns = size.height / rc.column;
+	// Build depth buffer...	
+	bool hasHeightHap = false;
+	if ( parameters.Exists( "heightmap" ) )
+	{
+		TextureOpMap heightMap = parameters.Get< TextureOpMap >( "heightmap" );
+		unify::Size< unsigned int > heightMapSize = heightMap.texture->ImageSize();
+		unify::TexCoords uvHeight_Length = unify::TexCoords( heightMap.texArea.Size().width, heightMap.texArea.Size().height );
+		unify::TexCoords height_uv;
+
+		TextureLock textlock;
+		heightMap.texture->LockRect( 0, textlock, 0, true );
+
+		for ( unsigned int c = 0; c < (faces.column + 1); c++ )
+		{
+			for ( unsigned int r = 0; r < (faces.row + 1); r++ )
+			{
+				// Compute texcoord in image...
+				unify::TexCoords uv( (float)r / ((float)faces.row + 1), (float)c / ((float)faces.column + 1) );
+
+				// Get the heightmap position...
+				height_uv = heightMap.texArea.ul + (uv * uvHeight_Length);
+
+				// Support tiling...
+				while ( height_uv.v > 1.0f )
+				{
+					height_uv.v -= 1.0f;
+				}
+				while ( height_uv.v < 0.0f )
+				{
+					height_uv.v += 1.0f;
+				}
+
+				while ( height_uv.u > 1.0f )
+				{
+					height_uv.u -= 1.0f;
+				}
+				while ( height_uv.u < 0.0f )
+				{
+					height_uv.u += 1.0f;
+				}
+
+				unsigned int uSurfaceOffsetV = (unsigned int)(heightMapSize.height * height_uv.v);
+				unsigned int* pBufferColumnStart = (unsigned int*)((unsigned int*)textlock.pBits + (uSurfaceOffsetV * textlock.uStride));
+
+				unsigned int uSurfaceOffsetH = (unsigned int)(heightMapSize.width * height_uv.u);
+				unsigned int* pBuffer = pBufferColumnStart + uSurfaceOffsetH;
+				unify::Color pixel = unify::Color::ColorARGB( *pBuffer );
+				unify::ColorUnit result( heightMap.colorOp * pixel );
+
+				// Perform modification to vertex...
+				float sum = result.SumComponents();
+
+				unsigned int vertexIndex = r + (c * (faces.row + 1));
+				float depth = constant + sum;
+				m_depth[vertexIndex] = depth;
+				m_minmax += depth;
+
+			}
+		}
+		heightMap.texture->UnlockRect( 0 );
+	}
+
 	unsigned int uVert = 0;
 
-	//Vertex vertex;	 //Temp vertex
 	unify::TexCoords uvLength;
 	unify::TexCoords uv;
 	
 	uvLength = texArea.dr - texArea.ul;
 
-	for( c = 0; c < (rc.column + 1); c++ )
+	for ( unsigned int c = 0; c < (faces.column + 1); c++ )
 	{
-		float v = (1.0f / (rc.column)) * c;		// is unit
-		uv.v = (texArea.ul.v + ((1.0f - v) * uvLength.v));
+		float v = (1.0f / (faces.column)) * c; // is unit
+		uv.v = (texArea.ul.v + ((v) * uvLength.v));
 
-		for( r = 0; r < (rc.row + 1); r++ )
+		for ( unsigned int r = 0; r < (faces.row + 1); r++ )
 		{
-			float h = (1.0f / (rc.row)) * r;	// is unit
+			float h = (1.0f / (faces.row)) * r;	// is unit
 			uv.u = texArea.ul.u + (uvLength.u * h);
-			
-			unify::V3< float > vPos( fStartX + (h * size.width), constant, fStartY + (v * size.height) );
+
+			unsigned int vertex = (c * (faces.row + 1)) + r;
+
+			unify::V3< float > vPos(
+				(m_size.width * -0.5f) + m_size.width * h
+				, m_depth[vertex]
+				, (m_size.height * 0.5f) - m_size.height * v
+			);
+
 			unify::V3< float > vNormal( 0, 1, 0 );
-			unify::Color diffuse( unify::Color::ColorWhite() );
-			vd->WriteVertex( lock, uVert, positionE, vPos );
-			vd->WriteVertex( lock, uVert, normalE, vNormal );
-			vd->WriteVertex( lock, uVert, texE, uv );
-			vd->WriteVertex( lock, uVert, diffuseE, diffuse );
+
+			unify::ColorUnit ca( unify::Lerp( diffuseUL, diffuseUR, h ) );
+			unify::ColorUnit cb( unify::Lerp( diffuseDL, diffuseDR, v ) );
+			unify::ColorUnit cc( (ca + cb) / 2.0f );
+									   
+			unify::Color diffuse( cc );
+									   
+			vd->WriteVertex( lock, vertex, positionE, vPos );
+			vd->WriteVertex( lock, vertex, normalE, vNormal );
+			vd->WriteVertex( lock, vertex, texE, uv );
+			vd->WriteVertex( lock, vertex, diffuseE, diffuse );
 			uVert++;
 		}
 	}
@@ -106,40 +205,30 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	// Fill in indices...
 	std::vector< Index32 > indices( indexCount );
 
-	unsigned int uInd = 0;
-	unsigned int uSegmentsH = rc.row + 1;	// Number of segments
-	for( c = 0; c < rc.column; c++ )
+	for ( unsigned int c = 0; c < faces.column; ++c )
 	{
-		for( r = 0; r < (int)uSegmentsH; r++ )
+		for ( unsigned int r = 0; r < faces.row; ++r )
 		{
-			indices[uInd++] = (Index32)((uSegmentsH * c) + r);
-			indices[uInd++] = (Index32)((uSegmentsH * (c + 1)) + r);
-		}
-		if( c < (rc.column - 1) )
-		{
-			indices[uInd++] = (Index32)((uSegmentsH * (c + 2)) - 1);
-			indices[uInd++] = (Index32)(uSegmentsH * (c + 1));
+			// Build quad
+			unsigned int v0 = c * (faces.row + 1) + r;
+			unsigned int v1 = v0 + 1;
+			unsigned int v2 = v0 + (faces.row + 1 );
+			unsigned int v3 = v2 + 1;
+
+			unsigned int firstIndex = IndicesPerRow * c + r * IndicesPerCell;
+			indices[firstIndex + 0] = v0;
+			indices[firstIndex + 1] = v1;
+			indices[firstIndex + 2] = v2;
+			indices[firstIndex + 3] = v1;
+			indices[firstIndex + 4] = v3;
+			indices[firstIndex + 5] = v2; 
 		}
 	}
 
 	IndexBuffer & ib = set.GetIndexBuffer();
 	ib.Create( indexCount, (Index32*)&indices[0], BufferUsage::Default );
-
-	m_rc = rc;
-
+				 
 	ComputeBounds();
-
-	if ( parameters.Exists( "heightmap" ) )
-	{
-		TextureOpMap tom = parameters.Get< TextureOpMap >( "heightmap" );
-		ApplyHeightMap( tom );
-	}
-
-	if ( parameters.Exists( "alphamap" ) )
-	{
-		TextureOpMap tom = parameters.Get< TextureOpMap >( "alphamap" );
-		ApplyAlphaMap( tom );
-	}
 }
 
 bool Terra::ApplyHeightMap( TextureOpMap tom )
@@ -314,7 +403,7 @@ bool Terra::ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexA
 
 	VertexElement positionE = CommonVertexElement::Position();
 
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	unify::TexCoords cMul( pTexArea->Size().width, pTexArea->Size().height );
 	cMul.u /= (rc.row - 1);
@@ -348,7 +437,7 @@ void Terra::GenerateNormals( bool bUseSelf )
 
 	unsigned int h, v;
 
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	for( v = 0; v < rc.column; v++ )
 	{
@@ -417,7 +506,7 @@ void Terra::GenerateNormals( bool bUseSelf )
 bool Terra::Smooth( unsigned int uFlags )
 {
 	// Vertex rows and columns...
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	float * pfDepthArray = new float[ rc.column * rc.row ];
 	if( ! pfDepthArray )
@@ -505,7 +594,7 @@ bool Terra::Smooth( unsigned int uFlags )
 bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fTolerance )
 {
 	// Vertex rows and columns...
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
@@ -557,7 +646,7 @@ bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fToleranc
 bool Terra::MakeWrappable( unsigned int uFlags )
 {
 	// Vertex rows and columns...
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
@@ -637,7 +726,7 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 {
 	// Vertex rows and columns...
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row , m_pointCount.column );
 	
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
@@ -697,7 +786,7 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 {
 	// Vertex rows and columns...
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
@@ -769,7 +858,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 {
 	// Vertex rows and columns...
-	unify::RowColumn< unsigned int > rc( m_rc.row + 1, m_rc.column + 1 );
+	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
 	unify::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
@@ -905,9 +994,47 @@ bool Terra::RenderNormals()
 	return true;
 }
 
-const unify::RowColumn< unsigned int > & Terra::GetRC() const
+unify::RowColumn< unsigned int > Terra::GetPointCount() const
 {
-	return m_rc;
+	return m_pointCount;
+}
+
+float Terra::GetDepth( float x, float y ) const
+{
+	if ( x > 1.0f ) x = 1.0f;
+	if ( x < 0.0f ) x = 0.0f;
+
+	if ( y > 1.0f ) y = 1.0f;
+	if ( y < 0.0f ) y = 0.0f;
+
+	// Get the vertex row and column.
+	unify::RowColumn< unsigned int > rc;
+	rc.row = (unsigned int)(((float)m_pointCount.row) * x);
+	rc.column = (unsigned int)(((float)m_pointCount.column + 1.0f) * y);
+	return GetDepth( rc );
+}
+
+float Terra::GetDepth( unify::RowColumn< unsigned int > rc ) const
+{
+	if ( rc.row >= m_pointCount.row ) rc.row = m_pointCount.row - 1;
+	if ( rc.row < 0 ) rc.row = 0;
+
+	if ( rc.column >= m_pointCount.column ) rc.column = m_pointCount.column - 1;
+	if ( rc.column < 0 ) rc.column = 0;
+
+	unsigned int vertex = rc.row + rc.column * m_pointCount.row;
+	return m_depth[vertex];
+
+}
+
+unify::MinMax< float > Terra::GetMinMax() const
+{
+	return m_minmax;
+}
+
+unify::Size< float > Terra::GetSize() const
+{
+	return m_size;
 }
 
 PrimitiveList & Terra::GetPrimitiveList()

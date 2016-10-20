@@ -160,10 +160,13 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DXIPhysX.cpp" />
+    <ClCompile Include="dxiphysx\GameComponent.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\BoxCollider.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\CapsuleCollider.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\ColliderBase.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\HeightFieldCollider.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\RigidBody.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\RigidStatic.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\SphereCollider.cpp" />
     <ClCompile Include="dxiphysx\SceneComponent.cpp" />
     <ClCompile Include="dxiphysx\SceneManagerComponent.cpp" />
@@ -171,10 +174,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXIPhysX.h" />
+    <ClInclude Include="dxiphysx\GameComponent.h" />
     <ClInclude Include="dxiphysx\objectcomponent\BoxCollider.h" />
     <ClInclude Include="dxiphysx\objectcomponent\CapsuleCollider.h" />
     <ClInclude Include="dxiphysx\objectcomponent\ColliderBase.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\HeightFieldCollider.h" />
     <ClInclude Include="dxiphysx\objectcomponent\RigidBody.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\RigidStatic.h" />
     <ClInclude Include="dxiphysx\objectcomponent\SphereCollider.h" />
     <ClInclude Include="dxiphysx\Releaser.h" />
     <ClInclude Include="dxiphysx\SceneComponent.h" />

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 					 
 namespace dxi
 {
@@ -21,7 +22,7 @@ namespace dxi
 
 			virtual ~IGameComponent() {}
 
-			virtual std::string GetName() = 0;
+			virtual std::string GetName() const = 0;
 
 			virtual void OnAttach( IGame * game ) = 0;
 

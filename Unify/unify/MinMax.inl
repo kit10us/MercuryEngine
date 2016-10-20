@@ -34,6 +34,12 @@ MinMax< T >::MinMax( const std::string & text )
 }
 
 template< typename T >
+void unify::MinMax< T >::Clear()
+{
+	m_isSet = false;
+}
+
+template< typename T >
 void unify::MinMax< T >::Add( T value )
 {
 	if( m_isSet )

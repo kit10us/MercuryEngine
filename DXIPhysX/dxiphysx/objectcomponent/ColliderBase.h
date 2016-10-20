@@ -3,7 +3,9 @@
 
 #pragma once
 
+#include <DXIPhysX.h>
 #include <dxi/scene/IObjectComponent.h>
+#include <dxiphysx/GameComponent.h>
 #include <dxi/core/IOS.h>
 #include <PxPhysicsAPI.h>
 #include <dxiphysx/Releaser.h>
@@ -15,7 +17,7 @@ namespace dxiphysx
 		class ColliderBase : public dxi::scene::IObjectComponent
 		{
 		public:
-			ColliderBase( dxi::core::IOS * os, physx::PxPhysics * physics );
+			ColliderBase( dxi::core::IOS * os, GameComponent * gameComponent );
 			~ColliderBase();
 
 			dxi::core::IOS * GetOS();
@@ -33,15 +35,15 @@ namespace dxiphysx
 			void OnSuspend() override {}
 			void OnResume() override {}
 
-			physx::PxShape * GetShape();
-			const physx::PxShape * GetShape() const;
+			DXIPHYSX_API physx::PxShape * GetShape();
+			DXIPHYSX_API const physx::PxShape * GetShape() const;
 
 		private:
 			dxi::core::IOS * m_os;
 			bool m_enabled;
 
 		protected:
-			physx::PxPhysics * m_physics;
+			GameComponent * m_gameComponent;
 			std::shared_ptr< physx::PxShape > m_shape;
 			std::shared_ptr< physx::PxMaterial > m_material;
 		};

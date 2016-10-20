@@ -2,14 +2,16 @@
 // All Rights Reserved
 
 #include <dxilua/DXILua.h>
+#include <dxilua/ExportScene.h>
+
 #include "luaphysx/ExportPxSceneComponent.h"
 
-#include <dxilua/Matrix.h>
-#include <dxilua/Color.h>
-#include <dxilua/Size2.h>
-#include <dxilua/Size3.h>
-#include <dxilua/V2.h>
-#include <dxilua/V3.h>
+#include <dxilua/unify/ExportMatrix.h>
+#include <dxilua/unify/ExportColor.h>
+#include <dxilua/unify/ExportSize2.h>
+#include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
 
 #include <PxPhysicsAPI.h>
 
@@ -17,6 +19,7 @@ using namespace dxilua;
 using namespace dxi;
 
 static dxilua::ScriptEngine * g_luaSE;
+static dxi::core::Game * g_game;
 
 int PushPxSceneComponent( lua_State * state, dxiphysx::SceneComponent::ptr sceneComponent )
 {
@@ -33,6 +36,18 @@ PxSceneComponentProxy * CheckPxSceneComponent( lua_State* state, int index )
 	return ud;
 }					 
 
+int PxSceneComponent_AttachTo( lua_State* state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	PxSceneComponentProxy * pxScene = CheckPxSceneComponent( state, 1 );
+	SceneProxy * scene = CheckScene( state, 2 );
+
+	scene->scene->AddComponent( pxScene->sceneComponent );
+
+	return 0;
+}
 
 int PxSceneComponent_CreateBox( lua_State* state )
 {
@@ -54,14 +69,30 @@ int PxSceneComponent_CreateBox( lua_State* state )
 
 static const luaL_Reg PxSceneComponentFunctions[] =
 {
-	{ "Create", PxSceneComponent_CreateBox },
+	{ "AttachTo", PxSceneComponent_AttachTo },
+	{ "CreateBox", PxSceneComponent_CreateBox },
 	{ nullptr, nullptr }
 };
 
-void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE )
+int PxSceneComponent_Constructor( lua_State * state )
 {
+	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	dxi::scene::ISceneComponent::ptr component( new dxiphysx::SceneComponent( g_game->GetOS(), physics ) );
+	return PushPxSceneComponent( state, component );
+}
+
+int PxSceneComponent_Destructor( lua_State * state )
+{
+	PxSceneComponentProxy * proxy = CheckPxSceneComponent( state, 1 );
+	delete proxy;
+	return 0;
+}
+
+void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
+{
+	g_game = game;
 	g_luaSE = luaSE;
 
-	luaSE->AddLibrary( "PxShapeComponent", PxSceneComponentFunctions, 1 );
+	luaSE->AddType( "PxSceneComponent", PxSceneComponentFunctions, 2, PxSceneComponent_Constructor, PxSceneComponent_Destructor );
 }
 

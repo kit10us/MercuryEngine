@@ -29,5 +29,5 @@ void DeleterSC( SceneComponent * sc )
 
 void SceneManagerComponent::OnNewScene( scene::Scene * scene )
 {
-	scene->AddComponent( scene::ISceneComponent::ptr( new SceneComponent( m_os ), DeleterSC ) );
+	//scene->AddComponent( scene::ISceneComponent::ptr( new SceneComponent( m_os ), DeleterSC ) );
 }

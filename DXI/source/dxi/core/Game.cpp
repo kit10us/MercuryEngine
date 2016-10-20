@@ -66,6 +66,8 @@ Game::~Game()
 
 	m_inputManager.Clear();
 
+	m_components.clear();
+
 	// Remove extensions...
 	m_extensions.clear();
 
@@ -154,6 +156,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 
 	TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
 	GetManager< Texture >()->AddFactory( ".dds", textureFactoryPtr ); // TODO: Can't we just share this between types?
+	GetManager< Texture >()->AddFactory( ".png", textureFactoryPtr );
 	GetManager< Texture >()->AddFactory( ".bmp", textureFactoryPtr );
 	GetManager< Texture >()->AddFactory( ".jpg", textureFactoryPtr );
 

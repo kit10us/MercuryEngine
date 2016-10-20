@@ -40,6 +40,10 @@ namespace dxi
 	public:
 		struct TextureOpMap
 		{
+			TextureOpMap()
+			{
+			}
+
 			TextureOpMap( Texture::ptr texture, const unify::ColorUnit & colorOp, const unify::TexArea texArea = unify::TexArea::Full() )
 				: texture( texture )
 				, colorOp( colorOp )
@@ -58,11 +62,11 @@ namespace dxi
 			{
 			}
 
-			Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > rc, const float constant, const unify::TexArea texArea, Effect::ptr effect )
+			Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > faces, const float constant, const unify::TexArea texArea, Effect::ptr effect )
 			{
 				Set( "size", size );
 				Set( "effect", effect ); 
-				Set< unify::RowColumn< unsigned int > >( "rowscolumns", rc );
+				Set< unify::RowColumn< unsigned int > >( "faces", faces );
 				Set< float >( "constant", constant );
 				Set< unify::TexArea >( "texarea", texArea );
 			}
@@ -71,9 +75,13 @@ namespace dxi
 			{
 				Set( "size", size );
 			}
-			void SetRowsColumns( const unify::RowColumn< unsigned int > rc )
+			void SetFaces( const unify::RowColumn< unsigned int > faces )
 			{
-				Set< unify::RowColumn< unsigned int > >( "rowscolumns", rc );
+				Set< unify::RowColumn< unsigned int > >( "faces", faces );
+			}
+			void SetPoints( const unify::RowColumn< unsigned int > points )
+			{
+				Set< unify::RowColumn< unsigned int > >( "points", points );
 			}
 			void SetConstant( const float constant )
 			{
@@ -95,7 +103,23 @@ namespace dxi
 			{
 				Set( "alphamap", tom );
 			}
+			void SetDiffuse( unify::ColorUnit diffuse )
+			{
+				Set( "diffuseul", diffuse );
+				Set( "diffuseur", diffuse );
+				Set( "diffusedl", diffuse );
+				Set( "diffusedr", diffuse );
+			}
+			void SetDiffuses( unify::ColorUnit diffuseUL, unify::ColorUnit diffuseUR, unify::ColorUnit diffuseDL, unify::ColorUnit diffuseDR )
+			{
+				Set( "diffuseul", diffuseUL );
+				Set( "diffuseur", diffuseUR );
+				Set( "diffusedl", diffuseDL );
+				Set( "diffusedr", diffuseDR );
+			}
 		};
+
+
 
 		Terra( core::IRenderer * renderer );
 		Terra( core::IRenderer * renderer, unify::Parameters & parameters );
@@ -122,13 +146,34 @@ namespace dxi
 		void Offset( const unify::V3< float > & vec );
 		bool NormalSide( unsigned int uFlags, const unify::V3< float > & normal = unify::V3< float >(0,1,0) );
 		bool RenderNormals();
-		const unify::RowColumn< unsigned int > & GetRC() const;
+
 		PrimitiveList & GetPrimitiveList();
+
+		/// <summary>
+		/// Get the number of sample points. (faces + 1)
+		/// </summmat>
+		unify::RowColumn< unsigned int > GetPointCount() const;
+
+		/// <summary>
+		/// Get depth at a specific point between 0,0 and 1.0, 1.0.
+		/// </summary>
+		float GetDepth( float x, float y ) const;
+
+		/// <summary>
+		/// Get depth at a specific row and column; note that column is generally considered across the width or X coordinate.
+		/// </summary>
+		float GetDepth( unify::RowColumn< unsigned int > rc ) const;
+
+		unify::MinMax< float > GetMinMax() const;
+
+		unify::Size< float > GetSize() const;
 
 	protected:
 		unify::Parameters m_parameters;
 		PrimitiveList m_primitiveList;
-		std::vector< float > m_depth;
-		unify::RowColumn< unsigned int > m_rc;
+		unify::Size< float > m_size;
+		float * m_depth;
+		unify::MinMax< float > m_minmax;
+		unify::RowColumn< unsigned int > m_pointCount;
 	};
 }

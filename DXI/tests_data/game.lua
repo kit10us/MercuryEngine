@@ -10,7 +10,7 @@ function OnStart()
 	-- Add camera...
 	local camera = root:AddCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
-	camera:Transform():LookAt( V3.Zero() ) 
+	camera:Transform():LookAt( V3.New( 0, -7, 0 ) ) 
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
@@ -70,16 +70,31 @@ function OnStart()
 	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "script/rotatey.lua" )
+	
+	
+	local terraParams = TerraParameters()
+	terraParams:SetEffect( Effect( "pit_image", "media/EffectPit.effect" ) )
+	terraParams:SetSize( Size2.New( 10, 10 ) )
+	terraParams:SetConstant( 0 )
+	terraParams:SetRC( 10, 10 )
+	terraParams:SetHeighMap( Texture( "test256", "media/pit.bmp", true, true ), Color.NewGrey( 4 ) )
+	
+	local terraGeo = Terra( terraParams )
+	local terra = group:AddChild( "terra" )
+	terra:SetGeometry( terraGeo )
+	terra:Transform():SetPosition( V3.New( 0, -12, 0 ) );		
+	
 end
 
 function OnUpdate()
 	local rotation = Update.GetDelta()
 	
+	--[[
 	totalRotation = totalRotation + rotation
 	local pi2 = 3.1415926535 * 2
 	if totalRotation > pi2 then
 		totalRotation = totalRotation - pi2
-		rotation = totalRotation -- Left over
+		rotation = totalRotation -- Left over		
 		axisIndex = axisIndex + 1
 		if axisIndex >= 3 then
 			axisIndex = 0
@@ -96,4 +111,7 @@ function OnUpdate()
 	end
 
 	group:Transform():RotateAbout( axis, rotation )
+	--]]
+	group:Transform():RotateAbout( V3.New( 0, 1, 0 ), rotation )
+
 end

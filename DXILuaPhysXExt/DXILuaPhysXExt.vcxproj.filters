@@ -2,12 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="luaphysx\ExportTest.cpp">
-      <Filter>luaphysx</Filter>
-    </ClCompile>
-    <ClCompile Include="luaphysx\ExportShape.cpp">
-      <Filter>luaphysx</Filter>
-    </ClCompile>
     <ClCompile Include="DXILuaPhysXExt.cpp" />
     <ClCompile Include="luaphysx\ExportPxMaterial.cpp">
       <Filter>luaphysx</Filter>
@@ -18,6 +12,15 @@
     <ClCompile Include="luaphysx\ExportPhysX.cpp">
       <Filter>luaphysx</Filter>
     </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxShape.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxRigidBody.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxRigidStatic.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="luaphysx">
@@ -25,12 +28,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="luaphysx\ExportTest.h">
-      <Filter>luaphysx</Filter>
-    </ClInclude>
-    <ClInclude Include="luaphysx\ExportShape.h">
-      <Filter>luaphysx</Filter>
-    </ClInclude>
     <ClInclude Include="DXILuaPhysXExt.h" />
     <ClInclude Include="luaphysx\ExportPxMaterial.h">
       <Filter>luaphysx</Filter>
@@ -39,6 +36,15 @@
       <Filter>luaphysx</Filter>
     </ClInclude>
     <ClInclude Include="luaphysx\ExportPhysX.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxShape.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxRigidBody.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxRigidStatic.h">
       <Filter>luaphysx</Filter>
     </ClInclude>
   </ItemGroup>

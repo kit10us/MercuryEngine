@@ -21,6 +21,9 @@
 #include <dxilua/shape/ExportShapeParameters.h>
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/ExportInput.h>
+#include <dxilua/ExportTerraParameters.h>
+#include <dxilua/ExportTerra.h>
+#include <dxilua/ExportTexture.h>
 
 lua_State * dxilua::CreateState()
 {
@@ -46,8 +49,11 @@ lua_State * dxilua::CreateState()
 	RegisterTransform( state );
 	RegisterShapeParameters( state );
 	RegisterGeometry( state );
+	RegisterTexture( state );
 	RegisterEffect( state );
 	RegisterInput( state );
+	RegisterTerraParameters( state );
+	RegisterTerra( state );
 
 	return state;
 }

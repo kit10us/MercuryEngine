@@ -2,14 +2,15 @@
 // All Rights Reserved
 
 #include <dxilua/DXILua.h>
-#include "luaphysx/ExportShape.h"
+#include <luaphysx/ExportPxShape.h>
 
-#include <dxilua/Matrix.h>
-#include <dxilua/Color.h>
-#include <dxilua/Size2.h>
-#include <dxilua/Size3.h>
-#include <dxilua/V2.h>
-#include <dxilua/V3.h>
+#include <dxilua/unify/ExportMatrix.h>
+#include <dxilua/unify/ExportColor.h>
+#include <dxilua/unify/ExportSize2.h>
+#include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportV2.h>
+#include <dxilua/unify/ExportV3.h>
+#include <dxilua/ExportObject.h>
 
 #include <PxPhysicsAPI.h>
 
@@ -17,12 +18,14 @@ using namespace dxilua;
 using namespace dxi;
 
 static dxilua::ScriptEngine * g_luaSE;
+static dxi::core::Game * g_game;
 
-int PushPxShape( lua_State * state, std::shared_ptr< physx::PxShape > shape )
+int PushPxShape( lua_State * state, dxiphysx::objectcomponent::ColliderBase::ptr component )
 {
 	PxShapeProxy ** newProxy = (PxShapeProxy**)(lua_newuserdata( state, sizeof( PxShapeProxy* ) ));
 	*newProxy = new PxShapeProxy();
-	(*newProxy)->shape = shape;
+	(*newProxy)->component = component;
+	(*newProxy)->shape = dynamic_cast< dxiphysx::objectcomponent::ColliderBase * >( component.get() )->GetShape();
 	luaL_setmetatable( state, "PxShape" );
 	return 1;
 }
@@ -33,29 +36,22 @@ PxShapeProxy* CheckPxShape( lua_State* state, int index )
 	return ud;
 }					 
 
-
-int PxShape_CreateBox( lua_State* state )
+int PxShape_AttachTo( lua_State* state )
 {
 	int args = lua_gettop( state );
-	assert( args == 1 );
+	assert( args == 2 );
 
-	auto v3 = CheckV3( state, 1 );
-	/*
+	PxShapeProxy * pxShape = CheckPxShape( state, 1 );
+	ObjectProxy * object = CheckObject( state, 2 );
 
-	std::shared_ptr< physx::PxShape > shape( 
-	PxShape * cube = m_physics->createShape( PxBoxGeometry( v3.x, v3.y, v3.z ), *m_material );
-
-	  */
-
-	int x( 0 ); x;
+	object->object->AddComponent( pxShape->component );
 
 	return 0;
 }
 
 static const luaL_Reg PxShapeFunctions[] =
 {
-	{ "CreateBox", PxShape_CreateBox },
-	{ nullptr, nullptr }
+	{ "AttachTo", PxShape_AttachTo }
 };
 
 int PxShape_Constructor( lua_State * state )
@@ -79,19 +75,10 @@ int PxShape_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxShape( dxilua::ScriptEngine * luaSE )
+void RegisterPxShape( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
 {
 	g_luaSE = luaSE;
 
-	luaSE->AddLibrary( "PxShape", PxShapeFunctions, 1 );
-
-	/*
-	lua_register( state, "PxShape", Shape_Constructor );
-	luaL_newmetatable( state, "PhysX" );
-	lua_pushcfunction( state, Shape_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, PhysXFunctions, 0 );
-	lua_pop( state, 1 );
-	*/
+	luaSE->AddType( "PxShape", PxShapeFunctions, sizeof( PxShapeFunctions ) / sizeof( luaL_Reg ), PxShape_Constructor, PxShape_Destructor );
 }
 

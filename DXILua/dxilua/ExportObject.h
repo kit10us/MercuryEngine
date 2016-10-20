@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <DXILuaDLL.h>
 #include <lua.hpp>
 #include <dxi/scene/Object.h>
 
@@ -11,7 +12,7 @@ struct ObjectProxy
 	dxi::scene::Object::ptr object;
 };
 
-int PushObject( lua_State * state, dxi::scene::Object::ptr object );
-ObjectProxy* CheckObject( lua_State* state, int index );
+DXILUADLL_API int PushObject( lua_State * state, dxi::scene::Object::ptr object );
+DXILUADLL_API ObjectProxy* CheckObject( lua_State* state, int index );
 
 void RegisterObject( lua_State * state );

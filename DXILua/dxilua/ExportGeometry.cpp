@@ -19,9 +19,9 @@ int PushGeometry( lua_State * state, dxi::Geometry::ptr geometry )
 }
 
 GeometryProxy* CheckGeometry( lua_State* state, int index )
-{
-	GeometryProxy* ud = *(GeometryProxy**)luaL_checkudata( state, index, "Geometry" );
-	return ud;
+{			
+	GeometryProxy** ud = (GeometryProxy**)luaL_testudata( state, index, "Geometry" );
+	return ud ? *ud : nullptr;
 }
 			   
 static const luaL_Reg GeometryFunctions[] =

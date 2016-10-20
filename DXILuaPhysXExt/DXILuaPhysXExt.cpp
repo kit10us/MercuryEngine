@@ -2,35 +2,21 @@
 //
 
 #include "DXILuaPhysXExt.h"
-#include "luaphysx/ExportTest.h"
 #include <dxilua/DXILua.h>
 #include <memory.h>
 #include <dxi/win/DXILib.h>
 
+#include <luaphysx/ExportPhysX.h>
+#include <luaphysx/ExportPxSceneComponent.h>
 #include <luaphysx/ExportPxMaterial.h>
-#include <luaphysx/ExportShape.h>
+#include <luaphysx/ExportPxShape.h>
+#include <luaphysx/ExportPxRigidBody.h>
+#include <luaphysx/ExportPxRigidStatic.h>
 
 #pragma comment( lib, "lua53" )
-#pragma comment( lib, "../DXI/tests_data/DXILua.lib" )
-#pragma comment( lib, "DXILuaLib" )
+#pragma comment( lib, "../DXI/tests_data/DXILua.lib" ) // TODO: Ensure these point to the DLL output, once we have one, instead of the tests_data.
+#pragma comment( lib, "../DXI/tests_data/DXIPhysX" )
 
-
-extern "C"
-int Debug_Bark( lua_State * state )
-{
-	int args = lua_gettop( state );
-
-	lua_pushnumber( state, 12.0f );
-
-
-	return 1;
-}
-
-extern "C" static const luaL_Reg debugFuncs[] =
-{
-	{ "Bark", Debug_Bark },
-	{ nullptr, nullptr }
-};
 
 void Deleter( dxi::scripting::IScriptEngine * se )
 {
@@ -52,9 +38,13 @@ __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Docume
 		game->ReportError( dxi::ErrorLevel::Failure, "DXILuaShapeExt", "Lua extension found, but wrong version (more, we can't understand how to use it)!" );
 	}
 
-	RegisterPxMaterial( luaSE );
-	RegisterPxShape( luaSE );
-						  	
+	RegisterPhysX( luaSE, game );
+	RegisterPxSceneComponent( luaSE, game );
+	RegisterPxMaterial( luaSE, game );
+	RegisterPxShape( luaSE, game );
+	RegisterPxRigidBody( luaSE, game );
+	RegisterPxRigidStatic( luaSE, game );
+
 	//game->AddScriptEngine( "lua", std::shared_ptr< dxi::scripting::IScriptEngine >( new dxilua::ScriptEngine( game ), Deleter ) );
 	return true;
 }

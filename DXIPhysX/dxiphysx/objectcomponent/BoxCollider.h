@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <DXIPhysX.h>
+#include <dxiphysx/GameComponent.h>
 #include <dxiphysx/objectcomponent/ColliderBase.h>
 
 namespace dxiphysx
@@ -12,7 +14,7 @@ namespace dxiphysx
 		class BoxCollider : public dxiphysx::objectcomponent::ColliderBase
 		{
 		public:
-			BoxCollider( dxi::core::IOS * os, physx::PxPhysics * physics, unify::V3< float > halfExt );
+			DXIPHYSX_API BoxCollider( dxi::core::IOS * os, GameComponent * gameComponent, unify::V3< float > halfExt );
 			~BoxCollider();
 
 			std::string GetName() const override;

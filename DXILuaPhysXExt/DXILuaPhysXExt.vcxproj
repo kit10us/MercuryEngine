@@ -150,17 +150,19 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DXILuaPhysXExt.cpp" />
     <ClCompile Include="luaphysx\ExportPhysX.cpp" />
+    <ClCompile Include="luaphysx\ExportPxRigidBody.cpp" />
+    <ClCompile Include="luaphysx\ExportPxRigidStatic.cpp" />
     <ClCompile Include="luaphysx\ExportPxSceneComponent.cpp" />
-    <ClCompile Include="luaphysx\ExportShape.cpp" />
-    <ClCompile Include="luaphysx\ExportTest.cpp" />
+    <ClCompile Include="luaphysx\ExportPxShape.cpp" />
     <ClCompile Include="luaphysx\ExportPxMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXILuaPhysXExt.h" />
     <ClInclude Include="luaphysx\ExportPhysX.h" />
+    <ClInclude Include="luaphysx\ExportPxRigidBody.h" />
+    <ClInclude Include="luaphysx\ExportPxRigidStatic.h" />
     <ClInclude Include="luaphysx\ExportPxSceneComponent.h" />
-    <ClInclude Include="luaphysx\ExportShape.h" />
-    <ClInclude Include="luaphysx\ExportTest.h" />
+    <ClInclude Include="luaphysx\ExportPxShape.h" />
     <ClInclude Include="luaphysx\ExportPxMaterial.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

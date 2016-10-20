@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <DXIPhysX.h>
+#include <dxiphysx/GameComponent.h>
 #include <dxi/scene/IObjectComponent.h>
 #include <dxi/core/IOS.h>
 #include <PxPhysicsAPI.h>
@@ -15,7 +17,7 @@ namespace dxiphysx
 		class RigidBody : public dxi::scene::IObjectComponent
 		{
 		public:
-			RigidBody( dxi::core::IOS * os, physx::PxPhysics * physics );
+			DXIPHYSX_API RigidBody( dxi::core::IOS * os, GameComponent * gameComponent );
 			~RigidBody();
 
 			dxi::core::IOS * GetOS();
@@ -35,13 +37,13 @@ namespace dxiphysx
 			void OnSuspend() override {}
 			void OnResume() override {}
 
-			physx::PxRigidBody * GetRigidBody();
+			DXIPHYSX_API physx::PxRigidBody * GetRigidBody();
 			const physx::PxRigidBody * GetRigidBody() const;
 
 		private:
 			dxi::core::IOS * m_os;
 			bool m_enabled;
-			physx::PxPhysics * m_physics;
+			GameComponent * m_gameComponent;
 			std::shared_ptr< physx::PxRigidBody > m_rigidBody;
 		};
 	}

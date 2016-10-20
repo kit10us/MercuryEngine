@@ -5,16 +5,19 @@
 #include <dxiphysx/Util.h>
 #include <dxi/scene/Object.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
+#include <dxiphysx/SceneComponent.h>
 
 using namespace dxi;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
-RigidBody::RigidBody( core::IOS * os, physx::PxPhysics * physics )
+RigidBody::RigidBody( core::IOS * os, GameComponent * gameComponent )
 : m_os( os )
-, m_physics( physics )
+, m_gameComponent( gameComponent )
 {
+	PxTransform transform( util::Convert< physx::PxTransform >( unify::Matrix::MatrixIdentity() ) );
+	m_rigidBody.reset( m_gameComponent->GetPhysics()->createRigidDynamic( transform ), Releaser< physx::PxRigidBody > );
 }
 
 RigidBody::~RigidBody()
@@ -48,9 +51,10 @@ void RigidBody::SetEnabled( bool enabled )
 
 void RigidBody::OnAttach( dxi::scene::Object * object )
 {
+	// Sync physx to object.
 	PxTransform transform( util::Convert< physx::PxTransform >( object->GetFrame().GetMatrix() ) );
-	m_rigidBody.reset( m_physics->createRigidDynamic( transform ), Releaser< physx::PxRigidBody > );
 	m_rigidBody->userData = object;
+	m_rigidBody->setGlobalPose( transform );
 
 	// Attach any existing colliders.
 	for ( int i = 0; i < object->ComponentCount(); ++i )
@@ -61,6 +65,12 @@ void RigidBody::OnAttach( dxi::scene::Object * object )
 			m_rigidBody->attachShape( *collider->GetShape() );
 		}
 	}
+	PxRigidBodyExt::updateMassAndInertia( *m_rigidBody, 10.0f );
+
+	dxi::scene::Scene * scene = object->GetScene();
+	dxi::scene::ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
+	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
+	sceneComponent->GetScene()->addActor( *m_rigidBody.get() );
 }
 		
 physx::PxRigidBody * RigidBody::GetRigidBody()
