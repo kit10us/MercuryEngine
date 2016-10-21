@@ -49,7 +49,7 @@ function OnStart()
 
 	local numR = 30
 	local numC = 30
-	local numL = 1
+	local numL = 2
 	local offset = 3
 	for l = 0, numL - 1 do
 		for r = 0, numR - 1 do

@@ -105,11 +105,10 @@ void SceneComponent::OnUpdate( dxi::scene::Scene * scene, const RenderInfo & ren
 		object->GetFrame().SetMatrix( *(unify::Matrix*)&mat );
 	}
 
-	/*
 	PxU32 actorCount = m_scene->getNbActors( PxActorTypeFlag::eRIGID_DYNAMIC );
 
 	float rationMoving = (float)nbActiveTransforms / (float)actorCount;
-	if ( rationMoving < 0.90f )
+	if ( rationMoving < 0.70f )
 	{
 		const PxU32 maxActors = 2000;
 		PxRigidDynamic * actors[maxActors];
@@ -123,7 +122,6 @@ void SceneComponent::OnUpdate( dxi::scene::Scene * scene, const RenderInfo & ren
 					0 ) );
 		}
 	}
-	*/
 }
 
 void SceneComponent::OnRender( dxi::scene::Scene * scene, const RenderInfo & renderInfo )
