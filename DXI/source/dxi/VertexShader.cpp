@@ -4,6 +4,7 @@
 #include <dxi/VertexShader.h>
 #include <dxi/win/DXRenderer.h>
 #include <dxi/exception/NotImplemented.h>
+#include <atlbase.h>
 
 using namespace dxi;
 

@@ -912,18 +912,6 @@ void Matrix::TransformNormal( V2< float > & coord ) const
 {
 	coord.x = m[0][0] * coord.x + m[1][0] * coord.y + m[2][0] * 0.0f + m[3][0] * 0.0f;
 	coord.y = m[0][1] * coord.x + m[1][1] * coord.y + m[2][1] * 0.0f + m[3][1] * 0.0f;
-	/*
-#ifdef DIRECTX9
-	D3DXVec2TransformNormal( (D3DXVECTOR2*)&coord, (D3DXVECTOR2*)&coord, (D3DXMATRIX*)&m );
-#else
-	DirectX::XMVECTOR vector;
-	vector.m128_f32[0] = coord[0];
-	vector.m128_f32[1] = coord[1];
-	vector = DirectX::XMVector2TransformNormal( vector, *(DirectX::XMMATRIX*)&m[0][0] );
-	coord[0] = vector.m128_f32[0];
-	coord[1] = vector.m128_f32[1];
-#endif
-*/
 }
 
 void Matrix::TransformNormal( V3< float > & coord ) const
@@ -931,21 +919,6 @@ void Matrix::TransformNormal( V3< float > & coord ) const
 	coord.x = m[0][0] * coord.x + m[1][0] * coord.y + m[2][0] * coord.z + m[3][0] * 0.0f;
 	coord.y = m[0][1] * coord.x + m[1][1] * coord.y + m[2][1] * coord.z + m[3][1] * 0.0f;
 	coord.z = m[0][2] * coord.x + m[1][2] * coord.y + m[2][2] * coord.z + m[3][2] * 0.0f;
-
-	/*
-#ifdef DIRECTX9
-	D3DXVec3TransformNormal( (D3DXVECTOR3*)&coord, (D3DXVECTOR3*)&coord, (D3DXMATRIX*)&m );
-#else
-	DirectX::XMVECTOR vector;
-	vector.m128_f32[0] = coord[0];
-	vector.m128_f32[1] = coord[1];
-	vector.m128_f32[2] = coord[2];
-	vector = DirectX::XMVector3TransformNormal( vector, *(DirectX::XMMATRIX*)&m[0][0] );
-	coord[0] = vector.m128_f32[0];
-	coord[1] = vector.m128_f32[1];
-	coord[2] = vector.m128_f32[2];
-#endif
-*/
 }
 
 void Matrix::Transform( V4< float > & coord ) const

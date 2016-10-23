@@ -4,6 +4,7 @@
 #include <dxi/VertexDeclaration.h>
 #include <dxi/win/DXRenderer.h>
 #include <unify/ColorUnit.h>
+#include <atlbase.h>
 
 using namespace dxi;
 

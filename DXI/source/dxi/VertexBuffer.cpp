@@ -6,6 +6,7 @@
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/Exception.h>
+#include <atlbase.h>
 
 using namespace dxi;
 

@@ -5,15 +5,6 @@
 
 using namespace dxi;
 
-/* TODO: For reference.
-#if defined( DIRECTX9 )
-D3DVIEWPORT9 m_dxViewport;
-#elif defined( DIRECTX11 )
-D3D11_VIEWPORT m_dxViewport;
-#endif
-*/
-
-
 Viewport::Viewport()
 {
 }

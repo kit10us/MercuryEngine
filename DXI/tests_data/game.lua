@@ -10,7 +10,7 @@ function OnStart()
 	-- Add camera...
 	local camera = root:AddCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
-	camera:Transform():LookAt( V3.New( 0, -7, 0 ) ) 
+	camera:Transform():LookAt( V3.New( 0, -2, 0 ) ) 
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
@@ -74,15 +74,15 @@ function OnStart()
 	
 	local terraParams = TerraParameters()
 	terraParams:SetEffect( Effect( "pit_image", "media/EffectPit.effect" ) )
-	terraParams:SetSize( Size2.New( 10, 10 ) )
+	terraParams:SetSize( Size2.New( 20, 20 ) )
 	terraParams:SetConstant( 0 )
-	terraParams:SetRC( 10, 10 )
-	terraParams:SetHeighMap( Texture( "test256", "media/pit.bmp", true, true ), Color.NewGrey( 4 ) )
+	terraParams:SetFaces( 20, 20 )
+	terraParams:SetHeightMap( Texture( "test256", "media/pit.bmp", true, true ), Color.NewGrey( 1 ) )
 	
 	local terraGeo = Terra( terraParams )
 	local terra = group:AddChild( "terra" )
 	terra:SetGeometry( terraGeo )
-	terra:Transform():SetPosition( V3.New( 0, -12, 0 ) );		
+	terra:Transform():SetPosition( V3.New( 0, -7, 0 ) );		
 	
 end
 

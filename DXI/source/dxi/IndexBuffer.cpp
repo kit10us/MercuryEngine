@@ -7,6 +7,7 @@
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/OutOfBounds.h>
 #include <dxi/exception/NotImplemented.h>
+#include <atlbase.h>
 
 using namespace dxi;
 
