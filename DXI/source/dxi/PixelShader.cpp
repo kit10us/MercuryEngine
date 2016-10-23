@@ -8,8 +8,16 @@
 
 using namespace dxi;
 
+#if defined( DIRECTX9 )
+
 class PixelShader::Pimpl
 {
+	PixelShader & m_owner;
+	win::DXRenderer * m_renderer;
+	CComPtr< ID3DXBuffer > m_codeBuffer;
+	CComPtr< ID3DXConstantTable > m_constantTable;
+	CComPtr< IDirect3DPixelShader9 > m_shader;
+
 public:
 	Pimpl( PixelShader & owner, core::IRenderer * renderer )
 		: m_owner( owner )
@@ -24,14 +32,9 @@ public:
 
 	void Destroy()
 	{
-#if defined( DIRECTX9 )
 		m_shader = nullptr;
 		m_codeBuffer = nullptr;
 		m_constantTable = nullptr;
-#elif defined( DIRECTX11 )
-		m_pixelShader = nullptr;
-		m_pixelShaderBuffer = nullptr;
-#endif
 	}
 
 	void Create()
@@ -43,7 +46,6 @@ public:
 			false;
 #endif
 
-#if defined( DIRECTX9 )
 		HRESULT result = S_OK;
 		CComPtr< ID3DXBuffer > errorBuffer;
 		if( !m_owner.m_filePath.Empty() )
@@ -87,25 +89,6 @@ public:
 		{
 			throw unify::Exception( "Attempted to create shader from unknown source!" );
 		}
-#elif defined( DIRECTX11 )
-		HRESULT result;
-		CComPtr< ID3D10Blob > errorBlob; // Generic buffer for error data.
-		D3D_SHADER_MACRO * shaderMacros = 0;
-		unsigned int flags1 = D3DCOMPILE_ENABLE_STRICTNESS;
-		if( debug )
-		{
-			flags1 |= D3DCOMPILE_DEBUG;
-		}
-
-		unsigned int flags2 = 0; // Only used for effect compilation.
-		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_owner.m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
-		if( FAILED( result ) )
-		{
-			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-			assert( !FAILED( result ) );
-		}
-
-#endif
 		CreateThisShader();
 	}
 
@@ -119,49 +102,97 @@ public:
 		m_scalarTime = m_constantTable->GetConstantByName( 0, "scalarTime" );
 		m_textureSize = m_constantTable->GetConstantByName( 0, "textureSize" );
 		*/
-#if defined( DIRECTX9 )
 		m_renderer->GetDxDevice()->CreatePixelShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
-#elif defined( DIRECTX11 )
-		HRESULT result;
-		ID3D11ClassLinkage * classLinkage = nullptr;
-		result = m_renderer->GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
-		assert( !FAILED( result ) );
-#endif	 
 	}
 
 	void Use( const RenderInfo & renderInfo )
 	{
-#if	defined( DIRECTX9 )
 		HRESULT result = m_renderer->GetDxDevice()->SetPixelShader( m_shader );
 		if( FAILED( result ) )
 		{
 			throw unify::Exception( "Failed to set pixel shader!" );
 		}
-#elif defined( DIRECTX11 )
-		win::DX::GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
-#endif
 	}
 
-#if defined( DIRECTX9 )
 	ID3DXConstantTable * GetConstantTable()
 	{
 		return m_constantTable;
 	}
-#elif defined( DIRECTX11 )
-#endif
+};
 
+
+#elif defined( DIRECTX11 )
+
+
+class PixelShader::Pimpl
+{
+public:
 	PixelShader & m_owner;
 	win::DXRenderer * m_renderer;
-
-#if defined( DIRECTX9 )
-	CComPtr< ID3DXBuffer > m_codeBuffer;
-	CComPtr< ID3DXConstantTable > m_constantTable;
-	CComPtr< IDirect3DPixelShader9 > m_shader;
-#elif defined( DIRECTX11 )
 	CComPtr< ID3D11PixelShader > m_pixelShader;
 	CComPtr< ID3D10Blob > m_pixelShaderBuffer;
-#endif											  
+
+	Pimpl( PixelShader & owner, core::IRenderer * renderer )
+		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >(renderer) )
+	{
+	}
+
+	~Pimpl()
+	{
+		Destroy();
+	}
+
+	void Destroy()
+	{
+		m_pixelShader = nullptr;
+		m_pixelShaderBuffer = nullptr;
+	}
+
+	void Create()
+	{
+		bool debug =
+#if defined( DEBUG ) || defined( _DEBUG )
+			true;
+#else
+			false;
+#endif
+
+		HRESULT result;
+		CComPtr< ID3D10Blob > errorBlob; // Generic buffer for error data.
+		D3D_SHADER_MACRO * shaderMacros = 0;
+		unsigned int flags1 = D3DCOMPILE_ENABLE_STRICTNESS;
+		if ( debug )
+		{
+			flags1 |= D3DCOMPILE_DEBUG;
+		}
+
+		unsigned int flags2 = 0; // Only used for effect compilation.
+		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_owner.m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
+		if ( FAILED( result ) )
+		{
+			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
+			assert( !FAILED( result ) );
+		}
+		CreateThisShader();
+	}
+
+	void CreateThisShader()
+	{
+		HRESULT result;
+		ID3D11ClassLinkage * classLinkage = nullptr;
+		result = m_renderer->GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
+		assert( !FAILED( result ) );
+	}
+
+	void Use( const RenderInfo & renderInfo )
+	{
+		win::DX::GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
+	}
 };
+
+
+#endif
 
 PixelShader::PixelShader( core::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer  ) )

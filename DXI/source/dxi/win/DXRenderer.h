@@ -23,9 +23,8 @@ namespace dxi
 
 #if defined(DIRECTX9)
 			IDirect3DDevice9 * GetDxDevice() const;
-
-			IDirect3DSwapChain9 * GetSwapChain() const;
 #elif defined(DIRECTX11)
+
 #endif
 
 			void SetCullMode( CullMode::TYPE mode ) override;

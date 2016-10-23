@@ -8,22 +8,18 @@
 
 using namespace dxi;
 
+
+
+#if defined( DIRECTX9 )
+
+
+
+
 class VertexShader::Pimpl
 {
 	VertexShader & m_owner;
 	win::DXRenderer * m_renderer;
 
-#if defined( DIRECTX9 )
-#elif defined( DIRECTX11 )
-	struct ConstantBuffer
-	{
-		DirectX::XMMATRIX worldMatrix;
-		DirectX::XMMATRIX viewMatrix;
-		DirectX::XMMATRIX projectionMatrix;
-	} m_vertexShaderConstants;
-#endif
-
-#if defined( DIRECTX9 )
 	CComPtr< ID3DXBuffer > m_codeBuffer;
 	CComPtr< ID3DXConstantTable > m_constantTable;
 	CComPtr< IDirect3DVertexShader9 > m_shader;
@@ -32,26 +28,15 @@ class VertexShader::Pimpl
 	D3DXHANDLE m_viewMatrixHandle;
 	D3DXHANDLE m_projectionMatrixHandle;
 	D3DXHANDLE m_finalMatrixHandle;
-#elif defined( DIRECTX11 )
-	CComPtr< ID3D11VertexShader > m_vertexShader;
-	CComPtr< ID3D10Blob > m_vertexShaderBuffer;
-	//CComPtr< ID3D11ShaderReflection > m_vertexShaderReflection;
-
-	// TODO: Need a standard interface for updating constant data that is cross renderer support.
-	CComPtr< ID3D11Buffer > m_vertexShaderConstantBuffer;
-#endif
 
 public:
 	Pimpl( VertexShader & owner, core::IRenderer * renderer )
 		: m_owner( owner )
 		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
-#if defined( DIRECTX9 )
 		, m_finalMatrixHandle( 0 )
 		, m_worldMatrixHandle( 0 )
 	    , m_viewMatrixHandle( 0 )
 	    , m_projectionMatrixHandle( 0 )
-#elif defined( DIRECTX11 )
-#endif
 	{
 	}
 
@@ -62,15 +47,9 @@ public:
 
 	void Destroy()
 	{
-#if defined( DIRECTX9 )
 		m_codeBuffer = nullptr;
 		m_constantTable = nullptr;
 		m_shader = nullptr;
-#elif defined( DIRECTX11 )
-		m_vertexShader = nullptr;
-		m_vertexShaderBuffer = nullptr;
-		//		m_vertexShaderReflection = nullptr;
-#endif
 	}
 
 	void Create()
@@ -80,7 +59,6 @@ public:
 		debug = true;
 #endif
 
-#if defined( DIRECTX9 )
 		HRESULT result = S_OK;
 		ID3DXBuffer * errorBuffer = 0;
 		if( !m_owner.m_filePath.Empty() )
@@ -128,35 +106,137 @@ public:
 		{
 			throw unify::Exception( "Attempted to create shader from unknown source!" );
 		}
-#elif defined( DIRECTX11 )
-		HRESULT result = S_OK;
-		CComPtr< ID3D10Blob > errorBlob; // Generic buffer for error data.
-		D3D_SHADER_MACRO * shaderMacros = 0;
-		unsigned int flags1 = D3DCOMPILE_ENABLE_STRICTNESS;
-		if( debug )
-		{
-			flags1 |= D3DCOMPILE_DEBUG;
-		}
-		unsigned int flags2 = 0; // Only used for effect compilation.
-		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_owner.m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags1, flags2, &m_vertexShaderBuffer, &errorBlob );
-		if( FAILED( result ) )
-		{
-			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-			assert( !FAILED( result ) );
-		}
-#endif
 		CreateThisShader();
 	}
 
 	void CreateThisShader()
 	{
-#if defined( DIRECTX9 )
 		m_renderer->GetDxDevice()->CreateVertexShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
 		m_finalMatrixHandle = m_constantTable->GetConstantByName( 0, "finalMatrix" );
 		m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "worldMatrix" );
 		m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "viewMatrix" );
 		m_projectionMatrixHandle = m_constantTable->GetConstantByName( 0, "projectionMatrix" );
-#elif defined( DIRECTX11 )
+		m_owner.m_vertexDeclaration->Build( m_owner );
+		m_owner.m_created = true;
+	}
+
+	void Use( const RenderInfo & renderInfo )
+	{
+		HRESULT result = S_OK;
+
+		unify::Matrix world = renderInfo.GetWorldMatrix();
+		unify::Matrix view = renderInfo.GetViewMatrix();
+		unify::Matrix projection = renderInfo.GetProjectionMatrix();
+
+		if( m_worldMatrixHandle != 0 )
+		{
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_worldMatrixHandle, (D3DXMATRIX*)&world.m );
+		}
+		if( m_viewMatrixHandle != 0 )
+		{
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_viewMatrixHandle, (D3DXMATRIX*)&view.m );
+		}
+		if( m_projectionMatrixHandle != 0 )
+		{
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_projectionMatrixHandle, (D3DXMATRIX*)&projection.m );
+		}
+		if( m_finalMatrixHandle != 0 )
+		{
+			unify::Matrix final = world * view * projection;
+			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_finalMatrixHandle, (D3DXMATRIX*)&final.m );
+		}
+
+		result = m_renderer->GetDxDevice()->SetVertexShader( m_shader );
+		if( FAILED( result ) )
+		{
+			throw unify::Exception( "Failed to set vertex shader!" );
+		}
+	}
+
+	ID3DXConstantTable * GetConstantTable()
+	{
+		return m_constantTable;
+	}
+
+	const void * GetBytecode() const
+	{
+		return nullptr;
+	}
+
+	size_t GetBytecodeLength() const
+	{
+		return 0;
+	}
+};
+
+
+#else defiend( DIRECTX11 )
+
+
+class VertexShader::Pimpl
+{
+	VertexShader & m_owner;
+	win::DXRenderer * m_renderer;
+
+	struct ConstantBuffer
+	{
+		DirectX::XMMATRIX worldMatrix;
+		DirectX::XMMATRIX viewMatrix;
+		DirectX::XMMATRIX projectionMatrix;
+	} m_vertexShaderConstants;
+
+	CComPtr< ID3D11VertexShader > m_vertexShader;
+	CComPtr< ID3D10Blob > m_vertexShaderBuffer;
+	//CComPtr< ID3D11ShaderReflection > m_vertexShaderReflection;
+
+	// TODO: Need a standard interface for updating constant data that is cross renderer support.
+	CComPtr< ID3D11Buffer > m_vertexShaderConstantBuffer;
+
+public:
+	Pimpl( VertexShader & owner, core::IRenderer * renderer )
+		: m_owner( owner )
+		, m_renderer( dynamic_cast< win::DXRenderer * >(renderer) )
+	{
+	}
+
+	~Pimpl()
+	{
+		Destroy();
+	}
+
+	void Destroy()
+	{
+		m_vertexShader = nullptr;
+		m_vertexShaderBuffer = nullptr;
+	}
+
+	void Create()
+	{
+		bool debug = false;
+#if defined( DEBUG ) || defined( _DEBUG )
+		debug = true;
+#endif
+
+		HRESULT result = S_OK;
+		CComPtr< ID3D10Blob > errorBlob; // Generic buffer for error data.
+		D3D_SHADER_MACRO * shaderMacros = 0;
+		unsigned int flags1 = D3DCOMPILE_ENABLE_STRICTNESS;
+		if ( debug )
+		{
+			flags1 |= D3DCOMPILE_DEBUG;
+		}
+		unsigned int flags2 = 0; // Only used for effect compilation.
+		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_owner.m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags1, flags2, &m_vertexShaderBuffer, &errorBlob );
+		if ( FAILED( result ) )
+		{
+			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
+			assert( !FAILED( result ) );
+		}
+		CreateThisShader();
+	}
+
+	void CreateThisShader()
+	{
 		HRESULT result = S_OK;
 		auto dxDevice = win::DX::GetDxDevice();
 		ID3D11ClassLinkage * classLinkage = nullptr;
@@ -189,51 +269,20 @@ public:
 		constantBufferSourceData.pSysMem = &m_vertexShaderConstants;
 		result = dxDevice->CreateBuffer( &constantBufferDesc, &constantBufferSourceData, &m_vertexShaderConstantBuffer );
 		assert( !FAILED( result ) );
-#endif
+		
 		m_owner.m_vertexDeclaration->Build( m_owner );
 		m_owner.m_created = true;
 	}
 
 	void Use( const RenderInfo & renderInfo )
 	{
-#if defined( DIRECTX9 )
-		HRESULT result = S_OK;
-
-		unify::Matrix world = renderInfo.GetWorldMatrix();
-		unify::Matrix view = renderInfo.GetViewMatrix();
-		unify::Matrix projection = renderInfo.GetProjectionMatrix();
-
-		if( m_worldMatrixHandle != 0 )
-		{
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_worldMatrixHandle, (D3DXMATRIX*)&world.m );
-		}
-		if( m_viewMatrixHandle != 0 )
-		{
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_viewMatrixHandle, (D3DXMATRIX*)&view.m );
-		}
-		if( m_projectionMatrixHandle != 0 )
-		{
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_projectionMatrixHandle, (D3DXMATRIX*)&projection.m );
-		}
-		if( m_finalMatrixHandle != 0 )
-		{
-			unify::Matrix final = world * view * projection;
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_finalMatrixHandle, (D3DXMATRIX*)&final.m );
-		}
-
-		result = m_renderer->GetDxDevice()->SetVertexShader( m_shader );
-		if( FAILED( result ) )
-		{
-			throw unify::Exception( "Failed to set vertex shader!" );
-		}
-#elif defined( DIRECTX11 )
 		auto dxDevice = m_renderer->GetDxDevice();
 		auto dxContext = m_renderer->GetDxContext();
 
 		using namespace DirectX;
 		D3D11_MAPPED_SUBRESOURCE subResource = D3D11_MAPPED_SUBRESOURCE();
 		HRESULT result = win::DX::GetDxContext()->Map( m_vertexShaderConstantBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
-		if( FAILED( result ) )
+		if ( FAILED( result ) )
 		{
 			throw unify::Exception( "Failed to set vertex shader!" );
 		}
@@ -250,36 +299,22 @@ public:
 		dxContext->VSSetConstantBuffers( 0, 1, &m_vertexShaderConstantBuffer.p );
 
 		win::DX::GetDxContext()->VSSetShader( m_vertexShader, nullptr, 0 );
-
-#endif
 	}
-
-#if defined( DIRECTX9 )
-	ID3DXConstantTable * GetConstantTable()
-	{
-		return m_constantTable;
-	}
-#elif defined( DIRECTX11 )
-#endif
 
 	const void * GetBytecode() const
 	{
-#if defined( DIRECTX9 )
-		return nullptr;
-#elif defined( DIRECTX11 )
 		return m_vertexShaderBuffer->GetBufferPointer();
-#endif
 	}
 
 	size_t GetBytecodeLength() const
 	{
-#if defined( DIRECTX9 )
-		return 0;
-#elif defined( DIRECTX11 )
 		return m_vertexShaderBuffer->GetBufferSize();
-#endif
 	}
 };
+
+
+#endif
+
 
 VertexShader::VertexShader( core::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )

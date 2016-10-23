@@ -56,8 +56,6 @@ namespace dxi
 		void Use() const;
 
 	protected:
-		unsigned int m_createFlags;
-
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
 	};

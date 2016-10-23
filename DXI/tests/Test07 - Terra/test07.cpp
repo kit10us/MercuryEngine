@@ -2,9 +2,8 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/scene/Camera.h>
+#include <dxi/scene/CameraComponent.h>
 #include <dxi/Mesh.h>
-#include <dxi/GeometryGroup.h>
 #include <dxi/Terra.h>
 #include <dxi/factory/EffectFactories.h>
 #include <dxi/win/DXILib.h>

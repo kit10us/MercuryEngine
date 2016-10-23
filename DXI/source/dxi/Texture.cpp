@@ -3,10 +3,13 @@
 //
 
 #if defined( DIRECTX9 )
+
 #elif defined( DIRECTX11 )
+
 #include <DirectXTex.h>
 #include <DDS.h>
 #pragma comment( lib, "DirectXTex" )
+
 #endif
 
 #include <dxi/Texture.h>

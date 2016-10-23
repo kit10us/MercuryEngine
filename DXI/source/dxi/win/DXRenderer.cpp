@@ -123,11 +123,6 @@ public:
 		return m_dxDevice;
 	}
 
-	IDirect3DSwapChain9 * GetSwapChain() const
-	{
-		return m_swapChain;
-	}
-
 	void BeforeRender()
 	{
 		HRESULT result;
@@ -311,11 +306,6 @@ public:
 		return m_dxDevice;
 	}
 
-	IDirect3DSwapChain9 * GetSwapChain() const
-	{
-		return m_swapChain;
-	}
-
 	void BeforeRender()
 	{
 		float clearColor[] = { 0.1f, 0.0f, 0.2f, 1.0f };
@@ -376,11 +366,6 @@ const core::Display & DXRenderer::GetDisplay() const
 IDirect3DDevice9 * DXRenderer::GetDxDevice() const
 {
 	return m_pimpl->GetDxDevice();
-}
-
-IDirect3DSwapChain9 * DXRenderer::GetSwapChain() const
-{
-	return m_pimpl->GetSwapChain();
 }
 
 #elif defined(DIRECTX11)
