@@ -4,7 +4,7 @@
 #pragma once
 
 #include <dxi/input/IInputSource.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 #include <Xinput.h>
 #include <map>
 
@@ -13,7 +13,7 @@ namespace dxigp
 	class Gamepad : public dxi::input::IInputSource
 	{
 	public:
-		Gamepad( dxi::core::Game * game );
+		Gamepad( dxi::core::IGame * game );
 		virtual ~Gamepad();
 
 		std::string Name() const;
@@ -33,7 +33,7 @@ namespace dxigp
 		bool SetValue( size_t subSource, std::string name, float value ) override;
 
 	private:
-		dxi::core::Game * m_game;
+		dxi::core::IGame * m_game;
 		std::map< DWORD, XINPUT_STATE > m_states;
 		std::map< DWORD, XINPUT_STATE > m_prevStates;
 	};

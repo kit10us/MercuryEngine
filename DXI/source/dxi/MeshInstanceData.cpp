@@ -3,7 +3,6 @@
 #pragma once
 
 #include <dxi/MeshInstanceData.h>
-#include <dxi/core/Game.h>
 
 using namespace dxi;
 

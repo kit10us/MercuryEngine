@@ -5,6 +5,7 @@
 #include <dxilua/DXILua.h>
 #include <memory.h>
 #include <dxi/win/DXILib.h>
+#include <dxi/core/Game.h>
 
 #include <luaphysx/ExportPhysX.h>
 #include <luaphysx/ExportPxSceneComponent.h>
@@ -14,8 +15,8 @@
 #include <luaphysx/ExportPxRigidStatic.h>
 
 #pragma comment( lib, "lua53" )
-#pragma comment( lib, "../DXI/tests_data/DXILua.lib" ) // TODO: Ensure these point to the DLL output, once we have one, instead of the tests_data.
-#pragma comment( lib, "../DXI/tests_data/DXIPhysX" )
+#pragma comment( lib, "../extensions/DXILua.lib" ) // TODO: Ensure these point to the DLL output, once we have one, instead of the tests_data.
+#pragma comment( lib, "../extensions/DXIPhysX.lib" )
 
 
 void Deleter( dxi::scripting::IScriptEngine * se )
@@ -23,7 +24,8 @@ void Deleter( dxi::scripting::IScriptEngine * se )
 	delete se;
 }
 				   
-__declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
+__declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * document )
 {
 	dxi::scripting::IScriptEngine * se = game->GetScriptEngine( "lua" );
 	if ( ! se )

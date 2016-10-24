@@ -6,6 +6,7 @@
 #include <dxi/RenderInfo.h>
 #include <dxi/core/Display.h>
 #include <dxi/win/DirectX.h>
+#include <memory>
 
 namespace dxi
 {
@@ -17,14 +18,15 @@ namespace dxi
 		{
 		public:
 			DXRenderer( WindowsOS * os, core::Display display );
-			virtual ~DXRenderer();
-
+			virtual ~DXRenderer();																															   
 			const core::Display & GetDisplay() const;
 
 #if defined(DIRECTX9)
 			IDirect3DDevice9 * GetDxDevice() const;
 #elif defined(DIRECTX11)
-
+			ID3D11Device * GetDxDevice() const;
+			ID3D11DeviceContext * GetDxContext() const;
+			IDXGISwapChain * GetSwapChain() const;
 #endif
 
 			void SetCullMode( CullMode::TYPE mode ) override;

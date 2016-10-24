@@ -4,7 +4,7 @@
 #pragma once
 
 #include <dxi/input/IInputSource.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 
 #define DIRECTINPUT_VERSION		0x0800
 #include <dinput.h>
@@ -24,7 +24,7 @@ namespace dxikeyboard
 	class Keyboard : public dxi::input::IInputSource
 	{
 	public:
-		Keyboard( dxi::core::Game * game );
+		Keyboard( dxi::core::IGame * game );
 		virtual ~Keyboard();
 
 		std::string Name() const;
@@ -46,7 +46,7 @@ namespace dxikeyboard
 		bool SetValue( size_t subSource, std::string name, float value );
 
 	private:
-		dxi::core::Game * m_game;
+		dxi::core::IGame * m_game;
 
 		CComPtr< IDirectInput > m_pdi;
 		CComPtr< IDirectInputDevice > m_pdiKeyboard;

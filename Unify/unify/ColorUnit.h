@@ -28,7 +28,10 @@ namespace unify
 		static ColorUnit ColorUnitWhite( float a = 1.0f );
 		static ColorUnit ColorUnitRed( float r = 1.0f, float a = 1.0f );
 		static ColorUnit ColorUnitGreen( float g = 1.0f, float a = 1.0f );
-		static ColorUnit ColorUnitBlue( float b = 1.0f, float a = 1.0f );
+		static ColorUnit ColorUnitBlue( float b = 1.0f, float a = 1.0f );	
+		static ColorUnit ColorUnitYellow( float b = 1.0f, float a = 1.0f );
+		static ColorUnit ColorUnitCyan( float b = 1.0f, float a = 1.0f );
+		static ColorUnit ColorUnitMagenta( float b = 1.0f, float a = 1.0f );
 		static ColorUnit ColorUnitGrey( float grey, float a = 1.0f );
 		static ColorUnit ColorUnitBlack( float a = 1.0f);
 		static ColorUnit ColorUnitZero();

@@ -10,6 +10,7 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/win/DXILib.h>
+#include <dxi/RenderMethod.h>
 #include <DXIWinMain.h>
 
 using namespace dxi;
@@ -102,7 +103,6 @@ void MyGame::Startup()
 bool MyGame::Update( RenderInfo & renderInfo )
 {
 	static unify::Angle rotation( unify::Angle::AngleInRadians( 0.0f ) );
-	static unify::Angle changeOverTime( unify::Angle::AngleInRadians( 0.00525f *0.5f ) );
 	static int axisIndex = 0;
 
 	/*
@@ -113,7 +113,7 @@ bool MyGame::Update( RenderInfo & renderInfo )
 	const float width = 800;
 	const float height = 600;
 
-	rotation += changeOverTime;
+	rotation += unify::Angle::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
 	{
 		++axisIndex;

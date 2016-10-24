@@ -11,7 +11,6 @@
 #include <unify/RowColumn.h>
 #include <unify/Quaternion.h>
 #include <unify/Angle.h>
-#include <memory>
 
 namespace unify
 {

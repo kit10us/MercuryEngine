@@ -11,7 +11,7 @@ using namespace dxi;
 
 void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi::Mesh * mesh );
 
-GeometryFactory::GeometryFactory( core::Game * game )
+GeometryFactory::GeometryFactory( core::IGame * game )
 	: m_game( game )
 {
 }
@@ -31,7 +31,8 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source )
 	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
 	if( version == "1.2" )
 	{
-		LoadMesh_1_2( m_game, geometryElement, mesh );
+		auto game = dynamic_cast<core::Game *>(m_game);
+		LoadMesh_1_2( game, geometryElement, mesh );
 	}
 	else
 	{

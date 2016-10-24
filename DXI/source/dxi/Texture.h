@@ -133,22 +133,8 @@ namespace dxi
 		unsigned int SpriteCount() const;
 
 	protected:
-		unify::Path m_filePath;
-		bool m_created;
-
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();
-
-		unify::Size< unsigned int > m_fileSize;
-		unify::Size< unsigned int > m_imageSize;
-
-		bool m_useColorKey;
-		unify::Color m_colorKey;
-		bool m_renderable;
-		bool m_lockable;
-
-		SpriteArrayMap m_spriteArrayMap;
-		SpriteMasterList m_spriteMasterList;
 
 		class Pimpl;
 		std::shared_ptr< class Pimpl > m_pimpl;

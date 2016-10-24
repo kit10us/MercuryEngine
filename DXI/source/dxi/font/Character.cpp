@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/font/Character.h>
-#include <dxi/core/Game.h>
 
 using namespace dxi;
 using namespace font;

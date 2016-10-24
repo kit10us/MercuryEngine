@@ -15,7 +15,7 @@ using namespace dxi;
 
 ScriptEngine * ScriptEngine::s_se;
 
-ScriptEngine::ScriptEngine( dxi::core::Game * game )
+ScriptEngine::ScriptEngine( dxi::core::IGame * game )
 	: m_game( game )
 	, m_state{ CreateState() }
 {
@@ -103,7 +103,7 @@ DXILUADLL_API void ScriptEngine::AddType( const char * name, const luaL_Reg * fu
 	lua_pop( m_state, 1 );
 }
 
-dxi::core::Game * ScriptEngine::GetGame()
+dxi::core::IGame * ScriptEngine::GetGame()
 {
 	return ScriptEngine::s_se->m_game;
 }

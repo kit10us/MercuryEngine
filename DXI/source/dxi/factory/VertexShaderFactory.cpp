@@ -8,7 +8,7 @@
 
 using namespace dxi;
 
-VertexShaderFactory::VertexShaderFactory( core::Game * game )
+VertexShaderFactory::VertexShaderFactory( core::IGame * game )
 	: m_game( game )
 {
 }

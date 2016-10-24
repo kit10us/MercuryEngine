@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/Mesh.h>
-#include <dxi/core/Game.h>
 #include <dxi/MeshInstanceData.h>
 
 using namespace dxi;

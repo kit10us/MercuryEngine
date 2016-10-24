@@ -187,7 +187,7 @@ public:
 
 	void Use( const RenderInfo & renderInfo )
 	{
-		win::DX::GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
+		m_renderer->GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
 	}
 };
 

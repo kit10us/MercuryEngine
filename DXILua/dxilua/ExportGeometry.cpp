@@ -5,6 +5,7 @@
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/shape/ExportShapeParameters.h>
 #include <dxi/shapes/ShapeCreators.h>
+#include <dxi/core/Game.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -36,7 +37,10 @@ int Geometry_Constructor( lua_State * state )
 
 	Geometry::ptr geometry;
 
-	auto game = ScriptEngine::GetGame();
+	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+
+	try
+	{
 	
 	// Allow pulling existing from manager...
 	if ( top == 1 && type == LUA_TSTRING )
@@ -60,6 +64,11 @@ int Geometry_Constructor( lua_State * state )
 	*geometryProxy = new GeometryProxy;
 	(*geometryProxy)->geometry = geometry;
 	luaL_setmetatable( state, "Geometry" );
+	}
+	catch (std::exception ex )
+	{
+		game->ReportError( ErrorLevel::Failure, "LUA", ex.what() );
+	}
 	
 	return 1;
 }

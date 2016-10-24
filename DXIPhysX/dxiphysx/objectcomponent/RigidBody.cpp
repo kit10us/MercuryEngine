@@ -6,6 +6,7 @@
 #include <dxi/scene/Object.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 #include <dxiphysx/SceneComponent.h>
+#include <dxi/scene/Scene.h>
 
 using namespace dxi;
 using namespace dxiphysx;

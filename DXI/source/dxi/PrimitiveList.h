@@ -23,11 +23,6 @@ namespace dxi
 
 		PrimitiveList( const PrimitiveList & ) = delete;
 
-		/// <summary>
-		/// Append an existing PrimtiveList onto this one.
-		/// </summary>
-		void Append( const PrimitiveList & from );
-
 		void Destroy();
 
 		void Render( const RenderInfo & renderInfo ) const;

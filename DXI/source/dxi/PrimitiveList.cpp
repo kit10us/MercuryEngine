@@ -17,34 +17,6 @@ PrimitiveList::~PrimitiveList()
 	Destroy();
 }
 
-void PrimitiveList::Append( const PrimitiveList & from )
-{
-	for( std::vector< BufferSet::shared_ptr >::const_iterator itrFrom = from.m_buffers.begin(), endFrom = from.m_buffers.end(); itrFrom != endFrom; ++itrFrom )
-	{
-		const BufferSet & fromSet = *itrFrom->get();
-		bool bufferFound = false;
-		for( std::vector< BufferSet::shared_ptr >::iterator itrTo = m_buffers.begin(), endTo = m_buffers.end(); itrTo != endTo && bufferFound == false; ++itrTo )
-		{
-			BufferSet & toSet = *itrTo->get();
-			if ( toSet.GetVertexBuffer().GetVertexDeclaration() == fromSet.GetVertexBuffer().GetVertexDeclaration() )
-			{
-				size_t vbOffset = toSet.GetVertexBuffer().Append( fromSet.GetVertexBuffer() );
-				size_t ibOffset = toSet.GetIndexBuffer().Append( fromSet.GetIndexBuffer(), vbOffset );
-				size_t rbOffset = toSet.GetRenderMethodBuffer().Append( fromSet.GetRenderMethodBuffer(), vbOffset, ibOffset );
-				bufferFound = true;
-			}
-		}
-
-		if ( bufferFound == false )
-		{
-			BufferSet & toSet = AddBufferSet();		
-			toSet.GetVertexBuffer().Append( fromSet.GetVertexBuffer() );
-			toSet.GetIndexBuffer().Append( fromSet.GetIndexBuffer() );
-			toSet.GetRenderMethodBuffer().Append( fromSet.GetRenderMethodBuffer(), 0, 0 );
-		}
-	}
-}
-
 // Destroy all contents...
 void PrimitiveList::Destroy()
 {

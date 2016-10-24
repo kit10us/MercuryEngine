@@ -4,26 +4,16 @@
 #pragma once
 
 #include <DXILuaDLL.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 #include <dxi/scripting/IScriptEngine.h>
 #include <lua.hpp>
 
 namespace dxilua
 {
-
-	class ILuaExtension
-	{
-	public:
-		virtual ~ILuaExtension()
-		{
-		}
-	};
-
-
 	class ScriptEngine : public dxi::scripting::IScriptEngine
 	{
 	public:
-		ScriptEngine( dxi::core::Game * game );
+		ScriptEngine( dxi::core::IGame * game );
 		~ScriptEngine();
 
 		dxi::scripting::ExecuteResult ExecuteString( std::string line ) override;
@@ -37,10 +27,10 @@ namespace dxilua
 
 		DXILUADLL_API void AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector );
 
-		static dxi::core::Game * GetGame();
+		static dxi::core::IGame * GetGame();
 
 	private:
-		dxi::core::Game * m_game;		
+		dxi::core::IGame * m_game;		
 		lua_State * m_state;
 
 		std::list< dxi::scripting::IModule::ptr > m_modules;

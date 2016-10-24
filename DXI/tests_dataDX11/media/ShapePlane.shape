@@ -2,9 +2,7 @@
   <shape>
     <type>plane</type>
     <effect name="cube" source="EffectTextured.effect"/>
-    <segments>2</segments>
     <size2>2,2</size2>
     <diffuse>0,255,255,255</diffuse>
-    <center>-1.5, -3, 0</center>
   </shape>
 </xml>

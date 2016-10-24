@@ -9,4 +9,4 @@
 
 std::shared_ptr< physx::PxPhysics > GetPhysX();
 
-void RegisterPhysX( dxilua::ScriptEngine * luaSE, dxi::core::Game * game );
+void RegisterPhysX( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game );

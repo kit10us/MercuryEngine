@@ -11,6 +11,7 @@
 #include <unify/Color.h>
 #include <dxi/Geometry.h>
 #include <dxi/PlacementEntry.h>
+#include <dxi/Texture.h>
 #include <vector>
 
 namespace dxi

@@ -6,7 +6,7 @@
 using namespace dxi;
 using namespace font;
 
-TextBox::TextBox( core::Game * game )
+TextBox::TextBox( core::IGame * game )
 	: m_game( game )
 {
 }

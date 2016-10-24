@@ -10,4 +10,3 @@
 #define DXILUADLL_API __declspec(dllimport)
 #endif
 
-#include <dxi/core/Game.h>

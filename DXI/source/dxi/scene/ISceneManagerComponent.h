@@ -4,16 +4,12 @@
 #pragma once
 
 #include <dxi/scene/Scene.h>
-#include <string>
 #include <memory>
 
 namespace dxi
 {
 	namespace scene
 	{
-		class Scene;
-		class Object;
-
 		/// <summary>
 		/// Used to interace with scenes.
 		/// </summary>

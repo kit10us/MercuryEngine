@@ -5,8 +5,9 @@
 
 using namespace dxi;
 
-// This is the automatically assumed size of the
-size_t dxi::SizeOf( ElementFormat format )
+using namespace dxi;
+
+size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 {
 	switch ( format )
 	{
@@ -18,34 +19,8 @@ size_t dxi::SizeOf( ElementFormat format )
 		return sizeof( float ) * 3;
 	case ElementFormat::Float4:
 		return sizeof( float ) * 4;
-	case ElementFormat::Color:
+	case ElementFormat::ColorUNorm:
 		return sizeof( unify::Color );
-		/*
-		case D3DDECLTYPE_UBYTE4:
-		return sizeof( unsigned char ) * 4;
-		case D3DDECLTYPE_SHORT2:
-		return sizeof( short ) * 2;
-		case D3DDECLTYPE_SHORT4:
-		return sizeof( short ) * 4;
-		case D3DDECLTYPE_UBYTE4N:
-		return sizeof( unsigned char ) * 4;
-		case D3DDECLTYPE_SHORT2N:
-		return sizeof( short ) * 2;
-		case D3DDECLTYPE_SHORT4N:
-		return sizeof( short ) * 4;
-		case D3DDECLTYPE_USHORT2N:
-		return sizeof( unsigned short ) * 2;
-		case D3DDECLTYPE_USHORT4N:
-		return sizeof( unsigned short ) * 4;
-		case D3DDECLTYPE_UDEC3:
-		return 4;
-		case D3DDECLTYPE_DEC3N:
-		return 4;
-		case D3DDECLTYPE_FLOAT16_2:
-		return 2 * 2;
-		case D3DDECLTYPE_FLOAT16_4:
-		return 2 * 4;
-		*/
 	case ElementFormat::Unknown:
 		return 0;
 	default:
@@ -53,36 +28,268 @@ size_t dxi::SizeOf( ElementFormat format )
 	}
 }
 
-ElementFormat dxi::ElementFormatFromString( std::string type )
+
+template< typename T >
+T Convert( std::string in, std::initializer_list< std::pair< std::string, T > > pairs, bool( *compare )(const std::string &, const std::string &) = unify::StringIs )
 {
-	ElementFormat format;
-	if ( unify::StringIsAny( type, { "FLOAT1", "FLOAT", "R32_FLOAT" } ) )
+	for ( auto && pair : pairs )
 	{
-		format = ElementFormat::Float1;
+		if ( compare( in, pair.first ) ) return pair.second;
 	}
-	else if ( unify::StringIsAny( type, { "FLOAT2", "TEXCOORD", "R32G32_FLOAT" } ) )
+	throw unify::Exception( "Conversion of " + in + " not found!" );
+}
+
+ElementFormat::TYPE ElementFormat::FromString( std::string format )
+{
+	return Convert< ElementFormat::TYPE>( format,
 	{
-		format = ElementFormat::Float2;
+		{ "Float1", ElementFormat::Float1 },
+		{ "Float2", ElementFormat::Float2 },
+		{ "TexCoord", ElementFormat::Float2 },
+		{ "Float3", ElementFormat::Float3 },
+		{ "ColorUNorm", ElementFormat::ColorUNorm },
+		{ "Color", ElementFormat::ColorUNorm }
+	} );
+}
+
+std::string ElementFormat::ToString( ElementFormat::TYPE format )
+{
+	switch ( format )
+	{
+	case ElementFormat::Float1:
+		return "Float1";
+	case ElementFormat::Float2:
+		return "Float2";
+	case ElementFormat::Float3:
+		return "Float3";
+	case ElementFormat::Float4:
+		return "Float4";
+	case ElementFormat::ColorUNorm:
+		return "ColorUNorm";
+	case ElementFormat::Unknown:
+		return 0;
+	default:
+		throw unify::Exception( "Vertex declaration type not support!" );
 	}
-	else if ( unify::StringIsAny( type, { "FLOAT3", "R32G32B32_FLOAT" } ) )
+}
+
+
+
+
+
+VertexElement::VertexElement()
+	: SemanticIndex( 0 )
+	, Format( ElementFormat::Unknown )
+	, InputSlot( 0 )
+	, AlignedByteOffset( 0 )
+{
+}
+
+VertexElement::VertexElement( const qxml::Element & element, unsigned int slot )
+{
+	InputSlot = 0;
+	if ( element.HasAttributes( "stream" ) )
 	{
-		format = ElementFormat::Float3;
+		InputSlot = element.GetAttributeElse< unsigned short >( "stream", 0 );
 	}
-	else if ( unify::StringIsAny( type, { "FLOAT4", "COLORUNIT", "R32G32B32A32_FLOAT" } ) )
+	else if ( element.HasAttributes( "slot" ) )
 	{
-		format = ElementFormat::Float4;
+		InputSlot = element.GetAttributeElse< unsigned short >( "slot", 0 );
 	}
-	else if ( unify::StringIsAny( type, { "D3DCOLOR", "COLOR", "R8G8B8A8_UNORM" } ) )
+
+
+	std::string name = element.GetAttribute( "name" )->GetString();
+	if ( unify::StringIs( name, "POSITION" ) )
 	{
-		format = ElementFormat::Color;
+		SemanticName = "POSITION";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
+	{
+		SemanticName = "BLENDWEIGHT";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "BLENDINDICES" ) )
+	{
+		SemanticName = "BLENDINDICES";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "NORMAL" ) )
+	{
+		SemanticName = "NORMAL";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "PSIZE" ) )
+	{
+		SemanticName = "PSIZE";
+		SemanticIndex = 0;
+	}
+	else if ( unify::BeginsWith( name, "TEXCOORD" ) )
+	{
+		SemanticName = "TEXCOORD";
+		std::string n = name.substr( strlen( "TEXCOORD" ) );
+		SemanticIndex = unify::Cast< unsigned char >( n );
+	}
+	else if ( unify::BeginsWith( name, "TEX" ) )
+	{
+		SemanticName = "TEXCOORD";
+		std::string n = name.substr( strlen( "TEX" ) );
+		SemanticIndex = unify::Cast< unsigned char >( n );
+	}
+	else if ( unify::StringIs( name, "TANGENT" ) )
+	{
+		SemanticName = "TANGENT";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "BINORMAL" ) )
+	{
+		SemanticName = "BINORMAL";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "TESSFACTOR" ) )
+	{
+		SemanticName = "TESSFACTOR";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "POSITIONT" ) )
+	{
+		SemanticName = "POSITIONT";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
+	{
+		SemanticName = "COLOR";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "SPECULAR" ) )
+	{
+		SemanticName = "COLOR";
+		SemanticIndex = 1;
+	}
+	else if ( unify::StringIs( name, "FOG" ) )
+	{
+		SemanticName = "FOG";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "DEPTH" ) )
+	{
+		SemanticName = "DEPTH";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "SAMPLE" ) )
+	{
+		SemanticName = "SAMPLE";
+		SemanticIndex = 0;
 	}
 	else
 	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration type!" );
+		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
 	}
 
-	return format;
+	Format = ElementFormat::FromString( element.GetAttribute( "type" )->GetString() );
+
+	AlignedByteOffset = 0; // Because we don't know here.
 }
+
+VertexElement::VertexElement( const qjson::Pair & pair, unsigned int slot )
+{
+	std::string name = pair.GetName();
+	if ( unify::StringIs( name, "POSITION" ) )
+	{
+		SemanticName = "POSITION";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
+	{
+		SemanticName = "BLENDWEIGHT";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "BLENDINDICES" ) )
+	{
+		SemanticName = "BLENDINDICES";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "NORMAL" ) )
+	{
+		SemanticName = "NORMAL";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "PSIZE" ) )
+	{
+		SemanticName = "PSIZE";
+		SemanticIndex = 0;
+	}
+	else if ( unify::BeginsWith( name, "TEXCOORD" ) )
+	{
+		SemanticName = "TEXCOORD";
+		std::string n = name.substr( strlen( "TEXCOORD" ) );
+		SemanticIndex = unify::Cast< unsigned char >( n );
+	}
+	else if ( unify::BeginsWith( name, "TEX" ) )
+	{
+		SemanticName = "TEXCOORD";
+		std::string n = name.substr( strlen( "TEX" ) );
+		SemanticIndex = unify::Cast< unsigned char >( n );
+	}
+	else if ( unify::StringIs( name, "TANGENT" ) )
+	{
+		SemanticName = "TANGENT";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "BINORMAL" ) )
+	{
+		SemanticName = "BINORMAL";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "TESSFACTOR" ) )
+	{
+		SemanticName = "TESSFACTOR";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "POSITIONT" ) )
+	{
+		SemanticName = "POSITIONT";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
+	{
+		SemanticName = "COLOR";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "SPECULAR" ) )
+	{
+		SemanticName = "COLOR";
+		SemanticIndex = 1;
+	}
+	else if ( unify::StringIs( name, "FOG" ) )
+	{
+		SemanticName = "FOG";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "DEPTH" ) )
+	{
+		SemanticName = "DEPTH";
+		SemanticIndex = 0;
+	}
+	else if ( unify::StringIs( name, "SAMPLE" ) )
+	{
+		SemanticName = "SAMPLE";
+		SemanticIndex = 0;
+	}
+	else
+	{
+		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
+	}
+
+	Format = ElementFormat::FromString( pair.GetValue()->ToString() );
+	InputSlot = slot;
+}
+
+size_t VertexElement::SizeOf() const
+{
+	return ElementFormat::SizeOf( Format );
+}
+
 
 
 
@@ -113,7 +320,7 @@ VertexElement CommonVertexElement::Diffuse( unsigned int slot )
 {
 	VertexElement diffuseE = {};
 	diffuseE.InputSlot = slot;
-	diffuseE.Format = ElementFormat::Color;
+	diffuseE.Format = ElementFormat::ColorUNorm;
 	diffuseE.SemanticName = "COLOR";
 	diffuseE.SemanticIndex = 0;
 	return diffuseE;
@@ -123,7 +330,7 @@ VertexElement CommonVertexElement::Specular( unsigned int slot )
 {
 	VertexElement specularE = {};
 	specularE.InputSlot = slot;
-	specularE.Format = ElementFormat::Color;
+	specularE.Format = ElementFormat::ColorUNorm;
 	specularE.SemanticName = "COLOR";
 	specularE.SemanticIndex = 1;
 	return specularE;

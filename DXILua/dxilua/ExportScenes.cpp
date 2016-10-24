@@ -3,6 +3,7 @@
 
 #include <dxilua/ExportScenes.h>
 #include <dxilua/DXILua.h>
+#include <dxi/core/Game.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -31,7 +32,7 @@ int Scenes_AddScene( lua_State * state )
 
 	std::string name = lua_tostring( state, 1 );
 
-	auto game = ScriptEngine::GetGame();
+	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 
 	game->GetSceneManager()->Add( name );
 

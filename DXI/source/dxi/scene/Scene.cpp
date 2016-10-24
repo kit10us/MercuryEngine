@@ -3,7 +3,6 @@
 
 #include <dxi/scene/Scene.h>
 #include <dxi/Frustum.h>
-#include <dxi/core/Game.h>
 #include <map>
 
 using namespace dxi;

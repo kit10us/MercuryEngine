@@ -1,6 +1,8 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
+#include <dxi/core/Game.h>
+
 #include <dxilua/DXILua.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/ExportTransform.h>
@@ -10,9 +12,9 @@
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/ExportCameraComponent.h>
 #include <dxi/scene/ScriptComponent.h>
+
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/ExportTerra.h>
-
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/unify/ExportSize2.h>
@@ -183,7 +185,7 @@ int Object_SetGeometry( lua_State * state )
 	if ( lua_type( state, 2 ) == LUA_TSTRING ) 
 	{
 		std::string geometryName = lua_tostring( state, 2 );
-		auto game = ScriptEngine::GetGame();
+		auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 		geometry = game->GetManager< Geometry >()->Find( geometryName );
 	}
 	else

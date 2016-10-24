@@ -5,6 +5,7 @@
 #include <dxi/win/DXRenderer.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
+#include <dxi/exception/NotImplemented.h>
 #include <dxi/exception/Exception.h>
 #include <atlbase.h>
 
@@ -89,91 +90,6 @@ public:
 			lock.CopyBytesFrom( source, 0, m_owner.GetSize() );
 		}
 	}
-
-	void Resize( unsigned int numVertices )
-	{
-		unsigned int oldNumberOfVertices = m_owner.GetLength();
-		size_t oldSize = m_owner.GetSize();
-		IDirect3DVertexBuffer9 * oldVertexBuffer = m_VB;
-		m_VB = 0;
-		m_owner.m_length = 0;
-
-		Create( numVertices, m_owner.GetVertexDeclaration(), nullptr,  m_owner.GetUsage() );
-
-		HRESULT hr;
-		unsigned char * oldData;
-		hr = oldVertexBuffer->Lock( 0, 0, (void**)&oldData, D3DLOCK_READONLY );
-		if( FAILED( hr ) )
-		{
-			throw exception::FailedToLock( "Failed to lock vertex buffer!" );
-		}
-
-		unsigned char * newData;
-		hr = m_VB->Lock( 0, 0, (void**)&newData, D3DLOCK_DISCARD );
-		if( FAILED( hr ) )
-		{
-			oldVertexBuffer->Release();
-			oldVertexBuffer = 0;
-			throw exception::FailedToLock( "Failed to lock vertex buffer!" );
-		}
-
-		memcpy( newData, oldData, oldSize );
-		m_VB->Unlock();
-		oldVertexBuffer->Unlock();
-		oldVertexBuffer->Release();
-		oldVertexBuffer = 0;
-	}
-
-	size_t Append( const VertexBuffer & from )
-	{
-		size_t offset = m_owner.GetLength();
-		size_t originalSizeInBytes = m_owner.GetSize();
-
-		if( from.GetLength() == 0 )
-		{
-			return offset;
-		}
-
-		if( from.GetUsage() != BufferUsage::Staging )
-		{
-			throw unify::Exception( "From VertexBuffer's usage is not Staging!" );
-		}
-
-		if( m_owner.GetLength() == 0 )
-		{
-			unsigned int length = from.GetLength();
-			VertexDeclaration::ptr vd = from.GetVertexDeclaration();
-			BufferUsage::TYPE usage = from.GetUsage();
-			//unsigned int createFlags = from.GetCreateFlags();
-			assert( 0 ); // TOOD:
-			Create( length, vd, nullptr, usage /*, createFlags*/ );
-		}
-		else
-		{
-			if( m_owner.GetUsage() != BufferUsage::Staging )
-			{
-				throw unify::Exception( "VertexBuffer's usage is not Staging!" );
-			}
-			if( *m_owner.m_vertexDeclaration != *from.m_vertexDeclaration )
-			{
-				throw unify::Exception( "VertexBuffer's source and destination doesn't match for Append!" );
-			}
-
-			Resize( m_owner.GetLength() + from.GetLength() );
-		}
-
-		// Copy vertices.5..
-		unify::DataLock locksrc, lockdest;
-		Lock( lockdest );
-
-		from.LockReadOnly( locksrc );
-
-		lockdest.CopyBytesFrom( locksrc.GetDataReadOnly(), originalSizeInBytes, locksrc.GetSizeInBytes() );
-		Unlock();
-		from.Unlock();
-		return offset;
-	}
-
 
 	void Lock( unify::DataLock & lock )
 	{
@@ -332,63 +248,9 @@ public:
 		OnFailedThrow( result, "Failed to create vertex buffer!" );
 	}
 
-	void Resize( unsigned int numVertices )
-	{
-	}
-
-	size_t Append( const VertexBuffer & from )
-	{
-		size_t offset = m_owner.GetLength();
-		size_t originalSizeInBytes = m_owner.GetSize();
-
-		if ( from.GetLength() == 0 )
-		{
-			return offset;
-		}
-
-		if ( from.GetUsage() != BufferUsage::Staging )
-		{
-			throw unify::Exception( "From VertexBuffer's usage is not Staging!" );
-		}
-
-		if ( m_owner.GetLength() == 0 )
-		{
-			unsigned int length = from.GetLength();
-			VertexDeclaration::ptr vd = from.GetVertexDeclaration();
-			BufferUsage::TYPE usage = from.GetUsage();
-			//unsigned int createFlags = from.GetCreateFlags();
-			assert( 0 ); // TOOD:
-			Create( length, vd, nullptr, usage /*, createFlags*/ );
-		}
-		else
-		{
-			if ( m_owner.GetUsage() != BufferUsage::Staging )
-			{
-				throw unify::Exception( "VertexBuffer's usage is not Staging!" );
-			}
-			if ( *m_owner.m_vertexDeclaration != *from.m_vertexDeclaration )
-			{
-				throw unify::Exception( "VertexBuffer's source and destination doesn't match for Append!" );
-			}
-
-			Resize( m_owner.GetLength() + from.GetLength() );
-		}
-
-		// Copy vertices.5..
-		unify::DataLock locksrc, lockdest;
-		Lock( lockdest );
-
-		from.LockReadOnly( locksrc );
-
-		lockdest.CopyBytesFrom( locksrc.GetDataReadOnly(), originalSizeInBytes, locksrc.GetSizeInBytes() );
-		Unlock();
-		from.Unlock();
-		return offset;
-	}
-
-
 	void Lock( unify::DataLock & lock )
 	{
+		throw exception::NotImplemented();
 	}
 
 	void LockReadOnly( unify::DataLock & lock ) const
@@ -436,10 +298,10 @@ VertexBuffer::VertexBuffer( core::IRenderer * renderer )
 {
 }
 
-VertexBuffer::VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage/*, unify::Flags flags*/ )
+VertexBuffer::VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 {
-	Create( numVertices, vertexDeclaration, source, usage/*, flags*/ );
+	Create( numVertices, vertexDeclaration, source, usage );
 }
 
 VertexBuffer::~VertexBuffer()
@@ -463,21 +325,6 @@ void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration::ptr ver
 	}
 
 	m_pimpl->Create( uNumVertices, vertexDeclaration, source, usage );
-}
-
-void VertexBuffer::Resize( unsigned int numVertices )
-{
-	if ( GetUsage() != BufferUsage::Staging )
-	{
-		throw unify::Exception( "VertexBuffer's usage is not Staging! Cannot resize without CPU read and write access." );
-	}
-
-	m_pimpl->Resize( numVertices );
-}
-
-size_t VertexBuffer::Append( const VertexBuffer & from )
-{
-	return m_pimpl->Append( from );
 }
 
 void VertexBuffer::Destroy()

@@ -18,7 +18,8 @@ void Deleter( dxiphysx::GameComponent * component )
 	delete component;
 }
 
-DXIPHYSX_API bool DXILoader( dxi::core::Game * game, const qxml::Document * document )
+extern "C" DXIPHYSX_API bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
+DXIPHYSX_API bool DXILoader( dxi::core::IGame * game, const qxml::Document * document )
 {
 	game->AddComponent( dxi::core::IGameComponent::ptr( new dxiphysx::GameComponent(), Deleter ) );
 	return true;

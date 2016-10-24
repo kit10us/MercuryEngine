@@ -14,6 +14,8 @@
 
 #include <PxPhysicsAPI.h>
 
+#include <dxi/core/Game.h>
+
 using namespace dxilua;
 using namespace dxi;
 
@@ -103,7 +105,7 @@ int PxRigidStatic_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
+void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
 {
 	g_luaSE = luaSE;
 

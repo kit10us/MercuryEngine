@@ -29,7 +29,7 @@ namespace dxi
 		~VertexDeclaration();
 
 		void Build( const class VertexShader & vs );
-
+		
 		bool operator==( const VertexDeclaration & b ) const;
 		bool operator!=( const VertexDeclaration & b ) const;
 
@@ -87,14 +87,7 @@ namespace dxi
 		bool ReadVertex( unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, void * vertex ) const;
 
 	private:
-		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
-		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;
-
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
-
-		std::vector< VertexElement > m_elements;
-		ElementMap m_elementMap;
-		size_t m_totalSizeInBytes;
 	};
 }

@@ -1,9 +1,7 @@
 <xml>
 <setup>
+<failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
-<fullscreen>false</fullscreen>
-<resolution width="800" height="640"/>
-<!--<resolution width="3840" height="2160"/>-->
-<!--<extension></extension>-->
+<display fullscreen="false" x="10" y="10" width="800" height="640"/>
 </setup>
 </xml>

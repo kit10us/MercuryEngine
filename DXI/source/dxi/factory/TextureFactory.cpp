@@ -6,7 +6,7 @@
 
 using namespace dxi;
 
-TextureSourceFactory::TextureSourceFactory( core::Game * game )
+TextureSourceFactory::TextureSourceFactory( core::IGame * game )
 	: m_game( game )
 {
 }

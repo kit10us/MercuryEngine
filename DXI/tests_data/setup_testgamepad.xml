@@ -2,10 +2,10 @@
 <setup>
 <logfile>log.txt</logfile>
 <display fullscreen="false" x="10" y="10" width="800" height="640"/>
-<extension>DXILua.dll</extension>
-<extension>DAELoader.dll</extension>
-<extension>ASELoader.dll</extension>
-<extension>DXIGamepad.dll</extension>
+<extension>../../../extensions/DXILua.dll</extension>
+<extension>../../../extensions/DAELoader.dll</extension>
+<extension>../../../extensions/ASELoader.dll</extension>
+<extension>../../../extensions/DXIGamepad.dll</extension>
 <gamemodule type="LUA" source="test_inputs.lua"/>
 </setup>
 </xml>

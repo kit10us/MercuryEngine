@@ -236,7 +236,9 @@ void RenderMethod::Render( const RenderInfo & renderInfo ) const
 	}
 	OnFailedThrow( hr, "Failed to render vertex buffer!" );
 #elif defined( DIRECTX11 )
-	auto dxContext = win::DX::GetDxContext();
+	auto dxRenderer = dynamic_cast<const win::DXRenderer *>(renderInfo.GetRenderer());
+	auto dxDevice = dxRenderer->GetDxDevice();
+	auto dxContext = dxRenderer->GetDxContext();
 	
 	D3D11_PRIMITIVE_TOPOLOGY topology{};
 	switch( primitiveType )

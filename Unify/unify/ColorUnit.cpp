@@ -43,6 +43,21 @@ ColorUnit ColorUnit::ColorUnitBlue( float b, float a )
 	return ColorUnit::ColorUnitRGBA( 0.0f, 0.0f, b, a );
 }
 
+ColorUnit ColorUnit::ColorUnitYellow( float b, float a )
+{
+	return ColorUnit::ColorUnitRGBA( b, b, 0.0f, a );
+}
+
+ColorUnit ColorUnit::ColorUnitCyan( float b, float a )
+{
+	return ColorUnit::ColorUnitRGBA( b, b, 0.0f, a );
+}
+
+ColorUnit ColorUnit::ColorUnitMagenta( float b, float a )
+{
+	return ColorUnit::ColorUnitRGBA( b, 0.0f, b, a );
+}
+
 ColorUnit ColorUnit::ColorUnitGrey( float grey, float a )
 {
 	return ColorUnit::ColorUnitRGBA( grey, grey, grey, a );

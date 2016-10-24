@@ -25,6 +25,8 @@
 
 #include <PxPhysicsAPI.h>
 
+#include <dxi/core/Game.h>
+
 using namespace dxilua;
 using namespace dxi;
 
@@ -120,10 +122,10 @@ static const luaL_Reg PhysXFunctions[] =
 	{ "CreateRigidStatic", PhysX_CreateRigidStatic }
 };
 
-void RegisterPhysX( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
+void RegisterPhysX( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
 {
 	g_luaSE = luaSE;
-	g_game = game;
+	g_game = dynamic_cast< dxi::core::Game * >(game);
 
 	luaSE->AddLibrary( "PhysX", PhysXFunctions, sizeof( PhysXFunctions ) / sizeof( luaL_Reg ) );
 }

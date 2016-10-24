@@ -433,9 +433,6 @@
     <ClCompile Include="source\dxi\scene\BBoxRendererComponent.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\VertexElement.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\scene\SceneComponent.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
@@ -447,6 +444,9 @@
     </ClCompile>
     <ClCompile Include="source\dxi\scene\ObjectComponent.cpp">
       <Filter>dxi\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dxi\VertexElement.cpp">
+      <Filter>dxi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -664,9 +664,6 @@
     <ClInclude Include="source\dxi\scene\BBoxRendererComponent.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\VertexElement.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\scene\ISceneComponent.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
@@ -690,6 +687,9 @@
     </ClInclude>
     <ClInclude Include="source\dxi\scene\ObjectComponent.h">
       <Filter>dxi\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\VertexElement.h">
+      <Filter>dxi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,10 +11,14 @@
 #pragma once
 
 #include <dxi/Geometry.h>
+#include <dxi/Texture.h>
+#include <dxi/Effect.h>
+#include <dxi/PrimitiveList.h>
 #include <unify/RowColumn.h>
 #include <unify/TexArea.h>
 #include <unify/Parameters.h>
 #include <unify/ColorUnit.h>
+#include <unify/MinMax.h>
 
 namespace dxi
 {

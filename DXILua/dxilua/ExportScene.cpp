@@ -4,6 +4,7 @@
 #include <dxilua/DXILua.h>
 #include <dxilua/ExportScene.h>
 #include <dxilua/ExportObject.h>
+#include <dxi/core/Game.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -64,7 +65,7 @@ int Scene_Constructor( lua_State * state )
 	*sceneProxy = new SceneProxy;
 	luaL_setmetatable( state, "Scene" );
 
-	auto game = ScriptEngine::GetGame();
+	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 
 	(*sceneProxy)->scene = game->GetSceneManager()->Add( name );			  
 	return 1;

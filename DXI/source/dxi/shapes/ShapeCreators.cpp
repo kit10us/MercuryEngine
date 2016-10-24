@@ -105,6 +105,19 @@ void shapes::CreateShape_Cube( core::IRenderer * renderer, PrimitiveList & primi
 	const unsigned int totalIndices = indicesPerSide * numberOfSides;
 	const unsigned int totalTriangles = facesPerSide * numberOfSides;
 
+	char * verticesFinal = new char[totalVertices * vd->GetSize()];
+
+	unify::DataLock lock( verticesFinal, vd->GetSize(), totalVertices, false );
+
+	unsigned short stream = 0;
+
+	VertexElement positionE = CommonVertexElement::Position( stream );
+	VertexElement normalE = CommonVertexElement::Normal( stream );
+	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
+	VertexElement specularE = CommonVertexElement::Specular( stream );
+	VertexElement texE = CommonVertexElement::TexCoords( stream );
+
+
 	class V
 	{
 	public:
@@ -204,18 +217,6 @@ void shapes::CreateShape_Cube( core::IRenderer * renderer, PrimitiveList & primi
 		vertices[6].diffuse = diffuse;
 		vertices[7].diffuse = diffuse;
 	}
-
-	char * verticesFinal = new char[totalVertices * vd->GetSize()];
-
-	unify::DataLock lock( verticesFinal, vd->GetSize(), totalVertices, false );
-
-	unsigned short stream = 0;
-
-	VertexElement positionE = CommonVertexElement::Position( stream );
-	VertexElement normalE = CommonVertexElement::Normal( stream );
-	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
-	VertexElement specularE = CommonVertexElement::Specular( stream );
-	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	vd->WriteVertex( lock, { 0, 14, 17 }, vFormat, (void*)&vertices[0] );
 	vd->WriteVertex( lock, { 1, 15, 20 }, vFormat, (void*)&vertices[1] );

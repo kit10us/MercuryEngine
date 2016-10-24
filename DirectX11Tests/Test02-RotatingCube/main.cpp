@@ -305,7 +305,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		result = dxDevice->CreateInputLayout( inputElements, 2, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &vertexLayout );
 		assert( ! FAILED( result ) );
 	}
-	dxContext->IASetInputLayout( vertexLayout );
+	//dxContext->IASetInputLayout( vertexLayout );
 #pragma endregion
 
 #pragma region Create vertex raw data as a C-style struct...

@@ -44,7 +44,8 @@ void Game::Shutdown()
 }
 
 Game::Game( unify::Path setup )
-: m_setup( setup )
+: m_failuresAsCritial( true )
+, m_setup( setup )
 , m_isQuitting( false )
 , m_totalStartupTime{}
 {
@@ -105,8 +106,13 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	}
 
 	// Early setup...
-	if( m_setup.Exists() )
+	if ( ! m_setup.Empty() )
 	{
+		if( ! m_setup.Exists() )
+		{
+			ReportError( ErrorLevel::Critical, "Game", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
+		}
+
 		qxml::Document doc( m_setup );
 
 		qxml::Element * setup = doc.FindElement( "setup" );
@@ -118,7 +124,11 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				{
 					m_logFile = node.GetText();
 				}
-				if( node.IsTagName( "display" ) )
+				else if ( node.IsTagName( "FailuresAsCritial" ) )
+				{
+					m_failuresAsCritial = unify::Cast< bool >( node.GetText() );
+				}
+				else if( node.IsTagName( "display" ) )
 				{
 					bool fullscreen = node.GetAttributeElse< bool >( "fullscreen", false );
 					int width = node.GetAttribute< int >( "width" );
@@ -194,7 +204,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				{
 					unify::Path path( node.GetText() );
 					//m_extensions.push_back( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
-					AddExtension( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
+					AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
 				}
 				else if( node.IsTagName( "gamemodule" ) )
 				{
@@ -265,6 +275,7 @@ void Game::Draw()
 	for( int index = 0; index < GetOS()->RendererCount(); ++index )
 	{
 		IRenderer & renderer = *m_os->GetRenderer( index );
+		m_renderInfo.SetRenderer( &renderer );
 		renderer.BeforeRender();
 		m_sceneManager->Render( index, renderer.GetViewport() );
 		Render( index, m_renderInfo, renderer.GetViewport() );	
@@ -366,13 +377,16 @@ const input::InputManager * Game::GetInputManager() const
 	return &m_inputManager;
 }
 
-void Game::AddExtension( std::shared_ptr< Extension > extension )
+void Game::AddExtension( unify::Path path )
 {
-	m_extensions.push_back( extension );
+	std::shared_ptr< core::Extension > extension( new Extension( path ) );
+
 	if ( ! extension->Load( this ) )
 	{
-		throw exception::FailedToCreate( "Failed to load extension!" );
+		ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
 	}
+
+	m_extensions.push_back( extension );
 }
 
 void Game::Log( std::string text )
@@ -396,14 +410,19 @@ void Game::ReportError( ErrorLevel level, std::string source, std::string error 
 	switch( level )
 	{
 	case ErrorLevel::Critical:
-		m_criticalErrors.push_back( "Critical Failure (" + source + "): \"" + error + "\"." );
-		LogLine( "Critical Failure (" + source + "): \"" + error + "\"." );
-		return;
+		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error + "." );
+		LogLine( "Critical Failure (" + source + "): " + error + "." );
+		throw unify::Exception( "Critical Failure (" + source + "): " + error + "." );
 	case ErrorLevel::Failure:
-		LogLine( "Failure (" + source + "): \"" + error + "\"." );
+		LogLine( "Failure (" + source + "): " + error + "." );
+		if ( m_failuresAsCritial )
+		{
+			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error + "." );
+			throw unify::Exception( "Failure (" + source + "): " + error + "." );
+		}
 		break;
 	case ErrorLevel::Warning:
-		LogLine( "Warning (" + source + "): \"" + error + "\"." );
+		LogLine( "Warning (" + source + "): " + error + "." );
 		break;
 	}
 	return;

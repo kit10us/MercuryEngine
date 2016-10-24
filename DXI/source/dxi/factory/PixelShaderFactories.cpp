@@ -1,14 +1,13 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/exception/FailedToCreate.h>
 #include <qxml/Document.h>
 
 using namespace dxi;
 
-PixelShaderFactory::PixelShaderFactory( core::Game * game )
+PixelShaderFactory::PixelShaderFactory( core::IGame * game )
 	: m_game( game )
 {
 }

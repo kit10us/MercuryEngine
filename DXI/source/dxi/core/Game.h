@@ -3,15 +3,15 @@
 
 #pragma once
 
-#include <dxi/core/IGame.h>
 #include <dxi/input/InputManager.h>
 #include <dxi/scene/SceneManager.h>
+#include <dxi/core/IGame.h>
 #include <dxi/core/IOS.h>
-#include <dxi/exception/Exception.h>
 #include <dxi/core/Display.h>
 #include <rm/ResourceManagerSimple.h>
 #include <rm/ResourceHub.h>
-#include <unify/Parameters.h>
+#include <dxi/Texture.h>
+#include <dxi/Effect.h>
 
 typedef std::shared_ptr< rm::ISourceFactory< dxi::Texture > > TextureFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< dxi::Effect > > EffectFactoryPtr;
@@ -83,8 +83,6 @@ namespace dxi
 			input::InputManager * GetInputManager();
 			const input::InputManager * GetInputManager() const;
 
-			void AddExtension( std::shared_ptr< Extension > extension ) override;
-
 			void Log( std::string text );
 			void LogLine( std::string line );
 
@@ -100,7 +98,12 @@ namespace dxi
 			int FindComponent( std::string name, int startIndex ) const;
 
 		private:
+			void AddExtension( unify::Path path );
+
+		private:
 			std::list< core::IGameComponent::ptr > m_components;
+			
+			bool m_failuresAsCritial;
 
 			unify::Path m_setup;
 			unify::Path m_logFile;

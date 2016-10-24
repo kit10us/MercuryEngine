@@ -4,9 +4,8 @@
 #include <dxi/exception/FailedToCreate.h>
 #include <dxi/exception/FailedToLock.h>
 #include <dxi/exception/Exception.h>
-#include <assert.h>
 #include <dxi/RenderMethodBuffer.h>
-#include <dxi/core/Game.h>
+#include <assert.h>
 
 using namespace dxi;
 

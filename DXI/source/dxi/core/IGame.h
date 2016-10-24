@@ -81,11 +81,6 @@ namespace dxi
 			/// </summary>
 			virtual scripting::IScriptEngine * GetScriptEngine( std::string name ) = 0;
 
-			/// <summary>
-			/// Add an extension.
-			/// </summary>
-			virtual void AddExtension( std::shared_ptr< Extension > extension ) = 0;
-
 			virtual void Quit() = 0;
 
 			virtual bool IsQuitting() const = 0;

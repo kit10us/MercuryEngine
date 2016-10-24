@@ -5,6 +5,8 @@
 
 #include <dxi/scene/ObjectComponent.h>
 #include <dxi/scene/GeometryComponent.h>
+#include <dxi/Effect.h>
+#include <dxi/PrimitiveList.h>
 
 namespace dxi
 {

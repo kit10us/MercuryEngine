@@ -15,6 +15,8 @@
 
 #include <PxPhysicsAPI.h>
 
+#include <dxi/core/Game.h>
+
 using namespace dxilua;
 using namespace dxi;
 
@@ -88,9 +90,9 @@ int PxSceneComponent_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
+void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
 {
-	g_game = game;
+	g_game = dynamic_cast< dxi::core::Game * >( game );
 	g_luaSE = luaSE;
 
 	luaSE->AddType( "PxSceneComponent", PxSceneComponentFunctions, 2, PxSceneComponent_Constructor, PxSceneComponent_Destructor );

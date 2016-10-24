@@ -9,7 +9,7 @@
 
 using namespace dxi;
 
-Sprite::Sprite( core::Game * game )
+Sprite::Sprite( core::IGame * game )
 : m_game( game )
 , m_center( 0, 0 )
 , m_size( 0, 0 )
@@ -19,7 +19,7 @@ Sprite::Sprite( core::Game * game )
 {
 }
 
-Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
+Sprite::Sprite( core::IGame * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth )
 : m_game( game )
 , m_effect( effect )
 , m_animationInstance( animationInstance )
@@ -33,7 +33,7 @@ Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > 
 	Init();
 }
 
-Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
+Sprite::Sprite( core::IGame * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth )
 : m_game( game )
 , m_effect( effect )
 , m_animationInstance( animationInstance )
@@ -47,7 +47,7 @@ Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > 
 	Init();
 }
 
-Sprite::Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
+Sprite::Sprite( core::IGame * game, Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth )
 : m_game( game )
 , m_effect( effect )
 , m_animationInstance( animationInstance )

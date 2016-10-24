@@ -13,9 +13,7 @@
 #pragma once
 
 #include <dxi/GeometryInstanceData.h>
-#include <dxi/PrimitiveList.h>
 #include <dxi/RenderInfo.h>
-#include <dxi/scene/ObjectComponent.h>
 #include <unify/Unify.h>
 #include <unify/BSphere.h>
 #include <unify/BBox.h>

@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/Effect.h>
-#include <dxi/core/Game.h>
 
 using namespace dxi;
 

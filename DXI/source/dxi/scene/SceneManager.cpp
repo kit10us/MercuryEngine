@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/scene/SceneManager.h>
-#include <dxi/core/Game.h>
 #include <qxml/Document.h>
 #include <dxi/exception/NotImplemented.h>
 #include <dxi/exception/FailedToCreate.h>

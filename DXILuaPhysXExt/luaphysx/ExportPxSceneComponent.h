@@ -15,4 +15,4 @@ struct PxSceneComponentProxy
 PxSceneComponentProxy* CheckPxSceneComponent( lua_State* state, int index );
 int PushPxSceneComponent( lua_State * state, dxiphysx::SceneComponent::ptr sceneComponent );
 
-void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, dxi::core::Game * game );
+void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game );

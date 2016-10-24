@@ -3,6 +3,7 @@
 
 #include <dxilua/DXILua.h>
 #include <dxilua/ExportTexture.h>
+#include <dxi/core/Game.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -34,7 +35,7 @@ int Texture_Constructor( lua_State * state )
 
 	Texture::ptr texture;
 
-	auto game = ScriptEngine::GetGame();
+	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 	
 	// Allow pulling existing from manager...
 	if ( top == 1 )

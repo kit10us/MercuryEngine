@@ -4,7 +4,7 @@
 #pragma once
 
 #include <dxi/input/IInputSource.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 #include <map>
 
 namespace dximouse
@@ -12,7 +12,7 @@ namespace dximouse
 	class Mouse : public dxi::input::IInputSource
 	{
 	public:
-		Mouse( dxi::core::Game * game );
+		Mouse( dxi::core::IGame * game );
 		virtual ~Mouse();
 
 		std::string Name() const;
@@ -32,7 +32,7 @@ namespace dximouse
 		bool SetValue( size_t subSource, std::string name, float value );
 
 	private:
-		dxi::core::Game * m_game;
+		dxi::core::IGame * m_game;
 
 		struct Source
 		{

@@ -164,84 +164,64 @@ void WindowsOS::CreateDisplay( core::Display display )
 
 	std::shared_ptr< DXRenderer > renderer;
 
-	if( display.IsDialog() )
+	// If we have no handle, create a window...
+	if ( display.GetHandle() == 0 )
 	{
-		// Note: If we are a dialog, we do NOT have a Direct-X Display Device.
-		HINSTANCE hInstance = GetHInstance(); // [optional] A handle to the module whose executable file contains the dialog box template. 
-		LPCSTR lpName = display.GetDialogTemplateName();
+		// Regardless of windowed or not, we need a window...
+		WNDCLASS wc;
+		memset( &wc, 0, sizeof( wc ) );
+		wc.style = 0;
+		wc.lpfnWndProc = (WNDPROC)m_pimpl->m_wndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = GetHInstance();
+		wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
+		wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
 
-		//MAKEINTRESOURCEA( IDD_ENUM ); // The dialog box template. This parameter is either the pointer to a null-terminated character string that specifies the name of the dialog box template or an integer value that specifies the resource identifier of the dialog box template. If the parameter specifies a resource identifier, its high-order word must be zero and its low-order word must contain the identifier. You can use the MAKEINTRESOURCE macro to create this value. 
-		HWND hWndParent = display.GetParentHandle(); // [optional] A handle to the window that owns the dialog box. 
-		DLGPROC lpDialogFunc = display.GetDialogProc() ? display.GetDialogProc() : (DLGPROC)m_pimpl->m_wndProc; // [optional] A pointer to the dialog box procedure. For more information about the dialog box procedure, see DialogProc.
-		HWND hwnd = CreateDialogA( hInstance, lpName, hWndParent, lpDialogFunc );
-		assert( hwnd );
-		if( hWndParent )
+		if( isPrimary )
 		{
-			m_pimpl->m_childHandles.push_back( hwnd );
+			wc.lpszMenuName = L"MainMenu";
+			wc.lpszClassName = L"MainWndClass";
 		}
-		ShowWindow( hwnd, SW_SHOW );
-	}
-	else
-	{
-		// If we have no handle, create a window...
-		if ( display.GetHandle() == 0 )
+		else		    // TODO: This worked, yet is dodgy...
 		{
-			// Regardless of windowed or not, we need a window...
-			WNDCLASS wc;
-			memset( &wc, 0, sizeof( wc ) );
-			wc.style = 0;
-			wc.lpfnWndProc = (WNDPROC)m_pimpl->m_wndProc;
-			wc.cbClsExtra = 0;
-			wc.cbWndExtra = 0;
-			wc.hInstance = GetHInstance();
-			wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
-			wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
-
-			if( isPrimary )
-			{
-				wc.lpszMenuName = L"MainMenu";
-				wc.lpszClassName = L"MainWndClass";
-			}
-			else		    // TODO: This worked, yet is dodgy...
-			{
-				wc.lpszMenuName = 0;
-				wc.lpszClassName = L"SecondWndClass";
-			}
-
-			if( !RegisterClass( &wc ) )
-			{
-				throw std::exception( "Failed to register window class!" );
-			}
-
-			int x = static_cast< int >(display.GetPosition().x);
-			int y = static_cast< int >(display.GetPosition().y);
-			int width = static_cast< int >(display.GetSize().width);
-			int height = static_cast< int >(display.GetSize().height);
-			HWND parentHandle = display.GetParentHandle();
-			HWND handle = CreateWindowA( "MainWndClass", "An Empty DirectX Project", WS_OVERLAPPEDWINDOW, x, y, width, height,
-				parentHandle, (HMENU)NULL, GetHInstance(), (LPVOID)NULL );
-
-			if( !handle )
-			{
-				throw exception::FailedToCreate( "Failed to create window!" );
-			}
-
-			{ // Resize window to ensure exact pixel match...
-				RECT windowRect;
-				GetWindowRect( handle, &windowRect );
-
-				RECT clientRect;
-				GetClientRect( handle, &clientRect );
-
-				long newWindowWidth = (windowRect.right - windowRect.left) + width - clientRect.right;
-				long newWindowHeight = (windowRect.bottom - windowRect.top) + height - clientRect.bottom;
-				MoveWindow( handle, windowRect.left, windowRect.top, newWindowWidth, newWindowHeight, false );
-			}
-
-			ShowWindow( handle, m_pimpl->m_cmdShow );
-			UpdateWindow( handle );
-			display.SetHandle( handle );
+			wc.lpszMenuName = 0;
+			wc.lpszClassName = L"SecondWndClass";
 		}
+
+		if( !RegisterClass( &wc ) )
+		{
+			throw std::exception( "Failed to register window class!" );
+		}
+
+		int x = static_cast< int >(display.GetPosition().x);
+		int y = static_cast< int >(display.GetPosition().y);
+		int width = static_cast< int >(display.GetSize().width);
+		int height = static_cast< int >(display.GetSize().height);
+		HWND parentHandle = display.GetParentHandle();
+		HWND handle = CreateWindowA( "MainWndClass", "An Empty DirectX Project", WS_OVERLAPPEDWINDOW, x, y, width, height,
+			parentHandle, (HMENU)NULL, GetHInstance(), (LPVOID)NULL );
+
+		if( !handle )
+		{
+			throw exception::FailedToCreate( "Failed to create window!" );
+		}
+
+		{ // Resize window to ensure exact pixel match...
+			RECT windowRect;
+			GetWindowRect( handle, &windowRect );
+
+			RECT clientRect;
+			GetClientRect( handle, &clientRect );
+
+			long newWindowWidth = (windowRect.right - windowRect.left) + width - clientRect.right;
+			long newWindowHeight = (windowRect.bottom - windowRect.top) + height - clientRect.bottom;
+			MoveWindow( handle, windowRect.left, windowRect.top, newWindowWidth, newWindowHeight, false );
+		}
+
+		ShowWindow( handle, m_pimpl->m_cmdShow );
+		UpdateWindow( handle );
+		display.SetHandle( handle );
 	}
 
 	renderer.reset( new DXRenderer( this, display ) );

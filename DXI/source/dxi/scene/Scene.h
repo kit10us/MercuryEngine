@@ -8,10 +8,8 @@
 #include <dxi/scene/CameraComponent.h>
 #include <dxi/Viewport.h>
 #include <unify/MinMax.h>
-#include <vector>
-#include <map>
-
-#pragma comment( lib, "winmm" )
+#include <list>
+#include <memory>
 
 namespace dxi
 {

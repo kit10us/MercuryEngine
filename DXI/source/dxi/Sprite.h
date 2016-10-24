@@ -9,7 +9,7 @@
 #include <dxi/animation/Instance.h>
 #include <dxi/RenderInfo.h>
 #include <dxi/Effect.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 
 namespace dxi
 {
@@ -17,10 +17,10 @@ namespace dxi
 	{
 	public:
 		// TODO: Game here is a little heavy handed, right??? Why do we need this? Use an IRenderer, or rely on the one from RenderInfo?
-		Sprite( core::Game * game );
-		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
-		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
-		Sprite( core::Game * game, Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
+		Sprite( core::IGame * game );
+		Sprite( core::IGame * game, Effect::ptr effect, const unify::V2< float > & center, animation::Instance animationInstance, float depth = 0 );
+		Sprite( core::IGame * game, Effect::ptr effect, const unify::V2< float > & center, const unify::V2< float > & scale, animation::Instance animationInstance, float depth = 0 );
+		Sprite( core::IGame * game, Effect::ptr effect, const unify::V2< float > & center, const unify::Size< float > & size, animation::Instance animationInstance, float depth = 0 );
 		~Sprite() throw ();
 
 		Effect::ptr GetEffect() const;
@@ -54,7 +54,7 @@ namespace dxi
 		/// </summary>
 		void Init();
 
-		core::Game * m_game;
+		core::IGame * m_game;
 
 		Effect::ptr m_effect;
 		animation::Instance m_animationInstance;

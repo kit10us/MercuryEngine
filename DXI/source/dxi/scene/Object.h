@@ -4,13 +4,10 @@
 
 #include <dxi/scene/IObjectComponent.h>
 #include <dxi/scene/GeometryComponent.h>
-#include <dxi/Effect.h>
 #include <dxi/RenderInfo.h>
 #include <dxi/Geometry.h>
 #include <unify/FrameLite.h>
-#include <tuple>
 #include <list>
-#include <functional>
 
 namespace dxi
 {

@@ -8,7 +8,7 @@
 using namespace dxigp;
 using namespace dxi;
 
-Gamepad::Gamepad( dxi::core::Game * game )
+Gamepad::Gamepad( dxi::core::IGame * game )
 	: m_game( game )
 {
 }

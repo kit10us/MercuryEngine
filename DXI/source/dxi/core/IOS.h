@@ -9,7 +9,6 @@
 #include <unify/Size.h>
 #include <vector>
 #include <string>
-#include <memory>
 
 // Because Windows likes to define...
 #ifdef GetCommandLine

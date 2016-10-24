@@ -3,6 +3,7 @@
 
 #include <dxilua/ExportResources.h>
 #include <dxilua/DXILua.h>
+#include <dxi/core/Game.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -17,7 +18,7 @@ int Resources_AddResource( lua_State * state )
 	std::string name = lua_tostring( state, 2 );
 	std::string path = lua_tostring( state, 3 );
 
-	auto game = ScriptEngine::GetGame();
+	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 
 	try
 	{

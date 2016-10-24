@@ -13,6 +13,8 @@
 #include <dxi/RenderMethod.h>
 #include <dxi/RenderInfo.h>
 #include <dxi/MeshInstanceData.h>
+#include <dxi/scene/ObjectComponent.h>
+#include <dxi/PrimitiveList.h>
 #include <unify/unify.h>
 
 namespace dxi

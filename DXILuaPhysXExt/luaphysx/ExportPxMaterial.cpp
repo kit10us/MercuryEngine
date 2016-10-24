@@ -13,6 +13,8 @@
 
 #include <PxPhysicsAPI.h>
 
+#include <dxi/core/Game.h>
+
 using namespace dxilua;
 using namespace dxi;
 
@@ -79,10 +81,10 @@ int PxMaterial_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxMaterial( dxilua::ScriptEngine * luaSE, dxi::core::Game * game )
+void RegisterPxMaterial( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
 {
 	g_luaSE = luaSE;
-	g_game = game;
+	g_game = dynamic_cast< dxi::core::Game * >(game);
 
 	luaSE->AddLibrary( "PxMaterial", PxMaterialFunctions, 1 );
 

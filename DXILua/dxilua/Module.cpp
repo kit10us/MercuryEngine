@@ -9,7 +9,7 @@
 using namespace dxilua;
 using namespace dxi;
 
-Module::Module( dxi::scene::Object::ptr object, lua_State * state, dxi::core::Game * game, std::string name, unify::Path path )
+Module::Module( dxi::scene::Object::ptr object, lua_State * state, dxi::core::IGame * game, std::string name, unify::Path path )
 	: m_object( object )
 	, m_state( state )
 	, m_game( game )
@@ -39,8 +39,7 @@ void Module::CallMember( std::string function )
 		if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
 		{
 			std::string error = lua_tostring( m_state, -1 );
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script " + function + ": " + error );
-			assert( 0 ); // TODO:
+			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed in script " + function + ": " + error );
 		}
 	}
 	else
@@ -63,7 +62,7 @@ void Module::OnInit()
 	}
 	else if ( result != LUA_OK )
 	{
-		assert( 0 );
+		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Failure in script!" );
 	}
 
 	// Create table for modules _ENV table.

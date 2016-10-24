@@ -341,7 +341,7 @@ std::map< int, std::string > g_KeyIndexToName =
 	{ DIK_UPARROW, "UPARROW" }
 };
 
-Keyboard::Keyboard( dxi::core::Game * game )
+Keyboard::Keyboard( dxi::core::IGame * game )
 	: m_game( game )
 	, m_pdi( 0 )
 	, m_pdiKeyboard( 0 )

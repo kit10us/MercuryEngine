@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/scene/Object.h>
-#include <dxi/core/Game.h>
 #include <stack>
 
 using namespace dxi;

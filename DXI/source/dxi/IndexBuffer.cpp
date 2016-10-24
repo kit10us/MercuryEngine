@@ -329,6 +329,8 @@ public:
 
 	void Create( unsigned int uNumIndices, Index32 * source, BufferUsage::TYPE usage, unify::Flags flags )
 	{
+		auto dxDevice = m_renderer->GetDxDevice();
+
 		Destroy();
 
 		HRESULT hr = S_OK;
@@ -491,7 +493,7 @@ public:
 		}
 
 		// Set the buffer.
-		m_dxContext->IASetIndexBuffer( m_IB, DXGI_FORMAT_R32_UINT, 0 );
+		m_renderer->GetDxContext()->IASetIndexBuffer( m_IB, DXGI_FORMAT_R32_UINT, 0 );
 	}
 };
 

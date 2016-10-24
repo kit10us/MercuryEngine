@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dxi/GeometryPlacement.h>
-#include <dxi/core/Game.h>
 
 using namespace dxi;
 

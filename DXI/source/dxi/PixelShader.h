@@ -6,6 +6,7 @@
 #include <dxi/RenderInfo.h>
 #include <dxi/core/IRenderer.h>
 #include <unify/Path.h>
+#include <memory>
 
 namespace dxi
 {

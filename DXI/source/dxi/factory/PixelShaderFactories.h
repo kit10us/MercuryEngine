@@ -3,17 +3,17 @@
 #pragma once
 #include <dxi/PixelShader.h>
 #include <rm/ResourceManagerSimple.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 
 namespace dxi
 {
 	class PixelShaderFactory : public rm::ISourceFactory< PixelShader >
 	{
 	public:
-		PixelShaderFactory( core::Game * game );
+		PixelShaderFactory( core::IGame * game );
 		PixelShader::ptr Produce( unify::Path source ) override;
 
 	public:
-		core::Game * m_game;
+		core::IGame * m_game;
 	};
 }

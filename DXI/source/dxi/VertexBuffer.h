@@ -35,16 +35,6 @@ namespace dxi
 		~VertexBuffer();
 
 		void Create( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
-
-		void Resize( unsigned int numVertices );
-
-		/// <summary>
-		/// Append into this vertex buffer the entire contents of another vertex buffer, returning
-		/// the offset (where the new vertices are copied to, i.e., the index of the first vertex
-		/// in the new vertex buffer).
-		/// </summary>
-		size_t Append( const VertexBuffer & vb );
-
 		void Destroy();
 
 		void Lock( unify::DataLock & lock );

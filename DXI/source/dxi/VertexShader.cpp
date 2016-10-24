@@ -178,6 +178,7 @@ class VertexShader::Pimpl
 	VertexShader & m_owner;
 	win::DXRenderer * m_renderer;
 
+	// TODO: Unify::Matrix
 	struct ConstantBuffer
 	{
 		DirectX::XMMATRIX worldMatrix;
@@ -238,7 +239,8 @@ public:
 	void CreateThisShader()
 	{
 		HRESULT result = S_OK;
-		auto dxDevice = win::DX::GetDxDevice();
+
+		auto dxDevice = m_renderer->GetDxDevice();
 		ID3D11ClassLinkage * classLinkage = nullptr;
 		result = dxDevice->CreateVertexShader( m_vertexShaderBuffer->GetBufferPointer(), m_vertexShaderBuffer->GetBufferSize(), classLinkage, &m_vertexShader );
 		assert( !FAILED( result ) );
@@ -281,7 +283,7 @@ public:
 
 		using namespace DirectX;
 		D3D11_MAPPED_SUBRESOURCE subResource = D3D11_MAPPED_SUBRESOURCE();
-		HRESULT result = win::DX::GetDxContext()->Map( m_vertexShaderConstantBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
+		HRESULT result = dxContext->Map( m_vertexShaderConstantBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
 		if ( FAILED( result ) )
 		{
 			throw unify::Exception( "Failed to set vertex shader!" );
@@ -298,7 +300,7 @@ public:
 
 		dxContext->VSSetConstantBuffers( 0, 1, &m_vertexShaderConstantBuffer.p );
 
-		win::DX::GetDxContext()->VSSetShader( m_vertexShader, nullptr, 0 );
+		dxContext->VSSetShader( m_vertexShader, nullptr, 0 );
 	}
 
 	const void * GetBytecode() const

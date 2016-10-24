@@ -3,17 +3,17 @@
 #pragma once
 #include <dxi/Texture.h>
 #include <rm/ResourceManagerSimple.h>
-#include <dxi/core/Game.h>
+#include <dxi/core/IGame.h>
 
 namespace dxi
 {
 	class TextureSourceFactory : public rm::ISourceFactory< Texture >
 	{
 	public:
-		TextureSourceFactory( core::Game * game );
+		TextureSourceFactory( core::IGame * game );
 		Texture::ptr Produce( unify::Path source ) override;
 
 	private:
-		core::Game * m_game;
+		core::IGame * m_game;
 	};
 }

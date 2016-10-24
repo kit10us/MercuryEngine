@@ -6,6 +6,7 @@
 #include <dxi/scene/SceneComponent.h>
 #include <dxi/scene/GeometryComponent.h>
 #include <dxi/scene/Scene.h>
+#include <dxi/Effect.h>
 
 namespace dxi
 {

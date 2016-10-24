@@ -7,7 +7,7 @@ using namespace dximouse;
 using namespace dxi;
 using namespace input;
 
-Mouse::Mouse( dxi::core::Game * game )
+Mouse::Mouse( dxi::core::IGame * game )
 	: m_game( game )
 {
 	m_subSources.resize( game->GetOS()->RendererCount() );

@@ -1,6 +1,8 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
+#include <qxml/Element.h>
+#include <qjson/QJson.h>
 #include <unify/V2.h>
 #include <unify/V3.h>
 #include <unify/V4.h>
@@ -9,28 +11,41 @@
 
 namespace dxi
 {
-	enum class ElementFormat
+	struct ElementFormat
 	{
-		Float1,
-		Float2,
-		Float3,
-		Float4,
-		Color,
-		Unknown
-	};
+		enum TYPE
+		{
+			Float1,
+			Float2,
+			Float3,
+			Float4,
+			ColorUNorm,
+			Unknown
+		};
 
-	size_t SizeOf( ElementFormat format );
-	ElementFormat ElementFormatFromString( std::string type );
+		static size_t SizeOf( TYPE format );
+		static TYPE FromString( std::string format );
+		static std::string ToString( TYPE format );
+	};
 
 	struct VertexElement
 	{
 		std::string                SemanticName;
 		unsigned int               SemanticIndex;
-		ElementFormat		       Format;
+		ElementFormat::TYPE		   Format;
 		unsigned int               InputSlot;
 		unsigned int               AlignedByteOffset;
+
+		VertexElement();
+		VertexElement( const qxml::Element & element, unsigned int slot = 0 );
+		VertexElement( const qjson::Pair & pair, unsigned int slot = 0 );
+		size_t SizeOf() const;
 	};
 
+
+	/// <summary>
+	/// Used for writing to the elements.
+	/// </summary>
 	struct CommonVertexElement
 	{
 		static VertexElement Position( unsigned int slot = 0 );
