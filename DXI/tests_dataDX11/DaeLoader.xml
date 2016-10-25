@@ -1,0 +1,4 @@
+<xml>
+<color name="color" source="media/EffectColor.effect"/>
+<texture name="texture" source="media/EffectTextured.effect"/>
+</xml>

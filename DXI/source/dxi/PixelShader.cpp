@@ -4,6 +4,7 @@
 #include <dxi/PixelShader.h>
 #include <dxi/win/DXRenderer.h>
 #include <dxi/exception/NotImplemented.h>
+#include <dxi/exception/FailedToCreate.h>
 #include <atlbase.h>
 
 using namespace dxi;
@@ -172,7 +173,7 @@ public:
 		if ( FAILED( result ) )
 		{
 			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-			assert( !FAILED( result ) );
+			throw exception::FailedToCreate( std::string( "Failed to create shader \"" ) + m_owner.m_filePath.ToString() + "\": " +  std::string( (char*)errorBlob->GetBufferPointer() ) );
 		}
 		CreateThisShader();
 	}
@@ -182,7 +183,10 @@ public:
 		HRESULT result;
 		ID3D11ClassLinkage * classLinkage = nullptr;
 		result = m_renderer->GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
-		assert( !FAILED( result ) );
+		if ( FAILED( result ) )
+		{
+			throw exception::FailedToCreate( "Failed to create shader!" );
+		}
 	}
 
 	void Use( const RenderInfo & renderInfo )

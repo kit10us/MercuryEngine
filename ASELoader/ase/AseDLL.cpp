@@ -15,7 +15,7 @@ void Deleter( GeometryFactory * factory )
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( dxi::core::Game * game, const qxml::Document * doc );
+extern "C" __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
 
 __declspec(dllexport) bool DXILoader( dxi::core::IGame * _game, const qxml::Document * doc )
 {

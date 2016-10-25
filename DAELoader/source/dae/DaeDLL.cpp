@@ -22,7 +22,10 @@ __declspec(dllexport) bool DXILoader( dxi::core::IGame * _game, const qxml::Docu
 
 	auto game = dynamic_cast<dxi::core::Game *>(_game);
 
-	if( doc == nullptr ) return false;
+	if( doc == nullptr ) 
+	{
+		game->ReportError( ErrorLevel::Failure, "DALoader", "Configuraiton file missing!" );
+	}
 
 	// Setup DAE factory.
 	class MyEffectSolver : public dae::util::IEffectSolver

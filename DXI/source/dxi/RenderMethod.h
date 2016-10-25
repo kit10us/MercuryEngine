@@ -36,15 +36,11 @@ namespace dxi
 
 	class RenderMethod
 	{
-	public:
-		RenderMethod();
+	public: // TODO: Make private.
 		RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::ptr, bool useIB = false, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
 		RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::ptr effect, bool useIB = true, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
-
-		// Named constructors
-		// TODO: Add more low level named constructors.
-		// TODO: Replace 'Create' prefix with 'RenderMethod'.
-		// TODO: Support VB and IB indices.
+	public:
+		RenderMethod();
 
 		static RenderMethod CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::ptr effect );
 		static RenderMethod CreateTriangleList( unsigned int startVertex, unsigned int triangleCount, Effect::ptr effect );

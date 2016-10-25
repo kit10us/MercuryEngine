@@ -219,7 +219,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 
 		VT * vt = (VT*)lock.GetData();
 
-		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), vertices.get(), dxi::BufferUsage::Staging );
+		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), vertices.get(), dxi::BufferUsage::Dynamic );
 
 		size_t numberOfIndices = 0;
 		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
@@ -245,6 +245,6 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 
 		set.GetIndexBuffer().Create( numberOfIndices, (dxi::Index32*)&indices[0], dxi::BufferUsage::Staging );
 
-		set.GetRenderMethodBuffer().AddMethod( dxi::RenderMethod( dxi::PrimitiveType::TriangleList, 0, numberOfVertices, numberOfIndices / 3, myEffect, true ) );
+		set.GetRenderMethodBuffer().AddMethod( dxi::RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
 	}
 }

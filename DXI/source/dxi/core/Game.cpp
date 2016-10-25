@@ -203,7 +203,6 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				if( node.IsTagName( "extension" ) )
 				{
 					unify::Path path( node.GetText() );
-					//m_extensions.push_back( std::shared_ptr< core::Extension >( new Extension( node.GetDocument()->GetPath().DirectoryOnly() + path ) ) );
 					AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
 				}
 				else if( node.IsTagName( "gamemodule" ) )
@@ -228,7 +227,14 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 
 
 	// User startup...
-	Startup();
+	try
+	{
+		Startup();
+	}
+	catch( unify::Exception ex )
+	{
+		ReportError( ErrorLevel::Critical, "Game", ex.what() );
+	}
 
 	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
 	duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
@@ -410,19 +416,19 @@ void Game::ReportError( ErrorLevel level, std::string source, std::string error 
 	switch( level )
 	{
 	case ErrorLevel::Critical:
-		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error + "." );
-		LogLine( "Critical Failure (" + source + "): " + error + "." );
-		throw unify::Exception( "Critical Failure (" + source + "): " + error + "." );
+		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
+		LogLine( "Critical Failure (" + source + "): " + error  );
+		throw unify::Exception( "Critical Failure (" + source + "): " + error );
 	case ErrorLevel::Failure:
-		LogLine( "Failure (" + source + "): " + error + "." );
+		LogLine( "Failure (" + source + "): " + error );
 		if ( m_failuresAsCritial )
 		{
-			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error + "." );
-			throw unify::Exception( "Failure (" + source + "): " + error + "." );
+			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
+			throw unify::Exception( "Failure (" + source + "): " + error );
 		}
 		break;
 	case ErrorLevel::Warning:
-		LogLine( "Warning (" + source + "): " + error + "." );
+		LogLine( "Warning (" + source + "): " + error );
 		break;
 	}
 	return;

@@ -25,6 +25,9 @@
     <Filter Include="dae\util">
       <UniqueIdentifier>{5cc6062f-00f0-4738-af1f-fcbab13e73d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dll">
+      <UniqueIdentifier>{b7ef1a20-4753-42e4-8b95-75a36196b7c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\dae\Input_Unshared.h">

@@ -4,6 +4,7 @@
 #include <dxi/core/Game.h>
 #include <dxi/factory/GeometryFactory.h>
 #include <dxi/exception/FailedToCreate.h>
+#include <dxi/exception/NotImplemented.h>
 #include <dxi/XMLConvert.h>
 #include <qxml/Document.h>
 
@@ -202,24 +203,65 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 
 						auto effect = effectManager->Find( methodElement.GetAttribute< std::string >( "effect" ) );
 
-						// Determine attributes used...
-						if( methodElement.HasAttributes( "baseVertex" ) )
+
+						switch( pt )
 						{
-							int baseVertex = methodElement.GetAttribute< int >( "basevertex" );
-							int minIndex = methodElement.GetAttribute< int >( "minindex" );
-							int vertices = methodElement.GetAttribute< int >( "vertices" );
-							int startIndex = methodElement.GetAttribute< int >( "startIndex" );
-							int primitives = methodElement.GetAttribute< int >( "primitives" );
-							bool useIB = true;
-							bufferset.GetRenderMethodBuffer().AddMethod( RenderMethod( pt, baseVertex, minIndex, vertices, startIndex, primitives, effect, useIB ) );
+						case PrimitiveType::LineList:
+						{
+							int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+							int lineCount = methodElement.GetAttribute< int >( "linecount" );
+							RenderMethod method( RenderMethod::CreateLineList( startVertex, lineCount, effect ) );
+							bufferset.GetRenderMethodBuffer().AddMethod( method );
+							break;
 						}
-						else
+						case PrimitiveType::LineStrip:
+							throw exception::NotImplemented( "Line strip primitive type not implemented!" );
+							break;
+						case PrimitiveType::PointList:
 						{
-							int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
-							int vertices = methodElement.GetAttribute< int >( "vertices" );
-							int primitives = methodElement.GetAttribute< int >( "primitives" );
-							bool useIB = true;
-							bufferset.GetRenderMethodBuffer().AddMethod( RenderMethod( pt, startVertex, vertices, primitives, effect, useIB ) );
+							int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+							int pointCount = methodElement.GetAttribute< int >( "pointcount" );
+							RenderMethod method( RenderMethod::CreatePointList( startVertex, pointCount, effect ) );
+							bufferset.GetRenderMethodBuffer().AddMethod( method );
+							break;
+						}
+						case PrimitiveType::TriangleList:
+							if ( methodElement.HasAttributes( "indices" ) == false )
+							{
+								int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+								int triangleCount = methodElement.GetAttribute< int >( "trianglecount" );
+								RenderMethod method( RenderMethod::CreateTriangleList( startVertex, triangleCount, effect ));
+								bufferset.GetRenderMethodBuffer().AddMethod( method );
+							}
+							else
+							{
+								int vertices = methodElement.GetAttribute< int >( "vertices" );
+								int indices = methodElement.GetAttribute< int >( "indices" );
+								int startIndex = methodElement.GetAttributeElse < int >("startindex", 0);
+								int baseVertexIndex = methodElement.GetAttributeElse< int >( "baseVertexIndex", 0 );
+								RenderMethod method( RenderMethod::CreateTriangleListIndexed( vertices, indices, startIndex, baseVertexIndex, effect ) );
+								bufferset.GetRenderMethodBuffer().AddMethod( method );
+							}
+							break;
+						case PrimitiveType::TriangleStrip:
+							if ( methodElement.HasAttributes( "indices" ) == false )
+							{
+								int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+								int segmentCount = methodElement.GetAttribute< int >( "segmentcount" );
+								RenderMethod method( RenderMethod::CreateTriangleStrip( startVertex, segmentCount, effect ) );
+								bufferset.GetRenderMethodBuffer().AddMethod( method );
+							}
+							else
+							{
+								int vertices = methodElement.GetAttribute< int >( "vertices" );
+								int indices = methodElement.GetAttribute< int >( "indices" );
+								int startIndex = methodElement.GetAttributeElse < int >( "startindex", 0 );
+								int baseVertexIndex = methodElement.GetAttributeElse< int >( "baseVertexIndex", 0 );
+								RenderMethod method( RenderMethod::CreateTriangleStripIndexed( vertices, indices, startIndex, baseVertexIndex, effect ) );
+								bufferset.GetRenderMethodBuffer().AddMethod( method );
+							}							break;
+						default:
+							throw exception::FailedToCreate( "Invalid primitive type!" );
 						}
 					}
 				}

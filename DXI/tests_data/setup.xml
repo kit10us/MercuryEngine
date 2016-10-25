@@ -1,5 +1,6 @@
 <xml>
 <setup>
+<failureAsCritical>true</failureAsCritical>
 <logfile>log.txt</logfile>
 <display fullscreen="false" x="10" y="10" width="800" height="640"/>
 <!--<extension>../../../extensions/</extension>-->

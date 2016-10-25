@@ -242,7 +242,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source )
 					IndexBuffer & ib = bufferSet.GetIndexBuffer();
 					ib.Create( (unsigned int)listPTP.size() * 3, (Index32*)&indices[0], dxi::BufferUsage::Default );
 
-					bufferSet.GetRenderMethodBuffer().AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, mesh_numfaces * 3, mesh_numfaces, effect, true /*useIB*/ ) );
+					bufferSet.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( mesh_numfaces * 3, (unsigned int)listPTP.size() * 3, 0, 0, effect ) );
 				}
 			}
 		}

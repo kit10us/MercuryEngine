@@ -35,7 +35,7 @@ bool Extension::Load( IGame * game )
 		return false;
 	}
 
-	unify::Path config( m_source.ChangeExtension( ".xml" ) );
+	unify::Path config( m_source.ChangeExtension( ".xml" ).Filename() );
 	std::shared_ptr< qxml::Document > doc;
 	if ( config.Exists() )
 	{

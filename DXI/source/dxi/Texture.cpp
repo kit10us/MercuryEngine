@@ -421,6 +421,9 @@ class Texture::Pimpl
 	SpriteArrayMap m_spriteArrayMap;
 	SpriteMasterList m_spriteMasterList;
 
+	DirectX::ScratchImage m_scratch;
+
+
 public:
 	Pimpl( Texture & owner, core::IRenderer * renderer )
 		: m_owner( owner )
@@ -444,6 +447,7 @@ public:
 
 	~Pimpl()
 	{
+		Destroy();
 	}
 
 	void Create()
@@ -475,6 +479,7 @@ public:
 	{
 		m_texture = nullptr;
 		m_created = false; // TODO: Can solve this from m_texture.
+		m_scratch.Release();
 	}
 
 	void Set( bool renderable, bool lockable )
@@ -494,12 +499,37 @@ public:
 		{
 			throw exception::FailedToLock( "Texture is not lockable!" );
 		}
-		throw exception::NotImplemented( "DX11" );
+
+		// Allow us to convert from our flag type to DX.
+		/*
+		unsigned int dxFlags = readonly ? D3DLOCK_READONLY : 0;
+
+		D3DLOCKED_RECT d3dLockedRect;
+		if ( FAILED( m_texture->LockRect( level, &d3dLockedRect, (RECT*)rect, dxFlags ) ) )
+		{
+		lock.pBits = 0;
+		lock.uStride = 0;
+		throw unify::Exception( "Failed to lock texture: \"" + m_filePath.ToString() + "\"" );
+		}
+		*/
+
+		lock.pBits = m_scratch.GetImage( level, 0, 0 )->pixels;
+		lock.uStride = m_scratch.GetImage( level, 0, 0 )->rowPitch;
+		if ( rect )
+		{
+			lock.uWidth = rect->right - rect->left;
+			lock.uHeight = rect->bottom - rect->top;
+		}
+		else
+		{
+			lock.uWidth = m_imageSize.width;
+			lock.uHeight = m_imageSize.height;
+		}
 	}
 
 	void UnlockRect( unsigned int level )
 	{
-		throw exception::NotImplemented( "DX11" );
+
 	}
 
 	void LoadImage( unify::Path filePath )
@@ -520,36 +550,44 @@ public:
 		//DirectX::Image sourceImages{};
 		DirectX::TexMetadata texMetadata{};
 
-		DirectX::ScratchImage scratch{};
+		//DirectX::ScratchImagem_scratch{};
 
 		if ( m_filePath.IsExtension( "DDS" ) )
 		{
-			result = DirectX::LoadFromDDSFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), 0, &texMetadata, scratch );
+			result = DirectX::LoadFromDDSFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), 0, &texMetadata, m_scratch );
 		}
-		else if ( m_filePath.IsExtension( "BMP" ) || m_filePath.IsExtension( "JPG" ) || m_filePath.IsExtension( "JPEG" ) || m_filePath.IsExtension( "TIFF" ) || m_filePath.IsExtension( "TIF" ) || m_filePath.IsExtension( "HDP" ) )
+		else if ( m_filePath.IsExtension( "BMP" ) || m_filePath.IsExtension( "JPG" ) || m_filePath.IsExtension( "JPEG" ) || m_filePath.IsExtension( "TIFF" ) || m_filePath.IsExtension( "TIF" ) || m_filePath.IsExtension( "HDP" ) || m_filePath.IsExtension( "PNG" ) )
 		{
-			result = DirectX::LoadFromWICFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), 0, &texMetadata, scratch );
+			result = DirectX::LoadFromWICFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), 0, &texMetadata, m_scratch );
 		}
 		else if ( m_filePath.IsExtension( "TGA" ) )
 		{
-			result = DirectX::LoadFromTGAFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), &texMetadata, scratch );
+			result = DirectX::LoadFromTGAFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), &texMetadata, m_scratch );
 		}
-		assert( !FAILED( result ) );
+		else
+		{
+			throw unify::Exception( "File format for \"" + m_filePath.ToString() + "\" not supported!" );
+		}
 
-		unsigned int width = scratch.GetImage( 0, 0, 0 )->width;
-		unsigned int height = scratch.GetImage( 0, 0, 0 )->height;
+		if ( FAILED( result ) )
+		{
+			throw unify::Exception( "Failed to load image \"" + m_filePath.ToString() + "\"!" );
+		}
+
+		unsigned int width = m_scratch.GetImage( 0, 0, 0 )->width;
+		unsigned int height = m_scratch.GetImage( 0, 0, 0 )->height;
 
 		D3D11_SUBRESOURCE_DATA data{};
-		data.pSysMem = scratch.GetImage( 0, 0, 0 )->pixels;
-		data.SysMemPitch = scratch.GetImage( 0, 0, 0 )->rowPitch;
-		data.SysMemSlicePitch = scratch.GetImage( 0, 0, 0 )->slicePitch;
+		data.pSysMem = m_scratch.GetImage( 0, 0, 0 )->pixels;
+		data.SysMemPitch = m_scratch.GetImage( 0, 0, 0 )->rowPitch;
+		data.SysMemSlicePitch = m_scratch.GetImage( 0, 0, 0 )->slicePitch;
 
 		D3D11_TEXTURE2D_DESC textureDesc{};
 		textureDesc.Width = width;
 		textureDesc.Height = height;
 		textureDesc.MipLevels = 1;
 		textureDesc.ArraySize = 1;
-		textureDesc.Format = scratch.GetImage( 0, 0, 0 )->format;
+		textureDesc.Format = m_scratch.GetImage( 0, 0, 0 )->format;
 		textureDesc.SampleDesc.Count = 1;
 		textureDesc.SampleDesc.Quality = 0;
 		textureDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -562,8 +600,6 @@ public:
 			Destroy();
 			throw unify::Exception( "Failed to load image\"" + filePath.ToString() + "\"!" );
 		}
-
-		scratch.Release();
 
 		D3D11_SAMPLER_DESC colorMapDesc{};
 		colorMapDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -589,6 +625,9 @@ public:
 
 		result = dxDevice->CreateShaderResourceView( m_texture, &textureResourceDesc, &m_colorMap );
 		assert( !FAILED( result ) );
+
+		m_imageSize.width = width;
+		m_imageSize.height = height;
 	}
 
 	bool Use( unsigned int stage )

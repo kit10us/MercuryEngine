@@ -13,6 +13,7 @@
 #pragma comment( lib, "PxTaskDEBUG.lib" )
 #pragma comment( lib, "PhysX3ExtensionsDEBUG.lib" )
 
+
 void Deleter( dxiphysx::GameComponent * component )
 {
 	delete component;

@@ -255,18 +255,22 @@ public:
 
 	void LockReadOnly( unify::DataLock & lock ) const
 	{
+		throw exception::NotImplemented();
 	}
 
 	void Unlock()
 	{
+		throw exception::NotImplemented();
 	}
 
 	void Unlock() const
 	{
+		throw exception::NotImplemented();
 	}
 
 	void Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts )
 	{
+		throw exception::NotImplemented();
 	}
 
 	bool Valid() const

@@ -105,13 +105,8 @@ bool MyGame::Update( RenderInfo & renderInfo )
 	static unify::Angle rotation( unify::Angle::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
-	/*
-	// TODO:
-	const float width = (float)GetOS()->GetResolution().width;
-	const float height = (float)GetOS()->GetResolution().height;
-	*/
-	const float width = 800;
-	const float height = 600;
+	const float width = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().width;
+	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 
 	rotation += unify::Angle::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
@@ -140,7 +135,7 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 {
 	vertexBuffer->Use();
 
-	RenderMethod method( PrimitiveType::TriangleList, 0, vertexBuffer->GetLength(), 12, effect );
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 	method.Render( renderInfo );
 }
 

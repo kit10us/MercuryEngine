@@ -142,7 +142,7 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 {
 	vertexBuffer->Use();
 
-	RenderMethod method( PrimitiveType::TriangleList, 0, vertexBuffer->GetLength(), 12, effect );
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 	method.Render( renderInfo );
 }
 

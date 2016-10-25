@@ -16,6 +16,7 @@
 #undef LoadImage
 #endif
 
+
 namespace dxi
 {
 	// TODO: Re-arch...

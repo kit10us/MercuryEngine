@@ -60,6 +60,10 @@ void Module::OnInit()
 		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
 		assert( 0 );
 	}
+	else if ( result == LUA_ERRFILE )
+	{
+		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
+	}
 	else if ( result != LUA_OK )
 	{
 		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Failure in script!" );

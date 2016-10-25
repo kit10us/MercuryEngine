@@ -62,10 +62,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	{
 		// NOTE: Our goal is to never hit hear in release.
         OutputDebugStringA( "[" );
-        OutputDebugStringA( "exception: " );
+        OutputDebugStringA( "Mercury Failure: " );
         OutputDebugStringA( exception.what() );
         OutputDebugStringA( "]\n" );
-		MessageBoxA( 0, exception.what(), "Exception caught", MB_ICONEXCLAMATION );
+		MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION );
 		return -1;
 	}
  

@@ -52,17 +52,19 @@ void MyGame::Startup()
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 	
 	// Add textures we will need for our effects, and terrain generation/modification.
-	GetManager< Texture >()->Add( "land", new Texture( GetOS()->GetRenderer(0), "media/earthb.bmp", true, true ) );
-	GetManager< Texture >()->Add( "cutout", new Texture( GetOS()->GetRenderer( 0 ), "media/EarthWaterCutoutMap.bmp", true, true ) );
+	GetManager< Texture >()->Add( "land", new Texture( GetOS()->GetRenderer(0), "media/4.bmp", true, true ) );
+//	GetManager< Texture >()->Add( "cutout", new Texture( GetOS()->GetRenderer( 0 ), "media/EarthWaterCutoutMap.bmp", true, true ) );
 
 	// Load an effect, then modify it to fit our needs.
 	Effect::ptr landEffect = GetManager< Effect >()->Add( "land", "media/EffectTextured.effect" );
 	//landEffect->SetBlend( Blend( Usage::False ) );
 	landEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
 
+	/*
 	Effect::ptr cutoutEffect = GetManager< Effect >()->Add( "cutout", "media/EffectTextured.effect" );
 	//cutoutEffect->SetBlend( Blend( Usage::True, Blend::Effect::One, Blend::Effect::One ) );
 	cutoutEffect->SetTexture( 0, GetManager< Texture >()->Find( "land" ) );
+	*/
 
 	// At this point the same effect has been loaded twice, modified to have different blending modes for the land and cutout effect.
 	// Note that the same texture is shared, and internally all other possible assets are shared, such as shaders.
@@ -76,7 +78,10 @@ void MyGame::Startup()
     parameters.SetPoints( unify::RowColumn< unsigned int >( 200, 140 ) );
     parameters.SetConstant( 0.0f );
     parameters.SetTexArea( unify::TexArea::Full() );
-	parameters.SetHeightMap( Terra::TextureOpMap( GetManager< Texture >()->Find( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 0.7f, 0.25f, -1.0f ) ) );	
+	
+	//parameters.SetHeightMap( Terra::TextureOpMap( GetManager< Texture >()->Find( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 0.7f, 0.25f, -1.0f ) ) );	
+	parameters.SetHeightMap( Terra::TextureOpMap( GetManager< Texture >()->Find( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 1.0f, 0.0f, 0.0f ) ) );	
+	
 	//parameters.SetDiffuse( unify::ColorUnit::ColorUnitRed() );
 	//parameters.SetDiffuses( unify::ColorUnit::ColorUnitBlack(), unify::ColorUnit::ColorUnitRed(), unify::ColorUnit::ColorUnitBlue(), unify::ColorUnit::ColorUnitWhite() );
 	
