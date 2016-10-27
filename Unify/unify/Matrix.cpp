@@ -225,12 +225,13 @@ Matrix::Matrix( const Matrix & matrix )
 	memcpy( &m, &matrix.m, sizeof( float ) * 4 * 4 );
 }
 
-Matrix::Matrix( Quaternion orientation, V3< float > translation, V3< float > scale )
+Matrix::Matrix( Quaternion q, V3< float > translation )
 {
-	const float & x = orientation.x;
-	const float & y = orientation.y;
-	const float & z = orientation.z;
-	const float & w = orientation.w;
+	/*
+	const float & x = q.x;
+	const float & y = q.y;
+	const float & z = q.z;
+	const float & w = q.w;
 	float x2 = x * x;
 	float y2 = y * y;
 	float z2 = z * z;
@@ -266,6 +267,42 @@ Matrix::Matrix( Quaternion orientation, V3< float > translation, V3< float > sca
 	Matrix scaleM( MatrixScale( scale ) );
 	Matrix translationM( MatrixTranslate( translation ) );
 	*this = scaleM * rotation * translationM;
+	*/
+
+	float sqw = q.w*q.w;
+	float sqx = q.x*q.x;
+	float sqy = q.y*q.y;
+	float sqz = q.z*q.z;
+
+	// invs (inverse square length) is only required if quaternion is not already normalised
+	float invs = 1 / (sqx + sqy + sqz + sqw);
+	m[0][0] = (sqx - sqy - sqz + sqw)*invs; // since sqw + sqx + sqy + sqz =1/invs*invs
+	m[1][1] = (-sqx + sqy - sqz + sqw)*invs;
+	m[2][2] = (-sqx - sqy + sqz + sqw)*invs;
+
+	float tmp1 = q.x*q.y;
+	float tmp2 = q.z*q.w;
+	m[0][1] = 2.0f * (tmp1 + tmp2)*invs;
+	m[1][0] = 2.0f * (tmp1 - tmp2)*invs;
+
+	tmp1 = q.x*q.z;
+	tmp2 = q.y*q.w;
+	m[0][2] = 2.0f * (tmp1 - tmp2)*invs;
+	m[2][0] = 2.0f * (tmp1 + tmp2)*invs;
+	tmp1 = q.y*q.z;
+	tmp2 = q.x*q.w;
+	m[1][2] = 2.0f * (tmp1 + tmp2)*invs;
+	m[2][1] = 2.0f * (tmp1 - tmp2)*invs;
+
+	m[3][0] = translation.x;
+	m[3][1] = translation.y;
+	m[3][2] = translation.z;
+
+	m[0][3] = 0.0f;
+	m[1][3] = 0.0f;
+	m[2][3] = 0.0f;
+
+	m[3][3] = 1.0f;
 }
 
 Matrix::~Matrix()
@@ -532,7 +569,8 @@ Matrix & Matrix::SetRotation( const Quaternion & quaternion )
 	// Store values to restore them after rotation.
 	V3< float > scale = GetScale();
 	V3< float > position = GetPosition();
-	*this = Matrix( quaternion, position, scale );
+	*this = Matrix( quaternion, position );
+	*this *= Matrix::MatrixScale( scale );
 	return *this;
 }
 

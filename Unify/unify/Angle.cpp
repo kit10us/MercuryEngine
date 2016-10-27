@@ -6,34 +6,35 @@
 
 using namespace unify;
 
+Angle unify::AngleInRadians( float radians )
+{
+	return Angle( radians );
+}
+
+Angle unify::AngleInDegrees( float degrees )
+{
+	return Angle( degrees * (3.14159265f / 180.0f) );
+}
+
+Angle unify::AnglePI()
+{
+	return AngleInRadians( 3.14159265f );
+}
+
+Angle unify::AnglePI2()
+{
+	return AngleInRadians( 3.14159265f * 2.0f );
+}
+
+Angle unify::AnglePIHalf()
+{
+	return AngleInRadians( 3.14159265f * 0.5f );
+}
+
+
 Angle::Angle( float radians )
 : m_radians( radians )
 {
-}
-
-Angle Angle::AngleInRadians( float radians )
-{
-    return Angle( radians );
-}
-
-Angle Angle::AngleInDegrees( float degrees )
-{
-    return Angle( degrees * ( 3.14159265f / 180.0f ) );
-}
-
-Angle Angle::AnglePI()
-{
-    return AngleInRadians( 3.14159265f );
-}
-
-Angle Angle::AnglePI2()
-{
-    return AngleInRadians( 3.14159265f * 2.0f );
-}
-
-Angle Angle::AnglePIHalf()
-{
-    return AngleInRadians( 3.14159265f * 0.5f );
 }
 
 Angle::Angle()

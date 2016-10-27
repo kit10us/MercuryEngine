@@ -31,8 +31,8 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Quaternion & q, cons
 	if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix ) )
 	{
 		unify::V3< float > v( element->GetAttribute( "x" + postFix )->Get< float >(), element->GetAttribute( "y" + postFix )->Get< float >(), element->GetAttribute( "z" + postFix )->Get< float >() );
-		float rotation = element->GetAttribute( "rotation" + postFix )->Get< float >();
-		q = unify::Quaternion::QuaternionRotationAxis( v, rotation );
+		unify::Angle rotation( unify::AngleInRadians( element->GetAttribute( "rotation" + postFix )->Get< float >() ) );
+		q = unify::Quaternion( v, rotation );
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix ) )
 	{
@@ -40,8 +40,8 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Quaternion & q, cons
 		v.x = unify::Cast< float >( element->GetElement( "x" + postFix )->GetText() );
 		v.y = unify::Cast< float >( element->GetElement( "y" + postFix )->GetText() );
 		v.z = unify::Cast< float >( element->GetElement( "z" + postFix )->GetText() );
-		float rotation = unify::Cast< float >( element->GetElement( "rotation" + postFix )->GetText() );
-		q = unify::Quaternion::QuaternionRotationAxis( v, rotation );
+		unify::Angle rotation( unify::AngleInRadians( element->GetAttribute( "rotation" + postFix )->Get< float >() ) );
+		q = unify::Quaternion( v, rotation );
 	}
 
 	// Explicit quaternion
@@ -69,7 +69,7 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Quaternion & q, cons
 bool dxi::XMLConvert( const qxml::Element * element, unify::Matrix & matrix, const std::string & postFix )
 {
 	unify::V3< float > scale( 1, 1, 1 );
-	unify::Quaternion rotation( unify::Quaternion::QuaternionIdentity() );
+	unify::Quaternion rotation( unify::QuaternionIdentity() );
 	unify::V3< float > translation( 0, 0, 0 );
 	int finds = 0;
 
@@ -96,7 +96,8 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Matrix & matrix, con
 
 	if( finds )
 	{
-		matrix = unify::Matrix( rotation, translation, scale );
+		matrix = unify::Matrix( rotation, translation );
+		matrix *= unify::Matrix::MatrixScale( scale );
 		return true;
 	}
 	else

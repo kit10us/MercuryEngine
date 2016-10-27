@@ -147,7 +147,7 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 		break;
 	case Source::Geometry: // In screen coordinates
 		{
-			unify::Matrix temp = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 1, 0, 0 ), unify::Angle::AnglePI() );
+			unify::Matrix temp = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 1, 0, 0 ), unify::AnglePI() );
 			
 			if( is3D )
 			{

@@ -10,14 +10,18 @@ int main( int argc, char ** argv )
 
 	Matrix m( Matrix::MatrixIdentity() );
 	assert( m.IsIdentity() );
+	
 	Matrix scale( Matrix::MatrixScale( 10, 100, 1000 ) );
+	assert( scale.IsIdentity() == false );
 	assert( scale( 0, 0 ) == 10.0f );
 	assert( scale( 1, 1 ) == 100.0f );
 	assert( scale( 2, 2 ) == 1000.0f );
+
 	Matrix translate( Matrix::MatrixTranslate( V3< float >( 1, 2, 3 ) ) );
 	assert( translate( 3, 0 ) == 1.0f );
 	assert( translate( 3, 1 ) == 2.0f );
 	assert( translate( 3, 2 ) == 3.0f );
+
 	Matrix final( m * scale * translate );
 	V2< float > transformedCoordV2( 1, 2 );
 	V3< float > transformedCoordV3( 3, 4, 5 );
@@ -47,6 +51,9 @@ int main( int argc, char ** argv )
 	translate.Invert();
 	translate.TransformCoord( transformedCoordV3 );
 	scale.TransformCoord( transformedCoordV3 );
+
+	cout << "\nMatrix tests passed!\n";
+	cout << "Press any key to finish...\n";
 
 	cout << std::endl << std::endl;
 	while( ! _getch() );

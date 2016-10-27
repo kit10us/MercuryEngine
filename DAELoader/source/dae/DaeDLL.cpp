@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <dae/GeometrySourceFactory.h>
-#include "DaeDLL.h"
 #include <memory.h>
 #include <dxi/win/DXILib.h>
 #include <dxi/win/DXRenderer.h>

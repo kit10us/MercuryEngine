@@ -85,7 +85,7 @@ void MyGame::Startup()
 	aseObject->SetGeometry( meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	aseObject->GetGeometryMatrix().Scale( 0.090f );
-	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::Angle::AngleInDegrees( 90 ) );
+	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
 	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 	aseObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
@@ -94,10 +94,10 @@ void MyGame::Startup()
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/cube.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/torus.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/torus.dae" ) );
 	
 	// Rigged...
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
@@ -107,15 +107,15 @@ void MyGame::Startup()
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 
 	daeModel->GetGeometryMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
-	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::Angle::AngleInDegrees( 270.0f ) );
-	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::Angle::AngleInDegrees( -90.0f ) );
+	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
+	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
 	// Use of camera controls to simplify camera movement...
 	scene::Object::ptr camera = GetSceneManager()->Find( "scene" )->GetRoot()->FindObject( "camera" );
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
 	return Game::Update( renderInfo );

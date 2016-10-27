@@ -7,8 +7,6 @@
 
 namespace unify
 {
-//	typedef float Radians;
-	
 	/// <summary>
 	///	An Angle abstract so we can move between degrees and radians easily, and simplify math by pushing the actual conversion format
 	/// to the beginning and end of the lifetime of the math - that is to say, we don't care if A + B is degress or radians, we only 
@@ -16,15 +14,16 @@ namespace unify
 	/// </summary>
 	class Angle
     {
-        float m_radians;
+		friend Angle AngleInRadians( float radians );
+		friend Angle AngleInDegrees( float degrees );
+		friend Angle AnglePI();
+		friend Angle AnglePI2();
+		friend Angle AnglePIHalf();
+		
+		float m_radians;
         Angle( float radians );
 
     public:
-        static Angle AngleInRadians( float radians );
-        static Angle AngleInDegrees( float degrees );
-        static Angle AnglePI();
-        static Angle AnglePI2();
-        static Angle AnglePIHalf();
 
 		Angle();
 		Angle( const Angle & angle );
@@ -75,4 +74,10 @@ namespace unify
 		/// </summary>
 		float CosOf() const;
     };
+
+	Angle AngleInRadians( float radians );
+	Angle AngleInDegrees( float degrees );
+	Angle AnglePI();
+	Angle AnglePI2();
+	Angle AnglePIHalf();
 }

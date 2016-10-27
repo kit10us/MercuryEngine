@@ -102,13 +102,13 @@ void MyGame::Startup()
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
-	static unify::Angle rotation( unify::Angle::AngleInRadians( 0.0f ) );
+	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
 	const float width = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().width;
 	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 
-	rotation += unify::Angle::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
+	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
 	{
 		++axisIndex;
@@ -122,9 +122,15 @@ bool MyGame::Update( RenderInfo & renderInfo )
 	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
 	unify::V3< float > up( 0.0f, 1.0f, 0.0f );
 
-	unify::Matrix worldMatrix = unify::Matrix::MatrixIdentity();
 	unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
-	worldMatrix *= unify::Matrix::MatrixRotationAboutAxis( axis, rotation );
+
+	unify::Matrix worldMatrixA = unify::Matrix::MatrixIdentity();
+	worldMatrixA *= unify::Matrix::MatrixRotationAboutAxis( axis, rotation );
+
+	unify::Quaternion q( unify::Quaternion( axis, rotation ) );
+
+	unify::Matrix worldMatrix( q );
+	
 	renderInfo.SetWorldMatrix( worldMatrix );
 	renderInfo.SetViewMatrix( unify::Matrix::MatrixLookAtLH( eye, at, up ) );
 	renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );

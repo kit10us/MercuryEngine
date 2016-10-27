@@ -54,7 +54,7 @@ Node::Node( IDocument & document, const dae::Node * parent, const qxml::Element 
 		{
 			std::vector< float > components = unify::SplitOnWhitespace< float >( childNode->GetText() );
 			unify::V3< float > axis( components[ 0 ], components[ 1 ], components[ 2 ] );
-			unify::Angle angle( unify::Angle::AngleInDegrees( components[ 3 ] ) );
+			unify::Angle angle( unify::AngleInDegrees( components[ 3 ] ) );
 			m_matrix *= unify::Matrix::MatrixRotationAboutAxis( axis, angle );
 		}
 		else if ( childNode->IsTagName( "instance_camera" ) )
@@ -138,7 +138,7 @@ Node::Node( IDocument & document, const qxml::Element * node )
 		{
 			std::vector< float > components = unify::SplitOnWhitespace< float >( childNode->GetText() );
 			unify::V3< float > axis( components[ 0 ], components[ 1 ], components[ 2 ] );
-			unify::Angle angle( unify::Angle::AngleInDegrees( components[ 3 ] ) );
+			unify::Angle angle( unify::AngleInDegrees( components[ 3 ] ) );
 			m_matrix *= unify::Matrix::MatrixRotationAboutAxis( axis, angle );
 		}
 		else if ( childNode->IsTagName( "instance_camera" ) )

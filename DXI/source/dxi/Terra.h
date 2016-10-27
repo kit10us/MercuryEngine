@@ -142,7 +142,6 @@ namespace dxi
 		bool ApplyAlphaMap( TextureOpMap tom );
 		bool ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexArea );
 		bool ApplyTransparent( unsigned int uFlags, float fValue, float fTolerance = 0.0f );
-		void GenerateNormals( bool bCrossSide = false );
 		bool Smooth( unsigned int uFlags = FLAGNULL );
 		bool MakeWrappable( unsigned int uFlags = WRAP_COLUMNS | WRAP_ROWS );
 		bool FixSide( unsigned int	uFlags, float fToDepth );

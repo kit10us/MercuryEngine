@@ -159,9 +159,6 @@
     <ClInclude Include="source\dae\util\IEffectSolver.h">
       <Filter>dae\util</Filter>
     </ClInclude>
-    <ClInclude Include="source\dae\DaeDLL.h">
-      <Filter>dae</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dae\InstanceSet.cpp">

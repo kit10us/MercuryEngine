@@ -95,7 +95,6 @@
     <ClInclude Include="source\dae\Accessor.h" />
     <ClInclude Include="source\dae\BindMaterial.h" />
     <ClInclude Include="source\dae\BindMaterial_TechniqueCommon.h" />
-    <ClInclude Include="source\dae\DaeDLL.h" />
     <ClInclude Include="source\dae\Document.h" />
     <ClInclude Include="source\dae\DocumentNode.h" />
     <ClInclude Include="source\dae\Exceptions.h" />

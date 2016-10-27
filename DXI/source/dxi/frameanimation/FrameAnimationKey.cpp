@@ -40,6 +40,6 @@ unify::Quaternion dxi::frameanimation::InterpretValue< unify::Quaternion >( floa
 		rightValue = rightItr->Value();
 	}
 	float invMix = 1.0f - mix;
-	unify::Quaternion final( unify::Quaternion::QuaternionSlerp( leftValue, rightValue, mix ) );
+	unify::Quaternion final( unify::QuaternionSlerp( leftValue, rightValue, mix ) );
 	return final;
 }

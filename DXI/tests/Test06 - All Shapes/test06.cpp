@@ -188,7 +188,7 @@ public:
 	{
 		static size_t axisIndex = 1;
 		static unify::Angle totalRotation{};
-		unify::Angle rotation = unify::Angle::AngleInRadians( renderInfo.GetDelta() );
+		unify::Angle rotation = unify::AngleInRadians( renderInfo.GetDelta() );
 		totalRotation += rotation;
 		if( totalRotation.Fix360() != 0 )
 		{
@@ -203,7 +203,7 @@ public:
 		unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 
 		auto group = GetSceneManager()->Find( "main" )->FindObject( "group" );
-		group->GetFrame().RotateAbout( axis, rotation );
+		group->GetFrame().Rotate( unify::Quaternion( axis, rotation ) );
 
 		return Game::Update( renderInfo );
 	}

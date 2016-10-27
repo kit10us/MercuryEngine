@@ -31,7 +31,6 @@
     <ClCompile Include="unify\TexArea.cpp" />
     <ClCompile Include="unify\TexCoords.cpp" />
     <ClCompile Include="unify\TimeDelta.cpp" />
-    <ClCompile Include="unify\Transform.cpp" />
     <ClCompile Include="unify\V2.cpp" />
     <ClCompile Include="unify\Variant.cpp" />
   </ItemGroup>
@@ -73,7 +72,6 @@
     <ClInclude Include="unify\TexArea.h" />
     <ClInclude Include="unify\TexCoords.h" />
     <ClInclude Include="unify\TimeDelta.h" />
-    <ClInclude Include="unify\Transform.h" />
     <ClInclude Include="unify\Tree.h" />
     <ClInclude Include="unify\Triangle.h" />
     <ClInclude Include="unify\unify.h" />

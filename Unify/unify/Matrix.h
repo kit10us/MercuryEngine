@@ -33,7 +33,7 @@ namespace unify
 
 		Matrix();
 		Matrix( const Matrix & matrix );
-		explicit Matrix( Quaternion orientation, V3< float > position = V3< float >( 0, 0, 0 ), V3< float > scale = V3< float >( 1, 1, 1 ) );
+		explicit Matrix( Quaternion orientation, V3< float > position = V3< float >( 0, 0, 0 ) );
 		~Matrix();
 
 		Matrix & operator = ( const Matrix & matrix );
@@ -117,7 +117,6 @@ namespace unify
 		void LookAtLH( const V3< float > & at, const V3< float > & up );
 
 		std::string ToString() const;
-
 		float m[4][4];
 	};
 }

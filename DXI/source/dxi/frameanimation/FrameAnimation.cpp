@@ -85,9 +85,9 @@ void Animation::ApplyToFrames( float progress, unify::FrameSetInstance & frameSe
 		const TranslationKey::list & translationKeys = itr->second.translation;
 
 		unify::V3< float > scale( InterpretValue< unify::V3< float > >( progress, scaleKeys, unify::V3< float >( 1.0f, 1.0f, 1.0f ) ) );
-		unify::Quaternion rotation( InterpretValue< unify::Quaternion >( progress, rotationKeys, unify::Quaternion::QuaternionIdentity() ) );
+		unify::Quaternion rotation( InterpretValue< unify::Quaternion >( progress, rotationKeys, unify::QuaternionIdentity() ) );
 		unify::V3< float > translation( InterpretValue< unify::V3< float > >( progress, translationKeys, unify::V3< float >( 0.0f, 0.0f, 0.0f ) ) );
-		unify::Matrix matrix( rotation, translation, scale );
+		unify::Matrix matrix( rotation, translation ); // TODO: Quaternions
 		frameSetInstance.Transform( boneIndex, matrix );
 	}
 }

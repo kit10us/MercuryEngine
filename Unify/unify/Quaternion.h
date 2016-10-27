@@ -6,45 +6,43 @@
 #include <unify/Unify.h>
 #include <unify/V3.h>
 #include <unify/V4.h>
+#include <unify/Angle.h>
 
 namespace unify
 {
 	class Quaternion
 	{
+		friend Quaternion QuaternionIdentity();
+		friend Quaternion QuaternionFromEuler( const unify::V3< float > & euler );
+		friend Quaternion QuaternionSlerp( const Quaternion & quaternionA, const Quaternion & quaternionB, float mix );
 	public:
-		static Quaternion QuaternionIdentity();
-		static Quaternion QuaternionFromEuler( const unify::V3< float > & euler );
-		static Quaternion QuaternionRotationAxis( const V3< float > & axis, float rotation );
-		static Quaternion QuaternionSlerp( const Quaternion & quaternionA, const Quaternion & quaternionB, float mix );
 
 		Quaternion();
+		Quaternion( V3< float > axis, Angle angle );
 		Quaternion( float x, float y, float z, float w );
 		Quaternion( const Quaternion & quaternion );
 
 		bool IsIdentity() const;
+
+		Quaternion Conjugate() const;
+		Quaternion Normalize() const;
 
 		// assignment operators
 		Quaternion & operator += ( const Quaternion & quaternion );
 		Quaternion & operator -= ( const Quaternion & quaternion );
 		Quaternion & operator *= ( const Quaternion & quaternion );
 		Quaternion & operator *= ( float value );
-		Quaternion & operator /= ( float value );
-
-		// unary operators
-		Quaternion operator + () const;
-		Quaternion operator - () const;
 
 		// binary operators
 		Quaternion operator + ( const Quaternion & quaternion ) const;
 		Quaternion operator - ( const Quaternion & quaternion ) const;
 		Quaternion operator * ( const Quaternion & quaternion ) const;
 		Quaternion operator * ( float value ) const;
-		Quaternion operator / ( float value ) const;
 
 		bool operator == ( const Quaternion & quaternion ) const;
 		bool operator != ( const Quaternion & quaternion ) const;
-		
-		Quaternion Conjugate() const;
+
+		V3< float > operator * ( V3< float > quaternion ) const;
 
 		void TransformVector( V3< float > & vector ) const;
 
@@ -53,4 +51,8 @@ namespace unify
 		float z;
 		float w;
 	};
+
+	Quaternion QuaternionIdentity();
+	Quaternion QuaternionFromEuler( const unify::V3< float > & euler );
+	Quaternion QuaternionSlerp( const Quaternion & quaternionA, const Quaternion & quaternionB, float mix );
 }

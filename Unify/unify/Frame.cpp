@@ -491,7 +491,7 @@ Frame & Frame::SetForward( const V3< float > & direction )
 
 Frame & Frame::SetRotation( const Quaternion & rotation )
 {
-	m_matrix = Matrix( rotation, GetPosition(), unify::V3< float >( 1, 1, 1 ) );
+	m_matrix = Matrix( rotation, GetPosition() );
 	MakeDirty();
 	return *this;
 }			
@@ -505,7 +505,8 @@ Frame & Frame::SetPosition( const V3< float > & position )
 
 Frame & Frame::Set( const Quaternion & orientation, const V3< float > & position, const V3< float > & scale )
 {
-	m_matrix = Matrix( orientation, position, scale );
+	m_matrix = Matrix( orientation, position );
+	m_matrix *= Matrix::MatrixScale( scale );
 	MakeDirty();
 	return *this;
 }

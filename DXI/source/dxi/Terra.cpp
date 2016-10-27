@@ -303,7 +303,6 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 
 	set.GetVertexBuffer().Unlock();
 
-	GenerateNormals();
 	ComputeBounds();
 
 	return true;
@@ -388,7 +387,6 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 
 	set.GetVertexBuffer().Unlock();
 
-	GenerateNormals();
 	ComputeBounds();
 
 	return true;
@@ -423,84 +421,6 @@ bool Terra::ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexA
 	set.GetVertexBuffer().Unlock();
 
 	return true;		
-}
-
-void Terra::GenerateNormals( bool bUseSelf )
-{
-	unify::DataLock lock;
-	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
-	set.GetVertexBuffer().Lock( lock );
-
-	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
-	VertexElement positionE = CommonVertexElement::Position();
-	VertexElement normalE = CommonVertexElement::Normal();
-
-	unsigned int h, v;
-
-	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
-
-	for( v = 0; v < rc.column; v++ )
-	{
-		for( h = 0; h < rc.row; h++ )
-		{
-			unify::V3< float > vAxis[3];	// X, Y, Z
-			
-			unify::V3< float > vPosCenter;
-			unify::V3< float > vPosX, vPosZ;
-
-			vd->ReadVertex( lock, (v * rc.row) + h, positionE, vPosCenter );
-	
-			// X
-			if( h == rc.row - 1 )	// At the far right edge...
-			{
-				vd->ReadVertex( lock, (v * rc.row) + (h - 1), positionE, vPosX );
-				vPosX.y = vPosCenter.y;
-				vAxis[0] = vPosCenter - vPosX;
-			}
-			else
-			{
-				vd->ReadVertex( lock, (v * rc.row) + (h + 1), positionE, vPosX );
-				if( h == 0 ) vPosX.y = vPosCenter.y;	// left column
-				vAxis[0] = vPosX - vPosCenter;
-			}
-
-			// Z
-			if( v == rc.column - 1 )	// top row
-			{
-				vd->ReadVertex( lock, ((v - 1) * rc.row) + h, positionE, vPosZ );
-				vPosZ.y = vPosCenter.y;
-				vAxis[2] = vPosZ - vPosCenter;
-			}
-			else
-			{
-				vd->ReadVertex( lock, ((v + 1) * rc.row) + h, positionE, vPosZ );				
-				if( v == 0 ) vPosZ.y = vPosCenter.y;	// bottom row		
-				vAxis[2] = vPosCenter - vPosZ;
-			}
-
-			// Y
-			vAxis[1].V3Cross( vAxis[0], vAxis[2] );
-
-			vAxis[0].Normalize();
-			vAxis[1].Normalize();
-			vAxis[2].Normalize();
-
-			unify::Matrix mRot( unify::Matrix::MatrixIdentity() );
-
-			mRot.SetLeft( vAxis[0] );
-			mRot.SetUp( vAxis[1] );
-			mRot.SetForward( vAxis[2] );
-
-			// Compute normal...
-			unify::V3< float > vNormal = unify::V3< float >(0,1,0);
-
-			mRot.TransformCoord( vNormal );
-			vNormal.Normalize();
-			
-			vd->WriteVertex( lock, (v * rc.row) + h, normalE, vNormal );
-		}
-	}
-	set.GetVertexBuffer().Unlock();
 }
 
 bool Terra::Smooth( unsigned int uFlags )

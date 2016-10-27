@@ -58,9 +58,6 @@
     <ClCompile Include="unify\TimeDelta.cpp">
       <Filter>unify</Filter>
     </ClCompile>
-    <ClCompile Include="unify\Transform.cpp">
-      <Filter>unify</Filter>
-    </ClCompile>
     <ClCompile Include="unify\V2.cpp">
       <Filter>unify</Filter>
     </ClCompile>
@@ -175,9 +172,6 @@
       <Filter>unify</Filter>
     </ClInclude>
     <ClInclude Include="unify\TimeDelta.h">
-      <Filter>unify</Filter>
-    </ClInclude>
-    <ClInclude Include="unify\Transform.h">
       <Filter>unify</Filter>
     </ClInclude>
     <ClInclude Include="unify\Tree.h">

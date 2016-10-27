@@ -148,7 +148,7 @@ int Matrix_NewRotationAboutAxis( lua_State * state )
 	unify::V3< float > axis( CheckV3( state, 1 ) );
 	float angle = (float)lua_tonumber( state, 2 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationAboutAxis( axis, unify::Angle::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::Matrix::MatrixRotationAboutAxis( axis, unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -181,7 +181,7 @@ int Matrix_NewRotationX( lua_State * state )
 
 	float angle = (float)lua_tonumber( state, 1 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationX( unify::Angle::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::Matrix::MatrixRotationX( unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -196,7 +196,7 @@ int Matrix_NewRotationY( lua_State * state )
 
 	float angle = (float)lua_tonumber( state, 1 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationY( unify::Angle::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::Matrix::MatrixRotationY( unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -210,7 +210,7 @@ int Matrix_NewRotationZ( lua_State * state )
 
 	float angle = (float)lua_tonumber( state, 1 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationZ( unify::Angle::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::Matrix::MatrixRotationZ( unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -307,60 +307,6 @@ int Matrix_Div( lua_State * state )
 
 	return 1;
 }
-
-
-/*
-void Set( unsigned int row, unsigned int column, float value );
-
-void SetLeft( const V3< float > & vec );
-void SetUp( const V3< float > & vec );
-void SetForward( const V3< float > & vec );
-void SetPosition( const V3< float > & vec );
-void SetLeft( float x, float y, float z );
-void SetUp( float x, float y, float z );
-void SetForward( float x, float y, float z );
-void SetPosition( float x, float y, float z );
-
-V3< float > GetLeft() const;
-V3< float > GetUp() const;
-V3< float > GetForward() const;
-V3< float > GetPosition() const;
-V3< float > GetScale() const;
-Quaternion GetRotation() const;
-
-float Determinant() const;
-bool IsIdentity() const;
-
-void BecomeIdentity();
-void Zero();
-
-/// <summary>
-/// Inverts this matrix.
-/// </summary>
-void Invert();
-
-/// <summary>
-/// Returns a copy of the inverse of this matrix, leaving the original matrix in tact.
-/// </summary>
-Matrix Inverse() const;
-
-void Transpose();
-void Transpose( const Matrix & matrix );
-
-void TransformCoord( V2< float > & v2 ) const;
-void TransformCoord( V3< float > & v3 ) const;
-V2< float > TransformCoord_Copy( const V2< float > & v2 ) const;
-V3< float > TransformCoord_Copy( const V3< float > & v3 ) const;
-void TransformNormal( V2< float > & v2 ) const;
-void TransformNormal( V3< float > & v3 ) const;
-
-void Transform( V4< float > & v4 ) const;
-void RotateAboutAxis( const V3< float > & axis, Angle angle );
-
-void LookAtLH( const V3< float > & at, const V3< float > & up );
-
-std::string ToString() const;
-*/
 
 static const luaL_Reg matrixFuncs[] =
 {

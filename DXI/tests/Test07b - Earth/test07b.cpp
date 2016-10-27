@@ -106,7 +106,7 @@ void MyGame::Startup()
 bool MyGame::Update( RenderInfo & renderInfo )
 {
 	scene::Object::ptr camera = GetSceneManager()->Find( "main" )->FindObject( "camera" );
-	//camera->GetFrame().RotateAbout( unify::V3< float >( 0, 1, 0 ), unify::Angle::AngleInRadians( renderInfo.GetDelta() ) );
+	//camera->GetFrame().RotateAbout( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	return true;
 }
 

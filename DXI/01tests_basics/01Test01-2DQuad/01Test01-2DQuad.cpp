@@ -102,7 +102,7 @@ void MyGame::Startup()
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
-	static unify::Angle rotation( unify::Angle::AngleInRadians( 0.0f ) );
+	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
 	HRESULT result = S_OK;
@@ -115,7 +115,7 @@ bool MyGame::Update( RenderInfo & renderInfo )
 	const float width = 800;
 	const float height = 600;
 
-	rotation += unify::Angle::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
+	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
 	{
 		++axisIndex;

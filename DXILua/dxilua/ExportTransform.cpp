@@ -71,7 +71,7 @@ int Transform_Orbit( lua_State * state )
 
 	float distance = (float)lua_tonumber( state, 4 );
 	
-	proxy->transform->Orbit( origin, axis, unify::Angle::AngleInRadians( distance ) );
+	proxy->transform->Orbit( origin, axis, unify::AngleInRadians( distance ) );
 
 	return 0;
 }
@@ -87,7 +87,7 @@ int Transform_RotateAbout( lua_State * state )
 
 	float rotation = (float)lua_tonumber( state, 3 );
 
-	proxy->transform->RotateAbout( axis, unify::Angle::AngleInRadians( rotation ) );
+	proxy->transform->Rotate( unify::Quaternion( axis, unify::AngleInRadians( rotation ) ) );
 
 	return 0;
 }
