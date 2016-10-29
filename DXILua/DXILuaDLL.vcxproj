@@ -83,7 +83,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir>..\DXI\tests_data\</OutDir>
+    <OutDir>..\extensions\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -175,6 +175,7 @@
     <ClInclude Include="dxilua\shape\ExportShapeParameters.h" />
     <ClInclude Include="dxilua\unify\ExportColor.h" />
     <ClInclude Include="dxilua\unify\ExportMatrix.h" />
+    <ClInclude Include="dxilua\unify\ExportQuaternion.h" />
     <ClInclude Include="dxilua\unify\ExportSize2.h" />
     <ClInclude Include="dxilua\unify\ExportSize3.h" />
     <ClInclude Include="dxilua\unify\ExportTexCoords.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="dxilua\shape\ExportShapeParameters.cpp" />
     <ClCompile Include="dxilua\unify\ExportColor.cpp" />
     <ClCompile Include="dxilua\unify\ExportMatrix.cpp" />
+    <ClCompile Include="dxilua\unify\ExportQuaternion.cpp" />
     <ClCompile Include="dxilua\unify\ExportSize2.cpp" />
     <ClCompile Include="dxilua\unify\ExportSize3.cpp" />
     <ClCompile Include="dxilua\unify\ExportTexCoords.cpp" />

@@ -4,7 +4,6 @@
 #pragma once
 
 #include <dxi/input/InputManager.h>
-#include <dxi/scene/SceneManager.h>
 #include <dxi/core/IGame.h>
 #include <dxi/core/IOS.h>
 #include <dxi/core/Display.h>
@@ -57,14 +56,6 @@ namespace dxi
 
 			virtual IOS * GetOS() final;
 
-			void AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se ) override;
-
-			scripting::IScriptEngine * GetScriptEngine( std::string name ) override;
-
-			virtual scene::SceneManager::shared_ptr GetSceneManager();
-
-			scene::Scene::ptr FindScene( const std::string & id );
-
 			template< typename T > 
 			rm::ResourceManagerSimple< T > * GetManager();
 
@@ -116,13 +107,9 @@ namespace dxi
 
 			RenderInfo m_renderInfo;
 
-			scene::SceneManager::shared_ptr m_sceneManager;
-
 			bool m_isQuitting;
 			
 			input::InputManager m_inputManager;
-
-			std::map < std::string, std::shared_ptr< scripting::IScriptEngine >, unify::CaseInsensitiveLessThanTest > m_scriptEngines;
 
 			std::list< std::shared_ptr< Extension > > m_extensions;
 

@@ -9,6 +9,7 @@
 #include <dxi/factory/GeometryFactory.h>
 #include <dxi/factory/ShapeFactory.h>
 #include <dxi/exception/FailedToCreate.h>
+#include <dxi/scene/SceneManager.h>
 #include <fstream>
 #include <chrono>
 #include <ctime>
@@ -58,10 +59,7 @@ Game::~Game()
 
 	// Release scripts.
 	m_gameModule.reset();
-	m_scriptEngines.clear();
-
-	// Release asset managers...
-	m_sceneManager.reset();
+	//m_scriptEngines.clear();
 
 	m_resourceHub.Clear();
 
@@ -165,7 +163,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Texture >( "Texture" ) ) );
 
 	TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
-	GetManager< Texture >()->AddFactory( ".dds", textureFactoryPtr ); // TODO: Can't we just share this between types?
+	GetManager< Texture >()->AddFactory( ".dds", textureFactoryPtr );
 	GetManager< Texture >()->AddFactory( ".png", textureFactoryPtr );
 	GetManager< Texture >()->AddFactory( ".bmp", textureFactoryPtr );
 	GetManager< Texture >()->AddFactory( ".jpg", textureFactoryPtr );
@@ -183,7 +181,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new ShapeFactory( this ) ) );
 
-	m_sceneManager.reset( new scene::SceneManager( this ) );
+	AddComponent( IGameComponent::ptr( new scene::SceneManager( this ) ) );
 
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
@@ -208,8 +206,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				else if( node.IsTagName( "gamemodule" ) )
 				{
 					std::string type = node.GetAttribute< std::string >( "type" );
-					auto se = GetScriptEngine( type );
-					assert( se ); //TODO: Handle error better.
+					auto se = core::GetGameComponent< scripting::IScriptEngine * >( this, type );
 					m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ), scene::Object::ptr() );
 				}
 			}
@@ -271,7 +268,10 @@ void Game::Tick()
 		m_gameModule->OnUpdate();
 	}
 
-	m_sceneManager->Update( m_renderInfo );
+	for( auto && component : m_components )
+	{
+		component->OnUpdate( this, m_renderInfo );
+	}
 
 	bool run = Update( m_renderInfo );
 }
@@ -283,8 +283,16 @@ void Game::Draw()
 		IRenderer & renderer = *m_os->GetRenderer( index );
 		m_renderInfo.SetRenderer( &renderer );
 		renderer.BeforeRender();
-		m_sceneManager->Render( index, renderer.GetViewport() );
+
+	
+		for( auto && component : m_components )
+		{
+			component->OnRender( this, m_renderInfo );
+		}
+
 		Render( index, m_renderInfo, renderer.GetViewport() );	
+
+
 		renderer.AfterRender();
 	}
 	m_renderInfo.IncrementFrameID();
@@ -298,27 +306,6 @@ const RenderInfo & Game::GetRenderInfo() const
 IOS * Game::GetOS()
 {
 	return m_os.get();
-}
-
-void Game::AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se )
-{
-	m_scriptEngines[name] = se;
-}
-
-scripting::IScriptEngine * Game::GetScriptEngine( std::string name )
-{
-	auto se = m_scriptEngines.find( name );
-	return ( se == m_scriptEngines.end() ) ? nullptr : se->second.get();
-}
-
-scene::SceneManager::shared_ptr Game::GetSceneManager()
-{
-	return m_sceneManager;
-}
-
-scene::Scene::ptr Game::FindScene( const std::string & id )
-{
-	return GetSceneManager() ? GetSceneManager()->Find( id ) : scene::Scene::ptr();
 }
 
 template<>

@@ -71,16 +71,6 @@ namespace dxi
 			/// </summary>
 			virtual const RenderInfo & GetRenderInfo() const = 0;
 
-			/// <summary>
-			/// Add a script engine.
-			/// </summary>
-			virtual void AddScriptEngine( std::string name, std::shared_ptr< scripting::IScriptEngine > se ) = 0;
-
-			/// <summary>
-			/// Get a script engine by name.
-			/// </summary>
-			virtual scripting::IScriptEngine * GetScriptEngine( std::string name ) = 0;
-
 			virtual void Quit() = 0;
 
 			virtual bool IsQuitting() const = 0;
@@ -100,8 +90,31 @@ namespace dxi
 			virtual void RemoveComponent( IGameComponent::ptr component ) = 0;
 			virtual IGameComponent::ptr GetComponent( int index ) = 0;
 			virtual IGameComponent::ptr GetComponent( std::string name, int startIndex ) = 0 ;
-			virtual int FindComponent( std::string name, int startIndex ) const = 0;		
-
+			virtual int FindComponent( std::string name, int startIndex ) const = 0;	
 		};
+
+
+		/// <summary>
+		/// Helper function to get a specific game component.
+		/// </summary>
+		template< typename T >
+		T GetGameComponent( IGame * game, std::string name )
+		{
+			IGameComponent::ptr gc = game->GetComponent( name, 0 );
+			if( !gc )
+			{
+				game->ReportError( ErrorLevel::Critical, "Mercury", "Couldn't find game component " + name + "!" );
+				return T();
+			}
+
+			T c = dynamic_cast<T>(gc.get());
+			if( !c )
+			{
+				game->ReportError( ErrorLevel::Critical, "Mercury", "Component " + name + " found, however, not expected type or version!" );
+				return T();
+			}
+			
+			return c;
+		}
 	}
 }

@@ -73,7 +73,7 @@
 	  </indexlist>
       
 	  <methodlist>
-	    <addmethod effect="cube" type="trianglelist" vertices="24" primitives="12"/>
+	    <addmethod effect="cube" type="trianglelist" vertices="24" indices="36" trianglecount="12"/>
 	  </methodlist>
     </bufferset>
   </geometry>

@@ -45,6 +45,8 @@ namespace dxi
 
 			virtual bool IsFullscreen() const = 0;
 
+			virtual size_t GetIndex() const = 0;
+
 			virtual HWND GetHandle() const = 0;
 		};
 	}

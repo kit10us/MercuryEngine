@@ -16,6 +16,16 @@ namespace dxilua
 		ScriptEngine( dxi::core::IGame * game );
 		~ScriptEngine();
 
+		std::string GetName() const override;
+
+		void OnAttach( dxi::core::IGame * game ) override;
+
+		void OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+
+		void OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+
+		void OnDetach( dxi::core::IGame * game ) override;
+
 		dxi::scripting::ExecuteResult ExecuteString( std::string line ) override;
 		dxi::scripting::ExecuteResult ExecuteFile( unify::Path path ) override;
 
@@ -26,6 +36,8 @@ namespace dxilua
 		DXILUADLL_API void AddLibrary( const char * group, const luaL_Reg * list, int count );
 
 		DXILUADLL_API void AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector );
+
+
 
 		static dxi::core::IGame * GetGame();
 

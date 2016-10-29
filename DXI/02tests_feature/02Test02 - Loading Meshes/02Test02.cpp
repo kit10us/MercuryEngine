@@ -3,7 +3,7 @@
 
 #include <dxi/core/Game.h>
 #include <dxi/Mesh.h>
-#include <dxi/scene/Scene.h>
+#include <dxi/scene/SceneManager.h>
 #include <dxi/shapes/ShapeCreators.h>
 #include <dxi/factory/PixelShaderFactories.h>
 #include <dxi/factory/VertexShaderFactory.h>
@@ -29,6 +29,8 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
+	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
 	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
@@ -47,7 +49,7 @@ void MyGame::Startup()
 	borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
 
 	// Add a scene.
-	scene::Scene::ptr scene = GetSceneManager()->Add( "scene" );
+	scene::Scene::ptr scene = sceneManager->Add( "scene" );
 
 	// Add a camera...
 	scene::Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
@@ -94,10 +96,10 @@ void MyGame::Startup()
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/cube.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/torus.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/torus.dae" ) );
 	
 	// Rigged...
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
@@ -113,8 +115,10 @@ void MyGame::Startup()
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
+	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+
 	// Use of camera controls to simplify camera movement...
-	scene::Object::ptr camera = GetSceneManager()->Find( "scene" )->GetRoot()->FindObject( "camera" );
+	scene::Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 

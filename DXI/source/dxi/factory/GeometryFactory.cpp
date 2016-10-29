@@ -208,7 +208,7 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 						{
 						case PrimitiveType::LineList:
 						{
-							int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+							int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 							int lineCount = methodElement.GetAttribute< int >( "linecount" );
 							RenderMethod method( RenderMethod::CreateLineList( startVertex, lineCount, effect ) );
 							bufferset.GetRenderMethodBuffer().AddMethod( method );
@@ -219,7 +219,7 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 							break;
 						case PrimitiveType::PointList:
 						{
-							int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+							int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 							int pointCount = methodElement.GetAttribute< int >( "pointcount" );
 							RenderMethod method( RenderMethod::CreatePointList( startVertex, pointCount, effect ) );
 							bufferset.GetRenderMethodBuffer().AddMethod( method );
@@ -228,7 +228,7 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 						case PrimitiveType::TriangleList:
 							if ( methodElement.HasAttributes( "indices" ) == false )
 							{
-								int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+								int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 								int triangleCount = methodElement.GetAttribute< int >( "trianglecount" );
 								RenderMethod method( RenderMethod::CreateTriangleList( startVertex, triangleCount, effect ));
 								bufferset.GetRenderMethodBuffer().AddMethod( method );
@@ -246,7 +246,7 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 						case PrimitiveType::TriangleStrip:
 							if ( methodElement.HasAttributes( "indices" ) == false )
 							{
-								int startVertex = methodElement.GetAttribute< int >( "startvertex" );
+								int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 								int segmentCount = methodElement.GetAttribute< int >( "segmentcount" );
 								RenderMethod method( RenderMethod::CreateTriangleStrip( startVertex, segmentCount, effect ) );
 								bufferset.GetRenderMethodBuffer().AddMethod( method );

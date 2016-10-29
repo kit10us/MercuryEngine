@@ -253,3 +253,9 @@ void Quaternion::TransformVector( V3< float > & v ) const
 	}
 	*/
 }
+
+std::string Quaternion::ToString() const
+{
+	return Cast< std::string >( x ) + ", " + Cast< std::string >( y ) + ", " + Cast< std::string >( z ) + ", " + Cast< std::string >( w );
+}
+

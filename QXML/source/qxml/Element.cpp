@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <qxml/Element.h>
+#include <qxml/Document.h>
 #include <unify/String.h>
 #include <unify/Exception.h>
 #include <cassert>
@@ -171,8 +172,7 @@ Attribute::shared_ptr Element::GetAttribute( const std::string & attributeName )
 		if( _stricmp( (*itr)->GetName().c_str(), attributeName.c_str() ) == 0 ) return (*itr);
 	}
 
-	assert( 0 );
-	throw unify::Exception( "Attribute \"" + attributeName + "\" was not found by name!" );
+	throw unify::Exception( GetDocument()->GetPath().ToString() + ": Attribute \"" + attributeName + "\" was not found by name!" );
 }
 
 void Element::FindElements( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes ) const
