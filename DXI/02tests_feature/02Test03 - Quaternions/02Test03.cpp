@@ -56,7 +56,8 @@ void MyGame::Startup()
 	camera->AddComponent( scene::IObjectComponent::ptr( new scene::CameraComponent( GetOS() ) ) );	 
 	scene::CameraComponent * cameraComponent = unify::polymorphic_downcast< scene::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::Matrix::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
+
+	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -10 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 	// From dynamically generated geometry (shape creator)...
@@ -115,15 +116,20 @@ void MyGame::Startup()
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
+	using namespace unify;
+
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	scene::Scene::ptr scene = sceneManager->Find( "scene" );
 
 	// Use of camera controls to simplify camera movement...
 	scene::Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );
-	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
-	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
-	
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-	return Game::Update( renderInfo );
+	auto swordASE = scene->FindObject( "swordASE" );
+
+	swordASE->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+	
+	swordASE->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+	swordASE->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+
+	return true;
 }

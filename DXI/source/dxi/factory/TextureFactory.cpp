@@ -11,11 +11,16 @@ TextureSourceFactory::TextureSourceFactory( core::IGame * game )
 {
 }
 
-Texture::ptr TextureSourceFactory::Produce( unify::Path source )
+Texture::ptr TextureSourceFactory::Produce( unify::Path source, void * data )
 {
 	if( !source.Empty() )
 	{
-		return Texture::ptr( new Texture( m_game->GetOS()->GetRenderer(0), source ) );
+		Texture::TextureParameters parameters;
+		if ( data )
+		{
+			parameters = *(Texture::TextureParameters*)data;
+		}
+		return Texture::ptr( new Texture( m_game->GetOS()->GetRenderer(0), source, parameters ) );
 	}
 
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );

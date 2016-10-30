@@ -14,7 +14,7 @@ ShapeFactory::ShapeFactory( core::IGame * game )
 {
 }
 
-std::shared_ptr< Geometry > ShapeFactory::Produce( unify::Path source )
+std::shared_ptr< Geometry > ShapeFactory::Produce( unify::Path source, void * data )
 {	
 	auto game = dynamic_cast<core::Game *>(m_game);
 

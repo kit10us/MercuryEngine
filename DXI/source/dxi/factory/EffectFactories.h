@@ -13,7 +13,7 @@ namespace dxi
 	{
 	public:
 		EffectFactory( core::IGame * game );
-		std::shared_ptr< Effect > Produce( unify::Path source ) override;
+		std::shared_ptr< Effect > Produce( unify::Path source, void * data ) override;
 
 	private:
 		core::IGame * m_game;

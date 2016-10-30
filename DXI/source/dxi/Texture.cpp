@@ -42,28 +42,23 @@ class Texture::Pimpl
 	unify::Size< unsigned int > m_imageSize;
 	bool m_useColorKey;
 	unify::Color m_colorKey;
-	bool m_renderable;
-	bool m_lockable;
+	TextureParameters m_parameters;
 	SpriteArrayMap m_spriteArrayMap;
 	SpriteMasterList m_spriteMasterList;
 
 public:
-	Pimpl( Texture & owner, core::IRenderer * renderer )
+	Pimpl( Texture & owner, core::IRenderer * renderer, TextureParameters parameters )
 		: m_owner( owner )
 		, m_renderer( dynamic_cast< win::DXRenderer * >( renderer ) )
 		, m_useColorKey( false )
 		, m_created( false )
-		, m_renderable( true )
-		, m_lockable( false )
+		, m_parameters( parameters )
 	{
 	}
 
-	Pimpl( Texture & owner, core::IRenderer * renderer, const unify::Path & filePath, bool renderable, bool lockable )
-		: Pimpl( owner, renderer )
+	Pimpl( Texture & owner, core::IRenderer * renderer, const unify::Path & filePath, TextureParameters parameters )
+		: Pimpl( owner, renderer, parameters )
 	{
-		m_renderable = renderable;
-		m_lockable = lockable;
-
 		m_filePath = filePath;
 		Create();
 	}
@@ -87,26 +82,12 @@ public:
 		m_created = true;
 	}	 
 
-	// Will return if already loaded and ready and validated.
-	void CreateFromFile( const unify::Path & filePath, bool renderable, bool lockable )
-	{
-		m_filePath = filePath;
-		SetRenderable( renderable );
-		SetLockable( lockable );
-		Create();
-	}
 
 	// Destroyes data, keeps header intact - thus no graphical footprint, yet we can still use it's statistics/dimensions in calculations.
 	void Destroy()
 	{
 		m_texture = nullptr;
 		m_created = false; // TODO: Can solve this from m_texture.
-	}
-
-	void Set( bool renderable, bool lockable )
-	{
-		m_renderable = renderable;
-		m_lockable = lockable;
 	}
 
 	void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, bool readonly )
@@ -116,7 +97,7 @@ public:
 			Create();
 		}
 
-		if( m_lockable == false )
+		if( m_parameters.lockable == false )
 		{
 			throw exception::FailedToLock( "Texture is not lockable!" );
 		}
@@ -171,9 +152,9 @@ public:
 
 
 		D3DPOOL pool = D3DPOOL_DEFAULT;
-		if( m_lockable )
+		if( m_parameters.lockable )
 		{
-			pool = m_renderable ? D3DPOOL_MANAGED : D3DPOOL_SCRATCH;
+			pool = m_parameters.renderable ? D3DPOOL_MANAGED : D3DPOOL_SCRATCH;
 		}
 
 		HRESULT result;
@@ -248,24 +229,24 @@ public:
 	{
 		Destroy();
 
-		m_renderable = renderable;
+		m_parameters.renderable = renderable;
 	}
 
 	bool GetRenderable() const
 	{
-		return m_renderable;
+		return m_parameters.renderable;
 	}
 
 	void SetLockable( bool lockable )
 	{
 		Destroy();
 
-		m_lockable = lockable;
+		m_parameters.lockable = lockable;
 	}
 
 	bool GetLockable() const
 	{
-		return m_lockable;
+		return m_parameters.lockable;
 	}
 
 	void Preload()
@@ -416,31 +397,24 @@ class Texture::Pimpl
 	unify::Size< unsigned int > m_imageSize;
 	bool m_useColorKey;
 	unify::Color m_colorKey;
-	bool m_renderable;
-	bool m_lockable;
+	TextureParameters m_parameters;
 	SpriteArrayMap m_spriteArrayMap;
 	SpriteMasterList m_spriteMasterList;
-
-	DirectX::ScratchImage m_scratch;
-
+	DirectX::ScratchImage m_scratch;	
 
 public:
-	Pimpl( Texture & owner, core::IRenderer * renderer )
+	Pimpl( Texture & owner, core::IRenderer * renderer, TextureParameters parameters )
 		: m_owner( owner )
-		, m_renderer( dynamic_cast< win::DXRenderer * >(renderer) )
+		, m_renderer( dynamic_cast<win::DXRenderer *>(renderer) )
 		, m_useColorKey( false )
 		, m_created( false )
-		, m_renderable( true )
-		, m_lockable( false )
+		, m_parameters( parameters )
 	{
 	}
 
-	Pimpl( Texture & owner, core::IRenderer * renderer, const unify::Path & filePath, bool renderable, bool lockable )
-		: Pimpl( owner, renderer )
+	Pimpl( Texture & owner, core::IRenderer * renderer, const unify::Path & filePath, TextureParameters parameters )
+		: Pimpl( owner, renderer, parameters )
 	{
-		m_renderable = renderable;
-		m_lockable = lockable;
-
 		m_filePath = filePath;
 		Create();
 	}
@@ -465,27 +439,12 @@ public:
 		m_created = true;
 	}
 
-	// Will return if already loaded and ready and validated.
-	void CreateFromFile( const unify::Path & filePath, bool renderable, bool lockable )
-	{
-		m_filePath = filePath;
-		SetRenderable( renderable );
-		SetLockable( lockable );
-		Create();
-	}
-
 	// Destroyes data, keeps header intact - thus no graphical footprint, yet we can still use it's statistics/dimensions in calculations.
 	void Destroy()
 	{
 		m_texture = nullptr;
 		m_created = false; // TODO: Can solve this from m_texture.
 		m_scratch.Release();
-	}
-
-	void Set( bool renderable, bool lockable )
-	{
-		m_renderable = renderable;
-		m_lockable = lockable;
 	}
 
 	void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, bool readonly )
@@ -495,7 +454,7 @@ public:
 			Create();
 		}
 
-		if ( m_lockable == false )
+		if ( m_parameters.lockable == false )
 		{
 			throw exception::FailedToLock( "Texture is not lockable!" );
 		}
@@ -606,7 +565,48 @@ public:
 		colorMapDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 		colorMapDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		colorMapDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		colorMapDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+
+		if ( m_parameters.min == Filtering::Point && m_parameters.mag == Filtering::Point && m_parameters.mip == Filtering::Point )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+		}
+		else if ( m_parameters.min == Filtering::Point && m_parameters.mag == Filtering::Point && m_parameters.mip == Filtering::Linear )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_MAG_POINT_MIP_LINEAR;
+		}
+		else if ( m_parameters.min == Filtering::Point && m_parameters.mag == Filtering::Linear && m_parameters.mip == Filtering::Point )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT;
+		}
+		else if ( m_parameters.min == Filtering::Point && m_parameters.mag == Filtering::Linear && m_parameters.mip == Filtering::Linear )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_POINT_MAG_MIP_LINEAR;
+		}
+		else if ( m_parameters.min == Filtering::Linear && m_parameters.mag == Filtering::Point && m_parameters.mip == Filtering::Point )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT;
+		}
+		else if ( m_parameters.min == Filtering::Linear && m_parameters.mag == Filtering::Point && m_parameters.mip == Filtering::Linear )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR;
+		}
+		else if ( m_parameters.min == Filtering::Linear && m_parameters.mag == Filtering::Linear && m_parameters.mip == Filtering::Point )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+		}
+		else if ( m_parameters.min == Filtering::Linear && m_parameters.mag == Filtering::Linear && m_parameters.mip == Filtering::Linear )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		}
+		else if ( m_parameters.min == Filtering::Anisotropic && m_parameters.mag == Filtering::Anisotropic && m_parameters.mip == Filtering::Anisotropic )
+		{
+			colorMapDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+		}									
+		else
+		{
+			throw unify::Exception( "Bad filtering combination!" );
+		}
+
 		colorMapDesc.MipLODBias = 0.0f;
 		colorMapDesc.BorderColor[0] = 0;
 		colorMapDesc.BorderColor[1] = 0;
@@ -661,28 +661,14 @@ public:
 		return m_imageSize;
 	}
 
-	void SetRenderable( bool renderable )
-	{
-		Destroy();
-
-		m_renderable = renderable;
-	}
-
 	bool GetRenderable() const
 	{
-		return m_renderable;
-	}
-
-	void SetLockable( bool lockable )
-	{
-		Destroy();
-
-		m_lockable = lockable;
+		return m_parameters.renderable;
 	}
 
 	bool GetLockable() const
 	{
-		return m_lockable;
+		return m_parameters.lockable;
 	}
 
 	void Preload()
@@ -813,13 +799,13 @@ public:
 #endif
 
 
-Texture::Texture( core::IRenderer * renderer )
-	: m_pimpl( new Pimpl( *this, renderer ) )
+Texture::Texture( core::IRenderer * renderer, TextureParameters parameters )
+	: m_pimpl( new Pimpl( *this, renderer, parameters ) )
 {
 }
 
-Texture::Texture( core::IRenderer * renderer, const unify::Path & filePath, bool renderable, bool lockable )
-	: m_pimpl( new Pimpl( *this, renderer, filePath, renderable, lockable ) )
+Texture::Texture( core::IRenderer * renderer, const unify::Path & filePath, TextureParameters parameters )
+	: m_pimpl( new Pimpl( *this, renderer, filePath, parameters ) )
 {
 }
 
@@ -830,12 +816,6 @@ Texture::~Texture()
 void Texture::Create()
 {
 	m_pimpl->Create();
-}
-
-// Will return if already loaded and ready and validated.
-void Texture::CreateFromFile( const unify::Path & filePath, bool renderable, bool lockable )
-{
-	m_pimpl->CreateFromFile( filePath, renderable, lockable );
 }
 
 // Destroyes data, keeps header intact - thus no graphical footprint, yet we can still use it's statistics/dimensions in calculations.
@@ -864,19 +844,9 @@ const unify::Size< unsigned int > & Texture::ImageSize() const
 	return m_pimpl->ImageSize();
 }
 
-void Texture::SetRenderable( bool renderable )
-{
-	m_pimpl->SetRenderable( renderable );
-}
-
 bool Texture::GetRenderable() const
 {
 	return m_pimpl->GetRenderable();
-}
-
-void Texture::SetLockable( bool lockable )
-{
-	m_pimpl->SetLockable( lockable );
 }
 
 bool Texture::GetLockable() const

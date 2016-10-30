@@ -202,6 +202,7 @@ public:
 	DXRenderer & m_owner;
 	win::WindowsOS * m_OS;
 	core::Display m_display;
+	size_t m_index;
 
 	CComPtr< ID3D11Device > m_dxDevice;
 	CComPtr< ID3D11DeviceContext > m_dxContext;
@@ -212,11 +213,12 @@ public:
 	CComPtr< ID3D11DepthStencilView > m_depthStencilView;
 	CComPtr< ID3D11RasterizerState > m_rasterizerState;
 
-	Pimpl( DXRenderer & owner, WindowsOS * os, core::Display display )
+	Pimpl( DXRenderer & owner, WindowsOS * os, core::Display display, size_t index )
 		: m_owner( owner )
 		, m_OS( os )
 		, m_display( display )
 		, m_swapChainDesc{}
+		, m_index{ index }
 	{
 		bool debug =
 #if defined( DEBUG ) || defined( _DEBUG )
@@ -378,6 +380,11 @@ public:
 	bool IsFullscreen() const
 	{
 		return m_display.IsFullscreen();
+	}
+
+	size_t GetIndex() const
+	{
+		return m_index;
 	}
 
 	HWND GetHandle() const

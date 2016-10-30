@@ -61,7 +61,12 @@ int Texture_Constructor( lua_State * state )
 			{
 				readable = lua_toboolean( state, 4 ) ? true : false;
 			}
-			texture = game->GetManager< Texture >()->Add( name, new Texture( game->GetOS()->GetRenderer( 0 ), source, renderable, readable ) );
+
+			Texture::TextureParameters parameters;
+			parameters.lockable = readable;
+			parameters.renderable = renderable;
+
+			texture = game->GetManager< Texture >()->Add( name, new Texture( game->GetOS()->GetRenderer( 0 ), source, parameters ) );
 		}
 		else
 		{

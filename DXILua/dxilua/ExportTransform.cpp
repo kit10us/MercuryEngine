@@ -88,7 +88,7 @@ int Transform_RotateAbout( lua_State * state )
 
 	float rotation = (float)lua_tonumber( state, 3 );
 
-	proxy->transform->Rotate( unify::Quaternion( axis, unify::AngleInRadians( rotation ) ) );
+	proxy->transform->PreMul( unify::Quaternion( axis, unify::AngleInRadians( rotation ) ) );
 
 	return 0;
 }

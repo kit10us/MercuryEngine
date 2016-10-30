@@ -14,7 +14,7 @@ GeometrySourceFactory::GeometrySourceFactory( dxi::core::IRenderer * renderer, u
 {
 }
 
-dxi::Geometry::ptr GeometrySourceFactory::Produce( unify::Path path )
+dxi::Geometry::ptr GeometrySourceFactory::Produce( unify::Path path, void * data )
 {
 	dae::Document doc( m_renderer, path, m_effectSolver.get() );
 	dxi::Mesh * mesh = new dxi::Mesh( m_renderer );

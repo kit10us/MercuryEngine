@@ -11,7 +11,7 @@ namespace dxi
 	{
 	public:
 		VertexShaderFactory( core::IGame * game );
-		VertexShader::ptr Produce( unify::Path source ) override;
+		VertexShader::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
 		core::IGame * m_game;

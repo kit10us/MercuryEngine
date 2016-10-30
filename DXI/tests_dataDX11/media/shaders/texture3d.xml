@@ -1,11 +1,11 @@
 <xml>
   <pixelshader name="textured3D">
-    <source>test3DTextured.hlsl</source>
+    <source>textured3d.hlsl</source>
     <entry>ps_main</entry>
     <profile>ps_4_0</profile>
   </pixelshader>
   <vertexshader name="textured3D">
-    <source>test3DTextured.hlsl</source>
+    <source>textured3d.hlsl</source>
     <entry>vs_main</entry>
     <profile>vs_4_0</profile>
     <vd>

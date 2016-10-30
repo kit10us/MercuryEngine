@@ -12,7 +12,7 @@ PixelShaderFactory::PixelShaderFactory( core::IGame * game )
 {
 }
 
-PixelShader::ptr PixelShaderFactory::Produce( unify::Path source )
+PixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 {
 	qxml::Document doc( source );
 	auto & node = *doc.GetRoot()->FindFirstElement( "pixelshader" );

@@ -14,7 +14,7 @@ namespace dae
 	public:
 		GeometrySourceFactory( dxi::core::IRenderer * renderer, util::IEffectSolver * effectSolver );
 
-		dxi::Geometry::ptr Produce( unify::Path path ) override;
+		dxi::Geometry::ptr Produce( unify::Path path, void * data ) override;
 
 	private:
 		dxi::core::IRenderer * m_renderer;

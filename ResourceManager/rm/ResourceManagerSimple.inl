@@ -67,7 +67,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, T * reso
 }
 
 template< class T >
-std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::Path source )
+std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::Path source, void * data )
 {
 	// Attempt to find the existing resource.
 	ResourcePtr existingResource = Find( name );
@@ -85,7 +85,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );
 	}
 
-	auto product = factory->second->Produce( source );
+	auto product = factory->second->Produce( source, data );
 	if( product )
 	{
 		m_resourceList[ name ] = product;

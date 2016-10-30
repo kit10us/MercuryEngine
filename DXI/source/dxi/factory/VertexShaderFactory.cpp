@@ -13,7 +13,7 @@ VertexShaderFactory::VertexShaderFactory( core::IGame * game )
 {
 }
 
-VertexShader::ptr VertexShaderFactory::Produce( unify::Path source )
+VertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data )
 {
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
 

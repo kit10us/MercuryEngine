@@ -51,8 +51,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	HRESULT result = S_OK;
 
 #pragma region Create window...
-	int width = 800;
-	int height = 600;
+	int width = 1920;
+	int height = 1080;
 
 	WNDCLASSEX wndClassEx;
 	ZeroMemory( &wndClassEx, sizeof( WNDCLASSEX ) );
@@ -397,9 +397,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 #pragma region Per-object matrices...
 	std::vector< DirectX::XMMATRIX > matrices;
-	int totalR = 10;
-	int totalC = 10;
-	int totalD = 10;
+	int totalR = 25;
+	int totalC = 25;
+	int totalD = 25;
 	for( int d = 0; d < totalD; ++d )
 	{
 		for( int c = 0; c < totalC; ++c )
@@ -411,6 +411,18 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		}
 	}
 #pragma endregion
+
+	unsigned int vertexStride = sizeof( Vertex );
+	unsigned int offset = 0;
+	dxContext->OMSetDepthStencilState( 0, 0 );
+	float blendFactors[] = { 0, 0, 0, 0 };
+	dxContext->OMSetBlendState( 0, blendFactors, std::numeric_limits< unsigned int >::max() );
+	dxContext->IASetInputLayout( vertexLayout );
+	dxContext->IASetVertexBuffers( 0, 1, &vertexBuffer.p, &vertexStride, &offset );
+	dxContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+	dxContext->VSSetConstantBuffers( 0, 1, &vertexShaderConstantBuffer.p );
+	dxContext->VSSetShader( vertexShader, nullptr, 0 );
+	dxContext->PSSetShader( pixelShader, nullptr, 0 ); 
 
 #pragma region The main loop...
 	float rotationInRadians = 0.0f;
@@ -473,17 +485,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 				dxContext->Unmap( vertexShaderConstantBuffer, 0 );
 			}
 
-			unsigned int vertexStride = sizeof( Vertex );
-			unsigned int offset = 0;
-			dxContext->OMSetDepthStencilState( 0, 0 );
-			float blendFactors[] = { 0, 0, 0, 0 };
-			dxContext->OMSetBlendState( 0, blendFactors, std::numeric_limits< unsigned int >::max() );
-			dxContext->IASetInputLayout( vertexLayout );
-			dxContext->IASetVertexBuffers( 0, 1, &vertexBuffer.p, &vertexStride, &offset );
-			dxContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
-			dxContext->VSSetConstantBuffers( 0, 1, &vertexShaderConstantBuffer.p );
-			dxContext->VSSetShader( vertexShader, nullptr, 0 );
-			dxContext->PSSetShader( pixelShader, nullptr, 0 );
 			dxContext->Draw( numberOfVertices, 0 );
 		}
 

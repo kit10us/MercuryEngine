@@ -14,7 +14,7 @@ EffectFactory::EffectFactory( core::IGame * game )
 {
 }
 	  
-std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source )
+std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * data )
 {
 	auto game = dynamic_cast<core::Game *>(m_game);
 	auto textureManager = game->GetManager< Texture >();
@@ -35,8 +35,31 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source )
 		{
 			std::string name = child.GetAttribute< std::string >( "name" );
 			unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
+
+			Texture::TextureParameters parameters;
+			if ( child.HasAttributes( "min" ) )
+			{
+				parameters.min = Filtering::FromString( child.GetAttribute< std::string >( "min" ) );
+			}
+			if ( child.HasAttributes( "mag" ) )
+			{
+				parameters.mag = Filtering::FromString( child.GetAttribute< std::string >( "mag" ) );
+			}
+			if ( child.HasAttributes( "mip" ) )
+			{
+				parameters.mip = Filtering::FromString( child.GetAttribute< std::string >( "mip" ) );
+			}
+			if ( child.HasAttributes( "lockable" ) )
+			{
+				parameters.lockable = child.GetAttribute< bool >( "lockable" );
+			}
+			if ( child.HasAttributes( "renderable" ) )
+			{
+				parameters.renderable = child.GetAttribute< bool >( "renderable" );
+			}
+
 			unify::Path source = child.GetDocument()->GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" );
-			effect->SetTexture( stage, textureManager->Add( name, source ) );
+			effect->SetTexture( stage, textureManager->Add( name, source, &parameters ) );
 		}
 		else if( child.IsTagName( "blend" ) )
 		{

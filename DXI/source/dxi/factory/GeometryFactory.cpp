@@ -17,7 +17,7 @@ GeometryFactory::GeometryFactory( core::IGame * game )
 {
 }
 
-Geometry::ptr GeometryFactory::Produce( unify::Path source )
+Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 {
 	qxml::Document doc( source );
 	auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );

@@ -19,8 +19,9 @@ namespace unify
 		void LookAt( const V3< float > & at, const V3< float > & up = V3< float >( 0, 1, 0 ) );
 		void MoveBy( const V3< float > & by );
 		void Orbit( const V3< float > & origin, const V2< float > & direction, Angle angle );
-		void Orbit( const V3< float > & origin, const Quaternion & orbit, float distance );
-		void Rotate( Quaternion q );
+		void Orbit( const V3< float > & origin, const Quaternion & orbit );
+		void PreMul( Quaternion q );
+		void PostMul( Quaternion q );
 
 		Matrix GetMatrix() const;
 

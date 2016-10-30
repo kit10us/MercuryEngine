@@ -26,7 +26,7 @@ namespace rm
 	{
 	public:
 		~ISourceFactory() {}
-		virtual std::shared_ptr< T > Produce( unify::Path path ) = 0;
+		virtual std::shared_ptr< T > Produce( unify::Path path, void * data ) = 0;
 	};
 
 	// A base for a resource list...
@@ -59,7 +59,7 @@ namespace rm
 		// Add an entry for a resource.
 		ResourcePtr Add( std::string name, T * resource ) override;
 
-		ResourcePtr Add( std::string name, unify::Path source );
+		ResourcePtr Add( std::string name, unify::Path source, void * data = 0 );
 	
 		void AddResource( std::string name, unify::Path path ) override;
 

@@ -26,7 +26,7 @@ void GeometryFactory::SetPixelShader( dxi::PixelShader::ptr pixelShader )
 	m_pixelShader = pixelShader;
 }
 
-Geometry::ptr GeometryFactory::Produce( unify::Path source )
+Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 {
 	core::Game & game = *m_game;
 

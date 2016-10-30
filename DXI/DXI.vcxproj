@@ -23,6 +23,7 @@
     <ClCompile Include="source\dxi\DataBuffer.cpp" />
     <ClCompile Include="source\dxi\Effect.cpp" />
     <ClCompile Include="source\dxi\factory\EffectFactories.cpp" />
+    <ClCompile Include="source\dxi\Filtering.cpp" />
     <ClCompile Include="source\dxi\font\Character.cpp" />
     <ClCompile Include="source\dxi\font\CharacterKey.cpp" />
     <ClCompile Include="source\dxi\font\CharacterRender.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="source\dxi\exception\Startup.h" />
     <ClInclude Include="source\dxi\exception\UnsupportedValue.h" />
     <ClInclude Include="source\dxi\exception\Update.h" />
+    <ClInclude Include="source\dxi\Filtering.h" />
     <ClInclude Include="source\dxi\font\Character.h" />
     <ClInclude Include="source\dxi\font\CharacterKey.h" />
     <ClInclude Include="source\dxi\font\CharacterRender.h" />
@@ -272,7 +274,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.\source;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;..\..\packages\DirectXTex-master\DirectXTex;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIRECTX9;DIRECTX11;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DIRECTX11;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>

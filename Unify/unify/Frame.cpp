@@ -360,23 +360,6 @@ Frame & Frame::Slide( const V3< float > & axis, float amount )
 
 Frame & Frame::Orbit( const V3< float > & origin, const V2< float > & direction, Angle angle )
 {
-	/*
-	unify::V3< float > position = GetPosition() - origin; // Make the origin, our origin.
-	
-	unify::V2< float > directionNormalized( direction );
-	directionNormalized.Normalize();
-
-	Matrix rotX = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 0, 1, 0 ), angle * directionNormalized.x );
-	Matrix rotY = unify::Matrix::MatrixRotationAboutAxis( unify::V3< float >( 1, 0, 0 ), angle * directionNormalized.y );
-	Matrix m = rotX * rotY;
-
-	m.TransformCoord( position );
-	SetPosition( position + origin );
-	
-	MakeDirty();
-	return *this;
-	*/
-
 	Update();
 
 	// Compute our coordinates, so all of our math is in model space.
@@ -403,7 +386,7 @@ Frame & Frame::Orbit( const V3< float > & origin, const V2< float > & direction,
 Frame & Frame::Orbit( const V3< float > & origin, const Quaternion & orbit, float distance )
 {
 	V3< float > position( distance, 0, 0 );
-	orbit.TransformVector( position );
+	position = orbit * position;
 	position += origin;
 	SetPosition( position );
 	return *this;

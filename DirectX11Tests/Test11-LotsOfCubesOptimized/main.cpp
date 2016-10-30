@@ -51,8 +51,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	HRESULT result = S_OK;
 
 #pragma region Create window...
-	int width = 800;
-	int height = 600;
+	int width = 1920;
+	int height = 1080;
 
 	WNDCLASSEX wndClassEx;
 	ZeroMemory( &wndClassEx, sizeof( WNDCLASSEX ) );
@@ -262,9 +262,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 #pragma endregion
 
-	const int totalR = 30;
-	const int totalC = 30;
-	const int totalD = 30;
+	const int totalR = 50;
+	const int totalC = 50;
+	const int totalD = 50;
 	const int totalInstances = totalR * totalC * totalD;
 
 #pragma region Setup shader constant transforms for CPU memory (non-GPU/uploaded to GPU)...
@@ -280,7 +280,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 		vertexShaderConstants.worldMatrix = XMMatrixIdentity();
 		
-		XMVECTOR eye = XMVectorSet( 30.0f, 240.0f, -390.0f, 0.0f );
+		XMVECTOR eye = XMVectorSet( 230.0f, 440.0f, -590.0f, 0.0f );
 		XMVECTOR at = XMVectorSet( 0.0f, 0.0f, 0.0f, 0.0f );
 		XMVECTOR up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
 		vertexShaderConstants.viewMatrix = XMMatrixLookAtLH( eye, at, up );
@@ -412,13 +412,6 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}
 #pragma endregion
 
-
-
-
-
-
-	
-
 	struct InstanceData
 	{
 		DirectX::XMVECTOR q;
@@ -451,12 +444,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		result = dxDevice->CreateBuffer( &bufferDesc, &bufferSourceData, &instanceBuffer );
 		assert( !FAILED( result ) );
 	}
-
-
-
-
-
-
+					   
 	unsigned int vertexStride = sizeof( Vertex );
 	unsigned int instanceStride = sizeof( InstanceData );
 	unsigned int offset = 0;
@@ -515,57 +503,22 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		}
 		XMVECTOR axis = XMVectorSet( axisIndex == 0, axisIndex == 1, axisIndex == 2, 1.0f );
 		rotationMatrix = XMMatrixRotationAxis( axis, rotationInRadians );
-
-		/*
-		for( auto qp : qpbuffer )
-		{
-			// Update matrices...
-			{
-				D3D11_MAPPED_SUBRESOURCE subResource = D3D11_MAPPED_SUBRESOURCE();
-				result = dxContext->Map( vertexShaderConstantBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
-				assert( !FAILED( result ) );
-
-				//vertexShaderConstants.worldMatrix[0] = rotationMatrix * matrix;
-				
-				//DirectX::XMMATRIX matrix = XMMatrixRotationQuaternion( qp.q );
-				//matrix *= XMMatrixTranslation( qp.p.m128_f32[ 0 ], qp.p.m128_f32[1], qp.p.m128_f32[2] );
-
-				//DirectX::XMMATRIX matrix = XMMatrixTranslation( qp.p.m128_f32[ 0 ], qp.p.m128_f32[1], qp.p.m128_f32[2] );
-
-				vertexShaderConstants.worldMatrix = rotationMatrix;// *qp.matrix;
-				
-				vertexShaderConstants.q = qp.q;
-				vertexShaderConstants.p = qp.p;
-
-				ConstantBuffer * target = (ConstantBuffer*)subResource.pData;
-				*target = vertexShaderConstants;
-
-				dxContext->Unmap( vertexShaderConstantBuffer, 0 );
-			}
-
-			dxContext->Draw( numberOfVertices, 0 );
-		}
-		*/
-
+	
 		// Update matrices...
 		{
 			D3D11_MAPPED_SUBRESOURCE subResource = D3D11_MAPPED_SUBRESOURCE();
 			result = dxContext->Map( vertexShaderConstantBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
 			assert( !FAILED( result ) );
 
-			vertexShaderConstants.worldMatrix = rotationMatrix;// *qp.matrix;
+			vertexShaderConstants.worldMatrix = rotationMatrix;
 
 			ConstantBuffer * target = (ConstantBuffer*)subResource.pData;
 			*target = vertexShaderConstants;
 
 			dxContext->Unmap( vertexShaderConstantBuffer, 0 );
 		}
-
-
-
-		//dxContext->Draw( numberOfVertices, 0 );
-		dxContext->DrawInstanced( numberOfVertices, totalInstances, 0, 0 );
-
+						 
+		dxContext->DrawInstanced( numberOfVertices, totalInstances, 0, 0 );	 
 
 		swapChain->Present( 0, 0 );
 	}

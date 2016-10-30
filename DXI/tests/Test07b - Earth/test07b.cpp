@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
+#include <dxi/scene/SceneManager.h>
 #include <dxi/scene/CameraComponent.h>
 #include <dxi/Mesh.h>
 #include <dxi/Terra.h>
@@ -35,9 +36,9 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	Game::Startup();
+	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
-	scene::Scene::ptr mainScene = GetSceneManager()->Add( "main" );
+	scene::Scene::ptr mainScene = sceneManager->Add( "main" );
 
 	scene::Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
 	camera->AddComponent( scene::IObjectComponent::ptr( new scene::CameraComponent( GetOS() ) ) );
@@ -52,7 +53,13 @@ void MyGame::Startup()
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 	
 	// Add textures we will need for our effects, and terrain generation/modification.
-	GetManager< Texture >()->Add( "land", new Texture( GetOS()->GetRenderer(0), "media/4.bmp", true, true ) );
+
+	{
+		Texture::TextureParameters parameters;
+		parameters.renderable = true;
+		parameters.lockable = true;
+		GetManager< Texture >()->Add( "land", new Texture( GetOS()->GetRenderer(0), "media/4.bmp", parameters ) );
+	}
 //	GetManager< Texture >()->Add( "cutout", new Texture( GetOS()->GetRenderer( 0 ), "media/EarthWaterCutoutMap.bmp", true, true ) );
 
 	// Load an effect, then modify it to fit our needs.
@@ -105,8 +112,11 @@ void MyGame::Startup()
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
-	scene::Object::ptr camera = GetSceneManager()->Find( "main" )->FindObject( "camera" );
-	//camera->GetFrame().RotateAbout( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
+	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+
+	scene::Object::ptr camera = sceneManager->Find( "main" )->FindObject( "camera" );
+	camera->GetFrame().Orbit( unify::V3< float >(0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInDegrees( 90.0f * renderInfo.GetDelta() ) );
+	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 	return true;
 }
 

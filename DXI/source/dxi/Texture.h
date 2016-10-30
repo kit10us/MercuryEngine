@@ -3,6 +3,7 @@
 
 #pragma once
 #include <dxi/core/IRenderer.h>
+#include <dxi/Filtering.h>
 #include <unify/Rect.h>
 #include <unify/Color.h>
 #include <unify/TexArea.h>
@@ -16,6 +17,9 @@
 #undef LoadImage
 #endif
 
+#ifdef min
+#undef min
+#endif
 
 namespace dxi
 {
@@ -80,6 +84,23 @@ namespace dxi
 	public:
 		typedef std::shared_ptr< Texture > ptr;
 
+		struct TextureParameters
+		{
+			TextureParameters()
+				: renderable( true )
+				, lockable( false )
+				, min( Filtering::Linear )
+				, mag( Filtering::Linear )
+				, mip( Filtering::Linear )
+			{
+			}
+			bool renderable;
+			bool lockable;
+			Filtering::TYPE min;
+			Filtering::TYPE mag;
+			Filtering::TYPE mip;
+		};								  										  
+
 		struct SpriteArray
 		{
 			SpriteArray() {}
@@ -93,8 +114,8 @@ namespace dxi
 
 		static bool s_allowTextureUses;
 
-		Texture( core::IRenderer * renderer );
-		Texture( core::IRenderer * renderer, const unify::Path & filePath, bool renderable = true, bool lockable = false );
+		Texture( core::IRenderer * renderer, TextureParameters parameters = TextureParameters() );
+		Texture( core::IRenderer * renderer, const unify::Path & filePath, TextureParameters parameters = TextureParameters() );
 		virtual ~Texture();
 
 		// ::Resource...
@@ -104,21 +125,15 @@ namespace dxi
 
 		void ClearHeader();
 
-		void CreateFromFile( const unify::Path & filePath, bool renderable, bool lockable );
-
 		const unsigned int FileWidth() const;
+	
 		const unsigned int FileHeight() const;
-
 
 		const unify::Size< unsigned int > & ImageSize() const;
 
 		bool Use( unsigned int stage );
 
-		void SetRenderable( bool renderable );
-
 		bool GetRenderable() const;
-
-		void SetLockable( bool lockable );
 
 		bool GetLockable() const;
 
@@ -140,4 +155,4 @@ namespace dxi
 		class Pimpl;
 		std::shared_ptr< class Pimpl > m_pimpl;
 	};
-} // namespace dxi
+}

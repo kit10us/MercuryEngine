@@ -448,6 +448,9 @@
     <ClCompile Include="source\dxi\VertexElement.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
+    <ClCompile Include="source\dxi\Filtering.cpp">
+      <Filter>dxi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl">
@@ -689,6 +692,9 @@
       <Filter>dxi\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\VertexElement.h">
+      <Filter>dxi</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dxi\Filtering.h">
       <Filter>dxi</Filter>
     </ClInclude>
   </ItemGroup>

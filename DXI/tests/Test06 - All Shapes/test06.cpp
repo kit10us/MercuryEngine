@@ -207,7 +207,7 @@ public:
 		scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 		auto group = sceneManager->Find( "main" )->FindObject( "group" );
-		group->GetFrame().Rotate( unify::Quaternion( axis, rotation ) );
+		group->GetFrame().PreMul( unify::Quaternion( axis, rotation ) );
 
 		return Game::Update( renderInfo );
 	}

@@ -19,7 +19,7 @@ void RotateAbout::AtTime( float unitTime, unify::Frame * frame )
 {
 	unify::Quaternion intermediate( unify::QuaternionSlerp( *m_axisFrom, *m_axisTo, unitTime ) );
 	unify::V3< float > position( 0, 0, 1 );
-	intermediate.TransformVector( position );
+	position = intermediate * position;
 	position *= m_distance;
 	position += *m_position;
 	frame->SetPosition( position );

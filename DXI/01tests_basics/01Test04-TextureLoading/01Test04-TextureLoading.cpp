@@ -15,10 +15,12 @@
 
 using namespace dxi;
 using namespace core;
+using namespace unify;
 
 class MyGame : public Game
 {
-	Effect::ptr effect;
+	Effect::ptr effectBorg;
+	Effect::ptr effect4;
 	VertexBuffer::ptr vertexBuffer;
 
 public:
@@ -32,7 +34,8 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	effect = GetManager< Effect>()->Add( "textured_3d", "media/EffectTextured.effect" );
+	effectBorg = GetManager< Effect>()->Add( "borg", "media/EffectTextured.effect" );
+	effect4 = GetManager< Effect>()->Add( "4", "media/Effect4.effect" );
 
 #pragma region Create vertex raw data as a C-style struct...
 	float xscalar = 10.0f;
@@ -97,25 +100,20 @@ void MyGame::Startup()
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer.reset( new VertexBuffer( GetOS()->GetRenderer(0), numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), vbRaw, BufferUsage::Default ) );
+	vertexBuffer.reset( new VertexBuffer( GetOS()->GetRenderer(0), numberOfVertices, effectBorg->GetVertexShader()->GetVertexDeclaration(), vbRaw, BufferUsage::Default ) );
 }
 
 bool MyGame::Update( RenderInfo & renderInfo )
 {
-	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
+	static Angle rotation( AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
 	HRESULT result = S_OK;
 
-	/*
-	// TODO:
-	const float width = (float)GetOS()->GetResolution().width;
-	const float height = (float)GetOS()->GetResolution().height;
-	*/
-	const float width = 800;
-	const float height = 600;
+	const float width = GetOS()->GetRenderer(0)->GetViewport().GetSize().width;
+	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 
-	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
+	rotation += AngleInDegrees( renderInfo.GetDelta() * 90.0f );
 	if( rotation.Fix360() != 0 )
 	{
 		++axisIndex;
@@ -125,17 +123,17 @@ bool MyGame::Update( RenderInfo & renderInfo )
 		}
 	}
 
-	unify::V3< float > eye( 0.0f, 1.0f, -50.0f );
-	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
-	unify::V3< float > up( 0.0f, 1.0f, 0.0f );
+	V3< float > eye( 0.0f, 1.0f, -50.0f );
+	V3< float > at( 0.0f, 0.0f, 0.0f );
+	V3< float > up( 0.0f, 1.0f, 0.0f );
 
-	unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
+	V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 	
-	unify::Quaternion q = unify::Quaternion( axis, rotation );
-	renderInfo.SetWorldMatrix( unify::Matrix( q ) );
+	Quaternion q = Quaternion( axis, rotation );
+	renderInfo.SetWorldMatrix( Matrix( q ) );
 	
-	renderInfo.SetViewMatrix( unify::Matrix::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	renderInfo.SetViewMatrix( Matrix::MatrixLookAtLH( eye, at, up ) );
+	renderInfo.SetProjectionMatrix( Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 
 	return true;
 }
@@ -144,13 +142,24 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 {
 	vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
-	method.Render( renderInfo );
+	RenderInfo myRenderInfo( renderInfo );
+
+	{
+		myRenderInfo.SetWorldMatrix( renderInfo.GetWorldMatrix() * Matrix::MatrixTranslate( V3< float >( -15, 15, 10 ) ) );
+		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
+		method.Render( myRenderInfo );
+	}
+	{
+		myRenderInfo.SetWorldMatrix( renderInfo.GetWorldMatrix() * Matrix::MatrixTranslate( V3< float >( 15, 15, 10 ) ) );
+		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
+		method.Render( myRenderInfo );
+	}
 }
 
 void MyGame::Shutdown()
 {
-	effect.reset();
+	effect4.reset();
+	effectBorg.reset();
 	vertexBuffer.reset();
 }
 

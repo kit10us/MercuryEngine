@@ -29,43 +29,7 @@ void FrameLite::LookAt( const FrameLite & frame, const V3< float > & up )
 
 void FrameLite::LookAt( const V3< float > & at, const V3< float > & up )
 {	
-	/*
-	V3< float > atFinal = at;
-	V3< float > eyePosition = m_p;
-
-	Matrix matrix = unify::Matrix::MatrixIdentity();
-	unify::V3< float > forward( at - eyePosition );
-	forward.Normalize();
-
-	unify::V3< float > left( unify::V3< float >::V3Cross( up, forward ) );
-
-	SetForward( forward );
-	SetLeft( left );
-	unify::V3< float > orientedUp = unify::V3< float >::V3Cross( forward, left ); // As the specified parameter up means the world's up, this is the relative up for the look at.
-	SetUp( orientedUp ); // Regenerate up.
-	//matrix.SetPosition( -left.Dot( eyePosition ), -up.Dot( eyePosition ), -forward.Dot( eyePosition ) );
-	SetPosition( eyePosition );
-	*/
-
-	V3< float > forward( 0, 0, 1 );
-
-	V3< float > direction = V3< float >::V3Normalized( at - m_p );
-
-	float dot = forward.Dot( direction );
-
-	if ( abs( dot - (-1.0f) ) < 0.000001f )
-	{
-		m_q = Quaternion( up.x, up.y, up.z, 3.1415926535897932f );
-	}
-	if ( abs( dot - (1.0f) ) < 0.000001f )
-	{
-		m_q = QuaternionIdentity();
-	}
-
-	Angle rotAngle( AngleInRadians( acos( dot ) ) );
-	V3< float > rotAxis = V3< float >::V3Cross( forward, direction );
-	rotAxis = V3< float >::V3Normalized( rotAxis );
-	m_q = Quaternion( rotAxis, rotAngle );
+	m_q = QuaternionLookAt( m_p, at, up );
 }
 
 // Move ou position by an amount
@@ -81,22 +45,26 @@ void FrameLite::Orbit( const V3< float > & origin, const V2< float > & direction
 
 	Quaternion q = Quaternion( V3< float >( direction.y, direction.x, 0 ), angle );
 
-	q.TransformVector( newPosition );
+	newPosition = newPosition * q;
 	
 	m_p = newPosition + origin;
 }
 
-void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit, float distance )
+void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit )
 {
-	V3< float > position( distance, 0, 0 );
-	orbit.TransformVector( position );
-	position += origin;
-	SetPosition( position );
+	m_p -= origin;
+	m_p = m_p * orbit;
+	m_p += origin;
 }
 
-void FrameLite::Rotate( unify::Quaternion q )
+void FrameLite::PreMul( unify::Quaternion q )
 {
-	m_q *= q;
+	m_q = q * m_q;
+}
+
+void FrameLite::PostMul( unify::Quaternion q )
+{
+	m_q = m_q * q;
 }
 
 Matrix FrameLite::GetMatrix() const

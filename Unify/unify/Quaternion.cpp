@@ -5,73 +5,10 @@
 #include <unify/Matrix.h>
 
 
-/*
 #include <DirectXMath.h>
 #define XMV( _a ) *(DirectX::XMVECTOR*)&_a
-*/
 
 using namespace unify;
-
-
-
-Quaternion unify::QuaternionIdentity()
-{
-	Quaternion q( 0, 0, 0, 1 );
-	return q;
-}
-
-Quaternion unify::QuaternionFromEuler( const unify::V3< float > & euler )
-{
-	Quaternion q;
-
-	float c1 = cos( euler.y );
-	float c2 = cos( euler.x );
-	float c3 = cos( euler.z );
-	float s1 = sin( euler.y );
-	float s2 = sin( euler.x );
-	float s3 = sin( euler.z );
-
-	q.w = sqrt( 1.0f + c1 * c2 + c1*c3 - s1 * s2 * s3 + c2*c3 ) / 2.0f;
-	q.x = (c2 * s3 + c1 * s3 + s1 * s2 * c3) / (4.0f * q.w);
-	q.y = (s1 * c2 + s1 * c3 + c1 * s2 * s3) / (4.0f * q.w);
-	q.z = (-s1 * s3 + c1 * s2 * c3 + s2) / (4.0f * q.w);
-
-	return q;
-}
-
-Quaternion unify::QuaternionSlerp( const Quaternion & qa, const Quaternion & qb, float t )
-{
-	Quaternion q;
-	
-	float cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
-	if ( abs( cosHalfTheta ) >= 1.0f )
-	{
-		q.w = qa.w; q.x = qa.x; q.y = qa.y; q.z = qa.z;
-		return q;
-	}
-
-	float halfTheta = acos( cosHalfTheta );
-	float sinHalfTheta = sqrt( 1.0f - cosHalfTheta*cosHalfTheta );
-
-	if ( fabs( sinHalfTheta ) < 0.001f ) 
-	{ // fabs is floating point absolute
-		q.w = (qa.w * 0.5f + qb.w * 0.5f);
-		q.x = (qa.x * 0.5f + qb.x * 0.5f);
-		q.y = (qa.y * 0.5f + qb.y * 0.5f);
-		q.z = (qa.z * 0.5f + qb.z * 0.5f);
-		return q;
-	}
-	float ratioA = sin( (1.0f - t) * halfTheta ) / sinHalfTheta;
-	float ratioB = sin( t * halfTheta ) / sinHalfTheta;
-
-	q.w = (qa.w * ratioA + qb.w * ratioB);
-	q.x = (qa.x * ratioA + qb.x * ratioB);
-	q.y = (qa.y * ratioA + qb.y * ratioB);
-	q.z = (qa.z * ratioA + qb.z * ratioB);
-
-	return q;
-}
-
 
 Quaternion::Quaternion()
 // No default effort.
@@ -103,6 +40,41 @@ Quaternion::Quaternion( const Quaternion & quaternion )
 {
 }
 
+Quaternion::Quaternion( Matrix mat )
+{
+	float tr = mat.m[0][0] + mat.m[1][1] + mat.m[2][2];
+
+	if ( tr > 0 ) {
+		float S = sqrt( tr + 1.0f ) * 2.0f; // S=4*qw 
+		w = 0.25f * S;
+		x = (mat.m[1][2] - mat.m[2][1]) / S;
+		y = (mat.m[2][0] - mat.m[0][2]) / S;
+		z = (mat.m[0][1] - mat.m[1][0]) / S;
+	}
+	else if ( (mat.m[0][0] > mat.m[1][1])&(mat.m[0][0] > mat.m[2][2]) ) {
+		float S = sqrt( 1.0f + mat.m[0][0] - mat.m[1][1] - mat.m[2][2] ) * 2.0f; // S=4*qx 
+		w = (mat.m[1][2] - mat.m[2][1]) / S;
+		x = 0.25f * S;
+		y = (mat.m[1][0] + mat.m[0][1]) / S;
+
+		z = (mat.m[2][0] + mat.m[0][2]) / S;
+	}
+	else if ( mat.m[1][1] > mat.m[2][2] ) {
+		float S = sqrt( 1.0f + mat.m[1][1] - mat.m[0][0] - mat.m[2][2] ) * 2.0f; // S=4*qy
+		w = (mat.m[2][0] - mat.m[0][2]) / S;
+		x = (mat.m[1][0] + mat.m[0][1]) / S;
+		y = 0.25f * S;
+		z = (mat.m[2][1] + mat.m[1][2]) / S;
+	}
+	else {
+		float S = sqrt( 1.0f + mat.m[2][2] - mat.m[0][0] - mat.m[1][1] ) * 2.0f; // S=4*qz
+		w = (mat.m[0][1] - mat.m[1][0]) / S;
+		x = (mat.m[2][0] + mat.m[0][2]) / S;
+		y = (mat.m[2][1] + mat.m[1][2]) / S;
+		z = 0.25f * S;
+	}
+}
+
 bool Quaternion::IsIdentity() const
 {
 	return x == 0.0f && y == 0.0f && z == 0.0f && w == 1.0f;
@@ -118,6 +90,12 @@ Quaternion Quaternion::Normalize() const
 	float n = sqrt( x * x + y * y + z * z + w * w );
 	return Quaternion( x / n, y / n, z / n, w / n );
 }	
+
+V3< float > Quaternion::Up() const
+{
+	V3< float > up( 0, 1, 0 );
+	return up * *this;
+}
 
 // assignment operators
 Quaternion & Quaternion::operator += ( const Quaternion & quaternion )
@@ -195,91 +173,92 @@ bool Quaternion::operator != ( const Quaternion & quaternion ) const
 	return !operator==( quaternion );
 }
 
-V3< float > Quaternion::operator * ( V3< float > v ) const
+V3< float > Quaternion::operator *= ( V3< float > v ) const
 {
-	TransformVector( v );
-	return v;
-}
- 
-void Quaternion::TransformVector( V3< float > & v ) const
-{
-	/*
-	Quaternion q( v.x, v.y, v.z, 1 );
-	q *= *this;
-	v.x = q.x;
-	v.y = q.y;
-	v.z = q.z;
-	*/
-
-
-	/*
-	// Extract the vector part of the quaternion
-	V3< float > u( x, y, z );
-
-	// Extract the scalar part of the quaternion
-	float s = w;
-
-
-	V3< float > cross = V3< float >::V3Cross( u, v );
-	float dot_uv = u.Dot( v );
-	float dot_uu = u.Dot( u );
-
-	// Do the math
-	V3< float > out(
-		2.0f * dot_uv * u.x + (s*s - dot_uu) * v.x + 2.0f * s * cross.x,
-		2.0f * dot_uv * u.y + (s*s - dot_uu) * v.y + 2.0f * s * cross.y,
-		2.0f * dot_uv * u.z + (s*s - dot_uu) * v.z + 2.0f * s * cross.z );
-	v = out;
-	*/
-
-	V3< float > t = unify::V3< float >::V3Cross( unify::V3< float >( x, y, z ), v ) * 2.0f;
-	v = v + (t * w) + unify::V3< float >::V3Cross( unify::V3< float >( x, y, z ), t );
-
-	/*
-	float length = v.Normalize();
-	Quaternion conjugate( Conjugate() );
-	Quaternion result = *this * Quaternion( v.x, v.y, v.z, 1.0f ) * conjugate;
-	v.x = result.x;
-	v.y = result.y;
-	v.z = result.z;
-	*/
-
-
-
-	/*
-	void rotate_vector_by_quaternion( const Vector3& v, const Quaternion& q, Vector3& vprime )
-	{
-		// Extract the vector part of the quaternion
-		Vector3 u( q.x, q.y, q.z );
-
-		// Extract the scalar part of the quaternion
-		float s = q.w;
-
-		// Do the math
-		vprime = 2.0f * dot( u, v ) * u
-			+ (s*s - dot( u, u )) * v
-			+ 2.0f * s * cross( u, v );
-	}
-	*/
-	
-	/*
-
-	V3< float > u( x, y, z );
-	V3< float > out;
-
-	// Extract the scalar part of the quaternion
-	float s = w;
-
-	// Do the math
-	v = 2.0f * u.Dot( v ) * u
-		+ (s*s - u.Dot u ) * v
-		+ 2.0f * s * u.Cross( v );
-	}
-	*/
+	Quaternion vq( v.x, v.y, v.z, 0.0f );
+	Quaternion p = Conjugate() * vq * *this;
+	return V3< float >( p.x, p.y, p.z );
 }
 
 std::string Quaternion::ToString() const
 {
 	return Cast< std::string >( x ) + ", " + Cast< std::string >( y ) + ", " + Cast< std::string >( z ) + ", " + Cast< std::string >( w );
+}
+
+V3< float > unify::operator * ( V3 < float > v, Quaternion q )
+{
+	Quaternion vq( v.x, v.y, v.z, 0.0f );
+	Quaternion p = q.Conjugate() * vq * q;
+	return V3< float >( p.x, p.y, p.z );
+}
+
+V3< float > unify::operator * ( Quaternion q, V3< float > v )
+{
+	return ::operator*(v, q );
+}
+
+Quaternion unify::QuaternionIdentity()
+{
+	Quaternion q( 0, 0, 0, 1 );
+	return q;
+}
+
+Quaternion unify::QuaternionFromEuler( const unify::V3< float > & euler )
+{
+	Quaternion q;
+
+	float c1 = cos( euler.y );
+	float c2 = cos( euler.x );
+	float c3 = cos( euler.z );
+	float s1 = sin( euler.y );
+	float s2 = sin( euler.x );
+	float s3 = sin( euler.z );
+
+	q.w = sqrt( 1.0f + c1 * c2 + c1*c3 - s1 * s2 * s3 + c2*c3 ) / 2.0f;
+	q.x = (c2 * s3 + c1 * s3 + s1 * s2 * c3) / (4.0f * q.w);
+	q.y = (s1 * c2 + s1 * c3 + c1 * s2 * s3) / (4.0f * q.w);
+	q.z = (-s1 * s3 + c1 * s2 * c3 + s2) / (4.0f * q.w);
+
+	return q;
+}
+
+Quaternion unify::QuaternionSlerp( const Quaternion & qa, const Quaternion & qb, float t )
+{
+	Quaternion q;
+
+	float cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
+	if ( abs( cosHalfTheta ) >= 1.0f )
+	{
+		q.w = qa.w; q.x = qa.x; q.y = qa.y; q.z = qa.z;
+		return q;
+	}
+
+	float halfTheta = acos( cosHalfTheta );
+	float sinHalfTheta = sqrt( 1.0f - cosHalfTheta*cosHalfTheta );
+
+	if ( fabs( sinHalfTheta ) < 0.001f )
+	{ // fabs is floating point absolute
+		q.w = (qa.w * 0.5f + qb.w * 0.5f);
+		q.x = (qa.x * 0.5f + qb.x * 0.5f);
+		q.y = (qa.y * 0.5f + qb.y * 0.5f);
+		q.z = (qa.z * 0.5f + qb.z * 0.5f);
+		return q;
+	}
+	float ratioA = sin( (1.0f - t) * halfTheta ) / sinHalfTheta;
+	float ratioB = sin( t * halfTheta ) / sinHalfTheta;
+
+	q.w = (qa.w * ratioA + qb.w * ratioB);
+	q.x = (qa.x * ratioA + qb.x * ratioB);
+	q.y = (qa.y * ratioA + qb.y * ratioB);
+	q.z = (qa.z * ratioA + qb.z * ratioB);
+
+	return q;
+}
+
+Quaternion unify::QuaternionLookAt( unify::V3< float > eye, unify::V3< float > at, unify::V3< float > up )
+{
+	Matrix m = Matrix::MatrixLookAtLH( eye, at, up );
+	Quaternion q( m );
+	return q;
 }
 
