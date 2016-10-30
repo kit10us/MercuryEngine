@@ -76,17 +76,14 @@ void FrameLite::MoveBy( const V3< float > & by )
 
 void FrameLite::Orbit( const V3< float > & origin, const V2< float > & direction, Angle angle )
 {
-	// Compute our coordinates, so all of our math is in model space.
-	V3< float > relativeOrigin = origin;
-
 	// Re-origin our position...
-	V3< float > newPosition( GetPosition() - relativeOrigin );
+	V3< float > newPosition( m_p - origin );
+
+	Quaternion q = Quaternion( V3< float >( direction.y, direction.x, 0 ), angle );
+
+	q.TransformVector( newPosition );
 	
-	// Create a matrix that has our position as it's Z axis, then rotate that axis...
-	Quaternion m(
-		Quaternion( V3< float >( 1, 0, 0 ), angle * direction.y ) *
-		Quaternion( V3< float >( 0, 1, 0 ), angle * direction.x ) );
-	m_q = m;
+	m_p = newPosition + origin;
 }
 
 void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit, float distance )

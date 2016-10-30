@@ -28,6 +28,9 @@
     <Filter Include="dll">
       <UniqueIdentifier>{b7ef1a20-4753-42e4-8b95-75a36196b7c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dae\library_controllers">
+      <UniqueIdentifier>{0c942c72-f2fd-47e3-b18b-ee4b9da2d70d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\dae\Input_Unshared.h">
@@ -159,6 +162,21 @@
     <ClInclude Include="source\dae\util\IEffectSolver.h">
       <Filter>dae\util</Filter>
     </ClInclude>
+    <ClInclude Include="source\dae\library_visual_scenes\InstanceController.h">
+      <Filter>dae\library_visual_scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\library_controllers\Controller.h">
+      <Filter>dae\library_controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\library_controllers\LibraryControllers.h">
+      <Filter>dae\library_controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\library_controllers\Skin.h">
+      <Filter>dae\library_controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\library_controllers\Morph.h">
+      <Filter>dae\library_controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dae\InstanceSet.cpp">
@@ -283,6 +301,21 @@
     </ClCompile>
     <ClCompile Include="source\dae\DaeDLL.cpp">
       <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_visual_scenes\InstanceController.cpp">
+      <Filter>dae\library_visual_scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_controllers\Controller.cpp">
+      <Filter>dae\library_controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_controllers\LibraryControllers.cpp">
+      <Filter>dae\library_controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_controllers\Skin.cpp">
+      <Filter>dae\library_controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_controllers\Morph.cpp">
+      <Filter>dae\library_controllers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

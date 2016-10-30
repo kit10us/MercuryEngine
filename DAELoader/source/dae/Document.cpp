@@ -57,6 +57,10 @@ Document::Document( dxi::core::IRenderer * renderer, const unify::Path & filePat
 		{
 			m_library_geometries.reset( new LibraryGeometries( *this, childNode ) );
 		}
+		else if ( childNode->IsTagName( "library_controllers" ) )
+		{
+			m_library_controllers.reset( new LibraryControllers( *this, childNode ) );
+		}
 		else if ( childNode->IsTagName( "library_visual_scenes" ) )
 		{
 			m_library_visual_scenes.reset( new LibraryVisualScenes( *this, childNode ) );
@@ -101,6 +105,11 @@ const LibraryEffects & Document::GetLibraryEffects() const
 const LibraryGeometries & Document::GetLibraryGeometries() const
 {
 	return *m_library_geometries;
+}
+
+const LibraryControllers & Document::GetLibraryControllers() const
+{
+	return *m_library_controllers;
 }
 
 const LibraryVisualScenes & Document::GetLibraryVisualScenes() const

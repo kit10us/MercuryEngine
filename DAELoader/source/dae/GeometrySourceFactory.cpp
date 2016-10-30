@@ -20,6 +20,6 @@ dxi::Geometry::ptr GeometrySourceFactory::Produce( unify::Path path )
 	dxi::Mesh * mesh = new dxi::Mesh( m_renderer );
 	const dae::VisualScene & visualScene = *dynamic_cast< const dae::VisualScene* >(doc.Find( doc.GetScene().GetInstanceVisualScene()->GetURL() ));
 	visualScene.Build( mesh->GetPrimitiveList() );
-	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
+	mesh->ComputeBounds();
 	return dxi::Geometry::ptr( mesh );
 }

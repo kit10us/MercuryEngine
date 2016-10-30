@@ -3,6 +3,7 @@
 
 #include <dae/library_visual_scenes/VisualScene.h>
 #include <dae/library_visual_scenes/InstanceGeometry.h>
+#include <dae/library_visual_scenes/InstanceController.h>
 #include <unify/String.h>
 
 using namespace dae;
@@ -63,7 +64,7 @@ Node::Node( IDocument & document, const dae::Node * parent, const qxml::Element 
 		}
 		else if ( childNode->IsTagName( "instance_controller" ) )
 		{
-			// TODO:
+			m_instances.push_back( std::shared_ptr< InstanceController >( new InstanceController( childNode ) ) );
 		}
 		else if ( childNode->IsTagName( "instance_geometry" ) )
 		{
@@ -147,7 +148,7 @@ Node::Node( IDocument & document, const qxml::Element * node )
 		}
 		else if ( childNode->IsTagName( "instance_controller" ) )
 		{
-			// TODO:
+			m_instances.push_back( std::shared_ptr< InstanceController >( new InstanceController( childNode ) ) );
 		}
 		else if ( childNode->IsTagName( "instance_geometry" ) )
 		{

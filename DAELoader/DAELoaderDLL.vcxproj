@@ -107,6 +107,10 @@
     <ClInclude Include="source\dae\InstanceSet.h" />
     <ClInclude Include="source\dae\InstanceVisualScene.h" />
     <ClInclude Include="source\dae\Library.h" />
+    <ClInclude Include="source\dae\library_controllers\Controller.h" />
+    <ClInclude Include="source\dae\library_controllers\LibraryControllers.h" />
+    <ClInclude Include="source\dae\library_controllers\Morph.h" />
+    <ClInclude Include="source\dae\library_controllers\Skin.h" />
     <ClInclude Include="source\dae\library_effects\Effect.h" />
     <ClInclude Include="source\dae\library_effects\LibraryEffects.h" />
     <ClInclude Include="source\dae\library_effects\Shading.h" />
@@ -118,6 +122,7 @@
     <ClInclude Include="source\dae\library_materials\LibraryMaterials.h" />
     <ClInclude Include="source\dae\library_materials\Material.h" />
     <ClInclude Include="source\dae\library_nodes\LibraryNodes.h" />
+    <ClInclude Include="source\dae\library_visual_scenes\InstanceController.h" />
     <ClInclude Include="source\dae\library_visual_scenes\InstanceEffect.h" />
     <ClInclude Include="source\dae\library_visual_scenes\InstanceGeometry.h" />
     <ClInclude Include="source\dae\library_visual_scenes\InstanceMaterial.h" />
@@ -151,6 +156,10 @@
     <ClCompile Include="source\dae\Input_Unshared.cpp" />
     <ClCompile Include="source\dae\InstanceSet.cpp" />
     <ClCompile Include="source\dae\InstanceVisualScene.cpp" />
+    <ClCompile Include="source\dae\library_controllers\Controller.cpp" />
+    <ClCompile Include="source\dae\library_controllers\LibraryControllers.cpp" />
+    <ClCompile Include="source\dae\library_controllers\Morph.cpp" />
+    <ClCompile Include="source\dae\library_controllers\Skin.cpp" />
     <ClCompile Include="source\dae\library_effects\Effect.cpp" />
     <ClCompile Include="source\dae\library_effects\LibraryEffects.cpp" />
     <ClCompile Include="source\dae\library_effects\Shading.cpp" />
@@ -162,6 +171,7 @@
     <ClCompile Include="source\dae\library_materials\LibraryMaterials.cpp" />
     <ClCompile Include="source\dae\library_materials\Material.cpp" />
     <ClCompile Include="source\dae\library_nodes\LibraryNodes.cpp" />
+    <ClCompile Include="source\dae\library_visual_scenes\InstanceController.cpp" />
     <ClCompile Include="source\dae\library_visual_scenes\InstanceEffect.cpp" />
     <ClCompile Include="source\dae\library_visual_scenes\InstanceGeometry.cpp" />
     <ClCompile Include="source\dae\library_visual_scenes\InstanceMaterial.cpp" />

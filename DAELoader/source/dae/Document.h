@@ -8,6 +8,7 @@
 #include <dae/library_materials/LibraryMaterials.h>
 #include <dae/library_effects/LibraryEffects.h>
 #include <dae/library_geometries/LibraryGeometries.h>
+#include <dae/library_controllers/LibraryControllers.h>
 #include <dae/library_visual_scenes/LibraryVisualScenes.h>
 #include <dae/Scene.h>
 #include <dae/util/IEffectSolver.h>
@@ -41,6 +42,7 @@ namespace dae
 		const LibraryImages & GetLibraryImages() const;
 		const LibraryEffects & GetLibraryEffects() const;
 		const LibraryGeometries & GetLibraryGeometries() const;
+		const LibraryControllers & GetLibraryControllers() const;
 		const LibraryVisualScenes & GetLibraryVisualScenes() const;
 		const Scene & GetScene() const;
 
@@ -56,6 +58,7 @@ namespace dae
 		std::shared_ptr< LibraryMaterials > m_library_materials;
 		std::shared_ptr< LibraryEffects > m_library_effects;
 		std::shared_ptr< LibraryGeometries > m_library_geometries;
+		std::shared_ptr< LibraryControllers > m_library_controllers;
 		std::shared_ptr< LibraryVisualScenes > m_library_visual_scenes;
 		std::shared_ptr< LibraryImages > m_library_images;
 		std::shared_ptr< Scene > m_scene;

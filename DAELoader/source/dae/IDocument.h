@@ -29,6 +29,7 @@ namespace dae
 		virtual const class LibraryImages & GetLibraryImages() const = 0;
 		virtual const class LibraryEffects & GetLibraryEffects() const = 0;
 		virtual const class LibraryGeometries & GetLibraryGeometries() const = 0;
+		virtual const class LibraryControllers & GetLibraryControllers() const = 0;
 		virtual const class LibraryVisualScenes & GetLibraryVisualScenes() const = 0;
 		virtual const class Scene & GetScene() const = 0;
 		virtual void Add( const std::string & name, DocumentNode * node ) = 0;

@@ -91,28 +91,6 @@ void PrimitiveList::ComputeBounds( unify::BBox< float > & bbox ) const
 {
 	bbox.Clear();
 
-	/*
-	VertexElement positionE = CommonVertexElement::Position();
-
-	// Loop through vertices for largest radius
-	for( const auto & bs : m_buffers )
-	{
-		unify::DataLock lock;
-		const VertexBuffer & vb = bs->GetVertexBuffer();
-
-		vb.LockReadOnly( lock );
-		VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
-
-		for( size_t index = 0; index < vb.GetLength(); index++ )
-		{
-			unify::V3< float > pos;
-			vd->ReadVertex( lock, index, positionE, pos );
-			boundingBox.AddPoint( pos );
-		}
-		vb.Unlock();
-	}
-	*/
-
 	for ( const auto & bs : m_buffers )
 	{
 		const VertexBuffer & vb = bs->GetVertexBuffer();

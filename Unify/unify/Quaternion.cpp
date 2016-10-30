@@ -203,13 +203,37 @@ V3< float > Quaternion::operator * ( V3< float > v ) const
  
 void Quaternion::TransformVector( V3< float > & v ) const
 {
+	/*
 	Quaternion q( v.x, v.y, v.z, 1 );
 	q *= *this;
 	v.x = q.x;
 	v.y = q.y;
 	v.z = q.z;
+	*/
 
 
+	/*
+	// Extract the vector part of the quaternion
+	V3< float > u( x, y, z );
+
+	// Extract the scalar part of the quaternion
+	float s = w;
+
+
+	V3< float > cross = V3< float >::V3Cross( u, v );
+	float dot_uv = u.Dot( v );
+	float dot_uu = u.Dot( u );
+
+	// Do the math
+	V3< float > out(
+		2.0f * dot_uv * u.x + (s*s - dot_uu) * v.x + 2.0f * s * cross.x,
+		2.0f * dot_uv * u.y + (s*s - dot_uu) * v.y + 2.0f * s * cross.y,
+		2.0f * dot_uv * u.z + (s*s - dot_uu) * v.z + 2.0f * s * cross.z );
+	v = out;
+	*/
+
+	V3< float > t = unify::V3< float >::V3Cross( unify::V3< float >( x, y, z ), v ) * 2.0f;
+	v = v + (t * w) + unify::V3< float >::V3Cross( unify::V3< float >( x, y, z ), t );
 
 	/*
 	float length = v.Normalize();

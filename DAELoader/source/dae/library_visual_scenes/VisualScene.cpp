@@ -3,8 +3,10 @@
 
 #include <dae/library_visual_scenes/VisualScene.h>
 #include <dae/library_geometries/LibraryGeometries.h>
+#include <dae/library_controllers/LibraryControllers.h>
 #include <dae/library_nodes/LibraryNodes.h>
 #include <dae/library_visual_scenes/InstanceGeometry.h>
+#include <dae/library_visual_scenes/InstanceController.h>
 #include <dae/library_materials/Material.h>
 
 using namespace dae;
@@ -52,6 +54,9 @@ void VisualScene::Build( dxi::PrimitiveList & pl ) const
 
 void VisualScene::Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const
 {
+	OutputDebugStringA( node->GetID().c_str() );
+	OutputDebugStringA( "\n" );
+
 	// Iterate this nodes instances...
 	for ( const auto instance : node->GetInstances() )
 	{
@@ -62,6 +67,14 @@ void VisualScene::Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, 
 				const InstanceGeometry * instanceGeometry = dynamic_cast< const InstanceGeometry * >( instance.get() );
 				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( instance->GetURL() ) ;
 				geo.Build( pl, matrix * node->GetFinalMatrix(), instanceGeometry->GetBindMaterial()->GetTechniqueCommon() );
+			}
+			break;
+		case InstanceSet::InstanceTypeController:
+			{
+				const InstanceController * instanceController = dynamic_cast< const InstanceController * >(instance.get());
+				const dae::Controller & controller = *GetDocument().GetLibraryControllers().Find( instanceController->GetURL() );
+				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( controller.GetSkin()->GetSource() );
+				geo.Build( pl, matrix * node->GetFinalMatrix(), instanceController->GetBindMaterial()->GetTechniqueCommon() );
 			}
 			break;
 		case InstanceSet::InstanceTypeNode:
