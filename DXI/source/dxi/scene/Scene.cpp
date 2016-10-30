@@ -117,6 +117,98 @@ void Scene::Update( const RenderInfo & renderInfo )
 	GetRoot()->Update( renderInfo );
 }
 
+struct FinalObject
+{
+	Object::ptr object;	 // Replace with geometry.
+	unify::Matrix transform;
+};
+
+struct FinalCamera
+{
+	Object::ptr object;
+	unify::Matrix transform;
+	CameraComponent * camera;
+};
+
+void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, unify::Matrix parentTransform )
+{
+	assert( current );
+	assert( current->IsEnabled() );
+
+	// Solve our transform.
+	unify::Matrix transform = current->GetFrame().GetMatrix();
+	transform *= parentTransform;
+
+	// Check for a camera...
+	scene::CameraComponent * camera{};
+	for( int i = 0; i < current->ComponentCount(); ++i )
+	{
+		IObjectComponent::ptr component = current->GetComponent( i );
+		if( !component->IsEnabled() ) continue;
+
+		camera = dynamic_cast< scene::CameraComponent * >(component.get());
+		if( camera != nullptr )
+		{
+			cameraList.push_back( FinalCamera{ current, transform, camera } );
+		}
+	}
+
+	renderList.push_back(
+	{
+		current,
+		transform
+	} );
+
+	// Handle children
+	Object::ptr child = current->GetFirstChild();
+	while( child )
+	{
+		if( child->IsEnabled() )
+		{
+			Accumulate( renderList, cameraList, child, transform );
+		}
+
+		child = child->GetNext();
+	}
+}
+
+void Scene::Render( const RenderInfo & renderInfo )
+{
+	for( auto && component : m_components )
+	{
+		if( component->IsEnabled() )
+		{
+			component->OnRender( this, renderInfo );
+		}
+	}
+
+	std::list< FinalObject > renderList;
+	std::list< FinalCamera > cameraList;
+
+	unify::Matrix transform = unify::Matrix::MatrixIdentity();
+
+	if( GetRoot() && GetRoot()->IsEnabled() )
+	{
+		Accumulate( renderList, cameraList, GetRoot(), transform );
+	}
+
+	for( auto camera : cameraList )
+	{
+		if( camera.camera->GetRenderer() != renderInfo.GetRenderer()->GetIndex() ) continue;
+
+		RenderInfo renderInfo( renderInfo );
+		renderInfo.SetRenderer( renderInfo.GetRenderer() );
+		renderInfo.SetViewMatrix( camera.transform.Inverse() );
+		renderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
+
+		for( auto object : renderList )
+		{
+			renderInfo.SetWorldMatrix( object.transform );
+			object.object->RenderSimple( renderInfo );
+		}
+	}
+}
+
 void Scene::Suspend()
 {
 	for ( auto && component : m_components )
@@ -141,105 +233,6 @@ void Scene::Resume()
 			component->OnResume();
 		}
 	}
-}
-
-RenderInfo & Scene::GetRenderInfo()
-{
-	return m_renderInfo;
-}
-
-struct FinalObject
-{
-	Object::ptr object;	 // Replace with geometry.
-	unify::Matrix transform;
-};
-
-struct FinalCamera
-{
-	Object::ptr object;
-	unify::Matrix transform;
-	CameraComponent * camera;
-};							  
-
-void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, unify::Matrix parentTransform )
-{
-	assert( current );
-	assert( current->IsEnabled() );
-
-	// Solve our transform.
-	unify::Matrix transform = current->GetFrame().GetMatrix(); 
-	transform *= parentTransform;
-
-	// Check for a camera...
-	scene::CameraComponent * camera{};
-	for( int i = 0; i < current->ComponentCount(); ++i )
-	{
-		IObjectComponent::ptr component = current->GetComponent( i );
-		if( !component->IsEnabled() ) continue;
-
-		camera = dynamic_cast< scene::CameraComponent * >( component.get() );
-		if( camera != nullptr )
-		{
-			cameraList.push_back( FinalCamera{ current, transform, camera } );
-		}
-	}
-
-	renderList.push_back(
-	{
-		current,
-		transform
-	} );
-						   
-	// Handle children
-	Object::ptr child = current->GetFirstChild();
-	while( child )
-	{
-		if( child->IsEnabled() ) 
-		{
-			Accumulate( renderList, cameraList, child, transform );
-		}
-
-		child = child->GetNext();
-	}
-}
-
-void Scene::Render( size_t index, const Viewport & viewport )
-{	
-	for ( auto && component : m_components )
-	{
-		if ( component->IsEnabled() )
-		{
-			component->OnRender( this, m_renderInfo );
-		}
-	}
-
-	std::list< FinalObject > renderList;
-	std::list< FinalCamera > cameraList;
-	
-	unify::Matrix transform = unify::Matrix::MatrixIdentity();
-
-	if( GetRoot() && GetRoot()->IsEnabled() )
-	{
-		Accumulate( renderList, cameraList, GetRoot(), transform );
-	}
-
-	for( auto camera : cameraList )
-	{	
-		if( camera.camera->GetRenderer() != index ) continue;
-
-		RenderInfo renderInfo( m_renderInfo );
-		renderInfo.SetRenderer( m_game->GetOS()->GetRenderer( index ) ); // TODO: Likely renderer should know it's index, AND this Render function should take a IRenderer instead of an index.
-		renderInfo.SetViewMatrix( camera.transform.Inverse() );
-		renderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
-
-		for( auto object : renderList )
-		{
- 			renderInfo.SetWorldMatrix( object.transform );
-			object.object->RenderSimple( renderInfo );
-		}
-	}
-
-	m_renderInfo.IncrementFrameID();
 }
 
 void Scene::SetDefaultLighting( bool lighting )

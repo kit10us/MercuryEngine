@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/core/IGameComponent.h>
 #include <dxi/scripting/IModule.h>
 #include <dxi/scripting/ExecuteResult.h>
 #include <unify/Path.h>
@@ -13,7 +14,7 @@ namespace dxi
 	{
 		/// Provides common script engine features.
 		/// </summary>
-		class IScriptEngine
+		class IScriptEngine : public core::IGameComponent
 		{
 		public:
 			virtual ~IScriptEngine() {}

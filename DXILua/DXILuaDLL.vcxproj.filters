@@ -99,6 +99,9 @@
     <ClInclude Include="dxilua\ExportTexture.h">
       <Filter>dxilua</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\unify\ExportQuaternion.h">
+      <Filter>dxilua\unify</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="dxilua\ExportTexture.cpp">
       <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\unify\ExportQuaternion.cpp">
+      <Filter>dxilua\unify</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

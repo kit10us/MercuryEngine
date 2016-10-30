@@ -27,12 +27,13 @@ void Deleter( dxi::scripting::IScriptEngine * se )
 extern "C" __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
 __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * document )
 {
-	dxi::scripting::IScriptEngine * se = game->GetScriptEngine( "lua" );
-	if ( ! se )
+	auto gcse = game->GetComponent( "LUA", 0 );
+	if( !gcse )
 	{
 		game->ReportError( dxi::ErrorLevel::Failure, "DXILuaShapeExt", "Lua extension not found!" );
 		return false;
 	}
+	dxi::scripting::IScriptEngine * se = dynamic_cast<dxi::scripting::IScriptEngine *>(gcse.get());
 
 	dxilua::ScriptEngine * luaSE = dynamic_cast<dxilua::ScriptEngine *>(se);
 	if ( ! luaSE )

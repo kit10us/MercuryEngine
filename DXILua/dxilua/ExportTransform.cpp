@@ -16,6 +16,7 @@
 #include <dxilua/unify/ExportSize3.h>
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
+#include <dxilua/unify/ExportQuaternion.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -107,30 +108,28 @@ int Transform_Scale( lua_State * state )
 	return 0;
 }
 
-int Transform_GetMatrix( lua_State * state )
+int Transform_GetRotation( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
 
-	PushMatrix( state, proxy->transform->GetMatrix() );
+	PushQuaternion( state, proxy->transform->GetRotation() );
 
 	return 1;
 }
 
-int Transform_SetMatrix( lua_State * state )
+int Transform_SetRotation( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
 
-	int type = lua_type( state, 2 );
+	unify::Quaternion q = CheckQuaternion( state, 2 );
 
-	unify::Matrix mat = CheckMatrix( state, 2 );
-
-	proxy->transform->SetMatrix( mat );
+	proxy->transform->SetRotation( q );
 
 	return 0;
 }
@@ -141,11 +140,11 @@ int Transform_PreMul( lua_State * state )
 	assert( args == 2 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Matrix mat = CheckMatrix( state, 2 );
+	unify::Quaternion q = CheckQuaternion( state, 2 );
 	
-	unify::Matrix myMatrix = proxy->transform->GetMatrix();
+	unify::Quaternion myQ = proxy->transform->GetRotation();
 
-	proxy->transform->SetMatrix( mat * myMatrix );
+	proxy->transform->SetRotation( q * myQ );
 
 	return 0;
 }
@@ -156,11 +155,11 @@ int Transform_PostMul( lua_State * state )
 	assert( args == 2 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Matrix mat = CheckMatrix( state, 2 );
+	unify::Quaternion q = CheckQuaternion( state, 2 );
 
-	unify::Matrix myMatrix = proxy->transform->GetMatrix();
+	unify::Quaternion myQ = proxy->transform->GetRotation();
 
-	proxy->transform->SetMatrix( myMatrix * mat );
+	proxy->transform->SetRotation( myQ * q );
 
 	return 0;
 }
@@ -173,8 +172,8 @@ static const luaL_Reg TransformFunctions[] =
 	{ "Orbit", Transform_Orbit },
 	{ "RotateAbout", Transform_RotateAbout },
 	{ "Scale", Transform_Scale },
-	{ "GetMatrix", Transform_GetMatrix },
-	{ "SetMatrix", Transform_SetMatrix },
+	{ "GetRotation", Transform_GetRotation },
+	{ "SetRotation", Transform_SetRotation },
 	{ "PreMul", Transform_PreMul },
 	{ "PostMul", Transform_PostMul },
 	{ nullptr, nullptr }

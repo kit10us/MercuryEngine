@@ -4,6 +4,7 @@
 #include <dxilua/ExportScenes.h>
 #include <dxilua/DXILua.h>
 #include <dxi/core/Game.h>
+#include <dxi/scene/SceneManager.h>
 
 using namespace dxilua;
 using namespace dxi;
@@ -34,7 +35,12 @@ int Scenes_AddScene( lua_State * state )
 
 	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 
-	game->GetSceneManager()->Add( name );
+	auto x = game->GetComponent( "SceneManager", 0 );
+	if( !x ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
+
+	scene::SceneManager * sceneManager = dynamic_cast< dxi::scene::SceneManager * >(x.get());
+
+	sceneManager->Add( name );
 
 	return 0;
 }

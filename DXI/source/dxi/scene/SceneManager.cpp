@@ -21,6 +21,11 @@ SceneManager::~SceneManager()
     Destroy();
 }
 
+std::string SceneManager::GetName() const
+{
+	return "SceneManager";
+}
+
 core::IGame * SceneManager::GetGame()
 {
 	return m_game;
@@ -65,7 +70,15 @@ Scene::ptr SceneManager::Find( std::string name )
 	return itr == m_scenes.end() ? Scene::ptr() : itr->second;
 }
 
-void SceneManager::Update( const RenderInfo & renderInfo )
+void SceneManager::OnAttach( dxi::core::IGame * game )
+{
+}
+
+void SceneManager::OnDetach( dxi::core::IGame * game )
+{
+}
+
+void SceneManager::OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{
@@ -90,7 +103,7 @@ void SceneManager::Update( const RenderInfo & renderInfo )
     }
 }
 
-void SceneManager::Render( size_t renderer, const Viewport & viewport )
+void SceneManager::OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{
@@ -124,7 +137,7 @@ void SceneManager::Render( size_t renderer, const Viewport & viewport )
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Render( renderer, viewport );
+        scene->Render( renderInfo );
     }
 }
 

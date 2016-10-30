@@ -35,12 +35,10 @@ namespace dxi
 			Object::ptr GetRoot();
 			const Object::ptr GetRoot() const;
 
-			RenderInfo & GetRenderInfo();
-
 			void OnInit();
 			void OnStart();
 			void Update( const RenderInfo & renderInfo );
-		    void Render( size_t renderer, const Viewport & viewport );
+		    void Render( const RenderInfo & renderInfo );
 			void Suspend();
 			void Resume();
 
@@ -97,7 +95,6 @@ namespace dxi
 		    unsigned int m_lastCullCount;
 
 		    // Flags...
-		    RenderInfo m_renderInfo;
 		    bool m_renderSolids;
 		    bool m_renderTrans;
 		    bool m_cullingEnabled;

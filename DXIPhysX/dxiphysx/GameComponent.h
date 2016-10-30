@@ -19,6 +19,8 @@ namespace dxiphysx
 
 		void OnAttach( dxi::core::IGame * game ) override;
 		void OnDetach( dxi::core::IGame * game ) override;
+		void OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+		void OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
 
 		physx::PxPhysics * GetPhysics();
 		physx::PxDefaultCpuDispatcher * GetCpuDispatcher();

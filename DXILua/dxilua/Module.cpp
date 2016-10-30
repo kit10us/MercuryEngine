@@ -29,7 +29,6 @@ void Module::CallMember( std::string function )
 	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() ) )						   
 	{
 		m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Module not found! (" + m_name + ")" );
-		assert( 0 ); // TODO:
 	}
 
 	int r2 = lua_getfield( m_state, -1, function.c_str() );

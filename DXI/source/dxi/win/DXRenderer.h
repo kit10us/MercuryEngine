@@ -17,7 +17,7 @@ namespace dxi
 		class DXRenderer : public core::IRenderer
 		{
 		public:
-			DXRenderer( WindowsOS * os, core::Display display );
+			DXRenderer( WindowsOS * os, core::Display display, size_t index );
 			virtual ~DXRenderer();																															   
 			const core::Display & GetDisplay() const;
 
@@ -37,6 +37,8 @@ namespace dxi
 			Viewport GetViewport() const override;
 
 			bool IsFullscreen() const override;
+
+			size_t GetIndex() const override;
 
 			HWND GetHandle() const override;
 

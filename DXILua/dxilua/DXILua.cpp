@@ -8,7 +8,6 @@
 #include <dxilua/ExportObject.h>
 
 #pragma comment( lib, "lua53" )
-#pragma comment( lib, "DXILuaLib" )
 
 using namespace dxilua;
 using namespace dxi;
@@ -30,6 +29,26 @@ ScriptEngine::~ScriptEngine()
 	}
 }
 
+std::string ScriptEngine::GetName() const
+{
+	return "LUA";
+}
+
+void ScriptEngine::OnAttach( dxi::core::IGame * game )
+{
+}
+
+void ScriptEngine::OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+{
+}
+
+void ScriptEngine::OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+{
+}
+
+void ScriptEngine::OnDetach( dxi::core::IGame * game )
+{
+}
 
 scripting::ExecuteResult ScriptEngine::ExecuteString( std::string line )
 {

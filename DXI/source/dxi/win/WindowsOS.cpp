@@ -224,7 +224,7 @@ void WindowsOS::CreateDisplay( core::Display display )
 		display.SetHandle( handle );
 	}
 
-	renderer.reset( new DXRenderer( this, display ) );
+	renderer.reset( new DXRenderer( this, display, m_pimpl->m_renderers.size() ) );
 	m_pimpl->m_renderers.push_back( renderer );
 }
 

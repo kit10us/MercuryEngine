@@ -23,11 +23,13 @@ public:
 	D3DPRESENT_PARAMETERS m_pp;
 	CComPtr< IDirect3DDevice9 > m_dxDevice;
 	CComPtr< IDirect3DSwapChain9 > m_swapChain;
+	size_t m_index;
 		   
-	Pimpl( DXRenderer & owner, WindowsOS * os, core::Display display )
+	Pimpl( DXRenderer & owner, WindowsOS * os, core::Display display, size_t index )
 		: m_owner( owner )
 		, m_OS( os )
 		, m_display( display )
+		, m_index( index )
 	{
 		for ( int i = 0; i < os->RendererCount(); ++i )
 		{
@@ -182,6 +184,10 @@ public:
 		return m_display.IsFullscreen();
 	}
 
+	size_t GetIndex() const
+	{
+		return m_index;
+	}
 	HWND GetHandle() const
 	{
 		return  m_display.GetHandle();
@@ -384,8 +390,8 @@ public:
 
 
 
-DXRenderer::DXRenderer( WindowsOS * os, core::Display display )
-	: m_pimpl( new Pimpl( *this, os, display ) )
+DXRenderer::DXRenderer( WindowsOS * os, core::Display display, size_t index )
+	: m_pimpl( new Pimpl( *this, os, display, index ) )
 {
 }
 
@@ -449,8 +455,13 @@ bool DXRenderer::IsFullscreen() const
 	return m_pimpl->GetDisplay().IsFullscreen();
 }
 
+size_t DXRenderer::GetIndex() const
+{
+	return m_pimpl->GetIndex();
+}
+
 HWND DXRenderer::GetHandle() const
 {
-	return  m_pimpl->GetDisplay().GetHandle();
+	return m_pimpl->GetDisplay().GetHandle();
 }
 

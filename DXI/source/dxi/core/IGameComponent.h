@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <dxi/RenderInfo.h>
 #include <string>
 #include <memory>
 					 
@@ -25,6 +26,10 @@ namespace dxi
 			virtual std::string GetName() const = 0;
 
 			virtual void OnAttach( IGame * game ) = 0;
+
+			virtual void OnUpdate( IGame * game, const RenderInfo & renderInfo ) = 0;
+
+			virtual void OnRender( IGame * game, const RenderInfo & renderInfo ) = 0;
 
 			virtual void OnDetach( IGame * game ) = 0;
 		};

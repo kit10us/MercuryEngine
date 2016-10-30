@@ -101,8 +101,8 @@ void SceneComponent::OnUpdate( dxi::scene::Scene * scene, const RenderInfo & ren
 	for ( PxU32 i = 0; i < nbActiveTransforms; ++i )
 	{
 		scene::Object * object = static_cast<scene::Object*>(activeTransforms[i].userData);
-		physx::PxMat44 mat( activeTransforms[i].actor2World );
-		object->GetFrame().SetMatrix( *(unify::Matrix*)&mat );
+		object->GetFrame().SetPosition( util::Convert< unify::V3< float > >( activeTransforms[i].actor2World.p ) );
+		object->GetFrame().SetRotation( util::Convert< unify::Quaternion >( activeTransforms[i].actor2World.q ) );
 	}
 
 	PxU32 actorCount = m_scene->getNbActors( PxActorTypeFlag::eRIGID_DYNAMIC );

@@ -11,7 +11,7 @@
 #include <dxi/shapes/ShapeCreators.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
-
+#include <dxi/scene/SceneManager.h>
 #include <dxi/scene/BBoxRendererComponent.h>
 #include <dxi/scene/AutoBBoxSceneComponent.h>
 
@@ -23,6 +23,8 @@ class MyGame : public Game
 public:
 	void Startup()
 	{
+		scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+
 		// Load our effect from a file...
 		GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" ); // Load an effect into the manager.
 
@@ -30,7 +32,7 @@ public:
 
 		Effect::ptr effect = GetManager< Effect >()->Find( "texture3d" ); // Demonstrate how the effect is pulled from the manager by name.
 
-		scene::Scene::ptr mainScene = GetSceneManager()->Add( "main" );
+		scene::Scene::ptr mainScene = sceneManager->Add( "main" );
 
 		scene::Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
 		camera->AddComponent( scene::IObjectComponent::ptr( new scene::CameraComponent( GetOS() ) ) );
@@ -202,7 +204,9 @@ public:
 
 		unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 
-		auto group = GetSceneManager()->Find( "main" )->FindObject( "group" );
+		scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+
+		auto group = sceneManager->Find( "main" )->FindObject( "group" );
 		group->GetFrame().Rotate( unify::Quaternion( axis, rotation ) );
 
 		return Game::Update( renderInfo );

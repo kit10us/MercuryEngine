@@ -100,8 +100,9 @@ int Object_AddScript( lua_State * state )
 
 	dxi::scene::ScriptComponent * component = new scene::ScriptComponent( game->GetOS() );
 
-	auto se = game->GetScriptEngine( type );
-	assert( se ); //TODO: Handle error better.
+	auto gcse = game->GetComponent( type, 0 );
+	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find " + type + " script engine!" );
+	dxi::scripting::IScriptEngine * se = dynamic_cast<dxi::scripting::IScriptEngine *>(gcse.get());
 
 	scripting::IModule::ptr module = se->LoadModule( source, objectProxy->object );
 

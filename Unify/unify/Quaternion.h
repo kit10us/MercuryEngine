@@ -16,6 +16,10 @@ namespace unify
 		friend Quaternion QuaternionFromEuler( const unify::V3< float > & euler );
 		friend Quaternion QuaternionSlerp( const Quaternion & quaternionA, const Quaternion & quaternionB, float mix );
 	public:
+		float x;
+		float y;
+		float z;
+		float w;
 
 		Quaternion();
 		Quaternion( V3< float > axis, Angle angle );
@@ -46,10 +50,7 @@ namespace unify
 
 		void TransformVector( V3< float > & vector ) const;
 
-		float x;
-		float y;
-		float z;
-		float w;
+		std::string ToString() const;
 	};
 
 	Quaternion QuaternionIdentity();

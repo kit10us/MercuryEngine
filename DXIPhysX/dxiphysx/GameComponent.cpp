@@ -74,6 +74,14 @@ void GameComponent::OnDetach( core::IGame * game )
 {
 }
 
+void GameComponent::OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+{
+}
+
+void GameComponent::OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+{
+}
+
 physx::PxPhysics * GameComponent::GetPhysics()
 {
 	return m_physics.get();

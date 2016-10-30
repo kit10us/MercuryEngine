@@ -3,19 +3,23 @@
 
 #pragma once
 #include <dxi/scene/Scene.h>
+#include <dxi/core/IGameComponent.h>
 #include <dxi/scene/ISceneManagerComponent.h>
+
 
 namespace dxi
 {
     namespace scene
     {
-        class SceneManager
+        class SceneManager : public dxi::core::IGameComponent
 	    {
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;
 
 		    SceneManager( core::IGame * game );
 		    virtual ~SceneManager();
+
+			std::string GetName() const override;
 
 			core::IGame * GetGame();
 			const core::IGame * GetGame() const;
@@ -28,8 +32,10 @@ namespace dxi
             Scene::ptr Add( std::string name );
 		    Scene::ptr Find( std::string name );
 
-			void Update( const RenderInfo & renderInfo );
-		    void Render( size_t renderer, const Viewport & viewport );
+			void OnAttach( dxi::core::IGame * game ) override;
+			void OnDetach( dxi::core::IGame * game ) override;
+			void OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+			void OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
 
 			int ComponentCount() const;
 			void AddComponent( ISceneManagerComponent::ptr component );
