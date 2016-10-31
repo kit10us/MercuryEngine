@@ -4,7 +4,7 @@
 #include <dxilua/ExportCameraComponent.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/unify/ExportMatrix.h>
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>

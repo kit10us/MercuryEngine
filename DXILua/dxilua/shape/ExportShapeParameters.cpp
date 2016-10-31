@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <dxilua/shape/ExportShapeParameters.h>
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/ExportEffect.h>

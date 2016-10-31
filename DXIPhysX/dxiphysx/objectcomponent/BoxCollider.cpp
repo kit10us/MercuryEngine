@@ -8,6 +8,12 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+BoxCollider::BoxCollider( BoxCollider & collider )
+	: ColliderBase( collider )
+{
+}
+
+
 BoxCollider::BoxCollider( core::IOS * os, GameComponent * gameComponent, unify::V3< float > halfExt )
 : ColliderBase( os, gameComponent )
 {
@@ -22,4 +28,10 @@ BoxCollider::~BoxCollider()
 std::string BoxCollider::GetName() const
 {
 	return "Box Collider";
+}
+
+dxi::scene::IObjectComponent * BoxCollider::Duplicate()
+{
+	auto duplicate = new BoxCollider( *this );
+	return duplicate;
 }

@@ -5,6 +5,7 @@
 
 #include <dxi/input/InputManager.h>
 #include <dxi/core/IGame.h>
+#include <dxi/Geometry.h>
 #include <dxi/core/IOS.h>
 #include <dxi/core/Display.h>
 #include <rm/ResourceManagerSimple.h>
@@ -28,7 +29,7 @@ namespace dxi
 
 			virtual bool Setup( IOS * os ) override;  
 			virtual void Startup() override;		  
-			virtual bool Update( RenderInfo & renderInfo ) override;
+			virtual void Update( RenderInfo & renderInfo ) override;
 			virtual void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;			
 			virtual void Shutdown() override;
 
@@ -98,7 +99,8 @@ namespace dxi
 
 			unify::Path m_setup;
 			unify::Path m_logFile;
-			scripting::IModule::ptr m_gameModule;
+
+			scene::IObjectComponent::ptr m_gameModule;
 
 			float m_totalStartupTime;
 

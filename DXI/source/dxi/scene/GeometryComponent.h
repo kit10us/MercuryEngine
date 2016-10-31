@@ -13,6 +13,9 @@ namespace dxi
     {
 	    class GeometryComponent : public ObjectComponent
 	    {
+		protected:
+			GeometryComponent( GeometryComponent & component );
+
 	    public:
 			GeometryComponent( core::IOS * os );
 			GeometryComponent( core::IOS * os, Geometry::ptr geometry );
@@ -34,10 +37,12 @@ namespace dxi
 
 			void OnInit( Object * object ) override;
 			void OnStart( Object * object ) override;
-			void OnUpdate( const RenderInfo & renderInfo ) override;
-			void OnRender( const RenderInfo & renderInfo ) override;
-			void OnSuspend() override;
-			void OnResume() override;
+			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override;
+			void OnRender( Object * object, const RenderInfo & renderInfo ) override;
+			void OnSuspend( Object * object ) override;
+			void OnResume( Object * object ) override;
+
+			IObjectComponent * Duplicate();
 
 	    protected:
 			Geometry::ptr m_geometry;

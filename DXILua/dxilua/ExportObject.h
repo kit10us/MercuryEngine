@@ -9,10 +9,10 @@
 
 struct ObjectProxy
 {
-	dxi::scene::Object::ptr object;
+	dxi::scene::Object * object;
 };
 
-DXILUADLL_API int PushObject( lua_State * state, dxi::scene::Object::ptr object );
+DXILUADLL_API int PushObject( lua_State * state, dxi::scene::Object * object );
 DXILUADLL_API ObjectProxy* CheckObject( lua_State* state, int index );
 
 void RegisterObject( lua_State * state );

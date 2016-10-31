@@ -71,7 +71,6 @@
     <ClCompile Include="source\dxi\scene\SceneComponent.cpp" />
     <ClCompile Include="source\dxi\scene\SceneManager.cpp" />
     <ClCompile Include="source\dxi\factory\ShapeFactory.cpp" />
-    <ClCompile Include="source\dxi\scene\ScriptComponent.cpp" />
     <ClCompile Include="source\dxi\shapes\BeveledBoxParameters.cpp" />
     <ClCompile Include="source\dxi\shapes\CircleParameters.cpp" />
     <ClCompile Include="source\dxi\shapes\ConeParameters.cpp" />
@@ -187,9 +186,7 @@
     <ClInclude Include="source\dxi\scene\Scene.h" />
     <ClInclude Include="source\dxi\scene\SceneComponent.h" />
     <ClInclude Include="source\dxi\scene\SceneManager.h" />
-    <ClInclude Include="source\dxi\scene\ScriptComponent.h" />
     <ClInclude Include="source\dxi\scripting\ExecuteResult.h" />
-    <ClInclude Include="source\dxi\scripting\IModule.h" />
     <ClInclude Include="source\dxi\scripting\IScriptEngine.h" />
     <ClInclude Include="source\dxi\factory\ShapeFactory.h" />
     <ClInclude Include="source\dxi\shapes\BeveledBoxParameters.h" />

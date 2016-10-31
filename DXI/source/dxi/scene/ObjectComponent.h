@@ -12,6 +12,9 @@ namespace dxi
 	{
 		class ObjectComponent : public IObjectComponent
 		{
+		protected:
+			ObjectComponent( ObjectComponent & component );
+
 		public:
 			ObjectComponent( core::IOS * os );
 			~ObjectComponent();
@@ -26,14 +29,13 @@ namespace dxi
 			void OnDetach( Object * object ) override {}
 			void OnInit( Object * object ) override {}
 			void OnStart( Object * object ) override {}
-			void OnUpdate( const RenderInfo & renderInfo ) override {}
-			void OnRender( const RenderInfo & renderInfo ) override {}
-			void OnSuspend() override {}
-			void OnResume() override {}
+			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override {}
+			void OnRender( Object * object, const RenderInfo & renderInfo ) override {}
+			void OnSuspend( Object * object ) override {}
+			void OnResume( Object * object ) override {}
 
 		private:
 			core::IOS * m_os;
-			std::string m_name;
 			bool m_enabled;
 		};
 	}

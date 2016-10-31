@@ -27,7 +27,7 @@ protected:
 
 public:
 	void Startup();
-	bool Update( RenderInfo & renderInfo );
+	void Update( RenderInfo & renderInfo );
 	void Render();
 	void Shutdown();
 } game;
@@ -110,14 +110,13 @@ void MyGame::Startup()
 	*/
 }
 
-bool MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( RenderInfo & renderInfo )
 {
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	scene::Object::ptr camera = sceneManager->Find( "main" )->FindObject( "camera" );
 	camera->GetFrame().Orbit( unify::V3< float >(0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInDegrees( 90.0f * renderInfo.GetDelta() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
-	return true;
 }
 
 void MyGame::Render()

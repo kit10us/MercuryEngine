@@ -2,7 +2,7 @@
 //
 
 #include "DXILuaDLL.h"
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <memory.h>
 #include <dxi/win/DXILib.h>
 

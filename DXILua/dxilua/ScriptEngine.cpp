@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/Util.h>
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <dxilua/Module.h>
 #include <dxilua/CreateState.h>
 #include <dxilua/ExportObject.h>
@@ -84,16 +84,15 @@ scripting::ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 	return scripting::ExecuteResult::Pass;
 }
 
-scripting::IModule::ptr ScriptEngine::LoadModule( unify::Path path, dxi::scene::Object::ptr object )
+scene::IObjectComponent::ptr ScriptEngine::LoadModule( unify::Path path )
 {					
 	int top = lua_gettop( m_state );
 
-	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_modules.size() );
+	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_moduleCount++ );
 
 	lua_State * state = m_state;
 
-	scripting::IModule::ptr module( new Module( object, m_state, m_game, name, path ) );
-	m_modules.push_back( module );
+	scene::IObjectComponent::ptr module( new Module( m_state, m_game, name, path ) );
 
 	return module;
 }

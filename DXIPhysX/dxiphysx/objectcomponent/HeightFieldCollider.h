@@ -21,7 +21,7 @@ namespace dxiphysx
 
 			std::string GetName() const override;
 
-		private:
+			dxi::scene::IObjectComponent * Duplicate() override;
 		};
 	}
 }

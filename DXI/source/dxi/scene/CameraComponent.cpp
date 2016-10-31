@@ -6,10 +6,17 @@
 using namespace dxi;
 using namespace scene;
 
+CameraComponent::CameraComponent( CameraComponent & component )
+	: ObjectComponent( component )
+	, m_projection( component.m_projection )
+	, m_renderer( component.m_renderer )
+{
+}
+
 CameraComponent::CameraComponent( core::IOS * os )
-: ObjectComponent( os )
-, m_projection( unify::Matrix::MatrixIdentity() )
-, m_renderer( 0 )
+	: ObjectComponent( os )
+	, m_projection( unify::Matrix::MatrixIdentity() )
+	, m_renderer( 0 )
 {
 }
 
@@ -40,4 +47,10 @@ void CameraComponent::SetProjection( const unify::Matrix & projection )
 unify::Matrix CameraComponent::GetProjection() const
 {
 	return m_projection;
+}
+
+IObjectComponent * CameraComponent::Duplicate()
+{
+	auto duplicate = new CameraComponent( *this );
+	return duplicate;
 }

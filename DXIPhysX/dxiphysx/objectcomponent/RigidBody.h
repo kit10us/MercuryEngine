@@ -16,6 +16,9 @@ namespace dxiphysx
 	{
 		class RigidBody : public dxi::scene::IObjectComponent
 		{
+		protected:
+			RigidBody( RigidBody & rigidBody );
+
 		public:
 			DXIPHYSX_API RigidBody( dxi::core::IOS * os, GameComponent * gameComponent );
 			~RigidBody();
@@ -32,10 +35,12 @@ namespace dxiphysx
 			void OnDetach( dxi::scene::Object * object ) override {}
 			void OnInit( dxi::scene::Object * object ) override {}
 			void OnStart( dxi::scene::Object * object ) override {}
-			void OnUpdate( const dxi::RenderInfo & renderInfo ) override {}
-			void OnRender( const dxi::RenderInfo & renderInfo ) override {}
-			void OnSuspend() override {}
-			void OnResume() override {}
+			void OnUpdate( dxi::scene::Object * object, const dxi::RenderInfo & renderInfo ) override {}
+			void OnRender( dxi::scene::Object * object, const dxi::RenderInfo & renderInfo ) override {}
+			void OnSuspend( dxi::scene::Object * object ) override {}
+			void OnResume( dxi::scene::Object * object ) override {}
+
+			dxi::scene::IObjectComponent * Duplicate() override;
 
 			DXIPHYSX_API physx::PxRigidBody * GetRigidBody();
 			const physx::PxRigidBody * GetRigidBody() const;

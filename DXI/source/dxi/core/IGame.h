@@ -42,7 +42,7 @@ namespace dxi
 			/// <summary>
 			/// Update is called to enable objects to perform over-time operations.
 			/// </summary>
-			virtual bool Update( RenderInfo & renderInfo ) = 0;
+			virtual void Update( RenderInfo & renderInfo ) = 0;
 
 			/// <summary>
 			/// Render is called to draw graphics.

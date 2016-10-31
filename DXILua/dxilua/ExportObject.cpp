@@ -3,7 +3,7 @@
 
 #include <dxi/core/Game.h>
 
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/ExportTransform.h>
 #include <dxilua/ExportScene.h>
@@ -11,8 +11,6 @@
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/ExportCameraComponent.h>
-#include <dxi/scene/ScriptComponent.h>
-
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/ExportTerra.h>
 #include <dxilua/unify/ExportMatrix.h>
@@ -26,7 +24,7 @@
 using namespace dxilua;
 using namespace dxi;
 
-int PushObject( lua_State * state, dxi::scene::Object::ptr object )
+int PushObject( lua_State * state, dxi::scene::Object * object )
 {
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -54,7 +52,7 @@ int Object_AddChild( lua_State * state )
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
 	luaL_setmetatable( state, "Object" );
-	(*childProxy)->object = child;
+	(*childProxy)->object = child.get();
 
 	return 1;
 }
@@ -81,7 +79,7 @@ int Object_AddCamera( lua_State * state )
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
 	luaL_setmetatable( state, "Object" );
-	(*childProxy)->object = child;
+	(*childProxy)->object = child.get();
 
 	return 1;
 }
@@ -98,15 +96,13 @@ int Object_AddScript( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	dxi::scene::ScriptComponent * component = new scene::ScriptComponent( game->GetOS() );
+	//dxi::scene::ScriptComponent * component = new scene::ScriptComponent( game->GetOS() );
 
 	auto gcse = game->GetComponent( type, 0 );
 	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find " + type + " script engine!" );
 	dxi::scripting::IScriptEngine * se = dynamic_cast<dxi::scripting::IScriptEngine *>(gcse.get());
 
-	scripting::IModule::ptr module = se->LoadModule( source, objectProxy->object );
-
-	component->SetModule( module );
+	auto component = se->LoadModule( source );
 
 	objectProxy->object->AddComponent( scene::IObjectComponent::ptr( component ) );
 

@@ -29,7 +29,7 @@ namespace dxilua
 		dxi::scripting::ExecuteResult ExecuteString( std::string line ) override;
 		dxi::scripting::ExecuteResult ExecuteFile( unify::Path path ) override;
 
-		dxi::scripting::IModule::ptr LoadModule( unify::Path path, dxi::scene::Object::ptr object ) override;
+		dxi::scene::IObjectComponent::ptr LoadModule( unify::Path path ) override;
 
 		DXILUADLL_API lua_State * GetState();
 
@@ -44,8 +44,7 @@ namespace dxilua
 	private:
 		dxi::core::IGame * m_game;		
 		lua_State * m_state;
-
-		std::list< dxi::scripting::IModule::ptr > m_modules;
+		size_t m_moduleCount;
 
 		static ScriptEngine * s_se;
 	};

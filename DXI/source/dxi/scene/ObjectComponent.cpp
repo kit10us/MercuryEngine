@@ -6,6 +6,11 @@
 using namespace dxi;
 using namespace scene;
 
+ObjectComponent::ObjectComponent( ObjectComponent & component )
+	: m_os( component.m_os )
+{
+}
+
 ObjectComponent::ObjectComponent( core::IOS * os )
 : m_os( os )
 {

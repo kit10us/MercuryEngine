@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportScene.h>
 #include <dxilua/ExportObject.h>
 #include <dxi/core/Game.h>
@@ -29,7 +29,7 @@ int Scene_FindObject( lua_State * state )
 	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*objectProxy = new ObjectProxy;
 	luaL_setmetatable( state, "Object" );
-	(*objectProxy)->object = object;
+	(*objectProxy)->object = object.get();
 
 	return 1;
 }

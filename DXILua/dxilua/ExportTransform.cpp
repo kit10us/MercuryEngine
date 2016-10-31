@@ -1,15 +1,13 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportTransform.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/ExportScene.h>
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportMatrix.h>
-#include <dxi/scene/ScriptComponent.h>
-
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/unify/ExportSize2.h>

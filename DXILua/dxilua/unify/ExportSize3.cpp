@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/unify/ExportSize3.h>
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 
 using namespace dxilua;
 using namespace dxi;

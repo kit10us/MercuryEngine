@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/ExportGame.h>
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 
 using namespace dxilua;
 using namespace dxi;

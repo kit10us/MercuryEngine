@@ -62,3 +62,10 @@ std::string HeightFieldCollider::GetName() const
 {
 	return "HeightField Collider";
 }
+
+dxi::scene::IObjectComponent * HeightFieldCollider::Duplicate()
+{
+	auto duplicate = new HeightFieldCollider( *this );
+	return duplicate;
+}
+

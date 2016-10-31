@@ -13,9 +13,17 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+RigidBody::RigidBody( RigidBody & rigidBody )
+	: m_os( rigidBody.m_os )
+	, m_gameComponent( rigidBody.m_gameComponent )
+{
+	PxTransform transform( util::Convert< physx::PxTransform >( unify::Matrix::MatrixIdentity() ) );
+	m_rigidBody.reset( m_gameComponent->GetPhysics()->createRigidDynamic( transform ), Releaser< physx::PxRigidBody > );
+}
+
 RigidBody::RigidBody( core::IOS * os, GameComponent * gameComponent )
-: m_os( os )
-, m_gameComponent( gameComponent )
+	: m_os( os )
+	, m_gameComponent( gameComponent )
 {
 	PxTransform transform( util::Convert< physx::PxTransform >( unify::Matrix::MatrixIdentity() ) );
 	m_rigidBody.reset( m_gameComponent->GetPhysics()->createRigidDynamic( transform ), Releaser< physx::PxRigidBody > );
@@ -72,6 +80,12 @@ void RigidBody::OnAttach( dxi::scene::Object * object )
 	dxi::scene::ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
 	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
 	sceneComponent->GetScene()->addActor( *m_rigidBody.get() );
+}
+
+dxi::scene::IObjectComponent * RigidBody::Duplicate()
+{
+	auto duplicate = new RigidBody( *this );
+	return duplicate;
 }
 		
 physx::PxRigidBody * RigidBody::GetRigidBody()

@@ -186,7 +186,7 @@ public:
 		cone.GetFrame().SetPosition( positions[shape++] );
 	}
 
-	bool Update( RenderInfo & renderInfo )
+	void Update( RenderInfo & renderInfo )
 	{
 		static size_t axisIndex = 1;
 		static unify::Angle totalRotation{};
@@ -208,8 +208,6 @@ public:
 
 		auto group = sceneManager->Find( "main" )->FindObject( "group" );
 		group->GetFrame().PreMul( unify::Quaternion( axis, rotation ) );
-
-		return Game::Update( renderInfo );
 	}
 } game;
 

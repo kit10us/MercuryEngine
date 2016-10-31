@@ -49,22 +49,27 @@ namespace dxi
 			/// <summary>
 			/// Called every game update cycle.
 			/// </summary>
-			virtual void OnUpdate( const RenderInfo & renderInfo ) = 0;
+			virtual void OnUpdate( scene::Object * object, const RenderInfo & renderInfo ) = 0;
 
 			/// <summary>
 			/// Called during rendering.
 			/// </summary>
-			virtual void OnRender( const RenderInfo & renderInfo ) = 0;
+			virtual void OnRender( scene::Object * object, const RenderInfo & renderInfo ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).
 			/// </summary>
-			virtual void OnSuspend() = 0;
+			virtual void OnSuspend( scene::Object * object ) = 0;
 
 			/// <summary>
 			/// Called when resuming from suspending.
 			/// </summary>
-			virtual void OnResume() = 0;
+			virtual void OnResume( scene::Object * object ) = 0;
+
+			/// <summary>
+			/// Duplicate component.
+			/// </summary>
+			virtual IObjectComponent * Duplicate() = 0;
 		};
 	}
 }

@@ -22,7 +22,7 @@ protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup();
-	bool Update( RenderInfo & renderInfo );
+	void Update( RenderInfo & renderInfo );
 } game;
 
 RegisterGame( game );
@@ -63,7 +63,7 @@ void MyGame::Startup()
 	// From dynamically generated geometry (shape creator)...
 	shapes::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
-    cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
+    cubeParameters.SetSize( unify::Size3< float >( 1, 1, 1 ) );
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::ptr meshProg( shapes::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
@@ -72,64 +72,193 @@ void MyGame::Startup()
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	// From an XML file...
-	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
-	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
-	auto xmlObject = scene->GetRoot()->AddChild( "XMLObject" );
-	xmlObject->SetGeometry( meshXML );
-	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
-	xmlObject->GetGeometryMatrix().Scale( 0.10f );
-	xmlObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
-
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
-	auto aseObject = scene->GetRoot()->AddChild( "swordASE" );
-	aseObject->SetGeometry( meshASE );
-	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
-	aseObject->GetGeometryMatrix().Scale( 0.090f );
-	aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
-	aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-	aseObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	{
+		auto aseObject = scene->GetRoot()->AddChild( "sword1" );
+		aseObject->SetGeometry( meshASE );
+		aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
+		aseObject->GetGeometryMatrix().Scale( 0.090f );
+		aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
+		aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+		aseObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 0 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword1" )->Duplicate( "sword2" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword2" )->Duplicate( "sword3" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword3" )->Duplicate( "sword4" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 90 ) ) );
+	}
 
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/models/Death Star II/models/Death Star II.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/cube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/torus.dae" ) );
+
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword1" )->Duplicate( "sword5" );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword5" )->Duplicate( "sword6" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword6" )->Duplicate( "sword7" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword7" )->Duplicate( "sword8" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 90 ) ) );
+	}
+
 	
-	// Rigged...
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/SuperMarioGalaxy_Mario/mario.dae" ) );
-
-	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
-	daeModel->SetGeometry( meshDAE );
-	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	daeModel->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
-	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
-
-	daeModel->GetGeometryMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
-	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
-	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword1" )->Duplicate( "sword9" );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword9" )->Duplicate( "sword10" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword10" )->Duplicate( "sword11" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword11" )->Duplicate( "sword12" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 90 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword1" )->Duplicate( "sword13" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword3" )->Duplicate( "sword14" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword14" )->Duplicate( "sword15" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
+	}
+	{
+		auto aseObject = scene->GetRoot()->FindObject( "sword15" )->Duplicate( "sword16" );
+		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
+	}
 }
 
-bool MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( RenderInfo & renderInfo )
 {
 	using namespace unify;
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	scene::Scene::ptr scene = sceneManager->Find( "scene" );
 
-	// Use of camera controls to simplify camera movement...
-	scene::Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );
+	{
+		auto sword = scene->FindObject( "sword1" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );	
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword2" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword3" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword4" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
 
-	auto swordASE = scene->FindObject( "swordASE" );
 
-	swordASE->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
-	
-	swordASE->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
-	swordASE->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	{
+		auto sword = scene->FindObject( "sword5" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword6" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword7" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword8" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
 
-	return true;
+
+	{
+		auto sword = scene->FindObject( "sword9" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword10" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 1, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword11" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 1 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword12" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword13" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 1 ), unify::AngleInRadians( -renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword14" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 1, 1 ), unify::AngleInRadians( -renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword15" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 1 ), unify::AngleInRadians( -renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+	{
+		auto sword = scene->FindObject( "sword16" );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 1, 0 ), unify::AngleInRadians( -renderInfo.GetDelta() ) ) );
+		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
+		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
+	}
+
+
+	auto camera = scene->FindObject( "camera" );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() * - 1.0f) ) );
+	camera->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
 }

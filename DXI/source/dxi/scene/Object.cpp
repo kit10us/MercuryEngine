@@ -30,6 +30,23 @@ Object::Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float >
 	GetFrame().SetPosition( position );
 }
 
+Object::Object( const Object & object, std::string name )
+	: m_os ( object.m_os )
+	, m_enabled( object.m_enabled )
+	, m_selectable( object.m_selectable )
+	, m_checkFrame( object.m_checkFrame )
+	, m_lastFrameID( 0 )
+	, m_scene( object.m_scene )
+	, m_name( name )
+	, m_frame( object.m_frame )
+	, m_tags( object.m_tags )
+{
+	for( auto component : object.m_components )
+	{
+		AddComponent( scene::IObjectComponent::ptr( component.c->Duplicate() ) );
+	}
+}
+
 Object::~Object()
 {
 }
@@ -188,7 +205,7 @@ void Object::Update( const RenderInfo & renderInfo )
 			component.startDone = true;
 		}
 
-		component.c->OnUpdate( renderInfo );
+		component.c->OnUpdate( this, renderInfo );
 	}
 
 	if( GetFirstChild() )
@@ -210,7 +227,7 @@ void Object::RenderSimple( const RenderInfo & renderInfo )
 		// Don't try rendering if we haven't been properly setup...
 		if ( !component.initDone || !component.startDone || !component.c->IsEnabled() ) continue;
 
-		component.c->OnRender( renderInfo );
+		component.c->OnRender( this, renderInfo );
 	}
 }
 
@@ -240,7 +257,7 @@ void Object::OnSuspend()
 	{
 		if( component.c->IsEnabled() )
 		{
-			component.c->OnSuspend();
+			component.c->OnSuspend( this );
 		}
 	}
 
@@ -263,7 +280,7 @@ void Object::OnResume()
 	{
 		if( component.c->IsEnabled() )
 		{
-			component.c->OnResume();
+			component.c->OnResume( this );
 		}
 	}
 
@@ -345,6 +362,26 @@ Object::ptr Object::AddChild( std::string name )
 	// Last child is new child...
 	lastChild->SetName( name );
 	return lastChild;
+}
+
+Object::ptr Object::Duplicate( std::string name )
+{
+	Object::ptr duplicate( new Object(*this, name) );
+
+	Object::ptr lastSibling = m_parent->GetFirstChild();
+
+	// Find our last sibling...
+	while ( lastSibling->GetNext() )
+	{
+		lastSibling = lastSibling->GetNext();
+	}
+
+	lastSibling->m_next = duplicate;
+	duplicate->m_previous = lastSibling;
+	duplicate->m_parent = m_parent;
+
+	return duplicate;
+
 }
 
 Object::ptr Object::FindObject( std::string name )

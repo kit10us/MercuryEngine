@@ -22,7 +22,7 @@ protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup();
-	bool Update( RenderInfo & renderInfo );
+	void Update( RenderInfo & renderInfo );
 } game;
 
 RegisterGame( game );
@@ -113,7 +113,7 @@ void MyGame::Startup()
 	daeModel->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 }
 
-bool MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( RenderInfo & renderInfo )
 {
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
@@ -124,6 +124,4 @@ bool MyGame::Update( RenderInfo & renderInfo )
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
 	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
-
-	return Game::Update( renderInfo );
 }

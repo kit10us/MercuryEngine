@@ -155,7 +155,7 @@
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h" />
     <ClInclude Include="dxilua\CreateState.h" />
-    <ClInclude Include="dxilua\DXILua.h" />
+    <ClInclude Include="dxilua\ScriptEngine.h" />
     <ClInclude Include="dxilua\ExportCameraComponent.h" />
     <ClInclude Include="dxilua\ExportDebug.h" />
     <ClInclude Include="dxilua\ExportEffect.h" />
@@ -200,7 +200,7 @@
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp" />
     <ClCompile Include="dxilua\CreateState.cpp" />
-    <ClCompile Include="dxilua\DXILua.cpp" />
+    <ClCompile Include="dxilua\ScriptEngine.cpp" />
     <ClCompile Include="dxilua\ExportCameraComponent.cpp" />
     <ClCompile Include="dxilua\ExportDebug.cpp" />
     <ClCompile Include="dxilua\ExportEffect.cpp" />

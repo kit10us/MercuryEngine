@@ -4,7 +4,7 @@
 #pragma once
 
 #include <dxi/core/IGameComponent.h>
-#include <dxi/scripting/IModule.h>
+#include <dxi/scene/IObjectComponent.h>
 #include <dxi/scripting/ExecuteResult.h>
 #include <unify/Path.h>
 
@@ -23,7 +23,7 @@ namespace dxi
 			
 			virtual ExecuteResult ExecuteFile( unify::Path path ) = 0;
 
-			virtual IModule::ptr LoadModule( unify::Path path, scene::Object::ptr object ) = 0;
+			virtual scene::IObjectComponent::ptr LoadModule( unify::Path path ) = 0;
 		};
 	}
 }

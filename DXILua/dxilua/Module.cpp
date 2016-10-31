@@ -9,18 +9,42 @@
 using namespace dxilua;
 using namespace dxi;
 
-Module::Module( dxi::scene::Object::ptr object, lua_State * state, dxi::core::IGame * game, std::string name, unify::Path path )
-	: m_object( object )
-	, m_state( state )
+Module::Module( Module & component )
+	: m_state( component.m_state )
+	, m_game( component.m_game )
+	, m_name( component.m_name )
+	, m_path( component.m_path )
+	, m_enabled( component.m_enabled )
+{
+}
+
+Module::Module( lua_State * state, dxi::core::IGame * game, std::string name, unify::Path path )
+	: m_state( state )
 	, m_game( game )
 	, m_name( name )
 	, m_path( path )
+	, m_enabled( true )
 {
 }
 
 Module::~Module()
 {
 	m_state = 0;
+}
+
+std::string Module::GetName() const
+{
+	return m_name;
+}
+
+bool Module::IsEnabled() const
+{
+	return m_enabled;
+}
+
+void Module::SetEnabled( bool enabled )
+{
+	m_enabled = enabled;
 }
 
 void Module::CallMember( std::string function )
@@ -50,7 +74,17 @@ void Module::CallMember( std::string function )
 	lua_pop( m_state, 1 );
 }
 
-void Module::OnInit()
+void Module::OnAttach( dxi::scene::Object * object )
+{
+	m_object = object;
+}
+
+void Module::OnDetach( dxi::scene::Object * object )
+{
+	m_object = nullptr;
+}
+			 
+void Module::OnInit( scene::Object * object )
 {
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
@@ -111,22 +145,33 @@ void Module::OnInit()
 	CallMember( "OnInit" );
 }
 
-void Module::OnStart()
+void Module::OnStart( scene::Object * object )
 {
 	CallMember( "OnStart" );
 }
 
-void Module::OnUpdate()
+void Module::OnUpdate( scene::Object * object, const RenderInfo & renderInfo )
 {
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnSuspend()
+void Module::OnRender( scene::Object * object, const RenderInfo & renderInfo )
+{
+	CallMember( "OnUpdate" );
+}
+
+void Module::OnSuspend( scene::Object * object )
 {
 	CallMember( "OnSuspend" );
 }
 
-void Module::OnResume()
+void Module::OnResume( scene::Object * object )
 {
 	CallMember( "OnResume" );
+}
+
+dxi::scene::IObjectComponent * Module::Duplicate()
+{
+	auto duplicate = new Module( *this );
+	return duplicate;
 }

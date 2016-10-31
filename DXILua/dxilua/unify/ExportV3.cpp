@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/unify/ExportV3.h>
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>

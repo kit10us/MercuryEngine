@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/ExportScenes.h>
-#include <dxilua/DXILua.h>
+#include <dxilua/ScriptEngine.h>
 #include <dxi/core/Game.h>
 #include <dxi/scene/SceneManager.h>
 

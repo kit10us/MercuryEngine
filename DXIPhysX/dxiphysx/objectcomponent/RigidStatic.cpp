@@ -13,6 +13,14 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+RigidStatic::RigidStatic( RigidStatic & rigidStatic )
+	: m_os( rigidStatic.m_os )
+	, m_gameComponent( rigidStatic.m_gameComponent )
+{
+	PxTransform transform( util::Convert< physx::PxTransform >( unify::Matrix::MatrixIdentity() ) );
+	m_rigidStatic.reset( m_gameComponent->GetPhysics()->createRigidStatic( transform ), Releaser< physx::PxRigidStatic > );
+}
+
 RigidStatic::RigidStatic( core::IOS * os, GameComponent * gameComponent )
 : m_os( os )
 , m_gameComponent( gameComponent )
@@ -73,6 +81,12 @@ void RigidStatic::OnAttach( dxi::scene::Object * object )
 	sceneComponent->GetScene()->addActor( *m_rigidStatic.get() );
 }
 		
+dxi::scene::IObjectComponent * RigidStatic::Duplicate()
+{
+	auto duplicate = new RigidStatic( *this );
+	return duplicate;
+}
+
 physx::PxRigidStatic * RigidStatic::GetRigidStatic()
 {
 	return m_rigidStatic ? m_rigidStatic.get() : nullptr;

@@ -22,3 +22,9 @@ std::string CapsuleCollider::GetName() const
 {
 	return "Capsule Collider";
 }
+
+dxi::scene::IObjectComponent * CapsuleCollider::Duplicate()
+{
+	auto duplicate = new CapsuleCollider( *this );
+	return duplicate;
+}

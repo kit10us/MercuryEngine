@@ -14,6 +14,9 @@ namespace dxi
     {
 	    class BBoxRendererComponent : public ObjectComponent
 	    {
+		protected:
+			BBoxRendererComponent( BBoxRendererComponent & component );
+
 	    public:
 			BBoxRendererComponent( core::IOS * os, Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 			virtual ~BBoxRendererComponent();
@@ -32,8 +35,10 @@ namespace dxi
 
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
-			void OnUpdate( const RenderInfo & renderInfo ) override;
-			void OnRender( const RenderInfo & renderInfo ) override;
+			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override;
+			void OnRender( Object * object, const RenderInfo & renderInfo ) override;
+
+			IObjectComponent * Duplicate();
    
 	    protected:
 			Object * m_object;

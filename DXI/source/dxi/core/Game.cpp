@@ -28,10 +28,9 @@ void Game::Startup()
 	// STUBBED - optional for derived game class.
 }
 
-bool Game::Update( RenderInfo & renderInfo )
+void Game::Update( RenderInfo & renderInfo )
 {
 	// STUBBED - optional for derived game class.
-	return true;
 }
 
 void Game::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
@@ -59,7 +58,6 @@ Game::~Game()
 
 	// Release scripts.
 	m_gameModule.reset();
-	//m_scriptEngines.clear();
 
 	m_resourceHub.Clear();
 
@@ -207,7 +205,7 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 				{
 					std::string type = node.GetAttribute< std::string >( "type" );
 					auto se = core::GetGameComponent< scripting::IScriptEngine * >( this, type );
-					m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ), scene::Object::ptr() );
+					m_gameModule = se->LoadModule( node.GetDocument()->GetPath().DirectoryOnly() + node.GetAttribute< std::string >( "source" ) );
 				}
 			}
 		}
@@ -216,8 +214,8 @@ bool Game::Initialize( std::shared_ptr< IOS > os )
 	// TODO: This is clearly a hack. Fix this.
 	if( m_gameModule )
 	{
-		m_gameModule->OnInit();
-		m_gameModule->OnStart();
+		m_gameModule->OnInit( nullptr );
+		m_gameModule->OnStart( nullptr );
 	}
 
 	m_os->Startup();
@@ -265,7 +263,7 @@ void Game::Tick()
 
 	if( m_gameModule )
 	{
-		m_gameModule->OnUpdate();
+		m_gameModule->OnUpdate( nullptr, m_renderInfo );
 	}
 
 	for( auto && component : m_components )
@@ -273,7 +271,7 @@ void Game::Tick()
 		component->OnUpdate( this, m_renderInfo );
 	}
 
-	bool run = Update( m_renderInfo );
+	Update( m_renderInfo );
 }
 
 void Game::Draw()

@@ -18,9 +18,6 @@
     <ClInclude Include="DXILuaDLL.h">
       <Filter>dll</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\DXILua.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\ExportObject.h">
       <Filter>dxilua</Filter>
     </ClInclude>
@@ -102,6 +99,9 @@
     <ClInclude Include="dxilua\unify\ExportQuaternion.h">
       <Filter>dxilua\unify</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ScriptEngine.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -109,9 +109,6 @@
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp">
       <Filter>dll</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\DXILua.cpp">
-      <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportObject.cpp">
       <Filter>dxilua</Filter>
@@ -193,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportQuaternion.cpp">
       <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ScriptEngine.cpp">
+      <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

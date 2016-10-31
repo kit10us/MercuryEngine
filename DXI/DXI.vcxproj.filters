@@ -424,9 +424,6 @@
     <ClCompile Include="source\dxi\scene\GeometryComponent.cpp">
       <Filter>dxi\scene</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\scene\ScriptComponent.cpp">
-      <Filter>dxi\scene</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\input\InputManager.cpp">
       <Filter>dxi\input</Filter>
     </ClCompile>
@@ -646,16 +643,10 @@
     <ClInclude Include="source\dxi\core\Display.h">
       <Filter>dxi\core</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\scripting\IModule.h">
-      <Filter>dxi\scipting</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\scripting\ExecuteResult.h">
       <Filter>dxi\scipting</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\scene\GeometryComponent.h">
-      <Filter>dxi\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\scene\ScriptComponent.h">
       <Filter>dxi\scene</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\input\InputManager.h">

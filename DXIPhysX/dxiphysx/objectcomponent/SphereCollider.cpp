@@ -22,3 +22,10 @@ std::string SphereCollider::GetName() const
 {
 	return "Sphere Collider";
 }
+
+dxi::scene::IObjectComponent * SphereCollider::Duplicate()
+{
+	auto duplicate = new SphereCollider( *this );
+	return duplicate;
+}
+

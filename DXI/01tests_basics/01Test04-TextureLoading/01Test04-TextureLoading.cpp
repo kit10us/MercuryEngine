@@ -25,7 +25,7 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	bool Update( RenderInfo & renderInfo ) override;
+	void Update( RenderInfo & renderInfo ) override;
 	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
@@ -103,7 +103,7 @@ void MyGame::Startup()
 	vertexBuffer.reset( new VertexBuffer( GetOS()->GetRenderer(0), numberOfVertices, effectBorg->GetVertexShader()->GetVertexDeclaration(), vbRaw, BufferUsage::Default ) );
 }
 
-bool MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( RenderInfo & renderInfo )
 {
 	static Angle rotation( AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
@@ -134,8 +134,6 @@ bool MyGame::Update( RenderInfo & renderInfo )
 	
 	renderInfo.SetViewMatrix( Matrix::MatrixLookAtLH( eye, at, up ) );
 	renderInfo.SetProjectionMatrix( Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
-
-	return true;
 }
 
 void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )

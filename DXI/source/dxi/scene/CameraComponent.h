@@ -12,6 +12,9 @@ namespace dxi
     {
 	    class CameraComponent : public ObjectComponent
 	    {
+		protected:
+			CameraComponent( CameraComponent & component );
+
 	    public:
 			CameraComponent( core::IOS * os );
 		    virtual ~CameraComponent();
@@ -27,6 +30,8 @@ namespace dxi
 			void SetProjection( const unify::Matrix & projection );
 			
 			unify::Matrix GetProjection() const;
+
+			IObjectComponent * Duplicate() override;
 
 	    protected:
 			unify::Matrix m_projection;

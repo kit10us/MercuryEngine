@@ -11,10 +11,19 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+ColliderBase::ColliderBase( ColliderBase & colliderBase )
+	: m_os( colliderBase.m_os )
+	, m_gameComponent( colliderBase.m_gameComponent )
+	, m_material( colliderBase.m_material )
+	, m_shape( colliderBase.m_shape )
+{
+}
+
+
 ColliderBase::ColliderBase( core::IOS * os, GameComponent * gameComponent )
-: m_os( os )
-, m_gameComponent( gameComponent )
-, m_material( gameComponent->GetPhysics()->createMaterial( 0.5f, 0.5f, 0.6f ), Releaser< PxMaterial > )
+	: m_os( os )
+	, m_gameComponent( gameComponent )
+	, m_material( gameComponent->GetPhysics()->createMaterial( 0.5f, 0.5f, 0.6f ), Releaser< PxMaterial > )
 {
 }
 

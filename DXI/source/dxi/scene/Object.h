@@ -25,8 +25,8 @@ namespace dxi
 
 		    explicit Object( core::IOS * os );
 			Object( core::IOS * os, Scene * scene );
-
 			Object( core::IOS * os, Geometry::ptr geometry, const unify::V3< float > position );
+			Object( const Object & object, std::string name );
 		    virtual ~Object();
 
 			void SetName( std::string name );
@@ -83,7 +83,15 @@ namespace dxi
 			Object::ptr GetFirstChild();
 			const Object::ptr GetFirstChild() const;
 
+			/// <summary>
+			/// Add a child object.
+			/// </summary>
 			Object::ptr AddChild( std::string name );
+
+			/// <summary>
+			/// Duplicate ourselves as a sibling, with a new name.
+			/// </summary>
+			Object::ptr Duplicate( std::string name );
 
 			Object::ptr FindObject( std::string name );
 		

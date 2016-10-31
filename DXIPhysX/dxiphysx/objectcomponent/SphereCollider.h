@@ -16,6 +16,8 @@ namespace dxiphysx
 			~SphereCollider();
 
 			std::string GetName() const override;
+
+			dxi::scene::IObjectComponent * Duplicate() override;
 		};
 	}
 }

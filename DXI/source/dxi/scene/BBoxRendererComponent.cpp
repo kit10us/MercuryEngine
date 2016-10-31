@@ -7,6 +7,16 @@
 using namespace dxi;
 using namespace scene;
 
+BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component )
+	: ObjectComponent( component )
+	, m_pl( component.GetOS()->GetRenderer( 0 ) )
+	, m_effect( component.m_effect )
+	, m_padding( component.m_padding )
+	, m_color( component.m_color )
+{
+	m_pl.AddBufferSet();
+}
+
 BBoxRendererComponent::BBoxRendererComponent( core::IOS * os, Effect::ptr effect, unify::Color color )
 	: ObjectComponent( os )
 	, m_pl( os->GetRenderer(0) )
@@ -53,11 +63,11 @@ void BBoxRendererComponent::OnDetach( Object * object )
 	m_geomertries.clear();
 }
 
-void BBoxRendererComponent::OnUpdate( const RenderInfo & renderInfo )
+void BBoxRendererComponent::OnUpdate( Object * object, const RenderInfo & renderInfo )
 {
 }
 
-void BBoxRendererComponent::OnRender( const RenderInfo & renderInfo )
+void BBoxRendererComponent::OnRender( Object * object, const RenderInfo & renderInfo )
 {
 	if ( !m_effect || !m_geomertries.size() ) return;
 
@@ -136,4 +146,11 @@ void BBoxRendererComponent::OnRender( const RenderInfo & renderInfo )
 	bs.GetVertexBuffer().Create( vertexCount, vd, vertices.get() );
 	bs.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );
 	m_pl.Render( myRenderInfo );
+}
+
+
+IObjectComponent * BBoxRendererComponent::Duplicate()
+{
+	auto duplicate = new BBoxRendererComponent( *this );
+	return duplicate;
 }

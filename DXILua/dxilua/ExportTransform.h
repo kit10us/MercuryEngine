@@ -10,7 +10,7 @@ void RegisterTransform( lua_State * state );
 
 struct TransformProxy
 {
-	dxi::scene::Object::ptr object;
+	dxi::scene::Object * object;
 	unify::FrameLite * transform;
 };
 

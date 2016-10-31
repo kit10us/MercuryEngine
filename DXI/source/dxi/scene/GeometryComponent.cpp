@@ -6,6 +6,14 @@
 using namespace dxi;
 using namespace scene;
 
+GeometryComponent::GeometryComponent( GeometryComponent & component )
+	: ObjectComponent( component )
+	, m_geometry( component.m_geometry )
+	, m_geometryInstanceData( component.m_geometry->CreateInstanceData() )
+	, m_modelMatrix( component.m_modelMatrix )
+{
+}
+
 GeometryComponent::GeometryComponent( core::IOS * os )
 	: ObjectComponent( os )
 	, m_modelMatrix( unify::Matrix::MatrixIdentity() )
@@ -68,22 +76,28 @@ void GeometryComponent::OnStart( Object * object )
 {
 }
 
-void GeometryComponent::OnUpdate( const RenderInfo & renderInfo )
+void GeometryComponent::OnUpdate( Object * object, const RenderInfo & renderInfo )
 {
 	m_geometry->Update( renderInfo, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::OnRender( const RenderInfo & renderInfo )
+void GeometryComponent::OnRender( Object * object, const RenderInfo & renderInfo )
 {
 	RenderInfo myRenderInfo( renderInfo );
 	myRenderInfo.SetWorldMatrix( m_modelMatrix * myRenderInfo.GetWorldMatrix() );
 	m_geometry->Render( myRenderInfo, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::OnSuspend()
+void GeometryComponent::OnSuspend( Object * object )
 {
 }
 
-void GeometryComponent::OnResume()
+void GeometryComponent::OnResume( Object * object )
 {
+}
+
+IObjectComponent * GeometryComponent::Duplicate()
+{
+	auto duplicate = new GeometryComponent( *this );
+	return duplicate;
 }
