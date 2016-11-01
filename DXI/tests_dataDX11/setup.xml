@@ -2,6 +2,9 @@
 <setup>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
+<!--
 <display fullscreen="false" x="10" y="10" width="1920" height="1080"/>
+-->
+<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </setup>
 </xml>

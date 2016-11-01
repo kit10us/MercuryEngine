@@ -16,7 +16,7 @@ int main( int argc, char ** argv )
 	assert( q.IsIdentity() );
 
 	{
-		Matrix mx( Matrix::MatrixRotationAboutAxis( V3< float >( 1, 0, 0 ), AngleInDegrees( 180 ) ) );
+		Matrix mx( MatrixRotationAboutAxis( V3< float >( 1, 0, 0 ), AngleInDegrees( 180 ) ) );
 		V3< float > vm( 1, 1, 1 );
 		mx.TransformCoord( vm );
 
