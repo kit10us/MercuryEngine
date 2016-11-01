@@ -257,7 +257,7 @@ Quaternion unify::QuaternionSlerp( const Quaternion & qa, const Quaternion & qb,
 
 Quaternion unify::QuaternionLookAt( unify::V3< float > eye, unify::V3< float > at, unify::V3< float > up )
 {
-	Matrix m = Matrix::MatrixLookAtLH( eye, at, up );
+	Matrix m = unify::MatrixLookAtLH( eye, at, up );
 	Quaternion q( m );
 	return q;
 }

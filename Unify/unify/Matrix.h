@@ -16,20 +16,21 @@ namespace unify
 {
 	class Matrix
 	{
+	private:
+		friend Matrix MatrixIdentity();
+		friend Matrix MatrixZero();
+		friend Matrix MatrixTranslate( const V3< float > & vector );
+		friend Matrix MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar );
+		friend Matrix MatrixScale( const unify::V3< float > & scale );
+		friend Matrix MatrixScale( float x, float y, float z );
+		friend Matrix MatrixScale( float scale );
+		friend Matrix MatrixRotationAboutAxis( const V3< float > & axis, Angle angle );
+		friend Matrix MatrixPerspectiveFovLH( float fovy, float apsect, float zn, float zf );
+		friend Matrix MatrixRotationX( Angle angle );
+		friend Matrix MatrixRotationY( Angle angle );
+		friend Matrix MatrixRotationZ( Angle angle );
+		friend Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up );
 	public:
-		static Matrix MatrixIdentity();
-		static Matrix MatrixZero();
-		static Matrix MatrixTranslate( const V3< float > & vector );
-		static Matrix MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar );
-		static Matrix MatrixScale( const unify::V3< float > & scale );
-		static Matrix MatrixScale( float x, float y, float z );
-		static Matrix MatrixScale( float scale );
-		static Matrix MatrixRotationAboutAxis( const V3< float > & axis, Angle angle );
-		static Matrix MatrixPerspectiveFovLH( float fovy, float apsect, float zn, float zf );
-		static Matrix MatrixRotationX( Angle angle );
-		static Matrix MatrixRotationY( Angle angle );
-		static Matrix MatrixRotationZ( Angle angle );
-		static Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up );
 
 		Matrix();
 		Matrix( const Matrix & matrix );
@@ -119,4 +120,18 @@ namespace unify
 		std::string ToString() const;
 		float m[4][4];
 	};
+
+	Matrix MatrixIdentity();
+	Matrix MatrixZero();
+	Matrix MatrixTranslate( const V3< float > & vector );
+	Matrix MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar );
+	Matrix MatrixScale( const unify::V3< float > & scale );
+	Matrix MatrixScale( float x, float y, float z );
+	Matrix MatrixScale( float scale );
+	Matrix MatrixRotationAboutAxis( const V3< float > & axis, Angle angle );
+	Matrix MatrixPerspectiveFovLH( float fovy, float apsect, float zn, float zf );
+	Matrix MatrixRotationX( Angle angle );
+	Matrix MatrixRotationY( Angle angle );
+	Matrix MatrixRotationZ( Angle angle );
+	Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up );
 }

@@ -75,7 +75,7 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 	bool oldClipping = RenderState::Get( RenderState::Clipping ) == 0 ? false : true;
 	*/
 
-	unify::Matrix origin( unify::Matrix::MatrixIdentity() );
+	unify::Matrix origin( unify::MatrixIdentity() );
 
 	// We are rendering to 2D, so create a new orthogonal matrix...
 	if( renderInfo.IsOptionFalse( RenderOption::NoFrame ) )
@@ -91,7 +91,7 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 		RenderState::Set( RenderState::Clipping, false );
 		*/
 
-		unify::Matrix view( unify::Matrix::MatrixIdentity() );
+		unify::Matrix view( unify::MatrixIdentity() );
 		// TODO: Transform::Set( Transform::Index::View, view );
 	}
 	else

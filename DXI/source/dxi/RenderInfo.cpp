@@ -9,9 +9,9 @@ RenderInfo::RenderInfo()
 : m_renderer( 0 )
 , m_distanceFromCamera( 0.0f )
 , m_frameID( 0 )
-, m_world( unify::Matrix::MatrixIdentity() )
-, m_view( unify::Matrix::MatrixIdentity() )
-, m_projection( unify::Matrix::MatrixIdentity() )
+, m_world( unify::MatrixIdentity() )
+, m_view( unify::MatrixIdentity() )
+, m_projection( unify::MatrixIdentity() )
 , m_frameSetInstance( 0 )
 , m_delta{}
 , m_totalDelta{}

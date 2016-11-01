@@ -185,7 +185,7 @@ void Scene::Render( const RenderInfo & renderInfo )
 	std::list< FinalObject > renderList;
 	std::list< FinalCamera > cameraList;
 
-	unify::Matrix transform = unify::Matrix::MatrixIdentity();
+	unify::Matrix transform = unify::MatrixIdentity();
 
 	if( GetRoot() && GetRoot()->IsEnabled() )
 	{

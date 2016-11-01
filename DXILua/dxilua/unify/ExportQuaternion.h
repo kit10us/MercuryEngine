@@ -10,4 +10,4 @@
 DXILUADLL_API unify::Quaternion CheckQuaternion( lua_State * state, int index );
 DXILUADLL_API int PushQuaternion( lua_State * state, unify::Quaternion v3 );
 
-void RegisterV3( lua_State * state );
+void ExportQuaternion( lua_State * state );

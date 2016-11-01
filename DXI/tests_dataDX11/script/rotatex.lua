@@ -2,6 +2,6 @@ function OnStart()
 end
 
 function OnUpdate()
-	local rotMatrix = Matrix.NewRotationX( Update.GetDelta() * 2 )
-	_object:Transform():PreMul( rotMatrix )
+	local rot = Quaternion.NewRotationX( Update.GetDelta() * 2 )
+	_object:Transform():PreMul( rot )
 end

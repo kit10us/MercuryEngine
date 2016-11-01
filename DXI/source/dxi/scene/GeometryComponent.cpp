@@ -16,7 +16,7 @@ GeometryComponent::GeometryComponent( GeometryComponent & component )
 
 GeometryComponent::GeometryComponent( core::IOS * os )
 	: ObjectComponent( os )
-	, m_modelMatrix( unify::Matrix::MatrixIdentity() )
+	, m_modelMatrix( unify::MatrixIdentity() )
 {
 }
 
@@ -24,7 +24,7 @@ GeometryComponent::GeometryComponent( core::IOS * os, Geometry::ptr geometry )
 	: ObjectComponent( os )
 	, m_geometry( geometry )
 	, m_geometryInstanceData( geometry->CreateInstanceData() )
-	, m_modelMatrix( unify::Matrix::MatrixIdentity() )
+	, m_modelMatrix( unify::MatrixIdentity() )
 {
 }
 

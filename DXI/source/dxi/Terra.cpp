@@ -114,7 +114,10 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 			for ( unsigned int r = 0; r < (faces.row + 1); r++ )
 			{
 				// Compute texcoord in image...
-				unify::TexCoords uv( (float)r / ((float)faces.row + 1), (float)c / ((float)faces.column + 1) );
+				unify::TexCoords uv( 
+					1.0f - (float)r / ((float)faces.row + 1), 
+					(float)c / ((float)faces.column + 1) 
+				);
 
 				// Get the heightmap position...
 				height_uv = heightMap.texArea.ul + (uv * uvHeight_Length);

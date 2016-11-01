@@ -97,7 +97,7 @@ bool dxi::XMLConvert( const qxml::Element * element, unify::Matrix & matrix, con
 	if( finds )
 	{
 		matrix = unify::Matrix( rotation, translation );
-		matrix *= unify::Matrix::MatrixScale( scale );
+		matrix *= unify::MatrixScale( scale );
 		return true;
 	}
 	else

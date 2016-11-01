@@ -134,8 +134,8 @@ void MyGame::Update( RenderInfo & renderInfo )
 	unify::Quaternion q = unify::Quaternion( axis, rotation );
 	renderInfo.SetWorldMatrix( unify::Matrix( q ) );
 	
-	renderInfo.SetViewMatrix( unify::Matrix::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
+	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
 void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )

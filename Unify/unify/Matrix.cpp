@@ -6,216 +6,6 @@
 
 using namespace unify;
 
-Matrix Matrix::MatrixIdentity()
-{
-	Matrix matrix;
-	matrix.BecomeIdentity();
-	return matrix;
-}
-
-Matrix Matrix::MatrixZero()
-{
-	Matrix matrix;
-	matrix.Zero();
-	return matrix;
-}
-
-Matrix Matrix::MatrixTranslate( const V3< float > & vector )
-{
-	Matrix matrix;
-	matrix.m[0][0] = 1.0f;
-	matrix.m[0][1] = 0.0f;
-	matrix.m[0][2] = 0.0f;
-	matrix.m[0][3] = 0.0f;
-
-	matrix.m[1][0] = 0.0f;
-	matrix.m[1][1] = 1.0f;
-	matrix.m[1][2] = 0.0f;
-	matrix.m[1][3] = 0.0f;
-
-	matrix.m[2][0] = 0.0f;
-	matrix.m[2][1] = 0.0f;
-	matrix.m[2][2] = 1.0f;
-	matrix.m[2][3] = 0.0f;
-
-	matrix.m[3][0] = vector.x;
-	matrix.m[3][1] = vector.y;
-	matrix.m[3][2] = vector.z;
-	matrix.m[3][3] = 1.0f;
-
-	return matrix;
-}
-
-Matrix Matrix::MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar )
-{
-	Matrix matrix;
-	matrix.m[0][0] = 2.0f / (right - left);
-	matrix.m[0][1] = 0.0f;
-	matrix.m[0][2] = 0.0f;
-	matrix.m[0][3] = 0.0f;
-		
-	matrix.m[1][0] = 0.0f;
-	matrix.m[1][1] = 2.0f / (top - bottom);
-	matrix.m[1][2] = 0.0f;
-	matrix.m[1][3] = 0.0f;
-	
-	matrix.m[2][0] = 0.0f;
-	matrix.m[2][1] = 0.0f;
-	matrix.m[2][2] = 1.0f / (zfar - znear);
-	matrix.m[2][3] = 0.0f;
-		
-	matrix.m[3][0] = (left + right) / (left - right);
-	matrix.m[3][1] = (top + bottom) / (bottom - top);
-	matrix.m[3][2] = znear / (znear - zfar);
-	matrix.m[3][3] = 1.0f;
-
-	return matrix;
-}
-
-Matrix Matrix::MatrixScale( const unify::V3< float > & scale )
-{
-	Matrix matrix;
-	matrix.m[0][0] = scale.x;
-	matrix.m[1][1] = scale.y;
-	matrix.m[2][2] = scale.z;
-	matrix.m[3][3] = 1.0f;
-	matrix.m[1][0] = matrix.m[2][0] = matrix.m[3][0] =
-	matrix.m[0][1] = matrix.m[2][1] = matrix.m[3][1] =
-	matrix.m[0][2] = matrix.m[1][2] = matrix.m[3][2] = 
-	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;												 
-	return matrix;
-}
-
-Matrix Matrix::MatrixScale( float x, float y, float z )
-{
-	return MatrixScale( unify::V3< float >( x, y, z ) );
-}
-
-Matrix Matrix::MatrixScale( float scale )
-{
-	return MatrixScale( unify::V3< float >( scale, scale, scale ) );
-}
-
-Matrix Matrix::MatrixRotationAboutAxis( const V3< float > & axis, Angle angle )
-{
-	Matrix matrix = MatrixIdentity();
-	// Create rotation matrices using axis as scalar against angle.
-	matrix *= MatrixRotationX( angle * axis.x );
-	matrix *= MatrixRotationY( angle * axis.y );
-	matrix *= MatrixRotationZ( angle * axis.z );
-	return matrix;
-}
-
-Matrix Matrix::MatrixPerspectiveFovLH( float fovy, float aspect, float zn, float zf )
-{
-	Matrix matrix;
-	float yScale = 1.0f / tan( fovy / 2 );
-	float xScale = yScale / aspect;
-
-	matrix.m[0][0] = xScale;
-	matrix.m[0][1] = 0;
-	matrix.m[0][2] = 0;
-	matrix.m[0][3] = 0;
-	
-	matrix.m[1][0] = 0;
-	matrix.m[1][1] = yScale;
-	matrix.m[1][2] = 0;
-	matrix.m[1][3] = 0;
-
-	matrix.m[2][0] = 0;
-	matrix.m[2][1] = 0;
-	matrix.m[2][2] = zf / (zf - zn);
-	matrix.m[2][3] = 1;
-
-	matrix.m[3][0] = 0;
-	matrix.m[3][1] = 0;
-	matrix.m[3][2] = -zn*zf / (zf - zn);
-	matrix.m[3][3] = 0;
-
-	return matrix;
-}
-
-Matrix Matrix::MatrixRotationX( Angle angle )
-{
-	Matrix matrix;
-	float radians = angle.GetRadians();
-	matrix.m[0][0] = matrix.m[3][3] = 1.0f;
-	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
-	matrix.m[3][0] = matrix.m[3][1] = matrix.m[3][2] = 0.0f;
-
-	matrix.m[0][1] = matrix.m[1][0] = 0.0f;
-	matrix.m[2][0] = matrix.m[0][2] = 0.0f;
-
-	matrix.m[1][1] = cos( radians );
-	matrix.m[2][1] = -sin( radians );
-	matrix.m[1][2] = sin( radians );
-	matrix.m[2][2] = cos( radians );
-	return matrix;
-}
-
-Matrix Matrix::MatrixRotationY( Angle angle )
-{
-	Matrix matrix;
-	float radians = angle.GetRadians();
-	matrix.m[1][1] = matrix.m[3][3] = 1.0f;
-	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
-	matrix.m[3][0] = matrix.m[3][1] = matrix.m[3][2] = 0.0f;
-
-	matrix.m[1][0] = matrix.m[1][2] = 0.0f;
-	matrix.m[0][1] = matrix.m[2][1] = 0.0f;
-
-	matrix.m[0][0] = cos( radians );
-	matrix.m[2][0] = sin( radians );
-	matrix.m[0][2] = -sin( radians );
-	matrix.m[2][2] = cos( radians );
-	return matrix;
-}
-
-Matrix Matrix::MatrixRotationZ( Angle angle )
-{
-	Matrix matrix;
-	float radians = angle.GetRadians();
-	matrix.m[2][2] = matrix.m[3][3] = 1.0f;
-	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
-	matrix.m[3][0] = matrix.m[3][1] = matrix.m[3][2] = 0.0f;
-
-	matrix.m[2][0] = matrix.m[2][1] = 0.0f;
-	matrix.m[0][2] = matrix.m[1][2] = 0.0f;
-
-	matrix.m[0][0] = cos( radians );
-	matrix.m[1][0] = -sin( radians );
-	matrix.m[0][1] = sin( radians );
-	matrix.m[1][1] = cos( radians );
-	return matrix;
-}
-
-/*
-zaxis = normal( At - Eye )
-xaxis = normal( cross( Up, zaxis ) )
-yaxis = cross( zaxis, xaxis )
-
-xaxis.x				yaxis.x			zaxis.x				0
-xaxis.x				yaxis.x			zaxis.x				0
-xaxis.x				yaxis.x			zaxis.x				0
--dot( xaxis, eye )	-dot(yaxis,eye)	-dot(zaxis, eye)	1
-*/
-Matrix Matrix::MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up )
-{
-	Matrix matrix = unify::Matrix::MatrixIdentity();
-	unify::V3< float > forward( at - eyePosition );
-	forward.Normalize();
-
-	unify::V3< float > left( unify::V3< float >::V3Cross( up, forward ) );
-
-	matrix.SetForward( forward );
-	matrix.SetLeft( left );
-	unify::V3< float > orientedUp = unify::V3< float >::V3Cross( forward, left ); // As the specified parameter up means the world's up, this is the relative up for the look at.
-	matrix.SetUp( orientedUp ); // Regenerate up.
-	matrix.SetPosition( -left.Dot( eyePosition ), -up.Dot( eyePosition ), -forward.Dot( eyePosition ) );
-	return matrix;
-}
-
-
 Matrix::Matrix()
 {
 }
@@ -570,7 +360,7 @@ Matrix & Matrix::SetRotation( const Quaternion & quaternion )
 	V3< float > scale = GetScale();
 	V3< float > position = GetPosition();
 	*this = Matrix( quaternion, position );
-	*this *= Matrix::MatrixScale( scale );
+	*this *= unify::MatrixScale( scale );
 	return *this;
 }
 
@@ -583,7 +373,7 @@ Matrix & Matrix::Translate( const V3< float > & vector )
 
 Matrix & Matrix::Scale( const V3< float > & vector )
 {
-	Matrix scale( Matrix::MatrixScale( vector ) );
+	Matrix scale( unify::MatrixScale( vector ) );
 	*this *= scale;
 	return *this;
 }
@@ -976,7 +766,7 @@ void Matrix::RotateAboutAxis( const V3< float > & axis, Angle angle )
 void Matrix::LookAtLH( const V3< float > & at, const V3< float > & up )
 {
 	V3< float > eyePosition( GetPosition() );
-	*this = Matrix::MatrixLookAtLH( eyePosition, at, up );
+	*this = unify::MatrixLookAtLH( eyePosition, at, up );
 }
 
 std::string Matrix::ToString() const
@@ -1005,4 +795,216 @@ std::string Matrix::ToString() const
 		}
 	}
 	return out;
+}
+
+
+
+
+Matrix unify::MatrixIdentity()
+{
+	Matrix matrix;
+	matrix.BecomeIdentity();
+	return matrix;
+}
+
+Matrix unify::MatrixZero()
+{
+	Matrix matrix;
+	matrix.Zero();
+	return matrix;
+}
+
+Matrix unify::MatrixTranslate( const V3< float > & vector )
+{
+	Matrix matrix;
+	matrix.m[0][0] = 1.0f;
+	matrix.m[0][1] = 0.0f;
+	matrix.m[0][2] = 0.0f;
+	matrix.m[0][3] = 0.0f;
+
+	matrix.m[1][0] = 0.0f;
+	matrix.m[1][1] = 1.0f;
+	matrix.m[1][2] = 0.0f;
+	matrix.m[1][3] = 0.0f;
+
+	matrix.m[2][0] = 0.0f;
+	matrix.m[2][1] = 0.0f;
+	matrix.m[2][2] = 1.0f;
+	matrix.m[2][3] = 0.0f;
+
+	matrix.m[3][0] = vector.x;
+	matrix.m[3][1] = vector.y;
+	matrix.m[3][2] = vector.z;
+	matrix.m[3][3] = 1.0f;
+
+	return matrix;
+}
+
+Matrix unify::MatrixOrthoOffCenterLH( float left, float right, float bottom, float top, float znear, float zfar )
+{
+	Matrix matrix;
+	matrix.m[0][0] = 2.0f / (right - left);
+	matrix.m[0][1] = 0.0f;
+	matrix.m[0][2] = 0.0f;
+	matrix.m[0][3] = 0.0f;
+
+	matrix.m[1][0] = 0.0f;
+	matrix.m[1][1] = 2.0f / (top - bottom);
+	matrix.m[1][2] = 0.0f;
+	matrix.m[1][3] = 0.0f;
+
+	matrix.m[2][0] = 0.0f;
+	matrix.m[2][1] = 0.0f;
+	matrix.m[2][2] = 1.0f / (zfar - znear);
+	matrix.m[2][3] = 0.0f;
+
+	matrix.m[3][0] = (left + right) / (left - right);
+	matrix.m[3][1] = (top + bottom) / (bottom - top);
+	matrix.m[3][2] = znear / (znear - zfar);
+	matrix.m[3][3] = 1.0f;
+
+	return matrix;
+}
+
+Matrix unify::MatrixScale( const unify::V3< float > & scale )
+{
+	Matrix matrix;
+	matrix.m[0][0] = scale.x;
+	matrix.m[1][1] = scale.y;
+	matrix.m[2][2] = scale.z;
+	matrix.m[3][3] = 1.0f;
+	matrix.m[1][0] = matrix.m[2][0] = matrix.m[3][0] =
+		matrix.m[0][1] = matrix.m[2][1] = matrix.m[3][1] =
+		matrix.m[0][2] = matrix.m[1][2] = matrix.m[3][2] =
+		matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
+	return matrix;
+}
+
+Matrix unify::MatrixScale( float x, float y, float z )
+{
+	return MatrixScale( unify::V3< float >( x, y, z ) );
+}
+
+Matrix unify::MatrixScale( float scale )
+{
+	return MatrixScale( unify::V3< float >( scale, scale, scale ) );
+}
+
+Matrix unify::MatrixRotationAboutAxis( const V3< float > & axis, Angle angle )
+{
+	Matrix matrix = MatrixIdentity();
+	// Create rotation matrices using axis as scalar against angle.
+	matrix *= MatrixRotationX( angle * axis.x );
+	matrix *= MatrixRotationY( angle * axis.y );
+	matrix *= MatrixRotationZ( angle * axis.z );
+	return matrix;
+}
+
+Matrix unify::MatrixPerspectiveFovLH( float fovy, float aspect, float zn, float zf )
+{
+	Matrix matrix;
+	float yScale = 1.0f / tan( fovy / 2 );
+	float xScale = yScale / aspect;
+
+	matrix.m[0][0] = xScale;
+	matrix.m[0][1] = 0;
+	matrix.m[0][2] = 0;
+	matrix.m[0][3] = 0;
+
+	matrix.m[1][0] = 0;
+	matrix.m[1][1] = yScale;
+	matrix.m[1][2] = 0;
+	matrix.m[1][3] = 0;
+
+	matrix.m[2][0] = 0;
+	matrix.m[2][1] = 0;
+	matrix.m[2][2] = zf / (zf - zn);
+	matrix.m[2][3] = 1;
+
+	matrix.m[3][0] = 0;
+	matrix.m[3][1] = 0;
+	matrix.m[3][2] = -zn*zf / (zf - zn);
+	matrix.m[3][3] = 0;
+
+	return matrix;
+}
+
+Matrix unify::MatrixRotationX( Angle angle )
+{
+	Matrix matrix;
+	float radians = angle.GetRadians();
+	matrix.m[0][0] = matrix.m[3][3] = 1.0f;
+	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
+	matrix.m[3][0] = matrix.m[3][1] = matrix.m[3][2] = 0.0f;
+
+	matrix.m[0][1] = matrix.m[1][0] = 0.0f;
+	matrix.m[2][0] = matrix.m[0][2] = 0.0f;
+
+	matrix.m[1][1] = cos( radians );
+	matrix.m[2][1] = -sin( radians );
+	matrix.m[1][2] = sin( radians );
+	matrix.m[2][2] = cos( radians );
+	return matrix;
+}
+
+Matrix unify::MatrixRotationY( Angle angle )
+{
+	Matrix matrix;
+	float radians = angle.GetRadians();
+	matrix.m[1][1] = matrix.m[3][3] = 1.0f;
+	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
+	matrix.m[3][0] = matrix.m[3][1] = matrix.m[3][2] = 0.0f;
+
+	matrix.m[1][0] = matrix.m[1][2] = 0.0f;
+	matrix.m[0][1] = matrix.m[2][1] = 0.0f;
+
+	matrix.m[0][0] = cos( radians );
+	matrix.m[2][0] = sin( radians );
+	matrix.m[0][2] = -sin( radians );
+	matrix.m[2][2] = cos( radians );
+	return matrix;
+}
+
+Matrix unify::MatrixRotationZ( Angle angle )
+{
+	Matrix matrix;
+	float radians = angle.GetRadians();
+	matrix.m[2][2] = matrix.m[3][3] = 1.0f;
+	matrix.m[0][3] = matrix.m[1][3] = matrix.m[2][3] = 0.0f;
+	matrix.m[3][0] = matrix.m[3][1] = matrix.m[3][2] = 0.0f;
+
+	matrix.m[2][0] = matrix.m[2][1] = 0.0f;
+	matrix.m[0][2] = matrix.m[1][2] = 0.0f;
+
+	matrix.m[0][0] = cos( radians );
+	matrix.m[1][0] = -sin( radians );
+	matrix.m[0][1] = sin( radians );
+	matrix.m[1][1] = cos( radians );
+	return matrix;
+}
+
+/*
+zaxis = normal( At - Eye )
+xaxis = normal( cross( Up, zaxis ) )
+yaxis = cross( zaxis, xaxis )
+
+xaxis.x				yaxis.x			zaxis.x				0
+xaxis.x				yaxis.x			zaxis.x				0
+xaxis.x				yaxis.x			zaxis.x				0
+-dot( xaxis, eye )	-dot(yaxis,eye)	-dot(zaxis, eye)	1
+*/
+Matrix unify::MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up )
+{
+	Matrix matrix = unify::MatrixIdentity();
+	unify::V3< float > forward( at - eyePosition );
+	forward.Normalize();
+
+	unify::V3< float > left( unify::V3< float >::V3Cross( up, forward ) );
+
+	matrix.SetForward( forward );
+	matrix.SetLeft( left );
+	unify::V3< float > orientedUp = unify::V3< float >::V3Cross( forward, left ); // As the specified parameter up means the world's up, this is the relative up for the look at.
+	matrix.SetUp( orientedUp ); // Regenerate up.
+	matrix.SetPosition( -left.Dot( eyePosition ), -up.Dot( eyePosition ), -forward.Dot( eyePosition ) );
+	return matrix;
 }

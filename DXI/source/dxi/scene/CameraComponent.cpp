@@ -15,7 +15,7 @@ CameraComponent::CameraComponent( CameraComponent & component )
 
 CameraComponent::CameraComponent( core::IOS * os )
 	: ObjectComponent( os )
-	, m_projection( unify::Matrix::MatrixIdentity() )
+	, m_projection( unify::MatrixIdentity() )
 	, m_renderer( 0 )
 {
 }

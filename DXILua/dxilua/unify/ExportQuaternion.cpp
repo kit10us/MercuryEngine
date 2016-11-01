@@ -66,6 +66,42 @@ int Quaternion_New( lua_State * state )
 	return 1;
 }
 
+int Quaternion_NewRotationX( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	float angle = (float)lua_tonumber( state, 1 );
+
+	PushQuaternion( state, unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInRadians( angle ) ) );
+
+	return 1;
+}
+						 
+int Quaternion_NewRotationY( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	float angle = (float)lua_tonumber( state, 1 );
+
+	PushQuaternion( state, unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( angle ) ) );
+
+	return 1;
+}
+						 
+int Quaternion_NewRotationZ( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	float angle = (float)lua_tonumber( state, 1 );
+
+	PushQuaternion( state, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInRadians( angle ) ) );
+
+	return 1;
+}
+						 
 int Quaternion_FromEuler( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -200,11 +236,15 @@ static const luaL_Reg QuaternionFunctions[] =
 	{ "Normalize", Quaternion_Normalize },
 	{ "Slerp", Quaternion_Slerp },
 
+	{ "NewRotationX", Quaternion_NewRotationX },
+	{ "NewRotationY", Quaternion_NewRotationY },
+	{ "NewRotationZ", Quaternion_NewRotationZ },
+
 	{ "ToString", Quaternion_ToString },
 	{ nullptr, nullptr }
 };
 
-void RegisterQuaternion( lua_State * state )
+void ExportQuaternion( lua_State * state )
 {
 	luaL_newlib( state, QuaternionFunctions );
 	lua_setglobal( state, "Quaternion" );

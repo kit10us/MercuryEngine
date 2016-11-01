@@ -58,7 +58,7 @@ int Matrix_MakeIdentity( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::Matrix mat = unify::Matrix::MatrixIdentity();
+	unify::Matrix mat = unify::MatrixIdentity();
 	PushMatrix( state, mat );
 
 	return 1;
@@ -71,7 +71,7 @@ int Matrix_NewZero( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::Matrix mat = unify::Matrix::MatrixZero();
+	unify::Matrix mat = unify::MatrixZero();
 	PushMatrix( state, mat );
 
 	return 1;
@@ -86,7 +86,7 @@ int Matrix_NewTranslate( lua_State * state )
 
 	unify::V3< float > vector( CheckV3( state, 1 ) );
 
-	unify::Matrix mat = unify::Matrix::MatrixTranslate( vector );
+	unify::Matrix mat = unify::MatrixTranslate( vector );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -106,7 +106,7 @@ int Matrix_NewOrthoOffCenterLH( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::Matrix mat = unify::Matrix::MatrixOrthoOffCenterLH( left, right, bottom, top, zn, zf );
+	unify::Matrix mat = unify::MatrixOrthoOffCenterLH( left, right, bottom, top, zn, zf );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -125,12 +125,12 @@ int Matrix_NewScale( lua_State * state )
 	if ( type == LUA_TTABLE ) // V3
 	{
 		unify::V3< float > scale( CheckV3( state, 1 ) );
-		mat = unify::Matrix::MatrixScale( scale );
+		mat = unify::MatrixScale( scale );
 	}
 	else
 	{
 		float scale = (float)lua_tonumber( state, 1 );
-		mat = unify::Matrix::MatrixScale( scale );
+		mat = unify::MatrixScale( scale );
 	}
 
 	PushMatrix( state, mat );
@@ -148,7 +148,7 @@ int Matrix_NewRotationAboutAxis( lua_State * state )
 	unify::V3< float > axis( CheckV3( state, 1 ) );
 	float angle = (float)lua_tonumber( state, 2 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationAboutAxis( axis, unify::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::MatrixRotationAboutAxis( axis, unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -166,7 +166,7 @@ int Matrix_NewPerspectiveFovLH( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::Matrix mat = unify::Matrix::MatrixPerspectiveFovLH( w, h, zn, zf );
+	unify::Matrix mat = unify::MatrixPerspectiveFovLH( w, h, zn, zf );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -181,7 +181,7 @@ int Matrix_NewRotationX( lua_State * state )
 
 	float angle = (float)lua_tonumber( state, 1 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationX( unify::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::MatrixRotationX( unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -196,7 +196,7 @@ int Matrix_NewRotationY( lua_State * state )
 
 	float angle = (float)lua_tonumber( state, 1 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationY( unify::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::MatrixRotationY( unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -210,7 +210,7 @@ int Matrix_NewRotationZ( lua_State * state )
 
 	float angle = (float)lua_tonumber( state, 1 );
 
-	unify::Matrix mat = unify::Matrix::MatrixRotationZ( unify::AngleInRadians( angle ) );
+	unify::Matrix mat = unify::MatrixRotationZ( unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
 	return 1;
@@ -227,7 +227,7 @@ int Matrix_NewLookAtLH( lua_State * state )
 	unify::V3< float > at( CheckV3( state, 2 ) );
 	unify::V3< float > up( CheckV3( state, 3 ) );
 
-	unify::Matrix mat = unify::Matrix::MatrixLookAtLH( eye, at, up );
+	unify::Matrix mat = unify::MatrixLookAtLH( eye, at, up );
 	PushMatrix( state, mat );
 
 	return 1;

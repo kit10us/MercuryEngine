@@ -132,8 +132,8 @@ void MyGame::Update( RenderInfo & renderInfo )
 	Quaternion q = Quaternion( axis, rotation );
 	renderInfo.SetWorldMatrix( Matrix( q ) );
 	
-	renderInfo.SetViewMatrix( Matrix::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	renderInfo.SetViewMatrix( MatrixLookAtLH( eye, at, up ) );
+	renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
 void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
@@ -143,12 +143,12 @@ void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport
 	RenderInfo myRenderInfo( renderInfo );
 
 	{
-		myRenderInfo.SetWorldMatrix( renderInfo.GetWorldMatrix() * Matrix::MatrixTranslate( V3< float >( -15, 15, 10 ) ) );
+		myRenderInfo.SetWorldMatrix( renderInfo.GetWorldMatrix() * MatrixTranslate( V3< float >( -15, 15, 10 ) ) );
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
 		method.Render( myRenderInfo );
 	}
 	{
-		myRenderInfo.SetWorldMatrix( renderInfo.GetWorldMatrix() * Matrix::MatrixTranslate( V3< float >( 15, 15, 10 ) ) );
+		myRenderInfo.SetWorldMatrix( renderInfo.GetWorldMatrix() * MatrixTranslate( V3< float >( 15, 15, 10 ) ) );
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
 		method.Render( myRenderInfo );
 	}

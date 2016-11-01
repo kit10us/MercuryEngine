@@ -74,8 +74,8 @@ Frame::Frame()
 , m_previous( 0 )
 , m_next( 0 )
 , m_parent( 0 )
-, m_matrix( Matrix::MatrixIdentity() )
-, m_finalCached( Matrix::MatrixIdentity() )
+, m_matrix( MatrixIdentity() )
+, m_finalCached( MatrixIdentity() )
 , m_isDirty( true )
 {
 }
@@ -86,8 +86,8 @@ Frame::Frame( const std::string & name )
 , m_next( 0 )
 , m_parent( 0 )
 , m_name( name )
-, m_matrix( Matrix::MatrixIdentity() )
-, m_finalCached( Matrix::MatrixIdentity() )
+, m_matrix( MatrixIdentity() )
+, m_finalCached( MatrixIdentity() )
 , m_isDirty( true )
 {
 }
@@ -99,7 +99,7 @@ Frame::Frame( const Frame & frame )
 , m_parent( 0 )
 , m_name( frame.m_name )
 , m_matrix( frame.m_matrix )
-, m_finalCached( Matrix::MatrixIdentity() )
+, m_finalCached( MatrixIdentity() )
 , m_isDirty( true )
 {
 }
@@ -300,7 +300,7 @@ Frame & Frame::LookAt( const V3< float > & at, const V3< float > & up )
 	*/
 	V3< float > eyePosition = m_matrix.GetPosition();
 
-	Matrix matrix = unify::Matrix::MatrixIdentity();
+	Matrix matrix = unify::MatrixIdentity();
 	unify::V3< float > forward( at - eyePosition );
 	forward.Normalize();
 
@@ -374,8 +374,8 @@ Frame & Frame::Orbit( const V3< float > & origin, const V2< float > & direction,
 	
 	// Create a matrix that has our position as it's Z axis, then rotate that axis...
 	unify::Matrix m;
-	unify::Matrix rotX = unify::Matrix::MatrixRotationX( angle * direction.y );
-	unify::Matrix rotY = unify::Matrix::MatrixRotationY( angle * direction.x );
+	unify::Matrix rotX = MatrixRotationX( angle * direction.y );
+	unify::Matrix rotY = MatrixRotationY( angle * direction.x );
 	m = rotX * rotY;
 	m_matrix = m_matrix * m;
 	
@@ -394,7 +394,7 @@ Frame & Frame::Orbit( const V3< float > & origin, const Quaternion & orbit, floa
 
 Frame & Frame::Rotate( const V3< float > & axis, Angle angle )
 {
-	Matrix matrix = unify::Matrix::MatrixRotationAboutAxis( axis, angle );
+	Matrix matrix = unify::MatrixRotationAboutAxis( axis, angle );
 	m_matrix = matrix * m_matrix;
 	MakeDirty();
 	return *this;
@@ -410,7 +410,7 @@ Frame & Frame::Rotate( const Quaternion & q )
 
 Frame & Frame::RotateAbout( const V3< float > & axis, Angle angle )
 {
-	Matrix mRot = Matrix::MatrixRotationAboutAxis( axis, angle );	
+	Matrix mRot = MatrixRotationAboutAxis( axis, angle );	
 	m_matrix *= mRot;
 	MakeDirty( false );
 	return *this;
@@ -489,7 +489,7 @@ Frame & Frame::SetPosition( const V3< float > & position )
 Frame & Frame::Set( const Quaternion & orientation, const V3< float > & position, const V3< float > & scale )
 {
 	m_matrix = Matrix( orientation, position );
-	m_matrix *= Matrix::MatrixScale( scale );
+	m_matrix *= MatrixScale( scale );
 	MakeDirty();
 	return *this;
 }

@@ -17,7 +17,7 @@ RigidStatic::RigidStatic( RigidStatic & rigidStatic )
 	: m_os( rigidStatic.m_os )
 	, m_gameComponent( rigidStatic.m_gameComponent )
 {
-	PxTransform transform( util::Convert< physx::PxTransform >( unify::Matrix::MatrixIdentity() ) );
+	PxTransform transform( util::Convert< physx::PxTransform >( unify::MatrixIdentity() ) );
 	m_rigidStatic.reset( m_gameComponent->GetPhysics()->createRigidStatic( transform ), Releaser< physx::PxRigidStatic > );
 }
 
@@ -25,7 +25,7 @@ RigidStatic::RigidStatic( core::IOS * os, GameComponent * gameComponent )
 : m_os( os )
 , m_gameComponent( gameComponent )
 {
-	PxTransform transform( util::Convert< physx::PxTransform >( unify::Matrix::MatrixIdentity() ) );
+	PxTransform transform( util::Convert< physx::PxTransform >( unify::MatrixIdentity() ) );
 	m_rigidStatic.reset( m_gameComponent->GetPhysics()->createRigidStatic( transform ), Releaser< physx::PxRigidStatic > );
 }
 

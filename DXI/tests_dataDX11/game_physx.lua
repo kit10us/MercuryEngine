@@ -89,13 +89,13 @@ function OnStart()
 	plane = group:AddChild( "plane" )
 	plane:SetGeometry( Geometry( planeParameters ) )
 	plane:Transform():SetPosition( V3.New( 0, -20, 0 ) )
-	--[[
+
 	local terraParams = TerraParameters()
 	terraParams:SetEffect( Effect( "pit_image", "media/EffectPit.effect" ) )
 	terraParams:SetSize( Size2.New( 30, 30 ) )
 	terraParams:SetConstant( 0 )
 	terraParams:SetPoints( 100, 100 )
-	terraParams:SetHeightMap( Texture( "test256", "media/steps.png", true, true ), Color.NewGrey( 4 ) )
+	terraParams:SetHeightMap( Texture( "test256", "media/steps.bmp", true, true ), Color.NewGrey( 4 ) )
 	local terraGeo = Terra( terraParams )
 	local terra = group:AddChild( "terra" )
 	terra:SetGeometry( terraGeo )
@@ -105,7 +105,6 @@ function OnStart()
 	local pxBody = PhysX.CreateRigidStatic()
 	pxBody:AttachTo( terra )
 	pxBody:SetDisableGravity( true )
-	--]]
 	
 end
 

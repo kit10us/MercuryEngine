@@ -14,9 +14,9 @@ namespace dxi
         {
             BeveledBoxParameters();
             unify::Parameters & Reset();
-            BeveledBoxParameters & SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation = unify::Matrix::MatrixIdentity() );
-            BeveledBoxParameters & SetInf( const unify::V3< float > & inf, unify::Matrix & transformation = unify::Matrix::MatrixIdentity() );
-            BeveledBoxParameters & SetSup( const unify::V3< float > & sup, unify::Matrix & transformation = unify::Matrix::MatrixIdentity() );
+            BeveledBoxParameters & SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation = unify::MatrixIdentity() );
+            BeveledBoxParameters & SetInf( const unify::V3< float > & inf, unify::Matrix & transformation = unify::MatrixIdentity() );
+            BeveledBoxParameters & SetSup( const unify::V3< float > & sup, unify::Matrix & transformation = unify::MatrixIdentity() );
             BeveledBoxParameters & SetSize( const unify::Size3< float > & size );
             BeveledBoxParameters & SetDiffuseFaces( unify::Color one, unify::Color two, unify::Color three, unify::Color four, unify::Color five, unify::Color six );
             BeveledBoxParameters & SetDiffusePoints( unify::Color one, unify::Color two, unify::Color three, unify::Color four, unify::Color five, unify::Color six, unify::Color seven, unify::Color eight );

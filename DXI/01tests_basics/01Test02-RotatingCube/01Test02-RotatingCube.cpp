@@ -124,16 +124,16 @@ void MyGame::Update( RenderInfo & renderInfo )
 
 	unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 
-	unify::Matrix worldMatrixA = unify::Matrix::MatrixIdentity();
-	worldMatrixA *= unify::Matrix::MatrixRotationAboutAxis( axis, rotation );
+	unify::Matrix worldMatrixA = unify::MatrixIdentity();
+	worldMatrixA *= unify::MatrixRotationAboutAxis( axis, rotation );
 
 	unify::Quaternion q( unify::Quaternion( axis, rotation ) );
 
 	unify::Matrix worldMatrix( q );
 	
 	renderInfo.SetWorldMatrix( worldMatrix );
-	renderInfo.SetViewMatrix( unify::Matrix::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
+	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
 void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )

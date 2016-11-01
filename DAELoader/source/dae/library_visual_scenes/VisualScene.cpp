@@ -49,7 +49,7 @@ const Node * VisualScene::GetFirstNode() const
 
 void VisualScene::Build( dxi::PrimitiveList & pl ) const
 {
-	Build( pl, unify::Matrix::MatrixIdentity(), GetFirstNode() );
+	Build( pl, unify::MatrixIdentity(), GetFirstNode() );
 }
 
 void VisualScene::Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const

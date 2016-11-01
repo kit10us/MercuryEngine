@@ -39,7 +39,7 @@ public:
 		scene::CameraComponent * cameraComponent = unify::polymorphic_downcast< scene::CameraComponent * >( camera->GetComponent( "Camera" ).get() );
 																			 
 		cameraComponent->SetProjection(
-			unify::Matrix::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f,
+			unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f,
 				800 / 600
 				, 1, 1000 ) );
 

@@ -14,7 +14,7 @@ Node::Node( IDocument & document, const dae::Node * parent, const qxml::Element 
 , m_id( node->GetAttributeElse( "id", std::string() ) )
 , m_name( node->GetAttributeElse( "name", std::string() ) )
 , m_sid( node->GetAttributeElse( "sid", std::string() ) )
-, m_matrix( unify::Matrix::MatrixIdentity() )
+, m_matrix( unify::MatrixIdentity() )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -56,7 +56,7 @@ Node::Node( IDocument & document, const dae::Node * parent, const qxml::Element 
 			std::vector< float > components = unify::SplitOnWhitespace< float >( childNode->GetText() );
 			unify::V3< float > axis( components[ 0 ], components[ 1 ], components[ 2 ] );
 			unify::Angle angle( unify::AngleInDegrees( components[ 3 ] ) );
-			m_matrix *= unify::Matrix::MatrixRotationAboutAxis( axis, angle );
+			m_matrix *= unify::MatrixRotationAboutAxis( axis, angle );
 		}
 		else if ( childNode->IsTagName( "instance_camera" ) )
 		{
@@ -98,7 +98,7 @@ Node::Node( IDocument & document, const qxml::Element * node )
 , m_id( node->GetAttributeElse( "id", std::string() ) )
 , m_name( node->GetAttributeElse( "name", std::string() ) )
 , m_sid( node->GetAttributeElse( "sid", std::string() ) )
-, m_matrix( unify::Matrix::MatrixIdentity() )
+, m_matrix( unify::MatrixIdentity() )
 {
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
@@ -140,7 +140,7 @@ Node::Node( IDocument & document, const qxml::Element * node )
 			std::vector< float > components = unify::SplitOnWhitespace< float >( childNode->GetText() );
 			unify::V3< float > axis( components[ 0 ], components[ 1 ], components[ 2 ] );
 			unify::Angle angle( unify::AngleInDegrees( components[ 3 ] ) );
-			m_matrix *= unify::Matrix::MatrixRotationAboutAxis( axis, angle );
+			m_matrix *= unify::MatrixRotationAboutAxis( axis, angle );
 		}
 		else if ( childNode->IsTagName( "instance_camera" ) )
 		{
