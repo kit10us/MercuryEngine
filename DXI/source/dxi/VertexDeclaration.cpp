@@ -951,7 +951,6 @@ public:
 
 	std::vector< VertexElement > m_elements;
 	ElementMap m_elementMap;
-	size_t m_totalSizeInBytes;
 
 	CComPtr< ID3D11InputLayout > m_layout;
 
@@ -965,20 +964,20 @@ public:
 		: Pimpl( owner, renderer )
 	{
 		// Accumulate elements.
-		m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
+		size_t totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
 		for ( const auto child : element.Children() )
 		{
 			if ( child.IsTagName( "element" ) )
 			{
 				VertexElement element( child );
-				element.AlignedByteOffset = m_totalSizeInBytes;
+				element.AlignedByteOffset = totalSizeInBytes;
 
 				std::string name = child.GetAttribute( "name" )->GetString();
 
 				m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 				m_elements.push_back( element );
 
-				m_totalSizeInBytes += element.SizeOf();
+				totalSizeInBytes += element.SizeOf();
 			}
 		}
 
@@ -992,7 +991,7 @@ public:
 		: Pimpl( owner, renderer )
 	{
 		// Accumulate elements.
-		m_totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
+		size_t totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
 		for ( auto itr : object )
 			//for( const qxml::Element * itr = element.GetFirstChild(), *end = 0; itr != end; itr = itr->GetNext() )
 		{
@@ -1007,12 +1006,12 @@ public:
 
 				std::string name = itr.GetName();
 
-				element.AlignedByteOffset = m_totalSizeInBytes;
+				element.AlignedByteOffset = totalSizeInBytes;
 
 				m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 				m_elements.push_back( element );
 
-				m_totalSizeInBytes += element.SizeOf();
+				totalSizeInBytes += element.SizeOf();
 			}
 		}
 
@@ -1117,9 +1116,28 @@ public:
 		return m_elements[itr->second].SizeOf();
 	}
 
-	size_t GetSize() const
+	size_t GetSize( size_t slot ) const
 	{
-		return m_totalSizeInBytes;
+		size_t size = 0;
+		for( auto e : m_elements )
+		{
+			if( e.InputSlot == slot )
+			{
+				size += e.SizeOf();
+			}
+		}
+
+		return size;
+	}
+
+	size_t NumberOfSlots() const
+	{
+		size_t numberOfSlots = 0;
+		for( auto e : m_elements )
+		{
+			numberOfSlots = std::max( numberOfSlots, e.InputSlot );
+		}
+		return numberOfSlots;
 	}
 
 	void Use()
@@ -1842,9 +1860,14 @@ size_t VertexDeclaration::GetElementSize( const std::string & name ) const
 	return m_pimpl->GetElementSize( name );
 }
 
-size_t VertexDeclaration::GetSize() const
+size_t VertexDeclaration::GetSize( size_t slot ) const
 {
-	return m_pimpl->GetSize();
+	return m_pimpl->GetSize( slot );
+}
+
+size_t VertexDeclaration::NumberOfSlots() const
+{
+	return m_pimpl->NumberOfSlots();
 }
 
 void VertexDeclaration::Use()
@@ -1956,6 +1979,3 @@ bool VertexDeclaration::ReadVertex( unify::DataLock & lock, size_t vertexIndex, 
 {
 	return m_pimpl->ReadVertex( lock, vertexIndex, inVD, vertex );
 }
-
-
-

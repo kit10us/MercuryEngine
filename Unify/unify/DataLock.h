@@ -12,13 +12,13 @@ namespace unify
 	{
 	public:
 		DataLock();
-		DataLock( void * data, unsigned int stride, unsigned int count, bool readonly );
-		DataLock( void * data, unsigned int sizeInBytes, bool readonly );
+		DataLock( void * data, unsigned int stride, unsigned int count, bool readonly, size_t slot );
+		DataLock( void * data, unsigned int sizeInBytes, bool readonly, size_t slot );
 
 		virtual ~DataLock();
 
-		virtual void SetLock( void * data, unsigned int stride, unsigned int count, bool readonly );
-		virtual void SetLock( void * data, unsigned int sizeInBytes, bool readonly  );
+		virtual void SetLock( void * data, unsigned int stride, unsigned int count, bool readonly, size_t slot );
+		virtual void SetLock( void * data, unsigned int sizeInBytes, bool readonly, size_t slot );
 
 		/// <summary>
 		/// Return the head pointer to the entire data lock.
@@ -35,6 +35,7 @@ namespace unify
 		unsigned int Count() const;
 		unsigned int Stride() const;
 		unsigned int GetSizeInBytes() const;
+		size_t Slot() const;
 		virtual void Invalidate();
 		virtual bool CopyBytesFrom( const void * source, unsigned int offset, unsigned int byteCount );
 		virtual bool CopyItemFrom( const void * source, unsigned int indexTo ); 
@@ -164,5 +165,6 @@ namespace unify
 		unsigned int m_count;	// Number of items we can stride through
 		unsigned int m_sizeInBytes;
 		bool m_readonly;
+		size_t m_slot;
 	};
 } // namespace unify

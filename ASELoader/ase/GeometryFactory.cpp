@@ -237,7 +237,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 						indices[index * 3 + 2] = (Index32)index * 3 + 2;
 					}
 					
-					vb.Create( (unsigned int)listPTP.size(), vd, vertices.get() );
+					vb.Create( (unsigned int)listPTP.size(), vd, 0, vertices.get() );
 
 					IndexBuffer & ib = bufferSet.GetIndexBuffer();
 					ib.Create( (unsigned int)listPTP.size() * 3, (Index32*)&indices[0], dxi::BufferUsage::Default );

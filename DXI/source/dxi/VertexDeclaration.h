@@ -57,8 +57,15 @@ namespace dxi
 		size_t GetElementOffset( const std::string & name ) const;
 		size_t GetElementSize( const std::string & name ) const;
 
-		/// Returns the total size in bytes of the vertex this declaration declares.
-		size_t GetSize() const;
+		/// <summary>
+		/// Returns the total size in bytes of the vertex this declaration declares, for a specific slot.
+		/// </summary>
+		size_t GetSize( size_t slot = 0 ) const;
+
+		/// <summary>
+		/// Returns the number of slots (buffers) this declaration uses.
+		/// </summary>
+		size_t NumberOfSlots() const;
 
 		void Use();
 

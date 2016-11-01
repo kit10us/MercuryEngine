@@ -321,7 +321,7 @@ void shapes::CreateShape_Cube( core::IRenderer * renderer, PrimitiveList & primi
 		vd->WriteVertex( lock, { 20, 21, 22, 23 }, diffuseE, diffuses[5] );
 	}
 
-	vb.Create( totalVertices, vd, verticesFinal, bufferUsage );
+	vb.Create( totalVertices, vd, 0, verticesFinal, bufferUsage );
 	delete[] verticesFinal;
 
 	// Set the Indices..
@@ -429,7 +429,7 @@ void shapes::CreateShape_PointField( core::IRenderer * renderer, PrimitiveList &
 		vb.GetBBox() += vec;
 	}
 
-	vb.Create( count, vd, vertices, bufferUsage );
+	vb.Create( count, vd, 0, vertices, bufferUsage );
 
 	delete[] vertices;
 }
@@ -526,7 +526,7 @@ void shapes::CreateShape_PointRing( core::IRenderer * renderer, PrimitiveList & 
 		vd->WriteVertex( lock, v, specularE, specular );   
 		vb.GetBBox() += vec;
 	}
-	vb.Create( count, vd, vertices, bufferUsage );
+	vb.Create( count, vd, 0, vertices, bufferUsage );
 	delete[] vertices;
 }
 
@@ -633,7 +633,7 @@ void shapes::CreateShape_DashRing( core::IRenderer * renderer, PrimitiveList & p
 		fRad += fRadChangeSeg;
 	}
 
-	vb.Create( totalVertices, vd, vertices, bufferUsage );
+	vb.Create( totalVertices, vd, 0, vertices, bufferUsage );
 	delete[] vertices;
 
 	// Create the index list...
@@ -839,7 +839,7 @@ void shapes::CreateShape_Pyramid( core::IRenderer * renderer, PrimitiveList & pr
 	}break;
 	}
 
-	vb.Create( vertexCount, vd, verticesRaw.get(), bufferUsage );
+	vb.Create( vertexCount, vd, 0, verticesRaw.get(), bufferUsage );
 
 	// Set the Indices..
 	Index32 indices[18] =
@@ -944,7 +944,7 @@ void shapes::CreateShape_Circle( core::IRenderer * renderer, PrimitiveList & pri
 		dRad += dRadChange;
 	}
 
-	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+	vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 
 	std::vector< Index32 > indices( indexCount );
 
@@ -1054,7 +1054,7 @@ void shapes::CreateShape_Sphere( core::IRenderer * renderer, PrimitiveList & pri
 			}
 		}
 
-		vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+		vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 
 
 		// Indices...
@@ -1143,7 +1143,7 @@ void shapes::CreateShape_Sphere( core::IRenderer * renderer, PrimitiveList & pri
 			}
 		}
 
-		vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+		vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 
 		std::vector< Index32 > indices( indexCount );
 
@@ -1332,7 +1332,7 @@ void shapes::CreateShape_Cylinder( core::IRenderer * renderer, PrimitiveList & p
 		vb.GetBBox() += pos + center;
 	}
 
-	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+	vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 
 	if( indexCount > 0 )
 	{
@@ -1505,7 +1505,7 @@ void shapes::CreateShape_Tube( core::IRenderer * renderer, PrimitiveList & primi
 		vb.GetBBox() += vertex.pos;
 	}
 
-	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+	vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 }
 
 void shapes::CreateShape_Plane( core::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -1575,7 +1575,7 @@ void shapes::CreateShape_Plane( core::IRenderer * renderer, PrimitiveList & prim
 		}
 		unify::V3< float > pos = center - unify::V3< float >( size.width * 0.5f, 0, size.height * 0.5f );
 	}
-	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+	vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 
 	std::vector< Index32 > indices( 6 * segments * segments );
 	for( unsigned int v = 0; v < segments; ++v )
@@ -1738,7 +1738,7 @@ void shapes::CreateShape_Cone( core::IRenderer * renderer, PrimitiveList & primi
 		vb.GetBBox() += pos + center;
 	}
 
-	vb.Create( vertexCount, vd, vertices.get(), bufferUsage );
+	vb.Create( vertexCount, vd, 0, vertices.get(), bufferUsage );
 
 	if( indexCount > 0 )
 	{
@@ -1999,7 +1999,7 @@ void shapes::CreateShape_BeveledBox( core::IRenderer * renderer, PrimitiveList &
 		vd->WriteVertex( lock, { 20, 21, 22, 23 }, diffuseE, diffuses[5] );
 	}
 
-	vb.Create( totalVertices, vd, verticesRaw.get(), bufferUsage );
+	vb.Create( totalVertices, vd, 0, verticesRaw.get(), bufferUsage );
 
 	// Set the Indices..
 	Index32 indices[36] =

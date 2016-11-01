@@ -143,7 +143,7 @@ void BBoxRendererComponent::OnRender( Object * object, const RenderInfo & render
 		vd->WriteVertex( lock, i, diffuseE, m_color );
 	}
 
-	bs.GetVertexBuffer().Create( vertexCount, vd, vertices.get() );
+	bs.GetVertexBuffer().Create( vertexCount, vd, 0, vertices.get() );
 	bs.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );
 	m_pl.Render( myRenderInfo );
 }

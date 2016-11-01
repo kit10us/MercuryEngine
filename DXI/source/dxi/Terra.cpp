@@ -203,7 +203,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 		}
 	}
 
-	set.GetVertexBuffer().Create( vertexCount, vd, vertices.get() );
+	set.GetVertexBuffer().Create( vertexCount, vd, 0, vertices.get() );
 
 	// Fill in indices...
 	std::vector< Index32 > indices( indexCount );

@@ -12,39 +12,42 @@ DataLock::DataLock()
 , m_stride( 0 )
 , m_count( 0 )
 , m_sizeInBytes( 0 )
+, m_slot( 0 )
 {
 }
 
-DataLock::DataLock( void * data, unsigned int stride, unsigned int count, bool readonly )
+DataLock::DataLock( void * data, unsigned int stride, unsigned int count, bool readonly, size_t slot )
 {
-	SetLock( data, stride, count, readonly );
+	SetLock( data, stride, count, readonly, slot );
 }
 
-DataLock::DataLock( void * data, unsigned int sizeInBytes, bool readonly )
+DataLock::DataLock( void * data, unsigned int sizeInBytes, bool readonly, size_t slot )
 {
-	SetLock( data, sizeInBytes, readonly );
+	SetLock( data, sizeInBytes, readonly, slot );
 }
 
 DataLock::~DataLock()
 {
 }
 
-void DataLock::SetLock( void * data, unsigned int stride, unsigned int count, bool readonly )
+void DataLock::SetLock( void * data, unsigned int stride, unsigned int count, bool readonly, size_t slot )
 {
 	m_data = data;
 	m_stride = stride;
 	m_count = count;
 	m_sizeInBytes = stride * count;
 	m_readonly = readonly;
+	m_slot = slot;
 }
 
-void DataLock::SetLock( void * data, unsigned int sizeInBytes, bool readonly )
+void DataLock::SetLock( void * data, unsigned int sizeInBytes, bool readonly, size_t slot )
 {
 	m_data = data;
 	m_stride = sizeInBytes;
 	m_count = 1;
 	m_sizeInBytes = sizeInBytes;
 	m_readonly = readonly;
+	m_slot = slot;
 }
 
 void * DataLock::GetData()
@@ -96,11 +99,17 @@ unsigned int DataLock::GetSizeInBytes() const
 	return m_sizeInBytes;
 }
 
+size_t DataLock::Slot() const
+{
+	return m_slot;
+}
+
 void DataLock::Invalidate()
 {
 	m_data = 0;
 	m_stride = 0;
 	m_count = 0;
+	m_slot = 0;
 }
 
 bool DataLock::CopyBytesFrom( const void * source, unsigned int offset, unsigned int byteCount )

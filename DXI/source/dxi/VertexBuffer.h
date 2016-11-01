@@ -10,49 +10,50 @@
 
 namespace dxi
 {
-	// Quick encapsulation of vertex and index buffers...
-	class VertexBuffer : public DataBuffer
+	class VertexBuffer
 	{
 	public:
 		typedef std::shared_ptr< VertexBuffer > ptr;
 
-		// TODO: Replace create to use this.  Move to DataBuffer???
-		struct BufferDesc
-		{		  
-			BufferDesc()
-				: byteWidth( 0 )
-				, usage( BufferUsage::Default )
-				, stride( 0 )
-			{}
-
-			size_t byteWidth;
-			BufferUsage::TYPE usage;
-			size_t stride;
-		};
-
 		VertexBuffer( core::IRenderer * renderer );
-		VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
+		VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, size_t slot, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
 		~VertexBuffer();
 
-		void Create( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
+		void Create( unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, size_t slot,  const void * source, BufferUsage::TYPE usage = BufferUsage::Default );
 		void Destroy();
 
 		void Lock( unify::DataLock & lock );
 		void LockReadOnly( unify::DataLock & lock ) const;
 		void Unlock();
 		void Unlock() const;
-		void Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts );
+		
 		VertexDeclaration::ptr GetVertexDeclaration() const;
+		size_t GetSlot() const;
+		
 		bool Valid() const;
 		void Use() const;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;
 
-	protected:	   
+		bool Locked() const;
+		BufferUsage::TYPE GetUsage() const;
+		unsigned int GetStride() const;
+		unsigned int GetLength() const;
+		unsigned int GetSize() const;
+
+	protected:
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
+
 		VertexDeclaration::ptr m_vertexDeclaration;
+		size_t m_slot;
+
 		unify::BBox< float > m_bbox;
+
+		bool m_locked;
+		BufferUsage::TYPE m_usage;
+		unsigned int m_stride; // Size of each item in the buffer.
+		unsigned int m_length; // Number of items we can store in the buffer.
 	};
 }

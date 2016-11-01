@@ -174,7 +174,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 		dxi::VertexElement texE = dxi::CommonVertexElement::TexCoords( stream );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[ vd->GetSize() * numberOfVertices ] );
-		unify::DataLock lock( vertices.get(), vd->GetSize(), numberOfVertices, false );
+		unify::DataLock lock( vertices.get(), vd->GetSize(), numberOfVertices, false, 0 );
 
 		// Iterate through the vertices...
 		size_t vertexIndex = 0;
@@ -219,7 +219,7 @@ void Mesh::Build( dxi::PrimitiveList & accumulatedPL, const unify::Matrix & matr
 
 		VT * vt = (VT*)lock.GetData();
 
-		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), vertices.get(), dxi::BufferUsage::Dynamic );
+		set.GetVertexBuffer().Create( numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), dxi::BufferUsage::Dynamic );
 
 		size_t numberOfIndices = 0;
 		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )

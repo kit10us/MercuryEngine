@@ -135,20 +135,6 @@ public:
 		locked = false;
 	}
 
-	void Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts )
-	{
-		if( ((uStartVert + uNumVerts) - 1) >= m_owner.GetLength() )
-		{
-			throw unify::Exception( "Number of vertices to upload exceeds available area to upload to!" );
-		}
-
-		unify::DataLock lock;
-
-		Lock( lock );
-		lock.CopyBytesFrom( (unsigned char*)pVerticesIn, m_owner.GetStride() * uStartVert, uNumVerts * m_owner.GetStride() );
-		Unlock();
-	}
-
 	bool Valid() const
 	{
 		return m_VB != 0;
@@ -268,11 +254,6 @@ public:
 		throw exception::NotImplemented();
 	}
 
-	void Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts )
-	{
-		throw exception::NotImplemented();
-	}
-
 	bool Valid() const
 	{
 		return m_VB != 0;
@@ -299,13 +280,23 @@ public:
 
 VertexBuffer::VertexBuffer( core::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )
+	, m_slot( 0 )
+	, m_locked( false )
+	, m_usage( BufferUsage::Default )
+	, m_length( 0 )
+	, m_stride( 0 )
 {
 }
 
-VertexBuffer::VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage )
+VertexBuffer::VertexBuffer( core::IRenderer * renderer, unsigned int numVertices, VertexDeclaration::ptr vertexDeclaration, size_t slot, const void * source, BufferUsage::TYPE usage )
 	: m_pimpl( new Pimpl( *this, renderer ) )
+	, m_slot( slot )
+	, m_locked( false )
+	, m_usage( BufferUsage::Default )
+	, m_length( 0 )
+	, m_stride( 0 )
 {
-	Create( numVertices, vertexDeclaration, source, usage );
+	Create( numVertices, vertexDeclaration, slot, source, usage );
 }
 
 VertexBuffer::~VertexBuffer()
@@ -313,12 +304,13 @@ VertexBuffer::~VertexBuffer()
 	Destroy();
 }
 
-void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration::ptr vertexDeclaration, const void * source, BufferUsage::TYPE usage )
+void VertexBuffer::Create( unsigned int uNumVertices, VertexDeclaration::ptr vertexDeclaration, size_t slot, const void * source, BufferUsage::TYPE usage )
 {
 	Destroy();
 
 	m_vertexDeclaration = vertexDeclaration;
-	m_stride = m_vertexDeclaration->GetSize();
+	m_slot = slot;
+	m_stride = m_vertexDeclaration->GetSize( slot );
 	m_length = uNumVertices;
 	m_usage = usage;
 
@@ -358,14 +350,14 @@ void VertexBuffer::Unlock() const
 	m_pimpl->Unlock();
 }
 
-void VertexBuffer::Upload( const void * pVerticesIn, unsigned int uStartVert, unsigned int uNumVerts )
-{
-	m_pimpl->Upload( pVerticesIn, uStartVert, uNumVerts );
-}
-
 VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 {
 	return m_vertexDeclaration;
+}
+
+size_t VertexBuffer::GetSlot() const
+{
+	return m_slot;
 }
 
 bool VertexBuffer::Valid() const
@@ -386,4 +378,29 @@ unify::BBox< float > & VertexBuffer::GetBBox()
 const unify::BBox< float > & VertexBuffer::GetBBox() const
 {
 	return m_bbox;
+}
+
+bool VertexBuffer::Locked() const
+{
+	return m_locked;
+}
+
+BufferUsage::TYPE VertexBuffer::GetUsage() const
+{
+	return m_usage;
+}
+
+unsigned int VertexBuffer::GetStride() const
+{
+	return m_stride;
+}
+
+unsigned int VertexBuffer::GetLength() const
+{
+	return m_length;
+}
+
+unsigned int VertexBuffer::GetSize() const
+{
+	return m_stride * m_length;
 }

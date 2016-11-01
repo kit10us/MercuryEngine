@@ -175,7 +175,7 @@ void LoadMesh_1_2( core::Game * game, const qxml::Element & geometryElement, dxi
 						}
 					}
 
-					vb.Create( vertexCount, vd, vertices.get() );
+					vb.Create( vertexCount, vd, 0, vertices.get() );
 
 				}	 
 				else if( buffersetChild.IsTagName( "indexlist" ) )

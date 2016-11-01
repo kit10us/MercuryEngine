@@ -284,28 +284,8 @@ public:
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #elif defined(DIRECTX11)
+
 
 class IndexBuffer::Pimpl
 {
@@ -503,7 +483,10 @@ public:
 
 IndexBuffer::IndexBuffer( core::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )
-{
+	, m_locked( false )
+	, m_usage( BufferUsage::Default )
+	, m_length( 0 )
+	, m_stride( 0 ){
 }
 
 IndexBuffer::~IndexBuffer()
@@ -559,4 +542,29 @@ bool IndexBuffer::Valid() const
 void IndexBuffer::Use() const
 {
 	m_pimpl->Use();
+}
+
+bool IndexBuffer::Locked() const
+{
+	return m_locked;
+}
+
+BufferUsage::TYPE IndexBuffer::GetUsage() const
+{
+	return m_usage;
+}
+
+unsigned int IndexBuffer::GetStride() const
+{
+	return m_stride;
+}
+
+unsigned int IndexBuffer::GetLength() const
+{
+	return m_length;
+}
+
+unsigned int IndexBuffer::GetSize() const
+{
+	return m_stride * m_length;
 }

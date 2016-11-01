@@ -15,7 +15,7 @@ namespace dxi
 	// Typedefs...
 	typedef unsigned long			Index32;
 
-	class IndexBuffer : public DataBuffer
+	class IndexBuffer
 	{
 	public:
 		typedef  std::shared_ptr< IndexBuffer > shared_ptr;
@@ -55,8 +55,18 @@ namespace dxi
 		bool Valid() const;
 		void Use() const;
 
+		bool Locked() const;
+		BufferUsage::TYPE GetUsage() const;
+		unsigned int GetStride() const;
+		unsigned int GetLength() const;
+		unsigned int GetSize() const;
+
 	protected:
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
+		bool m_locked;
+		BufferUsage::TYPE m_usage;
+		unsigned int m_stride; // Size of each item in the buffer.
+		unsigned int m_length; // Number of items we can store in the buffer.
 	};
 }
