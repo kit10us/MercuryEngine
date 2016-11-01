@@ -5,9 +5,9 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DX", "dx\DX.vcxproj", "{02FB9FD8-8523-401F-B691-CFF6D2B70831}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feature Tests", "Feature Tests", "{0ACAB752-0AD7-4562-8ACE-F06D00ECC55A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orderer Tests OpenGL", "Orderer Tests OpenGL", "{0ACAB752-0AD7-4562-8ACE-F06D00ECC55A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ordered Minimal Tests", "Ordered Minimal Tests", "{1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orderer Tests DirectX", "Orderer Tests DirectX", "{1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test01-Device and 2D Quad", "Test01-Device and 2D Quad\Test01-Device and 2D Quad.vcxproj", "{69EA05C5-3E6F-4768-857A-4C0827549676}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -45,6 +45,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test10-LotsOfCubes", "Test10-LotsOfCubes\Test10-LotsOfCubes.vcxproj", "{C9C80DDA-D431-463C-A509-34FC5C9A2CFA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test11-LotsOfCubesOptimized", "Test11-LotsOfCubesOptimized\Test11-LotsOfCubesOptimized.vcxproj", "{6BC84A03-0BAD-462E-AB0E-E79C8459C279}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLTest01-Device and 2D Quad", "GLTest01-Device and 2D Quad\GLTest01-Device and 2D Quad.vcxproj", "{00A9D055-DC39-4736-B54D-99533E3A7470}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +140,12 @@ Global
 		{6BC84A03-0BAD-462E-AB0E-E79C8459C279}.Release|Win32.ActiveCfg = Release|Win32
 		{6BC84A03-0BAD-462E-AB0E-E79C8459C279}.Release|Win32.Build.0 = Release|Win32
 		{6BC84A03-0BAD-462E-AB0E-E79C8459C279}.Release|x64.ActiveCfg = Release|Win32
+		{00A9D055-DC39-4736-B54D-99533E3A7470}.Debug|Win32.ActiveCfg = Debug|Win32
+		{00A9D055-DC39-4736-B54D-99533E3A7470}.Debug|Win32.Build.0 = Debug|Win32
+		{00A9D055-DC39-4736-B54D-99533E3A7470}.Debug|x64.ActiveCfg = Debug|Win32
+		{00A9D055-DC39-4736-B54D-99533E3A7470}.Release|Win32.ActiveCfg = Release|Win32
+		{00A9D055-DC39-4736-B54D-99533E3A7470}.Release|Win32.Build.0 = Release|Win32
+		{00A9D055-DC39-4736-B54D-99533E3A7470}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,5 +162,6 @@ Global
 		{4456DD63-DF57-41C0-9886-C8AF21DAB229} = {1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}
 		{C9C80DDA-D431-463C-A509-34FC5C9A2CFA} = {1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}
 		{6BC84A03-0BAD-462E-AB0E-E79C8459C279} = {1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}
+		{00A9D055-DC39-4736-B54D-99533E3A7470} = {0ACAB752-0AD7-4562-8ACE-F06D00ECC55A}
 	EndGlobalSection
 EndGlobal
