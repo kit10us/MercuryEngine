@@ -4,16 +4,16 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/CameraComponent.h>
+#include <me/scene/CameraComponent.h>
 
 void RegisterCameraComponent( lua_State * state );
 
 
 struct CameraComponentProxy
 {
-	me::ObjectComponent::ptr component;
-	me::CameraComponent * camera;
+	me::scene::ObjectComponent::ptr component;
+	me::scene::CameraComponent * camera;
 };
 
 CameraComponentProxy* CheckCameraComponent( lua_State* state, int index );
-int PushCameraComponent( lua_State * state, me::ObjectComponent::ptr component );
+int PushCameraComponent( lua_State * state, me::scene::ObjectComponent::ptr component );

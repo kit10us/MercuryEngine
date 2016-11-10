@@ -22,10 +22,10 @@
 #include <me/scene/GeometryComponent.h>
 
 using namespace dxilua;
-using namespace dxi;
 using namespace me;
+using namespace scene;
 
-int PushObject( lua_State * state, me::Object * object )
+int PushObject( lua_State * state, me::scene::Object * object )
 {
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -48,7 +48,7 @@ int Object_AddChild( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	me::Object::ptr child = objectProxy->object->AddChild( name );
+	me::scene::Object::ptr child = objectProxy->object->AddChild( name );
 
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -71,7 +71,7 @@ int Object_AddCamera( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	me::Object::ptr child = objectProxy->object->AddChild( name );
+	Object::ptr child = objectProxy->object->AddChild( name );
 	CameraComponent * cameraComponent = new CameraComponent( game->GetOS() );
 	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
 
@@ -268,7 +268,7 @@ int Object_GetComponent( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	me::IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
+	IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
 
 	if ( ! component )
 	{

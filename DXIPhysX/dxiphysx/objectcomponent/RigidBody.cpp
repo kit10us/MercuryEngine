@@ -3,12 +3,13 @@
 
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/Util.h>
-#include <me/Object.h>
+#include <me/scene/Object.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 #include <dxiphysx/SceneComponent.h>
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
 
 using namespace me;
+using namespace scene;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -58,7 +59,7 @@ void RigidBody::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void RigidBody::OnAttach( me::Object * object )
+void RigidBody::OnAttach( me::scene::Object * object )
 {
 	// Sync physx to object.
 	PxTransform transform( util::Convert< physx::PxTransform >( object->GetFrame().GetMatrix() ) );
@@ -76,13 +77,13 @@ void RigidBody::OnAttach( me::Object * object )
 	}
 	PxRigidBodyExt::updateMassAndInertia( *m_rigidBody, 10.0f );
 
-	me::Scene * scene = object->GetScene();
+	me::scene::Scene * scene = object->GetScene();
 	ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
 	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
 	sceneComponent->GetScene()->addActor( *m_rigidBody.get() );
 }
 
-me::IObjectComponent * RigidBody::Duplicate()
+IObjectComponent * RigidBody::Duplicate()
 {
 	auto duplicate = new RigidBody( *this );
 	return duplicate;

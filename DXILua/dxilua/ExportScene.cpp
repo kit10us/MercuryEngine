@@ -9,6 +9,7 @@
 
 using namespace dxilua;
 using namespace me;
+using namespace scene;
 
 DXILUADLL_API SceneProxy* CheckScene( lua_State* state, int index )
 {

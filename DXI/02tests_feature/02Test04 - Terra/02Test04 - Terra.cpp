@@ -4,10 +4,10 @@
 
 #include <me/Game.h>
 #include <me/scene/SceneManager.h>
-#include <me/Scene.h>
-#include <me/CameraComponent.h>
+#include <me/scene/Scene.h>
+#include <me/scene/CameraComponent.h>
 #include <me/Mesh.h>
-#include <dxi/Terra.h>
+#include <me/Terra.h>
 #include <me/factory/EffectFactories.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
@@ -21,7 +21,6 @@
 /// </summary>
 
 
-using namespace dxi;
 using namespace me;
 
 class MyGame : public Game
@@ -40,7 +39,9 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	using namespace scene;
+
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr mainScene = sceneManager->Add( "main" );
 
 	Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
@@ -87,7 +88,9 @@ void MyGame::Startup()
 
 void MyGame::Update( RenderInfo & renderInfo )
 {
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	using namespace scene;
+
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	Object::ptr camera = sceneManager->Find( "main" )->FindObject( "camera" );
 	

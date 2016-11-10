@@ -1,11 +1,10 @@
 // Copyright (c) 2002 - 2010 Quentin S. Smith
 // All Rights Reserved
  
-#include <dxi/Terra.h>
+#include <me/Terra.h>
 #include <unify/Math.h>
 #include <me/VertexUtil.h>
 
-using namespace dxi;
 using namespace me;
 
 Terra::Terra( me::IRenderer * renderer )

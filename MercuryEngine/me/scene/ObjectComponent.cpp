@@ -1,9 +1,10 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/ObjectComponent.h>
+#include <me/scene/ObjectComponent.h>
 
 using namespace me;
+using namespace scene;
 
 ObjectComponent::ObjectComponent( ObjectComponent & component )
 	: m_os( component.m_os )

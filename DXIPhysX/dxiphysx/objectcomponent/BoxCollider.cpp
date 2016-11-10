@@ -4,6 +4,7 @@
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 
 using namespace me;
+using namespace scene;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -30,7 +31,7 @@ std::string BoxCollider::GetName() const
 	return "Box Collider";
 }
 
-me::IObjectComponent * BoxCollider::Duplicate()
+IObjectComponent * BoxCollider::Duplicate()
 {
 	auto duplicate = new BoxCollider( *this );
 	return duplicate;

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/ObjectComponent.h>
+#include <me/scene/ObjectComponent.h>
 #include <me/Geometry.h>
 #include <unify/Matrix.h>
 
@@ -51,5 +51,5 @@ namespace me
 	    };
     }
 
-	scene::GeometryComponent * AddGeometryComponent( Object * object, IOS * os, Geometry::ptr geometry );
+	scene::GeometryComponent * AddGeometryComponent( scene::Object * object, IOS * os, Geometry::ptr geometry );
 }

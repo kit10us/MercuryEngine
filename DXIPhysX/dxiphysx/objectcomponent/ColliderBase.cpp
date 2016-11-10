@@ -4,7 +4,7 @@
 #include <dxiphysx/objectcomponent/ColliderBase.h>
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/Util.h>
-#include <me/Object.h>
+#include <me/scene/Object.h>
 
 using namespace me;
 using namespace dxiphysx;
@@ -51,7 +51,7 @@ void ColliderBase::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void ColliderBase::OnAttach( me::Object * object )
+void ColliderBase::OnAttach( me::scene::Object * object )
 {
 	// Attach to RigidBody.
 	for( int i = 0; i < object->ComponentCount(); ++i )

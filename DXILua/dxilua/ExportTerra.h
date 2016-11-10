@@ -5,12 +5,12 @@
 
 #include <DXILuaDLL.h>
 #include <lua.hpp>
-#include <dxi/Terra.h>
+#include <me/Terra.h>
 
 struct TerraProxy
 {
 	me::Geometry::ptr geometry;
-	dxi::Terra * terra;
+	me::Terra * terra;
 };
 
 DXILUADLL_API TerraProxy* CheckTerra( lua_State* state, int index );

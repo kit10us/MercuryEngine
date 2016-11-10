@@ -11,7 +11,7 @@
 #include <DXIWinMain.h>
 
 #include <me/scene/BBoxRendererComponent.h>
-#include <me/CameraComponent.h>
+#include <me/scene/CameraComponent.h>
 
 using namespace me;
 
@@ -28,7 +28,9 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	using namespace scene;
+
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
@@ -114,7 +116,9 @@ void MyGame::Startup()
 
 void MyGame::Update( RenderInfo & renderInfo )
 {
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	using namespace scene;
+	
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
 	Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );

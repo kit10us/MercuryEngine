@@ -17,7 +17,7 @@ namespace dxiphysx
 
 		const char * GetName() const override;
 
-		void OnNewScene( me::Scene * scene ) override;
+		void OnNewScene( me::scene::Scene * scene ) override;
 
 	private:
 		me::IOS * m_os;

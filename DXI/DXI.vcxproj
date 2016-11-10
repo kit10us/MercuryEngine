@@ -25,7 +25,6 @@
     <ClCompile Include="source\dxi\font\TextBox.cpp" />
     <ClCompile Include="source\dxi\font\TextBox3D.cpp" />
     <ClCompile Include="source\dxi\GeometryPlacement.cpp" />
-    <ClCompile Include="source\dxi\LOD.cpp" />
     <ClCompile Include="source\dxi\pathing\general\Parallel.cpp" />
     <ClCompile Include="source\dxi\pathing\general\Split.cpp" />
     <ClCompile Include="source\dxi\pathing\orientation\LookAt.cpp" />
@@ -36,7 +35,6 @@
     <ClCompile Include="source\dxi\pathing\position\RotateAbout.cpp" />
     <ClCompile Include="source\dxi\Sprite.cpp" />
     <ClCompile Include="source\dxi\SpriteList.cpp" />
-    <ClCompile Include="source\dxi\Terra.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\dxi\animation\Frame.h" />
@@ -54,7 +52,6 @@
     <ClInclude Include="source\dxi\font\TextBox.h" />
     <ClInclude Include="source\dxi\font\TextBox3D.h" />
     <ClInclude Include="source\dxi\GeometryPlacement.h" />
-    <ClInclude Include="source\dxi\LOD.h" />
     <ClInclude Include="source\dxi\pathing\general\Parallel.h" />
     <ClInclude Include="source\dxi\pathing\general\Split.h" />
     <ClInclude Include="source\dxi\pathing\Modifier.h" />
@@ -70,7 +67,6 @@
     <ClInclude Include="source\dxi\QGizmoCommon.h" />
     <ClInclude Include="source\dxi\Sprite.h" />
     <ClInclude Include="source\dxi\SpriteList.h" />
-    <ClInclude Include="source\dxi\Terra.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl" />

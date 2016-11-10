@@ -17,7 +17,7 @@ namespace dxiphysx
 
 			std::string GetName() const override;
 
-			me::IObjectComponent * Duplicate() override;
+			me::scene::IObjectComponent * Duplicate() override;
 		};
 	}
 }

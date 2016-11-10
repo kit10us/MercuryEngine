@@ -8,6 +8,7 @@
 
 using namespace dxilua;
 using namespace me;
+using namespace scene;
 
 Module::Module( Module & component )
 	: m_state( component.m_state )
@@ -18,7 +19,7 @@ Module::Module( Module & component )
 {
 }
 
-Module::Module( lua_State * state, me::IGame * game, std::string name, unify::Path path )
+Module::Module( lua_State * state, IGame * game, std::string name, unify::Path path )
 	: m_state( state )
 	, m_game( game )
 	, m_name( name )
@@ -74,12 +75,12 @@ void Module::CallMember( std::string function )
 	lua_pop( m_state, 1 );
 }
 
-void Module::OnAttach( me::Object * object )
+void Module::OnAttach( Object * object )
 {
 	m_object = object;
 }
 
-void Module::OnDetach( me::Object * object )
+void Module::OnDetach( Object * object )
 {
 	m_object = nullptr;
 }
@@ -90,16 +91,16 @@ void Module::OnInit( Object * object )
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
 	if ( result == LUA_ERRSYNTAX )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
+		m_game->ReportError( ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
 		assert( 0 );
 	}
 	else if ( result == LUA_ERRFILE )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
+		m_game->ReportError( ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
 	}
 	else if ( result != LUA_OK )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure in script!" );
+		m_game->ReportError( ErrorLevel::Failure, "Lua", "Failure in script!" );
 	}
 
 	// Create table for modules _ENV table.
@@ -138,7 +139,7 @@ void Module::OnInit( Object * object )
 	if ( result != LUA_OK )
 	{
 		std::string error = lua_tostring( m_state, -1 );
-		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
+		m_game->ReportError( ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
 		assert( 0 ); // TODO:
 	}
 
@@ -170,7 +171,7 @@ void Module::OnResume( Object * object )
 	CallMember( "OnResume" );
 }
 
-me::IObjectComponent * Module::Duplicate()
+IObjectComponent * Module::Duplicate()
 {
 	auto duplicate = new Module( *this );
 	return duplicate;

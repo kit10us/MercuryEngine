@@ -11,6 +11,7 @@
 
 using namespace dxilua;
 using namespace me;
+using namespace scene;
 
 ScriptEngine * ScriptEngine::s_se;
 

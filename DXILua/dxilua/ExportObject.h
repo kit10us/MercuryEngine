@@ -5,14 +5,14 @@
 
 #include <DXILuaDLL.h>
 #include <lua.hpp>
-#include <me/Object.h>
+#include <me/scene/Object.h>
 
 struct ObjectProxy
 {
-	me::Object * object;
+	me::scene::Object * object;
 };
 
-DXILUADLL_API int PushObject( lua_State * state, me::Object * object );
+DXILUADLL_API int PushObject( lua_State * state, me::scene::Object * object );
 DXILUADLL_API ObjectProxy* CheckObject( lua_State* state, int index );
 
 void RegisterObject( lua_State * state );

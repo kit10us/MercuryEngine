@@ -66,25 +66,7 @@
     <ClInclude Include="me\Extension.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\IObjectComponent.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Object.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Scene.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Frustum.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\ISceneComponent.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\CameraComponent.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\ObjectComponent.h">
       <Filter>me</Filter>
     </ClInclude>
     <ClInclude Include="me\IPixelShader.h">
@@ -276,6 +258,27 @@
     <ClInclude Include="sg\BeveledBoxParameters.h">
       <Filter>sg</Filter>
     </ClInclude>
+    <ClInclude Include="me\Terra.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\LOD.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ObjectComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\Scene.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ISceneComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\Object.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\CameraComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -293,19 +296,7 @@
     <ClCompile Include="me\Extension.cpp">
       <Filter>me</Filter>
     </ClCompile>
-    <ClCompile Include="me\Object.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Scene.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\Frustum.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
-    <ClCompile Include="me\CameraComponent.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
-    <ClCompile Include="me\ObjectComponent.cpp">
       <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\DataBuffer.cpp">
@@ -445,6 +436,24 @@
     </ClCompile>
     <ClCompile Include="sg\BeveledBoxParameters.cpp">
       <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Terra.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\LOD.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\Scene.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\Object.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\ObjectComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\CameraComponent.cpp">
+      <Filter>me\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

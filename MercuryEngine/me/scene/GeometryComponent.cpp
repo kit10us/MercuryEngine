@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/GeometryComponent.h>
-#include <me/Object.h>
+#include <me/scene/Object.h>
 
 using namespace me;
 using namespace scene;

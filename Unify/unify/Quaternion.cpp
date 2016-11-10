@@ -25,11 +25,11 @@ Quaternion::Quaternion( float x, float y, float z, float w )
 
 Quaternion::Quaternion( V3< float > axis, Angle angle )
 {
-	float s = sin( angle.GetRadians() / 2.0f );
+	float s = sin( angle.ToRadians() / 2.0f );
 	x = axis.x * s;
 	y = axis.y * s;
 	z = axis.z * s;
-	w = cos( angle.GetRadians() / 2.0f );
+	w = cos( angle.ToRadians() / 2.0f );
 }
 
 Quaternion::Quaternion( const Quaternion & quaternion )

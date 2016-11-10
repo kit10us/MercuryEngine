@@ -3,12 +3,13 @@
 
 #include <dxiphysx/objectcomponent/RigidStatic.h>
 #include <dxiphysx/Util.h>
-#include <me/Object.h>
+#include <me/scene/Object.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 #include <dxiphysx/SceneComponent.h>
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
 
 using namespace me;
+using namespace scene;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -58,7 +59,7 @@ void RigidStatic::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void RigidStatic::OnAttach( me::Object * object )
+void RigidStatic::OnAttach( me::scene::Object * object )
 {
 	// Sync physx to object.
 	PxTransform transform( util::Convert< physx::PxTransform >( object->GetFrame().GetMatrix() ) );
@@ -75,13 +76,13 @@ void RigidStatic::OnAttach( me::Object * object )
 		}
 	}
 
-	me::Scene * scene = object->GetScene();
+	me::scene::Scene * scene = object->GetScene();
 	ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
 	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
 	sceneComponent->GetScene()->addActor( *m_rigidStatic.get() );
 }
 		
-me::IObjectComponent * RigidStatic::Duplicate()
+IObjectComponent * RigidStatic::Duplicate()
 {
 	auto duplicate = new RigidStatic( *this );
 	return duplicate;

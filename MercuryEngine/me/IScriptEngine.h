@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/IGameComponent.h>
-#include <me/IObjectComponent.h>
+#include <me/scene/IObjectComponent.h>
 #include <unify/Path.h>
 
 namespace me
@@ -28,6 +28,6 @@ namespace me
 			
 		virtual ExecuteResult ExecuteFile( unify::Path path ) = 0;
 
-		virtual IObjectComponent::ptr LoadModule( unify::Path path ) = 0;
+		virtual scene::IObjectComponent::ptr LoadModule( unify::Path path ) = 0;
 	};
 }

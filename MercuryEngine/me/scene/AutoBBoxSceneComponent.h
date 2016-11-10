@@ -5,7 +5,7 @@
 
 #include <me/scene/SceneComponent.h>
 #include <me/scene/GeometryComponent.h>
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
 #include <me/Effect.h>
 
 namespace me

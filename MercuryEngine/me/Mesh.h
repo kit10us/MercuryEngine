@@ -13,7 +13,7 @@
 #include <me/RenderMethod.h>
 #include <me/RenderInfo.h>
 #include <me/MeshInstanceData.h>
-#include <me/ObjectComponent.h>
+#include <me/scene/ObjectComponent.h>
 #include <me/PrimitiveList.h>
 #include <unify/unify.h>
 

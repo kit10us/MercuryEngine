@@ -1,10 +1,11 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Object.h>
+#include <me/scene/Object.h>
 #include <stack>
 
 using namespace me;
+using namespace scene;
 
 Object::Object( IOS * os )
 	: Object( os, 0 )

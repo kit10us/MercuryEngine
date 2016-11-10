@@ -1,17 +1,15 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 #include <dxi/animation/SpriteManager.h>
 #include <dxi/Sprite.h>
 #include <dxi/SpriteList.h>
-#include <dxi/win/DXDevice.h>
-#include <dxi/RenderState.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
 
 using namespace dxi;
-using namespace core;
+using namespace me;
 
 class MyGame : public Game
 {

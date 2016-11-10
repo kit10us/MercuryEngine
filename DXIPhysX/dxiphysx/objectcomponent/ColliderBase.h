@@ -4,7 +4,7 @@
 #pragma once
 
 #include <DXIPhysX.h>
-#include <me/IObjectComponent.h>
+#include <me/scene/IObjectComponent.h>
 #include <dxiphysx/GameComponent.h>
 #include <me/IOS.h>
 #include <PxPhysicsAPI.h>
@@ -14,7 +14,7 @@ namespace dxiphysx
 {
 	namespace objectcomponent
 	{
-		class ColliderBase : public me::IObjectComponent
+		class ColliderBase : public me::scene::IObjectComponent
 		{
 		protected:
 			ColliderBase( ColliderBase & colliderBase );
@@ -29,14 +29,14 @@ namespace dxiphysx
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 									   
-			void OnAttach( me::Object * object ) override;
-			void OnDetach( me::Object * object ) override {}
-			void OnInit( me::Object * object ) override {}
-			void OnStart( me::Object * object ) override {}
-			void OnUpdate( me::Object * object, const me::RenderInfo & renderInfo ) override {}
-			void OnRender( me::Object * object, const me::RenderInfo & renderInfo ) override {}
-			void OnSuspend( me::Object * object ) override {}
-			void OnResume( me::Object * object ) override {}
+			void OnAttach( me::scene::Object * object ) override;
+			void OnDetach( me::scene::Object * object ) override {}
+			void OnInit( me::scene::Object * object ) override {}
+			void OnStart( me::scene::Object * object ) override {}
+			void OnUpdate( me::scene::Object * object, const me::RenderInfo & renderInfo ) override {}
+			void OnRender( me::scene::Object * object, const me::RenderInfo & renderInfo ) override {}
+			void OnSuspend( me::scene::Object * object ) override {}
+			void OnResume( me::scene::Object * object ) override {}
 
 			DXIPHYSX_API physx::PxShape * GetShape();
 			DXIPHYSX_API const physx::PxShape * GetShape() const;

@@ -6,7 +6,6 @@
 #include <dxilua/ExportTerraParameters.h>
 
 using namespace dxilua;
-using namespace dxi;
 using namespace me;
 
 int PushTerra( lua_State * state, me::Geometry::ptr geometry )
@@ -14,7 +13,7 @@ int PushTerra( lua_State * state, me::Geometry::ptr geometry )
 	TerraProxy ** newProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
 	*newProxy = new TerraProxy();
 	(*newProxy)->geometry = geometry;
-	(*newProxy)->terra = dynamic_cast<dxi::Terra *>(geometry.get());
+	(*newProxy)->terra = dynamic_cast< Terra * >(geometry.get());
 	luaL_setmetatable( state, "TerraProxy" );
 	return 1;
 }

@@ -4,6 +4,7 @@
 #include <dxiphysx/objectcomponent/SphereCollider.h>
 
 using namespace me;
+using namespace scene;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -23,7 +24,7 @@ std::string SphereCollider::GetName() const
 	return "Sphere Collider";
 }
 
-me::IObjectComponent * SphereCollider::Duplicate()
+IObjectComponent * SphereCollider::Duplicate()
 {
 	auto duplicate = new SphereCollider( *this );
 	return duplicate;

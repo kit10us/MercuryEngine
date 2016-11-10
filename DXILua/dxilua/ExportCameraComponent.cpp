@@ -13,9 +13,9 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 
-
 using namespace dxilua;
 using namespace me;
+using namespace scene;
 
 CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 {
@@ -23,7 +23,7 @@ CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 	return ud;
 }
 
-int PushCameraComponent( lua_State * state, me::ObjectComponent::ptr component )
+int PushCameraComponent( lua_State * state, me::scene::ObjectComponent::ptr component )
 {
 	CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
 	*proxy = new CameraComponentProxy;
@@ -148,7 +148,7 @@ int CameraComponent_Constructor( lua_State * state )
 {
 	auto game = ScriptEngine::GetGame();
 
-	me::IObjectComponent::ptr component( new CameraComponent( game->GetOS( ) ) );
+	IObjectComponent::ptr component( new CameraComponent( game->GetOS( ) ) );
 	return PushCameraComponent( state, component );
 }
 

@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <dxilua/ScriptEngine.h>
-#include <me/IObjectComponent.h>
-#include <me/Object.h>
+#include <me/scene/IObjectComponent.h>
+#include <me/scene/Object.h>
 #include <me/IGame.h>
 
 namespace dxilua
 {
-	class Module : public me::IObjectComponent
+	class Module : public me::scene::IObjectComponent
 	{
 	protected:
 		Module( Module & component );
@@ -22,23 +22,23 @@ namespace dxilua
 		bool IsEnabled() const override;
 		void SetEnabled( bool enabled ) override;
 
-		void OnAttach( me::Object * object ) override;
-		void OnDetach( me::Object * object ) override;
-		void OnInit( me::Object * object ) override;
-		void OnStart( me::Object * object ) override;
-		void OnUpdate( me::Object * object, const me::RenderInfo & renderInfo ) override;
-		void OnRender( me::Object * object, const me::RenderInfo & renderInfo ) override;
-		void OnSuspend( me::Object * object ) override;
-		void OnResume( me::Object * object ) override;
+		void OnAttach( me::scene::Object * object ) override;
+		void OnDetach( me::scene::Object * object ) override;
+		void OnInit( me::scene::Object * object ) override;
+		void OnStart( me::scene::Object * object ) override;
+		void OnUpdate( me::scene::Object * object, const me::RenderInfo & renderInfo ) override;
+		void OnRender( me::scene::Object * object, const me::RenderInfo & renderInfo ) override;
+		void OnSuspend( me::scene::Object * object ) override;
+		void OnResume( me::scene::Object * object ) override;
 
-		me::IObjectComponent * Duplicate();
+		me::scene::IObjectComponent * Duplicate();
 
 	private: 
 		void CallMember( std::string function );
 
 		lua_State * m_state;
 		me::IGame * m_game;
-		me::Object * m_object;
+		me::scene::Object * m_object;
 		std::string m_name;
 		unify::Path m_path;
 		bool m_enabled;

@@ -4,6 +4,7 @@
 #include <dxiphysx/objectcomponent/CapsuleCollider.h>
 
 using namespace me;
+using namespace scene;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -23,7 +24,7 @@ std::string CapsuleCollider::GetName() const
 	return "Capsule Collider";
 }
 
-me::IObjectComponent * CapsuleCollider::Duplicate()
+IObjectComponent * CapsuleCollider::Duplicate()
 {
 	auto duplicate = new CapsuleCollider( *this );
 	return duplicate;

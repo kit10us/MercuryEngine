@@ -105,7 +105,7 @@ namespace me
 		unify::Path m_setup;
 		unify::Path m_logFile;
 
-		me::IObjectComponent::ptr m_gameModule;
+		me::scene::IObjectComponent::ptr m_gameModule;
 
 		float m_totalStartupTime;
 

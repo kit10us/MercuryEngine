@@ -156,12 +156,12 @@ bool Angle::operator <= ( const Angle & angle )
 	return m_radians <= angle.m_radians;
 }
 
-float Angle::GetRadians() const
+float Angle::ToRadians() const
 {
     return m_radians;
 }
 
-float Angle::GetDegrees() const
+float Angle::ToDegrees() const
 {
     return m_radians * (3.14159265f / 180.0f);
 }

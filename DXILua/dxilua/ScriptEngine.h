@@ -29,7 +29,7 @@ namespace dxilua
 		me::ExecuteResult ExecuteString( std::string line ) override;
 		me::ExecuteResult ExecuteFile( unify::Path path ) override;
 
-		me::IObjectComponent::ptr LoadModule( unify::Path path ) override;
+		me::scene::IObjectComponent::ptr LoadModule( unify::Path path ) override;
 
 		DXILUADLL_API lua_State * GetState();
 

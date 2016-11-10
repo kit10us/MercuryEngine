@@ -1,42 +1,20 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/LOD.h>
+#include <me/LOD.h>
 #include <algorithm>
 
-using namespace dxi;
 using namespace me;
 
-QLOD::QLOD()
+LOD::LOD()
 {
 }
 
-QLOD::~QLOD()
+LOD::~LOD()
 {
-	Destroy();
 }
 
-void QLOD::Create()
-{
-	// TODO:
-}
-
-void QLOD::Destroy()
-{
-	m_list.clear();
-}
-
-void QLOD::Validate()
-{
-	// TODO:
-}
-
-void QLOD::Invalidate()
-{
-	// TODO:
-}
-
-void QLOD::Add( Geometry::ptr geometry, float distanceStart )
+void LOD::Add( Geometry::ptr geometry, float distanceStart )
 {
 	m_list.push_back( LODNode( geometry, distanceStart ) );
 	m_list.sort();
@@ -44,7 +22,7 @@ void QLOD::Add( Geometry::ptr geometry, float distanceStart )
 	ComputeBounds();
 }
 
-void QLOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( m_list.empty() )
 	{
@@ -66,7 +44,7 @@ void QLOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 	itr->GetGeometry()->Render( renderInfo, instanceData );
 }
 
-void QLOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void LOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	// Update all geometry...
 	for( auto node : m_list )
@@ -75,7 +53,7 @@ void QLOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 	}
 }
 
-const unify::BBox< float > & QLOD::ComputeBounds()
+const unify::BBox< float > & LOD::ComputeBounds()
 {
 	// Merge all bouns into our bounds...
 	m_BBox.Clear();
@@ -87,7 +65,7 @@ const unify::BBox< float > & QLOD::ComputeBounds()
 	return m_BBox;
 }
 
-Geometry::ptr QLOD::GetLOD( unsigned int index )
+Geometry::ptr LOD::GetLOD( unsigned int index )
 {
 	// This should ensure the next step doesn't ever hit end (overflow).
 	if( index >= (unsigned int)m_list.size() )

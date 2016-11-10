@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #pragma once
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
 #include <me/IGameComponent.h>
 #include <me/scene/ISceneManagerComponent.h>
 

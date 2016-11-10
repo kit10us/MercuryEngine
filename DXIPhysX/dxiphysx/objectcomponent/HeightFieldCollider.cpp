@@ -3,14 +3,13 @@
 
 #include <dxiphysx/objectcomponent/HeightFieldCollider.h>
 
-using namespace dxi;
+using namespace me;
+using namespace scene;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
-//PxHeightFieldGeometry
-
-HeightFieldCollider::HeightFieldCollider( me::IOS * os, GameComponent * gameComponent, dxi::Terra * terra, unify::RowColumn< unsigned int > rcCount  )
+HeightFieldCollider::HeightFieldCollider( me::IOS * os, GameComponent * gameComponent, me::Terra * terra, unify::RowColumn< unsigned int > rcCount  )
 	: ColliderBase( os, gameComponent )
 {
 	PxPhysics * physics = gameComponent->GetPhysics();
@@ -63,7 +62,7 @@ std::string HeightFieldCollider::GetName() const
 	return "HeightField Collider";
 }
 
-me::IObjectComponent * HeightFieldCollider::Duplicate()
+IObjectComponent * HeightFieldCollider::Duplicate()
 {
 	auto duplicate = new HeightFieldCollider( *this );
 	return duplicate;

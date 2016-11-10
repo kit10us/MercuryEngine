@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/ObjectComponent.h>
+#include <me/scene/ObjectComponent.h>
 #include <me/scene/GeometryComponent.h>
 #include <me/Effect.h>
 #include <me/PrimitiveList.h>

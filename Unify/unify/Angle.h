@@ -55,8 +55,8 @@ namespace unify
 		bool operator < ( const Angle & angle );
 		bool operator <= ( const Angle & angle );
 
-		float GetRadians() const;
-        float GetDegrees() const;
+		float ToRadians() const;
+        float ToDegrees() const;
 
 		///<summary>
 		/// Ensures our value is within 360 degress, without loss of precision (if we are 367, then we become 7, etc.).

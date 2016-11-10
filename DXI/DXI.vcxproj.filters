@@ -148,12 +148,6 @@
     <ClCompile Include="source\dxi\pathing\general\Split.cpp">
       <Filter>dxi\pathing\general</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\LOD.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\Terra.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\GeometryPlacement.cpp">
       <Filter>dxi</Filter>
     </ClCompile>
@@ -198,12 +192,6 @@
     </ClInclude>
     <ClInclude Include="source\dxi\pathing\general\Parallel.h">
       <Filter>dxi\pathing\general</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\LOD.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\Terra.h">
-      <Filter>dxi</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\GeometryPlacement.h">
       <Filter>dxi</Filter>

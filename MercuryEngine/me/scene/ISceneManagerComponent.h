@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
 #include <memory>
 
 namespace me

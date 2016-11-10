@@ -1,13 +1,13 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
 
-using namespace dxi;
+using namespace me;
 
-class MyGame : public dxi::core::Game
+class MyGame : public Game
 {
 public:
 	MyGame()

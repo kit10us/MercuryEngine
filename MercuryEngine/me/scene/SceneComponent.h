@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/ISceneComponent.h>
+#include <me/scene/ISceneComponent.h>
 #include <me/IOS.h>
 
 namespace me

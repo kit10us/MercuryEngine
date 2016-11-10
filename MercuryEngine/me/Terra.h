@@ -20,7 +20,7 @@
 #include <unify/ColorUnit.h>
 #include <unify/MinMax.h>
 
-namespace dxi
+namespace me
 {
 	#define SIDE_NONE		FLAGNULL
 	#define SIDE_UP			FLAG01

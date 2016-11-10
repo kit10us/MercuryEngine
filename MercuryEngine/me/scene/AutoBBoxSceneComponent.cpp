@@ -3,7 +3,7 @@
 
 #include <me/scene/AutoBBoxSceneComponent.h>
 #include <me/scene/BBoxRendererComponent.h>
-#include <me/Object.h>
+#include <me/scene/Object.h>
 
 using namespace me;
 using namespace scene;

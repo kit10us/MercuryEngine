@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\BufferSet.h" />
-    <ClInclude Include="me\CameraComponent.h" />
     <ClInclude Include="me\DataBuffer.h" />
     <ClInclude Include="me\Display.h" />
     <ClInclude Include="me\Effect.h" />
@@ -55,33 +54,35 @@
     <ClInclude Include="me\IInputSource.h" />
     <ClInclude Include="me\IndexLock.h" />
     <ClInclude Include="me\InputManager.h" />
-    <ClInclude Include="me\IObjectComponent.h" />
     <ClInclude Include="me\IOS.h" />
     <ClInclude Include="me\IPixelShader.h" />
     <ClInclude Include="me\IRenderer.h" />
-    <ClInclude Include="me\ISceneComponent.h" />
     <ClInclude Include="me\IScriptEngine.h" />
     <ClInclude Include="me\ITexture.h" />
     <ClInclude Include="me\IVertexBuffer.h" />
     <ClInclude Include="me\IVertexDeclaration.h" />
     <ClInclude Include="me\IVertexShader.h" />
+    <ClInclude Include="me\LOD.h" />
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\Mesh.h" />
     <ClInclude Include="me\MeshAnimation.h" />
     <ClInclude Include="me\MeshInstanceData.h" />
-    <ClInclude Include="me\Object.h" />
-    <ClInclude Include="me\ObjectComponent.h" />
     <ClInclude Include="me\PrimitiveList.h" />
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderMethodBuffer.h" />
-    <ClInclude Include="me\Scene.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\BBoxRendererComponent.h" />
+    <ClInclude Include="me\scene\CameraComponent.h" />
     <ClInclude Include="me\scene\GeometryComponent.h" />
+    <ClInclude Include="me\scene\ISceneComponent.h" />
     <ClInclude Include="me\scene\ISceneManagerComponent.h" />
+    <ClInclude Include="me\scene\Object.h" />
+    <ClInclude Include="me\scene\ObjectComponent.h" />
+    <ClInclude Include="me\scene\Scene.h" />
     <ClInclude Include="me\scene\SceneComponent.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
+    <ClInclude Include="me\Terra.h" />
     <ClInclude Include="me\TextureLock.h" />
     <ClInclude Include="me\TextureMode.h" />
     <ClInclude Include="me\VertexElement.h" />
@@ -107,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\BufferSet.cpp" />
-    <ClCompile Include="me\CameraComponent.cpp" />
     <ClCompile Include="me\DataBuffer.cpp" />
     <ClCompile Include="me\Display.cpp" />
     <ClCompile Include="me\Effect.cpp" />
@@ -127,20 +127,23 @@
     <ClCompile Include="me\GeometryInstanceData.cpp" />
     <ClCompile Include="me\IndexLock.cpp" />
     <ClCompile Include="me\InputManager.cpp" />
+    <ClCompile Include="me\LOD.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
-    <ClCompile Include="me\Object.cpp" />
-    <ClCompile Include="me\ObjectComponent.cpp" />
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
     <ClCompile Include="me\RenderMethodBuffer.cpp" />
-    <ClCompile Include="me\Scene.cpp" />
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\BBoxRendererComponent.cpp" />
+    <ClCompile Include="me\scene\CameraComponent.cpp" />
     <ClCompile Include="me\scene\GeometryComponent.cpp" />
+    <ClCompile Include="me\scene\Object.cpp" />
+    <ClCompile Include="me\scene\ObjectComponent.cpp" />
+    <ClCompile Include="me\scene\Scene.cpp" />
     <ClCompile Include="me\scene\SceneComponent.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
+    <ClCompile Include="me\Terra.cpp" />
     <ClCompile Include="me\TextureMode.cpp" />
     <ClCompile Include="me\VertexElement.cpp" />
     <ClCompile Include="me\VertexUtil.cpp" />

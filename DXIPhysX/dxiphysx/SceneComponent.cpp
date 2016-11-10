@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxiphysx/SceneComponent.h>
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
 
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
@@ -11,6 +11,7 @@
 
 using namespace dxiphysx;
 using namespace me;
+using namespace scene;
 using namespace physx;
 		 
 DXIPHYSX_API SceneComponent::SceneComponent( me::IOS * os, GameComponent * gameComponent )
@@ -53,19 +54,19 @@ void SceneComponent::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void SceneComponent::OnAttach( me::Scene * scene )
+void SceneComponent::OnAttach( me::scene::Scene * scene )
 {
 }
 
-void SceneComponent::OnDetach( me::Scene * scene )
+void SceneComponent::OnDetach( me::scene::Scene * scene )
 {
 }
 
-void SceneComponent::OnInit( me::Scene * scene )
+void SceneComponent::OnInit( me::scene::Scene * scene )
 {
 }
 
-void SceneComponent::OnStart( me::Scene * scene )
+void SceneComponent::OnStart( me::scene::Scene * scene )
 {
 	auto physics = m_gameComponent->GetPhysics();
 
@@ -81,7 +82,7 @@ void SceneComponent::OnStart( me::Scene * scene )
 	}
 }
 
-void SceneComponent::OnUpdate( me::Scene * scene, const RenderInfo & renderInfo )
+void SceneComponent::OnUpdate( me::scene::Scene * scene, const RenderInfo & renderInfo )
 {											
 	float elapsedTime = renderInfo.GetDelta();
 
@@ -124,7 +125,7 @@ void SceneComponent::OnUpdate( me::Scene * scene, const RenderInfo & renderInfo 
 	}
 }
 
-void SceneComponent::OnRender( me::Scene * scene, const RenderInfo & renderInfo )
+void SceneComponent::OnRender( me::scene::Scene * scene, const RenderInfo & renderInfo )
 {
 }
 

@@ -1,21 +1,19 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 #include <me/Mesh.h>
-#include <dxi/scene/SceneManager.h>
-#include <dxi/shapes/ShapeCreators.h>
-#include <dxi/factory/PixelShaderFactories.h>
-#include <dxi/factory/VertexShaderFactory.h>
-#include <dxi/factory/ShapeFactory.h>
+#include <me/scene/SceneManager.h>
+#include <sg/ShapeCreators.h>
+#include <me/factory/PixelShaderFactories.h>
+#include <me/factory/VertexShaderFactory.h>
+#include <sg/ShapeFactory.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
 
-#include <dxi/scene/BBoxRendererComponent.h>
-#include <me/CameraComponent.h>
+#include <me/scene/BBoxRendererComponent.h>
+#include <me/scene/CameraComponent.h>
 
-using namespace dxi;
-using namespace core;
 using namespace me;
 
 class MyGame : public Game
@@ -31,15 +29,17 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	using namespace scene;
+
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
 	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
 
 	// Load shaders.
-	PixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
-	VertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
 
 	// Add a texture.
 	GetManager< ITexture >()->Add( "borgcube", "media/borgcube.bmp" );
@@ -63,11 +63,11 @@ void MyGame::Startup()
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 	// From dynamically generated geometry (shape creator)...
-	shapes::CubeParameters cubeParameters;
+	sg::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
     cubeParameters.SetSize( unify::Size3< float >( 1, 1, 1 ) );
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-	Geometry::ptr meshProg( shapes::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
+	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
 	auto gc = AddGeometryComponent( progObject.get(), GetOS(), meshProg );
@@ -154,8 +154,9 @@ void MyGame::Startup()
 void MyGame::Update( RenderInfo & renderInfo )
 {
 	using namespace unify;
+	using namespace scene;
 
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr scene = sceneManager->Find( "scene" );
 
 	{

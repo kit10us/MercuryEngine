@@ -19,6 +19,7 @@
 
 using namespace dxilua;
 using namespace me;
+using namespace scene;
 
 static dxilua::ScriptEngine * g_luaSE;
 static me::Game * g_game;

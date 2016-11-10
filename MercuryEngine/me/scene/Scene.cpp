@@ -1,12 +1,13 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Scene.h>
+#include <me/scene/Scene.h>
+#include <me/scene/CameraComponent.h>
 #include <me/Frustum.h>
-#include <me/CameraComponent.h>
 #include <map>
 
 using namespace me;
+using namespace scene;
 
 Scene::Scene( IGame * game )
 : m_game( game )

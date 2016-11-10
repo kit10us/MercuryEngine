@@ -6,6 +6,7 @@
 
 using namespace dxiphysx;
 using namespace me;
+using namespace scene;
 
 SceneManagerComponent::SceneManagerComponent( IOS * os )
 	: m_os( os )
