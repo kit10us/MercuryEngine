@@ -2,13 +2,11 @@
 // All Rights Reserved
 
 #include <dxikeyboard/Keyboard.h>
-#include <dxi/win/WindowsOS.h>
-#include <dxi/exception/DeviceFailure.h>
+#include <me/exception/DeviceFailure.h>
 #include <dinput.h>
 
 using namespace dxikeyboard;
-using namespace dxi;
-using namespace input;
+using namespace me;
 
 #pragma comment(lib,"dxguid")
 #pragma comment(lib,"dinput8")
@@ -341,7 +339,7 @@ std::map< int, std::string > g_KeyIndexToName =
 	{ DIK_UPARROW, "UPARROW" }
 };
 
-Keyboard::Keyboard( dxi::core::IGame * game )
+Keyboard::Keyboard( me::IGame * game )
 	: m_game( game )
 	, m_pdi( 0 )
 	, m_pdiKeyboard( 0 )
@@ -374,15 +372,16 @@ std::string Keyboard::Name() const
 
 void Keyboard::Acquire()
 {
-	win::WindowsOS * windowsOS = dynamic_cast< win::WindowsOS * >(m_game->GetOS());
-	HWND handle = windowsOS->GetHandle();
+	auto parameters = m_game->GetOSParameters();
+	HWND handle = (HWND)parameters.hWnd;
+	HINSTANCE hInstance = (HINSTANCE)parameters.hInstance;
 
 	// Create the Direct Input device...
 	if ( ! m_pdi )
 	{
-		if ( FAILED( DirectInput8Create( windowsOS->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&m_pdi, 0 ) ) )
+		if ( FAILED( DirectInput8Create( hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&m_pdi, 0 ) ) )
 		{
-			throw dxi::exception::DeviceFailure( "DirectInput", "Couldn't Create a device!" );
+			throw exception::DeviceFailure( "DirectInput", "Couldn't Create a device!" );
 		}
 	}
 
@@ -484,7 +483,7 @@ size_t Keyboard::SubSourceCount() const
 	return 1;
 }
 
-State Keyboard::GetState( size_t subSource, std::string name, std::string condition ) const
+me::State Keyboard::GetState( size_t subSource, std::string name, std::string condition ) const
 {
 	if ( subSource > 0 ) return State::Invalid;
 

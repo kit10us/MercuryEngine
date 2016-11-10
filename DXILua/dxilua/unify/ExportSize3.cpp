@@ -5,7 +5,7 @@
 #include <dxilua/ScriptEngine.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 unify::Size3< float > CheckSize3( lua_State * state, int index )
 {

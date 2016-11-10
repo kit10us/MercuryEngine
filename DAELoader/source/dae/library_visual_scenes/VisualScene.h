@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <dxi/PrimitiveList.h>
+#include <me/PrimitiveList.h>
 #include <dae/Node.h>
 #include <dae/DocumentNode.h>
 #include <string>
@@ -22,10 +22,10 @@ namespace dae
 		const std::string & GetName() const;
 		const Node * GetFirstNode() const;
 
-		void Build( dxi::PrimitiveList & pl ) const;
+		void Build( me::PrimitiveList & pl ) const;
 
 	private:
-		void Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const;
+		void Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const;
 
 		std::string m_id;
 		std::string m_name;		

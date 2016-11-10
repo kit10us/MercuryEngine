@@ -6,17 +6,17 @@
 #include <memory.h>
 #include <dxi/win/DXILib.h>
 
-void Deleter( dxi::scripting::IScriptEngine * se )
+void Deleter( me::IScriptEngine * se )
 {
 	delete se;
 }
 
-extern "C" DXILUADLL_API bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
+extern "C" DXILUADLL_API bool DXILoader( me::IGame * game, const qxml::Document * doc );
 
-DXILUADLL_API bool DXILoader( dxi::core::IGame * game, const qxml::Document * document )
+DXILUADLL_API bool DXILoader( me::IGame * game, const qxml::Document * document )
 {
 	//game->AddScriptEngine( "lua", std::shared_ptr< dxi::scripting::IScriptEngine >( new dxilua::ScriptEngine( game ), Deleter ) );
-	game->AddComponent( dxi::core::IGameComponent::ptr( new dxilua::ScriptEngine( game ), Deleter ) );
+	game->AddComponent( me::IGameComponent::ptr( new dxilua::ScriptEngine( game ), Deleter ) );
 	return true;
 }
 

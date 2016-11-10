@@ -173,7 +173,7 @@ double Value::ToDouble() const
 /// <summary>
 /// Enables generic testing if there is no value; null being literally no value, and array having no contents.
 /// </summary>
-bool Value::IsNullOrEmpty()
+bool Value::IsNullOrEmpty() const
 {
 	return false;
 }

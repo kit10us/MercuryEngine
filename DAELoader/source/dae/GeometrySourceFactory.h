@@ -3,21 +3,21 @@
 
 #pragma once
 
-#include <dxi/Geometry.h>
+#include <me/Geometry.h>
 #include <rm/ResourceManagerSimple.h>
 #include <dae/Document.h>
 
 namespace dae
 {
-	class GeometrySourceFactory : public rm::ISourceFactory< dxi::Geometry >
+	class GeometrySourceFactory : public rm::ISourceFactory< me::Geometry >
 	{
 	public:
-		GeometrySourceFactory( dxi::core::IRenderer * renderer, util::IEffectSolver * effectSolver );
+		GeometrySourceFactory( me::IRenderer * renderer, util::IEffectSolver * effectSolver );
 
-		dxi::Geometry::ptr Produce( unify::Path path, void * data ) override;
+		me::Geometry::ptr Produce( unify::Path path, void * data ) override;
 
 	private:
-		dxi::core::IRenderer * m_renderer;
+		me::IRenderer * m_renderer;
 		std::shared_ptr< util::IEffectSolver > m_effectSolver;
 	};
 }

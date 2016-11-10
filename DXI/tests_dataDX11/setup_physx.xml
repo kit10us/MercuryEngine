@@ -1,5 +1,6 @@
 <xml>
 <setup>
+<renderer>MercuryEngineDX11.dll</renderer>
 <logfile>log.txt</logfile>
 <display fullscreen="false" x="10" y="10" width="1920" height="1080"/>
 <extension>../../../extensions/DXILua.dll</extension>
@@ -7,12 +8,9 @@
 <extension>../../../extensions/ASELoader.dll</extension>
 <extension>../../../extensions/DXIPhysx.dll</extension>
 <extension>../../../extensions/DXILuaPhysXExt.dll</extension>
-
 <extension>../../../extensions/DXIKeyboard.dll</extension>
 <extension>../../../extensions/DXIMouse.dll</extension>
 <extension>../../../extensions/DXIGamepad.dll</extension>
-
-
 <gamemodule type="LUA" source="game_physx.lua"/>
 </setup>
 </xml>

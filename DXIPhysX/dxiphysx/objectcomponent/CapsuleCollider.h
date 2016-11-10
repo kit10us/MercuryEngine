@@ -12,12 +12,12 @@ namespace dxiphysx
 		class CapsuleCollider : public objectcomponent::ColliderBase
 		{
 		public:
-			CapsuleCollider( dxi::core::IOS * os, GameComponent * gameComponent, float radius, float halfHeight );
+			CapsuleCollider( me::IOS * os, GameComponent * gameComponent, float radius, float halfHeight );
 			~CapsuleCollider();
 
 			std::string GetName() const override;
 
-			dxi::scene::IObjectComponent * Duplicate() override;
+			me::IObjectComponent * Duplicate() override;
 		};
 	}
 }

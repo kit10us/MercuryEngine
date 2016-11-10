@@ -1,26 +1,26 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 #pragma once
-#include <dxi/Mesh.h>
+#include <me/Mesh.h>
 #include <rm/ResourceManagerSimple.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 namespace ase
 {
-	class GeometryFactory : public rm::ISourceFactory< dxi::Geometry >
+	class GeometryFactory : public rm::ISourceFactory< me::Geometry >
 	{
 	public:
-		GeometryFactory( dxi::core::Game * game );
+		GeometryFactory( me::Game * game );
 
-		void SetVertexShader( dxi::VertexShader::ptr vertexShader );
-		void SetPixelShader( dxi::PixelShader::ptr pixelShader );
+		void SetVertexShader( me::IVertexShader::ptr vertexShader );
+		void SetPixelShader( me::IPixelShader::ptr pixelShader );
 
-		dxi::Geometry::ptr Produce( unify::Path source, void * data ) override;
+		me::Geometry::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
-		dxi::core::Game * m_game;
+		me::Game * m_game;
 		// TODO: This will likely need to have multiple sets based on material needs - TBD.
-		dxi::VertexShader::ptr m_vertexShader;
-		dxi::PixelShader::ptr m_pixelShader;
+		me::IVertexShader::ptr m_vertexShader;
+		me::IPixelShader::ptr m_pixelShader;
 	};
 }

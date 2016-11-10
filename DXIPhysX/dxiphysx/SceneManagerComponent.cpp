@@ -5,9 +5,9 @@
 #include <dxiphysx/SceneComponent.h>
 
 using namespace dxiphysx;
-using namespace dxi;
+using namespace me;
 
-SceneManagerComponent::SceneManagerComponent( core::IOS * os )
+SceneManagerComponent::SceneManagerComponent( IOS * os )
 	: m_os( os )
 {
 }
@@ -27,7 +27,7 @@ void DeleterSC( SceneComponent * sc )
 	delete sc;
 }
 
-void SceneManagerComponent::OnNewScene( scene::Scene * scene )
+void SceneManagerComponent::OnNewScene( Scene * scene )
 {
 	//scene->AddComponent( scene::ISceneComponent::ptr( new SceneComponent( m_os ), DeleterSC ) );
 }

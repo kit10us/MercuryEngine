@@ -11,9 +11,7 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 
-
 using namespace dxilua;
-using namespace dxi;
 
 unify::V2< float > CheckV2( lua_State * state, int index )
 {

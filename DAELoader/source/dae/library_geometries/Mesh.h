@@ -9,7 +9,7 @@
 #include <dae/Triangles.h>
 #include <dae/DocumentNode.h>
 #include <dae/BindMaterial_TechniqueCommon.h>
-#include <dxi/PrimitiveList.h>
+#include <me/PrimitiveList.h>
 #include <qxml/QXML.h>
 #include <map>
 #include <vector>
@@ -31,7 +31,7 @@ namespace dae
 		/// <summary>
 		/// Build a primitive list using a given/optional material.
 		/// </summary>
-		void Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
+		void Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
 			
 	private:
 		std::vector< std::shared_ptr< Source > > m_source;

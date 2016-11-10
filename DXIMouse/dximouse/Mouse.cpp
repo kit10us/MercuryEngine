@@ -4,10 +4,9 @@
 #include <dximouse/Mouse.h>
 
 using namespace dximouse;
-using namespace dxi;
-using namespace input;
+using namespace me;
 
-Mouse::Mouse( dxi::core::IGame * game )
+Mouse::Mouse( IGame * game )
 	: m_game( game )
 {
 	m_subSources.resize( game->GetOS()->RendererCount() );
@@ -79,7 +78,7 @@ State Mouse::GetState( size_t subSource, std::string name, std::string condition
 {
 	if ( subSource >= m_subSources.size() )
 	{
-		return input::State::Invalid;
+		return State::Invalid;
 	}
 
 	const Source & source = m_subSources[subSource];

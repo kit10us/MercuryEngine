@@ -1,5 +1,6 @@
 <xml>
 <setup>
+<renderer>MercuryEngineDX9.dll</renderer>
 <failureAsCritical>true</failureAsCritical>
 <logfile>log.txt</logfile>
 <display fullscreen="true" width="3840" height="2160"/>

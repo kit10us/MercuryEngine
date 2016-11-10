@@ -7,16 +7,17 @@
 /// * Example of the creation of the programmatic
 /// </summary>
 
-#include <dxi/core/Game.h>
-#include <dxi/shapes/ShapeCreators.h>
+#include <me/Game.h>
+//#include <me/shapes/ShapeCreators.h>
 #include <dxi/win/DXILib.h>
 #include <DXIWinMain.h>
-#include <dxi/scene/SceneManager.h>
-#include <dxi/scene/BBoxRendererComponent.h>
-#include <dxi/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/SceneManager.h>
+#include <me/scene/BBoxRendererComponent.h>
+#include <me/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/GeometryComponent.h>
+#include <me/CameraComponent.h>
 
-using namespace dxi;
-using namespace core;
+using namespace me;
 
 class MyGame : public Game
 {
@@ -32,11 +33,11 @@ public:
 
 		Effect::ptr effect = GetManager< Effect >()->Find( "texture3d" ); // Demonstrate how the effect is pulled from the manager by name.
 
-		scene::Scene::ptr mainScene = sceneManager->Add( "main" );
+		Scene::ptr mainScene = sceneManager->Add( "main" );
 
-		scene::Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
-		camera->AddComponent( scene::IObjectComponent::ptr( new scene::CameraComponent( GetOS() ) ) );
-		scene::CameraComponent * cameraComponent = unify::polymorphic_downcast< scene::CameraComponent * >( camera->GetComponent( "Camera" ).get() );
+		Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
+		camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );
+		CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "Camera" ).get() );
 																			 
 		cameraComponent->SetProjection(
 			unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f,
@@ -46,7 +47,7 @@ public:
 		camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 		camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
-		VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+		IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 		auto group = mainScene->GetRoot()->AddChild( "group" );
 
@@ -75,7 +76,7 @@ public:
 
 		if ( createBBs )
 		{
-			mainScene->AddComponent( scene::ISceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3d ) ) );
+			mainScene->AddComponent( ISceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3d ) ) );
 		}
 
 		auto & cube = *group->AddChild( "cube" );
@@ -83,7 +84,7 @@ public:
 		cubeParameters.SetEffect( effect );
 		cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-		cube.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), cubeParameters ) ) );
+		AddGeometryComponent( &cube, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), cubeParameters ) ) );
 		cube.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pointField = *group->AddChild( "pointField" );
@@ -93,7 +94,7 @@ public:
 		pointFieldParameters.SetMajorRadius( 1.0f );
 		pointFieldParameters.SetCount( 1000 );
 		pointFieldParameters.SetDiffuse( unify::Color::ColorWhite() );
-		pointField.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), pointFieldParameters ) ) );
+		AddGeometryComponent( &pointField, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), pointFieldParameters ) ) );
 		pointField.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pointRing = *group->AddChild( "pointRing" );
@@ -103,7 +104,7 @@ public:
 		pointRingParameters.SetMajorRadius( 0.75f );
 		pointRingParameters.SetCount( 1000 );
 		pointRingParameters.SetDiffuse( unify::Color::ColorRed() );
-		pointRing.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), pointRingParameters ) ) );
+		AddGeometryComponent( &pointRing, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), pointRingParameters ) ) );
 		pointRing.GetFrame().SetPosition( positions[shape++] );
 
 		auto & dashRing = *group->AddChild( "dashRing" );
@@ -114,7 +115,7 @@ public:
 		dashRingParameters.SetSize( 0.5f );
 		dashRingParameters.SetCount( 5 );
 		dashRingParameters.SetDiffuse( unify::Color::ColorGreen() );
-		dashRing.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), dashRingParameters ) ) );
+		AddGeometryComponent( &dashRing, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), dashRingParameters ) ) );
 		dashRing.GetFrame().SetPosition( positions[shape++] );
 
 		auto & pyramid = *group->AddChild( "pyramid" );
@@ -122,7 +123,7 @@ public:
 		pyramidParameters.SetEffect( effect );
 		pyramidParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
 		pyramidParameters.SetDiffuse( unify::Color::ColorYellow() );
-		pyramid.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), pyramidParameters ) ) );
+		AddGeometryComponent( &pyramid, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), pyramidParameters ) ) );
 		pyramid.GetFrame().SetPosition( positions[shape++] );
 
 		auto & circle = *group->AddChild( "circle" );
@@ -131,7 +132,7 @@ public:
 		circleParameters.SetSegments( 24 );
 		circleParameters.SetRadius( 1.0f );
 		circleParameters.SetDiffuse( unify::Color::ColorBlue() );
-		circle.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), circleParameters ) ) );
+		AddGeometryComponent( &circle, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), circleParameters ) ) );
 		circle.GetFrame().SetPosition( positions[shape++] );
 
 		auto & sphere = *group->AddChild( "sphere" );
@@ -140,7 +141,7 @@ public:
 		sphereParameters.SetSegments( 24 );
 		sphereParameters.SetRadius( 1.0f );
 		sphereParameters.SetDiffuse( unify::Color::ColorCyan() );
-		sphere.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), sphereParameters ) ) );
+		AddGeometryComponent( &sphere, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), sphereParameters ) ) );
 		sphere.GetFrame().SetPosition( positions[shape++] );
 
 		auto & cylinder = *group->AddChild( "cylinder" );
@@ -151,7 +152,7 @@ public:
 		cylinderParameters.SetHeight( 2.0f );
 		cylinderParameters.SetDiffuse( unify::Color::ColorMagenta() );
 		cylinderParameters.SetCaps( true );
-		cylinder.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), cylinderParameters ) ) );
+		AddGeometryComponent( &cylinder, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), cylinderParameters ) ) );
 		cylinder.GetFrame().SetPosition( positions[shape++] );
 
 		auto & tube = *group->AddChild( "tube" );
@@ -162,7 +163,7 @@ public:
 		tubeParameters.SetMinorRadius( 0.5f );
 		tubeParameters.SetHeight( 2.0f );
 		tubeParameters.SetDiffuse( unify::Color::ColorRed() );
-		tube.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), tubeParameters ) ) );
+		AddGeometryComponent( &tube, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), tubeParameters ) ) );
 		tube.GetFrame().SetPosition( positions[shape++] );
 
 		auto & plane = *group->AddChild( "plane" );
@@ -171,7 +172,7 @@ public:
 		planeParameters.SetSegments( 2 );
 		planeParameters.SetSize( unify::Size< float >( 2.0f, 2.0f ) );
 		planeParameters.SetDiffuse( unify::Color::ColorCyan() );
-		plane.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), planeParameters ) ) );
+		AddGeometryComponent( &plane, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), planeParameters ) ) );
 		plane.GetFrame().SetPosition( positions[shape++] );
 
 		auto & cone = *group->AddChild( "cone" );
@@ -182,7 +183,7 @@ public:
 		coneParameters.SetHeight( 2.0f );
 		coneParameters.SetDiffuse( unify::Color::ColorGreen() );
 		coneParameters.SetCaps( true );
-		cone.SetGeometry( Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) ) );
+		AddGeometryComponent( &cone, GetOS(), Geometry::ptr( shapes::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) ) );
 		cone.GetFrame().SetPosition( positions[shape++] );
 	}
 

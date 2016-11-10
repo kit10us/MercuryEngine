@@ -4,9 +4,9 @@
 #pragma once
 
 #include <DXIPhysX.h>
-#include <dxi/scene/IObjectComponent.h>
+#include <me/IObjectComponent.h>
 #include <dxiphysx/GameComponent.h>
-#include <dxi/core/IOS.h>
+#include <me/IOS.h>
 #include <PxPhysicsAPI.h>
 #include <dxiphysx/Releaser.h>
 
@@ -14,35 +14,35 @@ namespace dxiphysx
 {
 	namespace objectcomponent
 	{
-		class ColliderBase : public dxi::scene::IObjectComponent
+		class ColliderBase : public me::IObjectComponent
 		{
 		protected:
 			ColliderBase( ColliderBase & colliderBase );
 
 		public:
-			ColliderBase( dxi::core::IOS * os, GameComponent * gameComponent );
+			ColliderBase( me::IOS * os, GameComponent * gameComponent );
 			~ColliderBase();
 
-			dxi::core::IOS * GetOS();
-			const dxi::core::IOS * GetOS() const;
+			me::IOS * GetOS();
+			const me::IOS * GetOS() const;
 
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 									   
-			void OnAttach( dxi::scene::Object * object ) override;
-			void OnDetach( dxi::scene::Object * object ) override {}
-			void OnInit( dxi::scene::Object * object ) override {}
-			void OnStart( dxi::scene::Object * object ) override {}
-			void OnUpdate( dxi::scene::Object * object, const dxi::RenderInfo & renderInfo ) override {}
-			void OnRender( dxi::scene::Object * object, const dxi::RenderInfo & renderInfo ) override {}
-			void OnSuspend( dxi::scene::Object * object ) override {}
-			void OnResume( dxi::scene::Object * object ) override {}
+			void OnAttach( me::Object * object ) override;
+			void OnDetach( me::Object * object ) override {}
+			void OnInit( me::Object * object ) override {}
+			void OnStart( me::Object * object ) override {}
+			void OnUpdate( me::Object * object, const me::RenderInfo & renderInfo ) override {}
+			void OnRender( me::Object * object, const me::RenderInfo & renderInfo ) override {}
+			void OnSuspend( me::Object * object ) override {}
+			void OnResume( me::Object * object ) override {}
 
 			DXIPHYSX_API physx::PxShape * GetShape();
 			DXIPHYSX_API const physx::PxShape * GetShape() const;
 
 		private:
-			dxi::core::IOS * m_os;
+			me::IOS * m_os;
 			bool m_enabled;
 
 		protected:

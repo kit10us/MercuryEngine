@@ -5,6 +5,7 @@
 
 using namespace dxi;
 using namespace font;
+using namespace me;
 
 Character::Character()
 : m_source( Source::Invalid )
@@ -109,25 +110,27 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 	{
 	case Source::Sprite:
 		{
-			VertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
-			VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
+			// TODO: IVertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
+			// TODO: IVertexDeclaration::ptr vd = vb.GetVertexDeclaration();
 
 			VertexElement positionE = CommonVertexElement::Position();
 			VertexElement texE = CommonVertexElement::TexCoords();
 
+			assert( 0 ); //TODO:
+			/*
 			unify::DataLock lock;
 			vb.Lock( lock );
 			const unify::TexArea & area = m_animationInstance.GetFrame().GetArea();
 			unify::Size< float > halfSize( m_size.width * scale * 0.5f, m_size.height * scale * 0.5f );
 			float depth = 1.0f;
-			vd->WriteVertex( lock, 0, positionE, unify::V3< float >( 0 - halfSize.width, 0 - halfSize.height, depth ) );
-			vd->WriteVertex( lock, 1, positionE, unify::V3< float >( 0 + halfSize.width, 0 - halfSize.height, depth ) );
-			vd->WriteVertex( lock, 2, positionE, unify::V3< float >( 0 - halfSize.width, 0 + halfSize.height, depth ) );
-			vd->WriteVertex( lock, 3, positionE, unify::V3< float >( 0 + halfSize.width, 0 + halfSize.height, depth ) );
-			vd->WriteVertex( lock, 0, texE, unify::TexCoords( area.UL() ) );
-			vd->WriteVertex( lock, 1, texE, unify::TexCoords( area.UR() ) );
-			vd->WriteVertex( lock, 2, texE, unify::TexCoords( area.DL() ) );
-			vd->WriteVertex( lock, 3, texE, unify::TexCoords( area.DR() ) );
+			WriteVertex( *vd, lock, 0, positionE, unify::V3< float >( 0 - halfSize.width, 0 - halfSize.height, depth ) );
+			WriteVertex( *vd, lock, 1, positionE, unify::V3< float >( 0 + halfSize.width, 0 - halfSize.height, depth ) );
+			WriteVertex( *vd, lock, 2, positionE, unify::V3< float >( 0 - halfSize.width, 0 + halfSize.height, depth ) );
+			WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( 0 + halfSize.width, 0 + halfSize.height, depth ) );
+			WriteVertex( *vd, lock, 0, texE, unify::TexCoords( area.UL() ) );
+			WriteVertex( *vd, lock, 1, texE, unify::TexCoords( area.UR() ) );
+			WriteVertex( *vd, lock, 2, texE, unify::TexCoords( area.DL() ) );
+			WriteVertex( *vd, lock, 3, texE, unify::TexCoords( area.DR() ) );
 			vb.Unlock();
 			vb.Use();
 
@@ -139,7 +142,6 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 			m_effect->Use( myRenderInfo );
 			m_animationInstance.GetFrame().GetTexture()->Use( 0 );
 
-			/*
 			//TODO:
 			win::DX::GetDxDevice()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
 			*/

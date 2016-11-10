@@ -3,23 +3,23 @@
 
 #pragma once
 
-#include <dxi/core/IOS.h>
-#include <dxi/scene/ISceneManagerComponent.h>
+#include <me/IOS.h>
+#include <me/scene/ISceneManagerComponent.h>
 #include <PxPhysicsAPI.h>
 
 namespace dxiphysx
 {
-	class SceneManagerComponent : public dxi::scene::ISceneManagerComponent
+	class SceneManagerComponent : public me::scene::ISceneManagerComponent
 	{
 	public:
-		SceneManagerComponent( dxi::core::IOS * os );
+		SceneManagerComponent( me::IOS * os );
 		~SceneManagerComponent();
 
 		const char * GetName() const override;
 
-		void OnNewScene( dxi::scene::Scene * scene ) override;
+		void OnNewScene( me::Scene * scene ) override;
 
 	private:
-		dxi::core::IOS * m_os;
+		me::IOS * m_os;
 	};
 }

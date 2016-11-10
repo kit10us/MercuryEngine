@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportObject.h>
@@ -19,12 +19,13 @@
 #include <dxilua/unify/ExportSize3.h>
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
-
+#include <me/scene/GeometryComponent.h>
 
 using namespace dxilua;
 using namespace dxi;
+using namespace me;
 
-int PushObject( lua_State * state, dxi::scene::Object * object )
+int PushObject( lua_State * state, me::Object * object )
 {
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -47,7 +48,7 @@ int Object_AddChild( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	dxi::scene::Object::ptr child = objectProxy->object->AddChild( name );
+	me::Object::ptr child = objectProxy->object->AddChild( name );
 
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -70,9 +71,9 @@ int Object_AddCamera( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	dxi::scene::Object::ptr child = objectProxy->object->AddChild( name );
-	dxi::scene::CameraComponent * cameraComponent = new scene::CameraComponent( game->GetOS() );
-	child->AddComponent( scene::IObjectComponent::ptr( cameraComponent ) );
+	me::Object::ptr child = objectProxy->object->AddChild( name );
+	CameraComponent * cameraComponent = new CameraComponent( game->GetOS() );
+	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
 
 	cameraComponent->SetProjection( mat );
 
@@ -100,11 +101,11 @@ int Object_AddScript( lua_State * state )
 
 	auto gcse = game->GetComponent( type, 0 );
 	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find " + type + " script engine!" );
-	dxi::scripting::IScriptEngine * se = dynamic_cast<dxi::scripting::IScriptEngine *>(gcse.get());
+	IScriptEngine * se = dynamic_cast< IScriptEngine *>(gcse.get() );
 
 	auto component = se->LoadModule( source );
 
-	objectProxy->object->AddComponent( scene::IObjectComponent::ptr( component ) );
+	objectProxy->object->AddComponent( IObjectComponent::ptr( component ) );
 
 	return 0;
 }
@@ -176,13 +177,14 @@ int Object_SetGeometry( lua_State * state )
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 							
+	auto game = dynamic_cast< me::Game * >(ScriptEngine::GetGame());
+
 	Geometry::ptr geometry;
 	
 	// If string, pull an existing resource...
 	if ( lua_type( state, 2 ) == LUA_TSTRING ) 
 	{
 		std::string geometryName = lua_tostring( state, 2 );
-		auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
 		geometry = game->GetManager< Geometry >()->Find( geometryName );
 	}
 	else
@@ -199,7 +201,7 @@ int Object_SetGeometry( lua_State * state )
 		}
 	}
 
-	objectProxy->object->SetGeometry( geometry );
+	AddGeometryComponent( objectProxy->object, game->GetOS(), geometry );
 
 	return 0;
 }
@@ -266,7 +268,7 @@ int Object_GetComponent( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	dxi::scene::IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
+	me::IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
 
 	if ( ! component )
 	{
@@ -275,7 +277,7 @@ int Object_GetComponent( lua_State * state )
 	}
 
 	// Camera..
-	dxi::scene::CameraComponent * camera = dynamic_cast<dxi::scene::CameraComponent *>( component.get() );
+	CameraComponent * camera = dynamic_cast< CameraComponent * >( component.get() );
 	if ( camera )
 	{
 		CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));

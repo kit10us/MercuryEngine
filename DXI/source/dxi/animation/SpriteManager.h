@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <dxi/core/IGame.h>
+#include <me/IGame.h>
 #include <dxi/animation/Group.h>
 #include <map>
 #include <memory>
@@ -20,11 +20,11 @@ namespace dxi
 		public:
 			typedef std::shared_ptr< SpriteManager > ptr;
 
-			SpriteManager( dxi::core::IGame * game );
+			SpriteManager( me::IGame * game );
 			~SpriteManager();
 
-			core::IGame * GetGame();
-			const core::IGame * GetGame() const;
+			me::IGame * GetGame();
+			const me::IGame * GetGame() const;
 
 			void LoadFromFile( const unify::Path & filePath );
 			void AddGroup( const GroupName & name, std::shared_ptr< Group > group );
@@ -34,7 +34,7 @@ namespace dxi
 			const GroupName & GetGroupName( const unsigned int index ) const;
 			unsigned int Count() const;
 		private:
-			core::IGame * m_game;
+			me::IGame * m_game;
 			GroupMap m_groups;
 		};
 	} // namespace animation

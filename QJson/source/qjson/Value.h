@@ -54,7 +54,7 @@ namespace qjson
 		/// <summary>
 		/// Enables generic testing if there is no value; null being literally no value, and array having no contents.
 		/// </summary>
-		virtual bool IsNullOrEmpty();
+		virtual bool IsNullOrEmpty() const;
 
 		virtual Value::shared_ptr Clone() const = 0;
 

@@ -3,16 +3,16 @@
 
 #pragma once
 
-#include <dxi/input/IInputSource.h>
-#include <dxi/core/IGame.h>
+#include <me/IInputSource.h>
+#include <me/IGame.h>
 #include <map>
 
 namespace dximouse
 {
-	class Mouse : public dxi::input::IInputSource
+	class Mouse : public me::IInputSource
 	{
 	public:
-		Mouse( dxi::core::IGame * game );
+		Mouse( me::IGame * game );
 		virtual ~Mouse();
 
 		std::string Name() const;
@@ -21,7 +21,7 @@ namespace dximouse
 
 		size_t SubSourceCount() const override;
 
-		dxi::input::State GetState( size_t subSource, std::string name, std::string condition ) const override;
+		me::State GetState( size_t subSource, std::string name, std::string condition ) const override;
 
 		bool HasValue( size_t subSource, std::string name ) const override;
 
@@ -32,7 +32,7 @@ namespace dximouse
 		bool SetValue( size_t subSource, std::string name, float value );
 
 	private:
-		dxi::core::IGame * m_game;
+		me::IGame * m_game;
 
 		struct Source
 		{

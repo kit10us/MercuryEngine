@@ -1,12 +1,13 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <dxi/win/WindowsOS.h>
-#include <dxi/core/Game.h>
+#include <WndProc.h>
+#include <me/Game.h>
 #include <shellapi.h>
 
-extern "C" dxi::core::Game * GetGameInstance();
+extern "C" me::Game * GetGameInstance();
 
+/*
 extern "C"
 LRESULT CALLBACK WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -16,19 +17,23 @@ LRESULT CALLBACK WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPara
 
 	return windowsOS->WndProc( handle, message, wParam, lParam );
 }
-
+*/
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
 {
 	MSG msg;
 	try
 	{
-		static dxi::core::Game & game = *GetGameInstance();
+		static me::Game & game = *GetGameInstance();
 
-		// Windows OS specific...
-		std::shared_ptr< dxi::win::WindowsOS > windowsOS { new dxi::win::WindowsOS( &game, hInstance, hPrevInstance, lpszCmdLine, nCmdShow, WndProc ) };
+		me::OSParameters osParameters;
+		osParameters.hInstance = hInstance;
+		osParameters.hPrevInstance = hPrevInstance;
+		osParameters.lpszCmdLine = lpszCmdLine;
+		osParameters.nCmdShow = nCmdShow;
+		osParameters.wndProc = WndProc; 
 
-		if ( ! game.Initialize( windowsOS ) )
+		if ( ! game.Initialize( osParameters ) )
 		{
 			return 0;
 		}
@@ -38,7 +43,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		{ 
 			while( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
 			{
-				if ( ! IsDialogMessage( windowsOS->GetHandle(), &msg ) )
+
+				//if ( ! IsDialogMessage( windowsOS->GetHandle(), &msg ) )
 				{
 					if( msg.message == WM_QUIT )
 					{

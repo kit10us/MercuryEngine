@@ -12,7 +12,7 @@
 #include <dxilua/unify/ExportV3.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 unify::Size< float > CheckSize2( lua_State * state, int index )
 {

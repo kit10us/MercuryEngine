@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxi/core/Game.h>
-#include <dxi/Mesh.h>
+#include <me/Mesh.h>
 #include <dxi/scene/SceneManager.h>
 #include <dxi/shapes/ShapeCreators.h>
 #include <dxi/factory/PixelShaderFactories.h>
@@ -12,9 +12,11 @@
 #include <DXIWinMain.h>
 
 #include <dxi/scene/BBoxRendererComponent.h>
+#include <me/CameraComponent.h>
 
 using namespace dxi;
 using namespace core;
+using namespace me;
 
 class MyGame : public Game
 {
@@ -36,25 +38,25 @@ void MyGame::Startup()
 	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
 
 	// Load shaders.
-	PixelShader::ptr ps = GetManager< PixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
-	VertexShader::ptr vs = GetManager< VertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	PixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	VertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
 
 	// Add a texture.
-	GetManager< Texture >()->Add( "borgcube", "media/borgcube.bmp" );
+	GetManager< ITexture >()->Add( "borgcube", "media/borgcube.bmp" );
 
 	// Create an effect.
 	Effect::ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
 	borgCubeEffect->SetVertexShader( vs );
 	borgCubeEffect->SetPixelShader( ps );
-	borgCubeEffect->SetTexture( 0, GetManager< Texture >()->Find( "borgcube" ) );
+	borgCubeEffect->SetTexture( 0, GetManager< ITexture >()->Find( "borgcube" ) );
 
 	// Add a scene.
-	scene::Scene::ptr scene = sceneManager->Add( "scene" );
+	Scene::ptr scene = sceneManager->Add( "scene" );
 
 	// Add a camera...
-	scene::Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
-	camera->AddComponent( scene::IObjectComponent::ptr( new scene::CameraComponent( GetOS() ) ) );	 
-	scene::CameraComponent * cameraComponent = unify::polymorphic_downcast< scene::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
+	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
+	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -10 ) );
@@ -68,21 +70,21 @@ void MyGame::Startup()
 	Geometry::ptr meshProg( shapes::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
-	progObject->SetGeometry( meshProg );
+	auto gc = AddGeometryComponent( progObject.get(), GetOS(), meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	{
 		auto aseObject = scene->GetRoot()->AddChild( "sword1" );
-		aseObject->SetGeometry( meshASE );
+		gc = AddGeometryComponent( aseObject.get(), GetOS(), meshASE );
 		aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
-		aseObject->GetGeometryMatrix().Scale( 0.090f );
-		aseObject->GetGeometryMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
-		aseObject->GetGeometryMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-		aseObject->AddComponent( scene::IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+		gc->GetMatrix().Scale( 0.090f );
+		gc->GetMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
+		gc->GetMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+		aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 0 ) ) );
 	}
 	{
@@ -154,7 +156,7 @@ void MyGame::Update( RenderInfo & renderInfo )
 	using namespace unify;
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
-	scene::Scene::ptr scene = sceneManager->Find( "scene" );
+	Scene::ptr scene = sceneManager->Find( "scene" );
 
 	{
 		auto sword = scene->FindObject( "sword1" );

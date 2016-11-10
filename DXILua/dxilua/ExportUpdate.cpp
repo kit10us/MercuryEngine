@@ -5,7 +5,7 @@
 #include <dxilua/ScriptEngine.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 int Update_GetDelta( lua_State * state )
 {

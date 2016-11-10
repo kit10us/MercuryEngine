@@ -15,9 +15,10 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportQuaternion.h>
+#include <me/scene/GeometryComponent.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 TransformProxy* CheckTransform( lua_State* state, int index )
 {
@@ -102,7 +103,7 @@ int Transform_Scale( lua_State * state )
 	auto x = objectProxy->object->GetComponent( "Geometry" ).get();
 	scene::GeometryComponent * geometry = unify::polymorphic_downcast< scene::GeometryComponent * >( x );
 
-	geometry->GetModelMatrix().Scale( scale );
+	geometry->GetMatrix().Scale( scale );
 	return 0;
 }
 

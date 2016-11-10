@@ -2,15 +2,16 @@
 // All Rights Reserved
 
 #include <dxi/font/Font.h>
-#include <dxi/factory/EffectFactories.h>
-#include <dxi/factory/GeometryFactory.h>
-#include <dxi/core/Game.h>
+#include <me/factory/EffectFactories.h>
+#include <me/factory/GeometryFactory.h>
+#include <me/Game.h>
 #include <qxml/Document.h>
 
 using namespace dxi;
 using namespace font;
+using namespace me;
 
-Font::Font( core::IGame * game )
+Font::Font( me::IGame * game )
 	: m_game( game )
 {
 }
@@ -26,12 +27,12 @@ Font::~Font() throw ()
 
 void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManager::ptr spriteManager )
 {
-	auto game = dynamic_cast<core::Game *>(m_game);
+	auto game = dynamic_cast<Game *>(m_game);
 
 	// Check if the file exists...
 	qxml::Document doc( filePath );
 
-	auto textureManager = game->GetManager< Texture >();
+	auto textureManager = game->GetManager< me::ITexture >();
 	auto effectManager = game->GetManager< Effect >();
 	auto geometryManager = game->GetManager< Geometry >();
 
@@ -93,11 +94,12 @@ void Font::CreateFromFile( const unify::Path & filePath, animation::SpriteManage
 						throw unify::Exception( "Specfied texture for character font does not exist!" );
 					}
 
-					Texture::ptr texture( textureManager->Find( textureName ) );
+					ITexture::ptr texture( textureManager->Find( textureName ) );
 					unsigned int sprite = leaf.GetAttributeElse< unsigned int >( "sprite", 0 );
 
-					animation::Frame frame( texture, texture->GetSprite( sprite ) );
-					character = Character( frame, m_effect );
+					assert( 0 ); //TODO:
+					//					animation::Frame frame( texture, texture->GetSprite( sprite ) );
+					//character = Character( frame, m_effect );
 				}
 				else
 				{

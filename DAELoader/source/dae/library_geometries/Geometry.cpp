@@ -49,7 +49,7 @@ const Mesh & Geometry::GetMesh() const
 	return *m_mesh;
 }
 
-void Geometry::Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Geometry::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
 {
 	GetMesh().Build( pl, matrix, technique );
 }

@@ -219,8 +219,15 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		result = D3DCompileFromFile( _T("test3D.hlsl"), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_4_0", flags1, flags2, &vertexShaderBuffer, &errorBlob );
 		if ( FAILED( result ) )
 		{
-			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-			assert( ! FAILED( result ) );
+			if ( result == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND) )
+			{
+				OutputDebugStringA( "Shader file not found!" );
+			}
+			else
+			{
+				OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
+			}
+			assert( 0 );
 		}
 
 		ID3D11ClassLinkage * classLinkage = nullptr;

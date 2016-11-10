@@ -4,32 +4,32 @@
 #pragma once
 
 #include <DXILuaDLL.h>
-#include <dxi/core/IGame.h>
-#include <dxi/scripting/IScriptEngine.h>
+#include <me/IGame.h>
+#include <me/IScriptEngine.h>
 #include <lua.hpp>
 
 namespace dxilua
 {
-	class ScriptEngine : public dxi::scripting::IScriptEngine
+	class ScriptEngine : public me::IScriptEngine
 	{
 	public:
-		ScriptEngine( dxi::core::IGame * game );
+		ScriptEngine( me::IGame * game );
 		~ScriptEngine();
 
 		std::string GetName() const override;
 
-		void OnAttach( dxi::core::IGame * game ) override;
+		void OnAttach( me::IGame * game ) override;
 
-		void OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+		void OnUpdate( me::IGame * game, const me::RenderInfo & renderInfo ) override;
 
-		void OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+		void OnRender( me::IGame * game, const me::RenderInfo & renderInfo ) override;
 
-		void OnDetach( dxi::core::IGame * game ) override;
+		void OnDetach( me::IGame * game ) override;
 
-		dxi::scripting::ExecuteResult ExecuteString( std::string line ) override;
-		dxi::scripting::ExecuteResult ExecuteFile( unify::Path path ) override;
+		me::ExecuteResult ExecuteString( std::string line ) override;
+		me::ExecuteResult ExecuteFile( unify::Path path ) override;
 
-		dxi::scene::IObjectComponent::ptr LoadModule( unify::Path path ) override;
+		me::IObjectComponent::ptr LoadModule( unify::Path path ) override;
 
 		DXILUADLL_API lua_State * GetState();
 
@@ -39,10 +39,10 @@ namespace dxilua
 
 
 
-		static dxi::core::IGame * GetGame();
+		static me::IGame * GetGame();
 
 	private:
-		dxi::core::IGame * m_game;		
+		me::IGame * m_game;		
 		lua_State * m_state;
 		size_t m_moduleCount;
 

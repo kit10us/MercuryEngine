@@ -4,13 +4,13 @@
 #include <dxiphysx/GameComponent.h>
 
 using namespace dxiphysx;
-using namespace dxi;
+using namespace me;
 using namespace physx;
 
 class ErrorCallback : public PxErrorCallback
 {
 public:
-	ErrorCallback( core::IOS * os )
+	ErrorCallback( me::IOS * os )
 		: m_os( os )
 	{
 	}
@@ -25,7 +25,7 @@ public:
 	}
 
 private:
-	core::IOS * m_os;
+	me::IOS * m_os;
 };
 
 GameComponent::GameComponent()
@@ -41,7 +41,7 @@ std::string GameComponent::GetName() const
 	return "PhysX";
 }
 
-void GameComponent::OnAttach( core::IGame * game )
+void GameComponent::OnAttach( me::IGame * game )
 {
 	m_errorCallback.reset( new ErrorCallback( game->GetOS() ) );
 	m_foundation.reset( PxCreateFoundation( PX_PHYSICS_VERSION, m_defaultAllocatorCallback, *m_errorCallback ), Releaser< PxFoundation > );
@@ -70,15 +70,15 @@ void GameComponent::OnAttach( core::IGame * game )
 	m_dispatcher = PxDefaultCpuDispatcherCreate( 2 );
 }
 
-void GameComponent::OnDetach( core::IGame * game )
+void GameComponent::OnDetach( me::IGame * game )
 {
 }
 
-void GameComponent::OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+void GameComponent::OnUpdate( me::IGame * game, const me::RenderInfo & renderInfo )
 {
 }
 
-void GameComponent::OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+void GameComponent::OnRender( me::IGame * game, const me::RenderInfo & renderInfo )
 {
 }
 

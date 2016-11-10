@@ -4,13 +4,13 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxi/scene/Object.h>
+#include <me/Object.h>
 
 void RegisterTransform( lua_State * state );
 
 struct TransformProxy
 {
-	dxi::scene::Object * object;
+	me::Object * object;
 	unify::FrameLite * transform;
 };
 

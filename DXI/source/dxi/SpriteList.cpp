@@ -4,6 +4,7 @@
 #include <dxi/SpriteList.h>
 
 using namespace dxi;
+using namespace me;
 
 SpriteList::SpriteList()
 {

@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using namespace dxi;
+using namespace me;
 
 QLOD::QLOD()
 {

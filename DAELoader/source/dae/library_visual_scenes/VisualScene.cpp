@@ -47,12 +47,12 @@ const Node * VisualScene::GetFirstNode() const
 	return m_firstNode.get();
 }
 
-void VisualScene::Build( dxi::PrimitiveList & pl ) const
+void VisualScene::Build( me::PrimitiveList & pl ) const
 {
 	Build( pl, unify::MatrixIdentity(), GetFirstNode() );
 }
 
-void VisualScene::Build( dxi::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const
+void VisualScene::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const
 {
 	OutputDebugStringA( node->GetID().c_str() );
 	OutputDebugStringA( "\n" );

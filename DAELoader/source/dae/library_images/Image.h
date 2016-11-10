@@ -20,12 +20,12 @@ namespace dae
 		const std::string & GetID() const;
 		const std::string & GetSID() const;
 		const std::string & GetName() const;
-		dxi::Texture::ptr GetTexture() const;
+		me::ITexture::ptr GetTexture() const;
 
 	private:
 		std::string m_id;
 		std::string m_sid;
 		std::string m_name;
-		dxi::Texture::ptr m_texture;
+		me::ITexture::ptr m_texture;
 	};
 }

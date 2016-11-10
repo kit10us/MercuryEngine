@@ -10,11 +10,11 @@
 #pragma comment( lib, "lua53" )
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 ScriptEngine * ScriptEngine::s_se;
 
-ScriptEngine::ScriptEngine( dxi::core::IGame * game )
+ScriptEngine::ScriptEngine( me::IGame * game )
 	: m_game( game )
 	, m_state{ CreateState() }
 {
@@ -34,57 +34,57 @@ std::string ScriptEngine::GetName() const
 	return "LUA";
 }
 
-void ScriptEngine::OnAttach( dxi::core::IGame * game )
+void ScriptEngine::OnAttach( me::IGame * game )
 {
 }
 
-void ScriptEngine::OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+void ScriptEngine::OnUpdate( me::IGame * game, const me::RenderInfo & renderInfo )
 {
 }
 
-void ScriptEngine::OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo )
+void ScriptEngine::OnRender( me::IGame * game, const me::RenderInfo & renderInfo )
 {
 }
 
-void ScriptEngine::OnDetach( dxi::core::IGame * game )
+void ScriptEngine::OnDetach( me::IGame * game )
 {
 }
 
-scripting::ExecuteResult ScriptEngine::ExecuteString( std::string line )
+ExecuteResult ScriptEngine::ExecuteString( std::string line )
 {
 	int result = luaL_loadstring( m_state, line.c_str() );
 	if( result != LUA_OK )
 	{
-		return scripting::ExecuteResult::Fail;
+		return ExecuteResult::Fail;
 	}
 
 	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
 	if( result != LUA_OK )
 	{
-		return scripting::ExecuteResult::Fail;
+		return ExecuteResult::Fail;
 	}
 
-	return scripting::ExecuteResult::Pass;
+	return ExecuteResult::Pass;
 }
 
-scripting::ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
+ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 {
 	int result = luaL_loadfile( m_state, path.ToString().c_str() );
 	if( result != LUA_OK )
 	{
-		return scripting::ExecuteResult::Fail;
+		return ExecuteResult::Fail;
 	}
 
 	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
 	if( result != LUA_OK )
 	{
-		return scripting::ExecuteResult::Fail;
+		return me::ExecuteResult::Fail;
 	}
 
-	return scripting::ExecuteResult::Pass;
+	return me::ExecuteResult::Pass;
 }
 
-scene::IObjectComponent::ptr ScriptEngine::LoadModule( unify::Path path )
+IObjectComponent::ptr ScriptEngine::LoadModule( unify::Path path )
 {					
 	int top = lua_gettop( m_state );
 
@@ -92,7 +92,7 @@ scene::IObjectComponent::ptr ScriptEngine::LoadModule( unify::Path path )
 
 	lua_State * state = m_state;
 
-	scene::IObjectComponent::ptr module( new Module( m_state, m_game, name, path ) );
+	IObjectComponent::ptr module( new Module( m_state, m_game, name, path ) );
 
 	return module;
 }
@@ -121,7 +121,7 @@ DXILUADLL_API void ScriptEngine::AddType( const char * name, const luaL_Reg * fu
 	lua_pop( m_state, 1 );
 }
 
-dxi::core::IGame * ScriptEngine::GetGame()
+me::IGame * ScriptEngine::GetGame()
 {
 	return ScriptEngine::s_se->m_game;
 }

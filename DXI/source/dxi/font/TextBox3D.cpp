@@ -5,6 +5,7 @@
 
 using namespace dxi;
 using namespace font;
+using namespace me;
 
 TextBox3D::TextBox3D()
 {
@@ -19,9 +20,9 @@ TextBox3D::~TextBox3D()
 {
 }
 
-void TextBox3D::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void TextBox3D::Render( const me::RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
-	RenderInfo myRenderInfo( renderInfo );
+	me::RenderInfo myRenderInfo( renderInfo );
 	if( m_text.get() )
 	{
 		myRenderInfo.SetOption( RenderOption::NoFrame, true );

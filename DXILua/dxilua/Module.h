@@ -2,19 +2,19 @@
 // All Rights Reserved
 
 #include <dxilua/ScriptEngine.h>
-#include <dxi/scene/IObjectComponent.h>
-#include <dxi/scene/Object.h>
-#include <dxi/core/IGame.h>
+#include <me/IObjectComponent.h>
+#include <me/Object.h>
+#include <me/IGame.h>
 
 namespace dxilua
 {
-	class Module : public dxi::scene::IObjectComponent
+	class Module : public me::IObjectComponent
 	{
 	protected:
 		Module( Module & component );
 
 	public:
-		Module( lua_State * state, dxi::core::IGame * game, std::string myName, unify::Path path );
+		Module( lua_State * state, me::IGame * game, std::string myName, unify::Path path );
 		~Module();
 
 		std::string GetName() const;
@@ -22,23 +22,23 @@ namespace dxilua
 		bool IsEnabled() const override;
 		void SetEnabled( bool enabled ) override;
 
-		void OnAttach( dxi::scene::Object * object ) override;
-		void OnDetach( dxi::scene::Object * object ) override;
-		void OnInit( dxi::scene::Object * object ) override;
-		void OnStart( dxi::scene::Object * object ) override;
-		void OnUpdate( dxi::scene::Object * object, const dxi::RenderInfo & renderInfo ) override;
-		void OnRender( dxi::scene::Object * object, const dxi::RenderInfo & renderInfo ) override;
-		void OnSuspend( dxi::scene::Object * object ) override;
-		void OnResume( dxi::scene::Object * object ) override;
+		void OnAttach( me::Object * object ) override;
+		void OnDetach( me::Object * object ) override;
+		void OnInit( me::Object * object ) override;
+		void OnStart( me::Object * object ) override;
+		void OnUpdate( me::Object * object, const me::RenderInfo & renderInfo ) override;
+		void OnRender( me::Object * object, const me::RenderInfo & renderInfo ) override;
+		void OnSuspend( me::Object * object ) override;
+		void OnResume( me::Object * object ) override;
 
-		dxi::scene::IObjectComponent * Duplicate();
+		me::IObjectComponent * Duplicate();
 
 	private: 
 		void CallMember( std::string function );
 
 		lua_State * m_state;
-		dxi::core::IGame * m_game;
-		dxi::scene::Object * m_object;
+		me::IGame * m_game;
+		me::Object * m_object;
 		std::string m_name;
 		unify::Path m_path;
 		bool m_enabled;

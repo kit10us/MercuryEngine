@@ -10,6 +10,7 @@
 
 #include <qxml/Document.h>
 #include <rm/ResourceManagerBase.h>
+#include <unify/String.h>
 #include <unify/Stream.h>
 #include <unify/Exception.h>
 #include <unify/Stream.h>

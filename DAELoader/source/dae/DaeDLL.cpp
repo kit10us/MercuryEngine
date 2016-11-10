@@ -4,32 +4,31 @@
 #include <dae/GeometrySourceFactory.h>
 #include <memory.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXRenderer.h>
-#include <dxi/core/IGame.h>
+#include <me/IRenderer.h>
+#include <me/IGame.h>
 
 void Deleter( dae::GeometrySourceFactory * factory )
 {
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
+extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
 
-__declspec(dllexport) bool DXILoader( dxi::core::IGame * _game, const qxml::Document * doc )
+__declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * doc )
 {
-	using namespace dxi;
-	using namespace core;
+	using namespace me;
 
-	auto game = dynamic_cast<dxi::core::Game *>(_game);
+	auto game = dynamic_cast<Game *>(_game);
 
 	if( doc == nullptr ) 
 	{
-		game->ReportError( ErrorLevel::Failure, "DALoader", "Configuraiton file missing!" );
+		game->ReportError( me::ErrorLevel::Failure, "DALoader", "Configuraiton file missing!" );
 	}
 
 	// Setup DAE factory.
 	class MyEffectSolver : public dae::util::IEffectSolver
 	{
-		dxi::core::Game * m_game;
+		Game * m_game;
 		Effect::ptr m_color;
 		Effect::ptr m_textured;
 	public:
@@ -41,12 +40,12 @@ __declspec(dllexport) bool DXILoader( dxi::core::IGame * _game, const qxml::Docu
 			m_textured = GetGame()->GetManager< Effect >()->Add( textureEffectName, textureEffectPath );
 		}
 
-		dxi::core::Game * GetGame() override
+		Game * GetGame() override
 		{
 			return m_game;
 		}				  
 
-		dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const
+		Effect::ptr GetEffect( const dae::Shading & shading ) const
 		{
 			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
 			{
@@ -68,7 +67,7 @@ __declspec(dllexport) bool DXILoader( dxi::core::IGame * _game, const qxml::Docu
 	unify::Path textureEffectPath = texture->GetAttribute< std::string >( "source" );
 
 	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game->GetOS()->GetRenderer( 0 ), new MyEffectSolver( game, colorEffectName, colorEffectPath, textureEffectName, textureEffectPath ) );
-	game->GetManager< dxi::Geometry >()->AddFactory( "dae", GeometryFactoryPtr( daeFactory ) );
+	game->GetManager< Geometry >()->AddFactory( ".dae", GeometryFactoryPtr( daeFactory ) );
 
 	return true;
 }

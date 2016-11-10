@@ -4,7 +4,7 @@
 #pragma once
 
 #include <dxi/font/Character.h>
-#include <dxi/RenderInfo.h>
+#include <me/RenderInfo.h>
 #include <unify/Unify.h>
 
 namespace dxi
@@ -22,7 +22,7 @@ namespace dxi
 			const unify::Size< float > & GetSize() const;
 
 			void Update( unify::Seconds elapsed );
-			void Render( const RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D );
+			void Render( const me::RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D );
 		private:
 			Character m_character;
 			unify::V2< float > m_offset;

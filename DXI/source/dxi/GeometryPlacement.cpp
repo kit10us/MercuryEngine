@@ -4,6 +4,7 @@
 #include <dxi/GeometryPlacement.h>
 
 using namespace dxi;
+using namespace me;
 
 GeometryPlacement::GeometryPlacement( Geometry::ptr geometry )
 : m_geometry( geometry )
@@ -75,7 +76,7 @@ void GeometryPlacement::AddPlace( const unify::V3< float > & position )
 	m_objects.push_back( PlacementEntry( position ) );
 }
 
-void GeometryPlacement::AddPlacesFromTexture( Texture::ptr texture, const unify::TexArea & area, float depth, unify::Color color )
+void GeometryPlacement::AddPlacesFromTexture( ITexture::ptr texture, const unify::TexArea & area, float depth, unify::Color color )
 {
 	unify::Rect< long > rect;
 	rect.left = (long)( texture->ImageSize().width * area.ul.u );

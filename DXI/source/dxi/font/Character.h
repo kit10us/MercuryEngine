@@ -4,8 +4,8 @@
 #pragma once
 
 #include <dxi/animation/Instance.h>
-#include <dxi/Effect.h>
-#include <dxi/Geometry.h>
+#include <me/Effect.h>
+#include <me/Geometry.h>
 #include <unify/Size.h>
 
 namespace dxi
@@ -28,31 +28,31 @@ namespace dxi
 
 			Character();
 			Character( const Character & character );
-			Character( const animation::Instance & animationInstance, std::shared_ptr< Effect > effect );
-			Character( Geometry::ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset3D );
+			Character( const animation::Instance & animationInstance, me::Effect::ptr effect );
+			Character( me::Geometry::ptr geometry, const unify::Size< float > & sizeInPixels, float geometryPostScale2D, const unify::V3< float > & geometryPostOffset2D, float geometryPostScale3D, const unify::V3< float > & geometryPostOffset3D );
 			~Character() throw ();
 
 			Source::TYPE GetSource() const;
 
-			std::shared_ptr< Effect > GetEffect();
-			const std::shared_ptr< Effect > GetEffect() const;
+			me::Effect::ptr GetEffect();
+			const me::Effect::ptr GetEffect() const;
 
 			const animation::Instance & GetAnimationInstance() const;
 
-			std::shared_ptr< Geometry > GetGeometry();
-			const std::shared_ptr< Geometry > GetGeometry() const;
+			me::Geometry::ptr GetGeometry();
+			const me::Geometry::ptr GetGeometry() const;
 
 			unify::Size< float > GetSize() const;
 
 			bool empty() const;
 			void Update( unify::Seconds elapsed );
-			void Render( const RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D );
+			void Render( const me::RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D );
 
 		protected:
 			Source::TYPE m_source;
-			std::shared_ptr< Effect > m_effect;
+			me::Effect::ptr m_effect;
 			animation::Instance m_animationInstance;
-			std::shared_ptr< Geometry > m_geometry;
+			me::Geometry::ptr m_geometry;
 			unify::Size< float > m_size;
 
 			float m_geometryPostScale2D; // Used to compensate for geometry sizes.

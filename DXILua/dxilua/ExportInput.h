@@ -4,13 +4,13 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 void RegisterInput( lua_State * state );
 
 struct InputProxy
 {
-	dxi::input::IInputSource::ptr input;
+	me::IInputSource::ptr input;
 };
 
 InputProxy* CheckInput( lua_State* state, int index );

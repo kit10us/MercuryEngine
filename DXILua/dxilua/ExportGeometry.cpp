@@ -4,13 +4,13 @@
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/shape/ExportShapeParameters.h>
-#include <dxi/shapes/ShapeCreators.h>
-#include <dxi/core/Game.h>
+#include <sg/ShapeCreators.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
-int PushGeometry( lua_State * state, dxi::Geometry::ptr geometry )
+int PushGeometry( lua_State * state, me::Geometry::ptr geometry )
 {
 	GeometryProxy ** newProxy = (GeometryProxy**)(lua_newuserdata( state, sizeof( GeometryProxy* ) ));
 	*newProxy = new GeometryProxy();
@@ -37,7 +37,7 @@ int Geometry_Constructor( lua_State * state )
 
 	Geometry::ptr geometry;
 
-	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
 
 	try
 	{
@@ -57,7 +57,7 @@ int Geometry_Constructor( lua_State * state )
 	else
 	{
 		ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-		geometry = shapes::CreateShape( game->GetOS()->GetRenderer(0), parameters->parameters );
+		geometry = sg::CreateShape( game->GetOS()->GetRenderer(0), parameters->parameters );
 	}
 
 	GeometryProxy ** geometryProxy = (GeometryProxy**)(lua_newuserdata( state, sizeof( GeometryProxy* ) ));

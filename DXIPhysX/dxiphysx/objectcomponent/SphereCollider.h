@@ -12,12 +12,12 @@ namespace dxiphysx
 		class SphereCollider : public objectcomponent::ColliderBase
 		{
 		public:
-			DXIPHYSX_API SphereCollider( dxi::core::IOS * os, GameComponent * gameComponent, float radius );
+			DXIPHYSX_API SphereCollider( me::IOS * os, GameComponent * gameComponent, float radius );
 			~SphereCollider();
 
 			std::string GetName() const override;
 
-			dxi::scene::IObjectComponent * Duplicate() override;
+			me::IObjectComponent * Duplicate() override;
 		};
 	}
 }

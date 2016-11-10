@@ -14,13 +14,12 @@
 
 #include <PxPhysicsAPI.h>
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
 
 static dxilua::ScriptEngine * g_luaSE;
-static dxi::core::Game * g_game;
+static me::Game * g_game;
 
 int PushPxShape( lua_State * state, dxiphysx::objectcomponent::ColliderBase::ptr component )
 {
@@ -77,7 +76,7 @@ int PxShape_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxShape( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
+void RegisterPxShape( dxilua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
 

@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <dxi/input/IInputSource.h>
-#include <dxi/core/IGame.h>
+#include <me/IInputSource.h>
+#include <me/IGame.h>
 
 #define DIRECTINPUT_VERSION		0x0800
 #include <dinput.h>
@@ -21,10 +21,10 @@ namespace dxikeyboard
 		COUNT
 	};
 
-	class Keyboard : public dxi::input::IInputSource
+	class Keyboard : public me::IInputSource
 	{
 	public:
-		Keyboard( dxi::core::IGame * game );
+		Keyboard( me::IGame * game );
 		virtual ~Keyboard();
 
 		std::string Name() const;
@@ -35,7 +35,7 @@ namespace dxikeyboard
 
 		size_t SubSourceCount() const override;
 
-		dxi::input::State GetState( size_t subSource, std::string name, std::string condition ) const override;
+		me::State GetState( size_t subSource, std::string name, std::string condition ) const override;
 
 		bool HasValue( size_t subSource, std::string name ) const override;
 
@@ -46,7 +46,7 @@ namespace dxikeyboard
 		bool SetValue( size_t subSource, std::string name, float value );
 
 	private:
-		dxi::core::IGame * m_game;
+		me::IGame * m_game;
 
 		CComPtr< IDirectInput > m_pdi;
 		CComPtr< IDirectInputDevice > m_pdiKeyboard;

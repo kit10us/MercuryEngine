@@ -4,7 +4,8 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxi/shapes/ShapeBaseParameters.h>
+#include <unify/Parameters.h>
+//#include <dxi/shapes/ShapeBaseParameters.h>
 
 struct ShapeParameters
 {

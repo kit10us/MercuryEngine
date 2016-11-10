@@ -25,10 +25,10 @@
 
 #include <PxPhysicsAPI.h>
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 
 std::shared_ptr< physx::PxPhysics > GetPhysX()
@@ -37,7 +37,7 @@ std::shared_ptr< physx::PxPhysics > GetPhysX()
 }
 
 static dxilua::ScriptEngine * g_luaSE;
-static dxi::core::Game * g_game;
+static me::Game * g_game;
 
 int PhysX_CreateBoxCollider( lua_State * state )
 {
@@ -122,10 +122,10 @@ static const luaL_Reg PhysXFunctions[] =
 	{ "CreateRigidStatic", PhysX_CreateRigidStatic }
 };
 
-void RegisterPhysX( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
+void RegisterPhysX( dxilua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
-	g_game = dynamic_cast< dxi::core::Game * >(game);
+	g_game = dynamic_cast< Game * >(game);
 
 	luaSE->AddLibrary( "PhysX", PhysXFunctions, sizeof( PhysXFunctions ) / sizeof( luaL_Reg ) );
 }

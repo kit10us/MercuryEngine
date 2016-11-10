@@ -3,12 +3,12 @@
 
 #include <dxiphysx/objectcomponent/RigidStatic.h>
 #include <dxiphysx/Util.h>
-#include <dxi/scene/Object.h>
+#include <me/Object.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 #include <dxiphysx/SceneComponent.h>
-#include <dxi/scene/Scene.h>
+#include <me/Scene.h>
 
-using namespace dxi;
+using namespace me;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -21,7 +21,7 @@ RigidStatic::RigidStatic( RigidStatic & rigidStatic )
 	m_rigidStatic.reset( m_gameComponent->GetPhysics()->createRigidStatic( transform ), Releaser< physx::PxRigidStatic > );
 }
 
-RigidStatic::RigidStatic( core::IOS * os, GameComponent * gameComponent )
+RigidStatic::RigidStatic( me::IOS * os, GameComponent * gameComponent )
 : m_os( os )
 , m_gameComponent( gameComponent )
 {
@@ -33,12 +33,12 @@ RigidStatic::~RigidStatic()
 {
 }
 
-core::IOS * RigidStatic::GetOS()
+me::IOS * RigidStatic::GetOS()
 {
 	return m_os;
 }
 
-const core::IOS * RigidStatic::GetOS() const
+const me::IOS * RigidStatic::GetOS() const
 {
 	return m_os;
 }
@@ -58,7 +58,7 @@ void RigidStatic::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void RigidStatic::OnAttach( dxi::scene::Object * object )
+void RigidStatic::OnAttach( me::Object * object )
 {
 	// Sync physx to object.
 	PxTransform transform( util::Convert< physx::PxTransform >( object->GetFrame().GetMatrix() ) );
@@ -75,13 +75,13 @@ void RigidStatic::OnAttach( dxi::scene::Object * object )
 		}
 	}
 
-	dxi::scene::Scene * scene = object->GetScene();
-	dxi::scene::ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
+	me::Scene * scene = object->GetScene();
+	ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
 	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
 	sceneComponent->GetScene()->addActor( *m_rigidStatic.get() );
 }
 		
-dxi::scene::IObjectComponent * RigidStatic::Duplicate()
+me::IObjectComponent * RigidStatic::Duplicate()
 {
 	auto duplicate = new RigidStatic( *this );
 	return duplicate;

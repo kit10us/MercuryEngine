@@ -3,12 +3,13 @@
 
 #include <dxi/animation/SpriteManager.h>
 #include <qxml/Document.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxi;
 using namespace animation;
+using namespace me;
 
-SpriteManager::SpriteManager( dxi::core::IGame * game )
+SpriteManager::SpriteManager( me::IGame * game )
 	: m_game( game )
 {
 }
@@ -17,33 +18,33 @@ SpriteManager::~SpriteManager()
 {
 }
 
-core::IGame * SpriteManager::GetGame()
+me::IGame * SpriteManager::GetGame()
 {
 	return m_game;
 }
 
-const core::IGame * SpriteManager::GetGame() const
+const me::IGame * SpriteManager::GetGame() const
 {
 	return m_game;
 }
 
 void SpriteManager::LoadFromFile( const unify::Path & filePath )
 {
-	auto textureManager = ((core::Game*)GetGame())->GetManager< Texture >();
+	auto textureManager = ((Game*)GetGame())->GetManager< ITexture >();
 
 	bool defaultLoop = true;
 	qxml::Document doc( filePath );
 
 	// Table of texture mappings.
 	typedef std::string Name;
-	std::map< Name, Texture::ptr > textureMapping;
+	std::map< Name, ITexture::ptr > textureMapping;
 
 	const qxml::Element * animation = doc.GetRoot()->FindFirstElement( "animation" );
 	for( const auto leaf : animation->Children() )
 	{
 		if( leaf.IsTagName( "texture" ) )
 		{
-			Texture::ptr texture = textureManager->Find( leaf.GetAttribute( "source" )->GetString() );
+			ITexture::ptr texture = textureManager->Find( leaf.GetAttribute( "source" )->GetString() );
 			textureMapping[ leaf.GetAttribute( "name" )->GetString() ] = texture;
 		}
 		else if( leaf.IsTagName( "group" ) )
@@ -59,7 +60,7 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 					{
 						if( frameLeaf.IsTagName( "frame" ) )
 						{
-							Texture::ptr texture = textureMapping[frameLeaf.GetAttribute( "texture" )->GetString() ];
+							ITexture::ptr texture = textureMapping[frameLeaf.GetAttribute( "texture" )->GetString() ];
 							unify::TexArea area( unify::TexArea::Full() );
 							if( frameLeaf.HasAttributes( "sprite" ) )
 							{
@@ -67,11 +68,13 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 								std::string arrayName = frameLeaf.GetAttributeElse< std::string >( "array", "" );
 								if( ! arrayName.empty() )
 								{
-									area = texture->GetSprite( arrayName, spriteIndex );
+									assert( 0 ); // TODO:
+									//area = texture->GetSprite( arrayName, spriteIndex );
 								}
 								else
 								{
-									area = texture->GetSprite( spriteIndex );
+									assert( 0 ); // TODO:
+												 //area = texture->GetSprite( spriteIndex );
 								}
 							}
 							unify::Seconds duration = static_cast< unify::Seconds >( frameLeaf.GetAttributeElse< float >( "duration", 0 ) );

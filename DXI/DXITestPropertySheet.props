@@ -9,11 +9,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\dxi\DXIWinMain;..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;..\..\..\DAELoader\source;</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIRECTX11;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\dxi\DXIWinMain;..\..\..\unify;..\..\..\dxi\source;..\..\..\qxml\include;..\..\..\QJson\source;..\..\..\ResourceManager;..\..\..\DAELoader\source;..\..\..\MercuryEngine</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>..\..\..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\..\..\packages\directx\lib\x86;..\..\..\..\packages\DirectXTex-master\DirectXTex\Bin\Desktop_2015\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\lib\$(DefaultPlatformToolset)_$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

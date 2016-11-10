@@ -18,6 +18,7 @@
 
 using namespace dxilua;
 using namespace dxi;
+using namespace me;
 
 int PushTerraParameters( lua_State * state, TerraParameters & shapeParameters )
 {

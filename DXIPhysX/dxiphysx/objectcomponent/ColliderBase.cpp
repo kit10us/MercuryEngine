@@ -4,9 +4,9 @@
 #include <dxiphysx/objectcomponent/ColliderBase.h>
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/Util.h>
-#include <dxi/scene/Object.h>
+#include <me/Object.h>
 
-using namespace dxi;
+using namespace me;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -20,7 +20,7 @@ ColliderBase::ColliderBase( ColliderBase & colliderBase )
 }
 
 
-ColliderBase::ColliderBase( core::IOS * os, GameComponent * gameComponent )
+ColliderBase::ColliderBase( me::IOS * os, GameComponent * gameComponent )
 	: m_os( os )
 	, m_gameComponent( gameComponent )
 	, m_material( gameComponent->GetPhysics()->createMaterial( 0.5f, 0.5f, 0.6f ), Releaser< PxMaterial > )
@@ -31,12 +31,12 @@ ColliderBase::~ColliderBase()
 {
 }
 
-core::IOS * ColliderBase::GetOS()
+me::IOS * ColliderBase::GetOS()
 {
 	return m_os;
 }
 
-const core::IOS * ColliderBase::GetOS() const
+const me::IOS * ColliderBase::GetOS() const
 {
 	return m_os;
 }
@@ -51,7 +51,7 @@ void ColliderBase::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void ColliderBase::OnAttach( dxi::scene::Object * object )
+void ColliderBase::OnAttach( me::Object * object )
 {
 	// Attach to RigidBody.
 	for( int i = 0; i < object->ComponentCount(); ++i )

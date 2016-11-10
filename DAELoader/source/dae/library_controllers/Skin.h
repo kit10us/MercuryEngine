@@ -6,7 +6,7 @@
 #include <dae/library_geometries/Mesh.h>
 #include <dae/DocumentNode.h>
 #include <dae/library_effects/Effect.h>
-#include <dxi/PrimitiveList.h>
+#include <me/PrimitiveList.h>
 #include <qxml/QXML.h>
 #include <string>
 

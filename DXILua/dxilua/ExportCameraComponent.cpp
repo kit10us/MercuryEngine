@@ -15,7 +15,7 @@
 
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 {
@@ -23,13 +23,13 @@ CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 	return ud;
 }
 
-int PushCameraComponent( lua_State * state, dxi::scene::ObjectComponent::ptr component )
+int PushCameraComponent( lua_State * state, me::ObjectComponent::ptr component )
 {
 	CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
 	*proxy = new CameraComponentProxy;
 	luaL_setmetatable( state, "CameraComponent" );
 	(*proxy)->component = component;
-	(*proxy)->camera = dynamic_cast<dxi::scene::CameraComponent *>(component.get());
+	(*proxy)->camera = dynamic_cast< CameraComponent *>(component.get());
 	return 1;
 }														
 
@@ -148,7 +148,7 @@ int CameraComponent_Constructor( lua_State * state )
 {
 	auto game = ScriptEngine::GetGame();
 
-	dxi::scene::IObjectComponent::ptr component( new dxi::scene::CameraComponent( game->GetOS( ) ) );
+	me::IObjectComponent::ptr component( new CameraComponent( game->GetOS( ) ) );
 	return PushCameraComponent( state, component );
 }
 

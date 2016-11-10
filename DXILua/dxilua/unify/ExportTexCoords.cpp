@@ -11,9 +11,8 @@
 #include <dxilua/unify/ExportTexCoords.h>
 #include <dxilua/unify/ExportV3.h>
 
-
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 unify::TexCoords CheckTexCoords( lua_State * state, int index )
 {

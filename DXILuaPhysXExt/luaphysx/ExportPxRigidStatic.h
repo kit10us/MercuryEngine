@@ -15,4 +15,4 @@ struct PxRigidStaticProxy
 PxRigidStaticProxy* CheckPxRigidStatic( lua_State* state, int index );
 int PushPxRigidStatic( lua_State * state, dxiphysx::objectcomponent::RigidStatic::ptr component );
 
-void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game );
+void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, me::IGame * game );

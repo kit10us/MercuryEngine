@@ -4,29 +4,29 @@
 
 #include <DXIPhysX.h>
 #include <dxiphysx/GameComponent.h>
-#include <dxi/core/IOS.h>
-#include <dxi/scene/ISceneComponent.h>
+#include <me/IOS.h>
+#include <me/ISceneComponent.h>
 #include <PxPhysicsAPI.h>
 #include <dxiphysx/Releaser.h>
 
 namespace dxiphysx
 {
-	class SceneComponent : public dxi::scene::ISceneComponent
+	class SceneComponent : public me::ISceneComponent
 	{
 	public:
-		DXIPHYSX_API SceneComponent( dxi::core::IOS * os, GameComponent * gameComponent );
+		DXIPHYSX_API SceneComponent( me::IOS * os, GameComponent * gameComponent );
 		~SceneComponent();
 
 		const char * GetName() const override;
 		bool IsEnabled() const override;
 		void SetEnabled( bool enabled ) override;
 
-		void OnAttach( dxi::scene::Scene * scene ) override;
-		void OnDetach( dxi::scene::Scene * scene ) override;
-		void OnInit( dxi::scene::Scene * scene ) override;
-		void OnStart( dxi::scene::Scene * scene ) override;
-		void OnUpdate( dxi::scene::Scene * scene, const dxi::RenderInfo & renderInfo ) override;
-		void OnRender( dxi::scene::Scene * scene, const dxi::RenderInfo & renderInfo ) override;
+		void OnAttach( me::Scene * scene ) override;
+		void OnDetach( me::Scene * scene ) override;
+		void OnInit( me::Scene * scene ) override;
+		void OnStart( me::Scene * scene ) override;
+		void OnUpdate( me::Scene * scene, const me::RenderInfo & renderInfo ) override;
+		void OnRender( me::Scene * scene, const me::RenderInfo & renderInfo ) override;
 		void OnSuspend() override;
 		void OnResume() override;
 
@@ -34,7 +34,7 @@ namespace dxiphysx
 		physx::PxMaterial * GetMaterial();
 
 	private:
-		dxi::core::IOS * m_os;
+		me::IOS * m_os;
 		bool m_enabled;
 
 		GameComponent * m_gameComponent;

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <dxi/Effect.h>
+#include <me/Effect.h>
 #include <dae/library_effects/Shading.h>
 #include <unify/unify.h>
 
@@ -15,8 +15,8 @@ namespace dae
 		{
 		public:
 			virtual ~IEffectSolver() {}
-			virtual dxi::Effect::ptr GetEffect( const dae::Shading & shading ) const = 0;				
-			virtual dxi::core::Game * GetGame() = 0;
+			virtual me::Effect::ptr GetEffect( const dae::Shading & shading ) const = 0;				
+			virtual me::Game * GetGame() = 0;
 		};
 	}
 }

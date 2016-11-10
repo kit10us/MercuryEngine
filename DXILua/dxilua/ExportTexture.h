@@ -5,15 +5,15 @@
 
 #include <DXILuaDLL.h>
 #include <lua.hpp>
-#include <dxi/Texture.h>
+#include <me/ITexture.h>
 
 struct TextureProxy
 {
-	dxi::Texture::ptr texture;
+	me::ITexture::ptr texture;
 };
 
 DXILUADLL_API TextureProxy* CheckTexture( lua_State* state, int index );
-DXILUADLL_API int PushTexture( lua_State * state, dxi::Texture::ptr effect );
+DXILUADLL_API int PushTexture( lua_State * state, me::ITexture::ptr effect );
 
 void RegisterTexture( lua_State * state );
 

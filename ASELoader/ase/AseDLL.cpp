@@ -5,34 +5,34 @@
 #include <ase/GeometryFactory.h>
 #include <memory.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/win/DXRenderer.h>
-#include <dxi/core/Game.h>
+#include <me/IRenderer.h>
+#include <me/Game.h>
 
 using namespace ase;
+using namespace me;
 
 void Deleter( GeometryFactory * factory )
 {
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
+extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
 
-__declspec(dllexport) bool DXILoader( dxi::core::IGame * _game, const qxml::Document * doc )
+__declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * doc )
 {
-	using namespace dxi;
-	using namespace core;
+	using namespace me;
 
-	auto game = dynamic_cast<dxi::core::Game *>(_game);
+	auto game = dynamic_cast<Game *>(_game);
 
-	PixelShader::ptr ps = game->GetManager< PixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
-	VertexShader::ptr vs = game->GetManager< VertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
 
 	// Setup ASE factories.
 	GeometryFactory * factory = new GeometryFactory( game );
 	factory->SetVertexShader( vs );
 	factory->SetPixelShader( ps );
 
-	game->GetManager< dxi::Geometry >()->AddFactory( "ase", GeometryFactoryPtr( factory ) );
+	game->GetManager< me::Geometry >()->AddFactory( "ase", GeometryFactoryPtr( factory ) );
 
 
 	return true;

@@ -3,12 +3,12 @@
 
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/Util.h>
-#include <dxi/scene/Object.h>
+#include <me/Object.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 #include <dxiphysx/SceneComponent.h>
-#include <dxi/scene/Scene.h>
+#include <me/Scene.h>
 
-using namespace dxi;
+using namespace me;
 using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -21,7 +21,7 @@ RigidBody::RigidBody( RigidBody & rigidBody )
 	m_rigidBody.reset( m_gameComponent->GetPhysics()->createRigidDynamic( transform ), Releaser< physx::PxRigidBody > );
 }
 
-RigidBody::RigidBody( core::IOS * os, GameComponent * gameComponent )
+RigidBody::RigidBody( me::IOS * os, GameComponent * gameComponent )
 	: m_os( os )
 	, m_gameComponent( gameComponent )
 {
@@ -33,12 +33,12 @@ RigidBody::~RigidBody()
 {
 }
 
-core::IOS * RigidBody::GetOS()
+me::IOS * RigidBody::GetOS()
 {
 	return m_os;
 }
 
-const core::IOS * RigidBody::GetOS() const
+const me::IOS * RigidBody::GetOS() const
 {
 	return m_os;
 }
@@ -58,7 +58,7 @@ void RigidBody::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void RigidBody::OnAttach( dxi::scene::Object * object )
+void RigidBody::OnAttach( me::Object * object )
 {
 	// Sync physx to object.
 	PxTransform transform( util::Convert< physx::PxTransform >( object->GetFrame().GetMatrix() ) );
@@ -76,13 +76,13 @@ void RigidBody::OnAttach( dxi::scene::Object * object )
 	}
 	PxRigidBodyExt::updateMassAndInertia( *m_rigidBody, 10.0f );
 
-	dxi::scene::Scene * scene = object->GetScene();
-	dxi::scene::ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
+	me::Scene * scene = object->GetScene();
+	ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
 	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
 	sceneComponent->GetScene()->addActor( *m_rigidBody.get() );
 }
 
-dxi::scene::IObjectComponent * RigidBody::Duplicate()
+me::IObjectComponent * RigidBody::Duplicate()
 {
 	auto duplicate = new RigidBody( *this );
 	return duplicate;

@@ -4,11 +4,11 @@
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportScene.h>
 #include <dxilua/ExportObject.h>
-#include <dxi/core/Game.h>
-#include <dxi/scene/SceneManager.h>
+#include <me/Game.h>
+#include <me/scene/SceneManager.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 DXILUADLL_API SceneProxy* CheckScene( lua_State* state, int index )
 {
@@ -24,7 +24,7 @@ int Scene_FindObject( lua_State * state )
 
 	std::string name = lua_tostring( state, 2 );
 
-	scene::Object::ptr object = sceneProxy->scene->FindObject( name );
+	Object::ptr object = sceneProxy->scene->FindObject( name );
 
 	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*objectProxy = new ObjectProxy;
@@ -66,10 +66,10 @@ int Scene_Constructor( lua_State * state )
 	*sceneProxy = new SceneProxy;
 	luaL_setmetatable( state, "Scene" );
 
-	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
 
 	auto x = game->GetComponent( "SceneManager", 0 );
-	if( !x ) game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
+	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 

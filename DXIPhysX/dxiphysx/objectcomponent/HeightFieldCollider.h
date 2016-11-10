@@ -16,12 +16,12 @@ namespace dxiphysx
 		class HeightFieldCollider : public dxiphysx::objectcomponent::ColliderBase
 		{
 		public:
-			DXIPHYSX_API HeightFieldCollider( dxi::core::IOS * os, GameComponent * gameComponent, dxi::Terra * terra, unify::RowColumn< unsigned int > rcCount );
+			DXIPHYSX_API HeightFieldCollider( me::IOS * os, GameComponent * gameComponent, dxi::Terra * terra, unify::RowColumn< unsigned int > rcCount );
 			~HeightFieldCollider();
 
 			std::string GetName() const override;
 
-			dxi::scene::IObjectComponent * Duplicate() override;
+			me::IObjectComponent * Duplicate() override;
 		};
 	}
 }

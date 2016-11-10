@@ -12,7 +12,7 @@
 #include <dxilua/unify/ExportV3.h>
 
 using namespace dxilua;
-using namespace dxi;
+//using namespace dxi;
  
 unify::V3< float > CheckV3( lua_State * state, int index )
 {

@@ -4,17 +4,17 @@
 #include "DXIMouse.h"
 #include <dxi/win/DXILib.h>
 #include <dximouse/Mouse.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 void DeleterMouse( dximouse::Mouse * mouse )
 {
 	delete mouse;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * doc );
-__declspec(dllexport) bool DXILoader( dxi::core::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
+__declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
 {
-	game->GetInputManager()->AddInputSource( dxi::input::IInputSource::ptr( new dximouse::Mouse( game ), DeleterMouse ) );
+	game->GetInputManager()->AddInputSource( me::IInputSource::ptr( new dximouse::Mouse( game ), DeleterMouse ) );
 
 	return true;
 }

@@ -3,10 +3,10 @@
 
 #include <dxilua/ExportResources.h>
 #include <dxilua/ScriptEngine.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 extern "C"
 int Resources_AddResource( lua_State * state )
@@ -18,7 +18,7 @@ int Resources_AddResource( lua_State * state )
 	std::string name = lua_tostring( state, 2 );
 	std::string path = lua_tostring( state, 3 );
 
-	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
 
 	try
 	{
@@ -26,11 +26,11 @@ int Resources_AddResource( lua_State * state )
 	}
 	catch( std::string ex )
 	{
-		game->ReportError( dxi::ErrorLevel::Failure, "Lua", ex );
+		game->ReportError( me::ErrorLevel::Failure, "Lua", ex );
 	}
 	catch( ... )
 	{
-		game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Unknown error" );
+		game->ReportError( me::ErrorLevel::Failure, "Lua", "Unknown error" );
 	}
 
 	return 0;

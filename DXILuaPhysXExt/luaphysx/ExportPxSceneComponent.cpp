@@ -15,13 +15,13 @@
 
 #include <PxPhysicsAPI.h>
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 static dxilua::ScriptEngine * g_luaSE;
-static dxi::core::Game * g_game;
+static me::Game * g_game;
 
 int PushPxSceneComponent( lua_State * state, dxiphysx::SceneComponent::ptr sceneComponent )
 {
@@ -79,7 +79,7 @@ static const luaL_Reg PxSceneComponentFunctions[] =
 int PxSceneComponent_Constructor( lua_State * state )
 {
 	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	dxi::scene::ISceneComponent::ptr component( new dxiphysx::SceneComponent( g_game->GetOS(), physics ) );
+	ISceneComponent::ptr component( new dxiphysx::SceneComponent( g_game->GetOS(), physics ) );
 	return PushPxSceneComponent( state, component );
 }
 
@@ -90,9 +90,9 @@ int PxSceneComponent_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
+void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, me::IGame * game )
 {
-	g_game = dynamic_cast< dxi::core::Game * >( game );
+	g_game = dynamic_cast< me::Game * >( game );
 	g_luaSE = luaSE;
 
 	luaSE->AddType( "PxSceneComponent", PxSceneComponentFunctions, 2, PxSceneComponent_Constructor, PxSceneComponent_Destructor );

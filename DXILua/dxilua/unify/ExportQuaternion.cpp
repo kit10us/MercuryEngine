@@ -8,7 +8,7 @@
 #include <dxilua/unify/ExportQuaternion.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
  
 unify::Quaternion CheckQuaternion( lua_State * state, int index )
 {

@@ -5,7 +5,7 @@
 #include <dxilua/ExportInput.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 InputProxy* CheckInput( lua_State* state, int index )
 {
@@ -48,13 +48,13 @@ int Input_GetState( lua_State * state )
 	std::string name = lua_tostring( state, 3 );
 	std::string condition = lua_tostring( state, 4 );
 
-	input::State inputState = inputProxy->input->GetState( subSource, name, condition );
+	State inputState = inputProxy->input->GetState( subSource, name, condition );
 	int result = -1;
-	if ( inputState == input::State::True )
+	if ( inputState == State::True )
 	{
 		result = 1;
 	}
-	else if ( inputState == input::State::False )
+	else if ( inputState == State::False )
 	{
 		result = 0;
 	}
@@ -114,7 +114,7 @@ int Input_Constructor( lua_State * state )
 
 	std::string name = luaL_checkstring( state, 1 );
 
-	input::IInputSource::ptr input = game->GetInputManager()->Find( name );
+	IInputSource::ptr input = game->GetInputManager()->Find( name );
 	if ( ! input )
 	{
 		lua_pushnil( state );

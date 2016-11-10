@@ -7,7 +7,7 @@
 #include <dxilua/CreateState.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 Module::Module( Module & component )
 	: m_state( component.m_state )
@@ -18,7 +18,7 @@ Module::Module( Module & component )
 {
 }
 
-Module::Module( lua_State * state, dxi::core::IGame * game, std::string name, unify::Path path )
+Module::Module( lua_State * state, me::IGame * game, std::string name, unify::Path path )
 	: m_state( state )
 	, m_game( game )
 	, m_name( name )
@@ -52,7 +52,7 @@ void Module::CallMember( std::string function )
 	// Get our _ENV...
 	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() ) )						   
 	{
-		m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Module not found! (" + m_name + ")" );
+		m_game->ReportError( ErrorLevel::Failure, "LUA", "Module not found! (" + m_name + ")" );
 	}
 
 	int r2 = lua_getfield( m_state, -1, function.c_str() );
@@ -62,7 +62,7 @@ void Module::CallMember( std::string function )
 		if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
 		{
 			std::string error = lua_tostring( m_state, -1 );
-			m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed in script " + function + ": " + error );
+			m_game->ReportError( ErrorLevel::Failure, "LUA", "Failed in script " + function + ": " + error );
 		}
 	}
 	else
@@ -74,32 +74,32 @@ void Module::CallMember( std::string function )
 	lua_pop( m_state, 1 );
 }
 
-void Module::OnAttach( dxi::scene::Object * object )
+void Module::OnAttach( me::Object * object )
 {
 	m_object = object;
 }
 
-void Module::OnDetach( dxi::scene::Object * object )
+void Module::OnDetach( me::Object * object )
 {
 	m_object = nullptr;
 }
 			 
-void Module::OnInit( scene::Object * object )
+void Module::OnInit( Object * object )
 {
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
 	if ( result == LUA_ERRSYNTAX )
 	{
-		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
+		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
 		assert( 0 );
 	}
 	else if ( result == LUA_ERRFILE )
 	{
-		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
+		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
 	}
 	else if ( result != LUA_OK )
 	{
-		m_game->ReportError( dxi::ErrorLevel::Failure, "Lua", "Failure in script!" );
+		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure in script!" );
 	}
 
 	// Create table for modules _ENV table.
@@ -138,39 +138,39 @@ void Module::OnInit( scene::Object * object )
 	if ( result != LUA_OK )
 	{
 		std::string error = lua_tostring( m_state, -1 );
-		m_game->ReportError( dxi::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
+		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
 		assert( 0 ); // TODO:
 	}
 
 	CallMember( "OnInit" );
 }
 
-void Module::OnStart( scene::Object * object )
+void Module::OnStart( Object * object )
 {
 	CallMember( "OnStart" );
 }
 
-void Module::OnUpdate( scene::Object * object, const RenderInfo & renderInfo )
+void Module::OnUpdate( Object * object, const RenderInfo & renderInfo )
 {
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnRender( scene::Object * object, const RenderInfo & renderInfo )
+void Module::OnRender( Object * object, const RenderInfo & renderInfo )
 {
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnSuspend( scene::Object * object )
+void Module::OnSuspend( Object * object )
 {
 	CallMember( "OnSuspend" );
 }
 
-void Module::OnResume( scene::Object * object )
+void Module::OnResume( Object * object )
 {
 	CallMember( "OnResume" );
 }
 
-dxi::scene::IObjectComponent * Module::Duplicate()
+me::IObjectComponent * Module::Duplicate()
 {
 	auto duplicate = new Module( *this );
 	return duplicate;

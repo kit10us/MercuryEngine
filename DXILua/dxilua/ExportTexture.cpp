@@ -3,12 +3,12 @@
 
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportTexture.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
-int PushTexture( lua_State * state, dxi::Texture::ptr texture )
+int PushTexture( lua_State * state, ITexture::ptr texture )
 {
 	TextureProxy ** newProxy = (TextureProxy**)(lua_newuserdata( state, sizeof( TextureProxy* ) ));
 	*newProxy = new TextureProxy();
@@ -33,15 +33,16 @@ int Texture_Constructor( lua_State * state )
 	int top = lua_gettop( state );
 	int type = lua_type( state, 1 );
 
-	Texture::ptr texture;
+	ITexture::ptr texture;
 
-	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
+	auto renderer = game->GetOS()->GetRenderer( 0 );
 	
 	// Allow pulling existing from manager...
 	if ( top == 1 )
 	{
 		std::string name = lua_tostring( state, 1 );
-		texture = game->GetManager< Texture >()->Find( name );
+		texture = game->GetManager< ITexture >()->Find( name );
 	}
 	else
 	{
@@ -62,15 +63,16 @@ int Texture_Constructor( lua_State * state )
 				readable = lua_toboolean( state, 4 ) ? true : false;
 			}
 
-			Texture::TextureParameters parameters;
+			TextureParameters parameters;
 			parameters.lockable = readable;
 			parameters.renderable = renderable;
+			parameters.source = source;
 
-			texture = game->GetManager< Texture >()->Add( name, new Texture( game->GetOS()->GetRenderer( 0 ), source, parameters ) );
+			texture = game->GetManager< ITexture >()->Add( name, source, &parameters );
 		}
 		else
 		{
-			texture = game->GetManager< Texture >()->Add( name, source );
+			texture = game->GetManager< ITexture >()->Add( name, source );
 		}
 	}
 

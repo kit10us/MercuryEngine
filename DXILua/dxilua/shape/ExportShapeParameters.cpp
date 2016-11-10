@@ -5,8 +5,7 @@
 #include <dxilua/shape/ExportShapeParameters.h>
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/ExportEffect.h>
-#include <dxi/shapes/ShapeCreators.h>
-
+#include <sg/ShapeCreators.h>
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>
 #include <dxilua/unify/ExportSize2.h>
@@ -16,7 +15,7 @@
 
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 int PushShapeParameters( lua_State * state, ShapeParameters & shapeParameters )
 {
@@ -70,7 +69,7 @@ int ShapeParameters_SetTextureMode( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
 	std::string textureMode = lua_tostring( state, 2 );
-	parameters->parameters.Set< int >( "texturemode", dxi::TextureMode::FromString( textureMode ) );
+	parameters->parameters.Set< int >( "texturemode", TextureMode::FromString( textureMode ) );
 	return 0;
 }
 
@@ -260,8 +259,9 @@ int ShapeParameters_Constructor( lua_State * state )
 
 	ShapeParameters ** parameters = (ShapeParameters**)(lua_newuserdata( state, sizeof( ShapeParameters* ) ));
 	*parameters = new ShapeParameters;
-	(*parameters)->parameters.Set< shapes::Shape::TYPE >( "type",shapes::Shape::FromString( type ) );
+	(*parameters)->parameters.Set< sg::Shape::TYPE >( "type", sg::Shape::FromString( type ) );
 	luaL_setmetatable( state, "ShapeParameters" );
+	
 	return 1;
 }
 

@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <dxi/Geometry.h>
+#include <me/Geometry.h>
 
 namespace dxi
 {
@@ -22,7 +22,7 @@ namespace dxi
 	class LODNode
 	{
 	public:
-		LODNode( Geometry::ptr geometry, float distanceStart )
+		LODNode( me::Geometry::ptr geometry, float distanceStart )
 			: m_geometry( geometry )
 			, m_distanceStart( distanceStart )
 		{
@@ -49,14 +49,14 @@ namespace dxi
 			return m_distanceStart;
 		}
 
-		Geometry::ptr & GetGeometry() { return m_geometry; }
+		me::Geometry::ptr & GetGeometry() { return m_geometry; }
 
-		Geometry::ptr m_geometry;
+		me::Geometry::ptr m_geometry;
 		float m_distanceStart;
 	};
 
 
-	class QLOD : public Geometry
+	class QLOD : public me::Geometry
 	{
 	public:
 		QLOD();
@@ -69,11 +69,11 @@ namespace dxi
 		void Invalidate();
 
 		// ::Geometry...
-		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
-		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+		void Render( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+		void Update( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
-		void Add( Geometry::ptr geometry, float distance );
-		Geometry::ptr GetLOD( unsigned int index );
+		void Add( me::Geometry::ptr geometry, float distance );
+		me::Geometry::ptr GetLOD( unsigned int index );
 
 		virtual const unify::BBox< float > & ComputeBounds();
 

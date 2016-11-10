@@ -10,7 +10,7 @@ using namespace objectcomponent;
 
 //PxHeightFieldGeometry
 
-HeightFieldCollider::HeightFieldCollider( core::IOS * os, GameComponent * gameComponent, dxi::Terra * terra, unify::RowColumn< unsigned int > rcCount  )
+HeightFieldCollider::HeightFieldCollider( me::IOS * os, GameComponent * gameComponent, dxi::Terra * terra, unify::RowColumn< unsigned int > rcCount  )
 	: ColliderBase( os, gameComponent )
 {
 	PxPhysics * physics = gameComponent->GetPhysics();
@@ -63,7 +63,7 @@ std::string HeightFieldCollider::GetName() const
 	return "HeightField Collider";
 }
 
-dxi::scene::IObjectComponent * HeightFieldCollider::Duplicate()
+me::IObjectComponent * HeightFieldCollider::Duplicate()
 {
 	auto duplicate = new HeightFieldCollider( *this );
 	return duplicate;

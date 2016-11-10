@@ -9,12 +9,12 @@
 
 struct TerraProxy
 {
-	dxi::Geometry::ptr geometry;
+	me::Geometry::ptr geometry;
 	dxi::Terra * terra;
 };
 
 DXILUADLL_API TerraProxy* CheckTerra( lua_State* state, int index );
-DXILUADLL_API int PushTerra( lua_State * state, dxi::Geometry::ptr geometry );
+DXILUADLL_API int PushTerra( lua_State * state, me::Geometry::ptr geometry );
 
 void RegisterTerra( lua_State * state );
 

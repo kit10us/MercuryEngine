@@ -7,8 +7,9 @@
 #include <dxi/pathing/position/RotateAbout.h>
 #include <dxi/pathing/position/AttachTo.h>
 #include <dxi/pathing/orientation/LookAt.h>
-#include <dxi/XMLConvert.h>
+#include <me/XMLConvert.h>
 
+using namespace me;
 using namespace dxi;
 using namespace pathing;
 

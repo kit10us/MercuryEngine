@@ -12,7 +12,8 @@
 #include <dxilua/unify/ExportV3.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
+
 int PushColor( lua_State * state, unify::ColorUnit color )
 {
 	lua_newtable( state ); // Create table.

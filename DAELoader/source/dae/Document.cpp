@@ -2,11 +2,11 @@
 // All Rights Reserved
 
 #include <dae/Document.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dae;
 
-Document::Document( dxi::core::IRenderer * renderer, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
+Document::Document( me::IRenderer * renderer, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
 : m_renderer( renderer )
 , m_effectSolver( effectSolver )
 {
@@ -77,7 +77,7 @@ const std::string & Document::GetVersion() const
 	return m_version;
 }
 
-dxi::Effect::ptr Document::GetEffect( const Shading & shading ) const
+me::Effect::ptr Document::GetEffect( const Shading & shading ) const
 {
 	return m_effectSolver->GetEffect( shading );
 }
@@ -157,7 +157,7 @@ const DocumentNode * Document::Find( const std::string & name ) const
 	}
 }
 
-dxi::core::IRenderer * Document::GetRenderer()
+me::IRenderer * Document::GetRenderer()
 {
 	return m_renderer;
 }

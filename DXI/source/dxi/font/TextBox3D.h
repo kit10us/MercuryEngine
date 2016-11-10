@@ -7,7 +7,7 @@
 #include <dxi/font/FontString.h>
 #include <dxi/font/IText.h>
 #include <dxi/font/Font.h>
-#include <dxi/Geometry.h>
+#include <me/Geometry.h>
 
 namespace dxi
 {
@@ -15,14 +15,14 @@ namespace dxi
 	{
 		typedef std::vector< CharacterRender > CharacterRenderList;
 
-		class TextBox3D : public Geometry
+		class TextBox3D : public me::Geometry
 		{
 		public:
 			TextBox3D();
 			TextBox3D( IText * text );
 			virtual ~TextBox3D();
-			virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
-			virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+			virtual void Render( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+			virtual void Update( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
 		protected:
 			std::shared_ptr< IText > m_text;

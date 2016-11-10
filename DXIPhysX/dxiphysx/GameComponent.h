@@ -2,14 +2,14 @@
 // All Rights Reserved
 #pragma once
 
-#include <dxi/core/IGameComponent.h>
+#include <me/IGameComponent.h>
 #include <dxiphysx/Util.h>
-#include <dxi/core/IOS.h>
-#include <dxi/core/IGame.h>
+#include <me/IOS.h>
+#include <me/IGame.h>
 
 namespace dxiphysx
 {
-	class GameComponent : public dxi::core::IGameComponent
+	class GameComponent : public me::IGameComponent
 	{
 	public:
 		GameComponent();
@@ -17,10 +17,10 @@ namespace dxiphysx
 
 		std::string GetName() const override;
 
-		void OnAttach( dxi::core::IGame * game ) override;
-		void OnDetach( dxi::core::IGame * game ) override;
-		void OnUpdate( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
-		void OnRender( dxi::core::IGame * game, const dxi::RenderInfo & renderInfo ) override;
+		void OnAttach( me::IGame * game ) override;
+		void OnDetach( me::IGame * game ) override;
+		void OnUpdate( me::IGame * game, const me::RenderInfo & renderInfo ) override;
+		void OnRender( me::IGame * game, const me::RenderInfo & renderInfo ) override;
 
 		physx::PxPhysics * GetPhysics();
 		physx::PxDefaultCpuDispatcher * GetCpuDispatcher();

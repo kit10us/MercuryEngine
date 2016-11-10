@@ -5,5 +5,8 @@
 
 #pragma comment( lib, "DXIWinMain" )
 
+/*
 extern "C"
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow );
+
+*/

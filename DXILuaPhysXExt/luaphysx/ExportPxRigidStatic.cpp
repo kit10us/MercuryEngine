@@ -14,13 +14,12 @@
 
 #include <PxPhysicsAPI.h>
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
 
 static dxilua::ScriptEngine * g_luaSE;
-static dxi::core::Game * g_game;
+static me::Game * g_game;
 
 int PushPxRigidStatic( lua_State * state, dxiphysx::objectcomponent::RigidStatic::ptr component )
 {
@@ -105,7 +104,7 @@ int PxRigidStatic_Destructor( lua_State * state )
 	return 0;
 }
 
-void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game )
+void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
 

@@ -3,44 +3,45 @@
 
 #include <ase/GeometryFactory.h>
 #include <ase/ASEDocument.h>
-#include <dxi/exception/FailedToCreate.h>
+#include <me/exception/FailedToCreate.h>
+#include <me/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/FrameSet.h>
 #include <unify/ColorUnit.h>
 
 using namespace ase;
-using namespace dxi;
+using namespace me;
 
-GeometryFactory::GeometryFactory( dxi::core::Game * game )
+GeometryFactory::GeometryFactory( Game * game )
 : m_game( game )
 {
 }
 
-void GeometryFactory::SetVertexShader( dxi::VertexShader::ptr vertexShader )
+void GeometryFactory::SetVertexShader( IVertexShader::ptr vertexShader )
 {
 	m_vertexShader = vertexShader;
 }
 
-void GeometryFactory::SetPixelShader( dxi::PixelShader::ptr pixelShader )
+void GeometryFactory::SetPixelShader( IPixelShader::ptr pixelShader )
 {
 	m_pixelShader = pixelShader;
 }
 
 Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 {
-	core::Game & game = *m_game;
+	Game & game = *m_game;
 
 	// Managers to store sub-resources.
-	auto textureManager = game.GetManager< Texture >();
-	auto pixelShaderManager = game.GetManager< PixelShader >();
-	auto vertexShaderManager = game.GetManager< VertexShader >();
+	auto textureManager = game.GetManager< ITexture >();
+	auto pixelShaderManager = game.GetManager< IPixelShader >();
+	auto vertexShaderManager = game.GetManager< IVertexShader >();
 	auto effectManager = game.GetManager< Effect >();
 
 	Mesh * mesh = new Mesh( m_game->GetOS()->GetRenderer( 0 ) );
 	PrimitiveList & primitiveList = mesh->GetPrimitiveList();
 
 	ase::Document doc;
-	Texture::ptr texture;
+	ITexture::ptr texture;
 	unsigned int u = 0;
 	
 	doc.Load( source );	  
@@ -82,7 +83,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 				{
 					qxml::Element * bitmapElement = mapDiffuseElement->GetElement( "BITMAP" );
 					unify::Path texturePath = source.DirectoryOnly() + 	bitmapElement->GetText();
-					Texture::ptr texture = textureManager->Add( bitmapElement->GetText(), texturePath );
+					ITexture::ptr texture = textureManager->Add( bitmapElement->GetText(), texturePath );
 					effect->SetTexture( 0, texture );
 				}
 			}
@@ -104,10 +105,12 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 				{
 					qxml::Element & mesh = child;
 
-					BufferSet & bufferSet = primitiveList.AddBufferSet();
+					BufferSet & set = primitiveList.AddBufferSet();
+
+					unify::BBox< float > bbox;
 
 					// Handle vertex format...
-					const VertexDeclaration::ptr & vd = effect->GetVertexShader()->GetVertexDeclaration();
+					const IVertexDeclaration::ptr & vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 					unsigned short stream = 0;
 
@@ -199,12 +202,9 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 						texCoords[ index ].v = 1.0f - mesh_tvert.GetAttribute< float >( "v" );
 					}
 
-					// Create vertex and index buffer...
-					VertexBuffer & vb = bufferSet.GetVertexBuffer();
-					
-					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize() * listPTP.size()] );
+					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * listPTP.size()] );
 
-					unify::DataLock lock( vertices.get(), vd->GetSize(), listPTP.size(), false );
+					unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), listPTP.size(), false, 0 );
 
 					std::vector< Index32 > indices( (unsigned int)listPTP.size() * 3 );
 
@@ -213,23 +213,23 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 					{
 						size_t index = mesh_facenormal.GetAttribute< size_t >( "index" );
 
-						vd->WriteVertex( lock, index * 3 + 0, positionE, positions[faces[index].mesh_face_A] );
-						vd->WriteVertex( lock, index * 3 + 1, positionE, positions[faces[index].mesh_face_B] );
-						vd->WriteVertex( lock, index * 3 + 2, positionE, positions[faces[index].mesh_face_C] );
+						WriteVertex( *vd, lock, index * 3 + 0, positionE, positions[faces[index].mesh_face_A] );
+						WriteVertex( *vd, lock, index * 3 + 1, positionE, positions[faces[index].mesh_face_B] );
+						WriteVertex( *vd, lock, index * 3 + 2, positionE, positions[faces[index].mesh_face_C] );
 
-						vb.GetBBox() += positions[faces[index].mesh_face_A];
-						vb.GetBBox() += positions[faces[index].mesh_face_B];
-						vb.GetBBox() += positions[faces[index].mesh_face_C];
+						bbox += positions[faces[index].mesh_face_A];
+						bbox += positions[faces[index].mesh_face_B];
+						bbox += positions[faces[index].mesh_face_C];
 
-						vd->WriteVertex( lock, index * 3 + 0, texE, texCoords[faces[index].mesh_tface_A] );
-						vd->WriteVertex( lock, index * 3 + 1, texE, texCoords[faces[index].mesh_tface_B] );
-						vd->WriteVertex( lock, index * 3 + 2, texE, texCoords[faces[index].mesh_tface_C] );
+						WriteVertex( *vd, lock, index * 3 + 0, texE, texCoords[faces[index].mesh_tface_A] );
+						WriteVertex( *vd, lock, index * 3 + 1, texE, texCoords[faces[index].mesh_tface_B] );
+						WriteVertex( *vd, lock, index * 3 + 2, texE, texCoords[faces[index].mesh_tface_C] );
 
 						size_t normalIndex = 0;
 						for( const auto mesh_vertexnormal : mesh_facenormal.Children( "MESH_VERTEXNORMAL" ) )
 						{
 							unify::V3< float > vNormal{ qxml::AttributeCast< unify::V3< float >, float >( mesh_vertexnormal, "x", "y", "z" ) };
-							vd->WriteVertex( lock, index * 3 + normalIndex++, normalE, vNormal );
+							WriteVertex( *vd, lock, index * 3 + normalIndex++, normalE, vNormal );
 						}						
 
 						indices[index * 3 + 0] = (Index32)index * 3 + 0;
@@ -237,12 +237,10 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 						indices[index * 3 + 2] = (Index32)index * 3 + 2;
 					}
 					
-					vb.Create( (unsigned int)listPTP.size(), vd, 0, vertices.get() );
+					set.AddVertexBuffer( { (unsigned int)listPTP.size(), vd, 0, vertices.get(), BufferUsage::Default, bbox } );
+					set.AddIndexBuffer( { (unsigned int)listPTP.size() * 3, (Index32*)&indices[0], BufferUsage::Default } );
 
-					IndexBuffer & ib = bufferSet.GetIndexBuffer();
-					ib.Create( (unsigned int)listPTP.size() * 3, (Index32*)&indices[0], dxi::BufferUsage::Default );
-
-					bufferSet.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( mesh_numfaces * 3, (unsigned int)listPTP.size() * 3, 0, 0, effect ) );
+					set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( mesh_numfaces * 3, (unsigned int)listPTP.size() * 3, 0, 0, effect ) );
 				}
 			}
 		}

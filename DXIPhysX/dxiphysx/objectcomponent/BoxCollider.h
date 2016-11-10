@@ -17,12 +17,12 @@ namespace dxiphysx
 				BoxCollider( BoxCollider & collider );
 
 		public:
-			DXIPHYSX_API BoxCollider( dxi::core::IOS * os, GameComponent * gameComponent, unify::V3< float > halfExt );
+			DXIPHYSX_API BoxCollider( me::IOS * os, GameComponent * gameComponent, unify::V3< float > halfExt );
 			~BoxCollider();
 
 			std::string GetName() const override;
 
-			dxi::scene::IObjectComponent * Duplicate() override;
+			me::IObjectComponent * Duplicate() override;
 		};
 	}
 }

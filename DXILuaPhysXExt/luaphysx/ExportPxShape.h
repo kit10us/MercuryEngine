@@ -15,4 +15,4 @@ struct PxShapeProxy
 PxShapeProxy* CheckPxShape( lua_State* state, int index );
 int PushPxShape( lua_State * state, dxiphysx::objectcomponent::ColliderBase::ptr component );
 
-void RegisterPxShape( dxilua::ScriptEngine * luaSE, dxi::core::IGame * game );
+void RegisterPxShape( dxilua::ScriptEngine * luaSE, me::IGame * game );

@@ -2,10 +2,11 @@
 // All Rights Reserved
 
 #include <dxi/animation/Frame.h>
-#include <dxi/Texture.h>
+#include <me/ITexture.h>
 
 using namespace dxi;
 using namespace animation;
+using namespace me;
 
 Frame::Frame()
 : m_duration( 0 )
@@ -19,7 +20,7 @@ Frame::Frame( const Frame & frame )
 {
 }
 
-Frame::Frame( std::shared_ptr< Texture > texture, const unify::TexArea & area, unify::Seconds duration )
+Frame::Frame( ITexture::ptr texture, const unify::TexArea & area, unify::Seconds duration )
 : m_texture( texture )
 , m_area( area )
 , m_duration( duration )
@@ -58,7 +59,7 @@ const unify::TexArea & Frame::GetArea() const
 	return m_area;
 }
 
-std::shared_ptr< Texture >Frame::GetTexture() const
+ITexture::ptr Frame::GetTexture() const
 {
 	return m_texture;
 }

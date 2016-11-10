@@ -25,9 +25,6 @@
     <Filter Include="dae\util">
       <UniqueIdentifier>{5cc6062f-00f0-4738-af1f-fcbab13e73d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dll">
-      <UniqueIdentifier>{b7ef1a20-4753-42e4-8b95-75a36196b7c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dae\library_controllers">
       <UniqueIdentifier>{0c942c72-f2fd-47e3-b18b-ee4b9da2d70d}</UniqueIdentifier>
     </Filter>
@@ -299,9 +296,6 @@
     <ClCompile Include="source\dae\library_visual_scenes\InstanceGeometry.cpp">
       <Filter>dae\library_visual_scenes</Filter>
     </ClCompile>
-    <ClCompile Include="source\dae\DaeDLL.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
     <ClCompile Include="source\dae\library_visual_scenes\InstanceController.cpp">
       <Filter>dae\library_visual_scenes</Filter>
     </ClCompile>
@@ -317,5 +311,6 @@
     <ClCompile Include="source\dae\library_controllers\Morph.cpp">
       <Filter>dae\library_controllers</Filter>
     </ClCompile>
+    <ClCompile Include="source\dae\DaeDLL.cpp" />
   </ItemGroup>
 </Project>

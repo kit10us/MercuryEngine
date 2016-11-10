@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="me">
+      <UniqueIdentifier>{795c4d5d-1487-4d16-bf60-24aa180e59a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\exception">
+      <UniqueIdentifier>{b0c3e8cd-3e2f-43be-a0d9-7d24f430f34a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\frameanimation">
+      <UniqueIdentifier>{170a6854-c457-4338-8aa3-92474c2b0cf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\factory">
+      <UniqueIdentifier>{6c66ea67-f273-463e-8b2f-27a565b78a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\scene">
+      <UniqueIdentifier>{fd54a837-708c-4c77-b8d8-d5d19e4ab49e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sg">
+      <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="me\IGame.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IGameComponent.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IIndexBuffer.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IInputSource.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\InputManager.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IOS.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IRenderer.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IScriptEngine.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ITexture.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexBuffer.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Mercury.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\RenderInfo.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Viewport.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Display.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Extension.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IObjectComponent.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Object.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Scene.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Frustum.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ISceneComponent.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\CameraComponent.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ObjectComponent.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IPixelShader.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexShader.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\DataBuffer.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\FailedToCreate.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\FailedToLock.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\NotImplemented.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\OutOfBounds.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\Render.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\ResourceNotFound.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\Startup.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\UnsupportedValue.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\Update.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\DeviceFailure.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\Exception.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\VertexElement.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexDeclaration.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\TextureMode.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Filtering.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IndexLock.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\VertexUtil.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\TextureLock.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\RenderMethod.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\RenderMethodBuffer.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Effect.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\BufferSet.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\PrimitiveList.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\frameanimation\FrameAnimation.h">
+      <Filter>me\frameanimation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\frameanimation\FrameAnimationKey.h">
+      <Filter>me\frameanimation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\frameanimation\FrameAnimationSet.h">
+      <Filter>me\frameanimation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Geometry.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\GeometryInstanceData.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Mesh.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\MeshAnimation.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\MeshInstanceData.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Game.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\factory\GeometryFactory.h">
+      <Filter>me\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="me\factory\PixelShaderFactories.h">
+      <Filter>me\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="me\factory\TextureFactory.h">
+      <Filter>me\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="me\factory\VertexShaderFactory.h">
+      <Filter>me\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="me\factory\EffectFactories.h">
+      <Filter>me\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="me\XMLConvert.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\BBoxRendererComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\GeometryComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ISceneManagerComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\SceneComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\SceneManager.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\AutoBBoxSceneComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\CircleParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\ConeParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\CubeParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\CylinderParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\DashRingParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\PlaneParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\PointFieldParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\PointRingParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\PyramidParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\ShapeBaseParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\ShapeCreators.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\ShapeFactory.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\ShapeType.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\SphereParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\TubeParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+    <ClInclude Include="sg\BeveledBoxParameters.h">
+      <Filter>sg</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="me\InputManager.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\RenderInfo.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Viewport.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Display.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Extension.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Object.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Scene.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Frustum.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\CameraComponent.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\ObjectComponent.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\DataBuffer.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\VertexElement.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Filtering.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\TextureMode.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\IndexLock.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\VertexUtil.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\RenderMethod.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\RenderMethodBuffer.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Effect.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\BufferSet.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\PrimitiveList.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
+      <Filter>me\frameanimation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\frameanimation\FrameAnimationSet.cpp">
+      <Filter>me\frameanimation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\frameanimation\FrameAnimation.cpp">
+      <Filter>me\frameanimation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Geometry.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\GeometryInstanceData.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Mesh.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\MeshInstanceData.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Game.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\factory\PixelShaderFactories.cpp">
+      <Filter>me\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="me\factory\TextureFactory.cpp">
+      <Filter>me\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="me\factory\VertexShaderFactory.cpp">
+      <Filter>me\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="me\factory\EffectFactories.cpp">
+      <Filter>me\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="me\factory\GeometryFactory.cpp">
+      <Filter>me\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="me\XMLConvert.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\BBoxRendererComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\GeometryComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\SceneComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\SceneManager.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\CircleParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\ConeParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\CubeParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\CylinderParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\DashRingParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\PlaneParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\PointFieldParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\PointRingParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\PyramidParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\ShapeBaseParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\ShapeCreators.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\ShapeFactory.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\ShapeType.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\SphereParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\TubeParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+    <ClCompile Include="sg\BeveledBoxParameters.cpp">
+      <Filter>sg</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="me\frameanimation\FrameAnimationKey.inl">
+      <Filter>me\frameanimation</Filter>
+    </None>
+  </ItemGroup>
+</Project>

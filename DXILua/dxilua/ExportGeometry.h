@@ -4,15 +4,15 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxi/Geometry.h>
+#include <me/Geometry.h>
 
 struct GeometryProxy
 {
-	dxi::Geometry::ptr geometry;
+	me::Geometry::ptr geometry;
 };
 
 GeometryProxy* CheckGeometry( lua_State* state, int index );
-int PushGeometry( lua_State * state, dxi::Geometry::ptr geometry );
+int PushGeometry( lua_State * state, me::Geometry::ptr geometry );
 
 void RegisterGeometry( lua_State * state );
 

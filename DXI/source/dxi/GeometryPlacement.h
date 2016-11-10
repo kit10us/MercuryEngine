@@ -9,17 +9,17 @@
 
 #include <unify/TexArea.h>
 #include <unify/Color.h>
-#include <dxi/Geometry.h>
+#include <me/Geometry.h>
 #include <dxi/PlacementEntry.h>
-#include <dxi/Texture.h>
+#include <me/ITexture.h>
 #include <vector>
 
 namespace dxi
 {
-	class GeometryPlacement : public Geometry
+	class GeometryPlacement : public me::Geometry
 	{
 	public:
-		GeometryPlacement( Geometry::ptr geometry );
+		GeometryPlacement( me::Geometry::ptr geometry );
 		~GeometryPlacement();
 
 		// ::Resource...
@@ -29,19 +29,19 @@ namespace dxi
 		void Invalidate();
 
 		// Geometry HAS TO Render
-		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+		virtual void Render( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
 		// Geometry CAN Update, but doesn't have to
-		virtual void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+		virtual void Update( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
 		void AddPlace( const unify::V3< float > & position );
 
-		void AddPlacesFromTexture( dxi::Texture::ptr texture, const unify::TexArea & area, float depth, unify::Color color );
+		void AddPlacesFromTexture( me::ITexture::ptr texture, const unify::TexArea & area, float depth, unify::Color color );
 
 	protected:
 		virtual const unify::BBox< float > & ComputeBounds();
 
 		std::vector< PlacementEntry > m_objects;
-		Geometry::ptr m_geometry;
+		me::Geometry::ptr m_geometry;
 	};
 }

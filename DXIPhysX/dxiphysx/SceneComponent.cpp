@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxiphysx/SceneComponent.h>
-#include <dxi/scene/Scene.h>
+#include <me/Scene.h>
 
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
@@ -10,10 +10,10 @@
 #include <dxiphysx/Util.h>
 
 using namespace dxiphysx;
-using namespace dxi;
+using namespace me;
 using namespace physx;
 		 
-DXIPHYSX_API SceneComponent::SceneComponent( core::IOS * os, GameComponent * gameComponent )
+DXIPHYSX_API SceneComponent::SceneComponent( me::IOS * os, GameComponent * gameComponent )
 	: m_os( os )
 	, m_enabled( true )
 	, m_gameComponent( gameComponent )
@@ -53,24 +53,24 @@ void SceneComponent::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-void SceneComponent::OnAttach( dxi::scene::Scene * scene )
+void SceneComponent::OnAttach( me::Scene * scene )
 {
 }
 
-void SceneComponent::OnDetach( dxi::scene::Scene * scene )
+void SceneComponent::OnDetach( me::Scene * scene )
 {
 }
 
-void SceneComponent::OnInit( dxi::scene::Scene * scene )
+void SceneComponent::OnInit( me::Scene * scene )
 {
 }
 
-void SceneComponent::OnStart( dxi::scene::Scene * scene )
+void SceneComponent::OnStart( me::Scene * scene )
 {
 	auto physics = m_gameComponent->GetPhysics();
 
 	{
-		scene::Object::ptr plane = scene->FindObject( "Plane" );
+		Object::ptr plane = scene->FindObject( "Plane" );
 		
 		PxRigidStatic* body = PxCreatePlane( *physics, util::Convert< PxPlane >( plane->GetFrame().GetMatrix() ), *m_material );
 		body->userData = plane.get();
@@ -81,7 +81,7 @@ void SceneComponent::OnStart( dxi::scene::Scene * scene )
 	}
 }
 
-void SceneComponent::OnUpdate( dxi::scene::Scene * scene, const RenderInfo & renderInfo )
+void SceneComponent::OnUpdate( me::Scene * scene, const RenderInfo & renderInfo )
 {											
 	float elapsedTime = renderInfo.GetDelta();
 
@@ -100,7 +100,7 @@ void SceneComponent::OnUpdate( dxi::scene::Scene * scene, const RenderInfo & ren
 
 	for ( PxU32 i = 0; i < nbActiveTransforms; ++i )
 	{
-		scene::Object * object = static_cast<scene::Object*>(activeTransforms[i].userData);
+		Object * object = static_cast< Object * >(activeTransforms[i].userData);
 		object->GetFrame().SetPosition( util::Convert< unify::V3< float > >( activeTransforms[i].actor2World.p ) );
 		object->GetFrame().SetRotation( util::Convert< unify::Quaternion >( activeTransforms[i].actor2World.q ) );
 	}
@@ -124,7 +124,7 @@ void SceneComponent::OnUpdate( dxi::scene::Scene * scene, const RenderInfo & ren
 	}
 }
 
-void SceneComponent::OnRender( dxi::scene::Scene * scene, const RenderInfo & renderInfo )
+void SceneComponent::OnRender( me::Scene * scene, const RenderInfo & renderInfo )
 {
 }
 

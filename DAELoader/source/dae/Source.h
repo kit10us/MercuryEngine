@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <dxi/VertexBuffer.h>
 #include <dae/FloatArray.h>
 #include <dae/Source_TechniqueCommon.h>
 #include <dae/Exceptions.h>

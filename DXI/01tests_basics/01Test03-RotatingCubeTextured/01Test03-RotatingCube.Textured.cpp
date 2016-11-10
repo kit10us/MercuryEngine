@@ -8,23 +8,22 @@
 /// * Use low level objects for limited unit-style testing.
 /// </summary>
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/RenderMethod.h>
+#include <me/RenderMethod.h>
 #include <DXIWinMain.h>
 
-using namespace dxi;
-using namespace core;
+using namespace me;
 
 class MyGame : public Game
 {
 	Effect::ptr effect;
-	VertexBuffer::ptr vertexBuffer;
+	IVertexBuffer::ptr vertexBuffer;
 
 public:
 	void Startup() override;
 	void Update( RenderInfo & renderInfo ) override;
-	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;
+	void Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -97,7 +96,7 @@ void MyGame::Startup()
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer.reset( new VertexBuffer( GetOS()->GetRenderer(0), numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default ) );
+	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
 }
 
 void MyGame::Update( RenderInfo & renderInfo )
@@ -107,13 +106,8 @@ void MyGame::Update( RenderInfo & renderInfo )
 
 	HRESULT result = S_OK;
 
-	/*
-	// TODO:
-	const float width = (float)GetOS()->GetResolution().width;
-	const float height = (float)GetOS()->GetResolution().height;
-	*/
-	const float width = 800;
-	const float height = 600;
+	const float width = (float)renderInfo.GetRenderer()->GetViewport().GetSize().width;
+	const float height = (float)renderInfo.GetRenderer()->GetViewport().GetSize().height;
 
 	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
@@ -138,7 +132,7 @@ void MyGame::Update( RenderInfo & renderInfo )
 	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
+void MyGame::Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport )
 {
 	vertexBuffer->Use();
 

@@ -6,9 +6,10 @@
 #pragma comment( lib, "Xinput9_1_0.lib" )
 
 using namespace dxigp;
-using namespace dxi;
+//using namespace dxi;
+using namespace me;
 
-Gamepad::Gamepad( dxi::core::IGame * game )
+Gamepad::Gamepad( me::IGame * game )
 	: m_game( game )
 {
 }
@@ -41,12 +42,12 @@ size_t Gamepad::SubSourceCount() const
 	return m_states.size();
 }
 
-input::State Gamepad::GetState( size_t subSource, std::string name, std::string condition ) const
+State Gamepad::GetState( size_t subSource, std::string name, std::string condition ) const
 {
 	auto itr = m_states.find( subSource );
 	if ( itr == m_states.end() )
 	{
-		return input::State::Invalid;
+		return State::Invalid;
 	}
 
 	const XINPUT_STATE * prevState = 0;
@@ -120,24 +121,24 @@ input::State Gamepad::GetState( size_t subSource, std::string name, std::string 
 	{
 		if ( unify::StringIs( condition, "Down" ) )
 		{
-			return ( ( state->Gamepad.wButtons & button ) == button ) ? input::State::True : input::State::False;
+			return ( ( state->Gamepad.wButtons & button ) == button ) ? State::True : State::False;
 		}
 		else if ( unify::StringIs( condition, "Up" ) )
 		{
-			return ( (state->Gamepad.wButtons & button) == 0 ) ? input::State::True : input::State::False;
+			return ( (state->Gamepad.wButtons & button) == 0 ) ? State::True : State::False;
 		}
 		else if ( unify::StringIs( condition, "Pressed" ) )
 		{
 			if ( ! prevState )
 			{
-				return input::State::False;
+				return State::False;
 			}
 
-			return ( ( (state->Gamepad.wButtons & button) == 0 ) && ( ( prevState->Gamepad.wButtons & button ) == button ) ) ? input::State::True : input::State::False;
+			return ( ( (state->Gamepad.wButtons & button) == 0 ) && ( ( prevState->Gamepad.wButtons & button ) == button ) ) ? State::True : State::False;
 		}
 	}
 
-	return input::State::Invalid;
+	return State::Invalid;
 }
 
 bool Gamepad::HasValue( size_t subSource, std::string name ) const

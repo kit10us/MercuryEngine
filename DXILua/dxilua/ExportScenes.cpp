@@ -3,11 +3,11 @@
 
 #include <dxilua/ExportScenes.h>
 #include <dxilua/ScriptEngine.h>
-#include <dxi/core/Game.h>
-#include <dxi/scene/SceneManager.h>
+#include <me/Game.h>
+#include <me/scene/SceneManager.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 extern "C"
 int Scenes_LoadScene( lua_State * state )
@@ -33,12 +33,12 @@ int Scenes_AddScene( lua_State * state )
 
 	std::string name = lua_tostring( state, 1 );
 
-	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
 
 	auto x = game->GetComponent( "SceneManager", 0 );
-	if( !x ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
+	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
-	scene::SceneManager * sceneManager = dynamic_cast< dxi::scene::SceneManager * >(x.get());
+	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 
 	sceneManager->Add( name );
 

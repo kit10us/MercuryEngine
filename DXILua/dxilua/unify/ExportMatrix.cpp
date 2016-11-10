@@ -13,7 +13,7 @@
 #include <dxilua/unify/ExportV3.h>
 					 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 unify::Matrix CheckMatrix( lua_State* state, int index )
 {

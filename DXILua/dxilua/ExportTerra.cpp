@@ -7,8 +7,9 @@
 
 using namespace dxilua;
 using namespace dxi;
+using namespace me;
 
-int PushTerra( lua_State * state, dxi::Geometry::ptr geometry )
+int PushTerra( lua_State * state, me::Geometry::ptr geometry )
 {
 	TerraProxy ** newProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
 	*newProxy = new TerraProxy();

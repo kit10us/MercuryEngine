@@ -3,12 +3,12 @@
 
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportEffect.h>
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
-int PushEffect( lua_State * state, dxi::Effect::ptr effect )
+int PushEffect( lua_State * state, me::Effect::ptr effect )
 {
 	EffectProxy ** newProxy = (EffectProxy**)(lua_newuserdata( state, sizeof( EffectProxy* ) ));
 	*newProxy = new EffectProxy();
@@ -35,7 +35,7 @@ int Effect_Constructor( lua_State * state )
 
 	Effect::ptr effect;
 
-	auto game = dynamic_cast< dxi::core::Game * >( ScriptEngine::GetGame() );
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
 	
 	// Allow pulling existing from manager...
 	if ( top == 1 )

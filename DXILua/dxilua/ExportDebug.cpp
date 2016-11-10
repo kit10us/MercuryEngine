@@ -5,7 +5,7 @@
 #include <dxilua/ScriptEngine.h>
 
 using namespace dxilua;
-using namespace dxi;
+using namespace me;
 
 extern "C"
 int Debug_Write( lua_State * state )

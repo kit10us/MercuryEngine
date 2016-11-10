@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="me\BufferSet.h" />
+    <ClInclude Include="me\CameraComponent.h" />
+    <ClInclude Include="me\DataBuffer.h" />
+    <ClInclude Include="me\Display.h" />
+    <ClInclude Include="me\Effect.h" />
+    <ClInclude Include="me\exception\DeviceFailure.h" />
+    <ClInclude Include="me\exception\Exception.h" />
+    <ClInclude Include="me\exception\FailedToCreate.h" />
+    <ClInclude Include="me\exception\FailedToLock.h" />
+    <ClInclude Include="me\exception\NotImplemented.h" />
+    <ClInclude Include="me\exception\OutOfBounds.h" />
+    <ClInclude Include="me\exception\Render.h" />
+    <ClInclude Include="me\exception\ResourceNotFound.h" />
+    <ClInclude Include="me\exception\Startup.h" />
+    <ClInclude Include="me\exception\UnsupportedValue.h" />
+    <ClInclude Include="me\exception\Update.h" />
+    <ClInclude Include="me\Extension.h" />
+    <ClInclude Include="me\factory\EffectFactories.h" />
+    <ClInclude Include="me\factory\GeometryFactory.h" />
+    <ClInclude Include="me\factory\PixelShaderFactories.h" />
+    <ClInclude Include="me\factory\TextureFactory.h" />
+    <ClInclude Include="me\factory\VertexShaderFactory.h" />
+    <ClInclude Include="me\Filtering.h" />
+    <ClInclude Include="me\frameanimation\FrameAnimation.h" />
+    <ClInclude Include="me\frameanimation\FrameAnimationKey.h" />
+    <ClInclude Include="me\frameanimation\FrameAnimationSet.h" />
+    <ClInclude Include="me\Frustum.h" />
+    <ClInclude Include="me\Game.h" />
+    <ClInclude Include="me\Geometry.h" />
+    <ClInclude Include="me\GeometryInstanceData.h" />
+    <ClInclude Include="me\IGame.h" />
+    <ClInclude Include="me\IGameComponent.h" />
+    <ClInclude Include="me\IIndexBuffer.h" />
+    <ClInclude Include="me\IInputSource.h" />
+    <ClInclude Include="me\IndexLock.h" />
+    <ClInclude Include="me\InputManager.h" />
+    <ClInclude Include="me\IObjectComponent.h" />
+    <ClInclude Include="me\IOS.h" />
+    <ClInclude Include="me\IPixelShader.h" />
+    <ClInclude Include="me\IRenderer.h" />
+    <ClInclude Include="me\ISceneComponent.h" />
+    <ClInclude Include="me\IScriptEngine.h" />
+    <ClInclude Include="me\ITexture.h" />
+    <ClInclude Include="me\IVertexBuffer.h" />
+    <ClInclude Include="me\IVertexDeclaration.h" />
+    <ClInclude Include="me\IVertexShader.h" />
+    <ClInclude Include="me\Mercury.h" />
+    <ClInclude Include="me\Mesh.h" />
+    <ClInclude Include="me\MeshAnimation.h" />
+    <ClInclude Include="me\MeshInstanceData.h" />
+    <ClInclude Include="me\Object.h" />
+    <ClInclude Include="me\ObjectComponent.h" />
+    <ClInclude Include="me\PrimitiveList.h" />
+    <ClInclude Include="me\RenderInfo.h" />
+    <ClInclude Include="me\RenderMethod.h" />
+    <ClInclude Include="me\RenderMethodBuffer.h" />
+    <ClInclude Include="me\Scene.h" />
+    <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
+    <ClInclude Include="me\scene\BBoxRendererComponent.h" />
+    <ClInclude Include="me\scene\GeometryComponent.h" />
+    <ClInclude Include="me\scene\ISceneManagerComponent.h" />
+    <ClInclude Include="me\scene\SceneComponent.h" />
+    <ClInclude Include="me\scene\SceneManager.h" />
+    <ClInclude Include="me\TextureLock.h" />
+    <ClInclude Include="me\TextureMode.h" />
+    <ClInclude Include="me\VertexElement.h" />
+    <ClInclude Include="me\VertexUtil.h" />
+    <ClInclude Include="me\Viewport.h" />
+    <ClInclude Include="me\XMLConvert.h" />
+    <ClInclude Include="sg\BeveledBoxParameters.h" />
+    <ClInclude Include="sg\CircleParameters.h" />
+    <ClInclude Include="sg\ConeParameters.h" />
+    <ClInclude Include="sg\CubeParameters.h" />
+    <ClInclude Include="sg\CylinderParameters.h" />
+    <ClInclude Include="sg\DashRingParameters.h" />
+    <ClInclude Include="sg\PlaneParameters.h" />
+    <ClInclude Include="sg\PointFieldParameters.h" />
+    <ClInclude Include="sg\PointRingParameters.h" />
+    <ClInclude Include="sg\PyramidParameters.h" />
+    <ClInclude Include="sg\ShapeBaseParameters.h" />
+    <ClInclude Include="sg\ShapeCreators.h" />
+    <ClInclude Include="sg\ShapeFactory.h" />
+    <ClInclude Include="sg\ShapeType.h" />
+    <ClInclude Include="sg\SphereParameters.h" />
+    <ClInclude Include="sg\TubeParameters.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="me\BufferSet.cpp" />
+    <ClCompile Include="me\CameraComponent.cpp" />
+    <ClCompile Include="me\DataBuffer.cpp" />
+    <ClCompile Include="me\Display.cpp" />
+    <ClCompile Include="me\Effect.cpp" />
+    <ClCompile Include="me\Extension.cpp" />
+    <ClCompile Include="me\factory\EffectFactories.cpp" />
+    <ClCompile Include="me\factory\GeometryFactory.cpp" />
+    <ClCompile Include="me\factory\PixelShaderFactories.cpp" />
+    <ClCompile Include="me\factory\TextureFactory.cpp" />
+    <ClCompile Include="me\factory\VertexShaderFactory.cpp" />
+    <ClCompile Include="me\Filtering.cpp" />
+    <ClCompile Include="me\frameanimation\FrameAnimation.cpp" />
+    <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp" />
+    <ClCompile Include="me\frameanimation\FrameAnimationSet.cpp" />
+    <ClCompile Include="me\Frustum.cpp" />
+    <ClCompile Include="me\Game.cpp" />
+    <ClCompile Include="me\Geometry.cpp" />
+    <ClCompile Include="me\GeometryInstanceData.cpp" />
+    <ClCompile Include="me\IndexLock.cpp" />
+    <ClCompile Include="me\InputManager.cpp" />
+    <ClCompile Include="me\Mesh.cpp" />
+    <ClCompile Include="me\MeshInstanceData.cpp" />
+    <ClCompile Include="me\Object.cpp" />
+    <ClCompile Include="me\ObjectComponent.cpp" />
+    <ClCompile Include="me\PrimitiveList.cpp" />
+    <ClCompile Include="me\RenderInfo.cpp" />
+    <ClCompile Include="me\RenderMethod.cpp" />
+    <ClCompile Include="me\RenderMethodBuffer.cpp" />
+    <ClCompile Include="me\Scene.cpp" />
+    <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
+    <ClCompile Include="me\scene\BBoxRendererComponent.cpp" />
+    <ClCompile Include="me\scene\GeometryComponent.cpp" />
+    <ClCompile Include="me\scene\SceneComponent.cpp" />
+    <ClCompile Include="me\scene\SceneManager.cpp" />
+    <ClCompile Include="me\TextureMode.cpp" />
+    <ClCompile Include="me\VertexElement.cpp" />
+    <ClCompile Include="me\VertexUtil.cpp" />
+    <ClCompile Include="me\Viewport.cpp" />
+    <ClCompile Include="me\XMLConvert.cpp" />
+    <ClCompile Include="sg\BeveledBoxParameters.cpp" />
+    <ClCompile Include="sg\CircleParameters.cpp" />
+    <ClCompile Include="sg\ConeParameters.cpp" />
+    <ClCompile Include="sg\CubeParameters.cpp" />
+    <ClCompile Include="sg\CylinderParameters.cpp" />
+    <ClCompile Include="sg\DashRingParameters.cpp" />
+    <ClCompile Include="sg\PlaneParameters.cpp" />
+    <ClCompile Include="sg\PointFieldParameters.cpp" />
+    <ClCompile Include="sg\PointRingParameters.cpp" />
+    <ClCompile Include="sg\PyramidParameters.cpp" />
+    <ClCompile Include="sg\ShapeBaseParameters.cpp" />
+    <ClCompile Include="sg\ShapeCreators.cpp" />
+    <ClCompile Include="sg\ShapeFactory.cpp" />
+    <ClCompile Include="sg\ShapeType.cpp" />
+    <ClCompile Include="sg\SphereParameters.cpp" />
+    <ClCompile Include="sg\TubeParameters.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="me\frameanimation\FrameAnimationKey.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>MercuryEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

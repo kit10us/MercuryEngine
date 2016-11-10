@@ -8,23 +8,22 @@
 /// * Use low level objects for limited unit-style testing.
 /// </summary>
 
-#include <dxi/core/Game.h>
+#include <me/Game.h>
 #include <dxi/win/DXILib.h>
-#include <dxi/RenderMethod.h>
+#include <me/RenderMethod.h>
 #include <DXIWinMain.h>
 
-using namespace dxi;
-using namespace core;
+using namespace me;
 
 class MyGame : public Game
 {
 	Effect::ptr effect;
-	VertexBuffer::ptr vertexBuffer;
+	IVertexBuffer::ptr vertexBuffer;
 
 public:
 	void Startup() override;
-	void Update( RenderInfo & renderInfo ) override;
-	void Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport ) override;
+	void Update( me::RenderInfo & renderInfo ) override;
+	void Render( int renderer, const me::RenderInfo & renderInfo, const me::Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -32,116 +31,43 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	effect = GetManager< Effect>()->Add( "textured3d", "media/EffectTextured.effect" );
+	const float width = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().width;
+	const float height = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;
+
+	effect = GetManager< Effect>()->Add( "color2d", "media/EffectColor2D.effect" );
 
 #pragma region Create vertex raw data as a C-style struct...
-	float xscalar = 10.0f;
-	float yscalar = 10.0f;
-	float zscalar = 10.0f;
-
+	float depth = 0.5f;
 	struct Vertex
 	{
 		float x, y, z;
-		float u, v;
+		float r, g, b, a;
 	};
 
 	Vertex vbRaw[] =
 	{
-		// Z-Near...
-		{ -xscalar, yscalar, zscalar, 0.0f, 0.0f },
-		{ xscalar, yscalar, zscalar, 1.0f, 0.0f },
-		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f },
-		{ xscalar, yscalar, zscalar, 1.0f, 0.0f },
-		{ xscalar, -yscalar, zscalar, 1.0f, 1.0f },
-		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f },
-
-		// Z-Near...
-		{ xscalar, yscalar, -zscalar, 0.0f, 0.0f },
-		{ -xscalar, yscalar, -zscalar, 1.0f, 0.0f },
-		{ xscalar, -yscalar, -zscalar, 0.0f, 1.0f },
-		{ -xscalar, yscalar, -zscalar, 1.0f, 0.0f },
-		{ -xscalar, -yscalar, -zscalar, 1.0f, 1.0f },
-		{ xscalar, -yscalar, -zscalar, 0.0f, 1.0f },
-
-		// X-Min...
-		{ -xscalar, yscalar, zscalar, 0.0f, 0.0f },
-		{ -xscalar, yscalar, -zscalar, 1.0f, 0.0f },
-		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f },
-		{ -xscalar, yscalar, -zscalar, 1.0f, 0.0f },
-		{ -xscalar, -yscalar, -zscalar, 1.0f, 1.0f },
-		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f },
-
-		// X-Max...
-		{ xscalar, yscalar, -zscalar, 0.0f, 0.0f },
-		{ xscalar, yscalar, zscalar, 1.0f, 0.0f },
-		{ xscalar, -yscalar, -zscalar, 0.0f, 1.0f },
-		{ xscalar, yscalar, zscalar, 1.0f, 0.0f },
-		{ xscalar, -yscalar, zscalar, 1.0f, 1.0f },
-		{ xscalar, -yscalar, -zscalar, 0.0f, 1.0f },
-
-		// Y-Min...
-		{ -xscalar, yscalar, zscalar, 0.0f, 0.0f },
-		{ xscalar, yscalar, zscalar, 1.0f, 0.0f },
-		{ -xscalar, yscalar, -zscalar, 0.0f, 1.0f },
-		{ xscalar, yscalar, zscalar, 1.0f, 0.0f },
-		{ xscalar, yscalar, -zscalar, 1.0f, 1.0f },
-		{ -xscalar, yscalar, -zscalar, 0.0f, 1.0f },
-
-		// Y-Max...
-		{ -xscalar, -yscalar, -zscalar, 0.0f, 0.0f },
-		{ xscalar, -yscalar, -zscalar, 1.0f, 0.0f },
-		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f },
-		{ xscalar, -yscalar, -zscalar, 1.0f, 0.0f },
-		{ xscalar, -yscalar, zscalar, 1.0f, 1.0f },
-		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f }
+		{ 0, 0, depth, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ width, 0, depth, 0.0f, 1.0f, 0.0f, 1.0f },
+		{ 0, height, depth, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ width, height, depth, 1.0f, 1.0f, 1.0f, 1.0f }
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer.reset( new VertexBuffer( GetOS()->GetRenderer(0), numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default ) );
+	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
 }
 
 void MyGame::Update( RenderInfo & renderInfo )
 {
-	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
-	static int axisIndex = 0;
-
-	HRESULT result = S_OK;
-
-	/*
-	// TODO:
-	const float width = (float)GetOS()->GetResolution().width;
-	const float height = (float)GetOS()->GetResolution().height;
-	*/
-	const float width = 800;
-	const float height = 600;
-
-	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
-	if( rotation.Fix360() != 0 )
-	{
-		++axisIndex;
-		if( axisIndex >= 3 )
-		{
-			axisIndex = 0;
-		}
-	}
-
-	unify::V3< float > eye( 0.0f, 1.0f, -50.0f );
-	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
-	unify::V3< float > up( 0.0f, 1.0f, 0.0f );
-
-	unify::Matrix worldMatrix = unify::MatrixIdentity();
-	unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
-	worldMatrix *= unify::MatrixRotationAboutAxis( axis, rotation );
-	renderInfo.SetWorldMatrix( worldMatrix );
-	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	const float width = (float)renderInfo.GetRenderer()->GetDisplay().GetSize().width;
+	const float height = (float)renderInfo.GetRenderer()->GetDisplay().GetSize().height;
+	renderInfo.SetProjectionMatrix( unify::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
+void MyGame::Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport )
 {
 	vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
+	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
 	method.Render( renderInfo );
 }
 
