@@ -5,11 +5,10 @@
 
 #include <me/IRenderer.h>
 #include <me/Display.h>
-#include <medx11/DirectX.h>
-#include <atlbase.h>
+#include <meogl3/OpenGL.h>
 #include <memory>
 
-namespace medx11
+namespace meogl3
 {
 	class WindowsOS;
 
@@ -20,9 +19,11 @@ namespace medx11
 		virtual ~Renderer();																															   
 		const me::Display & GetDisplay() const;
 
+		/*
 		ID3D11Device * GetDxDevice() const;
 		ID3D11DeviceContext * GetDxContext() const;
 		IDXGISwapChain * GetSwapChain() const;
+		*/
 
 		void SetCullMode( me::CullMode::TYPE mode ) override;
 
@@ -48,16 +49,7 @@ namespace medx11
 		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) override;
 
 	private:
-	WindowsOS * m_OS;
-	me::Display m_display;
-	size_t m_index;
-
-	CComPtr< ID3D11Device > m_dxDevice;
-	CComPtr< ID3D11DeviceContext > m_dxContext;
-	DXGI_SWAP_CHAIN_DESC m_swapChainDesc;
-	CComPtr< IDXGISwapChain > m_swapChain;
-	CComPtr< ID3D11RenderTargetView > m_renderTargetView;
-	CComPtr< ID3D11Texture2D > m_depthStencilBuffer;
-	CComPtr< ID3D11DepthStencilView > m_depthStencilView;
-	CComPtr< ID3D11RasterizerState > m_rasterizerState;	};
+		class Pimpl;
+		std::shared_ptr< Pimpl > m_pimpl;
+	};
 }
