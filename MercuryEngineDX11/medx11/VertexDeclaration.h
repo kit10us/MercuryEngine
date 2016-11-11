@@ -6,10 +6,11 @@
 #include <me/IRenderer.h>
 #include <me/IVertexDeclaration.h>
 #include <me/VertexElement.h>
+#include <medx11/Renderer.h>
 #include <unify/unify.h>
 #include <unify/String.h>
 #include <unify/DataLock.h>
-
+#include <atlbase.h>
 #include <map>
 
 namespace medx11
@@ -63,7 +64,14 @@ namespace medx11
 		void Use();
 
 	private:
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		Renderer * m_renderer;
+
+		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
+		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;
+
+		std::vector< me::VertexElement > m_elements;
+		ElementMap m_elementMap;
+
+		CComPtr< ID3D11InputLayout > m_layout;
 	};
 }

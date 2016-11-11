@@ -5,8 +5,10 @@
 
 #include <me/RenderInfo.h>
 #include <me/IRenderer.h>
+#include <medx11/Renderer.h>
 #include <unify/Path.h>
 #include <memory>
+#include <atlbase.h>
 
 namespace medx11
 {
@@ -33,12 +35,12 @@ namespace medx11
 	protected:
 		me::PixelShaderParameters m_parameters;
 		bool m_assembly;
-		std::string m_errorMessage;
 		bool m_created;
 
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		Renderer * m_renderer;
+		CComPtr< ID3D11PixelShader > m_pixelShader;
+		CComPtr< ID3D10Blob > m_pixelShaderBuffer;
 	};
 }

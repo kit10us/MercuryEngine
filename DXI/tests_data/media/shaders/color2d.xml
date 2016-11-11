@@ -11,7 +11,7 @@
     <profile>vs_1_1</profile>
     <vd>
       <element name="Position" type="Float3"/>
-  	  <element name="Diffuse" type="Color"/>
+  	  <element name="Diffuse" type="Float4"/>
     </vd>
   </vertexshader>
 </xml>

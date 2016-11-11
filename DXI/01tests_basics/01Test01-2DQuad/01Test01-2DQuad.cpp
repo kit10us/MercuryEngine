@@ -1,17 +1,12 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-/// <summary>
-/// "The Basics"
-/// goals and requirements:
-/// * Illustrate the core framework components.
-/// * Use low level objects for limited unit-style testing.
-/// </summary>
-
 #include <me/Game.h>
 #include <dxi/win/DXILib.h>
 #include <me/RenderMethod.h>
 #include <DXIWinMain.h>
+
+#include <me/VertexUtil.h>
 
 using namespace me;
 
@@ -36,24 +31,33 @@ void MyGame::Startup()
 
 	effect = GetManager< Effect>()->Add( "color2d", "media/EffectColor2D.effect" );
 
-#pragma region Create vertex raw data as a C-style struct...
+	auto vd = effect->GetVertexShader()->GetVertexDeclaration();
+
+	unsigned int vertexCount = 4;
+	size_t sizeOfBufferInBytes = vd->GetSize( 0 ) * vertexCount;
+
+	std::shared_ptr< unsigned char > vertices( new unsigned char[ sizeOfBufferInBytes ] );
+
+	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+
 	float depth = 0.5f;
-	struct Vertex
-	{
-		float x, y, z;
-		float r, g, b, a;
-	};
 
-	Vertex vbRaw[] =
-	{
-		{ 0, 0, depth, 1.0f, 0.0f, 0.0f, 1.0f },
-		{ width, 0, depth, 0.0f, 1.0f, 0.0f, 1.0f },
-		{ 0, height, depth, 0.0f, 0.0f, 1.0f, 1.0f },
-		{ width, height, depth, 1.0f, 1.0f, 1.0f, 1.0f }
-	};
-	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
+	VertexElement positionE = CommonVertexElement::Position(0);
+	VertexElement colorE = CommonVertexElement::Diffuse(0);
 
-	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
+	WriteVertex( *vd, lock, 0, positionE, unify::V3< float >( 0, 0, depth ) );
+	WriteVertex( *vd, lock, 0, colorE, unify::ColorUnit( 1, 0, 0, 1 ) );
+
+	WriteVertex( *vd, lock, 1, positionE, unify::V3< float >( width, 0, depth ) );
+	WriteVertex( *vd, lock, 1, colorE, unify::ColorUnit( 0, 1, 0, 1 ) );
+
+	WriteVertex( *vd, lock, 2, positionE, unify::V3< float >( 0, height, depth ) );
+	WriteVertex( *vd, lock, 2, colorE, unify::ColorUnit( 0, 0, 1, 1 ) );
+
+	WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( width, height, depth ) );
+	WriteVertex( *vd, lock, 3, colorE, unify::ColorUnit( 1, 1, 1, 1 ) );
+
+	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { vertexCount, effect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), BufferUsage::Default } );
 }
 
 void MyGame::Update( RenderInfo & renderInfo )

@@ -3,7 +3,10 @@
  */
 
 #include <unify/DataLock.h>
+#include <unify/String.h>
+#include <unify/Exception.h>
 #include <string>
+#include <cassert>
 
 using namespace unify;
 
@@ -61,9 +64,16 @@ void * DataLock::GetData()
 
 void * DataLock::GetItem( unsigned int index )
 {
-	if( index >= m_count || m_readonly )
+	if( index >= m_count )
 	{
-		return 0;
+		assert( 0 );
+		throw unify::Exception( "Attempted to access index out of range! (" + unify::Cast< std::string >( index ) + " to " + unify::Cast< std::string >( m_count ) +")" );
+	}
+
+	if ( m_readonly )
+	{
+		assert( 0 );
+		throw unify::Exception( "Attempted to access READONLY data for write!" );
 	}
 
 	return ((unsigned char*)m_data) + m_stride * index;
