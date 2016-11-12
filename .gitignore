@@ -52,3 +52,5 @@ intermediate/
 
 ## FORCED INCLUSIONS (our exclude exceptions)
 !DXI/tests_data/*
+/DXI/tests_data/*.DLL
+/MercuryTests/test_dataDX11/log.txt

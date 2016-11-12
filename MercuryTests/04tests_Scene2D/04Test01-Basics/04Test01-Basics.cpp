@@ -41,22 +41,6 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr mainScene = sceneManager->Add( "main" );
 	
-	/* TODO: Defect when we add this on destruction.
-
-	Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "Camera" ).get() );
-																			 
-	cameraComponent->SetProjection(
-		unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f,
-			800 / 600
-			, 1, 1000 ) );
-
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
-	*/
-	
-	
 	effect = GetManager< Effect>()->Add( "textured3d", "media/EffectTextured.effect" );
 
 #pragma region Create vertex raw data as a C-style struct...

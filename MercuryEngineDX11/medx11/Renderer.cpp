@@ -160,7 +160,7 @@ IDXGISwapChain * Renderer::GetSwapChain() const
 	   
 void Renderer::BeforeRender()
 {
-	float clearColor[] = { 0.1f, 0.0f, 0.2f, 1.0f };
+	float clearColor[] = { 0.5f, 0.0f, 0.3f, 1.0f };
 	m_dxContext->ClearRenderTargetView( m_renderTargetView, clearColor );
 	m_dxContext->ClearDepthStencilView( m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
 
