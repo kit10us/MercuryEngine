@@ -65,8 +65,11 @@ Game::~Game()
 
 	m_components.clear();
 
-	m_os->Shutdown();
-	m_os.reset();
+	if ( m_os )
+	{
+		m_os->Shutdown();
+		m_os.reset();
+	}
 
 	// Remove extensions...
 	m_extensions.clear();
