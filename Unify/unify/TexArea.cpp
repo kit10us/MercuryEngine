@@ -7,26 +7,6 @@
 
 using namespace unify;
 
-TexArea TexArea::One()
-{
-	return TexArea( 0, 0, 1, 1 );
-}
-
-TexArea TexArea::Zero()
-{
-	return TexArea( 0, 0, 0, 0 );
-}
-
-TexArea TexArea::Full()
-{
-	return TexArea( 0, 0, 1, 1 );
-}
-
-TexArea TexArea::Double()
-{
-	return TexArea( 0, 0, 2, 2 );
-}
-
 TexArea::TexArea()
 {
 	// Do nothing
@@ -108,4 +88,29 @@ TexCoords TexArea::DL() const
 TexCoords TexArea::DR() const
 {
 	return dr;
+}
+
+bool TexArea::IsZero() const
+{
+	return Width() == Height() == 0.0f;
+}
+
+TexArea unify::TexAreaOne()
+{
+	return TexArea( 0, 0, 1, 1 );
+}
+
+TexArea unify::TexAreaZero()
+{
+	return TexArea( 0, 0, 0, 0 );
+}
+
+TexArea unify::TexAreaFull()
+{
+	return TexArea( 0, 0, 1, 1 );
+}
+
+TexArea unify::TexAreaDouble()
+{
+	return TexArea( 0, 0, 2, 2 );
 }

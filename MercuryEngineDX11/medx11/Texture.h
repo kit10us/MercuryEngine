@@ -2,15 +2,15 @@
 // All Rights Reserved
 
 #pragma once
-#include <me/IRenderer.h>
+#include <medx11/Renderer.h>
 #include <me/TextureLock.h>
 #include <unify/Rect.h>
 #include <unify/Color.h>
-#include <unify/TexArea.h>
 #include <unify/Path.h>
 #include <string>
 #include <memory>
-#include <map>
+#include <atlbase.h>
+#include <DirectXTex.h>
 
 // MS agressive macros.
 #ifdef LoadImage
@@ -22,8 +22,7 @@
 #endif
 
 namespace medx11
-{
-
+{									  
 	//////////////////////////////////
 	// Font definitions...
 
@@ -46,17 +45,6 @@ namespace medx11
 	public:
 		typedef std::shared_ptr< Texture > ptr;
 
-		struct SpriteArray
-		{
-			SpriteArray() {}
-			SpriteArray( unsigned int head, unsigned int tail ) : head( head ), tail( tail ) {}
-			unsigned int head;
-			unsigned int tail;
-		};
-
-		typedef std::map< const std::string, SpriteArray > SpriteArrayMap;
-		typedef std::vector< unify::TexArea > SpriteMasterList;
-
 		static bool s_allowTextureUses;
 
 		Texture( me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
@@ -66,8 +54,6 @@ namespace medx11
 		void Preload();
 		void Create();
 		void Destroy();
-
-		void ClearHeader();
 
 		const unsigned int FileWidth() const;
 	
@@ -84,19 +70,24 @@ namespace medx11
 		void LockRect( unsigned int level, me::TextureLock & lock, const unify::Rect< long > * rect, bool readonly );
 		void UnlockRect( unsigned int level );
 
-		bool HasSpriteArray( const std::string & name ) const;
-		const Texture::SpriteArray & FindSpriteArray( const std::string & name ) const;
-		const Texture::SpriteArray & GetSpriteArray( unsigned int index ) const;
-		const unify::TexArea & GetSprite( const std::string & arrayName, unsigned int index ) const;
-		unsigned int SpriteArrayCount() const;
-		const unify::TexArea & GetSprite( unsigned int index ) const;
-		unsigned int SpriteCount() const;
+		me::SpriteDictionary & GetSpriteDictionary() override;
+		const me::SpriteDictionary & GetSpriteDictionary() const override;
 
 	protected:
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();
 
-		class Pimpl;
-		std::shared_ptr< class Pimpl > m_pimpl;
+		Renderer * m_renderer;						   
+		CComPtr< ID3D11Texture2D > m_texture;
+		CComPtr< ID3D11SamplerState > m_colorMapSampler;
+		CComPtr< ID3D11ShaderResourceView > m_colorMap;
+		bool m_created;
+		unify::Size< unsigned int > m_fileSize;
+		unify::Size< unsigned int > m_imageSize;
+		bool m_useColorKey;
+		unify::Color m_colorKey;
+		me::TextureParameters m_parameters;	
+		DirectX::ScratchImage m_scratch;	
+		me::SpriteDictionary m_spriteDictionary;
 	};
 }

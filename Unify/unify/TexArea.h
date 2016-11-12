@@ -12,12 +12,6 @@ namespace unify
 	class TexArea
 	{
 	public:
-		// Named constructors.
-		static TexArea One();
-		static TexArea Zero();
-		static TexArea Full();
-		static TexArea Double();
-
 		TexCoords ul;
 		TexCoords dr;
 
@@ -38,5 +32,12 @@ namespace unify
 		TexCoords UR() const;
 		TexCoords DL() const;
 		TexCoords DR() const;
+
+		bool IsZero() const;
 	};
+
+	TexArea TexAreaOne();
+	TexArea TexAreaZero();
+	TexArea TexAreaFull();
+	TexArea TexAreaDouble();
 }

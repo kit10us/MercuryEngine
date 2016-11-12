@@ -73,7 +73,7 @@ void MyGame::Startup()
 	parameters.SetEffect( GetManager< Effect >()->Find( "4" ) ); // Note the use of FindEffect to simplify interaction with the Effect Manager.
 	parameters.SetPoints( unify::RowColumn< unsigned int >( 200, 140 ) );
 	parameters.SetConstant( 0.0f );
-	parameters.SetTexArea( unify::TexArea::Full() );
+	parameters.SetTexArea( unify::TexAreaFull() );
 
 	//parameters.SetHeightMap( Terra::TextureOpMap( GetManager< ITexture >()->Find( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 0.7f, 0.25f, -1.0f ) ) );	
 	parameters.SetHeightMap( Terra::TextureOpMap( GetManager< ITexture >()->Find( "4" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 3.0f, 2.0f, 1.0f ) ) );

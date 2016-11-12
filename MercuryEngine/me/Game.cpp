@@ -33,7 +33,7 @@ void Game::Update( RenderInfo & renderInfo )
 	// STUBBED - optional for derived game class.
 }
 
-void Game::Render( int renderer, const RenderInfo & renderInfo, const Viewport & viewport )
+void Game::Render( const RenderInfo & renderInfo, const Viewport & viewport )
 {
 	// STUBBED - optional for derived game class.
 }
@@ -335,6 +335,8 @@ void Game::Tick()
 
 	m_renderInfo.SetDelta( elapsed );
 
+	m_renderInfo.SetRenderer( GetOS()->GetRenderer( 0 ) );
+
 	if( m_gameModule )
 	{
 		m_gameModule->OnUpdate( nullptr, m_renderInfo );
@@ -344,8 +346,6 @@ void Game::Tick()
 	{
 		component->OnUpdate( this, m_renderInfo );
 	}
-
-	m_renderInfo.SetRenderer( GetOS()->GetRenderer( 0 ) );
 
 	Update( m_renderInfo );
 }
@@ -357,15 +357,13 @@ void Game::Draw()
 		IRenderer & renderer = *m_os->GetRenderer( index );
 		m_renderInfo.SetRenderer( &renderer );
 		renderer.BeforeRender();
-
-	
+										  	
 		for( auto && component : m_components )
 		{
 			component->OnRender( this, m_renderInfo );
 		}
 
-		Render( index, m_renderInfo, renderer.GetViewport() );	
-
+		Render( m_renderInfo, renderer.GetViewport() );	
 
 		renderer.AfterRender();
 	}

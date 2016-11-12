@@ -61,7 +61,7 @@ void SpriteManager::LoadFromFile( const unify::Path & filePath )
 						if( frameLeaf.IsTagName( "frame" ) )
 						{
 							ITexture::ptr texture = textureMapping[frameLeaf.GetAttribute( "texture" )->GetString() ];
-							unify::TexArea area( unify::TexArea::Full() );
+							unify::TexArea area( unify::TexAreaFull() );
 							if( frameLeaf.HasAttributes( "sprite" ) )
 							{
 								int spriteIndex = frameLeaf.GetAttribute( "sprite" )->Get< int >();

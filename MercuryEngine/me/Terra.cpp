@@ -59,7 +59,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	}
 
     m_size = parameters.Get< unify::Size< float > > ( "size" );
-    const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea::Full() );
+    const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexAreaFull() );
 	const float constant = parameters.Get< float >( "constant" );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 

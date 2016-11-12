@@ -71,6 +71,12 @@
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderMethodBuffer.h" />
+    <ClInclude Include="me\scene2d\Anchor.h" />
+    <ClInclude Include="me\scene2d\Canvas.h" />
+    <ClInclude Include="me\scene2d\Element.h" />
+    <ClInclude Include="me\scene2d\FPS.h" />
+    <ClInclude Include="me\scene2d\IElement.h" />
+    <ClInclude Include="me\scene2d\TextElement.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\BBoxRendererComponent.h" />
     <ClInclude Include="me\scene\CameraComponent.h" />
@@ -82,6 +88,7 @@
     <ClInclude Include="me\scene\Scene.h" />
     <ClInclude Include="me\scene\SceneComponent.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
+    <ClInclude Include="me\SpriteDictionary.h" />
     <ClInclude Include="me\Terra.h" />
     <ClInclude Include="me\TextureLock.h" />
     <ClInclude Include="me\TextureMode.h" />
@@ -134,6 +141,10 @@
     <ClCompile Include="me\RenderInfo.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
     <ClCompile Include="me\RenderMethodBuffer.cpp" />
+    <ClCompile Include="me\scene2d\Canvas.cpp" />
+    <ClCompile Include="me\scene2d\Element.cpp" />
+    <ClCompile Include="me\scene2d\FPS.cpp" />
+    <ClCompile Include="me\scene2d\TextElement.cpp" />
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\BBoxRendererComponent.cpp" />
     <ClCompile Include="me\scene\CameraComponent.cpp" />
@@ -143,6 +154,7 @@
     <ClCompile Include="me\scene\Scene.cpp" />
     <ClCompile Include="me\scene\SceneComponent.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
+    <ClCompile Include="me\SpriteDictionary.cpp" />
     <ClCompile Include="me\Terra.cpp" />
     <ClCompile Include="me\TextureMode.cpp" />
     <ClCompile Include="me\VertexElement.cpp" />

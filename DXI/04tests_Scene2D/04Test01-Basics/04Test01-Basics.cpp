@@ -13,7 +13,13 @@
 #include <me/RenderMethod.h>
 #include <DXIWinMain.h>
 
+#include <me/scene/SceneManager.h>
+#include <me/scene/CameraComponent.h>
+#include <me/scene2d/Canvas.h>
+#include <me/scene2d/FPS.h>
+
 using namespace me;
+
 
 class MyGame : public Game
 {
@@ -23,7 +29,7 @@ class MyGame : public Game
 public:
 	void Startup() override;
 	void Update( RenderInfo & renderInfo ) override;
-	void Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport ) override;
+	void Render( const RenderInfo & renderInfo, const me::Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -31,7 +37,27 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	effect = GetManager< Effect>()->Add( "textured_3d", "media/EffectTextured.effect" );
+	using namespace scene;
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	Scene::ptr mainScene = sceneManager->Add( "main" );
+	
+	/* TODO: Defect when we add this on destruction.
+
+	Object::ptr camera = mainScene->GetRoot()->AddChild( "camera" );
+	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );
+	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "Camera" ).get() );
+																			 
+	cameraComponent->SetProjection(
+		unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f,
+			800 / 600
+			, 1, 1000 ) );
+
+	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
+	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+	*/
+	
+	
+	effect = GetManager< Effect>()->Add( "textured3d", "media/EffectTextured.effect" );
 
 #pragma region Create vertex raw data as a C-style struct...
 	float xscalar = 10.0f;
@@ -95,14 +121,13 @@ void MyGame::Startup()
 		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f }
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
-
 	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
 
+	scene2d::Canvas::ptr canvas( new scene2d::Canvas( this ) );
+	mainScene->AddComponent( canvas );
 
-
-
-
-
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
+	canvas->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 }
 
 void MyGame::Update( RenderInfo & renderInfo )
@@ -133,12 +158,11 @@ void MyGame::Update( RenderInfo & renderInfo )
 	
 	unify::Quaternion q = unify::Quaternion( axis, rotation );
 	renderInfo.SetWorldMatrix( unify::Matrix( q ) );
-	
 	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
 	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport )
+void MyGame::Render( const RenderInfo & renderInfo, const me::Viewport & viewport )
 {
 	vertexBuffer->Use();
 

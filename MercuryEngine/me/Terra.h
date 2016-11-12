@@ -48,7 +48,7 @@ namespace me
 			{
 			}
 
-			TextureOpMap( me::ITexture::ptr texture, const unify::ColorUnit & colorOp, const unify::TexArea texArea = unify::TexArea::Full() )
+			TextureOpMap( me::ITexture::ptr texture, const unify::ColorUnit & colorOp, const unify::TexArea texArea = unify::TexAreaFull() )
 				: texture( texture )
 				, colorOp( colorOp )
 				, texArea( texArea )

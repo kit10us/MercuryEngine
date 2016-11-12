@@ -45,7 +45,7 @@ namespace me
 		/// <summary>
 		/// Render is called to draw graphics.
 		/// </summary>
-		virtual void Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport ) = 0;
+		virtual void Render( const RenderInfo & renderInfo, const me::Viewport & viewport ) = 0;
 
 		/// <summary>
 		/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.

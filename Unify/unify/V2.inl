@@ -22,6 +22,13 @@ V2< T >::V2( const V2< T > & vec )
 }
 
 template< typename T >
+V2< T >::V2( const Size< T > & size )
+	: x( size.width )
+	, y( size.height )
+{
+}
+
+template< typename T >
 V2< T >::V2( const std::string & text )
 {
 	std::vector< T > split = Split< T >( text, ',' );

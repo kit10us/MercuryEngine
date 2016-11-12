@@ -6,6 +6,7 @@
 #include <me/TextureMode.h>
 #include <me/TextureLock.h>
 #include <me/Filtering.h>
+#include <me/SpriteDictionary.h>
 #include <unify/Path.h>
 #include <unify/Size.h>
 #include <unify/Rect.h>
@@ -60,5 +61,9 @@ namespace me
 		virtual void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, bool readonly ) = 0;
 		
 		virtual void UnlockRect( unsigned int level ) = 0;
+
+		virtual SpriteDictionary & GetSpriteDictionary() = 0;
+		
+		virtual const SpriteDictionary & GetSpriteDictionary() const = 0;
 	};
 }

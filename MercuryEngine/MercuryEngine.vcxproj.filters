@@ -19,6 +19,9 @@
     <Filter Include="sg">
       <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\scene2d">
+      <UniqueIdentifier>{563e301f-4ec1-4d38-b6eb-8d85553eb0a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\IGame.h">
@@ -279,6 +282,27 @@
     <ClInclude Include="me\scene\CameraComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
+    <ClInclude Include="me\SpriteDictionary.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\Anchor.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\IElement.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\Element.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\TextElement.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\Canvas.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\FPS.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -454,6 +478,21 @@
     </ClCompile>
     <ClCompile Include="me\scene\CameraComponent.cpp">
       <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\SpriteDictionary.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene2d\Element.cpp">
+      <Filter>me\scene2d</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene2d\TextElement.cpp">
+      <Filter>me\scene2d</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene2d\Canvas.cpp">
+      <Filter>me\scene2d</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene2d\FPS.cpp">
+      <Filter>me\scene2d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

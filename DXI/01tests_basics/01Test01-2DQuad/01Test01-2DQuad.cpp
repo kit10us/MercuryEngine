@@ -18,7 +18,7 @@ class MyGame : public Game
 public:
 	void Startup() override;
 	void Update( me::RenderInfo & renderInfo ) override;
-	void Render( int renderer, const me::RenderInfo & renderInfo, const me::Viewport & viewport ) override;
+	void Render( const me::RenderInfo & renderInfo, const me::Viewport & viewport ) override;
 	void Shutdown() override;
 } game;
 
@@ -67,7 +67,7 @@ void MyGame::Update( RenderInfo & renderInfo )
 	renderInfo.SetProjectionMatrix( unify::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( int renderer, const RenderInfo & renderInfo, const me::Viewport & viewport )
+void MyGame::Render(  const RenderInfo & renderInfo, const me::Viewport & viewport )
 {
 	vertexBuffer->Use();
 

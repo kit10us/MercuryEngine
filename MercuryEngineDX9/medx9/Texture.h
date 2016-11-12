@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #pragma once
-#include <me/IRenderer.h>
+#include <medx9/Renderer.h>
 #include <me/TextureLock.h>
 #include <unify/Rect.h>
 #include <unify/Color.h>
@@ -10,7 +10,7 @@
 #include <unify/Path.h>
 #include <string>
 #include <memory>
-#include <map>
+#include <atlbase.h>
 
 // MS agressive macros.
 #ifdef LoadImage
@@ -67,8 +67,6 @@ namespace medx9
 		void Create();
 		void Destroy();
 
-		void ClearHeader();
-
 		const unsigned int FileWidth() const;
 	
 		const unsigned int FileHeight() const;
@@ -84,19 +82,21 @@ namespace medx9
 		void LockRect( unsigned int level, me::TextureLock & lock, const unify::Rect< long > * rect, bool readonly );
 		void UnlockRect( unsigned int level );
 
-		bool HasSpriteArray( const std::string & name ) const;
-		const Texture::SpriteArray & FindSpriteArray( const std::string & name ) const;
-		const Texture::SpriteArray & GetSpriteArray( unsigned int index ) const;
-		const unify::TexArea & GetSprite( const std::string & arrayName, unsigned int index ) const;
-		unsigned int SpriteArrayCount() const;
-		const unify::TexArea & GetSprite( unsigned int index ) const;
-		unsigned int SpriteCount() const;
+		me::SpriteDictionary & GetSpriteDictionary() override;
+		const me::SpriteDictionary & GetSpriteDictionary() const override;
 
 	protected:
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();
 
-		class Pimpl;
-		std::shared_ptr< class Pimpl > m_pimpl;
+		Renderer * m_renderer;
+		CComPtr< IDirect3DTexture9 > m_texture;
+		me::TextureParameters m_parameters;
+		bool m_created;
+		unify::Size< unsigned int > m_fileSize;
+		unify::Size< unsigned int > m_imageSize;
+		bool m_useColorKey;
+		unify::Color m_colorKey;
+		me::SpriteDictionary m_spriteDictionary;
 	};
 }
