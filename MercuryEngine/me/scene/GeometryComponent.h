@@ -23,6 +23,8 @@ namespace me
 
 			std::string GetName() const override;
 
+			bool Renderable() const { return true; }
+
 			void SetGeometry( Geometry::ptr geometry );
 			Geometry::ptr GetGeometry();
 			const Geometry::ptr GetGeometry() const;
@@ -38,7 +40,9 @@ namespace me
 			void OnInit( Object * object ) override;
 			void OnStart( Object * object ) override;
 			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override;
-			void OnRender( Object * object, const RenderInfo & renderInfo ) override;
+			
+			void OnRender( Object * object, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
+			
 			void OnSuspend( Object * object ) override;
 			void OnResume( Object * object ) override;
 

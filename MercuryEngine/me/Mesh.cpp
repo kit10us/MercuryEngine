@@ -6,7 +6,7 @@
 
 using namespace me;
 
-Mesh::Mesh( me::IRenderer * renderer )
+Mesh::Mesh( const me::IRenderer * renderer )
 	: m_primitiveList( renderer )
 {
 }
@@ -38,8 +38,10 @@ void Mesh::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list )
 {
+	// TODO:
+	/*
 	RenderInfo myRenderInfo( renderInfo );
 
 	if( instanceData )
@@ -47,7 +49,7 @@ void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
 		myRenderInfo.SetFrameSetInstance( &meshInstanceData->GetFrameSetInstance() );
 	}
-	m_primitiveList.Render( myRenderInfo );
+	m_primitiveList.Render( myRenderInfo, list );
 
 	if( instanceData && myRenderInfo.IsOptionTrue( RenderOption::RenderFrames ) )
 	{
@@ -55,6 +57,9 @@ void Mesh::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanc
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
 		meshInstanceData->RenderFrames( myRenderInfo.GetWorldMatrix(), true, true );
 	}
+	*/
+	
+	m_primitiveList.Render( renderInfo, list );
 }
 
 PrimitiveList & Mesh::GetPrimitiveList()

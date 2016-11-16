@@ -1,0 +1,7 @@
+VertexElement:
+	std::string                SemanticName;
+	unsigned int               SemanticIndex;
+	ElementFormat::TYPE		   Format;
+	unsigned int               InputSlot;
+	unsigned int               AlignedByteOffset;
+	

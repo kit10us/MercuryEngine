@@ -110,7 +110,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 					unify::BBox< float > bbox;
 
 					// Handle vertex format...
-					const IVertexDeclaration::ptr & vd = effect->GetVertexShader()->GetVertexDeclaration();
+					const VertexDeclaration::ptr & vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 					unsigned short stream = 0;
 

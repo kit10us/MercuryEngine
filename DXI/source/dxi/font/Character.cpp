@@ -111,7 +111,7 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 	case Source::Sprite:
 		{
 			// TODO: IVertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
-			// TODO: IVertexDeclaration::ptr vd = vb.GetVertexDeclaration();
+			// TODO: VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
 
 			VertexElement positionE = CommonVertexElement::Position();
 			VertexElement texE = CommonVertexElement::TexCoords();
@@ -167,9 +167,8 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 			}
 
 			assert( 0 ); // This was changed form the "standalone", ensure this works...
-			RenderInfo renderInfo( renderInfo );
-			renderInfo.SetWorldMatrix( temp );
-			m_geometry->Render( renderInfo, 0 );
+			std::list< RenderInstance > list { temp };
+			m_geometry->Render( renderInfo, 0, list );
 		}
 		break;
 	}

@@ -102,7 +102,7 @@ void TextElement::Render( const RenderInfo & renderInfo )
 	m_vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2, m_effect ) );
-	method.Render( renderInfo );
+	renderInfo.GetRenderer()->Render( method, renderInfo, { unify::MatrixIdentity() } );
 }
 		
 void TextElement::OnSuspend()

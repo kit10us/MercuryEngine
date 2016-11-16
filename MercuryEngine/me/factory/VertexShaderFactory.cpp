@@ -24,6 +24,6 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 	parameters.path = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();
 	parameters.entryPointName = node.GetElement( "entry" )->GetText();
 	parameters. profile = node.GetElement( "profile" )->GetText();
-	parameters.vertexDeclaration = renderer->ProduceVD( node.GetElement( "vd" ) );
+	parameters.vertexDeclaration.reset( new VertexDeclaration( node.GetElement( "vd" ) ) );
 	return renderer->ProduceVS( parameters );
 }

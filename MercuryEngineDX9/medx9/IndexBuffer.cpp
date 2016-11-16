@@ -16,14 +16,14 @@ class IndexBuffer::Pimpl
 {
 public:
 	IndexBuffer & m_owner;
-	Renderer * m_renderer;
+	const Renderer * m_renderer;
 	unsigned int m_createFlags;
 
 	CComPtr< IDirect3DIndexBuffer9 > m_IB;
 
-	Pimpl( IndexBuffer & owner, me::IRenderer * renderer )
+	Pimpl( IndexBuffer & owner, const me::IRenderer * renderer )
 		: m_owner( owner )
-		, m_renderer( dynamic_cast< Renderer * >(renderer) )
+		, m_renderer( dynamic_cast< const Renderer * >(renderer) )
 	{
 	}
 	
@@ -283,7 +283,7 @@ public:
 };
 
 
-IndexBuffer::IndexBuffer( me::IRenderer * renderer )
+IndexBuffer::IndexBuffer( const me::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_locked( false )
 	, m_usage( BufferUsage::Default )
@@ -291,7 +291,7 @@ IndexBuffer::IndexBuffer( me::IRenderer * renderer )
 	, m_stride( 0 ){
 }
 
-IndexBuffer::IndexBuffer( me::IRenderer * renderer, IndexBufferParameters parameters )
+IndexBuffer::IndexBuffer( const me::IRenderer * renderer, IndexBufferParameters parameters )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_locked( false )
 	, m_usage( BufferUsage::Default )

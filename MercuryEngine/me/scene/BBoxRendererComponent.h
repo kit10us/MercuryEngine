@@ -23,6 +23,8 @@ namespace me
 
 			std::string GetName() const override;
 
+			bool Renderable() const { return true; }
+
 			/// <summary>
 			/// Get padding: the amount added to each vertex to increase the size of the visual BBox over the acutal BBox (so we can actually see it).
 			/// </summary>
@@ -36,14 +38,14 @@ namespace me
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override;
-			void OnRender( Object * object, const RenderInfo & renderInfo ) override;
+			void OnRender( Object * object, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
 
 			IObjectComponent * Duplicate();
    
 	    protected:
 			Object * m_object;
 			std::list< GeometryComponent * > m_geomertries;
-			PrimitiveList m_pl;
+			Geometry::ptr m_geometry;
 			Effect::ptr m_effect;
 			float m_padding;
 			unify::Color m_color;

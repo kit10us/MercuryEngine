@@ -117,9 +117,6 @@
     <ClInclude Include="me\VertexElement.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\IVertexDeclaration.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\TextureMode.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -302,6 +299,27 @@
     </ClInclude>
     <ClInclude Include="me\scene2d\FPS.h">
       <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\RenderInstance.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\IObjectComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ComponentInstance.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\RenderSet.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Instancing.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexConstruct.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\VertexDeclaration.h">
+      <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +511,18 @@
     </ClCompile>
     <ClCompile Include="me\scene2d\FPS.cpp">
       <Filter>me\scene2d</Filter>
+    </ClCompile>
+    <ClCompile Include="me\RenderInstance.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\ComponentInstance.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Instancing.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\VertexDeclaration.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

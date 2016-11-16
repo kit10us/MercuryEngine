@@ -3,29 +3,34 @@
 
 #pragma once
 
-#include <me/IRenderer.h>
-#include <me/IVertexDeclaration.h>
+//#include <me/IRenderer.h>
+#include <me/IVertexConstruct.h>
 #include <me/VertexElement.h>
+#include <me/Instancing.h>
 #include <unify/unify.h>
 #include <unify/String.h>
 #include <unify/DataLock.h>
-
 #include <map>
 
-namespace medx9
+namespace me
 {
+	class IRenderer;
+
 	/// <summary> 
 	/// Defines the structure of the data in a vertex. 
 	/// </summary>
-	class VertexDeclaration : public me::IVertexDeclaration
+	class VertexDeclaration
 	{
 	public:
-		VertexDeclaration( me::IRenderer * renderer );
-		VertexDeclaration( me::IRenderer * renderer, me::VertexDeclarationParameters parameters );
+		typedef std::shared_ptr< VertexDeclaration > ptr;
+
+		VertexDeclaration();
+		VertexDeclaration( const qxml::Element * xml );
+		VertexDeclaration( const qjson::Object json );
 
 		~VertexDeclaration();
 
-		void Build( const me::IVertexShader & vs );
+		void Build( const class IRenderer * renderer, const IVertexShader & vs );
 		
 		bool operator==( const VertexDeclaration & b ) const;
 		bool operator!=( const VertexDeclaration & b ) const;
@@ -58,12 +63,21 @@ namespace medx9
 
 		size_t NumberOfSlots() const;
 
-		std::vector< me::VertexElement > Elements() const override;
+		const std::vector< me::VertexElement > & Elements() const;
+
+		me::Instancing::TYPE GetInstancing() const;
 
 		void Use();
 
 	private:
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		Instancing::TYPE m_instancing;
+
+		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
+		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;
+
+		std::vector< me::VertexElement > m_elements;
+		ElementMap m_elementMap;
+
+		me::IVertexConstruct::ptr m_construct;
 	};
 }

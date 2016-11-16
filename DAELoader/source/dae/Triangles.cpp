@@ -26,7 +26,7 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 	{
 		format.Add( { input->GetSemantic(), input->GetSemantic() } );
 	}
-	m_vertexFormat = document.GetRenderer()->ProduceVD( format );
+	m_vertexFormat.reset( new me::VertexDeclaration( format ) );
 }
 
 const std::string & Triangles::GetName() const
@@ -54,7 +54,7 @@ const std::vector< int > & Triangles::GetP() const
 	return m_p;
 }
 
-me::IVertexDeclaration::ptr Triangles::GetVertexFormat() const
+me::VertexDeclaration::ptr Triangles::GetVertexFormat() const
 {
 	return m_vertexFormat;
 }

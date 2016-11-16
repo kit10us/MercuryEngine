@@ -6,6 +6,7 @@
 #include <me/BufferSet.h>
 #include <me/RenderInfo.h>
 #include <me/frameanimation/FrameAnimationSet.h>
+#include <me/RenderInstance.h>
 #include <unify/BBox.h>
 #include <unify/BSphere.h>
 #include <unify/Frame.h>
@@ -18,14 +19,14 @@ namespace me
 	class PrimitiveList
 	{
 	public:
-		PrimitiveList( me::IRenderer * renderer );
+		PrimitiveList( const me::IRenderer * renderer );
 		~PrimitiveList();
 
 		PrimitiveList( const PrimitiveList & ) = delete;
 
 		void Destroy();
 
-		void Render( const me::RenderInfo & renderInfo ) const;
+		void Render( const me::RenderInfo & renderInfo, std::list< RenderInstance > & list ) const;
 		
 		BufferSet & AddBufferSet();
 		void RemoveBufferSet( size_t i );
@@ -44,7 +45,7 @@ namespace me
 		void ComputeBounds( unify::BBox< float > & bbox ) const;
 
 	protected:
-		me::IRenderer * m_renderer;
+		const me::IRenderer * m_renderer;
 		std::vector< BufferSet::shared_ptr > m_buffers;
 		unify::FrameSet m_frameSet;
 		frameanimation::AnimationSet m_animationSet;

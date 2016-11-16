@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/Mercury.h>
-#include <me/IVertexDeclaration.h>
+#include <me/VertexDeclaration.h>
 #include <me/DataBuffer.h>
 #include <unify/BBox.h>
 #include <memory>
@@ -20,7 +20,7 @@ namespace me
 		{
 		}
 
-		VertexBufferParameters( unsigned int _count, IVertexDeclaration::ptr _vd, size_t _slot, const void * _source, me::BufferUsage::TYPE _usage = me::BufferUsage::Default, unify::BBox< float > _bbox = unify::BBox< float >() )
+		VertexBufferParameters( unsigned int _count, VertexDeclaration::ptr _vd, size_t _slot, const void * _source, me::BufferUsage::TYPE _usage = me::BufferUsage::Default, unify::BBox< float > _bbox = unify::BBox< float >() )
 			: numVertices( _count )
 			, vertexDeclaration( _vd )
 			, slot( _slot )
@@ -31,7 +31,7 @@ namespace me
 		}
 
 		unsigned int numVertices;
-		IVertexDeclaration::ptr vertexDeclaration;
+		VertexDeclaration::ptr vertexDeclaration;
 		size_t slot;
 		const void * source;
 		BufferUsage::TYPE usage;
@@ -47,7 +47,7 @@ namespace me
 
 		virtual void Create( me::VertexBufferParameters parameters ) = 0;
 		
-		virtual IVertexDeclaration::ptr GetVertexDeclaration() const = 0;
+		virtual VertexDeclaration::ptr GetVertexDeclaration() const = 0;
 
 		virtual void Lock( unify::DataLock & lock ) = 0;
 		virtual void LockReadOnly( unify::DataLock & lock ) const = 0;

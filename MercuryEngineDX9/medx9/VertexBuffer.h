@@ -6,7 +6,7 @@
 #include <me/IVertexBuffer.h>
 #include <me/IRenderer.h>
 #include <me/DataBuffer.h>
-#include <me/IVertexDeclaration.h>
+#include <me/VertexDeclaration.h>
 #include <medx9/Renderer.h>
 #include <unify/BBox.h>
 #include <atlbase.h>
@@ -16,8 +16,8 @@ namespace medx9
 	class VertexBuffer : public me::IVertexBuffer
 	{
 	public:
-		VertexBuffer( me::IRenderer * renderer );
-		VertexBuffer( me::IRenderer * renderer, me::VertexBufferParameters parameters );
+		VertexBuffer( const me::IRenderer * renderer );
+		VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters );
 		~VertexBuffer();
 
 		void Create( me::VertexBufferParameters parameters ) override;
@@ -28,7 +28,7 @@ namespace medx9
 		void Unlock();
 		void Unlock() const;
 		
-		me::IVertexDeclaration::ptr GetVertexDeclaration() const override;
+		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
 		size_t GetSlot() const;
 		
 		bool Valid() const;
@@ -44,9 +44,9 @@ namespace medx9
 		unsigned int GetSize() const;
 
 	protected:
-		Renderer * m_renderer;
+		const Renderer * m_renderer;
 		CComPtr< IDirect3DVertexBuffer9 > m_VB;
-		me::IVertexDeclaration::ptr m_vertexDeclaration;
+		me::VertexDeclaration::ptr m_vertexDeclaration;
 		size_t m_slot;
 		unify::BBox< float > m_bbox;
 		bool m_locked;

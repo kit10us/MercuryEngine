@@ -19,6 +19,7 @@ class MyGame : public Game
 {
 	Effect::ptr effect;
 	IVertexBuffer::ptr vertexBuffer;
+	unify::Quaternion q;
 
 public:
 	void Startup() override;
@@ -126,11 +127,8 @@ void MyGame::Update( RenderInfo & renderInfo )
 	unify::Matrix worldMatrixA = unify::MatrixIdentity();
 	worldMatrixA *= unify::MatrixRotationAboutAxis( axis, rotation );
 
-	unify::Quaternion q( unify::Quaternion( axis, rotation ) );
+	q = unify::Quaternion( axis, rotation );
 
-	unify::Matrix worldMatrix( q );
-	
-	renderInfo.SetWorldMatrix( worldMatrix );
 	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
 	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
@@ -140,7 +138,7 @@ void MyGame::Render(  const RenderInfo & renderInfo, const me::Viewport & viewpo
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
-	method.Render( renderInfo );
+	renderInfo.GetRenderer()->Render( method, renderInfo, unify::Matrix( q ) );
 }
 
 void MyGame::Shutdown()

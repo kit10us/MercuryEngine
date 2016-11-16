@@ -199,15 +199,4 @@ RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsign
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
-}
-
-
-void RenderMethod::Render( const RenderInfo & renderInfo ) const
-{
-	if ( effect )
-	{
-		effect->Use( renderInfo );
-	}
-
-	renderInfo.GetRenderer()->Render( *this );
-}
+}								   

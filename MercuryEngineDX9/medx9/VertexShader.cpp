@@ -12,7 +12,7 @@ using namespace me;
 class VertexShader::Pimpl
 {
 	VertexShader & m_owner;
-	Renderer * m_renderer;
+	const Renderer * m_renderer;
 
 	CComPtr< ID3DXBuffer > m_codeBuffer;
 	CComPtr< ID3DXConstantTable > m_constantTable;
@@ -24,9 +24,9 @@ class VertexShader::Pimpl
 	D3DXHANDLE m_finalMatrixHandle;
 
 public:
-	Pimpl( VertexShader & owner, me::IRenderer * renderer )
+	Pimpl( VertexShader & owner, const me::IRenderer * renderer )
 		: m_owner( owner )
-		, m_renderer( dynamic_cast< Renderer * >( renderer ) )
+		, m_renderer( dynamic_cast< const Renderer * >( renderer ) )
 		, m_finalMatrixHandle( 0 )
 		, m_worldMatrixHandle( 0 )
 	    , m_viewMatrixHandle( 0 )
@@ -110,15 +110,15 @@ public:
 		m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "worldMatrix" );
 		m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "viewMatrix" );
 		m_projectionMatrixHandle = m_constantTable->GetConstantByName( 0, "projectionMatrix" );
-		m_owner.m_vertexDeclaration->Build( m_owner );
+		m_owner.m_vertexDeclaration->Build( m_renderer, m_owner );
 		m_owner.m_created = true;
 	}
 
-	void Use( const RenderInfo & renderInfo )
+	void Use( const RenderInfo & renderInfo, RenderInstance instance )
 	{
 		HRESULT result = S_OK;
 
-		unify::Matrix world = renderInfo.GetWorldMatrix();
+		unify::Matrix world = instance.m;
 		unify::Matrix view = renderInfo.GetViewMatrix();
 		unify::Matrix projection = renderInfo.GetProjectionMatrix();
 
@@ -164,14 +164,14 @@ public:
 };
 
 
-VertexShader::VertexShader( me::IRenderer * renderer )
+VertexShader::VertexShader( const me::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_assembly( false )
 	, m_created( false )
 {
 }
 
-VertexShader::VertexShader( me::IRenderer * renderer, VertexShaderParameters parameters )
+VertexShader::VertexShader( const me::IRenderer * renderer, VertexShaderParameters parameters )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_assembly( false )
 	, m_created( false )
@@ -209,12 +209,12 @@ void VertexShader::Create( VertexShaderParameters parameters )
 	m_pimpl->Create();
 }
 
-void VertexShader::SetVertexDeclaration( IVertexDeclaration::ptr vertexDeclaration )
+void VertexShader::SetVertexDeclaration( VertexDeclaration::ptr vertexDeclaration )
 {
 	m_vertexDeclaration = vertexDeclaration;
 }
 
-IVertexDeclaration::ptr VertexShader::GetVertexDeclaration() const
+VertexDeclaration::ptr VertexShader::GetVertexDeclaration() const
 {
 	return m_vertexDeclaration;
 }
@@ -229,10 +229,10 @@ size_t VertexShader::GetBytecodeLength() const
 	return m_pimpl->GetBytecodeLength();
 }
 
-void VertexShader::Use( const RenderInfo & renderInfo )
+void VertexShader::Use( const RenderInfo & renderInfo, const RenderInstance & instance )
 {
 	m_vertexDeclaration->Use();
-	m_pimpl->Use( renderInfo );
+	m_pimpl->Use( renderInfo, instance );
 }
 
 std::string VertexShader::GetError()

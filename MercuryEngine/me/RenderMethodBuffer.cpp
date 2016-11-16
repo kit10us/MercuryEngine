@@ -1,10 +1,11 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
+#include <me/RenderMethodBuffer.h>
+#include <me/IRenderer.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/FailedToLock.h>
 #include <me/exception/Exception.h>
-#include <me/RenderMethodBuffer.h>
 #include <assert.h>
 
 using namespace me;
@@ -55,46 +56,12 @@ size_t RenderMethodBuffer::GetSize() const
 	return m_methodList.size();
 }
 
-void RenderMethodBuffer::Render( const RenderInfo &renderInfo ) const
+void RenderMethodBuffer::Render( const RenderInfo & renderInfo, RenderInstance instance ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
-		const RenderMethod & renderMethod = m_methodList[ i ];
-		
-		/*
-		// Cull obvious solids...
-		if( renderInfo.IsOptionTrue( RenderOption::TransOnly ) )
-		{	
-			if( ! currentEffect->UsesTransparency() )
-			{
-				//pMethod = pMethod->pNext;
-				continue;
-			}
-		}
-
-		// Allow culling obvious transparents...
-		if( renderInfo.IsOptionTrue( RenderOption::SolidOnly ) )
-		{
-			if( currentEffect->UsesTransparency() )
-			{
-				//pMethod = pMethod->pNext;
-				continue;
-			}
-		}
-		*/
-		
-		/*
-		// If... we don't want to set effects.
-		//   ... we don't have the same effect already set.
-		//   ... we have an effect set.
-        if( ! renderInfo.IsOptionTrue( RenderOption::NoEffectSet ) && currentEffect && currentEffecIndex != renderMethod.effecIndex && renderMethod.effecIndex != std::numeric_limits< unsigned int >::max() )
-		{
-			currentEffect->Use( renderInfo );
-		}
-		*/
-
-		// Draw Primitive...
-		renderMethod.Render( renderInfo );
+		const RenderMethod & method = m_methodList[ i ];
+		renderInfo.GetRenderer()->Render( method, renderInfo, instance );
 	}
 }

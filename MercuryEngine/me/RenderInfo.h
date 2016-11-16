@@ -69,8 +69,10 @@ namespace me
 
 		float GetFPS() const;
 
+		/*
 		void SetWorldMatrix( const unify::Matrix & matrix );
 		const unify::Matrix & GetWorldMatrix() const;
+		*/
 
 		void SetViewMatrix( const unify::Matrix & matrix );
 		const unify::Matrix & GetViewMatrix() const;
@@ -90,7 +92,11 @@ namespace me
 		float m_delta;
 		float m_totalDelta;
 		unsigned int m_deltaCount;
+		
+		/*
 		unify::Matrix m_world;
+		*/
+		
 		unify::Matrix m_view;
 		unify::Matrix m_projection;
 		const unify::FrameSetInstance * m_frameSetInstance;

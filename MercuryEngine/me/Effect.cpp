@@ -40,7 +40,7 @@ bool Effect::operator != ( const Effect & effect ) const
 	return !( *this == effect );
 }
 
-void Effect::Use( const RenderInfo & renderInfoIn )
+void Effect::Use( const RenderInfo & renderInfoIn, RenderInstance instance )
 {
 	RenderInfo renderInfo( renderInfoIn );
 
@@ -67,7 +67,7 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 	const unify::FrameSetInstance * frameSetInstance = renderInfo.GetFrameSetInstance();
 	if( ! renderInfo.IsOptionTrue( RenderOption::NoFrame ) && frameSetInstance && m_frameIndexAndInfluence.size() > 0 )
 	{
-		unify::Matrix world = renderInfo.GetWorldMatrix();
+		unify::Matrix world = instance.m;
 
 		// Get our animated frames lookup table. If it doesn't exist, then we don't want to use it.
 		for( size_t i = 0, end = m_frameIndexAndInfluence.size(); i != end; ++i )
@@ -88,7 +88,7 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 		}
 
 		assert( 0 ); // TODO:
-		renderInfo.SetWorldMatrix( world );
+		instance.m = world;
 	}
 
 	if( m_pixelShader )
@@ -98,7 +98,7 @@ void Effect::Use( const RenderInfo & renderInfoIn )
 
 	if( m_vertexShader )
 	{
-		m_vertexShader->Use( renderInfo );
+		m_vertexShader->Use( renderInfo, instance );
 	}
 
 	if ( m_textures.empty() )

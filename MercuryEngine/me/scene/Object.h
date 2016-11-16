@@ -4,6 +4,8 @@
 
 #include <me/IOS.h>
 #include <me/scene/IObjectComponent.h>
+#include <me/scene/ComponentInstance.h>
+#include <me/Geometry.h>
 #include <me/RenderInfo.h>
 #include <unify/FrameLite.h>
 #include <list>
@@ -60,8 +62,12 @@ namespace me
 			const unify::FrameLite & GetFrame() const;
 	
 			void Update( const RenderInfo & renderInfo );
-			void RenderSimple( const RenderInfo & renderInfo );
-			void RenderHierarchical( const RenderInfo & renderInfo );
+
+			/// <summary>
+			/// Render or collect the geometry for optimized rendering later.
+			/// </summary>
+			void CollectRenderables( std::list< RenderSet > & list, const RenderInfo & renderInfo, unify::Matrix parentTransform );
+
 			void OnSuspend();
 			void OnResume();
 		    
@@ -101,33 +107,8 @@ namespace me
 
 			bool m_enabled;
 			bool m_selectable;	  
-
-			// TODO: Template, and move to seperate file?
-			struct ComponentHolder
-			{
-				ComponentHolder()
-					: initDone( false )
-					, startDone( false )
-				{
-				}
-
-				ComponentHolder( IObjectComponent::ptr component )
-					: ComponentHolder()
-				{
-					c = component;
-				}
-
-				bool operator==( const ComponentHolder & ch )
-				{
-					return this->c.get() == ch.c.get();
-				}
-
-				bool initDone;
-				bool startDone;
-				IObjectComponent::ptr c;
-			};
 											 
-			std::list< ComponentHolder > m_components;
+			std::list< ComponentInstance< IObjectComponent::ptr > > m_components;
 
 			size_t m_lastFrameID;
 			bool m_checkFrame;

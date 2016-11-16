@@ -96,7 +96,7 @@
     <ClInclude Include="medx9\Renderer.h" />
     <ClInclude Include="medx9\Texture.h" />
     <ClInclude Include="medx9\VertexBuffer.h" />
-    <ClInclude Include="medx9\VertexDeclaration.h" />
+    <ClInclude Include="medx9\VertexConstruct.h" />
     <ClInclude Include="medx9\VertexShader.h" />
     <ClInclude Include="medx9\WindowsOS.h" />
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="medx9\Renderer.cpp" />
     <ClCompile Include="medx9\Texture.cpp" />
     <ClCompile Include="medx9\VertexBuffer.cpp" />
-    <ClCompile Include="medx9\VertexDeclaration.cpp" />
+    <ClCompile Include="medx9\VertexConstruct.cpp" />
     <ClCompile Include="medx9\VertexShader.cpp" />
     <ClCompile Include="medx9\WindowsOS.cpp" />
   </ItemGroup>

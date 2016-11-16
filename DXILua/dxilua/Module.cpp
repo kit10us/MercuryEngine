@@ -156,9 +156,9 @@ void Module::OnUpdate( Object * object, const RenderInfo & renderInfo )
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnRender( Object * object, const RenderInfo & renderInfo )
-{
-	CallMember( "OnUpdate" );
+void Module::OnRender( Object * object, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+{																										
+	// DO NOTHING
 }
 
 void Module::OnSuspend( Object * object )

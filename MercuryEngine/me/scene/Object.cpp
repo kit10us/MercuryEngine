@@ -35,7 +35,7 @@ Object::Object( const Object & object, std::string name )
 {
 	for( auto component : object.m_components )
 	{
-		AddComponent( IObjectComponent::ptr( component.c->Duplicate() ) );
+		AddComponent( IObjectComponent::ptr( component.Component()->Duplicate() ) );
 	}
 }
 
@@ -76,7 +76,7 @@ int Object::ComponentCount() const
 void Object::AddComponent( IObjectComponent::ptr component )
 {
 	component->OnAttach( this );
-	m_components.push_back( ComponentHolder( component ) );
+	m_components.push_back( ComponentInstance< IObjectComponent::ptr >( component ) );
 }
 
 void Object::RemoveComponent( IObjectComponent::ptr component )
@@ -92,7 +92,7 @@ IObjectComponent::ptr Object::GetComponent( int index )
 	int i = 0;
 	for( auto component : m_components )
 	{
-		if( index == i ) return component.c;
+		if( index == i ) return component.Component();
 		++i;
 	}
 
@@ -112,7 +112,7 @@ int Object::FindComponent( std::string name, int startIndex ) const
 	int i = 0;
 	for( auto component : m_components )
 	{
-		if( i >= startIndex && unify::StringIs( component.c->GetName(), name ) ) return i;
+		if( i >= startIndex && unify::StringIs( component.Component()->GetName(), name ) ) return i;
 		++i;
 	}		
 	return -1;
@@ -170,23 +170,23 @@ void Object::Update( const RenderInfo & renderInfo )
 	for( auto && component : m_components )
 	{
 		// Regardless of enabled, ensure OnInit is always called.
-		if ( component.initDone == false )
+		if ( component.IsInitialized() == false )
 		{
-			component.c->OnInit( this );
-			component.initDone = true;
+			component.Component()->OnInit( this );
+			component.SetInitialized( true );
 		}
 
 		// Only start and update if enabled.
-		if ( !component.c->IsEnabled() ) continue;
+		if ( !component.Component()->IsEnabled() ) continue;
 
 		// Start is basically a way to get us into a beginning state.
-		if ( component.startDone == false )
+		if ( component.IsStarted() == false )
 		{
-			component.c->OnStart( this );
-			component.startDone = true;
+			component.Component()->OnStart( this );
+			component.SetStarted( true );
 		}
 
-		component.c->OnUpdate( this, renderInfo );
+		component.Component()->OnUpdate( this, renderInfo );
 	}
 
 	if( GetFirstChild() )
@@ -200,35 +200,13 @@ void Object::Update( const RenderInfo & renderInfo )
 	}
 }
 
-void Object::RenderSimple( const RenderInfo & renderInfo )
+void Object::CollectRenderables( std::list< RenderSet > & list, const RenderInfo & renderInfo, unify::Matrix parentTransform )
 {
-	// Update components...
 	for( auto && component : m_components )
 	{
 		// Don't try rendering if we haven't been properly setup...
-		if ( !component.initDone || !component.startDone || !component.c->IsEnabled() ) continue;
-
-		component.c->OnRender( this, renderInfo );
-	}
-}
-
-void Object::RenderHierarchical( const RenderInfo & renderInfo )
-{	
-	// Render self and children...
-	RenderInfo myRenderInfo( renderInfo );
-
-	myRenderInfo.SetWorldMatrix( m_frame.GetMatrix() * myRenderInfo.GetWorldMatrix() );
-
-	RenderSimple( renderInfo );
-
-	if( GetFirstChild() )
-	{
-		GetFirstChild()->RenderHierarchical( myRenderInfo );
-	}
-
-	if( GetNext() )
-	{
-		GetNext()->RenderHierarchical( renderInfo );
+		if ( ! component.Component()->Renderable() || ! component.IsInitialized() || ! component.IsStarted() || ! component.Component()->IsEnabled() ) continue;
+		component.Component()->OnRender( this, renderInfo, list, GetFrame().GetMatrix() * parentTransform );
 	}
 }
 
@@ -236,9 +214,9 @@ void Object::OnSuspend()
 {
 	for( auto && component : m_components )
 	{
-		if( component.c->IsEnabled() )
+		if( component.Component()->IsEnabled() )
 		{
-			component.c->OnSuspend( this );
+			component.Component()->OnSuspend( this );
 		}
 	}
 
@@ -259,9 +237,9 @@ void Object::OnResume()
 {
 	for( auto && component : m_components )
 	{
-		if( component.c->IsEnabled() )
+		if( component.Component()->IsEnabled() )
 		{
-			component.c->OnResume( this );
+			component.Component()->OnResume( this );
 		}
 	}
 

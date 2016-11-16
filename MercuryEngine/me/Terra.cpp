@@ -8,7 +8,7 @@
 using namespace me;
 
 Terra::Terra( me::IRenderer * renderer )
-: m_primitiveList( renderer )
+: Mesh( renderer )
 , m_depth{}
 , m_pointCount( 0, 0 )
 {
@@ -29,13 +29,6 @@ void Terra::Destroy()
 {
 	delete[] m_depth;
 	m_depth = 0;
-	m_primitiveList.Destroy();
-}
-
-const unify::BBox< float > & Terra::ComputeBounds()
-{
-	m_primitiveList.ComputeBounds( m_BBox );
-	return m_BBox;
 }
 
 void Terra::CreateFromParameters( unify::Parameters & parameters )
@@ -68,7 +61,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	unify::ColorUnit diffuseDL = parameters.Get< unify::ColorUnit >( "diffusedl", unify::ColorUnit::ColorUnitWhite() );
 	unify::ColorUnit diffuseDR = parameters.Get< unify::ColorUnit >( "diffusedr", unify::ColorUnit::ColorUnitWhite() );
 
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 		  
 	const size_t && IndicesPerTriangle = 3;
 	const size_t && TrianglesPerCell = 2;
@@ -82,7 +75,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	m_depth = new float[vertexCount];
 	m_minmax.Clear();
 
-	BufferSet & set = m_primitiveList.AddBufferSet();
+	BufferSet & set = GetPrimitiveList().AddBufferSet();
 
 	set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
@@ -263,7 +256,7 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement diffuseE = CommonVertexElement::Diffuse();
@@ -345,7 +338,7 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement diffuseE = CommonVertexElement::Diffuse();
@@ -469,7 +462,7 @@ bool Terra::Smooth( unsigned int uFlags )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 	VertexElement positionE = CommonVertexElement::Position();	
 	
 	// Compute new smoothed depth...
@@ -554,7 +547,7 @@ bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fToleranc
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement diffuseE = CommonVertexElement::Diffuse();
@@ -609,7 +602,7 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 
@@ -692,7 +685,7 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 
@@ -754,7 +747,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 
@@ -762,7 +755,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	BufferSet & setIn = pTerraIn->m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	setIn.GetVertexBuffer().Lock( lockIn );
 
-	IVertexDeclaration::ptr vdIn = setIn.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vdIn = setIn.GetVertexBuffer().GetVertexDeclaration();
 
 
 	// Compute new wrapped depths...
@@ -828,7 +821,7 @@ bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
-	IVertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
+	VertexDeclaration::ptr vd = set.GetVertexBuffer().GetVertexDeclaration();
 
 	VertexElement positionE = CommonVertexElement::Position();
 	VertexElement normalE = CommonVertexElement::Normal();
@@ -877,18 +870,6 @@ void Terra::Offset( const unify::V3< float > & vec )
 	m_primitiveList.GetVertexBuffer().Offset( vec );
 	ComputeBounds();
 	*/
-}
-
-void Terra::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
-{
-}
-
-void Terra::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
-{
-	m_primitiveList.Render( renderInfo );
-
-	// Render Normals...
-	//RenderNormals();
 }
 
 bool Terra::RenderNormals()
@@ -999,9 +980,4 @@ unify::MinMax< float > Terra::GetMinMax() const
 unify::Size< float > Terra::GetSize() const
 {
 	return m_size;
-}
-
-PrimitiveList & Terra::GetPrimitiveList()
-{
-	return m_primitiveList;
 }

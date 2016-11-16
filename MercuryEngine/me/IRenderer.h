@@ -8,12 +8,14 @@
 #include <me/IIndexBuffer.h>
 #include <me/IVertexShader.h>
 #include <me/IPixelShader.h>
-#include <me/IVertexDeclaration.h>
 #include <me/ITexture.h>
+#include <me/RenderInstance.h>
 #include <memory>
 
 namespace me
 {
+	class VertexDeclaration;
+
 	struct CullMode
 	{
 		enum TYPE
@@ -57,14 +59,16 @@ namespace me
 
 		virtual void* GetHandle() const = 0;
 
-		virtual void Render( class RenderMethod ) const = 0;
+		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const RenderInstance & instance ) const = 0;
 
-		virtual me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) = 0;
-		virtual me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) = 0;
-		virtual me::IVertexShader::ptr ProduceVS( VertexShaderParameters parameters ) = 0;
-		virtual me::IPixelShader::ptr ProducePS( PixelShaderParameters parameters ) = 0;
-		virtual me::IVertexDeclaration::ptr ProduceVD( VertexDeclarationParameters parameters ) = 0;
-		virtual me::ITexture::ptr ProduceT( TextureParameters parameters ) = 0;
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances ) const = 0;
+
+		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
+		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;
+		virtual IVertexShader::ptr ProduceVS( VertexShaderParameters parameters ) const = 0;
+		virtual IPixelShader::ptr ProducePS( PixelShaderParameters parameters ) const = 0;
+		virtual IVertexConstruct::ptr ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) const = 0;
+		virtual ITexture::ptr ProduceT( TextureParameters parameters ) const = 0;
 	};
 }
 

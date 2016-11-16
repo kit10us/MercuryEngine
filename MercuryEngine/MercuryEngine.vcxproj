@@ -54,13 +54,14 @@
     <ClInclude Include="me\IInputSource.h" />
     <ClInclude Include="me\IndexLock.h" />
     <ClInclude Include="me\InputManager.h" />
+    <ClInclude Include="me\Instancing.h" />
     <ClInclude Include="me\IOS.h" />
     <ClInclude Include="me\IPixelShader.h" />
     <ClInclude Include="me\IRenderer.h" />
     <ClInclude Include="me\IScriptEngine.h" />
     <ClInclude Include="me\ITexture.h" />
     <ClInclude Include="me\IVertexBuffer.h" />
-    <ClInclude Include="me\IVertexDeclaration.h" />
+    <ClInclude Include="me\IVertexConstruct.h" />
     <ClInclude Include="me\IVertexShader.h" />
     <ClInclude Include="me\LOD.h" />
     <ClInclude Include="me\Mercury.h" />
@@ -69,8 +70,10 @@
     <ClInclude Include="me\MeshInstanceData.h" />
     <ClInclude Include="me\PrimitiveList.h" />
     <ClInclude Include="me\RenderInfo.h" />
+    <ClInclude Include="me\RenderInstance.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderMethodBuffer.h" />
+    <ClInclude Include="me\RenderSet.h" />
     <ClInclude Include="me\scene2d\Anchor.h" />
     <ClInclude Include="me\scene2d\Canvas.h" />
     <ClInclude Include="me\scene2d\Element.h" />
@@ -80,7 +83,9 @@
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\BBoxRendererComponent.h" />
     <ClInclude Include="me\scene\CameraComponent.h" />
+    <ClInclude Include="me\scene\ComponentInstance.h" />
     <ClInclude Include="me\scene\GeometryComponent.h" />
+    <ClInclude Include="me\scene\IObjectComponent.h" />
     <ClInclude Include="me\scene\ISceneComponent.h" />
     <ClInclude Include="me\scene\ISceneManagerComponent.h" />
     <ClInclude Include="me\scene\Object.h" />
@@ -92,6 +97,7 @@
     <ClInclude Include="me\Terra.h" />
     <ClInclude Include="me\TextureLock.h" />
     <ClInclude Include="me\TextureMode.h" />
+    <ClInclude Include="me\VertexDeclaration.h" />
     <ClInclude Include="me\VertexElement.h" />
     <ClInclude Include="me\VertexUtil.h" />
     <ClInclude Include="me\Viewport.h" />
@@ -134,11 +140,13 @@
     <ClCompile Include="me\GeometryInstanceData.cpp" />
     <ClCompile Include="me\IndexLock.cpp" />
     <ClCompile Include="me\InputManager.cpp" />
+    <ClCompile Include="me\Instancing.cpp" />
     <ClCompile Include="me\LOD.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
+    <ClCompile Include="me\RenderInstance.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
     <ClCompile Include="me\RenderMethodBuffer.cpp" />
     <ClCompile Include="me\scene2d\Canvas.cpp" />
@@ -148,6 +156,7 @@
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\BBoxRendererComponent.cpp" />
     <ClCompile Include="me\scene\CameraComponent.cpp" />
+    <ClCompile Include="me\scene\ComponentInstance.cpp" />
     <ClCompile Include="me\scene\GeometryComponent.cpp" />
     <ClCompile Include="me\scene\Object.cpp" />
     <ClCompile Include="me\scene\ObjectComponent.cpp" />
@@ -157,6 +166,7 @@
     <ClCompile Include="me\SpriteDictionary.cpp" />
     <ClCompile Include="me\Terra.cpp" />
     <ClCompile Include="me\TextureMode.cpp" />
+    <ClCompile Include="me\VertexDeclaration.cpp" />
     <ClCompile Include="me\VertexElement.cpp" />
     <ClCompile Include="me\VertexUtil.cpp" />
     <ClCompile Include="me\Viewport.cpp" />
@@ -248,6 +258,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -275,6 +286,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

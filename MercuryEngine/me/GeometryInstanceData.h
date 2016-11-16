@@ -24,11 +24,5 @@ namespace me
 		virtual ~GeometryInstanceData();
 
 		virtual void Update( unify::Seconds elapsed );
-
-		std::map< std::string, unify::Any > & GetAttributes();
-		const std::map< std::string, unify::Any > & GetAttributes() const;
-
-	private:
-		std::map< std::string, unify::Any > m_attributes;
 	};
 }

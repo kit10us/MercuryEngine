@@ -97,7 +97,7 @@ void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	int textureMode = parameters.Get( "texturemode", me::TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	const unsigned int verticesPerSide = 4;
@@ -141,7 +141,7 @@ void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat = renderer->ProduceVD( jsonFormat );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
@@ -371,7 +371,7 @@ void sg::CreateShape_PointField( me::IRenderer * renderer, PrimitiveList & primi
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
@@ -405,7 +405,7 @@ void sg::CreateShape_PointField( me::IRenderer * renderer, PrimitiveList & primi
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat = renderer->ProduceVD( jsonFormat );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	char * vertices = new char[vd->GetSize( 0 ) * count];
 	unify::DataLock lock( vertices, vd->GetSize( 0 ), count, false, 0 );
@@ -454,7 +454,7 @@ void sg::CreateShape_PointRing( me::IRenderer * renderer, PrimitiveList & primit
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
@@ -499,7 +499,7 @@ void sg::CreateShape_PointRing( me::IRenderer * renderer, PrimitiveList & primit
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	for( unsigned int v = 0; v < count; v++ )
 	{
@@ -557,7 +557,7 @@ void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primiti
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	int verticesPerSegment = (int)((definition + 1) * 2);
@@ -606,7 +606,7 @@ void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primiti
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat = renderer->ProduceVD( jsonFormat );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	// Create all the segments (clockwise from top)
 	unify::V3< float > vOuter, vInner, vNorm;
@@ -692,7 +692,7 @@ void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiv
 	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 	size_t vertexCount = 16;
 	size_t indexCount = 18;
@@ -728,7 +728,7 @@ void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiv
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	// Set the vertices from the TEMP vertices...
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
@@ -901,7 +901,7 @@ void sg::CreateShape_Circle( me::IRenderer * renderer, PrimitiveList & primitive
 	float radius = parameters.Get( "radius", 1.0f );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	if( segments < 3 ) segments = 3;
@@ -948,7 +948,7 @@ void sg::CreateShape_Circle( me::IRenderer * renderer, PrimitiveList & primitive
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	// Set the center
 	WriteVertex( *vd, lock, 0, positionE, center );
@@ -997,7 +997,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	if( segments < 4 ) segments = 4;
@@ -1055,7 +1055,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		jsonFormat.Add( { "Diffuse", "Color" } );
 		jsonFormat.Add( { "Specular", "Color" } );
 		jsonFormat.Add( { "TexCoord", "TexCoord" } );
-		IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+		VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 		unify::V3< float > vec, norm;
 
@@ -1220,7 +1220,7 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 	unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
 	// TODO: support top and bottom texArea.
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	bool caps = parameters.Get( "caps", true );
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
@@ -1283,7 +1283,7 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	unify::V3< float > pos;
 	unify::V3< float > norm;
@@ -1394,7 +1394,7 @@ void sg::CreateShape_Tube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	if( segments < 3 ) segments = 3;
@@ -1440,7 +1440,7 @@ void sg::CreateShape_Tube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	unsigned int trianglesPerSide = segments * 2;
 	unsigned int verticesPerSide = segments * 2 + 2;
@@ -1566,7 +1566,7 @@ void sg::CreateShape_Plane( me::IRenderer * renderer, PrimitiveList & primitiveL
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	unify::TexArea texArea = parameters.Get( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 	size_t vertexCount = (segments + 1) * (segments + 1);
 	size_t indexCount = 6 * segments * segments;
@@ -1599,7 +1599,7 @@ void sg::CreateShape_Plane( me::IRenderer * renderer, PrimitiveList & primitiveL
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
@@ -1667,7 +1667,7 @@ void sg::CreateShape_Cone( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
 	bool caps = parameters.Get( "caps", true );
 
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 	if( segments < 3 ) segments = 3;
 
@@ -1728,7 +1728,7 @@ void sg::CreateShape_Cone( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	unify::V3< float > pos;
 	unify::V3< float > norm;
@@ -1831,7 +1831,7 @@ void sg::CreateShape_BeveledBox( me::IRenderer * renderer, PrimitiveList & primi
 	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
-	IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	const unsigned int verticesPerSide = 4;
@@ -1883,7 +1883,7 @@ void sg::CreateShape_BeveledBox( me::IRenderer * renderer, PrimitiveList & primi
 	jsonFormat.Add( { "Diffuse", "Color" } );
 	jsonFormat.Add( { "Specular", "Color" } );
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	IVertexDeclaration::ptr vFormat( renderer->ProduceVD( jsonFormat ) );
+	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	// Set the TEMP vertices...
 	V vertices[8];

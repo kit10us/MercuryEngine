@@ -32,8 +32,8 @@ namespace medx11
 			};
 		};
 
-		IndexBuffer( me::IRenderer * renderer );
-		IndexBuffer( me::IRenderer * renderer, me::IndexBufferParameters parameters );
+		IndexBuffer( const me::IRenderer * renderer );
+		IndexBuffer( const me::IRenderer * renderer, me::IndexBufferParameters parameters );
 		~IndexBuffer();
 
 		void Create( me::IndexBufferParameters parameters );
@@ -62,7 +62,7 @@ namespace medx11
 		unsigned int GetSize() const;
 
 	protected:
-		Renderer * m_renderer;
+		const Renderer * m_renderer;
 		unsigned int m_createFlags;
 		CComPtr< ID3D11Buffer > m_IB;
 		bool m_locked;

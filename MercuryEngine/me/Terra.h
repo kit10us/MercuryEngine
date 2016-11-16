@@ -13,7 +13,7 @@
 #include <me/Geometry.h>
 #include <me/ITexture.h>
 #include <me/Effect.h>
-#include <me/PrimitiveList.h>
+#include <me/Mesh.h>
 #include <unify/RowColumn.h>
 #include <unify/TexArea.h>
 #include <unify/Parameters.h>
@@ -39,7 +39,7 @@ namespace me
 	// NOTE: column = uColumn-1 = DOWN/BOTTOM (towards)
 	//		 column = 0 = UP/TOP (away)
 
-	class Terra : public me::Geometry
+	class Terra : public me::Mesh
 	{
 	public:
 		struct TextureOpMap
@@ -122,20 +122,15 @@ namespace me
 				Set( "diffusedr", diffuseDR );
 			}
 		};
-
-
-
+ 
 		Terra( me::IRenderer * renderer );
 		Terra( me::IRenderer * renderer, unify::Parameters & parameters );
 		~Terra();
 
 		void Destroy();
 
-		virtual const unify::BBox< float > & ComputeBounds();
 		void CreateFromParameters( unify::Parameters & parameters );
-		void Update( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
-		void Render( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
-
+	
 		// would be good to make these rely on a generic implementation (perhaps more complex with these as simplified front-ends)
 		// from the Mesh geometry object.
 		bool ApplyHeightMap( TextureOpMap tom );
@@ -149,8 +144,6 @@ namespace me
 		void Offset( const unify::V3< float > & vec );
 		bool NormalSide( unsigned int uFlags, const unify::V3< float > & normal = unify::V3< float >(0,1,0) );
 		bool RenderNormals();
-
-		me::PrimitiveList & GetPrimitiveList();
 
 		/// <summary>
 		/// Get the number of sample points. (faces + 1)
@@ -173,7 +166,6 @@ namespace me
 
 	protected:
 		unify::Parameters m_parameters;
-		me::PrimitiveList m_primitiveList;
 		unify::Size< float > m_size;
 		float * m_depth;
 		unify::MinMax< float > m_minmax;

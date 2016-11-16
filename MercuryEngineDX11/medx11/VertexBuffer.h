@@ -6,7 +6,7 @@
 #include <me/IVertexBuffer.h>
 #include <me/IRenderer.h>
 #include <me/DataBuffer.h>
-#include <me/IVertexDeclaration.h>
+#include <me/VertexDeclaration.h>
 #include <unify/BBox.h>
 
 namespace medx11
@@ -14,8 +14,8 @@ namespace medx11
 	class VertexBuffer : public me::IVertexBuffer
 	{
 	public:
-		VertexBuffer( me::IRenderer * renderer );
-		VertexBuffer( me::IRenderer * renderer, me::VertexBufferParameters parameters );
+		VertexBuffer( const me::IRenderer * renderer );
+		VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters );
 		~VertexBuffer();
 
 		void Create( me::VertexBufferParameters parameters ) override;
@@ -26,7 +26,7 @@ namespace medx11
 		void Unlock();
 		void Unlock() const;
 		
-		me::IVertexDeclaration::ptr GetVertexDeclaration() const override;
+		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
 		size_t GetSlot() const;
 		
 		bool Valid() const;
@@ -45,7 +45,7 @@ namespace medx11
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
 
-		me::IVertexDeclaration::ptr m_vertexDeclaration;
+		me::VertexDeclaration::ptr m_vertexDeclaration;
 		size_t m_slot;
 
 		unify::BBox< float > m_bbox;

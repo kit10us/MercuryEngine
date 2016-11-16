@@ -26,7 +26,7 @@
     <ClInclude Include="medx11\Renderer.h" />
     <ClInclude Include="medx11\Texture.h" />
     <ClInclude Include="medx11\VertexBuffer.h" />
-    <ClInclude Include="medx11\VertexDeclaration.h" />
+    <ClInclude Include="medx11\VertexConstruct.h" />
     <ClInclude Include="medx11\VertexShader.h" />
     <ClInclude Include="medx11\WindowsOS.h" />
   </ItemGroup>
@@ -37,7 +37,7 @@
     <ClCompile Include="medx11\Renderer.cpp" />
     <ClCompile Include="medx11\Texture.cpp" />
     <ClCompile Include="medx11\VertexBuffer.cpp" />
-    <ClCompile Include="medx11\VertexDeclaration.cpp" />
+    <ClCompile Include="medx11\VertexConstruct.cpp" />
     <ClCompile Include="medx11\VertexShader.cpp" />
     <ClCompile Include="medx11\WindowsOS.cpp" />
   </ItemGroup>

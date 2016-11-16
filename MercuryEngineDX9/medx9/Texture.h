@@ -59,7 +59,7 @@ namespace medx9
 
 		static bool s_allowTextureUses;
 
-		Texture( me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
+		Texture( const me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
 		virtual ~Texture();
 
 		// ::Resource...
@@ -89,7 +89,7 @@ namespace medx9
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();
 
-		Renderer * m_renderer;
+		const Renderer * m_renderer;
 		CComPtr< IDirect3DTexture9 > m_texture;
 		me::TextureParameters m_parameters;
 		bool m_created;

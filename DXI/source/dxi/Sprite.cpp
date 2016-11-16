@@ -147,7 +147,7 @@ void Sprite::Render( const RenderInfo & renderInfo )
 
 	// Get our writers...
 	IVertexBuffer & vb = *m_effect->GetScratchVertexBuffer();
-	IVertexDeclaration::ptr vd = vb.GetVertexDeclaration();
+	VertexDeclaration::ptr vd = vb.GetVertexDeclaration();
 
 	WORD stream = 0;
 	VertexElement positionE = CommonVertexElement::Position( stream );

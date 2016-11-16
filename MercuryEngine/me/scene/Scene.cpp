@@ -118,12 +118,6 @@ void Scene::Update( const RenderInfo & renderInfo )
 	GetRoot()->Update( renderInfo );
 }
 
-struct FinalObject
-{
-	Object::ptr object;	 // Replace with geometry.
-	unify::Matrix transform;
-};
-
 struct FinalCamera
 {
 	Object::ptr object;
@@ -131,14 +125,10 @@ struct FinalCamera
 	CameraComponent * camera;
 };
 
-void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, unify::Matrix parentTransform )
+void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, const RenderInfo & renderInfo, unify::Matrix parentTransform )
 {
 	assert( current );
 	assert( current->IsEnabled() );
-
-	// Solve our transform.
-	unify::Matrix transform = current->GetFrame().GetMatrix();
-	transform *= parentTransform;
 
 	// Check for a camera...
 	CameraComponent * camera{};
@@ -150,15 +140,11 @@ void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera >
 		camera = dynamic_cast< CameraComponent * >(component.get());
 		if( camera != nullptr )
 		{
-			cameraList.push_back( FinalCamera{ current, transform, camera } );
+			cameraList.push_back( FinalCamera{ current, current->GetFrame().GetMatrix() * parentTransform, camera } );
 		}
-	}
+	}																		 
 
-	renderList.push_back(
-	{
-		current,
-		transform
-	} );
+	current->CollectRenderables( renderList, renderInfo, parentTransform );
 
 	// Handle children
 	Object::ptr child = current->GetFirstChild();
@@ -166,7 +152,7 @@ void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera >
 	{
 		if( child->IsEnabled() )
 		{
-			Accumulate( renderList, cameraList, child, transform );
+			Accumulate( renderList, cameraList, child, renderInfo, current->GetFrame().GetMatrix() * parentTransform );
 		}
 
 		child = child->GetNext();
@@ -175,6 +161,7 @@ void Accumulate( std::list< FinalObject > & renderList, std::list< FinalCamera >
 
 void Scene::Render( const RenderInfo & renderInfo )
 {
+	// Render scene components
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
@@ -182,30 +169,50 @@ void Scene::Render( const RenderInfo & renderInfo )
 			component->OnRender( this, renderInfo );
 		}
 	}
-
-	std::list< FinalObject > renderList;
-	std::list< FinalCamera > cameraList;
-
-	unify::Matrix transform = unify::MatrixIdentity();
-
+	
+	// Accumulate objects for rendering, and cameras.
+	std::list< RenderSet > renderList;
+	std::list< FinalCamera > cameraList;			 
 	if( GetRoot() && GetRoot()->IsEnabled() )
 	{
-		Accumulate( renderList, cameraList, GetRoot(), transform );
+		Accumulate( renderList, cameraList, GetRoot(), renderInfo, unify::MatrixIdentity() );
+	}
+
+	if ( cameraList.empty() ) return;
+
+	// Sort list by component...
+	// TODO: Check if making all of these Geometry::ptr into Geometry* during rendering is faster (since there is no changing of reference counting or temp vars).
+	std::map< Geometry::ptr, std::list< RenderInstance > > sorted;
+	
+	for( auto set : renderList )
+	{
+		sorted[ set.geo ].push_back( set.instance );
 	}
 
 	for( auto camera : cameraList )
 	{
 		if( camera.camera->GetRenderer() != renderInfo.GetRenderer()->GetIndex() ) continue;
 
-		RenderInfo renderInfo( renderInfo );
-		renderInfo.SetRenderer( renderInfo.GetRenderer() );
-		renderInfo.SetViewMatrix( camera.transform.Inverse() );
-		renderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
+		RenderInfo myRenderInfo( renderInfo );
+		myRenderInfo.SetViewMatrix( camera.transform.Inverse() );
+		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 
-		for( auto object : renderList )
+
+		//for( auto set : renderList )
+		//{
+		//	std::list< RenderInstance > list { set.instance };
+		//	set.geo->Render( myRenderInfo, 0 /*TODO: Likely should be in RenderInstance*/, list );
+		//}
+
+		//for( auto set : renderList )
+		//{
+		//	std::list< RenderInstance > list { set.instance };
+		//	set.geo->Render( myRenderInfo, 0 /*TODO: Likely should be in RenderInstance*/, list );
+		//}
+
+		for( auto pair : sorted )
 		{
-			renderInfo.SetWorldMatrix( object.transform );
-			object.object->RenderSimple( renderInfo );
+			pair.first->Render( myRenderInfo, 0, pair.second );
 		}
 	}
 }

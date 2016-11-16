@@ -220,7 +220,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		flags1 |= D3DCOMPILE_DEBUG;
 #endif
 		unsigned int flags2 = 0; // Only used for effect compilation.
-		result = D3DCompileFromFile( _T("ManyCube.hlsl"), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_4_0", flags1, flags2, &vertexShaderBuffer, &errorBlob );
+		result = D3DCompileFromFile( _T("InstancedQP.hlsl"), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_4_0", flags1, flags2, &vertexShaderBuffer, &errorBlob );
 		if ( FAILED( result ) )
 		{
 			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
@@ -249,7 +249,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 		}
 
 		unsigned int flags2 = 0; // Only used for effect compilation.
-		result = D3DCompileFromFile( _T("ManyCube.hlsl"), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, "ps_main", "ps_4_0", flags1, flags2, &pixelShaderBuffer, &errorBlob );
+		result = D3DCompileFromFile( _T("InstancedQP.hlsl"), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, "ps_main", "ps_4_0", flags1, flags2, &pixelShaderBuffer, &errorBlob );
 		if ( FAILED( result ) )
 		{
 			OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );

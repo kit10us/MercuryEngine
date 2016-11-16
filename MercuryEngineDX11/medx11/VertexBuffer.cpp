@@ -15,9 +15,9 @@ using namespace me;
 class VertexBuffer::Pimpl
 {
 public:
-	Pimpl( VertexBuffer & owner, me::IRenderer * renderer )
+	Pimpl( VertexBuffer & owner, const me::IRenderer * renderer )
 		: m_owner( owner )
-		, m_renderer( dynamic_cast< Renderer * >(renderer) )
+		, m_renderer( dynamic_cast< const Renderer * >(renderer) )
 	{
 	}
 
@@ -115,11 +115,11 @@ public:
 	}
 
 	VertexBuffer & m_owner;
-	Renderer * m_renderer;
+	const Renderer * m_renderer;
 	CComPtr< ID3D11Buffer > m_VB;
 };
 
-VertexBuffer::VertexBuffer( me::IRenderer * renderer )
+VertexBuffer::VertexBuffer( const me::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_slot( 0 )
 	, m_locked( false )
@@ -129,7 +129,7 @@ VertexBuffer::VertexBuffer( me::IRenderer * renderer )
 {
 }
 
-VertexBuffer::VertexBuffer( me::IRenderer * renderer, me::VertexBufferParameters parameters )
+VertexBuffer::VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_slot( 0 )
 	, m_locked( false )
@@ -193,7 +193,7 @@ void VertexBuffer::Unlock() const
 	m_pimpl->Unlock();
 }
 
-IVertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
+VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 {
 	return m_vertexDeclaration;
 }

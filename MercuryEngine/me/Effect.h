@@ -6,7 +6,7 @@
 #include <me/ITexture.h>
 #include <me/IPixelShader.h>
 #include <me/IVertexShader.h>
-#include <me/IVertexDeclaration.h>
+#include <me/VertexDeclaration.h>
 #include <me/IVertexBuffer.h>
 #include <unify/Matrix.h>
 #include <unify/Frame.h>
@@ -39,7 +39,7 @@ namespace me
 		bool operator ==( const Effect & effect ) const;
 		bool operator !=( const Effect & effect ) const;
 
-		void Use( const RenderInfo & renderInfo );
+		void Use( const RenderInfo & renderInfo, RenderInstance instance );
 		void SetTexture( unsigned char stage, ITexture::ptr texture );
 		void ClearTextures();
 		void SetCulling( CullingMode mode );

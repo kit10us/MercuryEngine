@@ -53,8 +53,6 @@ namespace me
 		static unsigned int VertexCountInATriangleStrip( unsigned int triangleCount );
 		static unsigned int VertexCountInATriangleList( unsigned int triangleCount );
 
-		void Render( const me::RenderInfo & renderInfo ) const;
-
 	public:
 		PrimitiveType::TYPE primitiveType;
 		unsigned int startVertex;

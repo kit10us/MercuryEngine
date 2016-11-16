@@ -38,6 +38,7 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
+	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "media/EffectColorInstanced3D.effect" );
 
 	Scene::ptr scene = sceneManager->Add( "scene" );
 

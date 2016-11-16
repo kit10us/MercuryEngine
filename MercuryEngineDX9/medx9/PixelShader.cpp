@@ -13,15 +13,15 @@ using namespace me;
 class PixelShader::Pimpl
 {
 	PixelShader & m_owner;
-	Renderer * m_renderer;
+	const Renderer * m_renderer;
 	CComPtr< ID3DXBuffer > m_codeBuffer;
 	CComPtr< ID3DXConstantTable > m_constantTable;
 	CComPtr< IDirect3DPixelShader9 > m_shader;
 
 public:
-	Pimpl( PixelShader & owner, me::IRenderer * renderer )
+	Pimpl( PixelShader & owner, const me::IRenderer * renderer )
 		: m_owner( owner )
-		, m_renderer( dynamic_cast< Renderer * >( renderer ) )
+		, m_renderer( dynamic_cast< const Renderer * >( renderer ) )
 	{
 	}
 
@@ -124,7 +124,7 @@ public:
 };
 
 
-PixelShader::PixelShader( me::IRenderer * renderer )
+PixelShader::PixelShader( const me::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer  ) )
 	, m_assembly( false )
 	, m_created( false )
@@ -132,7 +132,7 @@ PixelShader::PixelShader( me::IRenderer * renderer )
 {
 }
 
-PixelShader::PixelShader( me::IRenderer * renderer, PixelShaderParameters parameters )
+PixelShader::PixelShader( const me::IRenderer * renderer, PixelShaderParameters parameters )
 	: PixelShader( renderer )
 {
 	Create( parameters );

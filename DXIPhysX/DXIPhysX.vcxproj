@@ -71,10 +71,8 @@
       <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);../../packages/PhysXSDK/PhysXSDK/Lib/vc14win32;..\..\packages\directx\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy ..\..\packages\PhysXSDK\PhysXSDK\Bin\vc14win32 $(OutDir)
-
-)
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

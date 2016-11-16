@@ -31,8 +31,8 @@ namespace medx9
 			};
 		};
 
-		IndexBuffer( me::IRenderer * renderer );
-		IndexBuffer( me::IRenderer * renderer, me::IndexBufferParameters parameters );
+		IndexBuffer( const me::IRenderer * renderer );
+		IndexBuffer( const me::IRenderer * renderer, me::IndexBufferParameters parameters );
 		~IndexBuffer();
 
 		void Create( me::IndexBufferParameters parameters );

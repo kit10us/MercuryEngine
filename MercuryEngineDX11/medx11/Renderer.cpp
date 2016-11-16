@@ -7,7 +7,7 @@
 #include <medx11/IndexBuffer.h>
 #include <medx11/VertexShader.h>
 #include <medx11/PixelShader.h>
-#include <medx11/VertexDeclaration.h>
+#include <medx11/VertexConstruct.h>
 #include <medx11/Texture.h>
 #include <me/RenderMethod.h>
 #include <me/exception/FailedToCreate.h>
@@ -199,11 +199,16 @@ void* Renderer::GetHandle() const
 	return (HWND)m_display.GetHandle();
 }
 
-void Renderer::Render( RenderMethod method ) const
+void Renderer::Render( const RenderMethod & method, const me::RenderInfo & renderInfo, const RenderInstance & instance ) const
 {
 	auto dxRenderer = this;
 	auto dxDevice = dxRenderer->GetDxDevice();
 	auto dxContext = dxRenderer->GetDxContext();
+
+	if ( method.effect )
+	{
+		method.effect->Use( renderInfo, instance );
+	}
 	
 	D3D11_PRIMITIVE_TOPOLOGY topology{};
 	switch( method.primitiveType )
@@ -236,32 +241,40 @@ void Renderer::Render( RenderMethod method ) const
 	}
 }
 
-me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances ) const
+{
+	for ( auto instance : instances )
+	{
+		Render( method, renderInfo, instance );
+	}
+}
+
+me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) const
 {
 	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
 }
 
-me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters )
+me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters ) const
 {
 	return me::IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
 }
 
-me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters )
+me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters ) const
 {
 	return me::IVertexShader::ptr( new VertexShader( this, parameters ) );
 }
 
-me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters )
+me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters ) const
 {
 	return me::IPixelShader::ptr( new PixelShader( this, parameters ) );
 }
 
-me::IVertexDeclaration::ptr Renderer::ProduceVD( VertexDeclarationParameters parameters )
-{
-	return me::IVertexDeclaration::ptr( new VertexDeclaration( this, parameters ) );
-}
-
-me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters )
+me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters ) const
 {
 	return me::ITexture::ptr( new Texture( this, parameters ) );
+}
+
+me::IVertexConstruct::ptr Renderer::ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) const
+{
+	return me::IVertexConstruct::ptr( new VertexConstruct( this, vd, vs ) );
 }

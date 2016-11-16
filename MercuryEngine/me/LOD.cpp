@@ -22,7 +22,7 @@ void LOD::Add( Geometry::ptr geometry, float distanceStart )
 	ComputeBounds();
 }
 
-void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list )
 {
 	if( m_list.empty() )
 	{
@@ -31,7 +31,7 @@ void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instance
 	
 	if( m_list.size() == 1 )
 	{
-		m_list.begin()->GetGeometry()->Render( renderInfo, instanceData );
+		m_list.begin()->GetGeometry()->Render( renderInfo, instanceData, list );
 		return;
 	}
 
@@ -41,7 +41,7 @@ void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instance
 	{
 	}
 
-	itr->GetGeometry()->Render( renderInfo, instanceData );
+	itr->GetGeometry()->Render( renderInfo, instanceData, list );
 }
 
 void LOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )

@@ -12,10 +12,6 @@ struct VS_OUT
 	float4 color		: COLOR;
 };
 
-static const int rows = 6;
-static const int columns = 6;
-static const int depth = 6;
-
 cbuffer Constants : register(b0)
 {
 	float4x4 worldMatrix;	

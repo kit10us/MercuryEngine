@@ -33,16 +33,17 @@ namespace medx9
 		size_t GetIndex() const override;
 
 		void* GetHandle() const override;
+													  
+		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::RenderInstance & instance ) const override;
 
+		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::RenderInstance > & instances ) const override;
 
-		void Render( me::RenderMethod ) const override;
-
-		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
-		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;
-		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) override;
-		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) override;
-		me::IVertexDeclaration::ptr ProduceVD( me::VertexDeclarationParameters parameters ) override;
-		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) override;
+		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
+		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;
+		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) const override;
+		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) const override;
+		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) const override;
+		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) const override;
 
 	private:
 		class Pimpl;

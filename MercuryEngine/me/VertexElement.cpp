@@ -73,7 +73,33 @@ std::string ElementFormat::ToString( ElementFormat::TYPE format )
 }
 
 
+SlotClass::TYPE SlotClass::FromString( std::string value )
+{
+	if ( unify::StringIs( value, "vertex" ) )
+	{
+		return SlotClass::Vertex;
+	}
+	else if ( unify::StringIs( value, "object" ) )
+	{
+		return SlotClass::Object;
+	}
 
+	throw unify::Exception( "Unknown Vertex Element slot class string! (" + value + ")" );
+}
+
+std::string SlotClass::ToString( SlotClass::TYPE value )
+{
+	switch( value )
+	{
+	case SlotClass::Vertex:
+		return "Vertex";
+	case SlotClass::Object:
+		return "Object";
+	default:
+		throw unify::Exception( "Unknown Vertex Element slot class value!" );
+	}
+}
+						   
 
 
 VertexElement::VertexElement()
@@ -81,10 +107,12 @@ VertexElement::VertexElement()
 	, Format( ElementFormat::Unknown )
 	, InputSlot( 0 )
 	, AlignedByteOffset( 0 )
+	, SlotClass( SlotClass::Vertex )
+	, InstanceDataStepRate( 0 )
 {
 }
 
-VertexElement::VertexElement( const qxml::Element & element, unsigned int slot )
+VertexElement::VertexElement( const qxml::Element & element )
 {
 	InputSlot = 0;
 	if ( element.HasAttributes( "stream" ) )
@@ -96,101 +124,110 @@ VertexElement::VertexElement( const qxml::Element & element, unsigned int slot )
 		InputSlot = element.GetAttributeElse< unsigned short >( "slot", 0 );
 	}
 
+	if ( element.HasAttributes( "name" ) )
+	{
+		std::string name = element.GetAttribute( "name" )->GetString();
+		if ( unify::StringIs( name, "POSITION" ) )
+		{
+			SemanticName = "POSITION";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
+		{
+			SemanticName = "BLENDWEIGHT";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "BLENDINDICES" ) )
+		{
+			SemanticName = "BLENDINDICES";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "NORMAL" ) )
+		{
+			SemanticName = "NORMAL";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "PSIZE" ) )
+		{
+			SemanticName = "PSIZE";
+			SemanticIndex = 0;
+		}
+		else if ( unify::BeginsWith( name, "TEXCOORD" ) )
+		{
+			SemanticName = "TEXCOORD";
+			std::string n = name.substr( strlen( "TEXCOORD" ) );
+			SemanticIndex = unify::Cast< unsigned char >( n );
+		}
+		else if ( unify::BeginsWith( name, "TEX" ) )
+		{
+			SemanticName = "TEXCOORD";
+			std::string n = name.substr( strlen( "TEX" ) );
+			SemanticIndex = unify::Cast< unsigned char >( n );
+		}
+		else if ( unify::StringIs( name, "TANGENT" ) )
+		{
+			SemanticName = "TANGENT";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "BINORMAL" ) )
+		{
+			SemanticName = "BINORMAL";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "TESSFACTOR" ) )
+		{
+			SemanticName = "TESSFACTOR";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "POSITIONT" ) )
+		{
+			SemanticName = "POSITIONT";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
+		{
+			SemanticName = "COLOR";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "SPECULAR" ) )
+		{
+			SemanticName = "COLOR";
+			SemanticIndex = 1;
+		}
+		else if ( unify::StringIs( name, "FOG" ) )
+		{
+			SemanticName = "FOG";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "DEPTH" ) )
+		{
+			SemanticName = "DEPTH";
+			SemanticIndex = 0;
+		}
+		else if ( unify::StringIs( name, "SAMPLE" ) )
+		{
+			SemanticName = "SAMPLE";
+			SemanticIndex = 0;
+		}
+		else
+		{
+			throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
+		}
+	}
+	else if ( element.HasAttributes( "SemanaticName" ) )
+	{
+		SemanticName = element.GetAttribute< std::string >( "semanticname" );
+		SemanticIndex = element.GetAttributeElse( "semanticindex", 0 );
+	}
 
-	std::string name = element.GetAttribute( "name" )->GetString();
-	if ( unify::StringIs( name, "POSITION" ) )
-	{
-		SemanticName = "POSITION";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
-	{
-		SemanticName = "BLENDWEIGHT";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "BLENDINDICES" ) )
-	{
-		SemanticName = "BLENDINDICES";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "NORMAL" ) )
-	{
-		SemanticName = "NORMAL";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "PSIZE" ) )
-	{
-		SemanticName = "PSIZE";
-		SemanticIndex = 0;
-	}
-	else if ( unify::BeginsWith( name, "TEXCOORD" ) )
-	{
-		SemanticName = "TEXCOORD";
-		std::string n = name.substr( strlen( "TEXCOORD" ) );
-		SemanticIndex = unify::Cast< unsigned char >( n );
-	}
-	else if ( unify::BeginsWith( name, "TEX" ) )
-	{
-		SemanticName = "TEXCOORD";
-		std::string n = name.substr( strlen( "TEX" ) );
-		SemanticIndex = unify::Cast< unsigned char >( n );
-	}
-	else if ( unify::StringIs( name, "TANGENT" ) )
-	{
-		SemanticName = "TANGENT";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "BINORMAL" ) )
-	{
-		SemanticName = "BINORMAL";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "TESSFACTOR" ) )
-	{
-		SemanticName = "TESSFACTOR";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "POSITIONT" ) )
-	{
-		SemanticName = "POSITIONT";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
-	{
-		SemanticName = "COLOR";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "SPECULAR" ) )
-	{
-		SemanticName = "COLOR";
-		SemanticIndex = 1;
-	}
-	else if ( unify::StringIs( name, "FOG" ) )
-	{
-		SemanticName = "FOG";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "DEPTH" ) )
-	{
-		SemanticName = "DEPTH";
-		SemanticIndex = 0;
-	}
-	else if ( unify::StringIs( name, "SAMPLE" ) )
-	{
-		SemanticName = "SAMPLE";
-		SemanticIndex = 0;
-	}
-	else
-	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
-	}
+	InstanceDataStepRate = element.GetAttributeElse( "instancedatasteprate", 0 );
 
 	Format = ElementFormat::FromString( element.GetAttribute( "type" )->GetString() );
 
 	AlignedByteOffset = 0; // Because we don't know here.
 }
 
-VertexElement::VertexElement( const qjson::Pair & pair, unsigned int slot )
+VertexElement::VertexElement( const qjson::Pair & pair )
 {
 	std::string name = pair.GetName();
 	if ( unify::StringIs( name, "POSITION" ) )
@@ -281,7 +318,6 @@ VertexElement::VertexElement( const qjson::Pair & pair, unsigned int slot )
 	}
 
 	Format = ElementFormat::FromString( pair.GetValue()->ToString() );
-	InputSlot = slot;
 }
 
 size_t VertexElement::SizeOf() const

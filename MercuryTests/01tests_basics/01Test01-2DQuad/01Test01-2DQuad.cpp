@@ -67,12 +67,13 @@ void MyGame::Update( RenderInfo & renderInfo )
 	renderInfo.SetProjectionMatrix( unify::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render(  const RenderInfo & renderInfo, const me::Viewport & viewport )
+void MyGame::Render( const RenderInfo & renderInfo, const me::Viewport & viewport )
 {
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
-	method.Render( renderInfo );
+
+	renderInfo.GetRenderer()->Render( method, renderInfo, { unify::MatrixIdentity() } );
 }
 
 void MyGame::Shutdown()

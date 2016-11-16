@@ -53,7 +53,6 @@ void Canvas::OnUpdate( Scene * scene, const RenderInfo & renderInfo )
 	m_size = renderInfo.GetRenderer()->GetDisplay().GetSize();
 
 	m_projection = unify::MatrixOrthoOffCenterLH( m_position.x, m_position.x + m_size.width, m_position.y + m_size.height, m_position.y, 0.0f, 100.0f );
-	myRenderInfo.SetWorldMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetViewMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
@@ -70,7 +69,6 @@ void Canvas::OnRender( Scene * scene, const RenderInfo & renderInfo )
 	m_size = renderInfo.GetRenderer()->GetDisplay().GetSize();
 
 	m_projection = unify::MatrixOrthoOffCenterLH( m_position.x, m_position.x + m_size.width, m_position.y + m_size.height, m_position.y, 0.0f, 100.0f );
-	myRenderInfo.SetWorldMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetViewMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetProjectionMatrix( m_projection );
 

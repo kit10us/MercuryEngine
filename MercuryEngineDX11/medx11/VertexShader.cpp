@@ -12,14 +12,14 @@ using namespace me;
 class VertexShader::Pimpl
 {
 	VertexShader & m_owner;
-	Renderer * m_renderer;
+	const Renderer * m_renderer;
 
 	// TODO: Unify::Matrix
 	struct ConstantBuffer
 	{
-		DirectX::XMMATRIX worldMatrix;
-		DirectX::XMMATRIX viewMatrix;
-		DirectX::XMMATRIX projectionMatrix;
+		unify::Matrix worldMatrix;
+		unify::Matrix viewMatrix;
+		unify::Matrix projectionMatrix;
 	} m_vertexShaderConstants;
 
 	CComPtr< ID3D11VertexShader > m_vertexShader;
@@ -30,9 +30,9 @@ class VertexShader::Pimpl
 	CComPtr< ID3D11Buffer > m_vertexShaderConstantBuffer;
 
 public:
-	Pimpl( VertexShader & owner, me::IRenderer * renderer )
+	Pimpl( VertexShader & owner, const me::IRenderer * renderer )
 		: m_owner( owner )
-		, m_renderer( dynamic_cast< Renderer * >(renderer) )
+		, m_renderer( dynamic_cast< const Renderer * >(renderer) )
 	{
 	}
 
@@ -88,14 +88,14 @@ public:
 
 		using namespace DirectX;
 
-		m_vertexShaderConstants.worldMatrix = XMMatrixIdentity();
+		m_vertexShaderConstants.worldMatrix = unify::MatrixIdentity();
 
-		XMVECTOR eye = XMVectorSet( 0.0f, 1.0f, -50.0f, 0.0f );
-		XMVECTOR at = XMVectorSet( 0.0f, 0.0f, 0.0f, 0.0f );
-		XMVECTOR up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-		m_vertexShaderConstants.viewMatrix = XMMatrixLookAtLH( eye, at, up );
+		unify::V3< float > eye( 0.0f, 1.0f, -50.0f );
+		unify::V3< float > at( 0.0f, 0.0f, 0.0f );
+		unify::V3< float > up( 0.0f, 1.0f, 0.0f );
+		m_vertexShaderConstants.viewMatrix = unify::MatrixLookAtLH( eye, at, up );
 
-		m_vertexShaderConstants.projectionMatrix = XMMatrixPerspectiveFovLH( DirectX::XM_PIDIV4, 800 / 640, 0.01f, 100.0f );
+		m_vertexShaderConstants.projectionMatrix = unify::MatrixPerspectiveFovLH( 4.141592653589f * 0.25f, 800 / 640, 0.01f, 100.0f );
 
 
 		D3D11_BUFFER_DESC constantBufferDesc = D3D11_BUFFER_DESC();
@@ -108,11 +108,11 @@ public:
 		result = dxDevice->CreateBuffer( &constantBufferDesc, &constantBufferSourceData, &m_vertexShaderConstantBuffer );
 		assert( !FAILED( result ) );
 		
-		m_owner.m_vertexDeclaration->Build( m_owner );
+		m_owner.m_vertexDeclaration->Build( m_renderer, m_owner );
 		m_owner.m_created = true;
 	}
 
-	void Use( const RenderInfo & renderInfo )
+	void Use( const RenderInfo & renderInfo, RenderInstance instance )
 	{
 		auto dxDevice = m_renderer->GetDxDevice();
 		auto dxContext = m_renderer->GetDxContext();
@@ -125,9 +125,9 @@ public:
 			throw unify::Exception( "Failed to set vertex shader!" );
 		}
 
-		memcpy( &m_vertexShaderConstants.worldMatrix.r[0], &renderInfo.GetWorldMatrix().m, sizeof( float ) * 4 * 4 );
-		memcpy( &m_vertexShaderConstants.viewMatrix.r[0], &renderInfo.GetViewMatrix().m, sizeof( float ) * 4 * 4 );
-		memcpy( &m_vertexShaderConstants.projectionMatrix.r[0], &renderInfo.GetProjectionMatrix().m, sizeof( float ) * 4 * 4 );
+		m_vertexShaderConstants.worldMatrix = instance.m;
+		m_vertexShaderConstants.viewMatrix = renderInfo.GetViewMatrix();
+		m_vertexShaderConstants.projectionMatrix = renderInfo.GetProjectionMatrix();
 
 		ConstantBuffer * target = (ConstantBuffer*)subResource.pData;
 		*target = m_vertexShaderConstants;
@@ -151,14 +151,14 @@ public:
 };
 
 
-VertexShader::VertexShader( me::IRenderer * renderer )
+VertexShader::VertexShader( const me::IRenderer * renderer )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_assembly( false )
 	, m_created( false )
 {
 }
 
-VertexShader::VertexShader( me::IRenderer * renderer, VertexShaderParameters parameters )
+VertexShader::VertexShader( const me::IRenderer * renderer, VertexShaderParameters parameters )
 	: m_pimpl( new Pimpl( *this, renderer ) )
 	, m_assembly( false )
 	, m_created( false )
@@ -196,12 +196,12 @@ void VertexShader::Create( VertexShaderParameters parameters )
 	m_pimpl->Create();
 }
 
-void VertexShader::SetVertexDeclaration( IVertexDeclaration::ptr vertexDeclaration )
+void VertexShader::SetVertexDeclaration( VertexDeclaration::ptr vertexDeclaration )
 {
 	m_vertexDeclaration = vertexDeclaration;
 }
 
-IVertexDeclaration::ptr VertexShader::GetVertexDeclaration() const
+VertexDeclaration::ptr VertexShader::GetVertexDeclaration() const
 {
 	return m_vertexDeclaration;
 }
@@ -216,10 +216,10 @@ size_t VertexShader::GetBytecodeLength() const
 	return m_pimpl->GetBytecodeLength();
 }
 
-void VertexShader::Use( const RenderInfo & renderInfo )
+void VertexShader::Use( const RenderInfo & renderInfo, const RenderInstance & instance )
 {
 	m_vertexDeclaration->Use();
-	m_pimpl->Use( renderInfo );
+	m_pimpl->Use( renderInfo, instance );
 }
 
 std::string VertexShader::GetError()

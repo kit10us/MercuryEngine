@@ -15,8 +15,8 @@ namespace medx11
 	class PixelShader : public me::IPixelShader
 	{
 	public:
-		PixelShader( me::IRenderer * renderer );
-		PixelShader( me::IRenderer * renderer, me::PixelShaderParameters parameters );
+		PixelShader( const me::IRenderer * renderer );
+		PixelShader( const me::IRenderer * renderer, me::PixelShaderParameters parameters );
 
 		~PixelShader();
 
@@ -39,7 +39,7 @@ namespace medx11
 
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 
-		Renderer * m_renderer;
+		const Renderer * m_renderer;
 		CComPtr< ID3D11PixelShader > m_pixelShader;
 		CComPtr< ID3D10Blob > m_pixelShaderBuffer;
 	};

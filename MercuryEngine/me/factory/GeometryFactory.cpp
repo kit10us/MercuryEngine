@@ -78,7 +78,7 @@ void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * me
 				{	
 					std::string effectName = buffersetChild.GetAttribute< std::string >( "effect" );
 					auto effect = effectManager->Find( effectName );
-					IVertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
+					VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 					unsigned int vertexCount = buffersetChild.GetAttribute< unsigned int >( "count" );
 					
 					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );

@@ -7,7 +7,7 @@
 
 using namespace me;
 
-PrimitiveList::PrimitiveList( me::IRenderer * renderer )
+PrimitiveList::PrimitiveList( const me::IRenderer * renderer )
 	: m_renderer( renderer )
 {
 }
@@ -23,11 +23,15 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( const RenderInfo & renderInfo ) const
+void PrimitiveList::Render( const me::RenderInfo & renderInfo, std::list< RenderInstance > & list ) const
 {
-	for( const auto & set : m_buffers )
+	RenderInfo myRenderInfo( renderInfo );
+
+	// Optimized for one buffer...
+	if ( m_buffers.size() == 1 )
 	{
-		if( ! set->GetEnabled() ) continue;
+		const auto & set = m_buffers[0];
+		if( ! set->GetEnabled() ) return;
 
 		if( set->GetVertexBuffer() )
 		{
@@ -39,7 +43,32 @@ void PrimitiveList::Render( const RenderInfo & renderInfo ) const
 			set->GetIndexBuffer()->Use();
 		}
 
-		set->GetRenderMethodBuffer().Render( renderInfo );
+		for( auto instance : list )
+		{
+			set->GetRenderMethodBuffer().Render( renderInfo, instance );
+		}
+	}
+	else
+	{
+		for( auto instance : list )
+		{
+			for( const auto & set : m_buffers )
+			{
+				if( ! set->GetEnabled() ) continue;
+
+				if( set->GetVertexBuffer() )
+				{
+					set->GetVertexBuffer()->Use();
+				}
+
+				if ( set->GetIndexBuffer() )
+				{
+					set->GetIndexBuffer()->Use();
+				}
+
+				set->GetRenderMethodBuffer().Render( renderInfo, instance );
+			}
+		}
 	}
 }
 

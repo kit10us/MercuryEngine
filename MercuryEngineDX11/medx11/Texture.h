@@ -47,7 +47,7 @@ namespace medx11
 
 		static bool s_allowTextureUses;
 
-		Texture( me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
+		Texture( const me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
 		virtual ~Texture();
 
 		// ::Resource...
@@ -77,7 +77,7 @@ namespace medx11
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();
 
-		Renderer * m_renderer;						   
+		const Renderer * m_renderer;						   
 		CComPtr< ID3D11Texture2D > m_texture;
 		CComPtr< ID3D11SamplerState > m_colorMapSampler;
 		CComPtr< ID3D11ShaderResourceView > m_colorMap;

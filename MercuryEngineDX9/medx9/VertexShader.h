@@ -6,7 +6,7 @@
 #include <me/RenderInfo.h>
 #include <me/IRenderer.h>
 #include <me/IVertexShader.h>
-#include <me/IVertexDeclaration.h>
+#include <me/VertexDeclaration.h>
 #include <unify/Path.h>
 
 namespace medx9
@@ -14,8 +14,8 @@ namespace medx9
 	class VertexShader : public me::IVertexShader
 	{
 	public:
-		VertexShader( me::IRenderer * renderer );
-		VertexShader( me::IRenderer * renderer, me::VertexShaderParameters parameters );
+		VertexShader( const me::IRenderer * renderer );
+		VertexShader( const me::IRenderer * renderer, me::VertexShaderParameters parameters );
 
 		~VertexShader();
 
@@ -23,15 +23,15 @@ namespace medx9
 
 		void Create( me::VertexShaderParameters parameters );
 
-		void SetVertexDeclaration( me::IVertexDeclaration::ptr vertexDeclaration );
+		void SetVertexDeclaration( me::VertexDeclaration::ptr vertexDeclaration );
 
-		me::IVertexDeclaration::ptr GetVertexDeclaration() const override;
+		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
 
 		const void * GetBytecode() const;
 
 		size_t GetBytecodeLength() const;
 
-		void Use( const me::RenderInfo & renderInfo );
+		void Use( const me::RenderInfo & renderInfo, const me::RenderInstance & instance );
 
 		std::string GetError();
 
@@ -43,7 +43,7 @@ namespace medx9
 		std::string m_profile;
 		std::string m_errorMessage;
 		bool m_created;
-		me::IVertexDeclaration::ptr m_vertexDeclaration;
+		me::VertexDeclaration::ptr m_vertexDeclaration;
 
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;

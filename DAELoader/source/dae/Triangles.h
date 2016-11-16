@@ -23,7 +23,7 @@ namespace dae
 		const std::string & GetMaterial() const;
 		const std::vector< std::shared_ptr< Input_Shared > > & GetInput() const;
 		const std::vector< int > & GetP() const;
-		me::IVertexDeclaration::ptr GetVertexFormat() const;
+		me::VertexDeclaration::ptr GetVertexFormat() const;
 
 	private:
 		std::string m_name;
@@ -31,6 +31,6 @@ namespace dae
 		std::string m_material;
 		std::vector< std::shared_ptr< Input_Shared > > m_input;
 		std::vector< int > m_p;
-		me::IVertexDeclaration::ptr m_vertexFormat;
+		me::VertexDeclaration::ptr m_vertexFormat;
 	};
 }

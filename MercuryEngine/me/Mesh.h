@@ -12,6 +12,7 @@
 #include <me/Geometry.h>
 #include <me/RenderMethod.h>
 #include <me/RenderInfo.h>
+#include <me/RenderInstance.h>
 #include <me/MeshInstanceData.h>
 #include <me/scene/ObjectComponent.h>
 #include <me/PrimitiveList.h>
@@ -22,16 +23,16 @@ namespace me
 	class Mesh : public Geometry
 	{
 	public:
-		Mesh( IRenderer * renderer );
+		Mesh( const IRenderer * renderer );
 		~Mesh();
 
 		GeometryInstanceData * CreateInstanceData();
 
 		void Destroy();
 
-		// Overrides..
-		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
-		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData );
+		void Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
+
+		void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list ) override;
 
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();

@@ -18,7 +18,7 @@ namespace me
 	public:
 		typedef std::shared_ptr< BufferSet > shared_ptr;
 
-		BufferSet( me::IRenderer * renderer );
+		BufferSet( const me::IRenderer * renderer );
 		~BufferSet();
 
 		BufferSet( const BufferSet & ) = delete;
@@ -40,7 +40,7 @@ namespace me
 		bool GetEnabled() const;
 
 	private:
-		IRenderer * m_renderer;
+		const IRenderer * m_renderer;
 		bool m_enabled;
 		me::IVertexBuffer::ptr m_VB;
 		me::IIndexBuffer::ptr m_IB;

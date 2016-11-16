@@ -165,7 +165,7 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 
 		BufferSet & set = accumulatedPL.AddBufferSet();
 
-		const IVertexDeclaration::ptr vd = myEffect->GetVertexShader()->GetVertexDeclaration();
+		const VertexDeclaration::ptr vd = myEffect->GetVertexShader()->GetVertexDeclaration();
 		unsigned short stream = 0;
 
 		VertexElement positionE = CommonVertexElement::Position( stream );

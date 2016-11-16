@@ -30,17 +30,31 @@ namespace me
 		static std::string ToString( TYPE format );
 	};
 
+
+	struct SlotClass
+	{
+		enum TYPE
+		{
+			Vertex = 0,
+			Object
+		};
+		static TYPE FromString( std::string value );
+		static std::string ToString( TYPE value );
+	};
+
 	struct VertexElement
 	{
-		std::string                SemanticName;
-		unsigned int               SemanticIndex;
-		ElementFormat::TYPE		   Format;
-		unsigned int               InputSlot;
-		unsigned int               AlignedByteOffset;
+		std::string             SemanticName;
+		unsigned int            SemanticIndex;
+		ElementFormat::TYPE		Format;
+		unsigned int            InputSlot;
+		unsigned int			AlignedByteOffset;  
+		SlotClass::TYPE			SlotClass;
+		unsigned int			InstanceDataStepRate;
 
 		VertexElement();
-		VertexElement( const qxml::Element & element, unsigned int slot = 0 );
-		VertexElement( const qjson::Pair & pair, unsigned int slot = 0 );
+		VertexElement( const qxml::Element & element );
+		VertexElement( const qjson::Pair & pair );
 		size_t SizeOf() const;
 	};
 

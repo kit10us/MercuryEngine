@@ -30,13 +30,15 @@ namespace dxiphysx
 
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
+
+			bool Renderable() const { return false; }
 									   
 			void OnAttach( me::scene::Object * object ) override;
 			void OnDetach( me::scene::Object * object ) override {}
 			void OnInit( me::scene::Object * object ) override {}
 			void OnStart( me::scene::Object * object ) override {}
 			void OnUpdate( me::scene::Object * object, const me::RenderInfo & renderInfo ) override {}
-			void OnRender( me::scene::Object * object, const me::RenderInfo & renderInfo ) override {}
+			void OnRender( me::scene::Object * object, const me::RenderInfo & renderInfo, std::list< me::RenderSet > & list, unify::Matrix transform ) override {}
 			void OnSuspend( me::scene::Object * object ) override {}
 			void OnResume( me::scene::Object * object ) override {}
 

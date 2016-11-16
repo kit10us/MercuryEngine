@@ -10,8 +10,8 @@
 using namespace medx9;
 using namespace me;
 
-VertexBuffer::VertexBuffer( me::IRenderer * renderer )
-	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
+VertexBuffer::VertexBuffer( const me::IRenderer * renderer )
+	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
 	, m_slot( 0 )
 	, m_locked( false )
 	, m_usage( BufferUsage::Default )
@@ -20,8 +20,8 @@ VertexBuffer::VertexBuffer( me::IRenderer * renderer )
 {
 }
 
-VertexBuffer::VertexBuffer( me::IRenderer * renderer, me::VertexBufferParameters parameters )
-	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
+VertexBuffer::VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters )
+	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
 	, m_slot( 0 )
 	, m_locked( false )
 	, m_usage( BufferUsage::Default )
@@ -164,7 +164,7 @@ void VertexBuffer::Unlock() const
 }
 
 
-IVertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
+VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 {
 	return m_vertexDeclaration;
 }
