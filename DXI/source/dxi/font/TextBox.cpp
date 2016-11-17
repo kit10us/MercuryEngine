@@ -66,7 +66,7 @@ void TextBox::Update( unify::Seconds elapsed )
 	}
 }
 
-void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
+void TextBox::Render( const IRenderer * renderer, const RenderInfo & renderInfo, bool is3D )
 {
 	unify::Matrix oldProjection, oldView, oldWorld;
 	// TODO: Transform::Get( Transform::Index::World, oldWorld );
@@ -113,7 +113,7 @@ void TextBox::Render( const RenderInfo & renderInfo, bool is3D )
 
 	for( auto character : m_characterRenderList )
 	{
-		character.Render( renderInfo, origin, is3D );
+		character.Render( renderer, renderInfo, origin, is3D );
 	}
 
 	// Restore matrices...

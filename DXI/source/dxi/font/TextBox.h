@@ -32,7 +32,7 @@ namespace dxi
 
 			void SyncCharacterRenderList();
 			void Update( unify::Seconds elapsed );
-			void Render( const me::RenderInfo & renderInfo, bool is3D = false );
+			void Render( const me::IRenderer * renderer, const me::RenderInfo & renderInfo, bool is3D = false );
 
 		protected:
 			me::IGame * m_game;

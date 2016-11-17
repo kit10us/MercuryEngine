@@ -17,8 +17,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( me::RenderInfo & renderInfo ) override;
-	void Render( const me::RenderInfo & renderInfo, const me::Viewport & viewport ) override;
+	void Update( const IRenderer * renderer, me::RenderInfo & renderInfo ) override;
+	void Render( const IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
 
@@ -60,20 +60,20 @@ void MyGame::Startup()
 	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { vertexCount, effect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), BufferUsage::Default } );
 }
 
-void MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( const IRenderer * renderer, RenderInfo & renderInfo )
 {
-	const float width = (float)renderInfo.GetRenderer()->GetDisplay().GetSize().width;
-	const float height = (float)renderInfo.GetRenderer()->GetDisplay().GetSize().height;
+	const float width = (float)renderer->GetDisplay().GetSize().width;
+	const float height = (float)renderer->GetDisplay().GetSize().height;
 	renderInfo.SetProjectionMatrix( unify::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( const RenderInfo & renderInfo, const me::Viewport & viewport )
+void MyGame::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
 
-	renderInfo.GetRenderer()->Render( method, renderInfo, { unify::MatrixIdentity() } );
+	renderer->Render( method, renderInfo, { unify::MatrixIdentity() } );
 }
 
 void MyGame::Shutdown()

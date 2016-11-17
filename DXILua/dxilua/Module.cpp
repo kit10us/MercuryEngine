@@ -151,12 +151,12 @@ void Module::OnStart( Object * object )
 	CallMember( "OnStart" );
 }
 
-void Module::OnUpdate( Object * object, const RenderInfo & renderInfo )
+void Module::OnUpdate( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnRender( Object * object, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+void Module::OnRender( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
 {																										
 	// DO NOTHING
 }

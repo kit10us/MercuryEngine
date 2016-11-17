@@ -19,11 +19,11 @@ void SpriteList::AddSprite( const Sprite & sprite )
 	m_sprites.push_back( sprite );
 }
 
-void SpriteList::Render( const RenderInfo & renderInfo )
+void SpriteList::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	for( auto & sprite : m_sprites )
 	{
-		sprite.Render( renderInfo );
+		sprite.Render( renderer, renderInfo );
 	}
 }
 

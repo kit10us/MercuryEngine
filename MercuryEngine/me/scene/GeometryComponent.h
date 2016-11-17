@@ -39,9 +39,9 @@ namespace me
 
 			void OnInit( Object * object ) override;
 			void OnStart( Object * object ) override;
-			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override;
+			void OnUpdate( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo ) override;
 			
-			void OnRender( Object * object, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
+			void OnRender( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
 			
 			void OnSuspend( Object * object ) override;
 			void OnResume( Object * object ) override;

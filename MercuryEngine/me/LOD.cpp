@@ -22,7 +22,16 @@ void LOD::Add( Geometry::ptr geometry, float distanceStart )
 	ComputeBounds();
 }
 
-void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list )
+void LOD::Update( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+{
+	// Update all geometry...
+	for( auto node : m_list )
+	{
+		node.GetGeometry()->Update( renderer, renderInfo, instanceData );
+	}
+}
+
+void LOD::Render( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list )
 {
 	if( m_list.empty() )
 	{
@@ -31,7 +40,7 @@ void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instance
 	
 	if( m_list.size() == 1 )
 	{
-		m_list.begin()->GetGeometry()->Render( renderInfo, instanceData, list );
+		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, list );
 		return;
 	}
 
@@ -41,16 +50,7 @@ void LOD::Render( const RenderInfo & renderInfo, GeometryInstanceData * instance
 	{
 	}
 
-	itr->GetGeometry()->Render( renderInfo, instanceData, list );
-}
-
-void LOD::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
-{
-	// Update all geometry...
-	for( auto node : m_list )
-	{
-		node.GetGeometry()->Update( renderInfo, instanceData );
-	}
+	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, list );
 }
 
 const unify::BBox< float > & LOD::ComputeBounds()

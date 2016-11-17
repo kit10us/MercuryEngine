@@ -50,12 +50,12 @@ namespace me
 			/// <summary>
 			/// Called every game update cycle.
 			/// </summary>
-			virtual void OnUpdate( Scene * scene, const RenderInfo & renderInfo ) = 0;
+			virtual void OnUpdate( Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 
 			/// <summary>
 			/// Called during rendering.
 			/// </summary>
-			virtual void OnRender( Scene * scene, const RenderInfo & renderInfo ) = 0;
+			virtual void OnRender( Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).

@@ -29,10 +29,10 @@ namespace dxi
 		void Invalidate();
 
 		// Geometry HAS TO Render
-		virtual void Render( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+		virtual void Render( const me::IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
 		// Geometry CAN Update, but doesn't have to
-		virtual void Update( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+		virtual void Update( const me::IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
 		void AddPlace( const unify::V3< float > & position );
 

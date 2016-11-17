@@ -36,8 +36,8 @@ namespace me
 
 			void OnInit();
 			void OnStart();
-			void Update( const RenderInfo & renderInfo );
-			void Render( const RenderInfo & renderInfo );
+			void Update( const IRenderer * renderer, const RenderInfo & renderInfo );
+			void Render( const IRenderer * renderer, const RenderInfo & renderInfo );
 			void Suspend();
 			void Resume();
 

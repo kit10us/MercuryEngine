@@ -56,12 +56,12 @@ size_t RenderMethodBuffer::GetSize() const
 	return m_methodList.size();
 }
 
-void RenderMethodBuffer::Render( const RenderInfo & renderInfo, RenderInstance instance ) const
+void RenderMethodBuffer::Render( const IRenderer * renderer, const RenderInfo & renderInfo, RenderInstance instance ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderInfo.GetRenderer()->Render( method, renderInfo, instance );
+		renderer->Render( method, renderInfo, instance );
 	}
 }

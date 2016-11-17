@@ -26,7 +26,7 @@ namespace me
 
 		void Destroy();
 
-		void Render( const me::RenderInfo & renderInfo, std::list< RenderInstance > & list ) const;
+		void Render( const IRenderer * renderer, const me::RenderInfo & renderInfo, std::list< RenderInstance > & list ) const;
 		
 		BufferSet & AddBufferSet();
 		void RemoveBufferSet( size_t i );

@@ -102,7 +102,7 @@ void Character::Update( unify::Seconds elapsed )
 	}
 }
 
-void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D )
+void Character::Render( const IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix & origin, const unify::V2< float > & offset, float scale, bool is3D )
 {
 	unify::Matrix world( origin );
 
@@ -168,7 +168,7 @@ void Character::Render( const RenderInfo & renderInfo, const unify::Matrix & ori
 
 			assert( 0 ); // This was changed form the "standalone", ensure this works...
 			std::list< RenderInstance > list { temp };
-			m_geometry->Render( renderInfo, 0, list );
+			m_geometry->Render( renderer, renderInfo, 0, list );
 		}
 		break;
 	}

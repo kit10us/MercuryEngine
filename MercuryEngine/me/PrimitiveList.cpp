@@ -23,7 +23,7 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( const me::RenderInfo & renderInfo, std::list< RenderInstance > & list ) const
+void PrimitiveList::Render( const IRenderer * renderer, const me::RenderInfo & renderInfo, std::list< RenderInstance > & list ) const
 {
 	RenderInfo myRenderInfo( renderInfo );
 
@@ -45,7 +45,7 @@ void PrimitiveList::Render( const me::RenderInfo & renderInfo, std::list< Render
 
 		for( auto instance : list )
 		{
-			set->GetRenderMethodBuffer().Render( renderInfo, instance );
+			set->GetRenderMethodBuffer().Render( renderer, renderInfo, instance );
 		}
 	}
 	else
@@ -66,7 +66,7 @@ void PrimitiveList::Render( const me::RenderInfo & renderInfo, std::list< Render
 					set->GetIndexBuffer()->Use();
 				}
 
-				set->GetRenderMethodBuffer().Render( renderInfo, instance );
+				set->GetRenderMethodBuffer().Render( renderer, renderInfo, instance );
 			}
 		}
 	}

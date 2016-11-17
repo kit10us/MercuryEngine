@@ -25,8 +25,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( RenderInfo & renderInfo ) override;
-	void Render( const RenderInfo & renderInfo, const me::Viewport & viewport ) override;
+	void Update( const IRenderer * renderer, RenderInfo & renderInfo ) override;
+	void Render( const IRenderer * renderer, const RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
 
@@ -103,7 +103,7 @@ void MyGame::Startup()
 	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { numberOfVertices, effectBorg->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
 }
 
-void MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( const IRenderer * renderer, RenderInfo & renderInfo )
 {
 	static Angle rotation( AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
@@ -135,17 +135,17 @@ void MyGame::Update( RenderInfo & renderInfo )
 	renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render(  const RenderInfo & renderInfo, const me::Viewport & viewport )
+void MyGame::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	vertexBuffer->Use();
 
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
-		renderInfo.GetRenderer()->Render( method, renderInfo, Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) );
+		renderer->Render( method, renderInfo, Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) );
 	}
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
-		renderInfo.GetRenderer()->Render( method, renderInfo, Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) );
+		renderer->Render( method, renderInfo, Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) );
 	}
 }
 

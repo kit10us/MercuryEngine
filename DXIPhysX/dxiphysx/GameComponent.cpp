@@ -74,11 +74,11 @@ void GameComponent::OnDetach( me::IGame * game )
 {
 }
 
-void GameComponent::OnUpdate( me::IGame * game, const me::RenderInfo & renderInfo )
+void GameComponent::OnUpdate( me::IGame * game, const IRenderer * renderer, const me::RenderInfo & renderInfo )
 {
 }
 
-void GameComponent::OnRender( me::IGame * game, const me::RenderInfo & renderInfo )
+void GameComponent::OnRender( me::IGame * game, const IRenderer * renderer, const me::RenderInfo & renderInfo )
 {
 }
 

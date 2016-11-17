@@ -33,8 +33,8 @@ namespace me
 
 			void OnAttach( IGame * game ) override;
 			void OnDetach( IGame * game ) override;
-			void OnUpdate( IGame * game, const RenderInfo & renderInfo ) override;
-			void OnRender( IGame * game, const RenderInfo & renderInfo ) override;
+			void OnUpdate( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnRender( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo ) override;
 
 			int ComponentCount() const;
 			void AddComponent( ISceneManagerComponent::ptr component );

@@ -42,10 +42,6 @@ namespace me
 		~RenderInfo() throw ();
 		RenderInfo & operator=( const RenderInfo & info );
 
-		void SetRenderer( me::IRenderer * renderer );
-		me::IRenderer * GetRenderer();
-		const me::IRenderer * GetRenderer() const;
-
 		bool IsOptionSet( RenderOption::TYPE option ) const;
 		bool IsOptionTrue( RenderOption::TYPE option ) const;
 		bool IsOptionFalse( RenderOption::TYPE option ) const;
@@ -69,11 +65,6 @@ namespace me
 
 		float GetFPS() const;
 
-		/*
-		void SetWorldMatrix( const unify::Matrix & matrix );
-		const unify::Matrix & GetWorldMatrix() const;
-		*/
-
 		void SetViewMatrix( const unify::Matrix & matrix );
 		const unify::Matrix & GetViewMatrix() const;
 
@@ -84,7 +75,6 @@ namespace me
 		const unify::FrameSetInstance * GetFrameSetInstance() const;
 
 	protected:
-		IRenderer * m_renderer;
 		std::bitset< RenderOption::COUNT > m_optionValue;
 		std::bitset< RenderOption::COUNT > m_optionIsSet;
 		float m_distanceFromCamera;		// Distance from camera

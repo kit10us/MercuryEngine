@@ -37,8 +37,8 @@ namespace me
 
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
-			void OnUpdate( Object * object, const RenderInfo & renderInfo ) override;
-			void OnRender( Object * object, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
+			void OnUpdate( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnRender( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
 
 			IObjectComponent * Duplicate();
    

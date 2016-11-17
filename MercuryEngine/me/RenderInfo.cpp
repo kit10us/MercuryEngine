@@ -6,10 +6,8 @@
 using namespace me;
 
 RenderInfo::RenderInfo()
-: m_renderer( 0 )
-, m_distanceFromCamera( 0.0f )
+: m_distanceFromCamera( 0.0f )
 , m_frameID( 0 )
-//, m_world( unify::MatrixIdentity() )
 , m_view( unify::MatrixIdentity() )
 , m_projection( unify::MatrixIdentity() )
 , m_frameSetInstance( 0 )
@@ -20,12 +18,10 @@ RenderInfo::RenderInfo()
 }
 
 RenderInfo::RenderInfo( const RenderInfo & info )
-: m_renderer( info.m_renderer )
-, m_distanceFromCamera( 0.0f )
+: m_distanceFromCamera( 0.0f )
 , m_frameID( 0 )
 , m_optionIsSet( info.m_optionIsSet )
 , m_optionValue( info.m_optionValue )
-//, m_world( info.m_world )
 , m_view( info.m_view )
 , m_projection( info.m_projection )
 , m_frameSetInstance( info.m_frameSetInstance )
@@ -37,21 +33,6 @@ RenderInfo::RenderInfo( const RenderInfo & info )
 
 RenderInfo::~RenderInfo() throw ()
 {
-}
-
-void RenderInfo::SetRenderer( me::IRenderer * renderer )
-{
-	m_renderer = renderer;
-}
-
-me::IRenderer * RenderInfo::GetRenderer()
-{
-	return m_renderer;
-}
-
-const me::IRenderer * RenderInfo::GetRenderer() const
-{
-	return m_renderer;
 }
 
 bool RenderInfo::IsOptionSet( RenderOption::TYPE option ) const
@@ -96,7 +77,6 @@ RenderInfo & RenderInfo::operator=( const RenderInfo & info )
 	m_optionValue = info.m_optionValue;
 	m_distanceFromCamera = info.m_distanceFromCamera;
 	m_frameID = info.m_frameID;
-	//m_world = info.m_world;
 	m_view = info.m_view;
 	m_projection = info.m_projection;
 	return *this;
@@ -143,18 +123,6 @@ float RenderInfo::GetFPS() const
 {
 	return 1.0f / GetAverageDelta();
 }
-
-/*
-void RenderInfo::SetWorldMatrix( const unify::Matrix & matrix )
-{
-	m_world = matrix;
-}
-
-const unify::Matrix & RenderInfo::GetWorldMatrix() const
-{
-	return m_world;
-}
-*/
 
 void RenderInfo::SetViewMatrix( const unify::Matrix & matrix )
 {

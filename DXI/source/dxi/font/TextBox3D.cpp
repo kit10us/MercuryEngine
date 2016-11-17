@@ -20,7 +20,7 @@ TextBox3D::~TextBox3D()
 {
 }
 
-void TextBox3D::Render( const me::RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void TextBox3D::Render( const IRenderer * renderer, const me::RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	me::RenderInfo myRenderInfo( renderInfo );
 	if( m_text.get() )
@@ -31,7 +31,7 @@ void TextBox3D::Render( const me::RenderInfo & renderInfo, GeometryInstanceData 
 	}
 }
 
-void TextBox3D::Update( const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void TextBox3D::Update( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( m_text.get() )
 	{

@@ -28,7 +28,6 @@ Scene::Scene( IGame * game )
 , m_mouseDrag( false )
 {
 	m_root->SetName( "root" );
-
 }
 
 Scene::~Scene()
@@ -86,7 +85,7 @@ void Scene::OnStart()
 	}
 }
 
-void Scene::Update( const RenderInfo & renderInfo )
+void Scene::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( ! m_inited )
 	{
@@ -110,12 +109,12 @@ void Scene::Update( const RenderInfo & renderInfo )
 	{
 		if ( component->IsEnabled( ) )
 		{
-			component->OnUpdate( this, renderInfo );
+			component->OnUpdate( this, renderer, renderInfo );
 		}
 	}		   
 
 	// Object updating (animation, independant physics)...
-	GetRoot()->Update( renderInfo );
+	GetRoot()->Update( renderer, renderInfo );
 }
 
 struct FinalCamera
@@ -125,7 +124,7 @@ struct FinalCamera
 	CameraComponent * camera;
 };
 
-void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, const RenderInfo & renderInfo, unify::Matrix parentTransform )
+void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, const IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
 {
 	assert( current );
 	assert( current->IsEnabled() );
@@ -144,7 +143,7 @@ void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > &
 		}
 	}																		 
 
-	current->CollectRenderables( renderList, renderInfo, parentTransform );
+	current->CollectRenderables( renderList, renderer, renderInfo, parentTransform );
 
 	// Handle children
 	Object::ptr child = current->GetFirstChild();
@@ -152,21 +151,21 @@ void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > &
 	{
 		if( child->IsEnabled() )
 		{
-			Accumulate( renderList, cameraList, child, renderInfo, current->GetFrame().GetMatrix() * parentTransform );
+			Accumulate( renderList, cameraList, child, renderer, renderInfo, current->GetFrame().GetMatrix() * parentTransform );
 		}
 
 		child = child->GetNext();
 	}
 }
 
-void Scene::Render( const RenderInfo & renderInfo )
+void Scene::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	// Render scene components
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnRender( this, renderInfo );
+			component->OnRender( this, renderer, renderInfo );
 		}
 	}
 	
@@ -175,7 +174,7 @@ void Scene::Render( const RenderInfo & renderInfo )
 	std::list< FinalCamera > cameraList;			 
 	if( GetRoot() && GetRoot()->IsEnabled() )
 	{
-		Accumulate( renderList, cameraList, GetRoot(), renderInfo, unify::MatrixIdentity() );
+		Accumulate( renderList, cameraList, GetRoot(), renderer, renderInfo, unify::MatrixIdentity() );
 	}
 
 	if ( cameraList.empty() ) return;
@@ -191,7 +190,7 @@ void Scene::Render( const RenderInfo & renderInfo )
 
 	for( auto camera : cameraList )
 	{
-		if( camera.camera->GetRenderer() != renderInfo.GetRenderer()->GetIndex() ) continue;
+		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
 
 		RenderInfo myRenderInfo( renderInfo );
 		myRenderInfo.SetViewMatrix( camera.transform.Inverse() );
@@ -212,7 +211,7 @@ void Scene::Render( const RenderInfo & renderInfo )
 
 		for( auto pair : sorted )
 		{
-			pair.first->Render( myRenderInfo, 0, pair.second );
+			pair.first->Render( renderer, myRenderInfo, 0, pair.second );
 		}
 	}
 }

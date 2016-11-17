@@ -3,6 +3,7 @@
 
 #include <dxi/font/CharacterRender.h>
 
+using namespace me;
 using namespace dxi;
 using namespace font;
 
@@ -32,7 +33,7 @@ void CharacterRender::Update( unify::Seconds elapsed )
 	m_character.Update( elapsed );
 }
 
-void CharacterRender::Render( const me::RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D )
+void CharacterRender::Render( const IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix & origin, bool is3D )
 {
-	m_character.Render( renderInfo, origin, m_offset, m_scale, is3D );
+	m_character.Render( renderer, renderInfo, origin, m_offset, m_scale, is3D );
 }

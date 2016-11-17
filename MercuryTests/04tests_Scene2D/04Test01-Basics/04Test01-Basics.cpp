@@ -29,8 +29,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( RenderInfo & renderInfo ) override;
-	void Render( const RenderInfo & renderInfo, const me::Viewport & viewport ) override;
+	void Update( const IRenderer * renderer, RenderInfo & renderInfo ) override;
+	void Render( const IRenderer * renderer, const RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
 
@@ -115,15 +115,15 @@ void MyGame::Startup()
 	canvas->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 }
 
-void MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( const IRenderer * renderer, RenderInfo & renderInfo )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
 	HRESULT result = S_OK;
 
-	const float width = (float)renderInfo.GetRenderer()->GetViewport().GetSize().width;
-	const float height = (float)renderInfo.GetRenderer()->GetViewport().GetSize().height;
+	const float width = (float)renderer->GetViewport().GetSize().width;
+	const float height = (float)renderer->GetViewport().GetSize().height;
 
 	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
@@ -146,12 +146,12 @@ void MyGame::Update( RenderInfo & renderInfo )
 	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( const RenderInfo & renderInfo, const me::Viewport & viewport )
+void MyGame::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
-	renderInfo.GetRenderer()->Render( method, renderInfo, unify::Matrix( q ) );
+	renderer->Render( method, renderInfo, unify::Matrix( q ) );
 }
 
 void MyGame::Shutdown()

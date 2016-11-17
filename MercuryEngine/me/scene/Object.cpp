@@ -158,7 +158,7 @@ const unify::FrameLite & Object::GetFrame() const
 	return m_frame;
 }
 
-void Object::Update( const RenderInfo & renderInfo )
+void Object::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
     // Do not update if we are not enabled.
     if ( ! m_enabled )
@@ -186,27 +186,27 @@ void Object::Update( const RenderInfo & renderInfo )
 			component.SetStarted( true );
 		}
 
-		component.Component()->OnUpdate( this, renderInfo );
+		component.Component()->OnUpdate( this, renderer, renderInfo );
 	}
 
 	if( GetFirstChild() )
 	{
-		GetFirstChild()->Update( renderInfo );
+		GetFirstChild()->Update( renderer, renderInfo );
 	}
 
 	if ( GetNext() )
 	{
-		GetNext()->Update( renderInfo );
+		GetNext()->Update( renderer, renderInfo );
 	}
 }
 
-void Object::CollectRenderables( std::list< RenderSet > & list, const RenderInfo & renderInfo, unify::Matrix parentTransform )
+void Object::CollectRenderables( std::list< RenderSet > & list, const IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
 {
 	for( auto && component : m_components )
 	{
 		// Don't try rendering if we haven't been properly setup...
 		if ( ! component.Component()->Renderable() || ! component.IsInitialized() || ! component.IsStarted() || ! component.Component()->IsEnabled() ) continue;
-		component.Component()->OnRender( this, renderInfo, list, GetFrame().GetMatrix() * parentTransform );
+		component.Component()->OnRender( this, renderer, renderInfo, list, GetFrame().GetMatrix() * parentTransform );
 	}
 }
 

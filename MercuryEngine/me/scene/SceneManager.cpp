@@ -78,7 +78,7 @@ void SceneManager::OnDetach( IGame * game )
 {
 }
 
-void SceneManager::OnUpdate( IGame * game, const RenderInfo & renderInfo )
+void SceneManager::OnUpdate( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{
@@ -99,11 +99,11 @@ void SceneManager::OnUpdate( IGame * game, const RenderInfo & renderInfo )
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Update( renderInfo );
+        scene->Update( renderer, renderInfo );
     }
 }
 
-void SceneManager::OnRender( IGame * game, const RenderInfo & renderInfo )
+void SceneManager::OnRender( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{
@@ -137,7 +137,7 @@ void SceneManager::OnRender( IGame * game, const RenderInfo & renderInfo )
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Render( renderInfo );
+        scene->Render( renderer, renderInfo );
     }
 }
 

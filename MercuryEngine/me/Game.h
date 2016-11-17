@@ -27,8 +27,8 @@ namespace me
 
 		virtual bool Setup( me::IOS * os ) override;
 		virtual void Startup() override;		  
-		virtual void Update( me::RenderInfo & renderInfo ) override;
-		virtual void Render( const me::RenderInfo & renderInfo, const me::Viewport & viewport ) override;
+		virtual void Update( const IRenderer * renderer, RenderInfo & renderInfo ) override;
+		virtual void Render( const IRenderer * renderer, const RenderInfo & renderInfo ) override;
 		virtual void Shutdown() override;
 
 	public:

@@ -87,7 +87,7 @@ void TextElement::SetText( std::string text )
 	m_changed = true;
 }
 
-void TextElement::Update( const RenderInfo & renderInfo )
+void TextElement::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_changed )
 	{
@@ -95,14 +95,14 @@ void TextElement::Update( const RenderInfo & renderInfo )
 	}
 }
 		
-void TextElement::Render( const RenderInfo & renderInfo )
+void TextElement::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_text.empty() ) return;
 
 	m_vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2, m_effect ) );
-	renderInfo.GetRenderer()->Render( method, renderInfo, { unify::MatrixIdentity() } );
+	renderer->Render( method, renderInfo, { unify::MatrixIdentity() } );
 }
 		
 void TextElement::OnSuspend()

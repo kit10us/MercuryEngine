@@ -25,8 +25,8 @@ namespace dxiphysx
 		void OnDetach( me::scene::Scene * scene ) override;
 		void OnInit( me::scene::Scene * scene ) override;
 		void OnStart( me::scene::Scene * scene ) override;
-		void OnUpdate( me::scene::Scene * scene, const me::RenderInfo & renderInfo ) override;
-		void OnRender( me::scene::Scene * scene, const me::RenderInfo & renderInfo ) override;
+		void OnUpdate( me::scene::Scene * scene, const me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
+		void OnRender( me::scene::Scene * scene, const me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
 		void OnSuspend() override;
 		void OnResume() override;
 

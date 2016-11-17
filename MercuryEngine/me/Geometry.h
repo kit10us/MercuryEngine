@@ -33,8 +33,8 @@ namespace me
 
 		virtual GeometryInstanceData * CreateInstanceData();
 
-		virtual void Update( const me::RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
-		virtual void Render( const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list ) = 0;
+		virtual void Update( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
+		virtual void Render( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list ) = 0;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;

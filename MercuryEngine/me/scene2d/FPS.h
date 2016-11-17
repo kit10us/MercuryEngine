@@ -14,7 +14,7 @@ namespace me
 		public:
 			FPS( me::IGame * game, Effect::ptr effect );
 		
-			void Update( const RenderInfo & renderInfo ) override;
+			void Update( const IRenderer * renderer, const RenderInfo & renderInfo ) override;
 		};
 	}
 }

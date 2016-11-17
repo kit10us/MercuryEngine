@@ -138,7 +138,7 @@ void Sprite::Update( unify::Seconds elapsed )
 	SyncSizeToPixels();
 }
 
-void Sprite::Render( const RenderInfo & renderInfo )
+void Sprite::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	assert( 0 );
 	/*

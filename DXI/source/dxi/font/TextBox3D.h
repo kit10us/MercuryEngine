@@ -21,8 +21,8 @@ namespace dxi
 			TextBox3D();
 			TextBox3D( IText * text );
 			virtual ~TextBox3D();
-			virtual void Render( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
-			virtual void Update( const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+			virtual void Render( const me::IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+			virtual void Update( const me::IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
 
 		protected:
 			std::shared_ptr< IText > m_text;
