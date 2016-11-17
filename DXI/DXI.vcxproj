@@ -16,14 +16,6 @@
     <ClCompile Include="source\dxi\animation\Instance.cpp" />
     <ClCompile Include="source\dxi\animation\Sequence.cpp" />
     <ClCompile Include="source\dxi\animation\SpriteManager.cpp" />
-    <ClCompile Include="source\dxi\font\Character.cpp" />
-    <ClCompile Include="source\dxi\font\CharacterKey.cpp" />
-    <ClCompile Include="source\dxi\font\CharacterRender.cpp" />
-    <ClCompile Include="source\dxi\font\Font.cpp" />
-    <ClCompile Include="source\dxi\font\FontManager.cpp" />
-    <ClCompile Include="source\dxi\font\FontString.cpp" />
-    <ClCompile Include="source\dxi\font\TextBox.cpp" />
-    <ClCompile Include="source\dxi\font\TextBox3D.cpp" />
     <ClCompile Include="source\dxi\GeometryPlacement.cpp" />
     <ClCompile Include="source\dxi\pathing\general\Parallel.cpp" />
     <ClCompile Include="source\dxi\pathing\general\Split.cpp" />
@@ -33,8 +25,6 @@
     <ClCompile Include="source\dxi\pathing\PathSystem.cpp" />
     <ClCompile Include="source\dxi\pathing\position\AttachTo.cpp" />
     <ClCompile Include="source\dxi\pathing\position\RotateAbout.cpp" />
-    <ClCompile Include="source\dxi\Sprite.cpp" />
-    <ClCompile Include="source\dxi\SpriteList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\dxi\animation\Frame.h" />
@@ -42,15 +32,6 @@
     <ClInclude Include="source\dxi\animation\Instance.h" />
     <ClInclude Include="source\dxi\animation\Sequence.h" />
     <ClInclude Include="source\dxi\animation\SpriteManager.h" />
-    <ClInclude Include="source\dxi\font\Character.h" />
-    <ClInclude Include="source\dxi\font\CharacterKey.h" />
-    <ClInclude Include="source\dxi\font\CharacterRender.h" />
-    <ClInclude Include="source\dxi\font\Font.h" />
-    <ClInclude Include="source\dxi\font\FontManager.h" />
-    <ClInclude Include="source\dxi\font\FontString.h" />
-    <ClInclude Include="source\dxi\font\IText.h" />
-    <ClInclude Include="source\dxi\font\TextBox.h" />
-    <ClInclude Include="source\dxi\font\TextBox3D.h" />
     <ClInclude Include="source\dxi\GeometryPlacement.h" />
     <ClInclude Include="source\dxi\pathing\general\Parallel.h" />
     <ClInclude Include="source\dxi\pathing\general\Split.h" />
@@ -65,8 +46,6 @@
     <ClInclude Include="source\dxi\QCommonShaders.h" />
     <ClInclude Include="source\dxi\QGizmo.h" />
     <ClInclude Include="source\dxi\QGizmoCommon.h" />
-    <ClInclude Include="source\dxi\Sprite.h" />
-    <ClInclude Include="source\dxi\SpriteList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\dxi\QGizmoCommon.inl" />

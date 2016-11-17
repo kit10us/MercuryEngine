@@ -4,12 +4,6 @@
     <ClCompile Include="source\dxi\animation\SpriteManager.cpp">
       <Filter>dxi\animation</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\font\TextBox.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\TextBox3D.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\pathing\Path.cpp">
       <Filter>dxi\pathing</Filter>
     </ClCompile>
@@ -22,35 +16,11 @@
     <ClCompile Include="source\dxi\pathing\position\RotateAbout.cpp">
       <Filter>dxi\pathing\position</Filter>
     </ClCompile>
-    <ClCompile Include="source\dxi\Sprite.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\SpriteList.cpp">
-      <Filter>dxi</Filter>
-    </ClCompile>
     <ClCompile Include="source\dxi\animation\AnimationFrame.cpp">
       <Filter>dxi\animation</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\pathing\position\AttachTo.cpp">
       <Filter>dxi\pathing\position</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\Character.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\CharacterKey.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\CharacterRender.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\Font.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\FontManager.cpp">
-      <Filter>dxi\font</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dxi\font\FontString.cpp">
-      <Filter>dxi\font</Filter>
     </ClCompile>
     <ClCompile Include="source\dxi\animation\Group.cpp">
       <Filter>dxi\animation</Filter>
@@ -63,15 +33,6 @@
     </ClCompile>
     <ClInclude Include="source\dxi\animation\SpriteManager.h">
       <Filter>dxi\animation</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\IText.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\TextBox.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\TextBox3D.h">
-      <Filter>dxi\font</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\pathing\Modifier.h">
       <Filter>dxi\pathing</Filter>
@@ -100,32 +61,8 @@
     <ClInclude Include="source\dxi\QGizmoCommon.h">
       <Filter>dxi</Filter>
     </ClInclude>
-    <ClInclude Include="source\dxi\Sprite.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\SpriteList.h">
-      <Filter>dxi</Filter>
-    </ClInclude>
     <ClInclude Include="source\dxi\pathing\position\AttachTo.h">
       <Filter>dxi\pathing\position</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\Character.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\CharacterKey.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\CharacterRender.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\FontString.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\Font.h">
-      <Filter>dxi\font</Filter>
-    </ClInclude>
-    <ClInclude Include="source\dxi\font\FontManager.h">
-      <Filter>dxi\font</Filter>
     </ClInclude>
     <ClInclude Include="source\dxi\animation\Frame.h">
       <Filter>dxi\animation</Filter>
@@ -172,9 +109,6 @@
     </Filter>
     <Filter Include="dxi\animation">
       <UniqueIdentifier>{7b38b965-8172-4168-8994-8e89f7d413e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dxi\font">
-      <UniqueIdentifier>{40d6ae4b-ba0e-45e5-8e9c-a33b38c3dab0}</UniqueIdentifier>
     </Filter>
     <Filter Include="dxi\pathing\orientation">
       <UniqueIdentifier>{ba7a2a07-099f-4faa-87a8-241cb03ffba8}</UniqueIdentifier>

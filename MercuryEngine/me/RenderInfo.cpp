@@ -20,8 +20,6 @@ RenderInfo::RenderInfo()
 RenderInfo::RenderInfo( const RenderInfo & info )
 : m_distanceFromCamera( 0.0f )
 , m_frameID( 0 )
-, m_optionIsSet( info.m_optionIsSet )
-, m_optionValue( info.m_optionValue )
 , m_view( info.m_view )
 , m_projection( info.m_projection )
 , m_frameSetInstance( info.m_frameSetInstance )
@@ -35,32 +33,6 @@ RenderInfo::~RenderInfo() throw ()
 {
 }
 
-bool RenderInfo::IsOptionSet( RenderOption::TYPE option ) const
-{
-	return m_optionIsSet.test( option );
-}
-
-bool RenderInfo::IsOptionTrue( RenderOption::TYPE option ) const
-{
-	return m_optionValue.test( option );
-}
-
-bool RenderInfo::IsOptionFalse( RenderOption::TYPE option ) const
-{
-	return ! m_optionValue.test( option );
-}
-
-void RenderInfo::SetOption( RenderOption::TYPE option, bool enabled )
-{
-	m_optionIsSet[ option ] = 1;
-	m_optionValue[ option ] = enabled ? 1 : 0;
-}
-
-void RenderInfo::ClearOption( RenderOption::TYPE option )
-{
-	m_optionIsSet[ option ] = 0;
-}	
-
 void RenderInfo::SetDistanceFromCamera( float distance )
 {
 	m_distanceFromCamera = distance;
@@ -73,8 +45,6 @@ float RenderInfo::DistanceFromCamera() const
 
 RenderInfo & RenderInfo::operator=( const RenderInfo & info )
 {
-	m_optionIsSet = info.m_optionIsSet;
-	m_optionValue = info.m_optionValue;
 	m_distanceFromCamera = info.m_distanceFromCamera;
 	m_frameID = info.m_frameID;
 	m_view = info.m_view;

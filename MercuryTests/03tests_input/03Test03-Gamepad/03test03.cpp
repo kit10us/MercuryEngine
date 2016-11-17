@@ -3,7 +3,7 @@
 
 #include <me/Game.h>
 #include <dxi/win/DXILib.h>
-#include <DXIWinMain.h>
+#include <MEWinMain.h>
 
 class MyGame : public me::Game
 {

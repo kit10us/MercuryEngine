@@ -11,7 +11,7 @@
 #include <me/Game.h>
 #include <dxi/win/DXILib.h>
 #include <me/RenderMethod.h>
-#include <DXIWinMain.h>
+#include <MEWinMain.h>
 
 using namespace me;
 

@@ -4,7 +4,7 @@
 #include <me/Game.h>
 #include <dxi/win/DXILib.h>
 #include <me/RenderMethod.h>
-#include <DXIWinMain.h>
+#include <MEWinMain.h>
 
 #include <me/VertexUtil.h>
 

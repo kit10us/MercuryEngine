@@ -65,7 +65,7 @@ void Effect::Use( const RenderInfo & renderInfoIn, RenderInstance instance )
 
 	// MATRIX...
 	const unify::FrameSetInstance * frameSetInstance = renderInfo.GetFrameSetInstance();
-	if( ! renderInfo.IsOptionTrue( RenderOption::NoFrame ) && frameSetInstance && m_frameIndexAndInfluence.size() > 0 )
+	if( frameSetInstance && m_frameIndexAndInfluence.size() > 0 )
 	{
 		unify::Matrix world = instance.m;
 

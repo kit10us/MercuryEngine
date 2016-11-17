@@ -10,7 +10,7 @@
 #include <me/Terra.h>
 #include <me/factory/EffectFactories.h>
 #include <dxi/win/DXILib.h>
-#include <DXIWinMain.h>
+#include <MEWinMain.h>
 
 #include <me/scene/GeometryComponent.h>
 
