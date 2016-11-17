@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <me/Game.h>
-#include <dxi/win/DXILib.h>
 #include <MEWinMain.h>
 
 using namespace me;

@@ -4,7 +4,6 @@
 #include "DXILuaDLL.h"
 #include <dxilua/ScriptEngine.h>
 #include <memory.h>
-#include <dxi/win/DXILib.h>
 
 void Deleter( me::IScriptEngine * se )
 {

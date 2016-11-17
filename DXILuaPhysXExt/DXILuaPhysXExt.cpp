@@ -4,7 +4,6 @@
 #include "DXILuaPhysXExt.h"
 #include <dxilua/ScriptEngine.h>
 #include <memory.h>
-#include <dxi/win/DXILib.h>
 #include <me/Game.h>
 
 #include <luaphysx/ExportPhysX.h>

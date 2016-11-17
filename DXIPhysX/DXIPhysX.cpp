@@ -2,7 +2,6 @@
 //
 
 #include "DXIPhysX.h"
-#include <dxi/win/DXILib.h>
 #include <dxiphysx/GameComponent.h>
 					   
 #pragma comment( lib, "PhysX3DEBUG_x86.lib" )

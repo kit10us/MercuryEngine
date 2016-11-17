@@ -4,7 +4,6 @@
 #include <ase/AseDLL.h>
 #include <ase/GeometryFactory.h>
 #include <memory.h>
-#include <dxi/win/DXILib.h>
 #include <me/IRenderer.h>
 #include <me/Game.h>
 

@@ -2,7 +2,6 @@
 //
 
 #include "DXIKeyboard.h"
-#include <dxi/win/DXILib.h>
 #include <dxikeyboard/Keyboard.h>
 #include <me/IGame.h>
 

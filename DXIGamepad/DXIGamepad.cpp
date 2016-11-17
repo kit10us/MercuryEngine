@@ -2,7 +2,6 @@
 //
 
 #include "DXIGamepad.h"
-#include <dxi/win/DXILib.h>
 #include <dxigp/Gamepad.h>
 #include <me/IGame.h>
 

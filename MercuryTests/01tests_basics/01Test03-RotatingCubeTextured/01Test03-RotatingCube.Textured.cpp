@@ -9,7 +9,6 @@
 /// </summary>
 
 #include <me/Game.h>
-#include <dxi/win/DXILib.h>
 #include <me/RenderMethod.h>
 #include <MEWinMain.h>
 

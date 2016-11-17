@@ -3,7 +3,6 @@
 
 #include <dae/GeometrySourceFactory.h>
 #include <memory.h>
-#include <dxi/win/DXILib.h>
 #include <me/IRenderer.h>
 #include <me/IGame.h>
 

@@ -8,7 +8,6 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <sg/ShapeFactory.h>
-#include <dxi/win/DXILib.h>
 #include <MEWinMain.h>
 
 #include <me/scene/BBoxRendererComponent.h>

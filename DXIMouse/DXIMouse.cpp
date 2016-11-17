@@ -2,7 +2,6 @@
 //
 
 #include "DXIMouse.h"
-#include <dxi/win/DXILib.h>
 #include <dximouse/Mouse.h>
 #include <me/Game.h>
 
