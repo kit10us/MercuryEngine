@@ -1,8 +1,6 @@
 #include <dx/Common.h>
 #include <dx/DXHelpers.h>
 
-#pragma comment( lib, "dx.lib" )
-
 
 LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
