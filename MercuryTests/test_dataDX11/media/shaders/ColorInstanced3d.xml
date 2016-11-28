@@ -12,10 +12,10 @@
     <vd instancing="Matrix">
       <element name="Position" type="Float3"/>
   	  <element name="Diffuse" type="Float4"/>
-	  <element semanticname="TEXCOORD" semanticindex="0" type="Float4" slot="1" InstanceDataStepRate="1"/>
-	  <element semanticname="TEXCOORD" semanticindex="1" type="Float4" slot="1" InstanceDataStepRate="1"/>
-	  <element semanticname="TEXCOORD" semanticindex="2" type="Float4" slot="1" InstanceDataStepRate="1"/>
-	  <element semanticname="TEXCOORD" semanticindex="3" type="Float4" slot="1" InstanceDataStepRate="1"/>
+	  <element semanticname="TEXCOORD" semanticindex="0" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
+	  <element semanticname="TEXCOORD" semanticindex="1" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
+	  <element semanticname="TEXCOORD" semanticindex="2" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
+	  <element semanticname="TEXCOORD" semanticindex="3" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
     </vd>
   </vertexshader>
 </xml>

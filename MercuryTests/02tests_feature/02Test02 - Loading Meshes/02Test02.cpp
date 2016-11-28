@@ -19,8 +19,8 @@ class MyGame : public Game
 protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
-	void Startup();
-	void Update( RenderInfo & renderInfo );
+	void Startup() override;
+	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
 } game;
 
 RegisterGame( game );
@@ -113,7 +113,7 @@ void MyGame::Startup()
 	gc->GetMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 }
 
-void MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 {
 	using namespace scene;
 	

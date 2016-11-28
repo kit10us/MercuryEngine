@@ -28,12 +28,12 @@ void Game::Startup()
 	// STUBBED - optional for derived game class.
 }
 
-void Game::Update( const IRenderer * renderer, RenderInfo & renderInfo )
+void Game::Update( IRenderer * renderer, RenderInfo & renderInfo )
 {
 	// STUBBED - optional for derived game class.
 }
 
-void Game::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
+void Game::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	// STUBBED - optional for derived game class.
 }

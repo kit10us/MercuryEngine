@@ -16,8 +16,8 @@ namespace me
 		public:
 			typedef std::shared_ptr< IElement > ptr;
 
-			virtual void Update( const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
-			virtual void Render( const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+			virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+			virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 			virtual void OnSuspend() = 0;
 			virtual void OnResume() = 0;
 		};

@@ -39,11 +39,11 @@ void ScriptEngine::OnAttach( me::IGame * game )
 {
 }
 
-void ScriptEngine::OnUpdate( me::IGame * game, const IRenderer * renderer, const me::RenderInfo & renderInfo )
+void ScriptEngine::OnUpdate( me::IGame * game, IRenderer * renderer, const me::RenderInfo & renderInfo )
 {
 }
 
-void ScriptEngine::OnRender( me::IGame * game, const IRenderer * renderer, const me::RenderInfo & renderInfo )
+void ScriptEngine::OnRender( me::IGame * game, IRenderer * renderer, const me::RenderInfo & renderInfo )
 {
 }
 

@@ -26,7 +26,7 @@ void Mesh::Destroy()
 	m_primitiveList.Destroy();
 }
 
-void Mesh::Update( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void Mesh::Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
 {
 	if( instanceData )
 	{
@@ -38,7 +38,7 @@ void Mesh::Update( const IRenderer * renderer, const RenderInfo & renderInfo, Ge
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list )
+void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & instances )
 {
 	// TODO:
 	/*
@@ -59,7 +59,7 @@ void Mesh::Render( const IRenderer * renderer, const RenderInfo & renderInfo, Ge
 	}
 	*/
 	
-	m_primitiveList.Render( renderer, renderInfo, list );
+	m_primitiveList.Render( renderer, renderInfo, instances );
 }
 
 PrimitiveList & Mesh::GetPrimitiveList()

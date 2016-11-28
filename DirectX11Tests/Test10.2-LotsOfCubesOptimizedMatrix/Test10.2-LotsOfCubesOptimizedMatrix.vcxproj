@@ -21,8 +21,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Test12LotsOfCubesOptimizedMatrix</RootNamespace>
+    <RootNamespace>Test102LotsOfCubesOptimizedMatrix</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Test10.2-LotsOfCubesOptimizedMatrix</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

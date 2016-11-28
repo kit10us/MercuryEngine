@@ -40,12 +40,12 @@ namespace me
 		/// <summary>
 		/// Update is called to enable objects to perform over-time operations.
 		/// </summary>
-		virtual void Update( const IRenderer * renderer, RenderInfo & renderInfo ) = 0;
+		virtual void Update( IRenderer * renderer, RenderInfo & renderInfo ) = 0;
 
 		/// <summary>
 		/// Render is called to draw graphics.
 		/// </summary>
-		virtual void Render( const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 
 		/// <summary>
 		/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.

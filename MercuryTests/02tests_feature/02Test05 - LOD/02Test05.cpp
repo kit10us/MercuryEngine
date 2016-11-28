@@ -21,8 +21,8 @@ class MyGame : public Game
 protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
-	void Startup();
-	void Update( RenderInfo & renderInfo );
+	void Startup() override;
+	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
 } game;
 
 RegisterGame( game );
@@ -65,7 +65,7 @@ void MyGame::Startup()
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
 
-void MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 {
 	using namespace scene;
 

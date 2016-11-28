@@ -25,9 +25,9 @@ namespace me
 
 		virtual void OnAttach( IGame * game ) = 0;
 
-		virtual void OnUpdate( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+		virtual void OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 
-		virtual void OnRender( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+		virtual void OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 
 		virtual void OnDetach( IGame * game ) = 0;
 	};

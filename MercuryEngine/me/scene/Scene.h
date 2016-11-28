@@ -36,8 +36,8 @@ namespace me
 
 			void OnInit();
 			void OnStart();
-			void Update( const IRenderer * renderer, const RenderInfo & renderInfo );
-			void Render( const IRenderer * renderer, const RenderInfo & renderInfo );
+			void Update( IRenderer * renderer, const RenderInfo & renderInfo );
+			void Render( IRenderer * renderer, const RenderInfo & renderInfo );
 			void Suspend();
 			void Resume();
 
@@ -67,12 +67,15 @@ namespace me
 			void SetEnabled( bool enabled );
 			bool GetEnabled() const;
 
-			void SetFocus( bool focus );
-			bool HasFocus() const;
-			bool CantLoseFocus() const;
-
-			Object::ptr GetObjectOver() const;
-			void SetObjectOver( Object::ptr objectOver );
+			/// <summary>
+			/// Set if we want to render objects or not.
+			/// </summary>
+			void SetRenderObjects( bool enabled );
+			
+			/// <summary>
+			/// Returns true if we want to render objects.
+			/// </summary>
+			bool GetRenderObjects() const;
 
 			int ComponentCount() const;
 			void AddComponent( ISceneComponent::ptr component );
@@ -93,6 +96,9 @@ namespace me
 			unsigned int m_lastCullCount;
 
 			// Flags...
+			float m_order;
+			bool m_enabled;
+			bool m_renderObjects;
 			bool m_renderSolids;
 			bool m_renderTrans;
 			bool m_cullingEnabled;
@@ -103,15 +109,6 @@ namespace me
 
 			// Viewport...
 			me::Viewport m_viewport;
-
-			bool m_hasFocus;
-			float m_order;
-			bool m_enabled;
-
-			Object::ptr m_objectOver;
-			float m_mouseDownTimeLimit;
-			float m_mouseDownTime;
-			bool m_mouseDrag;
 		};
 	}
 }

@@ -16,8 +16,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( const IRenderer * renderer, me::RenderInfo & renderInfo ) override;
-	void Render( const IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
+	void Update( IRenderer * renderer, me::RenderInfo & renderInfo ) override;
+	void Render( IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
 	void Shutdown() override;
 } game;
 
@@ -59,14 +59,14 @@ void MyGame::Startup()
 	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { vertexCount, effect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), BufferUsage::Default } );
 }
 
-void MyGame::Update( const IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 {
 	const float width = (float)renderer->GetDisplay().GetSize().width;
 	const float height = (float)renderer->GetDisplay().GetSize().height;
 	renderInfo.SetProjectionMatrix( unify::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
+void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	vertexBuffer->Use();
 

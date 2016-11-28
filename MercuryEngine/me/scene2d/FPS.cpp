@@ -11,7 +11,7 @@ FPS::FPS( me::IGame * game, Effect::ptr effect )
 {
 }
 		
-void FPS::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
+void FPS::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	SetText( unify::Cast< std::string >( renderInfo.GetFPS() ) );
 	TextElement::Update( renderer, renderInfo );

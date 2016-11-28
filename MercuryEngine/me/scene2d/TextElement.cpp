@@ -87,7 +87,7 @@ void TextElement::SetText( std::string text )
 	m_changed = true;
 }
 
-void TextElement::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
+void TextElement::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_changed )
 	{
@@ -95,7 +95,7 @@ void TextElement::Update( const IRenderer * renderer, const RenderInfo & renderI
 	}
 }
 		
-void TextElement::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
+void TextElement::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_text.empty() ) return;
 

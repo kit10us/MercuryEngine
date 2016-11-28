@@ -113,6 +113,7 @@ VertexElement::VertexElement()
 }
 
 VertexElement::VertexElement( const qxml::Element & element )
+	: VertexElement()
 {
 	InputSlot = 0;
 	if ( element.HasAttributes( "stream" ) )
@@ -214,7 +215,7 @@ VertexElement::VertexElement( const qxml::Element & element )
 			throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
 		}
 	}
-	else if ( element.HasAttributes( "SemanaticName" ) )
+	else if ( element.HasAttributes( "SemanticName" ) )
 	{
 		SemanticName = element.GetAttribute< std::string >( "semanticname" );
 		SemanticIndex = element.GetAttributeElse( "semanticindex", 0 );
@@ -224,11 +225,18 @@ VertexElement::VertexElement( const qxml::Element & element )
 
 	Format = ElementFormat::FromString( element.GetAttribute( "type" )->GetString() );
 
+	if ( element.HasAttributes( "SlotClass" ) )
+	{
+		SlotClass = SlotClass::FromString( element.GetAttribute( "SlotClass" )->GetString() );
+	}
+
 	AlignedByteOffset = 0; // Because we don't know here.
 }
 
 VertexElement::VertexElement( const qjson::Pair & pair )
 {
+	InputSlot = 0;
+
 	std::string name = pair.GetName();
 	if ( unify::StringIs( name, "POSITION" ) )
 	{

@@ -15,17 +15,14 @@ Scene::Scene( IGame * game )
 , m_inited( false )
 , m_started( false )
 , m_lastCullCount( 0 )
+, m_order( 0.0f )
+, m_enabled( true )
+, m_renderObjects( true )
 , m_renderSolids( true )
 , m_renderTrans( true )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_hasFocus( false )
-, m_order( 0.0f )
-, m_enabled( true )
-, m_mouseDownTimeLimit( 0.025f )
-, m_mouseDownTime( 0 )
-, m_mouseDrag( false )
 {
 	m_root->SetName( "root" );
 }
@@ -85,7 +82,7 @@ void Scene::OnStart()
 	}
 }
 
-void Scene::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
+void Scene::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( ! m_inited )
 	{
@@ -124,7 +121,7 @@ struct FinalCamera
 	CameraComponent * camera;
 };
 
-void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, const IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
+void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
 {
 	assert( current );
 	assert( current->IsEnabled() );
@@ -158,7 +155,7 @@ void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > &
 	}
 }
 
-void Scene::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
+void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	// Render scene components
 	for( auto && component : m_components )
@@ -168,7 +165,12 @@ void Scene::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 			component->OnRender( this, renderer, renderInfo );
 		}
 	}
-	
+
+	if ( m_renderObjects == false )
+	{
+		return;
+	}
+
 	// Accumulate objects for rendering, and cameras.
 	std::list< RenderSet > renderList;
 	std::list< FinalCamera > cameraList;			 
@@ -195,19 +197,6 @@ void Scene::Render( const IRenderer * renderer, const RenderInfo & renderInfo )
 		RenderInfo myRenderInfo( renderInfo );
 		myRenderInfo.SetViewMatrix( camera.transform.Inverse() );
 		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
-
-
-		//for( auto set : renderList )
-		//{
-		//	std::list< RenderInstance > list { set.instance };
-		//	set.geo->Render( myRenderInfo, 0 /*TODO: Likely should be in RenderInstance*/, list );
-		//}
-
-		//for( auto set : renderList )
-		//{
-		//	std::list< RenderInstance > list { set.instance };
-		//	set.geo->Render( myRenderInfo, 0 /*TODO: Likely should be in RenderInstance*/, list );
-		//}
 
 		for( auto pair : sorted )
 		{
@@ -319,30 +308,15 @@ bool Scene::GetEnabled() const
     return m_enabled;
 }
 
-void Scene::SetFocus( bool focus )
+void Scene::SetRenderObjects( bool enabled )
 {
-    m_hasFocus = focus;
+	m_renderObjects = enabled;
 }
 
-bool Scene::HasFocus() const
+bool Scene::GetRenderObjects() const
 {
-    return m_hasFocus;
+	return m_renderObjects;
 }
-
-bool Scene::CantLoseFocus() const
-{
-    return m_mouseDrag;
-}
-
-Object::ptr Scene::GetObjectOver() const
-{
-    return m_objectOver;
-}
-
-void Scene::SetObjectOver( Object::ptr objectOver )
-{
-    m_objectOver = objectOver;
-}																
 
 int Scene::ComponentCount() const
 {

@@ -20,9 +20,9 @@ namespace dxilua
 
 		void OnAttach( me::IGame * game ) override;
 
-		void OnUpdate( me::IGame * game, const me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
+		void OnUpdate( me::IGame * game, me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
 
-		void OnRender( me::IGame * game, const me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
+		void OnRender( me::IGame * game, me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override;
 
 		void OnDetach( me::IGame * game ) override;
 

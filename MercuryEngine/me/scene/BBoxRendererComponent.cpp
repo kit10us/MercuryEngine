@@ -61,11 +61,11 @@ void BBoxRendererComponent::OnDetach( Object * object )
 	m_geomertries.clear();
 }
 
-void BBoxRendererComponent::OnUpdate( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo )
+void BBoxRendererComponent::OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 }
 
-void BBoxRendererComponent::OnRender( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+void BBoxRendererComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
 {
 	if ( !m_effect || !m_geomertries.size() ) return;
 

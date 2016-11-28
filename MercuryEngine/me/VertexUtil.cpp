@@ -249,6 +249,8 @@ bool me::WriteVertex( const VertexDeclaration & vd, unify::DataLock & lock, size
 	size_t result = 0;
 	for( auto e : inVD.Elements() )
 	{
+		if ( lock.Slot() != e.InputSlot ) continue;
+
 		size_t offset = e.AlignedByteOffset;
 		switch( e.Format )
 		{

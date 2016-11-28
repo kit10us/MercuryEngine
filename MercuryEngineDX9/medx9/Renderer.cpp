@@ -255,7 +255,7 @@ void* Renderer::GetHandle() const
 	return m_pimpl->GetDisplay().GetHandle();
 }
 
-void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const RenderInstance & instance ) const
+void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const RenderInstance & instance )
 {
 	D3DPRIMITIVETYPE dxPrimitiveType {};
 	switch( method.primitiveType )
@@ -291,7 +291,7 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances ) const
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances )
 {
 	for ( auto instance : instances )
 	{

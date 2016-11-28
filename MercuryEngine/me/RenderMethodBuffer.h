@@ -35,6 +35,7 @@ namespace me
 
 		size_t GetSize() const;
 
-		void Render( const IRenderer * renderer, const me::RenderInfo & renderInfo, RenderInstance instance ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, RenderInstance instance ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderInstance > & instances ) const;
 	};
 }

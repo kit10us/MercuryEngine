@@ -38,8 +38,8 @@ namespace medx11
 		void* GetHandle() const override;
 
 
-		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::RenderInstance & instance ) const override;
-		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::RenderInstance > & instances ) const override;
+		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::RenderInstance & instance ) override;
+		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::RenderInstance > & instances ) override;
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;
@@ -61,5 +61,8 @@ namespace medx11
 		CComPtr< ID3D11Texture2D > m_depthStencilBuffer;
 		CComPtr< ID3D11DepthStencilView > m_depthStencilView;
 		CComPtr< ID3D11RasterizerState > m_rasterizerState;	
+
+		size_t m_totalInstances;
+		CComPtr< ID3D11Buffer > m_instanceBufferM;
 	};
 }

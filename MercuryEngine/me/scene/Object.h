@@ -61,12 +61,12 @@ namespace me
 			unify::FrameLite & GetFrame();
 			const unify::FrameLite & GetFrame() const;
 	
-			void Update( const IRenderer * renderer, const RenderInfo & renderInfo );
+			void Update( IRenderer * renderer, const RenderInfo & renderInfo );
 
 			/// <summary>
 			/// Render or collect the geometry for optimized rendering later.
 			/// </summary>
-			void CollectRenderables( std::list< RenderSet > & list, const IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform );
+			void CollectRenderables( std::list< RenderSet > & list, IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform );
 
 			void OnSuspend();
 			void OnResume();

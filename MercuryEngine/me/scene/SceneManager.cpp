@@ -78,7 +78,7 @@ void SceneManager::OnDetach( IGame * game )
 {
 }
 
-void SceneManager::OnUpdate( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneManager::OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{
@@ -103,7 +103,7 @@ void SceneManager::OnUpdate( IGame * game, const IRenderer * renderer, const Ren
     }
 }
 
-void SceneManager::OnRender( IGame * game, const IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneManager::OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_enabled == false )
 	{

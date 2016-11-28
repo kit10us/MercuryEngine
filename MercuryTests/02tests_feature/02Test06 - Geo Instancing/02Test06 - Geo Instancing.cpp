@@ -24,8 +24,8 @@ class MyGame : public Game
 protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
-	void Startup();
-	void Update( RenderInfo & renderInfo );
+	void Startup() override;
+	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
 } game;
 
 RegisterGame( game );
@@ -36,8 +36,8 @@ void MyGame::Startup()
 
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
-	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "media/EffectColorInstanced3D.effect" );
+	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "media/EffectColorInstanced3D.effect" );
 
 	Scene::ptr scene = sceneManager->Add( "scene" );
 
@@ -45,9 +45,7 @@ void MyGame::Startup()
 	Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
-	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 25, -100 ) );
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 
 	// Geo1
 	sg::CubeParameters cubeParameters;
@@ -71,9 +69,9 @@ void MyGame::Startup()
 	coneParameters.SetDiffuse( unify::Color::ColorGreen() );
 	Geometry::ptr geo3( sg::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) );
 
-	size_t depth = 12;
-	size_t columns = 12;
-	size_t rows = 12;
+	size_t depth = 10;
+	size_t columns = 10;
+	size_t rows = 10;
 	float spacing = 2.0f;
 	for( size_t d = 0; d < depth; ++d )
 	{
@@ -95,6 +93,13 @@ void MyGame::Startup()
 		}
 	}
 
+	// Camera is based on number of objects
+	//camera->GetFrame().SetPosition( unify::V3< float >( 0, 8.0f + std::max( std::max( depth, columns), rows ) * spacing * 0.5f, -20.0f + std::max( std::max( depth, columns), rows ) * spacing ) );
+	float max = (float)std::max( std::max( depth, columns), rows );
+	camera->GetFrame().SetPosition( unify::V3< float >( 0, max * spacing * 0.5f, 0 - max * spacing * 2.0f ) );
+	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+
+
 	scene2d::Canvas::ptr canvas( new scene2d::Canvas( this ) );
 	scene->AddComponent( canvas );
 
@@ -102,7 +107,7 @@ void MyGame::Startup()
 	canvas->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 }
 
-void MyGame::Update( RenderInfo & renderInfo )
+void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 {
 	using namespace scene;
 

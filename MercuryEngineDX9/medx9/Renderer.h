@@ -34,9 +34,9 @@ namespace medx9
 
 		void* GetHandle() const override;
 													  
-		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::RenderInstance & instance ) const override;
+		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::RenderInstance & instance ) override;
 
-		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::RenderInstance > & instances ) const override;
+		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::RenderInstance > & instances ) override;
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;

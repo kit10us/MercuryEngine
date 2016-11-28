@@ -31,7 +31,7 @@ namespace me
 			/// </summary>
 			void SetPadding( float padding );
 
-			void OnUpdate( Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) override;
    
 	    protected:
 			Effect::ptr m_effect;

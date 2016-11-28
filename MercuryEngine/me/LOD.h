@@ -13,8 +13,8 @@ namespace me
 		LOD();
 		~LOD();
 
-		void Update( const IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
-		void Render( const IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, std::list< RenderInstance > & list );
+		void Update( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, std::list< RenderInstance > & list );
 
 		void Add( me::Geometry::ptr geometry, float distance );
 		me::Geometry::ptr GetLOD( unsigned int index );

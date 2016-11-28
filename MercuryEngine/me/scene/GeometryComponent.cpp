@@ -77,12 +77,12 @@ void GeometryComponent::OnStart( Object * object )
 {
 }
 
-void GeometryComponent::OnUpdate( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo )
+void GeometryComponent::OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	m_geometry->Update( renderer, renderInfo, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::OnRender( Object * object, const IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+void GeometryComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
 {
 	list.push_back( { m_geometry, m_matrix * transform } );
 	/* TODO: working on this... must not forget to handle more than just the geo and transform (gid, and ri?)

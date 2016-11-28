@@ -17,20 +17,28 @@ VertexDeclaration::VertexDeclaration()
 VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 	: VertexDeclaration()
 {
-	size_t totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
+	const size_t maxSlots = 16;
+	std::vector< size_t > totalSizeInBytes( maxSlots, 0 );
+
+	m_instancing = Instancing::None;
+	if ( xml->HasAttributes( "instancing" ) )
+	{
+		m_instancing = Instancing::FromString( xml->GetAttribute< std::string >( "instancing" ) );
+	}																			 
+
 	for ( const auto child : xml->Children() )
 	{
 		if ( child.IsTagName( "element" ) )
 		{
 			VertexElement element( child );
-			element.AlignedByteOffset = totalSizeInBytes;
+			element.AlignedByteOffset = totalSizeInBytes[ element.InputSlot ];
 
-			std::string name = child.GetAttribute( "name" )->GetString();
+			std::string name = element.SemanticName;
 
 			m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 			m_elements.push_back( element );
 
-			totalSizeInBytes += element.SizeOf();
+			totalSizeInBytes[ element.InputSlot ] += element.SizeOf();
 		}
 	}
 
@@ -43,7 +51,9 @@ VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 VertexDeclaration::VertexDeclaration( const qjson::Object json )
 	: VertexDeclaration()
 {
-	size_t totalSizeInBytes = 0; // Automatically increases based on asusmed element size.
+	const size_t maxSlots = 16;
+	std::vector< size_t > totalSizeInBytes( maxSlots, 0 );
+
 	for ( auto itr : json )
 		//for( const qxml::Element * itr = element.GetFirstChild(), *end = 0; itr != end; itr = itr->GetNext() )
 	{
@@ -58,12 +68,12 @@ VertexDeclaration::VertexDeclaration( const qjson::Object json )
 	
 			std::string name = itr.GetName();
 	
-			element.AlignedByteOffset = totalSizeInBytes;
+			element.AlignedByteOffset = totalSizeInBytes[ element.InputSlot ];
 	
 			m_elementMap[name] = m_elements.size(); // The next index is size, so this is what we will reference from our map.
 			m_elements.push_back( element );
 	
-			totalSizeInBytes += element.SizeOf();
+			totalSizeInBytes[ element.InputSlot ] += element.SizeOf();
 		}
 	}	
 
@@ -149,7 +159,7 @@ bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & elemen
 		m_elements.begin(), m_elements.end(),
 		[ & ]( auto & e )
 	{
-		return unify::StringIs( e.SemanticName, toFind.SemanticName ) && e.SemanticIndex == toFind.SemanticIndex;
+		return unify::StringIs( e.SemanticName, toFind.SemanticName ) && e.SemanticIndex == toFind.SemanticIndex && e.InputSlot == toFind.InputSlot;
 	} );
 	if ( elementItr == m_elements.end() )
 	{

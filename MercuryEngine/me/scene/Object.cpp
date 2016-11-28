@@ -158,7 +158,7 @@ const unify::FrameLite & Object::GetFrame() const
 	return m_frame;
 }
 
-void Object::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
+void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
     // Do not update if we are not enabled.
     if ( ! m_enabled )
@@ -200,7 +200,7 @@ void Object::Update( const IRenderer * renderer, const RenderInfo & renderInfo )
 	}
 }
 
-void Object::CollectRenderables( std::list< RenderSet > & list, const IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
+void Object::CollectRenderables( std::list< RenderSet > & list, IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
 {
 	for( auto && component : m_components )
 	{

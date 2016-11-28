@@ -46,7 +46,7 @@ void Canvas::OnStart( Scene * scene )
 {
 }
 			
-void Canvas::OnUpdate( Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo )
+void Canvas::OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	RenderInfo myRenderInfo( renderInfo );
 
@@ -62,7 +62,7 @@ void Canvas::OnUpdate( Scene * scene, const IRenderer * renderer, const RenderIn
 	}
 }
 
-void Canvas::OnRender( Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo )
+void Canvas::OnRender( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	RenderInfo myRenderInfo( renderInfo );
 

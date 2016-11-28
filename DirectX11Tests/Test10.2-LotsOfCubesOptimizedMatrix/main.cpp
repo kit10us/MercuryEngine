@@ -418,17 +418,14 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	{
 		DirectX::XMMATRIX matrix;
 	};
-	std::vector< InstanceData > instanceData;
+	std::vector< InstanceData > instanceData( totalD * totalC * totalR );
 	for( int d = 0; d < totalD; ++d )
 	{
 		for( int c = 0; c < totalC; ++c )
 		{
 			for( int r = 0; r < totalR; ++r )
 			{
-				instanceData.push_back(
-					{
-						DirectX::XMMatrixTranslation( -((size + 1) * totalR * 0.5f) + (size + 1) * r, -((size + 1) * totalC * 0.5f) + (size + 1) * c, -((size + 1) * totalD * 0.5f) + (size + 1) * d )
-					} );
+				instanceData[ r + c * totalR + d * (totalR * totalC) ].matrix = DirectX::XMMatrixTranslation( -((size + 1) * totalR * 0.5f) + (size + 1) * r, -((size + 1) * totalC * 0.5f) + (size + 1) * c, -((size + 1) * totalD * 0.5f) + (size + 1) * d );
 			}
 		}
 	}

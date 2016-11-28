@@ -20,9 +20,9 @@ namespace me
 
 			void SetText( std::string text );
 
-			void Update( const IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void Update( IRenderer * renderer, const RenderInfo & renderInfo ) override;
 		
-			void Render( const IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
 		
 			void OnSuspend() override;
 		

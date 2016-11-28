@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orderer Tests OpenGL", "Orderer Tests OpenGL", "{0ACAB752-0AD7-4562-8ACE-F06D00ECC55A}"
 EndProject
@@ -25,13 +25,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test08-TexturedCubeProgramm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test09-TexturedCubeFromFile", "Test09-TexturedCubeFromFile\Test09-TexturedCubeFromFile.vcxproj", "{4456DD63-DF57-41C0-9886-C8AF21DAB229}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test10-LotsOfCubes", "Test10-LotsOfCubes\Test10-LotsOfCubes.vcxproj", "{C9C80DDA-D431-463C-A509-34FC5C9A2CFA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test10.0-LotsOfCubes", "Test10.0-LotsOfCubes\Test10.0-LotsOfCubes.vcxproj", "{C9C80DDA-D431-463C-A509-34FC5C9A2CFA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test11-LotsOfCubesOptimizedPQ", "Test11-LotsOfCubesOptimized\Test11-LotsOfCubesOptimized.vcxproj", "{6BC84A03-0BAD-462E-AB0E-E79C8459C279}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test10.1-LotsOfCubesOptimizedPQ", "Test10.1-LotsOfCubesOptimized\Test10.1-LotsOfCubesOptimized.vcxproj", "{6BC84A03-0BAD-462E-AB0E-E79C8459C279}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLTest01-Device and 2D Quad", "GLTest01-Device and 2D Quad\GLTest01-Device and 2D Quad.vcxproj", "{00A9D055-DC39-4736-B54D-99533E3A7470}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test12-LotsOfCubesOptimizedMatrix", "Test12-LotsOfCubesOptimizedMatrix\Test12-LotsOfCubesOptimizedMatrix.vcxproj", "{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test10.2-LotsOfCubesOptimizedMatrix", "Test10.2-LotsOfCubesOptimizedMatrix\Test10.2-LotsOfCubesOptimizedMatrix.vcxproj", "{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test10.3-LotsOfCubes-IndividualRotation", "Test10.3-LotsOfCubes-IndividualRotation\Test10.3-LotsOfCubes-IndividualRotation.vcxproj", "{12271A2B-5F5A-4960-8041-AF0701839463}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,14 @@ Global
 		{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1}.Release|Win32.Build.0 = Release|Win32
 		{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1}.Release|x64.ActiveCfg = Release|x64
 		{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1}.Release|x64.Build.0 = Release|x64
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Debug|Win32.ActiveCfg = Debug|Win32
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Debug|Win32.Build.0 = Debug|Win32
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Debug|x64.ActiveCfg = Debug|x64
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Debug|x64.Build.0 = Debug|x64
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Release|Win32.ActiveCfg = Release|Win32
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Release|Win32.Build.0 = Release|Win32
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Release|x64.ActiveCfg = Release|x64
+		{12271A2B-5F5A-4960-8041-AF0701839463}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,5 +159,6 @@ Global
 		{6BC84A03-0BAD-462E-AB0E-E79C8459C279} = {1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}
 		{00A9D055-DC39-4736-B54D-99533E3A7470} = {0ACAB752-0AD7-4562-8ACE-F06D00ECC55A}
 		{6C2C9358-6ED3-4D9A-BF6A-F0F002A53CE1} = {1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}
+		{12271A2B-5F5A-4960-8041-AF0701839463} = {1AC78C67-FF2C-45A5-9C3F-9BD0D61DAC62}
 	EndGlobalSection
 EndGlobal

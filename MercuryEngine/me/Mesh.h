@@ -30,9 +30,9 @@ namespace me
 
 		void Destroy();
 
-		void Update( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
+		void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
 
-		void Render( const IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list ) override;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & instances ) override;
 
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();

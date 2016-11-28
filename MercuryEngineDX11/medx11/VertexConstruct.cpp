@@ -35,7 +35,11 @@ D3D11_INPUT_ELEMENT_DESC ToDX( const VertexElement & element )
 	case SlotClass::Object:
 		out.InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
 		break;
+	default:
+		throw unify::Exception( "Invalid slot class!" );
 	}
+
+	out.InstanceDataStepRate = element.InstanceDataStepRate;
 
 	return out;
 }				   

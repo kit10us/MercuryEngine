@@ -82,7 +82,7 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 	}
 }
 
-void SceneComponent::OnUpdate( me::scene::Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
 {											
 	float elapsedTime = renderInfo.GetDelta();
 
@@ -125,7 +125,7 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, const IRenderer * rende
 	}
 }
 
-void SceneComponent::OnRender( me::scene::Scene * scene, const IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneComponent::OnRender( me::scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 }
 
