@@ -13,7 +13,8 @@ namespace me
 			TopLeft, Top, TopRight, StretchTop,
 			Left, Center, Right, StretchLeftRight,
 			BottomLeft, Bottom, BottomRight, StretchBottom,
-			StretchLeft, StretchTopBottom, StretchFull
+			StretchLeft, StretchTopBottom, StretchRight, 
+			StretchFull
 		};
 	}
 }

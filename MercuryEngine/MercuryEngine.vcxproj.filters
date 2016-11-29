@@ -294,9 +294,6 @@
     <ClInclude Include="me\scene2d\TextElement.h">
       <Filter>me\scene2d</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene2d\Canvas.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene2d\FPS.h">
       <Filter>me\scene2d</Filter>
     </ClInclude>
@@ -320,6 +317,12 @@
     </ClInclude>
     <ClInclude Include="me\VertexDeclaration.h">
       <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\Layer.h">
+      <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene2d\CanvasComponent.h">
+      <Filter>me\scene2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -506,9 +509,6 @@
     <ClCompile Include="me\scene2d\TextElement.cpp">
       <Filter>me\scene2d</Filter>
     </ClCompile>
-    <ClCompile Include="me\scene2d\Canvas.cpp">
-      <Filter>me\scene2d</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene2d\FPS.cpp">
       <Filter>me\scene2d</Filter>
     </ClCompile>
@@ -523,6 +523,12 @@
     </ClCompile>
     <ClCompile Include="me\VertexDeclaration.cpp">
       <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene2d\Layer.cpp">
+      <Filter>me\scene2d</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene2d\CanvasComponent.cpp">
+      <Filter>me\scene2d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

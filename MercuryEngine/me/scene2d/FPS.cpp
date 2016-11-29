@@ -6,8 +6,8 @@
 using namespace me;
 using namespace scene2d;
 
-FPS::FPS( me::IGame * game, Effect::ptr effect )
-	: TextElement( game, effect )
+FPS::FPS( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+	: TextElement( game, effect, std::string(), anchor, scale, offset )
 {
 }
 		

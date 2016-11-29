@@ -14,11 +14,17 @@ namespace me
 		class TextElement : public Element
 		{
 		public:
-			TextElement( me::IGame * game, Effect::ptr effect, std::string text = std::string() );
+			TextElement( me::IGame * game, Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 		
 			void BuildText();
 
 			void SetText( std::string text );
+
+			void SetScale( unify::V2< float > scale );
+			
+			unify::V2< float > GetScale() const;
+
+			void UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area ) override;
 
 			void Update( IRenderer * renderer, const RenderInfo & renderInfo ) override;
 		
@@ -29,12 +35,12 @@ namespace me
 			void OnResume() override;
 
 		private:
-			IGame * m_game;
 			std::string m_text;
 			Effect::ptr m_effect;
 			IVertexBuffer::ptr m_vertexBuffer;
 			bool m_changed;
-
+			unify::V2< float > m_scale;
+			bool m_shrinkToFit;
 		};
 	}
 }

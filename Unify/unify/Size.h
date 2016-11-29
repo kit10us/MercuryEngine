@@ -64,6 +64,8 @@ namespace unify
 
 		float AspectRatioHW() const;
 		float AspectRatioWH() const;
+
+		unify::V2< T > Center() const;
 	};
 	#include <unify/Size.inl>
 }

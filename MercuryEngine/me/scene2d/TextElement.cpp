@@ -8,11 +8,13 @@
 using namespace me;
 using namespace scene2d;
 
-TextElement::TextElement( me::IGame * game, Effect::ptr effect, std::string text )
-	: m_game( game )
+TextElement::TextElement( me::IGame * game, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+	: Element( game, offset, {0, 0}, anchor )
 	, m_text( text )
 	, m_effect( effect )
 	, m_changed( true )
+	, m_scale{ scale }
+	, m_shrinkToFit{ true }
 {
 }
 		
@@ -38,10 +40,94 @@ void TextElement::BuildText()
 	VertexElement positionE = CommonVertexElement::Position( 0 );
 	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
 
-	unify::V2< float > scale( 1, 1 );
+	unify::V2< float > scale( m_scale );
+	unify::V2< float > posUL(0, 0);
+
+	// Determine sizes...
+	unify::Size< float > textSize {};
+	for( auto c : m_text )
+	{	
+		unify::TexArea texArea = m_effect->GetTexture(0)->GetSpriteDictionary().GetAscii( c );
+
+		unify::Size< float > size( imageSize.width * scale.x * texArea.Width(), imageSize.height * scale.y * texArea.Height() );
+
+		unify::V2< float > posDR( posUL.x + size.width, posUL.y + size.height );
+		posUL.x = posDR.x;
+		textSize.width = std::max( textSize.width, posDR.x );
+		textSize.height = std::max( textSize.height, posDR.y );
+	}
+
+	posUL = unify::V2< float >{ 0, 0 };
+	switch( GetAnchor() )
+	{
+	case Anchor::Free:
+		// Do nothing (handled by adding offset later)
+		break;
+	case Anchor::TopLeft:
+		posUL = unify::V2< float >{ 0, 0 };
+		break;
+	case Anchor::Top:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, 0 };
+		break;
+	case Anchor::TopRight:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, 0 };
+		break;
+	case Anchor::StretchTop:
+		posUL = unify::V2< float >{ 0, 0 };
+		scale.x = scale.x * (GetActualSize().width / textSize.width);
+		break;
+
+	case Anchor::Left:
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height * 0.5f };
+		break;
+	case Anchor::Center:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, GetActualPosition().y - textSize.height * 0.5f };
+		break;
+	case Anchor::Right:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, GetActualPosition().y - textSize.height * 0.5f };
+		break;
+	case Anchor::StretchLeftRight:
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height * 0.5f };
+		scale.x = scale.x * (GetActualSize().width / textSize.width);
+		break;
+
+	case Anchor::BottomLeft:
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height };
+		break;
+	case Anchor::Bottom:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, GetActualPosition().y - textSize.height};
+		break;
+	case Anchor::BottomRight:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, GetActualPosition().y - textSize.height };
+		break;
+	case Anchor::StretchBottom:
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height };
+		scale.x = scale.x * (GetActualSize().width / textSize.width);
+		break;
+
+	case Anchor::StretchLeft:
+		posUL = unify::V2< float >{ 0, 0 };
+		scale.y = scale.y * (GetActualSize().height / textSize.height);
+		break;
+	case Anchor::StretchTopBottom:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, 0 };
+		scale.y = scale.y * (GetActualSize().height / textSize.height);
+		break;
+	case Anchor::StretchRight:
+		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, 0 };
+		scale.y = scale.y * (GetActualSize().height / textSize.height);
+		break;
+
+	case Anchor::StretchFull:
+		posUL = unify::V2< float >{ 0, 0 };
+		scale.x = scale.x * (GetActualSize().width / textSize.width);
+		scale.y = scale.y * (GetActualSize().height / textSize.height);
+		break;
+	}
+
+	posUL += GetOffset();
 
 	size_t vertex = 0;
-	unify::V2< float > posUL(0, 0);
 	for( auto c : m_text )
 	{	
 		unify::TexArea texArea = m_effect->GetTexture(0)->GetSpriteDictionary().GetAscii( c );
@@ -77,7 +163,7 @@ void TextElement::BuildText()
 		posUL.x = posDR.x;
 	}
 
-	m_vertexBuffer = m_game->GetOS()->GetRenderer(0)->ProduceVB( parameters );
+	m_vertexBuffer = GetGame()->GetOS()->GetRenderer(0)->ProduceVB( parameters );
 	m_changed = false;
 }
 
@@ -87,17 +173,44 @@ void TextElement::SetText( std::string text )
 	m_changed = true;
 }
 
-void TextElement::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void TextElement::SetScale( unify::V2< float > scale )
 {
+	m_scale = scale;
+}
+
+unify::V2< float > TextElement::GetScale() const
+{
+	return m_scale;
+}
+
+void TextElement::UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area )
+{
+	if ( ! IsEnabled() ) return;
+
+	unify::V2< float > backPosition = GetActualPosition();
+	unify::Size< float > backSize = GetActualSize();
+	
+	Element::UpdateLayout( renderer, renderInfo, area );
+
+	if ( GetActualPosition() != backPosition || GetActualSize() != backSize )
+	{
+		m_changed = true;
+	}
+
 	if ( m_changed )
 	{
 		BuildText();
 	}
 }
+
+void TextElement::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+{
+}
 		
 void TextElement::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	if ( m_text.empty() ) return;
+	if ( ! IsEnabled() ) return;
 
 	m_vertexBuffer->Use();
 

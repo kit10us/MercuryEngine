@@ -75,10 +75,11 @@
     <ClInclude Include="me\RenderMethodBuffer.h" />
     <ClInclude Include="me\RenderSet.h" />
     <ClInclude Include="me\scene2d\Anchor.h" />
-    <ClInclude Include="me\scene2d\Canvas.h" />
+    <ClInclude Include="me\scene2d\CanvasComponent.h" />
     <ClInclude Include="me\scene2d\Element.h" />
     <ClInclude Include="me\scene2d\FPS.h" />
     <ClInclude Include="me\scene2d\IElement.h" />
+    <ClInclude Include="me\scene2d\Layer.h" />
     <ClInclude Include="me\scene2d\TextElement.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\BBoxRendererComponent.h" />
@@ -149,9 +150,10 @@
     <ClCompile Include="me\RenderInstance.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
     <ClCompile Include="me\RenderMethodBuffer.cpp" />
-    <ClCompile Include="me\scene2d\Canvas.cpp" />
+    <ClCompile Include="me\scene2d\CanvasComponent.cpp" />
     <ClCompile Include="me\scene2d\Element.cpp" />
     <ClCompile Include="me\scene2d\FPS.cpp" />
+    <ClCompile Include="me\scene2d\Layer.cpp" />
     <ClCompile Include="me\scene2d\TextElement.cpp" />
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\BBoxRendererComponent.cpp" />

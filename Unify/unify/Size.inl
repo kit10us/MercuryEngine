@@ -183,3 +183,9 @@ float Size< T >::AspectRatioWH() const
 {
 	return (float)width / height;
 }
+
+template< typename T >
+unify::V2< T > unify::Size< T >::Center() const
+{
+	return unify::V2< T >( width / 2, height / 2 );
+}

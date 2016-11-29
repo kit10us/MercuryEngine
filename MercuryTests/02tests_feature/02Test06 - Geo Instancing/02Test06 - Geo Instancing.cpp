@@ -14,7 +14,7 @@
 
 #include <me/scene/SceneManager.h>
 #include <me/scene/CameraComponent.h>
-#include <me/scene2d/Canvas.h>
+#include <me/scene2d/CanvasComponent.h>
 #include <me/scene2d/FPS.h>
 
 using namespace me;
@@ -94,17 +94,16 @@ void MyGame::Startup()
 	}
 
 	// Camera is based on number of objects
-	//camera->GetFrame().SetPosition( unify::V3< float >( 0, 8.0f + std::max( std::max( depth, columns), rows ) * spacing * 0.5f, -20.0f + std::max( std::max( depth, columns), rows ) * spacing ) );
 	float max = (float)std::max( std::max( depth, columns), rows );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, max * spacing * 0.5f, 0 - max * spacing * 2.0f ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 
-	scene2d::Canvas::ptr canvas( new scene2d::Canvas( this ) );
+	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 	scene->AddComponent( canvas );
 
 	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
-	canvas->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
+	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 }
 
 void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )

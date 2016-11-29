@@ -16,6 +16,15 @@ namespace me
 		public:
 			typedef std::shared_ptr< IElement > ptr;
 
+			virtual bool IsEnabled() const = 0;
+			virtual void SetEnabled( bool enabled ) = 0;
+
+			/// <summary>
+			/// Called immediately after Update, to allow automatic layout processing. Area is the
+			/// actual area space we area inside of.
+			/// </summary>
+			virtual void UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area ) = 0;
+
 			virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 			virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
 			virtual void OnSuspend() = 0;
