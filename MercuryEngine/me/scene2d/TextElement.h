@@ -15,8 +15,10 @@ namespace me
 		{
 		public:
 			TextElement( me::IGame * game, Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+
+			unify::Size< float > GetSize( unify::Size< float > area ) const override;
 		
-			void BuildText();
+			void BuildText( unify::Size< float > area );
 
 			void SetText( std::string text );
 

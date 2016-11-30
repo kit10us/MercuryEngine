@@ -12,7 +12,7 @@ namespace me
 		class FPS : public TextElement
 		{
 		public:
-			FPS( me::IGame * game, Effect::ptr effect, Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+			FPS( me::IGame * game, Effect::ptr effect, Anchor anchor = Anchor::TopRight, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 		
 			void Update( IRenderer * renderer, const RenderInfo & renderInfo ) override;
 		};

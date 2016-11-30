@@ -19,6 +19,9 @@ namespace me
 			virtual bool IsEnabled() const = 0;
 			virtual void SetEnabled( bool enabled ) = 0;
 
+			virtual unify::V2< float > GetOffset() const = 0;
+			virtual unify::Size< float > GetSize( unify::Size< float > area ) const = 0;
+
 			/// <summary>
 			/// Called immediately after Update, to allow automatic layout processing. Area is the
 			/// actual area space we area inside of.

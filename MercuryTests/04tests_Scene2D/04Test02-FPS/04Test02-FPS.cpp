@@ -114,7 +114,7 @@ void MyGame::Startup()
 	mainScene->AddComponent( canvas );
 
 	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
-	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2, scene2d::Anchor::TopRight ) ) );
+	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2, scene2d::Anchor::BottomLeft ) ) );
 }
 
 void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )

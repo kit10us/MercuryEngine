@@ -18,7 +18,31 @@ TextElement::TextElement( me::IGame * game, Effect::ptr effect, std::string text
 {
 }
 		
-void TextElement::BuildText()
+unify::Size< float > TextElement::GetSize( unify::Size< float > area ) const
+{
+	if ( m_text.empty() || ! IsEnabled() ) return { 0, 0 };
+	
+	unify::Size< unsigned int > imageSize( m_effect->GetTexture(0)->ImageSize() );
+
+	unify::V2< float > posUL(0, 0);
+
+	// Determine sizes...
+	unify::Size< float > textSize {};
+	for( auto c : m_text )
+	{	
+		unify::TexArea texArea = m_effect->GetTexture(0)->GetSpriteDictionary().GetAscii( c );
+
+		unify::Size< float > size( imageSize.width * m_scale.x * texArea.Width(), imageSize.height * m_scale.y * texArea.Height() );
+
+		unify::V2< float > posDR( posUL.x + size.width, posUL.y + size.height );
+		posUL.x = posDR.x;
+		textSize.width = std::max( textSize.width, posDR.x );
+		textSize.height = std::max( textSize.height, posDR.y );
+	}
+	return textSize;
+}
+
+void TextElement::BuildText( unify::Size< float > area )
 {
 	if ( m_text.empty() ) return;
 
@@ -30,8 +54,6 @@ void TextElement::BuildText()
 
 	unify::Size< unsigned int > imageSize( m_effect->GetTexture(0)->ImageSize() );
 
-	m_effect->GetTexture(0)->GetSpriteDictionary();
-
 	size_t vbSizeInBytes = vd->GetSize(0) * parameters.numVertices;
 	std::shared_ptr< unsigned char > vertices( new unsigned char[ vbSizeInBytes ] );
 	parameters.source = vertices.get();
@@ -41,23 +63,10 @@ void TextElement::BuildText()
 	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
 
 	unify::V2< float > scale( m_scale );
-	unify::V2< float > posUL(0, 0);
 
-	// Determine sizes...
-	unify::Size< float > textSize {};
-	for( auto c : m_text )
-	{	
-		unify::TexArea texArea = m_effect->GetTexture(0)->GetSpriteDictionary().GetAscii( c );
+	unify::Size< float > textSize = GetSize( area );
 
-		unify::Size< float > size( imageSize.width * scale.x * texArea.Width(), imageSize.height * scale.y * texArea.Height() );
-
-		unify::V2< float > posDR( posUL.x + size.width, posUL.y + size.height );
-		posUL.x = posDR.x;
-		textSize.width = std::max( textSize.width, posDR.x );
-		textSize.height = std::max( textSize.height, posDR.y );
-	}
-
-	posUL = unify::V2< float >{ 0, 0 };
+	unify::V2< float > posUL( { 0, 0 } );
 	switch( GetAnchor() )
 	{
 	case Anchor::Free:
@@ -199,7 +208,7 @@ void TextElement::UpdateLayout( IRenderer * renderer, const RenderInfo & renderI
 
 	if ( m_changed )
 	{
-		BuildText();
+		BuildText( area );
 	}
 }
 

@@ -27,8 +27,8 @@ namespace me
 			void SetAnchor( Anchor anchor );
 			Anchor GetAnchor() const;
 
-			unify::V2< float > GetOffset() const;
-			unify::Size< float > GetSize() const;
+			unify::V2< float > GetOffset() const override;
+			unify::Size< float > GetSize( unify::Size< float > area ) const override;
 
 			unify::V2< float > GetActualPosition() const;
 			unify::Size< float > GetActualSize() const;

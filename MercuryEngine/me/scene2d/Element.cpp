@@ -126,7 +126,7 @@ unify::V2< float > Element::GetOffset() const
 	return m_offset;
 }
 
-unify::Size< float > Element::GetSize() const
+unify::Size< float > Element::GetSize( unify::Size< float > area ) const
 {
 	return m_size;
 }
