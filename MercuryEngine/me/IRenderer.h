@@ -59,9 +59,9 @@ namespace me
 
 		virtual void* GetHandle() const = 0;
 
-		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const RenderInstance & instance ) = 0;
+		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix & instance ) = 0;
 
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances ) = 0;
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< unify::Matrix > & instances ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

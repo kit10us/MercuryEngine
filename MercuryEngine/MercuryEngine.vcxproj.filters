@@ -22,36 +22,12 @@
     <Filter Include="me\scene2d">
       <UniqueIdentifier>{563e301f-4ec1-4d38-b6eb-8d85553eb0a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\interfaces">
+      <UniqueIdentifier>{7152e1d1-6ddf-4f02-91c2-0823da575fc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="me\IGame.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IGameComponent.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IIndexBuffer.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IInputSource.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\InputManager.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IOS.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IRenderer.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IScriptEngine.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\ITexture.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexBuffer.h">
       <Filter>me</Filter>
     </ClInclude>
     <ClInclude Include="me\Mercury.h">
@@ -70,12 +46,6 @@
       <Filter>me</Filter>
     </ClInclude>
     <ClInclude Include="me\Frustum.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IPixelShader.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexShader.h">
       <Filter>me</Filter>
     </ClInclude>
     <ClInclude Include="me\DataBuffer.h">
@@ -312,9 +282,6 @@
     <ClInclude Include="me\Instancing.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\IVertexConstruct.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\VertexDeclaration.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -323,6 +290,42 @@
     </ClInclude>
     <ClInclude Include="me\scene2d\CanvasComponent.h">
       <Filter>me\scene2d</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IGameComponent.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IGame.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IIndexBuffer.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IInputSource.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IOS.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IPixelShader.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IRenderer.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IScriptEngine.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ITexture.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexBuffer.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexConstruct.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexShader.h">
+      <Filter>me\interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

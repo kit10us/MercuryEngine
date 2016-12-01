@@ -213,7 +213,7 @@ void* Renderer::GetHandle() const
 	return (HWND)m_display.GetHandle();
 }
 
-void Renderer::Render( const RenderMethod & method, const me::RenderInfo & renderInfo, const RenderInstance & instance )
+void Renderer::Render( const RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix & world )
 {
 	auto dxRenderer = this;
 	auto dxDevice = dxRenderer->GetDxDevice();
@@ -221,7 +221,7 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 
 	if ( method.effect )
 	{
-		method.effect->Use( renderInfo, instance );
+		method.effect->Use( renderInfo, world );
 	}
 	
 	D3D11_PRIMITIVE_TOPOLOGY topology{};
@@ -255,16 +255,16 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< unify::Matrix > & matrices )
 {
 	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
 
 	switch( instancing )
 	{
 	case Instancing::None:
-		for ( auto instance : instances )
+		for ( auto world : matrices )
 		{
-			Render( method, renderInfo, instance );
+			Render( method, renderInfo, world );
 		}
 		break;
 	case Instancing::Matrix:
@@ -275,9 +275,9 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			assert( !FAILED( result ) );
 
 			size_t instanceCount = 0;				
-			for( auto instance : instances )
+			for( auto world : matrices )
 			{
-				((unify::Matrix*)subResource.pData)[ instanceCount++ ] = instance.m;
+				((unify::Matrix*)subResource.pData)[ instanceCount++ ] = world;
 				if ( instanceCount >= m_totalInstances ) break;
 			}
 

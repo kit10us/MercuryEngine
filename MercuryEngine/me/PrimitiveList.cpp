@@ -23,7 +23,7 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, std::list< RenderInstance > & instances ) const
+void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, std::vector< unify::Matrix > & matrices ) const
 {
 	// Optimized for one buffer...
 	if ( m_buffers.size() == 1 )
@@ -41,11 +41,11 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 			set->GetIndexBuffer()->Use();
 		}
 
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instances );
+		set->GetRenderMethodBuffer().Render( renderer, renderInfo, matrices );
 	}
 	else
 	{
-		for( auto instance : instances )
+		for( auto world : matrices )
 		{
 			for( const auto & set : m_buffers )
 			{
@@ -61,7 +61,7 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 					set->GetIndexBuffer()->Use();
 				}
 
-				set->GetRenderMethodBuffer().Render( renderer, renderInfo, instance );
+				set->GetRenderMethodBuffer().Render( renderer, renderInfo, world );
 			}
 		}
 	}

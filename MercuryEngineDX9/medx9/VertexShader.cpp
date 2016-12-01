@@ -114,11 +114,10 @@ public:
 		m_owner.m_created = true;
 	}
 
-	void Use( const RenderInfo & renderInfo, RenderInstance instance )
+	void Use( const RenderInfo & renderInfo, const unify::Matrix & world )
 	{
 		HRESULT result = S_OK;
 
-		unify::Matrix world = instance.m;
 		unify::Matrix view = renderInfo.GetViewMatrix();
 		unify::Matrix projection = renderInfo.GetProjectionMatrix();
 
@@ -229,10 +228,10 @@ size_t VertexShader::GetBytecodeLength() const
 	return m_pimpl->GetBytecodeLength();
 }
 
-void VertexShader::Use( const RenderInfo & renderInfo, const RenderInstance & instance )
+void VertexShader::Use( const RenderInfo & renderInfo, const unify::Matrix & world )
 {
 	m_vertexDeclaration->Use();
-	m_pimpl->Use( renderInfo, instance );
+	m_pimpl->Use( renderInfo, world );
 }
 
 std::string VertexShader::GetError()

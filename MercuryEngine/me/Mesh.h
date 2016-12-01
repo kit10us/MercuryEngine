@@ -32,7 +32,7 @@ namespace me
 
 		void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & instances ) override;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< unify::Matrix > & matrices ) override;
 
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();

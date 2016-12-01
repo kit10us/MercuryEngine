@@ -31,7 +31,7 @@ void LOD::Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	}
 }
 
-void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::list< RenderInstance > & list )
+void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< unify::Matrix > & matrices )
 {
 	if( m_list.empty() )
 	{
@@ -40,7 +40,7 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	
 	if( m_list.size() == 1 )
 	{
-		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, list );
+		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, matrices );
 		return;
 	}
 
@@ -50,7 +50,7 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	{
 	}
 
-	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, list );
+	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, matrices );
 }
 
 const unify::BBox< float > & LOD::ComputeBounds()

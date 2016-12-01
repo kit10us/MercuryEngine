@@ -31,7 +31,7 @@ namespace medx9
 
 		size_t GetBytecodeLength() const;
 
-		void Use( const me::RenderInfo & renderInfo, const me::RenderInstance & instance );
+		void Use( const me::RenderInfo & renderInfo, const unify::Matrix & world );
 
 		std::string GetError();
 

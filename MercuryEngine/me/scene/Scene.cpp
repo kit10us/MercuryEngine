@@ -183,11 +183,11 @@ void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 
 	// Sort list by component...
 	// TODO: Check if making all of these Geometry::ptr into Geometry* during rendering is faster (since there is no changing of reference counting or temp vars).
-	std::map< Geometry::ptr, std::list< RenderInstance > > sorted;
+	std::map< Geometry::ptr, std::vector< unify::Matrix > > sorted;
 	
 	for( auto set : renderList )
 	{
-		sorted[ set.geo ].push_back( set.instance );
+		sorted[ set.geo ].push_back( set.world );
 	}
 
 	for( auto camera : cameraList )

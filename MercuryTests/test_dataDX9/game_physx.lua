@@ -1,6 +1,6 @@
 function OnStart()
 
-	color3d = Effect( "color3d", "media/EffectColor.effect" )
+	color3d = Effect( "color3d", "media/EffectColorInstanced3d.effect" )
 	borgcubeEffect = Effect( "borgcube", "media/EffectBorgCube.effect" )
 	
 	scene1 = Scene( "scene1" )	

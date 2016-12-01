@@ -255,7 +255,7 @@ void* Renderer::GetHandle() const
 	return m_pimpl->GetDisplay().GetHandle();
 }
 
-void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const RenderInstance & instance )
+void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix & world )
 {
 	D3DPRIMITIVETYPE dxPrimitiveType {};
 	switch( method.primitiveType )
@@ -273,7 +273,7 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 
 	if ( method.effect )
 	{
-		method.effect->Use( renderInfo, instance );
+		method.effect->Use( renderInfo, world );
 	}
 
 	// Draw Primitive...
@@ -291,11 +291,11 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< RenderInstance > & instances )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< unify::Matrix > & matrices )
 {
-	for ( auto instance : instances )
+	for ( auto world : matrices )
 	{
-		Render( method, renderInfo, instance );
+		Render( method, renderInfo, world );
 	}
 }	
 

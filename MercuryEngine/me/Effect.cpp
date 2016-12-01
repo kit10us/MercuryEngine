@@ -40,7 +40,7 @@ bool Effect::operator != ( const Effect & effect ) const
 	return !( *this == effect );
 }
 
-void Effect::Use( const RenderInfo & renderInfoIn, RenderInstance instance )
+void Effect::Use( const RenderInfo & renderInfoIn, const unify::Matrix & world )
 {
 	RenderInfo renderInfo( renderInfoIn );
 
@@ -63,6 +63,8 @@ void Effect::Use( const RenderInfo & renderInfoIn, RenderInstance instance )
 	*/
 
 
+	/*
+	//TODO:
 	// MATRIX...
 	const unify::FrameSetInstance * frameSetInstance = renderInfo.GetFrameSetInstance();
 	if( frameSetInstance && m_frameIndexAndInfluence.size() > 0 )
@@ -90,6 +92,7 @@ void Effect::Use( const RenderInfo & renderInfoIn, RenderInstance instance )
 		assert( 0 ); // TODO:
 		instance.m = world;
 	}
+	*/
 
 	if( m_pixelShader )
 	{
@@ -98,7 +101,7 @@ void Effect::Use( const RenderInfo & renderInfoIn, RenderInstance instance )
 
 	if( m_vertexShader )
 	{
-		m_vertexShader->Use( renderInfo, instance );
+		m_vertexShader->Use( renderInfo, world );
 	}
 
 	if ( m_textures.empty() )

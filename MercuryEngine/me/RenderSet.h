@@ -10,13 +10,13 @@ namespace me
 {
 	struct RenderSet
 	{
-		RenderSet( Geometry::ptr _geo, RenderInstance _instance )
+		RenderSet( Geometry::ptr _geo, unify::Matrix _world )
 			: geo( _geo )
-			, instance( _instance )
+			, world( _world )
 		{
 		}
 
 		Geometry::ptr geo;
-		RenderInstance instance;
+		unify::Matrix world;
 	};
 }

@@ -35,7 +35,7 @@ namespace me
 
 		size_t GetSize() const;
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, RenderInstance instance ) const;
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderInstance > & instances ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix & world ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< unify::Matrix > & martices ) const;
 	};
 }

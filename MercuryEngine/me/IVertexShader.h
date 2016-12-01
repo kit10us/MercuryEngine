@@ -50,6 +50,6 @@ namespace me
 		virtual VertexDeclaration::ptr GetVertexDeclaration() const = 0;
 		virtual const void * GetBytecode() const = 0;
 		virtual size_t GetBytecodeLength() const = 0;
-		virtual void Use( const RenderInfo & renderInfo, const RenderInstance & instance ) = 0;
+		virtual void Use( const RenderInfo & renderInfo, const unify::Matrix & world ) = 0;
 	};
 }

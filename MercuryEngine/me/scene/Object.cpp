@@ -161,37 +161,35 @@ const unify::FrameLite & Object::GetFrame() const
 void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
     // Do not update if we are not enabled.
-    if ( ! m_enabled )
+    if ( m_enabled )
     {
-        return;
-    }
-
-	// Update components...
-	for( auto && component : m_components )
-	{
-		// Regardless of enabled, ensure OnInit is always called.
-		if ( component.IsInitialized() == false )
+		// Update components...
+		for( auto && component : m_components )
 		{
-			component.Component()->OnInit( this );
-			component.SetInitialized( true );
+			// Regardless of enabled, ensure OnInit is always called.
+			if ( component.IsInitialized() == false )
+			{
+				component.Component()->OnInit( this );
+				component.SetInitialized( true );
+			}
+
+			// Only start and update if enabled.
+			if ( !component.Component()->IsEnabled() ) continue;
+
+			// Start is basically a way to get us into a beginning state.
+			if ( component.IsStarted() == false )
+			{
+				component.Component()->OnStart( this );
+				component.SetStarted( true );
+			}
+
+			component.Component()->OnUpdate( this, renderer, renderInfo );
 		}
 
-		// Only start and update if enabled.
-		if ( !component.Component()->IsEnabled() ) continue;
-
-		// Start is basically a way to get us into a beginning state.
-		if ( component.IsStarted() == false )
+		if( GetFirstChild() )
 		{
-			component.Component()->OnStart( this );
-			component.SetStarted( true );
+			GetFirstChild()->Update( renderer, renderInfo );
 		}
-
-		component.Component()->OnUpdate( this, renderer, renderInfo );
-	}
-
-	if( GetFirstChild() )
-	{
-		GetFirstChild()->Update( renderer, renderInfo );
 	}
 
 	if ( GetNext() )

@@ -3,11 +3,12 @@
 
 #pragma once
 
+#include <medx11/Renderer.h>
 #include <me/RenderInfo.h>
-#include <me/IRenderer.h>
 #include <me/IVertexShader.h>
 #include <me/VertexDeclaration.h>
 #include <unify/Path.h>
+#include <atlbase.h>
 
 namespace medx11
 {
@@ -31,7 +32,7 @@ namespace medx11
 
 		size_t GetBytecodeLength() const;
 
-		void Use( const me::RenderInfo & renderInfo, const me::RenderInstance & instance );
+		void Use( const me::RenderInfo & renderInfo, const unify::Matrix & world );
 
 		std::string GetError();
 
@@ -44,8 +45,20 @@ namespace medx11
 		std::string m_errorMessage;
 		bool m_created;
 		me::VertexDeclaration::ptr m_vertexDeclaration;
+		const Renderer * m_renderer;
 
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		struct ConstantBuffer
+		{
+			unify::Matrix worldMatrix;
+			unify::Matrix viewMatrix;
+			unify::Matrix projectionMatrix;
+		} m_vertexShaderConstants;
+
+		CComPtr< ID3D11VertexShader > m_vertexShader;
+		CComPtr< ID3D10Blob > m_vertexShaderBuffer;
+		//CComPtr< ID3D11ShaderReflection > m_vertexShaderReflection;
+
+		// TODO: Need a standard interface for updating constant data that is cross renderer support.
+		CComPtr< ID3D11Buffer > m_vertexShaderConstantBuffer;
 	};
 }
