@@ -7,13 +7,8 @@
 using namespace me;
 using namespace scene;
 
-Object::Object( IOS * os )
-	: Object( os, 0 )
-{
-}
-
-Object::Object( IOS * os, Scene * scene )
-	: m_os( os )
+Object::Object( Scene * scene, std::string name )
+	: m_name( name )
 	, m_enabled( true )
 	, m_selectable( false )
 	, m_checkFrame( true )
@@ -23,13 +18,12 @@ Object::Object( IOS * os, Scene * scene )
 }			  
 
 Object::Object( const Object & object, std::string name )
-	: m_os ( object.m_os )
+	: m_name( name )
 	, m_enabled( object.m_enabled )
 	, m_selectable( object.m_selectable )
 	, m_checkFrame( object.m_checkFrame )
 	, m_lastFrameID( 0 )
 	, m_scene( object.m_scene )
-	, m_name( name )
 	, m_frame( object.m_frame )
 	, m_tags( object.m_tags )
 {
@@ -300,7 +294,7 @@ Object::ptr Object::AddChild( std::string name )
 	if ( ! lastChild )
 	{
 		// No children...
-		m_firstChild.reset( new Object( m_os, m_scene ) );
+		m_firstChild.reset( new Object( m_scene, name ) );
 		lastChild = m_firstChild;
 	}
 	else
@@ -310,14 +304,13 @@ Object::ptr Object::AddChild( std::string name )
 		{
 			lastChild = lastChild->GetNext();
 		}
-		lastChild->m_next.reset( new Object( m_os, m_scene ) );
+		lastChild->m_next.reset( new Object( m_scene, name ) );
 		lastChild->m_next->m_previous = lastChild;
 		lastChild = lastChild->GetNext();	 
 	}
 	lastChild->m_parent.reset( this );
 	
 	// Last child is new child...
-	lastChild->SetName( name );
 	return lastChild;
 }
 

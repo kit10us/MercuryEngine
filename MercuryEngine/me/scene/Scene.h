@@ -90,6 +90,7 @@ namespace me
 			std::list< ISceneComponent::ptr > m_components;
 
 			Object::ptr m_root;
+
 			bool m_inited;
 			bool m_started;
 

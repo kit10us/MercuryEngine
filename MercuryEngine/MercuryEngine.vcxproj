@@ -86,6 +86,7 @@
     <ClInclude Include="me\scene\CameraComponent.h" />
     <ClInclude Include="me\scene\ComponentInstance.h" />
     <ClInclude Include="me\scene\GeometryComponent.h" />
+    <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IObjectComponent.h" />
     <ClInclude Include="me\scene\ISceneComponent.h" />
     <ClInclude Include="me\scene\ISceneManagerComponent.h" />

@@ -11,7 +11,7 @@ using namespace scene;
 
 Scene::Scene( IGame * game )
 : m_game( game )
-, m_root( new Object( game->GetOS(), this ) )
+, m_root( new Object( this, "root" ) )
 , m_inited( false )
 , m_started( false )
 , m_lastCullCount( 0 )
@@ -24,7 +24,6 @@ Scene::Scene( IGame * game )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
 {
-	m_root->SetName( "root" );
 }
 
 Scene::~Scene()

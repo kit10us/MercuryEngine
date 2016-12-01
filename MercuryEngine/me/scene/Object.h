@@ -24,8 +24,7 @@ namespace me
 		public:
 			typedef std::shared_ptr< Object > ptr;
 
-			explicit Object( IOS * os );
-			Object( IOS * os, Scene * scene );
+			Object( Scene * scene, std::string name );
 			Object( const Object & object, std::string name );
 			virtual ~Object();
 
@@ -101,7 +100,6 @@ namespace me
 
 		protected:
 			std::string m_name;
-			IOS * m_os;
 			Scene * m_scene;
 			std::list< std::string > m_tags;
 
