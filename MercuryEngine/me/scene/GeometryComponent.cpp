@@ -82,16 +82,9 @@ void GeometryComponent::OnUpdate( Object * object, IRenderer * renderer, const R
 	m_geometry->Update( renderer, renderInfo, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+void GeometryComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame )
 {
-	list.push_back( { m_geometry, m_matrix * transform } );
-	/* TODO: working on this... must not forget to handle more than just the geo and transform (gid, and ri?)
-	for( auto instance : list )
-	{
-		instance.m = m_matrix * instance.m;
-	}
-	m_geometry->Render( renderer, renderInfo, m_geometryInstanceData.get(), list );
-	*/
+	cache[ m_geometry.get() ].push_back( frame );
 }
 
 void GeometryComponent::OnSuspend( Object * object )

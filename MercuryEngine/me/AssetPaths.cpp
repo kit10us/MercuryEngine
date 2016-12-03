@@ -1,0 +1,27 @@
+// Copyright (c) 2003 - 2013, Quentin S. Smith
+// All Rights Reserved
+
+#include <me/AssetPaths.h>
+
+using namespace me;
+
+AssetPaths::AssetPaths()
+{
+}
+
+void AssetPaths::AddSource( unify::Path source )
+{
+	m_paths.push_back( source );
+}
+		
+unify::Path AssetPaths::FindAsset( unify::Path path )
+{
+	if ( path.Exists() ) return path;
+
+	for( auto && post : m_paths )
+	{
+		unify::Path complete( post + path );
+		if ( complete.Exists() ) return complete;
+	}
+	return unify::Path();
+}

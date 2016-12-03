@@ -38,7 +38,7 @@ void Mesh::Update( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< unify::Matrix > & matrices )
+void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< const unify::FrameLite * > & instances )
 {
 	// TODO:
 	/*
@@ -59,7 +59,7 @@ void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	}
 	*/
 	
-	m_primitiveList.Render( renderer, renderInfo, matrices );
+	m_primitiveList.Render( renderer, renderInfo, instances );
 }
 
 PrimitiveList & Mesh::GetPrimitiveList()

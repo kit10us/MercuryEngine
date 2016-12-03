@@ -14,7 +14,7 @@ namespace me
 		~LOD();
 
 		void Update( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
-		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, std::vector< unify::Matrix > & matrices );
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, std::vector< const unify::FrameLite * > & instances );
 
 		void Add( me::Geometry::ptr geometry, float distance );
 		me::Geometry::ptr GetLOD( unsigned int index );

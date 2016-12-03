@@ -17,15 +17,13 @@ function OnStart()
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
-	group = root:AddChild( "group" )
-	
 	Debug.WriteLine( "peter" )
 	
 	cubeParameters = ShapeParameters( "cube" )
 	cubeParameters:SetEffect( color3d )
 	cubeParameters:SetSize3( Size3.New( 2, 2, 2 ) )
 	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
-	cube = group:AddChild( "cube" )
+	cube = scene1:NewObject( "cube" )
 	cube:SetGeometry( Geometry( cubeParameters ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
 
@@ -36,7 +34,7 @@ function OnStart()
 	pointfieldParameters:SetMajorRadius( 1.0 )
 	pointfieldParameters:SetCount( 1000 )
 	pointfieldParameters:SetDiffuse( Color.NewWhite() )
-	pointfield = group:AddChild( "pointfield" )
+	pointfield = scene1:NewObject( "pointfield" )
 	pointfield:SetGeometry( Geometry( pointfieldParameters ) )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
 	
@@ -46,7 +44,7 @@ function OnStart()
 	pointringParameters:SetMajorRadius( 0.75 )
 	pointringParameters:SetCount( 1000 )
 	pointringParameters:SetDiffuse( Color.NewRed() )
-	pointring = group:AddChild( "pointring" )
+	pointring = scene1:NewObject( "pointring" )
 	pointring:SetGeometry( Geometry( pointringParameters ) )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
 
@@ -57,7 +55,7 @@ function OnStart()
 	dashringParameters:SetSize( 0.5 )
 	dashringParameters:SetCount( 5 )
 	dashringParameters:SetDiffuse( Color.NewGreen() )
-	dashring = group:AddChild( "dashring" )
+	dashring = scene1:NewObject( "dashring" )
 	dashring:SetGeometry( Geometry( dashringParameters ) )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )	
 	
@@ -65,7 +63,7 @@ function OnStart()
 	pyramidParameters:SetEffect( color3d )
 	pyramidParameters:SetSize3( Size3.New( 2, 2, 2 ) )
 	pyramidParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	pyramid = group:AddChild( "pyramid" )
+	pyramid = scene1:NewObject( "pyramid" )
 	pyramid:SetGeometry( Geometry( pyramidParameters ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )	
 	
@@ -74,7 +72,7 @@ function OnStart()
 	circleParameters:SetSegments( 24 );
 	circleParameters:SetRadius( 1.0 );
 	circleParameters:SetDiffuse( Color.NewBlue() );
-	circle = group:AddChild( "circle" )
+	circle = scene1:NewObject( "circle" )
 	circle:SetGeometry( Geometry( circleParameters ) );
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
 	
@@ -83,7 +81,7 @@ function OnStart()
 	sphereParameters:SetSegments( 24 )
 	sphereParameters:SetRadius( 1.0 )
 	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
-	sphere = group:AddChild( "sphere" )
+	sphere = scene1:NewObject( "sphere" )
 	sphere:SetGeometry( Geometry( sphereParameters ) )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
 
@@ -94,7 +92,7 @@ function OnStart()
 	cylinderParameters:SetHeight( 2.0 )
 	cylinderParameters:SetDiffuse( Color.NewRGB(1, 0, 1 ) )
 	cylinderParameters:SetCaps( true )
-	cylinder = group:AddChild( "cylinder" )
+	cylinder = scene1:NewObject( "cylinder" )
 	cylinder:SetGeometry( Geometry( cylinderParameters ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
 	
@@ -105,7 +103,7 @@ function OnStart()
 	tubeParameters:SetMinorRadius( 0.5 )
 	tubeParameters:SetHeight( 2.0 )
 	tubeParameters:SetDiffuse( Color.NewRed() )
-	tube = group:AddChild( "tube" )
+	tube = scene1:NewObject( "tube" )
 	tube:SetGeometry( Geometry( tubeParameters ) )
 	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
 
@@ -116,7 +114,7 @@ function OnStart()
 	planeParameters:SetSegments( 2 )
 	planeParameters:SetSize2( Size2.New( 2.0, 2.0 ) )
 	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	plane = group:AddChild( "plane" )
+	plane = scene1:NewObject( "plane" )
 	plane:SetGeometry( Geometry( planeParameters ) )
 	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
 	
@@ -127,7 +125,7 @@ function OnStart()
 	coneParameters:SetRadius( 1 )
 	coneParameters:SetHeight( 2 )
 	coneParameters:SetCaps( true )
-	cone = group:AddChild( "cone" )
+	cone = scene1:NewObject( "cone" )
 	cone:SetGeometry( Geometry( coneParameters ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
 end
@@ -155,5 +153,5 @@ function OnUpdate()
 		axis.z = 1
 	end
 
-	group:Transform():RotateAbout( axis, rotation )
+	--group:Transform():RotateAbout( axis, rotation )
 end

@@ -7,34 +7,31 @@
 using namespace me;
 using namespace scene;
 
-Object::Object( Scene * scene, std::string name )
-	: m_name( name )
-	, m_enabled( true )
-	, m_selectable( false )
-	, m_checkFrame( true )
-	, m_lastFrameID( 0 )
-	, m_scene( scene )
+Object::Object()
+	: m_name{}
+	, m_scene{}
+	, m_enabled{ true }
+	, m_tags{}
+	, m_components{}
+	, m_frame{}
 {
-}			  
-
-Object::Object( const Object & object, std::string name )
-	: m_name( name )
-	, m_enabled( object.m_enabled )
-	, m_selectable( object.m_selectable )
-	, m_checkFrame( object.m_checkFrame )
-	, m_lastFrameID( 0 )
-	, m_scene( object.m_scene )
-	, m_frame( object.m_frame )
-	, m_tags( object.m_tags )
-{
-	for( auto component : object.m_components )
-	{
-		AddComponent( IObjectComponent::ptr( component.Component()->Duplicate() ) );
-	}
 }
 
 Object::~Object()
 {
+}
+
+void Object::CopyFrom( std::string name, Object & objectFrom )
+{
+	m_name = name;
+	m_enabled = objectFrom.m_enabled;
+	m_frame = objectFrom.m_frame;
+	m_tags = objectFrom.m_tags;
+
+	for( auto component : objectFrom.m_components )
+	{
+		AddComponent( IObjectComponent::ptr( component.Component()->Duplicate() ) );
+	}
 }
 
 void Object::SetName( std::string name )
@@ -122,26 +119,6 @@ bool Object::IsEnabled() const
     return m_enabled;
 }
 
-void Object::SetSelectable( bool selectable )
-{
-    m_selectable = selectable;
-}
-
-bool Object::GetSelectable() const
-{
-    return m_selectable;
-}
-
-void Object::CheckFrame( bool checkFrame )
-{
-	m_checkFrame = checkFrame;
-}
-
-bool Object::CheckFrame() const
-{
-	return m_checkFrame;
-}
-
 unify::FrameLite & Object::GetFrame()
 {
 	return m_frame;
@@ -155,50 +132,42 @@ const unify::FrameLite & Object::GetFrame() const
 void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
     // Do not update if we are not enabled.
-    if ( m_enabled )
-    {
-		// Update components...
-		for( auto && component : m_components )
-		{
-			// Regardless of enabled, ensure OnInit is always called.
-			if ( component.IsInitialized() == false )
-			{
-				component.Component()->OnInit( this );
-				component.SetInitialized( true );
-			}
+    if ( ! m_enabled ) return;
 
-			// Only start and update if enabled.
-			if ( !component.Component()->IsEnabled() ) continue;
-
-			// Start is basically a way to get us into a beginning state.
-			if ( component.IsStarted() == false )
-			{
-				component.Component()->OnStart( this );
-				component.SetStarted( true );
-			}
-
-			component.Component()->OnUpdate( this, renderer, renderInfo );
-		}
-
-		if( GetFirstChild() )
-		{
-			GetFirstChild()->Update( renderer, renderInfo );
-		}
-	}
-
-	if ( GetNext() )
+	// Update components...
+	for( auto && component : m_components )
 	{
-		GetNext()->Update( renderer, renderInfo );
+		// Regardless of enabled, ensure OnInit is always called.
+		if ( component.IsInitialized() == false )
+		{
+			component.Component()->OnInit( this );
+			component.SetInitialized( true );
+		}
+
+		// Only start and update if enabled.
+		if ( !component.Component()->IsEnabled() ) continue;
+
+		// Start is basically a way to get us into a beginning state.
+		if ( component.IsStarted() == false )
+		{
+			component.Component()->OnStart( this );
+			component.SetStarted( true );
+		}
+
+		component.Component()->OnUpdate( this, renderer, renderInfo );
 	}
 }
 
-void Object::CollectRenderables( std::list< RenderSet > & list, IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
+void Object::CollectRenderables( GeometryCache & cache, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	for( auto && component : m_components )
 	{
 		// Don't try rendering if we haven't been properly setup...
-		if ( ! component.Component()->Renderable() || ! component.IsInitialized() || ! component.IsStarted() || ! component.Component()->IsEnabled() ) continue;
-		component.Component()->OnRender( this, renderer, renderInfo, list, GetFrame().GetMatrix() * parentTransform );
+		if ( ! component.Component()->Renderable() ) continue;
+		if ( ! component.IsInitialized() ) continue;
+		if ( ! component.IsStarted() ) continue;
+		if ( ! component.Component()->IsEnabled() ) continue;
+		component.Component()->OnRender( this, renderer, renderInfo, cache, &m_frame );
 	}
 }
 
@@ -211,18 +180,6 @@ void Object::OnSuspend()
 			component.Component()->OnSuspend( this );
 		}
 	}
-
-	if( GetFirstChild() )
-	{
-		GetFirstChild()->OnSuspend();
-	}
-
-	Object::ptr sibling = GetNext();
-	while( sibling )
-	{
-		sibling->OnSuspend();
-		sibling = sibling->GetNext();
-	}
 }
 
 void Object::OnResume()
@@ -234,147 +191,11 @@ void Object::OnResume()
 			component.Component()->OnResume( this );
 		}
 	}
-
-	if( GetFirstChild() )
-	{
-		GetFirstChild()->OnResume();
-	}
-
-	Object::ptr sibling = GetNext();
-	while( sibling )
-	{
-		sibling->OnResume();
-		sibling = sibling->GetNext();
-	}
 }
 
-Object::ptr Object::GetPrevious()
+void Object::SetScene( Scene * scene )
 {
-	return m_previous;
-}
-
-const Object::ptr Object::GetPrevious() const
-{
-	return m_previous;
-}
-
-Object::ptr Object::GetNext()
-{
-	return m_next;
-}
-
-const Object::ptr Object::GetNext() const
-{
-	return m_next;
-}
-
-Object::ptr Object::GetParent()
-{
-	return m_parent;
-}
-
-const Object::ptr Object::GetParent() const
-{
-	return m_parent;
-}
-
-Object::ptr Object::GetFirstChild()
-{
-	return m_firstChild;
-}
-
-const Object::ptr Object::GetFirstChild() const
-{
-	return m_firstChild;
-}
-
-Object::ptr Object::AddChild( std::string name )
-{
-	Object::ptr lastChild = GetFirstChild();
-	if ( ! lastChild )
-	{
-		// No children...
-		m_firstChild.reset( new Object( m_scene, name ) );
-		lastChild = m_firstChild;
-	}
-	else
-	{
-		// Find our last child...
-		while( lastChild->GetNext() )
-		{
-			lastChild = lastChild->GetNext();
-		}
-		lastChild->m_next.reset( new Object( m_scene, name ) );
-		lastChild->m_next->m_previous = lastChild;
-		lastChild = lastChild->GetNext();	 
-	}
-	lastChild->m_parent.reset( this );
-	
-	// Last child is new child...
-	return lastChild;
-}
-
-Object::ptr Object::Duplicate( std::string name )
-{
-	Object::ptr duplicate( new Object(*this, name) );
-
-	Object::ptr lastSibling = m_parent->GetFirstChild();
-
-	// Find our last sibling...
-	while ( lastSibling->GetNext() )
-	{
-		lastSibling = lastSibling->GetNext();
-	}
-
-	lastSibling->m_next = duplicate;
-	duplicate->m_previous = lastSibling;
-	duplicate->m_parent = m_parent;
-
-	return duplicate;
-
-}
-
-Object::ptr Object::FindObject( std::string name )
-{	
-	Object::ptr child = GetFirstChild();
-	while( child )
-	{
-		if ( unify::StringIs( child->GetName(), name ) )
-		{
-			return child;
-		}
-		Object::ptr found = child->FindObject( name );
-		if ( found )
-		{
-			return found;
-		}
-		child = child->GetNext();
-	}
-
-	// Not found...
-	return Object::ptr();
-}
-
-
-std::list< Object * > Object::AllChildren( bool recursive )
-{
-	std::list< Object * > objects;
-
-	std::stack< Object * > stack;
-	stack.push( this );
-
-	while( ! stack.empty() )
-	{	
-		Object * object = stack.top(); 
-		stack.pop();
-
-		objects.push_back( object );
-		
-		if ( object->GetNext() ) stack.push( object->GetNext().get() );
-		if ( object->GetFirstChild() ) stack.push( object->GetFirstChild().get() );
-	}
-
-	return objects;
+	m_scene = scene;
 }
 
 Scene * Object::GetScene()

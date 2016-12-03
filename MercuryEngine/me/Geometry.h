@@ -18,6 +18,7 @@
 #include <unify/Unify.h>
 #include <unify/BSphere.h>
 #include <unify/BBox.h>
+#include <unify/FrameLite.h>
 #include <memory>
 
 namespace me
@@ -34,7 +35,7 @@ namespace me
 		virtual GeometryInstanceData * CreateInstanceData();
 
 		virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< unify::Matrix > & matrices ) = 0;
+		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< const unify::FrameLite * > & instances ) = 0;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;

@@ -58,10 +58,12 @@ namespace medx11
 
 		LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
+		me::AssetPaths & GetAssetPaths() override;
+
 	private:
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
-
 		me::OSParameters m_osParameters;
+		me::AssetPaths m_assetPaths;
 	};
 }

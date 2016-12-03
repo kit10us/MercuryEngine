@@ -13,9 +13,9 @@ namespace me
 		public:
 			~IObjectAllocator() {}
 
-			virtual Object * NewObject() = 0;
+			virtual Object * NewObject( std::string name ) = 0;
 			virtual void DestroyObject( Object * object ) = 0;
-			virtual Object * CopyObject( Object * object ) = 0;
+			virtual Object * CopyObject( Object * object, std::string name ) = 0;
 		};
 	}
 }

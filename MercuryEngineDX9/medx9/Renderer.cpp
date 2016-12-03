@@ -291,11 +291,11 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< unify::Matrix > & matrices )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< const unify::FrameLite * > & instances )
 {
-	for ( auto world : matrices )
+	for ( auto frame : instances )
 	{
-		Render( method, renderInfo, world );
+		Render( method, renderInfo, frame->GetMatrix() );
 	}
 }	
 

@@ -52,7 +52,7 @@ void MyGame::Startup()
 	Scene::ptr scene = sceneManager->Add( "scene" );
 
 	// Add a camera...
-	Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
+	Object * camera = scene->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
@@ -66,16 +66,16 @@ void MyGame::Startup()
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
-	AddGeometryComponent( progObject.get(), GetOS(), meshProg );
+	auto progObject = scene->NewObject( "cubeDyna" );
+	AddGeometryComponent( progObject, GetOS(), meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
-	auto xmlObject = scene->GetRoot()->AddChild( "XMLObject" );
-	auto gc = AddGeometryComponent( xmlObject.get(), GetOS(), meshXML );
+	auto xmlObject = scene->NewObject( "XMLObject" );
+	auto gc = AddGeometryComponent( xmlObject, GetOS(), meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	gc->GetMatrix().Scale( 0.10f );
 	xmlObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
@@ -83,8 +83,8 @@ void MyGame::Startup()
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
-	auto aseObject = scene->GetRoot()->AddChild( "swordASE" );
-	gc = AddGeometryComponent( aseObject.get(), GetOS(), meshASE );
+	auto aseObject = scene->NewObject( "swordASE" );
+	gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	gc->GetMatrix().Scale( 0.090f );
 	gc->GetMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
@@ -102,8 +102,8 @@ void MyGame::Startup()
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/SuperMarioGalaxy_Mario/mario.dae" ) );
 
-	auto daeModel = scene->GetRoot()->AddChild( "daeModel" );
-	gc = AddGeometryComponent( daeModel.get(), GetOS(), meshDAE );
+	auto daeModel = scene->NewObject( "daeModel" );
+	gc = AddGeometryComponent( daeModel, GetOS(), meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
@@ -120,7 +120,7 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
-	Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );
+	Object * camera = sceneManager->Find( "scene" )->FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );

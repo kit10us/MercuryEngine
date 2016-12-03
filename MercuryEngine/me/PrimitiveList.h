@@ -9,7 +9,7 @@
 #include <me/RenderInstance.h>
 #include <unify/BBox.h>
 #include <unify/BSphere.h>
-#include <unify/Frame.h>
+#include <unify/FrameLite.h>
 
 namespace me
 {
@@ -26,7 +26,7 @@ namespace me
 
 		void Destroy();
 
-		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, std::vector< unify::Matrix > & matrices ) const;
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & instances ) const;
 		
 		BufferSet & AddBufferSet();
 		void RemoveBufferSet( size_t i );

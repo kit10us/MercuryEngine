@@ -4,6 +4,8 @@
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportScene.h>
 #include <dxilua/ExportObject.h>
+#include <dxilua/unify/ExportMatrix.h>
+#include <dxilua/ExportCameraComponent.h>
 #include <me/Game.h>
 #include <me/scene/SceneManager.h>
 
@@ -25,12 +27,12 @@ int Scene_FindObject( lua_State * state )
 
 	std::string name = lua_tostring( state, 2 );
 
-	Object::ptr object = sceneProxy->scene->FindObject( name );
+	Object * object = sceneProxy->scene->FindObject( name );
 
 	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*objectProxy = new ObjectProxy;
 	luaL_setmetatable( state, "Object" );
-	(*objectProxy)->object = object.get();
+	(*objectProxy)->object = object;
 
 	return 1;
 }
@@ -52,11 +54,58 @@ int Scene_SetSize( lua_State * state )
 
 	return 0;
 }
+			   
+int Scene_NewObject( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	SceneProxy * proxy = CheckScene( state, 1 );
+	std::string name = lua_tostring( state, 2 );
+
+	auto object = proxy->scene->NewObject( name );
+
+	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
+	*childProxy = new ObjectProxy;
+	luaL_setmetatable( state, "Object" );
+	(*childProxy)->object = object;
+
+	return 1;
+}
+
+int Scene_NewCamera( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 3 );
+
+	SceneProxy * proxy = CheckScene( state, 1 );
+	std::string name = lua_tostring( state, 2 );
+
+	int t = lua_type( state, 3 );
+	unify::Matrix mat = CheckMatrix( state, 3 );
+
+	auto game = ScriptEngine::GetGame();
+
+	Object * child = proxy->scene->NewObject( name );
+	CameraComponent * cameraComponent = new CameraComponent( game->GetOS() );
+	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
+
+	cameraComponent->SetProjection( mat );
+
+	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
+	*childProxy = new ObjectProxy;
+	luaL_setmetatable( state, "Object" );
+	(*childProxy)->object = child;
+
+	return 1;
+}
 
 static const luaL_Reg SceneFunctions[] =
 {
 	{ "FindObject", Scene_FindObject },
 	{ "SetSize", Scene_SetSize },
+	{ "NewObject", Scene_NewObject },
+	{ "NewCamera", Scene_NewCamera },
 	{ nullptr, nullptr }
 };
 

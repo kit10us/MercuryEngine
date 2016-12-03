@@ -1,5 +1,7 @@
 <xml>
 <setup>
+<assets>../test_data/</assets>
+<assets></assets>
 <renderer>MercuryEngineDX11.dll</renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>

@@ -5,6 +5,7 @@
 
 #include <me/IRenderer.h>
 #include <me/Display.h>
+#include <me/AssetPaths.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
 #include <vector>
@@ -140,5 +141,10 @@ namespace me
 		/// Write a debug message.
 		/// </summary>
 		virtual void DebugWriteLine( const std::string & line ) = 0;
+
+		/// <summary>
+		/// Asset path manager.
+		/// </summary>
+		virtual AssetPaths & GetAssetPaths() = 0;
 	};
 }

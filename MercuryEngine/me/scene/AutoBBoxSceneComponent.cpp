@@ -33,7 +33,9 @@ void AutoBBoxSceneComponent::SetPadding( float padding )
 void AutoBBoxSceneComponent::OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	// Ensure all objects have BBoxes...
-	for( auto object : scene->GetRoot()->AllChildren( true ) )
+	std::vector< Object * > objects;
+	scene->CollectObjects( objects );
+	for( auto && object : objects )
 	{
 		if ( object->GetComponent( "BBoxRenderer", 0 ) ) continue;
 		if ( ! object->GetComponent( "Geometry", 0 ) ) continue;

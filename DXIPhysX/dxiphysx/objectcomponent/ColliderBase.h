@@ -36,7 +36,7 @@ namespace dxiphysx
 			void OnInit( me::scene::Object * object ) override {}
 			void OnStart( me::scene::Object * object ) override {}
 			void OnUpdate( me::scene::Object * object, me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override {}
-			void OnRender( me::scene::Object * object, me::IRenderer * renderer, const me::RenderInfo & renderInfo, std::list< me::RenderSet > & list, unify::Matrix transform ) override {}
+			void OnRender( me::scene::Object * object, me::IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryCache & list, const unify::FrameLite * frame ) override {}
 			void OnSuspend( me::scene::Object * object ) override {}
 			void OnResume( me::scene::Object * object ) override {}
 

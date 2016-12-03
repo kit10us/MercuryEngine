@@ -39,51 +39,6 @@ ObjectProxy* CheckObject( lua_State* state, int index )
 	ObjectProxy* ud = *(ObjectProxy**)luaL_checkudata( state, index, "Object" );
 	return ud;
 }
-			   
-int Object_AddChild( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	std::string name = lua_tostring( state, 2 );
-
-	me::scene::Object::ptr child = objectProxy->object->AddChild( name );
-
-	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*childProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-	(*childProxy)->object = child.get();
-
-	return 1;
-}
-
-int Object_AddCamera( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	std::string name = lua_tostring( state, 2 );
-
-	int t = lua_type( state, 3 );
-	unify::Matrix mat = CheckMatrix( state, 3 );
-
-	auto game = ScriptEngine::GetGame();
-
-	Object::ptr child = objectProxy->object->AddChild( name );
-	CameraComponent * cameraComponent = new CameraComponent( game->GetOS() );
-	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
-
-	cameraComponent->SetProjection( mat );
-
-	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*childProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-	(*childProxy)->object = child.get();
-
-	return 1;
-}
 
 int Object_AddScript( lua_State * state )
 {
@@ -142,30 +97,6 @@ int Object_IsEnabled( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 		 
 	lua_pushboolean( state, objectProxy->object->IsEnabled() );
-
-	return 1;
-}
-
-int Object_SetSelectable( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	bool selectable = lua_toboolean( state, 2 ) ? true : false;
-
-	objectProxy->object->SetSelectable( selectable );
-	return 0;
-}
-
-int Object_IsSelectable( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-
-	lua_pushboolean( state, objectProxy->object->GetSelectable() );
 
 	return 1;
 }
@@ -292,14 +223,10 @@ int Object_GetComponent( lua_State * state )
 
 static const luaL_Reg ObjectFunctions[] =
 {
-	{ "AddChild", Object_AddChild },
-	{ "AddCamera", Object_AddCamera },
 	{ "AddScript", Object_AddScript },
 	{ "Name", Object_Name },
 	{ "SetEnabled", Object_SetEnabled },
 	{ "GetEnabled", Object_IsEnabled },
-	{ "SetSelectable", Object_SetSelectable },
-	{ "GetSelectable", Object_IsSelectable },
 	{ "SetGeometry", Object_SetGeometry },
 	{ "GetSize", Object_GetSize },
 	{ "Transform", Object_Transform },

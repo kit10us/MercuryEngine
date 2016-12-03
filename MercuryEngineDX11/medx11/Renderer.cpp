@@ -255,16 +255,16 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< unify::Matrix > & matrices )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< const unify::FrameLite * > & instances )
 {
 	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
 
 	switch( instancing )
 	{
 	case Instancing::None:
-		for ( auto world : matrices )
+		for ( auto frame : instances )
 		{
-			Render( method, renderInfo, world );
+			Render( method, renderInfo, frame->GetMatrix() );
 		}
 		break;
 	case Instancing::Matrix:
@@ -275,9 +275,9 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			assert( !FAILED( result ) );
 
 			size_t instanceCount = 0;				
-			for( auto world : matrices )
+			for( auto frame : instances )
 			{
-				((unify::Matrix*)subResource.pData)[ instanceCount++ ] = world;
+				((unify::Matrix*)subResource.pData)[ instanceCount++ ] = frame->GetMatrix();
 				if ( instanceCount >= m_totalInstances ) break;
 			}
 

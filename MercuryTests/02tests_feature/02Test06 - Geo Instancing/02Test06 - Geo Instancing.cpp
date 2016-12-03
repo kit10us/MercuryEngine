@@ -42,7 +42,7 @@ void MyGame::Startup()
 	Scene::ptr scene = sceneManager->Add( "scene" );
 
 	// Add a camera...
-	Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
+	Object * camera = scene->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
@@ -71,7 +71,7 @@ void MyGame::Startup()
 
 	size_t depth = 10;
 	size_t columns = 10;
-	size_t rows = 10;
+	size_t rows = 9;
 	float spacing = 2.0f;
 	for( size_t d = 0; d < depth; ++d )
 	{
@@ -81,8 +81,8 @@ void MyGame::Startup()
 			{			
 				size_t shape = (columns + d + r) % 3;
 
-				auto object = scene->GetRoot()->AddChild( "geo" );
-				AddGeometryComponent( object.get(), GetOS(), (shape == 0 ) ? geo1 : (shape == 1) ? geo2 : geo3 );
+				auto object = scene->NewObject( "geo" );
+				AddGeometryComponent( object, GetOS(), (shape == 0 ) ? geo1 : (shape == 1) ? geo2 : geo3 );
 
 				float x = (rows * spacing * -0.5f) + r * spacing;
 				float y = (columns * spacing * -0.5f) + c * spacing;
@@ -113,7 +113,7 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
-	Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );
+	Object * camera = sceneManager->Find( "scene" )->FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );

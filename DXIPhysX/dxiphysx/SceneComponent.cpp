@@ -71,10 +71,10 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 	auto physics = m_gameComponent->GetPhysics();
 
 	{
-		Object::ptr plane = scene->FindObject( "Plane" );
+		Object * plane = scene->FindObject( "Plane" );
 		
 		PxRigidStatic* body = PxCreatePlane( *physics, util::Convert< PxPlane >( plane->GetFrame().GetMatrix() ), *m_material );
-		body->userData = plane.get();
+		body->userData = plane;
 		m_scene->addActor( *body );
 
 		//dxiphysx::ObjectComponent * oc = new dxiphysx::ObjectComponent( m_os, "PhysX", body );

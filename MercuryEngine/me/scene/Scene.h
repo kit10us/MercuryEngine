@@ -4,6 +4,7 @@
 
 #include <me/IGame.h>
 #include <me/scene/ISceneComponent.h>
+#include <me/scene/IObjectAllocator.h>
 #include <me/scene/Object.h>
 #include <me/Viewport.h>
 #include <unify/MinMax.h>
@@ -23,16 +24,13 @@ namespace me
 			STATE_COUNT,
 		};
 
-		class Scene
+		class Scene : public IObjectAllocator
 		{
 		public:
 			typedef std::shared_ptr< Scene > ptr;
 
 			Scene( IGame * game );
 			virtual ~Scene();
-
-			Object::ptr GetRoot();
-			const Object::ptr GetRoot() const;
 
 			void OnInit();
 			void OnStart();
@@ -41,7 +39,7 @@ namespace me
 			void Suspend();
 			void Resume();
 
-			Object::ptr FindObject( const std::string & name );
+			Object * FindObject( std::string name );
     
 			unsigned int LastCullCount() const;
 			void SetRenders( bool bSolids, bool bTrans );
@@ -83,13 +81,37 @@ namespace me
 			ISceneComponent::ptr GetComponent( int index );
 			ISceneComponent::ptr GetComponent( std::string name, int startIndex = 0 );
 			int FindComponent( std::string name, int startIndex = 0 ) const;
+			
+			Object * NewObject( std::string name ) override;
+			void DestroyObject( Object * object ) override;
+			Object * CopyObject( Object * from, std::string name ) override;
+			Object * CopyObject( std::string from, std::string name );
+
+			void CollectObjects( std::vector< Object * > objects );
 
 		private:
 			IGame * m_game;
 
 			std::list< ISceneComponent::ptr > m_components;
 
-			Object::ptr m_root;
+			struct ObjectInstance
+			{
+				ObjectInstance() : alive( false ){}
+				Object object;
+				bool alive;
+			};
+			std::vector< ObjectInstance > m_objects;
+			size_t m_nextObjectAvailable;
+			size_t m_lastObjectAlive;
+
+			struct FinalCamera
+			{
+				Object * object;
+				class CameraComponent * camera;
+			};
+			std::list< FinalCamera > m_cached_cameraList;
+			std::map< Geometry *, std::vector< const unify::FrameLite * > > m_cached_sorted;
+			bool m_needRenderCaching;
 
 			bool m_inited;
 			bool m_started;

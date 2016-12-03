@@ -65,7 +65,7 @@ void BBoxRendererComponent::OnUpdate( Object * object, IRenderer * renderer, con
 {
 }
 
-void BBoxRendererComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+void BBoxRendererComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame )
 {
 	if ( !m_effect || !m_geomertries.size() ) return;
 
@@ -157,7 +157,7 @@ void BBoxRendererComponent::OnRender( Object * object, IRenderer * renderer, con
 	set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );	 
 
 	m_geometry.reset( mesh );
-	list.push_back( { m_geometry, transform } );
+	cache[ m_geometry.get() ].push_back( frame );
 }
 
 

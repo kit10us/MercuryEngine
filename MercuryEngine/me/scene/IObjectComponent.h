@@ -5,6 +5,7 @@
 
 #include <me/RenderInfo.h>
 #include <me/RenderSet.h>
+#include <unify/FrameLite.h>
 #include <string>
 #include <memory>
 
@@ -56,7 +57,7 @@ namespace me
 			/// <summary>
 			/// Called during rendering.
 			/// </summary>
-			virtual void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) = 0;
+			virtual void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).

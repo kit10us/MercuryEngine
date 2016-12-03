@@ -11,7 +11,6 @@ using namespace scene;
 
 Scene::Scene( IGame * game )
 : m_game( game )
-, m_root( new Object( this, "root" ) )
 , m_inited( false )
 , m_started( false )
 , m_lastCullCount( 0 )
@@ -23,6 +22,10 @@ Scene::Scene( IGame * game )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
+, m_nextObjectAvailable{ 0 }
+, m_lastObjectAlive{ 0 }
+, m_objects( 1000 )
+, m_needRenderCaching{ true }
 {
 }
 
@@ -30,33 +33,16 @@ Scene::~Scene()
 {
 }
 
-Object::ptr Scene::GetRoot()
+Object * Scene::FindObject( std::string name )
 {
-	return m_root;
-}
-
-const Object::ptr Scene::GetRoot() const
-{
-	return m_root;
-}
-
-Object::ptr Scene::FindObject( const std::string & name )
-{
-	if ( m_root )
+	for( auto && instance : m_objects )
 	{
-		if ( unify::StringIs( m_root->GetName(), name ) )
+		if ( instance.alive && unify::StringIs( instance.object.GetName(), name ) )
 		{
-			return m_root;
-		}
-		else
-		{
-			return m_root->FindObject( name );
+			return &instance.object;
 		}
 	}
-	else
-	{
-		return Object::ptr();
-	}
+	return nullptr;
 }
 
 void Scene::OnInit()
@@ -107,50 +93,16 @@ void Scene::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 		{
 			component->OnUpdate( this, renderer, renderInfo );
 		}
-	}		   
-
+	}
+	
 	// Object updating (animation, independant physics)...
-	GetRoot()->Update( renderer, renderInfo );
-}
 
-struct FinalCamera
-{
-	Object::ptr object;
-	unify::Matrix transform;
-	CameraComponent * camera;
-};
-
-void Accumulate( std::list< RenderSet > & renderList, std::list< FinalCamera > & cameraList, Object::ptr current, IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform )
-{
-	assert( current );
-	assert( current->IsEnabled() );
-
-	// Check for a camera...
-	CameraComponent * camera{};
-	for( int i = 0; i < current->ComponentCount(); ++i )
+	for( auto && instance : m_objects )
 	{
-		IObjectComponent::ptr component = current->GetComponent( i );
-		if( !component->IsEnabled() ) continue;
-
-		camera = dynamic_cast< CameraComponent * >(component.get());
-		if( camera != nullptr )
+		if ( instance.alive )
 		{
-			cameraList.push_back( FinalCamera{ current, current->GetFrame().GetMatrix() * parentTransform, camera } );
+			instance.object.Update( renderer, renderInfo );
 		}
-	}																		 
-
-	current->CollectRenderables( renderList, renderer, renderInfo, parentTransform );
-
-	// Handle children
-	Object::ptr child = current->GetFirstChild();
-	while( child )
-	{
-		if( child->IsEnabled() )
-		{
-			Accumulate( renderList, cameraList, child, renderer, renderInfo, current->GetFrame().GetMatrix() * parentTransform );
-		}
-
-		child = child->GetNext();
 	}
 }
 
@@ -170,34 +122,52 @@ void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 		return;
 	}
 
-	// Accumulate objects for rendering, and cameras.
-	std::list< RenderSet > renderList;
-	std::list< FinalCamera > cameraList;			 
-	if( GetRoot() && GetRoot()->IsEnabled() )
+	if ( m_needRenderCaching )
 	{
-		Accumulate( renderList, cameraList, GetRoot(), renderer, renderInfo, unify::MatrixIdentity() );
+		m_cached_cameraList.clear();
+		m_cached_sorted.clear();
+
+		std::list< RenderSet > renderList;
+
+		// Accumulate objects for rendering, and cameras.
+		for( auto && instance : m_objects )
+		{
+			if ( ! instance.alive || ! instance.object.IsEnabled() ) continue;
+
+			auto && object = instance.object;
+		
+			// Check for a camera...
+			CameraComponent * camera{};
+			for( int i = 0; i < object.ComponentCount(); ++i )
+			{
+				IObjectComponent::ptr component = object.GetComponent( i );
+				if( !component->IsEnabled() ) continue;
+
+				camera = dynamic_cast< CameraComponent * >(component.get());
+				if( camera != nullptr )
+				{
+					m_cached_cameraList.push_back( FinalCamera{ &object, camera } );
+				}
+			}																		 
+
+			object.CollectRenderables( m_cached_sorted, renderer, renderInfo );
+		}
+
+		if ( m_cached_cameraList.empty() ) return;
+
+		m_needRenderCaching = false;
 	}
 
-	if ( cameraList.empty() ) return;
-
-	// Sort list by component...
-	// TODO: Check if making all of these Geometry::ptr into Geometry* during rendering is faster (since there is no changing of reference counting or temp vars).
-	std::map< Geometry::ptr, std::vector< unify::Matrix > > sorted;
-	
-	for( auto set : renderList )
-	{
-		sorted[ set.geo ].push_back( set.world );
-	}
-
-	for( auto camera : cameraList )
+	// Render all geometry for each camera...
+	for( auto camera : m_cached_cameraList )
 	{
 		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
 
 		RenderInfo myRenderInfo( renderInfo );
-		myRenderInfo.SetViewMatrix( camera.transform.Inverse() );
+		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
 		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 
-		for( auto pair : sorted )
+		for( auto pair : m_cached_sorted )
 		{
 			pair.first->Render( renderer, myRenderInfo, 0, pair.second );
 		}
@@ -214,12 +184,24 @@ void Scene::Suspend()
 		}
 	}	
 
-	GetRoot()->OnSuspend();
+	for( auto && instance : m_objects )
+	{
+		if( instance.alive )
+		{
+			instance.object.OnSuspend();
+		}
+	}
 }
 
 void Scene::Resume()
 {
-	GetRoot()->OnResume();
+	for( auto && instance : m_objects )
+	{
+		if( instance.alive )
+		{
+			instance.object.OnResume();
+		}
+	}
 
 	for ( auto && component : m_components )
 	{
@@ -367,3 +349,66 @@ int Scene::FindComponent( std::string name, int startIndex ) const
 	return -1;
 }
 
+Object * Scene::NewObject( std::string name )
+{
+	// Get the next available object...
+	Object * object = &m_objects[ m_nextObjectAvailable ].object;
+	m_objects[ m_nextObjectAvailable ].alive = true;
+
+	object->SetScene( this );
+	object->SetName( name );
+	object->AddTag( "Object #" + unify::Cast< std::string >( m_nextObjectAvailable ) );
+
+	// Find the next available object...
+	// 1. Ensure we are within capacity, or stop and grow.
+	// 2. Stop if we are within capacity, and found an available object.
+	while( ++m_nextObjectAvailable < m_objects.size() && m_objects[ m_nextObjectAvailable ].alive );
+	
+	// If we need to reallocate (note that we will be at the next available object too)...
+	if ( m_nextObjectAvailable == m_objects.size() )
+	{
+		m_objects.resize( m_objects.size() * 2 );
+	}
+
+	m_needRenderCaching = true;
+
+	return object;
+}
+
+void Scene::DestroyObject( Object * object )
+{
+	for( size_t i = 0; i < m_objects.size(); ++i )
+	{
+		if ( &m_objects[ i ].object == object )
+		{
+			m_objects[ i ].alive = false;
+			if ( i < m_nextObjectAvailable ) m_nextObjectAvailable = i;
+			break;
+		}
+	}
+	m_needRenderCaching = true;
+}
+
+Object * Scene::CopyObject( Object * from, std::string name )
+{
+	Object * newObject = NewObject( name );
+	*newObject = *from;
+	return newObject;
+}
+
+Object * Scene::CopyObject( std::string from, std::string name )
+{
+	Object * fromObject = FindObject( from );
+	if ( ! fromObject ) return nullptr;
+
+	return CopyObject( fromObject, name );
+}
+
+void Scene::CollectObjects( std::vector< Object * > objects )
+{
+	for( auto && instance : m_objects )
+	{
+		if ( ! instance.alive ) return;
+		objects.push_back( &instance.object );
+	}
+}

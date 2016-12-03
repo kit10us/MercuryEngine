@@ -6,6 +6,7 @@
 #include <me/RenderMethod.h>
 #include <me/IVertexBuffer.h>
 #include <me/IIndexBuffer.h>
+#include <unify/FrameLite.h>
 #include <vector>
 #include <memory>
 
@@ -36,6 +37,6 @@ namespace me
 		size_t GetSize() const;
 
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix & world ) const;
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< unify::Matrix > & martices ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & martices ) const;
 	};
 }

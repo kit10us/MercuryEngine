@@ -10,6 +10,7 @@
 #include <me/IPixelShader.h>
 #include <me/ITexture.h>
 #include <me/RenderInstance.h>
+#include <unify/FrameLite.h>
 #include <memory>
 
 namespace me
@@ -61,7 +62,7 @@ namespace me
 
 		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix & instance ) = 0;
 
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< unify::Matrix > & instances ) = 0;
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< const unify::FrameLite * > & instances ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

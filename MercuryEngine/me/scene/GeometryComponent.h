@@ -41,7 +41,7 @@ namespace me
 			void OnStart( Object * object ) override;
 			void OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo ) override;
 			
-			void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform ) override;
+			void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * transform ) override;
 			
 			void OnSuspend( Object * object ) override;
 			void OnResume( Object * object ) override;

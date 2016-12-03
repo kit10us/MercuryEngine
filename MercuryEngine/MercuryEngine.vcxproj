@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="me\AssetPaths.h" />
     <ClInclude Include="me\BufferSet.h" />
     <ClInclude Include="me\DataBuffer.h" />
     <ClInclude Include="me\Display.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="me\scene\GeometryComponent.h" />
     <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IObjectComponent.h" />
+    <ClInclude Include="me\scene\IObjectContainer.h" />
     <ClInclude Include="me\scene\ISceneComponent.h" />
     <ClInclude Include="me\scene\ISceneManagerComponent.h" />
     <ClInclude Include="me\scene\Object.h" />
@@ -122,6 +124,7 @@
     <ClInclude Include="sg\TubeParameters.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="me\AssetPaths.cpp" />
     <ClCompile Include="me\BufferSet.cpp" />
     <ClCompile Include="me\DataBuffer.cpp" />
     <ClCompile Include="me\Display.cpp" />

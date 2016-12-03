@@ -24,8 +24,13 @@ namespace me
 		public:
 			typedef std::shared_ptr< Object > ptr;
 
-			Object( Scene * scene, std::string name );
-			Object( const Object & object, std::string name );
+			Object();
+
+			/// <summary>
+			/// Copy object from another object
+			/// </summary>
+			void CopyFrom( std::string name, Object & objectFrom );
+
 			virtual ~Object();
 
 			void SetName( std::string name );
@@ -51,12 +56,6 @@ namespace me
 			void SetEnabled( bool enabled );
 			bool IsEnabled() const;
 
-			void SetSelectable( bool selectable );
-			bool GetSelectable() const;
-			
-			void CheckFrame( bool checkFrame );
-			bool CheckFrame() const;
-
 			unify::FrameLite & GetFrame();
 			const unify::FrameLite & GetFrame() const;
 	
@@ -65,58 +64,21 @@ namespace me
 			/// <summary>
 			/// Render or collect the geometry for optimized rendering later.
 			/// </summary>
-			void CollectRenderables( std::list< RenderSet > & list, IRenderer * renderer, const RenderInfo & renderInfo, unify::Matrix parentTransform );
+			void CollectRenderables( GeometryCache & cache, IRenderer * renderer, const RenderInfo & renderInfo );
 
 			void OnSuspend();
 			void OnResume();
-		    
-			Object::ptr GetPrevious();
-			const Object::ptr GetPrevious() const;
 
-			Object::ptr GetNext();
-			const Object::ptr GetNext() const;
-
-			Object::ptr GetParent();
-			const Object::ptr GetParent() const;
-
-			Object::ptr GetFirstChild();
-			const Object::ptr GetFirstChild() const;
-
-			/// <summary>
-			/// Add a child object.
-			/// </summary>
-			Object::ptr AddChild( std::string name );
-
-			/// <summary>
-			/// Duplicate ourselves as a sibling, with a new name.
-			/// </summary>
-			Object::ptr Duplicate( std::string name );
-
-			Object::ptr FindObject( std::string name );
-		
-			std::list< Object * > AllChildren( bool recursive );
-
+			void SetScene( Scene * scene );
 			Scene * GetScene();
 
 		protected:
 			std::string m_name;
 			Scene * m_scene;
-			std::list< std::string > m_tags;
-
 			bool m_enabled;
-			bool m_selectable;	  
-											 
+			std::list< std::string > m_tags;
 			std::list< ComponentInstance< IObjectComponent::ptr > > m_components;
-
-			size_t m_lastFrameID;
-			bool m_checkFrame;
-
 			unify::FrameLite m_frame;
-
-			Object::ptr m_previous;
-			Object::ptr m_next;
-			Object::ptr m_parent;
-			Object::ptr m_firstChild;
 		};
 	}
 }

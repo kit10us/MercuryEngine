@@ -38,7 +38,7 @@ void MyGame::Startup()
 	Scene::ptr scene = sceneManager->Add( "scene" );
 
 	// Add a camera...
-	Object::ptr camera = scene->GetRoot()->AddChild( "camera" );
+	Object * camera = scene->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
@@ -59,8 +59,8 @@ void MyGame::Startup()
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = scene->GetRoot()->AddChild( "cubeDyna" );
-	AddGeometryComponent( progObject.get(), GetOS(), meshProg );
+	auto progObject = scene->NewObject( "cubeDyna" );
+	AddGeometryComponent( progObject, GetOS(), meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
@@ -72,7 +72,7 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
-	Object::ptr camera = sceneManager->Find( "scene" )->GetRoot()->FindObject( "camera" );
+	Object * camera = sceneManager->Find( "scene" )->FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );

@@ -14,7 +14,7 @@ function OnStart()
 	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth() / Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
-	camera = root:AddChild( "camera" )
+	camera = scene1:NewObject( "camera" )
 	cameraComponent = CameraComponent()
 	cameraComponent:AttachTo( camera )
 	cameraComponent:SetProjection( proj )
@@ -22,8 +22,6 @@ function OnStart()
 	camera:Transform():LookAt( V3.Zero() )
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
-
-	group = root:AddChild( "group" )
 
 	local i = 1
 
@@ -54,7 +52,7 @@ function OnStart()
 				local x = (-offset * numR * 0.5) + (r * offset)
 				local y = 10 + l * offset
 				local z = (-offset * numC * 0.5) + (c * offset) + c % 3
-				object = group:AddChild( "geo_" .. tostring( i ) ); i = i + 1;
+				object = scene1:NewObject( "geo_" .. tostring( i ) ); i = i + 1;
 				object:Transform():SetPosition( V3.New( x, y, z ) )
 				
 				local sh = i % 2
@@ -86,7 +84,7 @@ function OnStart()
 	planeParameters:SetSegments( 2 )
 	planeParameters:SetSize2( Size2.New( 40.0, 40.0 ) )
 	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	plane = group:AddChild( "plane" )
+	plane = scene1:NewObject( "plane" )
 	plane:SetGeometry( Geometry( planeParameters ) )
 	plane:Transform():SetPosition( V3.New( 0, -20, 0 ) )
 
@@ -97,7 +95,7 @@ function OnStart()
 	terraParams:SetPoints( 100, 100 )
 	terraParams:SetHeightMap( Texture( "test256", "media/steps.bmp", true, true ), Color.NewGrey( 4 ) )
 	local terraGeo = Terra( terraParams )
-	local terra = group:AddChild( "terra" )
+	local terra = scene1:NewObject( "terra" )
 	terra:SetGeometry( terraGeo )
 	terra:Transform():SetPosition( V3.New( 0, -12, 0 ) );
 	local pxShape = PhysX.CreateHeightFieldCollider( terraGeo, 30, 30 )
@@ -109,6 +107,6 @@ function OnStart()
 end
 
 function OnUpdate()
-	group:Transform():RotateAbout( V3.New( 0, 1, 0 ), Update.GetDelta() )
+	--group:Transform():RotateAbout( V3.New( 0, 1, 0 ), Update.GetDelta() )
 	
 end

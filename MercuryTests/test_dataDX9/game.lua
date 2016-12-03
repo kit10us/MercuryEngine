@@ -14,59 +14,59 @@ function OnStart()
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
-	group = root:AddChild( "group" )
+	group = scene1:NewObject( "group" )
 	
-	local cube = group:AddChild( "cube" )
+	local cube = scene1:NewObject( "cube" )
 	cube:SetGeometry( Geometry( "cube", "media/ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
     cube:AddScript( "rotate", "lua", "script/rotatex.lua" )
 	
-	local pointfield = group:AddChild( "pointfield" )
+	local pointfield = scene1:NewObject( "pointfield" )
 	pointfield:SetGeometry( Geometry( "pointfield", "media/ShapePointField.shape" ) )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
     pointfield:AddScript( "rotate", "lua", "script/rotatey.lua" )
 		
-	local pointring = group:AddChild( "pointring" )
+	local pointring = scene1:NewObject( "pointring" )
 	pointring:SetGeometry( Geometry( "pointring", "media/ShapePointRing.shape" ) )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
     pointring:AddScript( "rotate", "lua", "script/rotatez.lua" )
 
-	local dashring = group:AddChild( "dashring" )
+	local dashring = scene1:NewObject( "dashring" )
 	dashring:SetGeometry( Geometry( "dashring", "media/ShapeDashRing.shape" ) )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
     dashring:AddScript( "rotate", "lua", "script/rotatex.lua" )
 
-	local pyramid = group:AddChild( "pyramid" )
+	local pyramid = scene1:NewObject( "pyramid" )
 	pyramid:SetGeometry( Geometry( "pyramid", "media/ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
     pyramid:AddScript( "rotate", "lua", "script/rotatey.lua" )
 		
-	local circle = group:AddChild( "circle" )
+	local circle = scene1:NewObject( "circle" )
 	circle:SetGeometry( Geometry( "circle", "media/ShapeCircle.shape" ) )
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
     circle:AddScript( "rotate", "lua", "script/rotatez.lua" )
 
-	local sphere = group:AddChild( "sphere" )
+	local sphere = scene1:NewObject( "sphere" )
 	sphere:SetGeometry( Geometry( "sphere", "media/ShapeSphere.shape" ) )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
     sphere:AddScript( "rotate", "lua", "script/rotatex.lua" )
 	   
-	local cylinder = group:AddChild( "cylinder" )
+	local cylinder = scene1:NewObject( "cylinder" )
 	cylinder:SetGeometry( Geometry( "cylinder", "media/ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
     cylinder:AddScript( "rotate", "lua", "script/rotatey.lua" )
 
-	local tube = group:AddChild( "tube" )
+	local tube = scene1:NewObject( "tube" )
 	tube:SetGeometry( Geometry( "tube", "media/ShapeTube.shape" ) )
 	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
     tube:AddScript( "rotate", "lua", "script/rotatez.lua" )
 		
-	local plane = group:AddChild( "plane" )
+	local plane = scene1:NewObject( "plane" )
 	plane:SetGeometry( Geometry( "plane", "media/ShapePlane.shape" ) )
 	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
     plane:AddScript( "rotate", "lua", "script/rotatex.lua" )
 		
-	local cone = group:AddChild( "cone" )
+	local cone = scene1:NewObject( "cone" )
 	cone:SetGeometry( Geometry( "cone", "media/ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "script/rotatey.lua" )
@@ -80,7 +80,7 @@ function OnStart()
 	terraParams:SetHeightMap( Texture( "test256", "media/pit.bmp", true, true ), Color.NewGrey( 1 ) )
 	
 	local terraGeo = Terra( terraParams )
-	local terra = group:AddChild( "terra" )
+	local terra = scene1:NewObject( "terra" )
 	terra:SetGeometry( terraGeo )
 	terra:Transform():SetPosition( V3.New( 0, -7, 0 ) );		
 	

@@ -156,7 +156,7 @@ void Module::OnUpdate( Object * object, IRenderer * renderer, const RenderInfo &
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, std::list< RenderSet > & list, unify::Matrix transform )
+void Module::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame )
 {																										
 	// DO NOTHING
 }

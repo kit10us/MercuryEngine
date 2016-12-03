@@ -66,12 +66,12 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 	}
 }
 
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< unify::Matrix > & matrices ) const
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & instances ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->RenderInstanced( method, renderInfo, matrices );
+		renderer->RenderInstanced( method, renderInfo, instances );
 	}
 }

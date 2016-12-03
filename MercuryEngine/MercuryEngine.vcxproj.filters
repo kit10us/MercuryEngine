@@ -330,6 +330,12 @@
     <ClInclude Include="me\scene\IObjectAllocator.h">
       <Filter>me\scene</Filter>
     </ClInclude>
+    <ClInclude Include="me\scene\IObjectContainer.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\AssetPaths.h">
+      <Filter>me</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -535,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="me\scene2d\CanvasComponent.cpp">
       <Filter>me\scene2d</Filter>
+    </ClCompile>
+    <ClCompile Include="me\AssetPaths.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
