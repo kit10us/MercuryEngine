@@ -69,29 +69,29 @@ const unify::Matrix & GeometryComponent::GetMatrix() const
 	return m_matrix;
 }
 
-void GeometryComponent::OnInit( Object * object )
+void GeometryComponent::OnInit()
 {
 }
 
-void GeometryComponent::OnStart( Object * object )
+void GeometryComponent::OnStart()
 {
 }
 
-void GeometryComponent::OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo )
+void GeometryComponent::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	m_geometry->Update( renderer, renderInfo, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame )
+void GeometryComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
 {
 	cache[ m_geometry.get() ].push_back( frame );
 }
 
-void GeometryComponent::OnSuspend( Object * object )
+void GeometryComponent::OnSuspend()
 {
 }
 
-void GeometryComponent::OnResume( Object * object )
+void GeometryComponent::OnResume()
 {
 }
 

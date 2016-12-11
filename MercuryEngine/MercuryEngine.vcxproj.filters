@@ -16,14 +16,14 @@
     <Filter Include="me\scene">
       <UniqueIdentifier>{fd54a837-708c-4c77-b8d8-d5d19e4ab49e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sg">
-      <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="me\scene2d">
       <UniqueIdentifier>{563e301f-4ec1-4d38-b6eb-8d85553eb0a1}</UniqueIdentifier>
     </Filter>
     <Filter Include="me\interfaces">
       <UniqueIdentifier>{7152e1d1-6ddf-4f02-91c2-0823da575fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shape_creation">
+      <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -181,52 +181,52 @@
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="sg\CircleParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\ConeParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\CubeParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\CylinderParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\DashRingParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\PlaneParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\PointFieldParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\PointRingParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\PyramidParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\ShapeBaseParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\ShapeCreators.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\ShapeFactory.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\ShapeType.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\SphereParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\TubeParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="sg\BeveledBoxParameters.h">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="me\Terra.h">
       <Filter>me</Filter>
@@ -335,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="me\AssetPaths.h">
       <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ObjectStack.h">
+      <Filter>me\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -447,52 +450,52 @@
       <Filter>me\scene</Filter>
     </ClCompile>
     <ClCompile Include="sg\CircleParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\ConeParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\CubeParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\CylinderParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\DashRingParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\PlaneParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\PointFieldParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\PointRingParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\PyramidParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\ShapeBaseParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\ShapeCreators.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\ShapeFactory.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\ShapeType.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\SphereParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\TubeParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="sg\BeveledBoxParameters.cpp">
-      <Filter>sg</Filter>
+      <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="me\Terra.cpp">
       <Filter>me</Filter>
@@ -544,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="me\AssetPaths.cpp">
       <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\ObjectStack.cpp">
+      <Filter>me\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

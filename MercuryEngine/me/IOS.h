@@ -120,7 +120,7 @@ namespace me
 		/// <summary>
 		/// Build renderers.
 		/// </summary>
-		virtual void BuildRenderers() = 0;
+		virtual void BuildRenderers( std::string title ) = 0;
 
 		/// <summary>
 		/// Startup and initalize Operating System specific dependencies.

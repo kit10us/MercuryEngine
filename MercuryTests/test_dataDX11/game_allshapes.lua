@@ -11,7 +11,7 @@ function OnStart()
 	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth() / Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
-	camera = root:AddCamera( "camera", proj )	
+	camera = scene1:AddCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.Zero() )
 

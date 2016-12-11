@@ -34,8 +34,15 @@ namespace unify
 		void SetRotation( const Quaternion & rotation );
 		void SetPosition( const V3< float > & position );
 
+		void SetModelMatrix( Matrix & modelMatrix );
+		const Matrix & GetModelMatrix() const;
+		bool GetUseModelMatrix() const;
+
 	protected:
 		unify::Quaternion m_q;
 		unify::V3< float > m_p;
+		
+		bool m_useModelMatrix;
+		unify::Matrix m_modelMatrix;
 	};
 }

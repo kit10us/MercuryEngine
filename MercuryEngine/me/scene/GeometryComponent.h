@@ -37,14 +37,14 @@ namespace me
 			unify::Matrix & GetMatrix();
 			const unify::Matrix & GetMatrix() const;
 
-			void OnInit( Object * object ) override;
-			void OnStart( Object * object ) override;
-			void OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnInit() override;
+			void OnStart() override;
+			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override;
 			
-			void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * transform ) override;
+			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform ) override;
 			
-			void OnSuspend( Object * object ) override;
-			void OnResume( Object * object ) override;
+			void OnSuspend() override;
+			void OnResume() override;
 
 			IObjectComponent * Duplicate();
 

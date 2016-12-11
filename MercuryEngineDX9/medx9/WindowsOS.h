@@ -35,8 +35,8 @@ namespace medx9
 		const std::vector< std::string > & GetCommandLine() const override;
 
 		void AddDisplay( me::Display display );
-		void CreatePendingDisplays();
-		void CreateDisplay( me::Display display );
+		void CreatePendingDisplays( std::string title );
+		void CreateDisplay( me::Display display, std::string title );
 		int RendererCount() const override;
 		me::IRenderer * GetRenderer( int index ) const override;
 
@@ -46,7 +46,7 @@ namespace medx9
 		HINSTANCE GetHInstance() const;
 		HWND GetHandle() const;
 
-		void BuildRenderers() override;
+		void BuildRenderers( std::string title ) override;
 
 		void Startup() override;
 			

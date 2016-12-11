@@ -97,6 +97,7 @@ namespace me
 		void AddExtension( unify::Path path );
 
 	private:
+		std::string m_title;
 		me::OSParameters m_osParameters;
 		std::list< me::IGameComponent::ptr > m_components;
 			

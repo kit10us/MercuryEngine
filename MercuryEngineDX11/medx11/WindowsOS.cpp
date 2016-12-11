@@ -132,7 +132,7 @@ void WindowsOS::AddDisplay( Display display )
 	m_pimpl->m_pendingDisplays.push_back( display );
 }
 
-void WindowsOS::CreatePendingDisplays()
+void WindowsOS::CreatePendingDisplays( std::string title )
 {
 	if( m_pimpl->m_pendingDisplays.empty() )
 	{
@@ -141,13 +141,13 @@ void WindowsOS::CreatePendingDisplays()
 
 	for( auto && display : m_pimpl->m_pendingDisplays )
 	{
-		CreateDisplay( display );
+		CreateDisplay( display, title );
 	}
 
 	m_pimpl->m_pendingDisplays.clear();
 }
 
-void WindowsOS::CreateDisplay( Display display )
+void WindowsOS::CreateDisplay( Display display, std::string title )
 {
 	bool isPrimary = m_pimpl->m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
 
@@ -189,7 +189,7 @@ void WindowsOS::CreateDisplay( Display display )
 		int height = static_cast< int >(display.GetSize().height);
 		HWND parentHandle = (HWND)display.GetParentHandle();
 		HINSTANCE hInstance = GetHInstance();
-		HWND handle = CreateWindowA( "MainWndClass", "An Empty DirectX Project", WS_OVERLAPPEDWINDOW, x, y, width, height,
+		HWND handle = CreateWindowA( "MainWndClass", title.c_str(), WS_OVERLAPPEDWINDOW, x, y, width, height,
 			parentHandle, (HMENU)NULL, hInstance, (LPVOID)NULL );
 
 		if( !handle )
@@ -255,9 +255,9 @@ HWND WindowsOS::GetHandle() const
 	}
 }
 
-void WindowsOS::BuildRenderers()
+void WindowsOS::BuildRenderers( std::string title )
 {		 
-	CreatePendingDisplays();
+	CreatePendingDisplays( title );
 
 	// TODO: DragAcceptFiles( this->GetHWnd(), true );
 }

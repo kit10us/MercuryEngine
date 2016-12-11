@@ -15,6 +15,9 @@ namespace me
 			FPS( me::IGame * game, Effect::ptr effect, Anchor anchor = Anchor::TopRight, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 		
 			void Update( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+		private:
+			float m_updateRate;
+			float m_secondsTillUpdate;
 		};
 	}
 }

@@ -56,16 +56,16 @@ void BBoxRendererComponent::OnAttach( Object * object )
 	}
 }
 
-void BBoxRendererComponent::OnDetach( Object * object )
+void BBoxRendererComponent::OnDetach()
 {
 	m_geomertries.clear();
 }
 
-void BBoxRendererComponent::OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo )
+void BBoxRendererComponent::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 }
 
-void BBoxRendererComponent::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame )
+void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
 {
 	if ( !m_effect || !m_geomertries.size() ) return;
 
@@ -143,7 +143,7 @@ void BBoxRendererComponent::OnRender( Object * object, IRenderer * renderer, con
 		WriteVertex( *vd, lock, i, diffuseE, m_color );
 	}
 
-	Mesh * mesh = new Mesh( renderer );
+	Mesh * mesh = new Mesh( GetOS()->GetRenderer(0) );
 
 	BufferSet & set = mesh->GetPrimitiveList().AddBufferSet();
 	set.GetRenderMethodBuffer().Clear();

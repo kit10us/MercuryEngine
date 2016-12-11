@@ -87,65 +87,65 @@ void MyGame::Startup()
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 0 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword1", "sword2" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword1" ), "sword2" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword2", "sword3" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword2" ), "sword3" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword3", "sword4" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword3" ), "sword4" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 90 ) ) );
 	}
 
 
 	{
-		auto aseObject = scene->CopyObject( "sword1", "sword5" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword1" ), "sword5" );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword5", "sword6" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword5" ), "sword6" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword6", "sword7" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword6" ), "sword7" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword7", "sword8" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword7" ), "sword8" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 90 ) ) );
 	}
 
 	
 	{
-		auto aseObject = scene->CopyObject( "sword1", "sword9" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword1" ), "sword9" );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword9", "sword10" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword9" ), "sword10" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword10", "sword11" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword10" ), "sword11" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword11", "sword12" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword11" ), "sword12" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 90 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword1", "sword13" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword12" ), "sword13" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword3", "sword14" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword13" ), "sword14" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword14", "sword15" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword14" ), "sword15" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
 	}
 	{
-		auto aseObject = scene->CopyObject( "sword15", "sword16" );
+		auto aseObject = scene->CopyObject( scene->FindObject( "sword15" ), "sword16" );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( 180 ) ) );
 	}
 }

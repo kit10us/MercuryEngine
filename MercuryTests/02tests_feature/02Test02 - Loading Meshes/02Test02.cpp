@@ -77,7 +77,12 @@ void MyGame::Startup()
 	auto xmlObject = scene->NewObject( "XMLObject" );
 	auto gc = AddGeometryComponent( xmlObject, GetOS(), meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
-	gc->GetMatrix().Scale( 0.10f );
+	{ 
+		using namespace unify;
+		unify::Matrix modelMatrix = MatrixIdentity();
+		modelMatrix.Scale( 0.10f );
+		xmlObject->GetFrame().SetModelMatrix( modelMatrix );
+	}
 	xmlObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
@@ -86,9 +91,14 @@ void MyGame::Startup()
 	auto aseObject = scene->NewObject( "swordASE" );
 	gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
-	gc->GetMatrix().Scale( 0.090f );
-	gc->GetMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
-	gc->GetMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+	{ 
+		using namespace unify;
+		unify::Matrix modelMatrix = MatrixIdentity();
+		modelMatrix.Scale( 0.090f );
+		modelMatrix.RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
+		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+		aseObject->GetFrame().SetModelMatrix( modelMatrix );
+	}
 	aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
@@ -107,10 +117,14 @@ void MyGame::Startup()
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
-
-	gc->GetMatrix().Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
-	gc->GetMatrix().RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
-	gc->GetMatrix().RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
+	{ 
+		using namespace unify;
+		unify::Matrix modelMatrix = MatrixIdentity();
+		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
+		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
+		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
+		daeModel->GetFrame().SetModelMatrix( modelMatrix );
+	}
 }
 
 void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )

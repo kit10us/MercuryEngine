@@ -22,8 +22,6 @@ namespace me
 		class Object
 		{
 		public:
-			typedef std::shared_ptr< Object > ptr;
-
 			Object();
 
 			/// <summary>
@@ -72,7 +70,11 @@ namespace me
 			void SetScene( Scene * scene );
 			Scene * GetScene();
 
+			bool IsAlive() const;
+			void SetAlive( bool alive );
+
 		protected:
+			bool m_alive;
 			std::string m_name;
 			Scene * m_scene;
 			bool m_enabled;

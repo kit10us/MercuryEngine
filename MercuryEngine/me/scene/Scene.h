@@ -7,6 +7,7 @@
 #include <me/scene/IObjectAllocator.h>
 #include <me/scene/Object.h>
 #include <me/Viewport.h>
+#include <me/scene/ObjectStack.h>
 #include <unify/MinMax.h>
 #include <list>
 #include <memory>
@@ -39,8 +40,6 @@ namespace me
 			void Suspend();
 			void Resume();
 
-			Object * FindObject( std::string name );
-    
 			unsigned int LastCullCount() const;
 			void SetRenders( bool bSolids, bool bTrans );
 			void SetCulling( bool bCulling );
@@ -83,35 +82,17 @@ namespace me
 			int FindComponent( std::string name, int startIndex = 0 ) const;
 			
 			Object * NewObject( std::string name ) override;
-			void DestroyObject( Object * object ) override;
+			bool DestroyObject( Object * object ) override;
 			Object * CopyObject( Object * from, std::string name ) override;
-			Object * CopyObject( std::string from, std::string name );
-
-			void CollectObjects( std::vector< Object * > objects );
+			void CollectObjects( std::vector< Object * > & objects ) override;
+			Object * FindObject( std::string name ) override;
 
 		private:
 			IGame * m_game;
 
 			std::list< ISceneComponent::ptr > m_components;
 
-			struct ObjectInstance
-			{
-				ObjectInstance() : alive( false ){}
-				Object object;
-				bool alive;
-			};
-			std::vector< ObjectInstance > m_objects;
-			size_t m_nextObjectAvailable;
-			size_t m_lastObjectAlive;
-
-			struct FinalCamera
-			{
-				Object * object;
-				class CameraComponent * camera;
-			};
-			std::list< FinalCamera > m_cached_cameraList;
-			std::map< Geometry *, std::vector< const unify::FrameLite * > > m_cached_sorted;
-			bool m_needRenderCaching;
+			ObjectStack m_objectStack;
 
 			bool m_inited;
 			bool m_started;

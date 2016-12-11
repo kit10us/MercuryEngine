@@ -36,9 +36,9 @@ namespace me
 			void SetPadding( float padding );
 
 			void OnAttach( Object * object ) override;
-			void OnDetach( Object * object ) override;
-			void OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo ) override;
-			void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame ) override;
+			void OnDetach() override;
+			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
 
 			IObjectComponent * Duplicate();
    

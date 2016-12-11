@@ -8,12 +8,16 @@ using namespace unify;
 FrameLite::FrameLite()
 	: m_q( QuaternionIdentity() )
 	, m_p( 0, 0, 0 )
+	, m_useModelMatrix( false )
+	, m_modelMatrix( MatrixIdentity() )
 {
 }
 
 FrameLite::FrameLite( unify::Quaternion q, unify::V3< float > p )
 	: m_q( q )
 	, m_p( p )
+	, m_useModelMatrix( false )
+	, m_modelMatrix( MatrixIdentity() )
 {
 }
 
@@ -69,7 +73,14 @@ void FrameLite::PostMul( unify::Quaternion q )
 
 Matrix FrameLite::GetMatrix() const
 {
-	return Matrix( m_q, m_p );
+	if ( m_useModelMatrix )
+	{
+		return m_modelMatrix * Matrix( m_q, m_p );
+	}
+	else
+	{
+		return Matrix( m_q, m_p );
+	}
 }
 
 V3< float > FrameLite::GetLeft() const
@@ -106,3 +117,20 @@ void FrameLite::SetPosition( const V3< float > & position )
 {
 	m_p = position;
 }
+
+void FrameLite::SetModelMatrix( Matrix & modelMatrix )
+{
+	m_useModelMatrix = true;
+	m_modelMatrix = modelMatrix;
+}
+
+const Matrix & FrameLite::GetModelMatrix() const
+{
+	return m_modelMatrix;
+}
+
+bool FrameLite::GetUseModelMatrix() const
+{
+	return m_useModelMatrix;
+}
+

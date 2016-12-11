@@ -44,10 +44,11 @@ void Game::Shutdown()
 }
 
 Game::Game( unify::Path setup )
-: m_failuresAsCritial( true )
-, m_setup( setup )
-, m_isQuitting( false )
-, m_totalStartupTime{}
+	: m_title{ "Mercury Engine" }
+	, m_failuresAsCritial( true )
+	, m_setup( setup )
+	, m_isQuitting( false )
+	, m_totalStartupTime{}
 {
 }
 
@@ -193,7 +194,11 @@ bool Game::Initialize( OSParameters osParameters )
 		{
 			for( auto && node : setup->Children() )
 			{
-				if( node.IsTagName( "logfile" ) )
+				if ( node.IsTagName( "title" ) )
+				{
+					m_title = node.GetText();
+				}
+				else if( node.IsTagName( "logfile" ) )
 				{
 					m_logFile = node.GetText();
 				}
@@ -231,7 +236,7 @@ bool Game::Initialize( OSParameters osParameters )
 	}
 
 	// Creates displays...
-	GetOS()->BuildRenderers();
+	GetOS()->BuildRenderers( m_title );
 
 	// Create asset managers...
 
@@ -291,8 +296,8 @@ bool Game::Initialize( OSParameters osParameters )
 	// TODO: This is clearly a hack. Fix this.
 	if( m_gameModule )
 	{
-		m_gameModule->OnInit( nullptr );
-		m_gameModule->OnStart( nullptr );
+		m_gameModule->OnInit();
+		m_gameModule->OnStart();
 	}
 
 	m_os->Startup();
@@ -342,7 +347,7 @@ void Game::Tick()
 
 	if( m_gameModule )
 	{
-		m_gameModule->OnUpdate( nullptr, renderer, m_renderInfo );
+		m_gameModule->OnUpdate( renderer, m_renderInfo );
 	}
 
 	for( auto && component : m_components )

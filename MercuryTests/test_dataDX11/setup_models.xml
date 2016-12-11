@@ -1,5 +1,6 @@
 <xml>
 <setup>
+<title>DX11 Test</title>
 <renderer>MercuryEngineDX11.dll</renderer>
 <failureAsCritical>true</failureAsCritical>
 <logfile>log.txt</logfile>

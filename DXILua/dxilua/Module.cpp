@@ -80,12 +80,12 @@ void Module::OnAttach( Object * object )
 	m_object = object;
 }
 
-void Module::OnDetach( Object * object )
+void Module::OnDetach()
 {
 	m_object = nullptr;
 }
 			 
-void Module::OnInit( Object * object )
+void Module::OnInit()
 {
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
@@ -146,27 +146,27 @@ void Module::OnInit( Object * object )
 	CallMember( "OnInit" );
 }
 
-void Module::OnStart( Object * object )
+void Module::OnStart()
 {
 	CallMember( "OnStart" );
 }
 
-void Module::OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo )
+void Module::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	CallMember( "OnUpdate" );
 }
 
-void Module::OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & cache, const unify::FrameLite * frame )
+void Module::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
 {																										
 	// DO NOTHING
 }
 
-void Module::OnSuspend( Object * object )
+void Module::OnSuspend()
 {
 	CallMember( "OnSuspend" );
 }
 
-void Module::OnResume( Object * object )
+void Module::OnResume()
 {
 	CallMember( "OnResume" );
 }

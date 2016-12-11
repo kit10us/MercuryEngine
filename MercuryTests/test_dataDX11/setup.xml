@@ -1,5 +1,6 @@
 <xml>
 <setup>
+<title>DX11 Test</title>
 <assets>../test_data/</assets>
 <assets></assets>
 <renderer>MercuryEngineDX11.dll</renderer>

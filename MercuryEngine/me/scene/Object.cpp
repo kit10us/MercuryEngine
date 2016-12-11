@@ -9,6 +9,7 @@ using namespace scene;
 
 Object::Object()
 	: m_name{}
+	, m_alive{ false }
 	, m_scene{}
 	, m_enabled{ true }
 	, m_tags{}
@@ -73,7 +74,7 @@ void Object::AddComponent( IObjectComponent::ptr component )
 void Object::RemoveComponent( IObjectComponent::ptr component )
 {
 	m_components.remove( component );
-	component->OnDetach( this );
+	component->OnDetach();
 }
 
 IObjectComponent::ptr Object::GetComponent( int index )
@@ -140,7 +141,7 @@ void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 		// Regardless of enabled, ensure OnInit is always called.
 		if ( component.IsInitialized() == false )
 		{
-			component.Component()->OnInit( this );
+			component.Component()->OnInit();
 			component.SetInitialized( true );
 		}
 
@@ -150,11 +151,11 @@ void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 		// Start is basically a way to get us into a beginning state.
 		if ( component.IsStarted() == false )
 		{
-			component.Component()->OnStart( this );
+			component.Component()->OnStart();
 			component.SetStarted( true );
 		}
 
-		component.Component()->OnUpdate( this, renderer, renderInfo );
+		component.Component()->OnUpdate( renderer, renderInfo );
 	}
 }
 
@@ -167,7 +168,7 @@ void Object::CollectRenderables( GeometryCache & cache, IRenderer * renderer, co
 		if ( ! component.IsInitialized() ) continue;
 		if ( ! component.IsStarted() ) continue;
 		if ( ! component.Component()->IsEnabled() ) continue;
-		component.Component()->OnRender( this, renderer, renderInfo, cache, &m_frame );
+		component.Component()->CollectGeometry( cache, &m_frame );
 	}
 }
 
@@ -177,7 +178,7 @@ void Object::OnSuspend()
 	{
 		if( component.Component()->IsEnabled() )
 		{
-			component.Component()->OnSuspend( this );
+			component.Component()->OnSuspend();
 		}
 	}
 }
@@ -188,7 +189,7 @@ void Object::OnResume()
 	{
 		if( component.Component()->IsEnabled() )
 		{
-			component.Component()->OnResume( this );
+			component.Component()->OnResume();
 		}
 	}
 }
@@ -201,4 +202,14 @@ void Object::SetScene( Scene * scene )
 Scene * Object::GetScene()
 {
 	return m_scene;
+}
+
+bool Object::IsAlive() const
+{
+	return m_alive;
+}
+
+void Object::SetAlive( bool alive )
+{
+	m_alive = alive;
 }

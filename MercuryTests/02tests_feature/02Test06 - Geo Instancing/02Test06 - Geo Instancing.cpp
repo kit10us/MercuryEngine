@@ -71,7 +71,7 @@ void MyGame::Startup()
 
 	size_t depth = 10;
 	size_t columns = 10;
-	size_t rows = 9;
+	size_t rows = 10;
 	float spacing = 2.0f;
 	for( size_t d = 0; d < depth; ++d )
 	{

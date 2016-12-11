@@ -2,9 +2,21 @@
 <imagesize width="512" height="512"/>
 <addascii name="null" ulx="0" uly="1" drx="40" dry="64"/>
 
-<addascii name="!" ulx="0" uly="1" drx="28" dry="64"/>
-<addascii name="," ulx="409" uly="1" drx="433" dry="64"/>
-<addascii name="." ulx="461" uly="1" drx="485" dry="64"/>
+<addascii name="!" ulx="0" uly="0" drx="28" dry="64"/>
+<addascii name='"' ulx="28" uly="0" drx="61" dry="64"/>
+<addascii name="#" ulx="61" uly="0" drx="102" dry="64"/>
+<addascii name="$" ulx="102" uly="0" drx="143" dry="64"/>
+<addascii name="%" ulx="143" uly="0" drx="200" dry="64"/>
+<addascii name="&" ulx="200" uly="0" drx="249" dry="64"/>
+<addascii name="'" ulx="249" uly="0" drx="271" dry="64"/>
+<addascii name="(" ulx="271" uly="0" drx="300" dry="64"/>
+<addascii name=")" ulx="300" uly="0" drx="329" dry="64"/>
+<addascii name="*" ulx="329" uly="0" drx="361" dry="64"/>
+<addascii name="+" ulx="361" uly="0" drx="408" dry="64"/>
+<addascii name="," ulx="408" uly="0" drx="433" dry="64"/>
+<addascii name="-" ulx="433" uly="0" drx="460" dry="64"/>
+<addascii name="." ulx="460" uly="0" drx="485" dry="64"/>
+<addascii name="/" ulx="485" uly="0" drx="509" dry="64"/>
 
 <addascii name="0" ulx="0" uly="65" drx="41" dry="128"/>
 <addascii name="1" ulx="42" uly="65" drx="82" dry="128"/>

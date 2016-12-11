@@ -25,16 +25,17 @@ namespace me
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 
+			bool Updateable() const override { return false; }
 			bool Renderable() const override { return false; }			   
 										   
 			void OnAttach( Object * object ) override {}
-			void OnDetach( Object * object ) override {}
-			void OnInit( Object * object ) override {}
-			void OnStart( Object * object ) override {}
-			void OnUpdate( Object * object, IRenderer * renderer, const RenderInfo & renderInfo ) override {}
-			void OnRender( Object * object, IRenderer * renderer, const RenderInfo & renderInfo, GeometryCache & list, const unify::FrameLite * frame ) override {}
-			void OnSuspend( Object * object ) override {}
-			void OnResume( Object * object ) override {}
+			void OnDetach() override {}
+			void OnInit() override {}
+			void OnStart() override {}
+			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override {}
+			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override {}
+			void OnSuspend() override {}
+			void OnResume() override {}
 
 		private:
 			IOS * m_os;
