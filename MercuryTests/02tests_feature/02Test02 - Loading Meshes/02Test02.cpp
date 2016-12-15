@@ -36,8 +36,8 @@ void MyGame::Startup()
 	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/textured3d.xml" );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/textured3d.xml" );
 
 	// Add a texture.
 	GetManager< ITexture >()->Add( "borgcube", "media/borgcube.bmp" );
@@ -72,7 +72,7 @@ void MyGame::Startup()
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
-	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
+	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", GetOS()->GetAssetPaths().FindAsset( "media/cube.xml" ) ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = scene->NewObject( "XMLObject" );
 	auto gc = AddGeometryComponent( xmlObject, GetOS(), meshXML );
