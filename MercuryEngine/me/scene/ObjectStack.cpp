@@ -14,8 +14,6 @@ ObjectStack::ObjectStack( Scene * scene, size_t max )
 , m_nextObjectAvailable{ 0 }
 , m_lastObjectAlive{ 0 }
 , m_objects( max )
-, m_needUpdateCaching{ true }
-, m_needRenderCaching{ true }
 {
 }
 
@@ -27,8 +25,9 @@ Object * ObjectStack::NewObject( std::string name )
 {
 	// Get the next available object...
 	Object * object = &m_objects[ m_nextObjectAvailable ];
-	object->SetAlive( true );
+	m_newObjects.push_back( object );
 
+	object->SetAlive( true );
 	object->SetScene( m_scene );
 	object->SetName( name );
 
@@ -43,13 +42,14 @@ Object * ObjectStack::NewObject( std::string name )
 		m_objects.resize( m_objects.size() * 2 );
 	}
 
-	m_needUpdateCaching = true;
-	m_needRenderCaching = true;
 	return object;
 }
 
 bool ObjectStack::DestroyObject( Object * object )
 {
+	// TODO: Remove from cached lists 
+	assert( 0 ); // Not supported at the moment.
+
 	for( size_t i = 0; i < m_objects.size(); ++i )
 	{
 		if ( &m_objects[ i ] == object )
@@ -59,8 +59,6 @@ bool ObjectStack::DestroyObject( Object * object )
 			return true;
 		}
 	}
-	m_needUpdateCaching = true;
-	m_needRenderCaching = true;						  
 	return false;
 }
 
@@ -95,58 +93,23 @@ Object * ObjectStack::FindObject( std::string name )
 
 void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 {
-	if ( m_needUpdateCaching )
+	for( auto && object : m_newObjects )
 	{
-		CollectObjects( m_cached_updates );
-		m_needUpdateCaching = false;
+		// Initialize
+		object->Initialize( m_updatables, m_geometries, m_cameras,  renderer, renderInfo );
 	}
+	m_newObjects.clear();
 
-	for( auto && object : m_cached_updates )
+	for( auto && updateable : m_updatables )
 	{
-		object->Update( renderer, renderInfo );
+		updateable->OnUpdate( renderer, renderInfo );
 	}
 }
 
 void ObjectStack::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
-	if ( m_needRenderCaching )
-	{
-		m_cached_cameraList.clear();
-		m_cached_sorted.clear();
-
-		std::list< RenderSet > renderList;
-
-		// Accumulate objects for rendering, and cameras.
-		std::vector< Object * > objects;
-		CollectObjects( objects );
-		for( auto && object : objects )
-		{
-			if ( ! object->IsEnabled() ) continue;
-
-			// Check for a camera...
-			CameraComponent * camera{};
-			for( int i = 0; i < object->ComponentCount(); ++i )
-			{
-				IObjectComponent::ptr component = object->GetComponent( i );
-				if( !component->IsEnabled() ) continue;
-
-				camera = dynamic_cast< CameraComponent * >(component.get());
-				if( camera != nullptr )
-				{
-					m_cached_cameraList.push_back( FinalCamera{ object, camera } );
-				}
-			}																		 
-
-			object->CollectRenderables( m_cached_sorted, renderer, renderInfo );
-		}
-
-		if ( m_cached_cameraList.empty() ) return;
-
-		m_needRenderCaching = false;
-	}
-
 	// Render all geometry for each camera...
-	for( auto camera : m_cached_cameraList )
+	for( auto camera : m_cameras )
 	{
 		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
 
@@ -154,7 +117,7 @@ void ObjectStack::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
 		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 
-		for( auto pair : m_cached_sorted )
+		for( auto pair : m_geometries )
 		{
 			pair.first->Render( renderer, myRenderInfo, 0, pair.second );
 		}

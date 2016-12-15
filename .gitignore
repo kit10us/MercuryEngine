@@ -54,3 +54,4 @@ intermediate/
 !DXI/tests_data/*
 /DXI/tests_data/*.DLL
 /MercuryTests/test_dataDX11/log.txt
+/MercuryTests/test_dataDX9/log.txt

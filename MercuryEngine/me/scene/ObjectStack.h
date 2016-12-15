@@ -32,20 +32,14 @@ namespace me
 			Scene * m_scene;
 			std::vector< Object > m_objects;
 			size_t m_nextObjectAvailable;
-			size_t m_lastObjectAlive;
+			size_t m_lastObjectAlive;  
 
+			// All objects enter here.
+			std::list< Object * > m_newObjects;
 
-			struct FinalCamera
-			{
-				Object * object;
-				class CameraComponent * camera;
-			};
-			std::list< FinalCamera > m_cached_cameraList;
-			bool m_needRenderCaching;
-			std::map< Geometry *, std::vector< const unify::FrameLite * > > m_cached_sorted;
-
-			bool m_needUpdateCaching;
-			std::vector< Object * > m_cached_updates;
+			IObjectComponent::cache m_updatables;
+			CameraCache m_cameras;
+			GeometryCache m_geometries;
 		};
 	}
 }

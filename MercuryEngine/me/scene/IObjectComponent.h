@@ -19,6 +19,7 @@ namespace me
 		{
 		public:
 			typedef std::shared_ptr< IObjectComponent > ptr;
+			typedef std::list< IObjectComponent * > cache;
 
 			virtual ~IObjectComponent() {}
 

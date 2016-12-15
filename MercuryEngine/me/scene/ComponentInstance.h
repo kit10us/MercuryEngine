@@ -30,6 +30,11 @@ namespace me
 			return m_component;
 		}
 
+		const T Component() const
+		{
+			return m_component;
+		}
+
 		void SetInitialized( bool initialized )
 		{
 			m_initialized = initialized;

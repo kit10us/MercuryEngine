@@ -16,6 +16,13 @@ namespace me
 	{
 		class Scene;
 
+		struct FinalCamera
+		{
+			Object * object;
+			class CameraComponent * camera;
+		};
+		typedef std::list< FinalCamera > CameraCache;
+
 		/// <notes>
 		/// Objects belong to Scenes. Scenes are collections of objects.
 		/// </notes>
@@ -54,13 +61,20 @@ namespace me
 			void SetEnabled( bool enabled );
 			bool IsEnabled() const;
 
+			bool IsUpdateable() const;
+
 			unify::FrameLite & GetFrame();
 			const unify::FrameLite & GetFrame() const;
-	
-			void Update( IRenderer * renderer, const RenderInfo & renderInfo );
+				  
+			/// <summary>
+			/// Initialize object and it's components.
+			/// Collect updateables.
+			/// Collect the geometry for optimized rendering later.
+			/// Collect cameras.
+			/// </summary>
+			void Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, IRenderer * renderer, const RenderInfo & renderInfo );
 
 			/// <summary>
-			/// Render or collect the geometry for optimized rendering later.
 			/// </summary>
 			void CollectRenderables( GeometryCache & cache, IRenderer * renderer, const RenderInfo & renderInfo );
 

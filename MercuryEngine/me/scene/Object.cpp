@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/Object.h>
-#include <stack>
+#include <me/scene/CameraComponent.h>
 
 using namespace me;
 using namespace scene;
@@ -102,7 +102,7 @@ IObjectComponent::ptr Object::GetComponent( std::string name, int startIndex )
 int Object::FindComponent( std::string name, int startIndex ) const
 {
 	int i = 0;
-	for( auto component : m_components )
+	for( auto && component : m_components )
 	{
 		if( i >= startIndex && unify::StringIs( component.Component()->GetName(), name ) ) return i;
 		++i;
@@ -120,6 +120,15 @@ bool Object::IsEnabled() const
     return m_enabled;
 }
 
+bool Object::IsUpdateable() const
+{
+	for( auto && component : m_components )
+	{
+		if ( component.Component()->Updateable() ) return true;
+	}		
+	return false;
+}
+
 unify::FrameLite & Object::GetFrame()
 {
 	return m_frame;
@@ -130,11 +139,8 @@ const unify::FrameLite & Object::GetFrame() const
 	return m_frame;
 }
 
-void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void Object::Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, IRenderer * renderer, const RenderInfo & renderInfo )
 {
-    // Do not update if we are not enabled.
-    if ( ! m_enabled ) return;
-
 	// Update components...
 	for( auto && component : m_components )
 	{
@@ -155,20 +161,25 @@ void Object::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 			component.SetStarted( true );
 		}
 
-		component.Component()->OnUpdate( renderer, renderInfo );
-	}
-}
+		// Updateables...
+		if ( component.Component()->Updateable() )
+		{
+			updateables.push_back( component.Component().get() );
+		}
 
-void Object::CollectRenderables( GeometryCache & cache, IRenderer * renderer, const RenderInfo & renderInfo )
-{
-	for( auto && component : m_components )
-	{
+		// Check for a camera...
+		CameraComponent * camera{};
+		camera = dynamic_cast< CameraComponent * >(component.Component().get());
+		if( camera != nullptr )
+		{
+			cameras.push_back( FinalCamera{ this, camera } );
+		}
+
 		// Don't try rendering if we haven't been properly setup...
-		if ( ! component.Component()->Renderable() ) continue;
-		if ( ! component.IsInitialized() ) continue;
-		if ( ! component.IsStarted() ) continue;
-		if ( ! component.Component()->IsEnabled() ) continue;
-		component.Component()->CollectGeometry( cache, &m_frame );
+		if ( component.Component()->Renderable() )
+		{
+			component.Component()->CollectGeometry( geometries, &m_frame );
+		}
 	}
 }
 
