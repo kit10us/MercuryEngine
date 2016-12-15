@@ -1,12 +1,12 @@
 <xml>
-  <pixelshader name="texture2d">
-    <source>texture2d.hlsl</source>
+  <pixelshader name="textured3D">
+    <source>textured3d.hlsl</source>
     <entry>ps_main</entry>
-	<profile>ps_1_1</profile>
+    <profile>ps_1_1</profile>
   </pixelshader>
-  <vertexshader name="texture2d">
-    <source>texture2d.hlsl</source>
-	<entry>vs_main</entry>
+  <vertexshader name="textured3D">
+    <source>textured3d.hlsl</source>
+    <entry>vs_main</entry>
     <profile>vs_1_1</profile>
     <vd>
 	  <element name="Position" type="Float3"/>

@@ -21,7 +21,7 @@ __declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * 
 
 	if( doc == nullptr ) 
 	{
-		game->ReportError( me::ErrorLevel::Failure, "DALoader", "Configuraiton file missing!" );
+		game->ReportError( me::ErrorLevel::Failure, "DAELoader", "Configuraiton file missing!" );
 	}
 
 	// Setup DAE factory.

@@ -8,6 +8,9 @@
 <extension>../../../extensions/ASELoader.dll</extension>
 <extension>../../../extensions/DXIMouse.dll</extension>
 <extension>../../../extensions/DXIGamepad.dll</extension>
+<assets>../test_data/</assets>
+<assets>../test_data/media/</assets>
+<assets>media/</assets>
 <gamemodule type="LUA" source="game_inputs.lua"/>
 </setup>
 </xml>

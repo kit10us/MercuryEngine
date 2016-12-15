@@ -20,7 +20,7 @@ ITexture::ptr TextureSourceFactory::Produce( unify::Path source, void * data )
 		{
 			parameters = *(TextureParameters*)data;
 		}
-		parameters.source = source;
+		parameters.source = m_game->GetOS()->GetAssetPaths().FindAsset( source );
 		return m_game->GetOS()->GetRenderer(0)->ProduceT( parameters );
 	}
 

@@ -23,8 +23,20 @@ __declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * 
 
 	auto game = dynamic_cast<Game *>(_game);
 
-	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
-	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	if( doc == nullptr ) 
+	{
+		game->ReportError( me::ErrorLevel::Failure, "ASELoader", "Configuraiton file missing!" );
+	}
+
+	const auto texturePS = doc->GetRoot()->FindFirstElement( "textureps" );
+	std::string texturePSName = texturePS->GetAttribute< std::string >( "name" );
+	unify::Path texturePSPath = _game->GetOS()->GetAssetPaths().FindAsset( texturePS->GetAttribute< std::string >( "source" ) );
+	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( texturePSName, texturePSPath );
+	
+	const auto textureVS = doc->GetRoot()->FindFirstElement( "texturevs" );
+	std::string textureVSName = textureVS->GetAttribute< std::string >( "name" );
+	unify::Path textureVSPath = _game->GetOS()->GetAssetPaths().FindAsset( textureVS->GetAttribute< std::string >( "source" ) );
+	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( textureVSName, textureVSPath );
 
 	// Setup ASE factories.
 	GeometryFactory * factory = new GeometryFactory( game );

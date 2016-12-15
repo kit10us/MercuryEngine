@@ -58,7 +58,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 				parameters.renderable = child.GetAttribute< bool >( "renderable" );
 			}
 
-			unify::Path source = child.GetDocument()->GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" );
+			unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( child.GetAttribute< std::string >( "source" ), doc.GetPath().DirectoryOnly() );
 			effect->SetTexture( stage, textureManager->Add( name, source, &parameters ) );
 		}
 		else if( child.IsTagName( "blend" ) )
@@ -71,11 +71,13 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 		//void SetLighting( unsigned int dwValue );
 		else if( child.IsTagName( "pixelshader" ) )
 		{
-			effect->SetPixelShader( pixelShaderManager->Add( child.GetAttribute< std::string >( "name" ), doc.GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" ) ) );
+			unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( child.GetAttribute< std::string >( "source" ), doc.GetPath().DirectoryOnly() );
+			effect->SetPixelShader( pixelShaderManager->Add( child.GetAttribute< std::string >( "name" ), source ) );
 		}
 		else if( child.IsTagName( "vertexshader" ) )
 		{
-			effect->SetVertexShader( vertexShaderManager->Add( child.GetAttribute< std::string >( "name" ), doc.GetPath().DirectoryOnly() + child.GetAttribute< std::string >( "source" ) ) );
+			unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( child.GetAttribute< std::string >( "source" ), doc.GetPath().DirectoryOnly() );
+			effect->SetVertexShader( vertexShaderManager->Add( child.GetAttribute< std::string >( "name" ), source ) );
 		}
 		//void AddFrame( size_t frameIndex, float influence );
 	}

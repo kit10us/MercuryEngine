@@ -18,7 +18,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 	qxml::Document doc( source );
 	auto & node = *doc.GetRoot()->FindFirstElement( "pixelshader" );
 	PixelShaderParameters parameters;
-	parameters.path = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();
+	parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( node.GetElement( "source" )->GetText(), node.GetDocument()->GetPath().DirectoryOnly() );
 	parameters.entryPointName = node.GetElement( "entry" )->GetText();
 	parameters.profile = node.GetElement( "profile" )->GetText();
 	return renderer->ProducePS( parameters );

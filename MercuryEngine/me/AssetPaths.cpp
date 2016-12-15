@@ -14,8 +14,9 @@ void AssetPaths::AddSource( unify::Path source )
 	m_paths.push_back( source );
 }
 		
-unify::Path AssetPaths::FindAsset( unify::Path path )
+unify::Path AssetPaths::FindAsset( unify::Path path, unify::Path firstPlace )
 {
+	if ( ! firstPlace.Empty() && unify::Path( firstPlace, path ).Exists() ) return unify::Path( firstPlace, path );
 	if ( path.Exists() ) return path;
 
 	for( auto && post : m_paths )

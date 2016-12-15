@@ -15,7 +15,7 @@ namespace me
 
 		void AddSource( unify::Path source );
 		
-		unify::Path FindAsset( unify::Path path );
+		unify::Path FindAsset( unify::Path path, unify::Path firstPlace = "" );
 
 	private:
 		std::list< unify::Path > m_paths;

@@ -21,7 +21,7 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 	auto & node = *doc.GetRoot()->FindFirstElement( "vertexshader" );
 
 	VertexShaderParameters parameters;
-	parameters.path = node.GetDocument()->GetPath().DirectoryOnly() + node.GetElement( "source" )->GetText();
+	parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( node.GetElement( "source" )->GetText(), node.GetDocument()->GetPath().DirectoryOnly() );
 	parameters.entryPointName = node.GetElement( "entry" )->GetText();
 	parameters. profile = node.GetElement( "profile" )->GetText();
 	parameters.vertexDeclaration.reset( new VertexDeclaration( node.GetElement( "vd" ) ) );

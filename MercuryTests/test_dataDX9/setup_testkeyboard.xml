@@ -7,6 +7,9 @@
 <extension>../../../extensions/DAELoader.dll</extension>
 <extension>../../../extensions/ASELoader.dll</extension>
 <extension>../../../extensions/DXIKeyboard.dll</extension>
+<assets>../test_data/</assets>
+<assets>../test_data/media/</assets>
+<assets>media/</assets>
 <gamemodule type="LUA" source="game_inputs.lua"/>
 </setup>
 </xml>

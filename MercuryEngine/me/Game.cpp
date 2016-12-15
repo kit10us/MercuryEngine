@@ -231,6 +231,10 @@ bool Game::Initialize( OSParameters osParameters )
 
 					GetOS()->AddDisplay( display );
 				}
+				else if( node.IsTagName( "assets" ) )
+				{
+					GetOS()->GetAssetPaths().AddSource( node.GetText() );
+				}
 			}
 		}
 	}

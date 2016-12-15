@@ -37,7 +37,7 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "media/EffectColorInstanced3D.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", GetOS()->GetAssetPaths().FindAsset( "EffectColorInstanced3D.effect" ) );
 
 	Scene::ptr scene = sceneManager->Add( "scene" );
 
@@ -102,7 +102,7 @@ void MyGame::Startup()
 	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 	scene->AddComponent( canvas );
 
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", GetOS()->GetAssetPaths().FindAsset( "font2.effect" ) );	
 	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 }
 

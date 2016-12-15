@@ -5,5 +5,8 @@
 <logfile>log.txt</logfile>
 <display fullscreen="false" x="10" y="10" width="800" height="640"/>
 <extension>../../../extensions/DXILua.dll</extension>
+<assets>../test_data/</assets>
+<assets>../test_data/media/</assets>
+<assets>media/</assets>
 </setup>
 </xml>
