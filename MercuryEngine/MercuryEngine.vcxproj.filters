@@ -333,11 +333,17 @@
     <ClInclude Include="me\scene\IObjectContainer.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\AssetPaths.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\ObjectStack.h">
       <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\DataCore.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\SceneDataCore.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\MatrixStack.h">
+      <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -545,11 +551,17 @@
     <ClCompile Include="me\scene2d\CanvasComponent.cpp">
       <Filter>me\scene2d</Filter>
     </ClCompile>
-    <ClCompile Include="me\AssetPaths.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\ObjectStack.cpp">
       <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\DataCore.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\SceneDataCore.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\MatrixStack.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,7 +14,7 @@ Vertices::Vertices( IDocument & document, const qxml::Element * node )
 	{
 		if ( childNode->IsTagName( "input" ) )
 		{
-			m_input.push_back( std::shared_ptr< Input_Unshared >( new Input_Unshared( document, childNode ) ) );
+			m_input.push_back( std::shared_ptr< Input_Shared >( new Input_Shared( childNode ) ) );
 		}
 	}
 }
@@ -29,7 +29,7 @@ const std::string & Vertices::GetName() const
 	return m_name;
 }
 
-const std::vector< std::shared_ptr< Input_Unshared > > & Vertices::GetInput() const
+const std::vector< std::shared_ptr< Input_Shared > > & Vertices::GetInput() const
 {
 	return m_input;
 }

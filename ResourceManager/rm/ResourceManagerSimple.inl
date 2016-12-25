@@ -2,8 +2,9 @@
 // All Rights Reserved
 
 template< class T >
-ResourceManagerSimple< T >::ResourceManagerSimple( std::string resourceName )
+ResourceManagerSimple< T >::ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths )
 	: m_resourceName( resourceName )
+	, m_assetPaths( assetPaths )
 {
 }
 
@@ -83,6 +84,11 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 	if( factory == m_sourceFactories.end() )
 	{
 		throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );
+	}
+
+	if ( m_assetPaths != 0 )
+	{
+		source = m_assetPaths->FindAsset( source );
 	}
 
 	auto product = factory->second->Produce( source, data );

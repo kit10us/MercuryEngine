@@ -14,6 +14,7 @@
 #include <unify/Stream.h>
 #include <unify/Exception.h>
 #include <unify/Stream.h>
+#include <unify/AssetPaths.h>
 #include <map>
 #include <memory>
 
@@ -48,7 +49,7 @@ namespace rm
 
 		typedef std::shared_ptr< T > ResourcePtr;
 
-        ResourceManagerSimple( std::string resourceName );
+        ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths = nullptr );
 		~ResourceManagerSimple();
 
 		std::string GetName() const override;
@@ -75,6 +76,7 @@ namespace rm
 
 	protected:
 		std::string m_resourceName;
+		unify::AssetPaths * m_assetPaths;
 		std::map< std::string, ResourcePtr > m_resourceList; 
 		std::map< std::string, std::shared_ptr< ISourceFactory< T > >, unify::CaseInsensitiveLessThanTest > m_sourceFactories;
 	};

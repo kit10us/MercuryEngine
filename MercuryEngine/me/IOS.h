@@ -5,9 +5,9 @@
 
 #include <me/IRenderer.h>
 #include <me/Display.h>
-#include <me/AssetPaths.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
+#include <unify/AssetPaths.h>
 #include <vector>
 #include <string>
 #include <memory>
@@ -145,6 +145,6 @@ namespace me
 		/// <summary>
 		/// Asset path manager.
 		/// </summary>
-		virtual AssetPaths & GetAssetPaths() = 0;
+		virtual unify::AssetPaths & GetAssetPaths() = 0;
 	};
 }

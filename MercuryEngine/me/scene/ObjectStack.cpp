@@ -65,8 +65,7 @@ bool ObjectStack::DestroyObject( Object * object )
 Object * ObjectStack::CopyObject( Object * from, std::string name )
 {
 	Object * newObject = NewObject( name );
-	*newObject = *from;
-	newObject->SetName( name );
+	newObject->CopyFrom( name, *from );
 	return newObject;
 }
 

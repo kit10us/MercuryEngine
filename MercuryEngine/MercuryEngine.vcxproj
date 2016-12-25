@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="me\AssetPaths.h" />
     <ClInclude Include="me\BufferSet.h" />
     <ClInclude Include="me\DataBuffer.h" />
+    <ClInclude Include="me\DataCore.h" />
     <ClInclude Include="me\Display.h" />
     <ClInclude Include="me\Effect.h" />
     <ClInclude Include="me\exception\DeviceFailure.h" />
@@ -65,6 +65,7 @@
     <ClInclude Include="me\IVertexConstruct.h" />
     <ClInclude Include="me\IVertexShader.h" />
     <ClInclude Include="me\LOD.h" />
+    <ClInclude Include="me\MatrixStack.h" />
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\Mesh.h" />
     <ClInclude Include="me\MeshAnimation.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="me\scene\ObjectStack.h" />
     <ClInclude Include="me\scene\Scene.h" />
     <ClInclude Include="me\scene\SceneComponent.h" />
+    <ClInclude Include="me\scene\SceneDataCore.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
     <ClInclude Include="me\SpriteDictionary.h" />
     <ClInclude Include="me\Terra.h" />
@@ -125,9 +127,9 @@
     <ClInclude Include="sg\TubeParameters.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="me\AssetPaths.cpp" />
     <ClCompile Include="me\BufferSet.cpp" />
     <ClCompile Include="me\DataBuffer.cpp" />
+    <ClCompile Include="me\DataCore.cpp" />
     <ClCompile Include="me\Display.cpp" />
     <ClCompile Include="me\Effect.cpp" />
     <ClCompile Include="me\Extension.cpp" />
@@ -148,6 +150,7 @@
     <ClCompile Include="me\InputManager.cpp" />
     <ClCompile Include="me\Instancing.cpp" />
     <ClCompile Include="me\LOD.cpp" />
+    <ClCompile Include="me\MatrixStack.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
     <ClCompile Include="me\PrimitiveList.cpp" />
@@ -170,6 +173,7 @@
     <ClCompile Include="me\scene\ObjectStack.cpp" />
     <ClCompile Include="me\scene\Scene.cpp" />
     <ClCompile Include="me\scene\SceneComponent.cpp" />
+    <ClCompile Include="me\scene\SceneDataCore.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
     <ClCompile Include="me\SpriteDictionary.cpp" />
     <ClCompile Include="me\Terra.cpp" />

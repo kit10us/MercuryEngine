@@ -129,6 +129,12 @@ const Matrix & FrameLite::GetModelMatrix() const
 	return m_modelMatrix;
 }
 
+Matrix & FrameLite::GetModelMatrix()
+{
+	m_useModelMatrix = true;
+	return m_modelMatrix;
+}
+
 bool FrameLite::GetUseModelMatrix() const
 {
 	return m_useModelMatrix;

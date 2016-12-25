@@ -29,14 +29,6 @@ namespace me
 			Geometry::ptr GetGeometry();
 			const Geometry::ptr GetGeometry() const;
 
-			/// <summary>
-			/// Set a projection matrix to use with this camera.
-			/// </summary>
-			void SetModelMatrix( const unify::Matrix & projection );
-			
-			unify::Matrix & GetMatrix();
-			const unify::Matrix & GetMatrix() const;
-
 			void OnInit() override;
 			void OnStart() override;
 			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override;
@@ -51,7 +43,6 @@ namespace me
 	    protected:
 			Geometry::ptr m_geometry;
 			GeometryInstanceData::ptr m_geometryInstanceData;
-			unify::Matrix m_matrix;
 	    };
     }
 

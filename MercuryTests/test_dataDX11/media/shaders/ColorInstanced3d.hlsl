@@ -2,7 +2,7 @@ struct VS_IN
 {
 	float3 position		: POSITION;
 	float4 color		: COLOR;
-	float4x4 world		: TEXCOORD0;
+	float4x4 world		: MATRIX;
 };
 
 struct VS_OUT

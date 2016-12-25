@@ -77,9 +77,6 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 		unify::V3< float > inf( geo->GetGeometry()->GetBBox().inf );
 		unify::V3< float > sup( geo->GetGeometry()->GetBBox().sup );
 
-		geo->GetMatrix().TransformCoord( inf );
-		geo->GetMatrix().TransformCoord( sup );
-
 		bbox += ( inf - unify::V3< float >( m_padding, m_padding, m_padding ) );
 		bbox += ( sup + unify::V3< float >( m_padding, m_padding, m_padding ) );
 	}

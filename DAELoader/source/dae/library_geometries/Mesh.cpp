@@ -15,39 +15,6 @@ using namespace me;
 typedef std::vector< float > VFloat;
 typedef std::vector< int > VInt;
 
-/*
-TODO: Is this used? Will find out soon.
-/// Integrates, into an existing vertex buffer, a component "dest", from "source", choriographed via "indices", offset by "indexOffset", every other "indexStride", until "count" is achieved.
-void Integrate( unify::DataLock & lock, FVF::TYPE type, const VFloat & source, const VInt & indices, int indexOffset, int indexStride, size_t count )
-{
-	for( size_t i = 0; i < count; ++i )
-	{
-		size_t ii = indexOffset + i * indexStride;
-		size_t p = indices[ ii ];
-		switch( type )
-		{
-		case FVF::XYZ:
-		case FVF::Normal:
-			{
-				unify::V3< float > v( source[ p * 3 + 0 ], source[ p * 3 + 1 ], source[ p * 3 + 2 ] );
-				lock.SetItemMember( i, &v, type );
-			}
-			break;
-		case FVF::Tex1:
-		case FVF::Tex2:
-		case FVF::Tex3:
-		case FVF::Tex4:
-			{
-				unify::TexCoords uv( source[ p * 2 + 0 ], source[ p * 2 + 1 ] );
-				lock.SetItemMember( i, &uv, type );
-			}
-			break;
-		}
-	}
-}
-*/
-
-
 Mesh::Mesh( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
 {
@@ -88,47 +55,42 @@ Mesh::Mesh( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::vector< std::shared_ptr< Source > > & Mesh::GetSource() const
-{
-	return m_source;
-}
-
-std::shared_ptr< Source > Mesh::GetSource( const std::string & name ) const
+void Mesh::GetSources( std::list< ContributingInput > & sources, const Input_Shared * input, int offset, size_t & pStride ) const
 {
 	std::string realName;
 	
 	// Remove prepended "#" from name if it exists...
-	if ( name.at( 0 ) == '#' )
+	if ( input->GetSource().at( 0 ) == '#' )
 	{
-		realName = name.substr( 1 );
+		realName = input->GetSource().substr( 1 );
 	}
 	else
 	{
-		realName = name;
+		realName = input->GetSource();
 	}
 
-	// TODO: HACK: If we want the source, and the source is the vertices, then we really want to get it's position source. This will break when we get more complicate models,
-	// however, it will also be far easier to develope the alternative then (we will have a real world example).
+	// If we are referencing the vertices, then it can expand to multiple sources.
 	if ( realName == m_vertices->GetID() )
 	{
-		realName = m_vertices->GetInput()[ 0 ]->GetSource();
-		if ( realName.at( 0 ) == '#' )
+		for( auto && subInput : m_vertices->GetInput() )
 		{
-			realName = realName.substr( 1 );
+			GetSources( sources, subInput.get(), offset + input->GetOffset(), pStride );
 		}
 	}
-
-	std::map< std::string, size_t >::const_iterator itr = m_source_map.find( realName );
-	if ( itr == m_source_map.end() )
+	else
 	{
-		return std::shared_ptr< Source >();
+		std::map< std::string, size_t >::const_iterator itr = m_source_map.find( realName );
+		if ( itr != m_source_map.end() )
+		{
+			sources.push_back( ContributingInput{ input, m_source.at( itr->second ).get(), input->GetOffset() + offset } );
+			pStride = std::max( pStride, (size_t)input->GetOffset() + 1 );
+		}
 	}
-
-	return GetSource().at( itr->second );
 }
 
 void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
 {
+	// polylist and triangles are treated as polylists.
 	for ( const auto polylist : m_polylist )
 	{
 		unify::Color diffuse = unify::Color::ColorWhite();
@@ -160,8 +122,16 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 			myEffect->SetTexture( 0, texture );
 		}
 
+		// Determine number of contributing inputs...
+		std::list< ContributingInput > ciList;
+		size_t pStride = 1;
+		for( auto && input : polylist->GetInput() )
+		{
+			GetSources( ciList, input.get(), 0, pStride );
+		}
+		
 		// Create our primitive list...
-		size_t numberOfVertices = polylist->GetP().size() / polylist->GetInput().size();
+		size_t numberOfVertices = polylist->GetP().size() / pStride;
 
 		BufferSet & set = accumulatedPL.AddBufferSet();
 
@@ -178,6 +148,48 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 		unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), numberOfVertices, false, 0 );
 
 		unify::BBox< float > bbox;
+
+		//*
+
+		size_t pHead = 0;
+		for ( size_t vertexIndex = 0; vertexIndex < numberOfVertices; ++vertexIndex )
+		{
+			for( auto && ci : ciList )
+			{
+				size_t indexIntoP = pHead + ci.offset;
+				size_t indexOfAttribute = polylist->GetP()[ indexIntoP ];
+
+				const std::string metaType = ci.input->GetSemantic(); // Type of data, meta as it's an assumption.
+				const std::vector< float > & floats = ci.source->GetFloatArray().GetArrayContents();
+				size_t offsetOfFloats = indexOfAttribute * ci.input->GetStride();
+
+				if ( unify::StringIs( metaType, "POSITION" ) || unify::StringIs( metaType, "VERTEX" ) )
+				{
+					unify::V3< float > val( floats[ offsetOfFloats + 0 ] //* -1.0f
+					, floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
+					matrix.TransformCoord( val );
+					bbox += val;
+					WriteVertex( *vd, lock, vertexIndex, positionE, val );
+					WriteVertex( *vd, lock, vertexIndex, diffuseE, diffuse );
+
+				}
+				else if ( unify::StringIs( metaType, "NORMAL" ) )
+				{
+					unify::V3< float > val( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
+					WriteVertex( *vd, lock, vertexIndex, normalE, val );
+				}
+				else if ( unify::StringIs( metaType, "TEXCOORD" ) )
+				{
+					WriteVertex( *vd, lock, vertexIndex, texE, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
+				}
+			}
+			pHead += pStride;
+		}
+
+		//*/
+
+		/*
+		//ORIGINAL:
 
 		// Iterate through the vertices...
 		size_t vertexIndex = 0;
@@ -213,6 +225,7 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 				}
 			}
 		}
+		*/
 
 		struct VT
 		{
@@ -224,30 +237,50 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 
 		set.AddVertexBuffer( {numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), BufferUsage::Dynamic, bbox } );
 
-		size_t numberOfIndices = 0;
-		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
+		
+		switch( polylist->GetType() )
 		{
-			size_t vc = polylist->GetVCount()[ vci ];
-			numberOfIndices += ( vc - 2 ) * 3;
-		}
-
-		std::vector< Index32 > indices( numberOfIndices );
-		size_t vertexHead = 0; // Tracks the first vertex, increases by vc each iteration.
-		size_t index = 0;
-		for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
+		case Polylist::PolylistType:
 		{
-			size_t vc = polylist->GetVCount()[ vci ];
-			for( size_t indexOffset = 0; indexOffset < vc - 2; ++indexOffset )
+			size_t numberOfIndices = 0;
+			for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
 			{
-				indices[ index++ ] = vertexHead + indexOffset;
-				indices[ index++ ] = vertexHead + indexOffset + 1;
-				indices[ index++ ] = vertexHead + vc - 1;
+				size_t vc = polylist->GetVCount()[ vci ];
+				numberOfIndices += ( vc - 2 ) * 3;
 			}
-			vertexHead += vc;
+
+			std::vector< Index32 > indices( numberOfIndices );
+			size_t vertexHead = 0; // Tracks the first vertex, increases by vc each iteration.
+			size_t index = 0;
+			for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
+			{
+				size_t vc = polylist->GetVCount()[ vci ];
+				for( size_t indexOffset = 0; indexOffset < vc - 2; ++indexOffset )
+				{
+					indices[ index++ ] = vertexHead + indexOffset;
+					indices[ index++ ] = vertexHead + indexOffset + 1;
+					indices[ index++ ] = vertexHead + vc - 1;
+				}
+				vertexHead += vc;
+			}
+
+			set.AddIndexBuffer( {numberOfIndices, (Index32*)&indices[0], BufferUsage::Staging } );
+
+			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
 		}
+		break;
 
-		set.AddIndexBuffer( {numberOfIndices, (Index32*)&indices[0], BufferUsage::Staging } );
+		case Polylist::TrianglesType:
+		{
+			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleList( 0, numberOfVertices / 3, myEffect ) );
+		}
+		break;
 
-		set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
+		case Polylist::LinesType:
+		{
+			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, numberOfVertices / 2, myEffect ) );
+		}
+		break;
+		}
 	}
 }

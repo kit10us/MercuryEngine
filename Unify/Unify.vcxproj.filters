@@ -67,6 +67,9 @@
     <ClCompile Include="unify\FrameLite.cpp">
       <Filter>unify</Filter>
     </ClCompile>
+    <ClCompile Include="unify\AssetPaths.cpp">
+      <Filter>unify</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unify\Angle.h">
@@ -202,6 +205,9 @@
       <Filter>unify</Filter>
     </ClInclude>
     <ClInclude Include="unify\Math.h">
+      <Filter>unify</Filter>
+    </ClInclude>
+    <ClInclude Include="unify\AssetPaths.h">
       <Filter>unify</Filter>
     </ClInclude>
   </ItemGroup>

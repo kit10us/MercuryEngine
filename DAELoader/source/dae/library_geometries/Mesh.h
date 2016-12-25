@@ -25,18 +25,25 @@ namespace dae
 	public:
 		Mesh( IDocument & document, const qxml::Element * node );
 
-		const std::vector< std::shared_ptr< Source > > & GetSource() const;
-		std::shared_ptr< Source > GetSource( const std::string & name ) const;
-			
 		/// <summary>
 		/// Build a primitive list using a given/optional material.
 		/// </summary>
 		void Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
 			
 	private:
+		struct ContributingInput
+		{
+			const Input_Shared * input;
+			const Source * source;
+			int offset;
+		};
+
+		void GetSources( std::list< ContributingInput > & sources, const Input_Shared * input, int offset, size_t & pStride ) const;
+
 		std::vector< std::shared_ptr< Source > > m_source;
 		std::shared_ptr< Vertices > m_vertices; // 1
 		std::vector< std::shared_ptr< Polylist > > m_polylist;
 		std::map< std::string, size_t > m_source_map;
+
 	};
 }

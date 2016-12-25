@@ -11,13 +11,11 @@ GeometryComponent::GeometryComponent( GeometryComponent & component )
 	: ObjectComponent( component )
 	, m_geometry( component.m_geometry )
 	, m_geometryInstanceData( component.m_geometry->CreateInstanceData() )
-	, m_matrix( component.m_matrix )
 {
 }
 
 GeometryComponent::GeometryComponent( IOS * os )
 	: ObjectComponent( os )
-	, m_matrix( unify::MatrixIdentity() )
 {
 }
 
@@ -25,7 +23,6 @@ GeometryComponent::GeometryComponent( IOS * os, Geometry::ptr geometry )
 	: ObjectComponent( os )
 	, m_geometry( geometry )
 	, m_geometryInstanceData( geometry->CreateInstanceData() )
-	, m_matrix( unify::MatrixIdentity() )
 {
 }
 
@@ -52,21 +49,6 @@ Geometry::ptr GeometryComponent::GetGeometry()
 const Geometry::ptr GeometryComponent::GetGeometry() const
 {
 	return m_geometry;
-}
-
-void GeometryComponent::SetModelMatrix( const unify::Matrix & matrix )
-{
-	m_matrix = matrix;
-}
-
-unify::Matrix & GeometryComponent::GetMatrix()
-{
-	return m_matrix;
-}
-
-const unify::Matrix & GeometryComponent::GetMatrix() const
-{
-	return m_matrix;
 }
 
 void GeometryComponent::OnInit()

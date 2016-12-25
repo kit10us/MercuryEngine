@@ -49,13 +49,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>..\extensions\</OutDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir>..\DXI\tests_data\</OutDir>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
+    <OutDir>..\extensions\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -103,7 +103,6 @@
     <ClInclude Include="source\dae\GeometrySourceFactory.h" />
     <ClInclude Include="source\dae\IDocument.h" />
     <ClInclude Include="source\dae\Input_Shared.h" />
-    <ClInclude Include="source\dae\Input_Unshared.h" />
     <ClInclude Include="source\dae\InstanceSet.h" />
     <ClInclude Include="source\dae\InstanceVisualScene.h" />
     <ClInclude Include="source\dae\Library.h" />
@@ -153,7 +152,6 @@
     <ClCompile Include="source\dae\FloatArray.cpp" />
     <ClCompile Include="source\dae\GeometrySourceFactory.cpp" />
     <ClCompile Include="source\dae\Input_Shared.cpp" />
-    <ClCompile Include="source\dae\Input_Unshared.cpp" />
     <ClCompile Include="source\dae\InstanceSet.cpp" />
     <ClCompile Include="source\dae\InstanceVisualScene.cpp" />
     <ClCompile Include="source\dae\library_controllers\Controller.cpp" />

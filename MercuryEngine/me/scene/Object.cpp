@@ -28,6 +28,7 @@ void Object::CopyFrom( std::string name, Object & objectFrom )
 	m_enabled = objectFrom.m_enabled;
 	m_frame = objectFrom.m_frame;
 	m_tags = objectFrom.m_tags;
+	m_frame = objectFrom.GetFrame();
 
 	for( auto component : objectFrom.m_components )
 	{

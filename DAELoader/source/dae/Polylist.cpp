@@ -21,12 +21,10 @@ Polylist::Polylist( IDocument & document, const qxml::Element * node )
 	else if ( node->IsTagName( "triangles" ) )
 	{
 		m_type = TrianglesType;
-		m_vcount = std::vector< int >( m_count, 3 );
 	}
 	else if ( node->IsTagName( "lines" ) )
 	{
 		m_type = LinesType;
-		m_vcount = std::vector< int >( m_count, 2 );
 	}
 	else
 	{

@@ -35,6 +35,7 @@ namespace unify
 		void SetPosition( const V3< float > & position );
 
 		void SetModelMatrix( Matrix & modelMatrix );
+		Matrix & GetModelMatrix();
 		const Matrix & GetModelMatrix() const;
 		bool GetUseModelMatrix() const;
 

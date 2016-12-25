@@ -33,15 +33,15 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "EffectTextured.effect" );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/texture3d.xml" );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "shaders/textured3d.xml" );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "shaders/textured3d.xml" );
 
 	// Add a texture.
-	GetManager< ITexture >()->Add( "borgcube", "media/borgcube.bmp" );
+	GetManager< ITexture >()->Add( "borgcube", "borgcube.bmp" );
 
 	// Create an effect.
 	Effect::ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
@@ -74,15 +74,15 @@ void MyGame::Startup()
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
-	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
+	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	{
 		auto aseObject = scene->NewObject( "sword1" );
 		gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
 		aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
-		gc->GetMatrix().Scale( 0.090f );
-		gc->GetMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
-		gc->GetMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+		aseObject->GetFrame().GetModelMatrix().Scale( 0.090f );
+		aseObject->GetFrame().GetModelMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
+		aseObject->GetFrame().GetModelMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 		aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 0 ) ) );
 	}

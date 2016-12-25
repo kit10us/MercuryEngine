@@ -26,7 +26,8 @@ namespace me
 		}
 
 		TextureParameters( unify::Path _source, bool _renderable = true, bool _lockable = false )
-			: renderable( _renderable )
+			: source( _source )
+			, renderable( _renderable )
 			, lockable( _lockable )
 			, min( me::Filtering::Linear )
 			, mag( me::Filtering::Linear )

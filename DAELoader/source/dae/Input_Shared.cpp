@@ -4,7 +4,7 @@
 using namespace dae;
 
 Input_Shared::Input_Shared( const qxml::Element * node )
-: m_offset( node->GetAttribute< int >( "offset" ) )
+: m_offset( node->GetAttributeElse< int >( "offset", 0 ) )
 , m_semantic( node->GetAttribute< std::string >( "semantic" ) )
 , m_source( node->GetAttribute< std::string >( "source" ) )
 {
@@ -14,6 +14,10 @@ Input_Shared::Input_Shared( const qxml::Element * node )
 	}
 
 	if( unify::StringIs( m_semantic, "VERTEX" ) )
+	{
+		m_stride = 3;
+	}
+	else if( unify::StringIs( m_semantic, "POSITION" ) )
 	{
 		m_stride = 3;
 	}

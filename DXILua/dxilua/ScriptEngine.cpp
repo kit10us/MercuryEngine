@@ -70,6 +70,8 @@ ExecuteResult ScriptEngine::ExecuteString( std::string line )
 
 ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 {
+	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+
 	int result = luaL_loadfile( m_state, path.ToString().c_str() );
 	if( result != LUA_OK )
 	{
@@ -87,6 +89,8 @@ ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 
 IObjectComponent::ptr ScriptEngine::LoadModule( unify::Path path )
 {					
+	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+
 	int top = lua_gettop( m_state );
 
 	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_moduleCount++ );

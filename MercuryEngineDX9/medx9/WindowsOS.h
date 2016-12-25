@@ -58,13 +58,13 @@ namespace medx9
 
 		LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
-		me::AssetPaths & WindowsOS::GetAssetPaths() override;
+		unify::AssetPaths & WindowsOS::GetAssetPaths() override;
 
 	private:
 		class Pimpl;
 		std::shared_ptr< Pimpl > m_pimpl;
 
 		me::OSParameters m_osParameters;
-		me::AssetPaths m_assetPaths;
+		unify::AssetPaths m_assetPaths;
 	};
 }

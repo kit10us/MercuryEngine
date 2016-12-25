@@ -30,12 +30,12 @@ __declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * 
 
 	const auto texturePS = doc->GetRoot()->FindFirstElement( "textureps" );
 	std::string texturePSName = texturePS->GetAttribute< std::string >( "name" );
-	unify::Path texturePSPath = _game->GetOS()->GetAssetPaths().FindAsset( texturePS->GetAttribute< std::string >( "source" ) );
+	unify::Path texturePSPath = texturePS->GetAttribute< std::string >( "source" );
 	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( texturePSName, texturePSPath );
 	
 	const auto textureVS = doc->GetRoot()->FindFirstElement( "texturevs" );
 	std::string textureVSName = textureVS->GetAttribute< std::string >( "name" );
-	unify::Path textureVSPath = _game->GetOS()->GetAssetPaths().FindAsset( textureVS->GetAttribute< std::string >( "source" ) );
+	unify::Path textureVSPath = textureVS->GetAttribute< std::string >( "source" );
 	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( textureVSName, textureVSPath );
 
 	// Setup ASE factories.

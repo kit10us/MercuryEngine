@@ -72,7 +72,7 @@ void MyGame::Startup()
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
-	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", GetOS()->GetAssetPaths().FindAsset( "media/cube.xml" ) ) );
+	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = scene->NewObject( "XMLObject" );
 	auto gc = AddGeometryComponent( xmlObject, GetOS(), meshXML );

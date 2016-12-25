@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\dae\Input_Unshared.h">
-      <Filter>dae</Filter>
-    </ClInclude>
     <ClInclude Include="source\dae\InstanceSet.h">
       <Filter>dae</Filter>
     </ClInclude>
@@ -243,9 +240,6 @@
       <Filter>dae</Filter>
     </ClCompile>
     <ClCompile Include="source\dae\Input_Shared.cpp">
-      <Filter>dae</Filter>
-    </ClCompile>
-    <ClCompile Include="source\dae\Input_Unshared.cpp">
       <Filter>dae</Filter>
     </ClCompile>
     <ClCompile Include="source\dae\library_effects\Shading.cpp">

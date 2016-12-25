@@ -28,6 +28,8 @@ namespace me
 		/// </notes>
 		class Object
 		{
+			Object( Object const & ) = delete;
+			Object & operator=(Object const &) = delete;
 		public:
 			Object();
 
@@ -35,6 +37,8 @@ namespace me
 			/// Copy object from another object
 			/// </summary>
 			void CopyFrom( std::string name, Object & objectFrom );
+
+
 
 			virtual ~Object();
 

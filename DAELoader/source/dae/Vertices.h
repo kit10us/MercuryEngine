@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <dae/Input_Unshared.h>
+#include <dae/Input_Shared.h>
 #include <dae/DocumentNode.h>
 #include <qxml/QXML.h>
 #include <vector>
@@ -21,11 +21,11 @@ namespace dae
 
 		const std::string & GetID() const;
 		const std::string & GetName() const;
-		const std::vector< std::shared_ptr< Input_Unshared > > & GetInput() const;
+		const std::vector< std::shared_ptr< Input_Shared > > & GetInput() const;
 
 	private:
 		std::string m_id;
 		std::string m_name;
-		std::vector< std::shared_ptr< Input_Unshared > > m_input;
+		std::vector< std::shared_ptr< Input_Shared > > m_input;
 	};
 }

@@ -7,7 +7,9 @@
 <extension>../../../extensions/DXILua.dll</extension>
 <assets>../test_data/</assets>
 <assets>../test_data/media/</assets>
+<assets>../test_data/scripts/</assets>
 <assets>media/</assets>
+<assets>media/shaders/</assets>
 <gamemodule type="LUA" source="twowins.lua"/>
 </setup>
 </xml>
