@@ -15,11 +15,10 @@
 	  <element semanticname="TEXCOORD" semanticindex="0" type="Float4" slot="0"/>
 	  
 	  <!-- world -->
-	  <element semanticname="TEXCOORD" semanticindex="1" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
-	  <element semanticname="TEXCOORD" semanticindex="2" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
-	  <element semanticname="TEXCOORD" semanticindex="3" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
-	  <element semanticname="TEXCOORD" semanticindex="4" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
-	  
+	  <element semanticname="Matrix" semanticindex="0" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
+	  <element semanticname="Matrix" semanticindex="1" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
+	  <element semanticname="Matrix" semanticindex="2" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
+	  <element semanticname="Matrix" semanticindex="3" type="Float4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
 	  
     </vd>
   </vertexshader>
