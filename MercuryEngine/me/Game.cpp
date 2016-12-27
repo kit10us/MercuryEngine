@@ -13,6 +13,7 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
+#include <functional>
 
 using namespace me;
 using namespace scene;
@@ -155,20 +156,28 @@ bool Game::Initialize( OSParameters osParameters )
 			ReportError( ErrorLevel::Critical, "Game", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
 		}
 
-		qxml::Document doc( m_setup );
-
-		qxml::Element * setup = doc.FindElement( "setup" );
-		if( setup )
+		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path path )
 		{
-			for( auto && node : setup->Children() )
+			qxml::Document doc( path );
+
+			qxml::Element * setup = doc.GetRoot();
+			if( setup )
 			{
-				if( node.IsTagName( "renderer" ) )
+				for( auto && node : setup->Children() )
 				{
-					unify::Path path( node.GetText() );
-					AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
+					if ( node.IsTagName( "include" ) )
+					{
+						xmlLoader( unify::Path( node.GetText() ) );
+					}
+					else if( node.IsTagName( "renderer" ) )
+					{
+						unify::Path path( node.GetText() );
+						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
+					}
 				}
 			}
-		}
+		};
+		xmlLoader( m_setup );
 	}
 	
 	assert( m_os );
@@ -187,56 +196,64 @@ bool Game::Initialize( OSParameters osParameters )
 			ReportError( ErrorLevel::Critical, "Game", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
 		}
 
-		qxml::Document doc( m_setup );
-
-		qxml::Element * setup = doc.FindElement( "setup" );
-		if( setup )
+		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
-			for( auto && node : setup->Children() )
+			qxml::Document doc( source );
+
+			qxml::Element * setup = doc.GetRoot();
+			if( setup )
 			{
-				if ( node.IsTagName( "title" ) )
-				{
-					m_title = node.GetText();
-				}
-				else if( node.IsTagName( "logfile" ) )
-				{
-					m_logFile = node.GetText();
-				}
-				else if ( node.IsTagName( "FailuresAsCritial" ) )
-				{
-					m_failuresAsCritial = unify::Cast< bool >( node.GetText() );
-				}
-				else if( node.IsTagName( "display" ) )
-				{
-					bool fullscreen = node.GetAttributeElse< bool >( "fullscreen", false );
-					int width = node.GetAttribute< int >( "width" );
-					int height = node.GetAttribute< int >( "height" );
-					int x = node.GetAttributeElse< int >( "x", 0 );
-					int y = node.GetAttributeElse< int >( "y", 0 );
-					float nearZ = node.GetAttributeElse< float >( "nearz", 0.0f );
-					float farZ = node.GetAttributeElse< float >( "farz", 1000.0f );
-
-					Display display {};
-					if ( fullscreen )
+				for( auto && node : setup->Children() )
+				{			
+					if ( node.IsTagName( "include" ) )
 					{
-						display = Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
+						xmlLoader( unify::Path( node.GetText() ) );
 					}
-					else
+					else if ( node.IsTagName( "title" ) )
 					{
-						display = Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
+						m_title = node.GetText();
 					}
+					else if( node.IsTagName( "logfile" ) )
+					{
+						m_logFile = node.GetText();
+					}
+					else if ( node.IsTagName( "FailuresAsCritial" ) )
+					{
+						m_failuresAsCritial = unify::Cast< bool >( node.GetText() );
+					}
+					else if( node.IsTagName( "display" ) )
+					{
+						bool fullscreen = node.GetAttributeElse< bool >( "fullscreen", false );
+						int width = node.GetAttribute< int >( "width" );
+						int height = node.GetAttribute< int >( "height" );
+						int x = node.GetAttributeElse< int >( "x", 0 );
+						int y = node.GetAttributeElse< int >( "y", 0 );
+						float nearZ = node.GetAttributeElse< float >( "nearz", 0.0f );
+						float farZ = node.GetAttributeElse< float >( "farz", 1000.0f );
 
-					display.SetNearZ( nearZ );
-					display.SetFarZ( farZ );
+						Display display {};
+						if ( fullscreen )
+						{
+							display = Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
+						}
+						else
+						{
+							display = Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
+						}
 
-					GetOS()->AddDisplay( display );
-				}
-				else if( node.IsTagName( "assets" ) )
-				{
-					GetOS()->GetAssetPaths().AddSource( node.GetText() );
+						display.SetNearZ( nearZ );
+						display.SetFarZ( farZ );
+
+						GetOS()->AddDisplay( display );
+					}
+					else if( node.IsTagName( "assets" ) )
+					{
+						GetOS()->GetAssetPaths().AddSource( node.GetText() );
+					}
 				}
 			}
-		}
+		};
+		xmlLoader( m_setup );	
 	}
 
 	// Creates displays...
@@ -275,27 +292,36 @@ bool Game::Initialize( OSParameters osParameters )
 	// Our setup...
 	if( m_setup.Exists() )
 	{
-		qxml::Document doc( m_setup );
 
-		qxml::Element * setup = doc.FindElement( "setup" );
-		if( setup )
+		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path path )
 		{
-			for( auto && node : setup->Children() )
+			qxml::Document doc( path );
+
+			qxml::Element * setup = doc.GetRoot();
+			if( setup )
 			{
-				if( node.IsTagName( "extension" ) )
+				for( auto && node : setup->Children() )
 				{
-					unify::Path path( node.GetText() );
-					AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
-				}
-				else if( node.IsTagName( "gamemodule" ) )
-				{
-					std::string type = node.GetAttribute< std::string >( "type" );
-					auto se = GetGameComponent< IScriptEngine * >( this, type );
-					unify::Path source = node.GetAttribute< std::string >( "source" ); 
-					m_gameModule = se->LoadModule( source );
+					if ( node.IsTagName( "include" ) )
+					{
+						xmlLoader( unify::Path( node.GetText() ) );
+					}
+					else if( node.IsTagName( "extension" ) )
+					{
+						unify::Path path( node.GetText() );
+						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
+					}
+					else if( node.IsTagName( "gamemodule" ) )
+					{
+						std::string type = node.GetAttribute< std::string >( "type" );
+						auto se = GetGameComponent< IScriptEngine * >( this, type );
+						unify::Path source = node.GetAttribute< std::string >( "source" ); 
+						m_gameModule = se->LoadModule( source );
+					}
 				}
 			}
-		}
+		};
+		xmlLoader( m_setup );
 	}
 
 	// TODO: This is clearly a hack. Fix this.

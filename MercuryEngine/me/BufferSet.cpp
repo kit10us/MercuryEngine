@@ -47,6 +47,11 @@ const IIndexBuffer::ptr BufferSet::GetIndexBuffer() const
 	return m_IB;
 }
 
+void BufferSet::AddMethod( RenderMethod & method )
+{
+	m_RB.AddMethod( method );
+}
+
 RenderMethodBuffer & BufferSet::GetRenderMethodBuffer()
 {
 	return m_RB;

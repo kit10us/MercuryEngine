@@ -2,7 +2,7 @@ struct VS_IN
 {
 	float3 position		: POSITION;
 	float4 color		: COLOR;
-	float4x4 world		: MATRIX;
+	matrix <float, 4, 4> world[1]		: Matrix;
 };
 
 struct VS_OUT
@@ -22,7 +22,7 @@ VS_OUT vs_main( in VS_IN vs_in )
 {
 	VS_OUT vs_out;
 
-	float4x4 m = mul( vs_in.world, worldMatrix );
+	float4x4 m = mul( vs_in.world[0], worldMatrix );
 	
 	vs_out.position = float4( vs_in.position, 1.0f );
 	vs_out.position = mul( vs_out.position, transpose( m ) );

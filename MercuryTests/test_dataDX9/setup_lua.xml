@@ -1,14 +1,4 @@
 <xml>
-<setup>
-<renderer>MercuryEngineDX9.dll</renderer>
-<failureAsCritical>true</failureAsCritical>
-<logfile>log.txt</logfile>
-<display fullscreen="false" x="10" y="10" width="800" height="640"/>
+<include>setup_base.xml</include>
 <extension>../../../extensions/DXILua.dll</extension>
-<assets>../test_data/</assets>
-<assets>../test_data/media/</assets>
-<assets>../test_data/scripts/</assets>
-<assets>media/</assets>
-<assets>media/shaders/</assets>
-</setup>
 </xml>

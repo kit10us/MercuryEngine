@@ -88,6 +88,7 @@
     <ClInclude Include="me\scene\CameraComponent.h" />
     <ClInclude Include="me\scene\ComponentInstance.h" />
     <ClInclude Include="me\scene\GeometryComponent.h" />
+    <ClInclude Include="me\scene\GrowableObjectStack.h" />
     <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IObjectComponent.h" />
     <ClInclude Include="me\scene\IObjectContainer.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="me\scene\CameraComponent.cpp" />
     <ClCompile Include="me\scene\ComponentInstance.cpp" />
     <ClCompile Include="me\scene\GeometryComponent.cpp" />
+    <ClCompile Include="me\scene\GrowableObjectStack.cpp" />
     <ClCompile Include="me\scene\Object.cpp" />
     <ClCompile Include="me\scene\ObjectComponent.cpp" />
     <ClCompile Include="me\scene\ObjectStack.cpp" />

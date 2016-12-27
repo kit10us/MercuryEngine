@@ -4,10 +4,8 @@
 
 #include <me/IGame.h>
 #include <me/scene/ISceneComponent.h>
-#include <me/scene/IObjectAllocator.h>
-#include <me/scene/Object.h>
+#include <me/scene/GrowableObjectStack.h>
 #include <me/Viewport.h>
-#include <me/scene/ObjectStack.h>
 #include <unify/MinMax.h>
 #include <list>
 #include <memory>
@@ -25,13 +23,15 @@ namespace me
 			STATE_COUNT,
 		};
 
-		class Scene : public IObjectAllocator
+		class Scene
 		{
 		public:
 			typedef std::shared_ptr< Scene > ptr;
 
 			Scene( IGame * game );
 			virtual ~Scene();
+
+			size_t ObjectCount() const;
 
 			void OnInit();
 			void OnStart();
@@ -81,18 +81,19 @@ namespace me
 			ISceneComponent::ptr GetComponent( std::string name, int startIndex = 0 );
 			int FindComponent( std::string name, int startIndex = 0 ) const;
 			
-			Object * NewObject( std::string name ) override;
-			bool DestroyObject( Object * object ) override;
-			Object * CopyObject( Object * from, std::string name ) override;
-			void CollectObjects( std::vector< Object * > & objects ) override;
-			Object * FindObject( std::string name ) override;
+			Object * NewObject( std::string name );
+			bool DestroyObject( Object * object );
+			Object * CopyObject( Object * from, std::string name );
+			void CollectObjects( std::vector< Object * > & objects );
+			Object * FindObject( std::string name );
 
 		private:
 			IGame * m_game;
 
 			std::list< ISceneComponent::ptr > m_components;
 
-			ObjectStack m_objectStack;
+			GrowableObjectStack m_objectStack;
+			CameraCache m_cameras;
 
 			bool m_inited;
 			bool m_started;

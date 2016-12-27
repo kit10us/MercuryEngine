@@ -8,10 +8,12 @@
 using namespace medx11;
 using namespace me;
 
-D3D11_INPUT_ELEMENT_DESC ToDX( const VertexElement & element )
+std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 {
 	D3D11_INPUT_ELEMENT_DESC out{};
 	out.InputSlot = element.InputSlot;
+
+	size_t count = 1;
 
 	switch ( element.Format )
 	{
@@ -19,6 +21,7 @@ D3D11_INPUT_ELEMENT_DESC ToDX( const VertexElement & element )
 	case ElementFormat::Float2: out.Format = DXGI_FORMAT_R32G32_FLOAT; break;
 	case ElementFormat::Float3: out.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
 	case ElementFormat::Float4: out.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
+	case ElementFormat::Matrix4x4: out.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; count = 4; break;
 	case ElementFormat::ColorUNorm: out.Format = DXGI_FORMAT_R8G8B8A8_UNORM; break;
 	case ElementFormat::Unknown: out.Format = DXGI_FORMAT_UNKNOWN; break;
 	}
@@ -41,7 +44,14 @@ D3D11_INPUT_ELEMENT_DESC ToDX( const VertexElement & element )
 
 	out.InstanceDataStepRate = element.InstanceDataStepRate;
 
-	return out;
+	std::vector< D3D11_INPUT_ELEMENT_DESC > outVector( count );
+	for( size_t i = 0; i < count; ++i )
+	{
+		outVector[ i ] = out;
+		outVector[ i ].SemanticIndex += i;
+	}
+
+	return outVector;
 }				   
 
 VertexConstruct::VertexConstruct( const me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs )
@@ -50,7 +60,12 @@ VertexConstruct::VertexConstruct( const me::IRenderer * renderer, const me::Vert
 	std::vector< D3D11_INPUT_ELEMENT_DESC > elements;
 	for ( auto & e : vd.Elements() )
 	{
-		elements.push_back( ToDX( e ) );
+		std::vector< D3D11_INPUT_ELEMENT_DESC > newElements = ToDX( e );
+
+		for( auto && element : newElements )
+		{
+			elements.push_back( element );
+		}
 	}
 
 	HRESULT hr = m_renderer->GetDxDevice()->CreateInputLayout( &elements[0], elements.size(), vs.GetBytecode(), vs.GetBytecodeLength(), &m_layout );

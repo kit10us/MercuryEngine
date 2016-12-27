@@ -22,12 +22,17 @@ Scene::Scene( IGame * game )
 , m_cullingEnabled( true )
 , m_defaultLighting( false )
 , m_defaultZWriteEnable( true )
-, m_objectStack{ this, 2000 }
+, m_objectStack{ this, 4000 }
 {
 }
 
 Scene::~Scene()
 {
+}
+
+size_t Scene::ObjectCount() const
+{
+	return m_objectStack.Count();
 }
 
 void Scene::OnInit()
@@ -80,7 +85,8 @@ void Scene::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 		}
 	}
 
-	m_objectStack.Update( renderer, renderInfo );
+	m_cameras.clear();
+	m_objectStack.Update( renderer, renderInfo, m_cameras );
 }
 
 void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
@@ -99,7 +105,7 @@ void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 		return;
 	}
 
-	m_objectStack.Render( renderer, renderInfo );
+	m_objectStack.Render( renderer, renderInfo, m_cameras );
 }
 
 void Scene::Suspend()

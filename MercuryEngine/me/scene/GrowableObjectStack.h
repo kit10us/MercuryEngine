@@ -4,6 +4,8 @@
 
 #include <me/IGame.h>
 #include <me/scene/IObjectAllocator.h>
+#include <me/scene/Object.h>
+#include <me/scene/ObjectStack.h>
 #include <list>
 
 namespace me
@@ -12,11 +14,11 @@ namespace me
 	{
 		class Scene;
 
-		class ObjectStack : public IObjectAllocator
+		class GrowableObjectStack : public IObjectAllocator
 		{
 		public:
-			ObjectStack( Scene * scene, size_t max );
-			virtual ~ObjectStack();
+			GrowableObjectStack( Scene * scene, size_t max );
+			virtual ~GrowableObjectStack();
 
 			bool IsResizable() const override;
 			size_t Count() const override;
@@ -28,23 +30,13 @@ namespace me
 			void CollectObjects( std::vector< Object * > & objects ) override;
 			Object * FindObject( std::string name );
 
-			void Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameras ) override;
+			void Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameraCache ) override;
 			void Render( IRenderer * renderer, const RenderInfo & renderInfo, const CameraCache & cameras ) override;
 
 		private:
 			Scene * m_scene;
-			std::vector< Object > m_objects;
-			size_t m_nextObjectAvailable;
-			size_t m_lastObjectAlive; 
-			size_t m_freeObjects;
-			size_t m_count;
-
-			// All objects enter here.
-			std::list< Object * > m_newObjects;
-
-			IObjectComponent::cache m_updatables;
-			CameraCache m_cameras;
-			GeometryCache m_geometries;
+			size_t m_max;
+			std::list< std::shared_ptr< ObjectStack > > m_stacks;
 		};
 	}
 }

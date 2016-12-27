@@ -5,6 +5,7 @@
 #include <me/IOS.h>
 #include <me/scene/IObjectComponent.h>
 #include <me/scene/ComponentInstance.h>
+#include <me/scene/CameraComponent.h>
 #include <me/Geometry.h>
 #include <me/RenderInfo.h>
 #include <unify/FrameLite.h>
@@ -19,7 +20,7 @@ namespace me
 		struct FinalCamera
 		{
 			Object * object;
-			class CameraComponent * camera;
+			CameraComponent * camera;
 		};
 		typedef std::list< FinalCamera > CameraCache;
 
@@ -28,18 +29,17 @@ namespace me
 		/// </notes>
 		class Object
 		{
-			Object( Object const & ) = delete;
-			Object & operator=(Object const &) = delete;
+			Object & operator=(Object const &);
 		public:
 			Object();
+
+			Object( Object && );
 
 			/// <summary>
 			/// Copy object from another object
 			/// </summary>
 			void CopyFrom( std::string name, Object & objectFrom );
-
-
-
+			
 			virtual ~Object();
 
 			void SetName( std::string name );
@@ -77,10 +77,6 @@ namespace me
 			/// Collect cameras.
 			/// </summary>
 			void Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, IRenderer * renderer, const RenderInfo & renderInfo );
-
-			/// <summary>
-			/// </summary>
-			void CollectRenderables( GeometryCache & cache, IRenderer * renderer, const RenderInfo & renderInfo );
 
 			void OnSuspend();
 			void OnResume();

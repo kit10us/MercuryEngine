@@ -31,6 +31,7 @@ namespace me
 		me::IIndexBuffer::ptr BufferSet::GetIndexBuffer();
 		const me::IIndexBuffer::ptr BufferSet::GetIndexBuffer() const;
 
+		void AddMethod( RenderMethod & method );
 		RenderMethodBuffer & BufferSet::GetRenderMethodBuffer();
 		const RenderMethodBuffer & BufferSet::GetRenderMethodBuffer() const;
 

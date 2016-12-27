@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4A4364D4-EF7A-47BA-8580-7C6FF438EEC7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My02Test07MechAnimation</RootNamespace>
+    <RootNamespace>My02Test07MeshAnimation</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="02Test07 - Mech Animation.cpp" />
+    <ClCompile Include="02Test07 - Mesh Animation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -345,6 +345,9 @@
     <ClInclude Include="me\MatrixStack.h">
       <Filter>me</Filter>
     </ClInclude>
+    <ClInclude Include="me\scene\GrowableObjectStack.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -562,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="me\MatrixStack.cpp">
       <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\GrowableObjectStack.cpp">
+      <Filter>me\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

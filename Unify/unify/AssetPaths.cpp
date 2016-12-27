@@ -24,7 +24,10 @@ unify::Path AssetPaths::FindAsset( unify::Path path, unify::Path firstPlace )
 	for( auto && post : m_paths )
 	{
 		unify::Path complete( post + path );
-		if ( complete.Exists() ) return complete;
+		if ( complete.Exists() )
+		{
+			return complete;
+		}
 	}
 
 	assert( 0 );

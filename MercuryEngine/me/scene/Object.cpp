@@ -18,6 +18,17 @@ Object::Object()
 {
 }
 
+Object::Object( Object && objectFrom )
+{
+	m_alive = objectFrom.m_alive;
+	m_name = objectFrom.m_name;
+	m_scene = objectFrom.m_scene;
+	m_enabled = objectFrom.m_enabled;
+	m_tags = objectFrom.m_tags;
+	m_components = objectFrom.m_components;
+	m_frame = objectFrom.m_frame;
+}
+
 Object::~Object()
 {
 }

@@ -1,19 +1,9 @@
 <xml>
-<setup>
-<title>DX11 Test</title>
-<renderer>MercuryEngineDX11.dll</renderer>
-<logfile>log.txt</logfile>
-<display fullscreen="false" x="10" y="10" width="800" height="640"/>
+<include>setup_base.xml</include>
 <extension>../../../extensions/DXILua.dll</extension>
 <extension>../../../extensions/DAELoader.dll</extension>
 <extension>../../../extensions/ASELoader.dll</extension>
 <extension>../../../extensions/DXIMouse.dll</extension>
 <extension>../../../extensions/DXIGamepad.dll</extension>
 <gamemodule type="LUA" source="game_inputs.lua"/>
-<assets>../test_data/</assets>
-<assets>../test_data/media/</assets>
-<assets>../test_data/scripts/</assets>
-<assets>media/</assets>
-<assets>media/shaders/</assets>
-</setup>
 </xml>

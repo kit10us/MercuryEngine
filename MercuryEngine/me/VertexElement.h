@@ -21,6 +21,7 @@ namespace me
 			Float2,
 			Float3,
 			Float4,
+			Matrix4x4,
 			ColorUNorm,
 			Unknown
 		};

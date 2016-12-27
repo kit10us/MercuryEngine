@@ -1,16 +1,5 @@
 <xml>
-<setup>
-<title>DX11 Test</title>
-<renderer>MercuryEngineDX11.dll</renderer>
-<failureAsCritical>true</failureAsCritical>
-<logfile>log.txt</logfile>
-<display fullscreen="false" x="10" y="10" width="800" height="600"/>
+<include>setup_base.xml</include>
 <extension>../../../extensions/DXILua.dll</extension>
 <gamemodule type="LUA" source="game.lua"/>
-<assets>../test_data/</assets>
-<assets>../test_data/media/</assets>
-<assets>../test_data/scripts/</assets>
-<assets>media/</assets>
-<assets>media/shaders/</assets>
-</setup>
 </xml>

@@ -10,10 +10,12 @@ using namespace me;
 using namespace scene;
 
 ObjectStack::ObjectStack( Scene * scene, size_t max )
-: m_scene( scene )
-, m_nextObjectAvailable{ 0 }
-, m_lastObjectAlive{ 0 }
-, m_objects( max )
+	: m_scene{ scene }
+	, m_freeObjects{ max }
+	, m_count{ 0 }
+	, m_nextObjectAvailable{ 0 }
+	, m_lastObjectAlive{ 0 }
+	, m_objects( max )
 {
 }
 
@@ -21,8 +23,25 @@ ObjectStack::~ObjectStack()
 {
 }
 
+bool ObjectStack::IsResizable() const
+{
+	return false;
+}
+
+size_t ObjectStack::Count() const
+{
+	return m_count;
+}
+
+bool ObjectStack::Available() const
+{
+	return m_freeObjects > 0;
+}
+
 Object * ObjectStack::NewObject( std::string name )
 {
+	if ( m_freeObjects == 0 ) return nullptr;
+
 	// Get the next available object...
 	Object * object = &m_objects[ m_nextObjectAvailable ];
 	m_newObjects.push_back( object );
@@ -32,15 +51,12 @@ Object * ObjectStack::NewObject( std::string name )
 	object->SetName( name );
 
 	// Find the next available object...
-	// 1. Ensure we are within capacity, or stop and grow.
+	// 1. Ensure we are within capacity, or stop.
 	// 2. Stop if we are within capacity, and found an available object.
 	while( ++m_nextObjectAvailable < m_objects.size() && m_objects[ m_nextObjectAvailable ].IsAlive() );
-	
-	// If we need to reallocate (note that we will be at the next available object too)...
-	if ( m_nextObjectAvailable == m_objects.size() )
-	{
-		m_objects.resize( m_objects.size() * 2 );
-	}
+
+	m_freeObjects--;
+	m_count++;
 
 	return object;
 }
@@ -59,6 +75,10 @@ bool ObjectStack::DestroyObject( Object * object )
 			return true;
 		}
 	}
+	
+	m_freeObjects++;
+	m_count--;
+
 	return false;
 }
 
@@ -90,7 +110,7 @@ Object * ObjectStack::FindObject( std::string name )
 	return nullptr;
 }
 
-void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameras )
 {
 	for( auto && object : m_newObjects )
 	{
@@ -103,12 +123,17 @@ void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 	{
 		updateable->OnUpdate( renderer, renderInfo );
 	}
+
+	for( auto camera : m_cameras )
+	{
+		cameras.push_back( camera );
+	}
 }
 
-void ObjectStack::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void ObjectStack::Render( IRenderer * renderer, const RenderInfo & renderInfo, const CameraCache & cameras )
 {
 	// Render all geometry for each camera...
-	for( auto camera : m_cameras )
+	for( auto camera : cameras )
 	{
 		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
 

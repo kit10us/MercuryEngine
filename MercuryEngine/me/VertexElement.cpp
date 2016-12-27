@@ -17,6 +17,8 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 		return sizeof( float ) * 3;
 	case ElementFormat::Float4:
 		return sizeof( float ) * 4;
+	case ElementFormat::Matrix4x4:
+		return sizeof( float ) * 4 * 4;
 	case ElementFormat::ColorUNorm:
 		return sizeof( unify::Color );
 	case ElementFormat::Unknown:
@@ -46,6 +48,7 @@ ElementFormat::TYPE ElementFormat::FromString( std::string format )
 		{ "TexCoord", ElementFormat::Float2 },
 		{ "Float3", ElementFormat::Float3 },
 		{ "Float4", ElementFormat::Float4 },
+		{ "Matrix4x4", ElementFormat::Matrix4x4 },
 		{ "ColorUNorm", ElementFormat::ColorUNorm },
 		{ "Color", ElementFormat::ColorUNorm }
 	} );
@@ -63,6 +66,8 @@ std::string ElementFormat::ToString( ElementFormat::TYPE format )
 		return "Float3";
 	case ElementFormat::Float4:
 		return "Float4";
+	case ElementFormat::Matrix4x4:
+		return "Matrix4x4";
 	case ElementFormat::ColorUNorm:
 		return "ColorUNorm";
 	case ElementFormat::Unknown:
