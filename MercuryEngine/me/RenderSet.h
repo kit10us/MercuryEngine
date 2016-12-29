@@ -9,18 +9,6 @@
 						
 namespace me
 {
+	typedef std::vector< const unify::FrameLite * > InstanceCache;
 	typedef std::map< Geometry *, std::vector< const unify::FrameLite * > > GeometryCache;
-	// std::list< RenderSet >
-
-	struct RenderSet
-	{
-		RenderSet( Geometry * _geo, unify::Matrix _world )
-			: geo( _geo )
-			, world( _world )
-		{
-		}
-
-		Geometry * geo;
-		unify::Matrix world;
-	};
 }

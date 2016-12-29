@@ -1,5 +1,6 @@
 <xml>
 <include>setup_base.xml</include>
+<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 <extension>../../../extensions/DXILua.dll</extension>
 <extension>../../../extensions/DAELoader.dll</extension>
 <extension>../../../extensions/ASELoader.dll</extension>

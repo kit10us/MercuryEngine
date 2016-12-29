@@ -26,7 +26,8 @@ namespace me
 
 		void Destroy();
 
-		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & instances ) const;
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const;
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const;
 		
 		BufferSet & AddBufferSet();
 		void RemoveBufferSet( size_t i );

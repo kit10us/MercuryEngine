@@ -153,7 +153,9 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
-	renderer->Render( method, renderInfo, unify::Matrix( q ) );
+
+	unify::Matrix instance{ unify::Matrix( q ) };
+	renderer->Render( method, renderInfo, &instance, 1 );
 }
 
 void MyGame::Shutdown()

@@ -255,49 +255,65 @@ void* Renderer::GetHandle() const
 	return m_pimpl->GetDisplay().GetHandle();
 }
 
-void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix & world )
+void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size )
 {
-	D3DPRIMITIVETYPE dxPrimitiveType {};
-	switch( method.primitiveType )
-	{
-	case PrimitiveType::PointList: dxPrimitiveType = D3DPT_POINTLIST; break;
-	case PrimitiveType::LineList: dxPrimitiveType = D3DPT_LINELIST; break;
-	case PrimitiveType::LineStrip: dxPrimitiveType = D3DPT_LINESTRIP; break;
-	case PrimitiveType::TriangleList: dxPrimitiveType = D3DPT_TRIANGLELIST;	break;
-	case PrimitiveType::TriangleStrip: dxPrimitiveType = D3DPT_TRIANGLESTRIP;  break;
-	}
+	for ( size_t i = 0; i < instances_size; ++i )
+	{	
+		D3DPRIMITIVETYPE dxPrimitiveType {};
+		switch( method.primitiveType )
+		{
+		case PrimitiveType::PointList: dxPrimitiveType = D3DPT_POINTLIST; break;
+		case PrimitiveType::LineList: dxPrimitiveType = D3DPT_LINELIST; break;
+		case PrimitiveType::LineStrip: dxPrimitiveType = D3DPT_LINESTRIP; break;
+		case PrimitiveType::TriangleList: dxPrimitiveType = D3DPT_TRIANGLELIST;	break;
+		case PrimitiveType::TriangleStrip: dxPrimitiveType = D3DPT_TRIANGLESTRIP;  break;
+		}
 							   
-	auto dxDevice = GetDxDevice();
+		auto dxDevice = GetDxDevice();
 		
-	HRESULT hr = S_OK;
+		HRESULT hr = S_OK;
 
-	if ( method.effect )
-	{
-		method.effect->Use( renderInfo, world );
-	}
+		if ( method.effect )
+		{
+			method.effect->Use( renderInfo, instances[ i ] );
+		}
 
-	// Draw Primitive...
-	if( method.useIB == false )
-	{
-		hr = dxDevice->DrawPrimitive( dxPrimitiveType, method.startVertex, method.primitiveCount );
-	}
-	else
-	{
-		hr = dxDevice->DrawIndexedPrimitive( dxPrimitiveType, method.baseVertexIndex, method.minIndex, method.vertexCount, method.startIndex, method.primitiveCount );
-	}
-	if ( FAILED(hr) )
-	{
-		throw exception::Render( "Failed to render vertex buffer!" );
+		// Draw Primitive...
+		if( method.useIB == false )
+		{
+			hr = dxDevice->DrawPrimitive( dxPrimitiveType, method.startVertex, method.primitiveCount );
+		}
+		else
+		{
+			hr = dxDevice->DrawIndexedPrimitive( dxPrimitiveType, method.baseVertexIndex, method.minIndex, method.vertexCount, method.startIndex, method.primitiveCount );
+		}
+		if ( FAILED(hr) )
+		{
+			throw exception::Render( "Failed to render vertex buffer!" );
+		}
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< const unify::FrameLite * > & instances )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size )
 {
-	for ( auto frame : instances )
-	{
-		Render( method, renderInfo, frame->GetMatrix() );
+	for ( size_t i = 0; i < instances_size; ++i )
+	{		
+		const unify::Matrix * matrix = &(instances[i]->GetMatrix());
+		Render( method, renderInfo, matrix, 1 );
 	}
 }	
+
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList )
+{
+	for( auto && instancesSet : instancesList )
+	{
+		for ( size_t i = 0; i < instancesSet.instances_size; ++i )
+		{		
+			const unify::Matrix * matrix = &(instancesSet.instances[i]->GetMatrix());
+			Render( method, renderInfo, matrix, 1 );
+		}
+	}
+}
 
 me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) const
 {

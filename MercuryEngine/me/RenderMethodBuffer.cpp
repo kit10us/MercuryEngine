@@ -56,22 +56,32 @@ size_t RenderMethodBuffer::GetSize() const
 	return m_methodList.size();
 }
 
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix & world ) const
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->Render( method, renderInfo, world );
+		renderer->Render( method, renderInfo, instances, instances_size );
 	}
 }
 
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & instances ) const
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->RenderInstanced( method, renderInfo, instances );
+		renderer->RenderInstanced( method, renderInfo, instances, instances_size );
+	}
+}
+
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const
+{
+	// Iterate through methods to render.
+	for( unsigned int i = 0; i != m_methodList.size(); ++i )
+	{
+		const RenderMethod & method = m_methodList[ i ];
+		renderer->RenderInstanced( method, renderInfo, instancesList );
 	}
 }

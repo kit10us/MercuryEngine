@@ -224,7 +224,9 @@ void TextElement::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	m_vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2, m_effect ) );
-	renderer->Render( method, renderInfo, { unify::MatrixIdentity() } );
+	
+	unify::Matrix instance{ unify::MatrixIdentity() };
+	renderer->Render( method, renderInfo, &instance, 1 );
 }
 		
 void TextElement::OnSuspend()

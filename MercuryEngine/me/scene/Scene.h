@@ -40,15 +40,6 @@ namespace me
 			void Suspend();
 			void Resume();
 
-			unsigned int LastCullCount() const;
-			void SetRenders( bool bSolids, bool bTrans );
-			void SetCulling( bool bCulling );
-			bool RayTest( const unify::V3< float > * pFirst, const unify::V3< float > * pSecond );
-		    
-			void SetDefaultLighting( bool lighting );
-		    
-			void SetDefaultZWriteEnable( bool zWriteEnable );
-		    
 			void SetSize( const unify::Size< float > & size );
 			unify::Size< float > GetSize() const;
 		    
@@ -98,19 +89,10 @@ namespace me
 			bool m_inited;
 			bool m_started;
 
-			unsigned int m_lastCullCount;
-
 			// Flags...
 			float m_order;
 			bool m_enabled;
 			bool m_renderObjects;
-			bool m_renderSolids;
-			bool m_renderTrans;
-			bool m_cullingEnabled;
-
-			// States...
-			DWORD m_defaultLighting;
-			DWORD m_defaultZWriteEnable;
 
 			// Viewport...
 			me::Viewport m_viewport;

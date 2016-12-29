@@ -13,15 +13,9 @@ Scene::Scene( IGame * game )
 : m_game( game )
 , m_inited( false )
 , m_started( false )
-, m_lastCullCount( 0 )
 , m_order( 0.0f )
 , m_enabled( true )
 , m_renderObjects( true )
-, m_renderSolids( true )
-, m_renderTrans( true )
-, m_cullingEnabled( true )
-, m_defaultLighting( false )
-, m_defaultZWriteEnable( true )
 , m_objectStack{ this, 4000 }
 {
 }
@@ -142,37 +136,6 @@ void Scene::Resume()
 			component->OnResume();
 		}
 	}
-}
-
-void Scene::SetDefaultLighting( bool lighting )
-{
-	m_defaultLighting = lighting ? true : FALSE;
-}
-
-void Scene::SetDefaultZWriteEnable( bool zWriteEnable )
-{
-	m_defaultZWriteEnable = zWriteEnable ? true : FALSE;
-}
-
-unsigned int Scene::LastCullCount() const
-{
-	return m_lastCullCount;
-}
-
-void Scene::SetRenders( bool bSolids, bool bTrans ) 
-{ 
-	m_renderSolids = bSolids;
-	m_renderTrans = bTrans; 
-}
-
-void Scene::SetCulling( bool enabled ) 
-{ 
-	m_cullingEnabled = enabled;
-}
-
-bool Scene::RayTest( const unify::V3< float > * pFirst, const unify::V3< float > * pSecond )
-{
-	return true;
 }
 
 void Scene::SetSize( const unify::Size< float > & size )

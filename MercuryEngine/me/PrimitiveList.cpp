@@ -23,12 +23,10 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & instances ) const
+void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const
 {
-	// Optimized for one buffer...
-	if ( m_buffers.size() == 1 )
+	for( const auto & set : m_buffers )
 	{
-		const auto & set = m_buffers[0];
 		if( ! set->GetEnabled() ) return;
 
 		if( set->GetVertexBuffer() )
@@ -41,29 +39,27 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 			set->GetIndexBuffer()->Use();
 		}
 
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instances );
+		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instances, instances_size );
 	}
-	else
+}
+
+void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const
+{
+	for( const auto & set : m_buffers )
 	{
-		for( auto frame : instances )
+		if( ! set->GetEnabled() ) return;
+
+		if( set->GetVertexBuffer() )
 		{
-			for( const auto & set : m_buffers )
-			{
-				if( ! set->GetEnabled() ) continue;
-
-				if( set->GetVertexBuffer() )
-				{
-					set->GetVertexBuffer()->Use();
-				}
-
-				if ( set->GetIndexBuffer() )
-				{
-					set->GetIndexBuffer()->Use();
-				}
-
-				set->GetRenderMethodBuffer().Render( renderer, renderInfo, frame->GetMatrix() );
-			}
+			set->GetVertexBuffer()->Use();
 		}
+
+		if ( set->GetIndexBuffer() )
+		{
+			set->GetIndexBuffer()->Use();
+		}
+
+		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instancesList );
 	}
 }
 

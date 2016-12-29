@@ -27,6 +27,13 @@ namespace me
 		};
 	};
 
+	struct InstancesSet
+	{
+		const unify::FrameLite ** instances;
+		const size_t instances_size;
+	};																												  
+
+
 	/// <summary>
 	/// Supports access to the renderer.
 	/// </summary>
@@ -60,9 +67,11 @@ namespace me
 
 		virtual void* GetHandle() const = 0;
 
-		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix & instance ) = 0;
+		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix * instance, const size_t instances_size ) = 0;
 
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::vector< const unify::FrameLite * > & instances ) = 0;
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) = 0;
+		
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

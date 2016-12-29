@@ -59,7 +59,7 @@ void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	}
 	*/
 	
-	m_primitiveList.Render( renderer, renderInfo, instances );
+	m_primitiveList.Render( renderer, renderInfo, &instances[0], instances.size() );
 }
 
 PrimitiveList & Mesh::GetPrimitiveList()

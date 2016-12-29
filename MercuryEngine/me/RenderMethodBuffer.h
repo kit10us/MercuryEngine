@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/IRenderer.h>
 #include <me/RenderMethod.h>
 #include <me/IVertexBuffer.h>
 #include <me/IIndexBuffer.h>
@@ -36,7 +37,8 @@ namespace me
 
 		size_t GetSize() const;
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix & world ) const;
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, std::vector< const unify::FrameLite * > & martices ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const;
 	};
 }
