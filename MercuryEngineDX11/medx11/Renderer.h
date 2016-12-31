@@ -40,7 +40,7 @@ namespace medx11
 
 		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) override;
 		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) override;
-		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::InstancesSet > & instancesList ) override;
+		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::InstancesSet * instancesList, const size_t instancesList_size ) override;
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;
@@ -64,6 +64,6 @@ namespace medx11
 		CComPtr< ID3D11RasterizerState > m_rasterizerState;	
 
 		size_t m_totalInstances;
-		CComPtr< ID3D11Buffer > m_instanceBufferM;
+		CComPtr< ID3D11Buffer > m_instanceBufferM[ 2 ];
 	};
 }

@@ -37,7 +37,7 @@ namespace medx9
 		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) override;
 
 		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) override;
-		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< me::InstancesSet > & instancesList ) override;
+		void RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::InstancesSet * instancesList, const size_t instancesList_size ) override;
 
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;

@@ -71,7 +71,7 @@ namespace me
 
 		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) = 0;
 		
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) = 0;
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

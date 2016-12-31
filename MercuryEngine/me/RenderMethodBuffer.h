@@ -39,6 +39,6 @@ namespace me
 
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) const;
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const;
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) const;
 	};
 }

@@ -24,7 +24,7 @@ namespace me
 			virtual Object * FindObject( std::string name ) = 0;
 
 			virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameraCache ) = 0;
-			virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, const CameraCache & cameras ) = 0;
+			virtual void CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation ) = 0;
 		};
 	}
 }

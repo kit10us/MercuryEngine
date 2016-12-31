@@ -303,10 +303,11 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 	}
 }	
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList )
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size )
 {
-	for( auto && instancesSet : instancesList )
+	for( size_t instancesList_index = 0; instancesList_index < instancesList_size; ++instancesList_index )
 	{
+		auto && instancesSet = instancesList[ instancesList_index ];
 		for ( size_t i = 0; i < instancesSet.instances_size; ++i )
 		{		
 			const unify::Matrix * matrix = &(instancesSet.instances[i]->GetMatrix());

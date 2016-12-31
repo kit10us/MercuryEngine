@@ -81,7 +81,7 @@ Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 	}
 
 	{
-		D3D11_TEXTURE2D_DESC depthStencilDesc = D3D11_TEXTURE2D_DESC();
+		D3D11_TEXTURE2D_DESC depthStencilDesc {};
 		depthStencilDesc.Width = (unsigned int)display.GetSize().width;
 		depthStencilDesc.Height = (unsigned int)display.GetSize().height;
 		depthStencilDesc.MipLevels = 1;
@@ -107,7 +107,7 @@ Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 		m_dxContext->OMSetRenderTargets( 1, &m_renderTargetView.p, m_depthStencilView.p );
 	}
 
-	D3D11_VIEWPORT viewport = D3D11_VIEWPORT();
+	D3D11_VIEWPORT viewport {};
 	{
 		viewport.Width = static_cast< float >(m_swapChainDesc.BufferDesc.Width);
 		viewport.Height = static_cast< float >(m_swapChainDesc.BufferDesc.Height);
@@ -119,7 +119,7 @@ Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 	}
 
 	{
-		D3D11_RASTERIZER_DESC rasterizerDesc = D3D11_RASTERIZER_DESC();
+		D3D11_RASTERIZER_DESC rasterizerDesc {};
 		rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
 		rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE; // default: D3D11_CULL_BACK
 		rasterizerDesc.FrontCounterClockwise = false;
@@ -135,19 +135,24 @@ Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 	m_dxContext->RSSetState( m_rasterizerState );
 
 	{
-		D3D11_BUFFER_DESC bufferDesc = D3D11_BUFFER_DESC();
+		D3D11_BUFFER_DESC bufferDesc = {};
 		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bufferDesc.ByteWidth = sizeof( unify::Matrix ) * m_totalInstances;
 		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		result = m_dxDevice->CreateBuffer( &bufferDesc, nullptr, &m_instanceBufferM );
+		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;				  
+
+		result = m_dxDevice->CreateBuffer( &bufferDesc, nullptr, &m_instanceBufferM[ 0 ] );
+		assert( !FAILED( result ) );
+
+		result = m_dxDevice->CreateBuffer( &bufferDesc, nullptr, &m_instanceBufferM[ 1 ] );
 		assert( !FAILED( result ) );
 	}
 }
 
 Renderer::~Renderer()
 {
-	m_instanceBufferM = nullptr;
+	m_instanceBufferM[ 0 ] = nullptr;
+	m_instanceBufferM[ 1 ] = nullptr;
 	m_dxContext = nullptr;
 	m_dxDevice = nullptr;
 }
@@ -215,10 +220,6 @@ void* Renderer::GetHandle() const
 
 void Renderer::Render( const RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size )
 {
-	auto dxRenderer = this;
-	auto dxDevice = dxRenderer->GetDxDevice();
-	auto dxContext = dxRenderer->GetDxContext();
-
 	for( size_t i = 0; i < instances_size; ++i )
 	{
 		if ( method.effect )
@@ -245,15 +246,15 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 			topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
 			break;
 		}
-		dxContext->IASetPrimitiveTopology( topology );
+		m_dxContext->IASetPrimitiveTopology( topology );
 
 		if( method.useIB == false )
 		{
-			dxContext->Draw( method.vertexCount,  method.startVertex );
+			m_dxContext->Draw( method.vertexCount,  method.startVertex );
 		}
 		else
 		{
-			dxContext->DrawIndexed( method.indexCount, method.startIndex, method.baseVertexIndex );
+			m_dxContext->DrawIndexed( method.indexCount, method.startIndex, method.baseVertexIndex );
 		}
 	}
 }
@@ -262,32 +263,31 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 {
 	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
 
+	D3D11_PRIMITIVE_TOPOLOGY topology{};
+	switch( method.primitiveType )
+	{
+	case PrimitiveType::PointList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
+		break;
+	case PrimitiveType::LineList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
+		break;
+	case PrimitiveType::LineStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
+		break;
+	case PrimitiveType::TriangleList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
+		break;
+	case PrimitiveType::TriangleStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
+		break;
+	}
+	m_dxContext->IASetPrimitiveTopology( topology );
+
 	switch( instancing )
 	{
 	case Instancing::None:
 		{
-
-			D3D11_PRIMITIVE_TOPOLOGY topology{};
-			switch( method.primitiveType )
-			{
-			case PrimitiveType::PointList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
-				break;
-			case PrimitiveType::LineList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
-				break;
-			case PrimitiveType::LineStrip: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
-				break;
-			case PrimitiveType::TriangleList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
-				break;
-			case PrimitiveType::TriangleStrip: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
-				break;
-			}
-			m_dxContext->IASetPrimitiveTopology( topology );
-
 			for( size_t i = 0; i < instances_size; ++i )
 			{
 				if ( method.effect )
@@ -316,34 +316,13 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			if ( method.effect )
 			{
 				method.effect->Use( renderInfo, { unify::MatrixIdentity() } );
-			}
-	
-			D3D11_PRIMITIVE_TOPOLOGY topology{};
-			switch( method.primitiveType )
-			{
-			case PrimitiveType::PointList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
-				break;
-			case PrimitiveType::LineList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
-				break;
-			case PrimitiveType::LineStrip: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
-				break;
-			case PrimitiveType::TriangleList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
-				break;
-			case PrimitiveType::TriangleStrip: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
-				break;
-			}
-			m_dxContext->IASetPrimitiveTopology( topology );
+			}	 
 															  
 			size_t read = 0;
 			while( read < instances_size )
 			{
 				D3D11_MAPPED_SUBRESOURCE subResource {};
-				result = m_dxContext->Map( m_instanceBufferM, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
+				result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
 				assert( !FAILED( result ) );
 
 				size_t write = 0;
@@ -354,9 +333,9 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 					write+=1;
 				}
 
-				m_dxContext->Unmap( m_instanceBufferM, 0 );
+				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
 
-				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM.p, &stride, &offset );  
+				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );  
 								   
 				if( method.useIB == false )
 				{
@@ -376,18 +355,54 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 	}
 }
 
-void Renderer::RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList )
+void Renderer::RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size )
 {
 	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
+
+	D3D11_PRIMITIVE_TOPOLOGY topology{};
+	switch( method.primitiveType )
+	{
+	case PrimitiveType::PointList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
+		break;
+	case PrimitiveType::LineList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
+		break;
+	case PrimitiveType::LineStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
+		break;
+	case PrimitiveType::TriangleList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
+		break;
+	case PrimitiveType::TriangleStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
+		break;
+	}
+	m_dxContext->IASetPrimitiveTopology( topology );
 
 	switch( instancing )
 	{
 	case Instancing::None:
-		for( auto && instances : instancesList )
 		{
-			for( size_t i = 0; i < instances.instances_size; ++i )
+			for( size_t instancesList_index = 0; instancesList_index < instancesList_size; ++instancesList_index )
 			{
-				Render( method, renderInfo, &instances.instances[i]->GetMatrix(), 1 );
+				auto && instances = instancesList[ instancesList_index ];
+				for( size_t i = 0; i < instances.instances_size; ++i )
+				{
+					if ( method.effect )
+					{
+						method.effect->Use( renderInfo, instances.instances[i]->GetMatrix() );
+					}
+
+					if( method.useIB == false )
+					{
+						m_dxContext->Draw( method.vertexCount,  method.startVertex );
+					}
+					else
+					{
+						m_dxContext->DrawIndexed( method.indexCount, method.startIndex, method.baseVertexIndex );
+					}
+				}
 			}
 		}
 		break;
@@ -402,57 +417,52 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 			{
 				method.effect->Use( renderInfo, { unify::MatrixIdentity() } );
 			}
-	
-			D3D11_PRIMITIVE_TOPOLOGY topology{};
-			switch( method.primitiveType )
-			{
-			case PrimitiveType::PointList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
-				break;
-			case PrimitiveType::LineList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
-				break;
-			case PrimitiveType::LineStrip: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
-				break;
-			case PrimitiveType::TriangleList: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
-				break;
-			case PrimitiveType::TriangleStrip: 
-				topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
-				break;
-			}
-			m_dxContext->IASetPrimitiveTopology( topology );
+					  
+			D3D11_MAPPED_SUBRESOURCE subResource {};
 
-			for( auto && instances : instancesList )
+			const size_t set_list_size = instancesList_size;
+			size_t read = 0;
+			size_t set_list_index = 0;
+			while( set_list_index < set_list_size )
 			{
-				size_t read = 0;
-				while( read < instances.instances_size )
+				const InstancesSet * set_list = &instancesList[ set_list_index ];
+
+				result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
+				assert( !FAILED( result ) );
+
+				size_t write = 0;
+				while( write < m_totalInstances )
 				{
-					D3D11_MAPPED_SUBRESOURCE subResource {};
-					result = m_dxContext->Map( m_instanceBufferM, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
-					assert( !FAILED( result ) );
+					((unify::Matrix*)subResource.pData)[ write ] = set_list->instances[ read ]->GetMatrix();
+					read+=1;
+					write+=1;
 
-					size_t write = 0;
-					while( read < instances.instances_size && write < m_totalInstances )
+					if ( read >= set_list->instances_size )
 					{
-						((unify::Matrix*)subResource.pData)[ write ] = instances.instances[ read ]->GetMatrix();
-						read+=1;
-						write+=1;
+						read = 0;
+						set_list_index++;
+						if ( set_list_index == set_list_size )
+						{
+							break;
+						}
+						else
+						{
+							set_list = &instancesList[ set_list_index ];
+						}
 					}
+				}
 
-					m_dxContext->Unmap( m_instanceBufferM, 0 );
+				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
 
-					m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM.p, &stride, &offset );  
+				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );  
 								   
-					if( method.useIB == false )
-					{
-						m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
-					}
-					else
-					{
-						m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
-					}
+				if( method.useIB == false )
+				{
+					m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
+				}
+				else
+				{
+					m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
 				}
 			}
 		}

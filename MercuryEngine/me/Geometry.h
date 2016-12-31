@@ -15,6 +15,7 @@
 #include <me/GeometryInstanceData.h>
 #include <me/RenderInfo.h>
 #include <me/RenderInstance.h>
+#include <me/IRenderer.h>
 #include <unify/Unify.h>
 #include <unify/BSphere.h>
 #include <unify/BBox.h>
@@ -35,7 +36,8 @@ namespace me
 		virtual GeometryInstanceData * CreateInstanceData();
 
 		virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< const unify::FrameLite * > & instances ) = 0;
+		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size ) = 0;
+		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const InstancesSet * instances, const size_t instancesList_size ) = 0;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;

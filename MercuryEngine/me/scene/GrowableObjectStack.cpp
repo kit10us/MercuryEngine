@@ -96,11 +96,11 @@ void GrowableObjectStack::Update( IRenderer * renderer, const RenderInfo & rende
 	}
 }
 
-void GrowableObjectStack::Render( IRenderer * renderer, const RenderInfo & renderInfo, const CameraCache & cameras )
+void GrowableObjectStack::CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->Render( renderer, renderInfo, cameras );
+		stack->CollectRendering( renderer, renderInfo, summation );
 	}
 }
 

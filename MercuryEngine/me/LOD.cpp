@@ -31,7 +31,7 @@ void LOD::Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	}
 }
 
-void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, std::vector< const unify::FrameLite * > & instances )
+void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size )
 {
 	if( m_list.empty() )
 	{
@@ -40,7 +40,7 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	
 	if( m_list.size() == 1 )
 	{
-		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, instances );
+		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, instances, instances_size );
 		return;
 	}
 
@@ -50,7 +50,29 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	{
 	}
 
-	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, instances );
+	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, instances, instances_size );
+}
+
+void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const InstancesSet * instancesList, const size_t instancesList_size )
+{
+	if( m_list.empty() )
+	{
+		return;	
+	}
+	
+	if( m_list.size() == 1 )
+	{
+		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, instancesList, instancesList_size );
+		return;
+	}
+
+	// Find the last iterator that doesn't exceed our distance.
+	std::list< LODNode >::iterator itr;
+	for( itr = m_list.begin(); itr != m_list.end() && itr->DistanceStart() < renderInfo.DistanceFromCamera(); ++itr )
+	{
+	}
+
+	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, instancesList, instancesList_size );
 }
 
 const unify::BBox< float > & LOD::ComputeBounds()

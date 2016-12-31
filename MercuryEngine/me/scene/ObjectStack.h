@@ -29,7 +29,7 @@ namespace me
 			Object * FindObject( std::string name );
 
 			void Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameras ) override;
-			void Render( IRenderer * renderer, const RenderInfo & renderInfo, const CameraCache & cameras ) override;
+			void ObjectStack::CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;

@@ -76,12 +76,12 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 	}
 }
 
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->RenderInstanced( method, renderInfo, instancesList );
+		renderer->RenderInstanced( method, renderInfo, instancesList, instancesList_size );
 	}
 }

@@ -154,10 +154,9 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 	set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );	 
 
 	m_geometry.reset( mesh );
-	cache[ m_geometry.get() ].push_back( frame );
+	cache.Add( m_geometry.get(), frame );
 }
-
-
+					   
 IObjectComponent * BBoxRendererComponent::Duplicate()
 {
 	auto duplicate = new BBoxRendererComponent( *this );

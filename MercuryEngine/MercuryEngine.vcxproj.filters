@@ -276,9 +276,6 @@
     <ClInclude Include="me\scene\ComponentInstance.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\RenderSet.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Instancing.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -347,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="me\scene\GrowableObjectStack.h">
       <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\GeometryCache.h">
+      <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -568,6 +568,9 @@
     </ClCompile>
     <ClCompile Include="me\scene\GrowableObjectStack.cpp">
       <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\GeometryCache.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

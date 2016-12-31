@@ -99,7 +99,20 @@ void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 		return;
 	}
 
-	m_objectStack.Render( renderer, renderInfo, m_cameras );
+	GeometryCacheSummation summation;
+	m_objectStack.CollectRendering( renderer, renderInfo, summation );
+						 
+	// Render all geometry for each camera...
+	for( auto camera : m_cameras )
+	{
+		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
+
+		RenderInfo myRenderInfo( renderInfo );
+		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
+		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
+
+		summation.Render( renderer, myRenderInfo );
+	}
 }
 
 void Scene::Suspend()

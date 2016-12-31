@@ -130,20 +130,7 @@ void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo, C
 	}
 }
 
-void ObjectStack::Render( IRenderer * renderer, const RenderInfo & renderInfo, const CameraCache & cameras )
-{
-	// Render all geometry for each camera...
-	for( auto camera : cameras )
-	{
-		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
-
-		RenderInfo myRenderInfo( renderInfo );
-		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
-		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
-
-		for( auto pair : m_geometries )
-		{
-			pair.first->Render( renderer, myRenderInfo, 0, pair.second );
-		}
-	}
+void ObjectStack::CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation )
+{					  
+	m_geometries.Sum( summation );
 }

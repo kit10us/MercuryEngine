@@ -48,6 +48,7 @@
     <ClInclude Include="me\Frustum.h" />
     <ClInclude Include="me\Game.h" />
     <ClInclude Include="me\Geometry.h" />
+    <ClInclude Include="me\GeometryCache.h" />
     <ClInclude Include="me\GeometryInstanceData.h" />
     <ClInclude Include="me\IGame.h" />
     <ClInclude Include="me\IGameComponent.h" />
@@ -75,7 +76,6 @@
     <ClInclude Include="me\RenderInstance.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderMethodBuffer.h" />
-    <ClInclude Include="me\RenderSet.h" />
     <ClInclude Include="me\scene2d\Anchor.h" />
     <ClInclude Include="me\scene2d\CanvasComponent.h" />
     <ClInclude Include="me\scene2d\Element.h" />
@@ -146,6 +146,7 @@
     <ClCompile Include="me\Frustum.cpp" />
     <ClCompile Include="me\Game.cpp" />
     <ClCompile Include="me\Geometry.cpp" />
+    <ClCompile Include="me\GeometryCache.cpp" />
     <ClCompile Include="me\GeometryInstanceData.cpp" />
     <ClCompile Include="me\IndexLock.cpp" />
     <ClCompile Include="me\InputManager.cpp" />

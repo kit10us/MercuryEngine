@@ -43,7 +43,7 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 	}
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const std::list< InstancesSet > & instancesList ) const
+void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) const
 {
 	for( const auto & set : m_buffers )
 	{
@@ -59,7 +59,7 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 			set->GetIndexBuffer()->Use();
 		}
 
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instancesList );
+		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instancesList, instancesList_size );
 	}
 }
 

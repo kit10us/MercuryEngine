@@ -66,7 +66,7 @@ void GeometryComponent::OnUpdate( IRenderer * renderer, const RenderInfo & rende
 
 void GeometryComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
 {
-	cache[ m_geometry.get() ].push_back( frame );
+	cache.Add( m_geometry.get(), frame );
 }
 
 void GeometryComponent::OnSuspend()

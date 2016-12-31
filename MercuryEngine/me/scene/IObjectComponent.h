@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/RenderInfo.h>
-#include <me/RenderSet.h>
+#include <me/GeometryCache.h>
 #include <unify/FrameLite.h>
 #include <string>
 #include <memory>

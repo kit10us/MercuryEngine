@@ -13,8 +13,9 @@ namespace me
 		LOD();
 		~LOD();
 
-		void Update( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData );
-		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, std::vector< const unify::FrameLite * > & instances );
+		void Update( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData ) override;
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size ) override;
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, const InstancesSet * instancesList, const size_t instancesList_size ) override;
 
 		void Add( me::Geometry::ptr geometry, float distance );
 		me::Geometry::ptr GetLOD( unsigned int index );
