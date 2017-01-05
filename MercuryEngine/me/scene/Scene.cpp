@@ -16,7 +16,7 @@ Scene::Scene( IGame * game )
 , m_order( 0.0f )
 , m_enabled( true )
 , m_renderObjects( true )
-, m_objectStack{ this, 4000 }
+, m_objectStack{new GrowableObjectStack{ this, 4000} }
 {
 }
 
@@ -26,7 +26,7 @@ Scene::~Scene()
 
 size_t Scene::ObjectCount() const
 {
-	return m_objectStack.Count();
+	return m_objectStack->Count();
 }
 
 void Scene::OnInit()
@@ -80,7 +80,7 @@ void Scene::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 	}
 
 	m_cameras.clear();
-	m_objectStack.Update( renderer, renderInfo, m_cameras );
+	m_objectStack->Update( renderer, renderInfo, m_cameras );
 }
 
 void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
@@ -100,7 +100,7 @@ void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	}
 
 	GeometryCacheSummation summation;
-	m_objectStack.CollectRendering( renderer, renderInfo, summation );
+	m_objectStack->CollectRendering( renderer, renderInfo, summation );
 						 
 	// Render all geometry for each camera...
 	for( auto camera : m_cameras )
@@ -126,7 +126,7 @@ void Scene::Suspend()
 	}	
 
 	std::vector< Object * > objects;
-	m_objectStack.CollectObjects( objects );
+	m_objectStack->CollectObjects( objects );
 	for( auto && object : objects )
 	{
 		object->OnSuspend();
@@ -136,7 +136,7 @@ void Scene::Suspend()
 void Scene::Resume()
 {
 	std::vector< Object * > objects;
-	m_objectStack.CollectObjects( objects );
+	m_objectStack->CollectObjects( objects );
 	for( auto && object : objects )
 	{
 		object->OnResume();
@@ -259,13 +259,13 @@ int Scene::FindComponent( std::string name, int startIndex ) const
 
 Object * Scene::NewObject( std::string name )
 {
-	Object * object = m_objectStack.NewObject( name );
+	Object * object = m_objectStack->NewObject( name );
 	return object;
 }
 
 bool Scene::DestroyObject( Object * object )
 {
-	if ( ! m_objectStack.DestroyObject( object ) )
+	if ( ! m_objectStack->DestroyObject( object ) )
 	{
 		return false;
 	}
@@ -274,16 +274,16 @@ bool Scene::DestroyObject( Object * object )
 
 Object * Scene::CopyObject( Object * from, std::string name )
 {
-	return m_objectStack.CopyObject( from, name );
+	return m_objectStack->CopyObject( from, name );
 }
 
 void Scene::CollectObjects( std::vector< Object * > & objects )
 {
-	m_objectStack.CollectObjects( objects );
+	m_objectStack->CollectObjects( objects );
 }
 
 Object * Scene::FindObject( std::string name )
 {
-	return m_objectStack.FindObject( name );
+	return m_objectStack->FindObject( name );
 }
 

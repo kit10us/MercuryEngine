@@ -22,6 +22,8 @@ namespace unify
 		void Orbit( const V3< float > & origin, const Quaternion & orbit );
 		void PreMul( Quaternion q );
 		void PostMul( Quaternion q );
+		void PreMul( Matrix m );
+		void PostMul( Matrix m );
 
 		Matrix GetMatrix() const;
 

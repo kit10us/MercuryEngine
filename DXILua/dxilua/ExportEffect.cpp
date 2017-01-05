@@ -30,22 +30,26 @@ static const luaL_Reg EffectFunctions[] =
 
 int Effect_Constructor( lua_State * state )
 {
+	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
 	int top = lua_gettop( state );
+
+	if ( top < 1 )
+	{
+		game->ReportError( me::ErrorLevel::Failure, "LUA", "Effect requires at least the name of the effect as a parameter!" );
+	}
+
 	int type = lua_type( state, 1 );
 
 	Effect::ptr effect;
 
-	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
-	
-	// Allow pulling existing from manager...
+	std::string name = lua_tostring( state, 1 );
+
 	if ( top == 1 )
 	{
-		std::string name = lua_tostring( state, 1 );
 		effect = game->GetManager< Effect >()->Find( name );
 	}
 	else
 	{
-		std::string name = lua_tostring( state, 1 );
 		unify::Path source = lua_tostring( state, 2 );
 		effect = game->GetManager< Effect >()->Add( name, source );
 	}

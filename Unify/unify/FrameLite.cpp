@@ -61,15 +61,30 @@ void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit )
 	m_p += origin;
 }
 
-void FrameLite::PreMul( unify::Quaternion q )
+void FrameLite::PreMul( Quaternion q )
 {
 	m_q = q * m_q;
 }
 
-void FrameLite::PostMul( unify::Quaternion q )
+void FrameLite::PostMul( Quaternion q )
 {
 	m_q = m_q * q;
 }
+
+void FrameLite::PreMul( Matrix m )
+{
+	Matrix mine { m_q, m_p };
+	mine = m * mine;
+	m_q = mine.GetRotation();
+	m_p = mine.GetPosition();
+}
+
+void FrameLite::PostMul( Matrix m )
+{
+	Matrix mine { m_q, m_p };
+	mine = mine * m;
+	m_q = mine.GetRotation();
+	m_p = mine.GetPosition();}
 
 Matrix FrameLite::GetMatrix() const
 {

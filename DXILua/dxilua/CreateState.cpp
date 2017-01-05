@@ -9,6 +9,7 @@
 #include <dxilua/unify/ExportSize3.h>
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportQuaternion.h>
+#include <dxilua/unify/ExportAngle.h>
 #include <dxilua/ExportCameraComponent.h>
 #include <dxilua/ExportDebug.h>
 #include <dxilua/ExportGame.h>
@@ -56,6 +57,7 @@ lua_State * dxilua::CreateState()
 	RegisterInput( state );
 	RegisterTerraParameters( state );
 	RegisterTerra( state );
+	RegisterAngle( state );
 
 	return state;
 }

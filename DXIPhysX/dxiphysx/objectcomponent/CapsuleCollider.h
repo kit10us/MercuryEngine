@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <DXIPhysX.h>
+#include <dxiphysx/GameComponent.h>
 #include <dxiphysx/objectcomponent/ColliderBase.h>
 
 namespace dxiphysx
@@ -11,8 +13,11 @@ namespace dxiphysx
 	{
 		class CapsuleCollider : public objectcomponent::ColliderBase
 		{
+		private:
+			CapsuleCollider( CapsuleCollider & collider );
+
 		public:
-			CapsuleCollider( me::IOS * os, GameComponent * gameComponent, float radius, float halfHeight );
+			DXIPHYSX_API CapsuleCollider( me::IOS * os, GameComponent * gameComponent, float radius, float halfHeight );
 			~CapsuleCollider();
 
 			std::string GetName() const override;

@@ -112,6 +112,7 @@
     <ClInclude Include="dxilua\ExportUpdate.h" />
     <ClInclude Include="dxilua\Module.h" />
     <ClInclude Include="dxilua\shape\ExportShapeParameters.h" />
+    <ClInclude Include="dxilua\unify\ExportAngle.h" />
     <ClInclude Include="dxilua\unify\ExportColor.h" />
     <ClInclude Include="dxilua\unify\ExportMatrix.h" />
     <ClInclude Include="dxilua\unify\ExportQuaternion.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="dxilua\ExportUpdate.cpp" />
     <ClCompile Include="dxilua\Module.cpp" />
     <ClCompile Include="dxilua\shape\ExportShapeParameters.cpp" />
+    <ClCompile Include="dxilua\unify\ExportAngle.cpp" />
     <ClCompile Include="dxilua\unify\ExportColor.cpp" />
     <ClCompile Include="dxilua\unify\ExportMatrix.cpp" />
     <ClCompile Include="dxilua\unify\ExportQuaternion.cpp" />

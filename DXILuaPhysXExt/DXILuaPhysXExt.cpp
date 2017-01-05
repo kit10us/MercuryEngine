@@ -12,9 +12,10 @@
 #include <luaphysx/ExportPxShape.h>
 #include <luaphysx/ExportPxRigidBody.h>
 #include <luaphysx/ExportPxRigidStatic.h>
+#include <luaphysx/ExportPxController.h>
 
 #pragma comment( lib, "lua53" )
-#pragma comment( lib, "../extensions/DXILua.lib" ) // TODO: Ensure these point to the DLL output, once we have one, instead of the tests_data.
+#pragma comment( lib, "../extensions/DXILua.lib" )
 #pragma comment( lib, "../extensions/DXIPhysX.lib" )
 
 
@@ -46,6 +47,7 @@ __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * d
 	RegisterPxShape( luaSE, game );
 	RegisterPxRigidBody( luaSE, game );
 	RegisterPxRigidStatic( luaSE, game );
+	RegisterPxController( luaSE, game );
 
 	//game->AddScriptEngine( "lua", std::shared_ptr< dxi::scripting::IScriptEngine >( new dxilua::ScriptEngine( game ), Deleter ) );
 	return true;

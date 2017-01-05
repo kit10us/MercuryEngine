@@ -1,0 +1,8 @@
+<?xml profile="1.0" encoding="iso-8859-1"?>
+<xml>
+  <effect>
+    <pixelshader name="textured3D" source="shaders/textured3d.xml"/>
+    <vertexshader name="textured3D" source="shaders/textured3d.xml"/>
+    <texture name="articulate" stage="0" source="ReferenceBlock.bmp"/>
+  </effect>
+</xml>

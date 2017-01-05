@@ -473,6 +473,73 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 	}
 }
 
+void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous )
+{
+	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
+	assert( instancing == Instancing::Matrix );
+
+	D3D11_PRIMITIVE_TOPOLOGY topology{};
+	switch( method.primitiveType )
+	{
+	case PrimitiveType::PointList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
+		break;
+	case PrimitiveType::LineList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
+		break;
+	case PrimitiveType::LineStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
+		break;
+	case PrimitiveType::TriangleList: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
+		break;
+	case PrimitiveType::TriangleStrip: 
+		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
+		break;
+	}
+	m_dxContext->IASetPrimitiveTopology( topology );
+
+	HRESULT result = S_OK;
+
+	size_t stride = sizeof( unify::Matrix );
+	size_t offset = 0;
+
+	if ( method.effect )
+	{
+		method.effect->Use( renderInfo, { unify::MatrixIdentity() } );
+	}
+					  
+	D3D11_MAPPED_SUBRESOURCE subResource {};
+
+	size_t sources_index = 0;
+	while( sources_index < sources_size )
+	{
+		result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
+		assert( !FAILED( result ) );
+
+		// while ( if contiguous, ensure we can write the entire matrix set )
+		size_t write = 0;
+		while( sources_index < sources_size && ( write + ( contiguous ? sources[ sources_index ].Count() : 0 ) < m_totalInstances ) )
+		{
+			sources[ sources_index ].CopyMatrices( &((unify::Matrix*)subResource.pData)[ write ] );
+			write += sources[ sources_index ].Count();
+		}
+
+		m_dxContext->Unmap( m_instanceBufferM[0], 0 );
+
+		m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );  
+								   
+		if( method.useIB == false )
+		{
+			m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
+		}
+		else
+		{
+			m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
+		}
+	}
+}
+
 me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) const
 {
 	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );

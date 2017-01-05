@@ -113,6 +113,7 @@
     <ClInclude Include="sg\BeveledBoxParameters.h" />
     <ClInclude Include="sg\CircleParameters.h" />
     <ClInclude Include="sg\ConeParameters.h" />
+    <ClInclude Include="sg\CreateShape_Cube.h" />
     <ClInclude Include="sg\CubeParameters.h" />
     <ClInclude Include="sg\CylinderParameters.h" />
     <ClInclude Include="sg\DashRingParameters.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="sg\BeveledBoxParameters.cpp" />
     <ClCompile Include="sg\CircleParameters.cpp" />
     <ClCompile Include="sg\ConeParameters.cpp" />
+    <ClCompile Include="sg\CreateShape_Cube.cpp" />
     <ClCompile Include="sg\CubeParameters.cpp" />
     <ClCompile Include="sg\CylinderParameters.cpp" />
     <ClCompile Include="sg\DashRingParameters.cpp" />

@@ -30,6 +30,5 @@ unify::Path AssetPaths::FindAsset( unify::Path path, unify::Path firstPlace )
 		}
 	}
 
-	assert( 0 );
 	throw Exception( "Could not find \"" + path.ToString() + "\"!" );
 }

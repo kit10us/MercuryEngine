@@ -5,6 +5,8 @@
 #include <dxilua/ExportScene.h>
 
 #include "luaphysx/ExportPxSceneComponent.h"
+#include "luaphysx/ExportPxController.h"
+#include <dxiphysx/objectcomponent/CapsuleController.h>
 
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>
@@ -29,6 +31,7 @@ int PushPxSceneComponent( lua_State * state, dxiphysx::SceneComponent::ptr scene
 	PxSceneComponentProxy ** newProxy = (PxSceneComponentProxy**)(lua_newuserdata( state, sizeof( PxSceneComponentProxy* ) ));
 	*newProxy = new PxSceneComponentProxy();
 	(*newProxy)->sceneComponent = sceneComponent;
+	(*newProxy)->scene = dynamic_cast< dxiphysx::SceneComponent * >( sceneComponent.get() );
 	luaL_setmetatable( state, "PxSceneComponent" );
 	return 1;
 }
@@ -52,28 +55,27 @@ int PxSceneComponent_AttachTo( lua_State* state )
 	return 0;
 }
 
-int PxSceneComponent_CreateBox( lua_State* state )
+int PxSceneComponent_CreateCapsuleController( lua_State* state )
 {
 	int args = lua_gettop( state );
-	assert( args == 1 );
+	assert( args == 3 );
 
-	auto v3 = CheckV3( state, 1 );
-	/*
+	PxSceneComponentProxy * pxScene = CheckPxSceneComponent( state, 1 );
 
-	std::shared_ptr< physx::PxShape > shape( 
-	PxShape * cube = m_physics->createShape( PxBoxGeometry( v3.x, v3.y, v3.z ), *m_material );
+	float radius = (float)lua_tonumber( state, 2 );
+	float height = (float)lua_tonumber( state, 3 );											
 
-	  */
+	me::scene::IObjectComponent::ptr controller( new dxiphysx::objectcomponent::CapsuleController( g_game->GetOS(), pxScene->scene, radius, height ) );
 
-	int x( 0 ); x;
+	PushPxController( state, controller );
 
-	return 0;
+	return 1;
 }
 
 static const luaL_Reg PxSceneComponentFunctions[] =
 {
 	{ "AttachTo", PxSceneComponent_AttachTo },
-	{ "CreateBox", PxSceneComponent_CreateBox },
+	{ "CreateCapsuleController", PxSceneComponent_CreateCapsuleController },
 	{ nullptr, nullptr }
 };
 

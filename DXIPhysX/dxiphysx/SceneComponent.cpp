@@ -33,6 +33,9 @@ DXIPHYSX_API SceneComponent::SceneComponent( me::IOS * os, GameComponent * gameC
 	}
 
 	m_material.reset( m_gameComponent->GetPhysics()->createMaterial( 0.5f, 0.5f, 0.6f ), Releaser< PxMaterial > );
+
+	// Create character controller (CCT) manager...
+	m_cctManager.reset( PxCreateControllerManager( *m_scene.get() ), Releaser< PxControllerManager > );
 }
 
 SceneComponent::~SceneComponent()
@@ -80,6 +83,10 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 		//dxiphysx::ObjectComponent * oc = new dxiphysx::ObjectComponent( m_os, "PhysX", body );
 		//plane->AddComponent( scene::IObjectComponent::ptr( oc ) );
 	}
+
+	auto player = scene->FindObject( "player" );
+
+	int x(0);x;
 }
 
 void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
@@ -96,9 +103,9 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, c
 
 	m_scene->fetchResults( true );
 
+	// Sync physics to geometry...
 	PxU32 nbActiveTransforms;
-	const PxActiveTransform* activeTransforms = m_scene->getActiveTransforms( nbActiveTransforms );
-
+	const PxActiveTransform* activeTransforms = m_scene->getActiveTransforms( nbActiveTransforms );	
 	for ( PxU32 i = 0; i < nbActiveTransforms; ++i )
 	{
 		Object * object = static_cast< Object * >(activeTransforms[i].userData);
@@ -106,8 +113,9 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, c
 		object->GetFrame().SetRotation( util::Convert< unify::Quaternion >( activeTransforms[i].actor2World.q ) );
 	}
 
-	PxU32 actorCount = m_scene->getNbActors( PxActorTypeFlag::eRIGID_DYNAMIC );
 
+	/*
+	PxU32 actorCount = m_scene->getNbActors( PxActorTypeFlag::eRIGID_DYNAMIC );
 	float rationMoving = (float)nbActiveTransforms / (float)actorCount;
 	if ( rationMoving < 0.70f )
 	{
@@ -123,6 +131,7 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, c
 					0 ) );
 		}
 	}
+	*/
 }
 
 void SceneComponent::OnRender( me::scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
@@ -147,3 +156,7 @@ physx::PxMaterial * SceneComponent::GetMaterial()
 	return m_material.get();
 }
 
+physx::PxControllerManager * SceneComponent::GetControllerManager()
+{
+	return m_cctManager.get();
+}

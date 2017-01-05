@@ -11,6 +11,8 @@ namespace me
 		class IObjectAllocator
 		{
 		public:
+			typedef std::shared_ptr< IObjectAllocator > ptr;
+
 			~IObjectAllocator() {}
 
 			virtual bool IsResizable() const = 0;

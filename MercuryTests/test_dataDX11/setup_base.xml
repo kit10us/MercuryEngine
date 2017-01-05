@@ -1,8 +1,9 @@
 <xml>
 <title>DX11 Test</title>
-<renderer>MercuryEngineDX11.dll</renderer>
+<renderer>../../renderers/MercuryEngineDX11.dll</renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
+<assets>models/</assets>
 <assets>media/</assets>
 <assets>media/shaders/</assets>
 <assets>../test_data/</assets>

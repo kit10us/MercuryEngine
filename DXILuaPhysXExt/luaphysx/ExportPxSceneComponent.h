@@ -9,7 +9,8 @@
 
 struct PxSceneComponentProxy
 {
-	dxiphysx::SceneComponent::ptr sceneComponent;
+	me::scene::ISceneComponent::ptr sceneComponent;
+	dxiphysx::SceneComponent * scene;
 };
 
 PxSceneComponentProxy* CheckPxSceneComponent( lua_State* state, int index );

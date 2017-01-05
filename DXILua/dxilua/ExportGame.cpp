@@ -65,12 +65,25 @@ int Game_Quit( lua_State * state )
 	return 0;
 }
 
+int Game_Command( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	std::string command = lua_tostring( state, 1 );			  
+	auto game = ScriptEngine::GetGame();
+	game->Feed( "COMMAND", (char*)command.c_str() );
+
+	return 0;
+}
+
 static const luaL_Reg gameFuncs[] =
 {
 	{ "GetWidth", Game_GetWidth },
 	{ "GetHeight", Game_GetHeight },
 	{ "GetRendererCount", Game_GetRendererCount },
 	{ "Quit", Game_Quit },
+	{ "Command", Game_Command },
 	{ nullptr, nullptr }
 };
 

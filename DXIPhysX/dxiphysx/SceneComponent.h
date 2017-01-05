@@ -32,6 +32,7 @@ namespace dxiphysx
 
 		physx::PxScene * GetScene();
 		physx::PxMaterial * GetMaterial();
+		physx::PxControllerManager * GetControllerManager();
 
 	private:
 		me::IOS * m_os;
@@ -40,5 +41,6 @@ namespace dxiphysx
 		GameComponent * m_gameComponent;
 		std::shared_ptr< physx::PxScene > m_scene;
 		std::shared_ptr< physx::PxMaterial > m_material;
+		std::shared_ptr< physx::PxControllerManager > m_cctManager;
 	};
 }

@@ -92,6 +92,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DXILuaPhysXExt.cpp" />
     <ClCompile Include="luaphysx\ExportPhysX.cpp" />
+    <ClCompile Include="luaphysx\ExportPxController.cpp" />
     <ClCompile Include="luaphysx\ExportPxRigidBody.cpp" />
     <ClCompile Include="luaphysx\ExportPxRigidStatic.cpp" />
     <ClCompile Include="luaphysx\ExportPxSceneComponent.cpp" />
@@ -101,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="DXILuaPhysXExt.h" />
     <ClInclude Include="luaphysx\ExportPhysX.h" />
+    <ClInclude Include="luaphysx\ExportPxController.h" />
     <ClInclude Include="luaphysx\ExportPxRigidBody.h" />
     <ClInclude Include="luaphysx\ExportPxRigidStatic.h" />
     <ClInclude Include="luaphysx\ExportPxSceneComponent.h" />

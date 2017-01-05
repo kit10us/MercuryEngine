@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--this is an example XML documentation, put this under `./{solution_dir}/Documentation/` to be loaded automatically
+@param table.src: the source file uri, in order to support goto definition. 
+  it can be absolute file path or relative file path. For relative path, it will search for 
+  `./{solution_dir}`, `./{solution_dir}/src/` and `./{solution_dir}/Documentation` directory
+@param table.function.line: the line in the src at which the function is defined. 
+@param table.function.src: if not specified, it will use table.src.
+@param variables.variable.ns: the namespace in which a table is defined. 
+-->
+<doc>
+  <tables>
+    <table name="Transform">
+	  <function name="SetPosition">
+	    <summary>Set position.</summary>
+		<parameter name="Position V3"/>
+	  </function>
+	  <function name="LookAt">
+	    <summary>Immediately aim the camera directly at a position.</summary>
+		<parameter name="Position V3"/>
+	  </function>
+	  <function name="Oribit">
+	    <summary>Orbit a position.</summary>
+		<parameter name="Origin V3"/>
+		<parameter name="Axis V2"/>
+		<parameter name="distance to origin Number"/>
+	  </function>
+	  <function name="RotateAbout">
+	    <summary>Rotate by an axis and angle in radians.</summary>
+		<parameter name="Axis V3"/>
+		<parameter name="Angle in Radians Number"/>
+	  </function>    
+	</table>
+  </tables>
+</doc>
+</doc>

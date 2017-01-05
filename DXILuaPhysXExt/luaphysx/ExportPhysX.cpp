@@ -14,6 +14,7 @@
 #include <dxiphysx/SceneComponent.h>
 #include <dxiphysx/objectcomponent/BoxCollider.h>
 #include <dxiphysx/objectcomponent/SphereCollider.h>
+#include <dxiphysx/objectcomponent/CapsuleCollider.h>
 #include <dxiphysx/objectcomponent/RigidBody.h>
 #include <dxiphysx/objectcomponent/HeightFieldCollider.h>
 
@@ -47,7 +48,7 @@ int PhysX_CreateBoxCollider( lua_State * state )
 	unify::V3< float > halfExt( CheckV3( state, 1 ) );
 
 	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	dxiphysx::objectcomponent::BoxCollider::ptr collider( new dxiphysx::objectcomponent::BoxCollider( g_game->GetOS(), physics, halfExt ) );
+	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::BoxCollider( g_game->GetOS(), physics, halfExt ) );
 
 	PushPxShape( state, collider );
 
@@ -62,7 +63,24 @@ int PhysX_CreateSphereCollider( lua_State * state )
 	float halfExt( (float)luaL_checknumber( state, 1 ) );
 
 	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	dxiphysx::objectcomponent::BoxCollider::ptr collider( new dxiphysx::objectcomponent::SphereCollider( g_game->GetOS(), physics, halfExt ) );
+	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::SphereCollider( g_game->GetOS(), physics, halfExt ) );
+
+	PushPxShape( state, collider );
+
+	return 1;
+}
+
+int PhysX_CreateCapsuleCollider( lua_State * state )
+{
+	int argc = lua_gettop( state );
+	assert( argc == 2 );
+
+	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	
+	float radius( (float)luaL_checknumber( state, 1 ) );
+	float halfHeight( (float)luaL_checknumber( state, 2 ) );
+
+	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::CapsuleCollider( g_game->GetOS(), physics, radius, halfHeight ) );
 
 	PushPxShape( state, collider );
 
@@ -80,7 +98,7 @@ int PhysX_CreateHeightFieldCollider( lua_State * state )
 
 	unify::RowColumn< unsigned int > rcCount( (unsigned int)luaL_checknumber( state, 3 ), (unsigned int)luaL_checknumber( state, 2 ) );
 
-	dxiphysx::objectcomponent::HeightFieldCollider::ptr collider( new dxiphysx::objectcomponent::HeightFieldCollider( g_game->GetOS(), physics, terra->terra, rcCount ) );
+	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::HeightFieldCollider( g_game->GetOS(), physics, terra->terra, rcCount ) );
 
 	PushPxShape( state, collider );
 
@@ -93,7 +111,7 @@ int PhysX_CreateRigidBody( lua_State * state )
 	assert( argc == 0 );
 
 	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	dxiphysx::objectcomponent::RigidBody::ptr body( new dxiphysx::objectcomponent::RigidBody( g_game->GetOS(), physics ) );
+	me::scene::IObjectComponent::ptr body( new dxiphysx::objectcomponent::RigidBody( g_game->GetOS(), physics ) );
 
 	PushPxRigidBody( state, body );
 
@@ -106,7 +124,7 @@ int PhysX_CreateRigidStatic( lua_State * state )
 	assert( argc == 0 );
 
 	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	dxiphysx::objectcomponent::RigidStatic::ptr body( new dxiphysx::objectcomponent::RigidStatic( g_game->GetOS(), physics ) );
+	me::scene::IObjectComponent::ptr body( new dxiphysx::objectcomponent::RigidStatic( g_game->GetOS(), physics ) );
 
 	PushPxRigidStatic( state, body );
 
@@ -117,6 +135,7 @@ static const luaL_Reg PhysXFunctions[] =
 {
 	{ "CreateBoxCollider", PhysX_CreateBoxCollider },
 	{ "CreateSphereCollider", PhysX_CreateSphereCollider },
+	{ "CreateCapsuleCollider", PhysX_CreateCapsuleCollider },
 	{ "CreateHeightFieldCollider", PhysX_CreateHeightFieldCollider },
 	{ "CreateRigidBody", PhysX_CreateRigidBody },
 	{ "CreateRigidStatic", PhysX_CreateRigidStatic }

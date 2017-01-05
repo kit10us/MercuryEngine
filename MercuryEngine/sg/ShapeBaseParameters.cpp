@@ -45,3 +45,9 @@ ShapeBaseParameters & ShapeBaseParameters::SetEffect( Effect::ptr effect )
     Set< Effect::ptr >( "effect", effect );
 	return *this;
 }
+
+ShapeBaseParameters & ShapeBaseParameters::SetFaceUV( std::vector< unify::TexArea > faceUV )
+{
+	Set< std::vector< unify::TexArea > >( "faceUV", faceUV );
+	return *this;
+}

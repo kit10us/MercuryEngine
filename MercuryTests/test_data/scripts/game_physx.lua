@@ -5,6 +5,8 @@ function OnStart()
 	
 	scene1 = Scene( "scene1" )	
 	
+	Game.Command( "AddFPS" )
+	
 	-- Add PhysX
 	pxScene = PxSceneComponent()
 	pxScene:AttachTo( scene1 )

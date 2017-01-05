@@ -15,6 +15,13 @@
 #include <ctime>
 #include <functional>
 
+// Temporary...
+#include <me/scene/SceneManager.h>
+#include <me/scene/CameraComponent.h>
+#include <me/scene2d/CanvasComponent.h>
+#include <me/scene2d/FPS.h>
+
+
 using namespace me;
 using namespace scene;
 
@@ -94,6 +101,24 @@ void * Game::Feed( std::string target, void * data )
 	if ( unify::StringIs( target, "OS" ) )
 	{
 		return m_os->Feed( target, data );
+	}
+	else if ( unify::StringIs( target, "COMMAND" ) )
+	{
+		char * command = (char *)data;
+		if ( unify::StringIs( command, "ADDFPS" ) )
+		{
+			using namespace me;
+			using namespace scene;
+		
+			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+			Scene::ptr scene = sceneManager->Find( "scene1" );
+
+			scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
+			scene->AddComponent( canvas );
+
+			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
+			canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
+		}
 	}
 	
 	return 0;

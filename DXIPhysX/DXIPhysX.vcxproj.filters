@@ -40,6 +40,12 @@
     <ClCompile Include="dxiphysx\objectcomponent\SphereCollider.cpp">
       <Filter>dxiphysx\collider</Filter>
     </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\CapsuleController.cpp">
+      <Filter>dxiphysx\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="dxiphysx\objectcomponent\ControllerBase.cpp">
+      <Filter>dxiphysx\controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxiphysx\SceneComponent.h">
@@ -81,6 +87,12 @@
     <ClInclude Include="dxiphysx\objectcomponent\SphereCollider.h">
       <Filter>dxiphysx\collider</Filter>
     </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\CapsuleController.h">
+      <Filter>dxiphysx\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="dxiphysx\objectcomponent\ControllerBase.h">
+      <Filter>dxiphysx\controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dxiphysx">
@@ -94,6 +106,9 @@
     </Filter>
     <Filter Include="dxiphysx\actor">
       <UniqueIdentifier>{686e1551-6380-40b8-8ce8-c4e3c0905a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxiphysx\controller">
+      <UniqueIdentifier>{b8d78d23-568e-4b1c-bbdd-2d702796901e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

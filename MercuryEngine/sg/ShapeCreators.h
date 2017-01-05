@@ -9,11 +9,12 @@
 #include <unify/Parameters.h>
 #include <me/Mesh.h>
 
+#include <sg/CreateShape_Cube.h>
+
 namespace sg
 {
 	std::shared_ptr< me::Mesh > CreateShape( me::IRenderer * renderer, unify::Parameters & parameters );
 	void CreateShape( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
-	void CreateShape_Cube( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
 	void CreateShape_PointField( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
 	void CreateShape_PointRing( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
 	void CreateShape_DashRing( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
@@ -25,18 +26,8 @@ namespace sg
 	void CreateShape_Plane( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
 	void CreateShape_Cone( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
     void CreateShape_BeveledBox( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
-
-	template< class T >
-	class DistanceFunctor
-	{
-	public:
-		typedef std::shared_ptr< DistanceFunctor > shared_ptr;
-		virtual ~DistanceFunctor() {};
-		virtual T operator()( float unitDistance ) = 0;
-	};
 }
 
-#include <sg/CubeParameters.h>
 #include <sg/PointFieldParameters.h>
 #include <sg/PointRingParameters.h>
 #include <sg/DashRingParameters.h>

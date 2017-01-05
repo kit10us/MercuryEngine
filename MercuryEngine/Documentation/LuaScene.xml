@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--this is an example XML documentation, put this under `./{solution_dir}/Documentation/` to be loaded automatically
+@param table.src: the source file uri, in order to support goto definition. 
+  it can be absolute file path or relative file path. For relative path, it will search for 
+  `./{solution_dir}`, `./{solution_dir}/src/` and `./{solution_dir}/Documentation` directory
+@param table.function.line: the line in the src at which the function is defined. 
+@param table.function.src: if not specified, it will use table.src.
+@param variables.variable.ns: the namespace in which a table is defined. 
+-->
+<doc>
+<!--
+  <tables>
+    <table name="Scene">
+	  <function name="FindObject">
+	    <summary>Find an object.</summary>
+		<parameter name="name"/>
+		<returns>the width object or nil.</returns>
+	  </function>
+    </table>
+  </tables>
+  -->
+  <globals>
+    <function name="Scene">
+	  <summary>Create a scene.</summary>
+	  <parameter name="name"/>
+	  <returns>a Scene object.</returns>
+	</function>
+  </globals>
+  <!--
+  <variables>
+    <variable name="scene1" type="Scene"/>
+  </variables>
+  -->
+</doc>

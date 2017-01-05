@@ -134,22 +134,7 @@ int Transform_SetRotation( lua_State * state )
 	return 0;
 }
 
-int Transform_PreMul( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Quaternion q = CheckQuaternion( state, 2 );
-	
-	unify::Quaternion myQ = proxy->transform->GetRotation();
-
-	proxy->transform->SetRotation( q * myQ );
-
-	return 0;
-}
-
-int Transform_PostMul( lua_State * state )
+int Transform_PreMulQ( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -157,13 +142,49 @@ int Transform_PostMul( lua_State * state )
 	TransformProxy * proxy = CheckTransform( state, 1 );
 	unify::Quaternion q = CheckQuaternion( state, 2 );
 
-	unify::Quaternion myQ = proxy->transform->GetRotation();
-
-	proxy->transform->SetRotation( myQ * q );
+	proxy->transform->PreMul( q );
 
 	return 0;
 }
 
+int Transform_PostMulQ( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+	unify::Quaternion q = CheckQuaternion( state, 2 );
+
+	proxy->transform->PostMul( q );
+
+	return 0;
+}
+
+int Transform_PreMulM( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+	unify::Matrix m = CheckMatrix( state, 2 );
+
+	proxy->transform->PreMul( m );
+
+	return 0;
+}
+
+int Transform_PostMulM( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	TransformProxy * proxy = CheckTransform( state, 1 );
+	unify::Matrix m = CheckMatrix( state, 2 );
+
+	proxy->transform->PostMul( m );
+
+	return 0;
+}
 
 static const luaL_Reg TransformFunctions[] =
 {
@@ -174,8 +195,10 @@ static const luaL_Reg TransformFunctions[] =
 	{ "Scale", Transform_Scale },
 	{ "GetRotation", Transform_GetRotation },
 	{ "SetRotation", Transform_SetRotation },
-	{ "PreMul", Transform_PreMul },
-	{ "PostMul", Transform_PostMul },
+	{ "PreMulQ", Transform_PreMulQ },
+	{ "PostMulQ", Transform_PostMulQ },
+	{ "PreMulM", Transform_PreMulM },
+	{ "PostMulM", Transform_PostMulM },
 	{ nullptr, nullptr }
 };
 

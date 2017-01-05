@@ -51,7 +51,7 @@ int PushMatrix( lua_State* state, const unify::Matrix & mat )
 	return 1;
 }
 
-int Matrix_MakeIdentity( lua_State * state )
+int Matrix_NewIdentity( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -289,7 +289,7 @@ int Matrix_Mul( lua_State * state )
 
 	PushMatrix( state, mat );
 
-	return 0;
+	return 1;
 }
 
 int Matrix_Div( lua_State * state )
@@ -310,7 +310,7 @@ int Matrix_Div( lua_State * state )
 
 static const luaL_Reg matrixFuncs[] =
 {
-	{ "NewIdentity", Matrix_MakeIdentity },
+	{ "NewIdentity", Matrix_NewIdentity },
 	{ "NewZero", Matrix_NewZero },
 	{ "NewTranslate", Matrix_NewTranslate },
 	{ "NewOrthoOffCenterLH", Matrix_NewOrthoOffCenterLH },

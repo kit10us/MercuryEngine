@@ -54,9 +54,6 @@ void VisualScene::Build( me::PrimitiveList & pl ) const
 
 void VisualScene::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const
 {
-	OutputDebugStringA( node->GetID().c_str() );
-	OutputDebugStringA( "\n" );
-
 	// Iterate this nodes instances...
 	for ( const auto instance : node->GetInstances() )
 	{

@@ -128,6 +128,10 @@ int Object_SetGeometry( lua_State * state )
 		else
 		{
 			TerraProxy * terraProxy = CheckTerra( state, 2 );
+			if ( ! terraProxy )
+			{
+				game->ReportError( me::ErrorLevel::Failure, "LUA", "SetGeometry has invalid type!" );
+			}
 			geometry = terraProxy->geometry;
 		}
 	}
@@ -221,6 +225,20 @@ int Object_GetComponent( lua_State * state )
 	return 1;
 }
 
+int Object_SetModelMatrix( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+
+	unify::Matrix matrix = CheckMatrix( state, 2 );
+
+	objectProxy->object->GetFrame().SetModelMatrix( matrix );
+
+	return 0;
+}
+
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "AddScript", Object_AddScript },
@@ -230,6 +248,7 @@ static const luaL_Reg ObjectFunctions[] =
 	{ "SetGeometry", Object_SetGeometry },
 	{ "GetSize", Object_GetSize },
 	{ "Transform", Object_Transform },
+	{ "SetModelMatrix", Object_SetModelMatrix },
 	{ "GetComponent", Object_GetComponent },
 	{ "AddTag", Object_AddTag },
 	{ "HasTag", Object_HasTag },

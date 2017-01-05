@@ -75,11 +75,38 @@ int PxRigidBody_GetDisableGravity( lua_State * state )
 	return 1;
 }
 
+int PxRigidBody_SetKinematic( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	PxRigidBodyProxy * pxBody = CheckPxRigidBody( state, 1 );
+	bool enable = lua_toboolean( state, 2 ) ? true : false;
+
+	pxBody->body->setRigidBodyFlag( physx::PxRigidBodyFlag::eKINEMATIC, enable );
+
+	return 0;
+}
+
+int PxRigidBody_GetKinematic( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	PxRigidBodyProxy * pxBody = CheckPxRigidBody( state, 1 );
+	bool enabled = ((pxBody->body->getRigidBodyFlags() & physx::PxRigidBodyFlag::eKINEMATIC) == physx::PxRigidBodyFlag::eKINEMATIC) ? true : false;
+
+	lua_pushboolean( state, enabled ? 1 : 0 );
+	return 1;
+}
+
 static const luaL_Reg PxRigidBodyFunctions[] =
 {
 	{ "AttachTo", PxRigidBody_AttachTo },
 	{ "SetDisableGravity", PxRigidBody_SetDisableGravity },
 	{ "GetDisableGravity", PxRigidBody_GetDisableGravity },
+	{ "SetKinematic", PxRigidBody_SetKinematic },
+	{ "GetKinematic", PxRigidBody_GetKinematic },
 };
 
 int PxRigidBody_Constructor( lua_State * state )

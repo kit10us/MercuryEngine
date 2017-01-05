@@ -83,7 +83,7 @@ namespace me
 
 			std::list< ISceneComponent::ptr > m_components;
 
-			GrowableObjectStack m_objectStack;
+			IObjectAllocator::ptr m_objectStack;
 			CameraCache m_cameras;
 
 			bool m_inited;

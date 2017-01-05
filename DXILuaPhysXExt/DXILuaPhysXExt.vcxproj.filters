@@ -21,6 +21,9 @@
     <ClCompile Include="luaphysx\ExportPxRigidStatic.cpp">
       <Filter>luaphysx</Filter>
     </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxController.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="luaphysx">
@@ -45,6 +48,9 @@
       <Filter>luaphysx</Filter>
     </ClInclude>
     <ClInclude Include="luaphysx\ExportPxRigidStatic.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxController.h">
       <Filter>luaphysx</Filter>
     </ClInclude>
   </ItemGroup>

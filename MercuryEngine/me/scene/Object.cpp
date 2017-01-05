@@ -187,11 +187,7 @@ void Object::Initialize( IObjectComponent::cache & updateables, GeometryCache & 
 			cameras.push_back( FinalCamera{ this, camera } );
 		}
 
-		// Don't try rendering if we haven't been properly setup...
-		if ( component.Component()->Renderable() )
-		{
-			component.Component()->CollectGeometry( geometries, &m_frame );
-		}
+		component.Component()->CollectGeometry( geometries, &m_frame );
 	}
 }
 

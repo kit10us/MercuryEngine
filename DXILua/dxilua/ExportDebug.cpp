@@ -7,7 +7,6 @@
 using namespace dxilua;
 using namespace me;
 
-extern "C"
 int Debug_Write( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -20,7 +19,6 @@ int Debug_Write( lua_State * state )
 	return 0;
 }
 
-extern "C"
 int Debug_WriteLine( lua_State * state )
 {
 	int args = lua_gettop( state );

@@ -100,7 +100,9 @@
     <ClCompile Include="dxiphysx\GameComponent.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\BoxCollider.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\CapsuleCollider.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\CapsuleController.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\ColliderBase.cpp" />
+    <ClCompile Include="dxiphysx\objectcomponent\ControllerBase.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\HeightFieldCollider.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\RigidBody.cpp" />
     <ClCompile Include="dxiphysx\objectcomponent\RigidStatic.cpp" />
@@ -114,7 +116,9 @@
     <ClInclude Include="dxiphysx\GameComponent.h" />
     <ClInclude Include="dxiphysx\objectcomponent\BoxCollider.h" />
     <ClInclude Include="dxiphysx\objectcomponent\CapsuleCollider.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\CapsuleController.h" />
     <ClInclude Include="dxiphysx\objectcomponent\ColliderBase.h" />
+    <ClInclude Include="dxiphysx\objectcomponent\ControllerBase.h" />
     <ClInclude Include="dxiphysx\objectcomponent\HeightFieldCollider.h" />
     <ClInclude Include="dxiphysx\objectcomponent\RigidBody.h" />
     <ClInclude Include="dxiphysx\objectcomponent\RigidStatic.h" />

@@ -19,7 +19,6 @@ BoxCollider::BoxCollider( me::IOS * os, GameComponent * gameComponent, unify::V3
 : ColliderBase( os, gameComponent )
 {
 	m_shape.reset( gameComponent->GetPhysics()->createShape( PxBoxGeometry( PxVec3( halfExt.x, halfExt.y, halfExt.z ) ), *m_material ), Releaser< PxShape > );
-
 }
 
 BoxCollider::~BoxCollider()

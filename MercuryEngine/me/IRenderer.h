@@ -31,7 +31,17 @@ namespace me
 	{
 		const unify::FrameLite ** instances;
 		const size_t instances_size;
-	};																												  
+	};				
+
+	class IMatrixSource
+	{
+	public:
+		IMatrixSource() {}
+
+		virtual size_t Count() const = 0;
+		virtual unify::Matrix GetMatrix( size_t i ) const = 0;
+		virtual void CopyMatrices( unify::Matrix * matrices ) const = 0;
+	};
 
 
 	/// <summary>
@@ -72,6 +82,8 @@ namespace me
 		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) = 0;
 		
 		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) = 0;
+
+		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

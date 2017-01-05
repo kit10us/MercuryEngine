@@ -315,6 +315,21 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 		}
 	}
 }
+ 
+void Renderer::RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::IMatrixSource * sources, const size_t sources_size, bool contiguous )
+{
+	assert( contiguous == false || sources[ 0 ].Count() == 1 ); // contiguous matrices not supported.
+
+	for( size_t sources_index = 0; sources_index < sources_size; ++sources_index )
+	{
+		auto && source = sources[ sources_index ];
+		for ( size_t i = 0; i < source.Count(); ++i )
+		{		
+			unify::Matrix matrix = source.GetMatrix( i );
+			Render( method, renderInfo, &matrix, 1 );
+		}
+	}
+}
 
 me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) const
 {

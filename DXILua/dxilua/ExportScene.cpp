@@ -37,7 +37,6 @@ int Scene_FindObject( lua_State * state )
 	return 1;
 }
 
-extern "C"
 int Scene_SetSize( lua_State * state )
 {
 	int args = lua_gettop( state );

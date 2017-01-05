@@ -11,10 +11,10 @@ namespace dxiphysx
 {
 	namespace objectcomponent
 	{
-		class BoxCollider : public dxiphysx::objectcomponent::ColliderBase
+		class BoxCollider : public objectcomponent::ColliderBase
 		{
 		private:
-				BoxCollider( BoxCollider & collider );
+			BoxCollider( BoxCollider & collider );
 
 		public:
 			DXIPHYSX_API BoxCollider( me::IOS * os, GameComponent * gameComponent, unify::V3< float > halfExt );

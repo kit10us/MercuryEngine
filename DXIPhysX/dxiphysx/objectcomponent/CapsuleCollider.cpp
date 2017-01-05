@@ -9,6 +9,11 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+CapsuleCollider::CapsuleCollider( CapsuleCollider & collider )
+	: ColliderBase( collider )
+{
+}
+
 CapsuleCollider::CapsuleCollider( me::IOS * os, GameComponent * gameComponent, float radius, float halfHeight )
 : ColliderBase( os, gameComponent )
 {
