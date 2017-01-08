@@ -39,7 +39,7 @@ namespace me
 		bool operator ==( const Effect & effect ) const;
 		bool operator !=( const Effect & effect ) const;
 
-		void Use( const RenderInfo & renderInfo, const unify::Matrix & world );
+		void Use( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size );
 		void SetTexture( unsigned char stage, ITexture::ptr texture );
 		void ClearTextures();
 		void SetCulling( CullingMode mode );

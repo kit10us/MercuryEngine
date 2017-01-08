@@ -3,7 +3,6 @@
 
 #pragma once
 
-//#include <me/IRenderer.h>
 #include <me/IVertexConstruct.h>
 #include <me/VertexElement.h>
 #include <me/Instancing.h>

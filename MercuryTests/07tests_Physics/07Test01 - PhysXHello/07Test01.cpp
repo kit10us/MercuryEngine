@@ -28,7 +28,7 @@ public:
 		scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 		scene->AddComponent( canvas );
 
-		Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
+		Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
 		canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 	}
 } game;

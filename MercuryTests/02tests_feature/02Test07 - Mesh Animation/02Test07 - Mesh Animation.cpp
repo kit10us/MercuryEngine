@@ -22,8 +22,7 @@ RegisterGame( game );
 void MyGame::Startup()
 {
 	// Load effect...
-	//auto effect = GetManager< Effect>()->Add( "effect", "media/EffectColor.effect" );
-	auto effect = GetManager< Effect>()->Add( "effect", "media/EffectColorAnimInst3d.effect" );
+	auto effect = GetManager< Effect>()->Add( "effect", "EffectColorAnimInst3d.effect" );
 
 	// Create mesh...
 	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );
@@ -35,7 +34,7 @@ void MyGame::Startup()
 		float m0, m1, m2, m3; // Influences
 	};
 
-	size_t segments = 10;
+	size_t segments = 30;
 	size_t vertexPerTriangle = 3;
 	size_t trianglesPerSegment = 8;
 	size_t indicesPerTriangle = 3;
@@ -43,18 +42,59 @@ void MyGame::Startup()
 	unsigned int numberOfIndices = segments * trianglesPerSegment * indicesPerTriangle;
 	Vertex * vbRaw = new Vertex[ numberOfVertices ];
 	std::vector< Index32 > ibRaw( numberOfIndices );
-			  
+
+	class MatrixInfluence
+	{
+		int m_index;
+		float m_influence; 
+	public:
+		MatrixInfluence(int index = -1, float influence = 1.0f)
+			: m_index( index )
+			, m_influence( influence )
+		{														
+		}
+
+		/// <summary>
+		/// Matrix index, if negative, then ignored.
+		/// </summary>
+		void SetIndex( int index = -1 )
+		{
+			m_index = index;
+		}
+
+		void SetInfluence(float influence = 1.0f)
+		{
+			m_influence = std::min( influence, 1.0f );
+			m_influence = std::max( m_influence, 0.0f );
+		}
+
+		float Result() const
+		{	
+			if (m_index < 0.0f || m_influence < 0.0001f) return -1.0f;
+			float influence = m_influence * 0.1f;
+			return m_index + influence;
+		}
+	};
+
 	for( size_t i = 0; i < segments + 1; ++i )
 	{
-		float x = 2.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
-		float z = 2.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
+		float x = 1.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
+		float z = 1.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
 		float y = -10 + 20.0f * ((float)i / (segments) );
 		unsigned char color = (unsigned char )(255.0f * ((float)i / (segments) ));
+		
+		MatrixInfluence infl0( 0, 1.0f );
+		MatrixInfluence infl1( 1, (float)i / (segments) );
+		MatrixInfluence infl2( 2, 0.0f );
 
-		vbRaw[ i * 4 + 0 ] = { -x,  y, -z, unify::Color::ColorRed( color ), 0.1f, 0, 0, 0 };
-		vbRaw[ i * 4 + 1 ] = {  x,  y, -z, unify::Color::ColorGreen( color ), 0.1f, 0, 0, 0 };
-		vbRaw[ i * 4 + 2 ] = {  x,  y, z, unify::Color::ColorBlue( color ), 0.1f, 0, 0, 0 };
-		vbRaw[ i * 4 + 3 ] = { -x,  y, z, unify::Color::ColorWhite( color ), 0.1f, 0, 0, 0 };
+		float result_infl0 = infl0.Result();
+		float result_infl1 = infl1.Result();
+		float result_infl2 = infl2.Result();
+
+  		vbRaw[ i * 4 + 0 ] = { -x,  y, -z, unify::Color::ColorRed( color ),		result_infl0, result_infl1, result_infl2, 0 };
+		vbRaw[ i * 4 + 1 ] = {  x,  y, -z, unify::Color::ColorGreen( color ),	result_infl0, result_infl1, result_infl2, 0 };
+		vbRaw[ i * 4 + 2 ] = {  x,  y, z, unify::Color::ColorBlue( color ),		result_infl0, result_infl1, result_infl2, 0 };
+		vbRaw[ i * 4 + 3 ] = { -x,  y, z, unify::Color::ColorWhite( color ),	result_infl0, result_infl1, result_infl2, 0 };
 	};
 
 	size_t index = 0;
@@ -125,5 +165,75 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	std::vector< const unify::FrameLite * > frames;
 	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
 	frames.push_back( &frame );
-	mesh->Render( renderer, renderInfo, nullptr, &frames[0], frames.size() );
+
+	static size_t animState = 0;
+	static float animTime = 0;
+	static float animTimeLimit = 1.0f;
+	unify::Matrix animMatrix;
+	animTime += renderInfo.GetDelta() * 1.3f;
+	if ( animTime >= animTimeLimit )
+	{
+		animTime = 0.0f;
+		animState++;
+		if ( animState > 3 )
+		{
+			animState = 0;
+		}
+	}
+
+	switch( animState )
+	{
+	case 0:
+		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( 180 * (0.0f + (animTime / animTimeLimit ) ) ) );
+		break;
+	case 1:
+		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( 180 * (1.0f - (animTime / animTimeLimit ) ) ) );
+		break;
+	case 2:
+		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( -180 * (0.0f + (animTime / animTimeLimit ) ) ) );
+		break;
+	case 3:
+		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( -180 * (1.0f - (animTime / animTimeLimit ) ) ) );
+		break;
+	};
+
+
+	class Source : public IMatrixSource
+	{
+	private:
+		const unify::FrameLite & m_frame;
+		const unify::Matrix & m_matrix;
+	public:
+		Source( const unify::FrameLite & frame, const unify::Matrix & matrix )
+			: m_frame{ frame }
+			, m_matrix{ matrix }
+		{
+		}
+
+		size_t Count() const
+		{
+			return 1;
+		}
+
+		unify::Matrix GetMatrix( size_t i ) const
+		{
+			switch( i )
+			{
+			case 0:
+				return m_frame.GetMatrix();
+			case 1:
+				return m_matrix;
+			default:
+				return unify::MatrixIdentity();
+			}
+		}
+
+		void CopyMatrices( unify::Matrix * matrices ) const
+		{
+			matrices[ 0 ] = m_frame.GetMatrix();
+			matrices[ 1 ] = m_matrix;
+		}
+	} source( frame, animMatrix );
+
+	mesh->Render( renderer, renderInfo, nullptr, &source, 1, true );
 }

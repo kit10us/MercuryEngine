@@ -8,6 +8,7 @@ using namespace unify;
 FrameLite::FrameLite()
 	: m_q( QuaternionIdentity() )
 	, m_p( 0, 0, 0 )
+	, m_mat{ m_q, m_p }
 	, m_useModelMatrix( false )
 	, m_modelMatrix( MatrixIdentity() )
 {
@@ -16,6 +17,7 @@ FrameLite::FrameLite()
 FrameLite::FrameLite( unify::Quaternion q, unify::V3< float > p )
 	: m_q( q )
 	, m_p( p )
+	, m_mat{ m_q, m_p }
 	, m_useModelMatrix( false )
 	, m_modelMatrix( MatrixIdentity() )
 {
@@ -34,6 +36,7 @@ void FrameLite::LookAt( const FrameLite & frame, const V3< float > & up )
 void FrameLite::LookAt( const V3< float > & at, const V3< float > & up )
 {	
 	m_q = QuaternionLookAt( m_p, at, up );
+	m_mat = Matrix{ m_q, m_p };
 }
 
 // Move ou position by an amount
@@ -52,6 +55,8 @@ void FrameLite::Orbit( const V3< float > & origin, const V2< float > & direction
 	newPosition = newPosition * q;
 	
 	m_p = newPosition + origin;
+
+	m_mat = Matrix{ m_q, m_p };
 }
 
 void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit )
@@ -59,16 +64,20 @@ void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit )
 	m_p -= origin;
 	m_p = m_p * orbit;
 	m_p += origin;
+
+	m_mat = Matrix{ m_q, m_p };
 }
 
 void FrameLite::PreMul( Quaternion q )
 {
 	m_q = q * m_q;
+	m_mat = Matrix{ m_q, m_p };
 }
 
 void FrameLite::PostMul( Quaternion q )
 {
 	m_q = m_q * q;
+	m_mat = Matrix{ m_q, m_p };
 }
 
 void FrameLite::PreMul( Matrix m )
@@ -77,6 +86,7 @@ void FrameLite::PreMul( Matrix m )
 	mine = m * mine;
 	m_q = mine.GetRotation();
 	m_p = mine.GetPosition();
+	m_mat = Matrix{ m_q, m_p };
 }
 
 void FrameLite::PostMul( Matrix m )
@@ -84,16 +94,20 @@ void FrameLite::PostMul( Matrix m )
 	Matrix mine { m_q, m_p };
 	mine = mine * m;
 	m_q = mine.GetRotation();
-	m_p = mine.GetPosition();}
+	m_p = mine.GetPosition();
+	m_mat = Matrix{ m_q, m_p };
+}
 
 Matrix FrameLite::GetMatrix() const
 {
 	if ( m_useModelMatrix )
 	{
+		//return m_modelMatrix * m_mat;
 		return m_modelMatrix * Matrix( m_q, m_p );
 	}
 	else
 	{
+		//return m_mat;
 		return Matrix( m_q, m_p );
 	}
 }
@@ -126,11 +140,13 @@ V3< float > FrameLite::GetPosition() const
 void FrameLite::SetRotation( const Quaternion & rotation )
 {
 	m_q = rotation;
+	m_mat = Matrix{ m_q, m_p };
 }			
 
 void FrameLite::SetPosition( const V3< float > & position )
 {
 	m_p = position;
+	m_mat = Matrix{ m_q, m_p };
 }
 
 void FrameLite::SetModelMatrix( Matrix & modelMatrix )

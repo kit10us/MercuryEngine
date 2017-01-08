@@ -1,9 +1,9 @@
 <xml>
 <include>setup_base.xml</include>
-<extension>../../../extensions/DXILua.dll</extension>
-<extension>../../../extensions/DAELoader.dll</extension>
-<extension>../../../extensions/ASELoader.dll</extension>
-<extension>../../../extensions/DXIMouse.dll</extension>
-<extension>../../../extensions/DXIGamepad.dll</extension>
+<extension>../../extensions/DXILua.dll</extension>
+<extension>../../extensions/DAELoader.dll</extension>
+<extension>../../extensions/ASELoader.dll</extension>
+<extension>../../extensions/DXIMouse.dll</extension>
+<extension>../../extensions/DXIGamepad.dll</extension>
 <gamemodule type="LUA" source="game_inputs.lua"/>
 </xml>

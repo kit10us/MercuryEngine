@@ -1,5 +1,5 @@
 <xml>
 <include>setup_base.xml</include>
-<extension>../../../extensions/DAELoader.dll</extension>
-<extension>../../../extensions/ASELoader.dll</extension>
+<extension>../../extensions/DAELoader.dll</extension>
+<extension>../../extensions/ASELoader.dll</extension>
 </xml>

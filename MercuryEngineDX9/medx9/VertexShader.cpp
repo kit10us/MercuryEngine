@@ -2,179 +2,29 @@
 // All Rights Reserved
 
 #include <medx9/VertexShader.h>
-#include <medx9/Renderer.h>
 #include <me/exception/NotImplemented.h>
-#include <atlbase.h>
 
 using namespace medx9;
 using namespace me;
-
-class VertexShader::Pimpl
-{
-	VertexShader & m_owner;
-	const Renderer * m_renderer;
-
-	CComPtr< ID3DXBuffer > m_codeBuffer;
-	CComPtr< ID3DXConstantTable > m_constantTable;
-	CComPtr< IDirect3DVertexShader9 > m_shader;
-	
-	D3DXHANDLE m_worldMatrixHandle;
-	D3DXHANDLE m_viewMatrixHandle;
-	D3DXHANDLE m_projectionMatrixHandle;
-	D3DXHANDLE m_finalMatrixHandle;
-
-public:
-	Pimpl( VertexShader & owner, const me::IRenderer * renderer )
-		: m_owner( owner )
-		, m_renderer( dynamic_cast< const Renderer * >( renderer ) )
-		, m_finalMatrixHandle( 0 )
-		, m_worldMatrixHandle( 0 )
-	    , m_viewMatrixHandle( 0 )
-	    , m_projectionMatrixHandle( 0 )
-	{
-	}
-
-	~Pimpl()
-	{
-		Destroy();
-	}
-
-	void Destroy()
-	{
-		m_codeBuffer = nullptr;
-		m_constantTable = nullptr;
-		m_shader = nullptr;
-	}
-
-	void Create()
-	{
-		bool debug = false;
-#if defined( DEBUG ) || defined( _DEBUG )
-		debug = true;
-#endif
-
-		HRESULT result = S_OK;
-		ID3DXBuffer * errorBuffer = 0;
-		if( !m_owner.m_filePath.Empty() )
-		{
-			if( m_owner.m_assembly )
-			{
-				DWORD flags = D3DXSHADER_DEBUG;
-				result = D3DXAssembleShaderFromFileA( m_owner.m_filePath.ToString().c_str(), 0, 0, D3DXSHADER_DEBUG, &m_codeBuffer, &errorBuffer );
-			}
-			else
-			{
-				DWORD flags = 0;
-				result = D3DXCompileShaderFromFileA( m_owner.m_filePath.ToString().c_str(), 0, 0, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags, &m_codeBuffer, &errorBuffer, &m_constantTable );
-			}
-			if( m_codeBuffer == 0 || FAILED( result ) )
-			{
-				m_owner.m_errorMessage = static_cast< char * >(errorBuffer->GetBufferPointer());
-				errorBuffer->Release();
-				errorBuffer = 0;
-				throw unify::Exception( "Failed to create shader \"" + m_owner.m_filePath.ToString() + "\": " + m_owner.m_errorMessage + "\n" );
-			}
-		}
-		else if( m_owner.m_code.empty() )
-		{
-			if( m_owner.m_assembly )
-			{
-				DWORD flags = 0;
-				D3DXAssembleShader( m_owner.m_code.c_str(), static_cast< unsigned int >(m_owner.m_code.length() - 1), 0, NULL, flags, &m_codeBuffer, &errorBuffer );
-			}
-			else
-			{
-				DWORD flags = 0;
-				D3DXCompileShader( m_owner.m_code.c_str(), static_cast< unsigned int >(m_owner.m_code.length() - 1), 0, 0, m_owner.m_entryPointName.c_str(), m_owner.m_profile.c_str(), flags, &m_codeBuffer, &errorBuffer, &m_constantTable );
-			}
-
-			if( m_codeBuffer == 0 || FAILED( result ) )
-			{
-				m_owner.m_errorMessage = static_cast< char * >(errorBuffer->GetBufferPointer());
-				errorBuffer->Release();
-				errorBuffer = 0;
-				throw unify::Exception( "Failed to create shader from code: " + m_owner.m_errorMessage + "\n" );
-			}
-		}
-		else
-		{
-			throw unify::Exception( "Attempted to create shader from unknown source!" );
-		}
-		CreateThisShader();
-	}
-
-	void CreateThisShader()
-	{
-		m_renderer->GetDxDevice()->CreateVertexShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
-		m_finalMatrixHandle = m_constantTable->GetConstantByName( 0, "finalMatrix" );
-		m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "worldMatrix" );
-		m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "viewMatrix" );
-		m_projectionMatrixHandle = m_constantTable->GetConstantByName( 0, "projectionMatrix" );
-		m_owner.m_vertexDeclaration->Build( m_renderer, m_owner );
-		m_owner.m_created = true;
-	}
-
-	void Use( const RenderInfo & renderInfo, const unify::Matrix & world )
-	{
-		HRESULT result = S_OK;
-
-		unify::Matrix view = renderInfo.GetViewMatrix();
-		unify::Matrix projection = renderInfo.GetProjectionMatrix();
-
-		if( m_worldMatrixHandle != 0 )
-		{
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_worldMatrixHandle, (D3DXMATRIX*)&world.m );
-		}
-		if( m_viewMatrixHandle != 0 )
-		{
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_viewMatrixHandle, (D3DXMATRIX*)&view.m );
-		}
-		if( m_projectionMatrixHandle != 0 )
-		{
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_projectionMatrixHandle, (D3DXMATRIX*)&projection.m );
-		}
-		if( m_finalMatrixHandle != 0 )
-		{
-			unify::Matrix final = world * view * projection;
-			result = GetConstantTable()->SetMatrix( m_renderer->GetDxDevice(), m_finalMatrixHandle, (D3DXMATRIX*)&final.m );
-		}
-
-		result = m_renderer->GetDxDevice()->SetVertexShader( m_shader );
-		if( FAILED( result ) )
-		{
-			throw unify::Exception( "Failed to set vertex shader!" );
-		}
-	}
-
-	ID3DXConstantTable * GetConstantTable()
-	{
-		return m_constantTable;
-	}
-
-	const void * GetBytecode() const
-	{
-		return nullptr;
-	}
-
-	size_t GetBytecodeLength() const
-	{
-		return 0;
-	}
-};
-
+using namespace shader;
 
 VertexShader::VertexShader( const me::IRenderer * renderer )
-	: m_pimpl( new Pimpl( *this, renderer ) )
+	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
+	, m_worldMatrixHandle( 0 )
+	, m_viewMatrixHandle( 0 )
+	, m_projectionMatrixHandle( 0 )
 	, m_assembly( false )
 	, m_created( false )
 {
 }
 
 VertexShader::VertexShader( const me::IRenderer * renderer, VertexShaderParameters parameters )
-	: m_pimpl( new Pimpl( *this, renderer ) )
+	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
+	, m_worldMatrixHandle( 0 )
+	, m_viewMatrixHandle( 0 )
+	, m_projectionMatrixHandle( 0 )
 	, m_assembly( false )
 	, m_created( false )
-	, m_vertexDeclaration( parameters.vertexDeclaration )
 {
 	Create( parameters );
 }
@@ -186,12 +36,17 @@ VertexShader::~VertexShader()
 
 void VertexShader::Destroy()
 {
-	m_pimpl->Destroy();
+	m_codeBuffer = nullptr;
+	m_constantTable = nullptr;
+	m_shader = nullptr;
 }
 
 void VertexShader::Create( VertexShaderParameters parameters )
 {
 	Destroy();
+
+	// NOTE: For now, we are going to pull this programatiicaly from the shader: m_constants = parameters.constants;
+	m_vertexDeclaration = parameters.vertexDeclaration;
 
 	if( parameters.path.Empty() == false )
 	{
@@ -205,7 +60,120 @@ void VertexShader::Create( VertexShaderParameters parameters )
 	m_entryPointName = parameters.entryPointName;
 	m_profile = parameters.profile;
 
-	m_pimpl->Create();
+	bool debug = false;
+#if defined( DEBUG ) || defined( _DEBUG )
+	debug = true;
+#endif
+
+	HRESULT result = S_OK;
+	ID3DXBuffer * errorBuffer = 0;
+	if( !m_filePath.Empty() )
+	{
+		if( m_assembly )
+		{
+			DWORD flags = D3DXSHADER_DEBUG;
+			result = D3DXAssembleShaderFromFileA( m_filePath.ToString().c_str(), 0, 0, D3DXSHADER_DEBUG, &m_codeBuffer, &errorBuffer );
+		}
+		else
+		{
+			DWORD flags = 0;
+			result = D3DXCompileShaderFromFileA( m_filePath.ToString().c_str(), 0, 0, m_entryPointName.c_str(), m_profile.c_str(), flags, &m_codeBuffer, &errorBuffer, &m_constantTable );
+		}
+		if( m_codeBuffer == 0 || FAILED( result ) )
+		{
+			m_errorMessage = static_cast< char * >(errorBuffer->GetBufferPointer());
+			errorBuffer->Release();
+			errorBuffer = 0;
+			throw unify::Exception( "Failed to create shader \"" + m_filePath.ToString() + "\": " + m_errorMessage + "\n" );
+		}
+	}
+	else if( m_code.empty() )
+	{
+		if( m_assembly )
+		{
+			DWORD flags = 0;
+			D3DXAssembleShader( m_code.c_str(), static_cast< unsigned int >(m_code.length() - 1), 0, NULL, flags, &m_codeBuffer, &errorBuffer );
+		}
+		else
+		{
+			DWORD flags = 0;
+			D3DXCompileShader( m_code.c_str(), static_cast< unsigned int >(m_code.length() - 1), 0, 0, m_entryPointName.c_str(), m_profile.c_str(), flags, &m_codeBuffer, &errorBuffer, &m_constantTable );
+		}
+
+		if( m_codeBuffer == 0 || FAILED( result ) )
+		{
+			m_errorMessage = static_cast< char * >(errorBuffer->GetBufferPointer());
+			errorBuffer->Release();
+			errorBuffer = 0;
+			throw unify::Exception( "Failed to create shader from code: " + m_errorMessage + "\n" );
+		}
+	}
+	else
+	{
+		throw unify::Exception( "Attempted to create shader from unknown source!" );
+	}
+
+	shader::ConstantBuffer::ptr buffer( new shader::ConstantBuffer );
+
+	m_renderer->GetDxDevice()->CreateVertexShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
+	
+	m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "worldMatrix" );
+	if ( m_worldMatrixHandle == 0 )
+	{
+		m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "world" );
+	}
+
+	if ( m_worldMatrixHandle != 0 )
+	{
+		buffer->AddVariable( { "world", shader::ConstantsType::Matrix, 1 } );
+	}
+
+
+	m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "viewMatrix" );
+	if ( m_viewMatrixHandle == 0 )
+	{
+		m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "view" );
+	}
+
+	if ( m_viewMatrixHandle != 0 )
+	{
+		buffer->AddVariable( { "view", shader::ConstantsType::Matrix, 1 } );
+	}
+
+
+	m_projectionMatrixHandle = m_constantTable->GetConstantByName( 0, "projectionMatrix" );
+	if ( m_projectionMatrixHandle == 0 )
+	{
+		m_projectionMatrixHandle = m_constantTable->GetConstantByName( 0, "projection" );
+	}
+
+	if ( m_projectionMatrixHandle != 0 )
+	{
+		buffer->AddVariable( { "projection", shader::ConstantsType::Matrix, 1 } );
+	}
+
+	m_constants.reset( new shader::ShaderConstants );
+	m_constants->AddBuffer( buffer );
+
+	m_lockData.resize( buffer->GetVariables().size() );
+	
+	m_vertexDeclaration->Build( m_renderer, *this );
+	m_created = true;
+}
+
+const ShaderConstants * VertexShader::GetConstants() const
+{
+	return m_constants.get();
+}
+
+void VertexShader::LockConstants( size_t buffer, unify::DataLock & lock )
+{
+	lock.SetLock( &m_lockData[0], sizeof( unify::Matrix ) * m_lockData.size(), false, 0 );
+}
+
+void VertexShader::UnlockConstants( size_t buffer, unify::DataLock & lock )
+{
+	// Do nothing, we just needed m_lockData updated.
 }
 
 void VertexShader::SetVertexDeclaration( VertexDeclaration::ptr vertexDeclaration )
@@ -220,18 +188,40 @@ VertexDeclaration::ptr VertexShader::GetVertexDeclaration() const
 
 const void * VertexShader::GetBytecode() const
 {
-	return m_pimpl->GetBytecode();
+	return nullptr;
 }
 
 size_t VertexShader::GetBytecodeLength() const
 {
-	return m_pimpl->GetBytecodeLength();
+	return 0;
 }
 
-void VertexShader::Use( const RenderInfo & renderInfo, const unify::Matrix & world )
+void VertexShader::Use()
 {
 	m_vertexDeclaration->Use();
-	m_pimpl->Use( renderInfo, world );
+
+	HRESULT result = S_OK;
+
+	size_t i = 0;
+
+	if( m_worldMatrixHandle != 0 )
+	{
+		result = m_constantTable->SetMatrix( m_renderer->GetDxDevice(), m_worldMatrixHandle, (D3DXMATRIX*)&m_lockData[ i++ ] );
+	}
+	if( m_viewMatrixHandle != 0 )
+	{
+		result = m_constantTable->SetMatrix( m_renderer->GetDxDevice(), m_viewMatrixHandle, (D3DXMATRIX*)&m_lockData[ i++ ] );
+	}
+	if( m_projectionMatrixHandle != 0 )
+	{
+		result = m_constantTable->SetMatrix( m_renderer->GetDxDevice(), m_projectionMatrixHandle, (D3DXMATRIX*)&m_lockData[ i++ ] );
+	}
+
+	result = m_renderer->GetDxDevice()->SetVertexShader( m_shader );
+	if( FAILED( result ) )
+	{
+		throw unify::Exception( "Failed to set vertex shader!" );
+	}
 }
 
 std::string VertexShader::GetError()

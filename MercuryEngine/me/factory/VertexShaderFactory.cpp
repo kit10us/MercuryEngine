@@ -18,12 +18,31 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
 
 	qxml::Document doc( source );
-	auto & node = *doc.GetRoot()->FindFirstElement( "vertexshader" );
+	auto && root = *doc.GetRoot()->FindFirstElement( "vertexshader" );
 
 	VertexShaderParameters parameters;
-	parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( node.GetElement( "source" )->GetText(), node.GetDocument()->GetPath().DirectoryOnly() );
-	parameters.entryPointName = node.GetElement( "entry" )->GetText();
-	parameters. profile = node.GetElement( "profile" )->GetText();
-	parameters.vertexDeclaration.reset( new VertexDeclaration( node.GetElement( "vd" ) ) );
+	for ( auto && node : root.Children() )
+	{
+		if ( node.IsTagName( "source" ) )
+		{
+			parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( node.GetText(), node.GetDocument()->GetPath().DirectoryOnly() );
+		}
+		else if ( node.IsTagName( "entry" ) )
+		{
+			parameters.entryPointName = node.GetText();
+		}
+		else if ( node.IsTagName( "profile" ) )
+		{
+			parameters.profile = node.GetText();
+		}
+		else if ( node.IsTagName( "constants" ) )
+		{
+			parameters.constants.reset( new shader::ShaderConstants( &node ) );
+		}
+		else if ( node.IsTagName( "vd" ) )
+		{
+			parameters.vertexDeclaration.reset( new VertexDeclaration( &node ) );
+		}
+	}
 	return renderer->ProduceVS( parameters );
 }

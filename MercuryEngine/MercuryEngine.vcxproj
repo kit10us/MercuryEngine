@@ -101,6 +101,8 @@
     <ClInclude Include="me\scene\SceneComponent.h" />
     <ClInclude Include="me\scene\SceneDataCore.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
+    <ClInclude Include="me\shader\ConstantBuffer.h" />
+    <ClInclude Include="me\shader\ShaderConstants.h" />
     <ClInclude Include="me\SpriteDictionary.h" />
     <ClInclude Include="me\Terra.h" />
     <ClInclude Include="me\TextureLock.h" />
@@ -179,6 +181,8 @@
     <ClCompile Include="me\scene\SceneComponent.cpp" />
     <ClCompile Include="me\scene\SceneDataCore.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
+    <ClCompile Include="me\shader\ConstantBuffer.cpp" />
+    <ClCompile Include="me\shader\ShaderConstants.cpp" />
     <ClCompile Include="me\SpriteDictionary.cpp" />
     <ClCompile Include="me\Terra.cpp" />
     <ClCompile Include="me\TextureMode.cpp" />

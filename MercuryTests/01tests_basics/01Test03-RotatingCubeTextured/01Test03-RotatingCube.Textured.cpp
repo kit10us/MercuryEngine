@@ -31,7 +31,7 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	effect = GetManager< Effect>()->Add( "textured_3d", "media/EffectTextured.effect" );
+	effect = GetManager< Effect>()->Add( "textured_3d", "EffectTextured.effect" );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;

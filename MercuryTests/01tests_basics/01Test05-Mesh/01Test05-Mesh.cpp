@@ -30,7 +30,7 @@ RegisterGame( game );
 void MyGame::Startup()
 {
 	// Load effect...
-	auto effect = GetManager< Effect>()->Add( "textured_3d", "media/EffectTextured.effect" );
+	auto effect = GetManager< Effect>()->Add( "textured_3d", "EffectTextured.effect" );
 
 	// Create mesh...
 	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );

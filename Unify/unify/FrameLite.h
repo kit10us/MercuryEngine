@@ -44,6 +44,7 @@ namespace unify
 	protected:
 		unify::Quaternion m_q;
 		unify::V3< float > m_p;
+		unify::Matrix m_mat;
 		
 		bool m_useModelMatrix;
 		unify::Matrix m_modelMatrix;

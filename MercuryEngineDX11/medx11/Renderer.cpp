@@ -224,7 +224,7 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 	{
 		if ( method.effect )
 		{
-			method.effect->Use( renderInfo, instances[i] );
+			method.effect->Use( renderInfo, &instances[i], 1 );
 		}
 	
 		D3D11_PRIMITIVE_TOPOLOGY topology{};
@@ -292,7 +292,7 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			{
 				if ( method.effect )
 				{
-					method.effect->Use( renderInfo, instances[i]->GetMatrix() );
+					method.effect->Use( renderInfo, &instances[i]->GetMatrix(), 1 );
 				}								
 
 				if( method.useIB == false )
@@ -314,8 +314,9 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			size_t offset = 0;
 
 			if ( method.effect )
-			{
-				method.effect->Use( renderInfo, { unify::MatrixIdentity() } );
+			{						   
+				unify::Matrix matrix{ unify::MatrixIdentity() };
+				method.effect->Use( renderInfo, &matrix, 1 );
 			}	 
 															  
 			size_t read = 0;
@@ -391,7 +392,7 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 				{
 					if ( method.effect )
 					{
-						method.effect->Use( renderInfo, instances.instances[i]->GetMatrix() );
+						method.effect->Use( renderInfo, &instances.instances[i]->GetMatrix(), 1 );
 					}
 
 					if( method.useIB == false )
@@ -415,7 +416,8 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 
 			if ( method.effect )
 			{
-				method.effect->Use( renderInfo, { unify::MatrixIdentity() } );
+				unify::Matrix matrix{ unify::MatrixIdentity() };
+				method.effect->Use( renderInfo, &matrix, 1 );
 			}
 					  
 			D3D11_MAPPED_SUBRESOURCE subResource {};
@@ -506,7 +508,8 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 
 	if ( method.effect )
 	{
-		method.effect->Use( renderInfo, { unify::MatrixIdentity() } );
+		unify::Matrix matrix{ unify::MatrixIdentity() };
+		method.effect->Use( renderInfo, &matrix, 1 );
 	}
 					  
 	D3D11_MAPPED_SUBRESOURCE subResource {};
@@ -523,6 +526,7 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 		{
 			sources[ sources_index ].CopyMatrices( &((unify::Matrix*)subResource.pData)[ write ] );
 			write += sources[ sources_index ].Count();
+			sources_index++;
 		}
 
 		m_dxContext->Unmap( m_instanceBufferM[0], 0 );

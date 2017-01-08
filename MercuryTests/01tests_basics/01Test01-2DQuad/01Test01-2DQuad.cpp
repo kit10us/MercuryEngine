@@ -28,7 +28,7 @@ void MyGame::Startup()
 	const float width = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().width;
 	const float height = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;
 
-	effect = GetManager< Effect>()->Add( "color2d", "media/EffectColor2D.effect" );
+	effect = GetManager< Effect>()->Add( "color2d", "EffectColor2D.effect" );
 
 	auto vd = effect->GetVertexShader()->GetVertexDeclaration();
 

@@ -32,15 +32,15 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "media/EffectColor.effect" );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "media/EffectTextured.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "EffectTextured.effect" );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "media/shaders/textured3d.xml" );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "media/shaders/textured3d.xml" );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "shaders/textured3d.xml" );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "shaders/textured3d.xml" );
 
 	// Add a texture.
-	GetManager< ITexture >()->Add( "borgcube", "media/borgcube.bmp" );
+	GetManager< ITexture >()->Add( "borgcube", "borgcube.bmp" );
 
 	// Create an effect.
 	Effect::ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
@@ -72,7 +72,7 @@ void MyGame::Startup()
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
-	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "media/cube.xml" ) );
+	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = scene->NewObject( "XMLObject" );
 	auto gc = AddGeometryComponent( xmlObject, GetOS(), meshXML );
@@ -86,7 +86,7 @@ void MyGame::Startup()
 	xmlObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
-	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "media/ASE_SwordTextured.ASE" ) );
+	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = scene->NewObject( "swordASE" );
 	gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
@@ -101,16 +101,16 @@ void MyGame::Startup()
 	}
 	aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/USSVoyager.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/models/Death Star II/models/Death Star II.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/enterprise.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/cube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/borgcube.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/torus.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "USSVoyager.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "models/Death Star II/models/Death Star II.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "enterprise.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "cube.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "borgcube.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "torus.dae" ) );
 	
 	// Rigged...
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/Mickey_Mouse/Mickey_Mouse.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "media/SuperMarioGalaxy_Mario/mario.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "Mickey_Mouse/Mickey_Mouse.dae" ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = scene->NewObject( "daeModel" );
 	gc = AddGeometryComponent( daeModel, GetOS(), meshDAE );

@@ -3,12 +3,19 @@
   <pixelshader name="color3d">
     <source>color3d.hlsl</source>
     <entry>ps_main</entry>
-    <profile>ps_1_1</profile>
+    <profile>ps_4_0</profile>
   </pixelshader>
   <vertexshader name="color3d">
     <source>color3d.hlsl</source>
     <entry>vs_main</entry>
-    <profile>vs_1_1</profile>
+    <profile>vs_4_0</profile>
+	<constants>
+	  <buffer>
+	    <matrix name="world" count="1"/>
+	    <matrix name="view" count="1"/>
+	    <matrix name="projection" count="1"/>
+	  </buffer>
+	</constants>
     <vd>
       <element name="Position" type="Float3"/>
   	  <element name="Diffuse" type="Color"/>

@@ -27,12 +27,6 @@ namespace me
 		};
 	};
 
-	struct InstancesSet
-	{
-		const unify::FrameLite ** instances;
-		const size_t instances_size;
-	};				
-
 	class IMatrixSource
 	{
 	public:
@@ -43,6 +37,11 @@ namespace me
 		virtual void CopyMatrices( unify::Matrix * matrices ) const = 0;
 	};
 
+	struct InstancesSet
+	{
+		const unify::FrameLite ** instances;
+		const size_t instances_size;
+	};		
 
 	/// <summary>
 	/// Supports access to the renderer.

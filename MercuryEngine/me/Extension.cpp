@@ -11,6 +11,7 @@ typedef bool ( __cdecl *LoaderFunction )(me::IGame *, const qxml::Document * doc
 
 Extension::Extension( unify::Path source )
 	: m_source( source )
+	, m_moduleHandle( 0 )
 {
 }
 							 
@@ -25,6 +26,8 @@ bool Extension::Load( IGame * game )
 	{
 		game->ReportError( me::ErrorLevel::Critical, "Extension", "Failed to find extenion \"" + m_source.ToString() + "\"!" ); 
 	}
+
+	game->LogLine( "Loading extenion \"" + m_source.ToString() + "\"..." );
 
 	m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );
 	if ( ! m_moduleHandle )
@@ -59,9 +62,7 @@ bool Extension::Load( IGame * game )
 	loader( game, doc.get() );
 
 	return true;
-}
-
-
+}											
 
 void Extension::Free()
 {

@@ -25,6 +25,9 @@
     <Filter Include="shape_creation">
       <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\shader">
+      <UniqueIdentifier>{d61f0b9f-bb5c-4b7a-9dac-edc26a9fa479}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\InputManager.h">
@@ -351,6 +354,12 @@
     <ClInclude Include="sg\CreateShape_Cube.h">
       <Filter>shape_creation</Filter>
     </ClInclude>
+    <ClInclude Include="me\shader\ConstantBuffer.h">
+      <Filter>me\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="me\shader\ShaderConstants.h">
+      <Filter>me\shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -577,6 +586,12 @@
     </ClCompile>
     <ClCompile Include="sg\CreateShape_Cube.cpp">
       <Filter>shape_creation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\shader\ShaderConstants.cpp">
+      <Filter>me\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="me\shader\ConstantBuffer.cpp">
+      <Filter>me\shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

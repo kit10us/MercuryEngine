@@ -85,6 +85,10 @@ namespace me
 		virtual InputManager * GetInputManager() = 0;
 		virtual const InputManager * GetInputManager() const = 0;
 
+		virtual void Log( std::string text ) = 0;
+
+		virtual void LogLine( std::string line ) = 0;
+
 		/// <summary>
 		/// This is our method of reporting issues, especially from modules.
 		/// </summary>

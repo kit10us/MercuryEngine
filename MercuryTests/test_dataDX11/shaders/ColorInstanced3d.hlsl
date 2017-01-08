@@ -2,8 +2,7 @@ struct VS_IN
 {
 	float3 position		: POSITION;
 	float4 color		: COLOR;
-	float4 matInf		: MatInf;
-	matrix <float, 4, 4> world[3]		: Matrix;
+	matrix <float, 4, 4> world[1]		: Matrix;
 };
 
 struct VS_OUT
@@ -14,20 +13,21 @@ struct VS_OUT
 
 cbuffer Constants : register(b0)
 {
-	float4x4 worldMatrix;	
-	float4x4 viewMatrix;
-	float4x4 projectionMatrix;
+	float4x4 world;	
+	float4x4 view;
+	float4x4 projection;
 };
 
 VS_OUT vs_main( in VS_IN vs_in )
 {
 	VS_OUT vs_out;
 
-	float4x4 m = mul( vs_in.world[0], worldMatrix );
+	float4x4 m = mul( vs_in.world[0], world );
+	
 	vs_out.position = float4( vs_in.position, 1.0f );
 	vs_out.position = mul( vs_out.position, transpose( m ) );
-	vs_out.position = mul( vs_out.position, transpose( viewMatrix ) );
-	vs_out.position = mul( vs_out.position, transpose( projectionMatrix ) );	
+	vs_out.position = mul( vs_out.position, transpose( view ) );
+	vs_out.position = mul( vs_out.position, transpose( projection ) );	
 	vs_out.color = vs_in.color;
 	return vs_out;
 }

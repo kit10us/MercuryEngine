@@ -43,7 +43,7 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr mainScene = sceneManager->Add( "main" );
 	
-	effect = GetManager< Effect>()->Add( "textured3d", "media/EffectTextured.effect" );
+	effect = GetManager< Effect>()->Add( "textured3d", "EffectTextured.effect" );
 
 #pragma region Create vertex raw data as a C-style struct...
 	float xscalar = 10.0f;
@@ -113,7 +113,7 @@ void MyGame::Startup()
 	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 	mainScene->AddComponent( canvas );
 
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
 	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2, scene2d::Anchor::BottomLeft ) ) );
 }
 

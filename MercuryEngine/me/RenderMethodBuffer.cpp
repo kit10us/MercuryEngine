@@ -85,3 +85,13 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 		renderer->RenderInstanced( method, renderInfo, instancesList, instancesList_size );
 	}
 }
+
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) const
+{
+	// Iterate through methods to render.
+	for( unsigned int i = 0; i != m_methodList.size(); ++i )
+	{
+		const RenderMethod & method = m_methodList[ i ];
+		renderer->RenderInstanced( method, renderInfo, sources, sources_size, contiguous );
+	}
+}

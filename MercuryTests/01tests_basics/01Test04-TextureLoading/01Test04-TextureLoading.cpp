@@ -33,8 +33,8 @@ RegisterGame( game );
 
 void MyGame::Startup()
 {
-	effectBorg = GetManager< Effect>()->Add( "borg", "media/EffectTextured.effect" );
-	effect4 = GetManager< Effect>()->Add( "4", "media/Effect4.effect" );
+	effectBorg = GetManager< Effect>()->Add( "borg", "EffectTextured.effect" );
+	effect4 = GetManager< Effect>()->Add( "4", "Effect4.effect" );
 
 #pragma region Create vertex raw data as a C-style struct...
 	float xscalar = 10.0f;

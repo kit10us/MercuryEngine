@@ -116,7 +116,7 @@ void * Game::Feed( std::string target, void * data )
 			scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 			scene->AddComponent( canvas );
 
-			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "media/font2.effect" );	
+			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
 			canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 		}
 	}
@@ -321,6 +321,7 @@ bool Game::Initialize( OSParameters osParameters )
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path path )
 		{
 			qxml::Document doc( path );
+			LogLine( "Loading setup \"" + path.ToString() + "\"..." );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -522,6 +523,7 @@ void Game::AddExtension( unify::Path path )
 }
 
 void Game::Log( std::string text )
+
 {
 	using namespace std;
 

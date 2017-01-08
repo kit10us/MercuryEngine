@@ -40,7 +40,7 @@ bool Effect::operator != ( const Effect & effect ) const
 	return !( *this == effect );
 }
 
-void Effect::Use( const RenderInfo & renderInfoIn, const unify::Matrix & world )
+void Effect::Use( const RenderInfo & renderInfoIn, const unify::Matrix * world, size_t world_size )
 {
 	RenderInfo renderInfo( renderInfoIn );
 
@@ -101,7 +101,41 @@ void Effect::Use( const RenderInfo & renderInfoIn, const unify::Matrix & world )
 
 	if( m_vertexShader )
 	{
-		m_vertexShader->Use( renderInfo, world );
+		unify::DataLock lock;
+
+		const me::shader::ShaderConstants * constants = m_vertexShader->GetConstants();
+
+		size_t index = 0;
+		for ( auto && buffer : constants->GetBuffers() )
+		{
+			unify::DataLock lock;
+			m_vertexShader->LockConstants( index, lock );
+
+			for ( auto && constant : buffer->GetVariables() )
+			{
+				unsigned char * data = ((unsigned char *)lock.GetData()) + constant.offsetInBytes;
+				if ( unify::StringIs( constant.name, "World" ) )
+				{
+					unify::Matrix* matrix = (unify::Matrix*)data;
+					*matrix = world[0];
+				}
+				else if ( unify::StringIs( constant.name, "View" ) )
+				{
+					unify::Matrix* matrix = (unify::Matrix*)data;
+					*matrix = renderInfo.GetViewMatrix();
+				}
+				else if ( unify::StringIs( constant.name, "Projection" ) )
+				{
+					unify::Matrix* matrix = (unify::Matrix*)data;
+					*matrix = renderInfo.GetProjectionMatrix();
+				}
+			}
+
+			m_vertexShader->UnlockConstants( index, lock );
+			index++;
+		}
+
+		m_vertexShader->Use();
 	}
 
 	if ( m_textures.empty() )
