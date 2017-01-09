@@ -84,7 +84,7 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	}
 }
 
-void PixelShader::Use( const RenderInfo & renderInfo ) const
+void PixelShader::Use() const
 {
 	m_renderer->GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
 }

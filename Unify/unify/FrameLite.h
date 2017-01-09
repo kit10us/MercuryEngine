@@ -26,6 +26,7 @@ namespace unify
 		void PostMul( Matrix m );
 
 		Matrix GetMatrix() const;
+		void ReadMatrix( Matrix * matrix ) const;
 
 		V3< float > GetLeft() const;
 		V3< float > GetUp() const;

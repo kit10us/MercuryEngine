@@ -275,7 +275,8 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 
 		if ( method.effect )
 		{
-			method.effect->Use( renderInfo, &instances[ i ], 1 );
+			method.effect->UpdateData( renderInfo, &instances[ i ], 1 );
+			method.effect->Use();
 		}
 
 		// Draw Primitive...

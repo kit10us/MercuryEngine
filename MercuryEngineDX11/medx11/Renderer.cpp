@@ -17,6 +17,45 @@
 using namespace medx11;
 using namespace me;
 
+class MatrixFeed
+{
+	const InstancesSet * _instancesList;
+	const size_t _instancesList_size;
+	size_t _instancesList_index;
+	size_t _i;
+	bool _done;
+public:
+	MatrixFeed( const InstancesSet * instancesList, const size_t instancesList_size )
+		: _instancesList{ instancesList }
+		, _instancesList_size{ instancesList_size }
+		, _instancesList_index{ 0 }
+		, _i{ 0 }
+	{
+	}
+
+	size_t ReadMatrix( unify::Matrix * out, size_t max )
+	{
+		size_t read = 0;
+		while ( _instancesList_index < _instancesList_size && read < max )
+		{
+			auto && instances = _instancesList[_instancesList_index];
+			instances.instances[_i++]->ReadMatrix( &out[read++] );
+			if ( _i >= instances.instances_size )
+			{
+				_i = 0;
+				_instancesList_index++;
+			}
+		}
+		return read;
+	}
+				
+	bool Done() const
+	{
+		return _instancesList_index >= _instancesList_size;
+	}
+};
+
+
 Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 	: m_OS( os )
 	, m_display( display )
@@ -224,7 +263,8 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 	{
 		if ( method.effect )
 		{
-			method.effect->Use( renderInfo, &instances[i], 1 );
+			method.effect->UpdateData( renderInfo, &instances[ i ], 1 );
+			method.effect->Use();
 		}
 	
 		D3D11_PRIMITIVE_TOPOLOGY topology{};
@@ -292,7 +332,8 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			{
 				if ( method.effect )
 				{
-					method.effect->Use( renderInfo, &instances[i]->GetMatrix(), 1 );
+					method.effect->UpdateData( renderInfo, &instances[i]->GetMatrix(), 1 );
+					method.effect->Use();
 				}								
 
 				if( method.useIB == false )
@@ -316,7 +357,8 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 			if ( method.effect )
 			{						   
 				unify::Matrix matrix{ unify::MatrixIdentity() };
-				method.effect->Use( renderInfo, &matrix, 1 );
+				method.effect->UpdateData( renderInfo, &matrix, 1 );
+				method.effect->Use();
 			}	 
 															  
 			size_t read = 0;
@@ -381,83 +423,58 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 	}
 	m_dxContext->IASetPrimitiveTopology( topology );
 
+	auto && vertexShader = method.effect->GetVertexShader();
+	auto && constants = vertexShader->GetConstants();
+	auto worldRef = constants->GetWorld();
+
+	MatrixFeed matrixFeed( instancesList, instancesList_size );
+	size_t write = 0;	  
+
 	switch( instancing )
 	{
 	case Instancing::None:
 		{
-			for( size_t instancesList_index = 0; instancesList_index < instancesList_size; ++instancesList_index )
-			{
-				auto && instances = instancesList[ instancesList_index ];
-				for( size_t i = 0; i < instances.instances_size; ++i )
+			// With no instancing, we except a world matrix in the constant buffer.
+			auto world = constants->GetBuffers()[worldRef.buffer]->GetVariables()[worldRef.index];
+			auto viewRef = constants->GetView();
+			auto projRef = constants->GetProjection();
+
+			unify::DataLock lock;
+
+			while ( ! matrixFeed.Done() )
+			{					 
+				size_t bufferIndex = 0;
+				for ( auto && buffer : constants->GetBuffers() )
 				{
-					if ( method.effect )
+					vertexShader->LockConstants( bufferIndex, lock );
+
+					if ( bufferIndex == viewRef.buffer )
 					{
-						method.effect->Use( renderInfo, &instances.instances[i]->GetMatrix(), 1 );
+						unsigned char * data = ((unsigned char *)lock.GetData()) + viewRef.offsetInBytes;
+						unify::Matrix* matrix = (unify::Matrix*)data;
+						*matrix = renderInfo.GetViewMatrix();
+					}
+		
+					if ( bufferIndex == projRef.buffer )
+					{
+						unsigned char * data = ((unsigned char *)lock.GetData()) + projRef.offsetInBytes;
+						unify::Matrix* matrix = (unify::Matrix*)data;
+						*matrix = renderInfo.GetProjectionMatrix();
 					}
 
-					if( method.useIB == false )
-					{
-						m_dxContext->Draw( method.vertexCount,  method.startVertex );
+					if ( bufferIndex == worldRef.buffer )
+					{	
+						unsigned char * data = ((unsigned char *)lock.GetData()) + worldRef.offsetInBytes;
+						unify::Matrix* matrix = (unify::Matrix*)data;
+						write += matrixFeed.ReadMatrix( &matrix[write], world.count );
 					}
-					else
-					{
-						m_dxContext->DrawIndexed( method.indexCount, method.startIndex, method.baseVertexIndex );
-					}
+
+					vertexShader->UnlockConstants( bufferIndex, lock );
+					bufferIndex++;
 				}
-			}
-		}
-		break;
-	case Instancing::Matrix:	
-		{
-			HRESULT result = S_OK;
+				 
+				method.effect->Use(); 
 
-			size_t stride = sizeof( unify::Matrix );
-			size_t offset = 0;
-
-			if ( method.effect )
-			{
-				unify::Matrix matrix{ unify::MatrixIdentity() };
-				method.effect->Use( renderInfo, &matrix, 1 );
-			}
-					  
-			D3D11_MAPPED_SUBRESOURCE subResource {};
-
-			const size_t set_list_size = instancesList_size;
-			size_t read = 0;
-			size_t set_list_index = 0;
-			while( set_list_index < set_list_size )
-			{
-				const InstancesSet * set_list = &instancesList[ set_list_index ];
-
-				result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
-				assert( !FAILED( result ) );
-
-				size_t write = 0;
-				while( write < m_totalInstances )
-				{
-					((unify::Matrix*)subResource.pData)[ write ] = set_list->instances[ read ]->GetMatrix();
-					read+=1;
-					write+=1;
-
-					if ( read >= set_list->instances_size )
-					{
-						read = 0;
-						set_list_index++;
-						if ( set_list_index == set_list_size )
-						{
-							break;
-						}
-						else
-						{
-							set_list = &instancesList[ set_list_index ];
-						}
-					}
-				}
-
-				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
-
-				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );  
-								   
 				if( method.useIB == false )
 				{
 					m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
@@ -466,6 +483,42 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 				{
 					m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
 				}
+				write = 0;
+			}
+		}
+		break;
+	case Instancing::Matrix:	
+		{
+			HRESULT result = S_OK;
+			size_t stride = sizeof( unify::Matrix );
+			size_t offset = 0;
+
+			method.effect->UpdateData( renderInfo, nullptr, 0 );
+
+			D3D11_MAPPED_SUBRESOURCE subResource{};
+
+			while ( ! matrixFeed.Done() )
+			{
+				result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
+				assert( !FAILED( result ) );
+
+				write += matrixFeed.ReadMatrix( &((unify::Matrix*)subResource.pData)[write], m_totalInstances );
+
+				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
+
+				method.effect->Use();
+
+				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );
+
+				if ( method.useIB == false )
+				{
+					m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
+				}
+				else
+				{
+					m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
+				}
+				write = 0;
 			}
 		}
 
@@ -509,7 +562,8 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 	if ( method.effect )
 	{
 		unify::Matrix matrix{ unify::MatrixIdentity() };
-		method.effect->Use( renderInfo, &matrix, 1 );
+		method.effect->UpdateData( renderInfo, &matrix, 1 );
+		method.effect->Use();
 	}
 					  
 	D3D11_MAPPED_SUBRESOURCE subResource {};

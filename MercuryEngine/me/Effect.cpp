@@ -40,120 +40,61 @@ bool Effect::operator != ( const Effect & effect ) const
 	return !( *this == effect );
 }
 
-void Effect::Use( const RenderInfo & renderInfoIn, const unify::Matrix * world, size_t world_size )
+void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size )
 {
-	RenderInfo renderInfo( renderInfoIn );
+	unify::DataLock lock;
 
-	/*
-	TODO:
-	switch( m_culling )
-	{
-	case CullNone:
-		win::DX::GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
-		break;
-	case CullCW:
-		win::DX::GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_CW );
-		break;
-	case CullCCW:
-		win::DX::GetDxDevice()->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
-		break;
-	case CullIgnore:
-		break;
-	}
-	*/
+	const me::shader::ShaderConstants * constants = m_vertexShader->GetConstants();
 
+	auto worldRef = constants->GetWorld();
+	auto viewRef = constants->GetView();
+	auto projRef = constants->GetProjection();
 
-	/*
-	//TODO:
-	// MATRIX...
-	const unify::FrameSetInstance * frameSetInstance = renderInfo.GetFrameSetInstance();
-	if( frameSetInstance && m_frameIndexAndInfluence.size() > 0 )
-	{
-		unify::Matrix world = instance.m;
-
-		// Get our animated frames lookup table. If it doesn't exist, then we don't want to use it.
-		for( size_t i = 0, end = m_frameIndexAndInfluence.size(); i != end; ++i )
-		{
-			FrameIndexAndInfluence & frameIndexAndInfluence = m_frameIndexAndInfluence[ i ];
-			const size_t frameIndex = frameIndexAndInfluence.first;
-			const float influence = frameIndexAndInfluence.second;
-			
-			const unify::Matrix & a = frameSetInstance->OriginalLocal( frameIndex );
-			const unify::Matrix & b = frameSetInstance->Local( frameIndex );
-			
-			unify::Matrix inverseA( a );
-			inverseA.Invert();
-			
-			unify::Matrix immediate( inverseA * (b * influence) );
-
-			world *= immediate;
-		}
-
-		assert( 0 ); // TODO:
-		instance.m = world;
-	}
-	*/
-
-	if( m_pixelShader )
-	{
-		m_pixelShader->Use( renderInfo );
-	}
-
-	if( m_vertexShader )
+	size_t bufferIndex = 0;
+	for ( auto && buffer : constants->GetBuffers() )
 	{
 		unify::DataLock lock;
+		m_vertexShader->LockConstants( bufferIndex, lock );
 
-		const me::shader::ShaderConstants * constants = m_vertexShader->GetConstants();
-
-		size_t index = 0;
-		for ( auto && buffer : constants->GetBuffers() )
+		// Set automatic variables...
+		
+		if ( bufferIndex == viewRef.buffer )
 		{
-			unify::DataLock lock;
-			m_vertexShader->LockConstants( index, lock );
-
-			for ( auto && constant : buffer->GetVariables() )
-			{
-				unsigned char * data = ((unsigned char *)lock.GetData()) + constant.offsetInBytes;
-				if ( unify::StringIs( constant.name, "World" ) )
-				{
-					unify::Matrix* matrix = (unify::Matrix*)data;
-					*matrix = world[0];
-				}
-				else if ( unify::StringIs( constant.name, "View" ) )
-				{
-					unify::Matrix* matrix = (unify::Matrix*)data;
-					*matrix = renderInfo.GetViewMatrix();
-				}
-				else if ( unify::StringIs( constant.name, "Projection" ) )
-				{
-					unify::Matrix* matrix = (unify::Matrix*)data;
-					*matrix = renderInfo.GetProjectionMatrix();
-				}
-			}
-
-			m_vertexShader->UnlockConstants( index, lock );
-			index++;
+			unsigned char * data = ((unsigned char *)lock.GetData()) + viewRef.offsetInBytes;
+			unify::Matrix* matrix = (unify::Matrix*)data;
+			*matrix = renderInfo.GetViewMatrix();
+		}
+		
+		if ( bufferIndex == projRef.buffer )
+		{
+			unsigned char * data = ((unsigned char *)lock.GetData()) + projRef.offsetInBytes;
+			unify::Matrix* matrix = (unify::Matrix*)data;
+			*matrix = renderInfo.GetProjectionMatrix();
 		}
 
-		m_vertexShader->Use();
-	}
+		if ( world_size != 0 && bufferIndex == worldRef.buffer )
+		{
+			unsigned char * data = ((unsigned char *)lock.GetData()) + worldRef.offsetInBytes;
+			unify::Matrix* matrix = (unify::Matrix*)data;
+			*matrix = world[0];
+		}
 
-	if ( m_textures.empty() )
-	{
-		// TODO: DX11
-		//Texture::UnsetTexture( 0 );
+		m_vertexShader->UnlockConstants( bufferIndex, lock );
+		bufferIndex++;
 	}
+}
+
+void Effect::Use()
+{		   
+	m_pixelShader->Use();
+
+	m_vertexShader->Use();
 
 	for( size_t i = 0; i < m_textures.size(); ++i )
 	{
 		if ( m_textures[ i ] )
 		{
 			m_textures[ i ]->Use( i );
-		}
-		else
-		{
-			// TODO: DX11
-			//Texture::UnsetTexture( i );
 		}
 	}
 }

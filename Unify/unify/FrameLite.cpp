@@ -112,6 +112,18 @@ Matrix FrameLite::GetMatrix() const
 	}
 }
 
+void FrameLite::ReadMatrix( Matrix * matrix ) const
+{
+	if ( m_useModelMatrix )
+	{
+		*matrix = m_modelMatrix * Matrix( m_q, m_p );
+	}
+	else
+	{
+		*matrix = Matrix( m_q, m_p );
+	}
+}
+
 V3< float > FrameLite::GetLeft() const
 {
 	return m_q * V3< float >( 1, 0, 0 );

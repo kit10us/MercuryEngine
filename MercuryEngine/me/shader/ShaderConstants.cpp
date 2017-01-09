@@ -42,6 +42,7 @@ void ShaderConstants::AddBuffer( ConstantBuffer::ptr buffer )
 			{
 				m_world.buffer = m_buffers.size() - 1;
 				m_world.index = i;
+				m_world.offsetInBytes = variable.offsetInBytes;
 			}
 		}
 		else if ( unify::StringIs( variable.name, "view" ) || unify::StringIs( variable.name, "viewmatrix" ) )
@@ -50,6 +51,7 @@ void ShaderConstants::AddBuffer( ConstantBuffer::ptr buffer )
 			{
 				m_view.buffer = m_buffers.size() - 1;
 				m_view.index = i;
+				m_view.offsetInBytes = variable.offsetInBytes;
 			}
 		}
 		else if ( unify::StringIs( variable.name, "projection" ) || unify::StringIs( variable.name, "projectionmatrix" ) )
@@ -58,6 +60,7 @@ void ShaderConstants::AddBuffer( ConstantBuffer::ptr buffer )
 			{
 				m_projection.buffer = m_buffers.size() - 1;
 				m_projection.index = i;
+				m_projection.offsetInBytes = variable.offsetInBytes;
 			}
 		}
 		i++;

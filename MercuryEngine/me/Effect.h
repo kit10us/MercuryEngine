@@ -39,7 +39,13 @@ namespace me
 		bool operator ==( const Effect & effect ) const;
 		bool operator !=( const Effect & effect ) const;
 
-		void Use( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size );
+		/// <summary>
+		/// This updates data to the vertex shader; don't use this if you intend to do this manually (this is likely to be deprecated.
+		/// </summary>
+		void UpdateData( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size );
+
+		void Use();
+
 		void SetTexture( unsigned char stage, ITexture::ptr texture );
 		void ClearTextures();
 		void SetCulling( CullingMode mode );

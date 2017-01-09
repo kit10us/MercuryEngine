@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #pragma once
-
 #include <me/RenderInfo.h>
 #include <me/Mercury.h>
 #include <unify/Path.h>
@@ -33,6 +32,6 @@ namespace me
 
 		virtual bool IsTrans() = 0;
 
-		virtual void Use( const me::RenderInfo & renderInfo ) const = 0;
+		virtual void Use() const = 0;
 	};
 }

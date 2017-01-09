@@ -16,10 +16,11 @@ namespace me
 	namespace shader
 	{			  
 		struct Reference {
-			Reference() : buffer{ SIZE_MAX }, index{ SIZE_MAX } {}
-			Reference( size_t buffer, size_t index ) : buffer{ buffer }, index{ index } {}							 
+			Reference() : buffer{ SIZE_MAX }, index{ SIZE_MAX }, offsetInBytes{ SIZE_MAX } {}
+			Reference( size_t buffer, size_t index, size_t offsetInBytes ) : buffer{ buffer }, index{ index }, offsetInBytes{ offsetInBytes } {}
 			size_t buffer;
 			size_t index;
+			size_t offsetInBytes;
 
 			bool IsSet() const { return index != SIZE_MAX; }
 		};

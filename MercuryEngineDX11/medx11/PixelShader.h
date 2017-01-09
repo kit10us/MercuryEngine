@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <me/RenderInfo.h>
 #include <me/IRenderer.h>
 #include <medx11/Renderer.h>
 #include <unify/Path.h>
@@ -24,7 +23,7 @@ namespace medx11
 
 		void Create( me::PixelShaderParameters parameters );
 
-		void Use( const me::RenderInfo & renderInfo ) const override;
+		void Use() const override;
 
 		void SetTrans( bool bTrans ) override;
 

@@ -11,7 +11,6 @@
     <profile>vs_4_0</profile>
 	<constants>
 	  <buffer>
-	    <matrix name="world" count="1"/>
 	    <matrix name="view" count="1"/>
 	    <matrix name="projection" count="1"/>
 	  </buffer>

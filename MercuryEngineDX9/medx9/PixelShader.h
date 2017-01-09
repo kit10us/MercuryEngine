@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <me/RenderInfo.h>
-#include <me/IRenderer.h>
+#include <medx9/Renderer.h>
+#include <atlbase.h>
 #include <unify/Path.h>
 #include <memory>
 
@@ -22,7 +22,7 @@ namespace medx9
 
 		void Create( me::PixelShaderParameters parameters );
 
-		void Use( const me::RenderInfo & renderInfo ) const override;
+		void Use() const override;
 
 		void SetTrans( bool bTrans ) override;
 
@@ -38,7 +38,9 @@ namespace medx9
 
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		const Renderer * m_renderer;
+		CComPtr< ID3DXBuffer > m_codeBuffer;
+		CComPtr< ID3DXConstantTable > m_constantTable;
+		CComPtr< IDirect3DPixelShader9 > m_shader;
 	};
 }
