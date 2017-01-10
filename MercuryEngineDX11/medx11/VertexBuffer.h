@@ -3,11 +3,12 @@
 
 #pragma once
 
+#include <medx11/Renderer.h>
 #include <me/IVertexBuffer.h>
-#include <me/IRenderer.h>
 #include <me/DataBuffer.h>
 #include <me/VertexDeclaration.h>
 #include <unify/BBox.h>
+#include <atlbase.h>
 
 namespace medx11
 {
@@ -42,8 +43,8 @@ namespace medx11
 		unsigned int GetSize() const;
 
 	protected:
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		const Renderer * m_renderer;
+		CComPtr< ID3D11Buffer > m_VB;
 
 		me::VertexDeclaration::ptr m_vertexDeclaration;
 		size_t m_slot;
