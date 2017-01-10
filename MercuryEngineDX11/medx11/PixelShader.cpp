@@ -4,15 +4,19 @@
 #include <medx11/PixelShader.h>
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
+#include <me/exception/FailedToLock.h>
 
 using namespace medx11;
 using namespace me;
+using namespace shader;
 
 PixelShader::PixelShader( const me::IRenderer * renderer )
 	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
 	, m_assembly( false )
 	, m_created( false )
 	, m_isTrans( false )
+	, m_bufferAccessed( 0 )
+	, m_locked( 0 )
 {
 }
 
@@ -29,6 +33,12 @@ PixelShader::~PixelShader()
 
 void PixelShader::Destroy()
 {
+	for( auto && buffer : m_constantBuffers )
+	{
+		buffer->Release();
+	}
+	m_constantBuffers.clear();
+
 	m_pixelShader = nullptr;
 	m_pixelShaderBuffer = nullptr;
 }
@@ -38,6 +48,8 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	Destroy();
 
 	m_parameters = parameters;
+
+	m_constants = parameters.constants;
 
 	bool debug =
 #if defined( DEBUG ) || defined( _DEBUG )
@@ -76,17 +88,104 @@ void PixelShader::Create( PixelShaderParameters parameters )
 		throw exception::FailedToCreate( std::string( "Failed to create shader \"" ) + m_parameters.path.ToString() + "\": " +  std::string( (char*)errorBlob->GetBufferPointer() ) );
 	}
 
+	auto dxDevice = m_renderer->GetDxDevice();
+
 	ID3D11ClassLinkage * classLinkage = nullptr;
-	result = m_renderer->GetDxDevice()->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
+	result = dxDevice->CreatePixelShader( m_pixelShaderBuffer->GetBufferPointer(), m_pixelShaderBuffer->GetBufferSize(), classLinkage, &m_pixelShader );
 	if ( FAILED( result ) )
 	{
 		throw exception::FailedToCreate( "Failed to create shader!" );
 	}
+
+	using namespace DirectX;
+			  
+	if ( m_constants )
+	{
+		size_t index = 0;
+		for ( auto && buffer : m_constants->GetBuffers() )
+		{
+			D3D11_BUFFER_DESC constantBufferDesc{};
+			constantBufferDesc.ByteWidth = buffer->GetSizeInBytes();
+			constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+			constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			ID3D11Buffer * createdBuffer;
+			result = dxDevice->CreateBuffer( &constantBufferDesc, nullptr, &createdBuffer );
+			m_constantBuffers.push_back( createdBuffer );
+			assert( !FAILED( result ) );
+		}
+	}
+		
+	m_created = true;
 }
 
-void PixelShader::Use() const
+const ShaderConstants * PixelShader::GetConstants() const
 {
-	m_renderer->GetDxContext()->PSSetShader( m_pixelShader, nullptr, 0 );
+	return m_constants.get();
+}
+
+void PixelShader::LockConstants( size_t buffer, unify::DataLock & lock )
+{
+	if ( (m_locked & (1 << buffer)) == (1 << buffer) ) throw exception::FailedToLock( "Failed to lock vertex shader constant buffer!" );
+
+	m_bufferAccessed = m_bufferAccessed | (1 << buffer);
+	m_locked = m_locked | (1 << buffer);
+
+	auto dxDevice = m_renderer->GetDxDevice();
+	auto dxContext = m_renderer->GetDxContext();
+
+	D3D11_MAPPED_SUBRESOURCE subresource{};
+	HRESULT result = dxContext->Map( m_constantBuffers[ buffer ], buffer, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
+	if ( FAILED( result ) )
+	{
+		throw unify::Exception( "Failed to set vertex shader!" );
+	}		
+
+	lock.SetLock( subresource.pData, m_constants->GetBuffers()[ buffer ]->GetSizeInBytes(), false, 0 );
+
+	// Roughly handle defaults...
+	for ( auto variable : m_constants->GetBuffers()[ buffer ]->GetVariables() )
+	{
+		if ( variable.hasDefault )
+		{
+			lock.CopyBytesFrom( &variable.default[0], variable.offsetInBytes, variable.default.size() * sizeof( float ) );
+		}
+	}
+}
+
+void PixelShader::UnlockConstants( size_t buffer, unify::DataLock & lock )
+{
+	if ( (m_locked & (1 << buffer)) != (1 << buffer) ) throw exception::FailedToLock( "Failed to unlock vertex shader constant buffer (buffer not locked)!" );
+
+	auto dxDevice = m_renderer->GetDxDevice();
+	auto dxContext = m_renderer->GetDxContext();
+
+	dxContext->Unmap( m_constantBuffers[ buffer ], buffer );
+
+	m_locked = m_locked & ~(1 << buffer);
+}
+
+void PixelShader::Use()
+{
+	auto dxContext = m_renderer->GetDxContext();
+	dxContext->PSSetShader( m_pixelShader, nullptr, 0 );
+
+	// Ensure all buffers have been accessed (defaults)
+	for ( size_t buffer = 0, size = m_constantBuffers.size(); buffer < size; ++buffer )
+	{
+		// Access test...
+		if ( (m_bufferAccessed & (1 << buffer)) != (1 << buffer) )
+		{
+			unify::DataLock lock;
+			LockConstants( buffer, lock );
+			UnlockConstants( buffer, lock );
+		}		   		
+	}
+
+	if ( m_constantBuffers.size() > 0 )
+	{
+		dxContext->PSSetConstantBuffers( 0, m_constantBuffers.size(), &m_constantBuffers[0] );
+	}
 }
 
 void PixelShader::SetTrans( bool bTrans )

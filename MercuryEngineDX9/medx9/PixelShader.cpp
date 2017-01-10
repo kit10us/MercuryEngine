@@ -7,6 +7,7 @@
 
 using namespace medx9;
 using namespace me;
+using namespace shader;
 
 PixelShader::PixelShader( const me::IRenderer * renderer )
 	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
@@ -105,7 +106,21 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	m_renderer->GetDxDevice()->CreatePixelShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
 }
 
-void PixelShader::Use() const
+const ShaderConstants * PixelShader::GetConstants() const
+{
+	return m_constants.get();
+}
+
+void PixelShader::LockConstants( size_t buffer, unify::DataLock & lock )
+{
+}
+
+void PixelShader::UnlockConstants( size_t buffer, unify::DataLock & lock )
+{
+	// Do nothing, we just needed m_lockData updated.
+}
+
+void PixelShader::Use()
 {
 	HRESULT result = m_renderer->GetDxDevice()->SetPixelShader( m_shader );
 	if( FAILED( result ) )

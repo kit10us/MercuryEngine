@@ -61,8 +61,8 @@ namespace medx11
 		CComPtr< ID3D10Blob > m_vertexShaderBuffer;
 		//CComPtr< ID3D11ShaderReflection > m_vertexShaderReflection;
 
-		std::vector< CComPtr< ID3D11Buffer > > m_vertexShaderConstantBuffers;
-		std::vector< bool > m_locked;
-		size_t m_lockCount;
+		std::vector< ID3D11Buffer * > m_constantBuffers;
+		size_t m_bufferAccessed;
+		size_t m_locked;
 	};
 }

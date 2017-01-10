@@ -2,9 +2,10 @@
 // All Rights Reserved
 
 template< class T >
-ResourceManagerSimple< T >::ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths )
+ResourceManagerSimple< T >::ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths, ILogger::ptr logger )
 	: m_resourceName( resourceName )
 	, m_assetPaths( assetPaths )
+	, m_logger( logger )
 {
 }
 
@@ -91,6 +92,9 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		source = m_assetPaths->FindAsset( source );
 	}
 
+	Log_WriteLine( GetName() + " manager: adding \"" + name + "\" (" + source.ToString() + ")." );
+
+
 	auto product = factory->second->Produce( source, data );
 	if( product )
 	{
@@ -127,4 +131,22 @@ template< typename T >
 void ResourceManagerSimple< T >::AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory )
 {
 	m_sourceFactories[ ( ( extension[ 0 ] != '.' ) ? "." : "") + extension ] = factory;
+}
+								 
+template< typename T >
+void ResourceManagerSimple< T >::Log_Write( std::string text )
+{
+	if ( m_logger )
+	{
+		m_logger->Write( text );
+	}
+}
+
+template< typename T >
+void ResourceManagerSimple< T >::Log_WriteLine( std::string text )
+{
+	if ( m_logger )
+	{
+		m_logger->WriteLine( text );
+	}
 }

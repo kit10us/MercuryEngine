@@ -37,9 +37,10 @@ namespace me
 
 			const std::vector< ConstantBuffer::ptr > & GetBuffers() const;
 			Reference FindDefinition( std::string name ) const;
-			Reference  GetWorld() const;
+			Reference GetWorld() const;
 			Reference GetView() const;
 			Reference GetProjection() const;
+			bool HasDefaults( size_t buffer ) const;
 
 		private:
 			std::vector< ConstantBuffer::ptr > m_buffers;
@@ -47,6 +48,7 @@ namespace me
 			Reference m_world;
 			Reference m_view;
 			Reference m_projection;
+			size_t m_hasDefaults;
 		};
 	}
 }

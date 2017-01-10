@@ -20,6 +20,18 @@
 
 namespace rm
 {
+	class ILogger
+	{
+	public:
+		typedef std::shared_ptr< ILogger > ptr;
+
+		~ILogger() {}
+
+		virtual void Write( std::string text ) = 0;
+		virtual void WriteLine( std::string text ) = 0;
+	};
+
+
 	/// <summary>
 	/// Factory from a source path.
 	/// </summary>
@@ -49,7 +61,7 @@ namespace rm
 
 		typedef std::shared_ptr< T > ResourcePtr;
 
-        ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths = nullptr );
+        ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths = nullptr, ILogger::ptr = ILogger::ptr() );
 		~ResourceManagerSimple();
 
 		std::string GetName() const override;
@@ -74,9 +86,14 @@ namespace rm
 
 		void AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory );
 
+		void Log_Write( std::string text );
+
+		void Log_WriteLine( std::string text );
+
 	protected:
 		std::string m_resourceName;
 		unify::AssetPaths * m_assetPaths;
+		ILogger::ptr m_logger;
 		std::map< std::string, ResourcePtr > m_resourceList; 
 		std::map< std::string, std::shared_ptr< ISourceFactory< T > >, unify::CaseInsensitiveLessThanTest > m_sourceFactories;
 	};

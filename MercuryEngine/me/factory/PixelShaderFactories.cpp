@@ -16,10 +16,27 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 {
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
 	qxml::Document doc( source );
-	auto & node = *doc.GetRoot()->FindFirstElement( "pixelshader" );
+	auto && root = *doc.GetRoot()->FindFirstElement( "pixelshader" );
+
 	PixelShaderParameters parameters;
-	parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( node.GetElement( "source" )->GetText(), node.GetDocument()->GetPath().DirectoryOnly() );
-	parameters.entryPointName = node.GetElement( "entry" )->GetText();
-	parameters.profile = node.GetElement( "profile" )->GetText();
+	for ( auto && node : root.Children() )
+	{
+		if ( node.IsTagName( "source" ) )
+		{
+			parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( node.GetText(), node.GetDocument()->GetPath().DirectoryOnly() );
+		}
+		else if ( node.IsTagName( "entry" ) )
+		{
+			parameters.entryPointName = node.GetText();
+		}
+		else if ( node.IsTagName( "profile" ) )
+		{
+			parameters.profile = node.GetText();
+		}
+		else if ( node.IsTagName( "constants" ) )
+		{
+			parameters.constants.reset( new shader::ShaderConstants( &node ) );
+		}
+	}
 	return renderer->ProducePS( parameters );
 }

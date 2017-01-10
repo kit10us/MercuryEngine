@@ -10,10 +10,12 @@ using namespace me;
 using namespace shader;
 
 ShaderConstants::ShaderConstants()
+	: m_hasDefaults{ 0 }
 {
 }
 
 ShaderConstants::ShaderConstants( const qxml::Element * node )
+	: ShaderConstants()
 {
 	if ( ! node ) throw exception::FailedToCreate( "Shader constants XML node is null!" );
 
@@ -33,14 +35,15 @@ void ShaderConstants::AddBuffer( ConstantBuffer::ptr buffer )
 	size_t i = 0;
 	for ( auto && variable : buffer->GetVariables() )
 	{
-		m_map[variable.name].buffer = m_buffers.size() - 1;
+		size_t bufferIndex = m_buffers.size() - 1;
+		m_map[variable.name].buffer = bufferIndex;
 		m_map[variable.name].index = i;
 
 		if ( unify::StringIs( variable.name, "world" ) || unify::StringIs( variable.name, "worldmatrix" ) )
 		{
 			if ( ! m_world.IsSet() )
 			{
-				m_world.buffer = m_buffers.size() - 1;
+				m_world.buffer = bufferIndex;
 				m_world.index = i;
 				m_world.offsetInBytes = variable.offsetInBytes;
 			}
@@ -49,7 +52,7 @@ void ShaderConstants::AddBuffer( ConstantBuffer::ptr buffer )
 		{
 			if ( ! m_view.IsSet() )
 			{
-				m_view.buffer = m_buffers.size() - 1;
+				m_view.buffer = bufferIndex;
 				m_view.index = i;
 				m_view.offsetInBytes = variable.offsetInBytes;
 			}
@@ -58,11 +61,17 @@ void ShaderConstants::AddBuffer( ConstantBuffer::ptr buffer )
 		{
 			if ( ! m_projection.IsSet() )
 			{
-				m_projection.buffer = m_buffers.size() - 1;
+				m_projection.buffer = bufferIndex;
 				m_projection.index = i;
 				m_projection.offsetInBytes = variable.offsetInBytes;
 			}
 		}
+
+		if ( variable.hasDefault )
+		{
+			m_hasDefaults |= 1 << bufferIndex;
+		}
+
 		i++;
 	}
 }
@@ -93,3 +102,9 @@ Reference ShaderConstants::GetProjection() const
 {
 	return m_projection;
 }
+
+bool ShaderConstants::HasDefaults( size_t buffer ) const
+{
+	return (1 << buffer) == (m_hasDefaults & (1 << buffer));
+}
+

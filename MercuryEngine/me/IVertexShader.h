@@ -5,10 +5,9 @@
 
 #include <me/shader/ShaderConstants.h>
 #include <me/VertexDeclaration.h>
-#include <me/RenderInfo.h>
-#include <me/RenderInstance.h>
 #include <me/Mercury.h>
 #include <unify/Path.h>
+#include <unify/DataLock.h>
 #include <vector>
 #include <memory>
 

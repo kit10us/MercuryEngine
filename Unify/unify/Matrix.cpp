@@ -797,6 +797,20 @@ std::string Matrix::ToString() const
 	return out;
 }
 
+void Matrix::FromString( std::string text )
+{	
+	size_t index = 0;
+	size_t left = 0;
+	size_t right = 0;
+	do
+	{
+		right = text.find( ',', left );
+		std::string value = text.substr( left, right - left );
+		linear[index] = Cast< float >( value );
+		left = right + 1;
+		index++;
+	} while ( right != std::string::npos );
+}
 
 
 

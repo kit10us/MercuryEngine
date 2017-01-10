@@ -15,7 +15,11 @@ namespace me
 		struct ConstantsType
 		{
 			enum TYPE {
-				Matrix
+				Matrix,
+				Float1,
+				Float2,
+				Float3,
+				Float4
 			};
 
 			static std::string ToString( TYPE value );
@@ -25,8 +29,24 @@ namespace me
 
 		struct ConstantVariable
 		{
+			ConstantVariable()
+				: hasDefault{ false }
+			{
+			}
+
+			ConstantVariable( std::string name, ConstantsType::TYPE type, size_t count )
+				: name( name )
+				, type( type )
+				, count( count )
+			{
+			}
+
 			std::string name;
 			ConstantsType::TYPE type;
+
+			std::vector< float > default;
+			bool hasDefault;
+
 			size_t count;
 			size_t offsetInBytes;
 		};

@@ -10,6 +10,7 @@
 #include <me/IPixelShader.h>
 #include <me/ITexture.h>
 #include <me/RenderInstance.h>
+#include <me/RenderInfo.h>
 #include <unify/FrameLite.h>
 #include <memory>
 

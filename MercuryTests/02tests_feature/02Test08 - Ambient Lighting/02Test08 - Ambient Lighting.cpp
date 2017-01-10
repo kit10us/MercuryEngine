@@ -32,12 +32,12 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", "EffectTextured.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color_ambient", "Color_Ambient.effect" );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "textured_ambient", "Textured_Ambient.effect" );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "shaders/textured3d.xml" );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "shaders/textured3d.xml" );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "textured_ambient", "shaders/textured_ambient.xml" );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "textured_ambient", "shaders/textured_ambient.xml" );
 
 	// Add a texture.
 	GetManager< ITexture >()->Add( "borgcube", "borgcube.bmp" );
@@ -71,6 +71,7 @@ void MyGame::Startup()
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
+	/*
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
@@ -84,12 +85,13 @@ void MyGame::Startup()
 		xmlObject->GetFrame().SetModelMatrix( modelMatrix );
 	}
 	xmlObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	*/
 
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = scene->NewObject( "swordASE" );
-	gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
+	AddGeometryComponent( aseObject, GetOS(), meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -101,19 +103,20 @@ void MyGame::Startup()
 	}
 	aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
+	/*
+	// Non-rigged
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "USSVoyager.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "models/Death Star II/models/Death Star II.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "enterprise.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "cube.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "borgcube.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "torus.dae" ) );
-	
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "torus.dae" ) );	 	
 	// Rigged...
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "Mickey_Mouse/Mickey_Mouse.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = scene->NewObject( "daeModel" );
-	gc = AddGeometryComponent( daeModel, GetOS(), meshDAE );
+	AddGeometryComponent( daeModel, GetOS(), meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
@@ -125,6 +128,7 @@ void MyGame::Startup()
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 		daeModel->GetFrame().SetModelMatrix( modelMatrix );
 	}
+	*/
 }
 
 void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )

@@ -118,7 +118,12 @@ namespace unify
 		void LookAtLH( const V3< float > & at, const V3< float > & up );
 
 		std::string ToString() const;
-		float m[4][4];
+		void FromString( std::string text );
+
+		union {
+			float m[4][4];
+			float linear[16];
+		};
 	};
 
 	Matrix MatrixIdentity();

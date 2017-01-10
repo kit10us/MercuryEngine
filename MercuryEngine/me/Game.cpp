@@ -25,6 +25,28 @@
 using namespace me;
 using namespace scene;
 
+
+class GameLogger : public rm::ILogger
+{
+	IGame * m_game;
+public:
+	GameLogger( IGame * game ) : m_game( game )
+	{
+	}
+
+	void Write( std::string text ) override
+	{
+		m_game->Log( text );
+	}
+
+	void WriteLine( std::string text ) override
+	{
+		m_game->LogLine( text );
+	}
+
+};
+
+
 bool Game::Setup( IOS * os )
 {
 	// STUBBED - optional for derived game class.
@@ -286,7 +308,9 @@ bool Game::Initialize( OSParameters osParameters )
 
 	// Create asset managers...
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< ITexture >( "Texture", &GetOS()->GetAssetPaths() ) ) );
+	rm::ILogger::ptr logger( new GameLogger( this ) );
+
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< ITexture >( "Texture", &GetOS()->GetAssetPaths(), logger ) ) );
 
 	TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
 	GetManager< ITexture >()->AddFactory( ".dds", textureFactoryPtr );
@@ -294,16 +318,16 @@ bool Game::Initialize( OSParameters osParameters )
 	GetManager< ITexture >()->AddFactory( ".bmp", textureFactoryPtr );
 	GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Effect >( "Effect", &GetOS()->GetAssetPaths() ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Effect >( "Effect", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths() ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory( this ) ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths() ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory( this ) ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Geometry >( "Geometry", &GetOS()->GetAssetPaths() ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
 
