@@ -53,9 +53,17 @@ namespace me
 	class IBuffer
 	{
 	public:
-		~IBuffer() { }
+		virtual ~IBuffer() {}
+
+		virtual void Destroy() = 0;
+
+		virtual void Lock( unify::DataLock & lock ) = 0;
+		virtual void LockReadOnly( unify::DataLock & lock ) const = 0;
+		virtual void Unlock( unify::DataLock & lock ) = 0;
+		virtual void UnlockReadOnly( unify::DataLock & lock ) const = 0;
 
 		virtual void Use() const = 0;
 		virtual size_t GetSizeInBytes() const = 0;
+
 	};
 }

@@ -22,10 +22,10 @@ namespace medx11
 		void Create( me::VertexBufferParameters parameters ) override;
 		void Destroy();
 
-		void Lock( unify::DataLock & lock );
-		void LockReadOnly( unify::DataLock & lock ) const;
-		void Unlock();
-		void Unlock() const;
+		void Lock( unify::DataLock & lock ) override;
+		void LockReadOnly( unify::DataLock & lock ) const override;
+		void Unlock( unify::DataLock & lock ) override;
+		void UnlockReadOnly( unify::DataLock & lock ) const override;
 		
 		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
 		
@@ -49,7 +49,7 @@ namespace medx11
 
 		unify::BBox< float > m_bbox;
 
-		std::vector< bool > m_locked;
+		mutable std::vector< bool > m_locked;
 		me::BufferUsage::TYPE m_usage;
 		std::vector< size_t > m_strides; // Size of each item in the buffer.
 		std::vector< size_t > m_lengths; // Number of items we can store in the buffer.

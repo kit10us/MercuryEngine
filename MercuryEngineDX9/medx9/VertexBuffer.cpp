@@ -18,14 +18,11 @@ VertexBuffer::VertexBuffer( const me::IRenderer * renderer )
 }
 
 VertexBuffer::VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters )
-	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
-	, m_locked( false )
-	, m_usage( BufferUsage::Default )
+	: VertexBuffer( renderer )
 {
 	Create( parameters );
 }
-
-
+			  
 VertexBuffer::~VertexBuffer()
 {
 	Destroy();
@@ -86,7 +83,7 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 			unify::DataLock lock;
 			Lock( lock );
 			lock.CopyBytesFrom( parameters.countAndSource[0].source, 0, GetSizeInBytes() );
-			Unlock();
+			Unlock( lock );
 		}			 
 		bufferIndex++;
 	}
@@ -138,7 +135,7 @@ void VertexBuffer::LockReadOnly( unify::DataLock & lock ) const
 	lock.SetLock( data, m_vertexDeclaration->GetSizeInBytes( bufferIndex ), GetLength(), true, 0 );
 }
 
-void VertexBuffer::Unlock()
+void VertexBuffer::Unlock( unify::DataLock & lock )
 {
 	size_t bufferIndex = 0;
 	if( ! m_buffers[ bufferIndex ] || ! m_locked[bufferIndex] ) return;
@@ -146,14 +143,13 @@ void VertexBuffer::Unlock()
 	m_locked[ bufferIndex ] = FALSE;	// altering data in a constant function
 }
 
-void VertexBuffer::Unlock() const
+void VertexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
 {
 	size_t bufferIndex = 0;
 	if( ! m_buffers[ bufferIndex ] || ! m_locked[ bufferIndex ] ) return;
 	m_buffers[ bufferIndex ]->Unlock();
 	m_locked[bufferIndex] = false;
-}
-
+}	
 
 VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 {

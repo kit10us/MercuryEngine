@@ -23,10 +23,10 @@ namespace medx9
 		void Create( me::VertexBufferParameters parameters ) override;
 		void Destroy();
 
-		void Lock( unify::DataLock & lock );
-		void LockReadOnly( unify::DataLock & lock ) const;
-		void Unlock();
-		void Unlock() const;
+		void Lock( unify::DataLock & lock ) override;
+		void LockReadOnly( unify::DataLock & lock ) const override;
+		void Unlock( unify::DataLock & lock ) override;
+		void UnlockReadOnly( unify::DataLock & lock ) const override;
 		
 		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
 		

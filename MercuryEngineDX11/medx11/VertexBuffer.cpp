@@ -113,22 +113,67 @@ void VertexBuffer::Destroy()
 
 void VertexBuffer::Lock( unify::DataLock & lock )
 {
-	throw exception::NotImplemented();
+	size_t bufferIndex = 0;
+	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer index out of range)!" );
+	if ( m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer already locked)!" );
+
+	auto dxContext = m_renderer->GetDxContext();
+	D3D11_MAPPED_SUBRESOURCE subresource{};
+	HRESULT result = dxContext->Map( m_buffers[ bufferIndex ], bufferIndex, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
+	if ( FAILED( result ) )
+	{
+		throw unify::Exception( "Failed to set vertex shader!" );
+	}		
+
+	lock.SetLock( subresource.pData, GetSizeInBytes(), false, 0 );
+	m_locked[bufferIndex] = true;
 }
 
 void VertexBuffer::LockReadOnly( unify::DataLock & lock ) const
 {
-	throw exception::NotImplemented();
+	size_t bufferIndex = 0;
+	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer index out of range)!" );
+	if ( m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer already locked)!" );
+
+	auto dxContext = m_renderer->GetDxContext();
+	D3D11_MAPPED_SUBRESOURCE subresource{};
+	HRESULT result = dxContext->Map( m_buffers[ bufferIndex ], bufferIndex, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
+	if ( FAILED( result ) )
+	{
+		throw unify::Exception( "Failed to set vertex shader!" );
+	}		
+
+	lock.SetLock( subresource.pData, GetSizeInBytes(), true, 0 );
+	m_locked[bufferIndex] = true;
 }
 
-void VertexBuffer::Unlock()
+void VertexBuffer::Unlock( unify::DataLock & lock )
 {
-	throw exception::NotImplemented();
+	size_t bufferIndex = 0;
+	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer index out of range)!" );
+	if ( ! m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer not locked)!" );
+
+	auto dxDevice = m_renderer->GetDxDevice();
+	auto dxContext = m_renderer->GetDxContext();
+
+	dxContext->Unmap( m_buffers[ bufferIndex ], bufferIndex );
+
+	m_locked[bufferIndex] = false;
 }
 
-void VertexBuffer::Unlock() const
+void VertexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
 {
-	throw exception::NotImplemented();
+	size_t bufferIndex = 0;
+	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer index out of range)!" );
+	if ( ! m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer not locked)!" );
+
+	auto dxDevice = m_renderer->GetDxDevice();
+	auto dxContext = m_renderer->GetDxContext();
+
+	dxContext->Unmap( m_buffers[ bufferIndex ], bufferIndex );
+	//dxContext->VSSetConstantBuffers( buffer, 1, &m_constantBuffers[ buffer ].p );
+
+	m_locked[bufferIndex] = false;
 }
 
 VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const

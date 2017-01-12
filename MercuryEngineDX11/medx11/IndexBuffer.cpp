@@ -56,7 +56,7 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 	initialData.pSysMem = parameters.countAndSource[0].source;
 
 	// Create the buffer with the device.
-	hr = dxDevice->CreateBuffer( &bufferDesc, &initialData, &m_IB );
+	hr = dxDevice->CreateBuffer( &bufferDesc, &initialData, &m_buffer );
 	if ( FAILED( hr ) )
 	{
 		throw exception::FailedToCreate( "Failed to create index buffer!" );
@@ -75,8 +75,8 @@ void IndexBuffer::Resize( unsigned int numIndices )
 
 	unsigned int oldNumberOfIndices = GetLength();
 	size_t oldSize = GetSize();
-	ID3D11Buffer * oldIndexBuffer = m_IB;
-	m_IB = 0;
+	ID3D11Buffer * oldIndexBuffer = m_buffer;
+	m_buffer = 0;
 	m_length = 0;
 
 	Create( numIndices, this->GetFormat(), GetUsage(), m_createFlags );
@@ -90,7 +90,7 @@ void IndexBuffer::Resize( unsigned int numIndices )
 	}
 
 	unsigned char * newData;
-	hr = m_IB->Lock( 0, 0, (void**)&newData, D3DLOCK_DISCARD );
+	hr = m_buffer->Lock( 0, 0, (void**)&newData, D3DLOCK_DISCARD );
 	if( FAILED(hr) )
 	{
 	oldIndexBuffer->Release();
@@ -99,7 +99,7 @@ void IndexBuffer::Resize( unsigned int numIndices )
 	}
 
 	memcpy( newData, oldData, oldSize );
-	m_IB->Unlock();
+	m_buffer->Unlock();
 	oldIndexBuffer->Unlock();
 	oldIndexBuffer->Release();
 	oldIndexBuffer = 0;
@@ -156,52 +156,96 @@ size_t IndexBuffer::Append( const IndexBuffer & from, size_t vertexOffset  )
 		}
 	}
 
-	from.UnlockReadOnly();
-	Unlock();
+	from.UnlockReadOnly( locksrc );
+	Unlock( lockdest );
 
 	return offset;
 }
 
 void IndexBuffer::Destroy()
 {
-	m_IB = nullptr;
+	m_buffer = nullptr;
 	m_length = 0;
 }
 
-void IndexBuffer::Lock( IndexLock & lock )
+void IndexBuffer::Lock( unify::DataLock & lock )
 {
-	throw exception::NotImplemented( "Locking not supported in DX11!" );
+	size_t bufferIndex = 0;
+	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer not created)!" );
+	if ( m_locked ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer already locked)!" );
+
+	auto dxContext = m_renderer->GetDxContext();
+	D3D11_MAPPED_SUBRESOURCE subresource{};
+	HRESULT result = dxContext->Map( m_buffer, bufferIndex, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
+	if ( FAILED( result ) )
+	{
+		throw unify::Exception( "Failed to set vertex shader!" );
+	}		
+
+	lock.SetLock( subresource.pData, GetSizeInBytes(), false, 0 );
+	m_locked = true;
 }
 
-void IndexBuffer::LockReadOnly( IndexLock & lock ) const
+void IndexBuffer::LockReadOnly( unify::DataLock & lock ) const
 {
-	throw exception::NotImplemented( "Locking not supported in DX11!" );
+	size_t bufferIndex = 0;
+	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer not created)!" );
+	if ( m_locked ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer already locked)!" );
+
+	auto dxContext = m_renderer->GetDxContext();
+	D3D11_MAPPED_SUBRESOURCE subresource{};
+	HRESULT result = dxContext->Map( m_buffer, bufferIndex, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
+	if ( FAILED( result ) )
+	{
+		throw unify::Exception( "Failed to set vertex shader!" );
+	}		
+
+	lock.SetLock( subresource.pData, GetSizeInBytes(), true, 0 );
+	m_locked = true;
 }
 
-void IndexBuffer::Unlock()
+void IndexBuffer::Unlock( unify::DataLock & lock )
 {
-	throw exception::NotImplemented( "Locking not supported in DX11!" );
+	size_t bufferIndex = 0;
+	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not created)!" );
+	if ( ! m_locked ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not locked)!" );
+
+	auto dxDevice = m_renderer->GetDxDevice();
+	auto dxContext = m_renderer->GetDxContext();
+
+	dxContext->Unmap( m_buffer, bufferIndex );
+
+	m_locked = false;
 }
 
-void IndexBuffer::UnlockReadOnly() const
+void IndexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
 {
-	throw exception::NotImplemented( "Locking not supported in DX11!" );
+	size_t bufferIndex = 0;
+	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not created)!" );
+	if ( m_locked ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not locked)!" );
+
+	auto dxDevice = m_renderer->GetDxDevice();
+	auto dxContext = m_renderer->GetDxContext();
+
+	dxContext->Unmap( m_buffer, bufferIndex );
+
+	m_locked = false;
 }
 
 bool IndexBuffer::Valid() const
 {
-	return m_IB != 0;
+	return m_buffer != 0;
 }
 
 void IndexBuffer::Use() const
 {
-	if ( !m_IB )
+	if ( !m_buffer )
 	{
 		return;
 	}
 
 	// Set the buffer.
-	m_renderer->GetDxContext()->IASetIndexBuffer( m_IB, DXGI_FORMAT_R32_UINT, 0 );
+	m_renderer->GetDxContext()->IASetIndexBuffer( m_buffer, DXGI_FORMAT_R32_UINT, 0 );
 }
 
 bool IndexBuffer::Locked() const

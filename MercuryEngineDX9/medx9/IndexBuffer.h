@@ -3,11 +3,8 @@
 
 #pragma once
 
-#include <me/IIndexBuffer.h>
-#include <me/IRenderer.h>
-#include <me/BufferUsage.h>
-#include <me/IndexLock.h>
-#include <me/BufferUsage.h>
+#include <medx9/IndexBuffer.h>
+#include <medx9/Renderer.h>
 #include <unify/unify.h>
 #include <unify/Flags.h>
 #include <memory>
@@ -36,19 +33,14 @@ namespace medx9
 		~IndexBuffer();
 
 		void Create( me::IndexBufferParameters parameters );
-		void Resize( unsigned int numIndices );
 
-		/// <summary>
-		/// Append to our existing indices, the indices from ib, adding a vertex offset to each new index.
-		/// Returns the index offset for the first index from 'from'.
-		/// </summary>
-		size_t Append( const IndexBuffer & from, size_t vertexOffset = 0 );
 		void Destroy();
 
-		void Lock( me::IndexLock & lock );
-		void LockReadOnly( me::IndexLock & lock ) const;
-		void Unlock();
-		void UnlockReadOnly() const;
+		void Lock( unify::DataLock & lock ) override;
+		void LockReadOnly( unify::DataLock & lock ) const override;
+		void Unlock( unify::DataLock & lock ) override;
+		void UnlockReadOnly( unify::DataLock & lock ) const override;
+
 		bool Valid() const;
 		
 		void Use() const override;
@@ -60,8 +52,9 @@ namespace medx9
 		size_t GetSizeInBytes() const override;
 
 	protected:
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		const Renderer * m_renderer;
+		unsigned int m_createFlags;
+		IDirect3DIndexBuffer9 * m_buffer;
 		bool m_locked;
 		me::BufferUsage::TYPE m_usage;
 		unsigned int m_stride; // Size of each item in the buffer.

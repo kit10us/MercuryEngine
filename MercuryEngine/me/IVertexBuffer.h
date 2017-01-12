@@ -37,16 +37,9 @@ namespace me
 	public:
 		typedef std::shared_ptr< IVertexBuffer > ptr;
 
-		virtual ~IVertexBuffer() {}
-
 		virtual void Create( me::VertexBufferParameters parameters ) = 0;
 		
 		virtual VertexDeclaration::ptr GetVertexDeclaration() const = 0;
-
-		virtual void Lock( unify::DataLock & lock ) = 0;
-		virtual void LockReadOnly( unify::DataLock & lock ) const = 0;
-		virtual void Unlock() = 0;
-		virtual void Unlock() const = 0;
 
 		virtual unify::BBox< float > & GetBBox() = 0;
 		virtual const unify::BBox< float > & GetBBox() const = 0;

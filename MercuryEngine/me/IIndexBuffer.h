@@ -36,8 +36,6 @@ namespace me
 	public:
 		typedef std::shared_ptr< IIndexBuffer > ptr;
 
-		virtual ~IIndexBuffer() {}
-
 		virtual void Create( IndexBufferParameters parameters ) = 0;
 	};
 }
