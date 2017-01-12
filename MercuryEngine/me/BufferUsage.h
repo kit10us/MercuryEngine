@@ -38,22 +38,15 @@ namespace me
 		static std::string ToString( BufferUsage::TYPE usage );
 	};
 
-	class DataBuffer
+	struct CountAndSource
 	{
-	public:
-		DataBuffer();
-		virtual ~DataBuffer();
+		CountAndSource( size_t count, const void * source = nullptr )
+			: count{ count }
+			, source{ source }
+		{
+		}
 
-		bool Locked() const;
-		BufferUsage::TYPE GetUsage() const;
-		unsigned int GetStride() const;
-		unsigned int GetLength() const;
-		unsigned int GetSize() const;
-
-	protected:
-		bool m_locked;
-		BufferUsage::TYPE m_usage;
-		unsigned int m_stride; // Size of each item in the buffer.
-		unsigned int m_length; // Number of items we can store in the buffer.
+		size_t count;
+		const void * source;
 	};
 }

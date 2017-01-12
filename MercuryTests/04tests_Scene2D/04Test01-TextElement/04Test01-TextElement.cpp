@@ -107,7 +107,7 @@ void MyGame::Startup()
 		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f }
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
-	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
+	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 
 	// Add Canvas component...
 	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );

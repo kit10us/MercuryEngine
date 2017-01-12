@@ -235,7 +235,7 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 
 		VT * vt = (VT*)lock.GetData();
 
-		set.AddVertexBuffer( {numberOfVertices, myEffect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), BufferUsage::Dynamic, bbox } );
+		set.AddVertexBuffer( { myEffect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vertices.get() } }, BufferUsage::Dynamic, bbox } );
 
 		
 		switch( polylist->GetType() )
@@ -264,7 +264,7 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 				vertexHead += vc;
 			}
 
-			set.AddIndexBuffer( {numberOfIndices, (Index32*)&indices[0], BufferUsage::Staging } );
+			set.AddIndexBuffer( { { { numberOfIndices, &indices[0] } }, BufferUsage::Staging } );
 
 			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
 		}

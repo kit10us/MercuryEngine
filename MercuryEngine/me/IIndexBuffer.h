@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
+#include <vector>
 #include <memory>
 
 namespace me 
@@ -13,23 +14,19 @@ namespace me
 	struct IndexBufferParameters
 	{
 		IndexBufferParameters()
-			: numIndices{}
-			, source{}
-			, usage{ me::BufferUsage::Default }
+			: usage{ me::BufferUsage::Default }
 			, flags {}
 		{
 		}
 
-		IndexBufferParameters( unsigned int _count, const Index32 * _source, me::BufferUsage::TYPE _usage = me::BufferUsage::Default, unify::Flags _flags = 0 )
-			: numIndices{ _count }
-			, source{ _source }
+		IndexBufferParameters( std::vector< CountAndSource > countAndSource, me::BufferUsage::TYPE _usage = me::BufferUsage::Default, unify::Flags _flags = 0 )
+			: countAndSource{ countAndSource }
 			, usage{ _usage }
 			, flags{ _flags }
 		{
 		}
 
-		unsigned int numIndices;
-		const Index32 * source;
+		std::vector< CountAndSource > countAndSource;
 		BufferUsage::TYPE usage;
 		unify::Flags flags;
 	};

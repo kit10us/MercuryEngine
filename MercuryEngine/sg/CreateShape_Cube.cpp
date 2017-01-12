@@ -5,7 +5,7 @@
 #include <me/RenderMethod.h>
 #include <me/TextureMode.h>
 #include <me/exception/NotImplemented.h>
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
 #include <me/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/Size3.h>
@@ -56,12 +56,7 @@ void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 
 	char * verticesFinal = new char[totalVertices * vd->GetSize( 0 )];
 	unify::DataLock lock( verticesFinal, vd->GetSize( 0 ), totalVertices, false, 0 );
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = totalVertices;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = verticesFinal;
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { totalVertices, verticesFinal } }, bufferUsage };
 
 	unsigned short stream = 0;
 
@@ -326,5 +321,5 @@ void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 		21, 23, 22
 	};
 
-	set.AddIndexBuffer( { totalIndices, indices, bufferUsage } );
+	set.AddIndexBuffer( { { { totalIndices, &indices[0] } }, bufferUsage } );
 }

@@ -5,7 +5,7 @@
 #include <me/RenderMethod.h>
 #include <me/TextureMode.h>
 #include <me/exception/NotImplemented.h>
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
 #include <me/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/Size3.h>
@@ -119,12 +119,7 @@ void sg::CreateShape_PointField( me::IRenderer * renderer, PrimitiveList & primi
 
 	char * vertices = new char[vd->GetSize( 0 ) * count];
 	unify::DataLock lock( vertices, vd->GetSize( 0 ), count, false, 0 );
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = count;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices;
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	float distance;
 	unsigned int v;
@@ -179,13 +174,7 @@ void sg::CreateShape_PointRing( me::IRenderer * renderer, PrimitiveList & primit
 
 	char * vertices = new char[vd->GetSize( 0 ) * count];
 	unify::DataLock lock( vertices, vd->GetSize( 0 ), count, false, 0 );
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = count;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices;
-	vbParameters.usage = bufferUsage;
-
+	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 	unsigned short stream = 0;
 
 	VertexElement positionE = CommonVertexElement::Position( stream );
@@ -286,12 +275,7 @@ void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primiti
 
 	char * vertices = new char[vd->GetSize( 0 ) * totalVertices];
 	unify::DataLock lock( vertices, vd->GetSize( 0 ), totalVertices, false, 0 );
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = count;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices;
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	unsigned short stream = 0;
 
@@ -387,10 +371,7 @@ void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primiti
 		vo += 2;
 	}
 
-	IndexBufferParameters ibParameters;
-	ibParameters.numIndices = totalIndices;
-	ibParameters.source = (Index32*)&indices[0];
-	ibParameters.usage = bufferUsage;
+	IndexBufferParameters ibParameters{ { { totalIndices, &indices[0] } }, bufferUsage };
 	set.AddIndexBuffer( ibParameters);
 }
 
@@ -444,13 +425,7 @@ void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiv
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 	unify::DataLock lock( verticesRaw.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = verticesRaw.get();
-	vbParameters.usage = bufferUsage;
-
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 
 	// Set the TEMP vertices...
 	V vertices[5];
@@ -598,7 +573,7 @@ void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiv
 		14, 15, 13
 	};
 
-	set.AddIndexBuffer( { indexCount, indices, bufferUsage } );
+	set.AddIndexBuffer( { { { indexCount, indices } }, bufferUsage } );
 }
 
 
@@ -628,12 +603,7 @@ void sg::CreateShape_Circle( me::IRenderer * renderer, PrimitiveList & primitive
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vertexCount * vd->GetSize( 0 )] );
 	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices.get();
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 	unsigned short stream = 0;
 
@@ -696,7 +666,7 @@ void sg::CreateShape_Circle( me::IRenderer * renderer, PrimitiveList & primitive
 		indices[(s * 3) + 2] = (s < (segments - 1)) ? s + 2 : 1;
 	}
 
-	set.AddIndexBuffer( { indexCount, &indices[0] } );
+	set.AddIndexBuffer( { { { indexCount, &indices[0] } } } );
 }
 
 void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
@@ -721,7 +691,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		int iFacesH = (int)segments;
 		int iFacesV = (int)iFacesH / 2;
 
-		int vertexCount = (iFacesH + 1) * (iFacesV + 1);
+		size_t vertexCount = (iFacesH + 1) * (iFacesV + 1);
 
 		int iNumFaces = iFacesH * iFacesV * 2;	// Twice as many to count for triangles
 		unsigned int indexCount = iNumFaces * 3;			// Three indices to a triangle
@@ -735,12 +705,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 		unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-		VertexBufferParameters vbParameters;
-		vbParameters.numVertices = vertexCount;
-		vbParameters.vertexDeclaration = vd;
-		vbParameters.slot = 0;
-		vbParameters.source = vertices.get();
-		vbParameters.usage = bufferUsage;
+		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 		unsigned short stream = 0;
 
@@ -821,13 +786,13 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 			}
 		}
 
-		set.AddIndexBuffer( { indexCount, (Index32*)&indices[0], bufferUsage } );
+		set.AddIndexBuffer( { { { indexCount, (Index32*)&indices[0] } }, bufferUsage } );
 	}
 	else
 	{	// STRIP VERSION
 		int iRows = (int)segments;
 		int iColumns = (int)iRows / 2;
-		int vertexCount = (iRows + 1) * (iColumns + 1);
+		size_t vertexCount = (iRows + 1) * (iColumns + 1);
 		unsigned int indexCount = (iColumns * (2 * (iRows + 1))) + (((iColumns - 1) * 2));
 
 		BufferSet & set = primitiveList.AddBufferSet();
@@ -853,12 +818,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		// Set the vertices...
 		unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-		VertexBufferParameters vbParameters;
-		vbParameters.numVertices = vertexCount;
-		vbParameters.vertexDeclaration = vd;
-		vbParameters.slot = 0;
-		vbParameters.source = vertices.get();
-		vbParameters.usage = bufferUsage;
+		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 		float fRadH, fRadV;
 		int iVert = 0;
@@ -915,7 +875,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 			}
 		}
 
-		set.AddIndexBuffer( { indexCount, (Index32*)&indices[0], bufferUsage } );
+		set.AddIndexBuffer( { { { indexCount, &indices[0] } }, bufferUsage } );
 	}
 }
 
@@ -952,12 +912,7 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
 	std::vector< Index32 > indices( indexCount );
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices.get();
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 
@@ -1090,7 +1045,7 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 
 	if( indexCount > 0 )
 	{
-		set.AddIndexBuffer( { indexCount, (Index32*)&indices[0], bufferUsage } );
+		set.AddIndexBuffer( { { { indexCount, &indices[0] } }, bufferUsage } );
 	}
 }
 
@@ -1120,12 +1075,7 @@ void sg::CreateShape_Tube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices.get();
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 	unsigned short stream = 0;
 
@@ -1314,12 +1264,7 @@ void sg::CreateShape_Plane( me::IRenderer * renderer, PrimitiveList & primitiveL
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices.get();
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 	unify::V3< float > posUL = center - unify::V3< float >( size.width * 0.5f, 0, size.height * 0.5f );
 	for( unsigned int v = 0; v < (segments + 1); ++v )
@@ -1358,7 +1303,7 @@ void sg::CreateShape_Plane( me::IRenderer * renderer, PrimitiveList & primitiveL
 		}
 	}
 
-	set.AddIndexBuffer( { indexCount, (Index32*)&indices[0], bufferUsage } );
+	set.AddIndexBuffer( { { { indexCount, &indices[0] } }, bufferUsage } );
 }
 
 // A cone...
@@ -1396,12 +1341,7 @@ void sg::CreateShape_Cone( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = vertices.get();
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
 	std::vector< Index32 > indices( indexCount );
 
@@ -1512,7 +1452,7 @@ void sg::CreateShape_Cone( me::IRenderer * renderer, PrimitiveList & primitiveLi
 
 	if( indexCount > 0 )
 	{
-		set.AddIndexBuffer( { indexCount, (Index32*)&indices[0], bufferUsage } );
+		set.AddIndexBuffer( { { { indexCount, &indices[0] } }, bufferUsage } );
 	}
 }
 
@@ -1563,12 +1503,7 @@ void sg::CreateShape_BeveledBox( me::IRenderer * renderer, PrimitiveList & primi
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
 	unify::DataLock lock( verticesRaw.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
 
-	VertexBufferParameters vbParameters;
-	vbParameters.numVertices = vertexCount;
-	vbParameters.vertexDeclaration = vd;
-	vbParameters.slot = 0;
-	vbParameters.source = verticesRaw.get();
-	vbParameters.usage = bufferUsage;
+	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 
 	unsigned short stream = 0;
 
@@ -1804,5 +1739,5 @@ void sg::CreateShape_BeveledBox( me::IRenderer * renderer, PrimitiveList & primi
 		22, 23, 21
 	};
 
-	set.AddIndexBuffer( { totalIndices, indices, bufferUsage } );
+	set.AddIndexBuffer( { { { totalIndices, indices } }, bufferUsage } );
 }

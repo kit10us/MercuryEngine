@@ -46,18 +46,15 @@ void TextElement::BuildText( unify::Size< float > area )
 {
 	if ( m_text.empty() ) return;
 
-	VertexBufferParameters parameters;
-	parameters.vertexDeclaration = m_effect->GetVertexShader()->GetVertexDeclaration();
-	parameters.numVertices = m_text.length() * 6;
+	auto vd = m_effect->GetVertexShader()->GetVertexDeclaration();
+	size_t vertexCount = m_text.length() * 6;
 
-	auto vd = parameters.vertexDeclaration;
 
 	unify::Size< unsigned int > imageSize( m_effect->GetTexture(0)->ImageSize() );
 
-	size_t vbSizeInBytes = vd->GetSize(0) * parameters.numVertices;
+	size_t vbSizeInBytes = vd->GetSize(0) * vertexCount;
 	std::shared_ptr< unsigned char > vertices( new unsigned char[ vbSizeInBytes ] );
-	parameters.source = vertices.get();
-	unify::DataLock lock( vertices.get(), vd->GetSize(0), parameters.numVertices, false, 0 );
+	unify::DataLock lock( vertices.get(), vd->GetSize(0), vertexCount, false, 0 );
 
 	VertexElement positionE = CommonVertexElement::Position( 0 );
 	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
@@ -172,6 +169,7 @@ void TextElement::BuildText( unify::Size< float > area )
 		posUL.x = posDR.x;
 	}
 
+	VertexBufferParameters parameters{ vd, { { vertexCount, vertices.get() } } };
 	m_vertexBuffer = GetGame()->GetOS()->GetRenderer(0)->ProduceVB( parameters );
 	m_changed = false;
 }

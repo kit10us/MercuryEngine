@@ -5,7 +5,7 @@
 
 #include <medx11/Renderer.h>
 #include <me/IVertexBuffer.h>
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
 #include <me/VertexDeclaration.h>
 #include <unify/BBox.h>
 #include <atlbase.h>

@@ -5,9 +5,9 @@
 
 #include <medx11/Renderer.h>
 #include <me/IIndexBuffer.h>
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
 #include <me/IndexLock.h>
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
 #include <unify/unify.h>
 #include <unify/Flags.h>
 #include <atlbase.h>

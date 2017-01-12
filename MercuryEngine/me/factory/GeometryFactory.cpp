@@ -175,7 +175,7 @@ void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * me
 						}
 					}
 
-					set.AddVertexBuffer( { vertexCount, vd, 0, vertices.get(), BufferUsage::Default,  bbox } );
+					set.AddVertexBuffer( { vd, { { vertexCount, vertices.get() } }, BufferUsage::Default, bbox } );
 
 				}	 
 				else if( buffersetChild.IsTagName( "indexlist" ) )
@@ -190,7 +190,7 @@ void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * me
 						indices[u] = (Index32)unify::Cast< int >( unify::ListPart( buffersetChild.GetText(), {','}, u ) );
 					}
 
-					set.AddIndexBuffer( { numIndices, (Index32*)&indices[0], BufferUsage::Default } );
+					set.AddIndexBuffer( { { { numIndices, &indices[0] } }, BufferUsage::Default } );
 				}
 				else if( buffersetChild.IsTagName( "methodlist" ) )
 				{

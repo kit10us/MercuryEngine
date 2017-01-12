@@ -51,9 +51,6 @@
     <ClInclude Include="me\Frustum.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\DataBuffer.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\exception\FailedToCreate.h">
       <Filter>me\exception</Filter>
     </ClInclude>
@@ -360,6 +357,9 @@
     <ClInclude Include="me\shader\ShaderConstants.h">
       <Filter>me\shader</Filter>
     </ClInclude>
+    <ClInclude Include="me\BufferUsage.h">
+      <Filter>me</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -378,9 +378,6 @@
       <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\Frustum.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
-    <ClCompile Include="me\DataBuffer.cpp">
       <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\VertexElement.cpp">
@@ -592,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="me\shader\ConstantBuffer.cpp">
       <Filter>me\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="me\BufferUsage.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

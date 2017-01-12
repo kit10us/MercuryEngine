@@ -38,7 +38,7 @@ public:
 
 		HRESULT hr = S_OK;
 
-		m_owner.m_length = parameters.numIndices;
+		m_owner.m_length = parameters.countAndSource[0].count;
 
 		auto dxDevice = m_renderer->GetDxDevice();
 
@@ -91,12 +91,12 @@ public:
 			throw exception::FailedToCreate( "Failed to create index buffer!" );
 		}
 
-		if ( parameters.source )
+		if ( parameters.countAndSource[0].source )
 		{
 			// Create the index list...
 			IndexLock indexLock;
 			Lock( indexLock );
-			memcpy( indexLock.GetData(), parameters.source, m_owner.m_length * sizeof( Index32 ) );
+			memcpy( indexLock.GetData(), parameters.countAndSource[0].source, m_owner.m_length * sizeof( Index32 ) );
 			Unlock();
 		}
 	}
@@ -161,7 +161,7 @@ public:
 		if ( m_owner.GetLength() == 0 )
 		{
 			assert( 0 ); // TODO:
-			Create( IndexBufferParameters{ from.GetLength(), nullptr, from.GetUsage(), from.m_pimpl->m_createFlags } );
+			Create( { { { from.GetLength(), nullptr } }, from.GetUsage(), from.m_pimpl->m_createFlags } );
 		}
 		else
 		{

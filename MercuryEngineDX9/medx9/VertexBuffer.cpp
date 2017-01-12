@@ -42,9 +42,9 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 	Destroy();
 
 	m_vertexDeclaration = parameters.vertexDeclaration;
-	m_slot = parameters.slot;
-	m_stride = m_vertexDeclaration->GetSize( parameters.slot );
-	m_length = parameters.numVertices;
+	m_slot = 0;
+	m_stride = m_vertexDeclaration->GetSize( 0 );
+	m_length = parameters.countAndSource[0].count;
 	m_usage = parameters.usage;
 
 	// Ensure we have some sort of idea what we need to be...
@@ -101,13 +101,13 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 	hr = dxDevice->CreateVertexBuffer( GetSize(), createFlags, 0, pool, &m_VB, 0 );
 	OnFailedThrow( hr, "Failed to create vertex buffer!" );
 
-	if( parameters.source )
+	if( parameters.countAndSource[0].source )
 	{
 		unify::DataLock lock;
 		Lock( lock );
-		lock.CopyBytesFrom( parameters.source, 0, GetSize() );
-	}
-
+		lock.CopyBytesFrom( parameters.countAndSource[0].source, 0, GetSize() );
+		Unlock();
+	}			 
 		
 	m_bbox = parameters.bbox;
 }

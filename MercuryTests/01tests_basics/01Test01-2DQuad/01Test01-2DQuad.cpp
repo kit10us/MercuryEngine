@@ -56,7 +56,7 @@ void MyGame::Startup()
 	WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( width, height, depth ) );
 	WriteVertex( *vd, lock, 3, colorE, unify::ColorUnit( 1, 1, 1, 1 ) );
 
-	vertexBuffer = GetOS()->GetRenderer(0)->ProduceVB( { vertexCount, effect->GetVertexShader()->GetVertexDeclaration(), 0, vertices.get(), BufferUsage::Default } );
+	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { vertexCount, vertices.get() } }, BufferUsage::Default } );
 }
 
 void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )

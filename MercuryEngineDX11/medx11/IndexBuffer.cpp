@@ -43,17 +43,17 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 
 	HRESULT hr = S_OK;
 
-	m_length = parameters.numIndices;
+	m_length = parameters.countAndSource[0].count;
 
 	// Fill in a buffer description.
 	D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.ByteWidth = sizeof( unsigned int ) * parameters.numIndices;
+	bufferDesc.ByteWidth = sizeof( unsigned int ) * parameters.countAndSource[0].count;
 	bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 	D3D11_SUBRESOURCE_DATA initialData = D3D11_SUBRESOURCE_DATA();
-	initialData.pSysMem = parameters.source;
+	initialData.pSysMem = parameters.countAndSource[0].source;
 
 	// Create the buffer with the device.
 	hr = dxDevice->CreateBuffer( &bufferDesc, &initialData, &m_IB );

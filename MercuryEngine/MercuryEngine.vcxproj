@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\BufferSet.h" />
-    <ClInclude Include="me\DataBuffer.h" />
+    <ClInclude Include="me\BufferUsage.h" />
     <ClInclude Include="me\DataCore.h" />
     <ClInclude Include="me\Display.h" />
     <ClInclude Include="me\Effect.h" />
@@ -132,7 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\BufferSet.cpp" />
-    <ClCompile Include="me\DataBuffer.cpp" />
+    <ClCompile Include="me\BufferUsage.cpp" />
     <ClCompile Include="me\DataCore.cpp" />
     <ClCompile Include="me\Display.cpp" />
     <ClCompile Include="me\Effect.cpp" />

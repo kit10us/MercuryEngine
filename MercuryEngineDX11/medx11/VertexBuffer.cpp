@@ -37,9 +37,9 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 	Destroy();
 
 	m_vertexDeclaration = parameters.vertexDeclaration;
-	m_slot = parameters.slot;
-	m_stride = m_vertexDeclaration->GetSize( parameters.slot );
-	m_length = parameters.numVertices;
+	m_slot = 0;
+	m_stride = m_vertexDeclaration->GetSize( 0 );
+	m_length = parameters.countAndSource[0].count;
 	m_usage = parameters.usage;
 	m_bbox = parameters.bbox;
 
@@ -52,7 +52,7 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 	auto dxDevice = m_renderer->GetDxDevice();
 
 	// Ensure that if we are BufferUsage::Immutable, then source is not null.
-	if ( BufferUsage::Immutable && parameters.source == nullptr )
+	if ( BufferUsage::Immutable && parameters.countAndSource[0].source == nullptr )
 	{
 		throw exception::FailedToCreate( "Buffer is immutable, yet source is null!" );
 	}
@@ -76,14 +76,14 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 
 	D3D11_BUFFER_DESC vertexBufferDesc{};
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.ByteWidth = parameters.vertexDeclaration->GetSize( 0 ) * parameters.numVertices;
+	vertexBufferDesc.ByteWidth = parameters.vertexDeclaration->GetSize( 0 ) * parameters.countAndSource[0].count;
 	vertexBufferDesc.Usage = usageDX;
 
 	HRESULT result;
-	if ( parameters.source != nullptr )
+	if ( parameters.countAndSource[0].source != nullptr )
 	{
 		D3D11_SUBRESOURCE_DATA initialData{};
-		initialData.pSysMem = parameters.source;
+		initialData.pSysMem = parameters.countAndSource[0].source;
 		if ( parameters.usage == BufferUsage::Dynamic )
 		{
 			vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // TODO: make not hard coded.

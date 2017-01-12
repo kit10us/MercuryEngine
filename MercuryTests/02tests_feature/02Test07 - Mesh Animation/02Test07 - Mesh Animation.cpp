@@ -121,8 +121,8 @@ void MyGame::Startup()
 	}
 
 	auto & bs = mesh->GetPrimitiveList().AddBufferSet();
-	bs.AddVertexBuffer( VertexBufferParameters{ numberOfVertices, effect->GetVertexShader()->GetVertexDeclaration(), 0, vbRaw, BufferUsage::Default } );
-	bs.AddIndexBuffer( IndexBufferParameters{ numberOfIndices, &ibRaw[0] } );
+	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	bs.AddIndexBuffer( { { { numberOfIndices, &ibRaw[0] } } } );
 	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, effect ) );
 }
 

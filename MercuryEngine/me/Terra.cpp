@@ -213,7 +213,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 		}
 	}
 
-	set.AddVertexBuffer( { vertexCount, vd, 0, vertices.get(), BufferUsage::Default, bbox } );
+	set.AddVertexBuffer( { vd, { { vertexCount, vertices.get() } }, BufferUsage::Default, bbox } );
 
 	// Fill in indices...
 	std::vector< Index32 > indices( indexCount );
@@ -238,7 +238,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 		}
 	}
 
-	set.AddIndexBuffer( { indexCount, (Index32*)&indices[0], BufferUsage::Default } );
+	set.AddIndexBuffer( { { { indexCount, &indices[0] } }, BufferUsage::Default } );
 				 
 	ComputeBounds();
 }

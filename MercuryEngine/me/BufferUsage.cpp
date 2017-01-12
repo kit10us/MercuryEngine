@@ -4,7 +4,7 @@
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/FailedToLock.h>
 #include <me/exception/OutOfBounds.h>
-#include <me/DataBuffer.h>
+#include <me/BufferUsage.h>
 #include <unify/String.h>
 #include <assert.h>
 
@@ -49,41 +49,4 @@ std::string BufferUsage::ToString( BufferUsage::TYPE usage )
 	default:
 		throw unify::Exception( "BufferUsage::ToString: Not a valid usage type!" );
 	}
-}
-
-DataBuffer::DataBuffer()
-: m_locked( false )
-, m_usage( BufferUsage::Default )
-, m_length( 0 )
-, m_stride( 0 )
-{
-}
-
-DataBuffer::~DataBuffer()
-{
-}
-
-bool DataBuffer::Locked() const
-{
-	return m_locked;
-}
-
-BufferUsage::TYPE DataBuffer::GetUsage() const
-{
-	return m_usage;
-}
-
-unsigned int DataBuffer::GetStride() const
-{
-	return m_stride;
-}
-
-unsigned int DataBuffer::GetLength() const
-{
-	return m_length;
-}
-
-unsigned int DataBuffer::GetSize() const
-{
-	return m_stride * m_length;
 }
