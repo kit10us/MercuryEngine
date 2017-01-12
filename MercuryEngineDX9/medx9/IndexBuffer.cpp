@@ -79,7 +79,7 @@ public:
 
 		// Create Index Buffer...
 		hr = dxDevice->CreateIndexBuffer(
-			m_owner.GetSize(),
+			m_owner.GetSizeInBytes(),
 			createFlags,
 			d3dFormat,
 			pool,
@@ -377,7 +377,7 @@ unsigned int IndexBuffer::GetLength() const
 	return m_length;
 }
 
-unsigned int IndexBuffer::GetSize() const
+size_t IndexBuffer::GetSizeInBytes() const
 {
 	return m_stride * m_length;
 }

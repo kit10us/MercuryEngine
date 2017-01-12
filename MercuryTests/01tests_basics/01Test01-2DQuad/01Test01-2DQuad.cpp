@@ -33,11 +33,11 @@ void MyGame::Startup()
 	auto vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 	unsigned int vertexCount = 4;
-	size_t sizeOfBufferInBytes = vd->GetSize( 0 ) * vertexCount;
+	size_t sizeOfBufferInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[ sizeOfBufferInBytes ] );
 
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	float depth = 0.5f;
 

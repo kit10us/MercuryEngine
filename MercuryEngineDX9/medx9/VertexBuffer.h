@@ -29,10 +29,9 @@ namespace medx9
 		void Unlock() const;
 		
 		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
-		size_t GetSlot() const;
 		
 		bool Valid() const;
-		void Use() const;
+		void Use() const override;
 
 		unify::BBox< float > & GetBBox() override;
 		const unify::BBox< float > & GetBBox() const override;
@@ -41,17 +40,16 @@ namespace medx9
 		me::BufferUsage::TYPE GetUsage() const;
 		unsigned int GetStride() const;
 		unsigned int GetLength() const;
-		unsigned int GetSize() const;
+		size_t GetSizeInBytes() const override;
 
 	protected:
 		const Renderer * m_renderer;
-		CComPtr< IDirect3DVertexBuffer9 > m_VB;
+		std::vector< IDirect3DVertexBuffer9 * > m_buffers;
 		me::VertexDeclaration::ptr m_vertexDeclaration;
-		size_t m_slot;
 		unify::BBox< float > m_bbox;
-		bool m_locked;
 		me::BufferUsage::TYPE m_usage;
-		unsigned int m_stride; // Size of each item in the buffer.
-		unsigned int m_length; // Number of items we can store in the buffer.
+		std::vector< size_t > m_strides; // Size of each item in the buffer.
+		std::vector< size_t > m_lengths; // Number of items we can store in the buffer.
+		mutable std::vector< bool > m_locked;
 	};
 }

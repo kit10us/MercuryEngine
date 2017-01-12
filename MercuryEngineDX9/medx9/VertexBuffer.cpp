@@ -12,21 +12,15 @@ using namespace me;
 
 VertexBuffer::VertexBuffer( const me::IRenderer * renderer )
 	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
-	, m_slot( 0 )
 	, m_locked( false )
 	, m_usage( BufferUsage::Default )
-	, m_length( 0 )
-	, m_stride( 0 )
 {
 }
 
 VertexBuffer::VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters )
 	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
-	, m_slot( 0 )
 	, m_locked( false )
 	, m_usage( BufferUsage::Default )
-	, m_length( 0 )
-	, m_stride( 0 )
 {
 	Create( parameters );
 }
@@ -42,125 +36,122 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 	Destroy();
 
 	m_vertexDeclaration = parameters.vertexDeclaration;
-	m_slot = 0;
-	m_stride = m_vertexDeclaration->GetSize( 0 );
-	m_length = parameters.countAndSource[0].count;
 	m_usage = parameters.usage;
 
-	// Ensure we have some sort of idea what we need to be...
-	if( GetSize() == 0 )
+	size_t bufferIndex = 0;
+	for( auto countAndSource : parameters.countAndSource )
 	{
-		throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
-	}
+		m_strides.push_back( m_vertexDeclaration->GetSizeInBytes( bufferIndex ) );
+		m_lengths.push_back( parameters.countAndSource[bufferIndex].count );
+		m_locked.push_back( false );
 
-	auto dxDevice = m_renderer->GetDxDevice();
+		// Ensure we have some sort of idea what we need to be...
+		if( GetSizeInBytes() == 0 )
+		{
+			throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
+		}
 
-	unsigned int createFlags = FLAGNULL;
-	/*
-	// TODO: To support for DX9 and DX11...
-	// Build Vertex Buffer usage...
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::DoNotClip ) )
-	{
-		createFlags |= D3DUSAGE_DONOTCLIP;
-	}
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::NPatches ) )
-	{
-		createFlags |= D3DUSAGE_NPATCHES;
-	}
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::Points ) )
-	{
-		createFlags |= D3DUSAGE_POINTS;
-	}
-	if( unify::CheckFlag( m_createFlags, VertexBuffer::CreateFlags::RTPatches ) )
-	{
-		createFlags |= D3DUSAGE_RTPATCHES;
-	}
-	*/
+		auto dxDevice = m_renderer->GetDxDevice();
 
-	D3DPOOL pool = D3DPOOL_DEFAULT;
-	switch( m_usage )
-	{
-	case BufferUsage::Default:
-		pool = D3DPOOL_MANAGED;
-		break;
-	case BufferUsage::Immutable:
-		pool = D3DPOOL_DEFAULT;
-		createFlags |= D3DUSAGE_WRITEONLY;
-		break;
-	case BufferUsage::Dynamic:
-		pool = D3DPOOL_MANAGED;
-		break;
-	case BufferUsage::Staging:
-		//pool = D3DPOOL_SCRATCH;
-		pool = D3DPOOL_SYSTEMMEM;
-		break;
+		unsigned int createFlags = FLAGNULL;
+		D3DPOOL pool = D3DPOOL_DEFAULT;
+		switch( m_usage )
+		{
+		case BufferUsage::Default:
+			pool = D3DPOOL_MANAGED;
+			break;
+		case BufferUsage::Immutable:
+			pool = D3DPOOL_DEFAULT;
+			createFlags |= D3DUSAGE_WRITEONLY;
+			break;
+		case BufferUsage::Dynamic:
+			pool = D3DPOOL_MANAGED;
+			break;
+		case BufferUsage::Staging:
+			//pool = D3DPOOL_SCRATCH;
+			pool = D3DPOOL_SYSTEMMEM;
+			break;
+		}
+
+		// Create Vertex Buffer...
+		HRESULT hr;
+		IDirect3DVertexBuffer9 * buffer{};
+		hr = dxDevice->CreateVertexBuffer( GetSizeInBytes(), createFlags, 0, pool, &buffer, 0 );
+		OnFailedThrow( hr, "Failed to create vertex buffer!" );
+
+		m_buffers.push_back( buffer );
+
+		if( parameters.countAndSource[0].source )
+		{
+			unify::DataLock lock;
+			Lock( lock );
+			lock.CopyBytesFrom( parameters.countAndSource[0].source, 0, GetSizeInBytes() );
+			Unlock();
+		}			 
+		bufferIndex++;
 	}
-
-	// Create Vertex Buffer...
-	HRESULT hr;
-	hr = dxDevice->CreateVertexBuffer( GetSize(), createFlags, 0, pool, &m_VB, 0 );
-	OnFailedThrow( hr, "Failed to create vertex buffer!" );
-
-	if( parameters.countAndSource[0].source )
-	{
-		unify::DataLock lock;
-		Lock( lock );
-		lock.CopyBytesFrom( parameters.countAndSource[0].source, 0, GetSize() );
-		Unlock();
-	}			 
 		
 	m_bbox = parameters.bbox;
 }
 
 void VertexBuffer::Destroy()
 {
-	m_VB = nullptr;
-	m_length = 0;
-	m_stride = 0;
+	for ( auto && buffer : m_buffers )
+	{
+		buffer->Release();
+	}
+	m_buffers.clear();
+	m_lengths.clear();
+	m_strides.clear();
 }
 
 void VertexBuffer::Lock( unify::DataLock & lock )
 {
+	size_t bufferIndex = 0;
+
 	HRESULT hr;
 	unsigned char * data;
-	hr = m_VB->Lock( 0, 0, (void**)&data, 0 );
+	hr = m_buffers[ bufferIndex ]->Lock( 0, 0, (void**)&data, 0 );
 	if( FAILED( hr ) )
 	{
 		lock.Invalidate();
 		throw exception::FailedToLock( "Failed to lock vertex buffer!" );
 	}
 
-	lock.SetLock( data, m_vertexDeclaration->GetSize( 0 ), GetLength(), false, 0 );
-	m_locked = true;
+	lock.SetLock( data, m_vertexDeclaration->GetSizeInBytes( bufferIndex ), GetLength(), false, 0 );
+	m_locked[ bufferIndex ] = true;
 }
 
 void VertexBuffer::LockReadOnly( unify::DataLock & lock ) const
 {
+	size_t bufferIndex = 0;
+
 	HRESULT hr;
 	unsigned char * data;
-	hr = m_VB->Lock( 0, 0, (void**)&data, D3DLOCK_READONLY );
+	hr = m_buffers[ bufferIndex ]->Lock( 0, 0, (void**)&data, D3DLOCK_READONLY );
 	if( FAILED( hr ) )
 	{
 		lock.Invalidate();
 		throw exception::FailedToLock( "Failed to lock vertex buffer!" );
 	}
 
-	lock.SetLock( data, m_vertexDeclaration->GetSize( 0 ), GetLength(), true, 0 );
+	lock.SetLock( data, m_vertexDeclaration->GetSizeInBytes( bufferIndex ), GetLength(), true, 0 );
 }
 
 void VertexBuffer::Unlock()
 {
-	if( !m_VB || !m_locked ) return;
-	m_VB->Unlock();
-	m_locked = FALSE;	// altering data in a constant function
+	size_t bufferIndex = 0;
+	if( ! m_buffers[ bufferIndex ] || ! m_locked[bufferIndex] ) return;
+	m_buffers[bufferIndex]->Unlock();
+	m_locked[ bufferIndex ] = FALSE;	// altering data in a constant function
 }
 
 void VertexBuffer::Unlock() const
 {
-	if( !m_VB || !m_locked ) return;
-	m_VB->Unlock();
-	bool & locked = *const_cast< bool* >(&m_locked);
-	locked = false;
+	size_t bufferIndex = 0;
+	if( ! m_buffers[ bufferIndex ] || ! m_locked[ bufferIndex ] ) return;
+	m_buffers[ bufferIndex ]->Unlock();
+	m_locked[bufferIndex] = false;
 }
 
 
@@ -169,29 +160,23 @@ VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 	return m_vertexDeclaration;
 }
 
-size_t VertexBuffer::GetSlot() const
-{
-	return m_slot;
-}
-
 bool VertexBuffer::Valid() const
 {
-	return m_VB != 0;
+	return m_buffers.size() == m_strides.size();
 }
 
 void VertexBuffer::Use() const
 {
-	unsigned int streamNumber = 0;
-	unsigned int stride = GetStride();
-	unsigned int offsetInBytes = 0;
-	HRESULT hr = S_OK;
-
 	auto dxDevice = m_renderer->GetDxDevice();
-
-	hr = dxDevice->SetStreamSource( streamNumber, m_VB, offsetInBytes, stride );
-	if( FAILED( hr ) )
+	for ( size_t buffer = 0, buffer_count = m_buffers.size(); buffer < buffer_count; buffer++ )
 	{
-		throw unify::Exception( "VertexBuffer: Failed to SetStreamSource!" );
+		unsigned int offsetInBytes = 0;	  
+		HRESULT hr = S_OK;
+		hr = dxDevice->SetStreamSource( buffer, m_buffers[ buffer ], offsetInBytes, m_strides[ buffer ] );
+		if ( FAILED( hr ) )
+		{
+			throw unify::Exception( "VertexBuffer: Failed to SetStreamSource!" );
+		}
 	}
 }
 
@@ -207,7 +192,8 @@ const unify::BBox< float > & VertexBuffer::GetBBox() const
 
 bool VertexBuffer::Locked() const
 {
-	return m_locked;
+	size_t bufferIndex = 0;
+	return m_locked[ bufferIndex ];
 }
 
 BufferUsage::TYPE VertexBuffer::GetUsage() const
@@ -217,15 +203,18 @@ BufferUsage::TYPE VertexBuffer::GetUsage() const
 
 unsigned int VertexBuffer::GetStride() const
 {
-	return m_stride;
+	size_t bufferIndex = 0;
+	return m_strides[ bufferIndex ];
 }
 
 unsigned int VertexBuffer::GetLength() const
 {
-	return m_length;
+	size_t bufferIndex = 0;
+	return m_lengths[ bufferIndex ];
 }
 
-unsigned int VertexBuffer::GetSize() const
+size_t VertexBuffer::GetSizeInBytes() const
 {
-	return m_stride * m_length;
+	size_t bufferIndex = 0;
+	return m_strides[ bufferIndex ] * m_lengths[ bufferIndex ];
 }

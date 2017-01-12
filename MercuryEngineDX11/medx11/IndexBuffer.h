@@ -50,7 +50,6 @@ namespace medx11
 		void LockReadOnly( me::IndexLock & lock ) const;
 		void Unlock();
 		void UnlockReadOnly() const;
-		unsigned int GetCreateFlags() const;
 		bool Valid() const;
 		
 		void Use() const override;
@@ -59,7 +58,7 @@ namespace medx11
 		me::BufferUsage::TYPE GetUsage() const;
 		unsigned int GetStride() const;
 		unsigned int GetLength() const;
-		unsigned int GetSize() const;
+		size_t GetSizeInBytes() const override;
 
 	protected:
 		const Renderer * m_renderer;

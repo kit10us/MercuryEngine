@@ -49,4 +49,13 @@ namespace me
 		size_t count;
 		const void * source;
 	};
+
+	class IBuffer
+	{
+	public:
+		~IBuffer() { }
+
+		virtual void Use() const = 0;
+		virtual size_t GetSizeInBytes() const = 0;
+	};
 }

@@ -31,7 +31,7 @@ namespace me
 		unify::Flags flags;
 	};
 
-	class IIndexBuffer
+	class IIndexBuffer : public IBuffer
 	{
 	public:
 		typedef std::shared_ptr< IIndexBuffer > ptr;
@@ -39,6 +39,5 @@ namespace me
 		virtual ~IIndexBuffer() {}
 
 		virtual void Create( IndexBufferParameters parameters ) = 0;
-		virtual void Use() const = 0;
 	};
 }

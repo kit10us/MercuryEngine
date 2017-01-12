@@ -90,8 +90,8 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	// Build depth buffer...	
 	bool hasHeightHap = false;

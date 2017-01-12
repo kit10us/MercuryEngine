@@ -32,7 +32,7 @@ namespace me
 		unify::BBox< float > bbox;
 	};
 
-	class IVertexBuffer
+	class IVertexBuffer : public IBuffer
 	{
 	public:
 		typedef std::shared_ptr< IVertexBuffer > ptr;
@@ -47,8 +47,6 @@ namespace me
 		virtual void LockReadOnly( unify::DataLock & lock ) const = 0;
 		virtual void Unlock() = 0;
 		virtual void Unlock() const = 0;
-
-		virtual void Use() const = 0;
 
 		virtual unify::BBox< float > & GetBBox() = 0;
 		virtual const unify::BBox< float > & GetBBox() const = 0;

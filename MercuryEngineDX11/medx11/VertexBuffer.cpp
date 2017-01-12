@@ -12,11 +12,7 @@ using namespace me;
 
 VertexBuffer::VertexBuffer( const me::IRenderer * renderer )
 	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
-	, m_slot( 0 )
-	, m_locked( false )
 	, m_usage( BufferUsage::Default )
-	, m_length( 0 )
-	, m_stride( 0 )
 {
 }
 
@@ -36,72 +32,83 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 {
 	Destroy();
 
-	m_vertexDeclaration = parameters.vertexDeclaration;
-	m_slot = 0;
-	m_stride = m_vertexDeclaration->GetSize( 0 );
-	m_length = parameters.countAndSource[0].count;
 	m_usage = parameters.usage;
 	m_bbox = parameters.bbox;
 
-	// Ensure we have some sort of idea what we need to be...
-	if( GetSize() == 0 )
+	size_t bufferIndex = 0;
+	for ( auto && countAndSource : parameters.countAndSource )
 	{
-		throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
-	}
+		m_vertexDeclaration = parameters.vertexDeclaration;
+		m_strides.push_back( m_vertexDeclaration->GetSizeInBytes( bufferIndex ) );
+		m_lengths.push_back( countAndSource.count );
 
-	auto dxDevice = m_renderer->GetDxDevice();
-
-	// Ensure that if we are BufferUsage::Immutable, then source is not null.
-	if ( BufferUsage::Immutable && parameters.countAndSource[0].source == nullptr )
-	{
-		throw exception::FailedToCreate( "Buffer is immutable, yet source is null!" );
-	}
-
-	D3D11_USAGE usageDX{};
-	switch ( m_usage )
-	{
-	case BufferUsage::Default:
-		usageDX = D3D11_USAGE_DEFAULT;
-		break;
-	case BufferUsage::Immutable:
-		usageDX = D3D11_USAGE_IMMUTABLE;
-		break;
-	case BufferUsage::Dynamic:
-		usageDX = D3D11_USAGE_DYNAMIC;
-		break;
-	case BufferUsage::Staging:
-		usageDX = D3D11_USAGE_STAGING;
-		break;
-	}
-
-	D3D11_BUFFER_DESC vertexBufferDesc{};
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.ByteWidth = parameters.vertexDeclaration->GetSize( 0 ) * parameters.countAndSource[0].count;
-	vertexBufferDesc.Usage = usageDX;
-
-	HRESULT result;
-	if ( parameters.countAndSource[0].source != nullptr )
-	{
-		D3D11_SUBRESOURCE_DATA initialData{};
-		initialData.pSysMem = parameters.countAndSource[0].source;
-		if ( parameters.usage == BufferUsage::Dynamic )
+		// Ensure we have some sort of idea what we need to be...
+		if ( GetSizeInBytes() == 0 )
 		{
-			vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // TODO: make not hard coded.
+			throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
 		}
-		result = dxDevice->CreateBuffer( &vertexBufferDesc, &initialData, &m_VB );
+
+		auto dxDevice = m_renderer->GetDxDevice();
+
+		// Ensure that if we are BufferUsage::Immutable, then source is not null.
+		if ( BufferUsage::Immutable && parameters.countAndSource[0].source == nullptr )
+		{
+			throw exception::FailedToCreate( "Buffer is immutable, yet source is null!" );
+		}
+
+		D3D11_USAGE usageDX{};
+		switch ( m_usage )
+		{
+		case BufferUsage::Default:
+			usageDX = D3D11_USAGE_DEFAULT;
+			break;
+		case BufferUsage::Immutable:
+			usageDX = D3D11_USAGE_IMMUTABLE;
+			break;
+		case BufferUsage::Dynamic:
+			usageDX = D3D11_USAGE_DYNAMIC;
+			break;
+		case BufferUsage::Staging:
+			usageDX = D3D11_USAGE_STAGING;
+			break;
+		}
+
+		D3D11_BUFFER_DESC vertexBufferDesc{};
+		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		vertexBufferDesc.ByteWidth = parameters.vertexDeclaration->GetSizeInBytes( 0 ) * parameters.countAndSource[0].count;
+		vertexBufferDesc.Usage = usageDX;
+
+		HRESULT result;
+		ID3D11Buffer * buffer;
+		if ( parameters.countAndSource[0].source != nullptr )
+		{
+			D3D11_SUBRESOURCE_DATA initialData{};
+			initialData.pSysMem = parameters.countAndSource[0].source;
+			if ( parameters.usage == BufferUsage::Dynamic )
+			{
+				vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // TODO: make not hard coded.
+			}
+			result = dxDevice->CreateBuffer( &vertexBufferDesc, &initialData, &buffer );
+		}
+		else
+		{
+			result = dxDevice->CreateBuffer( &vertexBufferDesc, nullptr, &buffer );
+		}
+		OnFailedThrow( result, "Failed to create vertex buffer!" );
+		m_buffers.push_back( buffer );
+		bufferIndex++;
 	}
-	else
-	{
-		result = dxDevice->CreateBuffer( &vertexBufferDesc, nullptr, &m_VB );
-	}
-	OnFailedThrow( result, "Failed to create vertex buffer!" );
 }
 
 void VertexBuffer::Destroy()
 {
-	m_VB = nullptr;
-	m_length = 0;
-	m_stride = 0;
+	for ( auto && buffer : m_buffers )
+	{
+		buffer->Release();
+	}
+	m_buffers.clear();
+	m_lengths.clear();
+	m_strides.clear();
 }
 
 void VertexBuffer::Lock( unify::DataLock & lock )
@@ -129,23 +136,16 @@ VertexDeclaration::ptr VertexBuffer::GetVertexDeclaration() const
 	return m_vertexDeclaration;
 }
 
-size_t VertexBuffer::GetSlot() const
-{
-	return m_slot;
-}
-
 bool VertexBuffer::Valid() const
 {
-	return m_VB != 0;
+	return m_buffers.size() == m_strides.size();
 }
 
 void VertexBuffer::Use() const
-{
-	unsigned int streamNumber = 0;
-	unsigned int stride = GetStride();
-	unsigned int offsetInBytes = 0;
+{	
 	auto dxContext = m_renderer->GetDxContext();
-	dxContext->IASetVertexBuffers( streamNumber, 1, &m_VB.p, &stride, &offsetInBytes );
+	std::vector< unsigned int > offsetInBytes( m_strides.size(), 0 );
+	dxContext->IASetVertexBuffers( 0, m_buffers.size(), &m_buffers[0], &m_strides[0], &offsetInBytes[0] );
 }
 
 unify::BBox< float > & VertexBuffer::GetBBox()
@@ -160,7 +160,8 @@ const unify::BBox< float > & VertexBuffer::GetBBox() const
 
 bool VertexBuffer::Locked() const
 {
-	return m_locked;
+	size_t bufferIndex = 0;
+	return m_locked[ bufferIndex ];
 }
 
 BufferUsage::TYPE VertexBuffer::GetUsage() const
@@ -170,15 +171,18 @@ BufferUsage::TYPE VertexBuffer::GetUsage() const
 
 unsigned int VertexBuffer::GetStride() const
 {
-	return m_stride;
+	size_t bufferIndex = 0;
+	return m_strides[ bufferIndex ];
 }
 
 unsigned int VertexBuffer::GetLength() const
 {
-	return m_length;
+	size_t bufferIndex = 0;
+	return m_lengths[ bufferIndex ];
 }
 
-unsigned int VertexBuffer::GetSize() const
+size_t VertexBuffer::GetSizeInBytes() const
 {
-	return m_stride * m_length;
+	size_t bufferIndex = 0;
+	return m_strides[ bufferIndex ] * m_lengths[ bufferIndex ];
 }

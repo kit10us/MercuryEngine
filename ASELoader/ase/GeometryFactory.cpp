@@ -202,9 +202,9 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 						texCoords[ index ].v = 1.0f - mesh_tvert.GetAttribute< float >( "v" );
 					}
 
-					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * listPTP.size()] );
+					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * listPTP.size()] );
 
-					unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), listPTP.size(), false, 0 );
+					unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), listPTP.size(), false, 0 );
 
 					std::vector< Index32 > indices( (unsigned int)listPTP.size() * 3 );
 

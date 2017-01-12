@@ -117,8 +117,8 @@ void sg::CreateShape_PointField( me::IRenderer * renderer, PrimitiveList & primi
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
-	char * vertices = new char[vd->GetSize( 0 ) * count];
-	unify::DataLock lock( vertices, vd->GetSize( 0 ), count, false, 0 );
+	char * vertices = new char[vd->GetSizeInBytes( 0 ) * count];
+	unify::DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, false, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	float distance;
@@ -172,8 +172,8 @@ void sg::CreateShape_PointRing( me::IRenderer * renderer, PrimitiveList & primit
 	unify::V3< float > vPos3;
 	unify::V3< float > norm;
 
-	char * vertices = new char[vd->GetSize( 0 ) * count];
-	unify::DataLock lock( vertices, vd->GetSize( 0 ), count, false, 0 );
+	char * vertices = new char[vd->GetSizeInBytes( 0 ) * count];
+	unify::DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, false, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 	unsigned short stream = 0;
 
@@ -273,8 +273,8 @@ void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primiti
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
 
-	char * vertices = new char[vd->GetSize( 0 ) * totalVertices];
-	unify::DataLock lock( vertices, vd->GetSize( 0 ), totalVertices, false, 0 );
+	char * vertices = new char[vd->GetSizeInBytes( 0 ) * totalVertices];
+	unify::DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, false, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	unsigned short stream = 0;
@@ -422,8 +422,8 @@ void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiv
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	// Set the vertices from the TEMP vertices...
-	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( verticesRaw.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 
@@ -600,8 +600,8 @@ void sg::CreateShape_Circle( me::IRenderer * renderer, PrimitiveList & primitive
 	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vertexCount * vd->GetSize( 0 )] );
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vertexCount * vd->GetSizeInBytes( 0 )] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -702,8 +702,8 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 		rb.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
-		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-		unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -802,7 +802,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		RenderMethod renderMethod( RenderMethod::CreateTriangleStripIndexed( vertexCount, indexCount, 0, 0, effect ) );
 		rb.AddMethod( renderMethod );
 
-		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
+		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 
 		unsigned short stream = 0;
 
@@ -816,7 +816,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		unify::TexCoords coords;
 
 		// Set the vertices...
-		unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -908,8 +908,8 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	std::vector< Index32 > indices( indexCount );
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
@@ -1072,8 +1072,8 @@ void sg::CreateShape_Tube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	// a segment is made up of two triangles... segments * 2 = NumTriangles
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -1261,8 +1261,8 @@ void sg::CreateShape_Plane( me::IRenderer * renderer, PrimitiveList & primitiveL
 	jsonFormat.Add( { "TexCoord", "TexCoord" } );
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -1338,8 +1338,8 @@ void sg::CreateShape_Cone( me::IRenderer * renderer, PrimitiveList & primitiveLi
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -1500,8 +1500,8 @@ void sg::CreateShape_BeveledBox( me::IRenderer * renderer, PrimitiveList & primi
 	rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, effect, true ) );
 
 	// Set the vertices from the TEMP vertices...
-	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSize( 0 ) * vertexCount] );
-	unify::DataLock lock( verticesRaw.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
+	unify::DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 

@@ -58,7 +58,7 @@ namespace me
 		size_t GetElementOffset( const std::string & name ) const;
 		size_t GetElementSize( const std::string & name ) const;
 		
-		size_t GetSize( size_t slot = 0 ) const;
+		size_t GetSizeInBytes( size_t slot = 0 ) const;
 
 		size_t NumberOfSlots() const;
 

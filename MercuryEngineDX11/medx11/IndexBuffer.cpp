@@ -224,7 +224,7 @@ unsigned int IndexBuffer::GetLength() const
 	return m_length;
 }
 
-unsigned int IndexBuffer::GetSize() const
+size_t IndexBuffer::GetSizeInBytes() const
 {
 	return m_stride * m_length;
 }

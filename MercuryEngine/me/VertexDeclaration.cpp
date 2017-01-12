@@ -95,7 +95,7 @@ void VertexDeclaration::Build( const IRenderer * renderer, const IVertexShader &
 
 bool VertexDeclaration::operator==( const VertexDeclaration & b ) const
 {
-	if ( GetSize() != b.GetSize() || m_elements.size() != b.m_elements.size() )
+	if ( GetSizeInBytes() != b.GetSizeInBytes() || m_elements.size() != b.m_elements.size() )
 	{
 		return false;
 	}
@@ -191,7 +191,7 @@ size_t VertexDeclaration::GetElementSize( const std::string & name ) const
 	return m_elements[itr->second].SizeOf();
 }
 
-size_t VertexDeclaration::GetSize( size_t slot ) const
+size_t VertexDeclaration::GetSizeInBytes( size_t slot ) const
 {
 	size_t size = 0;
 	for( auto e : m_elements )

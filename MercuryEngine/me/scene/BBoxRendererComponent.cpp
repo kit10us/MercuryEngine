@@ -84,13 +84,13 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 	VertexDeclaration::ptr vd = m_effect->GetVertexShader()->GetVertexDeclaration();
 	size_t lineSegmentCount = 12;
 	size_t vertexCount = lineSegmentCount * 2;
-	std::shared_ptr< char * > vertices( new char *[ vd->GetSize( 0 ) * vertexCount ] );
+	std::shared_ptr< char * > vertices( new char *[ vd->GetSizeInBytes( 0 ) * vertexCount ] );
 
 	unsigned short stream = 0;
 	VertexElement positionE = CommonVertexElement::Position( stream );
 	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
 	
-	unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), vertexCount, false, 0 );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
 
 	// All from inf...
 

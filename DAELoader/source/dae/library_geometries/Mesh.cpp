@@ -144,8 +144,8 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 		VertexElement specularE = CommonVertexElement::Specular( stream );
 		VertexElement texE = CommonVertexElement::TexCoords( stream );
 
-		std::shared_ptr< unsigned char > vertices( new unsigned char[ vd->GetSize( 0 ) * numberOfVertices ] );
-		unify::DataLock lock( vertices.get(), vd->GetSize( 0 ), numberOfVertices, false, 0 );
+		std::shared_ptr< unsigned char > vertices( new unsigned char[ vd->GetSizeInBytes( 0 ) * numberOfVertices ] );
+		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), numberOfVertices, false, 0 );
 
 		unify::BBox< float > bbox;
 
