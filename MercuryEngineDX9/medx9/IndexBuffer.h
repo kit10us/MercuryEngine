@@ -36,20 +36,20 @@ namespace medx9
 
 		void Destroy();
 
-		void Lock( unify::DataLock & lock ) override;
-		void LockReadOnly( unify::DataLock & lock ) const override;
-		void Unlock( unify::DataLock & lock ) override;
-		void UnlockReadOnly( unify::DataLock & lock ) const override;
+		void Lock( size_t bufferIndex, unify::DataLock & lock ) override;
+		void LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const override;
+		void Unlock( size_t bufferIndex, unify::DataLock & lock ) override;
+		void UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const override;
 
 		bool Valid() const;
 		
 		void Use() const override;
 
-		bool Locked() const;
-		me::BufferUsage::TYPE GetUsage() const;
-		unsigned int GetStride() const;
-		unsigned int GetLength() const;
-		size_t GetSizeInBytes() const override;
+		bool Locked( size_t bufferIndex ) const override;
+		me::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const;
+		size_t GetStride( size_t bufferIndex ) const;
+		size_t GetLength( size_t bufferIndex ) const;
+		size_t GetSizeInBytes( size_t bufferIndex ) const override;
 
 	protected:
 		const Renderer * m_renderer;

@@ -5,7 +5,7 @@
 
 #include <me/Mercury.h>
 #include <me/VertexDeclaration.h>
-#include <me/BufferUsage.h>
+#include <me/IBuffer.h>
 #include <unify/BBox.h>
 #include <memory>
 

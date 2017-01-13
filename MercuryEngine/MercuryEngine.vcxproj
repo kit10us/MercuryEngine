@@ -50,6 +50,7 @@
     <ClInclude Include="me\Geometry.h" />
     <ClInclude Include="me\GeometryCache.h" />
     <ClInclude Include="me\GeometryInstanceData.h" />
+    <ClInclude Include="me\IBuffer.h" />
     <ClInclude Include="me\IGame.h" />
     <ClInclude Include="me\IGameComponent.h" />
     <ClInclude Include="me\IIndexBuffer.h" />

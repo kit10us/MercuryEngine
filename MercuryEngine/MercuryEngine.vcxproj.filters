@@ -360,6 +360,9 @@
     <ClInclude Include="me\BufferUsage.h">
       <Filter>me</Filter>
     </ClInclude>
+    <ClInclude Include="me\IBuffer.h">
+      <Filter>me\interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">

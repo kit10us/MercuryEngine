@@ -20,15 +20,10 @@ IndexBuffer::IndexBuffer( const me::IRenderer * renderer )
 }
 
 IndexBuffer::IndexBuffer( const me::IRenderer * renderer, IndexBufferParameters parameters )
-	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
-	, m_locked( false )
-	, m_usage( BufferUsage::Default )
-	, m_length( 0 )
-	, m_stride( 0 )
+	: IndexBuffer( renderer )
 {
 	Create( parameters );
-}
-
+}						 
 
 IndexBuffer::~IndexBuffer()
 {
@@ -63,9 +58,9 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 	}
 }
 
-void IndexBuffer::Resize( unsigned int numIndices )
+void IndexBuffer::Resize( size_t bufferIndex, unsigned int numIndices )
 {
-	if ( GetUsage() != BufferUsage::Staging )
+	if ( GetUsage(bufferIndex) != BufferUsage::Staging )
 	{
 		throw unify::Exception( "IndexBuffer's usage is not Staging! Cannot resize without CPU read and write access." );
 	}
@@ -106,39 +101,39 @@ void IndexBuffer::Resize( unsigned int numIndices )
 	*/
 }
 
-size_t IndexBuffer::Append( const IndexBuffer & from, size_t vertexOffset  )
+size_t IndexBuffer::Append( size_t bufferIndex, const IndexBuffer & from, size_t vertexOffset  )
 {
-	size_t offset = GetLength();
+	size_t offset = GetLength( bufferIndex );
 
-	if ( from.GetLength() == 0 )
+	if ( from.GetLength( bufferIndex ) == 0 )
 	{
 		return offset;
 	}
 
-	if ( from.GetUsage() != BufferUsage::Staging )
+	if ( from.GetUsage(bufferIndex) != BufferUsage::Staging )
 	{
 		throw unify::Exception( "From IndexBuffer's usage is not Staging!" );
 	}
 
-	if ( GetLength() == 0 )
+	if ( GetLength( bufferIndex ) == 0 )
 	{
 		assert( 0 ); // TODO:
 		//Create( from.GetLength(), nullptr, from.GetUsage(), from.m_pimpl->m_createFlags );
 	}
 	else
 	{
-		if ( GetUsage() != BufferUsage::Staging )
+		if ( GetUsage(bufferIndex) != BufferUsage::Staging )
 		{
 			throw unify::Exception( "IndexBuffer's usage is not Staging!" );
 		}
-		Resize( GetLength() + from.GetLength() );
+		Resize( bufferIndex, GetLength(bufferIndex) + from.GetLength(bufferIndex) );
 	}
 
 	// Copy vertices...
 	IndexLock locksrc, lockdest;
-	Lock( lockdest );
+	Lock( bufferIndex, lockdest );
 
-	from.LockReadOnly( locksrc );
+	from.LockReadOnly( bufferIndex, locksrc );
 
 	for ( size_t i = 0; i < locksrc.Count(); ++i )
 	{
@@ -156,8 +151,8 @@ size_t IndexBuffer::Append( const IndexBuffer & from, size_t vertexOffset  )
 		}
 	}
 
-	from.UnlockReadOnly( locksrc );
-	Unlock( lockdest );
+	from.UnlockReadOnly( bufferIndex, locksrc );
+	Unlock( bufferIndex, lockdest );
 
 	return offset;
 }
@@ -168,9 +163,8 @@ void IndexBuffer::Destroy()
 	m_length = 0;
 }
 
-void IndexBuffer::Lock( unify::DataLock & lock )
+void IndexBuffer::Lock( size_t bufferIndex, unify::DataLock & lock )
 {
-	size_t bufferIndex = 0;
 	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer not created)!" );
 	if ( m_locked ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer already locked)!" );
 
@@ -182,13 +176,12 @@ void IndexBuffer::Lock( unify::DataLock & lock )
 		throw unify::Exception( "Failed to set vertex shader!" );
 	}		
 
-	lock.SetLock( subresource.pData, GetSizeInBytes(), false, 0 );
+	lock.SetLock( subresource.pData, GetSizeInBytes(bufferIndex), false, 0 );
 	m_locked = true;
 }
 
-void IndexBuffer::LockReadOnly( unify::DataLock & lock ) const
+void IndexBuffer::LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const
 {
-	size_t bufferIndex = 0;
 	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer not created)!" );
 	if ( m_locked ) throw exception::FailedToLock( "Failed to lock index buffer buffer (buffer already locked)!" );
 
@@ -200,13 +193,12 @@ void IndexBuffer::LockReadOnly( unify::DataLock & lock ) const
 		throw unify::Exception( "Failed to set vertex shader!" );
 	}		
 
-	lock.SetLock( subresource.pData, GetSizeInBytes(), true, 0 );
+	lock.SetLock( subresource.pData, GetSizeInBytes(bufferIndex), true, 0 );
 	m_locked = true;
 }
 
-void IndexBuffer::Unlock( unify::DataLock & lock )
+void IndexBuffer::Unlock( size_t bufferIndex, unify::DataLock & lock )
 {
-	size_t bufferIndex = 0;
 	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not created)!" );
 	if ( ! m_locked ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not locked)!" );
 
@@ -218,9 +210,8 @@ void IndexBuffer::Unlock( unify::DataLock & lock )
 	m_locked = false;
 }
 
-void IndexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
+void IndexBuffer::UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const
 {
-	size_t bufferIndex = 0;
 	if ( ! m_buffer ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not created)!" );
 	if ( m_locked ) throw exception::FailedToLock( "Failed to unlock index buffer buffer (buffer not locked)!" );
 
@@ -248,27 +239,27 @@ void IndexBuffer::Use() const
 	m_renderer->GetDxContext()->IASetIndexBuffer( m_buffer, DXGI_FORMAT_R32_UINT, 0 );
 }
 
-bool IndexBuffer::Locked() const
+bool IndexBuffer::Locked( size_t bufferIndex ) const
 {
 	return m_locked;
 }
 
-BufferUsage::TYPE IndexBuffer::GetUsage() const
+BufferUsage::TYPE IndexBuffer::GetUsage( size_t bufferIndex ) const
 {
 	return m_usage;
 }
 
-unsigned int IndexBuffer::GetStride() const
+size_t IndexBuffer::GetStride( size_t bufferIndex ) const
 {
 	return m_stride;
 }
 
-unsigned int IndexBuffer::GetLength() const
+size_t IndexBuffer::GetLength( size_t bufferIndex ) const
 {
 	return m_length;
 }
 
-size_t IndexBuffer::GetSizeInBytes() const
+size_t IndexBuffer::GetSizeInBytes( size_t bufferIndex ) const
 {
 	return m_stride * m_length;
 }

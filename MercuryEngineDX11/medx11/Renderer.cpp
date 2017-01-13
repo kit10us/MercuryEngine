@@ -301,7 +301,12 @@ void Renderer::Render( const RenderMethod & method, const me::RenderInfo & rende
 
 void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size )
 {
-	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
+	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
+	Instancing::TYPE instancing = Instancing::None;
+	if ( instancingSlot != -1 )
+	{
+		instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing( instancingSlot );
+	}
 
 	D3D11_PRIMITIVE_TOPOLOGY topology{};
 	switch( method.primitiveType )
@@ -400,7 +405,12 @@ void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & 
 
 void Renderer::RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size )
 {
-	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
+	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
+	Instancing::TYPE instancing = Instancing::None;
+	if ( instancingSlot != -1 )
+	{
+		instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing( instancingSlot );
+	}
 
 	D3D11_PRIMITIVE_TOPOLOGY topology{};
 	switch( method.primitiveType )
@@ -530,7 +540,12 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 
 void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous )
 {
-	Instancing::TYPE instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing();
+	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
+	Instancing::TYPE instancing = Instancing::None;
+	if ( instancingSlot != -1 )
+	{
+		instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing( instancingSlot );
+	}
 	assert( instancing == Instancing::Matrix );
 
 	D3D11_PRIMITIVE_TOPOLOGY topology{};

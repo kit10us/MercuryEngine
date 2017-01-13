@@ -19,10 +19,11 @@
         <matrix name="world" count="1000"/>
 	  </buffer>		
 	</constants>
-    <vd><!--instancing="Matrix">-->
-      <element name="Position" type="Float3"/>
-  	  <element name="Diffuse" type="Float4"/>
-	  <!--<element name="InstanceID" type="SV_InstanceID"/>-->
-    </vd>
+    <vertexformat>
+	  <slot>
+        <element name="Position" type="Float3"/>
+  	    <element name="Diffuse" type="Float4"/>
+	  </slot>
+    </vertexformat>
   </vertexshader>
 </xml>

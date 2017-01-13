@@ -36,6 +36,8 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 {
 	Destroy();
 
+	size_t bufferIndex = 0;
+
 	HRESULT hr = S_OK;
 
 	m_length = parameters.countAndSource[0].count;
@@ -46,7 +48,7 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 	// Some of these are not required.
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::DoNotClip ) )	createFlags |= D3DUSAGE_DONOTCLIP;
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::NPatches ) )	createFlags |= D3DUSAGE_NPATCHES;
-	if ( unify::CheckFlag( parameters.flags, CreateFlags::Points ) )		createFlags |= D3DUSAGE_POINTS;
+	if ( unify::CheckFlag( parameters.flags, CreateFlags::Points ) )	createFlags |= D3DUSAGE_POINTS;
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::RTPatches ) )	createFlags |= D3DUSAGE_RTPATCHES;
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::SoftwareProcessing ) )	createFlags |= D3DUSAGE_SOFTWAREPROCESSING;
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::WriteOnly ) )	createFlags |= D3DUSAGE_WRITEONLY;
@@ -79,7 +81,7 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 
 	// Create Index Buffer...
 	hr = dxDevice->CreateIndexBuffer(
-		GetSizeInBytes(),
+		GetSizeInBytes(bufferIndex),
 		createFlags,
 		d3dFormat,
 		pool,
@@ -91,13 +93,13 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 		throw exception::FailedToCreate( "Failed to create index buffer!" );
 	}
 
-	if ( parameters.countAndSource[0].source )
+	if ( parameters.countAndSource[bufferIndex].source )
 	{
 		// Create the index list...
 		unify::DataLock lock;
-		Lock( lock );
-		memcpy( lock.GetData(), parameters.countAndSource[0].source, m_length * sizeof( Index32 ) );
-		Unlock( lock );
+		Lock( bufferIndex, lock );
+		memcpy( lock.GetData(), parameters.countAndSource[bufferIndex].source, m_length * sizeof( Index32 ) );
+		Unlock( bufferIndex, lock );
 	}
 }
 
@@ -111,7 +113,7 @@ void IndexBuffer::Destroy()
 	m_length = 0;
 }
 
-void IndexBuffer::Lock( unify::DataLock & lock )
+void IndexBuffer::Lock( size_t bufferIndex, unify::DataLock & lock )
 {
 	HRESULT hr;
 	unsigned char * data;
@@ -122,11 +124,11 @@ void IndexBuffer::Lock( unify::DataLock & lock )
 		throw exception::FailedToLock( "Failed to lock index buffer!" );
 	}
 
-	lock.SetLock( data, GetStride(), GetLength(), false, 0 );
+	lock.SetLock( data, GetStride(bufferIndex), GetLength(bufferIndex), false, 0 );
 	m_locked = true;
 }
 
-void IndexBuffer::LockReadOnly( unify::DataLock & lock ) const
+void IndexBuffer::LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const
 {
 	assert( m_buffer != 0 );
 	if ( m_locked )
@@ -139,12 +141,12 @@ void IndexBuffer::LockReadOnly( unify::DataLock & lock ) const
 	{
 		throw exception::FailedToLock( "Failed to lock indices!" );
 	}
-	lock.SetLock( data, GetStride(), GetLength(), true, 0 );
+	lock.SetLock( data, GetStride(bufferIndex), GetLength(bufferIndex), true, 0 );
 	bool & locked = *const_cast<bool*>(&m_locked); // Break const for locking.
 	locked = false;
 }
 
-void IndexBuffer::Unlock( unify::DataLock & lock )
+void IndexBuffer::Unlock( size_t bufferIndex, unify::DataLock & lock )
 {
 	if ( m_locked == false )
 	{
@@ -154,7 +156,7 @@ void IndexBuffer::Unlock( unify::DataLock & lock )
 	m_locked = false;
 }
 
-void IndexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
+void IndexBuffer::UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const
 {
 	if ( m_locked == false )
 	{
@@ -186,27 +188,27 @@ void IndexBuffer::Use() const
 	}
 }
 
-bool IndexBuffer::Locked() const
+bool IndexBuffer::Locked( size_t bufferIndex ) const
 {
 	return m_locked;
 }
 
-BufferUsage::TYPE IndexBuffer::GetUsage() const
+BufferUsage::TYPE IndexBuffer::GetUsage( size_t bufferIndex ) const
 {
 	return m_usage;
 }
 
-unsigned int IndexBuffer::GetStride() const
+size_t IndexBuffer::GetStride( size_t bufferIndex ) const
 {
 	return m_stride;
 }
 
-unsigned int IndexBuffer::GetLength() const
+size_t IndexBuffer::GetLength( size_t bufferIndex ) const
 {
 	return m_length;
 }
 
-size_t IndexBuffer::GetSizeInBytes() const
+size_t IndexBuffer::GetSizeInBytes( size_t bufferIndex ) const
 {
 	return m_stride * m_length;
 }

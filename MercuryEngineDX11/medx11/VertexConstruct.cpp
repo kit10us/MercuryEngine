@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <medx11/VertexConstruct.h>
-//#include <medx11/VertexShader.h>
+#include <me/exception/FailedToCreate.h>
 #include <algorithm>
 
 using namespace medx11;
@@ -57,6 +57,11 @@ std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 VertexConstruct::VertexConstruct( const me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs )
 	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
 {
+	if ( vd.GetNumberOfElements() == 0 )
+	{
+		throw exception::FailedToCreate( "Failed to create vertex declaration, as is empty!" );
+	}
+
 	std::vector< D3D11_INPUT_ELEMENT_DESC > elements;
 	for ( auto & e : vd.Elements() )
 	{

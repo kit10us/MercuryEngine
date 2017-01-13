@@ -16,14 +16,17 @@
 	    <matrix name="projection" count="1"/>
 	  </buffer>
 	</constants>
-    <vd instancing="Matrix">
-      <element name="Position" type="Float3"/>
-  	  <element name="Diffuse" type="Color"/>
-	  <element semanticname="MatInf" semanticindex="0" type="Float4" slot="0" InstanceDataStepRate="0" slotclass="vertex"/>
-	  
-	  <element semanticname="Matrix" semanticindex="0" type="Matrix4x4" slot="1" InstanceDataStepRate="1" slotclass="object"/>
-	  <element semanticname="Matrix" semanticindex="4" type="Matrix4x4" slot="1" InstanceDataStepRate="1" slotclass="object"/>	  
-	  <element semanticname="Matrix" semanticindex="8" type="Matrix4x4" slot="1" InstanceDataStepRate="1" slotclass="object"/>	  
-    </vd>
+    <vertexformat>
+      <slot>    
+        <element name="Position" type="Float3"/>
+  	    <element name="Diffuse" type="Color"/>
+	    <element semanticname="MatInf" semanticindex="0" type="Float4"/>	  
+	  </slot>
+	  <slot	instancing="Matrix" instances="5000" class="object" InstanceDataStepRate="1">
+	    <element semanticname="Matrix" semanticindex="0" type="Matrix4x4"/>
+	    <element semanticname="Matrix" semanticindex="4" type="Matrix4x4"/>	  
+	    <element semanticname="Matrix" semanticindex="8" type="Matrix4x4"/>	  
+      </slot>
+    </vertexformat>
   </vertexshader>
 </xml>

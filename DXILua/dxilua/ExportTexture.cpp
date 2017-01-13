@@ -68,7 +68,7 @@ int Texture_Constructor( lua_State * state )
 			parameters.renderable = renderable;
 			parameters.source = source;
 
-			texture = game->GetManager< ITexture >()->Add( name, source, &parameters );
+			texture = game->GetManager< ITexture >()->Add( name, source, "", &parameters );
 		}
 		else
 		{

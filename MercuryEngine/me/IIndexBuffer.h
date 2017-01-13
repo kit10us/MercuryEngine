@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/BufferUsage.h>
+#include <me/IBuffer.h>
 #include <vector>
 #include <memory>
 

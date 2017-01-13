@@ -23,10 +23,10 @@ namespace medx9
 		void Create( me::VertexBufferParameters parameters ) override;
 		void Destroy();
 
-		void Lock( unify::DataLock & lock ) override;
-		void LockReadOnly( unify::DataLock & lock ) const override;
-		void Unlock( unify::DataLock & lock ) override;
-		void UnlockReadOnly( unify::DataLock & lock ) const override;
+		void Lock( size_t bufferIndex, unify::DataLock & lock ) override;
+		void LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const override;
+		void Unlock( size_t bufferIndex, unify::DataLock & lock ) override;
+		void UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const override;
 		
 		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
 		
@@ -36,18 +36,18 @@ namespace medx9
 		unify::BBox< float > & GetBBox() override;
 		const unify::BBox< float > & GetBBox() const override;
 
-		bool Locked() const;
-		me::BufferUsage::TYPE GetUsage() const;
-		unsigned int GetStride() const;
-		unsigned int GetLength() const;
-		size_t GetSizeInBytes() const override;
+		bool Locked( size_t bufferIndex ) const override;
+		me::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const override;
+		size_t GetStride( size_t bufferIndex ) const override;
+		size_t GetLength( size_t bufferIndex ) const override;
+		size_t GetSizeInBytes( size_t bufferIndex ) const override;
 
 	protected:
 		const Renderer * m_renderer;
 		std::vector< IDirect3DVertexBuffer9 * > m_buffers;
 		me::VertexDeclaration::ptr m_vertexDeclaration;
 		unify::BBox< float > m_bbox;
-		me::BufferUsage::TYPE m_usage;
+		std::vector< me::BufferUsage::TYPE > m_usage;
 		std::vector< size_t > m_strides; // Size of each item in the buffer.
 		std::vector< size_t > m_lengths; // Number of items we can store in the buffer.
 		mutable std::vector< bool > m_locked;

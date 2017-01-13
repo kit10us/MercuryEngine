@@ -39,10 +39,14 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 		{
 			parameters.constants.reset( new shader::ShaderConstants( &node ) );
 		}
-		else if ( node.IsTagName( "vd" ) )
+		else if ( node.IsTagName( "vertexformat" ) )
 		{
 			parameters.vertexDeclaration.reset( new VertexDeclaration( &node ) );
 		}
+	}
+	if ( parameters.vertexDeclaration == nullptr )
+	{
+		throw exception::FailedToCreate( "Failed to create vertex shader as vertex format is missing!" );
 	}
 	return renderer->ProduceVS( parameters );
 }

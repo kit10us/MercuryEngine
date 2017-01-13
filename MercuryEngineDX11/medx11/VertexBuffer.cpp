@@ -32,18 +32,18 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 {
 	Destroy();
 
-	m_usage = parameters.usage;
 	m_bbox = parameters.bbox;
 
 	size_t bufferIndex = 0;
 	for ( auto && countAndSource : parameters.countAndSource )
 	{
+		m_usage.push_back( parameters.usage );
 		m_vertexDeclaration = parameters.vertexDeclaration;
 		m_strides.push_back( m_vertexDeclaration->GetSizeInBytes( bufferIndex ) );
 		m_lengths.push_back( countAndSource.count );
 
 		// Ensure we have some sort of idea what we need to be...
-		if ( GetSizeInBytes() == 0 )
+		if ( GetSizeInBytes(bufferIndex) == 0 )
 		{
 			throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
 		}
@@ -57,7 +57,7 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 		}
 
 		D3D11_USAGE usageDX{};
-		switch ( m_usage )
+		switch ( m_usage[bufferIndex] )
 		{
 		case BufferUsage::Default:
 			usageDX = D3D11_USAGE_DEFAULT;
@@ -111,9 +111,8 @@ void VertexBuffer::Destroy()
 	m_strides.clear();
 }
 
-void VertexBuffer::Lock( unify::DataLock & lock )
+void VertexBuffer::Lock( size_t bufferIndex, unify::DataLock & lock )
 {
-	size_t bufferIndex = 0;
 	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer index out of range)!" );
 	if ( m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer already locked)!" );
 
@@ -125,13 +124,12 @@ void VertexBuffer::Lock( unify::DataLock & lock )
 		throw unify::Exception( "Failed to set vertex shader!" );
 	}		
 
-	lock.SetLock( subresource.pData, GetSizeInBytes(), false, 0 );
+	lock.SetLock( subresource.pData, GetSizeInBytes(bufferIndex), false, 0 );
 	m_locked[bufferIndex] = true;
 }
 
-void VertexBuffer::LockReadOnly( unify::DataLock & lock ) const
+void VertexBuffer::LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const
 {
-	size_t bufferIndex = 0;
 	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer index out of range)!" );
 	if ( m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to lock vertex  buffer (buffer already locked)!" );
 
@@ -143,13 +141,12 @@ void VertexBuffer::LockReadOnly( unify::DataLock & lock ) const
 		throw unify::Exception( "Failed to set vertex shader!" );
 	}		
 
-	lock.SetLock( subresource.pData, GetSizeInBytes(), true, 0 );
+	lock.SetLock( subresource.pData, GetSizeInBytes(bufferIndex), true, 0 );
 	m_locked[bufferIndex] = true;
 }
 
-void VertexBuffer::Unlock( unify::DataLock & lock )
+void VertexBuffer::Unlock( size_t bufferIndex, unify::DataLock & lock )
 {
-	size_t bufferIndex = 0;
 	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer index out of range)!" );
 	if ( ! m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer not locked)!" );
 
@@ -161,9 +158,8 @@ void VertexBuffer::Unlock( unify::DataLock & lock )
 	m_locked[bufferIndex] = false;
 }
 
-void VertexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
+void VertexBuffer::UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const
 {
-	size_t bufferIndex = 0;
 	if ( bufferIndex >= m_buffers.size() ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer index out of range)!" );
 	if ( ! m_locked[ bufferIndex ] ) throw exception::FailedToLock( "Failed to unlock vertex  buffer (buffer not locked)!" );
 
@@ -171,8 +167,7 @@ void VertexBuffer::UnlockReadOnly( unify::DataLock & lock ) const
 	auto dxContext = m_renderer->GetDxContext();
 
 	dxContext->Unmap( m_buffers[ bufferIndex ], bufferIndex );
-	//dxContext->VSSetConstantBuffers( buffer, 1, &m_constantBuffers[ buffer ].p );
-
+	
 	m_locked[bufferIndex] = false;
 }
 
@@ -203,31 +198,27 @@ const unify::BBox< float > & VertexBuffer::GetBBox() const
 	return m_bbox;
 }
 
-bool VertexBuffer::Locked() const
+bool VertexBuffer::Locked( size_t bufferIndex ) const
 {
-	size_t bufferIndex = 0;
 	return m_locked[ bufferIndex ];
 }
 
-BufferUsage::TYPE VertexBuffer::GetUsage() const
+BufferUsage::TYPE VertexBuffer::GetUsage( size_t bufferIndex ) const
 {
-	return m_usage;
+	return m_usage[ bufferIndex ];
 }
 
-unsigned int VertexBuffer::GetStride() const
+size_t VertexBuffer::GetStride( size_t bufferIndex ) const
 {
-	size_t bufferIndex = 0;
 	return m_strides[ bufferIndex ];
 }
 
-unsigned int VertexBuffer::GetLength() const
+size_t VertexBuffer::GetLength( size_t bufferIndex ) const
 {
-	size_t bufferIndex = 0;
 	return m_lengths[ bufferIndex ];
 }
 
-size_t VertexBuffer::GetSizeInBytes() const
+size_t VertexBuffer::GetSizeInBytes( size_t bufferIndex ) const
 {
-	size_t bufferIndex = 0;
 	return m_strides[ bufferIndex ] * m_lengths[ bufferIndex ];
 }

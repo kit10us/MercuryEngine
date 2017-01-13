@@ -64,18 +64,24 @@ namespace me
 
 		const std::vector< me::VertexElement > & Elements() const;
 
-		me::Instancing::TYPE GetInstancing() const;
+		int GetInstanceingSlot() const;
+		me::Instancing::TYPE GetInstancing( size_t slot ) const;
+		size_t GetInstances( size_t slot ) const;
 
 		void Use();
 
 	private:
-		Instancing::TYPE m_instancing;
-
 		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
-		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;
+		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;								  
 
-		std::vector< me::VertexElement > m_elements;
+		size_t m_numberOfSlots;
+		std::vector< me::VertexElement > m_allElements;
+		std::vector< std::vector< me::VertexElement > > m_slotElements;
 		ElementMap m_elementMap;
+		std::vector< size_t > m_sizeInBytes;
+		std::vector< me::Instancing::TYPE > m_instancing;
+		std::vector< size_t > m_instances;
+		int m_instanceingSlot;
 
 		me::IVertexConstruct::ptr m_construct;
 	};

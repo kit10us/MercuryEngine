@@ -69,7 +69,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, T * reso
 }
 
 template< class T >
-std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::Path source, void * data )
+std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::Path source, unify::Path relativePath, void * data )
 {
 	// Attempt to find the existing resource.
 	ResourcePtr existingResource = Find( name );
@@ -89,7 +89,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 
 	if ( m_assetPaths != 0 )
 	{
-		source = m_assetPaths->FindAsset( source );
+		source = m_assetPaths->FindAsset( source, relativePath );
 	}
 
 	Log_WriteLine( GetName() + " manager: adding \"" + name + "\" (" + source.ToString() + ")." );

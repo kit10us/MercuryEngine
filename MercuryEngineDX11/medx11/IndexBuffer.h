@@ -18,48 +18,34 @@ namespace medx11
 	class IndexBuffer : public me::IIndexBuffer
 	{
 	public:
-		struct CreateFlags
-		{
-			enum TYPE
-			{
-				DoNotClip = FLAG01,
-				Dynamic = FLAG02,
-				NPatches = FLAG03,
-				Points = FLAG04,
-				RTPatches = FLAG05,
-				SoftwareProcessing = FLAG06,
-				WriteOnly = FLAG07,
-			};
-		};
-
 		IndexBuffer( const me::IRenderer * renderer );
 		IndexBuffer( const me::IRenderer * renderer, me::IndexBufferParameters parameters );
 		~IndexBuffer();
 
 		void Create( me::IndexBufferParameters parameters );
-		void Resize( unsigned int numIndices );
+		void Resize( size_t bufferIndex, unsigned int numIndices );
 
 		/// <summary>
 		/// Append to our existing indices, the indices from ib, adding a vertex offset to each new index.
 		/// Returns the index offset for the first index from 'from'.
 		/// </summary>
-		size_t Append( const IndexBuffer & from, size_t vertexOffset = 0 );
+		size_t Append( size_t bufferIndex, const IndexBuffer & from, size_t vertexOffset = 0 );
 		void Destroy();
 
-		void Lock( unify::DataLock & lock ) override;
-		void LockReadOnly( unify::DataLock & lock ) const override;
-		void Unlock( unify::DataLock & lock ) override;
-		void UnlockReadOnly( unify::DataLock & lock ) const override;
+		void Lock( size_t bufferIndex, unify::DataLock & lock ) override;
+		void LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const override;
+		void Unlock( size_t bufferIndex, unify::DataLock & lock ) override;
+		void UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const override;
 
 		bool Valid() const;
 		
 		void Use() const override;
 
-		bool Locked() const;
-		me::BufferUsage::TYPE GetUsage() const;
-		unsigned int GetStride() const;
-		unsigned int GetLength() const;
-		size_t GetSizeInBytes() const override;
+		bool Locked( size_t bufferIndex ) const override;
+		me::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const override;
+		size_t GetStride( size_t bufferIndex ) const override;
+		size_t GetLength( size_t bufferIndex ) const override;
+		size_t GetSizeInBytes( size_t bufferIndex ) const override;
 
 	protected:
 		const Renderer * m_renderer;

@@ -59,7 +59,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 			}
 
 			unify::Path source = child.GetAttribute< std::string >( "source" );
-			effect->SetTexture( stage, textureManager->Add( name, source, &parameters ) );
+			effect->SetTexture( stage, textureManager->Add( name, source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
 		}
 		else if( child.IsTagName( "blend" ) )
 		{

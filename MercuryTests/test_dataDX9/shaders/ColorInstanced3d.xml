@@ -19,9 +19,11 @@
 	  <matrix name="view" count="1"/>
 	  <matrix name="projection" count="1"/>
 	</constants>
-    <vd>
-      <element name="Position" type="Float3"/>
-  	  <element name="Diffuse" type="Color"/>
-    </vd>
+	<vertexformat>
+      <slot>
+        <element name="Position" type="Float3"/>
+  	    <element name="Diffuse" type="Color"/>
+      </slot>
+	</vertexformat>
   </vertexshader>
 </xml>

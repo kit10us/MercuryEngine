@@ -16,9 +16,11 @@
 	    <matrix name="projection" count="1"/>
 	  </buffer>
 	</constants>
-    <vd>
-      <element name="Position" type="Float3"/>
-  	  <element name="Diffuse" type="Color"/>
-    </vd>
+	<vertexformat>
+      <slot>
+        <element name="Position" type="Float3"/>
+  	    <element name="Diffuse" type="Color"/>
+      </slot>
+	</vertexformat>
   </vertexshader>
 </xml>

@@ -73,7 +73,7 @@ namespace rm
 		// Add an entry for a resource.
 		ResourcePtr Add( std::string name, T * resource ) override;
 
-		ResourcePtr Add( std::string name, unify::Path source, void * data = 0 );
+		ResourcePtr Add( std::string name, unify::Path source, unify::Path relativePath = "", void * data = 0 );
 	
 		void AddResource( std::string name, unify::Path path ) override;
 

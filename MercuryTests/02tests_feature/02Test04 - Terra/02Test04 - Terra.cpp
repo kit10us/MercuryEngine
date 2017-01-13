@@ -56,7 +56,7 @@ void MyGame::Startup()
 		parameters.min = Filtering::Point;
 		parameters.mag = Filtering::Point;
 		parameters.mip = Filtering::Point;
-		GetManager< ITexture >()->Add( "4", "4.bmp", &parameters );
+		GetManager< ITexture >()->Add( "4", "4.bmp", "", &parameters );
 	}
 
 	// Load an effect, then modify it to fit our needs.
