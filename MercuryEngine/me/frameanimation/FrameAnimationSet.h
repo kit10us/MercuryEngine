@@ -1,3 +1,6 @@
+// Copyright (c) 2003 - 2013, Quentin S. Smith
+// All Rights Reserved
+
 #pragma once
 
 #include <me/frameanimation/FrameAnimation.h>
@@ -11,12 +14,13 @@ namespace me
 		public:
 			AnimationSet();
 			~AnimationSet();
-			void AddAnimation( Animation::shared_ptr animation );
-			Animation::shared_ptr FindAnimation( const std::string & name );
-			const Animation::shared_ptr FindAnimation( const std::string & name ) const;
+			void AddAnimation( Animation::ptr animation );
+			Animation::ptr FindAnimation( const std::string & name );
+			const Animation::ptr FindAnimation( const std::string & name ) const;
 
 		private:
-			std::map< std::string /*animation name*/, std::shared_ptr< Animation > > m_animations;
+			typedef std::string AnimationName;
+			std::map< AnimationName, Animation::ptr > m_animations;
 		};
 	}
 }

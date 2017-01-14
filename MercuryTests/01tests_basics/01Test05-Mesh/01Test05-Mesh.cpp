@@ -139,7 +139,7 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	std::vector< const unify::FrameLite * > frames;
 	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
 	frames.push_back( &frame );
-	mesh->Render( renderer, renderInfo, nullptr, &frames[0], frames.size() );
+	mesh->Render( renderer, renderInfo, nullptr, MatrixFeed( &frames[0], frames.size() ) );
 }
 
 

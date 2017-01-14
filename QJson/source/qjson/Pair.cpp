@@ -33,7 +33,7 @@ Pair::Pair( const Pair & pair )
 {
 }
 
-Pair::Pair( const std::string & name, Value::const_shared_ptr value )
+Pair::Pair( const std::string & name, Value::const_ptr value )
 	: m_name( name )
 	, m_value( value.get() == nullptr ? std::make_shared< Null >() : value->Clone() )
 {
@@ -87,7 +87,7 @@ const std::string & Pair::GetName() const
 	return m_name;
 }
 
-Value::const_shared_ptr Pair::GetValue() const
+Value::const_ptr Pair::GetValue() const
 {
 	return m_value;
 }

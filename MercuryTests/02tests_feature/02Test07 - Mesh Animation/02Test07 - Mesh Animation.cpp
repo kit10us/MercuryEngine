@@ -5,12 +5,16 @@
 #include <me/Mesh.h>
 #include <MEWinMain.h>
 
+#include <me/frameanimation/FrameAnimation.h>
+
 using namespace me;
 
 class MyGame : public Game
 {
 	std::shared_ptr< Mesh > mesh;
 	unify::Quaternion q;
+	frameanimation::Animation::ptr m_animation;
+
 public:
 	void Startup() override;
 	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
@@ -124,6 +128,14 @@ void MyGame::Startup()
 	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 	bs.AddIndexBuffer( { { { numberOfIndices, &ibRaw[0] } } } );
 	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, effect ) );
+
+	// Create animation...
+	using namespace frameanimation;		
+	m_animation.reset( new Animation( "test", 1.0f ) );
+	m_animation->AddRotationKey( 0, RotationKey( 0.25f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 180 ) ) ) );
+	m_animation->AddRotationKey( 0, RotationKey( 0.5f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
+	m_animation->AddRotationKey( 0, RotationKey( 0.75f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( -180 ) ) ) );
+	m_animation->AddRotationKey( 0, RotationKey( 1.0f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
 }
 
 void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
@@ -164,38 +176,16 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
 	std::vector< const unify::FrameLite * > frames;
 	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
-	frames.push_back( &frame );
+	frames.push_back( &frame );		   
 
-	static size_t animState = 0;
-	static float animTime = 0;
-	static float animTimeLimit = 1.0f;
-	unify::Matrix animMatrix;
-	animTime += renderInfo.GetDelta() * 1.3f;
-	if ( animTime >= animTimeLimit )
-	{
-		animTime = 0.0f;
-		animState++;
-		if ( animState > 3 )
-		{
-			animState = 0;
-		}
-	}
-
-	switch( animState )
-	{
-	case 0:
-		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( 180 * (0.0f + (animTime / animTimeLimit ) ) ) );
-		break;
-	case 1:
-		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( 180 * (1.0f - (animTime / animTimeLimit ) ) ) );
-		break;
-	case 2:
-		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( -180 * (0.0f + (animTime / animTimeLimit ) ) ) );
-		break;
-	case 3:
-		animMatrix = unify::MatrixRotationZ( unify::AngleInDegrees( -180 * (1.0f - (animTime / animTimeLimit ) ) ) );
-		break;
-	};
+	// Apply animation...
+	static float progress = 0.0f;
+	unify::FrameSet frameSet;
+	frameSet.Add( unify::MatrixIdentity(), 0 );
+	unify::FrameSetInstance frameSetInstance( frameSet );
+	m_animation->ApplyToFrames( progress, frameSetInstance );
+	progress += renderInfo.GetDelta();
+	frameSetInstance.UpdateLocals();
 
 
 	class Source : public IMatrixSource
@@ -233,7 +223,9 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 			matrices[ 0 ] = m_frame.GetMatrix();
 			matrices[ 1 ] = m_matrix;
 		}
-	} source( frame, animMatrix );
+	};
+	
+	Source source( frame, frameSetInstance.Local( 0 ) );
 
 	mesh->Render( renderer, renderInfo, nullptr, &source, 1, true );
 }

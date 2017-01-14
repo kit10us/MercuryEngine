@@ -28,7 +28,7 @@ void Document::Load( const unify::Path & filePath )
 	qxml::Attribute * pAttribute = 0;
 
 	// Our initial parent is the root.
-	qxml::Element * parent = AddElement( new qxml::Element( "Root", qxml::Element::NodeType::Element, nullptr ) , "Root" );
+	qxml::Element * parent = AddElement( new qxml::Element( "Root", qxml::Element::NodeType::Element, nullptr, 0 ) , "Root" );
 	qxml::Element * previous = parent;
 
 	if( ! stream.Open( unify::StreamAccessType::STREAMACCESS_READ, (void *)filePath.ToString().c_str() ) )
@@ -44,7 +44,7 @@ void Document::Load( const unify::Path & filePath )
 	bool bInCData = false;
 	char strData[ 256 ];
 	size_t depth = 0;
-
+	size_t line = 0;
 	while( !stream.EndOfStream() )
 	{
 		stream.ReadPack( &strData, 256 );
@@ -73,7 +73,7 @@ void Document::Load( const unify::Path & filePath )
 		}
 
 		std::string name = unify::StringMinusLeft( unify::ListPart( sData, {' ', '\t' }, 0 ), 1 );
-		qxml::Element * element = new qxml::Element( name, qxml::Element::NodeType::Element, nullptr );
+		qxml::Element * element = new qxml::Element( name, qxml::Element::NodeType::Element, nullptr, line );
 		previous = element;
 		AddElement( element, name );
 		parent->TakeChild( element );
@@ -86,6 +86,7 @@ void Document::Load( const unify::Path & filePath )
 			// Allow modifying text...
 			ProcessASEElement( element, text );
 		}
+		line++;
 	}
 }
 

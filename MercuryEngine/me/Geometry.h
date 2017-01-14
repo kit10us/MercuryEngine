@@ -36,7 +36,6 @@ namespace me
 		virtual GeometryInstanceData * CreateInstanceData();
 
 		virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size ) = 0;
 		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) = 0;
 		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) = 0;
 

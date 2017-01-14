@@ -33,7 +33,7 @@ bool Animation::Loops() const
 
 void Animation::AddScaleKey( size_t boneIndex, const ScaleKey & key )
 {
-	std::map< size_t, SRTTimeline >::iterator itr = m_boneAnimations.find( boneIndex );
+	auto && itr = m_boneAnimations.find( boneIndex );
 	if( itr == m_boneAnimations.end() )
 	{
 		m_boneAnimations[ boneIndex ] = SRTTimeline();
@@ -46,7 +46,7 @@ void Animation::AddScaleKey( size_t boneIndex, const ScaleKey & key )
 
 void Animation::AddRotationKey( size_t boneIndex, const RotationKey & key )
 {
-	std::map< size_t, SRTTimeline >::iterator itr = m_boneAnimations.find( boneIndex );
+	auto && itr = m_boneAnimations.find( boneIndex );
 	if( itr == m_boneAnimations.end() )
 	{
 		m_boneAnimations[ boneIndex ] = SRTTimeline();
@@ -59,7 +59,7 @@ void Animation::AddRotationKey( size_t boneIndex, const RotationKey & key )
 
 void Animation::AddTranslationKey( size_t boneIndex, const TranslationKey & key )
 {
-	std::map< size_t, SRTTimeline >::iterator itr = m_boneAnimations.find( boneIndex );
+	auto && itr = m_boneAnimations.find( boneIndex );
 	if( itr == m_boneAnimations.end() )
 	{
 		m_boneAnimations[ boneIndex ] = SRTTimeline();
@@ -70,23 +70,24 @@ void Animation::AddTranslationKey( size_t boneIndex, const TranslationKey & key 
 	boneTimeline.translation.sort();
 }
 
-void Animation::ApplyToFrames( float progress, unify::FrameSetInstance & frameSetInstance ) const
+void Animation::ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const
 {
-	assert( progress >= 0.0f && progress <= Duration() );
+	while ( elapsedTime < 0.0f ) elapsedTime += Duration();
+	while ( elapsedTime > Duration() ) elapsedTime -= Duration();
 
 	// Apply animation
-	for( std::map< size_t, SRTTimeline >::const_iterator itr = m_boneAnimations.begin(), end = m_boneAnimations.end(); itr != end; ++itr )
+	for( auto && itr : m_boneAnimations )
 	{
-		size_t boneIndex = itr->first;
+		size_t boneIndex = itr.first;
 		assert( boneIndex < frameSetInstance.Count() );
 
-		const ScaleKey::list & scaleKeys = itr->second.scale;
-		const RotationKey::list & rotationKeys = itr->second.rotation;
-		const TranslationKey::list & translationKeys = itr->second.translation;
+		const ScaleKey::list & scaleKeys = itr.second.scale;
+		const RotationKey::list & rotationKeys = itr.second.rotation;
+		const TranslationKey::list & translationKeys = itr.second.translation;
 
-		unify::V3< float > scale( InterpretValue< unify::V3< float > >( progress, scaleKeys, unify::V3< float >( 1.0f, 1.0f, 1.0f ) ) );
-		unify::Quaternion rotation( InterpretValue< unify::Quaternion >( progress, rotationKeys, unify::QuaternionIdentity() ) );
-		unify::V3< float > translation( InterpretValue< unify::V3< float > >( progress, translationKeys, unify::V3< float >( 0.0f, 0.0f, 0.0f ) ) );
+		unify::V3< float > scale( InterpretValue< unify::V3< float > >( elapsedTime, scaleKeys, unify::V3< float >( 1.0f, 1.0f, 1.0f ) ) );
+		unify::Quaternion rotation( InterpretValue< unify::Quaternion >( elapsedTime, rotationKeys, unify::QuaternionIdentity() ) );
+		unify::V3< float > translation( InterpretValue< unify::V3< float > >( elapsedTime, translationKeys, unify::V3< float >( 0.0f, 0.0f, 0.0f ) ) );
 		unify::Matrix matrix( rotation, translation ); // TODO: Quaternions
 		frameSetInstance.Transform( boneIndex, matrix );
 	}

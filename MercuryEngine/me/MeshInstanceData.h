@@ -4,7 +4,7 @@
 
 #include <me/Geometry.h>
 #include <me/frameanimation/FrameAnimationSet.h>
-#include <unify/FrameSet.h>
+#include <unify/FrameSetInstance.h>
 
 namespace me
 {
@@ -55,13 +55,13 @@ namespace me
 		
 		struct ActiveAnimation
 		{
-			ActiveAnimation( unify::Seconds time, me::frameanimation::Animation::const_shared_ptr animation, bool forceLoop )
+			ActiveAnimation( unify::Seconds time, me::frameanimation::Animation::const_ptr animation, bool forceLoop )
 				: m_time( time ), m_animation( animation ), m_forceLoop( forceLoop )
 			{
 			}
 
 			unify::Seconds m_time;
-			me::frameanimation::Animation::const_shared_ptr m_animation;
+			me::frameanimation::Animation::const_ptr m_animation;
 			bool m_forceLoop;
 		};
 

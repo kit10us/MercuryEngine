@@ -26,7 +26,6 @@ namespace me
 
 		void Destroy();
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const;
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const;
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) const;
 		

@@ -68,7 +68,6 @@
     <ClInclude Include="me\IVertexShader.h" />
     <ClInclude Include="me\LOD.h" />
     <ClInclude Include="me\MatrixFeed.h" />
-    <ClInclude Include="me\MatrixStack.h" />
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\Mesh.h" />
     <ClInclude Include="me\MeshAnimation.h" />
@@ -158,7 +157,6 @@
     <ClCompile Include="me\Instancing.cpp" />
     <ClCompile Include="me\LOD.cpp" />
     <ClCompile Include="me\MatrixFeed.cpp" />
-    <ClCompile Include="me\MatrixStack.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
     <ClCompile Include="me\PrimitiveList.cpp" />

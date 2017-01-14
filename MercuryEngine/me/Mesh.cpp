@@ -38,30 +38,6 @@ void Mesh::Update( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size )
-{
-	// TODO:
-	/*
-	RenderInfo myRenderInfo( renderInfo );
-
-	if( instanceData )
-	{
-		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		myRenderInfo.SetFrameSetInstance( &meshInstanceData->GetFrameSetInstance() );
-	}
-	m_primitiveList.Render( myRenderInfo, list );
-
-	if( instanceData && myRenderInfo.IsOptionTrue( RenderOption::RenderFrames ) )
-	{
-		assert( 0 ); // TODO: Updates to RenderInfo need to be vetted.
-		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		meshInstanceData->RenderFrames( myRenderInfo.GetWorldMatrix(), true, true );
-	}
-	*/
-	
-	m_primitiveList.Render( renderer, renderInfo, instances, instances_size );
-}
-
 void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
 {
 	// TODO:

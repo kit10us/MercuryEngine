@@ -14,7 +14,7 @@ namespace qjson
 
 		Pair( const Pair & pair );
 
-		Pair( const std::string & name, Value::const_shared_ptr value );
+		Pair( const std::string & name, Value::const_ptr value );
 		Pair( const std::string & name, const Value & value );
 		Pair( const std::string & name, std::string value );
 		Pair( const std::string & name, const char * value );
@@ -25,7 +25,7 @@ namespace qjson
 		virtual ~Pair() {}
 
 		const std::string & GetName() const;
-		Value::const_shared_ptr GetValue() const;
+		Value::const_ptr GetValue() const;
 
 		std::string ToString() const;
 		std::string ToJSONString() const;

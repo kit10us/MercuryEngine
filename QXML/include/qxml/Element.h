@@ -31,7 +31,7 @@ namespace qxml
 		};
 
 		Element();
-		Element( const std::string & name, NodeType::TYPE type, Document * document );
+		Element( const std::string & name, NodeType::TYPE type, Document * document, size_t line );
 		~Element();
 
 		const std::string & GetTagName() const;
@@ -76,6 +76,7 @@ namespace qxml
 		const Element * GetElement( const std::string & tagName ) const;
 		NodeType::TYPE GetType() const;
         Document * GetDocument() const;
+		size_t GetLine() const;
 
 		template< typename T >
 		class iterate_children
@@ -217,6 +218,7 @@ namespace qxml
 		Element * m_lastChild;
 
         Document * m_document;
+		size_t m_line;
 		
 		unsigned int m_numChildren;
 	};

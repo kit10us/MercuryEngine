@@ -23,7 +23,7 @@ namespace qjson
 	{
 	public:
 		typedef std::shared_ptr< Value > shared_ptr;
-		typedef std::shared_ptr< const Value > const_shared_ptr;
+		typedef std::shared_ptr< const Value > const_ptr;
 
 		static bool BeginsWith( const std::string & a, const std::string & b );
 		

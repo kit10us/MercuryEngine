@@ -57,9 +57,15 @@ void Document::Load( const unify::Path & filePath )
 	std::string data;
 	char cQuotes = ' ';
 	bool bInCData = false;
+	size_t line = 0;
 	while( ! stream.EndOfStream() )
 	{
 		stream.Read( &cChar, 1 );
+		if ( cChar == '\n' )
+		{
+			line++;
+		}
+
 		if ( bInCData ) {
 			data += cChar;
 			// End CDATA
@@ -71,49 +77,61 @@ void Document::Load( const unify::Path & filePath )
 				continue;
 			}
 		} 
-		else if( bInElement ) {
-			if ( cQuotes != ' ' ) {
-				if ( cQuotes == cChar ) {
+		else if( bInElement )
+		{
+			if ( cQuotes != ' ' ) // If we are in quotes (' ' means no quotes).
+			{
+				if ( cQuotes == cChar ) 
+				{
 					cQuotes = ' ';
 				}
 				data += cChar;
 				continue;
-			} else if( cChar == '"' || cChar == '\'' ) {
+			} 
+			else if( cChar == '"' || cChar == '\'' ) 
+			{
 				data += cChar;
 				cQuotes = cChar;
 				continue;
-			} else if( unify::LeftString( data, 8 ) == "![CDATA[" ) {
+			} 
+			else if( unify::LeftString( data, 8 ) == "![CDATA[" ) 
+			{
 				bInElement = false;
 				bInCData = true;
 				data = "";
-			} else if( cChar == '>' ) {
+			} 
+			else if( cChar == '>' ) 
+			{
 				bInElement = false;
-				if( unify::LeftString( data, 3 ) == "!--" ) {
+				if( unify::LeftString( data, 3 ) == "!--" ) 
+				{
 					bInComment = true;
 					if( unify::RightString( data, 2 ) == "--" ) {  
 						data = unify::RightString( data, (unsigned int)data.length() - 1 );
 						//printf( "COMMENT = \"%s\"\n", data.c_str() );
-						pElement = AddElement( new Element( "COMMENT", Element::NodeType::Comment, this ), "COMMENT" );
+						pElement = AddElement( new Element( "COMMENT", Element::NodeType::Comment, this, line ), "COMMENT" );
 						pElement->m_data = data;
 						pParent->TakeChild( pElement );
 						data = "";
 						bInComment = false;
 						continue;
-					} else {
+					} 
+					else 
+					{
 						bInElement = true;
 						data += cChar;
 						continue;
-					}
-
+					}	
 				} 
 				else 
 				{
 					// Determine if this is a close element...
-					if( unify::LeftString( data, 1 ) == "/" ) {
+					if( unify::LeftString( data, 1 ) == "/" ) 
+					{
 						data = unify::RightString( data, (unsigned int)data.length() - 1 );
 						if( data != pParent->GetTagName() )
 						{
-							throw unify::Exception( "Mismatched end element in file \"" + filePath.ToString() + "\"! (end = " + data + ", open = " + pParent->GetTagName() + ")!" );
+							throw unify::Exception( "Line " + unify::Cast< std::string >( line ) + ": Mismatched end element in file \"" + filePath.ToString() + "\"! (end = " + data + ", open = " + pParent->GetTagName() + ")!" );
 						}
 						pParent = pParent->GetParent();
 						data = "";
@@ -138,13 +156,13 @@ void Document::Load( const unify::Path & filePath )
 					}
 
 					Element::NodeType::TYPE type = bCommand ? Element::NodeType::Command : Element::NodeType::Element  ;
-					std::string tagName = unify::ListPart( data, {' '}, 0 );
-					pElement = AddElement( new Element( tagName, type, this ), tagName );
+					std::string tagName = unify::ListPart( data, {' ', '\t'}, 0 );
+					pElement = AddElement( new Element( tagName, type, this, line ), tagName );
 
 					// Process out attributes...
-					for( unsigned int i = 1; i < unify::ListPartCount( data, {' '} ); i++ )
+					for( unsigned int i = 1; i < unify::ListPartCount( data, {' ', '\t'} ); i++ )
 					{
-						std::string attribute = unify::ListPart( data, {' '}, i );
+						std::string attribute = unify::ListPart( data, {' ', '\t'}, i );
 						if( attribute == "" ) continue;
 						pElement->AppendAttribute( Attribute::shared_ptr( new Attribute( attribute ) ) );
 					}

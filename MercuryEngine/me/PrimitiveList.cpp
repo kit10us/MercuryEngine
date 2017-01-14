@@ -23,26 +23,6 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const
-{
-	for( const auto & set : m_buffers )
-	{
-		if( ! set->GetEnabled() ) return;
-
-		if( set->GetVertexBuffer() )
-		{
-			set->GetVertexBuffer()->Use();
-		}
-
-		if ( set->GetIndexBuffer() )
-		{
-			set->GetIndexBuffer()->Use();
-		}
-
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instances, instances_size );
-	}
-}
-
 void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
 {
 	for( const auto & set : m_buffers )
@@ -80,7 +60,6 @@ void PrimitiveList::Render( IRenderer * renderer, const RenderInfo & renderInfo,
 		}
 
 		set->GetRenderMethodBuffer().Render( renderer, renderInfo, sources, sources_size, contiguous );
-		//set->GetRenderMethodBuffer().Render( renderer, renderInfo, set->GetVertexBuffer(), set->GetIndexBuffer(), sources, sources_size, contiguous );
 	}
 }
 

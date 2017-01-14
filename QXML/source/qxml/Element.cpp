@@ -18,10 +18,11 @@ Element::Element()
 , m_lastChild( 0 )
 , m_numChildren( 0 )
 , m_document( 0 )
+, m_line( 0 )
 {
 }
 
-Element::Element( const std::string & name, NodeType::TYPE type, Document * document )
+Element::Element( const std::string & name, NodeType::TYPE type, Document * document, size_t line )
 : m_tagName( name )
 , m_index( 0 )
 , m_type( type )
@@ -32,6 +33,7 @@ Element::Element( const std::string & name, NodeType::TYPE type, Document * docu
 , m_lastChild( 0 )
 , m_numChildren( 0 )
 , m_document( document )
+, m_line( 0 )
 {
 }
 
@@ -374,6 +376,11 @@ Element::NodeType::TYPE Element::GetType() const
 Document * Element::GetDocument() const
 {
     return m_document;
+}
+
+size_t Element::GetLine() const
+{
+	return m_line;
 }
 
 

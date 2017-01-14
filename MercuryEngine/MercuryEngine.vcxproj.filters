@@ -339,9 +339,6 @@
     <ClInclude Include="me\scene\SceneDataCore.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\MatrixStack.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\GrowableObjectStack.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -577,9 +574,6 @@
     </ClCompile>
     <ClCompile Include="me\scene\SceneDataCore.cpp">
       <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\MatrixStack.cpp">
-      <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\scene\GrowableObjectStack.cpp">
       <Filter>me\scene</Filter>

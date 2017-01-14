@@ -32,8 +32,6 @@ namespace me
 
 		void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size ) override;
-
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
 
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) override;

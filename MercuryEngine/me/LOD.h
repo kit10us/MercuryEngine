@@ -14,7 +14,6 @@ namespace me
 		~LOD();
 
 		void Update( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData ) override;
-		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, const unify::FrameLite ** instances, const size_t instances_size ) override;
 		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, me::GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
 
 		void Add( me::Geometry::ptr geometry, float distance );
