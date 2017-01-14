@@ -363,6 +363,9 @@
     <ClInclude Include="me\IBuffer.h">
       <Filter>me\interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="me\MatrixFeed.h">
+      <Filter>me</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\InputManager.cpp">
@@ -594,6 +597,9 @@
       <Filter>me\shader</Filter>
     </ClCompile>
     <ClCompile Include="me\BufferUsage.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\MatrixFeed.cpp">
       <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>

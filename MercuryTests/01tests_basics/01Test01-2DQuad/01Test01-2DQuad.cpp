@@ -73,7 +73,7 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	renderer->Render( method, renderInfo, &instance, 1 );
+	renderer->Render( method, renderInfo, MatrixFeed( &instance, 1 ) );
 }
 
 void MyGame::Shutdown()

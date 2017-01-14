@@ -4,10 +4,6 @@
 #include <unify/Quaternion.h>
 #include <unify/Matrix.h>
 
-
-#include <DirectXMath.h>
-#define XMV( _a ) *(DirectX::XMVECTOR*)&_a
-
 using namespace unify;
 
 Quaternion::Quaternion()

@@ -62,7 +62,7 @@ void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	m_primitiveList.Render( renderer, renderInfo, instances, instances_size );
 }
 
-void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const InstancesSet * instancesList, const size_t instancesList_size )
+void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
 {
 	// TODO:
 	/*
@@ -83,7 +83,7 @@ void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	}
 	*/
 	
-	m_primitiveList.Render( renderer, renderInfo, instancesList, instancesList_size );
+	m_primitiveList.Render( renderer, renderInfo, matrixFeed );
 }
 
 void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const IMatrixSource * sources, const size_t sources_size, bool contiguous )

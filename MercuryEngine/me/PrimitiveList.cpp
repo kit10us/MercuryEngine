@@ -43,7 +43,7 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 	}
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) const
+void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
 {
 	for( const auto & set : m_buffers )
 	{
@@ -59,7 +59,7 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 			set->GetIndexBuffer()->Use();
 		}
 
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, instancesList, instancesList_size );
+		set->GetRenderMethodBuffer().Render( renderer, renderInfo, matrixFeed );
 	}
 }
 
@@ -80,6 +80,7 @@ void PrimitiveList::Render( IRenderer * renderer, const RenderInfo & renderInfo,
 		}
 
 		set->GetRenderMethodBuffer().Render( renderer, renderInfo, sources, sources_size, contiguous );
+		//set->GetRenderMethodBuffer().Render( renderer, renderInfo, set->GetVertexBuffer(), set->GetIndexBuffer(), sources, sources_size, contiguous );
 	}
 }
 

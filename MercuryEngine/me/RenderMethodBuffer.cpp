@@ -62,7 +62,7 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->Render( method, renderInfo, instances, instances_size );
+		renderer->Render( method, renderInfo, MatrixFeed( instances, instances_size ) );
 	}
 }
 
@@ -72,17 +72,18 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->RenderInstanced( method, renderInfo, instances, instances_size );
+		renderer->Render( method, renderInfo, MatrixFeed( instances, instances_size ) );
 	}
 }
 
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) const
+void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
 {
 	// Iterate through methods to render.
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->RenderInstanced( method, renderInfo, instancesList, instancesList_size );
+		renderer->Render( method, renderInfo, matrixFeed );
+		matrixFeed.Restart();
 	}
 }
 
@@ -92,6 +93,6 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 	for( unsigned int i = 0; i != m_methodList.size(); ++i )
 	{
 		const RenderMethod & method = m_methodList[ i ];
-		renderer->RenderInstanced( method, renderInfo, sources, sources_size, contiguous );
+		renderer->Render( method, renderInfo, sources, sources_size, contiguous );
 	}
 }

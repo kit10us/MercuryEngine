@@ -34,16 +34,49 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 
 	m_bbox = parameters.bbox;
 
-	size_t bufferIndex = 0;
-	for ( auto && countAndSource : parameters.countAndSource )
+	auto vd = parameters.vertexDeclaration;
+
+	bool gaps = false; // We do not support gaps in buffers.
+	for( size_t slot = 0; slot < vd->NumberOfSlots(); slot++ )
 	{
-		m_usage.push_back( parameters.usage );
-		m_vertexDeclaration = parameters.vertexDeclaration;
-		m_strides.push_back( m_vertexDeclaration->GetSizeInBytes( bufferIndex ) );
-		m_lengths.push_back( countAndSource.count );
+		size_t count = 0;
+		const void * source = 0;
+		if ( slot < parameters.countAndSource.size() )
+		{
+			count = parameters.countAndSource[slot].count;
+			source = parameters.countAndSource[slot].source;
+		}
+
+		if ( count == 0 )
+		{
+			if ( vd->GetInstances( slot ) > 0 )
+			{
+				count = vd->GetInstances( slot );
+			}
+			else
+			{
+				gaps = true;
+				continue;
+			}
+		}
+		else if ( gaps == true )
+		{
+			throw exception::FailedToCreate( "Vertex buffer has empty gaps, likely due to requested create sizes and instancing!" );
+		}
+
+		BufferUsage::TYPE usage = parameters.usage;
+		if ( vd->GetInstancing( slot ) != Instancing::None )
+		{
+			usage = BufferUsage::Dynamic;
+		}
+
+		m_usage.push_back( usage );
+		m_vertexDeclaration = vd;
+		m_strides.push_back( m_vertexDeclaration->GetSizeInBytes( slot ) );
+		m_lengths.push_back( count );
 
 		// Ensure we have some sort of idea what we need to be...
-		if ( GetSizeInBytes(bufferIndex) == 0 )
+		if ( GetSizeInBytes( slot ) == 0 )
 		{
 			throw exception::FailedToCreate( "Not a valid vertex buffer size!" );
 		}
@@ -51,13 +84,14 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 		auto dxDevice = m_renderer->GetDxDevice();
 
 		// Ensure that if we are BufferUsage::Immutable, then source is not null.
-		if ( BufferUsage::Immutable && parameters.countAndSource[0].source == nullptr )
+		if ( usage == BufferUsage::Immutable && source == nullptr )
 		{
-			throw exception::FailedToCreate( "Buffer is immutable, yet source is null!" );
+			throw exception::FailedToCreate( "Vertex buffer is immutable, yet source is null!" );
 		}
 
 		D3D11_USAGE usageDX{};
-		switch ( m_usage[bufferIndex] )
+		unsigned int CPUAccessFlags = 0; // TODO: This needs to be managed better (from parameters or XML?)
+		switch ( m_usage[slot] )
 		{
 		case BufferUsage::Default:
 			usageDX = D3D11_USAGE_DEFAULT;
@@ -67,6 +101,7 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 			break;
 		case BufferUsage::Dynamic:
 			usageDX = D3D11_USAGE_DYNAMIC;
+			CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			break;
 		case BufferUsage::Staging:
 			usageDX = D3D11_USAGE_STAGING;
@@ -75,19 +110,16 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 
 		D3D11_BUFFER_DESC vertexBufferDesc{};
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vertexBufferDesc.ByteWidth = parameters.vertexDeclaration->GetSizeInBytes( 0 ) * parameters.countAndSource[0].count;
+		vertexBufferDesc.ByteWidth = parameters.vertexDeclaration->GetSizeInBytes( slot ) * count;
 		vertexBufferDesc.Usage = usageDX;
+		vertexBufferDesc.CPUAccessFlags = CPUAccessFlags;
 
 		HRESULT result;
 		ID3D11Buffer * buffer;
-		if ( parameters.countAndSource[0].source != nullptr )
+		if ( source != nullptr )
 		{
 			D3D11_SUBRESOURCE_DATA initialData{};
-			initialData.pSysMem = parameters.countAndSource[0].source;
-			if ( parameters.usage == BufferUsage::Dynamic )
-			{
-				vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE; // TODO: make not hard coded.
-			}
+			initialData.pSysMem = source;
 			result = dxDevice->CreateBuffer( &vertexBufferDesc, &initialData, &buffer );
 		}
 		else
@@ -96,7 +128,6 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 		}
 		OnFailedThrow( result, "Failed to create vertex buffer!" );
 		m_buffers.push_back( buffer );
-		bufferIndex++;
 	}
 }
 

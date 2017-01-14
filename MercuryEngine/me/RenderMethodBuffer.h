@@ -39,7 +39,9 @@ namespace me
 
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) const;
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const;
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) const;
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const;
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) const;
+
+		void Render( IRenderer * renderer, const RenderInfo & renderInfo, IVertexBuffer * vb, IIndexBuffer * ib, const InstancesSet * instancesList, const size_t instancesList_size ) const;
 	};
 }

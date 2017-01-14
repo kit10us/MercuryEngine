@@ -137,7 +137,7 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 
 	unify::Matrix instance = unify::Matrix( q );
-	renderer->Render( method, renderInfo, &instance, 1 );
+	renderer->Render( method, renderInfo, MatrixFeed( &instance, 1 ) );
 }
 
 void MyGame::Shutdown()

@@ -11,8 +11,11 @@
 #include <me/ITexture.h>
 #include <me/RenderInstance.h>
 #include <me/RenderInfo.h>
+#include <me/RenderMethod.h>
 #include <unify/FrameLite.h>
 #include <memory>
+
+#include <me/MatrixFeed.h>
 
 namespace me
 {
@@ -27,22 +30,6 @@ namespace me
 			CounteClockwise
 		};
 	};
-
-	class IMatrixSource
-	{
-	public:
-		IMatrixSource() {}
-
-		virtual size_t Count() const = 0;
-		virtual unify::Matrix GetMatrix( size_t i ) const = 0;
-		virtual void CopyMatrices( unify::Matrix * matrices ) const = 0;
-	};
-
-	struct InstancesSet
-	{
-		const unify::FrameLite ** instances;
-		const size_t instances_size;
-	};		
 
 	/// <summary>
 	/// Supports access to the renderer.
@@ -77,13 +64,9 @@ namespace me
 
 		virtual void* GetHandle() const = 0;
 
-		virtual void Render( const class RenderMethod & method, const RenderInfo & renderInfo, const unify::Matrix * instance, const size_t instances_size ) = 0;
+		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) = 0;
 
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) = 0;
-		
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size ) = 0;
-
-		virtual void RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) = 0;
+		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

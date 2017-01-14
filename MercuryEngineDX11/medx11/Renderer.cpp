@@ -14,47 +14,10 @@
 #include <me/exception/NotImplemented.h>
 #include <cassert>
 
+#include <me/MatrixFeed.h>
+
 using namespace medx11;
 using namespace me;
-
-class MatrixFeed
-{
-	const InstancesSet * _instancesList;
-	const size_t _instancesList_size;
-	size_t _instancesList_index;
-	size_t _i;
-	bool _done;
-public:
-	MatrixFeed( const InstancesSet * instancesList, const size_t instancesList_size )
-		: _instancesList{ instancesList }
-		, _instancesList_size{ instancesList_size }
-		, _instancesList_index{ 0 }
-		, _i{ 0 }
-	{
-	}
-
-	size_t ReadMatrix( unify::Matrix * out, size_t max )
-	{
-		size_t read = 0;
-		while ( _instancesList_index < _instancesList_size && read < max )
-		{
-			auto && instances = _instancesList[_instancesList_index];
-			instances.instances[_i++]->ReadMatrix( &out[read++] );
-			if ( _i >= instances.instances_size )
-			{
-				_i = 0;
-				_instancesList_index++;
-			}
-		}
-		return read;
-	}
-				
-	bool Done() const
-	{
-		return _instancesList_index >= _instancesList_size;
-	}
-};
-
 
 Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 	: m_OS( os )
@@ -256,154 +219,8 @@ void* Renderer::GetHandle() const
 {
 	return (HWND)m_display.GetHandle();
 }
-
-void Renderer::Render( const RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size )
-{
-	for( size_t i = 0; i < instances_size; ++i )
-	{
-		if ( method.effect )
-		{
-			method.effect->UpdateData( renderInfo, &instances[ i ], 1 );
-			method.effect->Use();
-		}
-	
-		D3D11_PRIMITIVE_TOPOLOGY topology{};
-		switch( method.primitiveType )
-		{
-		case PrimitiveType::PointList: 
-			topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
-			break;
-		case PrimitiveType::LineList: 
-			topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
-			break;
-		case PrimitiveType::LineStrip: 
-			topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
-			break;
-		case PrimitiveType::TriangleList: 
-			topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
-			break;
-		case PrimitiveType::TriangleStrip: 
-			topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
-			break;
-		}
-		m_dxContext->IASetPrimitiveTopology( topology );
-
-		if( method.useIB == false )
-		{
-			m_dxContext->Draw( method.vertexCount,  method.startVertex );
-		}
-		else
-		{
-			m_dxContext->DrawIndexed( method.indexCount, method.startIndex, method.baseVertexIndex );
-		}
-	}
-}
-
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size )
-{
-	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
-	Instancing::TYPE instancing = Instancing::None;
-	if ( instancingSlot != -1 )
-	{
-		instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing( instancingSlot );
-	}
-
-	D3D11_PRIMITIVE_TOPOLOGY topology{};
-	switch( method.primitiveType )
-	{
-	case PrimitiveType::PointList: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
-		break;
-	case PrimitiveType::LineList: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
-		break;
-	case PrimitiveType::LineStrip: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
-		break;
-	case PrimitiveType::TriangleList: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
-		break;
-	case PrimitiveType::TriangleStrip: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
-		break;
-	}
-	m_dxContext->IASetPrimitiveTopology( topology );
-
-	switch( instancing )
-	{
-	case Instancing::None:
-		{
-			for( size_t i = 0; i < instances_size; ++i )
-			{
-				if ( method.effect )
-				{
-					method.effect->UpdateData( renderInfo, &instances[i]->GetMatrix(), 1 );
-					method.effect->Use();
-				}								
-
-				if( method.useIB == false )
-				{
-					m_dxContext->Draw( method.vertexCount,  method.startVertex );
-				}
-				else
-				{
-					m_dxContext->DrawIndexed( method.indexCount, method.startIndex, method.baseVertexIndex );
-				}
-			}
-		}
-		break;
-	case Instancing::Matrix:	
-		{
-			HRESULT result = S_OK;
-
-			size_t stride = sizeof( unify::Matrix );
-			size_t offset = 0;
-
-			if ( method.effect )
-			{						   
-				unify::Matrix matrix{ unify::MatrixIdentity() };
-				method.effect->UpdateData( renderInfo, &matrix, 1 );
-				method.effect->Use();
-			}	 
-															  
-			size_t read = 0;
-			while( read < instances_size )
-			{
-				D3D11_MAPPED_SUBRESOURCE subResource {};
-				result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
-				assert( !FAILED( result ) );
-
-				size_t write = 0;
-				while( read < instances_size && write < m_totalInstances )
-				{
-					((unify::Matrix*)subResource.pData)[ write ] = instances[ read ]->GetMatrix();
-					read+=1;
-					write+=1;
-				}
-
-				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
-
-				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );  
-								   
-				if( method.useIB == false )
-				{
-					m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
-				}
-				else
-				{
-					m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
-				}
-			}
-		}
-
-		break;
-	case Instancing::QP:
-		assert( 0 ); // TODO:
-		break;
-	}
-}
-
-void Renderer::RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size )
+ 
+void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed )
 {
 	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
 	Instancing::TYPE instancing = Instancing::None;
@@ -437,7 +254,6 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 	auto && constants = vertexShader->GetConstants();
 	auto worldRef = constants->GetWorld();
 
-	MatrixFeed matrixFeed( instancesList, instancesList_size );
 	size_t write = 0;	  
 
 	switch( instancing )
@@ -499,12 +315,14 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 		break;
 	case Instancing::Matrix:	
 		{
+
 			HRESULT result = S_OK;
 			size_t stride = sizeof( unify::Matrix );
 			size_t offset = 0;
 
 			method.effect->UpdateData( renderInfo, nullptr, 0 );
 
+			unify::DataLock lock;
 			D3D11_MAPPED_SUBRESOURCE subResource{};
 
 			while ( ! matrixFeed.Done() )
@@ -538,7 +356,7 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 	}
 }
 
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous )
+void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous )
 {
 	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
 	Instancing::TYPE instancing = Instancing::None;

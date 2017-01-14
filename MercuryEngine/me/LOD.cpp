@@ -53,7 +53,7 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, instances, instances_size );
 }
 
-void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const InstancesSet * instancesList, const size_t instancesList_size )
+void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
 {
 	if( m_list.empty() )
 	{
@@ -62,7 +62,7 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	
 	if( m_list.size() == 1 )
 	{
-		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, instancesList, instancesList_size );
+		m_list.begin()->GetGeometry()->Render( renderer, renderInfo, instanceData, matrixFeed );
 		return;
 	}
 
@@ -72,7 +72,7 @@ void LOD::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryI
 	{
 	}
 
-	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, instancesList, instancesList_size );
+	itr->GetGeometry()->Render( renderer, renderInfo, instanceData, matrixFeed );
 }
 
 const unify::BBox< float > & LOD::ComputeBounds()

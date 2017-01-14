@@ -6,6 +6,15 @@
 #include <unify/Path.h>
 #include <windows.h>
 
+#ifdef max
+#undef max
+#endif
+
+#ifdef min
+#undef min
+#endif
+
+
 namespace me
 {
 	class IGame;

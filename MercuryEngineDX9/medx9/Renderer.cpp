@@ -255,10 +255,13 @@ void* Renderer::GetHandle() const
 	return m_pimpl->GetDisplay().GetHandle();
 }
 
-void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size )
+void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed )
 {
-	for ( size_t i = 0; i < instances_size; ++i )
-	{	
+	while( ! matrixFeed.Done() )
+	{
+		unify::Matrix matrix;
+		matrixFeed.ReadMatrix( &matrix, 1 );
+
 		D3DPRIMITIVETYPE dxPrimitiveType {};
 		switch( method.primitiveType )
 		{
@@ -275,7 +278,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 
 		if ( method.effect )
 		{
-			method.effect->UpdateData( renderInfo, &instances[ i ], 1 );
+			method.effect->UpdateData( renderInfo, &matrix, 1 );
 			method.effect->Use();
 		}
 
@@ -294,30 +297,8 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 		}
 	}
 }
-
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size )
-{
-	for ( size_t i = 0; i < instances_size; ++i )
-	{		
-		const unify::Matrix * matrix = &(instances[i]->GetMatrix());
-		Render( method, renderInfo, matrix, 1 );
-	}
-}	
-
-void Renderer::RenderInstanced( const RenderMethod & method, const RenderInfo & renderInfo, const InstancesSet * instancesList, const size_t instancesList_size )
-{
-	for( size_t instancesList_index = 0; instancesList_index < instancesList_size; ++instancesList_index )
-	{
-		auto && instancesSet = instancesList[ instancesList_index ];
-		for ( size_t i = 0; i < instancesSet.instances_size; ++i )
-		{		
-			const unify::Matrix * matrix = &(instancesSet.instances[i]->GetMatrix());
-			Render( method, renderInfo, matrix, 1 );
-		}
-	}
-}
  
-void Renderer::RenderInstanced( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::IMatrixSource * sources, const size_t sources_size, bool contiguous )
+void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::IMatrixSource * sources, const size_t sources_size, bool contiguous )
 {
 	assert( contiguous == false || sources[ 0 ].Count() == 1 ); // contiguous matrices not supported.
 
@@ -327,7 +308,40 @@ void Renderer::RenderInstanced( const me::RenderMethod & method, const me::Rende
 		for ( size_t i = 0; i < source.Count(); ++i )
 		{		
 			unify::Matrix matrix = source.GetMatrix( i );
-			Render( method, renderInfo, &matrix, 1 );
+
+			D3DPRIMITIVETYPE dxPrimitiveType {};
+			switch( method.primitiveType )
+			{
+			case PrimitiveType::PointList: dxPrimitiveType = D3DPT_POINTLIST; break;
+			case PrimitiveType::LineList: dxPrimitiveType = D3DPT_LINELIST; break;
+			case PrimitiveType::LineStrip: dxPrimitiveType = D3DPT_LINESTRIP; break;
+			case PrimitiveType::TriangleList: dxPrimitiveType = D3DPT_TRIANGLELIST;	break;
+			case PrimitiveType::TriangleStrip: dxPrimitiveType = D3DPT_TRIANGLESTRIP;  break;
+			}
+							   
+			auto dxDevice = GetDxDevice();
+		
+			HRESULT hr = S_OK;
+
+			if ( method.effect )
+			{
+				method.effect->UpdateData( renderInfo, &matrix, 1 );
+				method.effect->Use();
+			}
+
+			// Draw Primitive...
+			if( method.useIB == false )
+			{
+				hr = dxDevice->DrawPrimitive( dxPrimitiveType, method.startVertex, method.primitiveCount );
+			}
+			else
+			{
+				hr = dxDevice->DrawIndexedPrimitive( dxPrimitiveType, method.baseVertexIndex, method.minIndex, method.vertexCount, method.startIndex, method.primitiveCount );
+			}
+			if ( FAILED(hr) )
+			{
+				throw exception::Render( "Failed to render vertex buffer!" );
+			}		 
 		}
 	}
 }

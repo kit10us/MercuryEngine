@@ -7,14 +7,6 @@
 #include <unify/unify.h>
 #include <string>
 
-#ifdef max
-#undef max
-#endif
-
-#ifdef min
-#undef min
-#endif
-
 namespace me
 {
 	// Primitive Type (PrimitiveType)...

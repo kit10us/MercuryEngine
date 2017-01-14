@@ -38,7 +38,7 @@ void GeometryCacheSummation::Render( IRenderer * renderer, const RenderInfo & re
 {
 	for( auto && pair : m_summation )
 	{
-		pair.first->Render( renderer, renderInfo, 0, &pair.second[0], pair.second.size() );
+		pair.first->Render( renderer, renderInfo, 0, MatrixFeed( &pair.second[0], pair.second.size() ) );
 	}
 }
 
