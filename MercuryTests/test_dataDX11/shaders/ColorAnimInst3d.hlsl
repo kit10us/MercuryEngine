@@ -3,7 +3,8 @@ struct VS_IN
 	float3 position		: POSITION;
 	float4 color		: COLOR;
 	float4 matInf		: MatInf;
-	matrix <float, 4, 4> world[3]		: Matrix;
+	matrix <float, 4, 4> world[2]		: Matrix;
+	uint instanceID     : SV_InstanceID;
 };
 
 struct VS_OUT
@@ -14,7 +15,6 @@ struct VS_OUT
 
 cbuffer Constants : register(b0)
 {
-	float4x4 worldMatrix;	
 	float4x4 viewMatrix;
 	float4x4 projectionMatrix;
 };
@@ -32,6 +32,7 @@ VS_OUT vs_main( in VS_IN vs_in )
 	if( mat1_index > -1 )
  	{
 		float1 influence = (vs_in.matInf.y - mat1_index ) * 10.0f;
+		//mat1_index += vs_in.instanceID * 2;
 		vs_out.position += mul( vs_out.position, transpose( vs_in.world[mat1_index] ) * influence );
 	}
 

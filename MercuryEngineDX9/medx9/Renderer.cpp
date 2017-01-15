@@ -260,7 +260,7 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 	while( ! matrixFeed.Done() )
 	{
 		unify::Matrix matrix;
-		matrixFeed.ReadMatrix( &matrix, 1 );
+		matrixFeed.Consume( &matrix, 1 );
 
 		D3DPRIMITIVETYPE dxPrimitiveType {};
 		switch( method.primitiveType )
@@ -294,54 +294,6 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 		if ( FAILED(hr) )
 		{
 			throw exception::Render( "Failed to render vertex buffer!" );
-		}
-	}
-}
- 
-void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::IMatrixSource * sources, const size_t sources_size, bool contiguous )
-{
-	assert( contiguous == false || sources[ 0 ].Count() == 1 ); // contiguous matrices not supported.
-
-	for( size_t sources_index = 0; sources_index < sources_size; ++sources_index )
-	{
-		auto && source = sources[ sources_index ];
-		for ( size_t i = 0; i < source.Count(); ++i )
-		{		
-			unify::Matrix matrix = source.GetMatrix( i );
-
-			D3DPRIMITIVETYPE dxPrimitiveType {};
-			switch( method.primitiveType )
-			{
-			case PrimitiveType::PointList: dxPrimitiveType = D3DPT_POINTLIST; break;
-			case PrimitiveType::LineList: dxPrimitiveType = D3DPT_LINELIST; break;
-			case PrimitiveType::LineStrip: dxPrimitiveType = D3DPT_LINESTRIP; break;
-			case PrimitiveType::TriangleList: dxPrimitiveType = D3DPT_TRIANGLELIST;	break;
-			case PrimitiveType::TriangleStrip: dxPrimitiveType = D3DPT_TRIANGLESTRIP;  break;
-			}
-							   
-			auto dxDevice = GetDxDevice();
-		
-			HRESULT hr = S_OK;
-
-			if ( method.effect )
-			{
-				method.effect->UpdateData( renderInfo, &matrix, 1 );
-				method.effect->Use();
-			}
-
-			// Draw Primitive...
-			if( method.useIB == false )
-			{
-				hr = dxDevice->DrawPrimitive( dxPrimitiveType, method.startVertex, method.primitiveCount );
-			}
-			else
-			{
-				hr = dxDevice->DrawIndexedPrimitive( dxPrimitiveType, method.baseVertexIndex, method.minIndex, method.vertexCount, method.startIndex, method.primitiveCount );
-			}
-			if ( FAILED(hr) )
-			{
-				throw exception::Render( "Failed to render vertex buffer!" );
-			}		 
 		}
 	}
 }

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <qxml/Element.h>
+#include <me/ElementFormat.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -12,21 +13,6 @@ namespace me
 {
 	namespace shader
 	{			  
-		struct ConstantsType
-		{
-			enum TYPE {
-				Matrix,
-				Float1,
-				Float2,
-				Float3,
-				Float4
-			};
-
-			static std::string ToString( TYPE value );
-			static TYPE FromString( std::string value );
-			static size_t SizeOf( TYPE value );
-		};
-
 		struct ConstantVariable
 		{
 			ConstantVariable()
@@ -34,7 +20,7 @@ namespace me
 			{
 			}
 
-			ConstantVariable( std::string name, ConstantsType::TYPE type, size_t count )
+			ConstantVariable( std::string name, ElementFormat::TYPE type, size_t count )
 				: name( name )
 				, type( type )
 				, count( count )
@@ -42,7 +28,7 @@ namespace me
 			}
 
 			std::string name;
-			ConstantsType::TYPE type;
+			ElementFormat::TYPE type;
 
 			std::vector< float > default;
 			bool hasDefault;

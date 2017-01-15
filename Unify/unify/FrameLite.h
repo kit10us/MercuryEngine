@@ -13,6 +13,7 @@ namespace unify
 	public:
 		FrameLite();
 		FrameLite( unify::Quaternion q, unify::V3< float > p );
+		FrameLite( unify::Matrix matrix );
 		virtual ~FrameLite();
 
 		void LookAt( const FrameLite & at, const V3< float > & up = V3< float >( 0, 1, 0 ) );

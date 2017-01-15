@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/Geometry.h>
-#include <me/RenderInstance.h>
 #include <unify/FrameLite.h>
 						
 namespace me

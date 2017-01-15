@@ -24,6 +24,7 @@
     <ClInclude Include="me\DataCore.h" />
     <ClInclude Include="me\Display.h" />
     <ClInclude Include="me\Effect.h" />
+    <ClInclude Include="me\ElementFormat.h" />
     <ClInclude Include="me\exception\DeviceFailure.h" />
     <ClInclude Include="me\exception\Exception.h" />
     <ClInclude Include="me\exception\FailedToCreate.h" />
@@ -74,7 +75,6 @@
     <ClInclude Include="me\MeshInstanceData.h" />
     <ClInclude Include="me\PrimitiveList.h" />
     <ClInclude Include="me\RenderInfo.h" />
-    <ClInclude Include="me\RenderInstance.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderMethodBuffer.h" />
     <ClInclude Include="me\scene2d\Anchor.h" />
@@ -137,6 +137,7 @@
     <ClCompile Include="me\DataCore.cpp" />
     <ClCompile Include="me\Display.cpp" />
     <ClCompile Include="me\Effect.cpp" />
+    <ClCompile Include="me\ElementFormat.cpp" />
     <ClCompile Include="me\Extension.cpp" />
     <ClCompile Include="me\factory\EffectFactories.cpp" />
     <ClCompile Include="me\factory\GeometryFactory.cpp" />
@@ -161,7 +162,6 @@
     <ClCompile Include="me\MeshInstanceData.cpp" />
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
-    <ClCompile Include="me\RenderInstance.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
     <ClCompile Include="me\RenderMethodBuffer.cpp" />
     <ClCompile Include="me\scene2d\CanvasComponent.cpp" />

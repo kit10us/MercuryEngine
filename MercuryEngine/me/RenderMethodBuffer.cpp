@@ -56,26 +56,6 @@ size_t RenderMethodBuffer::GetSize() const
 	return m_methodList.size();
 }
 
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::Matrix * instances, const size_t instances_size ) const
-{
-	// Iterate through methods to render.
-	for( unsigned int i = 0; i != m_methodList.size(); ++i )
-	{
-		const RenderMethod & method = m_methodList[ i ];
-		renderer->Render( method, renderInfo, MatrixFeed( instances, instances_size ) );
-	}
-}
-
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const unify::FrameLite ** instances, const size_t instances_size ) const
-{
-	// Iterate through methods to render.
-	for( unsigned int i = 0; i != m_methodList.size(); ++i )
-	{
-		const RenderMethod & method = m_methodList[ i ];
-		renderer->Render( method, renderInfo, MatrixFeed( instances, instances_size ) );
-	}
-}
-
 void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
 {
 	// Iterate through methods to render.
@@ -84,15 +64,5 @@ void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & render
 		const RenderMethod & method = m_methodList[ i ];
 		renderer->Render( method, renderInfo, matrixFeed );
 		matrixFeed.Restart();
-	}
-}
-
-void RenderMethodBuffer::Render( IRenderer * renderer, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) const
-{
-	// Iterate through methods to render.
-	for( unsigned int i = 0; i != m_methodList.size(); ++i )
-	{
-		const RenderMethod & method = m_methodList[ i ];
-		renderer->Render( method, renderInfo, sources, sources_size, contiguous );
 	}
 }

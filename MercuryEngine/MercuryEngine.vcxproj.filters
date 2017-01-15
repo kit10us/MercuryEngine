@@ -267,9 +267,6 @@
     <ClInclude Include="me\scene2d\FPS.h">
       <Filter>me\scene2d</Filter>
     </ClInclude>
-    <ClInclude Include="me\RenderInstance.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\IObjectComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -361,6 +358,9 @@
       <Filter>me\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="me\MatrixFeed.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ElementFormat.h">
       <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
@@ -548,9 +548,6 @@
     <ClCompile Include="me\scene2d\FPS.cpp">
       <Filter>me\scene2d</Filter>
     </ClCompile>
-    <ClCompile Include="me\RenderInstance.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\ComponentInstance.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
@@ -594,6 +591,9 @@
       <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\MatrixFeed.cpp">
+      <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\ElementFormat.cpp">
       <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>

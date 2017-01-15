@@ -70,7 +70,7 @@ void Animation::AddTranslationKey( size_t boneIndex, const TranslationKey & key 
 	boneTimeline.translation.sort();
 }
 
-void Animation::ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const
+float Animation::ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const
 {
 	while ( elapsedTime < 0.0f ) elapsedTime += Duration();
 	while ( elapsedTime > Duration() ) elapsedTime -= Duration();
@@ -91,4 +91,5 @@ void Animation::ApplyToFrames( float elapsedTime, unify::FrameSetInstance & fram
 		unify::Matrix matrix( rotation, translation ); // TODO: Quaternions
 		frameSetInstance.Transform( boneIndex, matrix );
 	}
+	return elapsedTime;
 }

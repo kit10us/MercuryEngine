@@ -254,6 +254,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 	auto && constants = vertexShader->GetConstants();
 	auto worldRef = constants->GetWorld();
 
+	size_t matricesPerInstance = matrixFeed.MatricesPerInstance();	   
 	size_t write = 0;	  
 
 	switch( instancing )
@@ -292,7 +293,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 					{	
 						unsigned char * data = ((unsigned char *)lock.GetData()) + worldRef.offsetInBytes;
 						unify::Matrix* matrix = (unify::Matrix*)data;
-						write += matrixFeed.ReadMatrix( &matrix[write], world.count );
+						write += matrixFeed.Consume( &matrix[write], world.count );
 					}
 
 					vertexShader->UnlockConstants( bufferIndex, lock );
@@ -317,7 +318,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 		{
 
 			HRESULT result = S_OK;
-			size_t stride = sizeof( unify::Matrix );
+			size_t bufferStride = sizeof( unify::Matrix );
 			size_t offset = 0;
 
 			method.effect->UpdateData( renderInfo, nullptr, 0 );
@@ -330,21 +331,24 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 				result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
 				assert( !FAILED( result ) );
 
-				write += matrixFeed.ReadMatrix( &((unify::Matrix*)subResource.pData)[write], m_totalInstances );
+				write += matrixFeed.Consume( &((unify::Matrix*)subResource.pData)[write], m_totalInstances );
 
+				size_t instanceCount = write / matricesPerInstance;
+;
+				
 				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
 
 				method.effect->Use();
 
-				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );
+				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &bufferStride, &offset );
 
 				if ( method.useIB == false )
 				{
-					m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
+					m_dxContext->DrawInstanced( method.vertexCount, instanceCount, method.startVertex, 0 );
 				}
 				else
 				{
-					m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
+					m_dxContext->DrawIndexedInstanced( method.indexCount, instanceCount, method.startIndex, method.baseVertexIndex, 0 );
 				}
 				write = 0;
 			}
@@ -353,81 +357,6 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 		break;
 	case Instancing::QP:
 		break;
-	}
-}
-
-void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous )
-{
-	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
-	Instancing::TYPE instancing = Instancing::None;
-	if ( instancingSlot != -1 )
-	{
-		instancing = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstancing( instancingSlot );
-	}
-	assert( instancing == Instancing::Matrix );
-
-	D3D11_PRIMITIVE_TOPOLOGY topology{};
-	switch( method.primitiveType )
-	{
-	case PrimitiveType::PointList: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; 
-		break;
-	case PrimitiveType::LineList: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; 
-		break;
-	case PrimitiveType::LineStrip: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; 
-		break;
-	case PrimitiveType::TriangleList: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;	
-		break;
-	case PrimitiveType::TriangleStrip: 
-		topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;  
-		break;
-	}
-	m_dxContext->IASetPrimitiveTopology( topology );
-
-	HRESULT result = S_OK;
-
-	size_t stride = sizeof( unify::Matrix );
-	size_t offset = 0;
-
-	if ( method.effect )
-	{
-		unify::Matrix matrix{ unify::MatrixIdentity() };
-		method.effect->UpdateData( renderInfo, &matrix, 1 );
-		method.effect->Use();
-	}
-					  
-	D3D11_MAPPED_SUBRESOURCE subResource {};
-
-	size_t sources_index = 0;
-	while( sources_index < sources_size )
-	{
-		result = m_dxContext->Map( m_instanceBufferM[0], 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource );
-		assert( !FAILED( result ) );
-
-		// while ( if contiguous, ensure we can write the entire matrix set )
-		size_t write = 0;
-		while( sources_index < sources_size && ( write + ( contiguous ? sources[ sources_index ].Count() : 0 ) < m_totalInstances ) )
-		{
-			sources[ sources_index ].CopyMatrices( &((unify::Matrix*)subResource.pData)[ write ] );
-			write += sources[ sources_index ].Count();
-			sources_index++;
-		}
-
-		m_dxContext->Unmap( m_instanceBufferM[0], 0 );
-
-		m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &stride, &offset );  
-								   
-		if( method.useIB == false )
-		{
-			m_dxContext->DrawInstanced( method.vertexCount, write, method.startVertex, 0 );
-		}
-		else
-		{
-			m_dxContext->DrawIndexedInstanced( method.indexCount, write, method.startIndex, method.baseVertexIndex, 0 );
-		}
 	}
 }
 

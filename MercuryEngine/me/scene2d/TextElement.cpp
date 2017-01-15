@@ -224,7 +224,7 @@ void TextElement::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2, m_effect ) );
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	MatrixFeed matrixFeed{ &instance, 1 };
+	MatrixFeed matrixFeed( &instance, 1 );
 	//renderer->Render( method, renderInfo, &instance, 1 );
 	renderer->Render( method, renderInfo, matrixFeed );
 }

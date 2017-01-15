@@ -12,7 +12,6 @@
 #include <me/Geometry.h>
 #include <me/RenderMethod.h>
 #include <me/RenderInfo.h>
-#include <me/RenderInstance.h>
 #include <me/MeshInstanceData.h>
 #include <me/scene/ObjectComponent.h>
 #include <me/PrimitiveList.h>
@@ -33,8 +32,6 @@ namespace me
 		void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
 
 		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
-
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) override;
 
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();

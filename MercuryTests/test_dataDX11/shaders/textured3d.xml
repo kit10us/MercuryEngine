@@ -10,9 +10,9 @@
     <profile>vs_4_0</profile>
 	<constants>
 	  <buffer>
-	    <matrix name="world" count="1"/>
-	    <matrix name="view" count="1"/>
-	    <matrix name="projection" count="1"/>
+	    <element name="world" type="Matrix4x4"/>
+	    <element name="view" type="Matrix4x4"/>
+	    <element name="projection" type="Matrix4x4"/>
 	  </buffer>
 	</constants>
     <vertexformat>

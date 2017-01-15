@@ -9,7 +9,6 @@
 #include <me/IVertexShader.h>
 #include <me/IPixelShader.h>
 #include <me/ITexture.h>
-#include <me/RenderInstance.h>
 #include <me/RenderInfo.h>
 #include <me/RenderMethod.h>
 #include <unify/FrameLite.h>
@@ -65,8 +64,6 @@ namespace me
 		virtual void* GetHandle() const = 0;
 
 		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) = 0;
-
-		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;

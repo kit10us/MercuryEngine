@@ -11,6 +11,7 @@
 #include <me/Game.h>
 #include <me/RenderMethod.h>
 #include <MEWinMain.h>
+#include <unify/Color.h>
 
 using namespace me;
 
@@ -138,7 +139,7 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 
 	unify::Matrix instance = unify::Matrix( q );
-	renderer->Render( method, renderInfo, MatrixFeed( &instance, 1 ) );
+	renderer->Render( method, renderInfo, MatrixFeed( &instance, 1, 1 ) );
 }
 
 void MyGame::Shutdown()

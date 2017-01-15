@@ -38,7 +38,6 @@ namespace medx11
 		void* GetHandle() const override;
 
 		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::MatrixFeed & matrixFeed ) override;
-		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, const me::IMatrixSource * sources, const size_t sources_size, bool contiguous ) override;
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;

@@ -125,7 +125,7 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	if ( m_worldMatrixHandle != 0 )
 	{
-		buffer->AddVariable( { "world", shader::ConstantsType::Matrix, 1 } );
+		buffer->AddVariable( { "world", ElementFormat::Matrix4x4, 1 } );
 	}
 
 
@@ -137,7 +137,7 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	if ( m_viewMatrixHandle != 0 )
 	{
-		buffer->AddVariable( { "view", shader::ConstantsType::Matrix, 1 } );
+		buffer->AddVariable( { "view", ElementFormat::Matrix4x4, 1 } );
 	}
 
 
@@ -149,7 +149,7 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	if ( m_projectionMatrixHandle != 0 )
 	{
-		buffer->AddVariable( { "projection", shader::ConstantsType::Matrix, 1 } );
+		buffer->AddVariable( { "projection", ElementFormat::Matrix4x4, 1 } );
 	}
 
 	m_constants.reset( new shader::ShaderConstants );

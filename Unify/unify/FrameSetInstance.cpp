@@ -8,10 +8,15 @@
 
 using namespace unify;
 
-FrameSetInstance::FrameSetInstance( const FrameSet & frameSet )
+FrameSetInstance::FrameSetInstance()
+	: m_frameSet{ 0 }
+{
+}
+
+FrameSetInstance::FrameSetInstance( const FrameSet * frameSet )
 : m_frameSet( frameSet )
-, m_models( frameSet.m_models )
-, m_locals( frameSet.m_locals )
+, m_models( frameSet->m_models )
+, m_locals( frameSet->m_locals )
 , m_dirty( false )
 {
 }
@@ -30,32 +35,43 @@ FrameSetInstance::~FrameSetInstance()
 
 FrameSetInstance & FrameSetInstance::operator=( const FrameSetInstance & frameSetInstance )
 {
+	m_frameSet = frameSetInstance.m_frameSet;
 	m_models = frameSetInstance.m_models;
 	m_locals = frameSetInstance.m_locals;
 	m_dirty = frameSetInstance.m_dirty;
 	return *this;
 }
 
-size_t FrameSetInstance::Count() const
+const FrameSet * FrameSetInstance::GetFrameSet() const
 {
-	return m_frameSet.Count();
+	return m_frameSet;
 }
 
-void FrameSetInstance::Reset()
+size_t FrameSetInstance::Count() const
 {
-	m_models = m_frameSet.m_models;
-	m_locals = m_frameSet.m_locals;
+	return m_frameSet->Count();
+}
+
+void FrameSetInstance::Reset( const FrameSet * frameSet )
+{
+	if ( frameSet )
+	{
+		m_frameSet = frameSet;
+	}
+
+	m_models = m_frameSet->m_models;
+	m_locals = m_frameSet->m_locals;
 	m_dirty = false;
 }
 
 bool FrameSetInstance::Exists( const std::string & name ) const
 {
-	return m_frameSet.Exists( name );
+	return m_frameSet->Exists( name );
 }
 
 size_t FrameSetInstance::Find( const std::string & name ) const
 {
-	return m_frameSet.Find( name );
+	return m_frameSet->Find( name );
 }
 
 const Matrix & FrameSetInstance::Model( size_t index ) const
@@ -73,12 +89,12 @@ const Matrix & FrameSetInstance::Local( size_t index ) const
 
 const Matrix & FrameSetInstance::OriginalModel( size_t index ) const
 {
-	return m_frameSet.Model( index );
+	return m_frameSet->Model( index );
 }
 
 const Matrix & FrameSetInstance::OriginalLocal( size_t index ) const
 {
-	return m_frameSet.Local( index );
+	return m_frameSet->Local( index );
 }
 
 void FrameSetInstance::Transform( size_t index, const Matrix & transform )
@@ -94,7 +110,7 @@ void FrameSetInstance::UpdateLocals()
 	{
 		for( size_t i = 0, end = Count(); i != end; ++i )
 		{
-			const size_t & parentIndex = m_frameSet.m_parentIndex[ i ];
+			const size_t & parentIndex = m_frameSet->m_parentIndex[ i ];
 			if( i == parentIndex )
 			{
 				m_locals[ i ] = m_models[ i ];

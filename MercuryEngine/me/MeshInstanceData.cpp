@@ -9,7 +9,7 @@ using namespace me;
 MeshInstanceData::MeshInstanceData( const unify::FrameSet & frameSet, const frameanimation::AnimationSet & animationSet )
 : m_playing( false )
 , m_animationSet( &animationSet )
-, m_frameSetInstance( frameSet )
+, m_frameSetInstance( &frameSet )
 {
 }
 

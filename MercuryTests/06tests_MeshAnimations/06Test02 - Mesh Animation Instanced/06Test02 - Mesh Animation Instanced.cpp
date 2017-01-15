@@ -174,20 +174,6 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 
 void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 {
-	std::vector< const unify::FrameLite * > frames;
-	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
-	frames.push_back( &frame );		   
-
-	// Apply animation...
-	static float progress = 0.0f;
-	unify::FrameSet frameSet;
-	frameSet.Add( unify::MatrixIdentity(), 0 );
-	unify::FrameSetInstance frameSetInstance( frameSet );
-	m_animation->ApplyToFrames( progress, frameSetInstance );
-	progress += renderInfo.GetDelta();
-	frameSetInstance.UpdateLocals();
-
-
 	class Source : public IMatrixSource
 	{
 	private:
@@ -202,12 +188,12 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 
 		size_t Count() const
 		{
-			return 1;
+			return 2;
 		}
 
 		unify::Matrix GetMatrix( size_t i ) const
 		{
-			switch( i )
+			switch ( i )
 			{
 			case 0:
 				return m_frame.GetMatrix();
@@ -220,12 +206,38 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 
 		void CopyMatrices( unify::Matrix * matrices ) const
 		{
-			matrices[ 0 ] = m_frame.GetMatrix();
-			matrices[ 1 ] = m_matrix;
+			matrices[0] = m_frame.GetMatrix();
+			matrices[1] = m_matrix;
 		}
 	};
-	
-	Source source( frame, frameSetInstance.Local( 0 ) );
 
-	mesh->Render( renderer, renderInfo, nullptr, &source, 1, true );
+	// Apply animation...
+	static float progress = 0.0f;
+	unify::FrameSet frameSet;
+	frameSet.Add( unify::MatrixIdentity(), 0 );
+	
+	unify::FrameSetInstance frameSetInstance1( &frameSet );
+	unify::FrameSetInstance frameSetInstance2( &frameSet );
+	m_animation->ApplyToFrames( progress, frameSetInstance1 );
+	m_animation->ApplyToFrames( progress, frameSetInstance2 );
+	frameSetInstance1.UpdateLocals();
+	frameSetInstance2.UpdateLocals();
+	progress += renderInfo.GetDelta();
+
+
+	Source sorces_source[] = {
+		{ { q, unify::V3< float >( -10, 0, 0 ) }, frameSetInstance1.Local(0) }, 
+		{ { q, unify::V3< float >( 10, 0, 0 ) }, frameSetInstance2.Local(0) } 
+	};
+
+	/*
+	Source sorces_source[] = {
+		{ { unify::MatrixIdentity() }, frameSetInstance.Local( 0 ) },
+		{ { unify::MatrixIdentity() }, frameSetInstance.Local( 0 ) }
+	};
+	*/
+
+	std::vector< IMatrixSource * > sources{ &sorces_source[0], &sorces_source[1] };
+
+	mesh->Render( renderer, renderInfo, nullptr, MatrixFeed( &sources[0], sources.size(), sources[0]->Count() ) );
 }

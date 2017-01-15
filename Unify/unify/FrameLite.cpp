@@ -23,6 +23,15 @@ FrameLite::FrameLite( unify::Quaternion q, unify::V3< float > p )
 {
 }
 
+FrameLite::FrameLite( unify::Matrix matrix )
+	: m_q( matrix.GetRotation() )
+	, m_p( matrix.GetPosition() )
+	, m_mat{ m_q, m_p }
+	, m_useModelMatrix( false )
+	, m_modelMatrix( MatrixIdentity() )
+{
+}
+
 FrameLite::~FrameLite()
 {
 }

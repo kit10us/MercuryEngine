@@ -27,7 +27,7 @@ namespace unify
 		FrameSet();
 		~FrameSet();
 
-		size_t Add( const Matrix & model, size_t parent, const std::string & name = std::string() );
+		size_t Add( const Matrix & model, size_t parent, std::string name = std::string() );
 		bool Exists( const std::string & name ) const;
 		size_t Find( const std::string & name ) const;
 		size_t Count() const;

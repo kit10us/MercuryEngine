@@ -5,6 +5,7 @@
 
 #include <unify/Unify.h>
 #include <unify/FrameSet.h>
+#include <memory>
 
 namespace unify
 {
@@ -14,14 +15,23 @@ namespace unify
 	class FrameSetInstance
 	{
 	public:
-		FrameSetInstance( const FrameSet & frameSet );
+		typedef std::shared_ptr< FrameSetInstance > ptr;
+
+		FrameSetInstance();
+		FrameSetInstance( const FrameSet * frameSet );
 		FrameSetInstance( const FrameSetInstance & frameSetInstance );
 		~FrameSetInstance();
 
 		FrameSetInstance & operator=( const FrameSetInstance & frameSetInstance );
 
+		const FrameSet * GetFrameSet() const;
 		size_t Count() const;
-		void Reset();
+		
+		/// <summary>
+		/// Reset to FrameSet, or, nullptr, reset to existing FrameSet.
+		/// </summary>
+		void Reset( const FrameSet * frameSet = nullptr );
+
 		bool Exists( const std::string & name ) const;
 		size_t Find( const std::string & name ) const;
 		const Matrix & Model( size_t index ) const;
@@ -32,7 +42,7 @@ namespace unify
 		void UpdateLocals();
 
 	private:
-		const FrameSet & m_frameSet;
+		const FrameSet * m_frameSet;
 		std::vector< Matrix > m_models;
 		std::vector< Matrix > m_locals; // local = parent * model
 		bool m_dirty;

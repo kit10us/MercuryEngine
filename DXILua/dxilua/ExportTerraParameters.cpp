@@ -13,8 +13,8 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportTexCoords.h>
-#include <dxilua/ExportTexture.h>
-
+#include <dxilua/ExportTexture.h> 
+#include <unify/Color.h>
 
 using namespace dxilua;
 using namespace me;

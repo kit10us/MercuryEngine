@@ -6,14 +6,14 @@
     <profile>ps_4_0</profile>
 	<constants>
 	  <buffer>
-	    <float3 name="AmbientDown">
+	    <element name="AmbientDown" type="Float3">
 		  <default>0.1, 0.1, 0.1</default>
-		</float3>
-		<float1/>
-	    <float3 name="AmbientUp">
+		</element>
+		<element type="Float1"/>
+	    <element name="AmbientUp" type="Float3">
 		  <default>0.9, 0.9, 0.9</default>
-		</float3>
-		<float1/>
+		</element>
+		<element type="Float1"/>
 	  </buffer>
 	</constants>
   </pixelshader>
@@ -23,9 +23,9 @@
     <profile>vs_4_0</profile>
 	<constants>
 	  <buffer>
-	    <matrix name="world" count="1"/>
-	    <matrix name="view" count="1"/>
-	    <matrix name="projection" count="1"/>
+	    <element name="world" type="Matrix4x4"/>
+	    <element name="view" type="Matrix4x4"/>
+	    <element name="projection" type="Matrix4x4"/>
 	  </buffer>
 	</constants>
     <vertexformat>

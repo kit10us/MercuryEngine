@@ -28,7 +28,7 @@ std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 
 	out.SemanticName = element.SemanticName.c_str();
 	out.SemanticIndex = element.SemanticIndex;
-	out.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT; // element.AlignedByteOffset;				 +
+	out.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT; // element.AlignedByteOffset;
 
 	switch( element.SlotClass )
 	{

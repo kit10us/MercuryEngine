@@ -142,13 +142,13 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-		renderer->Render( method, renderInfo, MatrixFeed( &instance, 1 ) );
+		renderer->Render( method, renderInfo, MatrixFeed( &instance, 1, 1 ) );
 	}
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-		renderer->Render( method, renderInfo, MatrixFeed( &instance, 1 ) );
+		renderer->Render( method, renderInfo, MatrixFeed( &instance, 1, 1 ) );
 	}
 }
 

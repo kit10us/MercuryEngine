@@ -14,7 +14,6 @@
 
 #include <me/GeometryInstanceData.h>
 #include <me/RenderInfo.h>
-#include <me/RenderInstance.h>
 #include <me/IRenderer.h>
 #include <unify/Unify.h>
 #include <unify/BSphere.h>
@@ -37,7 +36,6 @@ namespace me
 
 		virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
 		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) = 0;
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) = 0;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;

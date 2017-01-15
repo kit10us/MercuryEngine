@@ -28,7 +28,11 @@ namespace me
 			void AddScaleKey( size_t boneIndex, const ScaleKey & key );
 			void AddRotationKey( size_t boneIndex, const RotationKey & key );
 			void AddTranslationKey( size_t BoneIndex, const TranslationKey & key );
-			void ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const;
+			
+			/// <summary>
+			/// Apply to frames, returning the actual elapsed time clamped to our timeline.
+			/// </summary>
+			float ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const;
 
 		private:
 			std::string m_name;

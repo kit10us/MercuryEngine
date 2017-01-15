@@ -43,26 +43,6 @@ void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderI
 	}
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const RenderInfo & renderInfo, const IMatrixSource * sources, const size_t sources_size, bool contiguous ) const
-{
-	for( const auto & set : m_buffers )
-	{
-		if( ! set->GetEnabled() ) return;
-
-		if( set->GetVertexBuffer() )
-		{
-			set->GetVertexBuffer()->Use();
-		}
-
-		if ( set->GetIndexBuffer() )
-		{
-			set->GetIndexBuffer()->Use();
-		}
-
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, sources, sources_size, contiguous );
-	}
-}
-
 BufferSet & PrimitiveList::AddBufferSet()
 {
 	BufferSet::shared_ptr newSet( new BufferSet( m_renderer ) );

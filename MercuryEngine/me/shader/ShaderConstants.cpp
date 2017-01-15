@@ -19,10 +19,8 @@ ShaderConstants::ShaderConstants( const qxml::Element * node )
 {
 	if ( ! node ) throw exception::FailedToCreate( "Shader constants XML node is null!" );
 
-	for ( auto && child : node->Children() )
+	for ( auto && child : node->Children( "buffer" ) )
 	{
-		if ( !child.IsTagName( "buffer" ) ) continue;
-
 		ConstantBuffer::ptr buffer( new ConstantBuffer( &child ) );
 		AddBuffer( buffer );
 	}

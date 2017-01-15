@@ -62,30 +62,6 @@ void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	m_primitiveList.Render( renderer, renderInfo, matrixFeed );
 }
 
-void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, const IMatrixSource * sources, const size_t sources_size, bool contiguous )
-{
-	// TODO:
-	/*
-	RenderInfo myRenderInfo( renderInfo );
-
-	if( instanceData )
-	{
-		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		myRenderInfo.SetFrameSetInstance( &meshInstanceData->GetFrameSetInstance() );
-	}
-	m_primitiveList.Render( myRenderInfo, list );
-
-	if( instanceData && myRenderInfo.IsOptionTrue( RenderOption::RenderFrames ) )
-	{
-		assert( 0 ); // TODO: Updates to RenderInfo need to be vetted.
-		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		meshInstanceData->RenderFrames( myRenderInfo.GetWorldMatrix(), true, true );
-	}
-	*/
-	
-	m_primitiveList.Render( renderer, renderInfo, sources, sources_size, contiguous );
-}
-
 PrimitiveList & Mesh::GetPrimitiveList()
 {
 	return m_primitiveList;

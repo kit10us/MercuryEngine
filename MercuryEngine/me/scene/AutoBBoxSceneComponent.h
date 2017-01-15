@@ -7,6 +7,7 @@
 #include <me/scene/GeometryComponent.h>
 #include <me/scene/Scene.h>
 #include <me/Effect.h>
+#include <unify/Color.h>
 
 namespace me
 {
