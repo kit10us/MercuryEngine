@@ -5,7 +5,6 @@
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/FailedToLock.h>
-#include <me/exception/Exception.h>
 
 using namespace medx11;
 using namespace me;
@@ -47,20 +46,12 @@ void VertexShader::Create( VertexShaderParameters parameters )
 {
 	Destroy();
 
+	m_filePath = parameters.path;
+	m_code = parameters.code;
 	m_constants = parameters.constants;
-	m_vertexDeclaration = parameters.vertexDeclaration;
-
-	if( parameters.path.Empty() == false )
-	{
-		m_filePath = parameters.path;
-	}
-	else
-	{
-		m_code = parameters.code;
-	}
-
 	m_entryPointName = parameters.entryPointName;
 	m_profile = parameters.profile;
+	m_vertexDeclaration = parameters.vertexDeclaration;
 
 	bool debug = false;
 #if defined( DEBUG ) || defined( _DEBUG )

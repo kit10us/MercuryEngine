@@ -38,9 +38,14 @@ namespace medx11
 		std::string GetError();
 
 	protected:
-		me::PixelShaderParameters m_parameters;
+		unify::Path m_filePath;
+		std::string m_code;
 		bool m_assembly;
+		std::string m_entryPointName;
+		std::string m_profile;
+		std::string m_errorMessage;
 		bool m_created;
+
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 
 		const Renderer * m_renderer;
