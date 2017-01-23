@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/shader/ShaderConstants.h>
+#include <me/shader/ConstantBuffer.h>
 #include <me/Mercury.h>
 #include <unify/Path.h>
 #include <unify/DataLock.h>
@@ -22,7 +22,7 @@ namespace me
 			std::string _code,
 			std::string _entryPointName,
 			std::string _profile,
-			shader::ShaderConstants::ptr _constants
+			shader::ConstantBuffer::ptr _constants
 		)
 			: path( _path )
 			, code( _code )
@@ -37,7 +37,7 @@ namespace me
 		std::string code;
 		std::string entryPointName;
 		std::string profile;
-		shader::ShaderConstants::ptr constants;
+		shader::ConstantBuffer::ptr constants;
 	};
 
 	class IPixelShader
@@ -51,7 +51,7 @@ namespace me
 
 		virtual bool IsTrans() = 0;
 
-		virtual const shader::ShaderConstants * GetConstants() const = 0;
+		virtual const shader::ConstantBuffer * GetConstants() const = 0;
 		virtual void LockConstants( size_t buffer, unify::DataLock & lock ) = 0;
 		virtual void UnlockConstants( size_t buffer, unify::DataLock & lock ) = 0;
 

@@ -19,13 +19,11 @@ VertexDeclaration::VertexDeclaration()
 VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 	: VertexDeclaration()
 {
-	const size_t maxSlots = 16;
-
 	for( auto && slot : xml->Children( "slot" ) )
 	{
 		m_numberOfSlots++;
 		m_sizeInBytes.push_back( 0 );
-		m_slotElements.push_back( std::vector< me::VertexElement >() );
+		m_elements.push_back( std::vector< me::VertexElement >() );
 		m_instancing.push_back( Instancing::FromString( slot.GetAttributeElse< std::string >( "instancing", "none" ) ) );
 		m_instances.push_back( slot.GetAttributeElse( "instances", 0 ) );
 		if ( m_instancing.back() != Instancing::None )
@@ -45,49 +43,18 @@ VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 			vertexElement.InstanceDataStepRate = instanceDataStepRate;
 
 			std::string name = vertexElement.SemanticName;	  
-			m_elementMap[name] = m_allElements.size(); // The next index is size, so this is what we will reference from our map.
+			m_elementMap[name] = { m_numberOfSlots - 1, m_allElements.size() }; // The next index is size, so this is what we will reference from our map.
 			m_allElements.push_back( vertexElement );
-			m_slotElements[vertexElement.InputSlot].push_back( vertexElement );
+			m_elements[vertexElement.InputSlot].push_back( vertexElement );
 
 			m_sizeInBytes[ vertexElement.InputSlot ] += vertexElement.SizeOf();
 		}
-	}
-
-	/*
-	m_instancing = Instancing::None;
-	if ( xml->HasAttributes( "instancing" ) )
-	{
-		m_instancing = Instancing::FromString( xml->GetAttribute< std::string >( "instancing" ) );
-	}																			 
-
-	for ( const auto child : xml->Children() )
-	{
-		if ( child.IsTagName( "element" ) )
-		{
-			VertexElement element( child );
-			element.AlignedByteOffset = totalSizeInBytes[ element.InputSlot ];
-
-			std::string name = element.SemanticName;
-
-			m_elementMap[name] = m_allElements.size(); // The next index is size, so this is what we will reference from our map.
-			m_allElements.push_back( element );
-
-			totalSizeInBytes[ element.InputSlot ] += element.SizeOf();
-		}
-	}
-	*/
-
-	if ( m_allElements.size() == 0 )
-	{
-		throw unify::Exception( "No vertex elements defined for vertex declaration!" );
 	}
 }
 
 VertexDeclaration::VertexDeclaration( const qjson::Object json )
 	: VertexDeclaration()
 {
-	const size_t maxSlots = 16;
-
 	for ( auto itr : json )
 	{
 		const qjson::Object * member = dynamic_cast< const qjson::Object * >(itr.GetValue().get());
@@ -105,23 +72,18 @@ VertexDeclaration::VertexDeclaration( const qjson::Object json )
 			{
 				m_numberOfSlots = element.InputSlot + 1; // Ensure we track all slots.
 				m_sizeInBytes.resize( m_numberOfSlots, 0 );
-				m_slotElements.resize( m_numberOfSlots, std::vector< me::VertexElement >() );
+				m_elements.resize( m_numberOfSlots, std::vector< me::VertexElement >() );
 			}
 	
 			element.AlignedByteOffset = m_sizeInBytes[ element.InputSlot ];
 			
-			m_elementMap[name] = m_allElements.size(); // The next index is size, so this is what we will reference from our map.
+			m_elementMap[name] = { element.InputSlot, m_allElements.size() }; // The next index is size, so this is what we will reference from our map.
 			m_allElements.push_back( element );
-			m_slotElements[ element.InputSlot ].push_back( element );
+			m_elements[ element.InputSlot ].push_back( element );
 	
 			m_sizeInBytes[ element.InputSlot ] += element.SizeOf();
 		}
 	}	
-
-	if ( m_allElements.size() == 0 )
-	{
-		throw unify::Exception( "No vertex elements defined for vertex declaration!" );
-	}
 }
 
 VertexDeclaration::~VertexDeclaration()
@@ -136,7 +98,7 @@ void VertexDeclaration::Build( const IRenderer * renderer, const IVertexShader &
 
 bool VertexDeclaration::operator==( const VertexDeclaration & b ) const
 {
-	if ( GetSizeInBytes() != b.GetSizeInBytes() || m_allElements.size() != b.m_allElements.size() )
+	if ( GetSizeInBytes() != b.GetSizeInBytes() )
 	{
 		return false;
 	}
@@ -178,72 +140,37 @@ bool VertexDeclaration::ElementExists( const std::string & name ) const
 bool VertexDeclaration::GetElement( const std::string name, VertexElement & element ) const
 {
 	ElementMap::const_iterator itr = m_elementMap.find( name );
-	return GetElement( itr->second, element );
+	return GetElement( itr->second.buffer, itr->second.item, element );
 }
 
-bool VertexDeclaration::GetElement( size_t index, VertexElement & element ) const
+bool VertexDeclaration::GetElement( size_t buffer, size_t item, VertexElement & element ) const
 {
-	if ( index < m_allElements.size() )
-	{
-		element = m_allElements[index];
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
+	if ( buffer >= m_elements.size() ) return false;
+	if ( item >= m_elements[buffer].size() ) return false;
 
-bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & element ) const
-{
-	auto elementItr = std::find_if(
-		m_allElements.begin(), m_allElements.end(),
-		[ & ]( auto & e )
-	{
-		return unify::StringIs( e.SemanticName, toFind.SemanticName ) && e.SemanticIndex == toFind.SemanticIndex && e.InputSlot == toFind.InputSlot;
-	} );
-	if ( elementItr == m_allElements.end() )
-	{
-		return false;
-	}
-	element = *elementItr;
+	element = m_elements[buffer][item];
 	return true;
 }
-						   
-size_t VertexDeclaration::GetElementOffset( const std::string & name ) const
+
+bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & elementOut ) const
 {
-	ElementMap::const_iterator itr = m_elementMap.find( name );
-	if ( itr == m_elementMap.end() )
+	for ( auto && buffer : m_elements )
 	{
-		throw unify::Exception( "VertexDeclaration: Element not found!" );
+		for ( auto && element : buffer )
+		{
+			if ( unify::StringIs( element.SemanticName, toFind.SemanticName ) && element.SemanticIndex == toFind.SemanticIndex && element.InputSlot == toFind.InputSlot )
+			{
+				elementOut = element;
+				return true;
+			}
+		}
 	}
-
-	return m_allElements[itr->second].AlignedByteOffset;
-}
-
-size_t VertexDeclaration::GetElementSize( const std::string & name ) const
-{
-	ElementMap::const_iterator itr = m_elementMap.find( name );
-	if ( itr == m_elementMap.end() )
-	{
-		throw unify::Exception( "VertexDeclaration: Element not found!" );
-	}
-
-	return m_allElements[itr->second].SizeOf();
+	return false;
 }
 
 size_t VertexDeclaration::GetSizeInBytes( size_t slot ) const
 {
-	size_t size = 0;
-	for( auto e : m_allElements )
-	{
-		if( e.InputSlot == slot )
-		{
-			size += e.SizeOf();
-		}
-	}
-
-	return size;
+	return m_sizeInBytes[ slot ];
 }
 
 size_t VertexDeclaration::NumberOfSlots() const
@@ -254,6 +181,11 @@ size_t VertexDeclaration::NumberOfSlots() const
 const std::vector< VertexElement > & VertexDeclaration::Elements() const
 {
 	return m_allElements;
+}
+
+const std::vector< VertexElement > & VertexDeclaration::Elements( size_t slot ) const
+{
+	return m_elements[ slot ];
 }
 
 int VertexDeclaration::GetInstanceingSlot() const

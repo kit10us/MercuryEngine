@@ -84,34 +84,34 @@ ColorUnit::ColorUnit()
 
 
 ColorUnit::ColorUnit( float r, float g, float b, float a )
-: a( a )
-, r( r )
-, g( g )
-, b( b )
 {
+	component.a = a;
+	component.r = r;
+	component.g = g;
+	component.b = b;
 }
 
 
 ColorUnit::ColorUnit( const ColorUnit & color )
-: a( color.a )
-, r( color.r )
-, g( color.g )
-, b( color.b )
 {
+	component.a = color.component.a;
+	component.r = color.component.r;
+	component.g = color.component.g;
+	component.b = color.component.b;
 }
 
 ColorUnit::ColorUnit( const std::string &text, Order order, float defaultAlpha )
 {
-	r = 0;
-	g = 0;
-	b = 0;
-	a = defaultAlpha;
+	component.r = 0;
+	component.g = 0;
+	component.b = 0;
+	component.a = defaultAlpha;
 
 	if( StringIs( text, "white" ) )
 	{
-		r = 1.0f;
-		g = 1.0f;
-		b = 1.0f;
+		component.r = 1.0f;
+		component.g = 1.0f;
+		component.b = 1.0f;
 	}
 	else if( StringIs( text, "black" ) )
 	{
@@ -119,19 +119,19 @@ ColorUnit::ColorUnit( const std::string &text, Order order, float defaultAlpha )
 	}
 	else if( StringIs( text, "red" ) )
 	{
-		r = 1.0f;
+		component.r = 1.0f;
 	}
 	else if( StringIs( text, "green" ) )
 	{
-		g = 1.0f;
+		component.g = 1.0f;
 	}
 	else if( StringIs( text, "blue" ) )
 	{
-		b = 1.0f;
+		component.b = 1.0f;
 	}
 	else if( StringIs( text, "clear" ) )
 	{
-		a = 0.0f;
+		component.a = 0.0f;
 	}
 	else
 	{
@@ -143,37 +143,37 @@ ColorUnit::ColorUnit( const std::string &text, Order order, float defaultAlpha )
 
 		if ( split.size() == 3 )
 		{
-			r = split[ 0 ];
-			g = split[ 1 ];
-			b = split[ 2 ];
+			component.r = split[ 0 ];
+			component.g = split[ 1 ];
+			component.b = split[ 2 ];
 		}
 		else if ( split.size() == 4 )
 		{
 			switch( order )
 			{
 			case RGBA:
-				r = split[ 0 ];
-				g = split[ 1 ];
-				b = split[ 2 ];
-				a = split[ 3 ];
+				component.r = split[ 0 ];
+				component.g = split[ 1 ];
+				component.b = split[ 2 ];
+				component.a = split[ 3 ];
 				break;
 			case ARGB:
-				a = split[ 0 ];
-				r = split[ 1 ];
-				g = split[ 2 ];
-				b = split[ 3 ];
+				component.a = split[ 0 ];
+				component.r = split[ 1 ];
+				component.g = split[ 2 ];
+				component.b = split[ 3 ];
 				break;
 			case BGRA:
-				b = split[ 0 ];
-				g = split[ 1 ];
-				r = split[ 2 ];
-				a = split[ 3 ];
+				component.b = split[ 0 ];
+				component.g = split[ 1 ];
+				component.r = split[ 2 ];
+				component.a = split[ 3 ];
 				break;
 			case ABGR:
-				a = split[ 0 ];
-				b = split[ 1 ];
-				g = split[ 2 ];
-				r = split[ 3 ];
+				component.a = split[ 0 ];
+				component.b = split[ 1 ];
+				component.g = split[ 2 ];
+				component.r = split[ 3 ];
 				break;
 			}
 		}
@@ -182,50 +182,50 @@ ColorUnit::ColorUnit( const std::string &text, Order order, float defaultAlpha )
 
 ColorUnit::operator Color()
 {
-	return Color::ColorRGBA( (unsigned char)(r * 255.0f), (unsigned char)(g * 255.0f), (unsigned char)(b * 255.0f), (unsigned char)(a * 255.0f) );
+	return Color::ColorRGBA( (unsigned char)(component.r * 255.0f), (unsigned char)(component.g * 255.0f), (unsigned char)(component.b * 255.0f), (unsigned char)(component.a * 255.0f) );
 }
 
 float ColorUnit::SumComponents()
 {
-	return a + r + g + b;
+	return component.a + component.r + component.g + component.b;
 }
 
 ColorUnit & ColorUnit::operator += ( const ColorUnit & col )
 {
-	a += col.a;
-	r += col.r;
-	g += col.g;
-	b += col.b;
+	component.a += col.component.a;
+	component.r += col.component.r;
+	component.g += col.component.g;
+	component.b += col.component.b;
 	return *this;
 }
 
 
 ColorUnit & ColorUnit::operator -= ( const  ColorUnit & col )
 {
-	a -= col.a;
-	r -= col.r;
-	g -= col.g;
-	b -= col.b;
+	component.a -= col.component.a;
+	component.r -= col.component.r;
+	component.g -= col.component.g;
+	component.b -= col.component.b;
 	return *this;
 }
 
 
 ColorUnit & ColorUnit::operator *= ( float val )
 {
-	a *= val;
-	r *= val;
-	g *= val;
-	b *= val;
+	component.a *= val;
+	component.r *= val;
+	component.g *= val;
+	component.b *= val;
 	return *this;
 }
 
 
 ColorUnit & ColorUnit::operator /= ( float val )
 {
-	a /= val;
-	r /= val;
-	g /= val;
-	b /= val;
+	component.a /= val;
+	component.r /= val;
+	component.g /= val;
+	component.b /= val;
 	return *this;
 }
 
@@ -233,86 +233,75 @@ ColorUnit & ColorUnit::operator /= ( float val )
 
 ColorUnit ColorUnit::operator + ( const ColorUnit & col ) const
 {
-	return ColorUnit::ColorUnitARGB( a + col.a, r + col.r, g + col.g, b + col.b );
+	return ColorUnit::ColorUnitARGB( component.a + col.component.a, component.r + col.component.r, component.g + col.component.g, component.b + col.component.b );
 }
 
 
 ColorUnit ColorUnit::operator - ( const ColorUnit & col ) const
 {
-	return ColorUnit::ColorUnitARGB( a - col.a, r - col.r, g - col.g, b - col.b );
+	return ColorUnit::ColorUnitARGB( component.a - col.component.a, component.r - col.component.r, component.g - col.component.g, component.b - col.component.b );
 }
 
 
 ColorUnit ColorUnit::operator * ( const ColorUnit & col ) const
 {
-	return ColorUnit::ColorUnitARGB( a * col.a, r * col.r, g * col.g, b * col.b );
+	return ColorUnit::ColorUnitARGB( component.a * col.component.a, component.r * col.component.r, component.g * col.component.g, component.b * col.component.b );
 }
 
 ColorUnit ColorUnit::operator / ( const ColorUnit & col ) const
 {
-	return ColorUnit::ColorUnitARGB( a / col.a, r / col.r, g / col.g, b / col.b );
+	return ColorUnit::ColorUnitARGB( component.a / col.component.a, component.r / col.component.r, component.g / col.component.g, component.b / col.component.b );
 }
 
 
 ColorUnit ColorUnit::operator * ( float val ) const
 {
-	return ColorUnit::ColorUnitARGB( a * val, r * val, g * val, b * val );
+	return ColorUnit::ColorUnitARGB( component.a * val, component.r * val, component.g * val, component.b * val );
 }
 
 
 ColorUnit ColorUnit::operator / ( float val ) const
 {
-	return ColorUnit::ColorUnitARGB( a / val, r / val, g / val, b / val );
+	return ColorUnit::ColorUnitARGB( component.a / val, component.r / val, component.g / val, component.b / val );
 }
 
 bool ColorUnit::operator == ( const ColorUnit & col ) const
 {
-	return( a == col.a && r == col.r && g == col.g && b == col.b );
+	return( component.a == col.component.a && component.r == col.component.r && component.g == col.component.g && component.b == col.component.b );
 }
 
 
 bool ColorUnit::operator != ( const ColorUnit & col ) const
 {
-	return( a != col.a || r != col.r || g != col.g || b != col.b );
+	return( component.a != col.component.a || component.r != col.component.r || component.g != col.component.g || component.b != col.component.b );
 }
 
 void ColorUnit::SetRed( float pr )
 {
-	r = pr;
+	component.r = pr;
 }
 
 void ColorUnit::SetGreen( float pg )
 {
-	g = pg;
+	component.g = pg;
 }
 
 void ColorUnit::SetBlue( float pb )
 {
-	b = pb;
+	component.b = pb;
 }
 
 void ColorUnit::SetAlpha( float pa )
 {
-	a = pa;
+	component.a = pa;
 }
 
 void ColorUnit::SetRGBA( float ri, float gi, float bi, float ai )
 {
-	r = ri;
-	g = gi;
-	b = bi;
-	a = ai;
-}
-
-ColorUnit ColorUnit::Normalize() const
-{
-	ColorUnit result = ColorUnitRGBA(
-		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ),
-		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ),
-		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ),
-		std::min< float >( std::max< float >( r, 1.0f ), 0.0f ) 
-	);
-	return result;
+	component.r = ri;
+	component.g = gi;
+	component.b = bi;
+	component.a = ai;
 }
 
 std::string ColorUnit::ToString( ColorUnit::Order order ) const
@@ -321,12 +310,12 @@ std::string ColorUnit::ToString( ColorUnit::Order order ) const
 	{
 	case RGBA:
 	default:
-		return Cast< std::string >( r ) + ", " + Cast< std::string >( g ) + ", " + Cast< std::string >( b ) + ", " + Cast< std::string >( a );
+		return Cast< std::string >( component.r ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.b ) + ", " + Cast< std::string >( component.a );
 	case ARGB:
-		return Cast< std::string >( a ) + ", " + Cast< std::string >( r ) + ", " + Cast< std::string >( g ) + ", " + Cast< std::string >( b );
+		return Cast< std::string >( component.a ) + ", " + Cast< std::string >( component.r ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.b );
 	case BGRA:
-		return Cast< std::string >( b ) + ", " + Cast< std::string >( g ) + ", " + Cast< std::string >( r ) + ", " + Cast< std::string >( a );
+		return Cast< std::string >( component.b ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.r ) + ", " + Cast< std::string >( component.a );
 	case ABGR:
-		return Cast< std::string >( a ) + ", " + Cast< std::string >( b ) + ", " + Cast< std::string >( g ) + ", " + Cast< std::string >( r );
+		return Cast< std::string >( component.a ) + ", " + Cast< std::string >( component.b ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.r );
 	}
 }

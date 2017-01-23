@@ -35,6 +35,6 @@ VS_OUT vs_main( in VS_IN vs_in )
 PS_OUT ps_main( in VS_OUT ps_in )
 {
 	PS_OUT ps_out;
-	ps_out.color = ps_in.color;//= saturate( ps_in.color );
+	ps_out.color = saturate( ps_in.color );
 	return ps_out;
 }

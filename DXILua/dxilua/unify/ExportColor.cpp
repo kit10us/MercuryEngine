@@ -19,19 +19,19 @@ int PushColor( lua_State * state, unify::ColorUnit color )
 	lua_newtable( state ); // Create table.
 
 	lua_pushstring( state, "r" );
-	lua_pushnumber( state, color.r );
+	lua_pushnumber( state, color.component.r );
 	lua_settable( state, -3 );
 
 	lua_pushstring( state, "g" );
-	lua_pushnumber( state, color.g );
+	lua_pushnumber( state, color.component.g );
 	lua_settable( state, -3 );
 
 	lua_pushstring( state, "b" );
-	lua_pushnumber( state, color.b );
+	lua_pushnumber( state, color.component.b );
 	lua_settable( state, -3 );
 
 	lua_pushstring( state, "a" );
-	lua_pushnumber( state, color.a );
+	lua_pushnumber( state, color.component.a );
 	lua_settable( state, -3 );
 	return 1;
 }
@@ -278,17 +278,6 @@ int Color_Div( lua_State * state )
 	return 1;
 }
 
-int Color_Normalize( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::ColorUnit color( CheckColor( state, 1 ) );
-
-	PushColor( state, color.Normalize() );
-	return 1;
-}			   
-
 int Color_Lerp( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -324,7 +313,6 @@ static const luaL_Reg ColorFunctions[] =
 	{ "Mul", Color_Mul },
 	{ "Div", Color_Div },
 
-	{ "Normalize", Color_Normalize },
 	{ "Lerp", Color_Lerp },
 
 	{ nullptr, nullptr }

@@ -26,20 +26,8 @@ void PrimitiveList::Destroy()
 void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
 {
 	for( const auto & set : m_buffers )
-	{
-		if( ! set->GetEnabled() ) return;
-
-		if( set->GetVertexBuffer() )
-		{
-			set->GetVertexBuffer()->Use();
-		}
-
-		if ( set->GetIndexBuffer() )
-		{
-			set->GetIndexBuffer()->Use();
-		}
-
-		set->GetRenderMethodBuffer().Render( renderer, renderInfo, matrixFeed );
+	{	
+		set->Render( renderer, renderInfo, matrixFeed );
 	}
 }
 

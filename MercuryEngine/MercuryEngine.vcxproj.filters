@@ -105,9 +105,6 @@
     <ClInclude Include="me\RenderMethod.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\RenderMethodBuffer.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Effect.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -348,9 +345,6 @@
     <ClInclude Include="me\shader\ConstantBuffer.h">
       <Filter>me\shader</Filter>
     </ClInclude>
-    <ClInclude Include="me\shader\ShaderConstants.h">
-      <Filter>me\shader</Filter>
-    </ClInclude>
     <ClInclude Include="me\BufferUsage.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -362,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="me\ElementFormat.h">
       <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\shader\ConstantVariable.h">
+      <Filter>me\shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -399,9 +396,6 @@
       <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\RenderMethod.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
-    <ClCompile Include="me\RenderMethodBuffer.cpp">
       <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\Effect.cpp">
@@ -581,9 +575,6 @@
     <ClCompile Include="sg\CreateShape_Cube.cpp">
       <Filter>shape_creation</Filter>
     </ClCompile>
-    <ClCompile Include="me\shader\ShaderConstants.cpp">
-      <Filter>me\shader</Filter>
-    </ClCompile>
     <ClCompile Include="me\shader\ConstantBuffer.cpp">
       <Filter>me\shader</Filter>
     </ClCompile>
@@ -595,6 +586,9 @@
     </ClCompile>
     <ClCompile Include="me\ElementFormat.cpp">
       <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\shader\ConstantVariable.cpp">
+      <Filter>me\shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

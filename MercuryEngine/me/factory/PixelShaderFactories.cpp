@@ -35,7 +35,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 		}
 		else if ( node.IsTagName( "constants" ) )
 		{
-			parameters.constants.reset( new shader::ShaderConstants( &node ) );
+			parameters.constants.reset( new shader::ConstantBuffer( &node ) );
 		}
 	}
 	return renderer->ProducePS( parameters );

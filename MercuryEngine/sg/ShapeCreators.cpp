@@ -85,10 +85,9 @@ void sg::CreateShape_PointField( me::IRenderer * renderer, PrimitiveList & primi
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 
 	// Method 1 - Triangle List...
-	rb.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
+	set.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
 
 	// Randomize the vertices positions...
 	unify::V3< float > vec, norm;
@@ -163,9 +162,8 @@ void sg::CreateShape_PointRing( me::IRenderer * renderer, PrimitiveList & primit
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 
-	rb.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
+	set.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
 
 	unify::V3< float > vec;
 	unify::V2< float > vPos2;	// Initial position ( by radius1 )
@@ -270,8 +268,7 @@ void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primiti
 	BufferSet & set = primitiveList.AddBufferSet();
 
 	// Method 1 - Triangle List...
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * totalVertices];
 	unify::DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, false, 0 );
@@ -393,8 +390,7 @@ void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiv
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 	unsigned short stream = 0;
 
@@ -597,8 +593,7 @@ void sg::CreateShape_Circle( me::IRenderer * renderer, PrimitiveList & primitive
 	BufferSet & set = primitiveList.AddBufferSet();
 
 	// Method 1 - Fan
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vertexCount * vd->GetSizeInBytes( 0 )] );
 	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
@@ -699,8 +694,7 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		BufferSet & set = primitiveList.AddBufferSet();
 
 		// Method 1 - Triangle List...
-		RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-		rb.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
@@ -798,9 +792,8 @@ void sg::CreateShape_Sphere( me::IRenderer * renderer, PrimitiveList & primitive
 		BufferSet & set = primitiveList.AddBufferSet();
 
 		// Method 1 - Triangle Strip...
-		RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
 		RenderMethod renderMethod( RenderMethod::CreateTriangleStripIndexed( vertexCount, indexCount, 0, 0, effect ) );
-		rb.AddMethod( renderMethod );
+		set.AddMethod( renderMethod );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 
@@ -914,15 +907,13 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 	std::vector< Index32 > indices( indexCount );
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-
 	// Method 1 - Triangle Strip (sides)
-	rb.AddMethod( RenderMethod::CreateTriangleStrip( 0, segments * 2, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 0, segments * 2, effect ) );
 
 	if( caps )
 	{
-		rb.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, 0, 0, effect ) );
-		rb.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, segments * 3, 0, effect ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, 0, 0, effect ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, segments * 3, 0, effect ) );
 	}
 
 	unsigned short stream = 0;
@@ -1105,19 +1096,17 @@ void sg::CreateShape_Tube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 	unsigned int trianglesPerSide = segments * 2;
 	unsigned int verticesPerSide = segments * 2 + 2;
 
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-
 	// Method 1 - Triangle Strip (Top)
-	rb.AddMethod( RenderMethod::CreateTriangleStrip( 0 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 0 * verticesPerSide, trianglesPerSide, effect ) );
 
 	// Method 2 - Triangle Strip (Bottom)
-	rb.AddMethod( RenderMethod::CreateTriangleStrip( 1 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 1 * verticesPerSide, trianglesPerSide, effect ) );
 
 	// Method 3 - Triangle Strip (Outside)
-	rb.AddMethod( RenderMethod::CreateTriangleStrip( 2 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 2 * verticesPerSide, trianglesPerSide, effect ) );
 
 	// Method 4 - Triangle Strip (Inside)
-	rb.AddMethod( RenderMethod::CreateTriangleStrip( 3 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 3 * verticesPerSide, trianglesPerSide, effect ) );
 
 	V vertex;
 	float radiansChange = PI2 / segments;
@@ -1233,8 +1222,7 @@ void sg::CreateShape_Plane( me::IRenderer * renderer, PrimitiveList & primitiveL
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 	unsigned short stream = 0;
 
@@ -1345,14 +1333,12 @@ void sg::CreateShape_Cone( me::IRenderer * renderer, PrimitiveList & primitiveLi
 
 	std::vector< Index32 > indices( indexCount );
 
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-
 	// Method 1 - Triangle Strip (sides)
-	rb.AddMethod( RenderMethod::CreateTriangleStrip( 0, segments * 2, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 0, segments * 2, effect ) );
 
 	if( caps )
 	{
-		rb.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, 0, 0, effect ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, 0, 0, effect ) );
 	}
 
 	unsigned short stream = 0;
@@ -1496,8 +1482,7 @@ void sg::CreateShape_BeveledBox( me::IRenderer * renderer, PrimitiveList & primi
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	RenderMethodBuffer & rb = primitiveList.GetBufferSet( 0 ).GetRenderMethodBuffer();
-	rb.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, effect, true ) );
+	set.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, effect, true ) );
 
 	// Set the vertices from the TEMP vertices...
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );

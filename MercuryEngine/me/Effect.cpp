@@ -44,14 +44,14 @@ void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * wo
 {
 	unify::DataLock lock;
 
-	const me::shader::ShaderConstants * constants = m_vertexShader->GetConstants();
+	const me::shader::ConstantBuffer * constants = m_vertexShader->GetConstants();
 
 	auto worldRef = constants->GetWorld();
 	auto viewRef = constants->GetView();
 	auto projRef = constants->GetProjection();
 
 	size_t bufferIndex = 0;
-	for ( auto && buffer : constants->GetBuffers() )
+	for( size_t bufferIndex = 0, buffer_count = constants->BufferCount(); bufferIndex < buffer_count; bufferIndex++ )
 	{
 		unify::DataLock lock;
 		m_vertexShader->LockConstants( bufferIndex, lock );

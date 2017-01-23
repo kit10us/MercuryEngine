@@ -37,7 +37,12 @@ namespace unify
 		static ColorUnit ColorUnitZero();
 		static ColorUnit ColorUnitLerp( ColorUnit l, ColorUnit r, float ratio );
 
-        float r, g, b, a;
+		union {
+			struct {
+				float r, g, b, a;
+			} component;
+			float linear[4];
+		};
 
 		ColorUnit();
 		ColorUnit( float r, float g, float b, float a );
@@ -45,7 +50,6 @@ namespace unify
 		explicit ColorUnit( const std::string & text, Order order = RGBA, float defaultAlpha = 1.0f );
 
 		void SetRGBA( float r, float g, float b, float a );
-		ColorUnit Normalize() const;
 
 		// CONVERSIONS
 		operator Color();

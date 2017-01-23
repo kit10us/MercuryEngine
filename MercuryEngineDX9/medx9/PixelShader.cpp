@@ -106,7 +106,7 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	m_renderer->GetDxDevice()->CreatePixelShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
 }
 
-const ShaderConstants * PixelShader::GetConstants() const
+const ConstantBuffer * PixelShader::GetConstants() const
 {
 	return m_constants.get();
 }

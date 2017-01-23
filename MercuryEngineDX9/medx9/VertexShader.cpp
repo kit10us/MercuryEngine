@@ -113,10 +113,12 @@ void VertexShader::Create( VertexShaderParameters parameters )
 		throw unify::Exception( "Attempted to create shader from unknown source!" );
 	}
 
-	shader::ConstantBuffer::ptr buffer( new shader::ConstantBuffer );
+	m_constants.reset( new shader::ConstantBuffer );
+	m_constants->AddBuffer();
 
 	m_renderer->GetDxDevice()->CreateVertexShader( (unsigned long *)m_codeBuffer->GetBufferPointer(), &m_shader );
-	
+
+
 	m_worldMatrixHandle = m_constantTable->GetConstantByName( 0, "worldMatrix" );
 	if ( m_worldMatrixHandle == 0 )
 	{
@@ -125,10 +127,9 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	if ( m_worldMatrixHandle != 0 )
 	{
-		buffer->AddVariable( { "world", ElementFormat::Matrix4x4, 1 } );
+		m_constants->AddVariable( 0, { "world", ElementFormat::Matrix4x4, 1 } );
 	}
-
-
+											
 	m_viewMatrixHandle = m_constantTable->GetConstantByName( 0, "viewMatrix" );
 	if ( m_viewMatrixHandle == 0 )
 	{
@@ -137,7 +138,7 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	if ( m_viewMatrixHandle != 0 )
 	{
-		buffer->AddVariable( { "view", ElementFormat::Matrix4x4, 1 } );
+		m_constants->AddVariable( 0, { "view", ElementFormat::Matrix4x4, 1 } );
 	}
 
 
@@ -149,19 +150,16 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	if ( m_projectionMatrixHandle != 0 )
 	{
-		buffer->AddVariable( { "projection", ElementFormat::Matrix4x4, 1 } );
+		m_constants->AddVariable( 0, { "projection", ElementFormat::Matrix4x4, 1 } );
 	}
 
-	m_constants.reset( new shader::ShaderConstants );
-	m_constants->AddBuffer( buffer );
-
-	m_lockData.resize( buffer->GetVariables().size() );
+	m_lockData.resize( m_constants->GetVariables( 0 ).size() );
 	
 	m_vertexDeclaration->Build( m_renderer, *this );
 	m_created = true;
 }
 
-const ShaderConstants * VertexShader::GetConstants() const
+const ConstantBuffer * VertexShader::GetConstants() const
 {
 	return m_constants.get();
 }

@@ -76,7 +76,6 @@
     <ClInclude Include="me\PrimitiveList.h" />
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
-    <ClInclude Include="me\RenderMethodBuffer.h" />
     <ClInclude Include="me\scene2d\Anchor.h" />
     <ClInclude Include="me\scene2d\CanvasComponent.h" />
     <ClInclude Include="me\scene2d\Element.h" />
@@ -103,7 +102,7 @@
     <ClInclude Include="me\scene\SceneDataCore.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
     <ClInclude Include="me\shader\ConstantBuffer.h" />
-    <ClInclude Include="me\shader\ShaderConstants.h" />
+    <ClInclude Include="me\shader\ConstantVariable.h" />
     <ClInclude Include="me\SpriteDictionary.h" />
     <ClInclude Include="me\Terra.h" />
     <ClInclude Include="me\TextureLock.h" />
@@ -163,7 +162,6 @@
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
-    <ClCompile Include="me\RenderMethodBuffer.cpp" />
     <ClCompile Include="me\scene2d\CanvasComponent.cpp" />
     <ClCompile Include="me\scene2d\Element.cpp" />
     <ClCompile Include="me\scene2d\FPS.cpp" />
@@ -183,7 +181,7 @@
     <ClCompile Include="me\scene\SceneDataCore.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
     <ClCompile Include="me\shader\ConstantBuffer.cpp" />
-    <ClCompile Include="me\shader\ShaderConstants.cpp" />
+    <ClCompile Include="me\shader\ConstantVariable.cpp" />
     <ClCompile Include="me\SpriteDictionary.cpp" />
     <ClCompile Include="me\Terra.cpp" />
     <ClCompile Include="me\TextureMode.cpp" />

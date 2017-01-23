@@ -262,7 +262,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 	case Instancing::None:
 		{
 			// With no instancing, we except a world matrix in the constant buffer.
-			auto world = constants->GetBuffers()[worldRef.buffer]->GetVariables()[worldRef.index];
+			auto world = constants->GetVariable( worldRef );
 			auto viewRef = constants->GetView();
 			auto projRef = constants->GetProjection();
 
@@ -270,8 +270,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 
 			while ( ! matrixFeed.Done() )
 			{					 
-				size_t bufferIndex = 0;
-				for ( auto && buffer : constants->GetBuffers() )
+				for( size_t bufferIndex = 0, buffer_count = constants->BufferCount(); bufferIndex < buffer_count; bufferIndex++ )
 				{
 					vertexShader->LockConstants( bufferIndex, lock );
 

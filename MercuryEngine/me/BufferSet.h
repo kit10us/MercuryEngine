@@ -6,7 +6,7 @@
 #include <me/IRenderer.h>
 #include <me/IVertexBuffer.h>
 #include <me/IIndexBuffer.h>
-#include <me/RenderMethodBuffer.h>
+#include <me/RenderMethod.h>
 
 namespace me
 {
@@ -32,19 +32,22 @@ namespace me
 		const me::IIndexBuffer::ptr BufferSet::GetIndexBuffer() const;
 
 		void AddMethod( RenderMethod & method );
-		RenderMethodBuffer & BufferSet::GetRenderMethodBuffer();
-		const RenderMethodBuffer & BufferSet::GetRenderMethodBuffer() const;
+		std::vector< RenderMethod > & BufferSet::GetRenderMethodBuffer();
+		const std::vector< RenderMethod > & BufferSet::GetRenderMethodBuffer() const;
+		void ClearMethods();
 
 		void Destroy();
 
 		void SetEnabled( bool enabled );
 		bool GetEnabled() const;
 
+		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const;
+
 	private:
 		const IRenderer * m_renderer;
 		bool m_enabled;
 		me::IVertexBuffer::ptr m_VB;
 		me::IIndexBuffer::ptr m_IB;
-		RenderMethodBuffer m_RB;
+		std::vector< RenderMethod > m_RB;
 	};
 }

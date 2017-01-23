@@ -22,7 +22,7 @@ namespace medx9
 
 		void Create( me::PixelShaderParameters parameters );
 
-		const me::shader::ShaderConstants * GetConstants() const override;
+		const me::shader::ConstantBuffer * GetConstants() const override;
 
 		void LockConstants( size_t buffer, unify::DataLock & lock ) override;	   
 
@@ -41,7 +41,7 @@ namespace medx9
 		bool m_assembly;
 		std::string m_errorMessage;
 		bool m_created;
- 		me::shader::ShaderConstants::ptr m_constants;
+ 		me::shader::ConstantBuffer::ptr m_constants;
 
 		bool m_isTrans;	// Does this pixel shader turn the render into transparent (in part or entire)
 

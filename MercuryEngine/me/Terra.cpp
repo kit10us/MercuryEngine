@@ -77,7 +77,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 
 	BufferSet & set = GetPrimitiveList().AddBufferSet();
 
-	set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 	unify::BBox< float > bbox;
 

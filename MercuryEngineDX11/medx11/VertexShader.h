@@ -4,9 +4,7 @@
 #pragma once
 
 #include <medx11/Renderer.h>
-#include <me/RenderInfo.h>
-#include <me/IVertexShader.h>
-#include <me/shader/ShaderConstants.h>
+#include <me/shader/ConstantBuffer.h>
 #include <me/VertexDeclaration.h>
 #include <unify/Path.h>
 #include <atlbase.h>
@@ -25,7 +23,7 @@ namespace medx11
 
 		void Create( me::VertexShaderParameters parameters );
 
-		const me::shader::ShaderConstants * GetConstants() const override;
+		const me::shader::ConstantBuffer * GetConstants() const override;
 
 		void LockConstants( size_t buffer, unify::DataLock & lock ) override;	   
 
@@ -52,7 +50,7 @@ namespace medx11
 		std::string m_errorMessage;
 		bool m_created;
 		
-		me::shader::ShaderConstants::ptr m_constants;
+		me::shader::ConstantBuffer::ptr m_constants;
 
 		me::VertexDeclaration::ptr m_vertexDeclaration;
 		const Renderer * m_renderer;

@@ -110,88 +110,88 @@ Color::Color( const Color & color )
 Color::Color( const ColorUnit & colorUnit )
 {
 	SetRGBA( 
-		static_cast< Component >( colorUnit.r * 255.f ),
-		static_cast< Component >( colorUnit.g * 255.f ),
-		static_cast< Component >( colorUnit.b * 255.f ),
-		static_cast< Component >( colorUnit.a * 255.f )
+		static_cast< Component >( colorUnit.component.r * 255.f ),
+		static_cast< Component >( colorUnit.component.g * 255.f ),
+		static_cast< Component >( colorUnit.component.b * 255.f ),
+		static_cast< Component >( colorUnit.component.a * 255.f )
 		);
 }
 
 Color::Color( const std::string & text, Color::Order order, Color::Component defaultAlpha )
 {
-	components.r = 0;
-	components.g = 0;
-	components.b = 0;
-	components.a = defaultAlpha;
+	component.r = 0;
+	component.g = 0;
+	component.b = 0;
+	component.a = defaultAlpha;
 
 	// Named colors.
 	if ( StringIs( text, "red" ) )
 	{
-		components.r = 255;
+		component.r = 255;
 	}
 	else if ( StringIs( text, "green" ) )
 	{
-		components.g = 255;
+		component.g = 255;
 	}
 	else if ( StringIs( text, "blue" ) )
 	{
-		components.b = 255;
+		component.b = 255;
 	}
 	else if ( StringIs( text, "white" ) )
 	{
-		components.r = 255;
-		components.g = 255;
-		components.b = 255;
+		component.r = 255;
+		component.g = 255;
+		component.b = 255;
 	}
 	else if ( StringIs( text, "black" ) )
 	{
-		components.r = 0;
-		components.g = 0;
-		components.b = 0;
+		component.r = 0;
+		component.g = 0;
+		component.b = 0;
 	}
 	else if ( StringIs( text, "clear" ) )
 	{
-		components.r = 0;
-		components.g = 0;
-		components.b = 0;
-		components.a = 0;
+		component.r = 0;
+		component.g = 0;
+		component.b = 0;
+		component.a = 0;
 	}
 	else
 	{
 		std::vector< unsigned char > split = unify::Split< unsigned char >( text, ',' );
 		if ( split.size() == 3 )
 		{
-			components.r = split[ 0 ];
-			components.g = split[ 1 ];
-			components.b = split[ 2 ];
+			component.r = split[ 0 ];
+			component.g = split[ 1 ];
+			component.b = split[ 2 ];
 		}
 		else if ( split.size() == 4 )
 		{
 			switch( order )
 			{
 			case RGBA:
-				components.r = split[ 0 ];
-				components.g = split[ 1 ];
-				components.b = split[ 2 ];
-				components.a = split[ 3 ];
+				component.r = split[ 0 ];
+				component.g = split[ 1 ];
+				component.b = split[ 2 ];
+				component.a = split[ 3 ];
 				break;
 			case ARGB:
-				components.a = split[ 0 ];
-				components.r = split[ 1 ];
-				components.g = split[ 2 ];
-				components.b = split[ 3 ];
+				component.a = split[ 0 ];
+				component.r = split[ 1 ];
+				component.g = split[ 2 ];
+				component.b = split[ 3 ];
 				break;
 			case BGRA:
-				components.b = split[ 0 ];
-				components.g = split[ 1 ];
-				components.r = split[ 2 ];
-				components.a = split[ 3 ];
+				component.b = split[ 0 ];
+				component.g = split[ 1 ];
+				component.r = split[ 2 ];
+				component.a = split[ 3 ];
 				break;
 			case ABGR:
-				components.a = split[ 0 ];
-				components.b = split[ 1 ];
-				components.g = split[ 2 ];
-				components.r = split[ 3 ];
+				component.a = split[ 0 ];
+				component.b = split[ 1 ];
+				component.g = split[ 2 ];
+				component.r = split[ 3 ];
 				break;
 			}
 		}
@@ -390,30 +390,30 @@ bool Color::operator != ( const Color & col ) const
 
 void Color::SetRGBA( Color::Component r, Color::Component g, Color::Component b, Color::Component a )
 {
-	components.r = r;
-	components.g = g;
-	components.b = b;
-	components.a = a;
+	component.r = r;
+	component.g = g;
+	component.b = b;
+	component.a = a;
 }
 
 Color::Component Color::GetAlpha() const
 {
-	return components.a;
+	return component.a;
 }
 
 Color::Component Color::GetRed() const
 {
-	return components.r;
+	return component.r;
 }
 
 Color::Component Color::GetGreen() const
 {
-	return components.g;
+	return component.g;
 }
 
 Color::Component Color::GetBlue() const
 {
-	return components.b;
+	return component.b;
 }
 
 void Color::SetAlpha( Color::Component a)
@@ -472,12 +472,12 @@ std::string Color::ToString( Color::Order order ) const
 	{
 	case RGBA:
 	default:
-		return Cast< std::string >( components.r ) + ", " + Cast< std::string >( components.g ) + ", " + Cast< std::string >( components.b ) + ", " + Cast< std::string >( components.a );
+		return Cast< std::string >( component.r ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.b ) + ", " + Cast< std::string >( component.a );
 	case ARGB:
-		return Cast< std::string >( components.a ) + ", " + Cast< std::string >( components.r ) + ", " + Cast< std::string >( components.g ) + ", " + Cast< std::string >( components.b );
+		return Cast< std::string >( component.a ) + ", " + Cast< std::string >( component.r ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.b );
 	case BGRA:
-		return Cast< std::string >( components.b ) + ", " + Cast< std::string >( components.g ) + ", " + Cast< std::string >( components.r ) + ", " + Cast< std::string >( components.a );
+		return Cast< std::string >( component.b ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.r ) + ", " + Cast< std::string >( component.a );
 	case ABGR:
-		return Cast< std::string >( components.a ) + ", " + Cast< std::string >( components.b ) + ", " + Cast< std::string >( components.g ) + ", " + Cast< std::string >( components.r );
+		return Cast< std::string >( component.a ) + ", " + Cast< std::string >( component.b ) + ", " + Cast< std::string >( component.g ) + ", " + Cast< std::string >( component.r );
 	}
 }

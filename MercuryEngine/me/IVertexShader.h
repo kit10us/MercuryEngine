@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/shader/ShaderConstants.h>
+#include <me/shader/ConstantBuffer.h>
 #include <me/VertexDeclaration.h>
 #include <me/Mercury.h>
 #include <unify/Path.h>
@@ -26,7 +26,7 @@ namespace me
 			std::string _code,
 			std::string _entryPointName,
 			std::string _profile,
-			shader::ShaderConstants::ptr _constants,
+			shader::ConstantBuffer::ptr _constants,
 			VertexDeclaration::ptr _vertexDeclaration
 		)
 			: path( _path )
@@ -42,7 +42,7 @@ namespace me
 		std::string code;
 		std::string entryPointName;
 		std::string profile;
-		shader::ShaderConstants::ptr constants;
+		shader::ConstantBuffer::ptr constants;
 		VertexDeclaration::ptr vertexDeclaration;
 	};
 
@@ -53,7 +53,7 @@ namespace me
 
 		virtual ~IVertexShader() {}
 
-		virtual const shader::ShaderConstants * GetConstants() const = 0;
+		virtual const shader::ConstantBuffer * GetConstants() const = 0;
 		virtual void LockConstants( size_t buffer, unify::DataLock & lock ) = 0;
 		virtual void UnlockConstants( size_t buffer, unify::DataLock & lock ) = 0;
 		virtual VertexDeclaration::ptr GetVertexDeclaration() const = 0;

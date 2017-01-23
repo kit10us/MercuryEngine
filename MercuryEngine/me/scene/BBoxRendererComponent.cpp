@@ -143,11 +143,11 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 	Mesh * mesh = new Mesh( GetOS()->GetRenderer(0) );
 
 	BufferSet & set = mesh->GetPrimitiveList().AddBufferSet();
-	set.GetRenderMethodBuffer().Clear();
+	set.ClearMethods();
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } } };
 	set.AddVertexBuffer( vbParameters );
-	set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );	 
+	set.AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );	 
 
 	m_geometry.reset( mesh );
 	cache.Add( m_geometry.get(), frame );

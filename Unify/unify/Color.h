@@ -29,7 +29,8 @@ namespace unify
                 Component g;
 				Component b;
                 Component a;
-            } components;
+            } component;
+			unsigned char linear[4];
         };
 
 		Color();

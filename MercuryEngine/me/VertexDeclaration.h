@@ -45,24 +45,22 @@ namespace me
 		bool GetElement( const std::string name, me::VertexElement & element ) const;
 
 		/// <summary>
-		/// Get an element by index.
+		/// Get an element by buffer and item index.
 		/// </summary>
-		bool GetElement( size_t index, me::VertexElement & element ) const;
+		bool GetElement( size_t buffer, size_t item, me::VertexElement & element ) const;
 
 		/// <summary>
 		/// Get an element that closely matches a specified element.
 		/// </summary>
 		bool GetElement( me::VertexElement toFind, me::VertexElement & element ) const;
 
-		// Can throw, ensure ElementExists is tested before calling this function.
-		size_t GetElementOffset( const std::string & name ) const;
-		size_t GetElementSize( const std::string & name ) const;
-		
 		size_t GetSizeInBytes( size_t slot = 0 ) const;
 
 		size_t NumberOfSlots() const;
 
 		const std::vector< me::VertexElement > & Elements() const;
+
+		const std::vector< me::VertexElement > & Elements( size_t slot ) const;
 
 		int GetInstanceingSlot() const;
 		me::Instancing::TYPE GetInstancing( size_t slot ) const;
@@ -72,11 +70,14 @@ namespace me
 
 	private:
 		// ElementMap: first, std::string, is the element's name for lookup, and second, size_t, is the index into m_elements.
-		typedef std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > ElementMap;								  
+		struct BufferItem {
+			size_t buffer, item;
+		};
+		typedef std::map< std::string, BufferItem, unify::CaseInsensitiveLessThanTest > ElementMap;								  
 
 		size_t m_numberOfSlots;
 		std::vector< me::VertexElement > m_allElements;
-		std::vector< std::vector< me::VertexElement > > m_slotElements;
+		std::vector< std::vector< me::VertexElement > > m_elements;
 		ElementMap m_elementMap;
 		std::vector< size_t > m_sizeInBytes;
 		std::vector< me::Instancing::TYPE > m_instancing;

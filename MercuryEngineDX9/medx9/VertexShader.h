@@ -24,7 +24,7 @@ namespace medx9
 
 		void Create( me::VertexShaderParameters parameters );
 
-		const me::shader::ShaderConstants * GetConstants() const override;
+		const me::shader::ConstantBuffer * GetConstants() const override;
 
 		void LockConstants( size_t buffer, unify::DataLock & lock ) override;	  
 		void UnlockConstants( size_t buffer, unify::DataLock & lock ) override;	  
@@ -48,7 +48,7 @@ namespace medx9
 		std::string m_profile;
 		std::string m_errorMessage;
 		bool m_created;
-		me::shader::ShaderConstants::ptr m_constants;
+		me::shader::ConstantBuffer::ptr m_constants;
 		me::VertexDeclaration::ptr m_vertexDeclaration;
 
 		const medx9::Renderer * m_renderer;

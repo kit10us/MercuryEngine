@@ -75,7 +75,7 @@ void MyGame::Startup()
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = scene->NewObject( "XMLObject" );
-	auto gc = AddGeometryComponent( xmlObject, GetOS(), meshXML );
+	AddGeometryComponent( xmlObject, GetOS(), meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -89,7 +89,7 @@ void MyGame::Startup()
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = scene->NewObject( "swordASE" );
-	gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
+	AddGeometryComponent( aseObject, GetOS(), meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -113,7 +113,7 @@ void MyGame::Startup()
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = scene->NewObject( "daeModel" );
-	gc = AddGeometryComponent( daeModel, GetOS(), meshDAE );
+	AddGeometryComponent( daeModel, GetOS(), meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();

@@ -86,8 +86,7 @@ void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 
 	BufferSet & set = primitiveList.AddBufferSet();
 
-	RenderMethodBuffer & rb = set.GetRenderMethodBuffer();
-	rb.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
 
 	// Set the TEMP vertices...
 	V vertices[8];

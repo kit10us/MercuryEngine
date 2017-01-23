@@ -103,11 +103,10 @@ void PixelShader::Create( PixelShaderParameters parameters )
 			  
 	if ( m_constants )
 	{
-		size_t index = 0;
-		for ( auto && buffer : m_constants->GetBuffers() )
+		for( size_t bufferIndex = 0, buffer_count = m_constants->BufferCount(); bufferIndex < buffer_count; bufferIndex++ )
 		{
 			D3D11_BUFFER_DESC constantBufferDesc{};
-			constantBufferDesc.ByteWidth = buffer->GetSizeInBytes();
+			constantBufferDesc.ByteWidth = m_constants->GetSizeInBytes( bufferIndex );
 			constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 			constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 			constantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -121,32 +120,32 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	m_created = true;
 }
 
-const ShaderConstants * PixelShader::GetConstants() const
+const ConstantBuffer * PixelShader::GetConstants() const
 {
 	return m_constants.get();
 }
 
-void PixelShader::LockConstants( size_t buffer, unify::DataLock & lock )
+void PixelShader::LockConstants( size_t bufferIndex, unify::DataLock & lock )
 {
-	if ( (m_locked & (1 << buffer)) == (1 << buffer) ) throw exception::FailedToLock( "Failed to lock vertex shader constant buffer!" );
+	if ( (m_locked & (1 << bufferIndex)) == (1 << bufferIndex) ) throw exception::FailedToLock( "Failed to lock vertex shader constant buffer!" );
 
-	m_bufferAccessed = m_bufferAccessed | (1 << buffer);
-	m_locked = m_locked | (1 << buffer);
+	m_bufferAccessed = m_bufferAccessed | (1 << bufferIndex);
+	m_locked = m_locked | (1 << bufferIndex);
 
 	auto dxDevice = m_renderer->GetDxDevice();
 	auto dxContext = m_renderer->GetDxContext();
 
 	D3D11_MAPPED_SUBRESOURCE subresource{};
-	HRESULT result = dxContext->Map( m_constantBuffers[ buffer ], buffer, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
+	HRESULT result = dxContext->Map( m_constantBuffers[ bufferIndex ], bufferIndex, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subresource );
 	if ( FAILED( result ) )
 	{
 		throw unify::Exception( "Failed to set vertex shader!" );
 	}		
 
-	lock.SetLock( subresource.pData, m_constants->GetBuffers()[ buffer ]->GetSizeInBytes(), false, 0 );
+	lock.SetLock( subresource.pData, m_constants->GetSizeInBytes( bufferIndex ), false, 0 );
 
 	// Roughly handle defaults...
-	for ( auto variable : m_constants->GetBuffers()[ buffer ]->GetVariables() )
+	for ( auto variable : m_constants->GetVariables( bufferIndex ) )
 	{
 		if ( variable.hasDefault )
 		{

@@ -266,19 +266,19 @@ void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matri
 
 			set.AddIndexBuffer( { { { numberOfIndices, &indices[0] } }, BufferUsage::Staging } );
 
-			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
+			set.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
 		}
 		break;
 
 		case Polylist::TrianglesType:
 		{
-			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateTriangleList( 0, numberOfVertices / 3, myEffect ) );
+			set.AddMethod( RenderMethod::CreateTriangleList( 0, numberOfVertices / 3, myEffect ) );
 		}
 		break;
 
 		case Polylist::LinesType:
 		{
-			set.GetRenderMethodBuffer().AddMethod( RenderMethod::CreateLineList( 0, numberOfVertices / 2, myEffect ) );
+			set.AddMethod( RenderMethod::CreateLineList( 0, numberOfVertices / 2, myEffect ) );
 		}
 		break;
 		}

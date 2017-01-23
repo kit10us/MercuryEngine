@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <me/IRenderer.h>
 #include <medx11/Renderer.h>
 #include <unify/Path.h>
 #include <memory>
@@ -23,7 +22,7 @@ namespace medx11
 
 		void Create( me::PixelShaderParameters parameters );
 
-		const me::shader::ShaderConstants * GetConstants() const override;
+		const me::shader::ConstantBuffer * GetConstants() const override;
 
 		void LockConstants( size_t buffer, unify::DataLock & lock ) override;	   
 
@@ -52,7 +51,7 @@ namespace medx11
 		CComPtr< ID3D11PixelShader > m_pixelShader;
 		CComPtr< ID3D10Blob > m_pixelShaderBuffer;
 
-		me::shader::ShaderConstants::ptr m_constants;
+		me::shader::ConstantBuffer::ptr m_constants;
 		std::vector< ID3D11Buffer * > m_constantBuffers;
 		size_t m_bufferAccessed;
 		size_t m_locked;

@@ -49,24 +49,29 @@ const IIndexBuffer::ptr BufferSet::GetIndexBuffer() const
 
 void BufferSet::AddMethod( RenderMethod & method )
 {
-	m_RB.AddMethod( method );
+	m_RB.push_back( method );
 }
 
-RenderMethodBuffer & BufferSet::GetRenderMethodBuffer()
+std::vector< RenderMethod > & BufferSet::GetRenderMethodBuffer()
 {
 	return m_RB;
 }
 
-const RenderMethodBuffer & BufferSet::GetRenderMethodBuffer() const
+const std::vector< RenderMethod > & BufferSet::GetRenderMethodBuffer() const
 {
 	return m_RB;
+}
+
+void BufferSet::ClearMethods()
+{
+	m_RB.clear();
 }
 
 void BufferSet::Destroy()
 {
 	m_VB.reset();
 	m_IB.reset();
-	m_RB.Clear();
+	m_RB.clear();
 }
 
 void BufferSet::SetEnabled( bool enabled )
@@ -78,3 +83,26 @@ bool BufferSet::GetEnabled() const
 {
 	return m_enabled;
 }
+
+void BufferSet::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
+{
+	if ( !m_enabled ) return;
+
+	if( m_VB )
+	{
+		m_VB->Use();
+	}
+
+	if ( m_IB )
+	{
+		m_IB->Use();
+	}
+
+	// Iterate through methods to render.
+	for( auto && method : m_RB )
+	{
+		renderer->Render( method, renderInfo, matrixFeed );
+		matrixFeed.Restart();
+	}
+}
+

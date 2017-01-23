@@ -28,5 +28,6 @@ namespace me
 		static size_t SizeOf( TYPE format );
 		static TYPE FromString( std::string format );
 		static std::string ToString( TYPE format );
+		static bool Convert( TYPE formatOut, void * out, TYPE formatIn, const void * in );
 	};
 }
