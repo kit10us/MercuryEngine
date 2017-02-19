@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h" />
     <ClInclude Include="dxilua\CreateState.h" />
+    <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h" />
     <ClInclude Include="dxilua\ScriptEngine.h" />
     <ClInclude Include="dxilua\ExportCameraComponent.h" />
     <ClInclude Include="dxilua\ExportDebug.h" />
@@ -134,6 +135,7 @@
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp" />
     <ClCompile Include="dxilua\CreateState.cpp" />
+    <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp" />
     <ClCompile Include="dxilua\ScriptEngine.cpp" />
     <ClCompile Include="dxilua\ExportCameraComponent.cpp" />
     <ClCompile Include="dxilua\ExportDebug.cpp" />

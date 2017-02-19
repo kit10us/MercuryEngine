@@ -26,6 +26,7 @@
 #include <dxilua/ExportTerraParameters.h>
 #include <dxilua/ExportTerra.h>
 #include <dxilua/ExportTexture.h>
+#include <dxilua/ExportObjectOrbitMotivator.h>
 
 lua_State * dxilua::CreateState()
 {
@@ -33,31 +34,34 @@ lua_State * dxilua::CreateState()
 
 	luaL_openlibs( state );
 
-	// Add custom functions...
+	// Add unify functions...
+	RegisterColor( state );
+	ExportV2( state );
+	RegisterV3( state );
+	RegisterSize2( state );
+	RegisterSize3( state );
+	ExportMatrix( state );
+	ExportQuaternion( state );
+	RegisterAngle( state );	  
+
+	// Add core functions...
 	ExportGame( state );
 	ExportResources( state );
 	ExportScenes( state );
 	RegisterScene( state );
 	RegisterObject( state );
 	RegisterCameraComponent( state );
-	ExportMatrix( state );
-	ExportQuaternion( state );
 	ExportDebug( state );
 	ExportUpdate( state );
-	ExportV2( state );
-	RegisterV3( state );
-	RegisterSize2( state );
-	RegisterSize3( state );
-	RegisterColor( state );
 	RegisterTransform( state );
 	RegisterShapeParameters( state );
 	RegisterGeometry( state );
-	RegisterTexture( state );
 	RegisterEffect( state );
 	RegisterInput( state );
 	RegisterTerraParameters( state );
 	RegisterTerra( state );
-	RegisterAngle( state );
+	RegisterTexture( state );
+	RegisterObjectOrbitMotivator( state );
 
 	return state;
 }

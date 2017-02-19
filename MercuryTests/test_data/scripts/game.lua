@@ -1,18 +1,19 @@
-local axisIndex = 0
-local totalRotation = 0
-
 function OnStart()
 	local scene1 = Scene( "scene1" )
 	
 	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
-	camera = scene1:NewObject( "camera" )
-	cameraComponent = CameraComponent()
+	local camera = scene1:NewObject( "camera" )
+	local cameraComponent = CameraComponent()
 	cameraComponent:AttachTo( camera )
 	cameraComponent:SetProjection( proj )
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.New( 0, -2, 0 ) )	
+	
+	local cameraMotivator = ObjectOrbitMotivator( V3.New( 0, 0, 0 ), V3.New( 0, 1, 0 ), Angle.Degrees( 45 ) )
+	cameraMotivator:AttachTo( camera );
+	
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
@@ -82,36 +83,10 @@ function OnStart()
 	local terraGeo = Terra( terraParams )
 	local terra = scene1:NewObject( "terra" )
 	terra:SetGeometry( terraGeo )
-	terra:Transform():SetPosition( V3.New( 0, -7, 0 ) );		
+	terra:Transform():SetPosition( V3.New( 0, -7, 0 ) );
 	
+	Game.Command( "AddFPS" )
 end
 
 function OnUpdate()
-	local rotation = Update.GetDelta()
-	
-	--[[
-	totalRotation = totalRotation + rotation
-	local pi2 = 3.1415926535 * 2
-	if totalRotation > pi2 then
-		totalRotation = totalRotation - pi2
-		rotation = totalRotation -- Left over		
-		axisIndex = axisIndex + 1
-		if axisIndex >= 3 then
-			axisIndex = 0
-		end
-	end
-
-	local axis = V3.Zero()
-	if axisIndex == 0 then
-		axis.x = 1
-	elseif axisIndex == 1 then
-		axis.y = 1
-	elseif axisIndex == 2 then
-		axis.z = 1
-	end
-
-	group:Transform():RotateAbout( axis, rotation )
-	--]]
-	--group:Transform():RotateAbout( V3.New( 0, 1, 0 ), rotation )
-
 end

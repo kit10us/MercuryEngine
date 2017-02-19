@@ -93,12 +93,16 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, c
 {											
 	float elapsedTime = renderInfo.GetDelta();
 
+	/*
+	// NOTE: This might speed things up, but causes physx warnings (simulate calls overlapping)
 	const float maxElapsed = 0.05f;
 	while( elapsedTime > maxElapsed )
 	{
 		m_scene->simulate( maxElapsed );
 		elapsedTime -= maxElapsed;
 	}
+	*/
+
 	m_scene->simulate( elapsedTime );	  
 
 	m_scene->fetchResults( true );

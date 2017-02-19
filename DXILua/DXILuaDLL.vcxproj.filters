@@ -105,6 +105,9 @@
     <ClInclude Include="dxilua\unify\ExportAngle.h">
       <Filter>dxilua\unify</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -199,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportAngle.cpp">
       <Filter>dxilua\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp">
+      <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

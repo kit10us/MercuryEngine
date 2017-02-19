@@ -9,7 +9,7 @@ namespace unify
 {
 	/// <summary>
 	///	An Angle abstract so we can move between degrees and radians easily, and simplify math by pushing the actual conversion format
-	/// to the beginning and end of the lifetime of the math - that is to say, we don't care if A + B is degress or radians, we only 
+	/// to the beginning and end of the lifetime of the math - that is to say, we don't care if A + B is degrees or radians, we only 
 	/// care that the result is in degrees or radians.
 	/// </summary>
 	class Angle
@@ -59,7 +59,7 @@ namespace unify
         float ToDegrees() const;
 
 		///<summary>
-		/// Ensures our value is within 360 degress, without loss of precision (if we are 367, then we become 7, etc.).
+		/// Ensures our value is within 360 degrees, without loss of precision (if we are 367, then we become 7, etc.).
 		/// Returns the change in magnitude relative to 360 (367 returns 1, -728 returns -2, etc.).
         ///</summary>
         int Fix360();

@@ -10,6 +10,7 @@
 #include <MEWinMain.h>
 
 #include <me/scene/BBoxRendererComponent.h>
+#include <me/scene/AutoBBoxSceneComponent.h>
 #include <me/scene/CameraComponent.h>
 
 using namespace me;
@@ -38,7 +39,7 @@ void MyGame::Startup()
 	// Load shaders.
 	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", "shaders/textured3d.xml" );
 	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", "shaders/textured3d.xml" );
-
+																									  
 	// Add a texture.
 	GetManager< ITexture >()->Add( "borgcube", "borgcube.bmp" );
 
@@ -50,6 +51,8 @@ void MyGame::Startup()
 
 	// Add a scene.
 	Scene::ptr scene = sceneManager->Add( "scene" );
+
+	//scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Add a camera...
 	Object * camera = scene->NewObject( "camera" );

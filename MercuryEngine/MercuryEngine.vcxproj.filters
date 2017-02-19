@@ -19,14 +19,20 @@
     <Filter Include="me\scene2d">
       <UniqueIdentifier>{563e301f-4ec1-4d38-b6eb-8d85553eb0a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="me\interfaces">
-      <UniqueIdentifier>{7152e1d1-6ddf-4f02-91c2-0823da575fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shape_creation">
       <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
     </Filter>
     <Filter Include="me\shader">
       <UniqueIdentifier>{d61f0b9f-bb5c-4b7a-9dac-edc26a9fa479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\_tr">
+      <UniqueIdentifier>{1136597d-dff7-4357-9db4-7099e8a0c699}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\i">
+      <UniqueIdentifier>{7152e1d1-6ddf-4f02-91c2-0823da575fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\motivator">
+      <UniqueIdentifier>{af88dffd-46a6-4498-b076-51e9de76e31d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -282,42 +288,6 @@
     <ClInclude Include="me\scene2d\CanvasComponent.h">
       <Filter>me\scene2d</Filter>
     </ClInclude>
-    <ClInclude Include="me\IGameComponent.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IGame.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IIndexBuffer.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IInputSource.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IOS.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IPixelShader.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IRenderer.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IScriptEngine.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\ITexture.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexBuffer.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexConstruct.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexShader.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\IObjectAllocator.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -348,9 +318,6 @@
     <ClInclude Include="me\BufferUsage.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\IBuffer.h">
-      <Filter>me\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="me\MatrixFeed.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -359,6 +326,63 @@
     </ClInclude>
     <ClInclude Include="me\shader\ConstantVariable.h">
       <Filter>me\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ObjectMotivator.h">
+      <Filter>me\_tr</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IScriptEngine.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\ITexture.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexBuffer.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexConstruct.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IVertexShader.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IBuffer.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IConstantBuffer.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IController.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IGame.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IGameComponent.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IIndexBuffer.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IInputSource.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IMotivator.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IOS.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IPixelShader.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IRenderer.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\motivator\ObjectOrbitMotivator.h">
+      <Filter>me\motivator</Filter>
+    </ClInclude>
+    <ClInclude Include="me\motivator\IMotivator.h">
+      <Filter>me\motivator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -589,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="me\shader\ConstantVariable.cpp">
       <Filter>me\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="me\motivator\ObjectOrbitMotivator.cpp">
+      <Filter>me\motivator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

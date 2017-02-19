@@ -52,10 +52,13 @@
     <ClInclude Include="me\GeometryCache.h" />
     <ClInclude Include="me\GeometryInstanceData.h" />
     <ClInclude Include="me\IBuffer.h" />
+    <ClInclude Include="me\IConstantBuffer.h" />
+    <ClInclude Include="me\IController.h" />
     <ClInclude Include="me\IGame.h" />
     <ClInclude Include="me\IGameComponent.h" />
     <ClInclude Include="me\IIndexBuffer.h" />
     <ClInclude Include="me\IInputSource.h" />
+    <ClInclude Include="me\IMotivator.h" />
     <ClInclude Include="me\IndexLock.h" />
     <ClInclude Include="me\InputManager.h" />
     <ClInclude Include="me\Instancing.h" />
@@ -73,6 +76,9 @@
     <ClInclude Include="me\Mesh.h" />
     <ClInclude Include="me\MeshAnimation.h" />
     <ClInclude Include="me\MeshInstanceData.h" />
+    <ClInclude Include="me\motivator\IMotivator.h" />
+    <ClInclude Include="me\motivator\ObjectOrbitMotivator.h" />
+    <ClInclude Include="me\ObjectMotivator.h" />
     <ClInclude Include="me\PrimitiveList.h" />
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
@@ -159,6 +165,7 @@
     <ClCompile Include="me\MatrixFeed.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
+    <ClCompile Include="me\motivator\ObjectOrbitMotivator.cpp" />
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
