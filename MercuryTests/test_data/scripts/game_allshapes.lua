@@ -16,8 +16,6 @@ function OnStart()
 	camera:Transform():LookAt( V3.Zero() )
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
-
-	Debug.WriteLine( "peter" )
 	
 	cubeParameters = ShapeParameters( "cube" )
 	cubeParameters:SetEffect( color3d )

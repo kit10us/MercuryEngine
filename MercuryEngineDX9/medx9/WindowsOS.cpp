@@ -40,8 +40,8 @@ public:
 
 	std::vector< std::string > m_commandLine;
 
-	IInputSource * m_keyboard;
-	IInputSource * m_mouse;
+	input::IInputSource * m_keyboard;
+	input::IInputSource * m_mouse;
 
 	bool m_hasFocus;
 	std::list< HWND > m_childHandles; // Handles to be serviced.
@@ -312,7 +312,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_pimpl->m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
+				//m_pimpl->m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
 				break;
 			}
 		}
@@ -328,7 +328,9 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_pimpl->m_mouse->SetState( renderer, "LeftButton", "Down", true );
+				size_t leftButton = m_pimpl->m_mouse->InputIndex( renderer, "LeftButton" );
+				size_t leftButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, leftButton, "Down" );
+				m_pimpl->m_mouse->SetState( renderer, leftButton, leftButtonDown, true );
 				break;
 			}
 		}
@@ -344,7 +346,9 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_pimpl->m_mouse->SetState( renderer, "LeftButton", "Down", false );
+				size_t leftButton = m_pimpl->m_mouse->InputIndex( renderer, "LeftButton" );
+				size_t leftButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, leftButton, "Down" );
+				m_pimpl->m_mouse->SetState( renderer, leftButton, leftButtonDown, false );
 				break;
 			}
 		}
@@ -360,7 +364,9 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_pimpl->m_mouse->SetState( renderer, "RightButton", "Down", true );
+				size_t rightButton = m_pimpl->m_mouse->InputIndex( renderer, "RightButton" );
+				size_t rightButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, rightButton, "Down" );
+				m_pimpl->m_mouse->SetState( renderer, rightButton, rightButtonDown, true );
 				break;
 			}
 		}
@@ -376,7 +382,9 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_pimpl->m_mouse->SetState( renderer, "RightButton", "Down", false );
+				size_t rightButton = m_pimpl->m_mouse->InputIndex( renderer, "RightButton" );
+				size_t rightButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, rightButton, "Down" );
+				m_pimpl->m_mouse->SetState( renderer, rightButton, rightButtonDown, false );
 				break;
 			}
 		}
@@ -393,7 +401,8 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				m_pimpl->m_mouse->SetValue( renderer, "MouseWheel", zDelta / (float)WHEEL_DELTA );
+				size_t mouseWheel = m_pimpl->m_mouse->InputIndex( renderer, "MouseWheel" );
+				m_pimpl->m_mouse->SetValue( renderer, mouseWheel, zDelta / (float)WHEEL_DELTA );
 				break;
 			}
 		}
@@ -435,8 +444,11 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				mousePosition.x *= static_cast< int >(width / clientWidth);
 				mousePosition.y *= static_cast< int >(height / clientHeight);
 
-				m_pimpl->m_mouse->SetValue( renderer, "PositionX", (float)mousePosition.x );
-				m_pimpl->m_mouse->SetValue( renderer, "PositionY", (float)mousePosition.y );
+				size_t positionX = m_pimpl->m_mouse->InputIndex( renderer, "PositionX" );
+				size_t positionY = m_pimpl->m_mouse->InputIndex( renderer, "PositionY" );
+				
+				m_pimpl->m_mouse->SetValue( renderer, positionX, (float)mousePosition.x );
+				m_pimpl->m_mouse->SetValue( renderer, positionY, (float)mousePosition.y );
 				break;
 			}
 		}

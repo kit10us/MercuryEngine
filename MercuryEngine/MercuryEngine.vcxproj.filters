@@ -34,11 +34,11 @@
     <Filter Include="me\motivator">
       <UniqueIdentifier>{af88dffd-46a6-4498-b076-51e9de76e31d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\input">
+      <UniqueIdentifier>{0ace11eb-4903-464d-b70b-6fd4a1b5aabf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="me\InputManager.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Mercury.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -384,11 +384,20 @@
     <ClInclude Include="me\motivator\IMotivator.h">
       <Filter>me\motivator</Filter>
     </ClInclude>
+    <ClInclude Include="me\motivator\ObjectInputMotivator.h">
+      <Filter>me\motivator</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\IInputCondition.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\IInputSource.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\InputManager.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="me\InputManager.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\RenderInfo.cpp">
       <Filter>me</Filter>
     </ClCompile>
@@ -616,6 +625,15 @@
     </ClCompile>
     <ClCompile Include="me\motivator\ObjectOrbitMotivator.cpp">
       <Filter>me\motivator</Filter>
+    </ClCompile>
+    <ClCompile Include="me\motivator\ObjectInputMotivator.cpp">
+      <Filter>me\motivator</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\IInputCondition.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\InputManager.cpp">
+      <Filter>me\input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

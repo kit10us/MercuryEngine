@@ -524,12 +524,12 @@ bool Game::IsQuitting() const
 	return m_isQuitting;
 }
 
-InputManager * Game::GetInputManager()
+input::InputManager * Game::GetInputManager()
 {
 	return &m_inputManager;
 }
 
-const InputManager * Game::GetInputManager() const
+const input::InputManager * Game::GetInputManager() const
 {
 	return &m_inputManager;
 }

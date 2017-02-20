@@ -3,9 +3,20 @@
 
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportInput.h>
+#include <me/input/IInputCondition.h>
 
 using namespace dxilua;
 using namespace me;
+using namespace input;
+
+int PushInput( lua_State * state, me::input::IInputSource::ptr input )
+{
+	InputProxy ** proxy = (InputProxy**)(lua_newuserdata( state, sizeof( InputProxy* ) ));
+	*proxy = new InputProxy;
+	luaL_setmetatable( state, "Input" );
+	(*proxy)->input = input;
+	return 1;
+}
 
 InputProxy* CheckInput( lua_State* state, int index )
 {
@@ -48,7 +59,10 @@ int Input_GetState( lua_State * state )
 	std::string name = lua_tostring( state, 3 );
 	std::string condition = lua_tostring( state, 4 );
 
-	State inputState = inputProxy->input->GetState( subSource, name, condition );
+	size_t inputIndex = inputProxy->input->InputIndex( subSource, name );
+	size_t conditionIndex = inputProxy->input->InputConditionIndex( subSource, inputIndex, condition );
+
+	State inputState = inputProxy->input->GetState( subSource, inputIndex, conditionIndex );
 	int result = -1;
 	if ( inputState == State::True )
 	{
@@ -72,8 +86,9 @@ int Input_HasValue( lua_State * state )
 
 	size_t subSource = (size_t)lua_tonumber( state, 2 );
 	std::string name = lua_tostring( state, 3 );
+	size_t inputIndex = inputProxy->input->InputIndex( subSource, name );
 
-	bool hasValue = inputProxy->input->HasValue( subSource, name );
+	bool hasValue = inputProxy->input->HasValue( subSource, inputIndex );
 	lua_pushboolean( state, hasValue ? 1 : 0 );
 
 	return 1;
@@ -88,8 +103,9 @@ int Input_GetValue( lua_State * state )
 
 	size_t subSource = (size_t)lua_tonumber( state, 2 );
 	std::string name = lua_tostring( state, 3 );
+	size_t inputIndex = inputProxy->input->InputIndex( subSource, name );
 
-	float value = inputProxy->input->GetValue( subSource, name );
+	float value = inputProxy->input->GetValue( subSource, inputIndex );
 	lua_pushnumber( state, value );
 
 	return 1;

@@ -13,7 +13,7 @@ void DeleterMouse( dximouse::Mouse * mouse )
 extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
 __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
 {
-	game->GetInputManager()->AddInputSource( me::IInputSource::ptr( new dximouse::Mouse( game ), DeleterMouse ) );
+	game->GetInputManager()->AddInputSource( me::input::IInputSource::ptr( new dximouse::Mouse( game ), DeleterMouse ) );
 
 	return true;
 }

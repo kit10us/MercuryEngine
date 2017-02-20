@@ -5,12 +5,39 @@
 
 using namespace dximouse;
 using namespace me;
+using namespace input;
+
+std::vector< std::string > g_ButtonNames =
+{
+	"LeftButton",
+	"RightButton",
+	"MiddleButton"
+};
+
+std::vector< std::string > g_AnalogNames =
+{
+	"PositionX",
+	"PositionY",
+	"MouseWheel",
+	"ChangeX",
+	"ChangeY"
+};
 
 Mouse::Mouse( IGame * game )
 	: m_game( game )
 {
 	m_subSources.resize( game->GetOS()->RendererCount() );
 	m_subSourcesUpdated.resize( game->GetOS()->RendererCount() );
+
+	size_t index = 0;
+	for ( auto && name : g_ButtonNames )
+	{
+		m_nameToIndex[ name ] = index++;
+	}
+	for ( auto && name : g_AnalogNames )
+	{
+		m_nameToIndex[ name ] = index++;
+	}
 }
 
 Mouse::~Mouse()
@@ -74,7 +101,89 @@ size_t Mouse::SubSourceCount() const
 	return m_subSources.size();
 }
 
-State Mouse::GetState( size_t subSource, std::string name, std::string condition ) const
+size_t Mouse::InputCount( size_t subSource ) const
+{
+	return g_ButtonNames.size() + g_AnalogNames.size();
+}
+
+std::string Mouse::InputName( size_t subSource, size_t index ) const
+{
+	if ( index < g_ButtonNames.size() )
+	{	
+		return g_ButtonNames[ index ];
+	}
+	else if ( index < g_AnalogNames.size() )
+	{
+		return g_AnalogNames[ index - g_ButtonNames.size() ];
+	}
+	else
+	{
+		return std::string();
+	}
+}
+
+size_t Mouse::InputIndex( size_t subSource, std::string name ) const
+{
+	auto && itr = m_nameToIndex.find( name );
+	return itr == m_nameToIndex.end() ? MAXSIZE_T : itr->second;
+}
+
+size_t Mouse::InputConditionCount( size_t subSource, size_t index ) const
+{	
+	if ( index < g_ButtonNames.size() )
+	{
+		return 2;
+	}
+	else
+	{
+		return MAXSIZE_T;
+	}
+}
+
+std::string Mouse::InputConditionName( size_t subSource, size_t index, size_t condition ) const
+{
+	if ( index < g_ButtonNames.size() )
+	{
+		switch ( index )
+		{
+		case 0:
+			return "Down";
+		case 1:
+			return "Pressed";
+		default:
+			return std::string();
+		}
+	}
+	else
+	{
+		return std::string();
+	}
+}
+
+size_t Mouse::InputConditionIndex( size_t subSource, size_t index, std::string condition ) const
+{
+	if ( index < g_ButtonNames.size() )
+	{
+		if ( unify::StringIs( condition, "Down" ) )
+		{
+			return 0;
+		}
+		else if ( unify::StringIs( condition, "Pressed" ) )
+		{
+			return 1;
+		}
+		else
+		{
+			return MAXSIZE_T;
+		}
+	}
+	else
+	{
+		return MAXSIZE_T;
+	}
+}
+
+State Mouse::GetState( size_t subSource, size_t index, size_t condition ) const
 {
 	if ( subSource >= m_subSources.size() )
 	{
@@ -83,81 +192,65 @@ State Mouse::GetState( size_t subSource, std::string name, std::string condition
 
 	const Source & source = m_subSources[subSource];
 
-	if ( unify::StringIs( name, "LeftButton" ) )
+	switch ( index )
 	{
-		if ( unify::StringIs( condition, "Down" ) )
+	case 0:
+		switch ( condition )
 		{
+		case 0:
 			return source.LeftButton ? State::True : State::False;
-		}
-		else if ( unify::StringIs( condition, "Pressed" ) )
-		{
+		case 1:
 			return source.LeftButtonPressed ? State::True : State::False;
+		default:
+			return State::Invalid;
 		}
-	}
-
-	if ( unify::StringIs( name, "RightButton" ) )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
-		{	
+	case 1:
+		switch ( condition )
+		{
+		case 0:
 			return source.RightButton ? State::True : State::False;
-		}
-		else if ( unify::StringIs( condition, "Pressed" ) )
-		{
+		case 1:
 			return source.RightButtonPressed ? State::True : State::False;
+		default:
+			return State::Invalid;
 		}
-	}
-
-	if ( unify::StringIs( name, "MiddleButton" ) )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
+	case 2:
+		switch ( condition )
 		{
+		case 0:
 			return source.MiddleButton ? State::True : State::False;
-		}
-		else if ( unify::StringIs( condition, "Pressed" ) )
-		{
+		case 1:
 			return source.MiddleButtonPressed ? State::True : State::False;
+		default:
+			return State::Invalid;
 		}
+	default:
+		return State::Invalid;
 	}
-
-	return State::Invalid;
 }
 
-bool Mouse::HasValue( size_t subSource, std::string name ) const
+bool Mouse::HasValue( size_t subSource, size_t index ) const
 {
 	if ( subSource >= m_subSources.size() )
 	{
 		return false;
 	}
 
-	if ( unify::StringIs( name, "PositionX" ) )
+	if ( index < g_ButtonNames.size() )
+	{
+		return false;
+	}
+	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
 	{
 		return true;
 	}
-
-	if ( unify::StringIs( name, "PositionY" ) )
+	else
 	{
-		return true;
+		return false;
 	}
-
-	if ( unify::StringIs( name, "MouseWheel" ) )
-	{
-		return true;
-	}
-
-	if ( unify::StringIs( name, "ChangeX" ) )
-	{
-		return true;
-	}
-
-	if ( unify::StringIs( name, "ChangeY" ) )
-	{
-		return true;
-	}
-
-	return false;
 }
 
-float Mouse::GetValue( size_t subSource, std::string name ) const
+float Mouse::GetValue( size_t subSource, size_t index ) const
 {
 	if ( subSource >= m_subSources.size() )
 	{
@@ -166,94 +259,104 @@ float Mouse::GetValue( size_t subSource, std::string name ) const
 
 	const Source & source = m_subSources[subSource];
 
-	if ( unify::StringIs( name, "PositionX" ) )
+	if ( index < g_ButtonNames.size() )
 	{
-		return source.PositionX;
+		return 0.0f;
 	}
-
-	if ( unify::StringIs( name, "PositionY" ) )
+	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
 	{
-		return source.PositionY;
+		switch ( index - g_ButtonNames.size() )
+		{
+		case 0:
+			return source.PositionX;
+		case 1:
+			return source.PositionY;
+		case 2:
+			return source.MouseWheel;
+		case 3:
+			return source.ChangeX;
+		case 4:
+			return source.ChangeY;
+		default:
+			return 0.0f;
+		}
 	}
-
-	if ( unify::StringIs( name, "MouseWheel" ) )
+	else
 	{
-		return source.MouseWheel;
+		return 0.0f;
 	}
-
-	if ( unify::StringIs( name, "ChangeX" ) )
-	{
-		return source.ChangeX;
-	}
-
-	if ( unify::StringIs( name, "ChangeY" ) )
-	{
-		return source.ChangeY;
-	}
-
 	return 0.0f;
 }
 
-bool Mouse::SetState( size_t subSource, std::string name, std::string condition, bool set )
+bool Mouse::SetState( size_t subSource, size_t index, size_t condition, bool set )
 {
 	if ( subSource >= m_subSources.size() ) return false;
 
 	Source & source = m_subSourcesUpdated[subSource];
 
-	if ( unify::StringIs( name, "LeftButton" ) )
+	switch ( index )
 	{
-		if ( unify::StringIs( condition, "Down" ) )
+	case 0:
+		switch ( condition )
 		{
+		case 0:
 			source.LeftButton = set;
 			return true;
+		default:
+			return false;
 		}
-		return false;
-	}
-
-	if ( unify::StringIs( name, "RightButton" ) )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
+	case 1:
+		switch ( condition )
 		{
+		case 0:
 			source.RightButton = set;
 			return true;
+		default:
+			return false;
 		}
-		return false;
-	}
-
-	if ( unify::StringIs( name, "MiddleButton" ) )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
+	case 2:
+		switch ( condition )
 		{
+		case 0:
 			source.MiddleButton = set;
 			return true;
+		default:
+			return false;
 		}
+	default:
 		return false;
+	}
+}
+
+bool Mouse::SetValue( size_t subSource, size_t index, float value )
+{
+	if ( subSource >= m_subSources.size() ) return false;
+
+	Source & source = m_subSourcesUpdated[subSource];
+
+	if ( index < g_ButtonNames.size() )
+	{
+		return false;
+	}
+	else if( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
+	{
+		switch ( index - g_ButtonNames.size() )
+		{
+		case 0:
+			source.PositionX = value;
+			return true;
+		case 1:
+			source.PositionY = value;
+			return true;
+		case 2:
+			source.MouseWheel = value;
+			return true;
+
+		default:
+			return false;
+		}
 	}
 
 	return false;
-}
-
-bool Mouse::SetValue( size_t subSource, std::string name, float value )
-{
-	if ( subSource >= m_subSources.size() ) return false;
-
-	Source & source = m_subSourcesUpdated[subSource];
-
-	if ( unify::StringIs( name, "PositionX" ) )
-	{
-		source.PositionX = value;
-	}
-
-	if ( unify::StringIs( name, "PositionY" ) )
-	{
-		source.PositionY = value;
-	}
-
-	if ( unify::StringIs( name, "MouseWheel" ) )
-	{
-		source.MouseWheel = value;
-	}
-
-	return true;
 }
 

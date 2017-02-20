@@ -108,6 +108,12 @@
     <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h">
       <Filter>dxilua</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportObjectInputMotivator.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportInputCondition.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -204,6 +210,12 @@
       <Filter>dxilua\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObjectInputMotivator.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportInputCondition.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>

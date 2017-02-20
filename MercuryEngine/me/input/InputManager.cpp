@@ -1,10 +1,11 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/InputManager.h>
+#include <me/input/InputManager.h>
 #include <unify/String.h>
 
 using namespace me;
+using namespace input;
 
 InputManager::InputManager()
 {

@@ -8,7 +8,7 @@
 #include <unify/TimeDelta.h>
 #include <me/Extension.h>
 #include <me/RenderInfo.h>
-#include <me/InputManager.h>
+#include <me/input/InputManager.h>
 #include <rm/ResourceManagerSimple.h>
 #include <me/IGameComponent.h>
 
@@ -82,8 +82,8 @@ namespace me
 
 		virtual bool IsQuitting() const = 0;
 
-		virtual InputManager * GetInputManager() = 0;
-		virtual const InputManager * GetInputManager() const = 0;
+		virtual input::InputManager * GetInputManager() = 0;
+		virtual const input::InputManager * GetInputManager() const = 0;
 
 		virtual void Log( std::string text ) = 0;
 

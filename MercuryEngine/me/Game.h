@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/Geometry.h>
-#include <me/InputManager.h>
+#include <me/input/InputManager.h>
 #include <me/IGame.h>
 #include <me/IOS.h>
 #include <me/Display.h>
@@ -76,8 +76,8 @@ namespace me
 		void Quit();
 		bool IsQuitting() const;
 
-		me::InputManager * GetInputManager();
-		const me::InputManager * GetInputManager() const;
+		me::input::InputManager * GetInputManager();
+		const me::input::InputManager * GetInputManager() const;
 
 		void Log( std::string text );
 		void LogLine( std::string line );
@@ -117,7 +117,7 @@ namespace me
 
 		bool m_isQuitting;
 			
-		me::InputManager m_inputManager;
+		me::input::InputManager m_inputManager;
 
 		std::list< std::shared_ptr< me::Extension > > m_extensions;
 

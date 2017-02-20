@@ -94,6 +94,8 @@
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h" />
     <ClInclude Include="dxilua\CreateState.h" />
+    <ClInclude Include="dxilua\ExportInputCondition.h" />
+    <ClInclude Include="dxilua\ExportObjectInputMotivator.h" />
     <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h" />
     <ClInclude Include="dxilua\ScriptEngine.h" />
     <ClInclude Include="dxilua\ExportCameraComponent.h" />
@@ -135,6 +137,8 @@
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp" />
     <ClCompile Include="dxilua\CreateState.cpp" />
+    <ClCompile Include="dxilua\ExportInputCondition.cpp" />
+    <ClCompile Include="dxilua\ExportObjectInputMotivator.cpp" />
     <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp" />
     <ClCompile Include="dxilua\ScriptEngine.cpp" />
     <ClCompile Include="dxilua\ExportCameraComponent.cpp" />

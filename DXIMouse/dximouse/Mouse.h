@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include <me/IInputSource.h>
+#include <me/input/IInputSource.h>
 #include <me/IGame.h>
 #include <map>
 
 namespace dximouse
 {
-	class Mouse : public me::IInputSource
+	class Mouse : public me::input::IInputSource
 	{
 	public:
 		Mouse( me::IGame * game );
@@ -21,15 +21,27 @@ namespace dximouse
 
 		size_t SubSourceCount() const override;
 
-		me::State GetState( size_t subSource, std::string name, std::string condition ) const override;
+		size_t InputCount( size_t subSource ) const override;
 
-		bool HasValue( size_t subSource, std::string name ) const override;
+		std::string InputName( size_t subSource, size_t index ) const override;
 
-		float GetValue( size_t subSource, std::string name ) const override;
+		size_t InputIndex( size_t subSource, std::string name ) const override;
 
-		bool SetState( size_t subSource, std::string name, std::string condition, bool set );
+		size_t InputConditionCount( size_t subSource, size_t index ) const override;
 
-		bool SetValue( size_t subSource, std::string name, float value );
+		std::string InputConditionName( size_t subSource, size_t index, size_t condition ) const override;
+
+		size_t InputConditionIndex( size_t subSource, size_t index, std::string condition ) const override;
+
+		me::input::State GetState( size_t subSource, size_t index, size_t condition ) const override;
+
+		bool HasValue( size_t subSource, size_t index ) const override;
+
+		float GetValue( size_t subSource, size_t index ) const override;
+
+		bool SetState( size_t subSource, size_t index, size_t condition, bool set ) override;
+
+		bool SetValue( size_t subSource, size_t index, float value ) override;
 
 	private:
 		me::IGame * m_game;
@@ -65,6 +77,7 @@ namespace dximouse
 			float MouseWheel;
 		};
 
+		std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_nameToIndex;
 		std::vector< Source > m_subSources;
 		std::vector< Source > m_subSourcesUpdated;
 	};

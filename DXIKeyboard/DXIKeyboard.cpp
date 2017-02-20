@@ -13,7 +13,7 @@ void DeleterKeyboard( dxikeyboard::Keyboard * keyboard )
 extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
 __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
 {
-	game->GetInputManager()->AddInputSource( me::IInputSource::ptr( new dxikeyboard::Keyboard( game ), DeleterKeyboard ) );
+	game->GetInputManager()->AddInputSource( me::input::IInputSource::ptr( new dxikeyboard::Keyboard( game ), DeleterKeyboard ) );
 
 	return true;
 }

@@ -27,6 +27,8 @@
 #include <dxilua/ExportTerra.h>
 #include <dxilua/ExportTexture.h>
 #include <dxilua/ExportObjectOrbitMotivator.h>
+#include <dxilua/ExportObjectInputMotivator.h>
+#include <dxilua/ExportInputCondition.h>
 
 lua_State * dxilua::CreateState()
 {
@@ -62,6 +64,8 @@ lua_State * dxilua::CreateState()
 	RegisterTerra( state );
 	RegisterTexture( state );
 	RegisterObjectOrbitMotivator( state );
+	RegisterObjectInputMotivator( state );
+	RegisterInputCondition( state );	
 
 	return state;
 }

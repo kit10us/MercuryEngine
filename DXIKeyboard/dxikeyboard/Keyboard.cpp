@@ -7,336 +7,337 @@
 
 using namespace dxikeyboard;
 using namespace me;
+using namespace input;
 
 #pragma comment(lib,"dxguid")
 #pragma comment(lib,"dinput8")
-  
-std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_KeyNameToIndex =
-{
-{"0", DIK_0 },
-{ "1", DIK_1 },
-{ "2", DIK_2 },
-{ "3", DIK_3 },
-{ "4", DIK_4 },
-{ "5", DIK_5 },
-{ "6", DIK_6 },
-{ "7", DIK_7 },
-{ "8", DIK_8 },
-{ "9", DIK_9 },
-{ "A", DIK_A },
-{ "ABNT_C1", DIK_ABNT_C1 },
-{ "ABNT_C2", DIK_ABNT_C2 },
-{ "ADD", DIK_ADD },
-{ "APOSTROPHE", DIK_APOSTROPHE },
-{ "APPS", DIK_APPS },
-{ "AT", DIK_AT },
-{ "AX", DIK_AX },
-{ "B", DIK_B },
-{ "BACK", DIK_BACK },
-{ "BACKSLASH", DIK_BACKSLASH },
-{ "C", DIK_C },
-{ "CALCULATOR", DIK_CALCULATOR },
-{ "CAPITAL", DIK_CAPITAL },
-{ "COLON", DIK_COLON },
-{ "COMMA", DIK_COMMA },
-{ "CONVERT", DIK_CONVERT },
-{ "D", DIK_D },
-{ "DECIMAL", DIK_DECIMAL },
-{ "DELETE", DIK_DELETE },
-{ "DIVIDE", DIK_DIVIDE },
-{ "DOWN", DIK_DOWN },
-{ "E", DIK_E },
-{ "END", DIK_END },
-{ "EQUALS", DIK_EQUALS },
-{ "ESCAPE", DIK_ESCAPE },
-{ "F", DIK_F },
-{ "F1", DIK_F1 },
-{ "F2", DIK_F2 },
-{ "F3", DIK_F3 },
-{ "F4", DIK_F4 },
-{ "F5", DIK_F5 },
-{ "F6", DIK_F6 },
-{ "F7", DIK_F7 },
-{ "F8", DIK_F8 },
-{ "F9", DIK_F9 },
-{ "F10", DIK_F10 },
-{ "F11", DIK_F11 },
-{ "F12", DIK_F12 },
-{ "F13", DIK_F13 },
-{ "F14", DIK_F14 },
-{ "F15", DIK_F15 },
-{ "G", DIK_G },
-{ "GRAVE", DIK_GRAVE },
-{ "H", DIK_H },
-{ "HOME", DIK_HOME },
-{ "I", DIK_I },
-{ "INSERT", DIK_INSERT },
-{ "J", DIK_J },
-{ "K", DIK_K },
-{ "KANA", DIK_KANA },
-{ "KANJI", DIK_KANJI },
-{ "L", DIK_L },
-{ "LBRACKET", DIK_LBRACKET },
-{ "LCONTROL", DIK_LCONTROL },
-{ "LEFT", DIK_LEFT },
-{ "LMENU", DIK_LMENU },
-{ "LSHIFT", DIK_LSHIFT },
-{ "LWIN", DIK_LWIN },
-{ "M", DIK_M },
-{ "MAIL", DIK_MAIL },
-{ "MEDIASELECT", DIK_MEDIASELECT },
-{ "MEDIASTOP", DIK_MEDIASTOP },
-{ "MINUS", DIK_MINUS },
-{ "MULTIPLY", DIK_MULTIPLY },
-{ "MUTE", DIK_MUTE },
-{ "MYCOMPUTER", DIK_MYCOMPUTER },
-{ "N", DIK_N },
-{ "NEXT", DIK_NEXT },
-{ "NEXTTRACK", DIK_NEXTTRACK },
-{ "NOCONVERT", DIK_NOCONVERT },
-{ "NUMLOCK", DIK_NUMLOCK },
-{ "NUMPAD0", DIK_NUMPAD0 },
-{ "NUMPAD1", DIK_NUMPAD1 },
-{ "NUMPAD2", DIK_NUMPAD2 },
-{ "NUMPAD3", DIK_NUMPAD3 },
-{ "NUMPAD4", DIK_NUMPAD4 },
-{ "NUMPAD5", DIK_NUMPAD5 },
-{ "NUMPAD6", DIK_NUMPAD6 },
-{ "NUMPAD7", DIK_NUMPAD7 },
-{ "NUMPAD8", DIK_NUMPAD8 },
-{ "NUMPAD9", DIK_NUMPAD9 },
-{ "NUMPADCOMMA", DIK_NUMPADCOMMA },
-{ "NUMPADENTER", DIK_NUMPADENTER },
-{ "NUMPADEQUALS", DIK_NUMPADEQUALS },
-{ "O", DIK_O },
-{ "OEM_102", DIK_OEM_102 },
-{ "P", DIK_P },
-{ "PAUSE", DIK_PAUSE },
-{ "PERIOD", DIK_PERIOD },
-{ "PLAYPAUSE", DIK_PLAYPAUSE },
-{ "POWER", DIK_POWER },
-{ "PREVTRACK", DIK_PREVTRACK },
-{ "PRIOR", DIK_PRIOR },
-{ "Q", DIK_Q },
-{ "R", DIK_R },
-{ "RBRACKET", DIK_RBRACKET },
-{ "RCONTROL", DIK_RCONTROL },
-{ "RETURN", DIK_RETURN },
-{ "RIGHT", DIK_RIGHT },
-{ "RMENU", DIK_RMENU },
-{ "RSHIFT", DIK_RSHIFT },
-{ "RWIN", DIK_RWIN },
-{ "S", DIK_S },
-{ "SCROLL", DIK_SCROLL },
-{ "SEMICOLON", DIK_SEMICOLON },
-{ "SLASH", DIK_SLASH },
-{ "SLEEP", DIK_SLEEP },
-{ "SPACE", DIK_SPACE },
-{ "STOP", DIK_STOP },
-{ "SUBTRACT", DIK_SUBTRACT },
-{ "SYSRQ", DIK_SYSRQ },
-{ "T", DIK_T },
-{ "TAB", DIK_TAB },
-{ "U", DIK_U },
-{ "UNDERLINE", DIK_UNDERLINE },
-{ "UNLABELED", DIK_UNLABELED },
-{ "UP", DIK_UP },
-{ "V", DIK_V },
-{ "VOLUMEDOWN", DIK_VOLUMEDOWN },
-{ "VOLUMEUP", DIK_VOLUMEUP },
-{ "W", DIK_W },
-{ "WAKE", DIK_WAKE },
-{ "WEBBACK", DIK_WEBBACK },
-{ "WEBFAVORITES", DIK_WEBFAVORITES },
-{ "WEBFORWARD", DIK_WEBFORWARD },
-{ "WEBHOME", DIK_WEBHOME },
-{ "WEBREFRESH", DIK_WEBREFRESH },
-{ "WEBSEARCH", DIK_WEBSEARCH },
-{ "WEBSTOP", DIK_WEBSTOP },
-{ "X", DIK_X },
-{ "Y", DIK_Y },
-{ "YEN", DIK_YEN },
-{ "Z", DIK_Z },
-{ "BACKSPACE", DIK_BACKSPACE },
-{ "CAPSLOCK", DIK_CAPSLOCK },
-{ "CIRCUMFLEX", DIK_CIRCUMFLEX },
-{ "DOWNARROW", DIK_DOWNARROW },
-{ "LALT", DIK_LALT },
-{ "LEFTARROW", DIK_LEFTARROW },
-{ "NUMPADMINUS", DIK_NUMPADMINUS },
-{ "NUMPADPERIOD", DIK_NUMPADPERIOD },
-{ "NUMPADPLUS", DIK_NUMPADPLUS },
-{ "NUMPADSLASH", DIK_NUMPADSLASH },
-{ "NUMPADSTAR", DIK_NUMPADSTAR },
-{ "PGDN", DIK_PGDN },
-{ "PGUP", DIK_PGUP },
-{ "RALT", DIK_RALT },
-{ "RIGHTARROW", DIK_RIGHTARROW },
-{ "UPARROW", DIK_UPARROW }
-};
 
-std::map< int, std::string > g_KeyIndexToName =
+std::vector< std::string > g_Names =
 {
-	{ DIK_0, "0" },
-	{ DIK_1, "1" },
-	{ DIK_2, "2" },
-	{ DIK_3, "3" },
-	{ DIK_4, "4" },
-	{ DIK_5, "5" },
-	{ DIK_6, "6" },
-	{ DIK_7, "7" },
-	{ DIK_8, "8" },
-	{ DIK_9, "9" },
-	{ DIK_A, "A" },
-	{ DIK_ABNT_C1, "ABNT_C1" },
-	{ DIK_ABNT_C2, "ABNT_C2" },
-	{ DIK_ADD, "ADD" },
-	{ DIK_APOSTROPHE, "APOSTROPHE" },
-	{ DIK_APPS, "APPS" },
-	{ DIK_AT, "AT" },
-	{ DIK_AX, "AX" },
-	{ DIK_B, "B" },
-	{ DIK_BACK, "BACK" },
-	{ DIK_BACKSLASH, "BACKSLASH" },
-	{ DIK_C, "C" },
-	{ DIK_CALCULATOR, "CALCULATOR" },
-	{ DIK_CAPITAL, "CAPITAL" },
-	{ DIK_COLON, "COLON" },
-	{ DIK_COMMA, "COMMA" },
-	{ DIK_CONVERT, "CONVERT" },
-	{ DIK_D, "D" },
-	{ DIK_DECIMAL, "DECIMAL" },
-	{ DIK_DELETE, "DELETE" },
-	{ DIK_DIVIDE, "DIVIDE" },
-	{ DIK_DOWN, "DOWN" },
-	{ DIK_E, "E" },
-	{ DIK_END, "END" },
-	{ DIK_EQUALS, "EQUALS" },
-	{ DIK_ESCAPE, "ESCAPE" },
-	{ DIK_F, "F" },
-	{ DIK_F1, "F1" },
-	{ DIK_F2, "F2" },
-	{ DIK_F3, "F3" },
-	{ DIK_F4, "F4" },
-	{ DIK_F5, "F5" },
-	{ DIK_F6, "F6" },
-	{ DIK_F7, "F7" },
-	{ DIK_F8, "F8" },
-	{ DIK_F9, "F9" },
-	{ DIK_F10, "F10" },
-	{ DIK_F11, "F11" },
-	{ DIK_F12, "F12" },
-	{ DIK_F13, "F13" },
-	{ DIK_F14, "F14" },
-	{ DIK_F15, "F15" },
-	{ DIK_G, "G" },
-	{ DIK_GRAVE, "GRAVE" },
-	{ DIK_H, "H" },
-	{ DIK_HOME, "HOME" },
-	{ DIK_I, "I" },
-	{ DIK_INSERT, "INSERT" },
-	{ DIK_J, "J" },
-	{ DIK_K, "K" },
-	{ DIK_KANA, "KANA" },
-	{ DIK_KANJI, "KANJI" },
-	{ DIK_L, "L" },
-	{ DIK_LBRACKET, "LBRACKET" },
-	{ DIK_LCONTROL, "LCONTROL" },
-	{ DIK_LEFT, "LEFT" },
-	{ DIK_LMENU, "LMENU" },
-	{ DIK_LSHIFT, "LSHIFT" },
-	{ DIK_LWIN, "LWIN" },
-	{ DIK_M, "M" },
-	{ DIK_MAIL, "MAIL" },
-	{ DIK_MEDIASELECT, "MEDIASELECT" },
-	{ DIK_MEDIASTOP, "MEDIASTOP" },
-	{ DIK_MINUS, "MINUS" },
-	{ DIK_MULTIPLY, "MULTIPLY" },
-	{ DIK_MUTE, "MUTE" },
-	{ DIK_MYCOMPUTER, "MYCOMPUTER" },
-	{ DIK_N, "N" },
-	{ DIK_NEXT, "NEXT" },
-	{ DIK_NEXTTRACK, "NEXTTRACK" },
-	{ DIK_NOCONVERT, "NOCONVERT" },
-	{ DIK_NUMLOCK, "NUMLOCK" },
-	{ DIK_NUMPAD0, "NUMPAD0" },
-	{ DIK_NUMPAD1, "NUMPAD1" },
-	{ DIK_NUMPAD2, "NUMPAD2" },
-	{ DIK_NUMPAD3, "NUMPAD3" },
-	{ DIK_NUMPAD4, "NUMPAD4" },
-	{ DIK_NUMPAD5, "NUMPAD5" },
-	{ DIK_NUMPAD6, "NUMPAD6" },
-	{ DIK_NUMPAD7, "NUMPAD7" },
-	{ DIK_NUMPAD8, "NUMPAD8" },
-	{ DIK_NUMPAD9, "NUMPAD9" },
-	{ DIK_NUMPADCOMMA, "NUMPADCOMMA" },
-	{ DIK_NUMPADENTER, "NUMPADENTER" },
-	{ DIK_NUMPADEQUALS, "NUMPADEQUALS" },
-	{ DIK_O, "O" },
-	{ DIK_OEM_102, "OEM_102" },
-	{ DIK_P, "P" },
-	{ DIK_PAUSE, "PAUSE" },
-	{ DIK_PERIOD, "PERIOD" },
-	{ DIK_PLAYPAUSE, "PLAYPAUSE" },
-	{ DIK_POWER, "POWER" },
-	{ DIK_PREVTRACK, "PREVTRACK" },
-	{ DIK_PRIOR, "PRIOR" },
-	{ DIK_Q, "Q" },
-	{ DIK_R, "R" },
-	{ DIK_RBRACKET, "RBRACKET" },
-	{ DIK_RCONTROL, "RCONTROL" },
-	{ DIK_RETURN, "RETURN" },
-	{ DIK_RIGHT, "RIGHT" },
-	{ DIK_RMENU, "RMENU" },
-	{ DIK_RSHIFT, "RSHIFT" },
-	{ DIK_RWIN, "RWIN" },
-	{ DIK_S, "S" },
-	{ DIK_SCROLL, "SCROLL" },
-	{ DIK_SEMICOLON, "SEMICOLON" },
-	{ DIK_SLASH, "SLASH" },
-	{ DIK_SLEEP, "SLEEP" },
-	{ DIK_SPACE, "SPACE" },
-	{ DIK_STOP, "STOP" },
-	{ DIK_SUBTRACT, "SUBTRACT" },
-	{ DIK_SYSRQ, "SYSRQ" },
-	{ DIK_T, "T" },
-	{ DIK_TAB, "TAB" },
-	{ DIK_U, "U" },
-	{ DIK_UNDERLINE, "UNDERLINE" },
-	{ DIK_UNLABELED, "UNLABELED" },
-	{ DIK_UP, "UP" },
-	{ DIK_V, "V" },
-	{ DIK_VOLUMEDOWN, "VOLUMEDOWN" },
-	{ DIK_VOLUMEUP, "VOLUMEUP" },
-	{ DIK_W, "W" },
-	{ DIK_WAKE, "WAKE" },
-	{ DIK_WEBBACK, "WEBBACK" },
-	{ DIK_WEBFAVORITES, "WEBFAVORITES" },
-	{ DIK_WEBFORWARD, "WEBFORWARD" },
-	{ DIK_WEBHOME, "WEBHOME" },
-	{ DIK_WEBREFRESH, "WEBREFRESH" },
-	{ DIK_WEBSEARCH, "WEBSEARCH" },
-	{ DIK_WEBSTOP, "WEBSTOP" },
-	{ DIK_X, "X" },
-	{ DIK_Y, "Y" },
-	{ DIK_YEN, "YEN" },
-	{ DIK_Z, "Z" },
-	{ DIK_BACKSPACE, "BACKSPACE" },
-	{ DIK_CAPSLOCK, "CAPSLOCK" },
-	{ DIK_CIRCUMFLEX, "CIRCUMFLEX" },
-	{ DIK_DOWNARROW, "DOWNARROW" },
-	{ DIK_LALT, "LALT" },
-	{ DIK_LEFTARROW, "LEFTARROW" },
-	{ DIK_NUMPADMINUS, "NUMPADMINUS" },
-	{ DIK_NUMPADPERIOD, "NUMPADPERIOD" },
-	{ DIK_NUMPADPLUS, "NUMPADPLUS" },
-	{ DIK_NUMPADSLASH, "NUMPADSLASH" },
-	{ DIK_NUMPADSTAR, "NUMPADSTAR" },
-	{ DIK_PGDN, "PGDN" },
-	{ DIK_PGUP, "PGUP" },
-	{ DIK_RALT, "RALT" },
-	{ DIK_RIGHTARROW, "RIGHTARROW" },
-	{ DIK_UPARROW, "UPARROW" }
+	{"0"},
+	{ "1" },
+	{ "2" },
+	{ "3" },
+	{ "4" },
+	{ "5" },
+	{ "6" },
+	{ "7" },
+	{ "8" },
+	{ "9" },
+	{ "A" },
+	{ "ABNT_C1" },
+	{ "ABNT_C2" },
+	{ "ADD" },
+	{ "APOSTROPHE" },
+	{ "APPS" },
+	{ "AT" },
+	{ "AX" },
+	{ "B" },
+	{ "BACK" },
+	{ "BACKSLASH" },
+	{ "C" },
+	{ "CALCULATOR" },
+	{ "CAPITAL" },
+	{ "COLON" },
+	{ "COMMA" },
+	{ "CONVERT" },
+	{ "D" },
+	{ "DECIMAL" },
+	{ "DELETE" },
+	{ "DIVIDE" },
+	{ "DOWN" },
+	{ "E" },
+	{ "END" },
+	{ "EQUALS" },
+	{ "ESCAPE" },
+	{ "F" },
+	{ "F1" },
+	{ "F2" },
+	{ "F3" },
+	{ "F4" },
+	{ "F5" },
+	{ "F6" },
+	{ "F7" },
+	{ "F8" },
+	{ "F9" },
+	{ "F10" },
+	{ "F11" },
+	{ "F12" },
+	{ "F13" },
+	{ "F14" },
+	{ "F15" },
+	{ "G" },
+	{ "GRAVE" },
+	{ "H" },
+	{ "HOME" },
+	{ "I" },
+	{ "INSERT" },
+	{ "J" },
+	{ "K" },
+	{ "KANA" },
+	{ "KANJI" },
+	{ "L" },
+	{ "LBRACKET" },
+	{ "LCONTROL" },
+	{ "LEFT" },
+	{ "LMENU" },
+	{ "LSHIFT" },
+	{ "LWIN" },
+	{ "M" },
+	{ "MAIL" },
+	{ "MEDIASELECT" },
+	{ "MEDIASTOP" },
+	{ "MINUS" },
+	{ "MULTIPLY" },
+	{ "MUTE" },
+	{ "MYCOMPUTER" },
+	{ "N" },
+	{ "NEXT" },
+	{ "NEXTTRACK" },
+	{ "NOCONVERT" },
+	{ "NUMLOCK" },
+	{ "NUMPAD0" },
+	{ "NUMPAD1" },
+	{ "NUMPAD2" },
+	{ "NUMPAD3" },
+	{ "NUMPAD4" },
+	{ "NUMPAD5" },
+	{ "NUMPAD6" },
+	{ "NUMPAD7" },
+	{ "NUMPAD8" },
+	{ "NUMPAD9" },
+	{ "NUMPADCOMMA" },
+	{ "NUMPADENTER" },
+	{ "NUMPADEQUALS" },
+	{ "O" },
+	{ "OEM_102" },
+	{ "P" },
+	{ "PAUSE" },
+	{ "PERIOD" },
+	{ "PLAYPAUSE" },
+	{ "POWER" },
+	{ "PREVTRACK" },
+	{ "PRIOR" },
+	{ "Q" },
+	{ "R" },
+	{ "RBRACKET" },
+	{ "RCONTROL" },
+	{ "RETURN" },
+	{ "RIGHT" },
+	{ "RMENU" },
+	{ "RSHIFT" },
+	{ "RWIN" },
+	{ "S" },
+	{ "SCROLL" },
+	{ "SEMICOLON" },
+	{ "SLASH" },
+	{ "SLEEP" },
+	{ "SPACE" },
+	{ "STOP" },
+	{ "SUBTRACT" },
+	{ "SYSRQ" },
+	{ "T" },
+	{ "TAB" },
+	{ "U" },
+	{ "UNDERLINE" },
+	{ "UNLABELED" },
+	{ "UP" },
+	{ "V" },
+	{ "VOLUMEDOWN" },
+	{ "VOLUMEUP" },
+	{ "W" },
+	{ "WAKE" },
+	{ "WEBBACK" },
+	{ "WEBFAVORITES" },
+	{ "WEBFORWARD" },
+	{ "WEBHOME" },
+	{ "WEBREFRESH" },
+	{ "WEBSEARCH" },
+	{ "WEBSTOP" },
+	{ "X" },
+	{ "Y" },
+	{ "YEN" },
+	{ "Z" },
+	{ "BACKSPACE" },
+	{ "CAPSLOCK" },
+	{ "CIRCUMFLEX" },
+	{ "DOWNARROW" },
+	{ "LALT" },
+	{ "LEFTARROW" },
+	{ "NUMPADMINUS" },
+	{ "NUMPADPERIOD" },
+	{ "NUMPADPLUS" },
+	{ "NUMPADSLASH" },
+	{ "NUMPADSTAR" },
+	{ "PGDN" },
+	{ "PGUP" },
+	{ "RALT" },
+	{ "RIGHTARROW" },
+	{ "UPARROW" }
+};			  
+  
+std::vector< int > g_KeyCodes =
+{
+{ DIK_0 },
+{ DIK_1 },
+{ DIK_2 },
+{ DIK_3 },
+{ DIK_4 },
+{ DIK_5 },
+{ DIK_6 },
+{ DIK_7 },
+{ DIK_8 },
+{ DIK_9 },
+{ DIK_A },
+{ DIK_ABNT_C1 },
+{ DIK_ABNT_C2 },
+{ DIK_ADD },
+{ DIK_APOSTROPHE },
+{ DIK_APPS },
+{ DIK_AT },
+{ DIK_AX },
+{ DIK_B },
+{ DIK_BACK },
+{ DIK_BACKSLASH },
+{ DIK_C },
+{ DIK_CALCULATOR },
+{ DIK_CAPITAL },
+{ DIK_COLON },
+{ DIK_COMMA },
+{ DIK_CONVERT },
+{ DIK_D },
+{ DIK_DECIMAL },
+{ DIK_DELETE },
+{ DIK_DIVIDE },
+{ DIK_DOWN },
+{ DIK_E },
+{ DIK_END },
+{ DIK_EQUALS },
+{ DIK_ESCAPE },
+{ DIK_F },
+{ DIK_F1 },
+{ DIK_F2 },
+{ DIK_F3 },
+{ DIK_F4 },
+{ DIK_F5 },
+{ DIK_F6 },
+{ DIK_F7 },
+{ DIK_F8 },
+{ DIK_F9 },
+{ DIK_F10 },
+{ DIK_F11 },
+{ DIK_F12 },
+{ DIK_F13 },
+{ DIK_F14 },
+{ DIK_F15 },
+{ DIK_G },
+{ DIK_GRAVE },
+{ DIK_H },
+{ DIK_HOME },
+{ DIK_I },
+{ DIK_INSERT },
+{ DIK_J },
+{ DIK_K },
+{ DIK_KANA },
+{ DIK_KANJI },
+{ DIK_L },
+{ DIK_LBRACKET },
+{ DIK_LCONTROL },
+{ DIK_LEFT },
+{ DIK_LMENU },
+{ DIK_LSHIFT },
+{ DIK_LWIN },
+{ DIK_M },
+{ DIK_MAIL },
+{ DIK_MEDIASELECT },
+{ DIK_MEDIASTOP },
+{ DIK_MINUS },
+{ DIK_MULTIPLY },
+{ DIK_MUTE },
+{ DIK_MYCOMPUTER },
+{ DIK_N },
+{ DIK_NEXT },
+{ DIK_NEXTTRACK },
+{ DIK_NOCONVERT },
+{ DIK_NUMLOCK },
+{ DIK_NUMPAD0 },
+{ DIK_NUMPAD1 },
+{ DIK_NUMPAD2 },
+{ DIK_NUMPAD3 },
+{ DIK_NUMPAD4 },
+{ DIK_NUMPAD5 },
+{ DIK_NUMPAD6 },
+{ DIK_NUMPAD7 },
+{ DIK_NUMPAD8 },
+{ DIK_NUMPAD9 },
+{ DIK_NUMPADCOMMA },
+{ DIK_NUMPADENTER },
+{ DIK_NUMPADEQUALS },
+{ DIK_O },
+{ DIK_OEM_102 },
+{ DIK_P },
+{ DIK_PAUSE },
+{ DIK_PERIOD },
+{ DIK_PLAYPAUSE },
+{ DIK_POWER },
+{ DIK_PREVTRACK },
+{ DIK_PRIOR },
+{ DIK_Q },
+{ DIK_R },
+{ DIK_RBRACKET },
+{ DIK_RCONTROL },
+{ DIK_RETURN },
+{ DIK_RIGHT },
+{ DIK_RMENU },
+{ DIK_RSHIFT },
+{ DIK_RWIN },
+{ DIK_S },
+{ DIK_SCROLL },
+{ DIK_SEMICOLON },
+{ DIK_SLASH },
+{ DIK_SLEEP },
+{ DIK_SPACE },
+{ DIK_STOP },
+{ DIK_SUBTRACT },
+{ DIK_SYSRQ },
+{ DIK_T },
+{ DIK_TAB },
+{ DIK_U },
+{ DIK_UNDERLINE },
+{ DIK_UNLABELED },
+{ DIK_UP },
+{ DIK_V },
+{ DIK_VOLUMEDOWN },
+{ DIK_VOLUMEUP },
+{ DIK_W },
+{ DIK_WAKE },
+{ DIK_WEBBACK },
+{ DIK_WEBFAVORITES },
+{ DIK_WEBFORWARD },
+{ DIK_WEBHOME },
+{ DIK_WEBREFRESH },
+{ DIK_WEBSEARCH },
+{ DIK_WEBSTOP },
+{ DIK_X },
+{ DIK_Y },
+{ DIK_YEN },
+{ DIK_Z },
+{ DIK_BACKSPACE },
+{ DIK_CAPSLOCK },
+{ DIK_CIRCUMFLEX },
+{ DIK_DOWNARROW },
+{ DIK_LALT },
+{ DIK_LEFTARROW },
+{ DIK_NUMPADMINUS },
+{ DIK_NUMPADPERIOD },
+{ DIK_NUMPADPLUS },
+{ DIK_NUMPADSLASH },
+{ DIK_NUMPADSTAR },
+{ DIK_PGDN },
+{ DIK_PGUP },
+{ DIK_RALT },
+{ DIK_RIGHTARROW },
+{ DIK_UPARROW }
 };
 
 Keyboard::Keyboard( me::IGame * game )
@@ -347,15 +348,23 @@ Keyboard::Keyboard( me::IGame * game )
 	, m_hasFocus( false )
 {
 	// Set input buffers to defaults...
-	for ( size_t k = 0; k < 256; k++ )
+	for ( size_t k = 0; k < g_Names.size(); k++ )
 	{
+		m_nameToIndex[ g_Names[ k ] ] = k;
 		m_iKeyPressTimes[k] = 0;
 		m_KeyStatus[k] = KeyStatus::Up;
 	}
+
+	m_nameToIndex[ "Capslock" ] = m_nameToIndex.size();
+	m_nameToIndex[ "NumLock" ] = m_nameToIndex.size();
+	m_nameToIndex[ "ScrollLock" ] = m_nameToIndex.size();
+	m_nameToIndex[ "Insert" ] = m_nameToIndex.size();
+
 	for ( size_t k = 0; k < KeyStatus::COUNT; k++ )
 	{
 		m_uKeyStatusCount[k] = 0;
 	}
+
 	Acquire();
 }
 
@@ -407,7 +416,6 @@ void Keyboard::Acquire()
 	{
 		throw exception::DeviceFailure( "DirectInput.Keyboard", "Failed to acquire!" );
 	}
-
 }
 
 void Keyboard::Update()
@@ -439,8 +447,6 @@ void Keyboard::Update()
 		if ( diKeyPressed( m_diKeyState[ i ] ) )
 		{
 			m_iKeyPressTimes[i]++;
-
-			std::string keyName = g_KeyIndexToName[i];
 
 			if ( m_KeyStatus[i] == KeyStatus::Up )
 			{
@@ -483,74 +489,199 @@ size_t Keyboard::SubSourceCount() const
 	return 1;
 }
 
-me::State Keyboard::GetState( size_t subSource, std::string name, std::string condition ) const
+size_t Keyboard::InputCount( size_t subSource ) const
+{
+	return m_nameToIndex.size();
+}
+
+std::string Keyboard::InputName( size_t subSource, size_t index ) const
+{
+	if ( index < g_Names.size() )
+	{
+		return g_Names[ index ];
+	}
+	else if ( index < (g_Names.size() + 4) )
+	{
+		switch ( index - g_Names.size() )
+		{
+		case 0:
+			return "Capslock";
+		case 1:
+			return "NumLock";
+		case 2:
+			return "ScrollLock";
+		case 3:
+			return "Insert";
+		default: 
+			return std::string();
+		};
+	}
+	else
+	{
+		return std::string();
+	}
+}
+
+size_t Keyboard::InputIndex( size_t subSource, std::string name ) const
+{	
+	auto && itr = m_nameToIndex.find( name );
+	if ( itr == m_nameToIndex.end() )
+	{
+		return MAXSIZE_T;
+	}
+	else
+	{
+		return itr->second;
+	}
+}
+
+size_t Keyboard::InputConditionCount( size_t subSource, size_t index ) const
+{
+	if ( index < g_Names.size() )
+	{
+		return 3;
+	}
+	else if ( index < (g_Names.size() + 4) )
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+std::string Keyboard::InputConditionName( size_t subSource, size_t index, size_t condition ) const
+{
+	if ( index < g_Names.size() )
+	{
+		switch ( condition )
+		{
+		case 0:
+			return "Down";
+		case 1:
+			return "Pressed";
+		case 2:
+			return "JustDown";
+		default:
+			return std::string();
+		}
+	}
+	else if ( index < (g_Names.size() + 4) )
+	{
+		if ( condition == 1 )
+		{
+			return "On";
+		}
+		else
+		{
+			return std::string();
+		}
+	}
+	else
+	{
+		return std::string();
+	}
+}
+
+size_t Keyboard::InputConditionIndex( size_t subSource, size_t index, std::string condition ) const
+{
+	if ( index < g_Names.size() )
+	{
+		if ( unify::StringIs( condition, "Down" ) )
+		{
+			return 0;
+		}
+		else if ( unify::StringIs( condition, "Pressed" ) )
+		{
+			return 1;
+		}
+		else if ( unify::StringIs( condition, "JustDown" ) )
+		{
+			return 2;
+		}
+		else
+		{
+			return MAXSIZE_T;
+		}
+	}
+	else if ( index < (g_Names.size() + 4) )
+	{
+		if ( unify::StringIs( condition, "On" ) )
+		{
+			return 0;
+		}
+		else
+		{
+			return MAXSIZE_T;
+		}
+	}
+	else
+	{
+		return MAXSIZE_T;
+	}
+}
+
+State Keyboard::GetState( size_t subSource, size_t index, size_t condition ) const
 {
 	if ( subSource > 0 ) return State::Invalid;
 
-
-	if ( unify::StringIs( condition, "On" ) )
+	if ( index < g_Names.size() )
 	{
-		if ( unify::StringIs( name, "CapsLock" ) )
+		auto diKeyPressed = []( auto x ) { return  ((x & 0x80) != 0); };
+
+		int key = g_KeyCodes[ index ];
+		switch( condition )
 		{
+		case 0:
+			return diKeyPressed( m_diKeyState[key] ) ? State::True : State::False;
+		case 1:
+			return ( m_KeyStatus[key] == KeyStatus::Pressed ) ? State::True : State::False;
+		case 2:
+			return ( m_KeyStatus[key] == KeyStatus::JustDown ) ? State::True : State::False;
+		default:
+			return State::Invalid;
+		}
+	}
+	else if ( index < (g_Names.size() + 4) )
+	{
+		if ( condition != 0 )
+		{
+			return State::Invalid;
+		}
+
+		switch( index - g_Names.size() )
+		{
+		case 0:	 
 			return m_capslock ? State::True : State::False;
-		}
-
-		if ( unify::StringIs( name, "NumLock" ) )
-		{
+		case 1:
 			return m_numlock ? State::True : State::False;
-		}
-
-		if ( unify::StringIs( name, "ScrollLock" ) )
-		{
+		case 2:
 			return m_scrolllock ? State::True : State::False;
-		}
-
-		if ( unify::StringIs( name, "Insert" ) )
-		{
+		case 3:
 			return m_insert ? State::True : State::False;
 		}
-	}
-
-	auto diKeyPressed = []( auto x ) { return  ((x & 0x80) != 0); };
-
-	int key = g_KeyNameToIndex[ name ];
-
-	int escape = DIK_ESCAPE;
-
-	if ( unify::StringIs( condition, "Down" ) )
-	{
-		return diKeyPressed( m_diKeyState[key] ) ? State::True : State::False;
-	}
-
-	if ( unify::StringIs( condition, "Pressed" ) )
-	{
-		return ( m_KeyStatus[key] == KeyStatus::Pressed ) ? State::True : State::False;
-	}
-
-	if ( unify::StringIs( condition, "JustDown" ) )
-	{
-		return ( m_KeyStatus[key] == KeyStatus::JustDown ) ? State::True : State::False;
-	}
+	}	  
 
 	return State::Invalid;
 }
 
-bool Keyboard::HasValue( size_t subSource, std::string name ) const
+bool Keyboard::HasValue( size_t subSource, size_t index ) const
 {
 	return false;
 }
 
-float Keyboard::GetValue( size_t subSource, std::string name ) const
+float Keyboard::GetValue( size_t subSource, size_t index ) const
 {
 	return 0.0f;
 }
 
-bool Keyboard::SetState( size_t subSource, std::string name, std::string condition, bool set )
+bool Keyboard::SetState( size_t subSource, size_t index, size_t condition, bool set )
 {
 	return false;
 }
 
-bool Keyboard::SetValue( size_t subSource, std::string name, float value )
+bool Keyboard::SetValue( size_t subSource, size_t index, float value )
 {
 	return true;
 }
