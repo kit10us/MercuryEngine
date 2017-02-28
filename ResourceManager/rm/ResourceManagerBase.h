@@ -69,11 +69,18 @@ namespace rm
 		/// <summary>
 		/// Return the number of resources.
 		/// </sumamry>
-		size_t Count() const;
+		size_t Count() const override;
+
+		/// <summary>
+		/// Return the name of a specific resource.
+		/// </summary>
+		std::string GetResourceName( size_t index ) const override;
 
 	private:
 		std::string m_resourceName;
-		std::map< std::string, std::shared_ptr< ResourcePack< T > >, ci_less > m_resources;
+		std::map< std::string, std::shared_ptr< ResourcePack< T > >, ci_less > m_resourceMaps;
+		std::vector< std::shared_ptr< ResourcePack< T > > > m_resourceList;
+		std::vector< std::string > m_resourceNames;
 	};
 
 	#include <rm/ResourceManagerBase.inl>

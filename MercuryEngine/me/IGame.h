@@ -10,6 +10,7 @@
 #include <me/RenderInfo.h>
 #include <me/input/InputManager.h>
 #include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceHub.h>
 #include <me/IGameComponent.h>
 
 namespace me
@@ -78,6 +79,9 @@ namespace me
 		/// </summary>
 		virtual const RenderInfo & GetRenderInfo() const = 0;
 
+		virtual rm::ResourceHub & GetResourceHub() = 0;
+		virtual const rm::ResourceHub & GetResourceHub() const = 0;
+
 		virtual void Quit() = 0;
 
 		virtual bool IsQuitting() const = 0;
@@ -102,6 +106,16 @@ namespace me
 		virtual IGameComponent::ptr GetComponent( int index ) = 0;
 		virtual IGameComponent::ptr GetComponent( std::string name, int startIndex ) = 0 ;
 		virtual int FindComponent( std::string name, int startIndex ) const = 0;	
+
+		/// <summary>
+		/// Enables or disables game updates. Used for testing.
+		/// </summary>
+		virtual void SetUpdateEnabled( bool enabled ) = 0;
+
+		/// <summary>
+		/// Check if we have enabled updates.
+		/// </summary>
+		virtual bool GetUpdateEnabled() const = 0;
 	};
 
 

@@ -62,7 +62,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\DXI\tests_data\</OutDir>
+    <OutDir>..\extensions\</OutDir>
     <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\packages\directx\Include</IncludePath>
   </PropertyGroup>

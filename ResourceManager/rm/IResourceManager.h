@@ -11,11 +11,11 @@
 
 namespace rm
 {
-	class IResourceManagerEarly
+	class IResourceManagerRaw
 	{
 	public:
 		// Enable VTable...
-		virtual ~IResourceManagerEarly() {}
+		virtual ~IResourceManagerRaw() {}
 
 		/// <summary>
 		/// Returns the name of the resource being managed.
@@ -27,20 +27,6 @@ namespace rm
 		/// add resources in bulk, regardless of type (not template at this point, so we don't have to know the resource type).
 		/// </summary>
 		virtual void AddResource( std::string name, unify::Path path ) = 0;
-	};
-
-	template< typename T >
-	class IResourceManager : public IResourceManagerEarly
-	{
-	public:
-		typedef std::shared_ptr< T > ResourcePtr;
-
-		/// <summary>
-		/// Add resource with a specific ID.
-		/// Throws an exception if a resource already exists with the same ID, since we are passing in an already allocated resource,
-		/// this could lead to a unmanaged resource pointer.
-		/// </summary>
-		virtual ResourcePtr Add( std::string name, T * resource ) = 0;
 
 		/// <summary>
 		/// Returns true if a resource exists with the specified ID.
@@ -51,5 +37,24 @@ namespace rm
 		/// Returns the number of resources being managed.
 		/// </summary>
 		virtual size_t Count() const = 0;
+
+		/// <summary>
+		/// Return the name of a specific resource.
+		/// </summary>
+		virtual std::string GetResourceName( size_t index ) const = 0;
+	};
+
+	template< typename T >
+	class IResourceManager : public IResourceManagerRaw
+	{
+	public:
+		typedef std::shared_ptr< T > ResourcePtr;
+
+		/// <summary>
+		/// Add resource with a specific ID.
+		/// Throws an exception if a resource already exists with the same ID, since we are passing in an already allocated resource,
+		/// this could lead to a unmanaged resource pointer.
+		/// </summary>
+		virtual ResourcePtr Add( std::string name, T * resource ) = 0;
 	};
 }

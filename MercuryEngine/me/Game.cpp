@@ -79,6 +79,7 @@ Game::Game( unify::Path setup )
 	, m_setup( setup )
 	, m_isQuitting( false )
 	, m_totalStartupTime{}
+	, m_updateEnabled{ true }
 {
 }
 
@@ -305,12 +306,16 @@ bool Game::Initialize( OSParameters osParameters )
 
 	// Creates displays...
 	GetOS()->BuildRenderers( m_title );
+	assert( GetOS()->GetRenderer( 0 ) );
+
+	// Get the first handle...
+	m_osParameters.hWnd = GetOS()->GetRenderer( 0 )->GetHandle();
 
 	// Create asset managers...
 
 	rm::ILogger::ptr logger( new GameLogger( this ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< ITexture >( "Texture", &GetOS()->GetAssetPaths(), logger ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< ITexture >( "Texture", &GetOS()->GetAssetPaths(), logger ) ) );
 
 	TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
 	GetManager< ITexture >()->AddFactory( ".dds", textureFactoryPtr );
@@ -318,16 +323,16 @@ bool Game::Initialize( OSParameters osParameters )
 	GetManager< ITexture >()->AddFactory( ".bmp", textureFactoryPtr );
 	GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Effect >( "Effect", &GetOS()->GetAssetPaths(), logger ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< Effect >( "Effect", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths(), logger ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory( this ) ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths(), logger ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory( this ) ) );
 
-	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerEarly >( new rm::ResourceManagerSimple< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
+	GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
 	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
 
@@ -418,6 +423,8 @@ void Game::Tick()
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
 	unify::Seconds elapsed = micro * 0.000001f;
 	lastTime = currentTime;
+	
+	if ( !m_updateEnabled ) return;
 
 	m_inputManager.Update();
 
@@ -641,3 +648,12 @@ int Game::FindComponent( std::string name, int startIndex ) const
 	return -1;
 }
 
+void Game::SetUpdateEnabled( bool enabled )
+{
+	m_updateEnabled = enabled;
+}
+
+bool Game::GetUpdateEnabled() const
+{
+	return m_updateEnabled;
+}

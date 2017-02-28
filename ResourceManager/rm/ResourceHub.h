@@ -26,37 +26,68 @@ namespace rm
 		/// <summary>
 		/// Add a resource manager.
 		/// </summary>
-		void AddManager( std::shared_ptr< IResourceManagerEarly > manager );
+		void AddManager( std::shared_ptr< IResourceManagerRaw > manager );
 
 		/// <summary>
 		/// Remove all resource managers.
 		/// </summary>
 		void Clear();
 
+		/// <summary>
+		/// Returns a specific manager by name.
+		/// </summary>
+		rm::IResourceManagerRaw * GetManagerRaw( std::string name );
+
+		/// <summary>
+		/// Returns a specific manager by name.
+		/// </summary>
+		rm::IResourceManagerRaw * GetManagerRaw( size_t index );
+
+		/// <summary>
+		/// Returns a specific manager by name.
+		/// </summary>
 		template< typename T >
 		rm::IResourceManager< T > * GetManager( std::string name );
 
+		/// <summary>
+		/// Returns a specific manager by index.
+		/// </summary>
+		template< typename T >
+		rm::IResourceManager< T > * GetManager( size_t index );
+
+		/// <summary>
+		/// Returns the number of managed types (managers).
+		/// </summary>
+		size_t GetTypeCount() const;
+
+		/// <summaery>
+		/// Returns the name of the type managed by a specific manager.
+		/// </summary>
+		std::string GetTypeName( size_t index ) const;
+		
 		///<summary>
 		/// Load a resource file.
 		///</summary>
 		void Load( std::string type, std::string name, unify::Path path );
 
 	private:
-		std::map< std::string /*Resource name*/, std::shared_ptr< IResourceManagerEarly >, unify::CaseInsensitiveLessThanTest > m_resourceManagers;
+		std::map< std::string /*Resource name*/, std::shared_ptr< IResourceManagerRaw >, unify::CaseInsensitiveLessThanTest > m_managerMap;
+		std::vector< std::shared_ptr< IResourceManagerRaw > > m_managerList;
 	};
 
 	template< typename T >
 	IResourceManager< T > * ResourceHub::GetManager( std::string name )
 	{
-		auto managerPairItr = m_resourceManagers.find( name );
-		if ( managerPairItr == m_resourceManagers.end() )
-		{
-			return nullptr;
-		}
+		IResourceManagerRaw * managerRaw = GetManagerRaw( name );
+		auto resolved = unify::polymorphic_downcast< IResourceManager< T > * >( managerRaw );
+		return resolved;
+	}
 
-		auto managerItr = managerPairItr->second;
-		IResourceManagerEarly * rmEarly = managerItr.get();
-		auto resolved = unify::polymorphic_downcast< IResourceManager< T > * >( rmEarly );
+	template< typename T >
+	IResourceManager< T > * ResourceHub::GetManager( size_t index )
+	{
+		IResourceManagerRaw * managerRaw = GetManagerRaw( index );
+		auto resolved = unify::polymorphic_downcast< IResourceManager< T > * >( managerRaw );
 		return resolved;
 	}
 }

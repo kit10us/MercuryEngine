@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="MEEditor.cpp" />
+    <ClCompile Include="meedr\ResourceBrowser.cpp">
+      <Filter>meedr</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\EngineMain.cpp">
+      <Filter>meedr</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\container\Canvas.cpp">
+      <Filter>meedr\ui\container</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Builder.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Control.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\container\Container.cpp">
+      <Filter>meedr\ui\container</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Button.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\container\StackPanel.cpp">
+      <Filter>meedr\ui\container</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Static.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Combobox.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Listbox.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MEEditor.h" />
+    <ClInclude Include="meedr\ResourceBrowser.h">
+      <Filter>meedr</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\EngineMain.h">
+      <Filter>meedr</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\container\Canvas.h">
+      <Filter>meedr\ui\container</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\IControl.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Builder.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Control.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\container\Container.h">
+      <Filter>meedr\ui\container</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Button.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\container\StackPanel.h">
+      <Filter>meedr\ui\container</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Static.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Combobox.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Listbox.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="meedr">
+      <UniqueIdentifier>{1c9a8768-f165-448d-aa3e-54a5f70133bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="meedr\ui">
+      <UniqueIdentifier>{ffbc43e9-a2d9-4dbf-8ae2-9de8ccb43c4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="meedr\ui\container">
+      <UniqueIdentifier>{23a8c33b-dade-4ba3-8715-ae81f8145a1d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

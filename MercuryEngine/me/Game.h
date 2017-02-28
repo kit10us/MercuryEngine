@@ -11,7 +11,6 @@
 #include <me/ITexture.h>
 #include <me/Effect.h>
 #include <rm/ResourceManagerSimple.h>
-#include <rm/ResourceHub.h>
 
 typedef std::shared_ptr< rm::ISourceFactory< me::ITexture > > TextureFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::Effect > > EffectFactoryPtr;
@@ -70,8 +69,8 @@ namespace me
 		template<> rm::ResourceManagerSimple< me::IVertexShader > * GetManager();
 		template<> rm::ResourceManagerSimple< me::Geometry > * GetManager();
 
-		rm::ResourceHub & GetResourceHub();
-		const rm::ResourceHub & GetResourceHub() const;
+		rm::ResourceHub & GetResourceHub() override;
+		const rm::ResourceHub & GetResourceHub() const override;
 
 		void Quit();
 		bool IsQuitting() const;
@@ -92,6 +91,9 @@ namespace me
 		me::IGameComponent::ptr GetComponent( int index );
 		me::IGameComponent::ptr GetComponent( std::string name, int startIndex );
 		int FindComponent( std::string name, int startIndex ) const;
+
+		void SetUpdateEnabled( bool enabled ) override;
+		bool GetUpdateEnabled() const override;
 
 	private:
 		void AddExtension( unify::Path path );
@@ -122,6 +124,8 @@ namespace me
 		std::list< std::shared_ptr< me::Extension > > m_extensions;
 
 		std::list< std::string > m_criticalErrors;
+
+		bool m_updateEnabled;
 	};
 }
 

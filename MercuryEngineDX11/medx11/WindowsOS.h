@@ -65,5 +65,6 @@ namespace medx11
 		std::shared_ptr< Pimpl > m_pimpl;
 		me::OSParameters m_osParameters;
 		unify::AssetPaths m_assetPaths;
+		HWND m_mainWindow;
 	};
 }

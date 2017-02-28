@@ -19,7 +19,6 @@
     <ClCompile Include="unify\DataLock.cpp" />
     <ClCompile Include="unify\FrameLite.cpp" />
     <ClCompile Include="unify\FrameSetInstance.cpp" />
-    <ClCompile Include="unify\LookupTable.cpp" />
     <ClCompile Include="unify\Path.cpp" />
     <ClCompile Include="unify\Frame.cpp" />
     <ClCompile Include="unify\FrameSet.cpp" />
@@ -78,7 +77,6 @@
     <ClInclude Include="unify\TimeDelta.h" />
     <ClInclude Include="unify\Tree.h" />
     <ClInclude Include="unify\Triangle.h" />
-    <ClInclude Include="unify\LookupTable.h" />
     <ClInclude Include="unify\unify.h" />
     <ClInclude Include="unify\V2.h" />
     <ClInclude Include="unify\V3.h" />

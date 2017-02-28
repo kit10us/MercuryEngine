@@ -73,9 +73,6 @@
     <ClCompile Include="unify\FrameSetInstance.cpp">
       <Filter>unify</Filter>
     </ClCompile>
-    <ClCompile Include="unify\LookupTable.cpp">
-      <Filter>unify</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unify\Angle.h">
@@ -214,9 +211,6 @@
       <Filter>unify</Filter>
     </ClInclude>
     <ClInclude Include="unify\FrameSetInstance.h">
-      <Filter>unify</Filter>
-    </ClInclude>
-    <ClInclude Include="unify\LookupTable.h">
       <Filter>unify</Filter>
     </ClInclude>
   </ItemGroup>

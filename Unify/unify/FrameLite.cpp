@@ -8,7 +8,7 @@ using namespace unify;
 FrameLite::FrameLite()
 	: m_q( QuaternionIdentity() )
 	, m_p( 0, 0, 0 )
-	, m_mat{ m_q, m_p }
+	, m_mat{ MatrixIdentity() }
 	, m_useModelMatrix( false )
 	, m_modelMatrix( MatrixIdentity() )
 {
@@ -26,7 +26,7 @@ FrameLite::FrameLite( unify::Quaternion q, unify::V3< float > p )
 FrameLite::FrameLite( unify::Matrix matrix )
 	: m_q( matrix.GetRotation() )
 	, m_p( matrix.GetPosition() )
-	, m_mat{ m_q, m_p }
+	, m_mat{ matrix }
 	, m_useModelMatrix( false )
 	, m_modelMatrix( MatrixIdentity() )
 {
@@ -91,33 +91,27 @@ void FrameLite::PostMul( Quaternion q )
 
 void FrameLite::PreMul( Matrix m )
 {
-	Matrix mine { m_q, m_p };
-	mine = m * mine;
-	m_q = mine.GetRotation();
-	m_p = mine.GetPosition();
-	m_mat = Matrix{ m_q, m_p };
+	m_mat = m * m_mat;
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
 }
 
 void FrameLite::PostMul( Matrix m )
 {
-	Matrix mine { m_q, m_p };
-	mine = mine * m;
-	m_q = mine.GetRotation();
-	m_p = mine.GetPosition();
-	m_mat = Matrix{ m_q, m_p };
+	m_mat = m_mat * m;
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
 }
 
 Matrix FrameLite::GetMatrix() const
 {
 	if ( m_useModelMatrix )
 	{
-		//return m_modelMatrix * m_mat;
-		return m_modelMatrix * Matrix( m_q, m_p );
+		return m_modelMatrix * m_mat;
 	}
 	else
 	{
-		//return m_mat;
-		return Matrix( m_q, m_p );
+		return m_mat;
 	}
 }
 
@@ -125,11 +119,11 @@ void FrameLite::ReadMatrix( Matrix * matrix ) const
 {
 	if ( m_useModelMatrix )
 	{
-		*matrix = m_modelMatrix * Matrix( m_q, m_p );
+		*matrix = m_modelMatrix * m_mat;
 	}
 	else
 	{
-		*matrix = Matrix( m_q, m_p );
+		*matrix = m_mat;
 	}
 }
 

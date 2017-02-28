@@ -79,30 +79,44 @@ void ObjectInputMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & re
 	auto && strafeRightMotivation = m_motivations[ "straferight" ];
 	auto && walkForwardMotivation = m_motivations[ "walkforward" ];
 	auto && walkBackwardMotivation = m_motivations[ "walkbackward" ];	 
+	auto && lookXMotivation = m_motivations[ "lookX" ];
+	auto && lookYMotivation = m_motivations[ "lookY" ];
+	auto && lookMouse = m_motivations[ "lookMouse" ];
 
 	float speed = 1.0f;
-	if ( (*runOnMotivation)() )
+	if ( runOnMotivation->IsTrue() )
 	{
 		speed = 3.0f;
 	}
 
-	if ( (*strafeLeftMotivation)() )
+	if ( strafeLeftMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( -1, 0, 0 ) * renderInfo.GetDelta() * speed );
 	}
-	else if ( (*strafeRightMotivation)() )
+	else if ( strafeRightMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( 1, 0, 0 ) * renderInfo.GetDelta() * speed );
 	}
 
-	if ( (*walkForwardMotivation)() )
+	if ( walkForwardMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, 1 ) * renderInfo.GetDelta() * speed );
 	}
-	else if ( (*walkBackwardMotivation)() )
+	else if ( walkBackwardMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, -1 ) * renderInfo.GetDelta() * speed );
 	}
+
+	if ( lookMouse->IsTrue()  )
+	{
+		float changeX = lookXMotivation->GetValue();
+		float changeY = lookYMotivation->GetValue();
+		unify::Matrix rotation = unify::MatrixIdentity();
+		rotation *= unify::MatrixRotationY( unify::AngleInRadians( renderInfo.GetDelta() * changeX * 0.2f ) );
+		rotation *= unify::MatrixRotationX( unify::AngleInRadians( renderInfo.GetDelta() * changeY * 0.2f ) );
+		m_target->GetFrame().PostMul( rotation );
+	}
+
 }
 
 void ObjectInputMotivator::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )

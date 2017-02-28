@@ -82,6 +82,8 @@ namespace rm
 
 		size_t Count() const override;
 
+		std::string GetResourceName( size_t index ) const override;
+
         void ForEach( ForEachFunctor & functor );
 
 		void AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory );
@@ -94,7 +96,9 @@ namespace rm
 		std::string m_resourceName;
 		unify::AssetPaths * m_assetPaths;
 		ILogger::ptr m_logger;
-		std::map< std::string, ResourcePtr > m_resourceList; 
+		std::map< std::string, ResourcePtr > m_resourceMap;
+		std::vector< ResourcePtr > m_resourceList;
+		std::vector< std::string > m_resourceNames;
 		std::map< std::string, std::shared_ptr< ISourceFactory< T > >, unify::CaseInsensitiveLessThanTest > m_sourceFactories;
 	};
 

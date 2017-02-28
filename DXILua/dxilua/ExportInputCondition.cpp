@@ -44,6 +44,15 @@ int InputCondition_Constructor( lua_State * state )
 		std::string condition = luaL_checkstring( state, 5 );
 		inputCondition = me::input::IInputCondition::ptr( me::input::MakeButtonCondition( source->input, subSource, name, condition ) );
 	}
+	else if ( unify::StringIs( type, "analog" ) )
+	{
+		InputProxy * source = CheckInput( state, 2 );
+		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
+		std::string name = luaL_checkstring( state, 4 );
+		float threshold = (float)luaL_checknumber( state, 5 );
+		float cap = (float)luaL_checknumber( state, 6 );
+		inputCondition = me::input::IInputCondition::ptr( me::input::MakeAnalogCondition( source->input, subSource, name, threshold, cap ) );
+	}
 
 	return PushInputCondition( state, inputCondition );
 }

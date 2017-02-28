@@ -26,30 +26,38 @@ void ResourceManagerBase< T >::AddResource( std::string name, T * resource )
 
 	std::shared_ptr< ResourcePack< T > > pack( std::make_shared< ResourcePack< T > >( resource ) );
 
-	m_resources[ id ] = pack;
+	m_resourceMap[ id ] = pack;
+	m_resourceList.push_back( pack );
+	m_resourceNames.push_back( name );
 }
 
 template< typename T >
 bool ResourceManagerBase< T >::Exists( std::string name ) const
 {
-	auto itr = m_resources.find( id );
-	return !(itr == m_resources.end());
+	auto itr = m_resourceMap.find( id );
+	return !(itr == m_resourceMap.end());
 }
 
 template< typename T >
 std::shared_ptr< ResourcePack< T > > ResourceManagerBase< T >::Find( std::string name )
 {
-	return m_resources[ id ];
+	return m_resourceMap[ id ];
 }
 
 template< typename T >
 std::shared_ptr< const ResourcePack< T > > ResourceManagerBase< T >::Find( std::string name ) const
 {
-	return m_resources[id];
+	return m_resourceMap[id];
 }
 
 template< class T >
 size_t ResourceManagerBase< T >::Count() const
 {
 	return m_resourceList.size();
+}
+
+template< class T >
+std::string ResourceManagerBase< T >::GetResourceName( size_t index ) const
+{
+	return m_resourceNames[ index ];
 }

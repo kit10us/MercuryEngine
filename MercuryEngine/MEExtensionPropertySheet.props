@@ -2,13 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>..\extensions\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalLibraryDirectories>..\..\packages\DirectXTex-master\DirectXTex\Bin\Desktop_2015\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>../MercuryEngine;../unify;../QXML/include;../QJson/source;../ResourceManager</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;../MercuryEngine;../unify;../QXML/include;../QJson/source;../ResourceManager</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

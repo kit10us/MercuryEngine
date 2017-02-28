@@ -76,7 +76,6 @@ function OnStart( me )
 	cone:SetGeometry( Geometry( "cone", "ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "rotatey.lua" )
-	Debug.WriteLine( "cone is " .. type(cone) )
 	
 	local kb = Input( "Keyboard" );
 	local mouse = Input( "Mouse" );
@@ -86,6 +85,9 @@ function OnStart( me )
 	inputMotivator:Add( "StrafeRight",  InputCondition( "button", kb, 0, "Right", "Down" ) )
 	inputMotivator:Add( "WalkForward",  InputCondition( "button", kb, 0, "Up", "Down" ) )
 	inputMotivator:Add( "WalkBackward", InputCondition( "button", kb, 0, "Down", "Down" ) )
+	inputMotivator:Add( "lookMouse", InputCondition( "button", mouse, 0, "leftButton", "Down" ) )
+	inputMotivator:Add( "lookX",     InputCondition( "analog", mouse, 0, "ChangeX", 2, 10 ) )
+	inputMotivator:Add( "lookY",    InputCondition( "analog", mouse, 0, "ChangeY", 2, 10 ) )
 	inputMotivator:AttachTo( camera );	
 end
 

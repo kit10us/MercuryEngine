@@ -54,12 +54,6 @@ WindowsOS::WindowsOS( IGame * game )
 : m_pimpl( new Pimpl( game ) )
 {
 	m_osParameters = game->GetOSParameters();
-	/*
-	if ( m_osParameters.hWnd == nullptr )
-	{
-		m_osParameters.hWnd = GetModuleHandle( 0 );
-	}
-	*/
 
 	{
 		using namespace std;
@@ -197,17 +191,16 @@ void WindowsOS::CreateDisplay( Display display, std::string title )
 			throw exception::FailedToCreate( "Failed to create window!" );
 		}
 
-		{ // Resize window to ensure exact pixel match...
-			RECT windowRect;
-			GetWindowRect( handle, &windowRect );
+		// Resize window to ensure exact pixel match...
+		RECT windowRect;
+		GetWindowRect( handle, &windowRect );
 
-			RECT clientRect;
-			GetClientRect( handle, &clientRect );
+		RECT clientRect;
+		GetClientRect( handle, &clientRect );
 
-			long newWindowWidth = (windowRect.right - windowRect.left) + width - clientRect.right;
-			long newWindowHeight = (windowRect.bottom - windowRect.top) + height - clientRect.bottom;
-			MoveWindow( handle, windowRect.left, windowRect.top, newWindowWidth, newWindowHeight, false );
-		}
+		long newWindowWidth = (windowRect.right - windowRect.left) + width - clientRect.right;
+		long newWindowHeight = (windowRect.bottom - windowRect.top) + height - clientRect.bottom;
+		MoveWindow( handle, windowRect.left, windowRect.top, newWindowWidth, newWindowHeight, false );
 
 		ShowWindow( handle, m_osParameters.nCmdShow );
 		UpdateWindow( handle );
@@ -500,6 +493,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 	}
 	break;
 	*/
+
 	}
 
 	return DefWindowProc( handle, message, wParam, lParam );
