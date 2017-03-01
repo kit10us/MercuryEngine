@@ -38,23 +38,53 @@ namespace me
 		class ButtonCondition : public InputCondition
 		{
 		public:
-			ButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, std::string condition );
+			ButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, bool down );
 			virtual ~ButtonCondition();
-
-			size_t GetCondition() const;
 
 			bool IsTrue() const override;
 			float GetValue() const override;
 
 		private:
-			size_t m_condition;
+			bool m_down;
 		};
 
-		class AnalogCondition : public InputCondition
+		class ButtonPressedCondition : public InputCondition
 		{
 		public:
-			AnalogCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap );
-			virtual ~AnalogCondition();
+			ButtonPressedCondition( IInputSource::ptr source, size_t subSource, std::string name );
+			virtual ~ButtonPressedCondition();
+
+			bool IsTrue() const override;
+			float GetValue() const override;
+		};
+		
+
+		enum class StickAxis
+		{
+			X, Y, Z
+		};
+	 	StickAxis StickAxisFromString( std::string axis );
+
+		class StickCondition : public InputCondition
+		{
+		public:
+			StickCondition( IInputSource::ptr source, size_t subSource, std::string name, StickAxis axis, float threshold, float cap );
+			virtual ~StickCondition();
+
+			bool IsTrue() const override;
+			float GetValue() const override;
+
+		private:
+			StickAxis m_axis;
+			float m_threshold;
+			float m_cap;
+		};
+
+		class TriggerCondition : public InputCondition
+		{
+		public:
+			TriggerCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap );
+			virtual ~TriggerCondition();
 
 			bool IsTrue() const override;
 			float GetValue() const override;
@@ -63,16 +93,5 @@ namespace me
 			float m_threshold;
 			float m_cap;
 		};
-
-		/// <summary>
-		/// Creates a button/digital condition. If IsTrue, then GetValue() will be 1.0f, else GetValue() will be 0.0f.
-		/// </summary>
-		IInputCondition::ptr MakeButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, std::string condition );
-		
-
-		/// <summary>
-		/// Create an analog condition. IsTrue, when GetValue is between min and max.
-		/// </summary>
-		IInputCondition::ptr MakeAnalogCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap );
 	}
 }

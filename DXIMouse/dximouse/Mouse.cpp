@@ -14,13 +14,9 @@ std::vector< std::string > g_ButtonNames =
 	"MiddleButton"
 };
 
-std::vector< std::string > g_AnalogNames =
+std::vector< std::string > g_TrackerNames =
 {
-	"PositionX",
-	"PositionY",
-	"MouseWheel",
-	"ChangeX",
-	"ChangeY"
+	"Tracker",
 };
 
 Mouse::Mouse( IGame * game )
@@ -34,7 +30,7 @@ Mouse::Mouse( IGame * game )
 	{
 		m_nameToIndex[ name ] = index++;
 	}
-	for ( auto && name : g_AnalogNames )
+	for ( auto && name : g_TrackerNames )
 	{
 		m_nameToIndex[ name ] = index++;
 	}
@@ -103,7 +99,7 @@ size_t Mouse::SubSourceCount() const
 
 size_t Mouse::InputCount( size_t subSource ) const
 {
-	return g_ButtonNames.size() + g_AnalogNames.size();
+	return g_ButtonNames.size() + g_TrackerNames.size();
 }
 
 std::string Mouse::InputName( size_t subSource, size_t index ) const
@@ -112,9 +108,9 @@ std::string Mouse::InputName( size_t subSource, size_t index ) const
 	{	
 		return g_ButtonNames[ index ];
 	}
-	else if ( index < g_AnalogNames.size() )
+	else if ( index < (g_ButtonNames.size() + g_TrackerNames.size()) )
 	{
-		return g_AnalogNames[ index - g_ButtonNames.size() ];
+		return g_TrackerNames[ index - g_ButtonNames.size() ];
 	}
 	else
 	{
@@ -128,235 +124,128 @@ size_t Mouse::InputIndex( size_t subSource, std::string name ) const
 	return itr == m_nameToIndex.end() ? MAXSIZE_T : itr->second;
 }
 
-size_t Mouse::InputConditionCount( size_t subSource, size_t index ) const
-{	
+input::InputType Mouse::GetInputType( size_t subSource, size_t index ) const
+{
 	if ( index < g_ButtonNames.size() )
+	{	
+		return input::InputType::Button;
+	}
+	else if ( index < (g_ButtonNames.size() + g_TrackerNames.size()) )
 	{
-		return 2;
+		return input::InputType::Tracker;
 	}
 	else
 	{
-		return MAXSIZE_T;
+		return input::InputType::Invalid;
 	}
-}
+}																	 
 
-std::string Mouse::InputConditionName( size_t subSource, size_t index, size_t condition ) const
+input::IData::ptr Mouse::GetInputData( size_t subSource, size_t index ) const
 {
-	if ( index < g_ButtonNames.size() )
+	if ( subSource >= m_subSources.size() )
 	{
+		return input::IData::ptr();
+	}
+
+	const Source & source = m_subSources[subSource];
+
+	if ( index < g_ButtonNames.size() )
+	{	
+		input::ButtonData * data = new input::ButtonData();
+
 		switch ( index )
 		{
 		case 0:
-			return "Down";
+			data->down = source.LeftButton;
+			data->pressed = source.LeftButtonPressed;
+			break;
 		case 1:
-			return "Pressed";
-		default:
-			return std::string();
-		}
-	}
-	else
-	{
-		return std::string();
-	}
-}
-
-size_t Mouse::InputConditionIndex( size_t subSource, size_t index, std::string condition ) const
-{
-	if ( index < g_ButtonNames.size() )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
-		{
-			return 0;
-		}
-		else if ( unify::StringIs( condition, "Pressed" ) )
-		{
-			return 1;
-		}
-		else
-		{
-			return MAXSIZE_T;
-		}
-	}
-	else
-	{
-		return MAXSIZE_T;
-	}
-}
-
-State Mouse::GetState( size_t subSource, size_t index, size_t condition ) const
-{
-	if ( subSource >= m_subSources.size() )
-	{
-		return State::Invalid;
-	}
-
-	const Source & source = m_subSources[subSource];
-
-	switch ( index )
-	{
-	case 0:
-		switch ( condition )
-		{
-		case 0:
-			return source.LeftButton ? State::True : State::False;
-		case 1:
-			return source.LeftButtonPressed ? State::True : State::False;
-		default:
-			return State::Invalid;
-		}
-	case 1:
-		switch ( condition )
-		{
-		case 0:
-			return source.RightButton ? State::True : State::False;
-		case 1:
-			return source.RightButtonPressed ? State::True : State::False;
-		default:
-			return State::Invalid;
-		}
-	case 2:
-		switch ( condition )
-		{
-		case 0:
-			return source.MiddleButton ? State::True : State::False;
-		case 1:
-			return source.MiddleButtonPressed ? State::True : State::False;
-		default:
-			return State::Invalid;
-		}
-	default:
-		return State::Invalid;
-	}
-}
-
-bool Mouse::HasValue( size_t subSource, size_t index ) const
-{
-	if ( subSource >= m_subSources.size() )
-	{
-		return false;
-	}
-
-	if ( index < g_ButtonNames.size() )
-	{
-		return false;
-	}
-	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-float Mouse::GetValue( size_t subSource, size_t index ) const
-{
-	if ( subSource >= m_subSources.size() )
-	{
-		return 0.0f;
-	}
-
-	const Source & source = m_subSources[subSource];
-
-	if ( index < g_ButtonNames.size() )
-	{
-		return 0.0f;
-	}
-	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
-	{
-		switch ( index - g_ButtonNames.size() )
-		{
-		case 0:
-			return source.PositionX;
-		case 1:
-			return source.PositionY;
+			data->down = source.RightButton;
+			data->pressed = source.RightButtonPressed;
+			break;
 		case 2:
-			return source.MouseWheel;
-		case 3:
-			return source.ChangeX;
-		case 4:
-			return source.ChangeY;
+			data->down = source.MiddleButton;
+			data->pressed = source.MiddleButtonPressed;
+			break;
 		default:
-			return 0.0f;
+			throw std::exception( "Error in GetInputData, invalid button index!" );
 		}
+		return input::IData::ptr( data );
+	}
+	else if ( index < (g_ButtonNames.size() + g_TrackerNames.size()) )
+	{
+		input::TrackerData * data = new input::TrackerData();
+		data->set = { true, true, true };
+		data->position.x = source.PositionX;
+		data->position.y = source.PositionY;
+		data->position.z = 0;
+		data->change.x = source.ChangeX;
+		data->change.y = source.ChangeY;
+		data->change.z = source.MouseWheel;
+		return input::IData::ptr( data );
 	}
 	else
 	{
-		return 0.0f;
+		return input::IData::ptr();
 	}
-	return 0.0f;
 }
 
-bool Mouse::SetState( size_t subSource, size_t index, size_t condition, bool set )
+void Mouse::SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn )
 {
-	if ( subSource >= m_subSources.size() ) return false;
-
-	Source & source = m_subSourcesUpdated[subSource];
-
-	switch ( index )
+	if ( subSource >= m_subSources.size() )
 	{
-	case 0:
-		switch ( condition )
-		{
-		case 0:
-			source.LeftButton = set;
-			return true;
-		default:
-			return false;
-		}
-	case 1:
-		switch ( condition )
-		{
-		case 0:
-			source.RightButton = set;
-			return true;
-		default:
-			return false;
-		}
-	case 2:
-		switch ( condition )
-		{
-		case 0:
-			source.MiddleButton = set;
-			return true;
-		default:
-			return false;
-		}
-	default:
-		return false;
+		throw std::exception( "Error! Attempted to SetInputData for subSource out of range!" );
 	}
-}
-
-bool Mouse::SetValue( size_t subSource, size_t index, float value )
-{
-	if ( subSource >= m_subSources.size() ) return false;
 
 	Source & source = m_subSourcesUpdated[subSource];
 
 	if ( index < g_ButtonNames.size() )
-	{
-		return false;
-	}
-	else if( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
-	{
-		switch ( index - g_ButtonNames.size() )
+	{	
+		if ( dataIn->type != input::InputType::Button )
+		{
+			throw std::exception( "Error! Attempted to SetInputData for button, with NON button data!" );
+		}																								 
+		input::ButtonData * data = reinterpret_cast<me::input::ButtonData*>(dataIn.get());
+
+		switch ( index )
 		{
 		case 0:
-			source.PositionX = value;
-			return true;
+			source.LeftButton = data->down;
+			source.LeftButtonPressed = data->pressed;
+			break;
 		case 1:
-			source.PositionY = value;
-			return true;
+			source.RightButton = data->down;
+			source.RightButtonPressed = data->pressed;
+			break;
 		case 2:
-			source.MouseWheel = value;
-			return true;
-
+			source.MiddleButton = data->down;
+			source.MiddleButtonPressed = data->pressed;
+			break;
 		default:
-			return false;
+			throw std::exception( "Error in SetInputData, invalid button index!" );
 		}
 	}
+	else if ( index < (g_ButtonNames.size() + g_TrackerNames.size()) )
+	{
+		input::TrackerData * data = reinterpret_cast<me::input::TrackerData*>(dataIn.get());
 
-	return false;
+		if ( data->set.x )
+		{
+			source.PositionX = data->position.x;
+			source.ChangeX = data->change.x;
+		}
+		if ( data->set.y )
+		{
+			source.PositionY = data->position.y;
+			source.ChangeY = data->change.y;
+		}
+		if ( data->set.z )
+		{
+			source.MouseWheel = data->change.z;
+		}
+	}
+	else
+	{
+		throw std::exception( "Error! Attempted to SetInputData for input index out of range!" );
+	}
 }
-

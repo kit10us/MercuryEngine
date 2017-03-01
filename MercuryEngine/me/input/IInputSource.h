@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/input/InputType.h>
 #include <memory>
 #include <string>
 
@@ -56,55 +57,24 @@ namespace me
 			virtual std::string InputName( size_t subSource, size_t index ) const = 0;
 
 			/// <summary>
-			/// Get hte index of an input by name.
+			/// Get the index of an input by name.
 			/// </summary>
 			virtual size_t InputIndex( size_t subSource, std::string name ) const = 0;
 
 			/// <summary>
-			/// Number of conditions for an input.
+			/// Returns the type of an input, by index.
 			/// </summary>
-			virtual size_t InputConditionCount( size_t subSource, size_t index ) const = 0;
+			virtual InputType GetInputType( size_t subSource, size_t index ) const = 0;
 
 			/// <summary>
-			/// Number of inputs available from this source.
+			/// Get an input, by index's, data.
 			/// </summary>
-			virtual std::string InputConditionName( size_t subSource, size_t index, size_t condition ) const = 0;
+			virtual IData::ptr GetInputData( size_t subSource, size_t index ) const = 0;
 
 			/// <summary>
-			/// Number of inputs available from this source.
+			/// Set an input, by index's, data.
 			/// </summary>
-			virtual size_t InputConditionIndex( size_t subSource, size_t index, std::string condition ) const = 0;
-
-			/// <summary>
-			/// Returns the state of an input by name, for a specific condition.
-			/// </summary>
-			/// <exmaple>
-			/// if ( State::True == GetState( 0, "Start", "Pressed" ) ) { ... }
-			/// </example>
-			virtual State GetState( size_t subSource, size_t index, size_t condition ) const = 0;
-
-			/// <summary>
-			/// Returns true if named input can have a value (in other words, does "name" actual exist as a value).
-			/// </summary>
-			virtual bool HasValue( size_t subSource, size_t index ) const = 0;
-
-			/// <summary>
-			/// Returns value of named input; use HasValue first to verify the named values exists (once true, will always be true).
-			/// If the named input doesn't exist, this will return 0.
-			/// Valid ranges are 0.0 to 1.0f
-			/// </summary>
-			virtual float GetValue( size_t subSource, size_t index ) const = 0;
-
-			/// <summary>
-			/// Sets a writeable state. Returns false if we can't write to the state.
-			/// </summary>
-			virtual bool SetState( size_t subSource, size_t index, size_t condition, bool set ) = 0;
-
-			/// <summary>
-			/// Sets a writeable value. Returns false if we can't write to the value.
-			/// Valid ranges are 0.0 to 1.0f
-			/// </summary>
-			virtual bool SetValue( size_t subSource, size_t index, float value ) = 0;
+			virtual void SetInputData( size_t subSource, size_t index, IData::ptr dataIn ) = 0;
 		};
 	}
 }

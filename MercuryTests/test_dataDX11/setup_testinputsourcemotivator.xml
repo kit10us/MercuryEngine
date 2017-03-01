@@ -7,5 +7,6 @@
 <extension>../../extensions/DXIKeyboard.dll</extension>
 <extension>../../extensions/DXIMouse.dll</extension>
 <extension>../../extensions/DXIGamepad.dll</extension>
+<extension>../../extensions/MEEditor.dll</extension>
 <gamemodule type="LUA" source="game_inputsourcemotivator.lua"/>
 </xml>

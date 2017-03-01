@@ -7,37 +7,50 @@ using namespace meedr;
 using namespace ui;
 
 Static::Static( std::wstring text, DefaultWidth, DefaultHeight, int id )
-	: Control( id ), m_width{ -1 }, m_height{ -1 }, m_text{ text }
+	: Control( id ), m_width{ DefaultWidth::Value() }, m_height{ DefaultHeight::Value() }, m_text{ text }
 {
 }
 Static::Static( std::wstring text, DefaultWidth, FillHeight, int id )
-	: Control( id ), m_width{ -1 }, m_height{ -2 }, m_text{ text }
+	: Control( id ), m_width{ DefaultWidth::Value() }, m_height{ FillHeight::Value() }, m_text{ text }
 {
 }
 Static::Static( std::wstring text, DefaultWidth, int height, int id )
-	: Control( id ), m_width{ -1 }, m_height{ height }, m_text{ text }
+	: Control( id ), m_width{ DefaultWidth::Value() }, m_height{ height }, m_text{ text }
 {
 }
 
 Static::Static( std::wstring text, FillWidth, DefaultHeight, int id )
-	: Control( id ), m_width{ -2 }, m_height{ -1 }, m_text{ text }
+	: Control( id ), m_width{ FillWidth::Value() }, m_height{ DefaultHeight::Value() }, m_text{ text }
 {
 }
 Static::Static( std::wstring text, FillWidth, FillHeight, int id )
-	: Control( id ), m_width{ -2 }, m_height{ -2 }, m_text{ text }
+	: Control( id ), m_width{ FillWidth::Value() }, m_height{ FillHeight::Value() }, m_text{ text }
 {
 }
 Static::Static( std::wstring text, FillWidth, int height, int id )
-	: Control( id ), m_width{ -2 }, m_height{ height }, m_text{ text }
+	: Control( id ), m_width{ FillWidth::Value() }, m_height{ height }, m_text{ text }
+{
+}
+
+Static::Static( std::wstring text, SizeToContentWidth, DefaultHeight, int id )
+	: Control( id ), m_width{ SizeToContentWidth::Value() }, m_height{ DefaultHeight::Value() }, m_text{ text }
+{
+}
+Static::Static( std::wstring text, SizeToContentWidth, FillHeight, int id )
+	: Control( id ), m_width{ SizeToContentWidth::Value() }, m_height{ FillHeight::Value() }, m_text{ text }
+{
+}
+Static::Static( std::wstring text, SizeToContentWidth, int height, int id )
+	: Control( id ), m_width{ SizeToContentWidth::Value() }, m_height{ height }, m_text{ text }
 {
 }
 
 Static::Static( std::wstring text, int width, DefaultHeight, int id )
-	: Control( id ), m_width{ width }, m_height{ -1 }, m_text{ text }
+	: Control( id ), m_width{ width }, m_height{ DefaultHeight::Value() }, m_text{ text }
 {
 }
 Static::Static( std::wstring text, int width, FillHeight, int id )
-	: Control( id ), m_width{ width }, m_height{ -2 }, m_text{ text }
+	: Control( id ), m_width{ width }, m_height{ FillHeight::Value() }, m_text{ text }
 {
 }
 Static::Static( std::wstring text, int width, int height, int id )
@@ -50,8 +63,16 @@ Static::~Static()
 }
 
 int Static::GetWidth()
-{
-	return m_width;
+{	
+	if ( SizeToContentWidth() == m_width )
+	{
+		int charWidth = LOWORD( GetDialogBaseUnits() ) + 2;
+		return charWidth * m_text.size();
+	}
+	else
+	{
+		return m_width;
+	}
 }
 
 int Static::GetHeight()
@@ -83,6 +104,7 @@ void Static::Create( int x, int y, int width, int height, HWND parent )
 
 int Static::GetDefaultWidth()
 {
+
 	return 160;
 }
 

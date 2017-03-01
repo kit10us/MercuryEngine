@@ -5,6 +5,7 @@
 
 #include <me/Geometry.h>
 #include <me/input/InputManager.h>
+#include <me/input/IInputCondition.h>
 #include <me/IGame.h>
 #include <me/IOS.h>
 #include <me/Display.h>
@@ -126,6 +127,9 @@ namespace me
 		std::list< std::string > m_criticalErrors;
 
 		bool m_updateEnabled;
+
+		input::IInputCondition::ptr m_exitMotivation;
+		input::IInputCondition::ptr m_browserMotivation;
 	};
 }
 

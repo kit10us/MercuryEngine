@@ -63,6 +63,7 @@
     <ClInclude Include="me\input\IInputCondition.h" />
     <ClInclude Include="me\input\IInputSource.h" />
     <ClInclude Include="me\input\InputManager.h" />
+    <ClInclude Include="me\input\InputType.h" />
     <ClInclude Include="me\Instancing.h" />
     <ClInclude Include="me\IOS.h" />
     <ClInclude Include="me\IPixelShader.h" />
@@ -81,7 +82,6 @@
     <ClInclude Include="me\motivator\IMotivator.h" />
     <ClInclude Include="me\motivator\ObjectInputMotivator.h" />
     <ClInclude Include="me\motivator\ObjectOrbitMotivator.h" />
-    <ClInclude Include="me\ObjectMotivator.h" />
     <ClInclude Include="me\PrimitiveList.h" />
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
@@ -164,6 +164,7 @@
     <ClCompile Include="me\IndexLock.cpp" />
     <ClCompile Include="me\input\IInputCondition.cpp" />
     <ClCompile Include="me\input\InputManager.cpp" />
+    <ClCompile Include="me\input\InputType.cpp" />
     <ClCompile Include="me\Instancing.cpp" />
     <ClCompile Include="me\LOD.cpp" />
     <ClCompile Include="me\MatrixFeed.cpp" />

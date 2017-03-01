@@ -35,9 +35,11 @@ size_t InputCondition::GetSubSource() const
 }
 
 
-ButtonCondition::ButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, std::string condition )
+
+
+ButtonCondition::ButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, bool down )
 	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
-	, m_condition{ source->InputConditionIndex( subSource, GetIndex(), condition ) }
+	, m_down{ down }
 {
 }
 
@@ -45,14 +47,16 @@ ButtonCondition::~ButtonCondition()
 {
 }
 										
-size_t ButtonCondition::GetCondition() const
-{
-	return m_condition;
-}
-
 bool ButtonCondition::IsTrue() const
 {
-	return GetSource()->GetState( GetSubSource(), GetIndex(), GetCondition() ) == State::True;
+	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	if ( ! data || data->type != InputType::Button )
+	{
+		throw std::exception( "ButtonCondition is invalid!" );
+	}
+
+	ButtonData * buttonData = reinterpret_cast<ButtonData *>(data.get()); 
+	return buttonData->down == m_down;
 }
 
 float ButtonCondition::GetValue() const
@@ -61,43 +65,149 @@ float ButtonCondition::GetValue() const
 }
 
 
-AnalogCondition::AnalogCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap )
+
+
+ButtonPressedCondition::ButtonPressedCondition( IInputSource::ptr source, size_t subSource, std::string name )
 	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
-	, m_threshold( threshold )
-	, m_cap( cap )
 {
 }
 
-AnalogCondition::~AnalogCondition() 
+ButtonPressedCondition::~ButtonPressedCondition() 
 {
 }
 										
-bool AnalogCondition::IsTrue() const
+bool ButtonPressedCondition::IsTrue() const
 {
-	float value = GetSource()->GetValue( GetSubSource(), GetIndex() );
-	return abs( value ) >= m_threshold;
-}
-
-float AnalogCondition::GetValue() const
-{
-	float value = GetSource()->GetValue( GetSubSource(), GetIndex() );
-	if ( value < 0.0f )
+	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	if ( ! data || data->type != InputType::Button )
 	{
-		return (value * -1.0f) < m_threshold ? 0.0f : (-1.0f * value) > m_cap ? (m_cap * -1.0f) : value;
+		throw std::exception( "ButtonPressedCondition is invalid!" );
 	}
-	else
+
+	ButtonData * buttonData = reinterpret_cast<ButtonData *>(data.get());
+	return buttonData->pressed;
+}
+
+float ButtonPressedCondition::GetValue() const
+{
+	return IsTrue() ? 1.0f : 0.0f;
+}
+
+
+StickAxis input::StickAxisFromString( std::string axis )
+{
+	if ( unify::StringIs( axis, "x" ) )
 	{
-		return value < m_threshold ? 0.0f : value > m_cap ? m_cap : value;
+		return StickAxis::X;
 	}
+	else if ( unify::StringIs( axis, "y" ) )
+	{
+		return StickAxis::Y;
+	}
+	else if ( unify::StringIs( axis, "z" ) )
+	{
+		return StickAxis::Z;
+	}
+	throw std::exception( "Invalid StickAxis!" );
 }
-											
 
-IInputCondition::ptr me::input::MakeButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, std::string condition )
+StickCondition::StickCondition( IInputSource::ptr source, size_t subSource, std::string name, StickAxis axis, float threshold, float cap )
+	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
+	, m_axis{ axis }
+	, m_threshold{ threshold }
+	, m_cap{ cap }
 {
-	return IInputCondition::ptr( new ButtonCondition( source, subSource, name, condition ) );
 }
 
-IInputCondition::ptr me::input::MakeAnalogCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap )
+StickCondition::~StickCondition() 
 {
-	return IInputCondition::ptr( new AnalogCondition( source, subSource, name, threshold, cap ) );
+}
+										
+bool StickCondition::IsTrue() const
+{
+	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	if ( ! data || data->type != InputType::Stick )
+	{
+		throw std::exception( "StickCondition is invalid!" );
+	}
+
+	StickData * stickData = reinterpret_cast<StickData *>(data.get());
+	float value;
+	switch ( m_axis )
+	{
+	case StickAxis::X:
+		value = stickData->axis.x;
+		break;
+	case StickAxis::Y:
+		value = stickData->axis.y;
+		break;
+	case StickAxis::Z:
+		value = stickData->axis.z;
+		break;
+	}
+	return abs(value) >= m_threshold && abs(value) <= m_cap;
+}
+
+float StickCondition::GetValue() const
+{
+	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	if ( ! data || data->type != InputType::Stick )
+	{
+		throw std::exception( "StickCondition is invalid!" );
+	}
+
+	StickData * stickData = reinterpret_cast<StickData *>(data.get());
+	float value;
+	switch ( m_axis )
+	{
+	case StickAxis::X:
+		value = stickData->axis.x;
+		break;
+	case StickAxis::Y:
+		value = stickData->axis.y;
+		break;
+	case StickAxis::Z:
+		value = stickData->axis.z;
+		break;
+	}
+	return (abs(value) >= m_threshold && abs(value) <= m_cap) ? value : 0.0f;
+}
+
+
+
+
+
+TriggerCondition::TriggerCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap )
+	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
+	, m_threshold{ threshold }
+	, m_cap{ cap }
+{
+}
+
+TriggerCondition::~TriggerCondition() 
+{
+}
+										
+bool TriggerCondition::IsTrue() const
+{
+	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	if ( ! data || data->type != InputType::Trigger )
+	{
+		throw std::exception( "TriggerCondition is invalid!" );
+	}
+
+	TriggerData * triggerData = reinterpret_cast<TriggerData *>(data.get());
+	return (abs(triggerData->value) >= m_threshold && abs(triggerData->value) <= m_cap );
+}
+
+float TriggerCondition::GetValue() const
+{
+	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	if ( ! data || data->type != InputType::Trigger )
+	{
+		throw std::exception( "TriggerCondition is invalid!" );
+	}
+
+	TriggerData * triggerData = reinterpret_cast<TriggerData *>(data.get());
+	return (abs(triggerData->value) >= m_threshold && abs(triggerData->value) <= m_cap ) ? triggerData->value : 0.0f;
 }

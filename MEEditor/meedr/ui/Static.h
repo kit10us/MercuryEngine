@@ -22,6 +22,10 @@ namespace meedr
 			Static( std::wstring text, FillWidth, FillHeight, int id = 0 );
 			Static( std::wstring text, FillWidth, int height, int id = 0 );
 
+			Static( std::wstring text, SizeToContentWidth, DefaultHeight, int id = 0 );
+			Static( std::wstring text, SizeToContentWidth, FillHeight, int id = 0 );
+			Static( std::wstring text, SizeToContentWidth, int height, int id = 0 );
+
 			Static( std::wstring text, int width, DefaultHeight height, int id = 0 );
 			Static( std::wstring text, int width, FillHeight height, int id = 0 );
 			Static( std::wstring text, int width, int height, int id = 0 );

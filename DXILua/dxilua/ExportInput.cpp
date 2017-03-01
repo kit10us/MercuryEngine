@@ -48,76 +48,10 @@ int Input_SubSourceCount( lua_State * state )
 	return 1;
 }
 
-int Input_GetState( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 4 );
-
-	InputProxy * inputProxy = CheckInput( state, 1 );
-	
-	size_t subSource = (size_t)lua_tonumber( state, 2 );
-	std::string name = lua_tostring( state, 3 );
-	std::string condition = lua_tostring( state, 4 );
-
-	size_t inputIndex = inputProxy->input->InputIndex( subSource, name );
-	size_t conditionIndex = inputProxy->input->InputConditionIndex( subSource, inputIndex, condition );
-
-	State inputState = inputProxy->input->GetState( subSource, inputIndex, conditionIndex );
-	int result = -1;
-	if ( inputState == State::True )
-	{
-		result = 1;
-	}
-	else if ( inputState == State::False )
-	{
-		result = 0;
-	}
-	lua_pushnumber( state, result );
-
-	return 1;
-}
-
-int Input_HasValue( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	InputProxy * inputProxy = CheckInput( state, 1 );
-
-	size_t subSource = (size_t)lua_tonumber( state, 2 );
-	std::string name = lua_tostring( state, 3 );
-	size_t inputIndex = inputProxy->input->InputIndex( subSource, name );
-
-	bool hasValue = inputProxy->input->HasValue( subSource, inputIndex );
-	lua_pushboolean( state, hasValue ? 1 : 0 );
-
-	return 1;
-}
-
-int Input_GetValue( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	InputProxy * inputProxy = CheckInput( state, 1 );
-
-	size_t subSource = (size_t)lua_tonumber( state, 2 );
-	std::string name = lua_tostring( state, 3 );
-	size_t inputIndex = inputProxy->input->InputIndex( subSource, name );
-
-	float value = inputProxy->input->GetValue( subSource, inputIndex );
-	lua_pushnumber( state, value );
-
-	return 1;
-}
-
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "Name", Input_Name },
 	{ "SubSourceCount", Input_SubSourceCount },
-	{ "GetState", Input_GetState },
-	{ "HasValue", Input_HasValue },
-	{ "GetValue", Input_GetValue },
 	{ nullptr, nullptr }
 };
 
@@ -130,7 +64,7 @@ int Input_Constructor( lua_State * state )
 
 	std::string name = luaL_checkstring( state, 1 );
 
-	IInputSource::ptr input = game->GetInputManager()->Find( name );
+	IInputSource::ptr input = game->GetInputManager()->FindSource( name );
 	if ( ! input )
 	{
 		lua_pushnil( state );

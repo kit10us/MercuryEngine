@@ -13,7 +13,7 @@ static HWND s_windowHwnd;
 void UpdateResourceTypes( me::IGame * game, HWND hWnd )
 {
 	// Clear contents...
-	//SendMessageA( hWnd, CB_RESETCONTENT, 0, 0 );
+	SendMessageA( hWnd, CB_RESETCONTENT, 0, 0 );
 
 	// Fill in resource types...
 	for ( size_t i = 0; i < game->GetResourceHub().GetTypeCount(); i++ )
@@ -45,7 +45,7 @@ void UpdateResourceList( me::IGame * game, HWND hWnd )
 	SendMessageA( hWnd, LB_SETCURSEL, 0, 0 );
 }
 
-LRESULT CALLBACK Browser_WndProcChild( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK ResourceBrowser_WndProcChild( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	static me::IGame * game;
 	switch ( message )
@@ -99,7 +99,7 @@ HWND meedr::CreateResourceBrowser( me::IGame * game, HINSTANCE hInstance, HWND p
 	if ( !GetClassInfo( hInstance, L"ResourceBrowserWndClass", &wc ) )
 	{
 		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = (WNDPROC)Browser_WndProcChild;
+		wc.lpfnWndProc = (WNDPROC)ResourceBrowser_WndProcChild;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = hInstance;

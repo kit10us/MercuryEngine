@@ -20,21 +20,36 @@ namespace meedr
 	namespace ui
 	{
 		struct DefaultWidth {
-			bool operator==(int value){ return -1 == value; }
+			bool operator==(int value){ return Value() == value; }
+			static int Value() { return -1; }
 		};
+		struct DefaultHeight {
+			bool operator==(int value){ return Value() == value; }
+			static int Value() { return -1; }
+		};
+
 		struct FillWidth {
 			FillWidth( int weight = 1 ) : weight{ weight } {}
 			int weight;
-			bool operator==(int value){ return -2 == value; }
-		};
-
-		struct DefaultHeight {
-			bool operator==(int value){ return -1 == value; }
+			bool operator==(int value){ return Value() == value; }
+			static int Value() { return -2; }
 		};
 		struct FillHeight {
 			FillHeight( int weight = 1 ) : weight{ weight } {}
 			int weight;
-			bool operator==(int value){ return -2 == value; }
+			bool operator==(int value){ return Value() == value; }
+			static int Value() { return -2; }
+		};
+
+		struct SizeToContentWidth {
+			SizeToContentWidth() {}
+			bool operator==(int value){ return Value() == value; }
+			static int Value() { return -3; }
+		};
+		struct SizeToContentHeight {
+			SizeToContentHeight() {}
+			bool operator==(int value){ return Value() == value; }
+			static int Value() { return -3; }
 		};
 
 		namespace container

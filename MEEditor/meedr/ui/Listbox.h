@@ -34,9 +34,12 @@ namespace meedr
 			int GetDefaultWidth() override;
 			int GetDefaultHeight() override;
 
+			Listbox * SetSorted( bool sorted );
+
 		private:
 			int m_width;
 			int m_height;
+			bool m_sorted;
 		};
 	}
 }

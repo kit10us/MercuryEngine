@@ -16,11 +16,11 @@ std::vector< std::string > g_ButtonNames =
 	"DPAD_LEFT",
 	"DPAD_RIGHT",
 	"START",
-	"BACK",
-	"LEFT_THUMB",
-	"RIGHT_THUMB",
-	"LEFT_SHOULDER",
-	"RIGHT_SHOULDER",
+	"Back",
+	"LeftThumb",
+	"Righthumb",
+	"LeftShoulder",
+	"RightShoulder",
 	"A",
 	"B",
 	"X",
@@ -45,14 +45,16 @@ std::vector< WORD > g_ButtonCodes =
 	XINPUT_GAMEPAD_Y
 };
 
-std::vector< std::string > g_AnalogNames =
+std::vector< std::string > g_TriggerNames =
 {
-	"LEFTTRIGGER"
-	"RIGHTTRIGGER",
-	"THUMBLX",
-	"THUMBLY",
-	"THUMBRX",
-	"THUMBRY"
+	"LeftTrigger",
+	"RightTrigger"
+};
+
+std::vector< std::string > g_StickNames =
+{
+	"LeftStick",
+	"RightStick"
 };
 
 Gamepad::Gamepad( me::IGame * game )
@@ -63,7 +65,11 @@ Gamepad::Gamepad( me::IGame * game )
 	{
 		m_nameToIndex[ name ] = index++;
 	}
-	for ( auto && name : g_AnalogNames )
+	for ( auto && name : g_TriggerNames )
+	{
+		m_nameToIndex[ name ] = index++;
+	}
+	for ( auto && name : g_StickNames )
 	{
 		m_nameToIndex[ name ] = index++;
 	}
@@ -99,18 +105,22 @@ size_t Gamepad::SubSourceCount() const
 
 size_t Gamepad::InputCount( size_t subSource ) const
 {
-	return g_ButtonNames.size() + g_AnalogNames.size();
+	return g_ButtonNames.size() + g_TriggerNames.size() + g_StickNames.size();
 }
 
 std::string Gamepad::InputName( size_t subSource, size_t index ) const
 {
-	if ( index < g_ButtonNames.size() )
+	if ( index < (g_ButtonNames.size()) )
 	{
 		return g_ButtonNames[ index ];
 	}
-	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
+	else if ( index < (g_ButtonNames.size() + g_TriggerNames.size()) )
 	{
-		return g_AnalogNames[ index - g_ButtonNames.size() ];
+		return g_TriggerNames[ index - g_ButtonNames.size() ];
+	}
+	else if ( index < (g_ButtonNames.size() + g_TriggerNames.size() + g_StickNames.size()) )
+	{
+		return g_StickNames[ index - g_ButtonNames.size() - g_TriggerNames.size() ];
 	}
 	else
 	{
@@ -131,188 +141,110 @@ size_t Gamepad::InputIndex( size_t subSource, std::string name ) const
 	}
 }
 
-size_t Gamepad::InputConditionCount( size_t subSource, size_t index ) const
+me::input::InputType Gamepad::GetInputType( size_t subSource, size_t index ) const
 {
-	if ( index < g_ButtonNames.size() )
+	if ( index < (g_ButtonNames.size()) )
 	{
-		return 3;
+		return input::InputType::Button;
 	}
-	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
+	else if ( index < (g_ButtonNames.size() + g_TriggerNames.size()) )
 	{
-		return MAXSIZE_T;
+		return input::InputType::Trigger;
+	}
+	else if ( index < (g_ButtonNames.size() + g_TriggerNames.size() + g_StickNames.size()) )
+	{
+		return input::InputType::Stick;
 	}
 	else
 	{
-		return MAXSIZE_T;
+		return input::InputType::Invalid;
 	}
 }
 
-std::string Gamepad::InputConditionName( size_t subSource, size_t index, size_t condition ) const
+input::IData::ptr Gamepad::GetInputData( size_t subSource, size_t index ) const
 {
-	if ( index < g_ButtonNames.size() )
-	{
-		switch ( condition )
+	if ( index < (g_ButtonNames.size()) )
+	{	
+		auto itr = m_states.find( subSource );
+		if ( itr == m_states.end() )
 		{
-		case 0:
-			return "Down";
-		case 1:
-			return "Up";
-		case 2:
-			return "Pressed";
-		default:
-			return std::string();
+			return input::IData::ptr();
 		}
-	}
-	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
-	{
-		return std::string();
-	}
-	else
-	{
-		return std::string();
-	}
-}
 
-size_t Gamepad::InputConditionIndex( size_t subSource, size_t index, std::string condition ) const
-{
-	if ( index < g_ButtonNames.size() )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
+		const XINPUT_STATE * prevState = 0;
+		auto itrPrevious = m_prevStates.find( subSource );
+		if ( itrPrevious != m_prevStates.end() )
 		{
-			return 0;
+			prevState = &itrPrevious->second;
 		}
-		else if ( unify::StringIs( condition, "Up" ) )
-		{
-			return 1;
-		}
-		else if ( unify::StringIs( condition, "Pressed" ) )
-		{
-			return 2;
-		}
-		else
-		{
-			return MAXSIZE_T;
-		}
-	}
-	else if ( index < (g_ButtonNames.size() + g_AnalogNames.size()) )
-	{
-		return MAXSIZE_T;
-	}
-	else
-	{
-		return MAXSIZE_T;
-	}
-}
 
-State Gamepad::GetState( size_t subSource, size_t index, size_t condition ) const
-{
-	auto itr = m_states.find( subSource );
-	if ( itr == m_states.end() )
-	{
-		return State::Invalid;
-	}
-
-	const XINPUT_STATE * prevState = 0;
-	auto itrPrevious = m_prevStates.find( subSource );
-	if ( itrPrevious != m_prevStates.end() )
-	{
-		prevState = &itrPrevious->second;
-	}
-
-	const XINPUT_STATE * state = &itr->second;
-
-	if ( index < g_ButtonCodes.size() )
-	{
+		const XINPUT_STATE * state = &itr->second;
 		WORD button = g_ButtonCodes[ index ];
-		switch ( condition )
+
+		input::ButtonData * data = new input::ButtonData();
+		data->down = ((state->Gamepad.wButtons & button) == button);
+		data->pressed = (prevState && ((state->Gamepad.wButtons & button) == 0) && (prevState->Gamepad.wButtons & button) == button);
+		return input::IData::ptr( data );
+	}
+	else if ( index < (g_ButtonNames.size() + g_TriggerNames.size()) )
+	{
+		auto itr = m_states.find( subSource );
+		if ( itr == m_states.end() )
+		{
+			return input::IData::ptr();
+		}
+
+		auto TriggerValue = []( auto v ) { return (v <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD) ? 0.0f : ( v / 255.f ); };
+
+		const XINPUT_STATE * state = &itr->second;
+		input::TriggerData * data = new input::TriggerData();
+	
+		int triggerIndex = index - g_ButtonNames.size();
+		switch ( triggerIndex )
 		{
 		case 0:
-			return ((state->Gamepad.wButtons & button) == button) ? State::True : State::False;
+			data->value = TriggerValue( state->Gamepad.bLeftTrigger );
+			break;
 		case 1:
-			return ((state->Gamepad.wButtons & button) == 0) ? State::True : State::False;
-		case 3:
-			if ( !prevState )
-			{
-				return State::False;
-			}
-			return (((state->Gamepad.wButtons & button) == 0) && ((prevState->Gamepad.wButtons & button) == button)) ? State::True : State::False;
+			data->value = TriggerValue( state->Gamepad.bRightTrigger );
+			break;
 		}
+		return input::IData::ptr( data );
 	}
-
-	return State::Invalid;
-}
-
-bool Gamepad::HasValue( size_t subSource, size_t index ) const
-{	
-	auto itr = m_states.find( subSource );
-	if ( itr == m_states.end() )
+	else if ( index < (g_ButtonNames.size() + g_TriggerNames.size() + g_StickNames.size()) )
 	{
-		return false;
-	}		
+		auto itr = m_states.find( subSource );
+		if ( itr == m_states.end() )
+		{
+			return input::IData::ptr();
+		}
 
-	if ( index < g_ButtonCodes.size() )
-	{
-		return false;
-	}
-	else if ( index < (g_ButtonCodes.size() + g_AnalogNames.size()) )
-	{
-		return true;
+		auto StickValue = []( auto v ) { return (v < 0) ? (v / 32768.0f) : (v / 32767.0f); };
+
+		const XINPUT_STATE * state = &itr->second;
+		input::StickData * data = new input::StickData();
+
+		int stickIndex = index - g_ButtonNames.size() - g_TriggerNames.size();
+		switch ( stickIndex )
+		{
+		case 0:
+			data->axis.x = StickValue( state->Gamepad.sThumbLX );
+			data->axis.y = StickValue( state->Gamepad.sThumbLY );
+			break;
+		case 1:
+			data->axis.x = StickValue( state->Gamepad.sThumbRX );
+			data->axis.y = StickValue( state->Gamepad.sThumbRY );
+			break;
+		}
+		return input::IData::ptr( data );
 	}
 	else
 	{
-		return false;
+		return input::IData::ptr();
 	}
 }
 
-float Gamepad::GetValue( size_t subSource, size_t index ) const
+void Gamepad::SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn )
 {
-	auto itr = m_states.find( subSource );
-	if ( itr == m_states.end() )
-	{
-		return 0.0f;
-	}
-
-	auto ThumbValue = []( auto v ) { return (v < 0) ? (v / 32768.0f) : (v / 32767.0f); };
-	auto TriggerValue = []( auto v ) { return (v <= XINPUT_GAMEPAD_TRIGGER_THRESHOLD) ? 0.0f : ( v / 255.f ); };
-
-	const XINPUT_STATE * state = &itr->second;
-
-	if ( index < g_ButtonCodes.size() )
-	{
-		return 0.0f;
-	}
-	else if ( index < (g_ButtonCodes.size() + g_AnalogNames.size()) )
-	{
-		switch( index - g_ButtonCodes.size() )
-		{
-		case 0:
-			return TriggerValue( state->Gamepad.bLeftTrigger );
-		case 1:
-			return TriggerValue( state->Gamepad.bRightTrigger );
-		case 2:
-			return ThumbValue( state->Gamepad.sThumbLX );
-		case 3:
-			return ThumbValue( state->Gamepad.sThumbLY );
-		case 4:
-			return ThumbValue( state->Gamepad.sThumbRX );
-		case 5:
-			return ThumbValue( state->Gamepad.sThumbRY );
-		default:
-			return 0.0f;
-		}
-	}
-	else
-	{
-		return 0.0f;
-	}
-}
-
-bool Gamepad::SetState( size_t subSource, size_t index, size_t condition, bool set )
-{
-	return false;
-}
-
-bool Gamepad::SetValue( size_t subSource, size_t index, float value )
-{
-	return false;
+	throw std::exception( "Error! Attempted to SetInputData on Gamepad, which is read-only!" );
 }

@@ -75,46 +75,78 @@ void ObjectInputMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & re
 
 
 	auto && runOnMotivation = m_motivations[ "runOn" ];
+
+	// Digital movement...
 	auto && strafeLeftMotivation = m_motivations[ "strafeleft" ];
 	auto && strafeRightMotivation = m_motivations[ "straferight" ];
 	auto && walkForwardMotivation = m_motivations[ "walkforward" ];
 	auto && walkBackwardMotivation = m_motivations[ "walkbackward" ];	 
+
+	// Analog movement...
+	auto && walkXMotivation = m_motivations[ "walkx" ];
+	auto && walkYMotivation = m_motivations[ "walkY" ];
+
+	// Look...
 	auto && lookXMotivation = m_motivations[ "lookX" ];
 	auto && lookYMotivation = m_motivations[ "lookY" ];
-	auto && lookMouse = m_motivations[ "lookMouse" ];
 
 	float speed = 1.0f;
-	if ( runOnMotivation->IsTrue() )
+	if ( runOnMotivation && runOnMotivation->IsTrue() )
 	{
 		speed = 3.0f;
 	}
 
-	if ( strafeLeftMotivation->IsTrue() )
+	if ( strafeLeftMotivation && strafeLeftMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( -1, 0, 0 ) * renderInfo.GetDelta() * speed );
 	}
-	else if ( strafeRightMotivation->IsTrue() )
+	else if ( strafeRightMotivation && strafeRightMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( 1, 0, 0 ) * renderInfo.GetDelta() * speed );
 	}
 
-	if ( walkForwardMotivation->IsTrue() )
+	if ( walkForwardMotivation && walkForwardMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, 1 ) * renderInfo.GetDelta() * speed );
 	}
-	else if ( walkBackwardMotivation->IsTrue() )
+	else if ( walkBackwardMotivation && walkBackwardMotivation->IsTrue() )
 	{
 		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, -1 ) * renderInfo.GetDelta() * speed );
 	}
 
-	if ( lookMouse->IsTrue()  )
+	if ( walkXMotivation && walkXMotivation->IsTrue() )
 	{
-		float changeX = lookXMotivation->GetValue();
-		float changeY = lookYMotivation->GetValue();
-		unify::Matrix rotation = unify::MatrixIdentity();
-		rotation *= unify::MatrixRotationY( unify::AngleInRadians( renderInfo.GetDelta() * changeX * 0.2f ) );
-		rotation *= unify::MatrixRotationX( unify::AngleInRadians( renderInfo.GetDelta() * changeY * 0.2f ) );
-		m_target->GetFrame().PostMul( rotation );
+		unify::V3< float > left = m_target->GetFrame().GetLeft();
+		unify::Matrix matrix( unify::MatrixTranslate( left * walkXMotivation->GetValue() * renderInfo.GetDelta() * speed * 5.0f ) );
+		m_target->GetFrame().PostMul( matrix );
+	}
+
+	if ( walkYMotivation && walkYMotivation->IsTrue() )
+	{
+		unify::V3< float > forward = m_target->GetFrame().GetForward();
+		unify::Matrix matrix( unify::MatrixTranslate( forward * walkYMotivation->GetValue() * renderInfo.GetDelta() * speed * 5.0f ) );
+		m_target->GetFrame().PostMul( matrix );
+	}
+
+	bool lookXMotivated = (lookXMotivation && lookXMotivation->IsTrue());
+	bool lookYMotivated = (lookYMotivation && lookYMotivation->IsTrue());
+	if ( lookXMotivated || lookYMotivated )
+	{
+		unify::Matrix matrix = unify::MatrixIdentity();
+
+		if ( lookXMotivated )
+		{
+			float changeX = lookXMotivation->GetValue();
+			matrix *= unify::MatrixRotationY( unify::AngleInRadians( renderInfo.GetDelta() * changeX * 0.4f ) );
+		}
+
+		if ( lookYMotivated )
+		{
+			float changeY = lookYMotivation->GetValue();
+			matrix *= unify::MatrixRotationX( unify::AngleInRadians( renderInfo.GetDelta() * changeY * 0.4f ) );
+		}
+
+		m_target->GetFrame().PreMul( matrix );
 	}
 
 }

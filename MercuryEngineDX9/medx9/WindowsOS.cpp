@@ -19,47 +19,13 @@ using namespace medx9;
 #undef GetCommandLine
 #endif
 
-class WindowsOS::Pimpl
-{
-public:
-	Pimpl( IGame * game )
-		: m_game( game )
-		, m_hasFocus{}
-		, m_keyboard{}
-		, m_mouse{}
-	{
-	}
-
-	~Pimpl()
-	{
-	}
-
-	IGame * m_game;
-
-	std::string m_name;
-
-	std::vector< std::string > m_commandLine;
-
-	input::IInputSource * m_keyboard;
-	input::IInputSource * m_mouse;
-
-	bool m_hasFocus;
-	std::list< HWND > m_childHandles; // Handles to be serviced.
-	std::vector< Display > m_pendingDisplays;
-	std::vector< IRenderer::ptr > m_renderers;
-};
-
-
 WindowsOS::WindowsOS( IGame * game )
-: m_pimpl( new Pimpl( game ) )
+: m_game( game )
+, m_hasFocus{}
+, m_keyboard{}
+, m_mouse{}
 {
 	m_osParameters = game->GetOSParameters();
-	/*
-	if ( m_osParameters.hWnd == nullptr )
-	{
-		m_osParameters.hWnd = GetModuleHandle( 0 );
-	}
-	*/
 
 	{
 		using namespace std;
@@ -68,7 +34,7 @@ WindowsOS::WindowsOS( IGame * game )
 		string::size_type pos = string( buffer ).find_last_of( "\\/" );
 		if( pos != string::npos ) 
 		{
-			m_pimpl->m_name = buffer;
+			m_name = buffer;
 		}
 	}
 		
@@ -90,7 +56,7 @@ WindowsOS::WindowsOS( IGame * game )
 			}
 			if ( working.empty() == false )
 			{
-				m_pimpl->m_commandLine.push_back( working );
+				m_commandLine.push_back( working );
 				working.clear();
 			}
 			l = r + 1;
@@ -107,7 +73,7 @@ WindowsOS::WindowsOS( IGame * game )
 
 WindowsOS::~WindowsOS()
 {
-	m_pimpl->m_renderers.clear();
+	m_renderers.clear();
 }
 
 void * WindowsOS::Feed( std::string target, void * data )
@@ -119,37 +85,37 @@ void * WindowsOS::Feed( std::string target, void * data )
 
 std::string WindowsOS::GetName() const
 {
-	return m_pimpl->m_name;
+	return m_name;
 }
 
 const std::vector< std::string > & WindowsOS::GetCommandLine() const
 {
-	return m_pimpl->m_commandLine;
+	return m_commandLine;
 }
 
 void WindowsOS::AddDisplay( Display display )
 {
-	m_pimpl->m_pendingDisplays.push_back( display );
+	m_pendingDisplays.push_back( display );
 }
 
 void WindowsOS::CreatePendingDisplays( std::string title )
 {
-	if( m_pimpl->m_pendingDisplays.empty() )
+	if( m_pendingDisplays.empty() )
 	{
 		return;
 	}
 
-	for( auto && display : m_pimpl->m_pendingDisplays )
+	for( auto && display : m_pendingDisplays )
 	{
 		CreateDisplay( display, title );
 	}
 
-	m_pimpl->m_pendingDisplays.clear();
+	m_pendingDisplays.clear();
 }
 
 void WindowsOS::CreateDisplay( Display display, std::string title )
 {
-	bool isPrimary = m_pimpl->m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
+	bool isPrimary = m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
 
 	std::shared_ptr< Renderer > renderer;
 
@@ -214,28 +180,28 @@ void WindowsOS::CreateDisplay( Display display, std::string title )
 		display.SetHandle( handle );
 	}
 
-	renderer.reset( new Renderer( this, display, m_pimpl->m_renderers.size() ) );
-	m_pimpl->m_renderers.push_back( renderer );
+	renderer.reset( new Renderer( this, display, m_renderers.size() ) );
+	m_renderers.push_back( renderer );
 }
 
 int WindowsOS::RendererCount() const
 {
-	return m_pimpl->m_renderers.size();
+	return m_renderers.size();
 }
 
 me::IRenderer * WindowsOS::GetRenderer( int index) const
 {
-	return m_pimpl->m_renderers[ index ].get();
+	return m_renderers[ index ].get();
 }
 
 void WindowsOS::SetHasFocus( bool hasFocus )
 {
-	m_pimpl->m_hasFocus = hasFocus;
+	m_hasFocus = hasFocus;
 }
 
 bool WindowsOS::GetHasFocus() const
 {
-	return m_pimpl->m_hasFocus;
+	return m_hasFocus;
 }
 
 HINSTANCE WindowsOS::GetHInstance() const
@@ -251,7 +217,7 @@ HWND WindowsOS::GetHandle() const
 	}
 	else
 	{
-		return (HWND)m_pimpl->m_renderers[0]->GetDisplay().GetHandle();
+		return (HWND)m_renderers[0]->GetDisplay().GetHandle();
 	}
 }
 
@@ -264,16 +230,16 @@ void WindowsOS::BuildRenderers( std::string title )
 
 void WindowsOS::Startup()
 {
-	auto keyboardItr = m_pimpl->m_game->GetInputManager()->Find( "Keyboard" );
+	auto keyboardItr = m_game->GetInputManager()->FindSource( "Keyboard" );
 	if ( keyboardItr )
 	{
-		m_pimpl->m_keyboard = keyboardItr.get();
+		m_keyboard = keyboardItr.get();
 	}
 
-	auto mouseItr = m_pimpl->m_game->GetInputManager()->Find( "Mouse" );
+	auto mouseItr = m_game->GetInputManager()->FindSource( "Mouse" );
 	if ( mouseItr )
 	{
-		m_pimpl->m_mouse = mouseItr.get();
+		m_mouse = mouseItr.get();
 	}
 }
 
@@ -293,7 +259,7 @@ void WindowsOS::DebugWriteLine( const std::string & line )
 
 LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	IGame & game = *m_pimpl->m_game;
+	IGame & game = *m_game;
 	static bool trackingMouse = false;
 
 	switch ( message )
@@ -305,95 +271,143 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 
 	case WM_MOUSELEAVE:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		for( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				//m_pimpl->m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
+				//m_mouse->SetState( renderer, "MouseAvailable", "Available", false );
 				break;
 			}
 		}
+		break;
 	}
-	break;
 
 	case WM_LBUTTONDOWN:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				size_t leftButton = m_pimpl->m_mouse->InputIndex( renderer, "LeftButton" );
-				size_t leftButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, leftButton, "Down" );
-				m_pimpl->m_mouse->SetState( renderer, leftButton, leftButtonDown, true );
+				input::ButtonData * data = new input::ButtonData();
+				data->down = true;
+				data->pressed = false;
+				size_t inputIndex = m_mouse->InputIndex( renderer, "LeftButton" );
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
 		}
+		break;
 	}
-	break;
 
 	case WM_LBUTTONUP:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				size_t leftButton = m_pimpl->m_mouse->InputIndex( renderer, "LeftButton" );
-				size_t leftButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, leftButton, "Down" );
-				m_pimpl->m_mouse->SetState( renderer, leftButton, leftButtonDown, false );
+				input::ButtonData * data = new input::ButtonData();
+				data->down = false;
+				data->pressed = false;
+				size_t inputIndex = m_mouse->InputIndex( renderer, "LeftButton" );
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
 		}
+		break;
 	}
-	break;
 
 	case WM_RBUTTONDOWN:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				size_t rightButton = m_pimpl->m_mouse->InputIndex( renderer, "RightButton" );
-				size_t rightButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, rightButton, "Down" );
-				m_pimpl->m_mouse->SetState( renderer, rightButton, rightButtonDown, true );
+				input::ButtonData * data = new input::ButtonData();
+				data->down = true;
+				data->pressed = false;
+				size_t inputIndex = m_mouse->InputIndex( renderer, "RightButton" );
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
 		}
+		break;
 	}
-	break;
 
 	case WM_RBUTTONUP:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
 		{
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				size_t rightButton = m_pimpl->m_mouse->InputIndex( renderer, "RightButton" );
-				size_t rightButtonDown = m_pimpl->m_mouse->InputConditionIndex( renderer, rightButton, "Down" );
-				m_pimpl->m_mouse->SetState( renderer, rightButton, rightButtonDown, false );
+				input::ButtonData * data = new input::ButtonData();
+				data->down = false;
+				data->pressed = false;
+				size_t inputIndex = m_mouse->InputIndex( renderer, "RightButton" );
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
 		}
+		break;
 	}
-	break;
+
+	case WM_MBUTTONDOWN:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				input::ButtonData * data = new input::ButtonData();
+				data->down = true;
+				data->pressed = false;
+				size_t inputIndex = m_mouse->InputIndex( renderer, "MiddleButton" );
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
+				break;
+			}
+		}
+		break;
+	}
+
+	case WM_MBUTTONUP:
+	{
+		if ( m_mouse == nullptr ) break;
+
+		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
+		{
+			if ( GetRenderer( renderer )->GetHandle() == handle )
+			{
+				trackingMouse = false;
+				input::ButtonData * data = new input::ButtonData();
+				data->down = false;
+				data->pressed = false;
+				size_t inputIndex = m_mouse->InputIndex( renderer, "MiddleButton" );
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
+				break;
+			}
+		}
+		break;
+	}
 
 	case WM_MOUSEWHEEL:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		short zDelta = GET_WHEEL_DELTA_WPARAM( wParam );
 		for ( int renderer = 0; renderer < RendererCount(); ++renderer )
@@ -401,17 +415,20 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			if ( GetRenderer( renderer )->GetHandle() == handle )
 			{
 				trackingMouse = false;
-				size_t mouseWheel = m_pimpl->m_mouse->InputIndex( renderer, "MouseWheel" );
-				m_pimpl->m_mouse->SetValue( renderer, mouseWheel, zDelta / (float)WHEEL_DELTA );
+				input::TrackerData * data = new input::TrackerData();
+				size_t inputIndex = m_mouse->InputIndex( renderer, "Tracker" );
+				data->set.z = true;
+				data->change.z = zDelta / (float)WHEEL_DELTA;
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
 		}
+		break;
 	}
-	break;
 
 	case WM_MOUSEMOVE:
 	{
-		if ( m_pimpl->m_mouse == nullptr ) break;
+		if ( m_mouse == nullptr ) break;
 
 		// TODO:
 		// Enable tracking when the mouse leaves the client area...
@@ -444,16 +461,18 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				mousePosition.x *= static_cast< int >(width / clientWidth);
 				mousePosition.y *= static_cast< int >(height / clientHeight);
 
-				size_t positionX = m_pimpl->m_mouse->InputIndex( renderer, "PositionX" );
-				size_t positionY = m_pimpl->m_mouse->InputIndex( renderer, "PositionY" );
-				
-				m_pimpl->m_mouse->SetValue( renderer, positionX, (float)mousePosition.x );
-				m_pimpl->m_mouse->SetValue( renderer, positionY, (float)mousePosition.y );
+				input::TrackerData * data = new input::TrackerData();
+				size_t inputIndex = m_mouse->InputIndex( renderer, "Tracker" );
+				data->set.x = true;
+				data->position.x = (float)mousePosition.x;
+				data->set.y = true;
+				data->position.y = (float)mousePosition.y;
+				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );				
 				break;
 			}
 		}
+		break;
 	}
-	break;
 
 	case WM_ACTIVATE:
 	{
@@ -500,6 +519,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 	}
 	break;
 	*/
+
 	}
 
 	return DefWindowProc( handle, message, wParam, lParam );

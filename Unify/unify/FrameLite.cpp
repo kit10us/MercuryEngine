@@ -129,17 +129,17 @@ void FrameLite::ReadMatrix( Matrix * matrix ) const
 
 V3< float > FrameLite::GetLeft() const
 {
-	return m_q * V3< float >( 1, 0, 0 );
+	return m_mat.GetLeft();// m_q * V3< float >( 1, 0, 0 );
 }
 
 V3< float > FrameLite::GetUp() const
 {
-	return m_q * V3< float >( 0, 1, 0 );
+	return m_mat.GetUp(); // m_q * V3< float >( 0, 1, 0 );
 }
 
 V3< float > FrameLite::GetForward() const
 {
-	return m_q * V3< float >( 0, 0, -1 );
+	return m_mat.GetForward();// m_q * V3< float >( 0, 0, -1 );
 }
 
 Quaternion FrameLite::GetRotation() const

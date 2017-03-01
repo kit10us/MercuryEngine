@@ -61,8 +61,15 @@ namespace medx11
 		unify::AssetPaths & GetAssetPaths() override;
 
 	private:
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		me::IGame * m_game;
+		std::string m_name;
+		std::vector< std::string > m_commandLine;
+		me::input::IInputSource * m_keyboard;
+		me::input::IInputSource * m_mouse;
+		bool m_hasFocus;
+		std::list< HWND > m_childHandles; // Handles to be serviced.
+		std::vector< me::Display > m_pendingDisplays;
+		std::vector< me::IRenderer::ptr > m_renderers;
 		me::OSParameters m_osParameters;
 		unify::AssetPaths m_assetPaths;
 		HWND m_mainWindow;

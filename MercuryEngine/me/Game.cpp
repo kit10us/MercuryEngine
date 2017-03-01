@@ -93,6 +93,7 @@ Game::~Game()
 
 	m_resourceHub.Clear();
 
+	m_exitMotivation.reset();
 	m_inputManager.Clear();
 
 	m_components.clear();
@@ -398,6 +399,15 @@ bool Game::Initialize( OSParameters osParameters )
 		ReportError( ErrorLevel::Critical, "Game", ex.what() );
 	}
 
+	// Basic motivations...
+	if ( GetInputManager() )
+	{
+		input::IInputSource::ptr keyboard( GetInputManager()->FindSource( "keyboard" ) );
+		if ( keyboard )
+		{
+			m_exitMotivation = input::IInputCondition::ptr( new input::ButtonPressedCondition( keyboard, 0, "Escape" ) );
+		}
+	}	
 	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
 	duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
@@ -427,6 +437,11 @@ void Game::Tick()
 	if ( !m_updateEnabled ) return;
 
 	m_inputManager.Update();
+
+	if ( m_exitMotivation && m_exitMotivation->IsTrue() )
+	{
+		Quit();
+	}
 
 	m_renderInfo.SetDelta( elapsed );
 

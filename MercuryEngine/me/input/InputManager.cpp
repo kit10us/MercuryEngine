@@ -13,28 +13,42 @@ InputManager::InputManager()
 
 InputManager::~InputManager()
 {
+	Clear();
 }
 
 void InputManager::AddInputSource( IInputSource::ptr source )
 {
-	m_sources.push_back( source );
+	m_sourceList.push_back( source );
+	m_sourceMap[ source->Name() ] = source;
 }
 
-IInputSource::ptr InputManager::Find( std::string name )
+size_t InputManager::GetSourceCount() const
 {
-	for( auto & source : m_sources )
+	return m_sourceList.size();
+}
+
+IInputSource::ptr InputManager::GetSource( size_t index ) const
+{
+	return m_sourceList[ index ];
+}
+
+IInputSource::ptr InputManager::FindSource( std::string name )
+{
+	auto itr = m_sourceMap.find( name );
+	if ( itr == m_sourceMap.end() )
 	{
-		if ( unify::StringIs( source->Name(), name ) )
-		{
-			return source;
-		}
+		return nullptr;
+	}
+	else
+	{
+		return itr->second;
 	}
 	return nullptr;
 }
 
 void InputManager::Update()
 {
-	for( auto & source : m_sources )
+	for( auto & source : m_sourceList )
 	{
 		source->Update();
 	}
@@ -42,5 +56,6 @@ void InputManager::Update()
 
 void InputManager::Clear()
 {
-	m_sources.clear();
+	m_sourceList.clear();
+	m_sourceMap.clear();
 }

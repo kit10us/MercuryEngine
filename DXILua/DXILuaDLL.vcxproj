@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h" />
     <ClInclude Include="dxilua\CreateState.h" />
+    <ClInclude Include="dxilua\ExportInput.h" />
     <ClInclude Include="dxilua\ExportInputCondition.h" />
     <ClInclude Include="dxilua\ExportObjectInputMotivator.h" />
     <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h" />
@@ -103,7 +104,6 @@
     <ClInclude Include="dxilua\ExportEffect.h" />
     <ClInclude Include="dxilua\ExportGame.h" />
     <ClInclude Include="dxilua\ExportGeometry.h" />
-    <ClInclude Include="dxilua\ExportInput.h" />
     <ClInclude Include="dxilua\ExportObject.h" />
     <ClInclude Include="dxilua\ExportResources.h" />
     <ClInclude Include="dxilua\ExportScene.h" />
@@ -137,6 +137,7 @@
     </ClCompile>
     <ClCompile Include="DXILuaDLL.cpp" />
     <ClCompile Include="dxilua\CreateState.cpp" />
+    <ClCompile Include="dxilua\ExportInput.cpp" />
     <ClCompile Include="dxilua\ExportInputCondition.cpp" />
     <ClCompile Include="dxilua\ExportObjectInputMotivator.cpp" />
     <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp" />
@@ -146,7 +147,6 @@
     <ClCompile Include="dxilua\ExportEffect.cpp" />
     <ClCompile Include="dxilua\ExportGame.cpp" />
     <ClCompile Include="dxilua\ExportGeometry.cpp" />
-    <ClCompile Include="dxilua\ExportInput.cpp" />
     <ClCompile Include="dxilua\ExportObject.cpp" />
     <ClCompile Include="dxilua\ExportResources.cpp" />
     <ClCompile Include="dxilua\ExportScene.cpp" />

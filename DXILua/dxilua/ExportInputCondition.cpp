@@ -42,16 +42,38 @@ int InputCondition_Constructor( lua_State * state )
 		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
 		std::string name = luaL_checkstring( state, 4 );
 		std::string condition = luaL_checkstring( state, 5 );
-		inputCondition = me::input::IInputCondition::ptr( me::input::MakeButtonCondition( source->input, subSource, name, condition ) );
+		if ( unify::StringIs( condition, "down" ) )
+		{
+			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( source->input, subSource, name, true ) );
+		}
+		else if ( unify::StringIs( condition, "up" ) )
+		{
+			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( source->input, subSource, name, false ) );
+		}
+		else if ( unify::StringIs( condition, "pressed" ) )
+		{
+			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonPressedCondition( source->input, subSource, name ) );
+		}
 	}
-	else if ( unify::StringIs( type, "analog" ) )
+	else if ( unify::StringIs( type, "stick" ) )
+	{
+		InputProxy * source = CheckInput( state, 2 );
+		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
+		std::string name = luaL_checkstring( state, 4 );
+		std::string axisString = luaL_checkstring( state, 5 );
+		input::StickAxis axis = input::StickAxisFromString( axisString );
+		float threshold = (float)luaL_checknumber( state, 6 );
+		float cap = (float)luaL_checknumber( state, 7 );
+		inputCondition = me::input::IInputCondition::ptr( new me::input::StickCondition( source->input, subSource, name, axis, threshold, cap ) );
+	}
+	else if ( unify::StringIs( type, "trigger" ) )
 	{
 		InputProxy * source = CheckInput( state, 2 );
 		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
 		std::string name = luaL_checkstring( state, 4 );
 		float threshold = (float)luaL_checknumber( state, 5 );
 		float cap = (float)luaL_checknumber( state, 6 );
-		inputCondition = me::input::IInputCondition::ptr( me::input::MakeAnalogCondition( source->input, subSource, name, threshold, cap ) );
+		inputCondition = me::input::IInputCondition::ptr( new me::input::TriggerCondition( source->input, subSource, name, threshold, cap ) );
 	}
 
 	return PushInputCondition( state, inputCondition );

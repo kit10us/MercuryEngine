@@ -28,21 +28,11 @@ namespace dxigp
 
 		size_t InputIndex( size_t subSource, std::string name ) const override;
 
-		size_t InputConditionCount( size_t subSource, size_t index ) const override;
+		me::input::InputType GetInputType( size_t subSource, size_t index ) const override;
 
-		std::string InputConditionName( size_t subSource, size_t index, size_t condition ) const override;
+		me::input::IData::ptr GetInputData( size_t subSource, size_t index ) const override;
 
-		size_t InputConditionIndex( size_t subSource, size_t index, std::string condition ) const override;
-
-		me::input::State GetState( size_t subSource, size_t index, size_t condition ) const override;
-
-		bool HasValue( size_t subSource, size_t index ) const override;
-
-		float GetValue( size_t subSource, size_t index ) const override;
-
-		bool SetState( size_t subSource, size_t index, size_t condition, bool set ) override;
-
-		bool SetValue( size_t subSource, size_t index, float value ) override;
+		void SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn ) override;
 
 	private:
 		me::IGame * m_game;

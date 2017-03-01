@@ -75,9 +75,6 @@
     <ClInclude Include="dxilua\ExportEffect.h">
       <Filter>dxilua</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportInput.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\unify\ExportMatrix.h">
       <Filter>dxilua\unify</Filter>
     </ClInclude>
@@ -112,6 +109,9 @@
       <Filter>dxilua</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\ExportInputCondition.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportInput.h">
       <Filter>dxilua</Filter>
     </ClInclude>
   </ItemGroup>
@@ -179,9 +179,6 @@
     <ClCompile Include="dxilua\ExportEffect.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportInput.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
     <ClCompile Include="dxilua\unify\ExportMatrix.cpp">
       <Filter>dxilua\unify</Filter>
     </ClCompile>
@@ -216,6 +213,9 @@
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportInputCondition.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportInput.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>

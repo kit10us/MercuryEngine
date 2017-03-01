@@ -78,16 +78,24 @@ function OnStart( me )
     cone:AddScript( "rotate", "lua", "rotatey.lua" )
 	
 	local kb = Input( "Keyboard" );
-	local mouse = Input( "Mouse" );
+	local gamepad = Input( "Gamepad" );
 	local inputMotivator = ObjectInputMotivator()
+	-- InputCondition( type, source, subSource, name, value )
+	-- InputCondition( type, source, subSource, name, minValue, maxValue )
 	inputMotivator:Add( "runOn",		InputCondition( "button", kb, 0, "LShift", "Down" ) )
-	inputMotivator:Add( "StrafeLeft",   InputCondition( "button", kb, 0, "Left", "Down" ) )
-	inputMotivator:Add( "StrafeRight",  InputCondition( "button", kb, 0, "Right", "Down" ) )
-	inputMotivator:Add( "WalkForward",  InputCondition( "button", kb, 0, "Up", "Down" ) )
+	
+	--[[
+	inputMotivator:Add( "StrafeLeft", InputCondition( "button", kb, 0, "Left", "Down" ) )
+	inputMotivator:Add( "StrafeRight", InputCondition( "button", kb, 0, "Right", "Down" ) )
+	inputMotivator:Add( "WalkForward", InputCondition( "button", kb, 0, "Up", "Down" ) )
 	inputMotivator:Add( "WalkBackward", InputCondition( "button", kb, 0, "Down", "Down" ) )
-	inputMotivator:Add( "lookMouse", InputCondition( "button", mouse, 0, "leftButton", "Down" ) )
-	inputMotivator:Add( "lookX",     InputCondition( "analog", mouse, 0, "ChangeX", 2, 10 ) )
-	inputMotivator:Add( "lookY",    InputCondition( "analog", mouse, 0, "ChangeY", 2, 10 ) )
+	--]]
+
+	inputMotivator:Add( "walkx", InputCondition( "stick", gamepad, 0, "RightStick", "x", 0.2, 1 ) )
+	inputMotivator:Add( "walky", InputCondition( "stick", gamepad, 0, "RightStick", "y", 0.2, 1 ) )
+	
+	inputMotivator:Add( "lookX", InputCondition( "stick", gamepad, 0, "LeftStick", "x", 0.2, 1 ) )
+	inputMotivator:Add( "lookY", InputCondition( "stick", gamepad, 0, "LeftStick", "y", 0.2, 1 ) )
 	inputMotivator:AttachTo( camera );	
 end
 

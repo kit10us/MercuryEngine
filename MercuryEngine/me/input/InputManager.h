@@ -4,7 +4,9 @@
 #pragma once
 
 #include <me/input/IInputSource.h>
-#include <list>
+#include <unify/String.h>
+#include <vector>
+#include <map>
 
 namespace me
 {
@@ -21,14 +23,17 @@ namespace me
 
 			void AddInputSource( IInputSource::ptr source );
 
-			IInputSource::ptr Find( std::string name );
+			size_t GetSourceCount() const;
+			IInputSource::ptr GetSource( size_t index ) const;
+			IInputSource::ptr FindSource( std::string name );
 
 			void Update();
 
 			void Clear();
 
 		private:
-			std::list< IInputSource::ptr > m_sources;
+			std::vector< IInputSource::ptr > m_sourceList;
+			std::map< std::string, IInputSource::ptr, unify::CaseInsensitiveLessThanTest > m_sourceMap;
 		};
 	}
 }

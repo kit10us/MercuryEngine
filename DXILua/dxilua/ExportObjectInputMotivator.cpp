@@ -6,7 +6,6 @@
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/ScriptEngine.h>
 
-#include <dxilua/ExportInput.h>
 #include <dxilua/ExportInputCondition.h>
 
 using namespace dxilua;

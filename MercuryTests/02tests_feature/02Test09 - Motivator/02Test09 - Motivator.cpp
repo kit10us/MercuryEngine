@@ -105,17 +105,8 @@ void MyGame::Startup()
 	}
 	aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "USSVoyager.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "models/Death Star II/models/Death Star II.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "enterprise.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "cube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "borgcube.dae" ) );
 	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "torus.dae" ) );
 	
-	// Rigged...
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "Mickey_Mouse/Mickey_Mouse.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
-
 	auto daeModel = scene->NewObject( "daeModel" );
 	AddGeometryComponent( daeModel, GetOS(), meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );

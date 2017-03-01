@@ -12,9 +12,9 @@ using namespace input;
 #pragma comment(lib,"dxguid")
 #pragma comment(lib,"dinput8")
 
-std::vector< std::string > g_Names =
+std::vector< std::string > g_Buttons
 {
-	{"0"},
+	{ "0" },
 	{ "1" },
 	{ "2" },
 	{ "3" },
@@ -176,7 +176,7 @@ std::vector< std::string > g_Names =
 	{ "UPARROW" }
 };			  
   
-std::vector< int > g_KeyCodes =
+std::vector< int > g_KeyCodes
 {
 { DIK_0 },
 { DIK_1 },
@@ -340,6 +340,14 @@ std::vector< int > g_KeyCodes =
 { DIK_UPARROW }
 };
 
+std::vector< std::string > g_Toggles
+{
+	"CapslockToggle",
+	"NumLockToggle",
+	"ScrollLockToggle",
+	"InsertToggle"
+};
+	   
 Keyboard::Keyboard( me::IGame * game )
 	: m_game( game )
 	, m_pdi( 0 )
@@ -348,17 +356,19 @@ Keyboard::Keyboard( me::IGame * game )
 	, m_hasFocus( false )
 {
 	// Set input buffers to defaults...
-	for ( size_t k = 0; k < g_Names.size(); k++ )
+	size_t index = 0;
+	for ( auto && name : g_Buttons )
 	{
-		m_nameToIndex[ g_Names[ k ] ] = k;
-		m_iKeyPressTimes[k] = 0;
-		m_KeyStatus[k] = KeyStatus::Up;
+		m_nameToIndex[ name ] = index;
+		m_iKeyPressTimes[index] = 0;
+		m_KeyStatus[index] = KeyStatus::Up;
+		index++;
 	}
-
-	m_nameToIndex[ "Capslock" ] = m_nameToIndex.size();
-	m_nameToIndex[ "NumLock" ] = m_nameToIndex.size();
-	m_nameToIndex[ "ScrollLock" ] = m_nameToIndex.size();
-	m_nameToIndex[ "Insert" ] = m_nameToIndex.size();
+				
+	for ( auto && name : g_Toggles )
+	{
+		m_nameToIndex[ name ] = index++;
+	}
 
 	for ( size_t k = 0; k < KeyStatus::COUNT; k++ )
 	{
@@ -496,13 +506,13 @@ size_t Keyboard::InputCount( size_t subSource ) const
 
 std::string Keyboard::InputName( size_t subSource, size_t index ) const
 {
-	if ( index < g_Names.size() )
+	if ( index < g_Buttons.size() )
 	{
-		return g_Names[ index ];
+		return g_Buttons[ index ];
 	}
-	else if ( index < (g_Names.size() + 4) )
+	else if ( index < (g_Buttons.size() + 4) )
 	{
-		switch ( index - g_Names.size() )
+		switch ( index - g_Buttons.size() )
 		{
 		case 0:
 			return "Capslock";
@@ -535,154 +545,64 @@ size_t Keyboard::InputIndex( size_t subSource, std::string name ) const
 	}
 }
 
-size_t Keyboard::InputConditionCount( size_t subSource, size_t index ) const
+input::InputType Keyboard::GetInputType( size_t subSource, size_t index ) const
 {
-	if ( index < g_Names.size() )
+	if ( index < g_Buttons.size() )
 	{
-		return 3;
+		return input::InputType::Button;
 	}
-	else if ( index < (g_Names.size() + 4) )
+	else if ( index < (g_Buttons.size() + 4 ) )
 	{
-		return 1;
+		return input::InputType::Toggle;
 	}
 	else
 	{
-		return 0;
+		return input::InputType::Invalid;
 	}
-}
+}																	 
 
-std::string Keyboard::InputConditionName( size_t subSource, size_t index, size_t condition ) const
+input::IData::ptr Keyboard::GetInputData( size_t subSource, size_t index ) const
 {
-	if ( index < g_Names.size() )
-	{
-		switch ( condition )
-		{
-		case 0:
-			return "Down";
-		case 1:
-			return "Pressed";
-		case 2:
-			return "JustDown";
-		default:
-			return std::string();
-		}
-	}
-	else if ( index < (g_Names.size() + 4) )
-	{
-		if ( condition == 1 )
-		{
-			return "On";
-		}
-		else
-		{
-			return std::string();
-		}
-	}
-	else
-	{
-		return std::string();
-	}
-}
+	if ( subSource > 0 ) return nullptr;
 
-size_t Keyboard::InputConditionIndex( size_t subSource, size_t index, std::string condition ) const
-{
-	if ( index < g_Names.size() )
-	{
-		if ( unify::StringIs( condition, "Down" ) )
-		{
-			return 0;
-		}
-		else if ( unify::StringIs( condition, "Pressed" ) )
-		{
-			return 1;
-		}
-		else if ( unify::StringIs( condition, "JustDown" ) )
-		{
-			return 2;
-		}
-		else
-		{
-			return MAXSIZE_T;
-		}
-	}
-	else if ( index < (g_Names.size() + 4) )
-	{
-		if ( unify::StringIs( condition, "On" ) )
-		{
-			return 0;
-		}
-		else
-		{
-			return MAXSIZE_T;
-		}
-	}
-	else
-	{
-		return MAXSIZE_T;
-	}
-}
-
-State Keyboard::GetState( size_t subSource, size_t index, size_t condition ) const
-{
-	if ( subSource > 0 ) return State::Invalid;
-
-	if ( index < g_Names.size() )
+	if ( index < g_Buttons.size() )
 	{
 		auto diKeyPressed = []( auto x ) { return  ((x & 0x80) != 0); };
 
 		int key = g_KeyCodes[ index ];
-		switch( condition )
-		{
-		case 0:
-			return diKeyPressed( m_diKeyState[key] ) ? State::True : State::False;
-		case 1:
-			return ( m_KeyStatus[key] == KeyStatus::Pressed ) ? State::True : State::False;
-		case 2:
-			return ( m_KeyStatus[key] == KeyStatus::JustDown ) ? State::True : State::False;
-		default:
-			return State::Invalid;
-		}
+		input::ButtonData * data = new input::ButtonData();
+		data->down = diKeyPressed( m_diKeyState[ key ] );
+		data->pressed = (m_KeyStatus[ key ] == KeyStatus::Pressed);
+		return IData::ptr( data );
 	}
-	else if ( index < (g_Names.size() + 4) )
+	else if ( index < (g_Buttons.size() + g_Toggles.size()) )
 	{
-		if ( condition != 0 )
-		{
-			return State::Invalid;
-		}
-
-		switch( index - g_Names.size() )
+		input::ToggleData * data = new input::ToggleData();
+		
+		switch( index - g_Buttons.size() )
 		{
 		case 0:	 
-			return m_capslock ? State::True : State::False;
+			data->on = m_capslock;
+			break;
 		case 1:
-			return m_numlock ? State::True : State::False;
+			data->on = m_numlock;
+			break;
 		case 2:
-			return m_scrolllock ? State::True : State::False;
+			data->on = m_scrolllock;
+			break;
 		case 3:
-			return m_insert ? State::True : State::False;
+			data->on = m_insert;
+			break;
 		}
-	}	  
-
-	return State::Invalid;
+		return input::IData::ptr( data );
+	}
+	else
+	{
+		return IData::ptr();
+	}
 }
 
-bool Keyboard::HasValue( size_t subSource, size_t index ) const
+void Keyboard::SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn )
 {
-	return false;
+	throw std::exception( "Error! Attempted to SetInputData on Keyboard, which is read-only!" );
 }
-
-float Keyboard::GetValue( size_t subSource, size_t index ) const
-{
-	return 0.0f;
-}
-
-bool Keyboard::SetState( size_t subSource, size_t index, size_t condition, bool set )
-{
-	return false;
-}
-
-bool Keyboard::SetValue( size_t subSource, size_t index, float value )
-{
-	return true;
-}
-

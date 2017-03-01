@@ -25,9 +25,6 @@
     <Filter Include="me\shader">
       <UniqueIdentifier>{d61f0b9f-bb5c-4b7a-9dac-edc26a9fa479}</UniqueIdentifier>
     </Filter>
-    <Filter Include="me\_tr">
-      <UniqueIdentifier>{1136597d-dff7-4357-9db4-7099e8a0c699}</UniqueIdentifier>
-    </Filter>
     <Filter Include="me\i">
       <UniqueIdentifier>{7152e1d1-6ddf-4f02-91c2-0823da575fc8}</UniqueIdentifier>
     </Filter>
@@ -327,9 +324,6 @@
     <ClInclude Include="me\shader\ConstantVariable.h">
       <Filter>me\shader</Filter>
     </ClInclude>
-    <ClInclude Include="me\ObjectMotivator.h">
-      <Filter>me\_tr</Filter>
-    </ClInclude>
     <ClInclude Include="me\IScriptEngine.h">
       <Filter>me\i</Filter>
     </ClInclude>
@@ -394,6 +388,9 @@
       <Filter>me\input</Filter>
     </ClInclude>
     <ClInclude Include="me\input\InputManager.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\InputType.h">
       <Filter>me\input</Filter>
     </ClInclude>
   </ItemGroup>
@@ -633,6 +630,9 @@
       <Filter>me\input</Filter>
     </ClCompile>
     <ClCompile Include="me\input\InputManager.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\InputType.cpp">
       <Filter>me\input</Filter>
     </ClCompile>
   </ItemGroup>
