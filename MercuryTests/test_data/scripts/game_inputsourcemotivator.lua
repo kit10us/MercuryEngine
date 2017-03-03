@@ -80,22 +80,19 @@ function OnStart( me )
 	local kb = Input( "Keyboard" );
 	local gamepad = Input( "Gamepad" );
 	local inputMotivator = ObjectInputMotivator()
+	inputMotivator:SetValue( "WalkSpeed", 2 );
+	inputMotivator:SetValue( "RunSpeed", 4 );
+	inputMotivator:SetValue( "LookXSpeed", 2 );
+	inputMotivator:SetValue( "LookYSpeed", 2 );
 	-- InputCondition( type, source, subSource, name, value )
 	-- InputCondition( type, source, subSource, name, minValue, maxValue )
-	inputMotivator:Add( "runOn",		InputCondition( "button", kb, 0, "LShift", "Down" ) )
-	
-	--[[
-	inputMotivator:Add( "StrafeLeft", InputCondition( "button", kb, 0, "Left", "Down" ) )
-	inputMotivator:Add( "StrafeRight", InputCondition( "button", kb, 0, "Right", "Down" ) )
-	inputMotivator:Add( "WalkForward", InputCondition( "button", kb, 0, "Up", "Down" ) )
-	inputMotivator:Add( "WalkBackward", InputCondition( "button", kb, 0, "Down", "Down" ) )
-	--]]
+	inputMotivator:Add( "runOn", InputCondition( "button", gamepad, 0, "X", "Down" ) )
 
-	inputMotivator:Add( "walkx", InputCondition( "stick", gamepad, 0, "RightStick", "x", 0.2, 1 ) )
-	inputMotivator:Add( "walky", InputCondition( "stick", gamepad, 0, "RightStick", "y", 0.2, 1 ) )
+	inputMotivator:Add( "walkx", InputCondition( "stick", gamepad, 0, "LeftStick", "x", 0.2, 1 ) )
+	inputMotivator:Add( "walky", InputCondition( "stick", gamepad, 0, "LeftStick", "y", 0.2, 1 ) )
 	
-	inputMotivator:Add( "lookX", InputCondition( "stick", gamepad, 0, "LeftStick", "x", 0.2, 1 ) )
-	inputMotivator:Add( "lookY", InputCondition( "stick", gamepad, 0, "LeftStick", "y", 0.2, 1 ) )
+	inputMotivator:Add( "lookX", InputCondition( "stick", gamepad, 0, "RightStick", "x", 0.2, 1 ) )
+	inputMotivator:Add( "lookY", InputCondition( "stick", gamepad, 0, "RightStick", "y", 0.2, 1 ) )
 	inputMotivator:AttachTo( camera );	
 end
 

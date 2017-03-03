@@ -360,9 +360,6 @@
     <ClInclude Include="me\IInputSource.h">
       <Filter>me\i</Filter>
     </ClInclude>
-    <ClInclude Include="me\IMotivator.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
     <ClInclude Include="me\IOS.h">
       <Filter>me\i</Filter>
     </ClInclude>

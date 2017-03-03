@@ -14,19 +14,18 @@ namespace meedr
 		{
 			class Canvas : public Container
 			{
-				void Create( int x, int y, int parentWidth, int parentHeight, HWND parent ) override;
 			public:
 				Canvas( int width, int height );
 				virtual ~Canvas();
 
-				int GetWidth() override;
-				int GetHeight() override;
-
 				void AddChild( IControl * child );
 
 			private:
-				int m_width;
-				int m_height;
+				void ComputePass1() override;
+				void ComputePass2( int fillWidthTotal, int fillHeightTotal, int fillWidthTotalWeight, int fillHeightTotalWeight ) override;
+				void ComputePass3( int x, int y ) override;
+				void Create( HWND parent ) override;
+
 				std::list< IControl * > m_children;
 			};
 		}

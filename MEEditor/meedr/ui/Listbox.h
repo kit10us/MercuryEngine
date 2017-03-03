@@ -12,7 +12,6 @@ namespace meedr
 	{
 		class Listbox : public Control
 		{
-			void Create( int x, int y, int width, int height, HWND parent ) override;
 		public:		   			
 			Listbox( DefaultWidth, DefaultHeight, int id );
 			Listbox( DefaultWidth, FillHeight heightWeight, int id );
@@ -28,17 +27,14 @@ namespace meedr
 
 			virtual ~Listbox();
 
-			int GetWidth() override;
-			int GetHeight() override;
-
-			int GetDefaultWidth() override;
-			int GetDefaultHeight() override;
+			int GetDefaultWidth() const override;
+			int GetDefaultHeight() const override;
 
 			Listbox * SetSorted( bool sorted );
 
-		private:
-			int m_width;
-			int m_height;
+		protected:
+			void Create( HWND parent ) override;
+
 			bool m_sorted;
 		};
 	}

@@ -23,7 +23,6 @@ namespace me
 			Trigger,
 			Motion,
 			Stick,
-			Pad
 		};
 		std::string InputTypeToString( InputType type );
 
@@ -73,11 +72,6 @@ namespace me
 		{
 			StickData() : IData{ InputType::Stick }, axis{ 0, 0, 0 } { }
 			unify::V3< float > axis;
-		};
-
-		struct PadData : public IData
-		{
-			PadData() : IData{ InputType::Pad } { }
 		};
 	}
 }

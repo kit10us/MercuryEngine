@@ -58,6 +58,7 @@ int ObjectOrbitMotivator_Name( lua_State * state )
 
 int ObjectOrbitMotivator_SetOrigin( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
@@ -65,25 +66,34 @@ int ObjectOrbitMotivator_SetOrigin( lua_State * state )
 	
 	unify::V3< float > v = CheckV3( state, 2 );
 
-	motivatorProxy->motivator->SetOrigin( v );
+	motivatorProxy->motivator->SetValue( "origin", v.ToString() );
+	*/
+	assert( 0 );
 
 	return 0;
 }
 
 int ObjectOrbitMotivator_GetOrigin( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
 
+	unify::V3< float > v = CheckV3( state, 2 );
+
 	PushV3( state, motivatorProxy->motivator->GetOrigin() );
+	*/
+	assert( 0 );
+
 
 	return 1;
 }
 
 int ObjectOrbitMotivator_SetOrbit( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
@@ -92,24 +102,31 @@ int ObjectOrbitMotivator_SetOrbit( lua_State * state )
 	unify::V3< float > v = CheckV3( state, 2 );
 
 	motivatorProxy->motivator->SetOrbit( v );
+	*/
+	assert( 0 );
 
 	return 0;
 }
 
 int ObjectOrbitMotivator_GetOrbit( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
 
 	PushV3( state, motivatorProxy->motivator->GetOrbit() );
+	*/
+	assert( 0 );
+
 
 	return 1;
 }
 
 int ObjectOrbitMotivator_SetAngleASecond( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
@@ -118,31 +135,40 @@ int ObjectOrbitMotivator_SetAngleASecond( lua_State * state )
 	unify::Angle angle( unify::AngleInRadians( (float)luaL_checknumber( state, 2 ) ) );
 
 	motivatorProxy->motivator->SetAngleASecond( angle );
+	*/
+	assert( 0 );
 
 	return 0;
 }
 
 int ObjectOrbitMotivator_GetDegreesASecond( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
 
 	lua_pushnumber( state, motivatorProxy->motivator->GetAngleASecond().ToDegrees() );
+	*/
+	assert( 0 );
+
 
 	return 1;
 }
 
 int ObjectOrbitMotivator_GetRadiansASecond( lua_State * state )
 {
+	/*
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
 
 	lua_pushnumber( state, motivatorProxy->motivator->GetAngleASecond().ToRadians() );
-
+	*/
+	assert( 0 );
+	
 	return 1;
 }
 

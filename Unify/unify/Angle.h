@@ -27,6 +27,7 @@ namespace unify
 
 		Angle();
 		Angle( const Angle & angle );
+		Angle( std::string angle );
 
 		// binary operators
 		Angle & operator = ( const Angle & angle );
@@ -73,6 +74,8 @@ namespace unify
 		/// Returns the cosine of this angle.
 		/// </summary>
 		float CosOf() const;
+
+		std::string ToString( bool radians = true ) const;
     };
 
 	Angle AngleInRadians( float radians );

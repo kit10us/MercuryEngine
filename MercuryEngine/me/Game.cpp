@@ -129,7 +129,11 @@ void * Game::Feed( std::string target, void * data )
 	else if ( unify::StringIs( target, "COMMAND" ) )
 	{
 		char * command = (char *)data;
-		if ( unify::StringIs( command, "ADDFPS" ) )
+		if ( unify::StringIs( command, "QUIT" ) )
+		{
+			Quit();
+		}
+		else if ( unify::StringIs( command, "ADDFPS" ) )
 		{
 			using namespace me;
 			using namespace scene;

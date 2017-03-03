@@ -12,37 +12,34 @@ namespace meedr
 	{
 		class Static : public Control
 		{
-			void Create( int x, int y, int width, int height, HWND parent ) override;
 		public:		   			
 			Static( std::wstring text, DefaultWidth, DefaultHeight, int id = 0 );
-			Static( std::wstring text, DefaultWidth, FillHeight, int id = 0 );
+			Static( std::wstring text, DefaultWidth, FillHeight fillHeight, int id = 0 );
 			Static( std::wstring text, DefaultWidth, int height, int id = 0 );
 
-			Static( std::wstring text, FillWidth, DefaultHeight, int id = 0 );
-			Static( std::wstring text, FillWidth, FillHeight, int id = 0 );
-			Static( std::wstring text, FillWidth, int height, int id = 0 );
+			Static( std::wstring text, FillWidth fillWidth, DefaultHeight, int id = 0 );
+			Static( std::wstring text, FillWidth fillWidth, FillHeight fillHeight, int id = 0 );
+			Static( std::wstring text, FillWidth fillWidth, int height, int id = 0 );
 
 			Static( std::wstring text, SizeToContentWidth, DefaultHeight, int id = 0 );
-			Static( std::wstring text, SizeToContentWidth, FillHeight, int id = 0 );
+			Static( std::wstring text, SizeToContentWidth, FillHeight fillHeight, int id = 0 );
 			Static( std::wstring text, SizeToContentWidth, int height, int id = 0 );
 
-			Static( std::wstring text, int width, DefaultHeight height, int id = 0 );
-			Static( std::wstring text, int width, FillHeight height, int id = 0 );
+			Static( std::wstring text, int width, DefaultHeight ight, int id = 0 );
+			Static( std::wstring text, int width, FillHeight fillHeight, int id = 0 );
 			Static( std::wstring text, int width, int height, int id = 0 );
 
 			virtual ~Static();
 
-			int GetWidth() override;
-			int GetHeight() override;
-
 			std::wstring GetText();
 
-			int GetDefaultWidth() override;
-			int GetDefaultHeight() override;
+			int GetDefaultWidth() const override;
+			int GetDefaultHeight() const override;
 
-		private:
-			int m_width;
-			int m_height;
+		protected:
+			void Create( HWND parent ) override;
+			void ComputePass1() override;
+
 			std::wstring m_text;
 		};
 	}

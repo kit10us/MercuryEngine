@@ -39,6 +39,12 @@
     <ClCompile Include="meedr\InputBrowser.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
+    <ClCompile Include="meedr\ui\Richtext.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ScriptEditor.cpp">
+      <Filter>meedr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEEditor.h" />
@@ -79,6 +85,12 @@
       <Filter>meedr\ui</Filter>
     </ClInclude>
     <ClInclude Include="meedr\InputBrowser.h">
+      <Filter>meedr</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Richtext.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ScriptEditor.h">
       <Filter>meedr</Filter>
     </ClInclude>
   </ItemGroup>

@@ -58,7 +58,6 @@
     <ClInclude Include="me\IGameComponent.h" />
     <ClInclude Include="me\IIndexBuffer.h" />
     <ClInclude Include="me\IInputSource.h" />
-    <ClInclude Include="me\IMotivator.h" />
     <ClInclude Include="me\IndexLock.h" />
     <ClInclude Include="me\input\IInputCondition.h" />
     <ClInclude Include="me\input\IInputSource.h" />

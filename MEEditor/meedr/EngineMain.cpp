@@ -6,10 +6,11 @@
 #include <meedr/ResourceBrowser.h>
 #include <meedr/InputBrowser.h>
 
-#define IDC_BUTTON_PAUSE 0x01
-#define IDC_BUTTON_RESOURCEBROWSER 0x02
-#define IDC_BUTTON_INPUTBROWSER 0x03
-#define IDC_BUTTON_QUIT 0x20
+#define IDC_BUTTON_PAUSE			0x01
+#define IDC_BUTTON_RESOURCEBROWSER	0x02
+#define IDC_BUTTON_INPUTBROWSER		0x03
+#define IDC_BUTTON_SCRIPTEDITOR		0x04
+#define IDC_BUTTON_QUIT				0x20
 
 LRESULT CALLBACK WndProcChild( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
@@ -135,12 +136,14 @@ HWND meedr::CreateEngineMain( me::IGame * game )
 		throw std::exception( "Failed to register window class!" );
 	}
 
-	ui::Builder builder;
-	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, 240, 300 ) );
-	builder.AddControl( new ui::Button( L"Pause", ui::FillWidth(), ui::DefaultHeight(), IDC_BUTTON_PAUSE ) );
-	builder.AddControl( new ui::Button( L"Resource Browser", ui::FillWidth(), 26, IDC_BUTTON_RESOURCEBROWSER ) );
-	builder.AddControl( new ui::Button( L"Input Browser", ui::FillWidth(), 26, IDC_BUTTON_INPUTBROWSER ) );
-	builder.AddControl( new ui::Button( L"Quit", ui::FillWidth(), ui::DefaultHeight(), IDC_BUTTON_QUIT ) );
+	using namespace ui;
+	Builder builder;
+	builder.AddContainer( new container::StackPanel( container::Stack::Vertical, 240, SizeToContentHeight() ) );
+	builder.AddControl( new Button( L"Pause", FillWidth(), DefaultHeight(), IDC_BUTTON_PAUSE ) );
+	builder.AddControl( new Button( L"Resource Browser", FillWidth(), DefaultHeight(), IDC_BUTTON_RESOURCEBROWSER ) );
+	builder.AddControl( new Button( L"Input Browser", FillWidth(), DefaultHeight(), IDC_BUTTON_INPUTBROWSER ) );
+	builder.AddControl( new Button( L"Script Editor", FillWidth(), DefaultHeight(), IDC_BUTTON_SCRIPTEDITOR ) );
+	builder.AddControl( new Button( L"Quit", FillWidth(), DefaultHeight(), IDC_BUTTON_QUIT ) );
 	builder.Create( parentHandle, hInstance, L"SecondWndClass", L"Engine Main", x, y, game );
 
 	ShowWindow( builder.GetHandle(), nCmdShow );

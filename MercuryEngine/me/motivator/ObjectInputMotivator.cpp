@@ -10,6 +10,24 @@ using namespace me;
 using namespace motivator;
 using namespace input;
 
+namespace {
+	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
+	{
+		{ "walkSpeed", 0 },
+		{ "runSpeed", 1 },
+		{ "lookXSpeed", 2 },
+		{ "lookYSpeed", 3 }
+	};
+
+	std::vector< std::string > g_ValuesList
+	{
+		{ "walkSpeed" },
+		{ "runSpeed" },
+		{ "lookXSpeed" },
+		{ "lookYSpeed" }
+	};
+}
+
 ObjectInputMotivator::ObjectInputMotivator()
 {
 }
@@ -172,3 +190,102 @@ void ObjectInputMotivator::Add( std::string motivation, IInputCondition::ptr con
 {
 	m_motivations[ motivation ] = condition;
 }
+
+int ObjectInputMotivator::GetValueCount() const
+{
+	return 3;
+}
+
+bool ObjectInputMotivator::ValueExists( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+std::string ObjectInputMotivator::GetValueName( size_t index ) const
+{
+	if ( index >= g_ValuesList.size() )
+	{
+		return std::string();
+	}
+	else
+	{
+		return g_ValuesList[ index ];
+	}
+}
+
+int ObjectInputMotivator::FindValueIndex( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return -1;
+	}
+	else
+	{
+		return itr->second;
+	}
+}
+
+void ObjectInputMotivator::SetValue( size_t index, std::string value )
+{
+	switch ( index )
+	{
+	default:
+		return;
+	case 0:
+		m_walkSpeed = unify::Cast< float >( value );
+		break;
+	case 1:
+		m_runSpeed = unify::Cast< float >( value );
+		break;
+	case 2:
+		m_lookXSpeed = unify::Cast< float >( value );
+		break;
+	case 3:
+		m_lookYSpeed = unify::Cast< float >( value );
+		break;
+	}
+}
+
+void ObjectInputMotivator::SetValue( std::string name, std::string value )
+{
+	size_t index = FindValueIndex( name );
+	SetValue( index, value );
+}
+
+std::string ObjectInputMotivator::GetValue( size_t index ) const
+{
+	switch ( index )
+	{
+	default:
+		return std::string();
+	case 0:
+		return unify::Cast< std::string >( m_walkSpeed );
+		break;
+	case 1:
+		return unify::Cast< std::string >( m_runSpeed );
+		break;
+	case 2:
+		return unify::Cast< std::string >( m_lookXSpeed );
+		break;
+	case 3:
+		return unify::Cast< std::string >( m_lookYSpeed );
+		break;
+	}
+}
+ 
+std::string ObjectInputMotivator::GetValue( std::string name ) const
+{
+	size_t index = FindValueIndex( name );
+	return GetValue( index );
+}
+
+

@@ -115,8 +115,12 @@ HWND meedr::CreateResourceBrowser( me::IGame * game, HINSTANCE hInstance, HWND p
 	}
 
 	ui::Builder builder;
+	/*
 	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Horizontal, 540, 440 ) );
 	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, ui::FillWidth(), ui::FillHeight() ) );
+	*/
+	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, 540, 440 ) );
+
 	builder.AddControl( new ui::Static( L"Type:", 50, ui::DefaultHeight() ) );
 	builder.AddControl( new ui::Combobox( ui::FillWidth(), ui::DefaultHeight(), IDC_COMBOBOX_TYPES ) );
 	builder.AddControl( new ui::Listbox( ui::FillWidth(), ui::FillHeight(), IDC_LISTBOX_RESOURCES ) );

@@ -53,8 +53,18 @@ HWND Builder::Create( HWND parent, HINSTANCE hInstance, std::wstring className, 
 	assert( parent );
 	assert( m_handle == 0 );
 
-	int width = m_rootContainer->GetWidth();
-	int height = m_rootContainer->GetHeight();
+	if ( FillWidth() == m_rootContainer->GetWantedWidth() || FillHeight() == m_rootContainer->GetWantedHeight() )
+	{
+		throw std::exception( "Root container must have a constant size!" );
+	}
+
+	m_rootContainer->ComputePass1();
+	m_rootContainer->ComputePass2( 0, 0, 0, 0 );
+
+	m_rootContainer->ComputePass3( 0, 0 );
+
+	int paddingWidth = 8 * 2;
+	int paddingHeight = 40;// GetSystemMetrics( SM_CYEDGE ) + GetSystemMetrics( SM_CYSIZE ) + GetSystemMetrics( SM_CXPADDEDBORDER ) * 2;
 
 	m_handle = CreateWindowW(
 		className.c_str(),
@@ -62,15 +72,15 @@ HWND Builder::Create( HWND parent, HINSTANCE hInstance, std::wstring className, 
 		WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
 		x,
 		y,
-		width,
-		height,
+		m_rootContainer->GetActualWidth() + paddingWidth,
+		m_rootContainer->GetActualHeight() + paddingHeight,
 		parent, 
 		0, 
 		hInstance, 
 		lparam 
 	);			
 
-	m_rootContainer->Create( 0, 0, width - 16, height - 36, m_handle );
+	m_rootContainer->Create( m_handle );
 
 	return m_handle;
 }

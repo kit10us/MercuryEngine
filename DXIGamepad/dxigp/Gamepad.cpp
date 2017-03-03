@@ -11,11 +11,11 @@ using namespace input;
 
 std::vector< std::string > g_ButtonNames =
 {
-	"DPAD_UP",
-	"DPAD_DOWN",
-	"DPAD_LEFT",
-	"DPAD_RIGHT",
-	"START",
+	"DPadUp",
+	"DPadDown",
+	"DPadLeft",
+	"DPadRight",
+	"Start",
 	"Back",
 	"LeftThumb",
 	"Righthumb",

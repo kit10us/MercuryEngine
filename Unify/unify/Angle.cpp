@@ -2,9 +2,12 @@
 // All Rights Reserved
 
 #include <unify/Angle.h>
+#include <unify/Cast.h>
 #include <cmath>
 
 using namespace unify;
+
+const float DTOR = (3.14159265f / 180.0f);
 
 Angle unify::AngleInRadians( float radians )
 {
@@ -13,7 +16,7 @@ Angle unify::AngleInRadians( float radians )
 
 Angle unify::AngleInDegrees( float degrees )
 {
-	return Angle( degrees * (3.14159265f / 180.0f) );
+	return Angle( degrees * DTOR );
 }
 
 Angle unify::AnglePI()
@@ -35,6 +38,21 @@ Angle unify::AnglePIHalf()
 Angle::Angle( float radians )
 : m_radians( radians )
 {
+}
+
+Angle::Angle( std::string angle )
+{
+	char last = angle.back();
+	if ( last == 'd' || last == 'D' )
+	{
+		angle.pop_back();
+		m_radians = (float)atof( angle.c_str() ) * DTOR;
+	}
+	else if ( last == 'r' || last == 'R' )
+	{
+		angle.pop_back();
+		m_radians = (float)atof( angle.c_str() );
+	}
 }
 
 Angle::Angle()
@@ -191,4 +209,20 @@ float Angle::SinOf() const
 float Angle::CosOf() const
 {
 	return (float)cos( m_radians );
+}
+
+std::string Angle::ToString( bool radians ) const
+{
+	std::string out;
+	if ( radians )
+	{
+		out = unify::Cast< std::string >( ToRadians() );
+		out.push_back( 'r' );
+	}
+	else
+	{
+		out = unify::Cast< std::string >( ToDegrees() );
+		out.push_back( 'd' );
+	}
+	return out;
 }

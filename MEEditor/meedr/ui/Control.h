@@ -14,29 +14,55 @@ namespace meedr
 			friend class Builder;
 			friend class container::Canvas;
 			friend class container::StackPanel;
-		public:
-			Control( int id );
-			virtual ~Control();
-
-			int GetID() override;
-
-			int GetDefaultWidth() override;
-			int GetDefaultHeight() override;
-
-			void SetFillWidthWeight( int weight ) override;
-			int GetFillWidthWeight() override;
-			void SetFillHeightWeight( int weight ) override;
-			int GetFillHeightWeight() override;
 
 		protected:
-			container::Container * GetParent() override;
+			Control( int id, int width, int height );
+
+		public:
+			virtual ~Control();
+
+			// Default values...
+			int GetDefaultWidth() const override;
+			int GetDefaultHeight() const override;
+
+			// Wanted values...
+			void SetFillWidthWeight( int weight ) override;
+			int GetFillWidthWeight() const override;
+
+			void SetFillHeightWeight( int weight ) override;
+			int GetFillHeightWeight() const override;
+
+			int GetWantedWidth() const override;
+			int GetWantedHeight() const override;
+
+			int GetID() const override;
+			std::string GetName() const override;
+
+			// Actual values...
+			int GetActualX() const override;
+			int GetActualY() const override;
+			int GetActualWidth() const override;
+			int GetActualHeight() const override;
+
+		protected:
+			container::Container * GetParent() const override;
 			void SetParent( container::Container * parent ) override;
 
-		private:
+			void ComputePass1() override;
+			void ComputePass2( int fillWidthTotal, int fillHeightTotal, int fillWidthTotalWeight, int fillHeightTotalWeight ) override;
+			void ComputePass3( int x, int y ) override;
+
 			container::Container * m_parent;
 			int m_id;
+			std::string m_name;
 			int m_fillWidthWeight;
 			int m_fillHeightWeight;
+			int m_wantedWidth;
+			int m_wantedHeight;
+			int m_actualX;
+			int m_actualY;
+			int m_actualWidth;
+			int m_actualHeight;
 		};
 	}
 }

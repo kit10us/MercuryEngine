@@ -7,47 +7,47 @@ using namespace meedr;
 using namespace ui;
 
 Listbox::Listbox( DefaultWidth, DefaultHeight, int id )
-	: Control( id ), m_width{ -1 }, m_height{ -1 }, m_sorted{ true }
+	: Control( id, DefaultWidth::Value(), DefaultHeight::Value() ), m_sorted{ true }
 {
 }
 Listbox::Listbox( DefaultWidth, FillHeight heightWeight, int id )
-	: Control( id ), m_width{ -1 }, m_height{ -2 }, m_sorted{ true }
+	: Control( id, DefaultWidth::Value(), FillHeight::Value() ), m_sorted{ true }
 {
 	SetFillHeightWeight( heightWeight.weight );
 }
 Listbox::Listbox( DefaultWidth, int height, int id )
-	: Control( id ), m_width{ -1 }, m_height{ height }, m_sorted{ true }
+	: Control( id, DefaultWidth::Value(), height ), m_sorted{ true }
 {
 }
 
 Listbox::Listbox( FillWidth widthWeight, DefaultHeight, int id )
-	: Control( id ), m_width{ -2 }, m_height{ -1 }, m_sorted{ true }
+	: Control( id, FillWidth::Value(), DefaultHeight::Value() ), m_sorted{ true }
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 Listbox::Listbox( FillWidth widthWeight, FillHeight heightWeight, int id )
-	: Control( id ), m_width{ -2 }, m_height{ -2 }, m_sorted{ true }
+	: Control( id, FillWidth::Value(), FillHeight::Value() ), m_sorted{ true }
 {
 	SetFillWidthWeight( widthWeight.weight );
 	SetFillHeightWeight( heightWeight.weight );
 }
 Listbox::Listbox( FillWidth widthWeight, int height, int id )
-	: Control( id ), m_width{ -2 }, m_height{ height }, m_sorted{ true }
+	: Control( id, FillWidth::Value(), height ), m_sorted{ true }
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 
 Listbox::Listbox( int width, DefaultHeight, int id )
-	: Control( id ), m_width{ width }, m_height{ -1 }, m_sorted{ true }
+	: Control( id, width, DefaultHeight::Value() ), m_sorted{ true }
 {
 }
 Listbox::Listbox( int width, FillHeight heightWeight, int id )
-	: Control( id ), m_width{ width }, m_height{ -2 }, m_sorted{ true }
+	: Control( id, width, FillHeight::Value() ), m_sorted{ true }
 {
 	SetFillHeightWeight( heightWeight.weight );
 }
 Listbox::Listbox( int width, int height, int id )
-	: Control( id ), m_width{ width }, m_height{ height }, m_sorted{ true }
+	: Control( id, width, height ), m_sorted{ true }
 {
 }
 
@@ -55,17 +55,7 @@ Listbox::~Listbox()
 {
 }
 
-int Listbox::GetWidth()
-{
-	return m_width;
-}
-
-int Listbox::GetHeight()
-{
-	return m_height;
-}
-
-void Listbox::Create( int x, int y, int width, int height, HWND parent )
+void Listbox::Create( HWND parent )
 {
 	DWORD style = WS_TABSTOP | WS_VISIBLE | WS_CHILD;
 	style |= LBS_NOTIFY | WS_VSCROLL | WS_BORDER;
@@ -78,10 +68,10 @@ void Listbox::Create( int x, int y, int width, int height, HWND parent )
 		L"Listbox",
 		L"",
 		style,
-		x,
-		y,
-		width,
-		height,
+		GetActualX(),
+		GetActualY(),
+		GetActualWidth(),
+		GetActualHeight(), 
 		parent,
 		(HMENU)GetID(),
 		0,
@@ -89,12 +79,12 @@ void Listbox::Create( int x, int y, int width, int height, HWND parent )
 	);
 }
 
-int Listbox::GetDefaultWidth()
+int Listbox::GetDefaultWidth() const
 {
 	return 120;
 }
 
-int Listbox::GetDefaultHeight()
+int Listbox::GetDefaultHeight() const
 {
 	return 240;
 }

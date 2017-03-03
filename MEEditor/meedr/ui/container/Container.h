@@ -13,8 +13,10 @@ namespace meedr
 		{
 			class Container : public Control
 			{
+			protected:
+				Container( int id, int width, int height );
+
 			public:
-				Container( int id );
 				virtual ~Container();
 
 				virtual void AddChild( IControl * control ) = 0;

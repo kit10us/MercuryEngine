@@ -188,16 +188,18 @@ HWND meedr::CreateInputBrowser( me::IGame * game, HINSTANCE hInstance, HWND pare
 		}
 	}
 
-	ui::Builder builder;
-	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Horizontal, 540, 440 ) );
-	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, ui::FillWidth(), ui::FillHeight() ) );
-	builder.AddControl( new ui::Static( L"Type:", ui::SizeToContentWidth(), ui::DefaultHeight() ) );
-	builder.AddControl( new ui::Combobox( ui::FillWidth(), ui::DefaultHeight(), IDC_COMBOBOX_INPUTSOURCE ) );
-	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Horizontal, ui::FillWidth(), ui::FillHeight() ) );
-	builder.AddControl( (new ui::Listbox( 260, ui::FillHeight(), IDC_LISTBOX_INPUTNAMES ))->SetSorted( false ) );
-	builder.AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, ui::FillWidth(), ui::FillHeight() ) );
-	builder.AddControl( new ui::Static( L"Data:", ui::SizeToContentWidth(), ui::DefaultHeight() ) );
-	builder.AddControl( new ui::Static( L"PLACE FOR DATA", ui::FillWidth(), ui::FillHeight(), IDC_STATIC_INPUTDATA ) );
+	using namespace ui;
+
+	Builder builder;
+	builder.AddContainer( new container::StackPanel( container::Stack::Horizontal, 540, 440, 0 ) );
+	builder.AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
+	builder.AddControl( new Static( L"Type:", SizeToContentWidth(), DefaultHeight() ) );
+	builder.AddControl( new Combobox( FillWidth(), DefaultHeight(), IDC_COMBOBOX_INPUTSOURCE ) );
+	builder.AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), FillHeight() ) );
+	builder.AddControl( (new Listbox( 260, FillHeight(), IDC_LISTBOX_INPUTNAMES ))->SetSorted( false ) );
+	builder.AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
+	builder.AddControl( new Static( L"Data:", SizeToContentWidth(), DefaultHeight() ) );
+	builder.AddControl( new Static( L"PLACE FOR DATA", FillWidth(), FillHeight(), IDC_STATIC_INPUTDATA ) );
 	s_windowHwnd = builder.Create( s_parentWindow, hInstance, L"InputBrowserWndClass", L"Input Browser", x, y, game );
 	
 	ShowWindow( s_windowHwnd, nCmdShow );

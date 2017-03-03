@@ -12,7 +12,6 @@ namespace meedr
 	{
 		class Combobox : public Control
 		{
-			void Create( int x, int y, int width, int height, HWND parent ) override;
 		public:		   			
 			Combobox( DefaultWidth, DefaultHeight, int id );
 			Combobox( DefaultWidth, int height, int id );
@@ -25,15 +24,13 @@ namespace meedr
 
 			virtual ~Combobox();
 
-			int GetWidth() override;
-			int GetHeight() override;
+			int GetWantedHeight() const override;
 
-			int GetDefaultWidth() override;
-			int GetDefaultHeight() override;
+			int GetDefaultWidth() const override;
+			int GetDefaultHeight() const override;
 
-		private:
-			int m_width;
-			int m_height;
+		protected:
+			void Create( HWND parent ) override;
 		};
 	}
 }

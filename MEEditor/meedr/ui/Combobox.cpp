@@ -7,31 +7,31 @@ using namespace meedr;
 using namespace ui;
 
 Combobox::Combobox( DefaultWidth, DefaultHeight, int id )
-	: Control( id ), m_width{ -1 }, m_height{ -1 }
+	: Control( id, DefaultWidth::Value(), DefaultHeight::Value() )
 {
 }
 Combobox::Combobox( DefaultWidth, int height, int id )
-	: Control( id ), m_width{ -1 }, m_height{ height }
+	: Control( id, DefaultWidth::Value(), height )
 {
 }
 
 Combobox::Combobox( FillWidth widthWeight, DefaultHeight, int id )
-	: Control( id ), m_width{ -2 }, m_height{ -1 }
+	: Control( id, FillWidth::Value(), DefaultHeight::Value() )
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 Combobox::Combobox( FillWidth widthWeight, int height, int id )
-	: Control( id ), m_width{ -2 }, m_height{ height }
+	: Control( id, FillWidth::Value(), height )
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 
 Combobox::Combobox( int width, DefaultHeight, int id )
-	: Control( id ), m_width{ width }, m_height{ -1 }
+	: Control( id, width, DefaultHeight::Value() )
 {
 }
 Combobox::Combobox( int width, int height, int id )
-	: Control( id ), m_width{ width }, m_height{ height }
+	: Control( id, width, height )
 {
 }
 
@@ -39,26 +39,21 @@ Combobox::~Combobox()
 {
 }
 
-int Combobox::GetWidth()
-{
-	return m_width;
-}
-
-int Combobox::GetHeight()
+int Combobox::GetWantedHeight() const
 {
 	return 24;
 }
 
-void Combobox::Create( int x, int y, int width, int height, HWND parent )
+void Combobox::Create( HWND parent )
 {
 	HWND handle = CreateWindowW(
 		L"Combobox",
 		L"",
 		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_TABSTOP | WS_VISIBLE | WS_CHILD,
-		x,
-		y,
-		width,
-		( ui::DefaultHeight() == m_height ) ? GetDefaultHeight() : height,
+		GetActualX(),
+		GetActualY(),
+		GetActualWidth(),
+		( ui::DefaultHeight() == m_wantedHeight ) ? GetDefaultHeight() : m_wantedHeight,
 		parent,
 		(HMENU)GetID(),
 		0,
@@ -66,12 +61,12 @@ void Combobox::Create( int x, int y, int width, int height, HWND parent )
 	);
 }
 
-int Combobox::GetDefaultWidth()
+int Combobox::GetDefaultWidth() const
 {
 	return 120;
 }
 
-int Combobox::GetDefaultHeight()
+int Combobox::GetDefaultHeight() const
 {
 	return 240;
 }

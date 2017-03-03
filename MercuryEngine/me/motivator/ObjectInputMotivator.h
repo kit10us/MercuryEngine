@@ -53,10 +53,24 @@ namespace me
 		
 			void Add( std::string motiviation, input::IInputCondition::ptr condition );
 
+			int GetValueCount() const override;
+			bool ValueExists( std::string name ) const override;
+			std::string GetValueName( size_t index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			void SetValue( size_t index, std::string value ) override;
+			void SetValue( std::string name, std::string value ) override;
+			std::string GetValue( size_t index ) const override;
+			std::string GetValue( std::string name ) const override;
+
 		private:
 			scene::Object * m_target;
 			bool m_enabled;
 			std::map< std::string /*motivation*/, input::IInputCondition::ptr, unify::CaseInsensitiveLessThanTest > m_motivations;
+			
+			float m_walkSpeed;
+			float m_runSpeed;
+			float m_lookXSpeed;
+			float m_lookYSpeed;
 		};
 	}
 }

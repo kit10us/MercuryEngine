@@ -19,10 +19,7 @@
 #undef GetCommandLine
 #endif
 
-#define WM_RESOURCEBROWSER_CLOSED	(WM_USER+0)
-#define WM_INPUTBROWSER_CLOSED	(WM_USER+1)
-								
 namespace meedr
 {
-	HWND CreateEngineMain( me::IGame * game );
+	HWND CreateScriptEditor( me::IGame * game, HINSTANCE hInstance, HWND parentHandle, int nCmdShow, int x, int y );
 }

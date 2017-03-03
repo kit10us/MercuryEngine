@@ -18,6 +18,5 @@ std::string me::input::InputTypeToString( InputType type )
 	case InputType::Trigger: return "Trigger";
 	case InputType::Motion: return "Motion";
 	case InputType::Stick: return "Stick";
-	case InputType::Pad: return "Pad";
 	}
 }

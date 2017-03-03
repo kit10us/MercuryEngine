@@ -13,5 +13,14 @@ namespace me
 	{
 	public:
 		virtual ~IMotivator() {}
+
+		virtual int GetValueCount() const = 0;
+		virtual bool ValueExists( std::string name ) const = 0;
+		virtual std::string GetValueName( size_t index ) const = 0;
+		virtual int FindValueIndex( std::string name ) const = 0;
+		virtual void SetValue( size_t index, std::string value ) = 0;
+		virtual void SetValue( std::string name, std::string value ) = 0;
+		virtual std::string GetValue( size_t index ) const = 0;
+		virtual std::string GetValue( std::string name ) const = 0;
 	};
 }

@@ -51,17 +51,14 @@ namespace me
 
 			scene::IObjectComponent * Duplicate() override;
 
-			void SetOrigin( unify::V3< float > origin );
-			
-			void SetOrbit( unify::V3< float > orbit );
-			
-			void SetAngleASecond( unify::Angle angleASecond );
-			
-			unify::V3< float > GetOrigin() const;
-
-			unify::V3< float > GetOrbit() const;
-
-			unify::Angle GetAngleASecond() const;
+			int GetValueCount() const override;
+			bool ValueExists( std::string name ) const override;
+			std::string GetValueName( size_t index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			void SetValue( size_t index, std::string value ) override;
+			void SetValue( std::string name, std::string value ) override;
+			std::string GetValue( size_t index ) const override;
+			std::string GetValue( std::string name ) const override;
 
 		private:
 			scene::Object * m_target;

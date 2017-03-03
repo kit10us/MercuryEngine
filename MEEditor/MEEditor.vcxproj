@@ -152,6 +152,7 @@
     <ClCompile Include="meedr\EngineMain.cpp" />
     <ClCompile Include="meedr\InputBrowser.cpp" />
     <ClCompile Include="meedr\ResourceBrowser.cpp" />
+    <ClCompile Include="meedr\ScriptEditor.cpp" />
     <ClCompile Include="meedr\ui\Builder.cpp" />
     <ClCompile Include="meedr\ui\Button.cpp" />
     <ClCompile Include="meedr\ui\Combobox.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="meedr\ui\container\StackPanel.cpp" />
     <ClCompile Include="meedr\ui\Control.cpp" />
     <ClCompile Include="meedr\ui\Listbox.cpp" />
+    <ClCompile Include="meedr\ui\Richtext.cpp" />
     <ClCompile Include="meedr\ui\Static.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +169,7 @@
     <ClInclude Include="meedr\EngineMain.h" />
     <ClInclude Include="meedr\InputBrowser.h" />
     <ClInclude Include="meedr\ResourceBrowser.h" />
+    <ClInclude Include="meedr\ScriptEditor.h" />
     <ClInclude Include="meedr\ui\Builder.h" />
     <ClInclude Include="meedr\ui\Button.h" />
     <ClInclude Include="meedr\ui\Combobox.h" />
@@ -176,6 +179,7 @@
     <ClInclude Include="meedr\ui\Control.h" />
     <ClInclude Include="meedr\ui\IControl.h" />
     <ClInclude Include="meedr\ui\Listbox.h" />
+    <ClInclude Include="meedr\ui\Richtext.h" />
     <ClInclude Include="meedr\ui\Static.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

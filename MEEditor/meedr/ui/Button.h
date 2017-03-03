@@ -12,7 +12,6 @@ namespace meedr
 	{
 		class Button : public Control
 		{
-			void Create( int x, int y, int width, int height, HWND parent ) override;
 		public:		   			
 			Button( std::wstring text, DefaultWidth, DefaultHeight, int id );
 			Button( std::wstring text, DefaultWidth, FillHeight heightWeight, int id );
@@ -28,17 +27,14 @@ namespace meedr
 
 			virtual ~Button();
 
-			int GetWidth() override;
-			int GetHeight() override;
-
 			std::wstring GetText();
 
-			int GetDefaultWidth() override;
-			int GetDefaultHeight() override;
+			int GetDefaultWidth() const override;
+			int GetDefaultHeight() const override;
 
-		private:
-			int m_width;
-			int m_height;
+		protected:
+			void Create( HWND parent ) override;
+
 			std::wstring m_text;
 		};
 	}

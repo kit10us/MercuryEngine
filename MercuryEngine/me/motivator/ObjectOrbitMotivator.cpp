@@ -2,9 +2,27 @@
 // All Rights Reserved
 
 #include <me/motivator/ObjectOrbitMotivator.h>
+#include <unify/String.h>
+#include <map>
 
 using namespace me;
 using namespace motivator;
+
+namespace
+{
+	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
+	{
+		{ "origin", 0 },
+		{ "orbit", 1 },
+		{ "angleASecond", 2 }
+	};
+	std::vector< std::string > g_ValuesList
+	{
+		{ "origin" },
+		{ "orbit" },
+		{ "angleASecond" }
+	};
+}
 
 ObjectOrbitMotivator::ObjectOrbitMotivator( unify::V3< float > origin, unify::V3< float > orbit, unify::Angle angleASecond )
 	: m_origin{ origin }
@@ -95,32 +113,93 @@ scene::IObjectComponent * ObjectOrbitMotivator::Duplicate()
 	return duplicate;
 }
 
-void ObjectOrbitMotivator::SetOrigin( unify::V3< float > origin )
+int ObjectOrbitMotivator::GetValueCount() const
 {
-	m_origin = origin;
-}
-			
-void ObjectOrbitMotivator::SetOrbit( unify::V3< float > orbit )
-{
-	m_orbit = orbit;
-}
-			
-void ObjectOrbitMotivator::SetAngleASecond( unify::Angle angleASecond )
-{
-	m_angleASecond = angleASecond;
-}
-			
-unify::V3< float > ObjectOrbitMotivator::GetOrigin() const
-{
-	return m_origin;
+	return 3;
 }
 
-unify::V3< float > ObjectOrbitMotivator::GetOrbit() const
+bool ObjectOrbitMotivator::ValueExists( std::string name ) const
 {
-	return m_orbit;
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
-unify::Angle ObjectOrbitMotivator::GetAngleASecond() const
+std::string ObjectOrbitMotivator::GetValueName( size_t index ) const
 {
-	return m_angleASecond;
+	if ( index >= g_ValuesList.size() )
+	{
+		return std::string();
+	}
+	else
+	{
+		return g_ValuesList[ index ];
+	}
+}
+
+int ObjectOrbitMotivator::FindValueIndex( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return -1;
+	}
+	else
+	{
+		return itr->second;
+	}
+}
+
+void ObjectOrbitMotivator::SetValue( size_t index, std::string value )
+{
+	switch ( index )
+	{
+	default:
+		return;
+	case 0:
+		m_origin = unify::V3< float >( value );
+		break;
+	case 1:
+		m_orbit = unify::V3< float >( value );
+		break;
+	case 2:
+		m_angleASecond = unify::Angle( value );
+		break;
+	}
+}
+
+void ObjectOrbitMotivator::SetValue( std::string name, std::string value )
+{
+	size_t index = FindValueIndex( name );
+	SetValue( index, value );
+}
+
+std::string ObjectOrbitMotivator::GetValue( size_t index ) const
+{
+	switch ( index )
+	{
+	default:
+		return std::string();
+	case 0:
+		return m_origin.ToString();
+		break;
+	case 1:
+		return m_orbit.ToString();
+		break;
+	case 2:
+		return m_angleASecond.ToString( false );
+		break;
+	}
+}
+ 
+std::string ObjectOrbitMotivator::GetValue( std::string name ) const
+{
+	size_t index = FindValueIndex( name );
+	return GetValue( index );
 }

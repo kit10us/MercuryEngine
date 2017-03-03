@@ -89,13 +89,44 @@ int ObjectInputMotivator_IsEnabled( lua_State * state )
 	return 1;
 }
 
+int ObjectInputMotivator_SetValue( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 3 );
+
+	ObjectInputMotivatorProxy * motivatorProxy = CheckObjectInputMotivator( state, 1 );
+	std::string name = luaL_checkstring( state, 2 );
+
+	int type = lua_type( state, 3 );
+	switch ( type )
+	{
+	case LUA_TNIL:
+		assert( 0 );
+		break;
+	case LUA_TBOOLEAN:
+		motivatorProxy->motivator->SetValue( name, unify::Cast< std::string >( lua_toboolean( state, 3 ) ) );
+		break;
+	case LUA_TNUMBER:
+		motivatorProxy->motivator->SetValue( name, unify::Cast< std::string >( luaL_checknumber( state, 3 ) ) );
+		break;
+	case LUA_TSTRING:
+		motivatorProxy->motivator->SetValue( name, luaL_checkstring( state, 3 ) );
+		break;
+	}
+	bool enabled = lua_toboolean( state, 2 ) ? true : false;
+
+	motivatorProxy->motivator->SetEnabled( enabled );
+	return 0;
+}
+
 static const luaL_Reg ObjectInputMotivatorFunctions[] =
 {
 	{ "AttachTo", ObjectInputMotivator_AttachTo },
 	{ "Name", ObjectInputMotivator_Name },
 	{ "Add", ObjectInputMotivator_Add },
-	{ "IsEnabled", ObjectInputMotivator_IsEnabled } ,
+	{ "IsEnabled", ObjectInputMotivator_IsEnabled },
 	{ "SetEnabled", ObjectInputMotivator_SetEnabled },
+	{ "SetValue", ObjectInputMotivator_SetValue },
 	{ nullptr, nullptr }
 };
 
