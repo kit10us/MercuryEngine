@@ -3,26 +3,28 @@
 
 #pragma once
 
-#include <me/IOS.h>
 #include <me/IGame.h>
-#include <me/IRenderer.h>
-#include <me/Display.h>
-#include <list>
-#include <vector>
+#include <meedr/ui/Window.h>
 
-// Undefine Microsoft clashing defines.
-#ifdef CreateWindow
-#undef CreateWindow
-#endif
-
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
-
-#define WM_RESOURCEBROWSER_CLOSED	(WM_USER+0)
-#define WM_INPUTBROWSER_CLOSED	(WM_USER+1)
-								
+#define RESOURCEBROWSER_CLOSED	0
+#define INPUTBROWSER_CLOSED		1
+#define SCRIPTEDITOR_CLOSED		2
+#define SCENEVIEWER_CLOSED		3
+ 								
 namespace meedr
 {
-	HWND CreateEngineMain( me::IGame * game );
+	class EngineMain : public ui::Window
+	{
+		me::IGame * m_game;
+		int m_openChildren;
+		IWindow::ptr m_resourceBrowser;
+		IWindow::ptr m_inputBrowser;
+		IWindow::ptr m_sceneViewer;
+		IWindow::ptr m_scriptEditor;
+	public:
+		EngineMain( me::IGame * game );
+
+		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
+		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;
+	};
 }

@@ -10,7 +10,7 @@ using namespace ui;
 using namespace container;
 
 StackPanel::StackPanel( Stack direction, FillWidth widthWeight, FillHeight heightWeight, int padding )
-	: Container( 0, FillWidth::Value(), FillHeight::Value() )
+	: Container( FillWidth::Value(), FillHeight::Value() )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
@@ -19,7 +19,7 @@ StackPanel::StackPanel( Stack direction, FillWidth widthWeight, FillHeight heigh
 }
 
 StackPanel::StackPanel( Stack direction, FillWidth widthWeight, SizeToContentHeight, int padding )
-	: Container( 0, FillWidth::Value(), SizeToContentHeight::Value() )
+	: Container( FillWidth::Value(), SizeToContentHeight::Value() )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
@@ -27,7 +27,7 @@ StackPanel::StackPanel( Stack direction, FillWidth widthWeight, SizeToContentHei
 }
 
 StackPanel::StackPanel( Stack direction, FillWidth widthWeight, int height, int padding )
-	: Container( 0, FillWidth::Value(), height )
+	: Container( FillWidth::Value(), height )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
@@ -36,7 +36,7 @@ StackPanel::StackPanel( Stack direction, FillWidth widthWeight, int height, int 
 
 
 StackPanel::StackPanel( Stack direction, SizeToContentWidth, FillHeight heightWeight, int padding )
-	: Container( 0, SizeToContentWidth::Value(), FillHeight::Value() )
+	: Container( SizeToContentWidth::Value(), FillHeight::Value() )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
@@ -44,21 +44,21 @@ StackPanel::StackPanel( Stack direction, SizeToContentWidth, FillHeight heightWe
 }
 
 StackPanel::StackPanel( Stack direction, SizeToContentWidth, SizeToContentHeight, int padding )
-	: Container( 0, SizeToContentWidth::Value(), SizeToContentHeight::Value() )
+	: Container( SizeToContentWidth::Value(), SizeToContentHeight::Value() )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
 }
 
 StackPanel::StackPanel( Stack direction, SizeToContentWidth, int height, int padding )
-	: Container( 0, SizeToContentWidth::Value(), height )
+	: Container( SizeToContentWidth::Value(), height )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
 }
 
 StackPanel::StackPanel( Stack direction, int width, FillHeight heightWeight, int padding )
-	: Container( 0, width, FillHeight::Value() )
+	: Container( width, FillHeight::Value() )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
@@ -66,14 +66,14 @@ StackPanel::StackPanel( Stack direction, int width, FillHeight heightWeight, int
 }
 
 StackPanel::StackPanel( Stack direction, int width, SizeToContentHeight, int padding )
-	: Container( 0, width, SizeToContentHeight::Value() )
+	: Container( width, SizeToContentHeight::Value() )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {
 }
 
 StackPanel::StackPanel( Stack direction, int width, int height, int padding )
-	: Container( 0, width, height )
+	: Container( width, height )
 	, m_direction{ direction }
 	, m_padding{ padding }
 {

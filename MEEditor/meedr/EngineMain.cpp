@@ -2,157 +2,163 @@
 // All Rights Reserved
 
 #include <meedr/EngineMain.h>
-#include <meedr/ui/Builder.h>
+#include <meedr/ui/Window.h>
 #include <meedr/ResourceBrowser.h>
 #include <meedr/InputBrowser.h>
+#include <meedr/ScriptEditor.h>
+#include <meedr/SceneViewer.h>
 
-#define IDC_BUTTON_PAUSE			0x01
-#define IDC_BUTTON_RESOURCEBROWSER	0x02
-#define IDC_BUTTON_INPUTBROWSER		0x03
-#define IDC_BUTTON_SCRIPTEDITOR		0x04
-#define IDC_BUTTON_QUIT				0x20
+using namespace meedr;
+using namespace ui;
 
-LRESULT CALLBACK WndProcChild( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
+EngineMain::EngineMain( me::IGame * game )
+	: Window( (HWND)game->GetOSParameters().hWnd, L"EngineMainClass" )
+	, m_game{ game }
+	, m_openChildren{ 0 }
 {
-	static me::IGame * game;
-	static CREATESTRUCT createStruct;
-	static HWND resourceBrowserHwnd;
-	static HWND inputBrowserHwnd;
-	static int openChildren;
-
-	switch ( message )
-	{
-	case WM_CREATE:
-	{
-		createStruct = *(CREATESTRUCT*)lParam;
-		game = (me::IGame*)createStruct.lpCreateParams;
-		break;
-	}
-	case WM_COMMAND:
-	{
-		auto control = LOWORD( wParam );
-		switch ( control )
-		{
-		case IDC_BUTTON_QUIT:
-			game->Quit();
-			break;
-		case IDC_BUTTON_PAUSE:
-			game->SetUpdateEnabled( !game->GetUpdateEnabled() );
-			SetDlgItemText( hWnd, IDC_BUTTON_PAUSE, game->GetUpdateEnabled() ? L"Pause" : L"Resume" );
-			break;
-			case IDC_BUTTON_RESOURCEBROWSER:
-		{
-			RECT rect{};
-			GetWindowRect( hWnd, &rect );
-			int x = rect.right;
-			int y = rect.top;
-			if ( !resourceBrowserHwnd )
-			{
-				resourceBrowserHwnd = meedr::CreateResourceBrowser( game, createStruct.hInstance, hWnd, SW_SHOWDEFAULT, x + openChildren * 34, y + openChildren * 34 );
-				openChildren++;
-			}
-			else
-			{
-				ShowWindow( resourceBrowserHwnd, SW_RESTORE );
-				SetForegroundWindow( resourceBrowserHwnd );
-				FlashWindow( resourceBrowserHwnd, true );
-
-				RECT resourceBrowserRect{};
-				GetWindowRect( resourceBrowserHwnd, &resourceBrowserRect );
-				int width = resourceBrowserRect.right - resourceBrowserRect.left;
-				int height = resourceBrowserRect.bottom - resourceBrowserRect.top;
-				MoveWindow( resourceBrowserHwnd, x + openChildren * 34, y + openChildren * 34, width, height, 1 );
-			}
-			openChildren++;
-			break;
-		}
-		case IDC_BUTTON_INPUTBROWSER:
-		{
-			RECT rect{};
-			GetWindowRect( hWnd, &rect );
-			int x = rect.right;
-			int y = rect.top;
-			if ( !inputBrowserHwnd )
-			{
-				inputBrowserHwnd = meedr::CreateInputBrowser( game, createStruct.hInstance, hWnd, SW_SHOWDEFAULT, x + openChildren * 34, y + openChildren * 34 );
-				openChildren++;	 
-			}
-			else
-			{
-				ShowWindow( inputBrowserHwnd, SW_RESTORE );
-				SetForegroundWindow( inputBrowserHwnd );
-				FlashWindow( inputBrowserHwnd, true );
-
-				RECT inputBrowserRect{};
-				GetWindowRect( inputBrowserHwnd, &inputBrowserRect );
-				int width = inputBrowserRect.right - inputBrowserRect.left;
-				int height = inputBrowserRect.bottom - inputBrowserRect.top;
-				MoveWindow( inputBrowserHwnd, x, y, width, height, 1 );
-			}
-			break;
-		}
-		}
-		break;
-	}
-	case WM_RESOURCEBROWSER_CLOSED:
-		resourceBrowserHwnd = 0;
-		openChildren--;
-		break;
-	case WM_INPUTBROWSER_CLOSED:
-		inputBrowserHwnd = 0;
-		openChildren--;
-		break;
-	}
-
-	return DefWindowProc( hWnd, message, wParam, lParam );
-}
-
-HWND meedr::CreateEngineMain( me::IGame * game )
-{
-	//, GetHInstance(), handle, m_osParameters.nCmdShow, windowRect.left + newWindowWidth, windowRect.top
-
-	HINSTANCE hInstance = (HINSTANCE)game->GetOSParameters().hInstance;
-	HWND parentHandle = (HWND)game->GetOSParameters().hWnd;
 	int nCmdShow = game->GetOSParameters().nCmdShow;
 	RECT rect{};
-	GetWindowRect( parentHandle, &rect );
+	GetWindowRect( GetParentHandle(), &rect );
 	int x = rect.right;
 	int y = rect.top;
 
-	// Regardless of windowed or not, we need a window...
-	WNDCLASS wc{};
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = (WNDPROC)WndProcChild;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hInstance = hInstance;
-	wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
-	wc.hbrBackground = (HBRUSH)GetSysColorBrush( COLOR_3DFACE );
-	wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
-	wc.lpszMenuName = 0;
-	wc.lpszClassName = L"SecondWndClass"; 
-	if( !RegisterClass( &wc ) )
-	{
-		throw std::exception( "Failed to register window class!" );
-	}
+	AddContainer( new container::StackPanel( container::Stack::Vertical, 240, SizeToContentHeight() ) );
+	AddControl( new Button( L"Pause", FillWidth(), DefaultHeight() ), "Pause" );
+	AddControl( new Button( L"Resource Browser", FillWidth(), DefaultHeight() ), "ResourceBrowser" );
+	AddControl( new Button( L"Scene Viewer", FillWidth(), DefaultHeight() ), "SceneViewer" );
+	AddControl( new Button( L"Input Browser", FillWidth(), DefaultHeight() ), "InputBrowser" );
+	AddControl( new Button( L"Script Editor", FillWidth(), DefaultHeight() ), "ScriptEditor" );
+	AddControl( new Button( L"Quit", FillWidth(), DefaultHeight() ), "Quit" );
+	Create( L"Engine Main", x, y, nCmdShow );
 
-	using namespace ui;
-	Builder builder;
-	builder.AddContainer( new container::StackPanel( container::Stack::Vertical, 240, SizeToContentHeight() ) );
-	builder.AddControl( new Button( L"Pause", FillWidth(), DefaultHeight(), IDC_BUTTON_PAUSE ) );
-	builder.AddControl( new Button( L"Resource Browser", FillWidth(), DefaultHeight(), IDC_BUTTON_RESOURCEBROWSER ) );
-	builder.AddControl( new Button( L"Input Browser", FillWidth(), DefaultHeight(), IDC_BUTTON_INPUTBROWSER ) );
-	builder.AddControl( new Button( L"Script Editor", FillWidth(), DefaultHeight(), IDC_BUTTON_SCRIPTEDITOR ) );
-	builder.AddControl( new Button( L"Quit", FillWidth(), DefaultHeight(), IDC_BUTTON_QUIT ) );
-	builder.Create( parentHandle, hInstance, L"SecondWndClass", L"Engine Main", x, y, game );
-
-	ShowWindow( builder.GetHandle(), nCmdShow );
-
+	/*
 	// Disable input browser button if we don't have one.
 	if ( game->GetInputManager() == nullptr )
 	{
 		EnableWindow( GetDlgItem( builder.GetHandle(), IDC_BUTTON_INPUTBROWSER ), false );
 	}
+	*/
+}
 
-	return builder.GetHandle();
+IResult * EngineMain::OnControlCommand( ControlMessage message )
+{
+	if ( unify::StringIs( message.name, "Quit" ) )
+	{
+		m_game->Quit();
+		return new Result( 0 );
+	}
+	else if ( unify::StringIs( message.name, "Pause" ) )
+	{
+		m_game->SetUpdateEnabled( !m_game->GetUpdateEnabled() );
+		SetDlgItemText( GetHandle(), message.controlId, m_game->GetUpdateEnabled() ? L"Pause" : L"Resume" );
+		return new Result( 0 );
+	}
+	else if ( unify::StringIs( message.name, "ResourceBrowser" ) )
+	{
+		RECT rect{};
+		GetWindowRect( GetHandle(), &rect );
+		int x = rect.right;
+		int y = rect.top;
+		if ( !m_resourceBrowser )
+		{
+			m_resourceBrowser.reset( new meedr::ResourceBrowser( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+			m_openChildren++;
+		}
+		else
+		{
+			ShowWindow( m_resourceBrowser->GetHandle() , SW_RESTORE );
+			SetForegroundWindow( m_resourceBrowser->GetHandle() );
+			FlashWindow( m_resourceBrowser->GetHandle(), true );
+			m_resourceBrowser->MoveWindow( x + m_openChildren * 34, y + m_openChildren * 34, true );
+		}
+		m_openChildren++;
+		return new Result( 0 );
+	}
+	else if ( unify::StringIs( message.name, "InputBrowser" ) )
+	{
+		RECT rect{};
+		GetWindowRect( GetHandle(), &rect );
+		int x = rect.right;
+		int y = rect.top;
+		if ( !m_inputBrowser )
+		{
+			m_inputBrowser.reset( new InputBrowser( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+			m_openChildren++;
+			return new Result( 0 );
+		}
+		else
+		{
+			ShowWindow( m_inputBrowser->GetHandle(), SW_RESTORE );
+			SetForegroundWindow( m_inputBrowser->GetHandle() );
+			FlashWindow( m_inputBrowser->GetHandle(), true );
+
+			m_inputBrowser->MoveWindow(  x, y, true );
+		}
+		return new Result( 0 );
+	}
+	else if ( unify::StringIs( message.name, "ScriptEditor" ) )
+	{
+		RECT parentRect{};
+		GetWindowRect( GetHandle(), &parentRect );
+		int x = parentRect.right;
+		int y = parentRect.top;
+		if ( ! m_scriptEditor )
+		{
+			m_scriptEditor.reset( new ScriptEditor( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+			m_openChildren++;
+		}
+		else
+		{
+			ShowWindow( m_scriptEditor->GetHandle(), SW_RESTORE );
+			SetForegroundWindow( m_scriptEditor->GetHandle() );
+			FlashWindow( m_scriptEditor->GetHandle(), true );
+			m_scriptEditor->MoveWindow( x, y, true );
+		}
+		return new Result( 0 );
+	}
+	else if ( unify::StringIs( message.name, "SceneViewer" ) )
+	{
+		RECT parentRect{};
+		GetWindowRect( GetHandle(), &parentRect );
+		int x = parentRect.right;
+		int y = parentRect.top;
+		if ( ! m_sceneViewer )
+		{
+			m_sceneViewer.reset( new SceneViewer( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+			m_openChildren++;
+		}
+		else
+		{
+			ShowWindow( m_sceneViewer->GetHandle(), SW_RESTORE );
+			SetForegroundWindow( m_sceneViewer->GetHandle() );
+			FlashWindow( m_sceneViewer->GetHandle(), true );
+			m_sceneViewer->MoveWindow( x, y, true );
+		}
+		return new Result( 0 );
+	}
+	return new Unhandled();
+}
+
+IResult* EngineMain::OnUserMessage( UserMessageData message )
+{
+	switch ( message.message )
+	{
+	case RESOURCEBROWSER_CLOSED:
+		m_resourceBrowser.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case INPUTBROWSER_CLOSED:
+		m_inputBrowser.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case SCRIPTEDITOR_CLOSED:
+		m_inputBrowser.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case SCENEVIEWER_CLOSED:
+		m_sceneViewer.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	}
+	return new Unhandled();
 }

@@ -14,7 +14,7 @@ namespace meedr
 			class Container : public Control
 			{
 			protected:
-				Container( int id, int width, int height );
+				Container( int width, int height );
 
 			public:
 				virtual ~Container();

@@ -13,17 +13,17 @@ namespace meedr
 		class Listbox : public Control
 		{
 		public:		   			
-			Listbox( DefaultWidth, DefaultHeight, int id );
-			Listbox( DefaultWidth, FillHeight heightWeight, int id );
-			Listbox( DefaultWidth, int height, int id );
+			Listbox( DefaultWidth, DefaultHeight );
+			Listbox( DefaultWidth, FillHeight heightWeight );
+			Listbox( DefaultWidth, int height );
 			
-			Listbox( FillWidth widthWeight, DefaultHeight, int id );
-			Listbox( FillWidth widthWeight, FillHeight heigthWidth, int id );
-			Listbox( FillWidth widthWeight, int height, int id );
+			Listbox( FillWidth widthWeight, DefaultHeight );
+			Listbox( FillWidth widthWeight, FillHeight heigthWidth );
+			Listbox( FillWidth widthWeight, int height );
 
-			Listbox( int width, DefaultHeight, int id );
-			Listbox( int width, FillHeight heightWeight, int id );
-			Listbox( int width, int height, int id );
+			Listbox( int width, DefaultHeight );
+			Listbox( int width, FillHeight heightWeight );
+			Listbox( int width, int height );
 
 			virtual ~Listbox();
 

@@ -12,9 +12,6 @@
     <ClCompile Include="meedr\ui\container\Canvas.cpp">
       <Filter>meedr\ui\container</Filter>
     </ClCompile>
-    <ClCompile Include="meedr\ui\Builder.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
     <ClCompile Include="meedr\ui\Control.cpp">
       <Filter>meedr\ui</Filter>
     </ClCompile>
@@ -45,6 +42,15 @@
     <ClCompile Include="meedr\ScriptEditor.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
+    <ClCompile Include="meedr\ui\Window.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\ui\Treeview.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\SceneViewer.cpp">
+      <Filter>meedr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEEditor.h" />
@@ -58,9 +64,6 @@
       <Filter>meedr\ui\container</Filter>
     </ClInclude>
     <ClInclude Include="meedr\ui\IControl.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Builder.h">
       <Filter>meedr\ui</Filter>
     </ClInclude>
     <ClInclude Include="meedr\ui\Control.h">
@@ -91,6 +94,18 @@
       <Filter>meedr\ui</Filter>
     </ClInclude>
     <ClInclude Include="meedr\ScriptEditor.h">
+      <Filter>meedr</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Window.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\IWIndow.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\Treeview.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\SceneViewer.h">
       <Filter>meedr</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,25 +2,30 @@
 // All Rights Reserved
 
 #include <meedr/ui/Richtext.h>
+#include <Richedit.h>
 
 using namespace meedr;
 using namespace ui;
 
-Richtext::Richtext( FillWidth, FillHeight, int id )
-	: Control( id, FillWidth::Value(), FillHeight::Value() )
+Richtext::Richtext( FillWidth fillWidth, FillHeight fillHeight )
+	: Control(FillWidth::Value(), FillHeight::Value() )
 {
+	SetFillWidthWeight( fillWidth.weight );
+	SetFillHeightWeight( fillHeight.weight );
 }
-Richtext::Richtext( FillWidth, int height, int id )
-	: Control( id, FillWidth::Value(), height )
+Richtext::Richtext( FillWidth fillWidth, int height )
+	: Control(FillWidth::Value(), height )
 {
+	SetFillWidthWeight( fillWidth.weight );
 }
 
-Richtext::Richtext( int width, FillHeight, int id )
-	: Control( id, width, FillHeight::Value() )
+Richtext::Richtext( int width, FillHeight fillHeight )
+	: Control(width, FillHeight::Value() )
 {
+	SetFillHeightWeight( fillHeight.weight );
 }
-Richtext::Richtext( int width, int height, int id )
-	: Control( id, width, height )
+Richtext::Richtext( int width, int height )
+	: Control(width, height )
 {
 }
 
@@ -35,10 +40,12 @@ std::wstring Richtext::GetText()
 
 void Richtext::Create( HWND parent )
 {
-	HWND handle = CreateWindowW(
-		L"Richtext",
+	LoadLibrary( TEXT( "Msftedit.dll" ) );
+	HWND handle = CreateWindowExW(
+		0,
+		MSFTEDIT_CLASS,
 		m_text.c_str(),
-		WS_VISIBLE | WS_CHILD,
+		WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | WS_HSCROLL | WS_VSCROLL | ES_MULTILINE,
 		GetActualX(),
 		GetActualY(),
 		GetActualWidth(),
@@ -53,10 +60,10 @@ void Richtext::Create( HWND parent )
 int Richtext::GetDefaultWidth() const
 {
 
-	return 160;
+	return 320;
 }
 
 int Richtext::GetDefaultHeight() const
 {
-	return 20;
+	return 160;
 }

@@ -10,26 +10,22 @@ namespace meedr
 {
 	namespace ui
 	{
-		class Richtext : public Control
+		class Treeview : public Control
 		{
 		public:		   			
-			Richtext( FillWidth fillWidth, FillHeight fillHeight );
-			Richtext( FillWidth fillHeight, int height );
+			Treeview( FillWidth fillWidth, FillHeight fillHeight );
+			Treeview( FillWidth fillHeight, int height );
 
-			Richtext( int width, FillHeight fillHeight );
-			Richtext( int width, int height );
+			Treeview( int width, FillHeight fillHeight );
+			Treeview( int width, int height );
 
-			virtual ~Richtext();
-
-			std::wstring GetText();
+			virtual ~Treeview();
 
 			int GetDefaultWidth() const override;
 			int GetDefaultHeight() const override;
 
 		protected:
 			void Create( HWND parent ) override;
-
-			std::wstring m_text;
 		};
 	}
 }

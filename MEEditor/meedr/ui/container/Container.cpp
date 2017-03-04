@@ -7,8 +7,8 @@ using namespace meedr;
 using namespace ui;
 using namespace container;
 
-Container::Container( int id, int width, int height )
-	: Control( id, width, height )
+Container::Container( int width, int height )
+	: Control( width, height )
 {
 }
 

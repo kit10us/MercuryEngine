@@ -3,23 +3,21 @@
 
 #pragma once
 
-#include <me/IOS.h>
 #include <me/IGame.h>
-#include <me/IRenderer.h>
-#include <me/Display.h>
-#include <list>
-#include <vector>
-
-// Undefine Microsoft clashing defines.
-#ifdef CreateWindow
-#undef CreateWindow
-#endif
-
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
+#include <meedr/ui/Window.h>
 
 namespace meedr
 {
-	HWND CreateScriptEditor( me::IGame * game, HINSTANCE hInstance, HWND parentHandle, int nCmdShow, int x, int y );
+	class ScriptEditor : public meedr::ui::Window
+	{
+	private:
+		me::IGame * m_game;
+
+	public:
+		ScriptEditor( HWND parent, int nCmdShow, int x, int y, me::IGame * game );
+
+		ui::IResult* OnCreate( ui::Params params ) override; 
+		ui::IResult* OnDestroy( ui::Params params ) override;
+		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
+	};
 }

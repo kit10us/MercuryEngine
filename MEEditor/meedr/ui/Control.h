@@ -11,12 +11,12 @@ namespace meedr
 	{
 		class Control : public IControl
 		{
-			friend class Builder;
+			friend class Window;
 			friend class container::Canvas;
 			friend class container::StackPanel;
 
 		protected:
-			Control( int id, int width, int height );
+			Control( int width, int height );
 
 		public:
 			virtual ~Control();
@@ -35,7 +35,6 @@ namespace meedr
 			int GetWantedWidth() const override;
 			int GetWantedHeight() const override;
 
-			int GetID() const override;
 			std::string GetName() const override;
 
 			// Actual values...
@@ -43,6 +42,9 @@ namespace meedr
 			int GetActualY() const override;
 			int GetActualWidth() const override;
 			int GetActualHeight() const override;
+
+			void SetID( int id ) override;
+			int GetID() const override;
 
 		protected:
 			container::Container * GetParent() const override;

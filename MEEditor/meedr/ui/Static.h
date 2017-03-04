@@ -13,21 +13,21 @@ namespace meedr
 		class Static : public Control
 		{
 		public:		   			
-			Static( std::wstring text, DefaultWidth, DefaultHeight, int id = 0 );
-			Static( std::wstring text, DefaultWidth, FillHeight fillHeight, int id = 0 );
-			Static( std::wstring text, DefaultWidth, int height, int id = 0 );
+			Static( std::wstring text, DefaultWidth, DefaultHeight );
+			Static( std::wstring text, DefaultWidth, FillHeight fillHeight );
+			Static( std::wstring text, DefaultWidth, int height );
 
-			Static( std::wstring text, FillWidth fillWidth, DefaultHeight, int id = 0 );
-			Static( std::wstring text, FillWidth fillWidth, FillHeight fillHeight, int id = 0 );
-			Static( std::wstring text, FillWidth fillWidth, int height, int id = 0 );
+			Static( std::wstring text, FillWidth fillWidth, DefaultHeight );
+			Static( std::wstring text, FillWidth fillWidth, FillHeight fillHeight );
+			Static( std::wstring text, FillWidth fillWidth, int height );
 
-			Static( std::wstring text, SizeToContentWidth, DefaultHeight, int id = 0 );
-			Static( std::wstring text, SizeToContentWidth, FillHeight fillHeight, int id = 0 );
-			Static( std::wstring text, SizeToContentWidth, int height, int id = 0 );
+			Static( std::wstring text, SizeToContentWidth, DefaultHeight );
+			Static( std::wstring text, SizeToContentWidth, FillHeight fillHeight );
+			Static( std::wstring text, SizeToContentWidth, int height );
 
-			Static( std::wstring text, int width, DefaultHeight ight, int id = 0 );
-			Static( std::wstring text, int width, FillHeight fillHeight, int id = 0 );
-			Static( std::wstring text, int width, int height, int id = 0 );
+			Static( std::wstring text, int width, DefaultHeight ight );
+			Static( std::wstring text, int width, FillHeight fillHeight );
+			Static( std::wstring text, int width, int height );
 
 			virtual ~Static();
 

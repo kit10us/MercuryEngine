@@ -3,23 +3,34 @@
 
 #pragma once
 
-#include <me/IOS.h>
 #include <me/IGame.h>
-#include <me/IRenderer.h>
-#include <me/Display.h>
-#include <list>
-#include <vector>
-
-// Undefine Microsoft clashing defines.
-#ifdef CreateWindow
-#undef CreateWindow
-#endif
-
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
+#include <meedr/ui/Window.h>
+#include <thread>
 
 namespace meedr
 {
-	HWND CreateInputBrowser( me::IGame * game, HINSTANCE hInstance, HWND parentHandle, int nCmdShow, int x, int y );
+	class InputBrowser : public ui::Window
+	{
+		me::IGame * m_game;
+		bool m_closing;
+		std::thread m_updateData;
+	public:
+		InputBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game );
+		~InputBrowser();
+
+		void UpdateInputData();
+
+		void UpdateInputManagerList( HWND hWnd );
+
+		void UpdateInputSourceInputList( HWND hWndListInputNames );
+
+		ui::Result * OnCreate( ui::Params params ) override;
+
+		void Timer_UpdateInputData();
+
+		ui::Result* OnAfterCreate( ui::Params params ) override;
+		ui::Result * OnDestroy( ui::Params params ) override;
+		ui::Result* OnControlCommand( ui::ControlMessage message ) override;
+		ui::Result* OnUserMessage( ui::UserMessageData message ) override;
+	};
 }

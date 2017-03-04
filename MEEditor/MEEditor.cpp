@@ -6,12 +6,12 @@
 #include <me/Game.h>
 #include <Windows.h>
 
-static HWND s_secondWindow;
+meedr::ui::IWindow::ptr s_engineMain;
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
-__declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
 {
-	s_secondWindow = meedr::CreateEngineMain( game );
+	s_engineMain.reset();
+	s_engineMain.reset( new meedr::EngineMain( game ) );
 	return true;
 }
 

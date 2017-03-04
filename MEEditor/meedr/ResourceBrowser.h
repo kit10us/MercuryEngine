@@ -3,23 +3,25 @@
 
 #pragma once
 
-#include <me/IOS.h>
 #include <me/IGame.h>
-#include <me/IRenderer.h>
-#include <me/Display.h>
-#include <list>
-#include <vector>
-
-// Undefine Microsoft clashing defines.
-#ifdef CreateWindow
-#undef CreateWindow
-#endif
-
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
+#include <meedr/ui/Window.h>
 
 namespace meedr
-{
-	HWND CreateResourceBrowser( me::IGame * game, HINSTANCE hInstance, HWND parentHandle, int nCmdShow, int x, int y );
+{	  
+	class ResourceBrowser : public ui::Window
+	{
+		me::IGame* m_game;
+
+	public:
+		ResourceBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game );
+
+		void UpdateResourceTypes( HWND hWnd );
+
+		void UpdateResourceList( HWND hWnd );
+
+		ui::IResult * OnCreate( ui::Params params ) override;
+		ui::IResult * OnDestroy( ui::Params params ) override;
+		ui::IResult * OnAfterCreate( ui::Params ) override;
+		ui::IResult * OnControlCommand( ui::ControlMessage message ) override;
+	};
 }

@@ -62,7 +62,7 @@ namespace meedr
 
 		class IControl
 		{
-			friend class Builder;
+			friend class IWindow;
 			friend class container::Canvas;
 			friend class container::StackPanel;
 		public:
@@ -79,7 +79,6 @@ namespace meedr
 			// Wanted values...
 			virtual int GetWantedWidth() const = 0;
 			virtual int GetWantedHeight() const = 0;
-			virtual int GetID() const = 0;
 			virtual std::string GetName() const = 0;
 
 			// Actual values...
@@ -87,6 +86,9 @@ namespace meedr
 			virtual int GetActualY() const = 0;
 			virtual int GetActualWidth() const = 0;
 			virtual int GetActualHeight() const = 0;
+
+			virtual void SetID( int id ) = 0;
+			virtual int GetID() const = 0;
 
 		protected:
 			virtual void SetParent( container::Container * parent ) = 0;

@@ -6,32 +6,32 @@
 using namespace meedr;
 using namespace ui;
 
-Combobox::Combobox( DefaultWidth, DefaultHeight, int id )
-	: Control( id, DefaultWidth::Value(), DefaultHeight::Value() )
+Combobox::Combobox( DefaultWidth, DefaultHeight )
+	: Control(DefaultWidth::Value(), DefaultHeight::Value() )
 {
 }
-Combobox::Combobox( DefaultWidth, int height, int id )
-	: Control( id, DefaultWidth::Value(), height )
+Combobox::Combobox( DefaultWidth, int height )
+	: Control(DefaultWidth::Value(), height )
 {
 }
 
-Combobox::Combobox( FillWidth widthWeight, DefaultHeight, int id )
-	: Control( id, FillWidth::Value(), DefaultHeight::Value() )
+Combobox::Combobox( FillWidth widthWeight, DefaultHeight )
+	: Control(FillWidth::Value(), DefaultHeight::Value() )
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
-Combobox::Combobox( FillWidth widthWeight, int height, int id )
-	: Control( id, FillWidth::Value(), height )
+Combobox::Combobox( FillWidth widthWeight, int height )
+	: Control(FillWidth::Value(), height )
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 
-Combobox::Combobox( int width, DefaultHeight, int id )
-	: Control( id, width, DefaultHeight::Value() )
+Combobox::Combobox( int width, DefaultHeight )
+	: Control(width, DefaultHeight::Value() )
 {
 }
-Combobox::Combobox( int width, int height, int id )
-	: Control( id, width, height )
+Combobox::Combobox( int width, int height )
+	: Control(width, height )
 {
 }
 

@@ -6,9 +6,9 @@
 using namespace meedr;
 using namespace ui;
 
-Control::Control( int id, int width, int height )
+Control::Control( int width, int height )
 	: m_parent{ nullptr }
-	, m_id{ id }
+	, m_id{ 0 }
 	, m_fillWidthWeight{ 0 }
 	, m_fillHeightWeight{ 0 }
 	, m_wantedWidth{ width }
@@ -62,6 +62,11 @@ int Control::GetWantedWidth() const
 int Control::GetWantedHeight() const
 {
 	return m_wantedHeight;
+}
+
+void Control::SetID( int id )
+{
+	m_id = id;
 }
 
 int Control::GetID() const

@@ -3,28 +3,47 @@
 
 #include <meedr/EngineMain.h>
 #include <meedr/InputBrowser.h>
-#include <meedr/ui/Builder.h>
 
-static HWND s_parentWindow;
-static HWND s_windowHwnd;
+using namespace meedr;
+using namespace ui;
 
-#define IDC_COMBOBOX_INPUTSOURCE	0x01
-#define IDC_LISTBOX_INPUTNAMES		0x02
-#define IDC_STATIC_INPUTDATA		0x03
+#define USERMESSAGE_UPDATEINPUTDATE	 0
 
-#define ID_TIMER_UPDATEINPUTDATA	1
-
-static me::IGame * s_game;
-
-void UpdateInputData()
+InputBrowser::InputBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game )
+	: Window( parentHandle, L"InputBrowserWndClass" )
+	, m_game{ game }
+	, m_closing{ false }
 {
-	HWND hWndComboInputSource = GetDlgItem( s_windowHwnd, IDC_COMBOBOX_INPUTSOURCE );
-	HWND hWndListInputNames = GetDlgItem( s_windowHwnd, IDC_LISTBOX_INPUTNAMES );
-	HWND hWndStaticInputData = GetDlgItem( s_windowHwnd, IDC_STATIC_INPUTDATA );
+	AddContainer( new container::StackPanel( container::Stack::Horizontal, 540, 440, 0 ) );
+	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
+	AddControl( new Static( L"Type:", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( new Combobox( FillWidth(), DefaultHeight() ), "InputSource" );
+	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), FillHeight() ) );
+	AddControl( (new Listbox( 260, FillHeight() ) )->SetSorted( false ), "InputNames" );
+	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
+	AddControl( new Static( L"Data:", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( new Static( L"PLACE FOR DATA", FillWidth(), FillHeight() ), "InputData" );
+	Create( L"Input Browser", x, y, nCmdShow );	
+}
+
+InputBrowser::~InputBrowser()
+{
+	m_closing = true;
+	using namespace std::chrono_literals;
+	std::this_thread::sleep_for( 1s );
+	m_updateData.detach();
+	//m_updateData.join();
+}
+
+void InputBrowser::UpdateInputData()
+{
+	HWND hWndComboInputSource = GetDlgItem( GetHandle(), GetControl( "InputSource" ) );
+	HWND hWndListInputNames = GetDlgItem( GetHandle(), GetControl( "InputNames" ) );
+	HWND hWndStaticInputData = GetDlgItem( GetHandle(), GetControl( "InputData" ) );
  
 	size_t sourceIndex = SendMessageA( hWndComboInputSource, CB_GETCURSEL, 0, 0 );
 	size_t inputIndex = SendMessageA( hWndListInputNames, LB_GETCURSEL, 0, 0 );
-	auto source = s_game->GetInputManager()->GetSource( sourceIndex );
+	auto source = m_game->GetInputManager()->GetSource( sourceIndex );
 	size_t subSource = 0;  	
 	me::input::IData::ptr dataRaw = source->GetInputData( subSource, inputIndex );
 	me::input::InputType type = dataRaw ? dataRaw->type : me::input::InputType::Invalid;
@@ -72,15 +91,15 @@ void UpdateInputData()
 	SendMessageA( hWndStaticInputData, WM_SETTEXT, 0, (LPARAM)dataString.c_str() );
 }
 
-void UpdateInputManagerList( me::IGame * game, HWND hWnd )
+void InputBrowser::UpdateInputManagerList( HWND hWnd )
 {
 	// Clear contents...
 	SendMessageA( hWnd, CB_RESETCONTENT, 0, 0 );
 
 	// Fill in resource types...
-	for ( size_t i = 0; i < game->GetInputManager()->GetSourceCount(); i++ )
+	for ( size_t i = 0; i < m_game->GetInputManager()->GetSourceCount(); i++ )
 	{			  
-		auto source = game->GetInputManager()->GetSource( i );
+		auto source = m_game->GetInputManager()->GetSource( i );
 		std::string name = source->Name();
 		SendMessageA( hWnd, CB_ADDSTRING, 0, (LPARAM)name.c_str() );
 	}
@@ -89,15 +108,15 @@ void UpdateInputManagerList( me::IGame * game, HWND hWnd )
 	SendMessageA( hWnd, CB_SETCURSEL, 0, 0 );
 }
 
-void UpdateInputSourceInputList( me::IGame * game, HWND hWndListInputNames )
+void InputBrowser::UpdateInputSourceInputList( HWND hWndListInputNames )
 {
-	HWND hWndComboInputSource = GetDlgItem( s_windowHwnd, IDC_COMBOBOX_INPUTSOURCE );
+	HWND hWndComboInputSource = GetDlgItem( GetHandle(), GetControl( "InputSource" ) );
 
 	// Clear contents...
 	SendMessageA( hWndListInputNames, (UINT)LB_RESETCONTENT, (WPARAM)0, (LPARAM)0 );
 
 	size_t sourceIndex = SendMessageA( hWndComboInputSource, CB_GETCURSEL, 0, 0 );
-	auto source = game->GetInputManager()->GetSource( sourceIndex );
+	auto source = m_game->GetInputManager()->GetSource( sourceIndex );
 	size_t subSource = 0;
 
 	for ( size_t i = 0; i < source->InputCount( subSource ); i++ )
@@ -111,102 +130,64 @@ void UpdateInputSourceInputList( me::IGame * game, HWND hWndListInputNames )
 
 	UpdateInputData();
 }
-							
-void CALLBACK TimerProc_UpdateInputData( HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime )
-{					
-	UpdateInputData();
-	SetTimer( hWnd, ID_TIMER_UPDATEINPUTDATA, 100, TimerProc_UpdateInputData );
+
+Result* InputBrowser::OnCreate( Params params )
+{
+	return new Result( 0 );
 }
 
-LRESULT CALLBACK InputBrowser_WndProcChild( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
+void InputBrowser::Timer_UpdateInputData()
 {
-	static me::IGame * game;
-	switch ( message )
+	while ( ! m_closing )
 	{
-	case WM_CREATE:
-	{			
-		CREATESTRUCT * createStruct = (CREATESTRUCT*)lParam;
-		game = (me::IGame*)createStruct->lpCreateParams;
-		SetTimer( hWnd, ID_TIMER_UPDATEINPUTDATA, 100, TimerProc_UpdateInputData );
-		break;
+		using namespace std::chrono_literals;
+		std::this_thread::sleep_for( 100ms );			
+		SendMessageA( GetHandle(), WM_USER + USERMESSAGE_UPDATEINPUTDATE, 0, 0 );
 	}
-	case WM_DESTROY:
+}
+
+Result* InputBrowser::OnAfterCreate( Params params )
+{
+	UpdateInputManagerList( GetDlgItem( GetHandle(), GetControl( "InputSource" ) ) );
+	UpdateInputSourceInputList( GetDlgItem( GetHandle(), GetControl( "InputNames" ) ) );
+	m_updateData = std::thread( &InputBrowser::Timer_UpdateInputData, this );
+	return new Result( 0 );
+}
+
+Result * InputBrowser::OnDestroy( Params params )
+{
+	SendMessageA( GetParentHandle(), WM_USER + INPUTBROWSER_CLOSED, 0, 0 );
+	return new Result( 0 );
+}
+
+Result* InputBrowser::OnControlCommand( ControlMessage message )
+{
+	if ( message.IsFor( "InputSource" ) )
 	{
-		SendMessageA( s_parentWindow, WM_INPUTBROWSER_CLOSED, 0, 0 );
-		break;
-	}
-	case WM_COMMAND:
-	{
-		auto control = LOWORD( wParam );
-		auto controlMessage = HIWORD( wParam );
-		switch ( control )
+		switch ( message.message )
 		{
-		case IDC_COMBOBOX_INPUTSOURCE:
+		case CBN_SELCHANGE:
 		{
-			switch ( controlMessage )
-			{
-			case CBN_SELCHANGE:
-			{
-				HWND hWndListInputNames = GetDlgItem( hWnd, IDC_LISTBOX_INPUTNAMES );
-				UpdateInputSourceInputList( game, hWndListInputNames );
-				break;
-			}
-			}
+			HWND hWndListInputNames = GetDlgItem( GetHandle(), GetControl( "InputNames" ) );
+			UpdateInputSourceInputList( hWndListInputNames );
 			break;
 		}
 		}
-		break;
-	}
 	}
 
-	return DefWindowProc( hWnd, message, wParam, lParam );
+	return new Result( 0 );
 }
 
-HWND meedr::CreateInputBrowser( me::IGame * game, HINSTANCE hInstance, HWND parentHandle, int nCmdShow, int x, int y )
+Result* InputBrowser::OnUserMessage( UserMessageData message )
 {
-	s_parentWindow = parentHandle;
-	s_game = game;
-
-	// Regardless of windowed or not, we need a window...
-	WNDCLASS wc{};
-
-	if ( !GetClassInfo( hInstance, L"InputBrowserWndClass", &wc ) )
+	switch ( message.message )
 	{
-		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = (WNDPROC)InputBrowser_WndProcChild;
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = 0;
-		wc.hInstance = hInstance;
-		wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
-		wc.hbrBackground = (HBRUSH)GetSysColorBrush( COLOR_3DFACE );
-		wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
-		wc.lpszMenuName = 0;
-		wc.lpszClassName = L"InputBrowserWndClass";
-		if ( !RegisterClass( &wc ) )
-		{
-			throw std::exception( "Failed to register window class!" );
-		}
+	case USERMESSAGE_UPDATEINPUTDATE:
+	{
+		UpdateInputData();
+		break;
+	}		
 	}
-
-	using namespace ui;
-
-	Builder builder;
-	builder.AddContainer( new container::StackPanel( container::Stack::Horizontal, 540, 440, 0 ) );
-	builder.AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
-	builder.AddControl( new Static( L"Type:", SizeToContentWidth(), DefaultHeight() ) );
-	builder.AddControl( new Combobox( FillWidth(), DefaultHeight(), IDC_COMBOBOX_INPUTSOURCE ) );
-	builder.AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), FillHeight() ) );
-	builder.AddControl( (new Listbox( 260, FillHeight(), IDC_LISTBOX_INPUTNAMES ))->SetSorted( false ) );
-	builder.AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
-	builder.AddControl( new Static( L"Data:", SizeToContentWidth(), DefaultHeight() ) );
-	builder.AddControl( new Static( L"PLACE FOR DATA", FillWidth(), FillHeight(), IDC_STATIC_INPUTDATA ) );
-	s_windowHwnd = builder.Create( s_parentWindow, hInstance, L"InputBrowserWndClass", L"Input Browser", x, y, game );
-	
-	ShowWindow( s_windowHwnd, nCmdShow );
-
-	UpdateInputManagerList( game, GetDlgItem( s_windowHwnd, IDC_COMBOBOX_INPUTSOURCE ) );
-	UpdateInputSourceInputList( game, GetDlgItem( s_windowHwnd, IDC_LISTBOX_INPUTNAMES ) );
-
-	return s_windowHwnd;
+	return new Result( 0 );
 }
 

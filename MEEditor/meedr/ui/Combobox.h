@@ -13,14 +13,14 @@ namespace meedr
 		class Combobox : public Control
 		{
 		public:		   			
-			Combobox( DefaultWidth, DefaultHeight, int id );
-			Combobox( DefaultWidth, int height, int id );
+			Combobox( DefaultWidth, DefaultHeight );
+			Combobox( DefaultWidth, int height );
 			
-			Combobox( FillWidth widthWeight, DefaultHeight, int id );
-			Combobox( FillWidth widthWeight, int height, int id );
+			Combobox( FillWidth widthWeight, DefaultHeight );
+			Combobox( FillWidth widthWeight, int height );
 
-			Combobox( int width, DefaultHeight, int id );
-			Combobox( int width, int height, int id );
+			Combobox( int width, DefaultHeight );
+			Combobox( int width, int height );
 
 			virtual ~Combobox();
 

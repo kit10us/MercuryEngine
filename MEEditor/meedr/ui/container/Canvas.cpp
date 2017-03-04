@@ -9,7 +9,7 @@ using namespace ui;
 using namespace container;
 
 Canvas::Canvas( int width, int height )
-	: Container( 0, width, height )
+	: Container( width, height )
 {											  
 }
 
