@@ -10,6 +10,10 @@
 #include <list>
 #include <memory>
 
+#ifdef GetObject
+#undef GetObject
+#endif
+
 namespace me
 {
 	namespace scene
@@ -28,15 +32,17 @@ namespace me
 		public:
 			typedef std::shared_ptr< Scene > ptr;
 
-			Scene( IGame * game );
+			Scene( IGame * game, std::string name );
 			virtual ~Scene();
+
+			std::string GetName() const;
 
 			size_t ObjectCount() const;
 
 			void OnInit();
 			void OnStart();
-			void Update( IRenderer * renderer, const RenderInfo & renderInfo );
-			void Render( IRenderer * renderer, const RenderInfo & renderInfo );
+			void Update( UpdateParams params );
+			void Render( RenderParams params );
 			void Suspend();
 			void Resume();
 
@@ -78,8 +84,11 @@ namespace me
 			void CollectObjects( std::vector< Object * > & objects );
 			Object * FindObject( std::string name );
 
+			Object * GetObject( size_t index ) const;
+
 		private:
 			IGame * m_game;
+			std::string m_name;
 
 			std::list< ISceneComponent::ptr > m_components;
 

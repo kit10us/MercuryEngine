@@ -27,14 +27,25 @@ namespace meedr
 
 			virtual ~Listbox();
 
+			DWORD GetWantedStyle() const override;
+			std::wstring GetType() const override;
+
 			int GetDefaultWidth() const override;
 			int GetDefaultHeight() const override;
 
 			Listbox * SetSorted( bool sorted );
 
-		protected:
-			void Create( HWND parent ) override;
+		public: // WinApi functions...	
+			int AddFile( std::string filename );
+			int AddString( std::string text );
+			int DeleteString( int index );
+			int GetCurSel();
 
+			void DeleteString();
+			void ResetContent();
+			void SetCurSel( int sel );
+
+		protected: 
 			bool m_sorted;
 		};
 	}

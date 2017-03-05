@@ -24,9 +24,14 @@ CapsuleCollider::~CapsuleCollider()
 {
 }
 
-std::string CapsuleCollider::GetName() const
+std::string CapsuleCollider::GetType() const
 {
 	return "Capsule Collider";
+}
+
+std::string CapsuleCollider::GetWhat() const
+{
+	return std::string();
 }
 
 IObjectComponent * CapsuleCollider::Duplicate()

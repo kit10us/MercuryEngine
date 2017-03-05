@@ -21,7 +21,8 @@ namespace me
 			GeometryComponent( IOS * os, Geometry::ptr geometry );
 			virtual ~GeometryComponent();
 
-			std::string GetName() const override;
+			std::string GetType() const override;
+			std::string GetWhat() const override;
 
 			bool Renderable() const { return true; }
 
@@ -31,7 +32,7 @@ namespace me
 
 			void OnInit() override;
 			void OnStart() override;
-			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnUpdate( UpdateParams params ) override;
 			
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform ) override;
 			

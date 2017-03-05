@@ -24,9 +24,14 @@ CameraComponent::~CameraComponent()
 {
 }
 
-std::string CameraComponent::GetName() const
+std::string CameraComponent::GetType() const
 {
 	return "Camera";
+}
+
+std::string CameraComponent::GetWhat() const
+{
+	return std::string();
 }
 
 int CameraComponent::GetRenderer() const

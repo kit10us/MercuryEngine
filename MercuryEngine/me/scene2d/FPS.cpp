@@ -13,22 +13,22 @@ FPS::FPS( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float 
 {
 }
 		
-void FPS::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void FPS::Update( UpdateParams params )
 {
-	m_secondsTillUpdate -= renderInfo.GetDelta();
+	m_secondsTillUpdate -= params.renderInfo.GetDelta();
 	if ( m_secondsTillUpdate > 0.0f ) return;
 	
 	m_secondsTillUpdate = m_updateRate;
 
-	std::string average = unify::Cast< std::string >( renderInfo.GetFPS() );
+	std::string average = unify::Cast< std::string >( params.renderInfo.GetFPS() );
 	size_t p = average.find( '.' );
 	average = average.substr( 0, p < 3 ? 5 : p + 2 );
 
-	std::string instant = unify::Cast< std::string >( 1.0f / renderInfo.GetDelta() );
+	std::string instant = unify::Cast< std::string >( 1.0f / params.renderInfo.GetDelta() );
 	p = instant.find( '.' );
 	instant = instant.substr( 0, p < 3 ? 5 : p + 2 );
 
 	SetText( instant + "/" + average );
-	TextElement::Update( renderer, renderInfo );
+	TextElement::Update( params );
 }
 		

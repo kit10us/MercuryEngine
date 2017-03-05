@@ -7,6 +7,7 @@
 #include <meedr/InputBrowser.h>
 #include <meedr/ScriptEditor.h>
 #include <meedr/SceneViewer.h>
+#include <meedr/LogViewer.h>
 
 using namespace meedr;
 using namespace ui;
@@ -18,7 +19,7 @@ EngineMain::EngineMain( me::IGame * game )
 {
 	int nCmdShow = game->GetOSParameters().nCmdShow;
 	RECT rect{};
-	GetWindowRect( GetParentHandle(), &rect );
+	::GetWindowRect( GetParentHandle(), &rect );
 	int x = rect.right;
 	int y = rect.top;
 
@@ -28,6 +29,7 @@ EngineMain::EngineMain( me::IGame * game )
 	AddControl( new Button( L"Scene Viewer", FillWidth(), DefaultHeight() ), "SceneViewer" );
 	AddControl( new Button( L"Input Browser", FillWidth(), DefaultHeight() ), "InputBrowser" );
 	AddControl( new Button( L"Script Editor", FillWidth(), DefaultHeight() ), "ScriptEditor" );
+	AddControl( new Button( L"Log Viewer", FillWidth(), DefaultHeight() ), "LogViewer" );
 	AddControl( new Button( L"Quit", FillWidth(), DefaultHeight() ), "Quit" );
 	Create( L"Engine Main", x, y, nCmdShow );
 
@@ -40,100 +42,140 @@ EngineMain::EngineMain( me::IGame * game )
 	*/
 }
 
+me::IGame * EngineMain::GetGame() const
+{
+	return m_game;
+}
+
+void EngineMain::OpenResourceBrowser()
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( !m_resourceBrowser )
+	{
+		m_resourceBrowser.reset( new meedr::ResourceBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_resourceBrowser->ShowWindow( SW_RESTORE );
+		m_resourceBrowser->SetForegroundWindow();
+	}							  
+}	
+
+void EngineMain::OpenInputBrowser()
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( !m_inputBrowser )
+	{
+		m_inputBrowser.reset( new InputBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_inputBrowser->ShowWindow( SW_RESTORE );
+		m_inputBrowser->SetForegroundWindow();
+	}
+}
+void EngineMain::OpenScriptEditor( unify::Path source )
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( ! m_scriptEditor )
+	{
+		m_scriptEditor.reset( new ScriptEditor( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_scriptEditor->ShowWindow( SW_RESTORE );
+		m_scriptEditor->SetForegroundWindow();
+	}
+
+	ScriptEditor* scriptEditor = dynamic_cast<ScriptEditor*>(m_scriptEditor.get());
+	scriptEditor->LoadFile( source );
+}
+
+void EngineMain::OpenSceneViewer()
+{	
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( ! m_sceneViewer )
+	{
+		m_sceneViewer.reset( new SceneViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_sceneViewer->ShowWindow( SW_RESTORE );
+		m_sceneViewer->SetForegroundWindow();
+	}
+}
+
+void EngineMain::OpenLogViewer()
+{	
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( ! m_sceneViewer )
+	{
+		m_logViewer.reset( new LogViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_logViewer->ShowWindow( SW_RESTORE );
+		m_logViewer->SetForegroundWindow();
+	}
+}
+
 IResult * EngineMain::OnControlCommand( ControlMessage message )
 {
-	if ( unify::StringIs( message.name, "Quit" ) )
+	if ( message.IsFor( "Quit" ) )
 	{
 		m_game->Quit();
 		return new Result( 0 );
 	}
-	else if ( unify::StringIs( message.name, "Pause" ) )
+	else if ( message.IsFor( "Pause" ) )
 	{
 		m_game->SetUpdateEnabled( !m_game->GetUpdateEnabled() );
-		SetDlgItemText( GetHandle(), message.controlId, m_game->GetUpdateEnabled() ? L"Pause" : L"Resume" );
-		return new Result( 0 );
-	}
-	else if ( unify::StringIs( message.name, "ResourceBrowser" ) )
-	{
-		RECT rect{};
-		GetWindowRect( GetHandle(), &rect );
-		int x = rect.right;
-		int y = rect.top;
-		if ( !m_resourceBrowser )
-		{
-			m_resourceBrowser.reset( new meedr::ResourceBrowser( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
-			m_openChildren++;
-		}
-		else
-		{
-			ShowWindow( m_resourceBrowser->GetHandle() , SW_RESTORE );
-			SetForegroundWindow( m_resourceBrowser->GetHandle() );
-			FlashWindow( m_resourceBrowser->GetHandle(), true );
-			m_resourceBrowser->MoveWindow( x + m_openChildren * 34, y + m_openChildren * 34, true );
-		}
-		m_openChildren++;
-		return new Result( 0 );
-	}
-	else if ( unify::StringIs( message.name, "InputBrowser" ) )
-	{
-		RECT rect{};
-		GetWindowRect( GetHandle(), &rect );
-		int x = rect.right;
-		int y = rect.top;
-		if ( !m_inputBrowser )
-		{
-			m_inputBrowser.reset( new InputBrowser( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
-			m_openChildren++;
-			return new Result( 0 );
-		}
-		else
-		{
-			ShowWindow( m_inputBrowser->GetHandle(), SW_RESTORE );
-			SetForegroundWindow( m_inputBrowser->GetHandle() );
-			FlashWindow( m_inputBrowser->GetHandle(), true );
 
-			m_inputBrowser->MoveWindow(  x, y, true );
-		}
+		message.control->SetText( m_game->GetUpdateEnabled() ? "Pause" : "Resume" );
 		return new Result( 0 );
 	}
-	else if ( unify::StringIs( message.name, "ScriptEditor" ) )
+	else if ( message.IsFor( "ResourceBrowser" ) )
 	{
-		RECT parentRect{};
-		GetWindowRect( GetHandle(), &parentRect );
-		int x = parentRect.right;
-		int y = parentRect.top;
-		if ( ! m_scriptEditor )
-		{
-			m_scriptEditor.reset( new ScriptEditor( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
-			m_openChildren++;
-		}
-		else
-		{
-			ShowWindow( m_scriptEditor->GetHandle(), SW_RESTORE );
-			SetForegroundWindow( m_scriptEditor->GetHandle() );
-			FlashWindow( m_scriptEditor->GetHandle(), true );
-			m_scriptEditor->MoveWindow( x, y, true );
-		}
+		OpenResourceBrowser();
 		return new Result( 0 );
 	}
-	else if ( unify::StringIs( message.name, "SceneViewer" ) )
+	else if ( message.IsFor(  "InputBrowser" ) )
 	{
-		RECT parentRect{};
-		GetWindowRect( GetHandle(), &parentRect );
-		int x = parentRect.right;
-		int y = parentRect.top;
-		if ( ! m_sceneViewer )
-		{
-			m_sceneViewer.reset( new SceneViewer( GetHandle(), SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
-			m_openChildren++;
-		}
-		else
-		{
-			ShowWindow( m_sceneViewer->GetHandle(), SW_RESTORE );
-			SetForegroundWindow( m_sceneViewer->GetHandle() );
-			FlashWindow( m_sceneViewer->GetHandle(), true );
-			m_sceneViewer->MoveWindow( x, y, true );
-		}
+		OpenInputBrowser();
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "ScriptEditor" ) )
+	{
+		OpenScriptEditor( unify::Path() );
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "SceneViewer" ) )
+	{	
+		OpenSceneViewer();
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "LogViewer" ) )
+	{
+		OpenLogViewer();
 		return new Result( 0 );
 	}
 	return new Unhandled();
@@ -152,12 +194,19 @@ IResult* EngineMain::OnUserMessage( UserMessageData message )
 		m_openChildren--;
 		return new Result( 0 );
 	case SCRIPTEDITOR_CLOSED:
-		m_inputBrowser.reset();
+		m_scriptEditor.reset();
 		m_openChildren--;
 		return new Result( 0 );
 	case SCENEVIEWER_CLOSED:
 		m_sceneViewer.reset();
 		m_openChildren--;
+		return new Result( 0 );	
+	case LOGVIEWER_CLOSED:
+		m_logViewer.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case SCRIPTEDITOR_OPEN:
+		OpenScriptEditor( message.params.lParam ? unify::Path( (char*)message.params.lParam ) : unify::Path() );
 		return new Result( 0 );
 	}
 	return new Unhandled();

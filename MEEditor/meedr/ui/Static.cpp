@@ -7,60 +7,60 @@ using namespace meedr;
 using namespace ui;
 
 Static::Static( std::wstring text, DefaultWidth, DefaultHeight )
-	: Control(DefaultWidth::Value(), DefaultHeight::Value() ), m_text{ text }
+	: Control(DefaultWidth::Value(), DefaultHeight::Value(), text )
 {
 }
 Static::Static( std::wstring text, DefaultWidth, FillHeight fillHeight )
-	: Control(DefaultWidth::Value(), FillHeight::Value() ), m_text{ text }
+	: Control(DefaultWidth::Value(), FillHeight::Value(), text )
 {
 	SetFillHeightWeight( fillHeight.weight );
 }
 Static::Static( std::wstring text, DefaultWidth, int height )
-	: Control(DefaultWidth::Value(), height ), m_text{ text }
+	: Control(DefaultWidth::Value(), height, text )
 {
 }
 
 Static::Static( std::wstring text, FillWidth fillWidth, DefaultHeight )
-	: Control(FillWidth::Value(), DefaultHeight::Value() ), m_text{ text }
+	: Control(FillWidth::Value(), DefaultHeight::Value(), text )
 {
 	SetFillWidthWeight( fillWidth.weight );
 }
 Static::Static( std::wstring text, FillWidth fillWidth, FillHeight fillHeight )
-	: Control(FillWidth::Value(), FillHeight::Value() ), m_text{ text }
+	: Control(FillWidth::Value(), FillHeight::Value(), text )
 {
 	SetFillWidthWeight( fillWidth.weight );
 	SetFillHeightWeight( fillHeight.weight );
 }
 Static::Static( std::wstring text, FillWidth fillWidth, int height )
-	: Control(FillWidth::Value(), height ), m_text{ text }
+	: Control(FillWidth::Value(), height, text )
 {
 	SetFillWidthWeight( fillWidth.weight );
 }
 
 Static::Static( std::wstring text, SizeToContentWidth, DefaultHeight )
-	: Control(SizeToContentWidth::Value(), DefaultHeight::Value() ), m_text{ text }
+	: Control(SizeToContentWidth::Value(), DefaultHeight::Value(), text )
 {
 }
 Static::Static( std::wstring text, SizeToContentWidth, FillHeight fillHeight )
-	: Control(SizeToContentWidth::Value(), FillHeight::Value() ), m_text{ text }
+	: Control(SizeToContentWidth::Value(), FillHeight::Value(), text )
 {
 	SetFillHeightWeight( fillHeight.weight );
 }
 Static::Static( std::wstring text, SizeToContentWidth, int height )
-	: Control(SizeToContentWidth::Value(), height ), m_text{ text }
+	: Control(SizeToContentWidth::Value(), height, text )
 {
 }
 
 Static::Static( std::wstring text, int width, DefaultHeight )
-	: Control(width, DefaultHeight::Value() ), m_text{ text }
+	: Control(width, DefaultHeight::Value(), text )
 {
 }
 Static::Static( std::wstring text, int width, FillHeight )
-	: Control(width, FillHeight::Value() ), m_text{ text }
+	: Control(width, FillHeight::Value(), text )
 {
 }
 Static::Static( std::wstring text, int width, int height )
-	: Control(width, height ), m_text{ text }
+	: Control(width, height, text )
 {
 }
 
@@ -68,9 +68,15 @@ Static::~Static()
 {
 }
 
-std::wstring Static::GetText()
+DWORD Static::GetWantedStyle() const
 {
-	return m_text;
+	DWORD style = Control::GetWantedStyle();
+	return style;
+}
+
+std::wstring Static::GetType() const
+{
+	return L"Static";
 }
 
 int Static::GetDefaultWidth() const
@@ -83,23 +89,6 @@ int Static::GetDefaultHeight() const
 	return 20;
 }
 
-void Static::Create( HWND parent )
-{
-	HWND handle = CreateWindowW(
-		L"Static",
-		m_text.c_str(),
-		WS_VISIBLE | WS_CHILD,
-		GetActualX(),
-		GetActualY(),
-		GetActualWidth(),
-		GetActualHeight(),
-		parent,
-		(HMENU)GetID(),
-		0,
-		0
-	);
-}
-
 void Static::ComputePass1()
 {
 	Control::ComputePass1();
@@ -107,6 +96,6 @@ void Static::ComputePass1()
 	if ( SizeToContentWidth() == GetWantedWidth() )
 	{
 		int charWidth = LOWORD( GetDialogBaseUnits() ) + 2;
-		m_actualWidth = charWidth * m_text.size();
+		m_actualWidth = charWidth * m_wantedText.size();
 	}
 }

@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <me/RenderInfo.h>
+#include <me/UpdateParams.h>
+#include <me/RenderParams.h>
 #include <string>
 #include <memory>
 					 
@@ -25,9 +26,9 @@ namespace me
 
 		virtual void OnAttach( IGame * game ) = 0;
 
-		virtual void OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+		virtual void OnUpdate( IGame * game, UpdateParams params ) = 0;
 
-		virtual void OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+		virtual void OnRender( IGame * game, RenderParams params ) = 0;
 
 		virtual void OnDetach( IGame * game ) = 0;
 	};

@@ -28,8 +28,8 @@ namespace me
 			void OnDetach( Scene * scene ) override {}
 			void OnInit( Scene * scene ) override {}
 			void OnStart( Scene * scene ) override {}
-			void OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) override {}
-			void OnRender( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) override {}
+			void OnUpdate( Scene * scene, UpdateParams params ) override {}
+			void OnRender( Scene * scene, RenderParams params ) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}
 

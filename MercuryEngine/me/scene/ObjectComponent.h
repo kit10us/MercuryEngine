@@ -25,6 +25,15 @@ namespace me
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 
+			int GetValueCount() const override;
+			bool ValueExists( std::string ) const override;
+			std::string GetValueName( int index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			std::string GetValue( int index ) const override;
+			std::string GetValue( std::string name ) const override;
+			bool SetValue( int index, std::string value ) override;
+			bool SetValue( std::string name, std::string value ) override; 
+
 			bool Updateable() const override { return false; }
 			bool Renderable() const override { return false; }			   
 										   
@@ -32,7 +41,7 @@ namespace me
 			void OnDetach() override {}
 			void OnInit() override {}
 			void OnStart() override {}
-			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override {}
+			void OnUpdate( UpdateParams params ) override {}
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}

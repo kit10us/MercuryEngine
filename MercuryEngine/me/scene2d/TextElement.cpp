@@ -190,14 +190,14 @@ unify::V2< float > TextElement::GetScale() const
 	return m_scale;
 }
 
-void TextElement::UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area )
+void TextElement::UpdateLayout( UpdateParams params, unify::Size< float > area )
 {
 	if ( ! IsEnabled() ) return;
 
 	unify::V2< float > backPosition = GetActualPosition();
 	unify::Size< float > backSize = GetActualSize();
 	
-	Element::UpdateLayout( renderer, renderInfo, area );
+	Element::UpdateLayout( params, area );
 
 	if ( GetActualPosition() != backPosition || GetActualSize() != backSize )
 	{
@@ -210,11 +210,11 @@ void TextElement::UpdateLayout( IRenderer * renderer, const RenderInfo & renderI
 	}
 }
 
-void TextElement::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void TextElement::Update( UpdateParams params )
 {
 }
 		
-void TextElement::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void TextElement::Render( RenderParams params )
 {
 	if ( m_text.empty() ) return;
 	if ( ! IsEnabled() ) return;
@@ -225,8 +225,7 @@ void TextElement::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	MatrixFeed matrixFeed( &instance, 1 );
-	//renderer->Render( method, renderInfo, &instance, 1 );
-	renderer->Render( method, renderInfo, matrixFeed );
+	params.renderer->Render( method, params.renderInfo, matrixFeed );
 }
 		
 void TextElement::OnSuspend()

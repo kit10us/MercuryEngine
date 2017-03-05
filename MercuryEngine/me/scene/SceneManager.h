@@ -28,13 +28,15 @@ namespace me
 			void SetEnabled( bool enabled );
 			bool GetEnabled() const;			
 
-            Scene::ptr Add( std::string name );
-			Scene::ptr Find( std::string name );
+			size_t GetSceneCount() const;
+            Scene::ptr AddScene( std::string name );
+			Scene::ptr FindScene( std::string name ) const;
+			Scene::ptr GetScene( size_t index ) const;
 
 			void OnAttach( IGame * game ) override;
 			void OnDetach( IGame * game ) override;
-			void OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) override;
-			void OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnUpdate( IGame * game, UpdateParams params ) override;
+			void OnRender( IGame * game, RenderParams params ) override;
 
 			int ComponentCount() const;
 			void AddComponent( ISceneManagerComponent::ptr component );
@@ -48,6 +50,7 @@ namespace me
 			std::list< ISceneManagerComponent::ptr > m_components;
 
 			std::map< std::string, Scene::ptr > m_scenes;
+			std::vector< Scene::ptr > m_sceneList;
 			Scene * m_focusScene;
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;

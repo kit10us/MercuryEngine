@@ -89,9 +89,9 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 	int x(0);x;
 }
 
-void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneComponent::OnUpdate( me::scene::Scene * scene, UpdateParams params )
 {											
-	float elapsedTime = renderInfo.GetDelta();
+	float elapsedTime = params.GetDelta();
 
 	/*
 	// NOTE: This might speed things up, but causes physx warnings (simulate calls overlapping)
@@ -138,7 +138,7 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, IRenderer * renderer, c
 	*/
 }
 
-void SceneComponent::OnRender( me::scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneComponent::OnRender( me::scene::Scene * scene, RenderParams params )
 {
 }
 

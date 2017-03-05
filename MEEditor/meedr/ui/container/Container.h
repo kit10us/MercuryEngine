@@ -20,6 +20,10 @@ namespace meedr
 				virtual ~Container();
 
 				virtual void AddChild( IControl * control ) = 0;
+
+				HWND GetParentHandle() const override;
+				DWORD GetWantedStyle() const override;
+				std::wstring GetType() const override;
 			};
 		}
 	}

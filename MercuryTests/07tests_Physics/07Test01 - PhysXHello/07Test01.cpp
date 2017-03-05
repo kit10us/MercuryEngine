@@ -23,7 +23,7 @@ public:
 		using namespace scene;
 		
 		SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
-		Scene::ptr scene = sceneManager->Find( "scene1" );
+		Scene::ptr scene = sceneManager->FindScene( "scene1" );
 
 		scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 		scene->AddComponent( canvas );

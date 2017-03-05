@@ -18,7 +18,7 @@ namespace meedr
 				Canvas( int width, int height );
 				virtual ~Canvas();
 
-				void AddChild( IControl * child );
+				void AddChild( IControl * child ) override;
 
 			private:
 				void ComputePass1() override;

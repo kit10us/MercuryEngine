@@ -22,7 +22,8 @@ namespace me
 			BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 			virtual ~BBoxRendererComponent();
 
-			std::string GetName() const override;
+			std::string GetType() const override;
+			std::string GetWhat() const override;
 
 			bool Renderable() const { return true; }
 
@@ -38,7 +39,7 @@ namespace me
 
 			void OnAttach( Object * object ) override;
 			void OnDetach() override;
-			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnUpdate( UpdateParams params ) override;
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
 
 			IObjectComponent * Duplicate();

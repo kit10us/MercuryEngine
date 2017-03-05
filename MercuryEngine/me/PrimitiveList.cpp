@@ -23,11 +23,11 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
+void PrimitiveList::Render( RenderParams params, MatrixFeed & matrixFeed ) const
 {
 	for( const auto & set : m_buffers )
 	{	
-		set->Render( renderer, renderInfo, matrixFeed );
+		set->Render( params, matrixFeed );
 	}
 }
 

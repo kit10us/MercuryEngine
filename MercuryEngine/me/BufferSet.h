@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <me/IRenderer.h>
+#include <me/RenderParams.h>
+#include <me/MatrixFeed.h>
 #include <me/IVertexBuffer.h>
 #include <me/IIndexBuffer.h>
 #include <me/RenderMethod.h>
@@ -41,7 +42,7 @@ namespace me
 		void SetEnabled( bool enabled );
 		bool GetEnabled() const;
 
-		void Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const;
+		void Render( RenderParams params, MatrixFeed & matrixFeed ) const;
 
 	private:
 		const IRenderer * m_renderer;

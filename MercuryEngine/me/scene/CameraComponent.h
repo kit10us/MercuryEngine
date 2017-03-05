@@ -19,7 +19,8 @@ namespace me
 			CameraComponent( IOS * os );
 			virtual ~CameraComponent();
 
-			std::string GetName() const override;
+			std::string GetType() const override;
+			std::string GetWhat() const override;
 
 			int GetRenderer() const;
 			void SetRenderer( int index );

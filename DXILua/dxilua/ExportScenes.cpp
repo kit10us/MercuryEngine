@@ -40,7 +40,7 @@ int Scenes_AddScene( lua_State * state )
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 
-	sceneManager->Add( name );
+	sceneManager->AddScene( name );
 
 	return 0;
 }

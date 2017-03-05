@@ -34,11 +34,11 @@ void GeometryCacheSummation::Add( Geometry * geometry, InstancesSet set )
 	m_summation[ geometry ].push_back( set );
 }
 
-void GeometryCacheSummation::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void GeometryCacheSummation::Render( RenderParams params )
 {
 	for( auto && pair : m_summation )
 	{
-		pair.first->Render( renderer, renderInfo, 0, MatrixFeed( &pair.second[0], pair.second.size(), 1 ) );
+		pair.first->Render( params, 0, MatrixFeed( &pair.second[0], pair.second.size(), 1 ) );
 	}
 }
 

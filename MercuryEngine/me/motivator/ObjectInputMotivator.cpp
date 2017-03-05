@@ -13,14 +13,16 @@ using namespace input;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
-		{ "walkSpeed", 0 },
-		{ "runSpeed", 1 },
-		{ "lookXSpeed", 2 },
-		{ "lookYSpeed", 3 }
+		{ "enabled", 0 },
+		{ "walkSpeed", 1 },
+		{ "runSpeed", 2 },
+		{ "lookXSpeed", 3 },
+		{ "lookYSpeed", 4 }
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
+		{ "enabled" },
 		{ "walkSpeed" },
 		{ "runSpeed" },
 		{ "lookXSpeed" },
@@ -36,10 +38,15 @@ ObjectInputMotivator::~ObjectInputMotivator()
 {
 }
 
-std::string ObjectInputMotivator::GetName() const
+std::string ObjectInputMotivator::GetType() const
 {
 	return "ObjectInputMotivator";
 }
+
+std::string ObjectInputMotivator::GetWhat() const
+{
+	return std::string();
+}								
 
 bool ObjectInputMotivator::IsEnabled() const
 {
@@ -79,7 +86,7 @@ void ObjectInputMotivator::OnStart()
 {
 }
 
-void ObjectInputMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
+void ObjectInputMotivator::OnUpdate( UpdateParams params )
 {
 	if ( ! m_target )
 	{
@@ -116,33 +123,33 @@ void ObjectInputMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & re
 
 	if ( strafeLeftMotivation && strafeLeftMotivation->IsTrue() )
 	{
-		m_target->GetFrame().MoveBy( unify::V3< float >( -1, 0, 0 ) * renderInfo.GetDelta() * speed );
+		m_target->GetFrame().MoveBy( unify::V3< float >( -1, 0, 0 ) * params.renderInfo.GetDelta() * speed );
 	}
 	else if ( strafeRightMotivation && strafeRightMotivation->IsTrue() )
 	{
-		m_target->GetFrame().MoveBy( unify::V3< float >( 1, 0, 0 ) * renderInfo.GetDelta() * speed );
+		m_target->GetFrame().MoveBy( unify::V3< float >( 1, 0, 0 ) * params.renderInfo.GetDelta() * speed );
 	}
 
 	if ( walkForwardMotivation && walkForwardMotivation->IsTrue() )
 	{
-		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, 1 ) * renderInfo.GetDelta() * speed );
+		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, 1 ) * params.renderInfo.GetDelta() * speed );
 	}
 	else if ( walkBackwardMotivation && walkBackwardMotivation->IsTrue() )
 	{
-		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, -1 ) * renderInfo.GetDelta() * speed );
+		m_target->GetFrame().MoveBy( unify::V3< float >( 0, 0, -1 ) * params.renderInfo.GetDelta() * speed );
 	}
 
 	if ( walkXMotivation && walkXMotivation->IsTrue() )
 	{
 		unify::V3< float > left = m_target->GetFrame().GetLeft();
-		unify::Matrix matrix( unify::MatrixTranslate( left * walkXMotivation->GetValue() * renderInfo.GetDelta() * speed * 5.0f ) );
+		unify::Matrix matrix( unify::MatrixTranslate( left * walkXMotivation->GetValue() * params.renderInfo.GetDelta() * speed * 5.0f ) );
 		m_target->GetFrame().PostMul( matrix );
 	}
 
 	if ( walkYMotivation && walkYMotivation->IsTrue() )
 	{
 		unify::V3< float > forward = m_target->GetFrame().GetForward();
-		unify::Matrix matrix( unify::MatrixTranslate( forward * walkYMotivation->GetValue() * renderInfo.GetDelta() * speed * 5.0f ) );
+		unify::Matrix matrix( unify::MatrixTranslate( forward * walkYMotivation->GetValue() * params.renderInfo.GetDelta() * speed * 5.0f ) );
 		m_target->GetFrame().PostMul( matrix );
 	}
 
@@ -155,13 +162,13 @@ void ObjectInputMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & re
 		if ( lookXMotivated )
 		{
 			float changeX = lookXMotivation->GetValue();
-			matrix *= unify::MatrixRotationY( unify::AngleInRadians( renderInfo.GetDelta() * changeX * 0.4f ) );
+			matrix *= unify::MatrixRotationY( unify::AngleInRadians( params.renderInfo.GetDelta() * changeX * 0.4f ) );
 		}
 
 		if ( lookYMotivated )
 		{
 			float changeY = lookYMotivation->GetValue();
-			matrix *= unify::MatrixRotationX( unify::AngleInRadians( renderInfo.GetDelta() * changeY * 0.4f ) );
+			matrix *= unify::MatrixRotationX( unify::AngleInRadians( params.renderInfo.GetDelta() * changeY * 0.4f ) );
 		}
 
 		m_target->GetFrame().PreMul( matrix );
@@ -193,7 +200,7 @@ void ObjectInputMotivator::Add( std::string motivation, IInputCondition::ptr con
 
 int ObjectInputMotivator::GetValueCount() const
 {
-	return 3;
+	return (int)g_ValuesList.size();
 }
 
 bool ObjectInputMotivator::ValueExists( std::string name ) const
@@ -209,9 +216,9 @@ bool ObjectInputMotivator::ValueExists( std::string name ) const
 	}
 }
 
-std::string ObjectInputMotivator::GetValueName( size_t index ) const
+std::string ObjectInputMotivator::GetValueName( int index ) const
 {
-	if ( index >= g_ValuesList.size() )
+	if ( index >= (int)g_ValuesList.size() )
 	{
 		return std::string();
 	}
@@ -234,58 +241,58 @@ int ObjectInputMotivator::FindValueIndex( std::string name ) const
 	}
 }
 
-void ObjectInputMotivator::SetValue( size_t index, std::string value )
+bool ObjectInputMotivator::SetValue( int index, std::string value )
 {
 	switch ( index )
 	{
 	default:
-		return;
+		return false;
 	case 0:
-		m_walkSpeed = unify::Cast< float >( value );
+		m_enabled = unify::Cast< bool >( value );
 		break;
 	case 1:
-		m_runSpeed = unify::Cast< float >( value );
+		m_walkSpeed = unify::Cast< float >( value );
 		break;
 	case 2:
-		m_lookXSpeed = unify::Cast< float >( value );
+		m_runSpeed = unify::Cast< float >( value );
 		break;
 	case 3:
+		m_lookXSpeed = unify::Cast< float >( value );
+		break;
+	case 4:
 		m_lookYSpeed = unify::Cast< float >( value );
 		break;
 	}
+	return true;
 }
 
-void ObjectInputMotivator::SetValue( std::string name, std::string value )
+bool ObjectInputMotivator::SetValue( std::string name, std::string value )
 {
-	size_t index = FindValueIndex( name );
-	SetValue( index, value );
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
 }
 
-std::string ObjectInputMotivator::GetValue( size_t index ) const
+std::string ObjectInputMotivator::GetValue( int index ) const
 {
 	switch ( index )
 	{
 	default:
 		return std::string();
 	case 0:
-		return unify::Cast< std::string >( m_walkSpeed );
-		break;
+		return unify::Cast< std::string >( m_enabled );
 	case 1:
-		return unify::Cast< std::string >( m_runSpeed );
-		break;
+		return unify::Cast< std::string >( m_walkSpeed );
 	case 2:
-		return unify::Cast< std::string >( m_lookXSpeed );
-		break;
+		return unify::Cast< std::string >( m_runSpeed );
 	case 3:
+		return unify::Cast< std::string >( m_lookXSpeed );
+	case 4:
 		return unify::Cast< std::string >( m_lookYSpeed );
-		break;
 	}
 }
  
 std::string ObjectInputMotivator::GetValue( std::string name ) const
 {
-	size_t index = FindValueIndex( name );
+	int index = FindValueIndex( name );
 	return GetValue( index );
 }
-
-

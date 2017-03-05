@@ -22,11 +22,11 @@ void DataCore::OnAttach( IGame * game )
 {
 }
 
-void DataCore::OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo )
+void DataCore::OnUpdate( IGame * game, UpdateParams params )
 {
 }
 
-void DataCore::OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo )
+void DataCore::OnRender( IGame * game, RenderParams params )
 {
 }
 

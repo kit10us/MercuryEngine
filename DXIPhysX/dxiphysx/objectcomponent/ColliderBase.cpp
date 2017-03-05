@@ -11,6 +11,18 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+namespace {
+	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
+	{
+		{ "enabled", 0 },
+	};
+
+	std::vector< std::string > g_ValuesList
+	{
+		{ "enabled" },
+	};
+}
+
 ColliderBase::ColliderBase( ColliderBase & colliderBase )
 	: m_os( colliderBase.m_os )
 	, m_gameComponent( colliderBase.m_gameComponent )
@@ -73,4 +85,83 @@ physx::PxShape * ColliderBase::GetShape()
 const physx::PxShape * ColliderBase::GetShape() const
 {
 	return m_shape ? m_shape.get() : nullptr;
+}
+
+int ColliderBase::GetValueCount() const
+{
+	return (int)g_ValuesList.size();
+}
+
+bool ColliderBase::ValueExists( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+std::string ColliderBase::GetValueName( int index ) const
+{
+	if ( index >= (int)g_ValuesList.size() )
+	{
+		return std::string();
+	}
+	else
+	{
+		return g_ValuesList[ index ];
+	}
+}
+
+int ColliderBase::FindValueIndex( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return -1;
+	}
+	else
+	{
+		return itr->second;
+	}
+}
+
+bool ColliderBase::SetValue( int index, std::string value )
+{
+	switch ( index )
+	{
+	default:
+		return false;
+	case 0:
+		m_enabled = unify::Cast< bool >( value );
+		break;
+	}
+	return true;
+}
+
+bool ColliderBase::SetValue( std::string name, std::string value )
+{
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
+}
+
+std::string ColliderBase::GetValue( int index ) const
+{
+	switch ( index )
+	{
+	default:
+		return std::string();
+	case 0:
+		return unify::Cast< std::string >( m_enabled );
+	}
+}
+ 
+std::string ColliderBase::GetValue( std::string name ) const
+{
+	int index = FindValueIndex( name );
+	return GetValue( index );
 }

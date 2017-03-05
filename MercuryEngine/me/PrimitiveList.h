@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/BufferSet.h>
-#include <me/RenderInfo.h>
+#include <me/RenderParams.h>
 #include <me/frameanimation/FrameAnimationSet.h>
 #include <unify/BBox.h>
 #include <unify/BSphere.h>
@@ -25,7 +25,7 @@ namespace me
 
 		void Destroy();
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const;
+		void Render( RenderParams params, MatrixFeed & matrixFeed ) const;
 		
 		BufferSet & AddBufferSet();
 		void RemoveBufferSet( size_t i );

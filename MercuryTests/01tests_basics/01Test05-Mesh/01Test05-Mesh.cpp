@@ -21,8 +21,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
-	void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+	void Update( UpdateParams params ) override;
+	void Render( RenderParams params ) override;
 } game;
 
 RegisterGame( game );
@@ -102,17 +102,17 @@ void MyGame::Startup()
 	bs.AddMethod( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 }
 
-void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( UpdateParams params )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
 	HRESULT result = S_OK;
 
-	const float width = (float)renderer->GetViewport().GetSize().width;
-	const float height = (float)renderer->GetViewport().GetSize().height;
+	const float width = (float)params.renderer->GetViewport().GetSize().width;
+	const float height = (float)params.renderer->GetViewport().GetSize().height;
 
-	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 360.0f );
+	rotation += unify::AngleInDegrees( params.GetDelta() * 360.0f );
 	if( rotation.Fix360() != 0 )
 	{
 		++axisIndex;
@@ -130,16 +130,16 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	
 	q = unify::Quaternion( axis, rotation );
 	
-	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	params.renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
+	params.renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void MyGame::Render( RenderParams params )
 {
 	std::vector< const unify::FrameLite * > frames;
 	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
 	frames.push_back( &frame );
-	mesh->Render( renderer, renderInfo, nullptr, MatrixFeed( &frames[0], frames.size(), 1 ) );
+	mesh->Render( params, nullptr, MatrixFeed( &frames[0], frames.size(), 1 ) );
 }
 
 

@@ -146,5 +146,15 @@ namespace me
 		/// Asset path manager.
 		/// </summary>
 		virtual unify::AssetPaths & GetAssetPaths() = 0;
+
+		/// <summary>
+		/// Asset path manager.
+		/// </summary>
+		virtual unify::Path GetProgramPath() const = 0;
+
+		/// <summary>
+		/// Asset path manager.
+		/// </summary>
+		virtual unify::Path GetRunPath() const = 0;
 	};
 }

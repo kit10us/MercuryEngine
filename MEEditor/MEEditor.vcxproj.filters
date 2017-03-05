@@ -51,6 +51,12 @@
     <ClCompile Include="meedr\SceneViewer.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
+    <ClCompile Include="meedr\ui\Edit.cpp">
+      <Filter>meedr\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="meedr\LogViewer.cpp">
+      <Filter>meedr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEEditor.h" />
@@ -108,6 +114,15 @@
     <ClInclude Include="meedr\SceneViewer.h">
       <Filter>meedr</Filter>
     </ClInclude>
+    <ClInclude Include="meedr\ui\Edit.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\LogViewer.h">
+      <Filter>meedr</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ui\POD.h">
+      <Filter>meedr\ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="meedr">
@@ -118,6 +133,9 @@
     </Filter>
     <Filter Include="meedr\ui\container">
       <UniqueIdentifier>{23a8c33b-dade-4ba3-8715-ae81f8145a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="meedr\create">
+      <UniqueIdentifier>{c3084502-852d-4f9a-ad08-b11ecde5945c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

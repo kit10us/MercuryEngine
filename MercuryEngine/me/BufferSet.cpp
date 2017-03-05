@@ -84,7 +84,7 @@ bool BufferSet::GetEnabled() const
 	return m_enabled;
 }
 
-void BufferSet::Render( IRenderer * renderer, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed ) const
+void BufferSet::Render( RenderParams params, MatrixFeed & matrixFeed ) const
 {
 	if ( !m_enabled ) return;
 
@@ -101,7 +101,7 @@ void BufferSet::Render( IRenderer * renderer, const me::RenderInfo & renderInfo,
 	// Iterate through methods to render.
 	for( auto && method : m_RB )
 	{
-		renderer->Render( method, renderInfo, matrixFeed );
+		params.renderer->Render( method, params.renderInfo, matrixFeed );
 		matrixFeed.Restart();
 	}
 }

@@ -39,11 +39,11 @@ void SceneDataCore::OnStart( Scene * scene )
 {
 }
 
-void SceneDataCore::OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneDataCore::OnUpdate( Scene * scene, UpdateParams params )
 {
 }
 
-void SceneDataCore::OnRender( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneDataCore::OnRender( Scene * scene, RenderParams params )
 {
 }
 

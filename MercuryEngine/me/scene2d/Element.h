@@ -22,7 +22,7 @@ namespace me
 
 			me::IGame * GetGame();
 
-			void UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area ) override;
+			void UpdateLayout( UpdateParams params, unify::Size< float > area ) override;
 
 			void SetAnchor( Anchor anchor );
 			Anchor GetAnchor() const;

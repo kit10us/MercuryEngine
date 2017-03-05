@@ -26,10 +26,10 @@ namespace me
 			/// Called immediately after Update, to allow automatic layout processing. Area is the
 			/// actual area space we area inside of.
 			/// </summary>
-			virtual void UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area ) = 0;
+			virtual void UpdateLayout( UpdateParams params, unify::Size< float > area ) = 0;
 
-			virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
-			virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+			virtual void Update( UpdateParams params ) = 0;
+			virtual void Render( RenderParams params ) = 0;
 			virtual void OnSuspend() = 0;
 			virtual void OnResume() = 0;
 		};

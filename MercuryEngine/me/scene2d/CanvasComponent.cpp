@@ -47,31 +47,31 @@ void CanvasComponent::OnStart( Scene * scene )
 {
 }
 			
-void CanvasComponent::OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
+void CanvasComponent::OnUpdate( Scene * scene, UpdateParams params )
 {
-	RenderInfo myRenderInfo( renderInfo );
+	RenderInfo myRenderInfo( params.renderInfo );
 
-	m_size = renderer->GetDisplay().GetSize();
+	m_size = params.renderer->GetDisplay().GetSize();
 
 	m_projection = unify::MatrixOrthoOffCenterLH( m_position.x, m_position.x + m_size.width, m_position.y + m_size.height, m_position.y, 0.0f, 100.0f );
 	myRenderInfo.SetViewMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
-	m_layer->Update( renderer, myRenderInfo );
-	m_layer->UpdateLayout( renderer, myRenderInfo, m_size );
+	m_layer->Update( UpdateParams{ params.renderer, myRenderInfo } );
+	m_layer->UpdateLayout( UpdateParams{ params.renderer, myRenderInfo }, m_size );
 }
 
-void CanvasComponent::OnRender( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo )
+void CanvasComponent::OnRender( Scene * scene, RenderParams params )
 {
-	RenderInfo myRenderInfo( renderInfo );
+	RenderInfo myRenderInfo( params.renderInfo );
 
-	m_size = renderer->GetDisplay().GetSize();
+	m_size = params.renderer->GetDisplay().GetSize();
 
 	m_projection = unify::MatrixOrthoOffCenterLH( m_position.x, m_position.x + m_size.width, m_position.y + m_size.height, m_position.y, 0.0f, 100.0f );
 	myRenderInfo.SetViewMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
-	m_layer->Render( renderer, myRenderInfo );
+	m_layer->Render( RenderParams{ params.renderer, myRenderInfo } );
 }
 
 void CanvasComponent::OnSuspend()

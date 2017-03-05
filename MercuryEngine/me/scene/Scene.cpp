@@ -9,8 +9,9 @@
 using namespace me;
 using namespace scene;
 
-Scene::Scene( IGame * game )
+Scene::Scene( IGame * game, std::string name )
 : m_game( game )
+, m_name{ name }
 , m_inited( false )
 , m_started( false )
 , m_order( 0.0f )
@@ -22,6 +23,11 @@ Scene::Scene( IGame * game )
 
 Scene::~Scene()
 {
+}
+
+std::string Scene::GetName() const
+{
+	return m_name;
 }
 
 size_t Scene::ObjectCount() const
@@ -51,7 +57,7 @@ void Scene::OnStart()
 	}
 }
 
-void Scene::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void Scene::Update( UpdateParams params )
 {
 	if ( ! m_inited )
 	{
@@ -75,22 +81,22 @@ void Scene::Update( IRenderer * renderer, const RenderInfo & renderInfo )
 	{
 		if ( component->IsEnabled( ) )
 		{
-			component->OnUpdate( this, renderer, renderInfo );
+			component->OnUpdate( this, params );
 		}
 	}
 
 	m_cameras.clear();
-	m_objectStack->Update( renderer, renderInfo, m_cameras );
+	m_objectStack->Update( params, m_cameras );
 }
 
-void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void Scene::Render( RenderParams params )
 {
 	// Render scene components
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnRender( this, renderer, renderInfo );
+			component->OnRender( this, params );
 		}
 	}
 
@@ -100,18 +106,18 @@ void Scene::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	}
 
 	GeometryCacheSummation summation;
-	m_objectStack->CollectRendering( renderer, renderInfo, summation );
+	m_objectStack->CollectRendering( params, summation );
 						 
 	// Render all geometry for each camera...
 	for( auto camera : m_cameras )
 	{
-		if( camera.camera->GetRenderer() != renderer->GetIndex() ) continue;
+		if( camera.camera->GetRenderer() != params.renderer->GetIndex() ) continue;
 
-		RenderInfo myRenderInfo( renderInfo );
+		RenderInfo myRenderInfo( params.renderInfo );
 		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
 		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 
-		summation.Render( renderer, myRenderInfo );
+		summation.Render( RenderParams{ params.renderer, myRenderInfo } );
 	}
 }
 
@@ -287,3 +293,7 @@ Object * Scene::FindObject( std::string name )
 	return m_objectStack->FindObject( name );
 }
 
+Object * Scene::GetObject( size_t index ) const
+{
+	return m_objectStack->GetObject( index );
+}

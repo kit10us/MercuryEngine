@@ -57,9 +57,14 @@ HeightFieldCollider::~HeightFieldCollider()
 {
 }
 
-std::string HeightFieldCollider::GetName() const
+std::string HeightFieldCollider::GetType() const
 {
 	return "HeightField Collider";
+}
+
+std::string HeightFieldCollider::GetWhat() const
+{
+	return std::string();
 }
 
 IObjectComponent * HeightFieldCollider::Duplicate()

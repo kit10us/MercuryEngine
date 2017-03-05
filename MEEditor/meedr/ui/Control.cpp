@@ -6,13 +6,18 @@
 using namespace meedr;
 using namespace ui;
 
-Control::Control( int width, int height )
+Control::Control( int width, int height, std::wstring wantedText )
 	: m_parent{ nullptr }
 	, m_id{ 0 }
+	, m_parentHandle{ 0 }
+	, m_handle{ 0 }
 	, m_fillWidthWeight{ 0 }
 	, m_fillHeightWeight{ 0 }
 	, m_wantedWidth{ width }
 	, m_wantedHeight{ height }
+	, m_wantedText{ wantedText }
+	, m_wantedHScroll{ false }
+	, m_wantedVScroll{ false }
 	, m_actualX{ 0 }
 	, m_actualY{ 0 }
 	, m_actualWidth{ 0 }
@@ -64,6 +69,68 @@ int Control::GetWantedHeight() const
 	return m_wantedHeight;
 }
 
+std::wstring Control::GetWantedText() const
+{
+	return m_wantedText;
+}
+
+Control* Control::SetWantedHScroll( bool hscroll )
+{
+	m_wantedHScroll = hscroll;
+	return this;
+}
+
+bool Control::GetWantedHScroll() const
+{
+	return m_wantedHScroll;
+}
+
+Control* Control::SetWantedVScroll( bool vscroll )
+{
+	m_wantedVScroll = vscroll;
+	return this;
+}
+
+bool Control::GetWantedVScroll() const
+{
+	return m_wantedVScroll;
+}
+
+DWORD Control::GetWantedStyle() const
+{
+	DWORD style = WS_CHILD | WS_VISIBLE;
+	if ( GetWantedHScroll() )
+	{
+		style |= WS_HSCROLL;
+	}
+
+	if ( GetWantedVScroll() )
+	{
+		style |= WS_VSCROLL;
+	}
+
+	return style;
+}
+
+HWND Control::GetParentHandle() const
+{
+	return m_parentHandle;
+}
+HWND Control::GetHandle() const
+{
+	return m_handle;
+}
+
+void Control::SetName( std::string name )
+{
+	m_name = name;
+}
+
+std::string Control::GetName() const
+{
+	return m_name;
+}
+
 void Control::SetID( int id )
 {
 	m_id = id;
@@ -73,12 +140,6 @@ int Control::GetID() const
 {
 	return m_id;
 }
-
-std::string Control::GetName() const
-{
-	return m_name;
-}
-
 int Control::GetActualX() const
 {
 	return m_actualX;
@@ -147,4 +208,49 @@ void Control::ComputePass3( int x, int y )
 {
 	m_actualX = x;
 	m_actualY = y;
+}
+
+void Control::Create( HWND parent )
+{
+	m_parentHandle = parent;
+	m_handle = CreateWindowW(
+		GetType().c_str(),
+		GetWantedText().c_str(),
+		GetWantedStyle(),
+		GetActualX(),
+		GetActualY(),
+		GetActualWidth(),
+		GetActualHeight(), 
+		parent,
+		(HMENU)GetID(),
+		0,
+		0
+	);
+}
+
+void Control::SetText( std::string text )
+{
+	SendMessageA( GetHandle(), WM_SETTEXT, 0, (LPARAM)(char*)text.c_str() );
+}
+
+std::string Control::GetText() const
+{
+	int length = GetWindowTextLengthA( GetHandle() );
+	if ( length == 0 ) return "";
+
+	char * text = new char[ length + 1 ];
+	GetWindowTextA( GetHandle(), text, length + 1 );
+	std::string outText( text );
+	delete [] text;
+	return outText;
+}
+
+bool Control::IsEnabled() const
+{
+	return	IsWindowEnabled( GetHandle() ) ? true : false;
+}
+
+void Control::Enable( bool enable )
+{
+	EnableWindow( GetHandle(), enable ? 1 : 0 );
 }

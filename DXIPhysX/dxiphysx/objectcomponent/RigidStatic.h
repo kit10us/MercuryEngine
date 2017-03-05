@@ -26,7 +26,8 @@ namespace dxiphysx
 			me::IOS * GetOS();
 			const me::IOS * GetOS() const;
 
-			std::string GetName() const override;
+			std::string GetType() const override;
+			std::string GetWhat() const override;
 
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
@@ -38,7 +39,7 @@ namespace dxiphysx
 			void OnDetach() override {}
 			void OnInit() override {}
 			void OnStart() override {}
-			void OnUpdate( me::IRenderer * renderer, const me::RenderInfo & renderInfo ) override {}
+			void OnUpdate( me::UpdateParams params ) override {}
 			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}
@@ -47,6 +48,15 @@ namespace dxiphysx
 
 			DXIPHYSX_API physx::PxRigidStatic * GetRigidStatic();
 			const physx::PxRigidStatic * GetRigidStatic() const;
+
+			int GetValueCount() const override;
+			bool ValueExists( std::string ) const override;
+			std::string GetValueName( int index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			std::string GetValue( int index ) const override;
+			std::string GetValue( std::string name ) const override;
+			bool SetValue( int index, std::string value ) override;
+			bool SetValue( std::string name, std::string value ) override;
 
 		private:
 			me::IOS * m_os;

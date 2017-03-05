@@ -39,6 +39,16 @@ Combobox::~Combobox()
 {
 }
 
+DWORD Combobox::GetWantedStyle() const
+{
+	return Control::GetWantedStyle() | CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_TABSTOP;
+}
+
+std::wstring Combobox::GetType() const
+{
+	return L"Combobox";
+}
+
 int Combobox::GetWantedHeight() const
 {
 	return 24;
@@ -46,20 +56,21 @@ int Combobox::GetWantedHeight() const
 
 void Combobox::Create( HWND parent )
 {
-	HWND handle = CreateWindowW(
-		L"Combobox",
-		L"",
-		CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_TABSTOP | WS_VISIBLE | WS_CHILD,
+	m_parentHandle = parent;
+	m_handle = CreateWindowW(
+		GetType().c_str(),
+		GetWantedText().c_str(),
+		GetWantedStyle(),
 		GetActualX(),
 		GetActualY(),
 		GetActualWidth(),
-		( ui::DefaultHeight() == m_wantedHeight ) ? GetDefaultHeight() : m_wantedHeight,
+		( ui::DefaultHeight() == m_wantedHeight ) ? GetDefaultHeight() : m_wantedHeight, 
 		parent,
 		(HMENU)GetID(),
 		0,
 		0
 	);
-}
+}	 
 
 int Combobox::GetDefaultWidth() const
 {
@@ -69,4 +80,24 @@ int Combobox::GetDefaultWidth() const
 int Combobox::GetDefaultHeight() const
 {
 	return 240;
+}
+
+void Combobox::ResetContent()
+{
+	SendMessageA( GetHandle(), CB_RESETCONTENT, 0, 0 );
+}
+
+void Combobox::AddString( std::string text )
+{
+	SendMessageA( GetHandle(), CB_ADDSTRING, 0, (LPARAM)text.c_str() );
+}
+
+void Combobox::SetCurSel( int sel )
+{
+	SendMessageA( GetHandle(), CB_SETCURSEL, sel, 0 );
+}
+
+int Combobox::GetCurSel() const
+{
+	return SendMessageA( GetHandle(), CB_GETCURSEL, 0, 0 );
 }

@@ -27,8 +27,8 @@ namespace me
 
 		virtual bool Setup( me::IOS * os ) override;
 		virtual void Startup() override;		  
-		virtual void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+		virtual void Update( UpdateParams params ) override;
+		virtual void Render( RenderParams params ) override;
 		virtual void Shutdown() override;
 
 	public:
@@ -79,8 +79,10 @@ namespace me
 		me::input::InputManager * GetInputManager();
 		const me::input::InputManager * GetInputManager() const;
 
-		void Log( std::string text );
-		void LogLine( std::string line );
+		void Log( std::string text ) override;
+		void LogLine( std::string line ) override;
+		void AttachLogListener( ILogListener* listener ) override;
+		void DetachLogListener( ILogListener* litener ) override;
 
 		void ReportError( me::ErrorLevel level, std::string source, std::string error ) override;
 
@@ -108,6 +110,7 @@ namespace me
 
 		unify::Path m_setup;
 		unify::Path m_logFile;
+		std::list< ILogListener* > m_logListeners;
 
 		me::scene::IObjectComponent::ptr m_gameModule;
 

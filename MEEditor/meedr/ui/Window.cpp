@@ -18,10 +18,6 @@ namespace
 		{
 			auto itr = s_windows.find( hWnd );
 			window = itr != s_windows.end() ? itr->second : nullptr;
-			if ( window == nullptr )
-			{
-				int x( 0 ); x;
-			}
 		}								   
 
 		IResult::ptr result;
@@ -49,10 +45,10 @@ namespace
 			int controlMessage = (int)HIWORD( wParam );
 			if ( controlId != 0 )
 			{
-				std::string name = window->FindControl( controlId );
-				if ( !name.empty() )
+				IControl* control = window->FindControl( controlId );
+				if ( control )
 				{
-					result.reset( window->OnControlCommand( { name, controlId, controlMessage, (HWND)lParam } ) );
+					result.reset( window->OnControlCommand( { control, controlMessage } ) );
 				}
 			}
 			break;					  
@@ -85,7 +81,37 @@ namespace
 Window::Window( HWND parent, std::wstring className )
 	: m_hInstance{ (HINSTANCE)GetWindowLong( parent, GWL_HINSTANCE ) }
 	, m_className{ className }
+	, m_parent{ nullptr }
 	, m_parentHandle{ parent }
+	, m_handle{ 0 }
+	, m_rootContainer{ nullptr }
+	, m_currentParent{ nullptr }
+{	
+	WNDCLASS wc{};
+	if ( !GetClassInfo( m_hInstance, className.c_str(), &wc ) )
+	{
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = (WNDPROC)Builder_WndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = m_hInstance;
+		wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
+		wc.hbrBackground = (HBRUSH)GetSysColorBrush( COLOR_3DFACE );
+		wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
+		wc.lpszMenuName = 0;
+		wc.lpszClassName = m_className.c_str();
+		if ( ! RegisterClass( &wc ) )
+		{
+			throw std::exception( "Failed to register window class!" );
+		}
+	}
+}
+
+Window::Window( IWindow* parent, std::wstring className )
+	: m_hInstance{ (HINSTANCE)GetWindowLong( parent->GetHandle(), GWL_HINSTANCE ) }
+	, m_className{ className }
+	, m_parent{ parent }
+	, m_parentHandle{ parent->GetHandle() }
 	, m_handle{ 0 }
 	, m_rootContainer{ nullptr }
 	, m_currentParent{ nullptr }
@@ -133,7 +159,15 @@ void Window::AddControl( IControl * control, std::string name )
 {	
 	assert( m_currentParent );
 	m_currentParent->AddChild( control );
-	control->SetID( RegistryControl( name ) );
+
+	int id = m_controls.size() + 1;
+
+	IControl::ptr controlPtr( control );
+	m_controls[ id ] = controlPtr;
+	m_controlsByName[ name ] = controlPtr;
+	
+	control->SetName( name );
+	control->SetID( id );
 }
 
 void Window::StepDown( int steps )
@@ -179,16 +213,16 @@ HWND Window::Create( std::wstring title, int x, int y, int nCmdShow )
 
 	m_rootContainer->Create( m_handle );
 
-	ShowWindow( m_handle, nCmdShow );
+	ShowWindow( nCmdShow );
 
 	IResult::ptr result( OnAfterCreate( { 0, 0 } ) );
 
 	return m_handle;
 }
-
-HWND Window::GetHandle() const
+					
+IWindow* Window::GetParent() const
 {
-	return m_handle;
+	return m_parent;
 }
 
 HWND Window::GetParentHandle() const
@@ -196,38 +230,70 @@ HWND Window::GetParentHandle() const
 	return m_parentHandle;
 }
 
+HWND Window::GetHandle() const
+{
+	return m_handle;
+}
+
 HINSTANCE Window::GetInstance() const
 {
 	return (HINSTANCE)GetWindowLong( GetHandle(), GWL_HINSTANCE );
 }
 
-int Window::RegistryControl( std::string name )
-{
-	int id = m_controls.size() + 1;
-	m_controls[ id ] = name;
-	m_controlsByName[ name ] = id;
-	return id;
-}
-
-std::string Window::FindControl( int controlId ) const
+IControl* Window::FindControl( int controlId ) const
 {
 	auto itr = m_controls.find( controlId );
-	return itr == m_controls.end() ? std::string() : itr->second;
+	return itr == m_controls.end() ? nullptr : itr->second.get();
 }
 
-int Window::GetControl( std::string name ) const
+IControl* Window::FindControl( std::string name ) const
 {					
 	auto itr = m_controlsByName.find( name );
-	return itr == m_controlsByName.end() ? 0 : itr->second;
+	return itr == m_controlsByName.end() ? nullptr : itr->second.get();
+}
+
+void Window::GetWindowRect( RECT & rect ) const
+{	 
+	::GetWindowRect( GetHandle(), &rect );
 }
 
 void Window::MoveWindow( int x, int y, bool repaint )
 {
 	RECT inputBrowserRect{};
-	GetWindowRect( GetHandle(), &inputBrowserRect );
+	GetWindowRect( inputBrowserRect );
 	int width = inputBrowserRect.right - inputBrowserRect.left;
 	int height = inputBrowserRect.bottom - inputBrowserRect.top;
 	::MoveWindow( GetHandle(), x, y, width, height, repaint ? 1 : 0 );
+}
+
+void Window::ShowWindow( int nCmdShow )
+{
+	::ShowWindow( GetHandle(), nCmdShow );
+}
+
+void Window::SetForegroundWindow()
+{
+	::SetForegroundWindow( GetHandle() );
+}
+
+void Window::SetText( std::string text )
+{
+	SetWindowTextA( GetHandle(), text.c_str() );
+}
+
+std::string Window::GetText() const
+{
+	int length = GetWindowTextLengthA( GetHandle() );
+	char * text = new char[ length ];
+	GetWindowTextA( GetHandle(), text, length );
+	std::string outText( text );
+	delete [] text;
+	return outText;
+}
+
+int Window::SendUserMessage( int message, Params params )
+{
+	return SendMessageA( GetHandle(), WM_USER + message, params.wParam, params.lParam ); 
 }
 
 IResult* Window::OnCreate( Params params )

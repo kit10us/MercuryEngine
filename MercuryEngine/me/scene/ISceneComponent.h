@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <me/RenderInfo.h>
-
+#include <me/UpdateParams.h>
+#include <me/RenderParams.h>
 #include <string>
 #include <memory>
 
@@ -50,12 +50,12 @@ namespace me
 			/// <summary>
 			/// Called every game update cycle.
 			/// </summary>
-			virtual void OnUpdate( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+			virtual void OnUpdate( Scene * scene, UpdateParams params ) = 0;
 
 			/// <summary>
 			/// Called during rendering.
 			/// </summary>
-			virtual void OnRender( Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+			virtual void OnRender( Scene * scene, RenderParams params ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).

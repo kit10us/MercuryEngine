@@ -10,6 +10,18 @@ using namespace dxilua;
 using namespace me;
 using namespace scene;
 
+namespace {
+	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
+	{
+		{ "path", 0 },
+	};
+
+	std::vector< std::string > g_ValuesList
+	{
+		{ "path" },
+	};
+}
+
 Module::Module( Module & component )
 	: m_state( component.m_state )
 	, m_game( component.m_game )
@@ -33,10 +45,16 @@ Module::~Module()
 	m_state = 0;
 }
 
-std::string Module::GetName() const
+std::string Module::GetType() const
+{
+	return "LUA Script";
+}
+
+std::string Module::GetWhat() const
 {
 	return m_name;
 }
+
 
 bool Module::IsEnabled() const
 {
@@ -151,7 +169,7 @@ void Module::OnStart()
 	CallMember( "OnStart" );
 }
 
-void Module::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
+void Module::OnUpdate( UpdateParams params )
 {
 	CallMember( "OnUpdate" );
 }
@@ -176,3 +194,82 @@ IObjectComponent * Module::Duplicate()
 	auto duplicate = new Module( *this );
 	return duplicate;
 }
+
+int Module::GetValueCount() const
+{
+	return (int)g_ValuesList.size();
+}
+
+bool Module::ValueExists( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+std::string Module::GetValueName( int index ) const
+{
+	if ( index >= (int)g_ValuesList.size() )
+	{
+		return std::string();
+	}
+	else
+	{
+		return g_ValuesList[ index ];
+	}
+}
+
+int Module::FindValueIndex( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return -1;
+	}
+	else
+	{
+		return itr->second;
+	}
+}
+
+bool Module::SetValue( int index, std::string value )
+{
+	switch ( index )
+	{
+	default:
+		return false;
+	case 0:
+		m_path = unify::Path( value );
+	}
+	return true;
+}
+
+bool Module::SetValue( std::string name, std::string value )
+{
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
+}
+
+std::string Module::GetValue( int index ) const
+{
+	switch ( index )
+	{
+	default:
+		return std::string();
+	case 0:
+		return m_path.ToString();
+	}
+}
+ 
+std::string Module::GetValue( std::string name ) const
+{
+	int index = FindValueIndex( name );
+	return GetValue( index );
+}
+			  

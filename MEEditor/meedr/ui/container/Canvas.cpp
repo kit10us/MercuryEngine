@@ -15,10 +15,6 @@ Canvas::Canvas( int width, int height )
 
 Canvas::~Canvas() 
 {
-	for ( auto child : m_children )
-	{
-		delete child;
-	}
 	m_children.clear();
 }
 
@@ -27,7 +23,7 @@ void Canvas::AddChild( IControl * child )
 	m_children.push_back( child );
 	child->SetParent( this );
 }
-	 		 
+
 void Canvas::ComputePass1()
 {
 	assert( 0 ); // TODO

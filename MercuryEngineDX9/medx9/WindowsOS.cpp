@@ -31,11 +31,19 @@ WindowsOS::WindowsOS( IGame * game )
 		using namespace std;
 		char buffer[MAX_PATH];
 		GetModuleFileNameA( NULL, buffer, MAX_PATH );
+		m_programPath = unify::Path( buffer );
+		m_programPath.Normalize();
 		string::size_type pos = string( buffer ).find_last_of( "\\/" );
 		if( pos != string::npos ) 
 		{
 			m_name = buffer;
 		}
+	}
+
+	{
+		char buffer[ MAX_PATH ];
+		GetCurrentDirectoryA( MAX_PATH, buffer );
+		m_runPath = unify::Path( buffer );
 	}
 		
 	// TODO: We are also doing this in Game, shouldn't this be in once place?
@@ -528,4 +536,14 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 unify::AssetPaths & WindowsOS::GetAssetPaths()
 {
 	return m_assetPaths;
+}
+
+unify::Path WindowsOS::GetProgramPath() const
+{
+	return m_programPath;
+}
+
+unify::Path WindowsOS::GetRunPath() const
+{
+	return m_runPath;
 }

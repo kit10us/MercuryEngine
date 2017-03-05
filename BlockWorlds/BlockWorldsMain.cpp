@@ -135,7 +135,7 @@ protected:
 public:
 	MyGame() : Game( "setup.xml" ) {}
 	void Startup() override;
-	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
+	void Update( UpdateParams params ) override;
 } game;
 
 RegisterGame( game );
@@ -150,7 +150,7 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Effect::ptr testEffect = GetManager< Effect >()->Add( "Test", "GrassBlock00.effect" );
 		
-	Scene::ptr scene = sceneManager->Add( "scene" );
+	Scene::ptr scene = sceneManager->AddScene( "scene" );
 
 	// Add a camera...
 	Object * camera = scene->NewObject( "camera" );
@@ -210,16 +210,16 @@ void MyGame::Startup()
 	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
 }
 
-void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( UpdateParams params )
 {
 	using namespace scene;
 
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
-	Object * camera = sceneManager->Find( "scene" )->FindObject( "camera" );
+	Object * camera = sceneManager->FindScene( "scene" )->FindObject( "camera" );
 	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.renderInfo.GetDelta() ) );
 	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 }

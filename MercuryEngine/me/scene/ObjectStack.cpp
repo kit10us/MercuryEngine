@@ -110,18 +110,27 @@ Object * ObjectStack::FindObject( std::string name )
 	return nullptr;
 }
 
-void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameras )
+Object * ObjectStack::GetObject( size_t index )
+{
+	if ( index >= m_objects.size() )
+	{
+		return nullptr;
+	}
+	return &m_objects[ index ];
+}
+
+void ObjectStack::Update( UpdateParams params, CameraCache & cameras )
 {
 	for( auto && object : m_newObjects )
 	{
 		// Initialize
-		object->Initialize( m_updatables, m_geometries, m_cameras,  renderer, renderInfo );
+		object->Initialize( m_updatables, m_geometries, m_cameras, params );
 	}
 	m_newObjects.clear();
 
 	for( auto && updateable : m_updatables )
 	{
-		updateable->OnUpdate( renderer, renderInfo );
+		updateable->OnUpdate( params );
 	}
 
 	for( auto camera : m_cameras )
@@ -130,7 +139,7 @@ void ObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo, C
 	}
 }
 
-void ObjectStack::CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation )
+void ObjectStack::CollectRendering( RenderParams params, GeometryCacheSummation & summation )
 {					  
 	m_geometries.Sum( summation );
 }

@@ -122,7 +122,7 @@ int Scene_Constructor( lua_State * state )
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 
-	(*sceneProxy)->scene = sceneManager->Add( name );
+	(*sceneProxy)->scene = sceneManager->AddScene( name );
 	return 1;
 }
 

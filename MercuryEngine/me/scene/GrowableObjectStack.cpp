@@ -88,19 +88,39 @@ Object * GrowableObjectStack::FindObject( std::string name )
 	return object;
 }
 
-void GrowableObjectStack::Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameras )
+Object * GrowableObjectStack::GetObject( size_t index )
+{
+	// Find stack
+	for ( auto && stack : m_stacks )
+	{
+		if ( index >= stack->Count() )
+		{
+			index -= stack->Count();
+			continue;
+		}
+		else
+		{
+			return stack->GetObject( index );
+		}
+	}
+
+	return nullptr;
+}
+
+
+void GrowableObjectStack::Update( UpdateParams params, CameraCache & cameras )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->Update( renderer, renderInfo, cameras );
+		stack->Update( params, cameras );
 	}
 }
 
-void GrowableObjectStack::CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation )
+void GrowableObjectStack::CollectRendering( RenderParams params, GeometryCacheSummation & summation )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->CollectRendering( renderer, renderInfo, summation );
+		stack->CollectRendering( params, summation );
 	}
 }
 

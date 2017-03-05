@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/Geometry.h>
+#include <me/RenderParams.h>
 #include <unify/FrameLite.h>
 						
 namespace me
@@ -29,7 +30,7 @@ namespace me
 
 		void Add( Geometry * geometry, InstancesSet set );
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo );
+		void Render( RenderParams params );
 
 		// Keeps geometry, resets count/instances.
 		void Reset();

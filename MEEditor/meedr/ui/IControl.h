@@ -4,8 +4,6 @@
 #pragma once
 
 #include <Windows.h>
-#include <string>
-#include <cassert>
 
 // Undefine Microsoft clashing defines.
 #ifdef CreateWindow
@@ -15,6 +13,10 @@
 #ifdef GetCommandLine
 #undef GetCommandLine
 #endif
+
+#include <string>
+#include <cassert>
+#include <memory>
 
 namespace meedr
 {
@@ -66,6 +68,8 @@ namespace meedr
 			friend class container::Canvas;
 			friend class container::StackPanel;
 		public:
+			typedef std::shared_ptr< IControl > ptr;
+
 			virtual ~IControl() {}
 
 			// Default values...
@@ -79,7 +83,9 @@ namespace meedr
 			// Wanted values...
 			virtual int GetWantedWidth() const = 0;
 			virtual int GetWantedHeight() const = 0;
-			virtual std::string GetName() const = 0;
+			virtual std::wstring GetWantedText() const = 0;
+			virtual DWORD GetWantedStyle() const = 0;
+			virtual std::wstring GetType() const = 0;
 
 			// Actual values...
 			virtual int GetActualX() const = 0;
@@ -87,8 +93,14 @@ namespace meedr
 			virtual int GetActualWidth() const = 0;
 			virtual int GetActualHeight() const = 0;
 
+			virtual void SetName( std::string name ) = 0;
+			virtual std::string GetName() const = 0;
+
 			virtual void SetID( int id ) = 0;
 			virtual int GetID() const = 0;
+
+			virtual HWND GetHandle() const = 0;
+			virtual HWND GetParentHandle() const = 0;
 
 		protected:
 			virtual void SetParent( container::Container * parent ) = 0;
@@ -113,6 +125,12 @@ namespace meedr
 			/// Create all controls.
 			/// </summary>
 			virtual void Create( HWND parent ) = 0;
+
+		public: // WinApi functions...
+			virtual void SetText( std::string text ) = 0;
+			virtual std::string GetText() const = 0;
+			virtual bool IsEnabled() const = 0;
+			virtual void Enable( bool enable ) = 0;
 		};
 	}
 }

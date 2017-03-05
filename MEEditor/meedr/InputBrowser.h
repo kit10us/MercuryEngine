@@ -15,14 +15,14 @@ namespace meedr
 		bool m_closing;
 		std::thread m_updateData;
 	public:
-		InputBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game );
+		InputBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
 		~InputBrowser();
 
 		void UpdateInputData();
 
-		void UpdateInputManagerList( HWND hWnd );
+		void UpdateInputManagerList();
 
-		void UpdateInputSourceInputList( HWND hWndListInputNames );
+		void UpdateInputSourceInputList();
 
 		ui::Result * OnCreate( ui::Params params ) override;
 

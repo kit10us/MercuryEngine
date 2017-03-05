@@ -12,6 +12,7 @@
 #include <meedr/ui/Listbox.h>
 #include <meedr/ui/Richtext.h>
 #include <meedr/ui/Treeview.h>
+#include <meedr/ui/Edit.h>
 
 #include <meedr/ui/IWIndow.h>
 #include <unify/String.h>
@@ -28,6 +29,7 @@ namespace meedr
 		private:
 			HINSTANCE m_hInstance;
 			std::wstring m_className;
+			IWindow * m_parent;
 			HWND m_parentHandle;
 			HWND m_handle;
 			container::Container * m_rootContainer;
@@ -35,6 +37,7 @@ namespace meedr
 
 		public:
 			Window( HWND parent, std::wstring className );
+			Window( IWindow* parent, std::wstring className );
 			virtual ~Window();
 
 			void AddContainer( container::Container * container );
@@ -47,24 +50,28 @@ namespace meedr
 
 			HWND Create( std::wstring title, int x, int y, int nCmdShow );
 
-			HWND GetHandle() const;
+			HWND GetHandle() const override;
+			IWindow * GetParent() const override;
 			HWND GetParentHandle() const override;
 
 			// -- Built data --
 		private:
-			std::map< int, std::string > m_controls;
-			std::map< std::string, int > m_controlsByName;
-
-		protected:
-			int RegistryControl( std::string name ) override;
+			std::map< int, IControl::ptr > m_controls;
+			std::map< std::string, IControl::ptr, unify::CaseInsensitiveLessThanTest > m_controlsByName;
 
 		public:
 			HINSTANCE GetInstance() const override;
-			std::string FindControl( int controlId ) const override;
-			int GetControl( std::string name ) const override;
+			IControl* FindControl( int controlId ) const override;
+			IControl* FindControl( std::string name ) const override;
 
 		public: // WinApi functions...
+			void GetWindowRect( RECT & rect ) const override;
 			void MoveWindow( int x, int y, bool repaint ) override;
+			void ShowWindow( int nCmdShow ) override;
+			void SetForegroundWindow() override;
+			void SetText( std::string text ) override;
+			std::string GetText() const override;
+			int SendUserMessage( int message, Params params ) override;
 
 		public: // Events...
 			IResult* OnCreate( Params params ) override;

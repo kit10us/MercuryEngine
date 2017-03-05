@@ -32,16 +32,14 @@ namespace meedr
 
 			virtual ~Button();
 
-			std::wstring GetText();
+			DWORD GetWantedStyle() const override;
+			std::wstring GetType() const override;
 
 			int GetDefaultWidth() const override;
 			int GetDefaultHeight() const override;
 
 		protected:
-			void Create( HWND parent ) override;
 			void ComputePass1() override;
-
-			std::wstring m_text;
 		};
 	}
 }

@@ -288,9 +288,6 @@
     <ClInclude Include="me\scene\IObjectAllocator.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\IObjectContainer.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\ObjectStack.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -372,9 +369,6 @@
     <ClInclude Include="me\motivator\ObjectOrbitMotivator.h">
       <Filter>me\motivator</Filter>
     </ClInclude>
-    <ClInclude Include="me\motivator\IMotivator.h">
-      <Filter>me\motivator</Filter>
-    </ClInclude>
     <ClInclude Include="me\motivator\ObjectInputMotivator.h">
       <Filter>me\motivator</Filter>
     </ClInclude>
@@ -389,6 +383,12 @@
     </ClInclude>
     <ClInclude Include="me\input\InputType.h">
       <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\UpdateParams.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\RenderParams.h">
+      <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,9 +30,14 @@ GeometryComponent::~GeometryComponent()
 {
 }
 
-std::string GeometryComponent::GetName() const
+std::string GeometryComponent::GetType() const
 {
 	return "Geometry";
+}
+
+std::string GeometryComponent::GetWhat() const
+{
+	return std::string();
 }
 
 void GeometryComponent::SetGeometry( Geometry::ptr geometry )
@@ -59,9 +64,9 @@ void GeometryComponent::OnStart()
 {
 }
 
-void GeometryComponent::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
+void GeometryComponent::OnUpdate( UpdateParams params )
 {
-	m_geometry->Update( renderer, renderInfo, m_geometryInstanceData.get() );
+	m_geometry->Update( params, m_geometryInstanceData.get() );
 }
 
 void GeometryComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )

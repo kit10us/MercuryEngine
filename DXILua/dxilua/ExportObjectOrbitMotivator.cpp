@@ -45,17 +45,6 @@ int ObjectOrbitMotivator_AttachTo( lua_State * state )
 	return 0;
 }
 
-int ObjectOrbitMotivator_Name( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
-	lua_pushstring( state, motivatorProxy->motivator->GetName().c_str() );
-
-	return 1;
-}
-
 int ObjectOrbitMotivator_SetOrigin( lua_State * state )
 {
 	/*
@@ -200,7 +189,6 @@ int ObjectOrbitMotivator_IsEnabled( lua_State * state )
 static const luaL_Reg ObjectOrbitMotivatorFunctions[] =
 {
 	{ "AttachTo", ObjectOrbitMotivator_AttachTo },
-	{ "Name", ObjectOrbitMotivator_Name },
 	{ "SetOrigin", ObjectOrbitMotivator_SetOrigin },
 	{ "GetOrigin", ObjectOrbitMotivator_GetOrigin },
 	{ "SetOrbit", ObjectOrbitMotivator_SetOrbit },

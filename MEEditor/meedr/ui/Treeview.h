@@ -13,6 +13,9 @@ namespace meedr
 		class Treeview : public Control
 		{
 		public:		   			
+			Treeview( DefaultWidth, FillHeight fillHeight );
+			Treeview( DefaultWidth, int height );
+
 			Treeview( FillWidth fillWidth, FillHeight fillHeight );
 			Treeview( FillWidth fillHeight, int height );
 
@@ -20,6 +23,9 @@ namespace meedr
 			Treeview( int width, int height );
 
 			virtual ~Treeview();
+
+			DWORD GetWantedStyle() const override;
+			std::wstring GetType() const override;
 
 			int GetDefaultWidth() const override;
 			int GetDefaultHeight() const override;

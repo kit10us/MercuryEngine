@@ -60,9 +60,15 @@ namespace medx11
 
 		unify::AssetPaths & GetAssetPaths() override;
 
+		unify::Path GetProgramPath() const override;
+
+		unify::Path GetRunPath() const override;
+
 	private:
 		me::IGame * m_game;
 		std::string m_name;
+		unify::Path m_programPath;
+		unify::Path m_runPath;
 		std::vector< std::string > m_commandLine;
 		me::input::IInputSource * m_keyboard;
 		me::input::IInputSource * m_mouse;

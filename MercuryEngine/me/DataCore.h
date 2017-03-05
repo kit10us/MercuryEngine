@@ -20,9 +20,9 @@ namespace me
 
 		void OnAttach( IGame * game ) override;
 
-		void OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) override;
+		void OnUpdate( IGame * game, UpdateParams params ) override;
 
-		void OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo ) override;
+		void OnRender( IGame * game, RenderParams params ) override;
 
 		void OnDetach( IGame * game ) override;
 	};

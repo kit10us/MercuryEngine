@@ -1,5 +1,5 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
-// All Rights Reserved
+// Alol Rights Reserved
 
 #include <me/Game.h>
 #include <me/factory/EffectFactories.h>
@@ -58,12 +58,12 @@ void Game::Startup()
 	// STUBBED - optional for derived game class.
 }
 
-void Game::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void Game::Update( UpdateParams params )
 {
 	// STUBBED - optional for derived game class.
 }
 
-void Game::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void Game::Render( RenderParams params )
 {
 	// STUBBED - optional for derived game class.
 }
@@ -85,9 +85,14 @@ Game::Game( unify::Path setup )
 
 Game::~Game()
 {
+	LogLine( "Shutting down:" );
+
+	// Remove all log listeners.
+	m_logListeners.clear();
+
 	// Call user shutdown.
 	Shutdown();
-
+	
 	// Release scripts.
 	m_gameModule.reset();
 
@@ -109,8 +114,8 @@ Game::~Game()
 
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	Log( "Shutdown: " + std::string( std::ctime( &t ) ) );
 	const RenderInfo & renderInfo = GetRenderInfo();
+	Log( "  time: " + std::string( std::ctime( &t ) ) );
 	LogLine( "  frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 	LogLine( "" );
 }
@@ -139,7 +144,7 @@ void * Game::Feed( std::string target, void * data )
 			using namespace scene;
 		
 			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
-			Scene::ptr scene = sceneManager->Find( "scene1" );
+			Scene::ptr scene = sceneManager->FindScene( "scene1" );
 
 			scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 			scene->AddComponent( canvas );
@@ -269,6 +274,9 @@ bool Game::Initialize( OSParameters osParameters )
 					else if( node.IsTagName( "logfile" ) )
 					{
 						m_logFile = node.GetText();
+
+						// Delete current log.
+						DeleteFileA( (char*)m_logFile.ToString().c_str() );
 					}
 					else if ( node.IsTagName( "FailuresAsCritial" ) )
 					{
@@ -346,7 +354,11 @@ bool Game::Initialize( OSParameters osParameters )
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	Log( "Startup: " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") + ", " + std::ctime( &t ) );
+	LogLine( "Startup: " );
+	LogLine( "  name:    " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") );
+	LogLine( "  program: " + m_os->GetProgramPath().ToString() );
+	LogLine( "  path:    " + m_os->GetRunPath().ToString() );
+	LogLine( "  time:    " + std::string( std::ctime( &t ) ) );
 
 	// Our setup...
 	if( m_setup.Exists() )
@@ -447,21 +459,22 @@ void Game::Tick()
 		Quit();
 	}
 
-	m_renderInfo.SetDelta( elapsed );
-
+	m_renderInfo.SetDelta( elapsed );			  
 	auto renderer = GetOS()->GetRenderer( 0 );
+
+	UpdateParams params{ renderer, m_renderInfo };
 
 	if( m_gameModule )
 	{
-		m_gameModule->OnUpdate( renderer, m_renderInfo );
+		m_gameModule->OnUpdate( params );
 	}
 
 	for( auto && component : m_components )
 	{
-		component->OnUpdate( this, renderer, m_renderInfo );
+		component->OnUpdate( this, params );
 	}
 
-	Update( renderer, m_renderInfo );
+	Update( params );
 }
 
 void Game::Draw()
@@ -470,13 +483,15 @@ void Game::Draw()
 	{
 		IRenderer * renderer = m_os->GetRenderer( index );
 		renderer->BeforeRender();
+
+		RenderParams params{ renderer, m_renderInfo };
 										  	
 		for( auto && component : m_components )
 		{
-			component->OnRender( this, renderer, m_renderInfo );
+			component->OnRender( this, params );
 		}
 
-		Render( renderer, m_renderInfo );	
+		Render( params );
 
 		renderer->AfterRender();
 	}
@@ -573,7 +588,6 @@ void Game::AddExtension( unify::Path path )
 }
 
 void Game::Log( std::string text )
-
 {
 	using namespace std;
 
@@ -582,11 +596,37 @@ void Game::Log( std::string text )
 	ofstream out( m_logFile.ToString(), ios_base::out | ios_base::app  );
 	out << text;
 	OutputDebugStringA( text.c_str() );
+
+	for ( auto && listener : m_logListeners )
+	{
+		listener->Log( text );
+	}
 }
 
 void Game::LogLine( std::string line )
 {
 	Log( line + "\n" );
+}
+
+void Game::AttachLogListener( ILogListener* listener )
+{
+	using namespace std;
+
+	if( m_logFile.Empty() ) return;
+
+	string line;
+	ifstream in( m_logFile.ToString() );
+	while ( getline( in, line ) )
+	{
+		listener->Log( line + "\n" );
+	}
+
+	m_logListeners.push_back( listener );
+}
+
+void Game::DetachLogListener( ILogListener* listener )
+{
+	m_logListeners.remove( listener );
 }
 
 void Game::ReportError( ErrorLevel level, std::string source, std::string error )

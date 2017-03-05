@@ -40,17 +40,6 @@ int ObjectInputMotivator_AttachTo( lua_State * state )
 	return 0;
 }
 
-int ObjectInputMotivator_Name( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	ObjectInputMotivatorProxy * motivatorProxy = CheckObjectInputMotivator( state, 1 );
-	lua_pushstring( state, motivatorProxy->motivator->GetName().c_str() );
-
-	return 1;
-}
-
 int ObjectInputMotivator_Add( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -122,7 +111,6 @@ int ObjectInputMotivator_SetValue( lua_State * state )
 static const luaL_Reg ObjectInputMotivatorFunctions[] =
 {
 	{ "AttachTo", ObjectInputMotivator_AttachTo },
-	{ "Name", ObjectInputMotivator_Name },
 	{ "Add", ObjectInputMotivator_Add },
 	{ "IsEnabled", ObjectInputMotivator_IsEnabled },
 	{ "SetEnabled", ObjectInputMotivator_SetEnabled },

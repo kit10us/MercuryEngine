@@ -25,9 +25,14 @@ BoxCollider::~BoxCollider()
 {
 }
 
-std::string BoxCollider::GetName() const
+std::string BoxCollider::GetType() const
 {
 	return "Box Collider";
+}
+
+std::string BoxCollider::GetWhat() const
+{
+	return std::string();
 }
 
 IObjectComponent * BoxCollider::Duplicate()

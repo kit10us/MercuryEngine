@@ -22,7 +22,7 @@ protected:
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup() override;
-	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
+	void Update( UpdateParams params ) override;
 } game;
 
 RegisterGame( game );
@@ -35,7 +35,7 @@ void MyGame::Startup()
 
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
 
-	Scene::ptr scene = sceneManager->Add( "scene" );
+	Scene::ptr scene = sceneManager->AddScene( "scene" );
 
 	// Add a camera...
 	Object * camera = scene->NewObject( "camera" );
@@ -65,16 +65,16 @@ void MyGame::Startup()
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
 
-void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( UpdateParams params )
 {
 	using namespace scene;
 
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
-	Object * camera = sceneManager->Find( "scene" )->FindObject( "camera" );
+	Object * camera = sceneManager->FindScene( "scene" )->FindObject( "camera" );
 	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
 	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );

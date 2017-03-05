@@ -29,10 +29,15 @@ BBoxRendererComponent::~BBoxRendererComponent()
 {
 }
 
-std::string BBoxRendererComponent::GetName() const
+std::string BBoxRendererComponent::GetType() const
 {
 	return "BBoxRenderer";
 }	
+
+std::string BBoxRendererComponent::GetWhat() const
+{
+	return std::string();
+}
 
 float BBoxRendererComponent::GetPadding() const
 {
@@ -61,7 +66,7 @@ void BBoxRendererComponent::OnDetach()
 	m_geomertries.clear();
 }
 
-void BBoxRendererComponent::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
+void BBoxRendererComponent::OnUpdate( UpdateParams params )
 {
 }
 

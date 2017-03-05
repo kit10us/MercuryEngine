@@ -81,10 +81,6 @@ StackPanel::StackPanel( Stack direction, int width, int height, int padding )
 
 StackPanel::~StackPanel() 
 {
-	for ( auto child : m_children )
-	{
-		delete child;
-	}
 	m_children.clear();
 }
 

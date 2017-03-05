@@ -28,10 +28,11 @@ namespace me
 			bool DestroyObject( Object * object ) override;
 			Object * CopyObject( Object * from, std::string name ) override; 
 			void CollectObjects( std::vector< Object * > & objects ) override;
-			Object * FindObject( std::string name );
+			Object * FindObject( std::string name ) override;
+			Object* GetObject( size_t index ) override;
 
-			void Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameraCache ) override;
-			void CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation ) override;
+			void Update( UpdateParams params, CameraCache & cameraCache ) override;
+			void CollectRendering( RenderParams params, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;

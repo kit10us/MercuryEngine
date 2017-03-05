@@ -13,8 +13,9 @@
 #pragma once
 
 #include <me/GeometryInstanceData.h>
-#include <me/RenderInfo.h>
-#include <me/IRenderer.h>
+#include <me/UpdateParams.h>
+#include <me/RenderParams.h>
+#include <me/MatrixFeed.h>
 #include <unify/Unify.h>
 #include <unify/BSphere.h>
 #include <unify/BBox.h>
@@ -34,8 +35,8 @@ namespace me
 
 		virtual GeometryInstanceData * CreateInstanceData();
 
-		virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) = 0;
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) = 0;
+		virtual void Update( UpdateParams params, GeometryInstanceData * instanceData ) = 0;
+		virtual void Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) = 0;
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;

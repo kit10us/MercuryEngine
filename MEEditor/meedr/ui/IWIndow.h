@@ -3,83 +3,13 @@
 
 #pragma once
 
-#include <unify/String.h>
-#include <windows.h>
+#include <meedr/ui/POD.h>
 #include <memory>
-#include <map>
 
 namespace meedr
 {
 	namespace ui
 	{
-		struct Message
-		{
-			HWND handle;
-			UINT message; 
-			WPARAM wParam;
-			LPARAM lParam;
-		};
-
-		struct Params
-		{
-			WPARAM wParam;
-			LPARAM lParam;
-		};
-
-		struct ControlMessage
-		{
-			std::string name;
-			int controlId;
-			int message;
-			HWND controlHandle;
-
-			bool IsFor( std::string _name ) const
-			{
-				return unify::StringIs( name, _name );
-			}
-		};
-
-		struct IResult
-		{
-			typedef std::shared_ptr< IResult > ptr;
-			virtual ~IResult() {}
-			virtual bool IsUnhandled() const = 0;
-			virtual unsigned int GetResult() const = 0;
-		};
-
-		struct Unhandled : public IResult
-		{
-			bool IsUnhandled() const override 
-			{
-				return true;
-			}	 
-
-			unsigned int GetResult() const
-			{
-				return 0;
-			}
-		};
-
-		struct Result : public IResult
-		{
-			Result( unsigned int result ) : result{ result } {}
-			unsigned int result;
-			bool IsUnhandled() const override
-			{
-				return false;
-			}
-			unsigned int GetResult() const
-			{
-				return result;
-			}
-		};
-
-		struct UserMessageData
-		{	
-			int message;
-			Params params;
-		};
-
 		class IWindow
 		{
 		public:
@@ -87,17 +17,23 @@ namespace meedr
 
 			virtual ~IWindow() {}
 
-			virtual HWND GetParentHandle() const = 0;
-
+			virtual IWindow * GetParent() const = 0;
+			virtual HWND GetParentHandle() const = 0;	
 			virtual HWND GetHandle() const = 0;
 
 			virtual HINSTANCE GetInstance() const = 0;
 
-			virtual std::string FindControl( int controlID ) const = 0;
-			virtual int GetControl( std::string name ) const = 0;
+			virtual IControl* FindControl( int controlID ) const = 0;
+			virtual IControl* FindControl( std::string name ) const = 0;
 
 		public: // WinApi functions...
+			virtual void GetWindowRect( RECT & rect ) const = 0;
 			virtual void MoveWindow( int x, int y, bool repaint ) = 0;
+			virtual void ShowWindow( int nCmdShow ) = 0;
+			virtual void SetForegroundWindow() = 0;
+			virtual void SetText( std::string ) = 0;
+			virtual std::string GetText() const = 0;
+			virtual int SendUserMessage( int message, Params params ) = 0;
 
 		public: // Events...			
 			virtual IResult* OnCreate( Params params ) = 0;
@@ -107,9 +43,6 @@ namespace meedr
 			virtual IResult* OnPaint( Params params ) = 0;
 			virtual IResult* OnControlCommand( ControlMessage message ) = 0;
 			virtual IResult* OnUserMessage( UserMessageData message ) = 0;
-
-		protected:
-			virtual int RegistryControl( std::string name ) = 0;
 		};
 	}
 }

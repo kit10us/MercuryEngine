@@ -116,7 +116,7 @@ int Object::FindComponent( std::string name, int startIndex ) const
 	int i = 0;
 	for( auto && component : m_components )
 	{
-		if( i >= startIndex && unify::StringIs( component.Component()->GetName(), name ) ) return i;
+		if( i >= startIndex && unify::StringIs( component.Component()->GetType(), name ) ) return i;
 		++i;
 	}		
 	return -1;
@@ -151,7 +151,7 @@ const unify::FrameLite & Object::GetFrame() const
 	return m_frame;
 }
 
-void Object::Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, IRenderer * renderer, const RenderInfo & renderInfo )
+void Object::Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, UpdateParams params )
 {
 	// Update components...
 	for( auto && component : m_components )

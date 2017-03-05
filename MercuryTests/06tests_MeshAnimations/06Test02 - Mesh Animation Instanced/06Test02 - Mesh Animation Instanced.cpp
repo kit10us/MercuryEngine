@@ -17,8 +17,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
-	void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+	void Update( UpdateParams params ) override;
+	void Render( RenderParams params ) override;
 } game;
 
 RegisterGame( game );
@@ -138,17 +138,17 @@ void MyGame::Startup()
 	m_animation->AddRotationKey( 0, RotationKey( 1.0f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
 }
 
-void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( UpdateParams params )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 1;
 
 	HRESULT result = S_OK;
 
-	const float width = (float)renderer->GetViewport().GetSize().width;
-	const float height = (float)renderer->GetViewport().GetSize().height;
+	const float width = (float)params.renderer->GetViewport().GetSize().width;
+	const float height = (float)params.renderer->GetViewport().GetSize().height;
 
-	rotation += unify::AngleInDegrees( renderInfo.GetDelta() * 90.0f );
+	rotation += unify::AngleInDegrees( params.GetDelta() * 90.0f );
 	/*
 	if( rotation.Fix360() != 0 )
 	{
@@ -168,11 +168,11 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	
 	q = unify::Quaternion( axis, rotation );
 	
-	renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	params.renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
+	params.renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void MyGame::Render( RenderParams params )
 {
 	class Source : public IMatrixSource
 	{
@@ -222,7 +222,7 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 	m_animation->ApplyToFrames( progress, frameSetInstance2 );
 	frameSetInstance1.UpdateLocals();
 	frameSetInstance2.UpdateLocals();
-	progress += renderInfo.GetDelta();
+	progress += params.GetDelta();
 
 
 	Source sorces_source[] = {
@@ -239,5 +239,5 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 
 	std::vector< IMatrixSource * > sources{ &sorces_source[0], &sorces_source[1] };
 
-	mesh->Render( renderer, renderInfo, nullptr, MatrixFeed( &sources[0], sources.size(), sources[0]->Count() ) );
+	mesh->Render( params, nullptr, MatrixFeed( &sources[0], sources.size(), sources[0]->Count() ) );
 }

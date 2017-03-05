@@ -14,7 +14,9 @@ namespace meedr
 		me::IGame * m_game;
 
 	public:
-		ScriptEditor( HWND parent, int nCmdShow, int x, int y, me::IGame * game );
+		ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
+
+		void LoadFile( unify::Path path );
 
 		ui::IResult* OnCreate( ui::Params params ) override; 
 		ui::IResult* OnDestroy( ui::Params params ) override;

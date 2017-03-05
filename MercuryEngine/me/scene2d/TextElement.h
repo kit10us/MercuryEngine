@@ -26,11 +26,11 @@ namespace me
 			
 			unify::V2< float > GetScale() const;
 
-			void UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area ) override;
+			void UpdateLayout( UpdateParams params, unify::Size< float > area ) override;
 
-			void Update( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void Update( UpdateParams params ) override;
 		
-			void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void Render( RenderParams params ) override;
 		
 			void OnSuspend() override;
 		

@@ -29,9 +29,9 @@ namespace me
 
 		void Destroy();
 
-		void Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData ) override;
+		void Update( UpdateParams params, GeometryInstanceData * instanceData ) override;
 
-		void Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
+		void Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
 
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();

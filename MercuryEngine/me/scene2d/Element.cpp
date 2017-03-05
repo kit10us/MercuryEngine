@@ -31,7 +31,7 @@ me::IGame * Element::GetGame()
 }
 
 
-void Element::UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area )
+void Element::UpdateLayout( UpdateParams params, unify::Size< float > area )
 {
 	switch( m_anchor )
 	{

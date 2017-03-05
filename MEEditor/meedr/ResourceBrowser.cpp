@@ -9,8 +9,8 @@ using namespace meedr;
 using namespace ui;
 
 
-ResourceBrowser::ResourceBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game )
-	: Window( parentHandle, L"ResourceBrowserWndClass" )
+ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
+	: Window( parent, L"ResourceBrowserWndClass" )
 	, m_game{ game }
 {
 	AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, 540, 440 ) );
@@ -20,39 +20,45 @@ ResourceBrowser::ResourceBrowser( HWND parentHandle, int nCmdShow, int x, int y,
 	Create( L"Resource Browser", x, y, nCmdShow );
 }
 
-void ResourceBrowser::UpdateResourceTypes( HWND hWnd )
+void ResourceBrowser::UpdateResourceTypes()
 {
+	Combobox* types = dynamic_cast< Combobox* >( FindControl( "Types" ) );
+
 	// Clear contents...
-	SendMessageA( hWnd, CB_RESETCONTENT, 0, 0 );
+	types->ResetContent();
 
 	// Fill in resource types...
 	for ( size_t i = 0; i < m_game->GetResourceHub().GetTypeCount(); i++ )
 	{			  
 		std::string name = m_game->GetResourceHub().GetTypeName( i ).c_str();
-		SendMessageA( hWnd, CB_ADDSTRING, 0, (LPARAM)name.c_str() );
+		types->AddString( name );
 	}
 
 	// Select first type:
-	SendMessageA( hWnd, CB_SETCURSEL, 0, 0 );
+	types->SetCurSel( 0 );
+
+	UpdateResourceList();
 }
 
-void ResourceBrowser::UpdateResourceList( HWND hWnd )
+void ResourceBrowser::UpdateResourceList()
 {
-	// Clear contents...
-	SendMessageA( hWnd, (UINT)LB_RESETCONTENT, (WPARAM)0, (LPARAM)0 );
+	Combobox* types = dynamic_cast< Combobox* >( FindControl( "Types" ) );
+	Listbox* resources = dynamic_cast< Listbox* >( FindControl( "Resources" ) );
 
-	HWND hwndCombo = GetDlgItem( GetHandle(), GetControl( "Types" ) );
-	size_t typeIndex = SendMessageA( hwndCombo, CB_GETCURSEL, 0, 0 );
+	// Clear contents...
+	resources->ResetContent();
+
+	size_t typeIndex = types->GetCurSel();
 
 	// Fill in resource types...
 	for ( size_t i = 0; i < m_game->GetResourceHub().GetManagerRaw( typeIndex )->Count(); i++ )
 	{			  
 		std::string name = m_game->GetResourceHub().GetManagerRaw( typeIndex )->GetResourceName( i );
-		SendMessageA( hWnd, LB_ADDSTRING, 0, (LPARAM)name.c_str() );
+		resources->AddString( name.c_str() );
 	}
 
 	// Select first type:
-	SendMessageA( hWnd, LB_SETCURSEL, 0, 0 );
+	resources->SetCurSel( 0 );
 }
 
 IResult * ResourceBrowser::OnCreate( Params params )
@@ -62,14 +68,13 @@ IResult * ResourceBrowser::OnCreate( Params params )
 
 IResult * ResourceBrowser::OnDestroy( Params params )
 {
-	SendMessageA( GetParentHandle(), WM_USER + RESOURCEBROWSER_CLOSED, 0, 0 );
+	GetParent()->SendUserMessage( RESOURCEBROWSER_CLOSED, Params{ 0, 0 } );
 	return new Result( 0 );
 }
 
 IResult * ResourceBrowser::OnAfterCreate( Params )
 {
-	UpdateResourceTypes( GetDlgItem( GetHandle(), GetControl( "Types" ) ) );
-	UpdateResourceList( GetDlgItem( GetHandle(), GetControl( "Resources" ) ) );
+	UpdateResourceTypes();
 	return new Result( 0 );
 }
 
@@ -81,8 +86,7 @@ IResult * ResourceBrowser::OnControlCommand( ControlMessage message )
 		{
 		case CBN_SELCHANGE:
 		{
-			HWND hWndList = GetDlgItem( GetHandle(), GetControl( "Resources" ) );
-			UpdateResourceList( hWndList );
+			UpdateResourceList();
 			break;
 		}
 		}

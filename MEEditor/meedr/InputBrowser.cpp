@@ -9,8 +9,8 @@ using namespace ui;
 
 #define USERMESSAGE_UPDATEINPUTDATE	 0
 
-InputBrowser::InputBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game )
-	: Window( parentHandle, L"InputBrowserWndClass" )
+InputBrowser::InputBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
+	: Window( parent, L"InputBrowserWndClass" )
 	, m_game{ game }
 	, m_closing{ false }
 {
@@ -32,17 +32,16 @@ InputBrowser::~InputBrowser()
 	using namespace std::chrono_literals;
 	std::this_thread::sleep_for( 1s );
 	m_updateData.detach();
-	//m_updateData.join();
 }
 
 void InputBrowser::UpdateInputData()
 {
-	HWND hWndComboInputSource = GetDlgItem( GetHandle(), GetControl( "InputSource" ) );
-	HWND hWndListInputNames = GetDlgItem( GetHandle(), GetControl( "InputNames" ) );
-	HWND hWndStaticInputData = GetDlgItem( GetHandle(), GetControl( "InputData" ) );
+	Combobox* inputSource = dynamic_cast< Combobox* >( FindControl( "InputSource" ) );
+	Listbox* inputNames = dynamic_cast< Listbox* >( FindControl( "InputNames" ) );
+	Static* inputData = dynamic_cast< Static* >( FindControl( "InputData" ) );
  
-	size_t sourceIndex = SendMessageA( hWndComboInputSource, CB_GETCURSEL, 0, 0 );
-	size_t inputIndex = SendMessageA( hWndListInputNames, LB_GETCURSEL, 0, 0 );
+	size_t sourceIndex = inputSource->GetCurSel();
+	size_t inputIndex = inputNames->GetCurSel();
 	auto source = m_game->GetInputManager()->GetSource( sourceIndex );
 	size_t subSource = 0;  	
 	me::input::IData::ptr dataRaw = source->GetInputData( subSource, inputIndex );
@@ -88,45 +87,48 @@ void InputBrowser::UpdateInputData()
 	}
 	}
 
-	SendMessageA( hWndStaticInputData, WM_SETTEXT, 0, (LPARAM)dataString.c_str() );
+	inputData->SetText( dataString );
 }
 
-void InputBrowser::UpdateInputManagerList( HWND hWnd )
+void InputBrowser::UpdateInputManagerList()
 {
+	Combobox* inputSource = dynamic_cast< Combobox* >( FindControl( "InputSource" ) );
+
 	// Clear contents...
-	SendMessageA( hWnd, CB_RESETCONTENT, 0, 0 );
+	inputSource->ResetContent();
 
 	// Fill in resource types...
 	for ( size_t i = 0; i < m_game->GetInputManager()->GetSourceCount(); i++ )
 	{			  
 		auto source = m_game->GetInputManager()->GetSource( i );
 		std::string name = source->Name();
-		SendMessageA( hWnd, CB_ADDSTRING, 0, (LPARAM)name.c_str() );
+		inputSource->AddString( name );
 	}
 
 	// Select first type:
-	SendMessageA( hWnd, CB_SETCURSEL, 0, 0 );
+	inputSource->SetCurSel( 0 );
 }
 
-void InputBrowser::UpdateInputSourceInputList( HWND hWndListInputNames )
+void InputBrowser::UpdateInputSourceInputList()
 {
-	HWND hWndComboInputSource = GetDlgItem( GetHandle(), GetControl( "InputSource" ) );
+	Combobox* inputSource = dynamic_cast< Combobox* >( FindControl( "InputSource" ) );
+	Listbox* inputNames = dynamic_cast< Listbox* >( FindControl( "InputNames" ) );
 
 	// Clear contents...
-	SendMessageA( hWndListInputNames, (UINT)LB_RESETCONTENT, (WPARAM)0, (LPARAM)0 );
-
-	size_t sourceIndex = SendMessageA( hWndComboInputSource, CB_GETCURSEL, 0, 0 );
+	inputNames->ResetContent();
+	
+	size_t sourceIndex = inputSource->GetCurSel();
 	auto source = m_game->GetInputManager()->GetSource( sourceIndex );
 	size_t subSource = 0;
 
 	for ( size_t i = 0; i < source->InputCount( subSource ); i++ )
 	{
 		std::string name = source->InputName( subSource, i ) + " - " + me::input::InputTypeToString( source->GetInputType( subSource, i ) );
-		SendMessageA( hWndListInputNames, LB_ADDSTRING, 0, (LPARAM)name.c_str() );
+		inputNames->AddString( name );
 	}
 
 	// Select first type:
-	SendMessageA( hWndListInputNames, LB_SETCURSEL, 0, 0 );
+	inputNames->SetCurSel( 0 );
 
 	UpdateInputData();
 }
@@ -142,21 +144,21 @@ void InputBrowser::Timer_UpdateInputData()
 	{
 		using namespace std::chrono_literals;
 		std::this_thread::sleep_for( 100ms );			
-		SendMessageA( GetHandle(), WM_USER + USERMESSAGE_UPDATEINPUTDATE, 0, 0 );
+		SendUserMessage( USERMESSAGE_UPDATEINPUTDATE, Params{} );
 	}
 }
 
 Result* InputBrowser::OnAfterCreate( Params params )
 {
-	UpdateInputManagerList( GetDlgItem( GetHandle(), GetControl( "InputSource" ) ) );
-	UpdateInputSourceInputList( GetDlgItem( GetHandle(), GetControl( "InputNames" ) ) );
+	UpdateInputManagerList();
+	UpdateInputSourceInputList();
 	m_updateData = std::thread( &InputBrowser::Timer_UpdateInputData, this );
 	return new Result( 0 );
 }
 
 Result * InputBrowser::OnDestroy( Params params )
-{
-	SendMessageA( GetParentHandle(), WM_USER + INPUTBROWSER_CLOSED, 0, 0 );
+{	
+	GetParent()->SendUserMessage( INPUTBROWSER_CLOSED, Params{} );
 	return new Result( 0 );
 }
 
@@ -168,8 +170,7 @@ Result* InputBrowser::OnControlCommand( ControlMessage message )
 		{
 		case CBN_SELCHANGE:
 		{
-			HWND hWndListInputNames = GetDlgItem( GetHandle(), GetControl( "InputNames" ) );
-			UpdateInputSourceInputList( hWndListInputNames );
+			UpdateInputSourceInputList();
 			break;
 		}
 		}

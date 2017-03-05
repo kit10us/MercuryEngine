@@ -19,9 +19,14 @@ SphereCollider::~SphereCollider()
 {
 }
 
-std::string SphereCollider::GetName() const
+std::string SphereCollider::GetType() const
 {
 	return "Sphere Collider";
+}
+
+std::string SphereCollider::GetWhat() const
+{
+	return std::string();
 }
 
 IObjectComponent * SphereCollider::Duplicate()

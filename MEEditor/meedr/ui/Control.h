@@ -16,7 +16,7 @@ namespace meedr
 			friend class container::StackPanel;
 
 		protected:
-			Control( int width, int height );
+			Control( int width, int height, std::wstring wantedText = L"" );
 
 		public:
 			virtual ~Control();
@@ -34,8 +34,14 @@ namespace meedr
 
 			int GetWantedWidth() const override;
 			int GetWantedHeight() const override;
+			std::wstring GetWantedText() const override;
 
-			std::string GetName() const override;
+			Control* SetWantedHScroll( bool hscroll );
+			bool GetWantedHScroll() const;
+			Control* SetWantedVScroll( bool vscroll );
+			bool GetWantedVScroll() const;
+
+			DWORD GetWantedStyle() const override;
 
 			// Actual values...
 			int GetActualX() const override;
@@ -46,6 +52,12 @@ namespace meedr
 			void SetID( int id ) override;
 			int GetID() const override;
 
+			void SetName( std::string name ) override;
+			std::string GetName() const override;
+
+			HWND GetParentHandle() const override;
+			HWND GetHandle() const override;
+
 		protected:
 			container::Container * GetParent() const override;
 			void SetParent( container::Container * parent ) override;
@@ -53,18 +65,30 @@ namespace meedr
 			void ComputePass1() override;
 			void ComputePass2( int fillWidthTotal, int fillHeightTotal, int fillWidthTotalWeight, int fillHeightTotalWeight ) override;
 			void ComputePass3( int x, int y ) override;
+			void Create( HWND parent ) override;
 
 			container::Container * m_parent;
 			int m_id;
+			HWND m_parentHandle;
+			HWND m_handle;
 			std::string m_name;
 			int m_fillWidthWeight;
 			int m_fillHeightWeight;
 			int m_wantedWidth;
 			int m_wantedHeight;
+			std::wstring m_wantedText;
+			bool m_wantedHScroll;
+			bool m_wantedVScroll;
 			int m_actualX;
 			int m_actualY;
 			int m_actualWidth;
 			int m_actualHeight;
+
+		public: // WinApi functions...
+			void SetText( std::string text ) override;
+			std::string GetText() const override;
+			bool IsEnabled() const override;
+			void Enable( bool enable ) override;
 		};
 	}
 }

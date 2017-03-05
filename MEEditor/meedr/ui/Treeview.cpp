@@ -9,6 +9,16 @@
 using namespace meedr;
 using namespace ui;
 
+Treeview::Treeview( DefaultWidth fillWidth, FillHeight fillHeight )
+	: Control(DefaultWidth::Value(), FillHeight::Value() )
+{
+	SetFillHeightWeight( fillHeight.weight );
+}
+Treeview::Treeview( DefaultWidth fillWidth, int height )
+	: Control(DefaultWidth::Value(), height )
+{
+}
+
 Treeview::Treeview( FillWidth fillWidth, FillHeight fillHeight )
 	: Control(FillWidth::Value(), FillHeight::Value() )
 {
@@ -33,6 +43,17 @@ Treeview::Treeview( int width, int height )
 
 Treeview::~Treeview()
 {
+}	  
+
+DWORD Treeview::GetWantedStyle() const
+{
+	DWORD style = Control::GetWantedStyle();
+	return style |= WS_BORDER | WS_TABSTOP | WS_HSCROLL | WS_VSCROLL | TVS_HASLINES;
+}
+
+std::wstring Treeview::GetType() const
+{
+	return WC_TREEVIEWW;
 }
 
 void Treeview::Create( HWND parent )
@@ -42,11 +63,12 @@ void Treeview::Create( HWND parent )
 	initCtrls.dwICC = ICC_TREEVIEW_CLASSES;
 	InitCommonControlsEx( &initCtrls );
 
-	HWND handle = CreateWindowExW(
+	m_parentHandle = parent;
+	m_handle = CreateWindowExW(
 		0,
-		WC_TREEVIEW,
-		L"Tree...",
-		WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | WS_HSCROLL | WS_VSCROLL | TVS_HASLINES,
+		GetType().c_str(),
+		GetWantedText().c_str(),
+		GetWantedStyle(),
 		GetActualX(),
 		GetActualY(),
 		GetActualWidth(),

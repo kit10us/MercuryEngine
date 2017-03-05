@@ -44,17 +44,6 @@ int CameraComponent_AttachTo( lua_State * state )
 	return 0;
 }
 
-int CameraComponent_Name( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	CameraComponentProxy * componentProxy = CheckCameraComponent( state, 1 );
-	lua_pushstring( state, componentProxy->camera->GetName().c_str() );
-
-	return 1;
-}
-
 int CameraComponent_SetProjection( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -136,7 +125,6 @@ static const luaL_Reg CameraComponentFunctions[] =
 	{ "AttachTo", CameraComponent_AttachTo },
 	{ "SetProjection", CameraComponent_SetProjection },
 	{ "GetProjection", CameraComponent_GetProjection },
-	{ "Name", CameraComponent_Name },
 	{ "GetRenderer", CameraComponent_GetRenderer },
 	{ "IsEnabled", CameraComponent_IsEnabled } ,
 	{ "SetEnabled", CameraComponent_SetEnabled },

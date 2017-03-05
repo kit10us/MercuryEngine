@@ -14,6 +14,18 @@ using namespace dxiphysx;
 using namespace physx;
 using namespace objectcomponent;
 
+namespace {
+	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
+	{
+		{ "enabled", 0 },
+	};
+
+	std::vector< std::string > g_ValuesList
+	{
+		{ "enabled" },
+	};
+}
+
 RigidBody::RigidBody( RigidBody & rigidBody )
 	: m_os( rigidBody.m_os )
 	, m_gameComponent( rigidBody.m_gameComponent )
@@ -44,10 +56,15 @@ const me::IOS * RigidBody::GetOS() const
 	return m_os;
 }
 
-std::string RigidBody::GetName() const
+std::string RigidBody::GetType() const
 {
 	return "RigidBody";
 }
+
+std::string RigidBody::GetWhat() const
+{
+	return std::string();
+}					 
 	
 bool RigidBody::IsEnabled() const
 {
@@ -97,4 +114,83 @@ physx::PxRigidBody * RigidBody::GetRigidBody()
 const physx::PxRigidBody * RigidBody::GetRigidBody() const
 {
 	return m_rigidBody ? m_rigidBody.get() : nullptr;
+}
+
+int RigidBody::GetValueCount() const
+{
+	return (int)g_ValuesList.size();
+}
+
+bool RigidBody::ValueExists( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+std::string RigidBody::GetValueName( int index ) const
+{
+	if ( index >= (int)g_ValuesList.size() )
+	{
+		return std::string();
+	}
+	else
+	{
+		return g_ValuesList[ index ];
+	}
+}
+
+int RigidBody::FindValueIndex( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if ( itr == g_ValuesMap.end() )
+	{
+		return -1;
+	}
+	else
+	{
+		return itr->second;
+	}
+}
+
+bool RigidBody::SetValue( int index, std::string value )
+{
+	switch ( index )
+	{
+	default:
+		return false;
+	case 0:
+		m_enabled = unify::Cast< bool >( value );
+		break;
+	}
+	return true;
+}
+
+bool RigidBody::SetValue( std::string name, std::string value )
+{
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
+}
+
+std::string RigidBody::GetValue( int index ) const
+{
+	switch ( index )
+	{
+	default:
+		return std::string();
+	case 0:
+		return unify::Cast< std::string >( m_enabled );
+	}
+}
+ 
+std::string RigidBody::GetValue( std::string name ) const
+{
+	int index = FindValueIndex( name );
+	return GetValue( index );
 }

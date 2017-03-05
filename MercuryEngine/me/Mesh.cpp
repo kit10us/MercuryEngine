@@ -26,19 +26,19 @@ void Mesh::Destroy()
 	m_primitiveList.Destroy();
 }
 
-void Mesh::Update( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData )
+void Mesh::Update( UpdateParams params, GeometryInstanceData * instanceData )
 {
 	if( instanceData )
 	{
 		MeshInstanceData * meshInstanceData = static_cast< MeshInstanceData * >( instanceData );
-		meshInstanceData->Update( renderInfo );
+		meshInstanceData->Update( params.renderInfo );
 	}
 
 	// HACK: TODO:
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
+void Mesh::Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
 {
 	// TODO:
 	/*
@@ -59,7 +59,7 @@ void Mesh::Render( IRenderer * renderer, const RenderInfo & renderInfo, Geometry
 	}
 	*/
 	
-	m_primitiveList.Render( renderer, renderInfo, matrixFeed );
+	m_primitiveList.Render( params, matrixFeed );
 }
 
 PrimitiveList & Mesh::GetPrimitiveList()

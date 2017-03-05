@@ -5,7 +5,6 @@
 
 #include <me/scene/IObjectComponent.h>
 #include <me/scene/Object.h>
-#include <me/motivator/IMotivator.h>
 #include <unify/Angle.h>
 #include <unify/V3.h>
 
@@ -16,14 +15,15 @@ namespace me
 		///<summary>
 		/// Motivates an object to orbit.
 		///</summary>
-		class ObjectOrbitMotivator : public scene::IObjectComponent, IMotivator
+		class ObjectOrbitMotivator : public scene::IObjectComponent
 		{
 		public:
 			ObjectOrbitMotivator( unify::V3< float > origin, unify::V3< float > orbit, unify::Angle angleASecond );
 
 			virtual ~ObjectOrbitMotivator();
 
-			std::string GetName() const override;
+			std::string GetType() const override;
+			std::string GetWhat() const override;
 
 			bool IsEnabled() const override;
 
@@ -41,7 +41,7 @@ namespace me
 
 			void OnStart() override;
 
-			void OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnUpdate( UpdateParams params ) override;
 
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
 
@@ -51,14 +51,15 @@ namespace me
 
 			scene::IObjectComponent * Duplicate() override;
 
+
 			int GetValueCount() const override;
-			bool ValueExists( std::string name ) const override;
-			std::string GetValueName( size_t index ) const override;
+			bool ValueExists( std::string ) const override;
+			std::string GetValueName( int index ) const override;
 			int FindValueIndex( std::string name ) const override;
-			void SetValue( size_t index, std::string value ) override;
-			void SetValue( std::string name, std::string value ) override;
-			std::string GetValue( size_t index ) const override;
+			std::string GetValue( int index ) const override;
 			std::string GetValue( std::string name ) const override;
+			bool SetValue( int index, std::string value ) override;
+			bool SetValue( std::string name, std::string value ) override; 
 
 		private:
 			scene::Object * m_target;

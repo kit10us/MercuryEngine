@@ -15,7 +15,8 @@ namespace dxiphysx
 			DXIPHYSX_API SphereCollider( me::IOS * os, GameComponent * gameComponent, float radius );
 			~SphereCollider();
 
-			std::string GetName() const override;
+			std::string GetType() const override;
+			std::string GetWhat() const override;
 
 			me::scene::IObjectComponent * Duplicate() override;
 		};

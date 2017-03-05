@@ -24,8 +24,8 @@ class MyGame : public Game
 
 public:
 	void Startup() override;
-	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
-	void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+	void Update( UpdateParams params ) override;
+	void Render( RenderParams params ) override;
 	void Shutdown() override;
 } game;
 
@@ -102,7 +102,7 @@ void MyGame::Startup()
 	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effectBorg->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 }
 
-void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( UpdateParams params )
 {
 	static Angle rotation( AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
@@ -112,7 +112,7 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	const float width = GetOS()->GetRenderer(0)->GetViewport().GetSize().width;
 	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 
-	rotation += AngleInDegrees( renderInfo.GetDelta() * 90.0f );
+	rotation += AngleInDegrees( params.GetDelta() * 90.0f );
 	if( rotation.Fix360() != 0 )
 	{
 		++axisIndex;
@@ -130,11 +130,11 @@ void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
 	
 	q = Quaternion( axis, rotation );
 
-	renderInfo.SetViewMatrix( MatrixLookAtLH( eye, at, up ) );
-	renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	params.renderInfo.SetViewMatrix( MatrixLookAtLH( eye, at, up ) );
+	params.renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void MyGame::Render( RenderParams params )
 {
 	vertexBuffer->Use();
 
@@ -142,13 +142,13 @@ void MyGame::Render( IRenderer * renderer, const RenderInfo & renderInfo )
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-		renderer->Render( method, renderInfo, MatrixFeed( &instance, 1, 1 ) );
+		params.renderer->Render( method, params.renderInfo, MatrixFeed( &instance, 1, 1 ) );
 	}
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-		renderer->Render( method, renderInfo, MatrixFeed( &instance, 1, 1 ) );
+		params.renderer->Render( method, params.renderInfo, MatrixFeed( &instance, 1, 1 ) );
 	}
 }
 

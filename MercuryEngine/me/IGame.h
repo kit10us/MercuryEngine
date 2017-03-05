@@ -12,9 +12,19 @@
 #include <rm/ResourceManagerSimple.h>
 #include <rm/ResourceHub.h>
 #include <me/IGameComponent.h>
+#include <me/UpdateParams.h>
+#include <me/RenderParams.h>
 
 namespace me
 {
+	class ILogListener
+	{
+	public:
+		~ILogListener() {}
+
+		virtual void Log( std::string text ) = 0;
+	};
+
 	enum class ErrorLevel
 	{
 		Critical, // System is left unstable, we should likely shutdown immediately.
@@ -41,12 +51,12 @@ namespace me
 		/// <summary>
 		/// Update is called to enable objects to perform over-time operations.
 		/// </summary>
-		virtual void Update( IRenderer * renderer, RenderInfo & renderInfo ) = 0;
+		virtual void Update( UpdateParams params ) = 0;
 
 		/// <summary>
 		/// Render is called to draw graphics.
 		/// </summary>
-		virtual void Render( IRenderer * renderer, const RenderInfo & renderInfo ) = 0;
+		virtual void Render( RenderParams params ) = 0;
 
 		/// <summary>
 		/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.
@@ -90,8 +100,9 @@ namespace me
 		virtual const input::InputManager * GetInputManager() const = 0;
 
 		virtual void Log( std::string text ) = 0;
-
 		virtual void LogLine( std::string line ) = 0;
+		virtual void AttachLogListener( ILogListener* listener ) = 0;
+		virtual void DetachLogListener( ILogListener* litener ) = 0;
 
 		/// <summary>
 		/// This is our method of reporting issues, especially from modules.

@@ -76,7 +76,7 @@ namespace me
 			/// Collect the geometry for optimized rendering later.
 			/// Collect cameras.
 			/// </summary>
-			void Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, IRenderer * renderer, const RenderInfo & renderInfo );
+			void Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, UpdateParams params );
 
 			void OnSuspend();
 			void OnResume();

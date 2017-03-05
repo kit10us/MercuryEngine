@@ -35,10 +35,15 @@ ObjectOrbitMotivator::~ObjectOrbitMotivator()
 {
 }
 
-std::string ObjectOrbitMotivator::GetName() const
+std::string ObjectOrbitMotivator::GetType() const
 {
 	return "ObjectOrbitMotivator";
 }
+
+std::string ObjectOrbitMotivator::GetWhat() const
+{
+	return std::string();
+}								
 
 bool ObjectOrbitMotivator::IsEnabled() const
 {
@@ -78,7 +83,7 @@ void ObjectOrbitMotivator::OnStart()
 {
 }
 
-void ObjectOrbitMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & renderInfo )
+void ObjectOrbitMotivator::OnUpdate( UpdateParams params )
 {
 	if ( ! m_target )
 	{
@@ -90,7 +95,7 @@ void ObjectOrbitMotivator::OnUpdate( IRenderer * renderer, const RenderInfo & re
 		return;
 	}
 
-	m_target->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( m_orbit, m_angleASecond * renderInfo.GetDelta() ) );
+	m_target->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( m_orbit, m_angleASecond * params.renderInfo.GetDelta() ) );
 	
 	m_target->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 }
@@ -131,9 +136,9 @@ bool ObjectOrbitMotivator::ValueExists( std::string name ) const
 	}
 }
 
-std::string ObjectOrbitMotivator::GetValueName( size_t index ) const
+std::string ObjectOrbitMotivator::GetValueName( int index ) const
 {
-	if ( index >= g_ValuesList.size() )
+	if ( index >= (int)g_ValuesList.size() )
 	{
 		return std::string();
 	}
@@ -156,12 +161,12 @@ int ObjectOrbitMotivator::FindValueIndex( std::string name ) const
 	}
 }
 
-void ObjectOrbitMotivator::SetValue( size_t index, std::string value )
+bool ObjectOrbitMotivator::SetValue( int index, std::string value )
 {
 	switch ( index )
 	{
 	default:
-		return;
+		return false;
 	case 0:
 		m_origin = unify::V3< float >( value );
 		break;
@@ -172,15 +177,16 @@ void ObjectOrbitMotivator::SetValue( size_t index, std::string value )
 		m_angleASecond = unify::Angle( value );
 		break;
 	}
+	return true;
 }
 
-void ObjectOrbitMotivator::SetValue( std::string name, std::string value )
+bool ObjectOrbitMotivator::SetValue( std::string name, std::string value )
 {
-	size_t index = FindValueIndex( name );
-	SetValue( index, value );
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
 }
 
-std::string ObjectOrbitMotivator::GetValue( size_t index ) const
+std::string ObjectOrbitMotivator::GetValue( int index ) const
 {
 	switch ( index )
 	{
@@ -200,6 +206,6 @@ std::string ObjectOrbitMotivator::GetValue( size_t index ) const
  
 std::string ObjectOrbitMotivator::GetValue( std::string name ) const
 {
-	size_t index = FindValueIndex( name );
+	int index = FindValueIndex( name );
 	return GetValue( index );
 }

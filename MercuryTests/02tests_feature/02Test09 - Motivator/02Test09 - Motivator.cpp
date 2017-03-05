@@ -51,7 +51,7 @@ void MyGame::Startup()
 	borgCubeEffect->SetTexture( 0, GetManager< ITexture >()->Find( "borgcube" ) );
 
 	// Add a scene.
-	Scene::ptr scene = sceneManager->Add( "scene" );
+	Scene::ptr scene = sceneManager->AddScene( "scene" );
 
 	//scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 

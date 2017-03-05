@@ -29,9 +29,9 @@ namespace me
 
 			IElement::ptr FindElement( std::string name );
 
-			void UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area );
-			void Update( IRenderer * renderer, const RenderInfo & renderInfo ) override;
-			void Render( IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void UpdateLayout( UpdateParams params, unify::Size< float > area );
+			void Update( UpdateParams params ) override;
+			void Render( RenderParams params ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 

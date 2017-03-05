@@ -51,9 +51,14 @@ bool SceneManager::GetEnabled() const
 	return m_enabled;
 }
 
-Scene::ptr SceneManager::Add( std::string name )
+size_t SceneManager::GetSceneCount() const
 {
-    Scene::ptr scene( new Scene( GetGame() ) );
+	return m_scenes.size();
+}
+
+Scene::ptr SceneManager::AddScene( std::string name )
+{
+    Scene::ptr scene( new Scene( GetGame(), name ) );
 
 	for ( auto & component : m_components )
 	{
@@ -61,13 +66,20 @@ Scene::ptr SceneManager::Add( std::string name )
 	}
 
 	m_scenes[ name ] = scene;
+	m_sceneList.push_back( scene );
     return scene;
 }
 
-Scene::ptr SceneManager::Find( std::string name )
+Scene::ptr SceneManager::FindScene( std::string name ) const
 {
-	std::map< std::string, Scene::ptr >::iterator itr = m_scenes.find( name );
+	auto itr = m_scenes.find( name );
 	return itr == m_scenes.end() ? Scene::ptr() : itr->second;
+}
+													  
+Scene::ptr SceneManager::GetScene( size_t index ) const
+{
+	if ( index >= m_sceneList.size() ) return Scene::ptr();
+	return m_sceneList[ index ];
 }
 
 void SceneManager::OnAttach( IGame * game )
@@ -78,7 +90,7 @@ void SceneManager::OnDetach( IGame * game )
 {
 }
 
-void SceneManager::OnUpdate( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneManager::OnUpdate( IGame * game, UpdateParams params )
 {
 	if ( m_enabled == false )
 	{
@@ -99,11 +111,11 @@ void SceneManager::OnUpdate( IGame * game, IRenderer * renderer, const RenderInf
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Update( renderer, renderInfo );
+        scene->Update( params );
     }
 }
 
-void SceneManager::OnRender( IGame * game, IRenderer * renderer, const RenderInfo & renderInfo )
+void SceneManager::OnRender( IGame * game, RenderParams params )
 {
 	if ( m_enabled == false )
 	{
@@ -137,7 +149,7 @@ void SceneManager::OnRender( IGame * game, IRenderer * renderer, const RenderInf
     for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
     {
         Scene * scene = (*itr);
-        scene->Render( renderer, renderInfo );
+        scene->Render( params );
     }
 }
 

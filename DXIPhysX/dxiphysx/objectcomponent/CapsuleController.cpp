@@ -36,9 +36,14 @@ CapsuleController::~CapsuleController()
 {
 }
 
-std::string CapsuleController::GetName() const
+std::string CapsuleController::GetType() const
 {
 	return "Capsule Controller";
+}
+
+std::string CapsuleController::GetWhat() const
+{
+	return std::string();
 }
 
 IObjectComponent * CapsuleController::Duplicate()
@@ -50,4 +55,4 @@ IObjectComponent * CapsuleController::Duplicate()
 void CapsuleController::OnAttach( me::scene::Object * object )
 {
 	m_controller->setUserData( object );
-}
+}					  

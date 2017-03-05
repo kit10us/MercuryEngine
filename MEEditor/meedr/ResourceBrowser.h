@@ -13,11 +13,10 @@ namespace meedr
 		me::IGame* m_game;
 
 	public:
-		ResourceBrowser( HWND parentHandle, int nCmdShow, int x, int y, me::IGame * game );
+		ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
 
-		void UpdateResourceTypes( HWND hWnd );
-
-		void UpdateResourceList( HWND hWnd );
+		void UpdateResourceTypes();
+		void UpdateResourceList();
 
 		ui::IResult * OnCreate( ui::Params params ) override;
 		ui::IResult * OnDestroy( ui::Params params ) override;

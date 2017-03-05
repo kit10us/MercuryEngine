@@ -4,6 +4,11 @@
 
 #include <me/scene/Object.h>
 
+#ifdef GetObject
+#undef GetObject
+#endif
+
+
 namespace me
 {
 	namespace scene
@@ -24,9 +29,10 @@ namespace me
 			virtual Object * CopyObject( Object * object, std::string name ) = 0;
 			virtual void CollectObjects( std::vector< Object * > & objects ) = 0;
 			virtual Object * FindObject( std::string name ) = 0;
+			virtual Object * GetObject( size_t index ) = 0;
 
-			virtual void Update( IRenderer * renderer, const RenderInfo & renderInfo, CameraCache & cameraCache ) = 0;
-			virtual void CollectRendering( IRenderer * renderer, const RenderInfo & renderInfo, GeometryCacheSummation & summation ) = 0;
+			virtual void Update( UpdateParams params, CameraCache & cameraCache ) = 0;
+			virtual void CollectRendering( RenderParams params, GeometryCacheSummation & summation ) = 0;
 		};
 	}
 }

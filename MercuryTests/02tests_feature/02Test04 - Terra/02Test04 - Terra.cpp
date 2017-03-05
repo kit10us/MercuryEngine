@@ -29,7 +29,7 @@ protected:
 
 public:
 	void Startup() override;
-	void Update( IRenderer * renderer, RenderInfo & renderInfo ) override;
+	void Update( UpdateParams params ) override;
 } game;
 
 RegisterGame( game );
@@ -39,7 +39,7 @@ void MyGame::Startup()
 	using namespace scene;
 
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
-	Scene::ptr mainScene = sceneManager->Add( "main" );
+	Scene::ptr mainScene = sceneManager->AddScene( "main" );
 
 	Object * camera = mainScene->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );
@@ -83,13 +83,13 @@ void MyGame::Startup()
 	AddGeometryComponent( land, GetOS(), Geometry::ptr( terra ) );
 }
 
-void MyGame::Update( IRenderer * renderer, RenderInfo & renderInfo )
+void MyGame::Update( UpdateParams params )
 {
 	using namespace scene;
 
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
-	Object * camera = sceneManager->Find( "main" )->FindObject( "camera" );
+	Object * camera = sceneManager->FindScene( "main" )->FindObject( "camera" );
 	
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );

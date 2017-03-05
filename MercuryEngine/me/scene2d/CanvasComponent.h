@@ -32,9 +32,9 @@ namespace me
 
 			void OnStart( scene::Scene * scene ) override;
 			
-			void OnUpdate( scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnUpdate( scene::Scene * scene, UpdateParams params ) override;
 
-			void OnRender( scene::Scene * scene, IRenderer * renderer, const RenderInfo & renderInfo ) override;
+			void OnRender( scene::Scene * scene, RenderParams params ) override;
 
 			void OnSuspend() override;
 

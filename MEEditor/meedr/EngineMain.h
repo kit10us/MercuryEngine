@@ -10,6 +10,8 @@
 #define INPUTBROWSER_CLOSED		1
 #define SCRIPTEDITOR_CLOSED		2
 #define SCENEVIEWER_CLOSED		3
+#define SCRIPTEDITOR_OPEN		4
+#define LOGVIEWER_CLOSED		5
  								
 namespace meedr
 {
@@ -21,8 +23,17 @@ namespace meedr
 		IWindow::ptr m_inputBrowser;
 		IWindow::ptr m_sceneViewer;
 		IWindow::ptr m_scriptEditor;
+		IWindow::ptr m_logViewer;
 	public:
 		EngineMain( me::IGame * game );
+		
+		me::IGame * GetGame() const;
+
+		void OpenResourceBrowser();
+		void OpenInputBrowser();
+		void OpenScriptEditor( unify::Path source );
+		void OpenSceneViewer();
+		void OpenLogViewer();
 
 		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
 		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;

@@ -30,35 +30,35 @@ IElement::ptr Layer::FindElement( std::string name )
 	return itr->second;
 }
 
-void Layer::UpdateLayout( IRenderer * renderer, const RenderInfo & renderInfo, unify::Size< float > area )
+void Layer::UpdateLayout( UpdateParams params, unify::Size< float > area )
 {
 	if ( ! IsEnabled() ) return;
 
-	Element::UpdateLayout( renderer, renderInfo, area );
+	Element::UpdateLayout( params, area );
 
 	for( auto && element : m_elements )
 	{
-		element->UpdateLayout( renderer, renderInfo, GetActualSize() );
+		element->UpdateLayout( params, GetActualSize() );
 	}
 }
 
-void Layer::Update( IRenderer * renderer, const RenderInfo & renderInfo )
+void Layer::Update( UpdateParams params )
 {
 	if ( ! IsEnabled() ) return;
 
 	for( auto && element : m_elements )
 	{
-		element->Update( renderer, renderInfo );
+		element->Update( params );
 	}
 }
 
-void Layer::Render( IRenderer * renderer, const RenderInfo & renderInfo )
+void Layer::Render( RenderParams params )
 {
 	if ( ! IsEnabled() ) return;
 
 	for( auto && element : m_elements )
 	{
-		element->Render( renderer, renderInfo );
+		element->Render( params );
 	}
 }
 
