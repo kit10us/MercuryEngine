@@ -61,8 +61,15 @@ namespace meedr
 
 		public:
 			HINSTANCE GetInstance() const override;
-			IControl* FindControl( int controlId ) const override;
-			IControl* FindControl( std::string name ) const override;
+			
+			IControl* GetControl( int controlId ) const override;
+			IControl* GetControl( std::string name ) const override;
+
+			template< typename T >
+			T GetControl( int controlId ) const;
+
+			template< typename T >
+			T GetControl( std::string name ) const;
 
 		public: // WinApi functions...
 			void GetWindowRect( RECT & rect ) const override;
@@ -82,5 +89,19 @@ namespace meedr
 			IResult* OnControlCommand( ControlMessage message ) override;
 			IResult* OnUserMessage( UserMessageData message ) override;
 		};
+
+		template< typename T >
+		T Window::GetControl( int controlId ) const
+		{
+			IControl * control = GetControl( controlId );
+			return dynamic_cast< T >( control );
+		}
+
+		template< typename T >
+		T Window::GetControl( std::string name ) const
+		{					
+			IControl * control = GetControl( name );
+			return dynamic_cast< T >( control );
+		}
 	}
 }

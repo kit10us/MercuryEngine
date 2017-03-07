@@ -23,8 +23,8 @@ namespace meedr
 
 			virtual HINSTANCE GetInstance() const = 0;
 
-			virtual IControl* FindControl( int controlID ) const = 0;
-			virtual IControl* FindControl( std::string name ) const = 0;
+			virtual IControl* GetControl( int controlID ) const = 0;
+			virtual IControl* GetControl( std::string name ) const = 0;
 
 		public: // WinApi functions...
 			virtual void GetWindowRect( RECT & rect ) const = 0;

@@ -38,8 +38,8 @@ namespace meedr
 		public: // WinApi functions...
 			virtual void SetText( std::string text ) = 0;
 			virtual std::string GetText() const = 0;
-			virtual bool IsEnabled() const = 0;
-			virtual void Enable( bool enable ) = 0;
+			virtual bool GetEnabled() const = 0;
+			virtual void SetEnable( bool enable ) = 0;
 		};
 	}
 }

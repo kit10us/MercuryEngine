@@ -37,8 +37,8 @@ namespace meedr
 		public: // WinApi functions...
 			void SetText( std::string text ) override;
 			std::string GetText() const override;
-			bool IsEnabled() const override;
-			void Enable( bool enable ) override;
+			bool GetEnabled() const override;
+			void SetEnable( bool enable ) override;
 		};
 	}
 }

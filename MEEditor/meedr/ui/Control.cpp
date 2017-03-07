@@ -55,12 +55,12 @@ std::string Control::GetText() const
 	return outText;
 }
 
-bool Control::IsEnabled() const
+bool Control::GetEnabled() const
 {
 	return	IsWindowEnabled( GetHandle() ) ? true : false;
 }
 
-void Control::Enable( bool enable )
+void Control::SetEnable( bool enable )
 {
 	EnableWindow( GetHandle(), enable ? 1 : 0 );
 }

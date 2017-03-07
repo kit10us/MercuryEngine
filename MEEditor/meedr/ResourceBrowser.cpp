@@ -22,7 +22,7 @@ ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, m
 										   
 void ResourceBrowser::UpdateResourceTypes()
 {
-	Combobox* types = dynamic_cast< Combobox* >( FindControl( "Types" ) );
+	Combobox* types = GetControl< Combobox* >( "Types" );
 
 	// Clear contents...
 	types->ResetContent();
@@ -42,8 +42,8 @@ void ResourceBrowser::UpdateResourceTypes()
 
 void ResourceBrowser::UpdateResourceList()
 {
-	Combobox* types = dynamic_cast< Combobox* >( FindControl( "Types" ) );
-	Listbox* resources = dynamic_cast< Listbox* >( FindControl( "Resources" ) );
+	Combobox* types = GetControl< Combobox* >( "Types" );
+	Listbox* resources = GetControl< Listbox* >( "Resources" );
 
 	// Clear contents...
 	resources->ResetContent();

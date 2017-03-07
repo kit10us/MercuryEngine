@@ -45,7 +45,7 @@ namespace
 			int controlMessage = (int)HIWORD( wParam );
 			if ( controlId != 0 )
 			{
-				IControl* control = window->FindControl( controlId );
+				IControl* control = window->GetControl( controlId );
 				if ( control )
 				{
 					result.reset( window->OnControlCommand( { control, controlMessage } ) );
@@ -243,13 +243,13 @@ HINSTANCE Window::GetInstance() const
 	return (HINSTANCE)GetWindowLong( GetHandle(), GWL_HINSTANCE );
 }
 
-IControl* Window::FindControl( int controlId ) const
+IControl* Window::GetControl( int controlId ) const
 {
 	auto itr = m_controls.find( controlId );
 	return itr == m_controls.end() ? nullptr : itr->second.get()->GetControl();
 }
 
-IControl* Window::FindControl( std::string name ) const
+IControl* Window::GetControl( std::string name ) const
 {					
 	auto itr = m_controlsByName.find( name );
 	return itr == m_controlsByName.end() ? nullptr : itr->second.get()->GetControl();

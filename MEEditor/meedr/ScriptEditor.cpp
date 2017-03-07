@@ -30,18 +30,18 @@ using namespace ui;
 
 void ScriptEditor::LoadFile( unify::Path path )
 {
-	Richtext* text = dynamic_cast< Richtext* >( FindControl( "Text" ) );
+	Richtext* text = GetControl< Richtext* >( "Text" );
 
 	if ( path.Empty() )
 	{
 		text->SetText( "" );
-		text->Enable( false );
+		text->SetEnable( false );
 		SetText( "Script Editor" );
 		return;
 	}
 	else
 	{
-		text->Enable( true );
+		text->SetEnable( true );
 	}
 
 	SetText( std::string( "Script Editor (" ) + path.ToString() + ")" );
@@ -119,6 +119,13 @@ void ScriptEditor::LoadFile( unify::Path path )
 
 IResult* ScriptEditor::OnCreate( Params params )
 {
+	return new Result( 0 );
+}
+
+IResult* ScriptEditor::OnAfterCreate( Params params )
+{
+	Button* save = GetControl< Button* >( "save" );
+	save->SetEnable( false );
 	return new Result( 0 );
 }
 

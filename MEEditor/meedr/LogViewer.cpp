@@ -29,7 +29,7 @@ LogViewer::~LogViewer()
 
 void LogViewer::Log( std::string text )
 {
-	Richtext* logText = dynamic_cast< Richtext* >( FindControl( "LogText" ) );
+	Richtext* logText = GetControl< Richtext* >( "LogText" );
 	std::string currentText( logText->GetText() );
 	logText->SetText( currentText + text  );
 }
@@ -41,7 +41,7 @@ IResult* LogViewer::OnCreate( Params params )
 
 IResult* LogViewer::OnAfterCreate( Params params )
 {
-	Richtext* logText = dynamic_cast< Richtext* >( FindControl( "LogText" ) );
+	Richtext* logText = GetControl< Richtext* >( "LogText" );
 	logText->SetText( "" );
 	m_game->AttachLogListener( this );
 	return new Result( 0 );

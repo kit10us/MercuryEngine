@@ -54,7 +54,7 @@ SceneViewer::~SceneViewer()
 
 void SceneViewer::UpdateSceneList()
 {	
-	Combobox * sceneCombobox = dynamic_cast< Combobox* >( FindControl( "SceneCombobox" ) );
+	Combobox * sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 
 	for ( size_t i = 0; i < m_sceneManager->GetSceneCount(); i++ )
 	{
@@ -69,8 +69,8 @@ void SceneViewer::UpdateSceneList()
 
 void SceneViewer::UpdateObjectList()
 {
-	Combobox* sceneCombobox = dynamic_cast< Combobox* >( FindControl( "SceneCombobox" ) );
-	Listbox* objectListbox = dynamic_cast<Listbox*>(FindControl( "ObjectList" ));
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl<Listbox*>( "ObjectList" );
 
 	objectListbox->ResetContent();
 	
@@ -90,18 +90,18 @@ void SceneViewer::UpdateObjectList()
 
 void SceneViewer::UpdateObject()
 {
-	Combobox* sceneCombobox = dynamic_cast< Combobox* >( FindControl( "SceneCombobox" ) );
-	Listbox* objectListbox = dynamic_cast<Listbox*>(FindControl( "ObjectList" ));
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 				  		 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
 
-	Edit* name = dynamic_cast<Edit*>(FindControl( "Name" ));
-	Edit* x = dynamic_cast<Edit*>(FindControl( "X" ));
-	Edit* y = dynamic_cast<Edit*>(FindControl( "Y" ));
-	Edit* z = dynamic_cast<Edit*>(FindControl( "Z" ));
-	Listbox* components = dynamic_cast<Listbox*>(FindControl( "Components" ));
+	Edit* name = GetControl< Edit* >( "Name" );
+	Edit* x = GetControl< Edit* >( "X" );
+	Edit* y = GetControl< Edit* >( "Y" );
+	Edit* z = GetControl< Edit* >( "Z" );
+	Listbox* components = GetControl< Listbox* >( "Components" );
 	
 	// IF not object selected.
 	if ( objectIndex == -1 )
@@ -140,14 +140,14 @@ void SceneViewer::UpdateObject()
 
 void SceneViewer::OpenObjectComponent()
 {
-	Combobox* sceneCombobox = dynamic_cast< Combobox* >( FindControl( "SceneCombobox" ) );
-	Listbox* objectListbox = dynamic_cast<Listbox*>(FindControl( "ObjectList" ));
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
 	auto object = scene->GetObject( objectIndex );
-	Listbox* components = dynamic_cast<Listbox*>(FindControl( "Components" ));
+	Listbox* components = GetControl< Listbox* >( "Components" );
 	int componentIndex = components->GetCurSel();
 	auto component = object->GetComponent( componentIndex );
 	if ( unify::StringIs( component->GetType(), "LUA Script" ) )

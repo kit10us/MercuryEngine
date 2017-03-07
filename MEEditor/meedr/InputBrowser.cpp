@@ -37,9 +37,9 @@ InputBrowser::~InputBrowser()
 
 void InputBrowser::UpdateInputData()
 {
-	Combobox* inputSource = dynamic_cast< Combobox* >( FindControl( "InputSource" ) );
-	Listbox* inputNames = dynamic_cast< Listbox* >( FindControl( "InputNames" ) );
-	Static* inputData = dynamic_cast< Static* >( FindControl( "InputData" ) );
+	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
+	Listbox* inputNames = GetControl< Listbox* >( "InputNames" );
+	Static* inputData = GetControl< Static* >( "InputData" );
  
 	size_t sourceIndex = inputSource->GetCurSel();
 	size_t inputIndex = inputNames->GetCurSel();
@@ -93,7 +93,7 @@ void InputBrowser::UpdateInputData()
 
 void InputBrowser::UpdateInputManagerList()
 {
-	Combobox* inputSource = dynamic_cast< Combobox* >( FindControl( "InputSource" ) );
+	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
 
 	// Clear contents...
 	inputSource->ResetContent();
@@ -112,8 +112,8 @@ void InputBrowser::UpdateInputManagerList()
 
 void InputBrowser::UpdateInputSourceInputList()
 {
-	Combobox* inputSource = dynamic_cast< Combobox* >( FindControl( "InputSource" ) );
-	Listbox* inputNames = dynamic_cast< Listbox* >( FindControl( "InputNames" ) );
+	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
+	Listbox* inputNames = GetControl< Listbox* >( "InputNames" );
 
 	// Clear contents...
 	inputNames->ResetContent();
