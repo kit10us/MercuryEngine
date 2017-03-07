@@ -2,7 +2,7 @@ Initializing:
   name:    C:\dev\ws\Adventure\..\output\v140_Debug\Adventure\Adventure.exe
   program: C:/dev/ws/output/v140_Debug/Adventure/Adventure.exe
   path:    C:\dev\ws\Adventure\DX11
-  time:    Tue Mar  7 13:05:50 2017
+  time:    Tue Mar  7 13:37:26 2017
 
   Loading setup "setup.xml"...
   Loading extenion "../../extensions/DXILua.dll"...
@@ -43,8 +43,8 @@ GameModule OnStart
   Geometry manager: adding "pyramid" (../assets_common/media/ShapePyramid.shape).
   Geometry manager: adding "cylinder" (../assets_common/media/ShapeCylinder.shape).
 GameModule OnStart Done
-total startup time: 2.206591s
+total startup time: 1.957293s
 Shutting down:
-  time: Tue Mar  7 13:06:05 2017
+  time: Tue Mar  7 13:38:06 2017
 
-  frames: 391, total delta: 0.033248s,  average fps:30.076744
+  frames: 1093, total delta: 0.035193s,  average fps:28.414774

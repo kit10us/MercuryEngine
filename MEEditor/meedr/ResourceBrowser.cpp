@@ -109,6 +109,78 @@ void ResourceBrowser::UpdateResourceList()
 	resources->SetCurSel( 0 );
 }
 
+void ResourceBrowser::OpenResource()
+{
+	Combobox* types = GetControl< Combobox* >( "Types" );
+	Listbox* resources = GetControl< Listbox* >( "Resources" );
+
+	size_t typeIndex = types->GetCurSel();
+	size_t i = resources->GetCurSel();
+
+	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
+	unify::Path source;
+
+	if ( unify::StringIs( manager->GetName(), "texture" ) )
+	{
+		auto textureManager = reinterpret_cast<rm::ResourceManagerSimple< me::ITexture >*>(manager);
+		auto texture = textureManager->Get( i ).get();
+		if ( !texture->GetParameters()->source.Empty() )
+		{
+			source = texture->GetParameters()->source;
+		}
+	}
+	else if ( unify::StringIs( manager->GetName(), "effect" ) )
+	{
+		auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::Effect >*>(manager);
+		auto effect = effectManager->Get( i ).get();
+		if ( !effect->GetSource().empty() )
+		{
+			source = effect->GetSource();
+		}
+	}
+	else if ( unify::StringIs( manager->GetName(), "vertexshader" ) )
+	{
+		auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IVertexShader >*>(manager);
+		auto vertexShader = vertexShaderManager->Get( i ).get();
+		if ( !vertexShader->GetSource().empty() )
+		{
+			source = vertexShader->GetSource();
+		}
+	}
+	else if ( unify::StringIs( manager->GetName(), "pixelshader" ) )
+	{
+		auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IPixelShader >*>(manager);
+		auto pixelShader = pixelShaderManager->Get( i ).get();
+		if ( !pixelShader->GetSource().empty() )
+		{
+			source = pixelShader->GetSource();
+		}
+	}
+	else if ( unify::StringIs( manager->GetName(), "geometry" ) )
+	{
+		auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::Geometry >*>(manager);
+		auto geometry = geometryManager->Get( i ).get();
+		if ( !geometry->GetSource().empty() )
+		{
+			source = geometry->GetSource();
+		}
+	}
+
+	if ( source.Exists() )
+	{
+		char operation[] = "open";
+		source = m_game->GetOS()->GetRunPath() + source ;
+		HINSTANCE result = ShellExecuteA( GetHandle(), operation, source.ToString().c_str(), nullptr, nullptr, SW_SHOW );
+		switch( (int)result )
+		{
+		case ERROR_FILE_NOT_FOUND:
+		{
+			break;
+		}
+		}
+	}
+}
+
 IResult * ResourceBrowser::OnCreate( Params params )
 {
 	return new Result( 0 );
@@ -139,5 +211,16 @@ IResult * ResourceBrowser::OnControlCommand( ControlMessage message )
 		}
 		}
 	}	  
+	else if ( message.IsFor( "Resources" ) )
+	{
+		switch ( message.message )
+		{
+		case LBN_DBLCLK:
+		{
+			OpenResource();
+			break;
+		}
+		}
+	}
 	return new Result( 0 );
 }			

@@ -17,6 +17,7 @@ namespace meedr
 
 		void UpdateResourceTypes();
 		void UpdateResourceList();
+		void OpenResource();
 
 		ui::IResult * OnCreate( ui::Params params ) override;
 		ui::IResult * OnDestroy( ui::Params params ) override;
