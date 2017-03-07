@@ -297,3 +297,8 @@ Object * Scene::GetObject( size_t index ) const
 {
 	return m_objectStack->GetObject( index );
 }
+
+size_t Scene::GetObjectCount() const
+{
+	return m_objectStack->Count();
+}

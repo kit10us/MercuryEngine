@@ -7,7 +7,7 @@
 using namespace meedr;
 using namespace ui;
 
-#define USERMESSAGE_UPDATEINPUTDATE	 0
+#define USERMESSAGE_UPDATEDATA	 0
 
 InputBrowser::InputBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"InputBrowserWndClass" )
@@ -133,22 +133,17 @@ void InputBrowser::UpdateInputSourceInputList()
 	UpdateInputData();
 }
 
-Result* InputBrowser::OnCreate( Params params )
-{
-	return new Result( 0 );
-}
-
 void InputBrowser::Timer_UpdateInputData()
 {
 	while ( ! m_closing )
 	{
 		using namespace std::chrono_literals;
 		std::this_thread::sleep_for( 100ms );			
-		SendUserMessage( USERMESSAGE_UPDATEINPUTDATE, Params{} );
+		SendUserMessage( USERMESSAGE_UPDATEDATA, Params{} );
 	}
 }
 
-Result* InputBrowser::OnAfterCreate( Params params )
+IResult* InputBrowser::OnAfterCreate( Params params )
 {
 	UpdateInputManagerList();
 	UpdateInputSourceInputList();
@@ -156,13 +151,13 @@ Result* InputBrowser::OnAfterCreate( Params params )
 	return new Result( 0 );
 }
 
-Result * InputBrowser::OnDestroy( Params params )
+IResult * InputBrowser::OnDestroy( Params params )
 {	
 	GetParent()->SendUserMessage( INPUTBROWSER_CLOSED, Params{} );
 	return new Result( 0 );
 }
 
-Result* InputBrowser::OnControlCommand( ControlMessage message )
+IResult* InputBrowser::OnControlCommand( ControlMessage message )
 {
 	if ( message.IsFor( "InputSource" ) )
 	{
@@ -179,11 +174,11 @@ Result* InputBrowser::OnControlCommand( ControlMessage message )
 	return new Result( 0 );
 }
 
-Result* InputBrowser::OnUserMessage( UserMessageData message )
+IResult* InputBrowser::OnUserMessage( UserMessageData message )
 {
 	switch ( message.message )
 	{
-	case USERMESSAGE_UPDATEINPUTDATE:
+	case USERMESSAGE_UPDATEDATA:
 	{
 		UpdateInputData();
 		break;

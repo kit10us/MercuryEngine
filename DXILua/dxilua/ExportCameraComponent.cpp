@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/ExportCameraComponent.h>
+#include <dxilua/ExportObjectComponent.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/ScriptEngine.h>
@@ -136,8 +137,23 @@ int CameraComponent_Constructor( lua_State * state )
 {
 	auto game = ScriptEngine::GetGame();
 
-	IObjectComponent::ptr component( new CameraComponent( game->GetOS( ) ) );
-	return PushCameraComponent( state, component );
+	int args = lua_gettop( state );
+
+	if ( args == 0 )
+	{
+		IObjectComponent::ptr component( new CameraComponent( game->GetOS() ) );
+		return PushCameraComponent( state, component );
+	}
+	else if ( args == 1 )
+	{
+		ObjectComponentProxy * proxy = CheckObjectComponent( state, 1 );
+		return PushCameraComponent( state, proxy->component );
+	}
+	else
+	{
+		lua_pushnil( state );
+		return 1;
+	}
 }
 
 int CameraComponent_Destructor( lua_State * state )

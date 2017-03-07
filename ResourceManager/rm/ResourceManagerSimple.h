@@ -27,7 +27,6 @@ namespace rm
 
 		~ILogger() {}
 
-		virtual void Write( std::string text ) = 0;
 		virtual void WriteLine( std::string text ) = 0;
 	};
 

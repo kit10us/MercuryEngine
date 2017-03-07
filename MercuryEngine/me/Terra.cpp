@@ -7,6 +7,71 @@
 
 using namespace me;
 
+Terra::Parameters::Parameters()
+{
+}
+
+Terra::Parameters::Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > faces, const float constant, const unify::TexArea texArea, me::Effect::ptr effect )
+{
+	Set( "size", size );
+	Set( "effect", effect ); 
+	Set< unify::RowColumn< unsigned int > >( "faces", faces );
+	Set< float >( "constant", constant );
+	Set< unify::TexArea >( "texarea", texArea );
+}
+
+void Terra::Parameters::SetSize( const unify::Size< float > size )
+{
+	Set( "size", size );
+}
+void Terra::Parameters::SetFaces( const unify::RowColumn< unsigned int > faces )
+{
+	Set< unify::RowColumn< unsigned int > >( "faces", faces );
+}
+void Terra::Parameters::SetPoints( const unify::RowColumn< unsigned int > points )
+{
+	Set< unify::RowColumn< unsigned int > >( "points", points );
+}
+void Terra::Parameters::SetConstant( const float constant )
+{
+	Set( "constant", constant );
+}
+void Terra::Parameters::SetTexArea( const unify::TexArea texArea )
+{
+	Set( "texarea", texArea );
+}
+void Terra::Parameters::SetEffect( me::Effect::ptr effect )
+{
+	Set( "effect", effect ); 
+}
+void Terra::Parameters::SetHeightMap( Terra::TextureOpMap tom )
+{
+	Set( "heightmap", tom );
+}
+void Terra::Parameters::SetAlphaMap( Terra::TextureOpMap tom )
+{
+	Set( "alphamap", tom );
+}
+void Terra::Parameters::SetDiffuse( unify::ColorUnit diffuse )
+{
+	Set( "diffuseul", diffuse );
+	Set( "diffuseur", diffuse );
+	Set( "diffusedl", diffuse );
+	Set( "diffusedr", diffuse );
+}
+void Terra::Parameters::SetDiffuses( unify::ColorUnit diffuseUL, unify::ColorUnit diffuseUR, unify::ColorUnit diffuseDL, unify::ColorUnit diffuseDR )
+{
+	Set( "diffuseul", diffuseUL );
+	Set( "diffuseur", diffuseUR );
+	Set( "diffusedl", diffuseDL );
+	Set( "diffusedr", diffuseDR );
+}
+
+
+
+
+
+
 Terra::Terra( me::IRenderer * renderer )
 : Mesh( renderer )
 , m_depth{}
@@ -53,7 +118,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 
     m_size = parameters.Get< unify::Size< float > > ( "size" );
     const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexAreaFull() );
-	const float constant = parameters.Get< float >( "constant" );
+	const float constant = parameters.Get< float >( "constant", 0.0f );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 
 	unify::ColorUnit diffuseUL = parameters.Get< unify::ColorUnit >( "diffuseul", unify::ColorUnit::ColorUnitWhite() );
@@ -137,18 +202,6 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 					height_uv.u += 1.0f;
 				}
 
-				/*
-				unsigned int uSurfaceOffsetV = (unsigned int)(heightMapSize.height * height_uv.v);
-
-				size_t offset = (uSurfaceOffsetV * textlock.uStride);
-				unsigned char* pBufferColumnStart = (unsigned char*)((unsigned char*)textlock.pBits + (uSurfaceOffsetV * textlock.uStride));
-
-				unsigned int uSurfaceOffsetH = (unsigned int)(heightMapSize.width * height_uv.u);
-				unsigned char* pBuffer = pBufferColumnStart + uSurfaceOffsetH;
-				unify::Color pixel = unify::Color::ColorARGB( *pBuffer );
-				unify::ColorUnit result( heightMap.colorOp * pixel );
-				*/
-
 				unsigned int v = (unsigned int)(heightMapSize.height * height_uv.v);
 				unsigned int h = (unsigned int)(heightMapSize.width * height_uv.u);
 				unify::Color pixel = *(unify::Color*)
@@ -157,7 +210,6 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 						);
 
 				unify::ColorUnit result( heightMap.colorOp * pixel );
-
 
 				// Perform modification to vertex...
 				float sum = result.SumComponents();
@@ -170,6 +222,19 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 			}
 		}
 		heightMap.texture->UnlockRect( 0 );
+	}
+	else
+	{
+		for ( unsigned int c = 0; c < (faces.column + 1); c++ )
+		{
+			for ( unsigned int r = 0; r < (faces.row + 1); r++ )
+			{
+				unsigned int vertexIndex = r + (c * (faces.row + 1));
+				float depth = constant;
+				m_depth[vertexIndex] = depth;
+				m_minmax += depth;	
+			}
+		}
 	}
 
 	unsigned int uVert = 0;

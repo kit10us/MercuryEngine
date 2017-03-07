@@ -34,11 +34,6 @@ public:
 	{
 	}
 
-	void Write( std::string text ) override
-	{
-		m_game->Log( text );
-	}
-
 	void WriteLine( std::string text ) override
 	{
 		m_game->LogLine( text );
@@ -85,7 +80,7 @@ Game::Game( unify::Path setup )
 
 Game::~Game()
 {
-	LogLine( "Shutting down:" );
+	LogLine( "Shutting down:", 0 );
 
 	// Remove all log listeners.
 	m_logListeners.clear();
@@ -115,9 +110,8 @@ Game::~Game()
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
 	const RenderInfo & renderInfo = GetRenderInfo();
-	Log( "  time: " + std::string( std::ctime( &t ) ) );
-	LogLine( "  frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
-	LogLine( "" );
+	LogLine( "time: " + std::string( std::ctime( &t ) ) );
+	LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 }
 
 me::OSParameters Game::GetOSParameters() const
@@ -354,11 +348,11 @@ bool Game::Initialize( OSParameters osParameters )
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	LogLine( "Startup: " );
-	LogLine( "  name:    " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") );
-	LogLine( "  program: " + m_os->GetProgramPath().ToString() );
-	LogLine( "  path:    " + m_os->GetRunPath().ToString() );
-	LogLine( "  time:    " + std::string( std::ctime( &t ) ) );
+	LogLine( "Initializing: ", 0 );
+	LogLine( "name:    " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") );
+	LogLine( "program: " + m_os->GetProgramPath().ToString() );
+	LogLine( "path:    " + m_os->GetRunPath().ToString() );
+	LogLine( "time:    " + std::string( std::ctime( &t ) ) );
 
 	// Our setup...
 	if( m_setup.Exists() )
@@ -396,24 +390,35 @@ bool Game::Initialize( OSParameters osParameters )
 		xmlLoader( m_setup );
 	}
 
-	// TODO: This is clearly a hack. Fix this.
+	LogLine( "OS Startup", 0 );
+	m_os->Startup();
+	LogLine( "OS Startup Done", 0 );
+	
+	LogLine( "GameModule OnInit", 0 );
 	if( m_gameModule )
 	{
 		m_gameModule->OnInit();
-		m_gameModule->OnStart();
 	}
-
-	m_os->Startup();
+	LogLine( "GameModule OnInit Done", 0 );
 	
-	// User startup...
+	LogLine( "Startup", 0 );
 	try
 	{
 		Startup();
 	}
 	catch( unify::Exception ex )
 	{
+		LogLine( "Startup FAILED, 0" );
 		ReportError( ErrorLevel::Critical, "Game", ex.what() );
 	}
+	LogLine( "Startup Done", 0 );
+
+	LogLine( "GameModule OnStart", 0 );
+	if( m_gameModule )
+	{
+		m_gameModule->OnStart();
+	}
+	LogLine( "GameModule OnStart Done", 0 );
 
 	// Basic motivations...
 	if ( GetInputManager() )
@@ -429,7 +434,7 @@ bool Game::Initialize( OSParameters osParameters )
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
 	m_totalStartupTime = micro * 0.000001f;
 
-	LogLine( "  total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s" );
+	LogLine( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s", 0 );
 
 	return true;
 }
@@ -587,9 +592,16 @@ void Game::AddExtension( unify::Path path )
 	m_extensions.push_back( extension );
 }
 
-void Game::Log( std::string text )
+void Game::LogLine( std::string line, int indent )
 {
 	using namespace std;
+
+	std::string text = "";
+	for ( int i = 0; i < indent; i++ )
+	{
+		text += " ";
+	}
+	text += line + "\n";
 
 	if( m_logFile.Empty() ) return;
 
@@ -601,11 +613,6 @@ void Game::Log( std::string text )
 	{
 		listener->Log( text );
 	}
-}
-
-void Game::LogLine( std::string line )
-{
-	Log( line + "\n" );
 }
 
 void Game::AttachLogListener( ILogListener* listener )

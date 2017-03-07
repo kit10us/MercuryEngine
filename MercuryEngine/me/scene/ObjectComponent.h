@@ -15,6 +15,9 @@ namespace me
 		protected:
 			ObjectComponent( ObjectComponent & component );
 
+			Lookup * GetLookup();
+			const Lookup * GetLookup() const;
+
 		public:
 			ObjectComponent( IOS * os );
 			~ObjectComponent();
@@ -34,6 +37,9 @@ namespace me
 			bool SetValue( int index, std::string value ) override;
 			bool SetValue( std::string name, std::string value ) override; 
 
+		public:
+
+
 			bool Updateable() const override { return false; }
 			bool Renderable() const override { return false; }			   
 										   
@@ -46,9 +52,10 @@ namespace me
 			void OnSuspend() override {}
 			void OnResume() override {}
 
-		private:
+		protected:
 			IOS * m_os;
 			bool m_enabled;
+			Lookup m_values;
 		};
 	}
 }

@@ -5,6 +5,7 @@
 
 #include <me/UpdateParams.h>
 #include <me/GeometryCache.h>
+#include <me/Lookup.h>
 #include <unify/FrameLite.h>
 #include <string>
 #include <memory>

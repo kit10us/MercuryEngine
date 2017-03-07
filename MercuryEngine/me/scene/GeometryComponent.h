@@ -24,7 +24,7 @@ namespace me
 			std::string GetType() const override;
 			std::string GetWhat() const override;
 
-			bool Renderable() const { return true; }
+			bool Renderable() const override { return true; }
 
 			void SetGeometry( Geometry::ptr geometry );
 			Geometry::ptr GetGeometry();
@@ -39,7 +39,7 @@ namespace me
 			void OnSuspend() override;
 			void OnResume() override;
 
-			IObjectComponent * Duplicate();
+			IObjectComponent * Duplicate() override;
 
 	    protected:
 			Geometry::ptr m_geometry;

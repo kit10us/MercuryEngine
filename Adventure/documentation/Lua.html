@@ -1,0 +1,168 @@
+<html>
+<header>
+<title>Lua for Adveture</title>
+</header>
+<body>
+
+<h1>LUA for Adventure</h1>
+<p>
+This document describes the ways you can interact with Adventure using LUA.
+</p>
+
+<a name=#"toc"/>
+<h1>Table of Contents</h2>
+<ol>
+ <li><a href="#overview">Overview</a></li>
+ <li><a href="#debug">Debug</a></li>
+ <li><a href="#game">Game</a></li>
+ <li><a href="#scene">Scene</a></li>
+ <li><a href="#object">Object</a></li>
+ <li><a href="#objectcomponent">Object Component</a></li>
+</ol>
+ 
+ <a name="#overview">
+ <h1>Overview</li>
+ </a>
+ 
+ <h2>Game flow</h2>
+ <p>
+ It is necessary to have a basic understanding of the flow of the game.
+ The following is a brief overview on the game flow.
+ </p>
+ 
+ <ul>
+ <li><b>Initialize</b> - Initialize handles engine intialization, and all startup functions.</li>
+ <ol>
+ <li><i>initialize basic data</i> - At this point, commandline parameters are parsed, XML configuration files are loaded, and various other fundemental initializations takes place.</li>
+ <li><i>create displays</i> - The displays are created, and other pieces depending on them.</li>
+ <li><b>OS Startup</b> - The Operating System pieces are initalized.</li>
+ <li><b>Script GameModule OnInit</b> - If a game module was specified from the XML, it's OnInit is called.</li>
+ <li><b>Game Startup</b> - Adventure's code Startup is called.</li>
+ <li><b>Script GameModule OnStart</b> - If a game module was specified from the XML, it's OnStart is called.</li>
+ </ol>
+ </ul>
+ 
+ <h2>Instanced vs non-instanced objects</h2>
+ <p>
+ LUA supports two ways of interfacting with an object, depending of if their are instanced or not instanced. 
+ Instanced objects are objects who are created, or instanced, from a non-instanced object.
+ These are stored in variables by what ever name choosen.
+ Non-instanced objects have no instancing; there is only one of them.
+ All instanced objects come form non-instanced objects.
+ </p>
+ <p>
+ You access functions for non-instanced objects using a dot (.).
+ You access functions for instanced objects by their variables, and with a semi-colon (:).
+ </p>
+ <p>
+ To instance an object, you must use the non-instanced object's name as a function.
+ <p>
+ <b>Here is an example:</b>
+ </p>
+ <p>
+ <code>
+ &nbsp;&nbsp;&nbsp;types = Fruit.Types()</br>
+ &nbsp;&nbsp;&nbsp;first = Fruit( 0 )<br/>
+ &nbsp;&nbsp;&nbsp;print( first:Name() )<br/>
+
+ &nbsp;&nbsp;&nbsp;last = Fruit( types - 1 )<br/>
+ &nbsp;&nbsp;&nbsp;print( last:Name() )<br/>
+
+ &nbsp;&nbsp;&nbsp;banana = Fruit( "banana" )<br/>
+ &nbsp;&nbsp;&nbsp;print( banana:Name() )<br/>
+</code>
+ <p>
+ In the example above, we first access the non-instanced Fruit object's Types function, using a dot (.), to get the number of types of fruit (0 to N).
+ We then create using the non-instanced object constructor/creator function by the same name of the non-instanced object.
+ This produces an instance of Fruit called "first".
+ We access the instanced Fruit's name, using a semicolon, to get the instanced fruit's name.
+ </p>
+ 
+ <a name="#debug">
+ <h1>Debug</h1>
+ </a>
+ <p>
+ Debug is used to access the debug features within Adventure.
+ </p>
+ <h2>Non-Instanced functions</h2>
+ <ul>
+ <li><b>Debug.LogLine( message )</b> - Write to the log and add a new line.</li>
+ </ul> 
+ <h2>Instanced functions</h2>
+ <p>
+ <b>None</b>
+ </p>
+ 
+ <a name="#game">
+ <h1>Game</h1>
+ </a>
+ <p>
+ Game is used to access fundemental game features.
+ </p>
+ 
+  <a name="#scene">
+ <h1>Scene</h1>
+ </a>
+ <p>
+ Scenes are used to manage scene objects.
+ </p>
+ <h2>Non-Instanced functions</h2>
+ <ul>
+ <li><b>Scene( name )</b> - Create a new scene. Critical failure if scene not found.</li>
+ <li><b>Scene.FindScene( name )</b> - Returns an existing scene, or nil if scene was not found.</li>
+ </ul> 
+ <h2>Instanced functions</h2>
+ <ul>
+   <li><b><i>scene</i>:GetName()</b> - Get the name of the scene.</li>
+   <li><b><i>scene</i>:NewObject( name )</b> - Creates a scene object, and adds it to the scene.</li>
+   <li><b><i>scene</i>:NewCamera( name )</b> - Creates a scene objects and adds a camera component to it.</li>
+   <li><b><i>scene</i>:FindObject( name )</b> - Find an existing scene object.</li>
+   <li><b><i>scene</i>:GetObjectCount()</b> - Get the number of scene objects the scene owns.</li>
+ </ul> 
+ <a name="#object"> 
+ <h1>Object</h1>
+ </a>
+ <p>
+ Object is used to access scene objects. Scene objects are created from the Scene object, and <b>not</b> from this object.
+ </p>
+ <h2>Non-Instanced functions</h2>
+ <p>
+ <b>None</b>
+ </p>
+ <h2>Instanced functions</h2>
+ <ul>
+ <li><b><i>object</i>:AddScript( name, type, source )</b> - Add a script to the object. Scripts are actually object components, and can be acessed like other object components.</li>
+<li><b><i>object</i>:GetName()</b> - Get the name of the object.</li>
+<li><b><i>object</i>:SetEnabled( boolean )</b> - Enables or disables the object.</li>
+<li><b><i>object</i>:GetEnabled()</b> - Returns true if the object is enabled, else returns false.</li>
+ </ul> 
+
+ <a name="#objectcomponent"> 
+ <h1>Object Component</h1>
+ </a>
+ <p>
+ Object is used to access scene objects. Scene objects are created from the Scene object, and <b>not</b> from this object. Objects have a standardized way of accessing values. These values are accessed by either an index or a name.
+ </p>
+ <h2>Non-Instanced functions</h2>
+ <p>
+ <b>None</b>
+ </p>
+ <h2>Instanced functions</h2>
+ <ul>
+ <li><b><i>component</i>:AttachTo( object )</b> - Attach a component to an object.</li>
+ <li><b><i>component</i>:SetEnabled( boolean )</b> - Enables or disables the component.</li>
+ <li><b><i>component</i>:GetEnabled()</b> - Returns true if the component is enabled, else returns false.</li>
+ <li><b><i>component</i>:GetType()</b> - Get the type of the component.</li>
+ <li><b><i>component</i>:GetWhat()</b> - Get a string that better describes the instance of the component.</li>
+ <li><b><i>component</i>:GetValueCount()</b> - Get the number of values set for the component.</li>
+ <li><b><i>component</i>:ValueExists( name )</b> - Returns true if the component has a value with a specific name, else returns false.</li>
+ <li><b><i>component</i>:GetValueName( index )</b> - Get the name of a component's value by index.</li>
+ <li><b><i>component</i>:GetValue( name )</b> - Get the values of a component value, by name.</li>
+ <li><b><i>component</i>:GetValue( index )</b> - Get the values of a component value, by index.</li>
+ <li><b><i>component</i>:SetValue( name, value )</b> - Set the values of a component value, by name.</li>
+ <li><b><i>component</i>:SetValue( index, value )</b> - Set the values of a component value, by index.</li>
+  </ul>  
+ 
+ 
+</body>
+</html>

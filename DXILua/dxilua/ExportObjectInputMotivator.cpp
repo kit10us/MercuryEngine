@@ -49,7 +49,7 @@ int ObjectInputMotivator_Add( lua_State * state )
 	std::string motivation = luaL_checkstring( state, 2 );
 	InputConditionProxy * conditionProxy = CheckInputCondition( state, 3 );
 
-	motivatorProxy->motivator->Add( motivation, conditionProxy->condition );
+	motivatorProxy->motivator->GetMotivator()->AddMotivation( motivation, conditionProxy->condition );
 
 	return 0;
 }
@@ -125,9 +125,7 @@ int ObjectInputMotivator_Constructor( lua_State * state )
 	int top = lua_gettop( state );
 	int type = lua_type( state, 1 );
 
-	ITexture::ptr texture;
-
-	IObjectComponent::ptr component( new ObjectInputMotivator );
+	IObjectComponent::ptr component( new motivator::AutoOIMotivator( game->GetOS() ) );
 	return PushObjectInputMotivator( state, component );
 }
 

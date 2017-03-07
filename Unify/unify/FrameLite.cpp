@@ -152,6 +152,27 @@ V3< float > FrameLite::GetPosition() const
 	return m_p;
 }
 
+void FrameLite::SetLeft( V3< float > left )
+{
+	m_mat.SetLeft( left );
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
+}
+
+void FrameLite::SetUp( V3< float > up )
+{
+	m_mat.SetUp( up );
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
+}
+
+void FrameLite::SetForward( V3< float > forward )
+{
+	m_mat.SetForward( forward );
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
+}
+
 void FrameLite::SetRotation( const Quaternion & rotation )
 {
 	m_q = rotation;

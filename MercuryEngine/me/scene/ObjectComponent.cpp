@@ -18,6 +18,16 @@ namespace {
 	};
 }
 
+Lookup * ObjectComponent::GetLookup()
+{
+	return &m_values;
+}
+
+const Lookup * ObjectComponent::GetLookup() const
+{
+	return &m_values;
+}
+
 ObjectComponent::ObjectComponent( ObjectComponent & component )
 	: m_os( component.m_os )
 {
@@ -54,58 +64,48 @@ void ObjectComponent::SetEnabled( bool enabled )
 
 int ObjectComponent::GetValueCount() const
 {
-	return (int)g_ValuesList.size();
+	return (int)g_ValuesList.size() + m_values.Count();
 }
 
 bool ObjectComponent::ValueExists( std::string name ) const
 {
 	auto && itr = g_ValuesMap.find( name );
-	if ( itr == g_ValuesMap.end() )
-	{
-		return false;
-	}
-	else
+	if ( itr != g_ValuesMap.end() )
 	{
 		return true;
 	}
+	return m_values.Exists( name );
 }
 
 std::string ObjectComponent::GetValueName( int index ) const
 {
-	if ( index >= (int)g_ValuesList.size() )
-	{
-		return std::string();
-	}
-	else
+	if ( index < (int)g_ValuesList.size() )
 	{
 		return g_ValuesList[ index ];
 	}
+	return m_values.GetName( index - (int)g_ValuesList.size() );
 }
 
 int ObjectComponent::FindValueIndex( std::string name ) const
 {
 	auto && itr = g_ValuesMap.find( name );
-	if ( itr == g_ValuesMap.end() )
-	{
-		return -1;
-	}
-	else
+	if ( itr != g_ValuesMap.end() )
 	{
 		return itr->second;
 	}
+	return m_values.Find( name ) + g_ValuesMap.size();
 }
 
 bool ObjectComponent::SetValue( int index, std::string value )
 {
 	switch ( index )
 	{
-	default:
-		return false;
 	case 0:
 		m_enabled = unify::Cast< bool >( value );
-		break;
+		return true;
+	default:
+		return m_values.SetValue( index - g_ValuesMap.size(), value );
 	}
-	return true;
 }
 
 bool ObjectComponent::SetValue( std::string name, std::string value )
@@ -118,10 +118,10 @@ std::string ObjectComponent::GetValue( int index ) const
 {
 	switch ( index )
 	{
-	default:
-		return std::string();
 	case 0:
 		return unify::Cast< std::string >( m_enabled );
+	default:
+		return m_values.GetValue( index - g_ValuesMap.size() );
 	}
 }
  

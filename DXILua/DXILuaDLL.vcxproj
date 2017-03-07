@@ -96,6 +96,8 @@
     <ClInclude Include="dxilua\CreateState.h" />
     <ClInclude Include="dxilua\ExportInput.h" />
     <ClInclude Include="dxilua\ExportInputCondition.h" />
+    <ClInclude Include="dxilua\ExportInputMotivator.h" />
+    <ClInclude Include="dxilua\ExportObjectComponent.h" />
     <ClInclude Include="dxilua\ExportObjectInputMotivator.h" />
     <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h" />
     <ClInclude Include="dxilua\ScriptEngine.h" />
@@ -107,7 +109,6 @@
     <ClInclude Include="dxilua\ExportObject.h" />
     <ClInclude Include="dxilua\ExportResources.h" />
     <ClInclude Include="dxilua\ExportScene.h" />
-    <ClInclude Include="dxilua\ExportScenes.h" />
     <ClInclude Include="dxilua\ExportTerra.h" />
     <ClInclude Include="dxilua\ExportTerraParameters.h" />
     <ClInclude Include="dxilua\ExportTexture.h" />
@@ -139,6 +140,8 @@
     <ClCompile Include="dxilua\CreateState.cpp" />
     <ClCompile Include="dxilua\ExportInput.cpp" />
     <ClCompile Include="dxilua\ExportInputCondition.cpp" />
+    <ClCompile Include="dxilua\ExportInputMotivator.cpp" />
+    <ClCompile Include="dxilua\ExportObjectComponent.cpp" />
     <ClCompile Include="dxilua\ExportObjectInputMotivator.cpp" />
     <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp" />
     <ClCompile Include="dxilua\ScriptEngine.cpp" />
@@ -150,7 +153,6 @@
     <ClCompile Include="dxilua\ExportObject.cpp" />
     <ClCompile Include="dxilua\ExportResources.cpp" />
     <ClCompile Include="dxilua\ExportScene.cpp" />
-    <ClCompile Include="dxilua\ExportScenes.cpp" />
     <ClCompile Include="dxilua\ExportTerra.cpp" />
     <ClCompile Include="dxilua\ExportTerraParameters.cpp" />
     <ClCompile Include="dxilua\ExportTexture.cpp" />

@@ -27,9 +27,6 @@
     <ClInclude Include="dxilua\ExportResources.h">
       <Filter>dxilua</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportScenes.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\ExportScene.h">
       <Filter>dxilua</Filter>
     </ClInclude>
@@ -114,6 +111,12 @@
     <ClInclude Include="dxilua\ExportInput.h">
       <Filter>dxilua</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportObjectComponent.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportInputMotivator.h">
+      <Filter>dxilua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -129,9 +132,6 @@
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportResources.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportScenes.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportScene.cpp">
@@ -216,6 +216,12 @@
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportInput.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObjectComponent.cpp">
+      <Filter>dxilua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportInputMotivator.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
   </ItemGroup>

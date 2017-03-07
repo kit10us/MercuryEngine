@@ -10,7 +10,7 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportMatrix.h>
-#include <dxilua/ExportCameraComponent.h>
+#include <dxilua/ExportObjectComponent.h>
 #include <dxilua/ExportGeometry.h>
 #include <dxilua/ExportTerra.h>
 #include <dxilua/unify/ExportMatrix.h>
@@ -52,8 +52,6 @@ int Object_AddScript( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	//dxi::scene::ScriptComponent * component = new scene::ScriptComponent( game->GetOS() );
-
 	auto gcse = game->GetComponent( type, 0 );
 	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find " + type + " script engine!" );
 	IScriptEngine * se = dynamic_cast< IScriptEngine *>(gcse.get() );
@@ -65,7 +63,7 @@ int Object_AddScript( lua_State * state )
 	return 0;
 }
 
-int Object_Name( lua_State * state )
+int Object_GetName( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
@@ -195,6 +193,17 @@ int Object_HasTag( lua_State * state )
 	return 1;
 }
 
+int Object_GetComponentCount( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+
+	lua_pushnumber( state, objectProxy->object->ComponentCount() );
+	return 1;
+}
+
 int Object_GetComponent( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -211,17 +220,27 @@ int Object_GetComponent( lua_State * state )
 		return 1;
 	}
 
-	// Camera..
-	CameraComponent * camera = dynamic_cast< CameraComponent * >( component.get() );
-	if ( camera )
+	PushObjectComponent( state, component );  		
+	return 1;
+}
+
+int Object_GetComponentName( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	std::string name = lua_tostring( state, 2 );
+
+	IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
+
+	if ( ! component )
 	{
-		CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
-		*proxy = new CameraComponentProxy;
-		luaL_setmetatable( state, "CameraComponent" );
-		(*proxy)->camera = camera;
-		(*proxy)->component = component;
+		lua_pushstring( state, component->GetType().c_str() );
+		return 1;
 	}
 
+	PushObjectComponent( state, component );  		
 	return 1;
 }
 
@@ -242,14 +261,16 @@ int Object_SetModelMatrix( lua_State * state )
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "AddScript", Object_AddScript },
-	{ "Name", Object_Name },
+	{ "GetName", Object_GetName },
 	{ "SetEnabled", Object_SetEnabled },
 	{ "GetEnabled", Object_IsEnabled },
 	{ "SetGeometry", Object_SetGeometry },
 	{ "GetSize", Object_GetSize },
 	{ "Transform", Object_Transform },
 	{ "SetModelMatrix", Object_SetModelMatrix },
+	{ "GetComponentCount", Object_GetComponentCount },
 	{ "GetComponent", Object_GetComponent },
+	{ "GetComponentName", Object_GetComponentName },
 	{ "AddTag", Object_AddTag },
 	{ "HasTag", Object_HasTag },
 	{ nullptr, nullptr }
@@ -258,19 +279,6 @@ static const luaL_Reg ObjectFunctions[] =
 int Object_Constructor( lua_State * state )
 {
 	assert( 0 ); // NOT SUPPORTED.
-
-	/*
-	SceneProxy * sceneProxy = CheckScene( state, -1 );
-
-	std::string name = luaL_checkstring( state, -2 );
-	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*objectProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-
-	auto game = ScriptEngine::GetGame();
-
-	(*objectProxy)->object = sceneProxy->scene->GetRoot()->AddChild( name );
-	*/
 	return 1;
 }
 

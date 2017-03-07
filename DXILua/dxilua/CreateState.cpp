@@ -10,13 +10,13 @@
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportQuaternion.h>
 #include <dxilua/unify/ExportAngle.h>
+#include <dxilua/ExportObjectComponent.h>
 #include <dxilua/ExportCameraComponent.h>
 #include <dxilua/ExportDebug.h>
 #include <dxilua/ExportGame.h>
 #include <dxilua/ExportObject.h>
 #include <dxilua/ExportResources.h>
 #include <dxilua/ExportScene.h>
-#include <dxilua/ExportScenes.h>
 #include <dxilua/ExportUpdate.h>
 #include <dxilua/ExportTransform.h>
 #include <dxilua/ExportEffect.h>
@@ -26,9 +26,10 @@
 #include <dxilua/ExportTerraParameters.h>
 #include <dxilua/ExportTerra.h>
 #include <dxilua/ExportTexture.h>
+#include <dxilua/ExportInputMotivator.h>
+#include <dxilua/ExportInputCondition.h>
 #include <dxilua/ExportObjectOrbitMotivator.h>
 #include <dxilua/ExportObjectInputMotivator.h>
-#include <dxilua/ExportInputCondition.h>
 
 lua_State * dxilua::CreateState()
 {
@@ -49,9 +50,9 @@ lua_State * dxilua::CreateState()
 	// Add core functions...
 	ExportGame( state );
 	ExportResources( state );
-	ExportScenes( state );
 	RegisterScene( state );
 	RegisterObject( state );
+	RegisterObjectComponent( state );
 	RegisterCameraComponent( state );
 	ExportDebug( state );
 	ExportUpdate( state );
@@ -63,6 +64,7 @@ lua_State * dxilua::CreateState()
 	RegisterTerraParameters( state );
 	RegisterTerra( state );
 	RegisterTexture( state );
+	RegisterInputMotivator( state );
 	RegisterObjectOrbitMotivator( state );
 	RegisterObjectInputMotivator( state );
 	RegisterInputCondition( state );	

@@ -7,33 +7,22 @@
 using namespace dxilua;
 using namespace me;
 
-int Debug_Write( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	std::string log = lua_tostring( state, 1 );
-
-	OutputDebugStringA( log.c_str() );
-
-	return 0;
-}
-
-int Debug_WriteLine( lua_State * state )
+int Debug_LogLine( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
 	int type = lua_type( state, 1 );
 
+	auto game = ScriptEngine::GetGame();
 	if ( type == LUA_TNIL )
 	{
-		OutputDebugStringA( "<NIL>\n" );
+		game->LogLine( "<NIL>\n" );
 	}
 	else
 	{
 		std::string log = lua_tostring( state, 1 );			  
-		OutputDebugStringA( (log + "\n").c_str() );
+		game->LogLine( log );
 	}
 
 	return 0;
@@ -41,8 +30,7 @@ int Debug_WriteLine( lua_State * state )
 
 static const luaL_Reg debugFuncs[] =
 {
-	{ "Write", Debug_Write },
-	{ "WriteLine", Debug_WriteLine },
+	{ "LogLine", Debug_LogLine },
 	{ nullptr, nullptr }
 };
 

@@ -19,41 +19,34 @@ DXILUADLL_API SceneProxy* CheckScene( lua_State* state, int index )
 	return ud;
 }
 
-int Scene_FindObject( lua_State * state )
+int Scene_FindScene( lua_State * state )
 {
+	auto game = ScriptEngine::GetGame();
 	int args = lua_gettop( state );
 
-	SceneProxy * sceneProxy = CheckScene( state, 1 );
+	std::string name = lua_tostring( state, 1 );
 
-	std::string name = lua_tostring( state, 2 );
+	auto x = game->GetComponent( "SceneManager", 0 );
+	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
-	Object * object = sceneProxy->scene->FindObject( name );
+	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 
-	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*objectProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-	(*objectProxy)->object = object;
-
+	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
+	*sceneProxy = new SceneProxy;
+	luaL_setmetatable( state, "Scene" );
+	(*sceneProxy)->scene = sceneManager->FindScene( name );
 	return 1;
 }
 
-int Scene_SetSize( lua_State * state )
+int Scene_GetName( lua_State * state )
 {
 	int args = lua_gettop( state );
-	assert( args == 3 );
 
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
-
-	float width = (float)lua_tonumber( state, 2 );
-	float height = (float)lua_tonumber( state, 3 );
-
-	auto game = ScriptEngine::GetGame();
-
-	sceneProxy->scene->SetSize( unify::Size< float >( width, height ) );
-
-	return 0;
+	lua_pushstring( state, sceneProxy->scene->GetName().c_str() );
+	return 1;
 }
-			   
+
 int Scene_NewObject( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -99,29 +92,47 @@ int Scene_NewCamera( lua_State * state )
 	return 1;
 }
 
-static const luaL_Reg SceneFunctions[] =
+int Scene_FindObject( lua_State * state )
 {
-	{ "FindObject", Scene_FindObject },
-	{ "SetSize", Scene_SetSize },
-	{ "NewObject", Scene_NewObject },
-	{ "NewCamera", Scene_NewCamera },
-	{ nullptr, nullptr }
-};
+	int args = lua_gettop( state );
+
+	SceneProxy * sceneProxy = CheckScene( state, 1 );
+
+	std::string name = lua_tostring( state, 2 );
+
+	Object * object = sceneProxy->scene->FindObject( name );
+
+	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
+	*objectProxy = new ObjectProxy;
+	luaL_setmetatable( state, "Object" );
+	(*objectProxy)->object = object;
+
+	return 1;
+}
+
+int Scene_GetObjectCount( lua_State * state )
+{
+	int args = lua_gettop( state );
+
+	SceneProxy * sceneProxy = CheckScene( state, 1 );
+	lua_pushnumber( state, sceneProxy->scene->GetObjectCount() );
+	return 1;
+}
 
 int Scene_Constructor( lua_State * state )
 {
-	std::string name = luaL_checkstring( state, -1 );
-	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
-	*sceneProxy = new SceneProxy;
-	luaL_setmetatable( state, "Scene" );
-
 	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
+
+	std::string name = luaL_checkstring( state, -1 );
 
 	auto x = game->GetComponent( "SceneManager", 0 );
 	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 
+	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
+	*sceneProxy = new SceneProxy;
+	luaL_setmetatable( state, "Scene" );
 	(*sceneProxy)->scene = sceneManager->AddScene( name );
 	return 1;
 }
@@ -135,10 +146,30 @@ int Scene_Destructor( lua_State * state )
 			          
 void RegisterScene( lua_State * state )
 {
+	const luaL_Reg SceneMemberFunctions[] =
+	{
+		{ "FindScene", Scene_FindScene },
+		{ "GetName", Scene_GetName },
+		{ "NewObject", Scene_NewObject },
+		{ "NewCamera", Scene_NewCamera },
+		{ "FindObject", Scene_FindObject },
+		{ "GetObjectCount", Scene_GetObjectCount },
+		{ nullptr, nullptr }
+	};
+
 	lua_register( state, "Scene", Scene_Constructor );
 	luaL_newmetatable( state, "Scene" );
 	lua_pushcfunction( state, Scene_Destructor ); lua_setfield( state, -2, "__gc" );
 	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, SceneFunctions, 0 );
+	luaL_setfuncs( state, SceneMemberFunctions, 0 );
 	lua_pop( state, 1 );
+
+	const luaL_Reg SceneStaticFunctions[] =
+	{
+		{ "FindScene", Scene_FindScene },
+		{ nullptr, nullptr }
+	};
+
+	luaL_newlib( state, SceneStaticFunctions );
+	lua_setglobal( state, "Scene" );
 }

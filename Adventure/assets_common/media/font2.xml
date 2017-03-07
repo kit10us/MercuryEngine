@@ -1,0 +1,62 @@
+<header>
+<imagesize width="512" height="512"/>
+<addascii name="null" ulx="0" uly="1" drx="40" dry="64"/>
+
+<addascii name="!" ulx="0" uly="0" drx="28" dry="64"/>
+<addascii name='"' ulx="28" uly="0" drx="61" dry="64"/>
+<addascii name="#" ulx="61" uly="0" drx="102" dry="64"/>
+<addascii name="$" ulx="102" uly="0" drx="143" dry="64"/>
+<addascii name="%" ulx="143" uly="0" drx="200" dry="64"/>
+<addascii name="&" ulx="200" uly="0" drx="249" dry="64"/>
+<addascii name="'" ulx="249" uly="0" drx="271" dry="64"/>
+<addascii name="(" ulx="271" uly="0" drx="300" dry="64"/>
+<addascii name=")" ulx="300" uly="0" drx="329" dry="64"/>
+<addascii name="*" ulx="329" uly="0" drx="361" dry="64"/>
+<addascii name="+" ulx="361" uly="0" drx="408" dry="64"/>
+<addascii name="," ulx="408" uly="0" drx="433" dry="64"/>
+<addascii name="-" ulx="433" uly="0" drx="460" dry="64"/>
+<addascii name="." ulx="460" uly="0" drx="485" dry="64"/>
+<addascii name="/" ulx="485" uly="0" drx="509" dry="64"/>
+
+<addascii name="0" ulx="0" uly="65" drx="41" dry="128"/>
+<addascii name="1" ulx="42" uly="65" drx="82" dry="128"/>
+<addascii name="2" ulx="83" uly="65" drx="122" dry="128"/>
+<addascii name="3" ulx="123" uly="65" drx="163" dry="128"/>
+<addascii name="4" ulx="164" uly="65" drx="204" dry="128"/>
+<addascii name="5" ulx="205" uly="65" drx="245" dry="128"/>
+<addascii name="6" ulx="246" uly="65" drx="286" dry="128"/>
+<addascii name="7" ulx="287" uly="65" drx="327" dry="128"/>
+<addascii name="8" ulx="328" uly="65" drx="368" dry="128"/>
+<addascii name="9" ulx="369" uly="65" drx="409" dry="128"/>
+
+<addascii name="=" ulx="0" uly="129" drx="47" dry="192"/>
+<addascii name="A" ulx="186" uly="129" drx="230" dry="192"/>
+<addascii name="B" ulx="231" uly="129" drx="274" dry="192"/>
+<addascii name="C" ulx="275" uly="129" drx="317" dry="192"/>
+<addascii name="D" ulx="318" uly="129" drx="364" dry="192"/>
+<addascii name="E" ulx="365" uly="129" drx="404" dry="192"/>
+<addascii name="F" ulx="405" uly="129" drx="444" dry="192"/>
+<addascii name="G" ulx="445" uly="129" drx="491" dry="192"/>
+
+<addascii name="H" ulx="1" uly="193" drx="48" dry="256"/>
+<addascii name="I" ulx="49" uly="193" drx="73" dry="256"/>
+<addascii name="J" ulx="74" uly="193" drx="101" dry="256"/>
+<addascii name="K" ulx="102" uly="193" drx="146" dry="256"/>
+<addascii name="L" ulx="147" uly="193" drx="184" dry="256"/>
+<addascii name="M" ulx="185" uly="193" drx="240" dry="256"/>
+<addascii name="N" ulx="241" uly="193" drx="288" dry="256"/>
+<addascii name="O" ulx="289" uly="193" drx="337" dry="256"/>
+<addascii name="P" ulx="338" uly="193" drx="379" dry="256"/>
+<addascii name="Q" ulx="380" uly="193" drx="428" dry="256"/>
+<addascii name="R" ulx="429" uly="193" drx="472" dry="256"/>
+
+<addascii name="S" ulx="1" uly="257" drx="42" dry="320"/>
+<addascii name="T" ulx="43" uly="257" drx="82" dry="320"/>
+<addascii name="U" ulx="83" uly="257" drx="128" dry="320"/>
+<addascii name="V" ulx="129" uly="257" drx="173" dry="320"/>
+<addascii name="W" ulx="174" uly="257" drx="234" dry="320"/>
+<addascii name="X" ulx="235" uly="257" drx="279" dry="320"/>
+<addascii name="Y" ulx="280" uly="257" drx="321" dry="320"/>
+<addascii name="Z" ulx="322" uly="257" drx="363" dry="320"/>
+
+</header>

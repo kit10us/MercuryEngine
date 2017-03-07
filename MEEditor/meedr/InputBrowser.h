@@ -19,18 +19,13 @@ namespace meedr
 		~InputBrowser();
 
 		void UpdateInputData();
-
 		void UpdateInputManagerList();
-
 		void UpdateInputSourceInputList();
-
-		ui::Result * OnCreate( ui::Params params ) override;
-
 		void Timer_UpdateInputData();
 
-		ui::Result* OnAfterCreate( ui::Params params ) override;
-		ui::Result * OnDestroy( ui::Params params ) override;
-		ui::Result* OnControlCommand( ui::ControlMessage message ) override;
-		ui::Result* OnUserMessage( ui::UserMessageData message ) override;
+		ui::IResult* OnAfterCreate( ui::Params params ) override;
+		ui::IResult* OnDestroy( ui::Params params ) override;
+		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
+		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;
 	};
 }

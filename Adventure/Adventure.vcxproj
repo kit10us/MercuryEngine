@@ -18,6 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\Adventure.cpp" />
+    <ClCompile Include="source\CameraMotivator.cpp" />
+    <ClCompile Include="source\TerrainMap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\CameraMotivator.h" />
+    <ClInclude Include="source\TerrainMap.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{55030E14-EA34-48B1-ABE6-1190FC9FF68D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -92,6 +101,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\source\;..\MEWinMain;..\unify;..\dxi\source;..\qxml\include;..\QJson\source;..\ResourceManager;..\DAELoader\source;..\MercuryEngine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,6 +130,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\source\;..\MEWinMain;..\unify;..\dxi\source;..\qxml\include;..\QJson\source;..\ResourceManager;..\DAELoader\source;..\MercuryEngine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,9 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Adventure.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

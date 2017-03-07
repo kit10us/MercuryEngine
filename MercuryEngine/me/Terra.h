@@ -62,65 +62,18 @@ namespace me
 
 		struct Parameters : public unify::Parameters
 		{
-			Parameters()
-			{
-			}
-
-			Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > faces, const float constant, const unify::TexArea texArea, me::Effect::ptr effect )
-			{
-				Set( "size", size );
-				Set( "effect", effect ); 
-				Set< unify::RowColumn< unsigned int > >( "faces", faces );
-				Set< float >( "constant", constant );
-				Set< unify::TexArea >( "texarea", texArea );
-			}
-
-			void SetSize( const unify::Size< float > size )
-			{
-				Set( "size", size );
-			}
-			void SetFaces( const unify::RowColumn< unsigned int > faces )
-			{
-				Set< unify::RowColumn< unsigned int > >( "faces", faces );
-			}
-			void SetPoints( const unify::RowColumn< unsigned int > points )
-			{
-				Set< unify::RowColumn< unsigned int > >( "points", points );
-			}
-			void SetConstant( const float constant )
-			{
-				Set( "constant", constant );
-			}
-			void SetTexArea( const unify::TexArea texArea )
-			{
-				Set( "texarea", texArea );
-			}
-			void SetEffect( me::Effect::ptr effect )
-			{
-				Set( "effect", effect ); 
-			}
-			void SetHeightMap( Terra::TextureOpMap tom )
-			{
-				Set( "heightmap", tom );
-			}
-			void SetAlphaMap( Terra::TextureOpMap tom )
-			{
-				Set( "alphamap", tom );
-			}
-			void SetDiffuse( unify::ColorUnit diffuse )
-			{
-				Set( "diffuseul", diffuse );
-				Set( "diffuseur", diffuse );
-				Set( "diffusedl", diffuse );
-				Set( "diffusedr", diffuse );
-			}
-			void SetDiffuses( unify::ColorUnit diffuseUL, unify::ColorUnit diffuseUR, unify::ColorUnit diffuseDL, unify::ColorUnit diffuseDR )
-			{
-				Set( "diffuseul", diffuseUL );
-				Set( "diffuseur", diffuseUR );
-				Set( "diffusedl", diffuseDL );
-				Set( "diffusedr", diffuseDR );
-			}
+			Parameters();
+			Parameters( const unify::Size< float > size, const unify::RowColumn< unsigned int > faces, const float constant, const unify::TexArea texArea, me::Effect::ptr effect );
+			void SetSize( const unify::Size< float > size );
+			void SetFaces( const unify::RowColumn< unsigned int > faces );
+			void SetPoints( const unify::RowColumn< unsigned int > points );
+			void SetConstant( const float constant );
+			void SetTexArea( const unify::TexArea texArea );
+			void SetEffect( me::Effect::ptr effect );
+			void SetHeightMap( Terra::TextureOpMap tom );
+			void SetAlphaMap( Terra::TextureOpMap tom );
+			void SetDiffuse( unify::ColorUnit diffuse );
+			void SetDiffuses( unify::ColorUnit diffuseUL, unify::ColorUnit diffuseUR, unify::ColorUnit diffuseDL, unify::ColorUnit diffuseDR );
 		};
  
 		Terra( me::IRenderer * renderer );

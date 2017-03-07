@@ -1,6 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Adventure.cpp" />
+    <Filter Include="source">
+      <UniqueIdentifier>{3e4db685-5a7b-4070-b890-97701341a38b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\CameraMotivator.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\TerrainMap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Adventure.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\CameraMotivator.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TerrainMap.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

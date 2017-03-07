@@ -1,0 +1,46 @@
+Initializing: 
+  name:    C:\dev\ws\Adventure\..\output\v140_Debug\Adventure\Adventure.exe
+  program: C:/dev/ws/output/v140_Debug/Adventure/Adventure.exe
+  path:    C:\dev\ws\Adventure\DX11
+  time:    Tue Mar  7 08:58:14 2017
+
+  Loading setup "setup.xml"...
+  Loading extenion "../../extensions/DXILua.dll"...
+  Loading extenion "../../extensions/DAELoader.dll"...
+  Effect manager: adding "color_ambient" (../assets_common/effects/Color_Ambient.effect).
+  PixelShader manager: adding "color_ambient" (shaders/color_ambient.xml).
+  VertexShader manager: adding "color_ambient" (shaders/color_ambient.xml).
+  Effect manager: adding "textured_ambient" (../assets_common/effects/Textured_Ambient.effect).
+  PixelShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
+  VertexShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
+  Texture manager: adding "borgcube" (../assets_common/media/borgcube.bmp).
+  Loading extenion "../../extensions/ASELoader.dll"...
+  Loading extenion "../../extensions/DXIKeyboard.dll"...
+  Loading extenion "../../extensions/DXIMouse.dll"...
+  Loading extenion "../../extensions/DXIGamepad.dll"...
+  Loading extenion "../../extensions/MEEditor.dll"...
+OS Startup
+OS Startup Done
+GameModule OnInit
+GameModule OnInit Done
+Startup
+  Texture manager: adding "4" (../assets_common/media/4.bmp).
+  Effect manager: adding "4" (../assets_common/effects/EffectTextured.effect).
+  PixelShader manager: adding "textured3D" (shaders/textured3d.xml).
+  VertexShader manager: adding "textured3D" (shaders/textured3d.xml).
+Startup Done
+GameModule OnStart
+  Effect manager: adding "color3d" (../assets_common/effects/EffectColor.effect).
+  PixelShader manager: adding "color3d" (shaders/color3d.xml).
+  VertexShader manager: adding "color3d" (shaders/color3d.xml).
+  Effect manager: adding "borgcube" (../assets_common/effects/EffectBorgCube.effect).
+  Geometry manager: adding "cube" (../assets_common/media/ShapeCube.shape).
+  Effect manager: adding "cube" (../assets_common/effects/EffectTextured.effect).
+  Geometry manager: adding "pyramid" (../assets_common/media/ShapePyramid.shape).
+  Geometry manager: adding "cylinder" (../assets_common/media/ShapeCylinder.shape).
+GameModule OnStart Done
+total startup time: 1.524717s
+Shutting down:
+  time: Tue Mar  7 08:58:38 2017
+
+  frames: 5122, total delta: 0.004169s,  average fps:239.847229

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/motivator/ObjectInputMotivator.h>
+#include <me/motivator/AutoOIMotivator.h>
 
 void RegisterObjectInputMotivator( lua_State * state );
 

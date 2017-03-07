@@ -82,9 +82,9 @@ namespace me
 			bool DestroyObject( Object * object );
 			Object * CopyObject( Object * from, std::string name );
 			void CollectObjects( std::vector< Object * > & objects );
-			Object * FindObject( std::string name );
-
+			Object * FindObject( std::string name );	 
 			Object * GetObject( size_t index ) const;
+			size_t GetObjectCount() const;
 
 		private:
 			IGame * m_game;

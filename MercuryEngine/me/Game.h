@@ -79,8 +79,7 @@ namespace me
 		me::input::InputManager * GetInputManager();
 		const me::input::InputManager * GetInputManager() const;
 
-		void Log( std::string text ) override;
-		void LogLine( std::string line ) override;
+		void LogLine( std::string line, int indent = 2 ) override;
 		void AttachLogListener( ILogListener* listener ) override;
 		void DetachLogListener( ILogListener* litener ) override;
 

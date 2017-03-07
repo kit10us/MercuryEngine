@@ -58,6 +58,12 @@ size_t SceneManager::GetSceneCount() const
 
 Scene::ptr SceneManager::AddScene( std::string name )
 {
+	auto itr = m_scenes.find( name );
+	if ( itr != m_scenes.end() )
+	{
+		throw exception::FailedToCreate( "Attempted to add scene \"" + name + "\", but it already exists!" );
+	}
+
     Scene::ptr scene( new Scene( GetGame(), name ) );
 
 	for ( auto & component : m_components )

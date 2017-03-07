@@ -35,6 +35,9 @@ namespace unify
 		Quaternion GetRotation() const;
 		V3< float > GetPosition() const;
 
+		void SetLeft( V3< float > left);
+		void SetUp( V3< float > up );
+		void SetForward( V3< float > forward );
 		void SetRotation( const Quaternion & rotation );
 		void SetPosition( const V3< float > & position );
 

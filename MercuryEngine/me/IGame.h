@@ -99,8 +99,7 @@ namespace me
 		virtual input::InputManager * GetInputManager() = 0;
 		virtual const input::InputManager * GetInputManager() const = 0;
 
-		virtual void Log( std::string text ) = 0;
-		virtual void LogLine( std::string line ) = 0;
+		virtual void LogLine( std::string line, int indent = 2 ) = 0;
 		virtual void AttachLogListener( ILogListener* listener ) = 0;
 		virtual void DetachLogListener( ILogListener* litener ) = 0;
 
