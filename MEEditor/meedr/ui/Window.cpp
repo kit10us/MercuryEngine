@@ -142,7 +142,7 @@ Window::~Window()
 	delete m_rootContainer;
 }
 
-void Window::AddContainer( container::Container * container )
+void Window::AddContainer( create::container::Container * container )
 {
 	if ( ! m_rootContainer )
 	{
@@ -151,18 +151,21 @@ void Window::AddContainer( container::Container * container )
 	else
 	{
 		m_currentParent->AddChild( container );
+	
 	}
+	container->SetParent( m_currentParent );
 	m_currentParent = container;
+	
 }
 
-void Window::AddControl( IControl * control, std::string name )
+void Window::AddControl( create::IControl * control, std::string name )
 {	
 	assert( m_currentParent );
 	m_currentParent->AddChild( control );
 
 	int id = m_controls.size() + 1;
 
-	IControl::ptr controlPtr( control );
+	create::IControl::ptr controlPtr( control );
 	m_controls[ id ] = controlPtr;
 	m_controlsByName[ name ] = controlPtr;
 	
@@ -184,7 +187,7 @@ HWND Window::Create( std::wstring title, int x, int y, int nCmdShow )
 	assert( m_rootContainer );
 	assert( m_handle == 0 );
 
-	if ( FillWidth() == m_rootContainer->GetWantedWidth() || FillHeight() == m_rootContainer->GetWantedHeight() )
+	if ( create::FillWidth() == m_rootContainer->GetWantedWidth() || create::FillHeight() == m_rootContainer->GetWantedHeight() )
 	{
 		throw std::exception( "Root container must have a constant size!" );
 	}
@@ -243,13 +246,13 @@ HINSTANCE Window::GetInstance() const
 IControl* Window::FindControl( int controlId ) const
 {
 	auto itr = m_controls.find( controlId );
-	return itr == m_controls.end() ? nullptr : itr->second.get();
+	return itr == m_controls.end() ? nullptr : itr->second.get()->GetControl();
 }
 
 IControl* Window::FindControl( std::string name ) const
 {					
 	auto itr = m_controlsByName.find( name );
-	return itr == m_controlsByName.end() ? nullptr : itr->second.get();
+	return itr == m_controlsByName.end() ? nullptr : itr->second.get()->GetControl();
 }
 
 void Window::GetWindowRect( RECT & rect ) const

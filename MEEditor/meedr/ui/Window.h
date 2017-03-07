@@ -3,21 +3,21 @@
 
 #pragma once
 
-#include <meedr/ui/container/Container.h>
-#include <meedr/ui/container/Canvas.h>
-#include <meedr/ui/container/StackPanel.h>
+// Controls...
 #include <meedr/ui/Static.h>
 #include <meedr/ui/Button.h>
 #include <meedr/ui/Combobox.h>
 #include <meedr/ui/Listbox.h>
 #include <meedr/ui/Richtext.h>
 #include <meedr/ui/Treeview.h>
-#include <meedr/ui/Edit.h>
+#include <meedr/ui/Edit.h>			
 
-#include <meedr/ui/IWIndow.h>
+#include <meedr/ui/IWindow.h>
 #include <unify/String.h>
 #include <memory>
 #include <map>
+
+#include <meedr/Create.h>
 
 namespace meedr
 {
@@ -32,16 +32,16 @@ namespace meedr
 			IWindow * m_parent;
 			HWND m_parentHandle;
 			HWND m_handle;
-			container::Container * m_rootContainer;
-			container::Container * m_currentParent;
+			create::container::Container * m_rootContainer;
+			create::container::Container * m_currentParent;
 
 		public:
 			Window( HWND parent, std::wstring className );
 			Window( IWindow* parent, std::wstring className );
 			virtual ~Window();
 
-			void AddContainer( container::Container * container );
-			void AddControl( IControl * control, std::string name = std::string() );
+			void AddContainer( create::container::Container * container );
+			void AddControl( create::IControl * control, std::string name = std::string() );
 
 			/// <summary>
 			/// Step down from a container to it's n'th parent.
@@ -56,8 +56,8 @@ namespace meedr
 
 			// -- Built data --
 		private:
-			std::map< int, IControl::ptr > m_controls;
-			std::map< std::string, IControl::ptr, unify::CaseInsensitiveLessThanTest > m_controlsByName;
+			std::map< int, create::IControl::ptr > m_controls;
+			std::map< std::string, create::IControl::ptr, unify::CaseInsensitiveLessThanTest > m_controlsByName;
 
 		public:
 			HINSTANCE GetInstance() const override;

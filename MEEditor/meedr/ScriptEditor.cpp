@@ -9,14 +9,13 @@
 #include <ShObjIdl.h>
 #include <vector>
 
-
 using namespace meedr;
-using namespace ui;
 
 ScriptEditor::ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"ScriptEditorWndClass" )
 	, m_game{ game }
 {
+	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 640, 480 ) );
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, SizeToContentWidth(), SizeToContentHeight() ) );
 	AddControl( new Button( L"&Save", SizeToContentWidth(), DefaultHeight() ), "Save" );
@@ -25,6 +24,9 @@ ScriptEditor::ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGa
 	AddControl( new Richtext( FillWidth(), FillHeight() ), "Text" );
 	Window::Create( L"Script Editor", x, y, nCmdShow );
 }
+
+using namespace ui;
+
 
 void ScriptEditor::LoadFile( unify::Path path )
 {

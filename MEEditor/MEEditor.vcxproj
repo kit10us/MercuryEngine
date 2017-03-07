@@ -149,6 +149,17 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="MEEditor.cpp" />
+    <ClCompile Include="meedr\create\container\Create_Canvas.cpp" />
+    <ClCompile Include="meedr\create\container\Create_Container.cpp" />
+    <ClCompile Include="meedr\create\container\Create_StackPanel.cpp" />
+    <ClCompile Include="meedr\create\Create_Button.cpp" />
+    <ClCompile Include="meedr\create\Create_Combobox.cpp" />
+    <ClCompile Include="meedr\create\Create_Control.cpp" />
+    <ClCompile Include="meedr\create\Create_Edit.cpp" />
+    <ClCompile Include="meedr\create\Create_Listbox.cpp" />
+    <ClCompile Include="meedr\create\Create_Richtext.cpp" />
+    <ClCompile Include="meedr\create\Create_Static.cpp" />
+    <ClCompile Include="meedr\create\Create_Treeview.cpp" />
     <ClCompile Include="meedr\EngineMain.cpp" />
     <ClCompile Include="meedr\InputBrowser.cpp" />
     <ClCompile Include="meedr\LogViewer.cpp" />
@@ -157,9 +168,6 @@
     <ClCompile Include="meedr\ScriptEditor.cpp" />
     <ClCompile Include="meedr\ui\Button.cpp" />
     <ClCompile Include="meedr\ui\Combobox.cpp" />
-    <ClCompile Include="meedr\ui\container\Canvas.cpp" />
-    <ClCompile Include="meedr\ui\container\Container.cpp" />
-    <ClCompile Include="meedr\ui\container\StackPanel.cpp" />
     <ClCompile Include="meedr\ui\Control.cpp" />
     <ClCompile Include="meedr\ui\Edit.cpp" />
     <ClCompile Include="meedr\ui\Listbox.cpp" />
@@ -170,6 +178,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEEditor.h" />
+    <ClInclude Include="meedr\Create.h" />
+    <ClInclude Include="meedr\create\container\Create_Canvas.h" />
+    <ClInclude Include="meedr\create\container\Create_Container.h" />
+    <ClInclude Include="meedr\create\container\Create_StackPanel.h" />
+    <ClInclude Include="meedr\create\Create_Button.h" />
+    <ClInclude Include="meedr\create\Create_Combobox.h" />
+    <ClInclude Include="meedr\create\Create_Control.h" />
+    <ClInclude Include="meedr\create\Create_Edit.h" />
+    <ClInclude Include="meedr\create\Create_IControl.h" />
+    <ClInclude Include="meedr\create\Create_Listbox.h" />
+    <ClInclude Include="meedr\create\Create_Richtext.h" />
+    <ClInclude Include="meedr\create\Create_Static.h" />
+    <ClInclude Include="meedr\create\Create_Treeview.h" />
     <ClInclude Include="meedr\EngineMain.h" />
     <ClInclude Include="meedr\InputBrowser.h" />
     <ClInclude Include="meedr\LogViewer.h" />
@@ -178,9 +199,6 @@
     <ClInclude Include="meedr\ScriptEditor.h" />
     <ClInclude Include="meedr\ui\Button.h" />
     <ClInclude Include="meedr\ui\Combobox.h" />
-    <ClInclude Include="meedr\ui\container\Canvas.h" />
-    <ClInclude Include="meedr\ui\container\Container.h" />
-    <ClInclude Include="meedr\ui\container\StackPanel.h" />
     <ClInclude Include="meedr\ui\Control.h" />
     <ClInclude Include="meedr\ui\Edit.h" />
     <ClInclude Include="meedr\ui\IControl.h" />

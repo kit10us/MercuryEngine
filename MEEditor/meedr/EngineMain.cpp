@@ -23,6 +23,7 @@ EngineMain::EngineMain( me::IGame * game )
 	int x = rect.right;
 	int y = rect.top;
 
+	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 240, SizeToContentHeight() ) );
 	AddControl( new Button( L"Pause", FillWidth(), DefaultHeight() ), "Pause" );
 	AddControl( new Button( L"Resource Browser", FillWidth(), DefaultHeight() ), "ResourceBrowser" );

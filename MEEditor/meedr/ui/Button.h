@@ -13,33 +13,9 @@ namespace meedr
 		class Button : public Control
 		{
 		public:		   			
-			Button( std::wstring text, DefaultWidth, DefaultHeight );
-			Button( std::wstring text, DefaultWidth, FillHeight heightWeight );
-			Button( std::wstring text, DefaultWidth, int height );
-			
-			Button( std::wstring text, FillWidth widthWeight, DefaultHeight );
-			Button( std::wstring text, FillWidth widthWeight, FillHeight heigthWidth );
-			Button( std::wstring text, FillWidth widthWeight, int height );
-
-			Button( std::wstring text, SizeToContentWidth, DefaultHeight );
-			Button( std::wstring text, SizeToContentWidth, FillHeight heigthWidth );
-			Button( std::wstring text, SizeToContentWidth, int height );
-
-
-			Button( std::wstring text, int width, DefaultHeight );
-			Button( std::wstring text, int width, FillHeight heightWeight );
-			Button( std::wstring text, int width, int height );
+			Button( HWND parent, HWND handle, create::IControl * createControl );
 
 			virtual ~Button();
-
-			DWORD GetWantedStyle() const override;
-			std::wstring GetType() const override;
-
-			int GetDefaultWidth() const override;
-			int GetDefaultHeight() const override;
-
-		protected:
-			void ComputePass1() override;
 		};
 	}
 }

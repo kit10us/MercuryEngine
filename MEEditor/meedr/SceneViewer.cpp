@@ -3,6 +3,7 @@
 
 #include <meedr/EngineMain.h>
 #include <meedr/SceneViewer.h>
+#include <meedr/Create.h>
 
 #include <Richedit.h>
 #include <ShObjIdl.h>
@@ -19,6 +20,7 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager", 0 ).get() ) }
 	, m_closing{ false }
 {
+	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 740, 480, 0 ) );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, SizeToContentWidth(), FillHeight() ) );
 	AddControl( new Static( L"Scene:", SizeToContentWidth(), DefaultHeight() ) );
@@ -32,11 +34,11 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	StepDown();
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), SizeToContentHeight() ) );
 	AddControl( new Static( L"x", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetWantedReadonly( true ), "X" );
+	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "X" );
 	AddControl( new Static( L"y", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetWantedReadonly( true ), "y" );
+	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "y" );
 	AddControl( new Static( L"z", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetWantedReadonly( true ), "z" );
+	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "z" );
 	StepDown();
 	AddControl( new Static( L"Components: ", SizeToContentWidth(), DefaultHeight() ) );
 	AddControl( new Listbox( 260, 200 ), "Components" );

@@ -1,15 +1,16 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/ui/container/Container.h>
+#include <meedr/create/container/Create_Container.h>
 #include <cassert>
 
 using namespace meedr;
-using namespace ui;
+using namespace create;
 using namespace container;
 
 Container::Container( int width, int height )
 	: Control( width, height )
+	, m_parent{ nullptr }
 {
 }
 
@@ -17,11 +18,16 @@ Container::~Container()
 {
 }
 
-HWND Container::GetParentHandle() const
+void Container::SetParent( Container * parent )
 {
-	assert( 0 );
-	return 0;
+	m_parent = parent;
 }
+
+Container * Container::GetParent()
+{
+	return m_parent;
+}
+
 
 DWORD Container::GetWantedStyle() const
 {

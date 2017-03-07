@@ -1,11 +1,11 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/ui/container/Canvas.h>
+#include <meedr/create/container/Create_Canvas.h>
 #include <cassert>
 
 using namespace meedr;
-using namespace ui;
+using namespace create;
 using namespace container;
 
 Canvas::Canvas( int width, int height )
@@ -21,7 +21,6 @@ Canvas::~Canvas()
 void Canvas::AddChild( IControl * child )
 {
 	m_children.push_back( child );
-	child->SetParent( this );
 }
 
 void Canvas::ComputePass1()

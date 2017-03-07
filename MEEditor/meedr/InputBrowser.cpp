@@ -14,6 +14,7 @@ InputBrowser::InputBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGa
 	, m_game{ game }
 	, m_closing{ false }
 {
+	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 540, 440, 0 ) );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Type:", SizeToContentWidth(), DefaultHeight() ) );

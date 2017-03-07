@@ -1,12 +1,12 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/ui/container/StackPanel.h>
+#include <meedr/create/container/Create_StackPanel.h>
 #include <algorithm>
 #include <vector>
 
 using namespace meedr;
-using namespace ui;
+using namespace create;
 using namespace container;
 
 StackPanel::StackPanel( Stack direction, FillWidth widthWeight, FillHeight heightWeight, int padding )
@@ -92,7 +92,6 @@ Stack StackPanel::GetDirection() const
 void StackPanel::AddChild( IControl * child )
 {
 	m_children.push_back( child );
-	child->SetParent( this );
 }
 
 int StackPanel::GetPadding() const

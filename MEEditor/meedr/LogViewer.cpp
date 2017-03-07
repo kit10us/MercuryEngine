@@ -9,7 +9,6 @@
 #include <ShObjIdl.h>
 #include <vector>
 
-
 using namespace meedr;
 using namespace ui;
 
@@ -17,8 +16,9 @@ LogViewer::LogViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * g
 	: Window( parent, L"LogViewerWndClass" )
 	, m_game{ game }
 {
+	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 640, 480 ) );
-	AddControl( (new Richtext( FillWidth(), FillHeight() ))->/*SetWantedMultiline( true )->*/SetWantedReadonly( true )->SetWantedAutoHScroll( true )->SetWantedVScroll( true ), "LogText" );
+	AddControl( (new Richtext( FillWidth(), FillHeight() ))->/*SetMultiline( true )->*/SetReadonly( true )->SetAutoHScroll( true )->SetVScroll( true ), "LogText" );
 	Window::Create( L"Log Viewer", x, y, nCmdShow );
 }
 

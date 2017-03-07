@@ -13,26 +13,9 @@ namespace meedr
 		class Combobox : public Control
 		{
 		public:		   			
-			Combobox( DefaultWidth, DefaultHeight );
-			Combobox( DefaultWidth, int height );
-			
-			Combobox( FillWidth widthWeight, DefaultHeight );
-			Combobox( FillWidth widthWeight, int height );
-
-			Combobox( int width, DefaultHeight );
-			Combobox( int width, int height );
+			Combobox( HWND parent, HWND handle, create::IControl * createControl );
 
 			virtual ~Combobox();
-
-			int GetWantedHeight() const override;
-			DWORD GetWantedStyle() const override;
-			std::wstring GetType() const override;
-			
-			int GetDefaultWidth() const override;
-			int GetDefaultHeight() const override;
-
-		protected:
-			void Create( HWND parent ) override;
 
 		public: // WinApi functions...
 			void ResetContent();

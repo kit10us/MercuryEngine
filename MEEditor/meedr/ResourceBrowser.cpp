@@ -7,19 +7,19 @@
 
 using namespace meedr;
 using namespace ui;
-
-
+					 
 ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"ResourceBrowserWndClass" )
 	, m_game{ game }
 {
-	AddContainer( new ui::container::StackPanel( ui::container::Stack::Vertical, 540, 440 ) );
-	AddControl( new ui::Static( L"Type:", 50, ui::DefaultHeight() ) );
-	AddControl( new ui::Combobox( ui::FillWidth(), ui::DefaultHeight() ), "Types" );
-	AddControl( new ui::Listbox( ui::FillWidth(), ui::FillHeight() ), "Resources" );
+	using namespace create;
+	AddContainer( new container::StackPanel( container::Stack::Vertical, 540, 440 ) );
+	AddControl( new Static( L"Type:", 50, DefaultHeight() ) );
+	AddControl( new Combobox( FillWidth(), DefaultHeight() ), "Types" );
+	AddControl( new Listbox( FillWidth(), FillHeight() ), "Resources" );
 	Create( L"Resource Browser", x, y, nCmdShow );
 }
-
+										   
 void ResourceBrowser::UpdateResourceTypes()
 {
 	Combobox* types = dynamic_cast< Combobox* >( FindControl( "Types" ) );

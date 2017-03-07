@@ -3,25 +3,35 @@
 
 #pragma once
 
-#include <meedr/ui/Control.h>
+#include <meedr/create/Create_Control.h>
 
 namespace meedr
 {
 	namespace ui
 	{
+		class Window;
+	}
+
+	namespace create
+	{
 		namespace container
 		{
 			class Container : public Control
 			{
+				friend class ui::Window;
 			protected:
 				Container( int width, int height );
 
+				void SetParent( Container * parent );
+
+				Container * m_parent;
 			public:
 				virtual ~Container();
 
 				virtual void AddChild( IControl * control ) = 0;
+				
+				Container * GetParent();
 
-				HWND GetParentHandle() const override;
 				DWORD GetWantedStyle() const override;
 				std::wstring GetType() const override;
 			};
