@@ -37,8 +37,7 @@ namespace me
 			bool SetValue( int index, std::string value ) override;
 			bool SetValue( std::string name, std::string value ) override; 
 
-		public:
-
+		public:	   
 
 			bool Updateable() const override { return false; }
 			bool Renderable() const override { return false; }			   

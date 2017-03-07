@@ -51,10 +51,58 @@ void ResourceBrowser::UpdateResourceList()
 	size_t typeIndex = types->GetCurSel();
 
 	// Fill in resource types...
-	for ( size_t i = 0; i < m_game->GetResourceHub().GetManagerRaw( typeIndex )->Count(); i++ )
+	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
+	for ( size_t i = 0; i < manager->Count(); i++ )
 	{			  
-		std::string name = m_game->GetResourceHub().GetManagerRaw( typeIndex )->GetResourceName( i );
-		resources->AddString( name.c_str() );
+		std::string text = manager->GetResourceName( i );
+
+		if ( unify::StringIs( manager->GetName(), "texture" ) )
+		{
+			auto textureManager = reinterpret_cast<rm::ResourceManagerSimple< me::ITexture >*>(manager);
+			auto texture = textureManager->Get( i ).get();
+			if ( !texture->GetParameters()->source.Empty() )
+			{
+				text += "  (" + texture->GetParameters()->source.ToString() + ")";
+			}
+		}	 
+		else if ( unify::StringIs( manager->GetName(), "effect" ) )
+		{
+			auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::Effect >*>(manager);
+			auto effect = effectManager->Get( i ).get();
+			if ( !effect->GetSource().empty() )
+			{
+				text += "  (" + effect->GetSource() + ")";
+			}
+		}
+		else if ( unify::StringIs( manager->GetName(), "vertexshader" ) )
+		{
+			auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IVertexShader >*>(manager);
+			auto vertexShader = vertexShaderManager->Get( i ).get();
+			if ( !vertexShader->GetSource().empty() )
+			{
+				text += "  (" + vertexShader->GetSource() + ")";
+			}
+		}
+		else if ( unify::StringIs( manager->GetName(), "pixelshader" ) )
+		{
+			auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IPixelShader >*>(manager);
+			auto pixelShader = pixelShaderManager->Get( i ).get();
+			if ( !pixelShader->GetSource().empty() )
+			{
+				text += "  (" + pixelShader->GetSource() + ")";
+			}
+		}
+		else if ( unify::StringIs( manager->GetName(), "geometry" ) )
+		{
+			auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::Geometry >*>(manager);
+			auto geometry = geometryManager->Get( i ).get();
+			if ( !geometry->GetSource().empty() )
+			{
+				text += "  (" + geometry->GetSource() + ")";
+			}
+		}
+
+		resources->AddString( text.c_str() );
 	}
 
 	// Select first type:

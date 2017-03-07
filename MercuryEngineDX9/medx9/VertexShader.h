@@ -38,6 +38,8 @@ namespace medx9
 
 		void Use() override;
 
+		std::string GetSource() const override;
+
 		std::string GetError();
 
 	protected:	   

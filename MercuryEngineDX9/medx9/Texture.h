@@ -85,6 +85,8 @@ namespace medx9
 		me::SpriteDictionary & GetSpriteDictionary() override;
 		const me::SpriteDictionary & GetSpriteDictionary() const override;
 
+		const me::TextureParameters * GetParameters() const override;
+
 	protected:
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();

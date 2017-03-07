@@ -40,6 +40,8 @@ namespace me
 
 		unify::BBox< float > & GetBBox();
 		const unify::BBox< float > & GetBBox() const;
+
+		virtual std::string GetSource() const = 0;
 	protected:
 		unify::BBox< float > m_BBox;
 	};

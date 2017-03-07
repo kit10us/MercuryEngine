@@ -33,6 +33,7 @@ namespace me
 		typedef std::shared_ptr< Effect > ptr;
 
 		Effect();
+		Effect( std::string source );
 		~Effect();
 
 		Effect & operator = ( const Effect & effect );
@@ -58,7 +59,10 @@ namespace me
 		ITexture::ptr GetTexture( unsigned char stage );
 		bool UsesTransparency();
 
+		std::string GetSource() const;
+
 	protected:
+		std::string m_source;
 		CullingMode m_culling;
 		IPixelShader::ptr m_pixelShader;
 		IVertexShader::ptr m_vertexShader;

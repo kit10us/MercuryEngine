@@ -76,8 +76,15 @@ namespace rm
 	
 		void AddResource( std::string name, unify::Path path ) override;
 
-		// Find an existing resource.
+		/// <summary>
+		/// Find an existing resource by name.
+		/// </summary>
 		ResourcePtr Find( std::string name );
+
+		/// <summary>
+		/// Get an existing resource by index.
+		/// </summary>
+		ResourcePtr Get( size_t index );
 
 		size_t Count() const override;
 

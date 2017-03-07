@@ -207,6 +207,11 @@ void VertexShader::Use()
 	m_bufferAccessed = 0;
 }
 
+std::string VertexShader::GetSource() const
+{
+	return m_filePath.ToString();
+}
+
 std::string VertexShader::GetError()
 {
 	return m_errorMessage;

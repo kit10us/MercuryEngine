@@ -224,3 +224,8 @@ const SpriteDictionary & Texture::GetSpriteDictionary() const
 {
 	return m_spriteDictionary;
 }
+
+const me::TextureParameters * Texture::GetParameters() const
+{
+	return &m_parameters;
+}

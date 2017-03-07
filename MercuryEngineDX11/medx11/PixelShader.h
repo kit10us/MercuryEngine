@@ -30,6 +30,8 @@ namespace medx11
 
 		void Use() override;
 
+		std::string GetSource() const override;
+
 		void SetTrans( bool bTrans ) override;
 
 		bool IsTrans() override;

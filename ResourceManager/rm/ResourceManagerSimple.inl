@@ -42,6 +42,16 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Find( std::string name )
 }
 
 template< class T >
+std::shared_ptr< T > ResourceManagerSimple< T >::Get( size_t index )
+{
+	if ( index >= m_resourceList.size() )
+	{
+		return ResourcePtr();
+	}
+	return m_resourceList[ index ];
+}
+
+template< class T >
 bool ResourceManagerSimple< T >::Exists( std::string name ) const
 {
 	std::map< std::string, ResourcePtr >::const_iterator itr = m_resourceMap.find( name );

@@ -7,9 +7,16 @@
 using namespace me;
 
 Mesh::Mesh( const me::IRenderer * renderer )
-	: m_primitiveList( renderer )
+	: m_primitiveList{ renderer }
 {
 }
+
+Mesh::Mesh( unify::Path source, IRenderer * renderer )
+	: m_source{ source }
+	, m_primitiveList{ renderer }
+{
+}
+
 
 Mesh::~Mesh()
 {
@@ -60,6 +67,11 @@ void Mesh::Render( RenderParams params, GeometryInstanceData * instanceData, Mat
 	*/
 	
 	m_primitiveList.Render( params, matrixFeed );
+}
+
+std::string Mesh::GetSource() const
+{
+	return m_source.ToString();
 }
 
 PrimitiveList & Mesh::GetPrimitiveList()

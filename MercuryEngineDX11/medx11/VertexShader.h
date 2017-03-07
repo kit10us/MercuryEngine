@@ -39,6 +39,8 @@ namespace medx11
 
 		void Use() override;
 
+		std::string GetSource() const override;
+
 		std::string GetError();
 
 	protected:	   

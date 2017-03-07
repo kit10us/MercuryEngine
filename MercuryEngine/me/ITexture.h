@@ -66,5 +66,7 @@ namespace me
 		virtual SpriteDictionary & GetSpriteDictionary() = 0;
 		
 		virtual const SpriteDictionary & GetSpriteDictionary() const = 0;
+
+		virtual const me::TextureParameters * GetParameters() const = 0;
 	};
 }

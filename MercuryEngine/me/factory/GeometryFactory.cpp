@@ -28,7 +28,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 		return 0;
 	}
 
-	Mesh * mesh = new Mesh( m_game->GetOS()->GetRenderer(0) );
+	Mesh * mesh = new Mesh( source, m_game->GetOS()->GetRenderer(0) );
 
 	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
 	if( version == "1.2" )

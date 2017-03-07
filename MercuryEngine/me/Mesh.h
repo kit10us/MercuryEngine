@@ -23,6 +23,7 @@ namespace me
 	{
 	public:
 		Mesh( const IRenderer * renderer );
+		Mesh( unify::Path source, IRenderer * renderer );
 		~Mesh();
 
 		GeometryInstanceData * CreateInstanceData();
@@ -33,10 +34,13 @@ namespace me
 
 		void Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
 
+		std::string GetSource() const override;
+
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();
 
 	private:
+		unify::Path m_source;
 		PrimitiveList m_primitiveList;
 	};
 }

@@ -56,5 +56,7 @@ namespace me
 		virtual void UnlockConstants( size_t buffer, unify::DataLock & lock ) = 0;
 
 		virtual void Use() = 0;
+
+		virtual std::string GetSource() const = 0;
 	};
 }

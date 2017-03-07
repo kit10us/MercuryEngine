@@ -189,6 +189,11 @@ void PixelShader::Use()
 	}
 }
 
+std::string PixelShader::GetSource() const
+{
+	return m_filePath.ToString();
+}
+
 void PixelShader::SetTrans( bool bTrans )
 {
 	m_isTrans = bTrans;

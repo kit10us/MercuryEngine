@@ -24,7 +24,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 	qxml::Document doc( source );
 	auto & effectNode = *doc.GetRoot()->FindFirstElement( "effect" );
 
-	Effect * effect = new Effect;
+	Effect * effect = new Effect( source.ToString() );
 
 	for( auto&& child : effectNode.Children() )
 	{

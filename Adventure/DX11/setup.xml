@@ -6,6 +6,7 @@
 <assets>shaders/</assets>
 <assets>../assets_common/</assets>
 <assets>../assets_common/media/</assets>
+<assets>../assets_common/images/</assets>
 <assets>../assets_common/scripts/</assets>
 <assets>../assets_common/effects/</assets>
 <display fullscreen="false" x="10" y="10" width="800" height="600"/>

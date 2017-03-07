@@ -60,5 +60,6 @@ namespace me
 		virtual const void * GetBytecode() const = 0;
 		virtual size_t GetBytecodeLength() const = 0;
 		virtual void Use() = 0;
+		virtual std::string GetSource() const = 0;
 	};
 }

@@ -2,7 +2,7 @@ Initializing:
   name:    C:\dev\ws\Adventure\..\output\v140_Debug\Adventure\Adventure.exe
   program: C:/dev/ws/output/v140_Debug/Adventure/Adventure.exe
   path:    C:\dev\ws\Adventure\DX11
-  time:    Tue Mar  7 10:58:02 2017
+  time:    Tue Mar  7 13:05:50 2017
 
   Loading setup "setup.xml"...
   Loading extenion "../../extensions/DXILua.dll"...
@@ -24,8 +24,12 @@ OS Startup Done
 GameModule OnInit
 GameModule OnInit Done
 Startup
-  Texture manager: adding "4" (../assets_common/media/4.bmp).
-  Effect manager: adding "4" (../assets_common/effects/EffectTextured.effect).
+  Texture manager: adding "grass" (../assets_common/images/grass01.jpg).
+  Effect manager: adding "font2" (../assets_common/media/font2.effect).
+  PixelShader manager: adding "textured2D" (shaders/textured2d.xml).
+  VertexShader manager: adding "textured2D" (shaders/textured2d.xml).
+  Texture manager: adding "font2" (../assets_common/media/font2.png).
+  Effect manager: adding "grass" (../assets_common/effects/EffectTextured.effect).
   PixelShader manager: adding "textured3D" (shaders/textured3d.xml).
   VertexShader manager: adding "textured3D" (shaders/textured3d.xml).
 Startup Done
@@ -39,8 +43,8 @@ GameModule OnStart
   Geometry manager: adding "pyramid" (../assets_common/media/ShapePyramid.shape).
   Geometry manager: adding "cylinder" (../assets_common/media/ShapeCylinder.shape).
 GameModule OnStart Done
-total startup time: 1.411169s
+total startup time: 2.206591s
 Shutting down:
-  time: Tue Mar  7 10:58:23 2017
+  time: Tue Mar  7 13:06:05 2017
 
-  frames: 4530, total delta: 0.004170s,  average fps:239.791443
+  frames: 391, total delta: 0.033248s,  average fps:30.076744

@@ -62,9 +62,11 @@ int InputCondition_Constructor( lua_State * state )
 		std::string name = luaL_checkstring( state, 4 );
 		std::string axisString = luaL_checkstring( state, 5 );
 		input::StickAxis axis = input::StickAxisFromString( axisString );
-		float threshold = (float)luaL_checknumber( state, 6 );
-		float cap = (float)luaL_checknumber( state, 7 );
-		inputCondition = me::input::IInputCondition::ptr( new me::input::StickCondition( source->input, subSource, name, axis, threshold, cap ) );
+		float cap_low = (float)luaL_checknumber( state, 6 );
+		float threshold_low = (float)luaL_checknumber( state, 7 );
+		float threshold_high = (float)luaL_checknumber( state, 8 );
+		float cap_high = (float)luaL_checknumber( state, 9 );
+		inputCondition = me::input::IInputCondition::ptr( new me::input::StickCondition( source->input, subSource, name, axis, cap_low, threshold_low, threshold_high, cap_high ) );
 	}
 	else if ( unify::StringIs( type, "trigger" ) )
 	{

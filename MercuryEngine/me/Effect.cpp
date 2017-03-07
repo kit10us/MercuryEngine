@@ -6,7 +6,13 @@
 using namespace me;
 
 Effect::Effect()
-	: m_culling( CullNone )
+	: m_culling{ CullNone }
+{
+}
+
+Effect::Effect( std::string source )
+	: m_culling{ CullNone }
+	, m_source{ source }
 {
 }
 
@@ -153,4 +159,9 @@ void Effect::AddFrame( size_t frameIndex, float influence )
 bool Effect::UsesTransparency()
 {
 	return GetPixelShader() ? GetPixelShader()->IsTrans() : false;
+}
+
+std::string Effect::GetSource() const
+{
+	return m_source;
 }
