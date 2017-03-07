@@ -56,3 +56,8 @@ intermediate/
 /MercuryTests/test_dataDX11/log.txt
 /MercuryTests/test_dataDX9/log.txt
 /renderers
+/Adventure/DX11/log.txt
+/MEEditor/Debug
+/MercuryTests/02tests_feature/02Test09 - Motivator/Debug
+/MercuryTests/07tests_Physics/07Test02 - PhysXPlayer/Debug
+/BlockWorlds/run_dir/log.txt
