@@ -10,8 +10,8 @@ void DeleterKeyboard( dxikeyboard::Keyboard * keyboard )
 	delete keyboard;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
-__declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
+__declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
 {
 	game->GetInputManager()->AddInputSource( me::input::IInputSource::ptr( new dxikeyboard::Keyboard( game ), DeleterKeyboard ) );
 

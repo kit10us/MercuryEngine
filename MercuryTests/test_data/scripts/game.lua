@@ -1,4 +1,4 @@
-function OnStart()
+function OnBeforeStartup()
 	local scene1 = Scene( "scene1" )
 	
 	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
@@ -13,9 +13,7 @@ function OnStart()
 	
 	-- Add camera orbit motivator...
 	local cameraMotivator = ObjectOrbitMotivator( V3.New( 0, 0, 0 ), V3.New( 0, 1, 0 ), Angle.Degrees( 45 ) )
-	cameraMotivator:AttachTo( camera );
-	
-	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
+	cameraMotivator:AttachTo( camera );	
 
 	-- Add geometry...
 	

@@ -1,5 +1,11 @@
 <xml>
 <include>setup_base.xml</include>
-<extension>../../extensions/DAELoader.dll</extension>
-<extension>../../extensions/ASELoader.dll</extension>
+<extension source="../../extensions/DAELoader.dll">
+	<color name="color" source="EffectColor.effect"/>
+	<texture name="texture" source="EffectTextured.effect"/>
+</extension>
+<extension source="../../extensions/ASELoader.dll">
+	<textureps name="textured3d" source="texture3d.xml"/>
+	<texturevs name="textured3d" source="texture3d.xml"/>
+</extension>
 </xml>

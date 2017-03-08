@@ -21,12 +21,12 @@ using namespace dxilua;
 static dxilua::ScriptEngine * g_luaSE;
 static me::Game * g_game;
 
-int PushPxShape( lua_State * state, dxiphysx::objectcomponent::ColliderBase::ptr component )
+int PushPxShape( lua_State * state, mephysx::objectcomponent::ColliderBase::ptr component )
 {
 	PxShapeProxy ** newProxy = (PxShapeProxy**)(lua_newuserdata( state, sizeof( PxShapeProxy* ) ));
 	*newProxy = new PxShapeProxy();
 	(*newProxy)->component = component;
-	(*newProxy)->shape = dynamic_cast< dxiphysx::objectcomponent::ColliderBase * >( component.get() )->GetShape();
+	(*newProxy)->shape = dynamic_cast< mephysx::objectcomponent::ColliderBase * >( component.get() )->GetShape();
 	luaL_setmetatable( state, "PxShape" );
 	return 1;
 }

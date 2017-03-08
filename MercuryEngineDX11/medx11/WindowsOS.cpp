@@ -19,7 +19,7 @@ using namespace medx11;
 #undef GetCommandLine
 #endif
 
-WindowsOS::WindowsOS( IGame * game )
+WindowsOS::WindowsOS( IGame * game, const qxml::Element * element )
 	: m_game( game )
 	, m_hasFocus{}
 	, m_keyboard{}
@@ -76,6 +76,33 @@ WindowsOS::WindowsOS( IGame * game )
 			l = r + 1; // One past the double quote.
 			inQuote = !inQuote;
 		}
+	}
+
+	// Load display setup...
+	for( auto && node : element->Children( "display" ) )
+	{
+		bool fullscreen = node.GetAttributeElse< bool >( "fullscreen", false );
+		int width = node.GetAttribute< int >( "width" );
+		int height = node.GetAttribute< int >( "height" );
+		int x = node.GetAttributeElse< int >( "x", 0 );
+		int y = node.GetAttributeElse< int >( "y", 0 );
+		float nearZ = node.GetAttributeElse< float >( "nearz", 0.0f );
+		float farZ = node.GetAttributeElse< float >( "farz", 1000.0f );
+
+		Display display {};
+		if ( fullscreen )
+		{
+			display = Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
+		}
+		else
+		{
+			display = Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
+		}
+
+		display.SetNearZ( nearZ );
+		display.SetFarZ( farZ );
+
+		AddDisplay( display );
 	}
 }
 

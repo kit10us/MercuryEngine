@@ -54,9 +54,9 @@ int Object_AddScript( lua_State * state )
 
 	auto gcse = game->GetComponent( type, 0 );
 	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find " + type + " script engine!" );
-	IScriptEngine * se = dynamic_cast< IScriptEngine *>(gcse.get() );
+	ScriptEngine * se = dynamic_cast< ScriptEngine *>(gcse.get() );
 
-	auto component = se->LoadModule( source );
+	auto component = se->LoadObjectScript( source );
 
 	objectProxy->object->AddComponent( IObjectComponent::ptr( component ) );
 

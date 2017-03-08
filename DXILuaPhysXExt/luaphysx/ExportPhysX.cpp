@@ -10,13 +10,13 @@
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/ExportTerra.h>
 
-#include <dxiphysx/GameComponent.h>
-#include <dxiphysx/SceneComponent.h>
-#include <dxiphysx/objectcomponent/BoxCollider.h>
-#include <dxiphysx/objectcomponent/SphereCollider.h>
-#include <dxiphysx/objectcomponent/CapsuleCollider.h>
-#include <dxiphysx/objectcomponent/RigidBody.h>
-#include <dxiphysx/objectcomponent/HeightFieldCollider.h>
+#include <mephysx/GameComponent.h>
+#include <mephysx/SceneComponent.h>
+#include <mephysx/objectcomponent/BoxCollider.h>
+#include <mephysx/objectcomponent/SphereCollider.h>
+#include <mephysx/objectcomponent/CapsuleCollider.h>
+#include <mephysx/objectcomponent/RigidBody.h>
+#include <mephysx/objectcomponent/HeightFieldCollider.h>
 
 #include <luaphysx/ExportPhysX.h>
 #include <luaphysx/ExportPxSceneComponent.h>
@@ -47,8 +47,8 @@ int PhysX_CreateBoxCollider( lua_State * state )
 
 	unify::V3< float > halfExt( CheckV3( state, 1 ) );
 
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::BoxCollider( g_game->GetOS(), physics, halfExt ) );
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	me::scene::IObjectComponent::ptr collider( new mephysx::objectcomponent::BoxCollider( g_game->GetOS(), physics, halfExt ) );
 
 	PushPxShape( state, collider );
 
@@ -62,8 +62,8 @@ int PhysX_CreateSphereCollider( lua_State * state )
 
 	float halfExt( (float)luaL_checknumber( state, 1 ) );
 
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::SphereCollider( g_game->GetOS(), physics, halfExt ) );
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	me::scene::IObjectComponent::ptr collider( new mephysx::objectcomponent::SphereCollider( g_game->GetOS(), physics, halfExt ) );
 
 	PushPxShape( state, collider );
 
@@ -75,12 +75,12 @@ int PhysX_CreateCapsuleCollider( lua_State * state )
 	int argc = lua_gettop( state );
 	assert( argc == 2 );
 
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
 	
 	float radius( (float)luaL_checknumber( state, 1 ) );
 	float halfHeight( (float)luaL_checknumber( state, 2 ) );
 
-	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::CapsuleCollider( g_game->GetOS(), physics, radius, halfHeight ) );
+	me::scene::IObjectComponent::ptr collider( new mephysx::objectcomponent::CapsuleCollider( g_game->GetOS(), physics, radius, halfHeight ) );
 
 	PushPxShape( state, collider );
 
@@ -92,13 +92,13 @@ int PhysX_CreateHeightFieldCollider( lua_State * state )
 	int argc = lua_gettop( state );
 	assert( argc == 3 );
 
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
 	
 	TerraProxy * terra = CheckTerra( state, 1 );
 
 	unify::RowColumn< unsigned int > rcCount( (unsigned int)luaL_checknumber( state, 3 ), (unsigned int)luaL_checknumber( state, 2 ) );
 
-	me::scene::IObjectComponent::ptr collider( new dxiphysx::objectcomponent::HeightFieldCollider( g_game->GetOS(), physics, terra->terra, rcCount ) );
+	me::scene::IObjectComponent::ptr collider( new mephysx::objectcomponent::HeightFieldCollider( g_game->GetOS(), physics, terra->terra, rcCount ) );
 
 	PushPxShape( state, collider );
 
@@ -110,8 +110,8 @@ int PhysX_CreateRigidBody( lua_State * state )
 	int argc = lua_gettop( state );
 	assert( argc == 0 );
 
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	me::scene::IObjectComponent::ptr body( new dxiphysx::objectcomponent::RigidBody( g_game->GetOS(), physics ) );
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	me::scene::IObjectComponent::ptr body( new mephysx::objectcomponent::RigidBody( g_game->GetOS(), physics ) );
 
 	PushPxRigidBody( state, body );
 
@@ -123,8 +123,8 @@ int PhysX_CreateRigidStatic( lua_State * state )
 	int argc = lua_gettop( state );
 	assert( argc == 0 );
 
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	me::scene::IObjectComponent::ptr body( new dxiphysx::objectcomponent::RigidStatic( g_game->GetOS(), physics ) );
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	me::scene::IObjectComponent::ptr body( new mephysx::objectcomponent::RigidStatic( g_game->GetOS(), physics ) );
 
 	PushPxRigidStatic( state, body );
 

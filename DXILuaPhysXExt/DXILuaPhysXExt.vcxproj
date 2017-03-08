@@ -62,7 +62,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DXILUASHAPEEXT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../packages/lua-5.3.3_pre/include;./;../DXILua;../../packages/PhysXSDK/PhysXSDK/Include;../DXILuaLib;../DXIPhysX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../packages/lua-5.3.3_pre/include;./;../DXILua;../../packages/PhysXSDK/PhysXSDK/Include;../DXILuaLib;../MEPhysX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

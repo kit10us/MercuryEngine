@@ -24,7 +24,7 @@ namespace medx9
 	class WindowsOS : public me::IOS
 	{
 	public:
-		WindowsOS( me::IGame * game );
+		WindowsOS( me::IGame * game, const qxml::Element * element );
 
 		virtual ~WindowsOS();
 

@@ -1,5 +1,4 @@
 <xml>
 <include>setup_base.xml</include>
-<extension>../../extensions/DXILua.dll</extension>
-<gamemodule type="LUA" source="game.lua"/>
+<extension source="../../extensions/DXILua.dll"/>
 </xml>

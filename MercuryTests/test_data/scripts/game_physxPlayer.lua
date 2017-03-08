@@ -1,4 +1,4 @@
-function OnStart()
+function OnBeforeStartup()
 
 	color3d = Effect( "color3d", "EffectColorInstanced3d.effect" )
 	borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
@@ -21,9 +21,7 @@ function OnStart()
 	cameraComponent:AttachTo( camera )
 	cameraComponent:SetProjection( proj )
 	camera:Transform():SetPosition( V3.New( 0, 25, -47 ) )
-	camera:Transform():LookAt( V3.Zero() )
-
-	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
+	camera:Transform():LookAt( V3.NewZero() )
 
 	local i = 1
 

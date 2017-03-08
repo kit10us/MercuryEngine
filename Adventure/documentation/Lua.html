@@ -2,7 +2,7 @@
 <header>
 <title>Lua for Adveture</title>
 <style type="text/css">
-h1 {
+h1, h3 {
 	display: inline;
 }
 </style>
@@ -45,6 +45,37 @@ This document describes the ways you can interact with Adventure using LUA.
  It is necessary to have a basic understanding of the flow of the game.
  The following is a brief overview on the game flow.
  </p>
+ 
+ <p>
+ There are three kinds of scripts you can create. 
+ The simpliest is a standard LUA script; there is nothing notibly different between this and any other LUA script.
+ You can additionally create two kinds of Component scripts.
+ The first is the GameComponent script.
+ Every game can have exactly one of these.
+ By default, it's called "game.lua", however, this can be overrided when loading the LUA extension (See the XML configuration for the game) with the "startup" node.
+ You can also create ObjectComponent scripts.
+ These scripts are attached to game objects, and can interact with them and their in-game events.
+ </p>
+ 
+ <h3>Game Script functions:</h3><br/>
+ <code>
+ &nbsp;&nbsp;&nbsp;function OnInit()<br/>
+ &nbsp;&nbsp;&nbsp;function OnBeforeStartup() -- Called immediately before Startup.<br/>
+ &nbsp;&nbsp;&nbsp;function OnAfterStartup() -- Called immediately after startup.<br/>
+ &nbsp;&nbsp;&nbsp;function OnUpdate() -- Called when updating.<br/>
+ &nbsp;&nbsp;&nbsp;function OnRender() -- Called when rendering.<br/>
+ </code>
+ <br/>
+
+ <h3>Object Script functions:</h3><br/>
+ <code>
+ &nbsp;&nbsp;&nbsp;function OnInit()<br/>
+ &nbsp;&nbsp;&nbsp;function OnStart() -- Called on starting.<br/>
+ &nbsp;&nbsp;&nbsp;function OnUpdate() -- Called when updating.<br/>
+ &nbsp;&nbsp;&nbsp;function OnSuspend() -- Called when suspending.<br/>
+ &nbsp;&nbsp;&nbsp;function OnResume() -- Called when resuming.<br/>
+ </code>
+ <br/> 
  
  <ul>
  <li><b>Initialize</b> - Initialize handles engine intialization, and all startup functions.</li>

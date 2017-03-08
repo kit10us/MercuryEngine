@@ -22,14 +22,39 @@ namespace me
 
 		virtual ~IGameComponent() {}
 
+		/// <summary>
+		/// Returns the name of the game.
+		/// </summary>
 		virtual std::string GetName() const = 0;
 
+		/// <summary>
+		/// 
+		/// </summary>
 		virtual void OnAttach( IGame * game ) = 0;
 
+		/// <summary>
+		/// Called before our game's Startup.
+		/// </summary>
+		virtual void OnBeforeStartup( IGame * game ) = 0;
+		
+		/// <summary>
+		///  Called after our game's Startup.
+		/// </summary>
+		virtual void OnAfterStartup( IGame * game ) = 0;
+
+		/// <summary>
+		/// 
+		/// </summary>
 		virtual void OnUpdate( IGame * game, UpdateParams params ) = 0;
 
+		/// <summary>
+		/// 
+		/// </summary>
 		virtual void OnRender( IGame * game, RenderParams params ) = 0;
 
+		/// <summary>
+		/// 
+		/// </summary>
 		virtual void OnDetach( IGame * game ) = 0;
 	};
 }

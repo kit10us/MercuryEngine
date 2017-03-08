@@ -15,25 +15,20 @@ void Deleter( GeometryFactory * factory )
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
 
-__declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * doc )
+__declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * element )
 {
 	using namespace me;
 
 	auto game = dynamic_cast<Game *>(_game);
 
-	if( doc == nullptr ) 
-	{
-		game->ReportError( me::ErrorLevel::Failure, "ASELoader", "Configuraiton file missing!" );
-	}
-
-	const auto texturePS = doc->GetRoot()->FindFirstElement( "textureps" );
+	const auto texturePS = element->FindFirstElement( "textureps" );
 	std::string texturePSName = texturePS->GetAttribute< std::string >( "name" );
 	unify::Path texturePSPath = texturePS->GetAttribute< std::string >( "source" );
 	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( texturePSName, texturePSPath );
 	
-	const auto textureVS = doc->GetRoot()->FindFirstElement( "texturevs" );
+	const auto textureVS = element->FindFirstElement( "texturevs" );
 	std::string textureVSName = textureVS->GetAttribute< std::string >( "name" );
 	unify::Path textureVSPath = textureVS->GetAttribute< std::string >( "source" );
 	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( textureVSName, textureVSPath );

@@ -16,7 +16,7 @@
 
 #pragma comment( lib, "lua53" )
 #pragma comment( lib, "../extensions/DXILua.lib" )
-#pragma comment( lib, "../extensions/DXIPhysX.lib" )
+#pragma comment( lib, "../extensions/MEPhysX.lib" )
 
 
 void Deleter( me::IScriptEngine * se )
@@ -24,8 +24,8 @@ void Deleter( me::IScriptEngine * se )
 	delete se;
 }
 				   
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
-__declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * doc );
+__declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * document )
 {
 	auto gcse = game->GetComponent( "LUA", 0 );
 	if( !gcse )

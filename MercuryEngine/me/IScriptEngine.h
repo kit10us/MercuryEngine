@@ -28,6 +28,6 @@ namespace me
 			
 		virtual ExecuteResult ExecuteFile( unify::Path path ) = 0;
 
-		virtual scene::IObjectComponent::ptr LoadModule( unify::Path path ) = 0;
+		//virtual scene::IObjectComponent::ptr LoadModule( unify::Path path ) = 0;
 	};
 }

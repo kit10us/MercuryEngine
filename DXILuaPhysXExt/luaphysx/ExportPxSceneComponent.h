@@ -5,15 +5,15 @@
 
 #include <lua.hpp>
 #include <PxPhysicsAPI.h>
-#include <dxiphysx/SceneComponent.h>
+#include <mephysx/SceneComponent.h>
 
 struct PxSceneComponentProxy
 {
 	me::scene::ISceneComponent::ptr sceneComponent;
-	dxiphysx::SceneComponent * scene;
+	mephysx::SceneComponent * scene;
 };
 
 PxSceneComponentProxy* CheckPxSceneComponent( lua_State* state, int index );
-int PushPxSceneComponent( lua_State * state, dxiphysx::SceneComponent::ptr sceneComponent );
+int PushPxSceneComponent( lua_State * state, mephysx::SceneComponent::ptr sceneComponent );
 
 void RegisterPxSceneComponent( dxilua::ScriptEngine * luaSE, me::IGame * game );

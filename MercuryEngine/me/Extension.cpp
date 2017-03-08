@@ -7,7 +7,7 @@
 
 using namespace me;
 
-typedef bool ( __cdecl *LoaderFunction )(me::IGame *, const qxml::Document * doc );
+typedef bool ( __cdecl *LoaderFunction )(me::IGame *, const qxml::Element * element );
 
 Extension::Extension( unify::Path source )
 	: m_source( source )
@@ -20,7 +20,7 @@ Extension::~Extension()
 	Free();
 }
 
-bool Extension::Load( IGame * game )
+bool Extension::Load( IGame * game, const qxml::Element * element )
 {
 	if ( ! m_source.Exists() )
 	{
@@ -44,7 +44,7 @@ bool Extension::Load( IGame * game )
 		return false;
 	}
 	
-	LoaderFunction loader = (LoaderFunction)GetProcAddress( m_moduleHandle, "DXILoader" );
+	LoaderFunction loader = (LoaderFunction)GetProcAddress( m_moduleHandle, "MELoader" );
 	if ( ! loader )
 	{
 		FreeLibrary( m_moduleHandle );
@@ -52,14 +52,7 @@ bool Extension::Load( IGame * game )
 		return false;
 	}
 
-	unify::Path config( m_source.ChangeExtension( ".xml" ).Filename() );
-	std::shared_ptr< qxml::Document > doc;
-	if ( config.Exists() )
-	{
-		doc.reset( new qxml::Document( config ) );
-	}
-
-	loader( game, doc.get() );
+	loader( game, element );
 
 	return true;
 }											

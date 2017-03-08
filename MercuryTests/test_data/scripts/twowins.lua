@@ -1,7 +1,7 @@
 local axisIndex = 1
 local totalRotation = 0
 
-function OnStart( me )
+function OnBeforeStartup( me )
 	color3d = Effect( "color3d", "EffectColor.effect" )
 	
 	scene1 = Scene( "scene1" )

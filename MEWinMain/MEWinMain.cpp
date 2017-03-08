@@ -10,10 +10,26 @@ extern "C" me::Game * GetGameInstance();
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
 {
 	MSG msg;
+
+	static me::Game * game;
+
 	try
 	{
-		static me::Game & game = *GetGameInstance();
+		game = GetGameInstance();
+	}
+	catch( std::exception & exception )
+	{
+		// NOTE: Our goal is to never hit hear in release.
+        OutputDebugStringA( "[" );
+        OutputDebugStringA( "Mercury Failure: " );
+        OutputDebugStringA( exception.what() );
+        OutputDebugStringA( "]\n" );
+		MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION );
+		return -1;
+	}
 
+	try
+	{
 		me::OSParameters osParameters;
 		osParameters.hInstance = hInstance;
 		osParameters.hPrevInstance = hPrevInstance;
@@ -21,7 +37,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		osParameters.nCmdShow = nCmdShow;
 		osParameters.wndProc = WndProc; 
 
-		if ( ! game.Initialize( osParameters ) )
+		if ( ! game->Initialize( osParameters ) )
 		{
 			return 0;
 		}
@@ -43,22 +59,19 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 				}
 			}
 
-			game.Tick();
-			if( game.IsQuitting() )
+			game->Tick();
+			if( game->IsQuitting() )
 			{
 				break;
 			}
 			
-			game.Draw();
+			game->Draw();
 		} 
 	}
 	catch( std::exception & exception )
 	{
-		// NOTE: Our goal is to never hit hear in release.
-        OutputDebugStringA( "[" );
-        OutputDebugStringA( "Mercury Failure: " );
-        OutputDebugStringA( exception.what() );
-        OutputDebugStringA( "]\n" );
+		game->LogLine( "Mercury Failure: " );
+		game->LogLine( exception.what(), 4 );
 		MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION );
 		return -1;
 	}

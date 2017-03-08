@@ -1,12 +1,19 @@
 <xml>
 <include>setup_base.xml</include>
-<extension>../../extensions/DXILua.dll</extension>
-<extension>../../extensions/DAELoader.dll</extension>
-<extension>../../extensions/ASELoader.dll</extension>
-<extension>../../extensions/DXIPhysx.dll</extension>
-<extension>../../extensions/DXILuaPhysXExt.dll</extension>
-<extension>../../extensions/DXIKeyboard.dll</extension>
-<extension>../../extensions/DXIMouse.dll</extension>
-<extension>../../extensions/DXIGamepad.dll</extension>
-<gamemodule type="LUA" source="game_physx.lua"/>
+<extension source="../../extensions/DXILua.dll">
+	<startup>game_physx.lua</startup>
+</extension>
+<extension source="../../extensions/DAELoader.dll">
+	<color name="color" source="EffectColor.effect"/>
+	<texture name="texture" source="EffectTextured.effect"/>
+</extension>
+<extension source="../../extensions/ASELoader.dll">
+	<textureps name="textured3d" source="texture3d.xml"/>
+	<texturevs name="textured3d" source="texture3d.xml"/>
+</extension>
+<extension source="../../extensions/MEPhysx.dll"/>
+<extension source="../../extensions/DXILuaPhysXExt.dll"/>
+<extension source="../../extensions/DXIKeyboard.dll"/>
+<extension source="../../extensions/DXIMouse.dll"/>
+<extension source="../../extensions/DXIGamepad.dll"/>
 </xml>

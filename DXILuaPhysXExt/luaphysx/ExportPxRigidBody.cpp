@@ -21,12 +21,12 @@ using namespace dxilua;
 static dxilua::ScriptEngine * g_luaSE;
 static me::Game * g_game;
 
-int PushPxRigidBody( lua_State * state, dxiphysx::objectcomponent::RigidBody::ptr component )
+int PushPxRigidBody( lua_State * state, mephysx::objectcomponent::RigidBody::ptr component )
 {
 	PxRigidBodyProxy ** newProxy = (PxRigidBodyProxy**)(lua_newuserdata( state, sizeof( PxRigidBodyProxy* ) ));
 	*newProxy = new PxRigidBodyProxy();
 	(*newProxy)->component = component;
-	(*newProxy)->body = dynamic_cast< dxiphysx::objectcomponent::RigidBody * >( component.get() )->GetRigidBody();
+	(*newProxy)->body = dynamic_cast< mephysx::objectcomponent::RigidBody * >( component.get() )->GetRigidBody();
 	luaL_setmetatable( state, "PxRigidBody" );
 	return 1;
 }

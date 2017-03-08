@@ -20,6 +20,10 @@ namespace dxilua
 
 		void OnAttach( me::IGame * game ) override;
 
+		void OnBeforeStartup( me::IGame * game ) override;
+
+		void OnAfterStartup( me::IGame * game ) override;
+
 		void OnUpdate( me::IGame * game, me::UpdateParams params ) override;
 
 		void OnRender( me::IGame * game, me::RenderParams params ) override;
@@ -29,7 +33,9 @@ namespace dxilua
 		me::ExecuteResult ExecuteString( std::string line ) override;
 		me::ExecuteResult ExecuteFile( unify::Path path ) override;
 
-		me::scene::IObjectComponent::ptr LoadModule( unify::Path path ) override;
+		me::IGameComponent::ptr LoadGameScript( unify::Path path );
+
+		me::scene::IObjectComponent::ptr LoadObjectScript( unify::Path path );
 
 		DXILUADLL_API lua_State * GetState();
 
@@ -37,14 +43,13 @@ namespace dxilua
 
 		DXILUADLL_API void AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector );
 
-
-
 		static me::IGame * GetGame();
 
 	private:
 		me::IGame * m_game;		
 		lua_State * m_state;
-		size_t m_moduleCount;
+		size_t m_gameScriptCount;
+		size_t m_objectScriptCount;
 
 		static ScriptEngine * s_se;
 	};

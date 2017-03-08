@@ -13,6 +13,7 @@ int Debug_LogLine( lua_State * state )
 	assert( args == 1 );
 
 	int type = lua_type( state, 1 );
+	std::string typeName( lua_typename( state, type ) );
 
 	auto game = ScriptEngine::GetGame();
 	if ( type == LUA_TNIL )

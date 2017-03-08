@@ -1,6 +1,8 @@
 <xml>
 <title>DX11 Test</title>
-<renderer>../../renderers/MercuryEngineDX11.dll</renderer>
+<renderer source="../../renderers/MercuryEngineDX11.dll">
+	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
+</renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
 <assets>models/</assets>

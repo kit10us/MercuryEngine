@@ -1,4 +1,4 @@
 <xml>
 <include>setup_base.xml</include>
-<extension>../../extensions/DXILua.dll</extension>
+<extension source="../../extensions/DXILua.dll"/>
 </xml>

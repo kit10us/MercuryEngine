@@ -11,8 +11,8 @@ void DeleterGamepad( dxigp::Gamepad * gamepad )
 	delete gamepad;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
-__declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
+__declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
 {
 	game->GetInputManager()->AddInputSource( me::input::IInputSource::ptr( new dxigp::Gamepad( game ), DeleterGamepad ) );
 

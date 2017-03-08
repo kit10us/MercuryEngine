@@ -98,7 +98,7 @@ namespace me
 		bool GetUpdateEnabled() const override;
 
 	private:
-		void AddExtension( unify::Path path );
+		void AddExtension( unify::Path path, const qxml::Element * element );
 
 	private:
 		std::string m_title;
@@ -110,8 +110,6 @@ namespace me
 		unify::Path m_setup;
 		unify::Path m_logFile;
 		std::list< ILogListener* > m_logListeners;
-
-		me::scene::IObjectComponent::ptr m_gameModule;
 
 		float m_totalStartupTime;
 

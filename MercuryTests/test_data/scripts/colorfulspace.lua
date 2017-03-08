@@ -2,7 +2,7 @@ local axisIndex = 1
 local totalRotation = 0
 local autoRotate = true
 
-function OnStart()
+function OnBeforeStartup()
 	local scene1 = Scene( "scene1" )
 	local root = scene1:FindObject( "root" )
 	

@@ -4,15 +4,15 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxiphysx/objectcomponent/RigidStatic.h>
+#include <mephysx/objectcomponent/RigidStatic.h>
 
 struct PxRigidStaticProxy
 {
-	dxiphysx::objectcomponent::RigidStatic::ptr component;
+	mephysx::objectcomponent::RigidStatic::ptr component;
 	physx::PxRigidStatic * body;
 };
 
 PxRigidStaticProxy* CheckPxRigidStatic( lua_State* state, int index );
-int PushPxRigidStatic( lua_State * state, dxiphysx::objectcomponent::RigidStatic::ptr component );
+int PushPxRigidStatic( lua_State * state, mephysx::objectcomponent::RigidStatic::ptr component );
 
 void RegisterPxRigidStatic( dxilua::ScriptEngine * luaSE, me::IGame * game );

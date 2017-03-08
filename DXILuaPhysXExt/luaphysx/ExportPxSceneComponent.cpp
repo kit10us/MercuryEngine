@@ -6,7 +6,7 @@
 
 #include "luaphysx/ExportPxSceneComponent.h"
 #include "luaphysx/ExportPxController.h"
-#include <dxiphysx/objectcomponent/CapsuleController.h>
+#include <mephysx/objectcomponent/CapsuleController.h>
 
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportColor.h>
@@ -26,12 +26,12 @@ using namespace scene;
 static dxilua::ScriptEngine * g_luaSE;
 static me::Game * g_game;
 
-int PushPxSceneComponent( lua_State * state, dxiphysx::SceneComponent::ptr sceneComponent )
+int PushPxSceneComponent( lua_State * state, mephysx::SceneComponent::ptr sceneComponent )
 {
 	PxSceneComponentProxy ** newProxy = (PxSceneComponentProxy**)(lua_newuserdata( state, sizeof( PxSceneComponentProxy* ) ));
 	*newProxy = new PxSceneComponentProxy();
 	(*newProxy)->sceneComponent = sceneComponent;
-	(*newProxy)->scene = dynamic_cast< dxiphysx::SceneComponent * >( sceneComponent.get() );
+	(*newProxy)->scene = dynamic_cast< mephysx::SceneComponent * >( sceneComponent.get() );
 	luaL_setmetatable( state, "PxSceneComponent" );
 	return 1;
 }
@@ -65,7 +65,7 @@ int PxSceneComponent_CreateCapsuleController( lua_State* state )
 	float radius = (float)lua_tonumber( state, 2 );
 	float height = (float)lua_tonumber( state, 3 );											
 
-	me::scene::IObjectComponent::ptr controller( new dxiphysx::objectcomponent::CapsuleController( g_game->GetOS(), pxScene->scene, radius, height ) );
+	me::scene::IObjectComponent::ptr controller( new mephysx::objectcomponent::CapsuleController( g_game->GetOS(), pxScene->scene, radius, height ) );
 
 	PushPxController( state, controller );
 
@@ -81,8 +81,8 @@ static const luaL_Reg PxSceneComponentFunctions[] =
 
 int PxSceneComponent_Constructor( lua_State * state )
 {
-	dxiphysx::GameComponent * physics = dynamic_cast< dxiphysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
-	ISceneComponent::ptr component( new dxiphysx::SceneComponent( g_game->GetOS(), physics ) );
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	ISceneComponent::ptr component( new mephysx::SceneComponent( g_game->GetOS(), physics ) );
 	return PushPxSceneComponent( state, component );
 }
 

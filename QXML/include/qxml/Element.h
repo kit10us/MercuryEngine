@@ -204,6 +204,7 @@ namespace qxml
 		}
 
 	protected:
+        Document * m_document;
 		std::string m_tagName;
 		std::vector< Attribute::shared_ptr > m_attributeList;
 		std::string m_data;
@@ -217,7 +218,6 @@ namespace qxml
 		Element * m_firstChild;
 		Element * m_lastChild;
 
-        Document * m_document;
 		size_t m_line;
 		
 		unsigned int m_numChildren;

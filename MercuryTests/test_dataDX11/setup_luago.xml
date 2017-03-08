@@ -1,6 +1,5 @@
 <xml>
 <include>setup_base.xml</include>
-<display fullscreen="false" x="10" y="10" width="800" height="600"/>
-<extension>../../extensions/DXILua.dll</extension>
-<gamemodule type="LUA" source="game.lua"/>
+<extension source="../../extensions/DXILua.dll"/>
+</extension>
 </xml>

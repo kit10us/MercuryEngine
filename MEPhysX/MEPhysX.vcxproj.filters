@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="mephysx\SceneComponent.cpp">
+      <Filter>mephysx</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\SceneManagerComponent.cpp">
+      <Filter>mephysx</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\Util.cpp">
+      <Filter>mephysx</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\RigidBody.cpp">
+      <Filter>mephysx\actor</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\GameComponent.cpp">
+      <Filter>mephysx</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\RigidStatic.cpp">
+      <Filter>mephysx\actor</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\BoxCollider.cpp">
+      <Filter>mephysx\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\CapsuleCollider.cpp">
+      <Filter>mephysx\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\ColliderBase.cpp">
+      <Filter>mephysx\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\HeightFieldCollider.cpp">
+      <Filter>mephysx\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\SphereCollider.cpp">
+      <Filter>mephysx\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\CapsuleController.cpp">
+      <Filter>mephysx\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="mephysx\objectcomponent\ControllerBase.cpp">
+      <Filter>mephysx\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="MEPhysX.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mephysx\SceneComponent.h">
+      <Filter>mephysx</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\SceneManagerComponent.h">
+      <Filter>mephysx</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\Releaser.h">
+      <Filter>mephysx</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\Util.h">
+      <Filter>mephysx</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\RigidBody.h">
+      <Filter>mephysx\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\GameComponent.h">
+      <Filter>mephysx</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\RigidStatic.h">
+      <Filter>mephysx\actor</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\BoxCollider.h">
+      <Filter>mephysx\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\CapsuleCollider.h">
+      <Filter>mephysx\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\ColliderBase.h">
+      <Filter>mephysx\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\HeightFieldCollider.h">
+      <Filter>mephysx\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\SphereCollider.h">
+      <Filter>mephysx\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\CapsuleController.h">
+      <Filter>mephysx\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="mephysx\objectcomponent\ControllerBase.h">
+      <Filter>mephysx\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="MEPhysX.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="mephysx">
+      <UniqueIdentifier>{88641bfe-33ee-43fa-9834-4b8983ef042a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dll">
+      <UniqueIdentifier>{1144a2df-ca60-4795-a941-95fa48cbc24c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mephysx\collider">
+      <UniqueIdentifier>{96eefd3d-5cca-4083-94bd-7fe93e804807}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mephysx\actor">
+      <UniqueIdentifier>{686e1551-6380-40b8-8ce8-c4e3c0905a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mephysx\controller">
+      <UniqueIdentifier>{b8d78d23-568e-4b1c-bbdd-2d702796901e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

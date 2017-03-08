@@ -1,4 +1,4 @@
-function OnStart()
+function OnBeforeStartup()
 end
 
 function OnUpdate()

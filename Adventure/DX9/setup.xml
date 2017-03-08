@@ -10,13 +10,19 @@
 <assets>../assets_common/scripts/</assets>
 <assets>../assets_common/effects/</assets>
 <display fullscreen="false" x="10" y="10" width="800" height="600"/>
-<extension>../../extensions/DXILua.dll</extension>
-<extension>../../extensions/DAELoader.dll</extension>
-<extension>../../extensions/ASELoader.dll</extension>
-<extension>../../extensions/DXIKeyboard.dll</extension>
-<extension>../../extensions/DXIGamepad.dll</extension>
-<extension>../../extensions/MEEditor.dll</extension>
-<gamemodule type="LUA" source="startup.lua"/>
-
+<extension source="../../extensions/DXILua.dll">
+	<startup>startup.lua</startup>
+</extension>
+<extension source="../../extensions/DAELoader.dll">
+	<color name="color_ambient" source="Color_Ambient.effect"/>
+	<texture name="textured_ambient" source="Textured_Ambient.effect"/>
+</extension>
+<extension source="../../extensions/ASELoader.dll">
+	<textureps name="textured_ambient" source="textured_ambient.xml"/>
+	<texturevs name="textured_ambient" source="textured_ambient.xml"/>
+</extension>
+<extension source="../../extensions/DXIKeyboard.dll"/>
+<extension source="../../extensions/DXIGamepad.dll"/>
+<extension source="../../extensions/MEEditor.dll"/>
 <motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 </xml>

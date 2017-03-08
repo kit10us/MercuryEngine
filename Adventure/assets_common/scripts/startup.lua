@@ -2,7 +2,7 @@ local axisIndex = 1
 local totalRotation = 0
 local autoRotate = true
 
-function OnStart( me )
+function OnAfterStartup( me )
 	local sceneMain = Scene.FindScene( "main" )
 	local camera = sceneMain:FindObject( "camera" )
 	

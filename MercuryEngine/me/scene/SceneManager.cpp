@@ -92,6 +92,14 @@ void SceneManager::OnAttach( IGame * game )
 {
 }
 
+void SceneManager::OnBeforeStartup( IGame * game )
+{
+}
+
+void SceneManager::OnAfterStartup( IGame * game )
+{
+}
+
 void SceneManager::OnDetach( IGame * game )
 {
 }

@@ -170,6 +170,8 @@ void RegisterScene( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
+	/*
 	luaL_newlib( state, SceneStaticFunctions );
 	lua_setglobal( state, "Scene" );
+	*/
 }

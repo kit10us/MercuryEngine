@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <qxml/Element.h>
 #include <unify/Path.h>
 #include <windows.h>
 
@@ -25,7 +26,7 @@ namespace me
 		Extension( unify::Path source );
 		virtual ~Extension();
 
-		bool Load( IGame * game );
+		bool Load( IGame * game, const qxml::Element * element );
 		void Free();
 
 	private:

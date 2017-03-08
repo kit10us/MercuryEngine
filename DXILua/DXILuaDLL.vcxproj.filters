@@ -7,115 +7,124 @@
     <Filter Include="dll">
       <UniqueIdentifier>{78801e60-d16a-47b3-b5c9-36c659836dad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dxilua\shape">
+    <Filter Include="dxilua\exports">
+      <UniqueIdentifier>{ac2f2130-164b-46e4-bea7-60ee760ccdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxilua\exports\shape">
       <UniqueIdentifier>{e20edaad-5782-46f5-a9cd-5270462efcbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dxilua\unify">
+    <Filter Include="dxilua\exports\unify">
       <UniqueIdentifier>{f8591f8a-a2a8-4251-b642-f1e1f74015c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxilua\component">
+      <UniqueIdentifier>{4b0c6c43-54a0-4b57-a620-856d74875818}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DXILuaDLL.h">
       <Filter>dll</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportObject.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportGame.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportResources.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportScene.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportDebug.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportUpdate.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\Module.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\CreateState.h">
       <Filter>dxilua</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportTransform.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportCameraComponent.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\shape\ExportShapeParameters.h">
-      <Filter>dxilua\shape</Filter>
+      <Filter>dxilua\exports\shape</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportColor.h">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportV2.h">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportV3.h">
-      <Filter>dxilua\unify</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportGeometry.h">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportSize3.h">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportSize2.h">
-      <Filter>dxilua\unify</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportEffect.h">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportMatrix.h">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\Util.h">
       <Filter>dxilua</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportTexCoords.h">
-      <Filter>dxilua\unify</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportTerraParameters.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportTerra.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
-    <ClInclude Include="dxilua\ExportTexture.h">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportQuaternion.h">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\ScriptEngine.h">
       <Filter>dxilua</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\unify\ExportAngle.h">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h">
-      <Filter>dxilua</Filter>
+    <ClInclude Include="dxilua\ExportCameraComponent.h">
+      <Filter>dxilua\exports</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportObjectInputMotivator.h">
-      <Filter>dxilua</Filter>
+    <ClInclude Include="dxilua\ExportDebug.h">
+      <Filter>dxilua\exports</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportInputCondition.h">
-      <Filter>dxilua</Filter>
+    <ClInclude Include="dxilua\ExportEffect.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportGame.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportGeometry.h">
+      <Filter>dxilua\exports</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\ExportInput.h">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ExportObjectComponent.h">
-      <Filter>dxilua</Filter>
+    <ClInclude Include="dxilua\ExportInputCondition.h">
+      <Filter>dxilua\exports</Filter>
     </ClInclude>
     <ClInclude Include="dxilua\ExportInputMotivator.h">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportObject.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportObjectComponent.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportObjectInputMotivator.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportObjectOrbitMotivator.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportResources.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportScene.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTerra.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTerraParameters.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTexture.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportTransform.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\ExportUpdate.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\component\GameComponent.h">
+      <Filter>dxilua\component</Filter>
+    </ClInclude>
+    <ClInclude Include="dxilua\component\ObjectComponent.h">
+      <Filter>dxilua\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,104 +134,107 @@
     <ClCompile Include="DXILuaDLL.cpp">
       <Filter>dll</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportObject.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportGame.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportResources.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportScene.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportDebug.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportUpdate.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\Module.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
     <ClCompile Include="dxilua\CreateState.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportTransform.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportCameraComponent.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
     <ClCompile Include="dxilua\shape\ExportShapeParameters.cpp">
-      <Filter>dxilua\shape</Filter>
+      <Filter>dxilua\exports\shape</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportV2.cpp">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportV3.cpp">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportColor.cpp">
-      <Filter>dxilua\unify</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportGeometry.cpp">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportSize3.cpp">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportSize2.cpp">
-      <Filter>dxilua\unify</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportEffect.cpp">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportMatrix.cpp">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\Util.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportTexCoords.cpp">
-      <Filter>dxilua\unify</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportTerraParameters.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportTerra.cpp">
-      <Filter>dxilua</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ExportTexture.cpp">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportQuaternion.cpp">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ScriptEngine.cpp">
       <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportAngle.cpp">
-      <Filter>dxilua\unify</Filter>
+      <Filter>dxilua\exports\unify</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp">
-      <Filter>dxilua</Filter>
+    <ClCompile Include="dxilua\ExportCameraComponent.cpp">
+      <Filter>dxilua\exports</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportObjectInputMotivator.cpp">
-      <Filter>dxilua</Filter>
+    <ClCompile Include="dxilua\ExportDebug.cpp">
+      <Filter>dxilua\exports</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportInputCondition.cpp">
-      <Filter>dxilua</Filter>
+    <ClCompile Include="dxilua\ExportEffect.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportGame.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportGeometry.cpp">
+      <Filter>dxilua\exports</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportInput.cpp">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports</Filter>
     </ClCompile>
-    <ClCompile Include="dxilua\ExportObjectComponent.cpp">
-      <Filter>dxilua</Filter>
+    <ClCompile Include="dxilua\ExportInputCondition.cpp">
+      <Filter>dxilua\exports</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\ExportInputMotivator.cpp">
-      <Filter>dxilua</Filter>
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObject.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObjectComponent.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObjectInputMotivator.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportObjectOrbitMotivator.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportResources.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportScene.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTerra.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTerraParameters.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTexture.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportTransform.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportUpdate.cpp">
+      <Filter>dxilua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\component\ObjectComponent.cpp">
+      <Filter>dxilua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\component\GameComponent.cpp">
+      <Filter>dxilua\component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

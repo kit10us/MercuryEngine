@@ -21,12 +21,12 @@ using namespace dxilua;
 static dxilua::ScriptEngine * g_luaSE;
 static me::Game * g_game;
 
-int PushPxController( lua_State * state, dxiphysx::objectcomponent::ControllerBase::ptr component )
+int PushPxController( lua_State * state, mephysx::objectcomponent::ControllerBase::ptr component )
 {
 	PxControllerProxy ** newProxy = (PxControllerProxy**)(lua_newuserdata( state, sizeof( PxControllerProxy* ) ));
 	*newProxy = new PxControllerProxy();
 	(*newProxy)->component = component;
-	(*newProxy)->controller = dynamic_cast< dxiphysx::objectcomponent::ControllerBase * >( component.get() );
+	(*newProxy)->controller = dynamic_cast< mephysx::objectcomponent::ControllerBase * >( component.get() );
 	luaL_setmetatable( state, "PxController" );
 
 	return 1;

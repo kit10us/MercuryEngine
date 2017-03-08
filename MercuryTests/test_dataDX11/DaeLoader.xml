@@ -1,4 +1,0 @@
-<xml>
-<color name="color_ambient" source="Color_Ambient.effect"/>
-<texture name="textured_ambient" source="Textured_Ambient.effect"/>
-</xml>

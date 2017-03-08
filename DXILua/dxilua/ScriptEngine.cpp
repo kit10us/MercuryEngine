@@ -3,15 +3,24 @@
 
 #include <dxilua/Util.h>
 #include <dxilua/ScriptEngine.h>
-#include <dxilua/Module.h>
+#include <dxilua/component/GameComponent.h>
+#include <dxilua/component/ObjectComponent.h>
 #include <dxilua/CreateState.h>
 #include <dxilua/ExportObject.h>
 
 #pragma comment( lib, "lua53" )
 
 using namespace dxilua;
+using namespace melua;
 using namespace me;
 using namespace scene;
+
+
+void GameComponentDeleter( me::IGameComponent * gc )
+{
+	delete gc;
+}
+
 
 ScriptEngine * ScriptEngine::s_se;
 
@@ -36,6 +45,14 @@ std::string ScriptEngine::GetName() const
 }
 
 void ScriptEngine::OnAttach( me::IGame * game )
+{
+}
+
+void ScriptEngine::OnBeforeStartup( me::IGame * game )
+{
+}
+
+void ScriptEngine::OnAfterStartup( me::IGame * game )
 {
 }
 
@@ -87,17 +104,29 @@ ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 	return me::ExecuteResult::Pass;
 }
 
-IObjectComponent::ptr ScriptEngine::LoadModule( unify::Path path )
+IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 {					
 	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
 
 	int top = lua_gettop( m_state );
 
-	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_moduleCount++ );
+	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_gameScriptCount++ );
+
+	IGameComponent::ptr module( new component::GameComponent( m_state, m_game, name, path ), GameComponentDeleter );
+	return module;
+}
+
+IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
+{					
+	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+
+	int top = lua_gettop( m_state );
+
+	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_objectScriptCount++ );
 
 	lua_State * state = m_state;
 
-	IObjectComponent::ptr module( new Module( m_state, m_game, name, path ) );
+	IObjectComponent::ptr module( new component::ObjectComponent( m_state, m_game, name, path ) );
 
 	return module;
 }

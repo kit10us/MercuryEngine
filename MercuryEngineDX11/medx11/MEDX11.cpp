@@ -12,11 +12,11 @@ void Deleter( WindowsOS * factory )
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
 
-__declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc )
+__declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
 {
-	game->SetOS( me::IOS::ptr( new WindowsOS( game ) ) );
+	game->SetOS( me::IOS::ptr( new WindowsOS( game, element ) ) );
 
 	return true;
 }

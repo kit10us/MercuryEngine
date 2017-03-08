@@ -4,15 +4,15 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxiphysx/objectcomponent/ColliderBase.h>
+#include <mephysx/objectcomponent/ColliderBase.h>
 
 struct PxShapeProxy
 {
-	dxiphysx::objectcomponent::ColliderBase::ptr component;
+	mephysx::objectcomponent::ColliderBase::ptr component;
 	physx::PxShape * shape;
 };
 
 PxShapeProxy* CheckPxShape( lua_State* state, int index );
-int PushPxShape( lua_State * state, dxiphysx::objectcomponent::ColliderBase::ptr component );
+int PushPxShape( lua_State * state, mephysx::objectcomponent::ColliderBase::ptr component );
 
 void RegisterPxShape( dxilua::ScriptEngine * luaSE, me::IGame * game );

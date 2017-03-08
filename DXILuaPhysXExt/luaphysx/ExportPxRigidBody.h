@@ -4,7 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
-#include <dxiphysx/objectcomponent/RigidBody.h>
+#include <mephysx/objectcomponent/RigidBody.h>
 
 struct PxRigidBodyProxy
 {
@@ -13,6 +13,6 @@ struct PxRigidBodyProxy
 };
 
 PxRigidBodyProxy* CheckPxRigidBody( lua_State* state, int index );
-int PushPxRigidBody( lua_State * state, dxiphysx::objectcomponent::RigidBody::ptr component );
+int PushPxRigidBody( lua_State * state, mephysx::objectcomponent::RigidBody::ptr component );
 
 void RegisterPxRigidBody( dxilua::ScriptEngine * luaSE, me::IGame * game );

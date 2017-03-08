@@ -1,11 +1,17 @@
 <xml>
 <include>setup_base.xml</include>
-<!--<display fullscreen="true" width="3840" height="2160"/>-->
-<extension>../../extensions/DXILua.dll</extension>
-<extension>../../extensions/DAELoader.dll</extension>
-<extension>../../extensions/ASELoader.dll</extension>
-<extension>../../extensions/DXIKeyboard.dll</extension>
-<extension>../../extensions/DXIMouse.dll</extension>
-<extension>../../extensions/DXIGamepad.dll</extension>
-<gamemodule type="LUA" source="colorfulspace.lua"/>
+<extension source="../../extensions/DXILua.dll">
+	<startup>colorfulspace.lua</startup>
+</extension>
+<extension source="../../extensions/DAELoader.dll">
+	<color name="color" source="EffectColor.effect"/>
+	<texture name="texture" source="EffectTextured.effect"/>
+</extension>
+<extension source="../../extensions/ASELoader.dll">
+	<textureps name="textured3d" source="texture3d.xml"/>
+	<texturevs name="textured3d" source="texture3d.xml"/>
+</extension>
+<extension source="../../extensions/DXIKeyboard.dll"/>
+<extension source="../../extensions/DXIMouse.dll"/>
+<extension source="../../extensions/DXIGamepad.dll"/>
 </xml>

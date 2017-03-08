@@ -35,6 +35,8 @@ namespace me
 
 			void OnAttach( IGame * game ) override;
 			void OnDetach( IGame * game ) override;
+			void OnBeforeStartup( IGame * game ) override;
+			void OnAfterStartup( IGame * game ) override;
 			void OnUpdate( IGame * game, UpdateParams params ) override;
 			void OnRender( IGame * game, RenderParams params ) override;
 

@@ -22,6 +22,14 @@ void DataCore::OnAttach( IGame * game )
 {
 }
 
+void DataCore::OnBeforeStartup( IGame * game )
+{
+}
+
+void DataCore::OnAfterStartup( IGame * game )
+{
+}
+
 void DataCore::OnUpdate( IGame * game, UpdateParams params )
 {
 }

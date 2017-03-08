@@ -35,12 +35,12 @@ namespace qxml
 	protected:
 		Element * AddElement( Element * element, const std::string & name );
 
-		// Elements stored as a list internally, however they keep linkage hierarchicly.
+		 unify::Path m_filePath;
+
+		 // Elements stored as a list internally, however they keep linkage hierarchicly.
 		ElementList m_elementList;
 		Element * m_xml; // The XML header node.
 		Element * m_root;
-
-		 unify::Path m_filePath;
 	};
 }
 

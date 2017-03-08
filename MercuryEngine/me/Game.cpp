@@ -82,15 +82,21 @@ Game::~Game()
 {
 	LogLine( "Shutting down:", 0 );
 
+	LogLine( "OnDetach", 0 );
+	for( auto && component : m_components )
+	{
+		LogLine( component->GetName() );
+		component->OnDetach( this );
+	}
+	LogLine( "OnDetachDone", 0 );
+
+
 	// Remove all log listeners.
 	m_logListeners.clear();
 
 	// Call user shutdown.
 	Shutdown();
 	
-	// Release scripts.
-	m_gameModule.reset();
-
 	m_resourceHub.Clear();
 
 	m_exitMotivation.reset();
@@ -223,16 +229,19 @@ bool Game::Initialize( OSParameters osParameters )
 					}
 					else if( node.IsTagName( "renderer" ) )
 					{
-						unify::Path path( node.GetText() );
-						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
+						unify::Path path( node.GetAttribute< std::string >( "source" ) );
+						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
 				}
 			}
 		};
 		xmlLoader( m_setup );
 	}
-	
-	assert( m_os );
+
+	if ( ! m_os )
+	{
+		throw me::exception::FailedToCreate( "No renderer specified, or invalid renderer!" );
+	}
 					  	
 	// User setup...
 	if ( ! Setup( GetOS() ) )
@@ -275,31 +284,6 @@ bool Game::Initialize( OSParameters osParameters )
 					else if ( node.IsTagName( "FailuresAsCritial" ) )
 					{
 						m_failuresAsCritial = unify::Cast< bool >( node.GetText() );
-					}
-					else if( node.IsTagName( "display" ) )
-					{
-						bool fullscreen = node.GetAttributeElse< bool >( "fullscreen", false );
-						int width = node.GetAttribute< int >( "width" );
-						int height = node.GetAttribute< int >( "height" );
-						int x = node.GetAttributeElse< int >( "x", 0 );
-						int y = node.GetAttributeElse< int >( "y", 0 );
-						float nearZ = node.GetAttributeElse< float >( "nearz", 0.0f );
-						float farZ = node.GetAttributeElse< float >( "farz", 1000.0f );
-
-						Display display {};
-						if ( fullscreen )
-						{
-							display = Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
-						}
-						else
-						{
-							display = Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
-						}
-
-						display.SetNearZ( nearZ );
-						display.SetFarZ( farZ );
-
-						GetOS()->AddDisplay( display );
 					}
 					else if( node.IsTagName( "assets" ) )
 					{
@@ -374,15 +358,8 @@ bool Game::Initialize( OSParameters osParameters )
 					}
 					else if( node.IsTagName( "extension" ) )
 					{
-						unify::Path path( node.GetText() );
-						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path );
-					}
-					else if( node.IsTagName( "gamemodule" ) )
-					{
-						std::string type = node.GetAttribute< std::string >( "type" );
-						auto se = GetGameComponent< IScriptEngine * >( this, type );
-						unify::Path source = node.GetAttribute< std::string >( "source" ); 
-						m_gameModule = se->LoadModule( source );
+						unify::Path path( node.GetAttribute< std::string >( "source" ) );
+						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
 				}
 			}
@@ -394,12 +371,14 @@ bool Game::Initialize( OSParameters osParameters )
 	m_os->Startup();
 	LogLine( "OS Startup Done", 0 );
 	
-	LogLine( "GameModule OnInit", 0 );
-	if( m_gameModule )
+	LogLine( "OnBeforeStartup", 0 );
+	for( auto && component : m_components )
 	{
-		m_gameModule->OnInit();
+		LogLine( component->GetName() + "..." );
+		component->OnBeforeStartup( this );
 	}
-	LogLine( "GameModule OnInit Done", 0 );
+	LogLine( "OnBeforeStartup Done", 0 );
+
 	
 	LogLine( "Startup", 0 );
 	try
@@ -408,17 +387,18 @@ bool Game::Initialize( OSParameters osParameters )
 	}
 	catch( unify::Exception ex )
 	{
-		LogLine( "Startup FAILED, 0" );
+		LogLine( "Startup FAILED" );
 		ReportError( ErrorLevel::Critical, "Game", ex.what() );
 	}
 	LogLine( "Startup Done", 0 );
 
-	LogLine( "GameModule OnStart", 0 );
-	if( m_gameModule )
+	LogLine( "OnAfterStartup", 0 );
+	for( auto && component : m_components )
 	{
-		m_gameModule->OnStart();
+		LogLine( component->GetName() + "..." );
+		component->OnAfterStartup( this );
 	}
-	LogLine( "GameModule OnStart Done", 0 );
+	LogLine( "OnAfterStartup Done", 0 );
 
 	// Basic motivations...
 	if ( GetInputManager() )
@@ -468,11 +448,6 @@ void Game::Tick()
 	auto renderer = GetOS()->GetRenderer( 0 );
 
 	UpdateParams params{ renderer, m_renderInfo };
-
-	if( m_gameModule )
-	{
-		m_gameModule->OnUpdate( params );
-	}
 
 	for( auto && component : m_components )
 	{
@@ -580,11 +555,11 @@ const input::InputManager * Game::GetInputManager() const
 	return &m_inputManager;
 }
 
-void Game::AddExtension( unify::Path path )
+void Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
 	std::shared_ptr< Extension > extension( new Extension( path ) );
 
-	if ( ! extension->Load( this ) )
+	if ( ! extension->Load( this, element ) )
 	{
 		ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
 	}

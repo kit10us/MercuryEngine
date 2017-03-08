@@ -11,18 +11,13 @@ void Deleter( dae::GeometrySourceFactory * factory )
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * doc );
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
 
-__declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * doc )
+__declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * element )
 {
 	using namespace me;
 
 	auto game = dynamic_cast<Game *>(_game);
-
-	if( doc == nullptr ) 
-	{
-		game->ReportError( me::ErrorLevel::Failure, "DAELoader", "Configuraiton file missing!" );
-	}
 
 	// Setup DAE factory.
 	class MyEffectSolver : public dae::util::IEffectSolver
@@ -57,11 +52,11 @@ __declspec(dllexport) bool DXILoader( me::IGame * _game, const qxml::Document * 
 		}
 	};
 
-	const auto color = doc->GetRoot()->FindFirstElement( "color" );
+	const auto color = element->FindFirstElement( "color" );
 	std::string colorEffectName = color->GetAttribute< std::string >( "name" );
 	unify::Path colorEffectPath = color->GetAttribute< std::string >( "source" );
 
-	const auto texture = doc->GetRoot()->FindFirstElement( "texture" );
+	const auto texture = element->FindFirstElement( "texture" );
 	std::string textureEffectName = texture->GetAttribute< std::string >( "name" );
 	unify::Path textureEffectPath = texture->GetAttribute< std::string >( "source" );
 

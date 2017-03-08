@@ -8,7 +8,7 @@
 
 meedr::ui::IWindow::ptr s_engineMain;
 
-extern "C" __declspec(dllexport) bool DXILoader( me::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
 {
 	s_engineMain.reset();
 	s_engineMain.reset( new meedr::EngineMain( game ) );
