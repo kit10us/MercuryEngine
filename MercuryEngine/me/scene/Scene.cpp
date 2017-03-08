@@ -4,7 +4,7 @@
 #include <me/scene/Scene.h>
 #include <me/scene/CameraComponent.h>
 #include <me/Frustum.h>
-#include <map>
+#include <me/scene/RenderGirl.h>
 
 using namespace me;
 using namespace scene;
@@ -104,21 +104,10 @@ void Scene::Render( RenderParams params )
 		return;
 	}
 
-	CameraCache cameras;
-	GeometryCacheSummation summation;
-	m_objectStack->CollectRendering( params, cameras, summation );
-						 
-	// Render all geometry for each camera...
-	for( auto camera : cameras )
-	{
-		if( camera.camera->GetRenderer() != params.renderer->GetIndex() ) continue;
-
-		RenderInfo myRenderInfo( params.renderInfo );
-		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
-		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
-
-		summation.Render( RenderParams{ params.renderer, myRenderInfo } );
-	}
+	RenderGirl renderGirl;
+	renderGirl.Begin( &params );
+	renderGirl.Render( m_objectStack.get() );
+	renderGirl.End();
 }
 
 void Scene::Suspend()

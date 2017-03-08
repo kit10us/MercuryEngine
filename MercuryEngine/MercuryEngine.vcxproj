@@ -108,6 +108,7 @@
     <ClInclude Include="me\scene\Object.h" />
     <ClInclude Include="me\scene\ObjectComponent.h" />
     <ClInclude Include="me\scene\ObjectStack.h" />
+    <ClInclude Include="me\scene\RenderGirl.h" />
     <ClInclude Include="me\scene\Scene.h" />
     <ClInclude Include="me\scene\SceneComponent.h" />
     <ClInclude Include="me\scene\SceneDataCore.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="me\scene\Object.cpp" />
     <ClCompile Include="me\scene\ObjectComponent.cpp" />
     <ClCompile Include="me\scene\ObjectStack.cpp" />
+    <ClCompile Include="me\scene\RenderGirl.cpp" />
     <ClCompile Include="me\scene\Scene.cpp" />
     <ClCompile Include="me\scene\SceneComponent.cpp" />
     <ClCompile Include="me\scene\SceneDataCore.cpp" />

@@ -12,17 +12,14 @@ function OnAfterStartup( me )
 	local cube = sceneMain:NewObject( "cube" )
 	cube:SetGeometry( Geometry( "cube", "ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 1, 0 ) )
-    cube:AddScript( "rotate", "lua", "rotatex.lua" )
 
 	local pyramid = sceneMain:NewObject( "pyramid" )
 	pyramid:SetGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 1, 0 ) )
-    pyramid:AddScript( "rotate", "lua", "rotatey.lua" )
 	
 	local cylinder = sceneMain:NewObject( "cylinder" )
 	cylinder:SetGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 1, 0 ) )
-    cylinder:AddScript( "rotate", "lua", "rotatey.lua" )
 
 	--[[	
 	local tree_001 = sceneMain:NewObject( "tree_001" )

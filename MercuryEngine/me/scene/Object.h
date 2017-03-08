@@ -73,10 +73,12 @@ namespace me
 			/// <summary>
 			/// Initialize object and it's components.
 			/// Collect updateables.
-			/// Collect the geometry for optimized rendering later.
 			/// Collect cameras.
 			/// </summary>
-			void Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, UpdateParams params );
+			void Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params );
+
+			void CollectGeometry( GeometryCache & geometries );
+
 
 			void OnSuspend();
 			void OnResume();

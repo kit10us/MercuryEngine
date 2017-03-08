@@ -124,7 +124,8 @@ void ObjectStack::Update( UpdateParams params )
 	for( auto && object : m_newObjects )
 	{
 		// Initialize
-		object->Initialize( m_updatables, m_geometries, m_cameras, params );
+		object->Initialize( m_updatables, m_cameras, params );
+		object->CollectGeometry( m_geometries );
 	}
 	m_newObjects.clear();
 

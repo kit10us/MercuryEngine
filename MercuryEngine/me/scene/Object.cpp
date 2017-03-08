@@ -151,7 +151,7 @@ const unify::FrameLite & Object::GetFrame() const
 	return m_frame;
 }
 
-void Object::Initialize( IObjectComponent::cache & updateables, GeometryCache & geometries, CameraCache & cameras, UpdateParams params )
+void Object::Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params )
 {
 	// Update components...
 	for( auto && component : m_components )
@@ -186,7 +186,13 @@ void Object::Initialize( IObjectComponent::cache & updateables, GeometryCache & 
 		{
 			cameras.push_back( FinalCamera{ this, camera } );
 		}
+	}
+}
 
+void Object::CollectGeometry( GeometryCache & geometries )
+{
+	for( auto && component : m_components )
+	{
 		component.Component()->CollectGeometry( geometries, &m_frame );
 	}
 }

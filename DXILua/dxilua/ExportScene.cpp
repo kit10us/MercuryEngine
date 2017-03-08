@@ -148,7 +148,6 @@ void RegisterScene( lua_State * state )
 {
 	const luaL_Reg SceneMemberFunctions[] =
 	{
-		{ "FindScene", Scene_FindScene },
 		{ "GetName", Scene_GetName },
 		{ "NewObject", Scene_NewObject },
 		{ "NewCamera", Scene_NewCamera },
@@ -170,8 +169,6 @@ void RegisterScene( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
-	/*
 	luaL_newlib( state, SceneStaticFunctions );
 	lua_setglobal( state, "Scene" );
-	*/
 }
