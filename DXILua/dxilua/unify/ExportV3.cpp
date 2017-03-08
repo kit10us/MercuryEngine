@@ -236,7 +236,7 @@ static const luaL_Reg V3Functions[] =
 	{ "Dot", V3_Dot },
 	{ "Cross", V3_Cross },
 	{ "Inverse", V3_Inverse },
-	{ "Inverse", V3_Lerp },
+	{ "Lerp", V3_Lerp },
 
 	{ "ToString", V3_ToString },
 	{ nullptr, nullptr }

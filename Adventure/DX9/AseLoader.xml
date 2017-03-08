@@ -1,0 +1,4 @@
+<xml>
+<textureps name="textured3d" source="texture3d.xml"/>
+<texturevs name="textured3d" source="texture3d.xml"/>
+</xml>
