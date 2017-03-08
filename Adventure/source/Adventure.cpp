@@ -47,7 +47,6 @@ void Adventure::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr mainScene = sceneManager->AddScene( "main" );
 
-	// Add 2d scene...
 	// Add Canvas component...
 	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
 	mainScene->AddComponent( canvas );
@@ -60,6 +59,7 @@ void Adventure::Startup()
 	m_map.reset( map );
 	auto land = mainScene->NewObject( "land" );
 	land->AddComponent( m_map );
+	land->GetFrame().MoveBy( { -20 * 2 * 0.5f, 0, -20 * 2 * 0.5f } );
 
 	// Load an effect, then modify it to fit our needs.
 	{

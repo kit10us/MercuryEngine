@@ -67,17 +67,6 @@ int Size2_NewZero( lua_State * state )
 	return 1;
 }
 
-int Size2_ToString( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::Size< float > size( CheckSize2( state, 1 ) );
-
-	lua_pushstring( state, size.ToString().c_str() );
-	return 1;
-}
-
 int Size2_Add( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -135,9 +124,20 @@ int Size2_Units( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	unify::Size< float > size3( CheckSize2( state, 1 ) );
+	unify::Size< float > size( CheckSize2( state, 1 ) );
 
-	lua_pushnumber( state, size3.Units() );
+	lua_pushnumber( state, size.Units() );
+	return 1;
+}
+
+int Size2_ToString( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	unify::Size< float > size( CheckSize2( state, 1 ) );
+
+	lua_pushstring( state, size.ToString().c_str() );
 	return 1;
 }
 

@@ -63,7 +63,7 @@ int V3_New( lua_State * state )
 	return 1;
 }
 
-int V3_Zero( lua_State * state )
+int V3_NewZero( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -223,7 +223,7 @@ int V3_Lerp( lua_State * state )
 static const luaL_Reg V3Functions[] =
 {
 	{ "New", V3_New },
-	{ "Zero", V3_Zero },
+	{ "NewZero", V3_NewZero },
 
 	{ "Add", V3_Add },
 	{ "Sub", V3_Sub },
@@ -236,6 +236,7 @@ static const luaL_Reg V3Functions[] =
 	{ "Dot", V3_Dot },
 	{ "Cross", V3_Cross },
 	{ "Inverse", V3_Inverse },
+	{ "Inverse", V3_Lerp },
 
 	{ "ToString", V3_ToString },
 	{ nullptr, nullptr }

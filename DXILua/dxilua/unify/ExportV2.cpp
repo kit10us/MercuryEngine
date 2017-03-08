@@ -43,7 +43,7 @@ int PushV2( lua_State * state, unify::V2< float > V2 )
 	return 1;
 }
 
-int V2New( lua_State * state )
+int V2_New( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -56,7 +56,7 @@ int V2New( lua_State * state )
 	return 1;
 }
 
-int V2Zero( lua_State * state )
+int V2_NewZero( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -66,18 +66,7 @@ int V2Zero( lua_State * state )
 	return 1;
 }
 
-int V2ToString( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::V2< float > V2( CheckV2( state, 1 ) );
-
-	lua_pushstring( state, V2.ToString().c_str() );
-	return 1;
-}
-
-int V2Add( lua_State * state )
+int V2_Add( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -90,7 +79,7 @@ int V2Add( lua_State * state )
 	return 1;
 }
 
-int V2Sub( lua_State * state )
+int V2_Sub( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -103,7 +92,7 @@ int V2Sub( lua_State * state )
 	return 1;
 }
 
-int V2Mul( lua_State * state )
+int V2_Mul( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -116,7 +105,7 @@ int V2Mul( lua_State * state )
 	return 1;
 }
 
-int V2Div( lua_State * state )
+int V2_Div( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -129,7 +118,7 @@ int V2Div( lua_State * state )
 	return 1;
 }
  
-int V2Length( lua_State * state )
+int V2_Length( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
@@ -140,19 +129,30 @@ int V2Length( lua_State * state )
 	return 1;
 }
 
+int V2_ToString( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	unify::V2< float > V2( CheckV2( state, 1 ) );
+
+	lua_pushstring( state, V2.ToString().c_str() );
+	return 1;
+}
+
 static const luaL_Reg V2Funcs[] =
 {
-	{ "New", V2New },
-	{ "Zero", V2Zero },
+	{ "New", V2_New },
+	{ "NewZero", V2_NewZero },
 
-	{ "Add", V2Add },
-	{ "Sub", V2Sub },
-	{ "Mul", V2Mul },
-	{ "Div", V2Div },
+	{ "Add", V2_Add },
+	{ "Sub", V2_Sub },
+	{ "Mul", V2_Mul },
+	{ "Div", V2_Div },
 
-	{ "Length", V2Length },
+	{ "Length", V2_Length },
 
-	{ "ToString", V2ToString },
+	{ "ToString", V2_ToString },
 	{ nullptr, nullptr }
 };
 

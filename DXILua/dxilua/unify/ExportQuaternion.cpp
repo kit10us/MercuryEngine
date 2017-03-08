@@ -102,7 +102,7 @@ int Quaternion_NewRotationZ( lua_State * state )
 	return 1;
 }
 						 
-int Quaternion_FromEuler( lua_State * state )
+int Quaternion_NewFromEuler( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 3 );
@@ -116,7 +116,7 @@ int Quaternion_FromEuler( lua_State * state )
 	return 1;
 }
 
-int Quaternion_Zero( lua_State * state )
+int Quaternion_NewZero( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -126,7 +126,7 @@ int Quaternion_Zero( lua_State * state )
 	return 1;
 }
 
-int Quaternion_Identity( lua_State * state )
+int Quaternion_NewIdentity( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -224,9 +224,13 @@ int Quaternion_Slerp( lua_State * state )
 
 static const luaL_Reg QuaternionFunctions[] =
 {
+	{ "NewRotationX", Quaternion_NewRotationX },
+	{ "NewRotationY", Quaternion_NewRotationY },
+	{ "NewRotationZ", Quaternion_NewRotationZ },  
 	{ "New", Quaternion_New },
-	{ "Identity", Quaternion_Identity },
-	{ "Zero", Quaternion_Zero },
+	{ "NewFromEuler", Quaternion_NewFromEuler },
+	{ "NewZero", Quaternion_NewZero },
+	{ "NewIdentity", Quaternion_NewIdentity },
 
 	{ "Add", Quaternion_Add },
 	{ "Sub", Quaternion_Sub },
@@ -235,10 +239,6 @@ static const luaL_Reg QuaternionFunctions[] =
 	{ "Conjugate", Quaternion_Conjugate },
 	{ "Normalize", Quaternion_Normalize },
 	{ "Slerp", Quaternion_Slerp },
-
-	{ "NewRotationX", Quaternion_NewRotationX },
-	{ "NewRotationY", Quaternion_NewRotationY },
-	{ "NewRotationZ", Quaternion_NewRotationZ },
 
 	{ "ToString", Quaternion_ToString },
 	{ nullptr, nullptr }

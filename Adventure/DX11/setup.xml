@@ -14,10 +14,9 @@
 <extension>../../extensions/DAELoader.dll</extension>
 <extension>../../extensions/ASELoader.dll</extension>
 <extension>../../extensions/DXIKeyboard.dll</extension>
-<extension>../../extensions/DXIMouse.dll</extension>
 <extension>../../extensions/DXIGamepad.dll</extension>
 <extension>../../extensions/MEEditor.dll</extension>
 <gamemodule type="LUA" source="startup.lua"/>
 
-<motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/><display fullscreen="false" x="10" y="10" width="800" height="600"/>
+<motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 </xml>

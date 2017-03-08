@@ -203,19 +203,7 @@ static const luaL_Reg TransformFunctions[] =
 };
 
 int Transform_Constructor( lua_State * state )
-{
-	/*
-	SceneProxy * sceneProxy = CheckScene( state, -1 );
-
-	std::string name = luaL_checkstring( state, -2 );
-	TransformProxy ** objectProxy = (TransformProxy**)(lua_newuserdata( state, sizeof( TransformProxy* ) ));
-	*objectProxy = new TransformProxy;
-	luaL_setmetatable( state, "Transform" );
-
-	auto game = ScriptEngine::GetGame();
-
-	(*poxy)->object = sceneProxy->scene->GetRoot()->AddChild( name );
-	*/
+{																	 
 	assert( 0 );  // TODO: Can support this, once I clean up the Transform Proxy to support shared_ptr as as well as straight ptrs.
 	return 0;
 }

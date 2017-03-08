@@ -80,6 +80,8 @@ void TerrainMap::CollectGeometry( GeometryCache & cache, const unify::FrameLite 
 			auto & frame = m_frames[ square ];
 			if ( type == 0 )
 			{
+				frame = *transform;
+				frame.PostMul( unify::MatrixTranslate( { (float)m_terraSize.width * x, 0, y * (float)m_terraSize.height } ) );
 				cache.Add( m_invalidGeo.get(), &frame );
 			}
 		}
