@@ -3,10 +3,8 @@
 
 #include <meedr/EngineMain.h>
 #include <meedr/ScriptEditor.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 
-#include <Richedit.h>
-#include <ShObjIdl.h>
 #include <vector>
 
 using namespace meedr;
@@ -25,8 +23,7 @@ ScriptEditor::ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGa
 	Window::Create( L"Script Editor", x, y, nCmdShow );
 }
 
-using namespace ui;
-
+using namespace ui;			  
 
 void ScriptEditor::LoadFile( unify::Path path )
 {

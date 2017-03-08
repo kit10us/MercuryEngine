@@ -5,12 +5,12 @@
 
 #include <me/IGame.h>
 #include <me/scene/SceneManager.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 #include <thread>
 
 namespace meedr
 {
-	class SceneViewer : public meedr::ui::Window
+	class SceneViewer : public ui::Window
 	{
 	public:
 		SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );

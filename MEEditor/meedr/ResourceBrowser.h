@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/IGame.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 
 namespace meedr
 {	  

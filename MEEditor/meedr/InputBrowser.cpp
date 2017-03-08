@@ -5,7 +5,6 @@
 #include <meedr/InputBrowser.h>
 
 using namespace meedr;
-using namespace ui;
 
 #define USERMESSAGE_UPDATEDATA	 0
 
@@ -35,8 +34,15 @@ InputBrowser::~InputBrowser()
 	m_updateData.detach();
 }
 
+using namespace ui;
+
 void InputBrowser::UpdateInputData()
 {
+	if ( m_game->GetInputManager()->GetSourceCount() == 0 )
+	{
+		return;
+	}
+
 	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
 	Listbox* inputNames = GetControl< Listbox* >( "InputNames" );
 	Static* inputData = GetControl< Static* >( "InputData" );
@@ -98,6 +104,11 @@ void InputBrowser::UpdateInputManagerList()
 	// Clear contents...
 	inputSource->ResetContent();
 
+	if ( m_game->GetInputManager()->GetSourceCount() == 0 )
+	{
+		return;
+	}
+
 	// Fill in resource types...
 	for ( size_t i = 0; i < m_game->GetInputManager()->GetSourceCount(); i++ )
 	{			  
@@ -117,6 +128,12 @@ void InputBrowser::UpdateInputSourceInputList()
 
 	// Clear contents...
 	inputNames->ResetContent();
+
+	if ( m_game->GetInputManager()->GetSourceCount() == 0 )
+	{
+		return;
+	}
+
 	
 	size_t sourceIndex = inputSource->GetCurSel();
 	auto source = m_game->GetInputManager()->GetSource( sourceIndex );

@@ -4,11 +4,11 @@
 #pragma once
 
 #include <me/IGame.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 
 namespace meedr
 {
-	class ScriptEditor : public meedr::ui::Window
+	class ScriptEditor : public ui::Window
 	{
 	private:
 		me::IGame * m_game;

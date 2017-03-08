@@ -6,7 +6,7 @@
 #include <me/Game.h>
 #include <Windows.h>
 
-meedr::ui::IWindow::ptr s_engineMain;
+ui::IWindow::ptr s_engineMain;
 
 extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
 {

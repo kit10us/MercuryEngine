@@ -4,11 +4,11 @@
 #pragma once
 
 #include <me/IGame.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 
 namespace meedr
 {
-	class LogViewer : public meedr::ui::Window, me::ILogListener
+	class LogViewer : public ui::Window, me::ILogListener
 	{
 	private:
 		me::IGame * m_game;

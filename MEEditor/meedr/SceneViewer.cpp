@@ -3,14 +3,13 @@
 
 #include <meedr/EngineMain.h>
 #include <meedr/SceneViewer.h>
-#include <meedr/Create.h>
+#include <ui/Builder.h>
 
 #include <Richedit.h>
 #include <ShObjIdl.h>
 #include <vector>
 
 using namespace meedr;
-using namespace ui;
 
 #define USERMESSAGE_UPDATEDATA	0
 
@@ -44,6 +43,8 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	AddControl( new Listbox( 260, 200 ), "Components" );
 	Create( L"Scene Viewer", x, y, nCmdShow );
 }
+
+using namespace ui;
 
 SceneViewer::~SceneViewer()
 {

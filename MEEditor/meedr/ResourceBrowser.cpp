@@ -3,10 +3,9 @@
 
 #include <meedr/EngineMain.h>
 #include <meedr/ResourceBrowser.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 
 using namespace meedr;
-using namespace ui;
 					 
 ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"ResourceBrowserWndClass" )
@@ -19,7 +18,9 @@ ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, m
 	AddControl( new Listbox( FillWidth(), FillHeight() ), "Resources" );
 	Create( L"Resource Browser", x, y, nCmdShow );
 }
-										   
+									
+using namespace ui;
+
 void ResourceBrowser::UpdateResourceTypes()
 {
 	Combobox* types = GetControl< Combobox* >( "Types" );

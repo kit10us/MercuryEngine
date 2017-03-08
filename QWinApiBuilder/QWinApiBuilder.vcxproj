@@ -18,34 +18,83 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="create\container\Create_Canvas.cpp" />
+    <ClCompile Include="create\container\Create_Container.cpp" />
+    <ClCompile Include="create\container\Create_StackPanel.cpp" />
+    <ClCompile Include="create\Create_Button.cpp" />
+    <ClCompile Include="create\Create_Combobox.cpp" />
+    <ClCompile Include="create\Create_Control.cpp" />
+    <ClCompile Include="create\Create_Edit.cpp" />
+    <ClCompile Include="create\Create_Listbox.cpp" />
+    <ClCompile Include="create\Create_Richtext.cpp" />
+    <ClCompile Include="create\Create_Static.cpp" />
+    <ClCompile Include="create\Create_Treeview.cpp" />
+    <ClCompile Include="ui\Button.cpp" />
+    <ClCompile Include="ui\Combobox.cpp" />
+    <ClCompile Include="ui\Control.cpp" />
+    <ClCompile Include="ui\Edit.cpp" />
+    <ClCompile Include="ui\Listbox.cpp" />
+    <ClCompile Include="ui\Richtext.cpp" />
+    <ClCompile Include="ui\Static.cpp" />
+    <ClCompile Include="ui\Treeview.cpp" />
+    <ClCompile Include="ui\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="create\container\Create_Canvas.h" />
+    <ClInclude Include="create\container\Create_Container.h" />
+    <ClInclude Include="create\container\Create_StackPanel.h" />
+    <ClInclude Include="create\Create_Button.h" />
+    <ClInclude Include="create\Create_Combobox.h" />
+    <ClInclude Include="create\Create_Control.h" />
+    <ClInclude Include="create\Create_Edit.h" />
+    <ClInclude Include="create\Create_IControl.h" />
+    <ClInclude Include="create\Create_Listbox.h" />
+    <ClInclude Include="create\Create_Richtext.h" />
+    <ClInclude Include="create\Create_Static.h" />
+    <ClInclude Include="create\Create_Treeview.h" />
+    <ClInclude Include="ui\Builder.h" />
+    <ClInclude Include="ui\Button.h" />
+    <ClInclude Include="ui\Combobox.h" />
+    <ClInclude Include="ui\Control.h" />
+    <ClInclude Include="ui\Edit.h" />
+    <ClInclude Include="ui\IControl.h" />
+    <ClInclude Include="ui\IWIndow.h" />
+    <ClInclude Include="ui\Listbox.h" />
+    <ClInclude Include="ui\POD.h" />
+    <ClInclude Include="ui\Richtext.h" />
+    <ClInclude Include="ui\Static.h" />
+    <ClInclude Include="ui\Treeview.h" />
+    <ClInclude Include="ui\Window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{94A44287-4B89-4BAA-81D8-E754F1AB85B1}</ProjectGuid>
+    <ProjectGuid>{C3F94FE1-D15A-4B00-BBEB-E1E8A87BB55D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MEEditor</RootNamespace>
+    <RootNamespace>QWinApiBuilder</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -58,33 +107,24 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\MercuryEngine\MEExtensionPropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\MercuryEngine\MEExtensionPropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\MercuryEngine\MEExtensionPropertySheet.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\MercuryEngine\MEExtensionPropertySheet.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\extensions\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,12 +132,11 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;MEEDITOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;../MercuryEngine;../unify;../QXML/include;../QJson/source;../ResourceManager;../QWinApiBuilder</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;..\unify\;..\QXML\source;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,11 +145,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;MEEDITOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,14 +159,13 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MEEDITOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;../MercuryEngine;../unify;../QXML/include;../QJson/source;../ResourceManager;../QWinApiBuilder</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;..\unify\;..\QXML\source;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,34 +176,14 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;MEEDITOR_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="MEEditor.cpp" />
-    <ClCompile Include="meedr\EngineMain.cpp" />
-    <ClCompile Include="meedr\InputBrowser.cpp" />
-    <ClCompile Include="meedr\LogViewer.cpp" />
-    <ClCompile Include="meedr\ResourceBrowser.cpp" />
-    <ClCompile Include="meedr\SceneViewer.cpp" />
-    <ClCompile Include="meedr\ScriptEditor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MEEditor.h" />
-    <ClInclude Include="meedr\EngineMain.h" />
-    <ClInclude Include="meedr\InputBrowser.h" />
-    <ClInclude Include="meedr\LogViewer.h" />
-    <ClInclude Include="meedr\ResourceBrowser.h" />
-    <ClInclude Include="meedr\SceneViewer.h" />
-    <ClInclude Include="meedr\ScriptEditor.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

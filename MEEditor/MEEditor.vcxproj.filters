@@ -9,77 +9,17 @@
     <ClCompile Include="meedr\EngineMain.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
-    <ClCompile Include="meedr\ui\Control.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\ui\Button.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\ui\Static.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\ui\Combobox.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\ui\Listbox.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
     <ClCompile Include="meedr\InputBrowser.cpp">
       <Filter>meedr</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\ui\Richtext.cpp">
-      <Filter>meedr\ui</Filter>
     </ClCompile>
     <ClCompile Include="meedr\ScriptEditor.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
-    <ClCompile Include="meedr\ui\Window.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\ui\Treeview.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
     <ClCompile Include="meedr\SceneViewer.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
-    <ClCompile Include="meedr\ui\Edit.cpp">
-      <Filter>meedr\ui</Filter>
-    </ClCompile>
     <ClCompile Include="meedr\LogViewer.cpp">
       <Filter>meedr</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Combobox.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Control.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Edit.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Listbox.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Richtext.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Static.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Treeview.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\Create_Button.cpp">
-      <Filter>meedr\create</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\container\Create_Container.cpp">
-      <Filter>meedr\create\container</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\container\Create_StackPanel.cpp">
-      <Filter>meedr\create\container</Filter>
-    </ClCompile>
-    <ClCompile Include="meedr\create\container\Create_Canvas.cpp">
-      <Filter>meedr\create\container</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,106 +30,22 @@
     <ClInclude Include="meedr\EngineMain.h">
       <Filter>meedr</Filter>
     </ClInclude>
-    <ClInclude Include="meedr\ui\IControl.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Control.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Button.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Static.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Combobox.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Listbox.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
     <ClInclude Include="meedr\InputBrowser.h">
       <Filter>meedr</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Richtext.h">
-      <Filter>meedr\ui</Filter>
     </ClInclude>
     <ClInclude Include="meedr\ScriptEditor.h">
       <Filter>meedr</Filter>
     </ClInclude>
-    <ClInclude Include="meedr\ui\Window.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\IWIndow.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\Treeview.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
     <ClInclude Include="meedr\SceneViewer.h">
       <Filter>meedr</Filter>
     </ClInclude>
-    <ClInclude Include="meedr\ui\Edit.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
     <ClInclude Include="meedr\LogViewer.h">
-      <Filter>meedr</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\ui\POD.h">
-      <Filter>meedr\ui</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Combobox.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Control.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Edit.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_IControl.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Listbox.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Richtext.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Static.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Treeview.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\Create_Button.h">
-      <Filter>meedr\create</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\container\Create_Container.h">
-      <Filter>meedr\create\container</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\container\Create_StackPanel.h">
-      <Filter>meedr\create\container</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\create\container\Create_Canvas.h">
-      <Filter>meedr\create\container</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\Create.h">
       <Filter>meedr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="meedr">
       <UniqueIdentifier>{1c9a8768-f165-448d-aa3e-54a5f70133bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="meedr\ui">
-      <UniqueIdentifier>{ffbc43e9-a2d9-4dbf-8ae2-9de8ccb43c4d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="meedr\create">
-      <UniqueIdentifier>{c3084502-852d-4f9a-ad08-b11ecde5945c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="meedr\create\container">
-      <UniqueIdentifier>{3f6cf7fa-1d24-46fd-93b3-38d2c34f80de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

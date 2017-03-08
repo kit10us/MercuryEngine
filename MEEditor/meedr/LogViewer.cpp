@@ -3,14 +3,13 @@
 
 #include <meedr/EngineMain.h>
 #include <meedr/LogViewer.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 
 #include <Richedit.h>
 #include <ShObjIdl.h>
 #include <vector>
 
 using namespace meedr;
-using namespace ui;
 
 LogViewer::LogViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"LogViewerWndClass" )
@@ -26,6 +25,8 @@ LogViewer::~LogViewer()
 {
 	m_game->DetachLogListener( this );
 }
+
+using namespace ui;
 
 void LogViewer::Log( std::string text )
 {

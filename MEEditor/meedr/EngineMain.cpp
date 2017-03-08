@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <meedr/EngineMain.h>
-#include <meedr/ui/Window.h>
+#include <ui/Window.h>
 #include <meedr/ResourceBrowser.h>
 #include <meedr/InputBrowser.h>
 #include <meedr/ScriptEditor.h>
@@ -10,7 +10,6 @@
 #include <meedr/LogViewer.h>
 
 using namespace meedr;
-using namespace ui;
 
 EngineMain::EngineMain( me::IGame * game )
 	: Window( (HWND)game->GetOSParameters().hWnd, L"EngineMainClass" )
@@ -47,6 +46,8 @@ me::IGame * EngineMain::GetGame() const
 {
 	return m_game;
 }
+
+using namespace ui;
 
 void EngineMain::OpenResourceBrowser()
 {
