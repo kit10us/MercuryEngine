@@ -108,19 +108,19 @@ Object * GrowableObjectStack::GetObject( size_t index )
 }
 
 
-void GrowableObjectStack::Update( UpdateParams params, CameraCache & cameras )
+void GrowableObjectStack::Update( UpdateParams params )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->Update( params, cameras );
+		stack->Update( params );
 	}
 }
 
-void GrowableObjectStack::CollectRendering( RenderParams params, GeometryCacheSummation & summation )
+void GrowableObjectStack::CollectRendering( RenderParams params, CameraCache & cameraCache, GeometryCacheSummation & summation )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->CollectRendering( params, summation );
+		stack->CollectRendering( params, cameraCache, summation );
 	}
 }
 

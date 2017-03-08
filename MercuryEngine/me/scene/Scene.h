@@ -18,15 +18,6 @@ namespace me
 {
 	namespace scene
 	{
-		// For backups
-		enum RenderListStates
-		{
-			STATE_RENDER = 0,
-			STATE_LIGHTING,
-			STATE_ZWRITEENABLE,
-			STATE_COUNT,
-		};
-
 		class Scene
 		{
 		public:
@@ -93,7 +84,6 @@ namespace me
 			std::list< ISceneComponent::ptr > m_components;
 
 			IObjectAllocator::ptr m_objectStack;
-			CameraCache m_cameras;
 
 			bool m_inited;
 			bool m_started;

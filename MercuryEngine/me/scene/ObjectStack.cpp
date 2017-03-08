@@ -119,7 +119,7 @@ Object * ObjectStack::GetObject( size_t index )
 	return &m_objects[ index ];
 }
 
-void ObjectStack::Update( UpdateParams params, CameraCache & cameras )
+void ObjectStack::Update( UpdateParams params )
 {
 	for( auto && object : m_newObjects )
 	{
@@ -132,14 +132,14 @@ void ObjectStack::Update( UpdateParams params, CameraCache & cameras )
 	{
 		updateable->OnUpdate( params );
 	}
+}
 
+void ObjectStack::CollectRendering( RenderParams params, CameraCache & cameras, GeometryCacheSummation & summation )
+{					  
 	for( auto camera : m_cameras )
 	{
 		cameras.push_back( camera );
 	}
-}
 
-void ObjectStack::CollectRendering( RenderParams params, GeometryCacheSummation & summation )
-{					  
 	m_geometries.Sum( summation );
 }

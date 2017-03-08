@@ -33,8 +33,8 @@ namespace me
 			Object * FindObject( std::string name ) override;
 			Object * GetObject( size_t index ) override;
 
-			void Update( UpdateParams params, CameraCache & cameras ) override;
-			void CollectRendering( RenderParams params, GeometryCacheSummation & summation ) override;
+			void Update( UpdateParams params ) override;
+			void CollectRendering( RenderParams params, CameraCache & cameras, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;

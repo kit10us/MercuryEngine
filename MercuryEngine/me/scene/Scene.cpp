@@ -85,8 +85,7 @@ void Scene::Update( UpdateParams params )
 		}
 	}
 
-	m_cameras.clear();
-	m_objectStack->Update( params, m_cameras );
+	m_objectStack->Update( params );
 }
 
 void Scene::Render( RenderParams params )
@@ -105,11 +104,12 @@ void Scene::Render( RenderParams params )
 		return;
 	}
 
+	CameraCache cameras;
 	GeometryCacheSummation summation;
-	m_objectStack->CollectRendering( params, summation );
+	m_objectStack->CollectRendering( params, cameras, summation );
 						 
 	// Render all geometry for each camera...
-	for( auto camera : m_cameras )
+	for( auto camera : cameras )
 	{
 		if( camera.camera->GetRenderer() != params.renderer->GetIndex() ) continue;
 

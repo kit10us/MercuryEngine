@@ -31,8 +31,8 @@ namespace me
 			virtual Object * FindObject( std::string name ) = 0;
 			virtual Object * GetObject( size_t index ) = 0;
 
-			virtual void Update( UpdateParams params, CameraCache & cameraCache ) = 0;
-			virtual void CollectRendering( RenderParams params, GeometryCacheSummation & summation ) = 0;
+			virtual void Update( UpdateParams params ) = 0;
+			virtual void CollectRendering( RenderParams params, CameraCache & cameraCache, GeometryCacheSummation & summation ) = 0;
 		};
 	}
 }

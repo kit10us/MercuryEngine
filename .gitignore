@@ -61,3 +61,5 @@ intermediate/
 /MercuryTests/02tests_feature/02Test09 - Motivator/Debug
 /MercuryTests/07tests_Physics/07Test02 - PhysXPlayer/Debug
 /BlockWorlds/run_dir/log.txt
+/extensions/*.iobj
+/extensions/*.ipdb
