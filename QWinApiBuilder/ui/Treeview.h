@@ -12,6 +12,7 @@ namespace ui
 	{
 	public:		   			
 		Treeview( HWND parent, HWND handle, create::IControl * createControl );
+
 		~Treeview();
 	};
 }

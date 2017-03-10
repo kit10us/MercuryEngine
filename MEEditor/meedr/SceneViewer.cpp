@@ -47,10 +47,6 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Values: ", SizeToContentWidth(), DefaultHeight() ) );
 	AddControl( new ListView( 260, 200 ), "Values" );
-	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), SizeToContentHeight() ) );
-	AddControl( new Static( L"Value: ", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( 160, DefaultHeight() ))->SetReadonly( true ), "ValueEdit" );
-
 	Create( L"Scene Viewer", x, y, nCmdShow );
 }
 
@@ -236,42 +232,9 @@ void SceneViewer::UpdateObject_ComponentValues()
 
 	for ( int i = 0; i < component->GetValueCount(); i++ )
 	{
-		values->InsertItem( 0, i, unify::Cast< std::wstring >( component->GetValueName( i ) ) );
-		values->InsertItem( 1, i, unify::Cast< std::wstring >( component->GetValue( i ) ) );
+		values->InsertItem( 0, i, unify::Cast< std::wstring >( component->GetValue( i ) ) );
+		values->InsertItem( 1, i, unify::Cast< std::wstring >( component->GetValueName( i ) ) );
 	}
-
-	UpdateObject_ComponentValueSelected();
-}
-
-void SceneViewer::UpdateObject_ComponentValueSelected()
-{
-	using namespace ui;
-
-	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
-	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
-	Listbox* components = GetControl< Listbox* >( "Components" );
-	ListView* values = GetControl< ListView* >( "Values" );
-	Edit* valueEdit = GetControl< Edit* >( "ValueEdit" );
-
-	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
-	int objectIndex = objectListbox->GetCurSel();
-	auto object = scene->GetObject( objectIndex );
-	int componentIndex = components->GetCurSel();
-	if ( componentIndex == -1 )
-	{
-		valueEdit->SetText( "" );
-	}
-	
-	auto component = object->GetComponent( componentIndex );
-
-	int valueIndex = values->GetSelectedItem();
-	if ( valueIndex == -1 )
-	{
-		valueEdit->SetText( "" );
-	}
-
-	valueEdit->SetText( component->GetValue( valueIndex ) );
 }
 
 void SceneViewer::OpenObjectComponent()
@@ -302,17 +265,61 @@ void SceneViewer::OpenObjectComponent()
 	}
 }				
 
+void SceneViewer::EditScene( bool edit )
+{
+	using namespace ui;
+
+	m_game->LogLine( "EditScene " + unify::Cast< std::string >( edit ) );
+
+	if ( edit )
+	{
+		// Check if we are already editing, if so, do nothing.
+		if ( m_editingLock )
+		{
+			return;
+		}
+		else
+		{
+			m_editingLock = m_game->LockUpdate( false );
+		}
+	}
+	else
+	{
+		// Check if we are already not editing, if so, do nothing.
+		if ( !m_editingLock )
+		{
+			return;
+		}
+		else
+		{
+			m_editingLock.reset();
+		}
+	}
+
+	auto editSceneButton = GetControl< Button* >( "EditScene" );
+	auto x = GetControl< Edit* >( "X" );
+	auto y = GetControl< Edit* >( "Y" );
+	auto z = GetControl< Edit* >( "Z" );
+	auto values = GetControl< ListView* >( "Values" );
+
+	editSceneButton->SetText( m_editingLock ? "Resume" : "Edit Scene" );
+	x->SetReadonly( m_editingLock ? false : true );
+	y->SetReadonly( m_editingLock ? false : true );
+	z->SetReadonly( m_editingLock ? false : true );
+}
+
 ui::IResult* SceneViewer::OnAfterCreate( ui::Params )
 {
 	using namespace ui;
 
+	ListView* values = GetControl< ListView* >( "Values" );
+	values->AddColumn( 0, L"Value", 80 );
+	values->AddColumn( 1, L"Name", 120 );
+	int a[] = { 1, 0 };
+	values->SetColumnOrderArray( 2, a );
+
 	UpdateSceneList();
 
-	ListView* values = GetControl< ListView* >( "Values" );
-	values->AddColumn( 0, L"Name", 80 );
-	values->AddColumn( 1, L"Value", 120 );
-
-	//m_updateData = std::thread( &SceneViewer::Timer_Update, this );
 	m_timer = SetTimer( 0, 10 );
 
 	return new Result(0);
@@ -353,44 +360,22 @@ ui::IResult* SceneViewer::OnControlCommand( ui::ControlMessage message )
 		switch ( message.code )
 		{
 		case LBN_SELCHANGE:
-		{
 			UpdateObject_ComponentValues();
 			return new Result( 0 );
-		}
 		case LBN_DBLCLK:
-		{
 			OpenObjectComponent();
 			return new Result( 0 );
-		}
 		}	  
 	}
 	else if ( message.IsFor( "EditScene" ) )
 	{
-		if ( m_editingLock )
-		{	
-			m_editingLock.reset();
-		}
-		else
+		switch ( (Button::Event)message.code )
 		{
-			m_editingLock = m_game->LockUpdate( false );
+		case Button::Event::Clicked:
+			m_game->LogLine( "here" );
+			EditScene( !m_editingLock );
+			return new Result( 0 );
 		}
-
-		message.control->SetText( m_editingLock ? "Resume" : "Edit Scene" );
-
-		Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
-		Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
-		Edit* x = GetControl< Edit* >( "X" );
-		Edit* y = GetControl< Edit* >( "Y" );
-		Edit* z = GetControl< Edit* >( "Z" );
-		Listbox* components = GetControl< Listbox* >( "Components" );
-		ListView* values = GetControl< ListView* >( "Values" );
-		Edit* value = GetControl< Edit* >( "Value" );
-
-		x->SetReadonly( m_editingLock ? false : true );
-		y->SetReadonly( m_editingLock ? false : true );
-		z->SetReadonly( m_editingLock ? false : true );
-
-		return new Result( 0 );
 	}
 
 
@@ -479,11 +464,33 @@ ui::IResult* SceneViewer::OnNotify( ui::NotifyMessage message )
 	using namespace ui;
 	if ( message.IsFor( "Values" ) )
 	{
-		unsigned int x = LVN_ITEMACTIVATE;
-		if ( message.code == LVN_ITEMACTIVATE )
+		switch( (ListView::Notify)message.code )
 		{
-			UpdateObject_ComponentValueSelected();
-			return new Result( 0 );
+		case ListView::Notify::EndLabelEditW:
+		{
+			m_game->LogLine( "EndLabelEditW" );
+			NMLVDISPINFO info = *(NMLVDISPINFO*)message.lParam;
+
+			Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+			Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+			Listbox* components = GetControl< Listbox* >( "Components" );
+			ListView* values = GetControl< ListView* >( "Values" );
+
+			int sceneIndex = sceneCombobox->GetCurSel();
+			auto scene = m_sceneManager->GetScene( sceneIndex );
+			int objectIndex = objectListbox->GetCurSel();
+			auto object = scene->GetObject( objectIndex );
+			int componentIndex = components->GetCurSel();
+			auto component = object->GetComponent( componentIndex );
+
+			int valueIndex = info.item.iItem;
+			component->SetValue( valueIndex, unify::Cast< std::string >( std::wstring( info.item.pszText ) ) );
+
+			return new Result( 1 );
+		}
+		case ListView::Notify::BeginLabelEditW:
+			m_game->LogLine( "BeginLabelEditW" );
+			return new Result( m_editingLock ? 0 : 1 );
 		}
 	}
 	return new Unhandled();

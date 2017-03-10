@@ -7,14 +7,17 @@
 const size_t _cast_buffer_size = 30;
 char _cast_buffer[ _cast_buffer_size ];
 
-// string to string
 template<>
 std::string unify::Cast( const std::string in )
 {
 	return in;
 }
 
-// X to string.
+template<>
+std::string unify::Cast( const std::wstring in )
+{
+	return std::string( in.begin(), in.end() );
+}
 
 template<>
 std::string unify::Cast( const bool in )
@@ -242,3 +245,8 @@ std::string unify::Cast( const char * text )
 	return std::string( text );
 }
 
+template<> 
+std::string unify::Cast( const wchar_t * text )
+{
+	return Cast< std::string >( std::wstring( text ) );
+}

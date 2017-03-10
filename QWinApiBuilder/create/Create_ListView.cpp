@@ -9,47 +9,47 @@
 using namespace create;
 
 ListView::ListView( DefaultWidth, DefaultHeight )
-	: Control( DefaultWidth::Value(), DefaultHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control( DefaultWidth::Value(), DefaultHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 }
 ListView::ListView( DefaultWidth, FillHeight heightWeight )
-	: Control(DefaultWidth::Value(), FillHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(DefaultWidth::Value(), FillHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 	SetFillHeightWeight( heightWeight.weight );
 }
 ListView::ListView( DefaultWidth, int height )
-	: Control(DefaultWidth::Value(), height ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(DefaultWidth::Value(), height ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 }
 
 ListView::ListView( FillWidth widthWeight, DefaultHeight )
-	: Control(FillWidth::Value(), DefaultHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(FillWidth::Value(), DefaultHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 ListView::ListView( FillWidth widthWeight, FillHeight heightWeight )
-	: Control(FillWidth::Value(), FillHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(FillWidth::Value(), FillHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 	SetFillWidthWeight( widthWeight.weight );
 	SetFillHeightWeight( heightWeight.weight );
 }
 ListView::ListView( FillWidth widthWeight, int height )
-	: Control(FillWidth::Value(), height ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(FillWidth::Value(), height ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 	SetFillWidthWeight( widthWeight.weight );
 }
 
 ListView::ListView( int width, DefaultHeight )
-	: Control(width, DefaultHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(width, DefaultHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 }
 ListView::ListView( int width, FillHeight heightWeight )
-	: Control(width, FillHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(width, FillHeight::Value() ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 	SetFillHeightWeight( heightWeight.weight );
 }
 ListView::ListView( int width, int height )
-	: Control(width, height ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ true }
+	: Control(width, height ), m_sorted{ false }, m_fullRowSelect{ false }, m_oneClickActivate{ false }
 {
 }
 

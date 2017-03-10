@@ -20,6 +20,7 @@ namespace unify
 
 	// From X to std::string...
 	template<> std::string Cast( const std::string in );
+	template<> std::string Cast( const std::wstring in );
 	template<> std::string Cast( const bool in );
 	template<> std::string Cast( const unsigned char in );
 	template<> std::string Cast( const char in );
@@ -55,6 +56,7 @@ namespace unify
 	template<> double Cast( const char * text );
 	template<> wchar_t * Cast( const char * text );
 	template<> std::string Cast( const char * text );
+	template<> std::string Cast( const wchar_t * text );
 
 	template< typename Target, typename Source >
 	Target polymorphic_downcast( Source source )

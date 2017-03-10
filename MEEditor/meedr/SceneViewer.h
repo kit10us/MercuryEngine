@@ -23,9 +23,10 @@ namespace meedr
 		void UpdateObject_Position( bool force = false );
 		void UpdateObject_Components( bool force = false);
 		void UpdateObject_ComponentValues();
-		void UpdateObject_ComponentValueSelected();
 		
 		void OpenObjectComponent();
+
+		void EditScene( bool edit );
 		
 		ui::IResult* OnAfterCreate( ui::Params ) override;
 		ui::IResult* OnDestroy( ui::Params params ) override;
