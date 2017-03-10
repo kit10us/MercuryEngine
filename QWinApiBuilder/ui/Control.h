@@ -11,9 +11,7 @@ namespace create
 }
 
 namespace ui
-{
-
-
+{				 
 	class Control : public IControl
 	{
 		friend class Window;

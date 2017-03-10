@@ -1,8 +1,12 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/EngineMain.h>
+#include <ui/Window.h>
 #include <meedr/SceneViewer.h>
+#include <meedr/ResourceBrowser.h>
+#include <meedr/InputBrowser.h>
+#include <meedr/ScriptEditor.h>
+#include <meedr/LogViewer.h>
 #include <ui/Builder.h>
 
 #include <Richedit.h>
@@ -13,11 +17,19 @@ using namespace meedr;
 
 #define USERMESSAGE_UPDATEDATA	0
 
-SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
-	: Window( parent, L"SceneViewerWndClass" )
+SceneViewer::SceneViewer( me::IGame * game )
+	: Window( (HWND)game->GetOSParameters().hWnd, L"SceneViewerWndClass" )
 	, m_game{ game }
+	, m_openChildren{ 0 } 	
 	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager", 0 ).get() ) }
+	, m_noScenes{ true }
 {
+	int nCmdShow = game->GetOSParameters().nCmdShow;
+	RECT rect{};
+	::GetWindowRect( GetParentHandle(), &rect );
+	int x = rect.right;
+	int y = rect.top;
+	
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 740, 480, 0 ) );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, SizeToContentWidth(), FillHeight() ) );
@@ -47,7 +59,26 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Values: ", SizeToContentWidth(), DefaultHeight() ) );
 	AddControl( new ListView( 260, 200 ), "Values" );
-	Create( L"Scene Viewer", x, y, nCmdShow );
+
+	AddMenu( new Menu(
+		{
+			{ "File", 
+				{
+					{ "Quit" }
+				}
+			},
+			{ "View ",
+				{
+					{ "Resources" },
+					{ "Inputs" },
+					{ "Log" }
+				}
+
+			}
+		}
+	) );
+
+	Create( L"Mercury Engine Viwer", x, y, nCmdShow );
 }
 
 SceneViewer::~SceneViewer()
@@ -55,11 +86,101 @@ SceneViewer::~SceneViewer()
 	KillTimer( m_timer );
 }
 
+me::IGame * SceneViewer::GetGame() const
+{
+	return m_game;
+}
+
+void SceneViewer::OpenResourceBrowser()
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( !m_resourceBrowser )
+	{
+		m_resourceBrowser.reset( new meedr::ResourceBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_resourceBrowser->ShowWindow( SW_RESTORE );
+		m_resourceBrowser->SetForegroundWindow();
+	}							  
+}	
+
+void SceneViewer::OpenInputBrowser()
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( !m_inputBrowser )
+	{
+		m_inputBrowser.reset( new InputBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_inputBrowser->ShowWindow( SW_RESTORE );
+		m_inputBrowser->SetForegroundWindow();
+	}
+}
+void SceneViewer::OpenScriptEditor( unify::Path source )
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( ! m_scriptEditor )
+	{
+		m_scriptEditor.reset( new ScriptEditor( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_scriptEditor->ShowWindow( SW_RESTORE );
+		m_scriptEditor->SetForegroundWindow();
+	}
+
+	ScriptEditor* scriptEditor = dynamic_cast<ScriptEditor*>(m_scriptEditor.get());
+	scriptEditor->LoadFile( source );
+}
+
+void SceneViewer::OpenLogViewer()
+{	
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.right;
+	int y = rect.top;
+	if ( ! m_logViewer )
+	{
+		m_logViewer.reset( new LogViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+		m_openChildren++;
+	}
+	else
+	{
+		m_logViewer->ShowWindow( SW_RESTORE );
+		m_logViewer->SetForegroundWindow();
+	}
+}
+
 void SceneViewer::UpdateSceneList()
 {	
 	using namespace ui;
 
 	Combobox * sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+
+	if ( m_sceneManager->GetSceneCount() == 0 )
+	{
+		m_noScenes = true;
+		return;
+	}
+	else
+	{
+		m_noScenes = false;
+	}
+
 
 	for ( size_t i = 0; i < m_sceneManager->GetSceneCount(); i++ )
 	{
@@ -83,6 +204,10 @@ void SceneViewer::UpdateObjectList()
 	
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
+	if ( ! scene )
+	{
+		return;
+	}
 														
 	for ( size_t i = 0; i < scene->ObjectCount(); i++ )
 	{
@@ -104,6 +229,11 @@ void SceneViewer::UpdateObject_All()
 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
+	if ( ! scene )
+	{
+		return;
+	}
+
 	int objectIndex = objectListbox->GetCurSel();
 	me::scene::Object* object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
 
@@ -328,8 +458,6 @@ ui::IResult* SceneViewer::OnAfterCreate( ui::Params )
 ui::IResult* SceneViewer::OnDestroy( ui::Params params )
 {
 	using namespace ui;
-
-	GetParent()->SendUserMessage( SCENEVIEWER_CLOSED, Params{} );
 	return new Result(0);
 }
 
@@ -455,6 +583,11 @@ ui::IResult* SceneViewer::OnControlCommand( ui::ControlMessage message )
 ui::IResult* SceneViewer::OnTimer( ui::TimerMessage message )
 {
 	using namespace ui;
+	if ( m_noScenes )
+	{
+		UpdateSceneList();
+	}
+
 	UpdateObject_Position();
 	return new Result( 0 );
 }
@@ -492,6 +625,68 @@ ui::IResult* SceneViewer::OnNotify( ui::NotifyMessage message )
 			m_game->LogLine( "BeginLabelEditW" );
 			return new Result( m_editingLock ? 0 : 1 );
 		}
+	}
+	return new Unhandled();
+}					   
+
+ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
+{
+	using namespace ui;
+
+	if ( message.IsFor( "Quit" ) )
+	{
+		m_game->Quit();
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "Resources" ) )
+	{
+		OpenResourceBrowser();
+		return new Result( 0 );
+	}
+	else if ( message.IsFor(  "Inputs" ) )
+	{
+		OpenInputBrowser();
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "ScriptEditor" ) )
+	{
+		OpenScriptEditor( unify::Path() );
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "Log" ) )
+	{
+		OpenLogViewer();
+		return new Result( 0 );
+	}
+
+	return new Unhandled();
+}
+
+ui::IResult* SceneViewer::OnUserMessage( ui::UserMessageData message )
+{
+	using namespace ui;
+
+	switch ( message.message )
+	{
+	case RESOURCEBROWSER_CLOSED:
+		m_resourceBrowser.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case INPUTBROWSER_CLOSED:
+		m_inputBrowser.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case SCRIPTEDITOR_CLOSED:
+		m_scriptEditor.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case LOGVIEWER_CLOSED:
+		m_logViewer.reset();
+		m_openChildren--;
+		return new Result( 0 );
+	case SCRIPTEDITOR_OPEN:
+		OpenScriptEditor( message.params.lParam ? unify::Path( (char*)message.params.lParam ) : unify::Path() );
+		return new Result( 0 );
 	}
 	return new Unhandled();
 }

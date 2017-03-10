@@ -8,13 +8,26 @@
 #include <ui/Window.h>
 #include <thread>
 
+#define RESOURCEBROWSER_CLOSED	0
+#define INPUTBROWSER_CLOSED		1
+#define SCRIPTEDITOR_CLOSED		2
+#define SCRIPTEDITOR_OPEN		3
+#define LOGVIEWER_CLOSED		4
+
 namespace meedr
 {
 	class SceneViewer : public ui::Window
 	{
 	public:
-		SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
+		SceneViewer::SceneViewer( me::IGame * game );
 		~SceneViewer();
+
+		me::IGame * GetGame() const;
+
+		void OpenResourceBrowser();
+		void OpenInputBrowser();
+		void OpenScriptEditor( unify::Path source );
+		void OpenLogViewer();
 
 		void UpdateSceneList();
 		void UpdateObjectList();
@@ -33,11 +46,19 @@ namespace meedr
 		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
 		ui::IResult* OnTimer( ui::TimerMessage message ) override;
 		ui::IResult* OnNotify( ui::NotifyMessage message ) override;
+		ui::IResult* OnMenuCommand( ui::message::MenuCommand message ) override;
+		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;
 
 	private:
 		me::IGame * m_game;
+		int m_openChildren;
+		IWindow::ptr m_resourceBrowser;
+		IWindow::ptr m_inputBrowser;
+		IWindow::ptr m_scriptEditor;
+		IWindow::ptr m_logViewer;
 		me::scene::SceneManager * m_sceneManager;
 		UINT_PTR m_timer;
 		me::UpdateLock::ptr m_editingLock;
+		bool m_noScenes;
 	};
 }

@@ -6,9 +6,6 @@
     <ClCompile Include="meedr\ResourceBrowser.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
-    <ClCompile Include="meedr\EngineMain.cpp">
-      <Filter>meedr</Filter>
-    </ClCompile>
     <ClCompile Include="meedr\InputBrowser.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
@@ -25,9 +22,6 @@
   <ItemGroup>
     <ClInclude Include="MEEditor.h" />
     <ClInclude Include="meedr\ResourceBrowser.h">
-      <Filter>meedr</Filter>
-    </ClInclude>
-    <ClInclude Include="meedr\EngineMain.h">
       <Filter>meedr</Filter>
     </ClInclude>
     <ClInclude Include="meedr\InputBrowser.h">

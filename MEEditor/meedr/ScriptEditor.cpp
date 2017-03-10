@@ -1,7 +1,7 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/EngineMain.h>
+#include <meedr/SceneViewer.h>
 #include <meedr/ScriptEditor.h>
 #include <ui/Window.h>
 
@@ -22,11 +22,11 @@ ScriptEditor::ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGa
 	AddControl( new Richtext( FillWidth(), FillHeight() ), "Text" );
 	Window::Create( L"Script Editor", x, y, nCmdShow );
 }
-
-using namespace ui;			  
-
+				   
 void ScriptEditor::LoadFile( unify::Path path )
 {
+	using namespace ui;			  
+
 	Richtext* text = GetControl< Richtext* >( "Text" );
 
 	if ( path.Empty() )
@@ -114,26 +114,33 @@ void ScriptEditor::LoadFile( unify::Path path )
 		*/
 }
 
-IResult* ScriptEditor::OnCreate( Params params )
+ui::IResult* ScriptEditor::OnCreate( ui::Params params )
 {
+	using namespace ui;			  
 	return new Result( 0 );
 }
 
-IResult* ScriptEditor::OnAfterCreate( Params params )
+ui::IResult* ScriptEditor::OnAfterCreate( ui::Params params )
 {
+	using namespace ui;			  
+
 	Button* save = GetControl< Button* >( "save" );
 	save->SetEnable( false );
 	return new Result( 0 );
 }
 
-IResult* ScriptEditor::OnDestroy( Params params )
+ui::IResult* ScriptEditor::OnDestroy( ui::Params params )
 {
+	using namespace ui;			  
+
 	GetParent()->SendUserMessage( SCRIPTEDITOR_CLOSED, Params{} );
 	return new Result(0);
 }
 
-IResult* ScriptEditor::OnControlCommand( ControlMessage message )
+ui::IResult* ScriptEditor::OnControlCommand( ui::ControlMessage message )
 {
+	using namespace ui;			  
+
 	if ( message.IsFor( "Save" ) )
 	{
 		return new Result( 0 );

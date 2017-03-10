@@ -20,6 +20,8 @@
 
 namespace ui
 {
+	class Menu;
+
 	struct Message
 	{
 		HWND handle;
@@ -58,6 +60,8 @@ namespace ui
 			return unify::StringIs( control->GetName(), _name );
 		}
 	};
+
+
 					   
 	struct TimerMessage
 	{

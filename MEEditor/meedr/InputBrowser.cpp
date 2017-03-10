@@ -1,7 +1,7 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/EngineMain.h>
+#include <meedr/SceneViewer.h>
 #include <meedr/InputBrowser.h>
 
 using namespace meedr;

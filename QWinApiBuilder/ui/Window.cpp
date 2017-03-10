@@ -9,76 +9,6 @@
 
 using namespace ui;
 
-/*
-namespace
-{
-	LRESULT CALLBACK Builder_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
-	{
-		static std::map< HWND, IWindow* > s_windows;
-		IWindow * window = nullptr;
-		{
-			auto itr = s_windows.find( hWnd );
-			window = itr != s_windows.end() ? itr->second : nullptr;
-		}								   
-
-		IResult::ptr result;
-		switch ( message )
-		{
-		case WM_CREATE:
-			window = (IWindow*)((CREATESTRUCT*)lParam)->lpCreateParams;
-			s_windows[ hWnd ] = window;
-			window->OnCreate( { wParam, lParam } );
-			result.reset( new Unhandled() );
-			break;
-		case WM_DESTROY:
-			result.reset( window->OnDestroy( { wParam, lParam } ) );
-			s_windows.erase( hWnd );			
-			break;
-		case WM_INITDIALOG:
-			result.reset( window->OnInitDialog( { wParam, lParam } ) );
-			break;
-		case WM_PAINT:
-			result.reset( window->OnPaint( { wParam, lParam } ) );
-			break;
-		case WM_COMMAND:
-		{
-			int controlId = (int)LOWORD( wParam );
-			int controlMessage = (int)HIWORD( wParam );
-			if ( controlId != 0 )
-			{
-				IControl* control = window->GetControl( controlId );
-				if ( control )
-				{
-					result.reset( window->OnControlCommand( { control, controlMessage } ) );
-				}
-			}
-			break;					  
-		struct UserMessage
-		{	
-			int message;
-			Params params;
-		};
-		}
-		default:
-			if ( message >= WM_USER )
-			{
-				result.reset( window->OnUserMessage( UserMessageData{ (int)message - WM_USER, { wParam, lParam } } ) );
-			}
-			break;
-		}
-
-		if ( ! result || result->IsUnhandled() )
-		{
-			return DefWindowProc( hWnd, message, wParam, lParam );
-		}
-		else
-		{
-			return result->GetResult();
-		}
-	}
-}
-*/
-
 Window::Window( HWND parent, std::wstring className )
 	: m_hInstance{ (HINSTANCE)GetWindowLong( parent, GWL_HINSTANCE ) }
 	, m_className{ className }
@@ -174,6 +104,12 @@ void Window::AddControl( create::IControl * control, std::string name )
 	control->SetID( id );
 }
 
+void Window::AddMenu( create::Menu * menu )
+{
+	assert( menu );
+	m_menu.reset( menu );
+}
+
 void Window::StepDown( int steps )
 {
 	while ( steps-- )
@@ -201,6 +137,12 @@ HWND Window::Create( std::wstring title, int x, int y, int nCmdShow )
 	int paddingWidth = 8 * 2;
 	int paddingHeight = 40;// GetSystemMetrics( SM_CYEDGE ) + GetSystemMetrics( SM_CYSIZE ) + GetSystemMetrics( SM_CXPADDEDBORDER ) * 2;
 
+	HMENU menu{};
+	if ( m_menu )
+	{
+		menu = m_menu->Create();
+	}					 
+
 	m_handle = CreateWindowW(
 		m_className.c_str(),
 		title.c_str(),
@@ -210,7 +152,7 @@ HWND Window::Create( std::wstring title, int x, int y, int nCmdShow )
 		m_rootContainer->GetActualWidth() + paddingWidth,
 		m_rootContainer->GetActualHeight() + paddingHeight,
 		m_parentHandle, 
-		0, 
+		menu, 
 		m_hInstance, 
 		this
 	);			
@@ -255,6 +197,40 @@ IControl* Window::GetControl( std::string name ) const
 	auto itr = m_controlsByName.find( name );
 	return itr == m_controlsByName.end() ? nullptr : itr->second.get()->GetControl();
 }
+
+Menu* Window::GetMenu( HMENU handle )
+{
+	if ( handle == 0 || ! m_menu )
+	{
+		return nullptr;
+	}
+
+	return m_menu->GetMenu( handle );
+}
+
+MenuItem* Window::GetMenuItem( int id )
+{
+	if ( !m_menu )
+	{
+		return nullptr;
+	}
+	else
+	{
+		return m_menu->GetMenuItem( id );
+	}
+}
+
+MenuItem* Window::GetMenuItem( std::string name )
+{
+	if ( !m_menu )
+	{
+		return nullptr;
+	}
+	else
+	{
+		return m_menu->GetMenuItem( name );
+	}
+}																	 
 
 void Window::GetWindowRect( RECT & rect ) const
 {	 
@@ -356,3 +332,14 @@ IResult* Window::OnTimer( TimerMessage message )
 {
 	return new Unhandled();
 }
+
+IResult* Window::OnMenuSelect( message::MenuSelect message )
+{
+	return new Unhandled();
+}
+
+IResult* Window::OnMenuCommand( message::MenuCommand message )
+{
+	return new Unhandled();
+}
+

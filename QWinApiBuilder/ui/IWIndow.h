@@ -4,10 +4,13 @@
 #pragma once
 
 #include <ui/POD.h>
+#include <ui/message/Messages.h>
 #include <memory>
 
 namespace ui
 {
+	class MenuItem;
+
 	class IWindow
 	{
 	public:
@@ -23,6 +26,10 @@ namespace ui
 
 		virtual IControl* GetControl( int controlID ) const = 0;
 		virtual IControl* GetControl( std::string name ) const = 0;
+
+		virtual Menu* GetMenu( HMENU handle ) = 0;
+		virtual MenuItem* GetMenuItem( int id ) = 0;
+		virtual MenuItem* GetMenuItem( std::string name ) = 0;
 
 	public: // WinApi functions...
 		virtual void GetWindowRect( RECT & rect ) const = 0;
@@ -45,5 +52,7 @@ namespace ui
 		virtual IResult* OnUserMessage( UserMessageData message ) = 0;
 		virtual IResult* OnNotify( NotifyMessage message ) = 0;
 		virtual IResult* OnTimer( TimerMessage message ) = 0;
+		virtual IResult* OnMenuSelect( message::MenuSelect message ) = 0;
+		virtual IResult* OnMenuCommand( message::MenuCommand message ) = 0;
 	};
 }

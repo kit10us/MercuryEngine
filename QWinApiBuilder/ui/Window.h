@@ -12,6 +12,7 @@
 #include <ui/Treeview.h>
 #include <ui/Edit.h>			
 #include <ui/ListView.h>
+#include <ui/Menu.h>
 #include <ui/IWindow.h>
 #include <unify/String.h>
 #include <memory>
@@ -32,6 +33,9 @@ namespace ui
 		HWND m_handle;
 		create::container::Container * m_rootContainer;
 		create::container::Container * m_currentParent;
+		std::map< int, create::IControl::ptr > m_controls;
+		std::map< std::string, create::IControl::ptr, unify::CaseInsensitiveLessThanTest > m_controlsByName;
+		create::Menu::ptr m_menu;
 
 	public:
 		Window( HWND parent, std::wstring className );
@@ -40,6 +44,7 @@ namespace ui
 
 		void AddContainer( create::container::Container * container );
 		void AddControl( create::IControl * control, std::string name = std::string() );
+		void AddMenu( create::Menu * menu );
 
 		/// <summary>
 		/// Step down from a container to it's n'th parent.
@@ -52,11 +57,6 @@ namespace ui
 		IWindow * GetParent() const override;
 		HWND GetParentHandle() const override;
 
-		// -- Built data --
-	private:
-		std::map< int, create::IControl::ptr > m_controls;
-		std::map< std::string, create::IControl::ptr, unify::CaseInsensitiveLessThanTest > m_controlsByName;
-
 	public:
 		HINSTANCE GetInstance() const override;
 			
@@ -68,6 +68,10 @@ namespace ui
 
 		template< typename T >
 		T GetControl( std::string name ) const;
+
+		Menu* GetMenu( HMENU handle );
+		MenuItem* GetMenuItem( int id );
+		MenuItem* GetMenuItem( std::string name );
 
 	public: // WinApi functions...
 		void GetWindowRect( RECT & rect ) const override;
@@ -90,6 +94,9 @@ namespace ui
 		IResult* OnUserMessage( UserMessageData message ) override;
 		IResult* OnNotify( NotifyMessage message ) override;
 		IResult* OnTimer( TimerMessage message ) override;
+		IResult* OnMenuSelect( message::MenuSelect message ) override;
+		IResult* OnMenuCommand( message::MenuCommand message ) override;
+
 	};
 
 	template< typename T >

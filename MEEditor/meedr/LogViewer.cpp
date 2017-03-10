@@ -1,7 +1,7 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/EngineMain.h>
+#include <meedr/SceneViewer.h>
 #include <meedr/LogViewer.h>
 #include <ui/Window.h>
 
@@ -26,37 +26,45 @@ LogViewer::~LogViewer()
 	m_game->DetachLogListener( this );
 }
 
-using namespace ui;
-
 void LogViewer::Log( std::string text )
 {
+	using namespace ui;			  
+
 	Richtext* logText = GetControl< Richtext* >( "LogText" );
 	std::string currentText( logText->GetText() );
 	logText->SetText( currentText + text  );
 }
 
-IResult* LogViewer::OnCreate( Params params )
+ui::IResult* LogViewer::OnCreate( ui::Params params )
 {
+	using namespace ui;			  
+
 	return new Result( 0 );
 }
 
-IResult* LogViewer::OnAfterCreate( Params params )
+ui::IResult* LogViewer::OnAfterCreate( ui::Params params )
 {
+	using namespace ui;			  
+
 	Richtext* logText = GetControl< Richtext* >( "LogText" );
 	logText->SetText( "" );
 	m_game->AttachLogListener( this );
 	return new Result( 0 );
 }
 
-IResult* LogViewer::OnDestroy( Params params )
+ui::IResult* LogViewer::OnDestroy( ui::Params params )
 {
+	using namespace ui;			  
+
 	m_game->DetachLogListener( this );
 	GetParent()->SendUserMessage( LOGVIEWER_CLOSED, Params{}  );
 	return new Result( 0 );
 }
 
-IResult* LogViewer::OnControlCommand( ControlMessage message )
+ui::IResult* LogViewer::OnControlCommand( ui::ControlMessage message )
 {
+	using namespace ui;			  
+
 	/*
 	if ( message.IsFor( "Save" ) )
 	{

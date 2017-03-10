@@ -28,6 +28,7 @@
     <ClCompile Include="create\Create_Edit.cpp" />
     <ClCompile Include="create\Create_Listbox.cpp" />
     <ClCompile Include="create\Create_ListView.cpp" />
+    <ClCompile Include="create\Create_Menu.cpp" />
     <ClCompile Include="create\Create_Richtext.cpp" />
     <ClCompile Include="create\Create_Static.cpp" />
     <ClCompile Include="create\Create_Treeview.cpp" />
@@ -38,6 +39,8 @@
     <ClCompile Include="ui\Edit.cpp" />
     <ClCompile Include="ui\Listbox.cpp" />
     <ClCompile Include="ui\ListView.cpp" />
+    <ClCompile Include="ui\Menu.cpp" />
+    <ClCompile Include="ui\MenuItem.cpp" />
     <ClCompile Include="ui\Richtext.cpp" />
     <ClCompile Include="ui\Static.cpp" />
     <ClCompile Include="ui\Treeview.cpp" />
@@ -54,6 +57,7 @@
     <ClInclude Include="create\Create_IControl.h" />
     <ClInclude Include="create\Create_Listbox.h" />
     <ClInclude Include="create\Create_ListView.h" />
+    <ClInclude Include="create\Create_Menu.h" />
     <ClInclude Include="create\Create_Richtext.h" />
     <ClInclude Include="create\Create_Static.h" />
     <ClInclude Include="create\Create_Treeview.h" />
@@ -67,6 +71,11 @@
     <ClInclude Include="ui\IWIndow.h" />
     <ClInclude Include="ui\Listbox.h" />
     <ClInclude Include="ui\ListView.h" />
+    <ClInclude Include="ui\Menu.h" />
+    <ClInclude Include="ui\MenuItem.h" />
+    <ClInclude Include="ui\message\MenuCommand.h" />
+    <ClInclude Include="ui\message\MenuSelect.h" />
+    <ClInclude Include="ui\message\Messages.h" />
     <ClInclude Include="ui\POD.h" />
     <ClInclude Include="ui\Richtext.h" />
     <ClInclude Include="ui\Static.h" />

@@ -1,7 +1,7 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <meedr/EngineMain.h>
+#include <meedr/SceneViewer.h>
 #include <meedr/ResourceBrowser.h>
 #include <ui/Window.h>
 #include <me/Geometry.h>
@@ -20,10 +20,10 @@ ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, m
 	Create( L"Resource Browser", x, y, nCmdShow );
 }
 									
-using namespace ui;
-
 void ResourceBrowser::UpdateResourceTypes()
 {
+	using namespace ui;			  
+
 	Combobox* types = GetControl< Combobox* >( "Types" );
 
 	// Clear contents...
@@ -44,6 +44,8 @@ void ResourceBrowser::UpdateResourceTypes()
 
 void ResourceBrowser::UpdateResourceList()
 {
+	using namespace ui;			  
+
 	Combobox* types = GetControl< Combobox* >( "Types" );
 	Listbox* resources = GetControl< Listbox* >( "Resources" );
 
@@ -113,6 +115,8 @@ void ResourceBrowser::UpdateResourceList()
 
 void ResourceBrowser::OpenResource()
 {
+	using namespace ui;			  
+
 	Combobox* types = GetControl< Combobox* >( "Types" );
 	Listbox* resources = GetControl< Listbox* >( "Resources" );
 
@@ -183,25 +187,33 @@ void ResourceBrowser::OpenResource()
 	}
 }
 
-IResult * ResourceBrowser::OnCreate( Params params )
+ui::IResult * ResourceBrowser::OnCreate( ui::Params params )
 {
+	using namespace ui;			  
+
 	return new Result( 0 );
 }
 
-IResult * ResourceBrowser::OnDestroy( Params params )
+ui::IResult * ResourceBrowser::OnDestroy( ui::Params params )
 {
+	using namespace ui;			  
+
 	GetParent()->SendUserMessage( RESOURCEBROWSER_CLOSED, Params{ 0, 0 } );
 	return new Result( 0 );
 }
 
-IResult * ResourceBrowser::OnAfterCreate( Params )
+ui::IResult * ResourceBrowser::OnAfterCreate( ui::Params )
 {
+	using namespace ui;			  
+
 	UpdateResourceTypes();
 	return new Result( 0 );
 }
 
-IResult * ResourceBrowser::OnControlCommand( ControlMessage message )
+ui::IResult * ResourceBrowser::OnControlCommand( ui::ControlMessage message )
 {
+	using namespace ui;			  
+
 	if ( message.IsFor( "Types" ) )
 	{
 		switch ( message.code )

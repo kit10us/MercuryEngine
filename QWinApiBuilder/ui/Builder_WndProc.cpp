@@ -4,6 +4,7 @@
 #pragma once
 
 #include <ui/Builder_WndProc.h>
+#include <ui/Menu.h>
 #include <map>
 #include <cassert>
 
@@ -45,14 +46,25 @@ namespace ui
 			break;
 		case WM_COMMAND:
 		{
-			int controlId = (int)LOWORD( wParam );
-			int controlMessage = (int)HIWORD( wParam );
-			if ( controlId != 0 )
+			// Check if the message is for menu items...
+			if ( ! lParam )
 			{
-				IControl* control = window->GetControl( controlId );
-				if ( control )
+				int menuItemId = LOWORD( wParam );
+				MenuItem* item = window->GetMenuItem( menuItemId );
+				result.reset( window->OnMenuCommand( { item } ) );
+			}
+			else
+			{
+
+				int controlId = (int)LOWORD( wParam );
+				int controlMessage = (int)HIWORD( wParam );
+				if ( controlId != 0 )
 				{
-					result.reset( window->OnControlCommand( { control, controlMessage } ) );
+					IControl* control = window->GetControl( controlId );
+					if ( control )
+					{
+						result.reset( window->OnControlCommand( { control, controlMessage } ) );
+					}
 				}
 			}
 			break;		
@@ -64,6 +76,19 @@ namespace ui
 			if ( control )
 			{
 				result.reset( window->OnNotify( NotifyMessage{ control, hdr->code, lParam } ) );
+			}
+			break;
+		}
+		case WM_MENUSELECT:
+		{
+			WORD idOrIndex = LOWORD( wParam );
+			WORD flags = HIWORD( wParam );
+			HMENU menuHandle = (HMENU)lParam;
+			Menu* menu = window->GetMenu( menuHandle );
+			if ( menu )
+			{
+				MenuItem* item = window->GetMenuItem( idOrIndex );
+				result.reset( window->OnMenuSelect( message::MenuSelect{ item, menu, flags } ) );
 			}
 			break;
 		}

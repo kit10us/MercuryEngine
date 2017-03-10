@@ -10,6 +10,9 @@
     <Filter Include="create\container">
       <UniqueIdentifier>{40552907-990c-4096-942e-ab5d35747453}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\message">
+      <UniqueIdentifier>{911d38e6-50c1-435d-9714-598234e89f30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="create\Create_Control.cpp">
@@ -79,6 +82,15 @@
       <Filter>ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\Builder_WndProc.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Menu.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Menu.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\MenuItem.cpp">
       <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -166,6 +178,24 @@
     </ClInclude>
     <ClInclude Include="ui\Builder_WndProc.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Menu.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Menu.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\MenuItem.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Messages.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\MenuSelect.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\MenuCommand.h">
+      <Filter>ui\message</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
