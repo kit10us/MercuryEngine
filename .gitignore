@@ -63,3 +63,4 @@ intermediate/
 /BlockWorlds/run_dir/log.txt
 /extensions/*.iobj
 /extensions/*.ipdb
+/QFindReplace/Debug

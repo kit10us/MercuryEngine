@@ -16,7 +16,11 @@ namespace me
 	public:
 		Lookup();
 
-		void AddValue( std::string name, std::string value );
+		bool AddValue( std::string name, std::string value );
+
+		bool SetValue( std::string name, std::string value );
+
+		bool SetValue( size_t index, std::string value );
 
 		bool Exists( std::string name ) const;
 		
@@ -24,11 +28,9 @@ namespace me
 		/// Returns the index for value with a specific name. Throws if not found, so ensure you test with Exists beforehand.
 		/// </summary>
 		size_t Find( std::string name ) const;
-		
-		bool SetValue( std::string name, std::string value );
+
 		std::string GetValue( std::string name ) const;
 
-		bool SetValue( size_t index, std::string value );
 		std::string GetValue( size_t index ) const;
 
 		size_t Count() const;

@@ -38,10 +38,10 @@ void Adventure::Startup()
 {	  
 	using namespace scene;
 
-	// Add textures we will need for our effects, and terrain generation/modification.
-	{
-		GetManager< ITexture >()->Add( "grass", "grass01.jpg", "" );
-	}
+	//ITexture::ptr invalid = GetManager< ITexture >()->Find( "invalid" );
+	GetManager< ITexture >()->Add( "invalid", "borgcube.bmp" );
+	GetManager< ITexture >()->Add( "sand", "sand.bmp" );
+	GetManager< ITexture >()->Add( "grass", "grass.bmp" );
 	
 	// Add the main scene.
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
@@ -61,22 +61,56 @@ void Adventure::Startup()
 	land->AddComponent( m_map );
 	land->GetFrame().MoveBy( { -20 * 2 * 0.5f, 0, -20 * 2 * 0.5f } );
 
+	// Reusable...
+	Terra::Parameters parameters;
+	parameters.SetSize( unify::Size< float >( 2, 2 ) );
+	parameters.SetPoints( unify::RowColumn< unsigned int >( 10, 10 ) );
+	parameters.SetConstant( 0.0f );	 
+
+
 	// Load an effect, then modify it to fit our needs.
+	{
+		Effect::ptr effect = GetManager< Effect >()->Add( "invalid", "EffectTextured.effect" );
+		effect->SetTexture( 0, GetManager< ITexture >()->Find( "invalid" ) );
+		parameters.SetEffect( effect );
+		parameters.SetTexArea( { 1.0f / 4 * 1, 1.0f / 4 * 1, 1.0f / 4 * 2, 1.0f / 4 * 2 } );
+
+		map->SetInvalidGeometry( Geometry::ptr( new Terra( GetOS()->GetRenderer( 0 ), parameters ) ) );
+	}
+
+	// Add a grass ground...
 	{
 		Effect::ptr effect = GetManager< Effect >()->Add( "grass", "EffectTextured.effect" );
 		effect->SetTexture( 0, GetManager< ITexture >()->Find( "grass" ) );
-
-		Terra::Parameters parameters;
-		Terra * terra;
-		parameters.Reset();
-		parameters.SetSize( unify::Size< float >( 2, 2 ) );
 		parameters.SetEffect( effect );
-		parameters.SetPoints( unify::RowColumn< unsigned int >( 10, 10 ) );
-		parameters.SetConstant( 0.0f );
 		parameters.SetTexArea( unify::TexAreaFull() );
-		terra = new Terra( GetOS()->GetRenderer( 0 ), parameters );
-		map->SetInvalidGeometry( Geometry::ptr( terra ) );
+
+		GroundDesc::ptr ground( new GroundDesc{} );
+		ground->AddDefault( Geometry::ptr( new Terra( GetOS()->GetRenderer( 0 ), parameters ) ) );
+		map->AddGround( "grass", ground );
 	}
+
+	// Add a sand ground...
+	{
+		Effect::ptr effect = GetManager< Effect >()->Add( "sand", "EffectTextured.effect" );
+		effect->SetTexture( 0, GetManager< ITexture >()->Find( "sand" ) );
+		parameters.SetEffect( effect );
+		parameters.SetTexArea( { 1.0f / 4 * 1, 1.0f / 4 * 1, 1.0f / 4 * 2, 1.0f / 4 * 2 } );
+
+		GroundDesc::ptr ground( new GroundDesc{} );
+		ground->AddDefault( Geometry::ptr( new Terra( GetOS()->GetRenderer( 0 ), parameters ) ) );
+		map->AddGround( "sand", ground );
+	}
+
+	for ( int i = 0; i < map->GetSize().height && i < map->GetSize().width; i++ )
+	{
+		int xp = i;
+		int xn = map->GetSize().width - i - 1;
+		int y = i;
+		map->DrawOnMap( { xp, y }, "sand" );
+		map->DrawOnMap( { xn, y }, "sand" );
+	}
+
 
 	// Add a camera...
 	Object * camera = mainScene->NewObject( "camera" );

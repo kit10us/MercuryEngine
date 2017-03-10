@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Note: Index in vertex definition is arbatrary, and if included (which is suggested) is used as checking AND should start 0-->
+<pack>
+
+<geometry name="CastleMesh" type="mesh" source="castle1.x">
+<modify scale="0.5"/>
+<modify offset="5,2.5,-5"/>
+</geometry>
+
+<geometry name="Castle" type="group">
+<add geometry="CastleMesh"/>
+<add geometry="grass"/>
+</geometry>
+
+</pack>

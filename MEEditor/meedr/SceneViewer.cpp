@@ -17,11 +17,11 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	: Window( parent, L"SceneViewerWndClass" )
 	, m_game{ game }
 	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager", 0 ).get() ) }
-	, m_closing{ false }
 {
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 740, 480, 0 ) );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, SizeToContentWidth(), FillHeight() ) );
+	AddControl( new Button( L"Edit Scene", SizeToContentWidth(), DefaultHeight() ), "EditScene" );
 	AddControl( new Static( L"Scene:", SizeToContentWidth(), DefaultHeight() ) );
 	AddControl( new Combobox( DefaultWidth(), DefaultHeight() ), "SceneCombobox" );
 	AddControl( new Listbox( DefaultWidth(), FillHeight() ), "ObjectList" );
@@ -39,22 +39,30 @@ SceneViewer::SceneViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame
 	AddControl( new Static( L"z", SizeToContentWidth(), DefaultHeight() ) );
 	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "z" );
 	StepDown();
+	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), FillHeight() ) );
+	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Components: ", SizeToContentWidth(), DefaultHeight() ) );
 	AddControl( new Listbox( 260, 200 ), "Components" );
+	StepDown();
+	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
+	AddControl( new Static( L"Values: ", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( new ListView( 260, 200 ), "Values" );
+	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), SizeToContentHeight() ) );
+	AddControl( new Static( L"Value: ", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( (new Edit( 160, DefaultHeight() ))->SetReadonly( true ), "ValueEdit" );
+
 	Create( L"Scene Viewer", x, y, nCmdShow );
 }
 
-using namespace ui;
-
 SceneViewer::~SceneViewer()
-{
-	m_closing = true;
-	using namespace std::chrono_literals;
-	std::this_thread::sleep_for( 1s );
+{	
+	KillTimer( m_timer );
 }
 
 void SceneViewer::UpdateSceneList()
 {	
+	using namespace ui;
+
 	Combobox * sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 
 	for ( size_t i = 0; i < m_sceneManager->GetSceneCount(); i++ )
@@ -70,6 +78,8 @@ void SceneViewer::UpdateSceneList()
 
 void SceneViewer::UpdateObjectList()
 {
+	using namespace ui;
+
 	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 	Listbox* objectListbox = GetControl<Listbox*>( "ObjectList" );
 
@@ -86,44 +96,100 @@ void SceneViewer::UpdateObjectList()
 
 	objectListbox->SetCurSel( 0 );
 
-	UpdateObject();
+	UpdateObject_All();
 }
 
-void SceneViewer::UpdateObject()
+void SceneViewer::UpdateObject_All()
 {
+	using namespace ui;
 	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+	Edit* name = GetControl< Edit* >( "Name" );
+
+	int sceneIndex = sceneCombobox->GetCurSel();
+	auto scene = m_sceneManager->GetScene( sceneIndex );
+	int objectIndex = objectListbox->GetCurSel();
+	me::scene::Object* object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+
+	if ( ! object )
+	{
+		name->SetText( "" );
+	}
+	else
+	{
+		if ( name->GetText() != object->GetName() )
+		{
+			name->SetText( object->GetName() );
+		}
+	}
+
+	UpdateObject_Position( true );
+	UpdateObject_Components();
+}
+
+void SceneViewer::UpdateObject_Position( bool force )
+{
+	using namespace ui;
+
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+	Edit* x = GetControl< Edit* >( "X" );
+	Edit* y = GetControl< Edit* >( "Y" );
+	Edit* z = GetControl< Edit* >( "Z" );
 				  		 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
+	me::scene::Object* object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+							   
+	if ( force || ! m_editingLock )
+	{ // Shouldn't be editing
 
-	Edit* name = GetControl< Edit* >( "Name" );
-	Edit* x = GetControl< Edit* >( "X" );
-	Edit* y = GetControl< Edit* >( "Y" );
-	Edit* z = GetControl< Edit* >( "Z" );
-	Listbox* components = GetControl< Listbox* >( "Components" );
-	
-	// IF not object selected.
-	if ( objectIndex == -1 )
-	{
-		name->SetText( "" );
-		x->SetText( "" );
-		y->SetText( "" );
-		z->SetText( "" );
-		components->ResetContent();
-		return;
+		// If object is not selected.
+		if ( ! object )
+		{
+			x->SetText( "" );
+			y->SetText( "" );
+			z->SetText( "" );
+		}
+		else
+		{
+			unify::V3< float > position( object->GetFrame().GetPosition() );
+			std::string xs = unify::Cast< std::string >( position.x );
+			std::string ys = unify::Cast< std::string >( position.y );
+			std::string zs = unify::Cast< std::string >( position.z );
+
+			if ( x->GetText() != xs )
+			{
+				x->SetText( xs );
+			}
+
+			if ( y->GetText() != ys )
+			{
+				y->SetText( ys );
+			}
+
+			if ( z->GetText() != zs )
+			{
+				z->SetText( zs );
+			}
+		}
 	}
+}			  
 
-	auto object = scene->GetObject( objectIndex );
+void SceneViewer::UpdateObject_Components( bool force )
+{
+	using namespace ui;
 
-	name->SetText( object->GetName() );
-
-	unify::V3< float > position( object->GetFrame().GetPosition() );
-	x->SetText( unify::Cast< std::string >( position.x ) );
-	y->SetText( unify::Cast< std::string >( position.y ) );
-	z->SetText( unify::Cast< std::string >( position.z ) );
-
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+	Listbox* components = GetControl< Listbox* >( "Components" );
+				  		 
+	int sceneIndex = sceneCombobox->GetCurSel();
+	auto scene = m_sceneManager->GetScene( sceneIndex );
+	int objectIndex = objectListbox->GetCurSel();
+	me::scene::Object* object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+							   
 	components->ResetContent();
 	for ( int i = 0; i < object->ComponentCount(); i++ )
 	{
@@ -137,20 +203,96 @@ void SceneViewer::UpdateObject()
 		}
 		components->AddString( text );
 	}
+
+	// Select the first item in the list.
+	components->SetCurSel( 0 );
+
+	UpdateObject_ComponentValues();
 }
 
-void SceneViewer::OpenObjectComponent()
-{
+
+void SceneViewer::UpdateObject_ComponentValues()
+{	
+	using namespace ui;
+
 	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+	Listbox* components = GetControl< Listbox* >( "Components" );
+	ListView* values = GetControl< ListView* >( "Values" );
+
+	values->DeleteAllItems();
 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
 	auto object = scene->GetObject( objectIndex );
+	int componentIndex = components->GetCurSel();
+	if ( componentIndex == -1 )
+	{
+		return;
+	}
+
+	auto component = object->GetComponent( componentIndex );
+
+	for ( int i = 0; i < component->GetValueCount(); i++ )
+	{
+		values->InsertItem( 0, i, unify::Cast< std::wstring >( component->GetValueName( i ) ) );
+		values->InsertItem( 1, i, unify::Cast< std::wstring >( component->GetValue( i ) ) );
+	}
+
+	UpdateObject_ComponentValueSelected();
+}
+
+void SceneViewer::UpdateObject_ComponentValueSelected()
+{
+	using namespace ui;
+
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 	Listbox* components = GetControl< Listbox* >( "Components" );
+	ListView* values = GetControl< ListView* >( "Values" );
+	Edit* valueEdit = GetControl< Edit* >( "ValueEdit" );
+
+	int sceneIndex = sceneCombobox->GetCurSel();
+	auto scene = m_sceneManager->GetScene( sceneIndex );
+	int objectIndex = objectListbox->GetCurSel();
+	auto object = scene->GetObject( objectIndex );
+	int componentIndex = components->GetCurSel();
+	if ( componentIndex == -1 )
+	{
+		valueEdit->SetText( "" );
+	}
+	
+	auto component = object->GetComponent( componentIndex );
+
+	int valueIndex = values->GetSelectedItem();
+	if ( valueIndex == -1 )
+	{
+		valueEdit->SetText( "" );
+	}
+
+	valueEdit->SetText( component->GetValue( valueIndex ) );
+}
+
+void SceneViewer::OpenObjectComponent()
+{
+	using namespace ui;
+
+	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+	Listbox* components = GetControl< Listbox* >( "Components" );
+
+	int sceneIndex = sceneCombobox->GetCurSel();
+	auto scene = m_sceneManager->GetScene( sceneIndex );
+	int objectIndex = objectListbox->GetCurSel();
+	auto object = scene->GetObject( objectIndex );
 	int componentIndex = components->GetCurSel();
 	auto component = object->GetComponent( componentIndex );
+	if ( !component )
+	{
+		return;
+	}
+
 	if ( unify::StringIs( component->GetType(), "LUA Script" ) )
 	{
 		unify::Path path( component->GetValue( "path" ) );
@@ -158,35 +300,39 @@ void SceneViewer::OpenObjectComponent()
 		fullPath.Normalize();
 		GetParent()->SendUserMessage( SCRIPTEDITOR_OPEN, Params{ 0, (LPARAM)fullPath.ToString().c_str() } );
 	}
-}
-
-void SceneViewer::Timer_UpdateInputData()
-{
-	while ( ! m_closing )
-	{
-		using namespace std::chrono_literals;
-		std::this_thread::sleep_for( 100ms );			
-		// TODO: SendUserMessage( USERMESSAGE_UPDATEDATA, Params{} );
-	}
-}
+}				
 
 ui::IResult* SceneViewer::OnAfterCreate( ui::Params )
 {
+	using namespace ui;
+
 	UpdateSceneList();
+
+	ListView* values = GetControl< ListView* >( "Values" );
+	values->AddColumn( 0, L"Name", 80 );
+	values->AddColumn( 1, L"Value", 120 );
+
+	//m_updateData = std::thread( &SceneViewer::Timer_Update, this );
+	m_timer = SetTimer( 0, 10 );
+
 	return new Result(0);
 }
 
-IResult* SceneViewer::OnDestroy( Params params )
+ui::IResult* SceneViewer::OnDestroy( ui::Params params )
 {
+	using namespace ui;
+
 	GetParent()->SendUserMessage( SCENEVIEWER_CLOSED, Params{} );
 	return new Result(0);
 }
 
-IResult* SceneViewer::OnControlCommand( ControlMessage message )
+ui::IResult* SceneViewer::OnControlCommand( ui::ControlMessage message )
 {
+	using namespace ui;
+
 	if ( message.IsFor( "SceneCombobox" ) )
 	{
-		switch ( message.message )
+		switch ( message.code )
 		{
 		case CBN_SELCHANGE:
 			UpdateObjectList();
@@ -195,17 +341,22 @@ IResult* SceneViewer::OnControlCommand( ControlMessage message )
 	}
 	else if ( message.IsFor( "ObjectList" ) )
 	{
-		switch ( message.message )
+		switch ( message.code )
 		{
 		case LBN_SELCHANGE:
-			UpdateObject();
+			UpdateObject_All();
 			return new Result(0);
 		}
 	}
 	else if ( message.IsFor( "Components" ) )
 	{
-		switch ( message.message )
+		switch ( message.code )
 		{
+		case LBN_SELCHANGE:
+		{
+			UpdateObject_ComponentValues();
+			return new Result( 0 );
+		}
 		case LBN_DBLCLK:
 		{
 			OpenObjectComponent();
@@ -213,19 +364,127 @@ IResult* SceneViewer::OnControlCommand( ControlMessage message )
 		}
 		}	  
 	}
+	else if ( message.IsFor( "EditScene" ) )
+	{
+		if ( m_editingLock )
+		{	
+			m_editingLock.reset();
+		}
+		else
+		{
+			m_editingLock = m_game->LockUpdate( false );
+		}
+
+		message.control->SetText( m_editingLock ? "Resume" : "Edit Scene" );
+
+		Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+		Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+		Edit* x = GetControl< Edit* >( "X" );
+		Edit* y = GetControl< Edit* >( "Y" );
+		Edit* z = GetControl< Edit* >( "Z" );
+		Listbox* components = GetControl< Listbox* >( "Components" );
+		ListView* values = GetControl< ListView* >( "Values" );
+		Edit* value = GetControl< Edit* >( "Value" );
+
+		x->SetReadonly( m_editingLock ? false : true );
+		y->SetReadonly( m_editingLock ? false : true );
+		z->SetReadonly( m_editingLock ? false : true );
+
+		return new Result( 0 );
+	}
+
+
+	// Editing messages...
+	if ( m_editingLock )
+	{
+		if ( message.IsFor( "x" ) )
+		{
+			switch ( (Edit::Event)message.code )
+			{
+			case Edit::Event::Change:
+			{
+				float x( unify::Cast< float >( message.control->GetText() ) );
+
+				Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+				Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+				  		 
+				int sceneIndex = sceneCombobox->GetCurSel();
+				auto scene = m_sceneManager->GetScene( sceneIndex );
+				int objectIndex = objectListbox->GetCurSel();
+				me::scene::Object* object = scene->GetObject( objectIndex );
+				auto position( object->GetFrame().GetPosition() );
+				position.x = x;
+				object->GetFrame().SetPosition( position );
+				break;
+			}
+			}
+		}
+		else if ( message.IsFor( "y" ) )
+		{
+			switch ( (Edit::Event)message.code )
+			{
+			case Edit::Event::Change:
+			{
+				float y( unify::Cast< float >( message.control->GetText() ) );
+
+				Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+				Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+				  		 
+				int sceneIndex = sceneCombobox->GetCurSel();
+				auto scene = m_sceneManager->GetScene( sceneIndex );
+				int objectIndex = objectListbox->GetCurSel();
+				me::scene::Object* object = scene->GetObject( objectIndex );
+				auto position( object->GetFrame().GetPosition() );
+				position.y = y;
+				object->GetFrame().SetPosition( position );
+				break;
+			}
+			}
+		}
+		else if ( message.IsFor( "z" ) )
+		{
+			switch ( (Edit::Event)message.code )
+			{
+			case Edit::Event::Change:
+			{
+				float z( unify::Cast< float >( message.control->GetText() ) );
+
+				Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
+				Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
+				  		 
+				int sceneIndex = sceneCombobox->GetCurSel();
+				auto scene = m_sceneManager->GetScene( sceneIndex );
+				int objectIndex = objectListbox->GetCurSel();
+				me::scene::Object* object = scene->GetObject( objectIndex );
+				auto position( object->GetFrame().GetPosition() );
+				position.z = z;
+				object->GetFrame().SetPosition( position );
+				break;
+			}
+			}
+		}
+	}
 	return new Unhandled();
 }
 
-IResult* SceneViewer::OnUserMessage( UserMessageData message )
+ui::IResult* SceneViewer::OnTimer( ui::TimerMessage message )
 {
-	switch ( message.message )
-	{
-	case USERMESSAGE_UPDATEDATA:
-	{
-		UpdateObject();
-		break;
-	}		
-	}
+	using namespace ui;
+	UpdateObject_Position();
 	return new Result( 0 );
 }
 
+ui::IResult* SceneViewer::OnNotify( ui::NotifyMessage message )
+{
+	using namespace ui;
+	if ( message.IsFor( "Values" ) )
+	{
+		unsigned int x = LVN_ITEMACTIVATE;
+		if ( message.code == LVN_ITEMACTIVATE )
+		{
+			UpdateObject_ComponentValueSelected();
+			return new Result( 0 );
+		}
+	}
+	return new Unhandled();
+}

@@ -3,6 +3,7 @@
 
 #include <me/scene/GeometryComponent.h>
 #include <me/scene/Object.h>
+#include <me/GeometryCache.h>
 
 using namespace me;
 using namespace scene;

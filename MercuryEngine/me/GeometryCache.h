@@ -18,6 +18,7 @@ namespace me
 		GeometryCache();
 		void Add( Geometry * geometry, const unify::FrameLite * instance );
 		void Sum( GeometryCacheSummation & summation );
+		void Reset();
 
 	private:
 		std::map< Geometry *, std::vector< const unify::FrameLite * > > m_cache;

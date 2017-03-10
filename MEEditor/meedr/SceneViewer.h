@@ -18,19 +18,25 @@ namespace meedr
 
 		void UpdateSceneList();
 		void UpdateObjectList();
-		void UpdateObject();
+
+		void UpdateObject_All();
+		void UpdateObject_Position( bool force = false );
+		void UpdateObject_Components( bool force = false);
+		void UpdateObject_ComponentValues();
+		void UpdateObject_ComponentValueSelected();
+		
 		void OpenObjectComponent();
-		void Timer_UpdateInputData();
 		
 		ui::IResult* OnAfterCreate( ui::Params ) override;
 		ui::IResult* OnDestroy( ui::Params params ) override;
 		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
-		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;
+		ui::IResult* OnTimer( ui::TimerMessage message ) override;
+		ui::IResult* OnNotify( ui::NotifyMessage message ) override;
 
 	private:
 		me::IGame * m_game;
 		me::scene::SceneManager * m_sceneManager;
-		bool m_closing;
-		std::thread m_updateData;
+		UINT_PTR m_timer;
+		me::UpdateLock::ptr m_editingLock;
 	};
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<pack>
+
+<texture name="sky1" source="images/sky1.bmp"/>
+<texture name="clouds1" source="images/clouds1.dds"/>
+
+<terra name="sky" size="1000,1000" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="30" columns="30" constant="30">
+<modify texture="0,sky1"/>
+<modify texture="1,clouds1"/>
+<modify texture="2,clouds1"/>
+<modify pixelshader="Cloud Shader"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<!-- these coords are so high to wrap texture several times -->
+<texturemap tex="tex2" ul="10,10" dr="30,30"/>
+<texturemap tex="tex3" ul="10,10" dr="30,30"/>
+</terra>
+
+</pack>

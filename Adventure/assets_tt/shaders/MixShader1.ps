@@ -1,0 +1,18 @@
+ps.1.2 
+
+def c0, 1.f, 0.f, 0.f, 0.f  // Red
+def c3, 1.f, 1.f, 1.f, 1.f  // white / unit
+
+tex t0 	// Bottom texture
+tex t1 	// Top texture
+tex t2 	// Mix texture
+
+// Interpolate to produce one texture...
+dp3_sat r0, t2, c0  // Get the red component of our mix texture
+lrp r1, r0, t1, t0  // Interpolate from our top texture to our bottom texture by r1
+
+// Introduce vertex diffuse color...
+mul r0, r1, v0 
+
+// Attempt to remove alpha bug...
+mov r0.a, c3.a 

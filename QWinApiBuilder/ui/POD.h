@@ -39,12 +39,29 @@ namespace ui
 	struct ControlMessage
 	{
 		IControl* control;
-		int message;
+		int code;
 
 		bool IsFor( std::string _name ) const
 		{
 			return unify::StringIs( control->GetName(), _name );
 		}
+	};
+
+	struct NotifyMessage
+	{
+		IControl* control;
+		unsigned int code;
+		LPARAM lParam;
+
+		bool IsFor( std::string _name ) const
+		{
+			return unify::StringIs( control->GetName(), _name );
+		}
+	};
+					   
+	struct TimerMessage
+	{
+		UINT_PTR id;
 	};
 
 	struct IResult

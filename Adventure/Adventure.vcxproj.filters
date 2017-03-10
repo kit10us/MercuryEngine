@@ -15,12 +15,18 @@
     <ClCompile Include="source\Adventure.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\GroundDesc.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CameraMotivator.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\TerrainMap.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GroundDesc.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

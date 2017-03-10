@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<pack>
+<texture name="Rock1" source="images/rock1.dds"/>
+
+
+<!-- Parts -->
+
+<texture name="shallow_bigrockheight" source="images.shallow_bigrockheight.bmp" lockable="lockable" norender="norender"/>
+
+<terra name="shallow_bigrock" size="3,3" fvf="XYZ|NORMAL|TEX1" rows="60" columns="60" textureul="0,0" texturedr="6,6" constant="-0.25">
+<heightmap texture="shallow_bigrockheight" colorop="0,4,0,0" ul="0,0" dr="1,1"/>
+<modify texture="0,rock1"/>
+</terra>
+
+<geometry name="Shallow_bigrockplacement" type="placement" geometry="shallow_bigrock">
+<add place="0,0,0"/>
+<add place="-5,0,5"/>
+<add place="5,0,3"/>
+</geometry>
+
+<texture name="shallow_smallrockheight" source="images/shallow_smallrockheight.bmp" lockable="lockable" norender="norender"/>
+
+<terra name="shallow_smallrock" size="1,1" fvf="XYZ|NORMAL|TEX1" rows="30" columns="30" textureul="0,0" texturedr="2,2" constant="-0.25">
+<heightmap texture="shallow_smallrockheight" colorop="0,2,0,0" ul="0,0" dr="1,1"/>
+<modify texture="0,rock1"/>
+<modify offset="0,0,0"/>
+</terra>
+
+<geometry name="Shallow_smallrockplacement" type="placement" geometry="shallow_smallrock">
+<add place="-2,0,-3"/>
+<add place="-4,0,-1"/>
+<add place="2,0,3"/>
+<add place="1,0,-3"/>
+<add place="-3,0,0"/>
+</geometry>
+
+<geometry name="shallow" type="group">
+<add geometry="shallow_bigrockplacement"/>
+<add geometry="shallow_smallrockplacement"/>
+</geometry>
+
+
+<!-- Center -->
+<geometry name="Shallow00" type="group">
+<add geometry="Ocean00"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow01" type="group">
+<add geometry="Ocean01"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow02" type="group">
+<add geometry="Ocean02"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow03" type="group">
+<add geometry="Ocean03"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow04" type="group">
+<add geometry="Ocean04"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow05" type="group">
+<add geometry="Ocean05"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow06" type="group">
+<add geometry="Ocean06"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow07" type="group">
+<add geometry="Ocean07"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow08" type="group">
+<add geometry="Ocean08"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow09" type="group">
+<add geometry="Ocean09"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow10" type="group">
+<add geometry="Ocean10"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow11" type="group">
+<add geometry="Ocean11"/>
+<add geometry="shallow"/>
+</geometry>
+
+<geometry name="Shallow12" type="group">
+<add geometry="Ocean12"/>
+<add geometry="shallow"/>
+</geometry>
+
+</pack>
+

@@ -94,8 +94,9 @@ namespace me
 		me::IGameComponent::ptr GetComponent( std::string name, int startIndex );
 		int FindComponent( std::string name, int startIndex ) const;
 
-		void SetUpdateEnabled( bool enabled ) override;
-		bool GetUpdateEnabled() const override;
+		UpdateLock::ptr LockUpdate( bool exclusive );		
+
+		bool IsUpdateLocked( bool exclusive ) const;
 
 	private:
 		void AddExtension( unify::Path path, const qxml::Element * element );
@@ -126,10 +127,11 @@ namespace me
 
 		std::list< std::string > m_criticalErrors;
 
-		bool m_updateEnabled;
-
 		input::IInputCondition::ptr m_exitMotivation;
 		input::IInputCondition::ptr m_browserMotivation;
+
+		std::weak_ptr< UpdateLock > m_exclusiveLock;
+		std::list< std::weak_ptr< UpdateLock > > m_locks;
 	};
 }
 

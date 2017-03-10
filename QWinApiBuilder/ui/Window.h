@@ -11,6 +11,7 @@
 #include <ui/Richtext.h>
 #include <ui/Treeview.h>
 #include <ui/Edit.h>			
+#include <ui/ListView.h>
 #include <ui/IWindow.h>
 #include <unify/String.h>
 #include <memory>
@@ -76,6 +77,8 @@ namespace ui
 		void SetText( std::string text ) override;
 		std::string GetText() const override;
 		int SendUserMessage( int message, Params params ) override;
+		UINT_PTR SetTimer( UINT_PTR id, unsigned int elapsedInMS ) override;
+		bool KillTimer( UINT_PTR id ) override;
 
 	public: // Events...
 		IResult* OnCreate( Params params ) override;
@@ -85,6 +88,8 @@ namespace ui
 		IResult* OnPaint( Params params ) override;
 		IResult* OnControlCommand( ControlMessage message ) override;
 		IResult* OnUserMessage( UserMessageData message ) override;
+		IResult* OnNotify( NotifyMessage message ) override;
+		IResult* OnTimer( TimerMessage message ) override;
 	};
 
 	template< typename T >

@@ -1,7 +1,7 @@
 <xml>
 <title>Adventure DX11</title>
 <renderer source="../../renderers/MercuryEngineDX11.dll">
-	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
+<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>

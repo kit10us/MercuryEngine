@@ -22,8 +22,10 @@ void GeometryCache::Sum( GeometryCacheSummation & summation )
 	}
 }
 
-
-
+void GeometryCache::Reset()
+{
+	m_cache.clear();
+}
 
 GeometryCacheSummation::GeometryCacheSummation()
 {

@@ -78,11 +78,16 @@ void TerrainMap::CollectGeometry( GeometryCache & cache, const unify::FrameLite 
 			size_t square = y * m_mapSize.height + x;
 			int type = m_map[ square ];
 			auto & frame = m_frames[ square ];
-			if ( type == 0 )
+			frame = *transform;
+			frame.PostMul( unify::MatrixTranslate( { (float)m_terraSize.width * x, 0, y * (float)m_terraSize.height } ) );
+			if ( type >= (int)m_descsList.size() )
 			{
-				frame = *transform;
-				frame.PostMul( unify::MatrixTranslate( { (float)m_terraSize.width * x, 0, y * (float)m_terraSize.height } ) );
 				cache.Add( m_invalidGeo.get(), &frame );
+			}
+			else
+			{
+				GroundDesc::ptr ground = m_descsList[ type ];
+				cache.Add( ground->GetDefault( 0 ).get(), &frame );
 			}
 		}
 	}
@@ -101,7 +106,48 @@ IObjectComponent * TerrainMap::Duplicate()
 	return nullptr;
 }
 
+unify::Size< int > TerrainMap::GetSize() const
+{
+	return m_mapSize;
+}
+
 void TerrainMap::SetInvalidGeometry( Geometry::ptr geo )
 {
 	m_invalidGeo = geo;
+}
+
+size_t TerrainMap::AddGround( std::string name, GroundDesc::ptr ground )
+{
+	size_t index = m_descsList.size();
+	m_descMap[ name ] = index;
+	m_descsList.push_back( ground );
+	return index;
+}
+
+bool TerrainMap::DrawOnMap( unify::V2< int > pos, size_t ground )
+{
+	if ( ground >= (int)m_descsList.size() )
+	{
+		return false;
+	}
+
+	m_map[ pos.x + pos.y * m_mapSize.width ] = ground;
+	return true;
+}
+
+bool TerrainMap::DrawOnMap( unify::V2< int > pos, std::string name )
+{
+	auto itr = m_descMap.find( name );
+	if ( itr == m_descMap.end() )
+	{
+		return false;
+	}
+
+	if ( pos.x < 0 || pos.x >= m_mapSize.width || pos.y < 0 || pos.y >= m_mapSize.height )
+	{
+		return false;
+	}
+
+	m_map[ pos.x + pos.y * m_mapSize.width ] = itr->second;
+	return true;
 }

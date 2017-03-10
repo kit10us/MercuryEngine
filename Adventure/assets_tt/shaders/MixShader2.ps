@@ -1,0 +1,28 @@
+ps.1.2 
+
+def c0, 1.f, 0.f, 0.f, 0.f			// Red
+def c1, 0.25f, 0.25f, 0.25f, 0.25f 
+def c2, 0.5f, 0.5f, 0.5f, 0.5f 
+def c3, 1.f, 1.f, 1.f, 1.f 
+
+tex t0 							// Bottom texture
+tex t1 							// Top texture
+tex t2 							// Mix texture
+
+				// Combine components
+dp3_sat r0, t2, c0 	// Use alpha by changing c0, and using dp4_sat
+
+				// Produce darker texture (t1)
+mul r1, c1, t1 
+				
+				// Interpolate between texture (t1) and darker texture (t1)
+lrp r1, r0, t1, r1 
+
+				// Interpolate to produce one texture...
+lrp r0, r0, t1, t0 
+
+				// Introduce vertex diffuse color...
+mul r0, r0, v0 			// MAKES SOME SOLIDS SEMI-TRANSPARENT
+
+				// Attempt to remove alpha bug...
+mov r0.a, c3.a 

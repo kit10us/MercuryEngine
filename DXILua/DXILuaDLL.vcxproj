@@ -64,7 +64,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;../DXILuaLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;../DXILuaLib;../LuaWrapper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -81,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>DIRECTX9;WIN32;NDEBUG;_WINDOWS;_USRDLL;DXILUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;../DXILuaLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../DXI/source;../Unify;../../packages/lua-5.3.3_pre/include;./;../DXILuaLib;../LuaWrapper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

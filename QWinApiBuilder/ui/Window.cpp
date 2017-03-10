@@ -4,10 +4,12 @@
 #pragma once
 
 #include <ui/Window.h>
+#include <ui/Builder_WndProc.h>
 #include <cassert>
 
 using namespace ui;
 
+/*
 namespace
 {
 	LRESULT CALLBACK Builder_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
@@ -75,7 +77,7 @@ namespace
 		}
 	}
 }
-
+*/
 
 Window::Window( HWND parent, std::wstring className )
 	: m_hInstance{ (HINSTANCE)GetWindowLong( parent, GWL_HINSTANCE ) }
@@ -298,6 +300,18 @@ int Window::SendUserMessage( int message, Params params )
 	return SendMessageA( GetHandle(), WM_USER + message, params.wParam, params.lParam ); 
 }
 
+UINT_PTR Window::SetTimer( UINT_PTR id, unsigned int elapsedInMS )
+{
+	return ::SetTimer( GetHandle(), id, elapsedInMS, nullptr );
+}
+
+bool Window::KillTimer( UINT_PTR id )
+{
+	return ::KillTimer( GetHandle(), id ) ? true : false;
+}
+
+
+
 IResult* Window::OnCreate( Params params )
 {
 	return new Unhandled();
@@ -329,6 +343,16 @@ IResult* Window::OnControlCommand( ControlMessage message )
 }
 
 IResult* Window::OnUserMessage( UserMessageData message )
+{
+	return new Unhandled();
+}
+
+IResult* Window::OnNotify( NotifyMessage message )
+{
+	return new Unhandled();
+}
+
+IResult* Window::OnTimer( TimerMessage message )
 {
 	return new Unhandled();
 }

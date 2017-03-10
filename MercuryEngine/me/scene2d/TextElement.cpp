@@ -5,6 +5,8 @@
 #include <me/RenderMethod.h>
 #include <me/VertexUtil.h>
 
+#include <algorithm>
+
 using namespace me;
 using namespace scene2d;
 

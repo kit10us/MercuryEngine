@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Note: Index in vertex definition is arbatrary, and if included (which is suggested) is used as checking AND should start 0-->
+<pack>
+
+<geometry name="town1s" type="mesh" source="town1s.x">
+<modify scale="0.04"/>
+<modify offset="0,2.5,0"/>
+</geometry>
+
+<geometry name="town1a" type="mesh" source="town1a.x">
+<modify scale="0.04"/>
+<modify offset="0,2.5,0"/>
+</geometry>
+
+<geometry name="Town1Group" type="group">
+<add geometry="town1s"/>
+<add geometry="town1a"/>
+</geometry>
+
+<geometry name="town1_lod" type="mesh" source="town1_lod.x">
+<modify scale="0.04"/>
+<modify offset="0,2.5,0"/>
+</geometry>
+
+<geometry name="Town1" type="LOD">
+<add geometry="Town1Group" distance="0"/>
+<add geometry="Town1_lod" distance="20"/>
+</geometry>
+
+
+</pack>

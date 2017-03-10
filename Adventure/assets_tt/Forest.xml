@@ -1,0 +1,303 @@
+<?xml verision="1.0" encoding="ISO-8859-1"?>
+
+<pack>
+
+<texture name="forest_tile" source="images/forest_tile.dds"/>
+<texture name="forest_mix" source="images/forest_mix.bmp"/>
+<texture name="forest_placement" source="images/forest_placement.bmp" lockable="lockable" norender="norender"/>
+<texture name="treeshadow" source="images/treeshadow.dds"/>
+
+<geometry name="tree2opt" type="mesh" source="tree2opt.x">
+<modify scale="0.06"/>
+</geometry>
+
+<!--
+<geometry name="tree2opt" type="mesh" source="newtree">
+<modify scale="0.06"/>
+</geometry>
+-->
+
+<geometry name="treeshadow" type="shape" shape="plane">
+<args width="4" height="4" center="2,0,2"/>
+<modify texture="0,treeshadow"/>
+<modify blend="SrcAlpha,InvSrcAlpha"/>
+</geometry>
+
+<geometry name="Tree1" type="group">
+<add geometry="tree2opt"/>
+<add geometry="treeshadow"/>
+</geometry>
+
+<geometry name="Rock1" type="mesh" source="rock1.x">
+<modify scale="0.03"/>
+</geometry>
+
+
+<!-- Ground -->
+
+<!-- Center -->
+<terra name="ForestGround00" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0.25,0.25" dr="0.5,0.5"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0.25,0.25" dr="0.5,0.5"/></terra>
+
+<!-- Up -->
+<terra name="ForestGround01" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0.25,0.5" dr="0.5,0.75"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0.25,0.5" dr="0.5,0.75"/>
+</terra>
+
+<!-- Down -->
+<terra name="ForestGround02" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0.25,0" dr="0.5,0.25"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0.25,0" dr="0.5,0.25"/>
+</terra>
+
+<!-- Left -->
+<terra name="ForestGround03" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0.5,0.25" dr="0.75,0.5"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0.5,0.25" dr="0.75,0.5"/>
+</terra>
+
+<!-- Right-->
+<terra name="ForestGround04" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0,0.25" dr="0.25,0.5"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0,0.25" dr="0.25,0.5"/>
+</terra>
+
+<!-- Up Left -->
+<terra name="ForestGround05" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0.5,0.5" dr="0.75,0.75"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0.5,0.5" dr="0.75,0.75"/>
+</terra>
+
+<!-- Up Right -->
+<terra name="ForestGround06" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0,0.5" dr="0.25,0.75"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0,0.5" dr="0.25,0.75"/>
+</terra>
+
+<!-- Down Left -->
+<terra name="ForestGround07" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0.5,0" dr="0.75,0.25"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0.5,0" dr="0.75,0.25"/>
+</terra>
+
+<!-- Down Right -->
+<terra name="ForestGround08" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="1" columns="1" constant="2.5">
+<ignore_heightmap texture="mountain_h" colorop="0,10,0,0" ul="0,0" dr="0.25,0.25"/>
+<modify texture="0,forest_tile"/>
+<modify texture="1,grass_tile"/>
+<modify texture="2,Forest_Mix"/>
+<modify pixelshader="Mix Shader 1"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0,0" dr="1,1"/>
+<texturemap tex="tex3" ul="0,0" dr="0.25,0.25"/>
+</terra>
+
+
+<!-- Tree Placements -->
+
+<!-- Center -->
+<geometry name="TreePlacement00" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0.25,0.25" dr="0.5,0.5"/>
+</geometry>
+
+<!-- Up -->
+<geometry name="TreePlacement01" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0.25,0.5" dr="0.5,0.75"/>
+</geometry>
+
+<!-- Down -->
+<geometry name="TreePlacement02" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0.25,0" dr="0.5,0.25"/>
+</geometry>
+
+<!-- Left -->
+<geometry name="TreePlacement03" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0.5,0.25" dr="0.75,0.5"/>
+</geometry>
+
+<!-- Right-->
+<geometry name="TreePlacement04" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0,0.25" dr="0.25,0.5"/>
+</geometry>
+
+<!-- Up Left -->
+<geometry name="TreePlacement05" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0.5,0.5" dr="0.75,0.75"/>
+</geometry>
+
+<!-- Up Right -->
+<geometry name="TreePlacement06" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0,0.5" dr="0.25,0.75"/>
+</geometry>
+
+<!-- Down Left -->
+<geometry name="TreePlacement07" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0.5,0" dr="0.75,0.25"/>
+</geometry>
+
+<!-- Down Right -->
+<geometry name="TreePlacement08" type="placement" geometry="tree1">
+<add texture="forest_placement" depth="2.55" color="0,255,0" ul="0,0" dr="0.25,0.25"/>
+</geometry>
+
+
+
+<!-- Rock Placements -->
+
+<!-- Center -->
+<geometry name="RockPlacement00" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0.25,0.25" dr="0.5,0.5"/>
+</geometry>
+
+<!-- Up -->
+<geometry name="RockPlacement01" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0.25,0.5" dr="0.5,0.75"/>
+</geometry>
+
+<!-- Down -->
+<geometry name="RockPlacement02" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0.25,0" dr="0.5,0.25"/>
+</geometry>
+
+<!-- Left -->
+<geometry name="RockPlacement03" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0.5,0.25" dr="0.75,0.5"/>
+</geometry>
+
+<!-- Right-->
+<geometry name="RockPlacement04" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0,0.25" dr="0.25,0.5"/>
+</geometry>
+
+<!-- Up Left -->
+<geometry name="RockPlacement05" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0.5,0.5" dr="0.75,0.75"/>
+</geometry>
+
+<!-- Up Right -->
+<geometry name="RockPlacement06" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0,0.5" dr="0.25,0.75"/>
+</geometry>
+
+<!-- Down Left -->
+<geometry name="RockPlacement07" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0.5,0" dr="0.75,0.25"/>
+</geometry>
+
+<!-- Down Right -->
+<geometry name="RockPlacement08" type="placement" geometry="Rock1">
+<add texture="forest_placement" depth="2.55" color="255,255,255" ul="0,0" dr="0.25,0.25"/>
+</geometry>
+
+
+
+<!-- Groupings -->
+
+<geometry name="Forest00" type="group">
+<add geometry="ForestGround00"/>
+<add geometry="TreePlacement00"/>
+<add geometry="RockPlacement00"/>
+</geometry>
+
+<geometry name="Forest01" type="group">
+<add geometry="ForestGround01"/>
+<add geometry="TreePlacement01"/>
+<add geometry="RockPlacement01"/>
+</geometry>
+
+<geometry name="Forest02" type="group">
+<add geometry="ForestGround02"/>
+<add geometry="TreePlacement02"/>
+<add geometry="RockPlacement02"/>
+</geometry>
+
+<geometry name="Forest03" type="group">
+<add geometry="ForestGround03"/>
+<add geometry="TreePlacement03"/>
+<add geometry="RockPlacement03"/>
+</geometry>
+
+<geometry name="Forest04" type="group">
+<add geometry="ForestGround04"/>
+<add geometry="TreePlacement04"/>
+<add geometry="RockPlacement04"/>
+</geometry>
+
+<geometry name="Forest05" type="group">
+<add geometry="ForestGround05"/>
+<add geometry="TreePlacement05"/>
+<add geometry="RockPlacement05"/>
+</geometry>
+
+<geometry name="Forest06" type="group">
+<add geometry="ForestGround06"/>
+<add geometry="TreePlacement06"/>
+<add geometry="RockPlacement06"/>
+</geometry>
+
+<geometry name="Forest07" type="group">
+<add geometry="ForestGround07"/>
+<add geometry="TreePlacement07"/>
+<add geometry="RockPlacement07"/>
+</geometry>
+
+<geometry name="Forest08" type="group">
+<add geometry="ForestGround08"/>
+<add geometry="TreePlacement08"/>
+<add geometry="RockPlacement08"/>
+</geometry>
+
+
+<texture unload="forest_placement"/>
+
+</pack>

@@ -179,7 +179,7 @@ IResult* InputBrowser::OnControlCommand( ControlMessage message )
 {
 	if ( message.IsFor( "InputSource" ) )
 	{
-		switch ( message.message )
+		switch ( message.code )
 		{
 		case CBN_SELCHANGE:
 		{

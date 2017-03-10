@@ -5,6 +5,7 @@
 
 #include <MEPhysX.h>
 #include <me/scene/IObjectComponent.h>
+#include <me/GeometryCache.h>
 #include <mephysx/GameComponent.h>
 #include <me/IOS.h>
 #include <PxPhysicsAPI.h>

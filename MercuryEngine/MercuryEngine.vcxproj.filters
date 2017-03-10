@@ -408,6 +408,21 @@
     <ClInclude Include="me\scene\RenderGirl.h">
       <Filter>me\scene</Filter>
     </ClInclude>
+    <ClInclude Include="me\input\ButtonPressedCondition.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\InputCondition.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\StickCondition.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\TriggerCondition.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\ButtonCondition.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -551,9 +566,6 @@
     <ClCompile Include="me\motivator\ObjectInputMotivator.cpp">
       <Filter>me\motivator</Filter>
     </ClCompile>
-    <ClCompile Include="me\input\IInputCondition.cpp">
-      <Filter>me\input</Filter>
-    </ClCompile>
     <ClCompile Include="me\input\InputManager.cpp">
       <Filter>me\input</Filter>
     </ClCompile>
@@ -661,6 +673,21 @@
     </ClCompile>
     <ClCompile Include="me\scene\RenderGirl.cpp">
       <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\ButtonPressedCondition.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\InputCondition.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\StickCondition.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\TriggerCondition.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\ButtonCondition.cpp">
+      <Filter>me\input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

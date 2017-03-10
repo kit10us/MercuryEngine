@@ -5,6 +5,11 @@
 #include <dxilua/ExportInput.h>
 #include <dxilua/ScriptEngine.h>
 
+#include <me/input/ButtonCondition.h>
+#include <me/input/ButtonPressedCondition.h>
+#include <me/input/StickCondition.h>
+#include <me/input/TriggerCondition.h>
+
 using namespace dxilua;
 using namespace me;
 using namespace scene;

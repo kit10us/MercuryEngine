@@ -8,9 +8,10 @@
 #undef GetObject
 #endif
 
-
 namespace me
 {
+	class GeometryCacheSummation;
+
 	namespace scene
 	{
 		class IObjectAllocator

@@ -24,7 +24,6 @@ EngineMain::EngineMain( me::IGame * game )
 
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 240, SizeToContentHeight() ) );
-	AddControl( new Button( L"Pause", FillWidth(), DefaultHeight() ), "Pause" );
 	AddControl( new Button( L"Resource Browser", FillWidth(), DefaultHeight() ), "ResourceBrowser" );
 	AddControl( new Button( L"Scene Viewer", FillWidth(), DefaultHeight() ), "SceneViewer" );
 	AddControl( new Button( L"Input Browser", FillWidth(), DefaultHeight() ), "InputBrowser" );
@@ -129,7 +128,7 @@ void EngineMain::OpenLogViewer()
 	GetWindowRect( rect );
 	int x = rect.right;
 	int y = rect.top;
-	if ( ! m_sceneViewer )
+	if ( ! m_logViewer )
 	{
 		m_logViewer.reset( new LogViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 		m_openChildren++;
@@ -146,13 +145,6 @@ IResult * EngineMain::OnControlCommand( ControlMessage message )
 	if ( message.IsFor( "Quit" ) )
 	{
 		m_game->Quit();
-		return new Result( 0 );
-	}
-	else if ( message.IsFor( "Pause" ) )
-	{
-		m_game->SetUpdateEnabled( !m_game->GetUpdateEnabled() );
-
-		message.control->SetText( m_game->GetUpdateEnabled() ? "Pause" : "Resume" );
 		return new Result( 0 );
 	}
 	else if ( message.IsFor( "ResourceBrowser" ) )

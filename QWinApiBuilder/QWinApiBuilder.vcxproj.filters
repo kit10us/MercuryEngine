@@ -72,6 +72,15 @@
     <ClCompile Include="ui\Edit.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="create\Create_ListView.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ListView.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Builder_WndProc.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="create\Create_Control.h">
@@ -147,6 +156,15 @@
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\IWIndow.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_ListView.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ListView.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Builder_WndProc.h">
       <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>

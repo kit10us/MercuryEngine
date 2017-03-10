@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/BBoxRendererComponent.h>
+#include <me/GeometryCache.h>
 #include <me/Mesh.h>
 #include <me/VertexUtil.h>
 #include <me/scene/Object.h>

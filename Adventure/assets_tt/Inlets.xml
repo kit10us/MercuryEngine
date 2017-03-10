@@ -1,0 +1,85 @@
+<?xml version="1" encoding="ISO-8859-1"?>
+
+<pack>
+
+<texture name="inlet_h" source="images/inlet_h.bmp" lockable="lockable"/>
+<texture name="inlet_mix" source="images/inlet_mix.bmp"/>
+
+<!-- Inlet Land -->
+
+<!-- (River) U out to (Ocean) D -->
+<terra name="InletLand00" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="20" columns="20" constant="0">
+<heightmap texture="Inlet_H" colorop="0,2.5,0,0" ul="0.25,0.25" dr="0.5,0.5"/>
+<modify texture="0,Beach_Tile1"/>
+<modify texture="1,River27B"/>
+<modify texture="2,Inlet_Mix"/>
+<modify pixelshader="Mix Shader 2"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0.25,0.25" dr="0.5,0.5"/>
+<texturemap tex="tex3" ul="0.25,0.25" dr="0.5,0.5"/>
+</terra>
+
+<!-- (River) D out to (Ocean) U -->
+<terra name="InletLand01" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="20" columns="20" constant="0">
+<heightmap texture="Inlet_H" colorop="0,2.5,0,0" ul="0.5,0.5" dr="0.25,0.25"/>
+<modify texture="0,Beach_Tile1"/>
+<modify texture="1,River27B"/>
+<modify texture="2,Inlet_Mix"/>
+<modify pixelshader="Mix Shader 2"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0.25,0.25" dr="0.5,0.5"/>
+<texturemap tex="tex3" ul="0.5,0.5" dr="0.25,0.25"/>
+</terra>
+
+<!-- (River) L out to (Ocean) R -->
+<terra name="InletLand02" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="20" columns="20" constant="0">
+<heightmap texture="Inlet_H" colorop="0,2.5,0,0" ul="0.75,0.75" dr="0.5,0.5"/>
+<modify texture="0,Beach_Tile1"/>
+<modify texture="1,River27B"/>
+<modify texture="2,Inlet_Mix"/>
+<modify pixelshader="Mix Shader 2"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0.25,0.25" dr="0.5,0.5"/>
+<texturemap tex="tex3" ul="0.75,0.75" dr="0.5,0.5"/>
+</terra>
+
+<!-- (River) R out to (Ocean) L -->
+<terra name="InletLand03" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="20" columns="20" constant="0">
+<heightmap texture="Inlet_H" colorop="0,2.5,0,0" ul="0.5,0.5" dr="0.75,0.75"/>
+<modify texture="0,Beach_Tile1"/>
+<modify texture="1,River27B"/>
+<modify texture="2,Inlet_Mix"/>
+<modify pixelshader="Mix Shader 2"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+<texturemap tex="tex2" ul="0.25,0.25" dr="0.5,0.5"/>
+<texturemap tex="tex3" ul="0.5,0.5" dr="0.75,0.75"/>
+</terra>
+
+<!-- Inlet Groups (final) -->
+
+	
+<!-- -->
+<geometry name="Inlet00" type="group">
+<add geometry="InletLand00"/>
+<add geometry="OceanWater"/>
+</geometry>
+
+<!-- -->
+<geometry name="Inlet01" type="group">
+<add geometry="InletLand01"/>
+<add geometry="OceanWater"/>
+</geometry>
+
+<!-- -->
+<geometry name="Inlet02" type="group">
+<add geometry="InletLand02"/>
+<add geometry="OceanWater"/>
+</geometry>
+
+<!-- -->
+<geometry name="Inlet03" type="group">
+<add geometry="InletLand03"/>
+<add geometry="OceanWater"/>
+</geometry>
+
+</pack>

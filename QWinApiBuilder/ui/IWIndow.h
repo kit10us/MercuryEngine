@@ -32,6 +32,8 @@ namespace ui
 		virtual void SetText( std::string ) = 0;
 		virtual std::string GetText() const = 0;
 		virtual int SendUserMessage( int message, Params params ) = 0;
+		virtual UINT_PTR SetTimer( UINT_PTR id, unsigned int elapsedInMS ) = 0;
+		virtual bool KillTimer( UINT_PTR id ) = 0;
 
 	public: // Events...			
 		virtual IResult* OnCreate( Params params ) = 0;
@@ -41,5 +43,7 @@ namespace ui
 		virtual IResult* OnPaint( Params params ) = 0;
 		virtual IResult* OnControlCommand( ControlMessage message ) = 0;
 		virtual IResult* OnUserMessage( UserMessageData message ) = 0;
+		virtual IResult* OnNotify( NotifyMessage message ) = 0;
+		virtual IResult* OnTimer( TimerMessage message ) = 0;
 	};
 }

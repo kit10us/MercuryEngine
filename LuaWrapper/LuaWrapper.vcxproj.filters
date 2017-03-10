@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="luaw\LuaWrapper.h" />
+    <ClInclude Include="luaw\LuaFunction.h" />
+    <ClInclude Include="luaw\LuaParam.h" />
+    <ClInclude Include="luaw\LuaClass.h" />
+    <ClInclude Include="luaw\LuaManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="luaw\LuaParam.cpp" />
+    <ClCompile Include="luaw\LuaClass.cpp" />
+    <ClCompile Include="luaw\LuaFunction.cpp" />
+    <ClCompile Include="luaw\LuaManager.cpp" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Note: Index in vertex definition is arbatrary, and if included (which is suggested) is used as checking AND should start 0-->
+
+<pack>
+
+<texture name="grass_tile" source="images/grass_tile.dds"/>
+<texture name="field_h" source="images/field_h.bmp" lockable="lockable" norender="norender"/>
+
+<!-- Center -->
+<terra name="Field00" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0.25,0.25" dr="0.5,0.5"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Up -->
+<terra name="Field01" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0.25,0.5" dr="0.5,0.75"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Down -->
+<terra name="Field02" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0.25,0" dr="0.5,0.25"/>
+<modify texture="1,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Left -->
+<terra name="Field03" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0.5,0.25" dr="0.75,0.5"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Right-->
+<terra name="Field04" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0,0.25" dr="0.25,0.5"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Up Left -->
+<terra name="Field05" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0.5,0.5" dr="0.75,0.75"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Up Right -->
+<terra name="Field06" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0,0.5" dr="0.25,0.75"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Down Left -->
+<terra name="Field07" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0.5,0" dr="0.75,0.25"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+<!-- Down Right -->
+<terra name="Field08" size="10,10" fvf="XYZ|NORMAL|DIFFUSE|TEX3|TEXCOORDSIZE2(0)|TEXCOORDSIZE2(1)|TEXCOORDSIZE2(2)" rows="10" columns="10" constant="2.5">
+<heightmap texture="Field_h" colorop="0,1,0,0" ul="0,0" dr="0.25,0.25"/>
+<modify texture="0,grass_tile"/>
+<texturemap tex="tex1" ul="0,0" dr="1,1"/>
+</terra>
+
+
+<!--
+<texture unload="Field_H"/>
+-->
+
+</pack>

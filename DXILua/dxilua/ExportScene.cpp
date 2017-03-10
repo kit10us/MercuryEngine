@@ -9,6 +9,8 @@
 #include <me/Game.h>
 #include <me/scene/SceneManager.h>
 
+#include <luaw/LuaClass.h>
+
 using namespace dxilua;
 using namespace me;
 using namespace scene;
@@ -146,6 +148,16 @@ int Scene_Destructor( lua_State * state )
 			          
 void RegisterScene( lua_State * state )
 {
+	/*
+	using namespace luaw;
+	{
+		LuaClass* lc = new LuaClass( "Scene" );
+		lc->AddFunction( "GetName", 
+
+		delete lc;
+	} 
+	*/
+
 	const luaL_Reg SceneMemberFunctions[] =
 	{
 		{ "GetName", Scene_GetName },

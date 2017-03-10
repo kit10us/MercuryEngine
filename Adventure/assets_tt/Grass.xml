@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Note: Index in vertex definition is arbatrary, and if included (which is suggested) is used as checking AND should start 0-->
+<pack>
+
+<texture name="grass_tile" source="images/grass_tile.dds"/>
+
+<terra name="Grass" size="10,10" fvf="XYZ|NORMAL|TEX1" rows="1" columns="1" constant="2.5f" TexureUL="0,0" TextureDR="1,1">
+<modify texture="0,grass_tile"/>
+</terra>
+
+</pack>

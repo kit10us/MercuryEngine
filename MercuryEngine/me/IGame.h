@@ -14,6 +14,7 @@
 #include <me/IGameComponent.h>
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
+#include <memory>
 
 namespace me
 {
@@ -30,6 +31,11 @@ namespace me
 		Critical, // System is left unstable, we should likely shutdown immediately.
 		Failure, // We have a failure, the module that reported it is likely corrupted.
 		Warning // Error might not be important - state is unknown.
+	};
+
+	struct UpdateLock
+	{
+		typedef std::shared_ptr< UpdateLock > ptr;
 	};
 
 	/// <summary>
@@ -118,14 +124,20 @@ namespace me
 		virtual int FindComponent( std::string name, int startIndex ) const = 0;	
 
 		/// <summary>
-		/// Enables or disables game updates. Used for testing.
+		/// Request access to safely update the game engine. This disables game updates.
+		/// When exclusive, all other updates are prohibited.
+		/// Fails if exclusive, and any other update locks are active.
+		/// Returns a unique UpdateLock::ptr on success.
+		/// Returns an empty UpdateLock::ptr on failure.			  
+		/// Simply reset the UpdateLock::ptr, or let it fall out of scope, to unlock.
 		/// </summary>
-		virtual void SetUpdateEnabled( bool enabled ) = 0;
-
+		virtual UpdateLock::ptr LockUpdate( bool exclusive ) = 0;
+		
 		/// <summary>
-		/// Check if we have enabled updates.
+		/// If exclusive is false, returns true if there is any kind of lock,
+		/// else it returns true only if there is an exclusive lock.
 		/// </summary>
-		virtual bool GetUpdateEnabled() const = 0;
+		virtual bool IsUpdateLocked( bool exclusive ) const = 0;
 	};
 
 

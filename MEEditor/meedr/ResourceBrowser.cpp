@@ -4,6 +4,7 @@
 #include <meedr/EngineMain.h>
 #include <meedr/ResourceBrowser.h>
 #include <ui/Window.h>
+#include <me/Geometry.h>
 
 using namespace meedr;
 					 
@@ -203,7 +204,7 @@ IResult * ResourceBrowser::OnControlCommand( ControlMessage message )
 {
 	if ( message.IsFor( "Types" ) )
 	{
-		switch ( message.message )
+		switch ( message.code )
 		{
 		case CBN_SELCHANGE:
 		{
@@ -214,7 +215,7 @@ IResult * ResourceBrowser::OnControlCommand( ControlMessage message )
 	}	  
 	else if ( message.IsFor( "Resources" ) )
 	{
-		switch ( message.message )
+		switch ( message.code )
 		{
 		case LBN_DBLCLK:
 		{

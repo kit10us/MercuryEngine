@@ -91,7 +91,10 @@ void Object::RemoveComponent( IObjectComponent::ptr component )
 
 IObjectComponent::ptr Object::GetComponent( int index )
 {
-	if( index > (int)m_components.size() ) return IObjectComponent::ptr();
+	if ( index > (int)m_components.size() )
+	{
+		return IObjectComponent::ptr();
+	}
 
 	int i = 0;
 	for( auto component : m_components )
@@ -100,7 +103,6 @@ IObjectComponent::ptr Object::GetComponent( int index )
 		++i;
 	}
 
-	assert( 0 );
 	return IObjectComponent::ptr(); // Should never hit here.
 }
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include <me/IGame.h>
+#include <me/GeometryCache.h>
 #include <me/scene/IObjectAllocator.h>
 #include <list>
 

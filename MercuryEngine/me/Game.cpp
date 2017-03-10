@@ -15,6 +15,8 @@
 #include <ctime>
 #include <functional>
 
+#include <me/input/ButtonPressedCondition.h>
+
 // Temporary...
 #include <me/scene/SceneManager.h>
 #include <me/scene/CameraComponent.h>
@@ -74,7 +76,6 @@ Game::Game( unify::Path setup )
 	, m_setup( setup )
 	, m_isQuitting( false )
 	, m_totalStartupTime{}
-	, m_updateEnabled{ true }
 {
 }
 
@@ -434,10 +435,31 @@ void Game::Tick()
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
 	unify::Seconds elapsed = micro * 0.000001f;
 	lastTime = currentTime;
-	
-	if ( !m_updateEnabled ) return;
 
-	m_inputManager.Update();
+	// Remove expired locks...
+	for ( auto itr = m_locks.begin(); itr != m_locks.end();  )
+	{
+		if ( itr->expired() )
+		{
+			itr = m_locks.erase( itr );
+		}
+		else
+		{
+			itr++;
+		}
+	}
+	
+	// Return if we are locked.
+	if ( ! m_locks.empty() || ! m_exclusiveLock.expired() )
+	{
+		return;
+	}
+
+
+	if ( GetOS()->GetHasFocus() )
+	{
+		m_inputManager.Update();
+	}
 
 	if ( m_exitMotivation && m_exitMotivation->IsTrue() )
 	{
@@ -689,12 +711,38 @@ int Game::FindComponent( std::string name, int startIndex ) const
 	return -1;
 }
 
-void Game::SetUpdateEnabled( bool enabled )
+UpdateLock::ptr Game::LockUpdate( bool exclusive )
 {
-	m_updateEnabled = enabled;
+	if ( !m_exclusiveLock.expired() )
+	{
+		return false;
+	}
+
+	if ( exclusive )
+	{
+		if ( !m_locks.empty() )
+		{
+			return false;
+		}
+
+		UpdateLock::ptr lock( new UpdateLock() );
+		m_exclusiveLock = lock;
+		return lock;
+	}
+	else
+	{
+		UpdateLock::ptr lock( new UpdateLock() );
+		m_locks.push_back( lock );
+		return lock;
+	}
 }
 
-bool Game::GetUpdateEnabled() const
+bool Game::IsUpdateLocked( bool exclusive ) const
 {
-	return m_updateEnabled;
+	if ( ! m_exclusiveLock.expired() )
+	{
+		return true;
+	} 
+
+	return exclusive ? false : ! m_locks.empty();
 }
