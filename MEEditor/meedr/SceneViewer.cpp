@@ -64,7 +64,9 @@ SceneViewer::SceneViewer( me::IGame * game )
 		{
 			{ "File", 
 				{
-					{ "Quit" }
+					{ "Exit Scene Viewer" },
+					Seperator(),
+					{ "Quit Game" }
 				}
 			},
 			{ "View ",
@@ -391,7 +393,7 @@ void SceneViewer::OpenObjectComponent()
 		unify::Path path( component->GetValue( "path" ) );
 		unify::Path fullPath( m_game->GetOS()->GetRunPath(), path );
 		fullPath.Normalize();
-		GetParent()->SendUserMessage( SCRIPTEDITOR_OPEN, Params{ 0, (LPARAM)fullPath.ToString().c_str() } );
+		GetParent()->SendUserMessage( SCRIPTEDITOR_OPEN, message::Params{ 0, (LPARAM)fullPath.ToString().c_str() } );
 	}
 }				
 
@@ -438,7 +440,7 @@ void SceneViewer::EditScene( bool edit )
 	z->SetReadonly( m_editingLock ? false : true );
 }
 
-ui::IResult* SceneViewer::OnAfterCreate( ui::Params )
+ui::IResult* SceneViewer::OnAfterCreate( ui::message::Params )
 {
 	using namespace ui;
 
@@ -455,13 +457,34 @@ ui::IResult* SceneViewer::OnAfterCreate( ui::Params )
 	return new Result(0);
 }
 
-ui::IResult* SceneViewer::OnDestroy( ui::Params params )
+ui::IResult* SceneViewer::OnClose( ui::message::Params params )
 {
 	using namespace ui;
+
+	if ( m_resourceBrowser )
+	{
+		m_resourceBrowser->Close();
+	}
+	
+	if ( m_inputBrowser )
+	{
+		m_inputBrowser->Close();
+	}
+
+	if ( m_scriptEditor )
+	{
+		m_scriptEditor->Close();
+	}
+
+	if ( m_logViewer )
+	{
+		m_logViewer->Close();
+	}
+
 	return new Result(0);
 }
 
-ui::IResult* SceneViewer::OnControlCommand( ui::ControlMessage message )
+ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message )
 {
 	using namespace ui;
 
@@ -580,7 +603,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::ControlMessage message )
 	return new Unhandled();
 }
 
-ui::IResult* SceneViewer::OnTimer( ui::TimerMessage message )
+ui::IResult* SceneViewer::OnTimer( ui::message::Timer message )
 {
 	using namespace ui;
 	if ( m_noScenes )
@@ -592,7 +615,7 @@ ui::IResult* SceneViewer::OnTimer( ui::TimerMessage message )
 	return new Result( 0 );
 }
 
-ui::IResult* SceneViewer::OnNotify( ui::NotifyMessage message )
+ui::IResult* SceneViewer::OnNotify( ui::message::Notify message )
 {
 	using namespace ui;
 	if ( message.IsFor( "Values" ) )
@@ -633,9 +656,14 @@ ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
 {
 	using namespace ui;
 
-	if ( message.IsFor( "Quit" ) )
+	if ( message.IsFor( "Quit Game" ) )
 	{
 		m_game->Quit();
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "Exit Scene Viewer" ) )
+	{
+		Destroy();
 		return new Result( 0 );
 	}
 	else if ( message.IsFor( "Resources" ) )
@@ -662,7 +690,7 @@ ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
 	return new Unhandled();
 }
 
-ui::IResult* SceneViewer::OnUserMessage( ui::UserMessageData message )
+ui::IResult* SceneViewer::OnUser( ui::message::User message )
 {
 	using namespace ui;
 

@@ -187,22 +187,22 @@ void ResourceBrowser::OpenResource()
 	}
 }
 
-ui::IResult * ResourceBrowser::OnCreate( ui::Params params )
+ui::IResult * ResourceBrowser::OnCreate( ui::message::Params params )
 {
 	using namespace ui;			  
 
 	return new Result( 0 );
 }
 
-ui::IResult * ResourceBrowser::OnDestroy( ui::Params params )
+ui::IResult * ResourceBrowser::OnDestroy( ui::message::Params params )
 {
 	using namespace ui;			  
 
-	GetParent()->SendUserMessage( RESOURCEBROWSER_CLOSED, Params{ 0, 0 } );
+	GetParent()->SendUserMessage( RESOURCEBROWSER_CLOSED, message::Params{ 0, 0 } );
 	return new Result( 0 );
 }
 
-ui::IResult * ResourceBrowser::OnAfterCreate( ui::Params )
+ui::IResult * ResourceBrowser::OnAfterCreate( ui::message::Params )
 {
 	using namespace ui;			  
 
@@ -210,7 +210,7 @@ ui::IResult * ResourceBrowser::OnAfterCreate( ui::Params )
 	return new Result( 0 );
 }
 
-ui::IResult * ResourceBrowser::OnControlCommand( ui::ControlMessage message )
+ui::IResult * ResourceBrowser::OnControlCommand( ui::message::ControlCommand message )
 {
 	using namespace ui;			  
 

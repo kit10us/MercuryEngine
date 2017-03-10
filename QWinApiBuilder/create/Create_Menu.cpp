@@ -41,6 +41,10 @@ HMENU Menu::Create()
 				buildMenu( newMenu, createItem.m_items );
 				result = AppendMenuW( menu->GetHandle(), MF_STRING | MF_POPUP, (UINT_PTR)newMenu->GetHandle(), createItem.m_text.c_str() ) ? true : false;
 			}
+			else if ( createItem.m_name.empty() )
+			{
+				result = AppendMenuW( menu->GetHandle(), MF_SEPARATOR, 0, 0 ) ? true : false;		
+			}
 			else
 			{	
 				int id = (int)m_itemList.size();

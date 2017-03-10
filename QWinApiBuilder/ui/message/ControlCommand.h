@@ -4,19 +4,20 @@
 #pragma once
 
 #include <ui/POD.h>
-#include <ui/MenuItem.h>
+#include <ui/IControl.h>
 
 namespace ui
 {
 	namespace message
 	{
-		struct MenuCommand
+		struct ControlCommand
 		{
-			ui::MenuItem * item;
+			IControl* control;
+			int code;
 
 			bool IsFor( std::string _name ) const
 			{
-				return unify::StringIs( item->GetName(), _name );
+				return unify::StringIs( control->GetName(), _name );
 			}
 		};
 	}

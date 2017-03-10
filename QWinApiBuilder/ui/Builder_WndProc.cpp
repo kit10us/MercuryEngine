@@ -31,12 +31,18 @@ namespace ui
 			return DefWindowProc( hWnd, message, wParam, lParam );
 		}
 
+		if ( message == WM_DESTROY )
+		{
+			IResult::ptr result( window->OnDestroy( { wParam, lParam } ) );
+			s_windows.erase( hWnd );
+			return DefWindowProc( hWnd, message, wParam, lParam );
+		}
+
 		IResult::ptr result;
 		switch ( message )
 		{
-		case WM_DESTROY:
-			result.reset( window->OnDestroy( { wParam, lParam } ) );
-			s_windows.erase( hWnd );			
+		case WM_CLOSE:
+			result.reset( window->OnClose( { wParam, lParam } ) );
 			break;
 		case WM_INITDIALOG:
 			result.reset( window->OnInitDialog( { wParam, lParam } ) );
@@ -75,7 +81,7 @@ namespace ui
 			IControl * control = window->GetControl( hdr->idFrom );
 			if ( control )
 			{
-				result.reset( window->OnNotify( NotifyMessage{ control, hdr->code, lParam } ) );
+				result.reset( window->OnNotify( { control, hdr->code, lParam } ) );
 			}
 			break;
 		}
@@ -94,13 +100,13 @@ namespace ui
 		}
 		case WM_TIMER:
 		{
-			result.reset( window->OnTimer( TimerMessage{ wParam } ) );
+			result.reset( window->OnTimer( { wParam } ) );
 			break;
 		}
 		default:
 			if ( message >= WM_USER )
 			{
-				result.reset( window->OnUserMessage( UserMessageData{ (int)message - WM_USER, { wParam, lParam } } ) );
+				result.reset( window->OnUser( { (int)message - WM_USER, { wParam, lParam } } ) );
 			}
 			break;
 		}

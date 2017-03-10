@@ -52,7 +52,16 @@ namespace create
 		std::wstring m_text;
 		std::string m_name;
 		std::vector< MenuItem > m_items;
-	};										
+	};			
+
+	class Seperator : public MenuItem
+	{
+	public:
+		Seperator()
+			: MenuItem( std::wstring(), std::string() )
+		{
+		}
+	};
 
 
 

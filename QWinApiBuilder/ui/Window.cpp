@@ -232,6 +232,16 @@ MenuItem* Window::GetMenuItem( std::string name )
 	}
 }																	 
 
+void Window::Close()
+{
+	CloseWindow( GetHandle() );
+}
+
+void Window::Destroy()
+{
+	DestroyWindow( GetHandle() );
+}
+
 void Window::GetWindowRect( RECT & rect ) const
 {	 
 	::GetWindowRect( GetHandle(), &rect );
@@ -271,7 +281,7 @@ std::string Window::GetText() const
 	return outText;
 }
 
-int Window::SendUserMessage( int message, Params params )
+int Window::SendUserMessage( int message, message::Params params )
 {
 	return SendMessageA( GetHandle(), WM_USER + message, params.wParam, params.lParam ); 
 }
@@ -285,50 +295,53 @@ bool Window::KillTimer( UINT_PTR id )
 {
 	return ::KillTimer( GetHandle(), id ) ? true : false;
 }
-
-
-
-IResult* Window::OnCreate( Params params )
+						   
+IResult* Window::OnCreate( message::Params params )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnDestroy( Params params )
+IResult* Window::OnClose( message::Params params )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnInitDialog( Params params )
+IResult* Window::OnDestroy( message::Params params )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnAfterCreate( Params params )
+IResult* Window::OnInitDialog( message::Params params )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnPaint( Params params )
+IResult* Window::OnAfterCreate( message::Params params )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnControlCommand( ControlMessage message )
+IResult* Window::OnPaint( message::Params params )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnUserMessage( UserMessageData message )
+IResult* Window::OnControlCommand( message::ControlCommand message )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnNotify( NotifyMessage message )
+IResult* Window::OnUser( message::User message )
 {
 	return new Unhandled();
 }
 
-IResult* Window::OnTimer( TimerMessage message )
+IResult* Window::OnNotify( message::Notify message )
+{
+	return new Unhandled();
+}
+
+IResult* Window::OnTimer( message::Timer message )
 {
 	return new Unhandled();
 }

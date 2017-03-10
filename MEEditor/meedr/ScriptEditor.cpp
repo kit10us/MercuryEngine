@@ -114,13 +114,13 @@ void ScriptEditor::LoadFile( unify::Path path )
 		*/
 }
 
-ui::IResult* ScriptEditor::OnCreate( ui::Params params )
+ui::IResult* ScriptEditor::OnCreate( ui::message::Params params )
 {
 	using namespace ui;			  
 	return new Result( 0 );
 }
 
-ui::IResult* ScriptEditor::OnAfterCreate( ui::Params params )
+ui::IResult* ScriptEditor::OnAfterCreate( ui::message::Params params )
 {
 	using namespace ui;			  
 
@@ -129,15 +129,15 @@ ui::IResult* ScriptEditor::OnAfterCreate( ui::Params params )
 	return new Result( 0 );
 }
 
-ui::IResult* ScriptEditor::OnDestroy( ui::Params params )
+ui::IResult* ScriptEditor::OnDestroy( ui::message::Params params )
 {
 	using namespace ui;			  
 
-	GetParent()->SendUserMessage( SCRIPTEDITOR_CLOSED, Params{} );
+	GetParent()->SendUserMessage( SCRIPTEDITOR_CLOSED, message::Params{} );
 	return new Result(0);
 }
 
-ui::IResult* ScriptEditor::OnControlCommand( ui::ControlMessage message )
+ui::IResult* ScriptEditor::OnControlCommand( ui::message::ControlCommand message )
 {
 	using namespace ui;			  
 

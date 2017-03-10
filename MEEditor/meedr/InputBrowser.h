@@ -23,9 +23,9 @@ namespace meedr
 		void UpdateInputSourceInputList();
 		void Timer_UpdateInputData();
 
-		ui::IResult* OnAfterCreate( ui::Params params ) override;
-		ui::IResult* OnDestroy( ui::Params params ) override;
-		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
-		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;
+		ui::IResult* OnAfterCreate( ui::message::Params params ) override;
+		ui::IResult* OnDestroy( ui::message::Params params ) override;
+		ui::IResult* OnControlCommand( ui::message::ControlCommand message ) override;
+		ui::IResult* OnUser( ui::message::User message ) override;
 	};
 }

@@ -34,10 +34,10 @@ InputBrowser::~InputBrowser()
 	m_updateData.detach();
 }
 
-using namespace ui;
-
 void InputBrowser::UpdateInputData()
 {
+	using namespace ui;
+
 	if ( m_game->GetInputManager()->GetSourceCount() == 0 )
 	{
 		return;
@@ -99,6 +99,8 @@ void InputBrowser::UpdateInputData()
 
 void InputBrowser::UpdateInputManagerList()
 {
+	using namespace ui;
+
 	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
 
 	// Clear contents...
@@ -123,6 +125,8 @@ void InputBrowser::UpdateInputManagerList()
 
 void InputBrowser::UpdateInputSourceInputList()
 {
+	using namespace ui;
+
 	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
 	Listbox* inputNames = GetControl< Listbox* >( "InputNames" );
 
@@ -153,30 +157,38 @@ void InputBrowser::UpdateInputSourceInputList()
 
 void InputBrowser::Timer_UpdateInputData()
 {
+	using namespace ui;
+
 	while ( ! m_closing )
 	{
 		using namespace std::chrono_literals;
 		std::this_thread::sleep_for( 100ms );			
-		SendUserMessage( USERMESSAGE_UPDATEDATA, Params{} );
+		SendUserMessage( USERMESSAGE_UPDATEDATA, message::Params{} );
 	}
 }
 
-IResult* InputBrowser::OnAfterCreate( Params params )
+ui::IResult* InputBrowser::OnAfterCreate( ui::message::Params params )
 {
+	using namespace ui;
+
 	UpdateInputManagerList();
 	UpdateInputSourceInputList();
 	m_updateData = std::thread( &InputBrowser::Timer_UpdateInputData, this );
 	return new Result( 0 );
 }
 
-IResult * InputBrowser::OnDestroy( Params params )
+ui::IResult * InputBrowser::OnDestroy( ui::message::Params params )
 {	
-	GetParent()->SendUserMessage( INPUTBROWSER_CLOSED, Params{} );
+	using namespace ui;
+
+	GetParent()->SendUserMessage( INPUTBROWSER_CLOSED, message::Params{} );
 	return new Result( 0 );
 }
 
-IResult* InputBrowser::OnControlCommand( ControlMessage message )
+ui::IResult* InputBrowser::OnControlCommand( ui::message::ControlCommand message )
 {
+	using namespace ui;
+
 	if ( message.IsFor( "InputSource" ) )
 	{
 		switch ( message.code )
@@ -192,8 +204,10 @@ IResult* InputBrowser::OnControlCommand( ControlMessage message )
 	return new Result( 0 );
 }
 
-IResult* InputBrowser::OnUserMessage( UserMessageData message )
+ui::IResult* InputBrowser::OnUser( ui::message::User message )
 {
+	using namespace ui;
+
 	switch ( message.message )
 	{
 	case USERMESSAGE_UPDATEDATA:

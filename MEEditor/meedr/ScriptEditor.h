@@ -18,9 +18,9 @@ namespace meedr
 
 		void LoadFile( unify::Path path );
 
-		ui::IResult* OnCreate( ui::Params params ) override; 
-		ui::IResult* OnAfterCreate( ui::Params params ) override;
-		ui::IResult* OnDestroy( ui::Params params ) override;
-		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
+		ui::IResult* OnCreate( ui::message::Params params ) override; 
+		ui::IResult* OnAfterCreate( ui::message::Params params ) override;
+		ui::IResult* OnDestroy( ui::message::Params params ) override;
+		ui::IResult* OnControlCommand( ui::message::ControlCommand message ) override;
 	};
 }

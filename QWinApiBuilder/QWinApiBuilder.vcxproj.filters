@@ -167,9 +167,6 @@
     <ClInclude Include="ui\IControl.h">
       <Filter>ui</Filter>
     </ClInclude>
-    <ClInclude Include="ui\IWIndow.h">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="create\Create_ListView.h">
       <Filter>create</Filter>
     </ClInclude>
@@ -196,6 +193,27 @@
     </ClInclude>
     <ClInclude Include="ui\message\MenuCommand.h">
       <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Message.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Timer.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Notify.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Params.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\ControlCommand.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\User.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\IWindow.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

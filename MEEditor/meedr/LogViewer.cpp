@@ -35,14 +35,14 @@ void LogViewer::Log( std::string text )
 	logText->SetText( currentText + text  );
 }
 
-ui::IResult* LogViewer::OnCreate( ui::Params params )
+ui::IResult* LogViewer::OnCreate( ui::message::Params params )
 {
 	using namespace ui;			  
 
 	return new Result( 0 );
 }
 
-ui::IResult* LogViewer::OnAfterCreate( ui::Params params )
+ui::IResult* LogViewer::OnAfterCreate( ui::message::Params params )
 {
 	using namespace ui;			  
 
@@ -52,16 +52,16 @@ ui::IResult* LogViewer::OnAfterCreate( ui::Params params )
 	return new Result( 0 );
 }
 
-ui::IResult* LogViewer::OnDestroy( ui::Params params )
+ui::IResult* LogViewer::OnDestroy( ui::message::Params params )
 {
 	using namespace ui;			  
 
 	m_game->DetachLogListener( this );
-	GetParent()->SendUserMessage( LOGVIEWER_CLOSED, Params{}  );
+	GetParent()->SendUserMessage( LOGVIEWER_CLOSED, message::Params{}  );
 	return new Result( 0 );
 }
 
-ui::IResult* LogViewer::OnControlCommand( ui::ControlMessage message )
+ui::IResult* LogViewer::OnControlCommand( ui::message::ControlCommand message )
 {
 	using namespace ui;			  
 

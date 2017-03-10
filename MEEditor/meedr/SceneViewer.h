@@ -41,13 +41,13 @@ namespace meedr
 
 		void EditScene( bool edit );
 		
-		ui::IResult* OnAfterCreate( ui::Params ) override;
-		ui::IResult* OnDestroy( ui::Params params ) override;
-		ui::IResult* OnControlCommand( ui::ControlMessage message ) override;
-		ui::IResult* OnTimer( ui::TimerMessage message ) override;
-		ui::IResult* OnNotify( ui::NotifyMessage message ) override;
+		ui::IResult* OnAfterCreate( ui::message::Params ) override;
+		ui::IResult* OnClose( ui::message::Params params ) override;
+		ui::IResult* OnControlCommand( ui::message::ControlCommand message ) override;
+		ui::IResult* OnTimer( ui::message::Timer message ) override;
+		ui::IResult* OnNotify( ui::message::Notify message ) override;
 		ui::IResult* OnMenuCommand( ui::message::MenuCommand message ) override;
-		ui::IResult* OnUserMessage( ui::UserMessageData message ) override;
+		ui::IResult* OnUser( ui::message::User message ) override;
 
 	private:
 		me::IGame * m_game;

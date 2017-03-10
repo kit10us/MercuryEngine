@@ -69,31 +69,34 @@ namespace ui
 		template< typename T >
 		T GetControl( std::string name ) const;
 
-		Menu* GetMenu( HMENU handle );
-		MenuItem* GetMenuItem( int id );
-		MenuItem* GetMenuItem( std::string name );
+		Menu* GetMenu( HMENU handle ) override;
+		MenuItem* GetMenuItem( int id ) override;
+		MenuItem* GetMenuItem( std::string name ) override;
 
 	public: // WinApi functions...
+		void Close() override;
+		void Destroy() override;
 		void GetWindowRect( RECT & rect ) const override;
 		void MoveWindow( int x, int y, bool repaint ) override;
 		void ShowWindow( int nCmdShow ) override;
 		void SetForegroundWindow() override;
 		void SetText( std::string text ) override;
 		std::string GetText() const override;
-		int SendUserMessage( int message, Params params ) override;
+		int SendUserMessage( int message, message::Params params ) override;
 		UINT_PTR SetTimer( UINT_PTR id, unsigned int elapsedInMS ) override;
 		bool KillTimer( UINT_PTR id ) override;
 
 	public: // Events...
-		IResult* OnCreate( Params params ) override;
-		IResult* OnDestroy( Params params ) override;
-		IResult* OnInitDialog( Params params ) override;
-		IResult* OnAfterCreate( Params params ) override;
-		IResult* OnPaint( Params params ) override;
-		IResult* OnControlCommand( ControlMessage message ) override;
-		IResult* OnUserMessage( UserMessageData message ) override;
-		IResult* OnNotify( NotifyMessage message ) override;
-		IResult* OnTimer( TimerMessage message ) override;
+		IResult* OnCreate( message::Params params ) override;
+		IResult* OnClose( message::Params params ) override;
+		IResult* OnDestroy( message::Params params ) override;
+		IResult* OnInitDialog( message::Params params ) override;
+		IResult* OnAfterCreate( message::Params params ) override;
+		IResult* OnPaint( message::Params params ) override;
+		IResult* OnControlCommand( message::ControlCommand message ) override;
+		IResult* OnUser( message::User message ) override;
+		IResult* OnNotify( message::Notify message ) override;
+		IResult* OnTimer( message::Timer message ) override;
 		IResult* OnMenuSelect( message::MenuSelect message ) override;
 		IResult* OnMenuCommand( message::MenuCommand message ) override;
 
