@@ -20,54 +20,6 @@
 
 namespace ui
 {
-	class Menu;
-
-	struct Message
-	{
-		HWND handle;
-		UINT message; 
-		WPARAM wParam;
-		LPARAM lParam;
-	};
-
-	struct Params
-	{
-		Params() : wParam{ 0 }, lParam{ 0 } {}
-		Params( WPARAM w, LPARAM l ) : wParam{ w }, lParam{ l } {}
-		WPARAM wParam;
-		LPARAM lParam;
-	};
-
-	struct ControlMessage
-	{
-		IControl* control;
-		int code;
-
-		bool IsFor( std::string _name ) const
-		{
-			return unify::StringIs( control->GetName(), _name );
-		}
-	};
-
-	struct NotifyMessage
-	{
-		IControl* control;
-		unsigned int code;
-		LPARAM lParam;
-
-		bool IsFor( std::string _name ) const
-		{
-			return unify::StringIs( control->GetName(), _name );
-		}
-	};
-
-
-					   
-	struct TimerMessage
-	{
-		UINT_PTR id;
-	};
-
 	struct IResult
 	{
 		typedef std::shared_ptr< IResult > ptr;
@@ -101,11 +53,5 @@ namespace ui
 		{
 			return result;
 		}
-	};
-
-	struct UserMessageData
-	{	
-		int message;
-		Params params;
 	};
 }
