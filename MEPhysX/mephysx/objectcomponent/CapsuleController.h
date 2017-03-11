@@ -17,10 +17,9 @@ namespace mephysx
 			CapsuleController( CapsuleController & controller );
 
 		public:
-			MEPHYSX_API CapsuleController( me::IOS * os, SceneComponent * sceneComponent, float radius, float height );
+			MEPHYSX_API CapsuleController( SceneComponent * sceneComponent, float radius, float height );
 			~CapsuleController();
 
-			std::string GetType() const override;
 			std::string GetWhat() const override;
 			me::scene::IObjectComponent * Duplicate() override;
 

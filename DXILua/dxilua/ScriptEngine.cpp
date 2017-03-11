@@ -24,8 +24,8 @@ void GameComponentDeleter( me::IGameComponent * gc )
 
 ScriptEngine * ScriptEngine::s_se;
 
-ScriptEngine::ScriptEngine( me::IGame * game )
-	: m_game( game )
+ScriptEngine::ScriptEngine()
+	: GameComponent( "LuaScriptEngine" )
 	, m_state{ CreateState() }
 {
 	s_se = this;
@@ -37,35 +37,6 @@ ScriptEngine::~ScriptEngine()
 	{
 		lua_close( m_state );
 	}
-}
-
-std::string ScriptEngine::GetName() const
-{
-	return "LUA";
-}
-
-void ScriptEngine::OnAttach( me::IGame * game )
-{
-}
-
-void ScriptEngine::OnBeforeStartup( me::IGame * game )
-{
-}
-
-void ScriptEngine::OnAfterStartup( me::IGame * game )
-{
-}
-
-void ScriptEngine::OnUpdate( me::IGame * game, UpdateParams params )
-{
-}
-
-void ScriptEngine::OnRender( me::IGame * game, RenderParams params )
-{
-}
-
-void ScriptEngine::OnDetach( me::IGame * game )
-{
 }
 
 ExecuteResult ScriptEngine::ExecuteString( std::string line )
@@ -98,10 +69,10 @@ ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
 	if( result != LUA_OK )
 	{
-		return me::ExecuteResult::Fail;
+		return ExecuteResult::Fail;
 	}
 
-	return me::ExecuteResult::Pass;
+	return ExecuteResult::Pass;
 }
 
 IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
@@ -110,9 +81,9 @@ IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 
 	int top = lua_gettop( m_state );
 
-	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_gameScriptCount++ );
+	std::string luaName = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_gameScriptCount++ );
 
-	IGameComponent::ptr module( new component::GameComponent( m_state, m_game, name, path ), GameComponentDeleter );
+	IGameComponent::ptr module( new component::GameComponent( m_state, luaName, path ), GameComponentDeleter );
 	return module;
 }
 
@@ -122,11 +93,11 @@ IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
 
 	int top = lua_gettop( m_state );
 
-	std::string name = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_objectScriptCount++ );
+	std::string luaName = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_objectScriptCount++ );
 
 	lua_State * state = m_state;
 
-	IObjectComponent::ptr module( new component::ObjectComponent( m_state, m_game, name, path ) );
+	IObjectComponent::ptr module( new component::ObjectComponent( m_state, m_game, luaName, path ) );
 
 	return module;
 }
@@ -157,5 +128,10 @@ DXILUADLL_API void ScriptEngine::AddType( const char * name, const luaL_Reg * fu
 
 me::IGame * ScriptEngine::GetGame()
 {
-	return ScriptEngine::s_se->m_game;
+	return s_se->GameComponent::GetGame();
+}
+
+std::string ScriptEngine::GetWhat() const
+{
+	return std::string();
 }

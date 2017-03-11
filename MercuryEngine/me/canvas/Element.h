@@ -4,13 +4,13 @@
 #pragma once
 
 #include <me/IGame.h>
-#include <me/scene2d/Anchor.h>
-#include <me/scene2d/IElement.h>
+#include <me/canvas/Anchor.h>
+#include <me/canvas/IElement.h>
 #include <unify/Size.h>
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
 		class Element : public IElement
 		{

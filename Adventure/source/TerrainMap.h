@@ -21,15 +21,11 @@ protected:
 	TerrainMap( TerrainMap & component );
 
 public:
-	TerrainMap( IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize );
+	TerrainMap( unify::Size< int > mapSize, unify::Size< int > terraSize );
 	virtual ~TerrainMap();
 
-	std::string GetType() const override;
 	std::string GetWhat() const override;
 	bool Renderable() const override;
-	void OnInit() override;
-	void OnStart() override;
-	void OnUpdate( UpdateParams params ) override;
 	void CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform ) override;
 	void OnSuspend() override;
 	void OnResume() override;

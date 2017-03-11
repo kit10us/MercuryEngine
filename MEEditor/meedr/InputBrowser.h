@@ -12,10 +12,11 @@ namespace meedr
 	class InputBrowser : public ui::Window
 	{
 		me::IGame * m_game;
+		class SceneViewer* m_sceneViewer;
 		bool m_closing;
 		std::thread m_updateData;
 	public:
-		InputBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
+		InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
 		~InputBrowser();
 
 		void UpdateInputData();

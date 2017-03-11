@@ -17,11 +17,10 @@ namespace me
 			GeometryComponent( GeometryComponent & component );
 
 	    public:
-			GeometryComponent( IOS * os );
-			GeometryComponent( IOS * os, Geometry::ptr geometry );
+			GeometryComponent();
+			GeometryComponent( Geometry::ptr geometry );
 			virtual ~GeometryComponent();
 
-			std::string GetType() const override;
 			std::string GetWhat() const override;
 
 			bool Renderable() const override { return true; }
@@ -47,5 +46,5 @@ namespace me
 	    };
     }
 
-	scene::GeometryComponent * AddGeometryComponent( scene::Object * object, IOS * os, Geometry::ptr geometry );
+	scene::GeometryComponent * AddGeometryComponent( scene::Object * object, Geometry::ptr geometry );
 }

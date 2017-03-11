@@ -73,7 +73,7 @@ int ObjectComponent_GetType( lua_State * state )
 	assert( args == 1 );
 
 	ObjectComponentProxy * componentProxy = CheckObjectComponent( state, 1 );
-	lua_pushstring( state, componentProxy->component->GetType().c_str() );
+	lua_pushstring( state, componentProxy->component->GetTypeName().c_str() );
 	return 1;
 }			
 

@@ -323,6 +323,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MercuryGames", "MercuryGame
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlockWorlds", "..\BlockWorlds\BlockWorlds.vcxproj", "{0C19B9EB-9769-4C6B-B91F-D54165F21C35}"
 	ProjectSection(ProjectDependencies) = postProject
+		{78A53919-9D3A-435D-AF30-7F08B38C2390} = {78A53919-9D3A-435D-AF30-7F08B38C2390}
+		{60313297-04AD-4709-957A-20EF8C6C1230} = {60313297-04AD-4709-957A-20EF8C6C1230}
 		{08595ABF-1C5E-44B6-86A3-57AC751CF71F} = {08595ABF-1C5E-44B6-86A3-57AC751CF71F}
 	EndProjectSection
 EndProject
@@ -412,6 +414,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adventure", "..\Adventure\A
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MEPhysX", "..\MEPhysX\MEPhysX.vcxproj", "{78A53919-9D3A-435D-AF30-7F08B38C2390}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1} = {0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QWinApiBuilder", "..\QWinApiBuilder\QWinApiBuilder.vcxproj", "{C3F94FE1-D15A-4B00-BBEB-E1E8A87BB55D}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -420,6 +425,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QWinApiBuilder", "..\QWinAp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02Test10 - Octree", "..\MercuryTests\02tests_feature\02Test10 - Octree\02Test10 - Octree.vcxproj", "{FC3B60A9-B1A3-4766-9B9B-FFD3EC2630AD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3001C03A-F2E7-411A-A332-8DC5477ECBBB} = {3001C03A-F2E7-411A-A332-8DC5477ECBBB}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QFindReplace", "..\QFindReplace\QFindReplace.vcxproj", "{EBC05027-4484-46C3-A5A6-E3FA9DC96745}"
 EndProject

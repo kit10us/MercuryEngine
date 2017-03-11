@@ -15,11 +15,11 @@ namespace me
 		class AutoOIMotivator : public ObjectInputMotivator
 		{
 		public:
-			AutoOIMotivator( IOS * os );
+			AutoOIMotivator();
 
 			virtual ~AutoOIMotivator();
 
-			std::string GetType() const override;
+			std::string GetTypeName() const override;
 			std::string GetWhat() const override;
 
 			void OnUpdate( UpdateParams params ) override;

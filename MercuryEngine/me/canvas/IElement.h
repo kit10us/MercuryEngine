@@ -9,7 +9,7 @@
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
 		class IElement
 		{

@@ -23,20 +23,15 @@ namespace {
 }
 
 ObjectComponent::ObjectComponent( ObjectComponent & component )
-	: m_state( component.m_state )
-	, m_game( component.m_game )
-	, m_name( component.m_name )
-	, m_path( component.m_path )
-	, m_enabled( component.m_enabled )
+	: ObjectComponent( component.m_state, component.m_game, component.m_luaName, component.m_path  )
 {
 }
 
-ObjectComponent::ObjectComponent( lua_State * state, me::IGame * game, std::string name, unify::Path path )
-	: m_state( state )
+ObjectComponent::ObjectComponent( lua_State * state, me::IGame * game, std::string luaName, unify::Path path )
+	: me::scene::ObjectComponent( "LUAScript" )
+	, m_state( state )
 	, m_game( game )
-	, m_name( name )
 	, m_path( path )
-	, m_enabled( true )
 {
 }
 
@@ -45,33 +40,17 @@ ObjectComponent::~ObjectComponent()
 	m_state = 0;
 }
 
-std::string ObjectComponent::GetType() const
+std::string ObjectComponent::GetLuaName() const
 {
-	return "LUA Script";
-}
-
-std::string ObjectComponent::GetWhat() const
-{
-	return m_name;
-}
-
-
-bool ObjectComponent::IsEnabled() const
-{
-	return m_enabled;
-}
-
-void ObjectComponent::SetEnabled( bool enabled )
-{
-	m_enabled = enabled;
+	return m_luaName;
 }
 
 void ObjectComponent::CallMember( std::string function )
 {
 	// Get our _ENV...
-	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() ) )						   
+	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() ) )						   
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "ObjectComponent not found! (" + m_name + ")" );
+		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Object not found in lua module! (" + m_luaName + ")" );
 	}
 
 	int r2 = lua_getfield( m_state, -1, function.c_str() );
@@ -91,16 +70,6 @@ void ObjectComponent::CallMember( std::string function )
 
 	// Pop our _ENV.
 	lua_pop( m_state, 1 );
-}
-
-void ObjectComponent::OnAttach( me::scene::Object * object )
-{
-	m_object = object;
-}
-
-void ObjectComponent::OnDetach()
-{
-	m_object = nullptr;
 }
 			 
 void ObjectComponent::OnInit()
@@ -125,7 +94,7 @@ void ObjectComponent::OnInit()
 	lua_newtable( m_state );
 
 	// Add member variables.
-	lua_pushstring( m_state, m_name.c_str() );
+	lua_pushstring( m_state, m_luaName.c_str() );
 	lua_setfield( m_state, -2, "_name" );
 
 	if ( m_object )
@@ -145,10 +114,10 @@ void ObjectComponent::OnInit()
 	lua_setmetatable( m_state, -2 ); // Set global as the metatable
 
 	// Push to registery with a unique name.
-	lua_setfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() );
+	lua_setfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() );
 
 	// Retrieve registry.
-	int i = lua_getfield( m_state, LUA_REGISTRYINDEX, m_name.c_str() );
+	int i = lua_getfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() );
 
 	// Set the upvalue (_ENV)
 	const char * uv = lua_setupvalue( m_state, -2, 1 );
@@ -192,6 +161,11 @@ me::scene::IObjectComponent * ObjectComponent::Duplicate()
 {
 	auto duplicate = new ObjectComponent( *this );
 	return duplicate;
+}
+
+std::string ObjectComponent::GetWhat() const
+{
+	return m_path.Filename();
 }
 
 int ObjectComponent::GetValueCount() const
@@ -244,7 +218,7 @@ bool ObjectComponent::SetValue( int index, std::string value )
 	default:
 		return false;
 	case 0:
-		m_path = unify::Path( value );
+		return false;
 	}
 	return true;
 }

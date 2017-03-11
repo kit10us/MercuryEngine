@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/IComponent.h>
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
 #include <string>
@@ -15,45 +16,50 @@ namespace me
 	/// <summary>
 	/// Game components are components with global game life; they influnce the entire game.
 	/// </summary>
-	class IGameComponent
+	class IGameComponent : public IComponent
 	{	
 	public:
 		typedef std::shared_ptr< IGameComponent > ptr;
 
 		virtual ~IGameComponent() {}
-
+									 
 		/// <summary>
-		/// Returns the name of the game.
+		/// Access to the game.
 		/// </summary>
-		virtual std::string GetName() const = 0;
+		virtual IGame * GetGame() = 0;
 
 		/// <summary>
-		/// 
+		/// Access to the game.
+		/// </summary>
+		virtual  const IGame * GetGame() const = 0;
+
+		/// <summary>
+		/// Called first, upon being attached to the game.
 		/// </summary>
 		virtual void OnAttach( IGame * game ) = 0;
 
 		/// <summary>
 		/// Called before our game's Startup.
 		/// </summary>
-		virtual void OnBeforeStartup( IGame * game ) = 0;
+		virtual void OnBeforeStartup() = 0;
 		
 		/// <summary>
 		///  Called after our game's Startup.
 		/// </summary>
-		virtual void OnAfterStartup( IGame * game ) = 0;
+		virtual void OnAfterStartup( ) = 0;
 
 		/// <summary>
-		/// 
+		/// Called during game updating.
 		/// </summary>
-		virtual void OnUpdate( IGame * game, UpdateParams params ) = 0;
+		virtual void OnUpdate( UpdateParams params ) = 0;
 
 		/// <summary>
-		/// 
+		/// Called during game rendering.
 		/// </summary>
-		virtual void OnRender( IGame * game, RenderParams params ) = 0;
+		virtual void OnRender( RenderParams params ) = 0;
 
 		/// <summary>
-		/// 
+		/// Called last, to detach from the game.
 		/// </summary>
 		virtual void OnDetach( IGame * game ) = 0;
 	};

@@ -3,52 +3,42 @@
 
 #pragma once
 
-#include <me/scene/ISceneComponent.h>
-#include <me/scene2d/IElement.h>
-#include <me/scene2d/Layer.h>
+#include <me/scene/SceneComponent.h>
+#include <me/canvas/IElement.h>
+#include <me/canvas/Layer.h>
 #include <me/IGame.h>
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
-		class CanvasComponent : public scene::ISceneComponent
+		class CanvasComponent : public scene::SceneComponent
 		{
 		public:
-			typedef std::shared_ptr< scene2d::CanvasComponent > ptr;
+			typedef std::shared_ptr< canvas::CanvasComponent > ptr;
 
 			CanvasComponent( IGame * game );	  
 
-			const char * GetName() const override;
+			Layer * GetLayer();
 
-			bool IsEnabled() const override;
-			void SetEnabled( bool enabled ) override;
-
+		public: // ISceneComponent...
 			void OnAttach( scene::Scene * scene ) override;
-
 			void OnDetach( scene::Scene * scene ) override;
-
-			void OnInit( scene::Scene * scene ) override;
-
-			void OnStart( scene::Scene * scene ) override;
-			
+			void OnInit( scene::Scene * scene ) override;  
+			void OnStart( scene::Scene * scene ) override; 			
 			void OnUpdate( scene::Scene * scene, UpdateParams params ) override;
-
 			void OnRender( scene::Scene * scene, RenderParams params ) override;
-
-			void OnSuspend() override;
-
+			void OnSuspend() override;											
 			void OnResume() override;
 
-			Layer * GetLayer();
+		public: //IComponent...
+			std::string GetWhat() const override;
 
 		private:
 			IGame * m_game;
-			bool m_enabled;
 			unify::V2< float > m_position;
 			unify::Size< float > m_size;
 			unify::Matrix m_projection;
-
 			Layer::ptr m_layer;
 		};
 	}

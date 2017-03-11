@@ -57,9 +57,6 @@
     <ClInclude Include="dxilua\unify\ExportQuaternion.h">
       <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
-    <ClInclude Include="dxilua\ScriptEngine.h">
-      <Filter>dxilua</Filter>
-    </ClInclude>
     <ClInclude Include="dxilua\unify\ExportAngle.h">
       <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
@@ -126,6 +123,9 @@
     <ClInclude Include="dxilua\component\ObjectComponent.h">
       <Filter>dxilua\component</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ScriptEngine.h">
+      <Filter>dxilua\component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -166,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportQuaternion.cpp">
       <Filter>dxilua\exports\unify</Filter>
-    </ClCompile>
-    <ClCompile Include="dxilua\ScriptEngine.cpp">
-      <Filter>dxilua</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportAngle.cpp">
       <Filter>dxilua\exports\unify</Filter>
@@ -234,6 +231,9 @@
       <Filter>dxilua\component</Filter>
     </ClCompile>
     <ClCompile Include="dxilua\component\GameComponent.cpp">
+      <Filter>dxilua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ScriptEngine.cpp">
       <Filter>dxilua\component</Filter>
     </ClCompile>
   </ItemGroup>

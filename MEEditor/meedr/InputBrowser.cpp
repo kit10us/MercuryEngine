@@ -8,8 +8,9 @@ using namespace meedr;
 
 #define USERMESSAGE_UPDATEDATA	 0
 
-InputBrowser::InputBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
+InputBrowser::InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"InputBrowserWndClass" )
+	, m_sceneViewer{ parent }
 	, m_game{ game }
 	, m_closing{ false }
 {
@@ -191,9 +192,9 @@ ui::IResult* InputBrowser::OnControlCommand( ui::message::ControlCommand message
 
 	if ( message.IsFor( "InputSource" ) )
 	{
-		switch ( message.code )
+		switch ( (Combobox::Event)message.code )
 		{
-		case CBN_SELCHANGE:
+		case Combobox::Event::SelEndOk:
 		{
 			UpdateInputSourceInputList();
 			break;

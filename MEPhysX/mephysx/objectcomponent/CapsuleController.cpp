@@ -5,7 +5,6 @@
 #include <me/scene/Object.h>
 
 using namespace me;
-using namespace scene;
 using namespace mephysx;
 using namespace physx;
 using namespace objectcomponent;
@@ -15,8 +14,8 @@ CapsuleController::CapsuleController( CapsuleController & collider )
 {
 }
 
-CapsuleController::CapsuleController( me::IOS * os, SceneComponent * sceneComponent, float radius, float height )
-: ControllerBase( os, sceneComponent )
+CapsuleController::CapsuleController( mephysx::SceneComponent * sceneComponent, float radius, float height )
+: ControllerBase( "CapsuleController", sceneComponent )
 {
 	PxCapsuleControllerDesc desc;
 	desc.setToDefault();
@@ -36,17 +35,12 @@ CapsuleController::~CapsuleController()
 {
 }
 
-std::string CapsuleController::GetType() const
-{
-	return "Capsule Controller";
-}
-
 std::string CapsuleController::GetWhat() const
 {
 	return std::string();
 }
 
-IObjectComponent * CapsuleController::Duplicate()
+scene::IObjectComponent * CapsuleController::Duplicate()
 {
 	auto duplicate = new CapsuleController( *this );
 	return duplicate;

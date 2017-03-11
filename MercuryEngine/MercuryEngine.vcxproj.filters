@@ -16,9 +16,6 @@
     <Filter Include="me\scene">
       <UniqueIdentifier>{fd54a837-708c-4c77-b8d8-d5d19e4ab49e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="me\scene2d">
-      <UniqueIdentifier>{563e301f-4ec1-4d38-b6eb-8d85553eb0a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shape_creation">
       <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,9 @@
     </Filter>
     <Filter Include="me\core">
       <UniqueIdentifier>{d7f3b28a-0ec1-4b4f-bf95-ebdfc4061a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\canvas">
+      <UniqueIdentifier>{18c49259-c3eb-40d1-bb86-9eca3d9a7c93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,32 +177,11 @@
     <ClInclude Include="me\scene\CameraComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene2d\Anchor.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene2d\IElement.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene2d\Element.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene2d\TextElement.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene2d\FPS.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\IObjectComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\ComponentInstance.h">
       <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene2d\Layer.h">
-      <Filter>me\scene2d</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene2d\CanvasComponent.h">
-      <Filter>me\scene2d</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\IObjectAllocator.h">
       <Filter>me\scene</Filter>
@@ -224,9 +203,6 @@
     </ClInclude>
     <ClInclude Include="me\shader\ConstantVariable.h">
       <Filter>me\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IScriptEngine.h">
-      <Filter>me\i</Filter>
     </ClInclude>
     <ClInclude Include="me\ITexture.h">
       <Filter>me\i</Filter>
@@ -295,9 +271,6 @@
       <Filter>me\core</Filter>
     </ClInclude>
     <ClInclude Include="me\BufferUsage.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\DataCore.h">
       <Filter>me\core</Filter>
     </ClInclude>
     <ClInclude Include="me\Display.h">
@@ -423,6 +396,33 @@
     <ClInclude Include="me\input\ButtonCondition.h">
       <Filter>me\input</Filter>
     </ClInclude>
+    <ClInclude Include="me\canvas\CanvasComponent.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\canvas\Element.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\canvas\FPS.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\canvas\IElement.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\canvas\Layer.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\canvas\TextElement.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\canvas\Anchor.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IComponent.h">
+      <Filter>me\core</Filter>
+    </ClInclude>
+    <ClInclude Include="me\GameComponent.h">
+      <Filter>me</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -524,23 +524,8 @@
     <ClCompile Include="me\scene\CameraComponent.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
-    <ClCompile Include="me\scene2d\Element.cpp">
-      <Filter>me\scene2d</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene2d\TextElement.cpp">
-      <Filter>me\scene2d</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene2d\FPS.cpp">
-      <Filter>me\scene2d</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\ComponentInstance.cpp">
       <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene2d\Layer.cpp">
-      <Filter>me\scene2d</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene2d\CanvasComponent.cpp">
-      <Filter>me\scene2d</Filter>
     </ClCompile>
     <ClCompile Include="me\scene\ObjectStack.cpp">
       <Filter>me\scene</Filter>
@@ -579,9 +564,6 @@
       <Filter>me\core</Filter>
     </ClCompile>
     <ClCompile Include="me\BufferUsage.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\DataCore.cpp">
       <Filter>me\core</Filter>
     </ClCompile>
     <ClCompile Include="me\Display.cpp">
@@ -688,6 +670,24 @@
     </ClCompile>
     <ClCompile Include="me\input\ButtonCondition.cpp">
       <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\Element.cpp">
+      <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\FPS.cpp">
+      <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\Layer.cpp">
+      <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\TextElement.cpp">
+      <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\CanvasComponent.cpp">
+      <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\GameComponent.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

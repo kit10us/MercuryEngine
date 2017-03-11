@@ -56,7 +56,7 @@ void MyGame::Startup()
 
 	// Add a camera...
 	Object * camera = scene->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
+	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
@@ -70,7 +70,7 @@ void MyGame::Startup()
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 	auto progObject = scene->NewObject( "cubeDyna" );
-	AddGeometryComponent( progObject, GetOS(), meshProg );
+	AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
@@ -78,7 +78,7 @@ void MyGame::Startup()
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = scene->NewObject( "XMLObject" );
-	AddGeometryComponent( xmlObject, GetOS(), meshXML );
+	AddGeometryComponent( xmlObject, meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -92,7 +92,7 @@ void MyGame::Startup()
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = scene->NewObject( "swordASE" );
-	AddGeometryComponent( aseObject, GetOS(), meshASE );
+	AddGeometryComponent( aseObject, meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -116,7 +116,7 @@ void MyGame::Startup()
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = scene->NewObject( "daeModel" );
-	AddGeometryComponent( daeModel, GetOS(), meshDAE );
+	AddGeometryComponent( daeModel, meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();

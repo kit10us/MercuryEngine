@@ -6,7 +6,7 @@
 #include <dxilua/component/GameComponent.h>
 #include <memory.h>
 
-void ScriptEngineDeleter( me::IScriptEngine * se )
+void ScriptEngineDeleter( me::IGameComponent * se )
 {
 	delete se;
 }
@@ -16,7 +16,7 @@ extern "C" DXILUADLL_API bool MELoader( me::IGame * game, const qxml::Element * 
 DXILUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 {
 	// Add Script Engine...
-	dxilua::ScriptEngine * scriptEngine = new dxilua::ScriptEngine( game );
+	dxilua::ScriptEngine * scriptEngine = new dxilua::ScriptEngine();
 	game->AddComponent( me::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
 				  
 	// Automatically add "game.lua" GameComponent...

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/IComponent.h>
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
 #include <string>
@@ -13,19 +14,13 @@ namespace me
 	namespace scene
 	{
 		class Scene;
-		class Object;
 
-		class ISceneComponent
+		class ISceneComponent : public IComponent
 		{
 		public:
 			typedef std::shared_ptr< ISceneComponent > ptr;
 
 			virtual ~ISceneComponent() {}
-
-			virtual const char * GetName() const = 0;
-
-			virtual bool IsEnabled() const = 0;
-			virtual void SetEnabled( bool enabled ) = 0;
 
 			/// <summary>
 			/// Called once, when we are first attached to the scene.

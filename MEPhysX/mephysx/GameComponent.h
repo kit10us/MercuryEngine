@@ -2,30 +2,28 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/IGameComponent.h>
+#include <me/GameComponent.h>
 #include <mephysx/Util.h>
 #include <me/IOS.h>
 #include <me/IGame.h>
 
 namespace mephysx
 {
-	class GameComponent : public me::IGameComponent
+	class GameComponent : public me::GameComponent
 	{
 	public:
 		GameComponent();
 		~GameComponent();
 
-		std::string GetName() const override;
-
-		void OnAttach( me::IGame * game ) override;
-		void OnDetach( me::IGame * game ) override;
-		void OnBeforeStartup( me::IGame * game ) override;
-		void OnAfterStartup( me::IGame * game ) override;
-		void OnUpdate( me::IGame * game, me::UpdateParams params ) override;
-		void OnRender( me::IGame * game, me::RenderParams params ) override;
-
 		physx::PxPhysics * GetPhysics();
 		physx::PxDefaultCpuDispatcher * GetCpuDispatcher();
+
+	public: // IGameComponent...
+		void OnAttach( me::IGame * game ) override;
+		void OnDetach( me::IGame * game ) override;
+
+	public: // IComponent...
+		std::string GetWhat() const;
 
 	private:
 		std::shared_ptr< physx::PxErrorCallback > m_errorCallback;

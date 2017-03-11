@@ -11,8 +11,8 @@
 #include <me/factory/EffectFactories.h>
 #include <me/scene/GeometryComponent.h>
 
-#include <me/scene2d/CanvasComponent.h>
-#include <me/scene2d/FPS.h>
+#include <me/canvas/CanvasComponent.h>
+#include <me/canvas/FPS.h>
 
 #include <TerrainMap.h>
 #include <CameraMotivator.h>
@@ -48,14 +48,14 @@ void Adventure::Startup()
 	Scene::ptr mainScene = sceneManager->AddScene( "main" );
 
 	// Add Canvas component...
-	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
+	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 	mainScene->AddComponent( canvas );
 
 	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2, scene2d::Anchor::BottomLeft ) ) );
+	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2, canvas::Anchor::BottomLeft ) ) );
 
 	// Create map...
-	TerrainMap * map = new TerrainMap( GetOS(), { 30, 30 }, { 2, 2 } );
+	TerrainMap * map = new TerrainMap( { 30, 30 }, { 2, 2 } );
 	m_map.reset( map );
 	auto land = mainScene->NewObject( "land" );
 	land->AddComponent( m_map );
@@ -114,17 +114,17 @@ void Adventure::Startup()
 
 	// Add a camera...
 	Object * camera = mainScene->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
+	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 17, -12 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );			
 
-	auto cameraMotivator = new CameraMotivator( GetOS() );
+	auto cameraMotivator = new CameraMotivator();
 	auto im = dynamic_cast< motivator::InputMotivator* >(cameraMotivator);
 	auto com = dynamic_cast< scene::IObjectComponent* >(cameraMotivator);
 
-	camera->AddComponent( IObjectComponent::ptr( new CameraMotivator( GetOS() ) ) );
+	camera->AddComponent( IObjectComponent::ptr( cameraMotivator ) );
 }
 
 void Adventure::Update( UpdateParams params )

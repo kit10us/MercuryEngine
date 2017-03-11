@@ -9,10 +9,9 @@
 using namespace me;
 using namespace scene;
 
-SceneManager::SceneManager( IGame * game )
-: m_game( game )
-, m_focusScene( 0 )
-, m_enabled( true )
+SceneManager::SceneManager()
+	: GameComponent( "SceneManager" )
+	, m_focusScene( 0 )
 {
 }
 
@@ -21,34 +20,9 @@ SceneManager::~SceneManager()
     Destroy();
 }
 
-std::string SceneManager::GetName() const
-{
-	return "SceneManager";
-}
-
-IGame * SceneManager::GetGame()
-{
-	return m_game;
-}
-
-const IGame * SceneManager::GetGame() const
-{
-	return m_game;
-}
-
 void SceneManager::Destroy()
 {
     m_scenes.clear();
-}
-
-void SceneManager::SetEnabled( bool enabled )
-{
-	m_enabled = enabled;
-}
-
-bool SceneManager::GetEnabled() const
-{
-	return m_enabled;
 }
 
 size_t SceneManager::GetSceneCount() const
@@ -88,23 +62,7 @@ Scene::ptr SceneManager::GetScene( size_t index ) const
 	return m_sceneList[ index ];
 }
 
-void SceneManager::OnAttach( IGame * game )
-{
-}
-
-void SceneManager::OnBeforeStartup( IGame * game )
-{
-}
-
-void SceneManager::OnAfterStartup( IGame * game )
-{
-}
-
-void SceneManager::OnDetach( IGame * game )
-{
-}
-
-void SceneManager::OnUpdate( IGame * game, UpdateParams params )
+void SceneManager::OnUpdate( UpdateParams params )
 {
 	if ( m_enabled == false )
 	{
@@ -129,7 +87,7 @@ void SceneManager::OnUpdate( IGame * game, UpdateParams params )
     }
 }
 
-void SceneManager::OnRender( IGame * game, RenderParams params )
+void SceneManager::OnRender( RenderParams params )
 {
 	if ( m_enabled == false )
 	{
@@ -192,7 +150,6 @@ ISceneManagerComponent::ptr SceneManager::GetComponent( int index )
 		++i;
 	}
 
-	assert( 0 );
 	return ISceneManagerComponent::ptr(); // Should never hit here.
 }
 
@@ -208,9 +165,13 @@ int SceneManager::FindComponent( std::string name, int startIndex ) const
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		if ( i >= startIndex && unify::StringIs( component->GetTypeName(), name ) ) return i;
 		++i;
 	}
 	return -1;
 }
 
+std::string SceneManager::GetWhat() const
+{
+	return std::string();
+}

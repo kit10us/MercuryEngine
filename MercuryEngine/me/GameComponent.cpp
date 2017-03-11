@@ -1,98 +1,100 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene/SceneComponent.h>
+#include <me/GameComponent.h>
 
 using namespace me;
-using namespace scene;
 
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
 		{ "typename", 0 },
-		{ "enabled", 1 },
+		{ "enabled", 1 }
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
 		{ "typename" },
-		{ "enabled" },
+		{ "enabled" }
 	};
 }
 
-SceneComponent::SceneComponent( IOS * os, std::string typeName )
-: m_os( os )
-, m_typeName( typeName )
+Lookup * GameComponent::GetLookup()
+{
+	return &m_values;
+}
+
+const Lookup * GameComponent::GetLookup() const
+{
+	return &m_values;
+}
+
+GameComponent::GameComponent( std::string typeName )
+	: m_typeName{ typeName }
 {
 }
 
-SceneComponent::~SceneComponent()
+GameComponent::~GameComponent()
 {
 }
 
-IOS * SceneComponent::GetOS()
+IGame * GameComponent::GetGame()
 {
-	return m_os;
+	return m_game;
 }
 
-const IOS * SceneComponent::GetOS() const
+const IGame * GameComponent::GetGame() const
 {
-	return m_os;
+	return m_game;
 }
 
-void SceneComponent::OnAttach( Scene * scene )
+void GameComponent::OnAttach( IGame * game )
 {
+	m_game = game;
 }
 
-void SceneComponent::OnDetach( Scene * scene ) 
+void GameComponent::OnDetach( IGame * game ) 
 {
+	m_game = 0;
 }
 
-void SceneComponent::OnInit( Scene * scene ) 
-{
-}
-
-void SceneComponent::OnStart( Scene * scene ) 
+void GameComponent::OnBeforeStartup() 
 {
 }
 
-void SceneComponent::OnUpdate( Scene * scene, UpdateParams params ) 
+void GameComponent::OnAfterStartup() 
 {
 }
 
-void SceneComponent::OnRender( Scene * scene, RenderParams params ) 
+void GameComponent::OnUpdate( UpdateParams params ) 
 {
 }
 
-void SceneComponent::OnSuspend() 
+void GameComponent::OnRender( RenderParams params )
 {
 }
 
-void SceneComponent::OnResume()
-{
-}
-
-std::string SceneComponent::GetTypeName() const
+std::string GameComponent::GetTypeName() const
 {
 	return m_typeName;
 }
 
-bool SceneComponent::IsEnabled() const
+bool GameComponent::IsEnabled() const
 {
 	return m_enabled;
 }
 
-void SceneComponent::SetEnabled( bool enabled )
+void GameComponent::SetEnabled( bool enabled )
 {
 	m_enabled = enabled;
 }
 
-int SceneComponent::GetValueCount() const
+int GameComponent::GetValueCount() const
 {
 	return (int)g_ValuesList.size() + m_values.Count();
 }
 
-bool SceneComponent::ValueExists( std::string name ) const
+bool GameComponent::ValueExists( std::string name ) const
 {
 	auto && itr = g_ValuesMap.find( name );
 	if ( itr != g_ValuesMap.end() )
@@ -102,7 +104,7 @@ bool SceneComponent::ValueExists( std::string name ) const
 	return m_values.Exists( name );
 }
 
-std::string SceneComponent::GetValueName( int index ) const
+std::string GameComponent::GetValueName( int index ) const
 {
 	if ( index < (int)g_ValuesList.size() )
 	{
@@ -111,7 +113,7 @@ std::string SceneComponent::GetValueName( int index ) const
 	return m_values.GetName( index - (int)g_ValuesList.size() );
 }
 
-int SceneComponent::FindValueIndex( std::string name ) const
+int GameComponent::FindValueIndex( std::string name ) const
 {
 	auto && itr = g_ValuesMap.find( name );
 	if ( itr != g_ValuesMap.end() )
@@ -121,7 +123,7 @@ int SceneComponent::FindValueIndex( std::string name ) const
 	return m_values.Find( name ) + g_ValuesMap.size();
 }
 
-bool SceneComponent::SetValue( int index, std::string value )
+bool GameComponent::SetValue( int index, std::string value )
 {
 	switch ( index )
 	{
@@ -135,18 +137,18 @@ bool SceneComponent::SetValue( int index, std::string value )
 	}
 }
 
-bool SceneComponent::SetValue( std::string name, std::string value )
+bool GameComponent::SetValue( std::string name, std::string value )
 {
 	int index = FindValueIndex( name );
 	return SetValue( index, value );
 }
 
-std::string SceneComponent::GetValue( int index ) const
+std::string GameComponent::GetValue( int index ) const
 {
 	switch ( index )
 	{
 	case 0:
-		return m_typeName;
+		return GetTypeName();
 	case 1:
 		return unify::Cast< std::string >( m_enabled );
 	default:
@@ -154,7 +156,7 @@ std::string SceneComponent::GetValue( int index ) const
 	}
 }
  
-std::string SceneComponent::GetValue( std::string name ) const
+std::string GameComponent::GetValue( std::string name ) const
 {
 	int index = FindValueIndex( name );
 	return GetValue( index );

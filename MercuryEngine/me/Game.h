@@ -87,12 +87,12 @@ namespace me
 
 		bool HadCriticalError() const override;
 
-		int ComponentCount() const;
-		void AddComponent( me::IGameComponent::ptr component );
-		void RemoveComponent( me::IGameComponent::ptr component );
-		me::IGameComponent::ptr GetComponent( int index );
-		me::IGameComponent::ptr GetComponent( std::string name, int startIndex );
-		int FindComponent( std::string name, int startIndex ) const;
+		int GetComponentCount() const override;
+		void AddComponent( me::IGameComponent::ptr component ) override;
+		void RemoveComponent( me::IGameComponent::ptr component ) override;
+		me::IGameComponent::ptr GetComponent( int index ) override;
+		me::IGameComponent::ptr GetComponent( std::string typeName, int startIndex ) override;
+		int FindComponent( std::string typeName, int startIndex ) const override;
 
 		UpdateLock::ptr LockUpdate( bool exclusive );		
 

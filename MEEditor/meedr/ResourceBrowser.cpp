@@ -8,16 +8,17 @@
 
 using namespace meedr;
 					 
-ResourceBrowser::ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
+ResourceBrowser::ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"ResourceBrowserWndClass" )
+	, m_sceneViewer{ parent }
 	, m_game{ game }
 {
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 540, 440 ) );
 	AddControl( new Static( L"Type:", 50, DefaultHeight() ) );
 	AddControl( new Combobox( FillWidth(), DefaultHeight() ), "Types" );
-	AddControl( new Listbox( FillWidth(), FillHeight() ), "Resources" );
-	Create( L"Resource Browser", x, y, nCmdShow );
+	AddControl( new Listbox( FillWidth(), FillHeight() ), "Assets" );
+	Create( L"Asset Viewerr", x, y, nCmdShow );
 }
 									
 void ResourceBrowser::UpdateResourceTypes()
@@ -47,7 +48,7 @@ void ResourceBrowser::UpdateResourceList()
 	using namespace ui;			  
 
 	Combobox* types = GetControl< Combobox* >( "Types" );
-	Listbox* resources = GetControl< Listbox* >( "Resources" );
+	Listbox* resources = GetControl< Listbox* >( "Assets" );
 
 	// Clear contents...
 	resources->ResetContent();
@@ -118,7 +119,7 @@ void ResourceBrowser::OpenResource()
 	using namespace ui;			  
 
 	Combobox* types = GetControl< Combobox* >( "Types" );
-	Listbox* resources = GetControl< Listbox* >( "Resources" );
+	Listbox* resources = GetControl< Listbox* >( "Assets" );
 
 	size_t typeIndex = types->GetCurSel();
 	size_t i = resources->GetCurSel();
@@ -225,7 +226,7 @@ ui::IResult * ResourceBrowser::OnControlCommand( ui::message::ControlCommand mes
 		}
 		}
 	}	  
-	else if ( message.IsFor( "Resources" ) )
+	else if ( message.IsFor( "Assets" ) )
 	{
 		switch ( message.code )
 		{

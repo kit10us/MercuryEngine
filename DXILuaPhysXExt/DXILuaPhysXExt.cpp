@@ -19,7 +19,7 @@
 #pragma comment( lib, "../extensions/MEPhysX.lib" )
 
 
-void Deleter( me::IScriptEngine * se )
+void Deleter( me::IGameComponent * se )
 {
 	delete se;
 }
@@ -27,18 +27,18 @@ void Deleter( me::IScriptEngine * se )
 extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * doc );
 __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * document )
 {
-	auto gcse = game->GetComponent( "LUA", 0 );
+	auto gcse = game->GetComponent( "LuaScriptEngine", 0 );
 	if( !gcse )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "DXILuaShapeExt", "Lua extension not found!" );
+		game->ReportError( me::ErrorLevel::Failure, "DXILuaPhysXExt", "Lua Extension (\"LuaScriptEngine\") not found!" );
 		return false;
 	}
-	me::IScriptEngine * se = dynamic_cast<me::IScriptEngine *>(gcse.get());
+	me::IGameComponent * se = dynamic_cast<me::IGameComponent *>(gcse.get());
 
 	dxilua::ScriptEngine * luaSE = dynamic_cast<dxilua::ScriptEngine *>(se);
 	if ( ! luaSE )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "DXILuaShapeExt", "Lua extension found, but wrong version (more, we can't understand how to use it)!" );
+		game->ReportError( me::ErrorLevel::Failure, "DXILuaPhysXExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
 	}
 
 	RegisterPhysX( luaSE, game );

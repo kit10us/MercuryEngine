@@ -1,33 +1,18 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene2d/CanvasComponent.h>
+#include <me/canvas/CanvasComponent.h>
 
 using namespace me;
-using namespace scene2d;
+using namespace canvas;
 using namespace scene;
 
 CanvasComponent::CanvasComponent( IGame * game )
-	: m_game( game )
+	: SceneComponent( game->GetOS(), "CanvasComponent" )
+	, m_game( game )
 	, m_position( 0, 0 )
 	, m_size( 0, 0 )
-	, m_enabled( true )
 {
-}
-
-const char * CanvasComponent::GetName() const
-{
-	return "CanvasComponent";
-}
-
-bool CanvasComponent::IsEnabled() const
-{
-	return m_enabled;
-}
-
-void CanvasComponent::SetEnabled( bool enabled )
-{
-	m_enabled = enabled;
 }
 
 void CanvasComponent::OnAttach( Scene * scene )
@@ -87,4 +72,9 @@ void CanvasComponent::OnResume()
 Layer * CanvasComponent::GetLayer()
 {
 	return m_layer.get();
+}
+
+std::string CanvasComponent::GetWhat() const
+{
+	return std::string();
 }

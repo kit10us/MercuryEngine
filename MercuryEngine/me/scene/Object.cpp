@@ -72,7 +72,7 @@ bool Object::HasTag( std::string tag ) const
 	return false;
 }
 
-int Object::ComponentCount() const
+int Object::GetComponentCount() const
 {
 	return (int)m_components.size();
 }
@@ -86,7 +86,7 @@ void Object::AddComponent( IObjectComponent::ptr component )
 void Object::RemoveComponent( IObjectComponent::ptr component )
 {
 	m_components.remove( component );
-	component->OnDetach();
+	component->OnDetach( this );
 }
 
 IObjectComponent::ptr Object::GetComponent( int index )
@@ -113,12 +113,12 @@ IObjectComponent::ptr Object::GetComponent( std::string name, int startIndex )
 	return GetComponent( index );
 }
 	  
-int Object::FindComponent( std::string name, int startIndex ) const
+int Object::FindComponent( std::string typeName, int startIndex ) const
 {
 	int i = 0;
 	for( auto && component : m_components )
 	{
-		if( i >= startIndex && unify::StringIs( component.Component()->GetType(), name ) ) return i;
+		if( i >= startIndex && unify::StringIs( component.Component()->GetTypeName(), typeName ) ) return i;
 		++i;
 	}		
 	return -1;

@@ -54,7 +54,7 @@ void MyGame::Startup()
 
 	// Add a camera...
 	Object * camera = scene->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
+	camera->AddComponent( IObjectComponent::ptr( new CameraComponent()  ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 
@@ -69,7 +69,7 @@ void MyGame::Startup()
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 	auto progObject = scene->NewObject( "cubeDyna" );
-	auto gc = AddGeometryComponent( progObject, GetOS(), meshProg );
+	auto gc = AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
@@ -78,7 +78,7 @@ void MyGame::Startup()
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	{
 		auto aseObject = scene->NewObject( "sword1" );
-		gc = AddGeometryComponent( aseObject, GetOS(), meshASE );
+		gc = AddGeometryComponent( aseObject, meshASE );
 		aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 		aseObject->GetFrame().GetModelMatrix().Scale( 0.090f );
 		aseObject->GetFrame().GetModelMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );

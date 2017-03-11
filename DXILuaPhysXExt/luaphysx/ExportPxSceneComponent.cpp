@@ -65,7 +65,7 @@ int PxSceneComponent_CreateCapsuleController( lua_State* state )
 	float radius = (float)lua_tonumber( state, 2 );
 	float height = (float)lua_tonumber( state, 3 );											
 
-	me::scene::IObjectComponent::ptr controller( new mephysx::objectcomponent::CapsuleController( g_game->GetOS(), pxScene->scene, radius, height ) );
+	me::scene::IObjectComponent::ptr controller( new mephysx::objectcomponent::CapsuleController( pxScene->scene, radius, height ) );
 
 	PushPxController( state, controller );
 

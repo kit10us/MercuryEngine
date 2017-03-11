@@ -20,8 +20,8 @@
 // Temporary...
 #include <me/scene/SceneManager.h>
 #include <me/scene/CameraComponent.h>
-#include <me/scene2d/CanvasComponent.h>
-#include <me/scene2d/FPS.h>
+#include <me/canvas/CanvasComponent.h>
+#include <me/canvas/FPS.h>
 
 
 using namespace me;
@@ -86,7 +86,7 @@ Game::~Game()
 	LogLine( "OnDetach", 0 );
 	for( auto && component : m_components )
 	{
-		LogLine( component->GetName() );
+		LogLine( "Detaching " + component->GetTypeName() );
 		component->OnDetach( this );
 	}
 	LogLine( "OnDetachDone", 0 );
@@ -147,11 +147,11 @@ void * Game::Feed( std::string target, void * data )
 			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 			Scene::ptr scene = sceneManager->FindScene( "scene1" );
 
-			scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
+			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 			scene->AddComponent( canvas );
 
 			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-			canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
+			canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2 ) ) );
 		}
 	}
 	
@@ -328,7 +328,7 @@ bool Game::Initialize( OSParameters osParameters )
 	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
 
-	AddComponent( IGameComponent::ptr( new scene::SceneManager( this ) ) );
+	AddComponent( IGameComponent::ptr( new scene::SceneManager() ) );
 
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
@@ -375,8 +375,8 @@ bool Game::Initialize( OSParameters osParameters )
 	LogLine( "OnBeforeStartup", 0 );
 	for( auto && component : m_components )
 	{
-		LogLine( component->GetName() + "..." );
-		component->OnBeforeStartup( this );
+		LogLine( "OnBeforeStart " + component->GetTypeName() + "..." );
+		component->OnBeforeStartup();
 	}
 	LogLine( "OnBeforeStartup Done", 0 );
 
@@ -396,8 +396,8 @@ bool Game::Initialize( OSParameters osParameters )
 	LogLine( "OnAfterStartup", 0 );
 	for( auto && component : m_components )
 	{
-		LogLine( component->GetName() + "..." );
-		component->OnAfterStartup( this );
+		LogLine( "OnAfterStarutp " + component->GetTypeName() + "..." );
+		component->OnAfterStartup();
 	}
 	LogLine( "OnAfterStartup Done", 0 );
 
@@ -453,8 +453,7 @@ void Game::Tick()
 	if ( ! m_locks.empty() || ! m_exclusiveLock.expired() )
 	{
 		return;
-	}
-
+	}				  
 
 	if ( GetOS()->GetHasFocus() )
 	{
@@ -473,7 +472,12 @@ void Game::Tick()
 
 	for( auto && component : m_components )
 	{
-		component->OnUpdate( this, params );
+		if ( ! component->IsEnabled() )
+		{
+			continue;
+		}
+
+		component->OnUpdate( params );
 	}
 
 	Update( params );
@@ -490,7 +494,12 @@ void Game::Draw()
 										  	
 		for( auto && component : m_components )
 		{
-			component->OnRender( this, params );
+			if ( !component->IsEnabled() )
+			{
+				continue;
+			}
+
+			component->OnRender( params );
 		}
 
 		Render( params );
@@ -661,7 +670,7 @@ bool Game::HadCriticalError() const
 	return m_criticalErrors.size() != 0;
 }
 
-int Game::ComponentCount() const
+int Game::GetComponentCount() const
 {
 	return (int)m_components.size();
 }
@@ -700,12 +709,12 @@ IGameComponent::ptr Game::GetComponent( std::string name, int startIndex )
 	return GetComponent( index );
 }
 
-int Game::FindComponent( std::string name, int startIndex ) const
+int Game::FindComponent( std::string typeName, int startIndex ) const
 {
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		if ( i >= startIndex && unify::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

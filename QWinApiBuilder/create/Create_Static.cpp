@@ -95,7 +95,7 @@ void Static::ComputePass1()
 
 	if ( SizeToContentWidth() == GetWantedWidth() )
 	{
-		int charWidth = LOWORD( GetDialogBaseUnits() ) + 2;
+		int charWidth = LOWORD( GetDialogBaseUnits() );
 		m_actualWidth = charWidth * m_wantedText.size();
 	}
 }

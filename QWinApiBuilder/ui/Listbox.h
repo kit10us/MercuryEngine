@@ -10,10 +10,20 @@ namespace ui
 {
 	class Listbox : public Control
 	{
-	public:		   			
+	public:
 		Listbox( HWND parent, HWND handle, create::IControl * createControl );
 
 		virtual ~Listbox();
+		  
+		enum class Event
+		{
+			ErrSpace = LBN_ERRSPACE,
+			SelChange = LBN_SELCHANGE,
+			DblClick = LBN_DBLCLK,
+			SelCancel = LBN_SELCANCEL,
+			SetFocus = LBN_SETFOCUS,
+			KillFocus = LBN_KILLFOCUS
+		};
 
 	public: // WinApi functions...	
 		int AddFile( std::string filename );

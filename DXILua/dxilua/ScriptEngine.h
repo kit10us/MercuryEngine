@@ -4,34 +4,27 @@
 #pragma once
 
 #include <DXILuaDLL.h>
-#include <me/IGame.h>
-#include <me/IScriptEngine.h>
+#include <me/GameComponent.h>
+#include <me/scene/Scene.h>
 #include <lua.hpp>
 
 namespace dxilua
 {
-	class ScriptEngine : public me::IScriptEngine
+	enum class ExecuteResult
+	{
+		Pass,
+		Fail,
+		Pending
+	};
+
+	class ScriptEngine : public me::GameComponent
 	{
 	public:
-		ScriptEngine( me::IGame * game );
+		ScriptEngine();
 		~ScriptEngine();
 
-		std::string GetName() const override;
-
-		void OnAttach( me::IGame * game ) override;
-
-		void OnBeforeStartup( me::IGame * game ) override;
-
-		void OnAfterStartup( me::IGame * game ) override;
-
-		void OnUpdate( me::IGame * game, me::UpdateParams params ) override;
-
-		void OnRender( me::IGame * game, me::RenderParams params ) override;
-
-		void OnDetach( me::IGame * game ) override;
-
-		me::ExecuteResult ExecuteString( std::string line ) override;
-		me::ExecuteResult ExecuteFile( unify::Path path ) override;
+		ExecuteResult ExecuteString( std::string line );
+		ExecuteResult ExecuteFile( unify::Path path );
 
 		me::IGameComponent::ptr LoadGameScript( unify::Path path );
 
@@ -45,8 +38,10 @@ namespace dxilua
 
 		static me::IGame * GetGame();
 
+	public: // IComponent...
+		std::string GetWhat() const override;
+		
 	private:
-		me::IGame * m_game;		
 		lua_State * m_state;
 		size_t m_gameScriptCount;
 		size_t m_objectScriptCount;

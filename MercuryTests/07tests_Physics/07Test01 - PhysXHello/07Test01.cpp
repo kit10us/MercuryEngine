@@ -6,8 +6,8 @@
 
 #include <me/scene/SceneManager.h>
 #include <me/scene/CameraComponent.h>
-#include <me/scene2d/CanvasComponent.h>
-#include <me/scene2d/FPS.h>
+#include <me/canvas/CanvasComponent.h>
+#include <me/canvas/FPS.h>
 
 class MyGame : public me::Game
 {
@@ -25,11 +25,11 @@ public:
 		SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 		Scene::ptr scene = sceneManager->FindScene( "scene1" );
 
-		scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
+		canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 		scene->AddComponent( canvas );
 
 		Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-		canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
+		canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2 ) ) );
 	}
 } game;
 

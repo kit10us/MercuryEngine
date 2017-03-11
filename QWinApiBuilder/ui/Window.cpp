@@ -131,7 +131,6 @@ HWND Window::Create( std::wstring title, int x, int y, int nCmdShow )
 
 	m_rootContainer->ComputePass1();
 	m_rootContainer->ComputePass2( 0, 0, 0, 0 );
-
 	m_rootContainer->ComputePass3( 0, 0 );
 
 	int paddingWidth = 8 * 2;

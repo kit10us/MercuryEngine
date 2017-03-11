@@ -5,22 +5,23 @@
 #include <MEPhysX.h>
 #include <mephysx/GameComponent.h>
 #include <me/IOS.h>
-#include <me/scene/ISceneComponent.h>
+#include <me/scene/SceneComponent.h>
 #include <PxPhysicsAPI.h>
 #include <mephysx/Releaser.h>
 
 namespace mephysx
 {
-	class SceneComponent : public me::scene::ISceneComponent
+	class SceneComponent : public me::scene::SceneComponent
 	{
 	public:
 		MEPHYSX_API SceneComponent( me::IOS * os, GameComponent * gameComponent );
 		~SceneComponent();
 
-		const char * GetName() const override;
-		bool IsEnabled() const override;
-		void SetEnabled( bool enabled ) override;
+		physx::PxScene * GetScene();
+		physx::PxMaterial * GetMaterial();
+		physx::PxControllerManager * GetControllerManager();
 
+	public: // ISceneComponent...
 		void OnAttach( me::scene::Scene * scene ) override;
 		void OnDetach( me::scene::Scene * scene ) override;
 		void OnInit( me::scene::Scene * scene ) override;
@@ -30,14 +31,10 @@ namespace mephysx
 		void OnSuspend() override;
 		void OnResume() override;
 
-		physx::PxScene * GetScene();
-		physx::PxMaterial * GetMaterial();
-		physx::PxControllerManager * GetControllerManager();
-
+	public: // IComponent...
+		std::string GetWhat() const override;
+		
 	private:
-		me::IOS * m_os;
-		bool m_enabled;
-
 		GameComponent * m_gameComponent;
 		std::shared_ptr< physx::PxScene > m_scene;
 		std::shared_ptr< physx::PxMaterial > m_material;

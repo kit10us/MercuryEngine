@@ -3,20 +3,20 @@
 
 #pragma once
 
-#include <me/scene2d/Element.h>
+#include <me/canvas/Element.h>
 #include <me/IGame.h>
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
 		/// <summary>
 		/// A Layer is the simplist grouping of elements. No effort is made beyond the grouping itself (no sorting, no overlapping, no aranging).
 		/// </summary>
-		class Layer : public scene2d::Element
+		class Layer : public canvas::Element
 		{
 		public:
-			typedef std::shared_ptr< scene2d::Layer > ptr;
+			typedef std::shared_ptr< canvas::Layer > ptr;
 
 			Layer( IGame * game, unify::V2< float > position = {0, 0}, unify::Size< float > size = {100,100}, Anchor anchor = Anchor::StretchFull );
 

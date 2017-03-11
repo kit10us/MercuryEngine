@@ -1,6 +1,7 @@
 // DXILuaDLL.cpp : Defines the exported functions for the DLL application.
 //
 
+#include <me/Mercury.h>
 #include "MEPhysX.h"
 #include <mephysx/GameComponent.h>
 					   

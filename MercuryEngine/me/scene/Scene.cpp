@@ -202,7 +202,7 @@ bool Scene::GetRenderObjects() const
 	return m_renderObjects;
 }
 
-int Scene::ComponentCount() const
+int Scene::GetComponentCount() const
 {
 	return (int)m_components.size();
 }
@@ -241,12 +241,12 @@ ISceneComponent::ptr Scene::GetComponent( std::string name, int startIndex )
 	return GetComponent( index );
 }
 
-int Scene::FindComponent( std::string name, int startIndex ) const
+int Scene::FindComponent( std::string typeName, int startIndex ) const
 {
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( i >= startIndex && unify::StringIs( component->GetName(), name ) ) return i;
+		if ( i >= startIndex && unify::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

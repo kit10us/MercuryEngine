@@ -11,8 +11,9 @@
 
 using namespace meedr;
 
-LogViewer::LogViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
+LogViewer::LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"LogViewerWndClass" )
+	, m_sceneViewer{ parent }
 	, m_game{ game }
 {
 	using namespace create;

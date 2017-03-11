@@ -141,7 +141,7 @@ int CameraComponent_Constructor( lua_State * state )
 
 	if ( args == 0 )
 	{
-		IObjectComponent::ptr component( new CameraComponent( game->GetOS() ) );
+		IObjectComponent::ptr component( new CameraComponent() );
 		return PushCameraComponent( state, component );
 	}
 	else if ( args == 1 )

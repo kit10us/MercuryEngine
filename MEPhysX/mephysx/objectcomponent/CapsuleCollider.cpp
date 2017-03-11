@@ -14,19 +14,14 @@ CapsuleCollider::CapsuleCollider( CapsuleCollider & collider )
 {
 }
 
-CapsuleCollider::CapsuleCollider( me::IOS * os, GameComponent * gameComponent, float radius, float halfHeight )
-: ColliderBase( os, gameComponent )
+CapsuleCollider::CapsuleCollider( mephysx::GameComponent * gameComponent, float radius, float halfHeight )
+: ColliderBase( "CapsuleCollider", gameComponent )
 {
 	m_shape.reset( gameComponent->GetPhysics()->createShape( PxCapsuleGeometry( radius, halfHeight ), *m_material ), Releaser< PxShape > );
 }
 
 CapsuleCollider::~CapsuleCollider()
 {
-}
-
-std::string CapsuleCollider::GetType() const
-{
-	return "Capsule Collider";
 }
 
 std::string CapsuleCollider::GetWhat() const

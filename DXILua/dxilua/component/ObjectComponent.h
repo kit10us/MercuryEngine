@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <dxilua/ScriptEngine.h>
-#include <me/scene/IObjectComponent.h>
+#include <me/scene/ObjectComponent.h>
 #include <me/scene/Object.h>
 #include <me/IGame.h>
 
@@ -10,7 +10,7 @@ namespace melua
 {
 	namespace component
 	{
-		class ObjectComponent : public me::scene::IObjectComponent
+		class ObjectComponent : public me::scene::ObjectComponent
 		{
 		protected:
 			ObjectComponent( ObjectComponent & component );
@@ -19,17 +19,12 @@ namespace melua
 			ObjectComponent( lua_State * state, me::IGame * game, std::string myName, unify::Path path );
 			~ObjectComponent();
 
-			std::string GetType() const;
-			std::string GetWhat() const;
+			std::string GetLuaName() const;
 
-			bool IsEnabled() const override;
-			void SetEnabled( bool enabled ) override;
-
+		public: // IGameComponent...
 			bool Updateable() const { return false; }
 			bool Renderable() const { return false; }
 
-			void OnAttach( me::scene::Object * object ) override;
-			void OnDetach() override;
 			void OnInit() override;
 			void OnStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
@@ -39,6 +34,8 @@ namespace melua
 
 			me::scene::IObjectComponent * Duplicate();
 
+		public: // IComponent...
+			std::string GetWhat() const;
 			int GetValueCount() const override;
 			bool ValueExists( std::string name ) const override;
 			std::string GetValueName( int index ) const override;
@@ -53,10 +50,8 @@ namespace melua
 
 			lua_State * m_state;
 			me::IGame * m_game;
-			me::scene::Object * m_object;
-			std::string m_name;
+			std::string m_luaName;
 			unify::Path m_path;
-			bool m_enabled;
 		};
 	}
 }

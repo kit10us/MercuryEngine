@@ -3,11 +3,11 @@
 
 #pragma once
 
-#include <me/scene2d/TextElement.h>
+#include <me/canvas/TextElement.h>
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
 		class FPS : public TextElement
 		{

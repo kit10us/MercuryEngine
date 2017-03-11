@@ -19,21 +19,17 @@ BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component 
 }
 
 BBoxRendererComponent::BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color )
-	: ObjectComponent( os )
-	, m_effect( effect )
-	, m_padding( 0.1f )
-	, m_color( color )
+	: ObjectComponent( "BBoxRenderer" )
+	, m_os{ os }
+	, m_effect{ effect }
+	, m_padding{ 0.1f }
+	, m_color{ color }
 {
 }
 
 BBoxRendererComponent::~BBoxRendererComponent()
 {
 }
-
-std::string BBoxRendererComponent::GetType() const
-{
-	return "BBoxRenderer";
-}	
 
 std::string BBoxRendererComponent::GetWhat() const
 {
@@ -52,7 +48,9 @@ void BBoxRendererComponent::SetPadding( float padding )
 
 void BBoxRendererComponent::OnAttach( Object * object )
 {
-	for ( int i = 0; i < object->ComponentCount(); ++i )
+	ObjectComponent::OnAttach( object );
+
+	for ( int i = 0; i < object->GetComponentCount(); ++i )
 	{
 		GeometryComponent * geometryComponent = dynamic_cast< GeometryComponent * >(object->GetComponent( i ).get());
 		if ( geometryComponent != nullptr )
@@ -62,8 +60,10 @@ void BBoxRendererComponent::OnAttach( Object * object )
 	}
 }
 
-void BBoxRendererComponent::OnDetach()
+void BBoxRendererComponent::OnDetach( Object * object )
 {
+	ObjectComponent::OnDetach( object );
+
 	m_geomertries.clear();
 }
 
@@ -146,7 +146,7 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 		WriteVertex( *vd, lock, i, diffuseE, m_color );
 	}
 
-	Mesh * mesh = new Mesh( GetOS()->GetRenderer(0) );
+	Mesh * mesh = new Mesh( m_os->GetRenderer(0) );
 
 	BufferSet & set = mesh->GetPrimitiveList().AddBufferSet();
 	set.ClearMethods();

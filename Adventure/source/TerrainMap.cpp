@@ -14,8 +14,8 @@
 using namespace me;
 using namespace scene;
 
-TerrainMap::TerrainMap( IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize )
-	: ObjectComponent( os )
+TerrainMap::TerrainMap( unify::Size< int > mapSize, unify::Size< int > terraSize )
+	: ObjectComponent( "TerrainMap" )
 	, m_mapSize{ mapSize }
 	, m_terraSize{ terraSize }
  , m_map{ new size_t[ mapSize.width * mapSize.height ] }
@@ -36,12 +36,6 @@ TerrainMap::~TerrainMap()
 	delete[] m_map;
 }
 
-
-std::string TerrainMap::GetType() const
-{
-	return "Terrain Map";
-}
-
 std::string TerrainMap::GetWhat() const
 {
 	return std::string();
@@ -50,18 +44,6 @@ std::string TerrainMap::GetWhat() const
 bool TerrainMap::Renderable() const
 { 
 	return true; 
-}
-
-void TerrainMap::OnInit()
-{
-}
-
-void TerrainMap::OnStart()
-{
-}
-
-void TerrainMap::OnUpdate( UpdateParams params )
-{
 }
 
 void TerrainMap::CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform )

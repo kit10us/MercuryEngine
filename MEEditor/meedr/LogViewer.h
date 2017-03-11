@@ -12,9 +12,10 @@ namespace meedr
 	{
 	private:
 		me::IGame * m_game;
+		class SceneViewer*  m_sceneViewer;
 
 	public:
-		LogViewer( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
+		LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
 		~LogViewer();
 
 		// me::ILogListener...

@@ -11,9 +11,10 @@ namespace meedr
 	class ResourceBrowser : public ui::Window
 	{
 		me::IGame* m_game;
+		class SceneViewer * m_sceneViewer;
 
 	public:
-		ResourceBrowser( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
+		ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
 
 		void UpdateResourceTypes();
 		void UpdateResourceList();

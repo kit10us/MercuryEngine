@@ -4,7 +4,6 @@
 #include <mephysx/GameComponent.h>
 
 using namespace mephysx;
-using namespace me;
 using namespace physx;
 
 class ErrorCallback : public PxErrorCallback
@@ -29,6 +28,7 @@ private:
 };
 
 GameComponent::GameComponent()
+	: me::GameComponent( "PhysX" )
 {
 }
 
@@ -36,13 +36,22 @@ GameComponent::~GameComponent()
 {
 }
 
-std::string GameComponent::GetName() const
+physx::PxPhysics * GameComponent::GetPhysics()
 {
-	return "PhysX";
+	return m_physics.get();
+}
+
+physx::PxDefaultCpuDispatcher * GameComponent::GetCpuDispatcher()
+{
+	return m_dispatcher;
 }
 
 void GameComponent::OnAttach( me::IGame * game )
 {
+	me::GameComponent::OnAttach( game );
+
+	using namespace me;
+
 	m_errorCallback.reset( new ErrorCallback( game->GetOS() ) );
 	m_foundation.reset( PxCreateFoundation( PX_PHYSICS_VERSION, m_defaultAllocatorCallback, *m_errorCallback ), Releaser< PxFoundation > );
 	if ( !m_foundation )
@@ -72,30 +81,10 @@ void GameComponent::OnAttach( me::IGame * game )
 
 void GameComponent::OnDetach( me::IGame * game )
 {
+	me::GameComponent::OnDetach( game );
 }
 
-void GameComponent::OnBeforeStartup( me::IGame * game )
+std::string GameComponent::GetWhat() const
 {
-}
-
-void GameComponent::OnAfterStartup( me::IGame * game )
-{
-}
-
-void GameComponent::OnUpdate( me::IGame * game, UpdateParams params )
-{
-}
-
-void GameComponent::OnRender( me::IGame * game, RenderParams params )
-{
-}
-
-physx::PxPhysics * GameComponent::GetPhysics()
-{
-	return m_physics.get();
-}
-
-physx::PxDefaultCpuDispatcher * GameComponent::GetCpuDispatcher()
-{
-	return m_dispatcher;
+	return std::string();
 }

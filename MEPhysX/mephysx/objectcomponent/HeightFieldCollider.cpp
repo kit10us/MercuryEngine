@@ -9,8 +9,8 @@ using namespace mephysx;
 using namespace physx;
 using namespace objectcomponent;
 
-HeightFieldCollider::HeightFieldCollider( me::IOS * os, GameComponent * gameComponent, me::Terra * terra, unify::RowColumn< unsigned int > rcCount  )
-	: ColliderBase( os, gameComponent )
+HeightFieldCollider::HeightFieldCollider( mephysx::GameComponent * gameComponent, me::Terra * terra, unify::RowColumn< unsigned int > rcCount  )
+	: ColliderBase( "HeightFieldCollider", gameComponent )
 {
 	PxPhysics * physics = gameComponent->GetPhysics();
 
@@ -55,11 +55,6 @@ HeightFieldCollider::HeightFieldCollider( me::IOS * os, GameComponent * gameComp
 
 HeightFieldCollider::~HeightFieldCollider()
 {
-}
-
-std::string HeightFieldCollider::GetType() const
-{
-	return "HeightField Collider";
 }
 
 std::string HeightFieldCollider::GetWhat() const

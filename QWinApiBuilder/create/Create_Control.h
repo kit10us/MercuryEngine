@@ -59,9 +59,6 @@ namespace create
 		ui::IControl * GetControl() override;
 
 	protected:
-		//container::Container * GetParent() const override;
-		//void SetParent( container::Container * parent ) override;
-
 		void ComputePass1() override;
 		void ComputePass2( int fillWidthTotal, int fillHeightTotal, int fillWidthTotalWeight, int fillHeightTotalWeight ) override;
 		void ComputePass3( int x, int y ) override;

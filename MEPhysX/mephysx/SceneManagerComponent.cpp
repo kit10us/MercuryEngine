@@ -22,11 +22,13 @@ const char * SceneManagerComponent::GetName() const
 	return "PhysXSMC";
 }
 
+/*
 // TODO: Verify this is necessary.
 void DeleterSC( SceneComponent * sc )
 {
 	delete sc;
 }
+*/
 
 void SceneManagerComponent::OnNewScene( Scene * scene )
 {

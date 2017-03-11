@@ -9,8 +9,9 @@
 
 using namespace meedr;
 
-ScriptEditor::ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game )
+ScriptEditor::ScriptEditor( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
 	: Window( parent, L"ScriptEditorWndClass" )
+	, m_sceneViewer{ parent }
 	, m_game{ game }
 {
 	using namespace create;

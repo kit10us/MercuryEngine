@@ -17,6 +17,8 @@ namespace create
 		class Container : public Control
 		{
 			friend class ui::Window;
+			std::string m_tag;
+
 		protected:
 			Container( int width, int height );
 
@@ -32,6 +34,13 @@ namespace create
 
 			DWORD GetWantedStyle() const override;
 			std::wstring GetType() const override;
+
+			Container * SetDebugTag( std::string tag )
+			{
+				m_tag = tag;
+				return this;
+			}
+
 		};
 	}
 }

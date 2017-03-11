@@ -13,8 +13,8 @@ CameraComponent::CameraComponent( CameraComponent & component )
 {
 }
 
-CameraComponent::CameraComponent( IOS * os )
-	: ObjectComponent( os )
+CameraComponent::CameraComponent()
+	: ObjectComponent( "Camera" )
 	, m_projection( unify::MatrixIdentity() )
 	, m_renderer( 0 )
 {
@@ -22,11 +22,6 @@ CameraComponent::CameraComponent( IOS * os )
 
 CameraComponent::~CameraComponent()
 {
-}
-
-std::string CameraComponent::GetType() const
-{
-	return "Camera";
 }
 
 std::string CameraComponent::GetWhat() const

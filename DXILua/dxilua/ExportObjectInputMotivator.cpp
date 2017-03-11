@@ -125,7 +125,7 @@ int ObjectInputMotivator_Constructor( lua_State * state )
 	int top = lua_gettop( state );
 	int type = lua_type( state, 1 );
 
-	IObjectComponent::ptr component( new motivator::AutoOIMotivator( game->GetOS() ) );
+	IObjectComponent::ptr component( new motivator::AutoOIMotivator() );
 	return PushObjectInputMotivator( state, component );
 }
 

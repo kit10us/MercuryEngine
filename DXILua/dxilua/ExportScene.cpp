@@ -81,7 +81,7 @@ int Scene_NewCamera( lua_State * state )
 	auto game = ScriptEngine::GetGame();
 
 	Object * child = proxy->scene->NewObject( name );
-	CameraComponent * cameraComponent = new CameraComponent( game->GetOS() );
+	CameraComponent * cameraComponent = new CameraComponent();
 	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
 
 	cameraComponent->SetProjection( mat );
@@ -181,6 +181,8 @@ void RegisterScene( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
+	/*
 	luaL_newlib( state, SceneStaticFunctions );
 	lua_setglobal( state, "Scene" );
+	*/
 }

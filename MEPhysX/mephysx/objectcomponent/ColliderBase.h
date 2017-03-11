@@ -4,7 +4,7 @@
 #pragma once
 
 #include <MEPhysX.h>
-#include <me/scene/IObjectComponent.h>
+#include <me/scene/ObjectComponent.h>
 #include <me/GeometryCache.h>
 #include <mephysx/GameComponent.h>
 #include <me/IOS.h>
@@ -15,26 +15,18 @@ namespace mephysx
 {
 	namespace objectcomponent
 	{
-		class ColliderBase : public me::scene::IObjectComponent
+		class ColliderBase : public me::scene::ObjectComponent
 		{
 		protected:
 			ColliderBase( ColliderBase & colliderBase );
 
 		public:
-			ColliderBase( me::IOS * os, GameComponent * gameComponent );
+			ColliderBase( std::string typeName, GameComponent * gameComponent );
 			~ColliderBase();
 
-			me::IOS * GetOS();
-			const me::IOS * GetOS() const;
-
-			bool IsEnabled() const override;
-			void SetEnabled( bool enabled ) override;
-
-			bool Updateable() const { return false; }
-			bool Renderable() const { return false; }
-									   
+		public: // IObjectComponent...
 			void OnAttach( me::scene::Object * object ) override;
-			void OnDetach() override {}
+			void OnDetach( me::scene::Object * object ) override;
 			void OnInit() override {}
 			void OnStart() override {}
 			void OnUpdate( me::UpdateParams params ) override {}
@@ -44,19 +36,6 @@ namespace mephysx
 
 			MEPHYSX_API physx::PxShape * GetShape();
 			MEPHYSX_API const physx::PxShape * GetShape() const;
-
-			int GetValueCount() const override;
-			bool ValueExists( std::string name ) const override;
-			std::string GetValueName( int index ) const override;
-			int FindValueIndex( std::string name ) const override;
-			std::string GetValue( int index ) const override;
-			std::string GetValue( std::string name ) const override;
-			bool SetValue( int index, std::string value ) override;
-			bool SetValue( std::string name, std::string value ) override;
-
-		private:
-			me::IOS * m_os;
-			bool m_enabled;
 
 		protected:
 			GameComponent * m_gameComponent;

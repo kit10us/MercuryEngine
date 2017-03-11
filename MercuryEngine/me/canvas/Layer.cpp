@@ -1,11 +1,10 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene2d/Layer.h>
+#include <me/canvas/Layer.h>
 
 using namespace me;
-using namespace scene2d;
-using namespace scene;
+using namespace canvas;
 
 Layer::Layer( IGame * game, unify::V2< float > position, unify::Size< float > size, Anchor anchor )
 	: Element( game, position, size, anchor )

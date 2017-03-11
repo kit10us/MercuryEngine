@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include <me/scene2d/Element.h>
+#include <me/canvas/Element.h>
 #include <me/Effect.h>
 #include <me/IGame.h>
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
 		class TextElement : public Element
 		{

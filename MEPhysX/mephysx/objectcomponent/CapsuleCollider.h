@@ -17,10 +17,9 @@ namespace mephysx
 			CapsuleCollider( CapsuleCollider & collider );
 
 		public:
-			MEPHYSX_API CapsuleCollider( me::IOS * os, GameComponent * gameComponent, float radius, float halfHeight );
+			MEPHYSX_API CapsuleCollider( GameComponent * gameComponent, float radius, float halfHeight );
 			~CapsuleCollider();
 
-			std::string GetType() const override;
 			std::string GetWhat() const override;
 
 			me::scene::IObjectComponent * Duplicate() override;

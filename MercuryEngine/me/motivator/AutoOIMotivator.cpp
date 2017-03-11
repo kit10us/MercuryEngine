@@ -10,8 +10,8 @@ using namespace me;
 using namespace motivator;
 using namespace input;
 
-AutoOIMotivator::AutoOIMotivator( IOS * os )
-	: ObjectInputMotivator( os )
+AutoOIMotivator::AutoOIMotivator()
+	: ObjectInputMotivator()
 {
 	GetLookup()->AddValue( "speed", "1" );
 	GetLookup()->AddValue( "walkSpeed", "1" );
@@ -24,7 +24,7 @@ AutoOIMotivator::~AutoOIMotivator()
 {
 }
 
-std::string AutoOIMotivator::GetType() const
+std::string AutoOIMotivator::GetTypeName() const
 {
 	return "AutoOIMotivator";
 }
@@ -36,11 +36,6 @@ std::string AutoOIMotivator::GetWhat() const
 
 void AutoOIMotivator::OnUpdate( UpdateParams params )
 {
-	if ( !  GetTarget() )
-	{
-		return;
-	}
-
 	if ( ! IsEnabled() )
 	{
 		return;
@@ -76,37 +71,37 @@ void AutoOIMotivator::OnUpdate( UpdateParams params )
 	if ( strafeLeftMotivation && strafeLeftMotivation->IsTrue() )
 	{
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( -1, 0, 0 ) ) );
-		GetTarget()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
+		GetObject()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
 	}
 	else if ( strafeRightMotivation && strafeRightMotivation->IsTrue() )
 	{
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 1, 0, 0 ) ) );
-		GetTarget()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
+		GetObject()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
 	}
 
 	if ( walkForwardMotivation && walkForwardMotivation->IsTrue() )
 	{
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 0, 0, 1 ) ) );
-		GetTarget()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
+		GetObject()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
 	}
 	else if ( walkBackwardMotivation && walkBackwardMotivation->IsTrue() )
 	{
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 0, 0, -1 ) ) );
-		GetTarget()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
+		GetObject()->GetFrame().PostMul( translate * params.renderInfo.GetDelta() * speed );
 	}
 
 	if ( walkXMotivation && walkXMotivation->IsTrue() )
 	{
-		unify::V3< float > left = GetTarget()->GetFrame().GetLeft();
+		unify::V3< float > left = GetObject()->GetFrame().GetLeft();
 		unify::Matrix matrix( unify::MatrixTranslate( left * walkXMotivation->GetValue() * params.renderInfo.GetDelta() * speed * 5.0f ) );
-		GetTarget()->GetFrame().PostMul( matrix );
+		GetObject()->GetFrame().PostMul( matrix );
 	}
 
 	if ( walkYMotivation && walkYMotivation->IsTrue() )
 	{
-		unify::V3< float > forward = GetTarget()->GetFrame().GetForward();
+		unify::V3< float > forward = GetObject()->GetFrame().GetForward();
 		unify::Matrix matrix( unify::MatrixTranslate( forward * walkYMotivation->GetValue() * params.renderInfo.GetDelta() * speed * 5.0f ) );
-		GetTarget()->GetFrame().PostMul( matrix );
+		GetObject()->GetFrame().PostMul( matrix );
 	}
 
 	bool lookXMotivated = (lookXMotivation && lookXMotivation->IsTrue());
@@ -127,15 +122,15 @@ void AutoOIMotivator::OnUpdate( UpdateParams params )
 			matrix *= unify::MatrixRotationX( unify::AngleInRadians( params.renderInfo.GetDelta() * changeY * lookYSpeed ) );
 		}
 
-		GetTarget()->GetFrame().PreMul( matrix );
+		GetObject()->GetFrame().PreMul( matrix );
 
 	}
 
 	// Fix up, so we don't tilt to the left or the rigth.
 	{
 		using namespace unify;
-		V3< float > left = GetTarget()->GetFrame().GetLeft();
-		V3< float > forward = GetTarget()->GetFrame().GetForward();
+		V3< float > left = GetObject()->GetFrame().GetLeft();
+		V3< float > forward = GetObject()->GetFrame().GetForward();
 		V3< float > leftFixed = V3< float >( { left.x, 0, left.y } );
 		float ln = leftFixed.Normalize();
 		Angle angle( AngleInRadians( acos( left.Dot( leftFixed ) ) ) );
@@ -144,9 +139,9 @@ void AutoOIMotivator::OnUpdate( UpdateParams params )
 
 		forward = V3< float >::V3Cross( up, leftFixed );
 
-		GetTarget()->GetFrame().SetLeft( leftFixed );
-		GetTarget()->GetFrame().SetUp( up );
-		GetTarget()->GetFrame().SetForward( forward );
+		GetObject()->GetFrame().SetLeft( leftFixed );
+		GetObject()->GetFrame().SetUp( up );
+		GetObject()->GetFrame().SetForward( forward );
 	}
 }
 

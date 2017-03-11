@@ -16,10 +16,9 @@ namespace mephysx
 		class HeightFieldCollider : public mephysx::objectcomponent::ColliderBase
 		{
 		public:
-			MEPHYSX_API HeightFieldCollider( me::IOS * os, GameComponent * gameComponent, me::Terra * terra, unify::RowColumn< unsigned int > rcCount );
+			MEPHYSX_API HeightFieldCollider( GameComponent * gameComponent, me::Terra * terra, unify::RowColumn< unsigned int > rcCount );
 			~HeightFieldCollider();
 
-			std::string GetType() const override;
 			std::string GetWhat() const override;
 
 			me::scene::IObjectComponent * Duplicate() override;

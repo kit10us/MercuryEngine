@@ -10,19 +10,20 @@ using namespace me;
 using namespace motivator;
 using namespace input;
 
-CameraMotivator::CameraMotivator( me::IOS * os )
-	: ObjectInputMotivator( os )
+CameraMotivator::CameraMotivator( const CameraMotivator & cameraMotivator )
+	: ObjectInputMotivator( cameraMotivator )
 {
+}
+
+CameraMotivator::CameraMotivator()
+	: ObjectInputMotivator()
+{
+	m_typeName = "CameraMotivator";
 	GetLookup()->AddValue( "speed", "2.0" );
 }
 
 CameraMotivator::~CameraMotivator() 
 {
-}
-
-std::string CameraMotivator::GetType() const
-{
-	return "CameraMotivator";
 }
 
 std::string CameraMotivator::GetWhat() const
@@ -32,11 +33,6 @@ std::string CameraMotivator::GetWhat() const
 
 void CameraMotivator::OnUpdate( UpdateParams params )
 {
-	if ( ! GetTarget() )
-	{
-		return;
-	}
-
 	if ( ! IsEnabled() )
 	{
 		return;
@@ -54,30 +50,30 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 	{
 		float factor = -1.0f * params.renderInfo.GetDelta() * speed;
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( factor, 0, 0 ) ) );
-		GetTarget()->GetFrame().PostMul( translate );
+		GetObject()->GetFrame().PostMul( translate );
 	}
 	else if ( moveRightMotivation && moveRightMotivation->IsTrue() )
 	{
 		float factor = 1.0f * params.renderInfo.GetDelta() * speed;
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( factor, 0, 0 ) ) );
-		GetTarget()->GetFrame().PostMul( translate );
+		GetObject()->GetFrame().PostMul( translate );
 	}
 
 	if ( moveUpMotivation && moveUpMotivation->IsTrue() )
 	{
 		float factor = 1.0f * params.renderInfo.GetDelta() * speed;
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 0, 0, factor ) ) );
-		GetTarget()->GetFrame().PostMul( translate );
+		GetObject()->GetFrame().PostMul( translate );
 	}
 	else if ( moveDownMotivation && moveDownMotivation->IsTrue() )
 	{
 		float factor = -1.0f * params.renderInfo.GetDelta() * speed;
 		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 0, 0, factor ) ) );
-		GetTarget()->GetFrame().PostMul( translate );
+		GetObject()->GetFrame().PostMul( translate );
 	}
 }
 
 scene::IObjectComponent * CameraMotivator::Duplicate()
 {
-	return nullptr; // Not supported.
+	return new CameraMotivator( *this );
 }

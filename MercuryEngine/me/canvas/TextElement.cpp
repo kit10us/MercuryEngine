@@ -1,14 +1,14 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene2d/TextElement.h>
+#include <me/canvas/TextElement.h>
 #include <me/RenderMethod.h>
 #include <me/VertexUtil.h>
 
 #include <algorithm>
 
 using namespace me;
-using namespace scene2d;
+using namespace canvas;
 
 TextElement::TextElement( me::IGame * game, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: Element( game, offset, {0, 0}, anchor )

@@ -16,10 +16,9 @@ namespace me
 			CameraComponent( CameraComponent & component );
 
 		public:
-			CameraComponent( IOS * os );
+			CameraComponent();
 			virtual ~CameraComponent();
 
-			std::string GetType() const override;
 			std::string GetWhat() const override;
 
 			int GetRenderer() const;

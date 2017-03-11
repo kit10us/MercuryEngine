@@ -1,10 +1,10 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene2d/Element.h>
+#include <me/canvas/Element.h>
 
 using namespace me;
-using namespace scene2d;
+using namespace canvas;
 
 Element::Element( me::IGame * game, unify::V2< float > offset, unify::Size< float > size, Anchor anchor )
 	: m_game{ game }

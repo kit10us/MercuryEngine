@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/IOS.h>
-#include <me/IScriptEngine.h>
 #include <unify/TimeDelta.h>
 #include <me/Extension.h>
 #include <me/RenderInfo.h>
@@ -116,7 +115,7 @@ namespace me
 
 		virtual bool HadCriticalError() const = 0;
 
-		virtual int ComponentCount() const = 0;
+		virtual int GetComponentCount() const = 0;
 		virtual void AddComponent( IGameComponent::ptr component ) = 0;
 		virtual void RemoveComponent( IGameComponent::ptr component ) = 0;
 		virtual IGameComponent::ptr GetComponent( int index ) = 0;

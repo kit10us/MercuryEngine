@@ -7,6 +7,7 @@
 #include <meedr/InputBrowser.h>
 #include <meedr/ScriptEditor.h>
 #include <meedr/LogViewer.h>
+#include <meedr/ComponentViewer.h>
 #include <ui/Builder.h>
 
 #include <Richedit.h>
@@ -44,21 +45,21 @@ SceneViewer::SceneViewer( me::IGame * game )
 	AddControl( (new Edit( FillWidth(), DefaultHeight() )), "Name" );
 	StepDown();
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), SizeToContentHeight() ) );
-	AddControl( new Static( L"x", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "X" );
-	AddControl( new Static( L"y", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "y" );
-	AddControl( new Static( L"z", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( (new Edit( FillWidth(), DefaultHeight() ))->SetReadonly( true ), "z" );
+	AddControl( new Static( L"x: ", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( (new Edit( 90, DefaultHeight() ))->SetReadonly( true ), "X" );
+	AddControl( new Static( L"y: ", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( (new Edit( 90, DefaultHeight() ))->SetReadonly( true ), "y" );
+	AddControl( new Static( L"z: ", SizeToContentWidth(), DefaultHeight() ) );
+	AddControl( (new Edit( 90, DefaultHeight() ))->SetReadonly( true ), "z" );
 	StepDown();
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), FillHeight() ) );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Components: ", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( new Listbox( 260, 200 ), "Components" );
+	AddControl( new Listbox( FillWidth( 2 ), 200 ), "Components" );
 	StepDown();
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Values: ", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( new ListView( 260, 200 ), "Values" );
+	AddControl( new ListView( FillWidth( 3 ), 200 ), "ValuesList" );
 
 	AddMenu( new Menu(
 		{
@@ -71,7 +72,8 @@ SceneViewer::SceneViewer( me::IGame * game )
 			},
 			{ "View ",
 				{
-					{ "Resources" },
+					{ "Components" },
+					{ "Assets" },
 					{ "Inputs" },
 					{ "Log" }
 				}
@@ -97,12 +99,12 @@ void SceneViewer::OpenResourceBrowser()
 {
 	RECT rect{};
 	GetWindowRect( rect );
-	int x = rect.right;
+	int x = rect.left;
 	int y = rect.top;
 	if ( !m_resourceBrowser )
 	{
-		m_resourceBrowser.reset( new meedr::ResourceBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 		m_openChildren++;
+		m_resourceBrowser.reset( new meedr::ResourceBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 	}
 	else
 	{
@@ -115,12 +117,12 @@ void SceneViewer::OpenInputBrowser()
 {
 	RECT rect{};
 	GetWindowRect( rect );
-	int x = rect.right;
+	int x = rect.left;
 	int y = rect.top;
 	if ( !m_inputBrowser )
 	{
-		m_inputBrowser.reset( new InputBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 		m_openChildren++;
+		m_inputBrowser.reset( new InputBrowser( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 	}
 	else
 	{
@@ -128,16 +130,17 @@ void SceneViewer::OpenInputBrowser()
 		m_inputBrowser->SetForegroundWindow();
 	}
 }
+
 void SceneViewer::OpenScriptEditor( unify::Path source )
 {
 	RECT rect{};
 	GetWindowRect( rect );
-	int x = rect.right;
+	int x = rect.left;
 	int y = rect.top;
 	if ( ! m_scriptEditor )
 	{
-		m_scriptEditor.reset( new ScriptEditor( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 		m_openChildren++;
+		m_scriptEditor.reset( new ScriptEditor( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 	}
 	else
 	{
@@ -153,18 +156,39 @@ void SceneViewer::OpenLogViewer()
 {	
 	RECT rect{};
 	GetWindowRect( rect );
-	int x = rect.right;
+	int x = rect.left;
 	int y = rect.top;
 	if ( ! m_logViewer )
 	{
-		m_logViewer.reset( new LogViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 		m_openChildren++;
+		m_logViewer.reset( new LogViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
 	}
 	else
 	{
 		m_logViewer->ShowWindow( SW_RESTORE );
 		m_logViewer->SetForegroundWindow();
 	}
+}
+
+void SceneViewer::OpenComponentViewer( std::string type, int index )
+{
+	RECT rect{};
+	GetWindowRect( rect );
+	int x = rect.left;
+	int y = rect.top;
+	if ( ! m_componentViewer )
+	{
+		m_openChildren++;
+		m_componentViewer.reset( new ComponentViewer( this, SW_SHOWDEFAULT, x + m_openChildren * 34, y + m_openChildren * 34, m_game ) );
+	}
+	else
+	{
+		m_componentViewer->ShowWindow( SW_RESTORE );
+		m_componentViewer->SetForegroundWindow();
+	}
+
+	ComponentViewer* componentViewer = dynamic_cast<ComponentViewer*>(m_componentViewer.get());
+	componentViewer->GotoComponent( type, index );
 }
 
 void SceneViewer::UpdateSceneList()
@@ -319,10 +343,10 @@ void SceneViewer::UpdateObject_Components( bool force )
 	me::scene::Object* object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
 							   
 	components->ResetContent();
-	for ( int i = 0; i < object->ComponentCount(); i++ )
+	for ( int i = 0; i < object->GetComponentCount(); i++ )
 	{
 		auto component = object->GetComponent( i );
-		std::string type = component->GetType();
+		std::string type = component->GetTypeName();
 		std::string what = component->GetWhat();
 		std::string text = type;
 		if ( !what.empty() )
@@ -346,7 +370,7 @@ void SceneViewer::UpdateObject_ComponentValues()
 	Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 	Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 	Listbox* components = GetControl< Listbox* >( "Components" );
-	ListView* values = GetControl< ListView* >( "Values" );
+	ListView* values = GetControl< ListView* >( "ValuesList" );
 
 	values->DeleteAllItems();
 
@@ -388,14 +412,14 @@ void SceneViewer::OpenObjectComponent()
 		return;
 	}
 
-	if ( unify::StringIs( component->GetType(), "LUA Script" ) )
+	if ( unify::StringIs( component->GetTypeName(), "LUAScript" ) )
 	{
 		unify::Path path( component->GetValue( "path" ) );
 		unify::Path fullPath( m_game->GetOS()->GetRunPath(), path );
 		fullPath.Normalize();
 		GetParent()->SendUserMessage( SCRIPTEDITOR_OPEN, message::Params{ 0, (LPARAM)fullPath.ToString().c_str() } );
 	}
-}				
+}		
 
 void SceneViewer::EditScene( bool edit )
 {
@@ -432,7 +456,7 @@ void SceneViewer::EditScene( bool edit )
 	auto x = GetControl< Edit* >( "X" );
 	auto y = GetControl< Edit* >( "Y" );
 	auto z = GetControl< Edit* >( "Z" );
-	auto values = GetControl< ListView* >( "Values" );
+	auto values = GetControl< ListView* >( "ValuesList" );
 
 	editSceneButton->SetText( m_editingLock ? "Resume" : "Edit Scene" );
 	x->SetReadonly( m_editingLock ? false : true );
@@ -440,11 +464,16 @@ void SceneViewer::EditScene( bool edit )
 	z->SetReadonly( m_editingLock ? false : true );
 }
 
+bool SceneViewer::IsEditing() const
+{
+	return m_editingLock ? true : false;
+}
+
 ui::IResult* SceneViewer::OnAfterCreate( ui::message::Params )
 {
 	using namespace ui;
 
-	ListView* values = GetControl< ListView* >( "Values" );
+	ListView* values = GetControl< ListView* >( "ValuesList" );
 	values->AddColumn( 0, L"Value", 80 );
 	values->AddColumn( 1, L"Name", 120 );
 	int a[] = { 1, 0 };
@@ -457,63 +486,36 @@ ui::IResult* SceneViewer::OnAfterCreate( ui::message::Params )
 	return new Result(0);
 }
 
-ui::IResult* SceneViewer::OnClose( ui::message::Params params )
-{
-	using namespace ui;
-
-	if ( m_resourceBrowser )
-	{
-		m_resourceBrowser->Close();
-	}
-	
-	if ( m_inputBrowser )
-	{
-		m_inputBrowser->Close();
-	}
-
-	if ( m_scriptEditor )
-	{
-		m_scriptEditor->Close();
-	}
-
-	if ( m_logViewer )
-	{
-		m_logViewer->Close();
-	}
-
-	return new Result(0);
-}
-
 ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message )
 {
 	using namespace ui;
 
 	if ( message.IsFor( "SceneCombobox" ) )
 	{
-		switch ( message.code )
+		switch ( (Combobox::Event)message.code )
 		{
-		case CBN_SELCHANGE:
+		case Combobox::Event::SelEndOk:
 			UpdateObjectList();
 			break;
 		}
 	}
 	else if ( message.IsFor( "ObjectList" ) )
 	{
-		switch ( message.code )
+		switch ( (Listbox::Event)message.code )
 		{
-		case LBN_SELCHANGE:
+		case Listbox::Event::SelChange:
 			UpdateObject_All();
 			return new Result(0);
 		}
 	}
 	else if ( message.IsFor( "Components" ) )
 	{
-		switch ( message.code )
+		switch ( (Listbox::Event)message.code )
 		{
-		case LBN_SELCHANGE:
+		case Listbox::Event::SelChange:
 			UpdateObject_ComponentValues();
 			return new Result( 0 );
-		case LBN_DBLCLK:
+		case Listbox::Event::DblClick:
 			OpenObjectComponent();
 			return new Result( 0 );
 		}	  
@@ -618,19 +620,18 @@ ui::IResult* SceneViewer::OnTimer( ui::message::Timer message )
 ui::IResult* SceneViewer::OnNotify( ui::message::Notify message )
 {
 	using namespace ui;
-	if ( message.IsFor( "Values" ) )
+	if ( message.IsFor( "ValuesList" ) )
 	{
 		switch( (ListView::Notify)message.code )
 		{
 		case ListView::Notify::EndLabelEditW:
 		{
-			m_game->LogLine( "EndLabelEditW" );
 			NMLVDISPINFO info = *(NMLVDISPINFO*)message.lParam;
 
 			Combobox* sceneCombobox = GetControl< Combobox* >( "SceneCombobox" );
 			Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 			Listbox* components = GetControl< Listbox* >( "Components" );
-			ListView* values = GetControl< ListView* >( "Values" );
+			ListView* values = GetControl< ListView* >( "ValuesLidy" );
 
 			int sceneIndex = sceneCombobox->GetCurSel();
 			auto scene = m_sceneManager->GetScene( sceneIndex );
@@ -645,8 +646,7 @@ ui::IResult* SceneViewer::OnNotify( ui::message::Notify message )
 			return new Result( 1 );
 		}
 		case ListView::Notify::BeginLabelEditW:
-			m_game->LogLine( "BeginLabelEditW" );
-			return new Result( m_editingLock ? 0 : 1 );
+			return new Result( IsEditing() ? 0 : 1 );
 		}
 	}
 	return new Unhandled();
@@ -666,7 +666,12 @@ ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
 		Destroy();
 		return new Result( 0 );
 	}
-	else if ( message.IsFor( "Resources" ) )
+	else if ( message.IsFor( "Components" ) )
+	{
+		OpenComponentViewer( std::string(), -1 );
+		return new Result( 0 );
+	}
+	else if ( message.IsFor( "Assets" ) )
 	{
 		OpenResourceBrowser();
 		return new Result( 0 );
@@ -714,6 +719,10 @@ ui::IResult* SceneViewer::OnUser( ui::message::User message )
 		return new Result( 0 );
 	case SCRIPTEDITOR_OPEN:
 		OpenScriptEditor( message.params.lParam ? unify::Path( (char*)message.params.lParam ) : unify::Path() );
+		return new Result( 0 );
+	case COMPONENTVIEWER_CLOSED:
+		m_componentViewer.reset();
+		m_openChildren--;
 		return new Result( 0 );
 	}
 	return new Unhandled();

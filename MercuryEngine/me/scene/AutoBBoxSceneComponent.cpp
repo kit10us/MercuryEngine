@@ -43,3 +43,8 @@ void AutoBBoxSceneComponent::OnUpdate( Scene * scene, UpdateParams params )
 		object->AddComponent( IObjectComponent::ptr( new BBoxRendererComponent( GetOS(), m_effect, m_color ) ) );
 	}
 }
+
+std::string AutoBBoxSceneComponent::GetWhat() const
+{
+	return std::string();
+}

@@ -13,6 +13,8 @@
 #define SCRIPTEDITOR_CLOSED		2
 #define SCRIPTEDITOR_OPEN		3
 #define LOGVIEWER_CLOSED		4
+#define COMPONENTVIEWER_CLOSED	5
+#define COMPONENTVIEWER_OPEN	6
 
 namespace meedr
 {
@@ -28,6 +30,7 @@ namespace meedr
 		void OpenInputBrowser();
 		void OpenScriptEditor( unify::Path source );
 		void OpenLogViewer();
+		void OpenComponentViewer( std::string type, int index );
 
 		void UpdateSceneList();
 		void UpdateObjectList();
@@ -40,9 +43,10 @@ namespace meedr
 		void OpenObjectComponent();
 
 		void EditScene( bool edit );
+
+		bool IsEditing() const;
 		
 		ui::IResult* OnAfterCreate( ui::message::Params ) override;
-		ui::IResult* OnClose( ui::message::Params params ) override;
 		ui::IResult* OnControlCommand( ui::message::ControlCommand message ) override;
 		ui::IResult* OnTimer( ui::message::Timer message ) override;
 		ui::IResult* OnNotify( ui::message::Notify message ) override;
@@ -56,6 +60,7 @@ namespace meedr
 		IWindow::ptr m_inputBrowser;
 		IWindow::ptr m_scriptEditor;
 		IWindow::ptr m_logViewer;
+		IWindow::ptr m_componentViewer;
 		me::scene::SceneManager * m_sceneManager;
 		UINT_PTR m_timer;
 		me::UpdateLock::ptr m_editingLock;

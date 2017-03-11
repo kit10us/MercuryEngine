@@ -14,8 +14,8 @@
 
 #include <me/scene/SceneManager.h>
 #include <me/scene/CameraComponent.h>
-#include <me/scene2d/CanvasComponent.h>
-#include <me/scene2d/FPS.h>
+#include <me/canvas/CanvasComponent.h>
+#include <me/canvas/FPS.h>
 
 #include <memory>
 
@@ -154,7 +154,7 @@ void MyGame::Startup()
 
 	// Add a camera...
 	Object * camera = scene->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent( GetOS() ) ) );	 
+	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 
@@ -191,7 +191,7 @@ void MyGame::Startup()
 
 	// Test...
 	auto object = scene->NewObject( "geo" );
-	AddGeometryComponent( object, GetOS(), geo1 );
+	AddGeometryComponent( object, geo1 );
 
 	float x = 0.0f;
 	float y = 0.0f;
@@ -203,11 +203,11 @@ void MyGame::Startup()
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 10.0f, 0 - 10.0f * 2.0f ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 																 
-	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
+	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 	scene->AddComponent( canvas );
 
 	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2 ) ) );
+	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2 ) ) );
 }
 
 void MyGame::Update( UpdateParams params )

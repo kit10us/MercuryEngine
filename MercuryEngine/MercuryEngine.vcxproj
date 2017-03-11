@@ -21,7 +21,13 @@
   <ItemGroup>
     <ClInclude Include="me\BufferSet.h" />
     <ClInclude Include="me\BufferUsage.h" />
-    <ClInclude Include="me\DataCore.h" />
+    <ClInclude Include="me\canvas\Anchor.h" />
+    <ClInclude Include="me\canvas\CanvasComponent.h" />
+    <ClInclude Include="me\canvas\Element.h" />
+    <ClInclude Include="me\canvas\FPS.h" />
+    <ClInclude Include="me\canvas\IElement.h" />
+    <ClInclude Include="me\canvas\Layer.h" />
+    <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\Display.h" />
     <ClInclude Include="me\Effect.h" />
     <ClInclude Include="me\ElementFormat.h" />
@@ -48,10 +54,12 @@
     <ClInclude Include="me\frameanimation\FrameAnimationSet.h" />
     <ClInclude Include="me\Frustum.h" />
     <ClInclude Include="me\Game.h" />
+    <ClInclude Include="me\GameComponent.h" />
     <ClInclude Include="me\Geometry.h" />
     <ClInclude Include="me\GeometryCache.h" />
     <ClInclude Include="me\GeometryInstanceData.h" />
     <ClInclude Include="me\IBuffer.h" />
+    <ClInclude Include="me\IComponent.h" />
     <ClInclude Include="me\IConstantBuffer.h" />
     <ClInclude Include="me\IController.h" />
     <ClInclude Include="me\IGame.h" />
@@ -72,7 +80,6 @@
     <ClInclude Include="me\IOS.h" />
     <ClInclude Include="me\IPixelShader.h" />
     <ClInclude Include="me\IRenderer.h" />
-    <ClInclude Include="me\IScriptEngine.h" />
     <ClInclude Include="me\ITexture.h" />
     <ClInclude Include="me\IVertexBuffer.h" />
     <ClInclude Include="me\IVertexConstruct.h" />
@@ -93,13 +100,6 @@
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderParams.h" />
-    <ClInclude Include="me\scene2d\Anchor.h" />
-    <ClInclude Include="me\scene2d\CanvasComponent.h" />
-    <ClInclude Include="me\scene2d\Element.h" />
-    <ClInclude Include="me\scene2d\FPS.h" />
-    <ClInclude Include="me\scene2d\IElement.h" />
-    <ClInclude Include="me\scene2d\Layer.h" />
-    <ClInclude Include="me\scene2d\TextElement.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\BBoxRendererComponent.h" />
     <ClInclude Include="me\scene\CameraComponent.h" />
@@ -151,7 +151,11 @@
   <ItemGroup>
     <ClCompile Include="me\BufferSet.cpp" />
     <ClCompile Include="me\BufferUsage.cpp" />
-    <ClCompile Include="me\DataCore.cpp" />
+    <ClCompile Include="me\canvas\CanvasComponent.cpp" />
+    <ClCompile Include="me\canvas\Element.cpp" />
+    <ClCompile Include="me\canvas\FPS.cpp" />
+    <ClCompile Include="me\canvas\Layer.cpp" />
+    <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\Display.cpp" />
     <ClCompile Include="me\Effect.cpp" />
     <ClCompile Include="me\ElementFormat.cpp" />
@@ -167,6 +171,7 @@
     <ClCompile Include="me\frameanimation\FrameAnimationSet.cpp" />
     <ClCompile Include="me\Frustum.cpp" />
     <ClCompile Include="me\Game.cpp" />
+    <ClCompile Include="me\GameComponent.cpp" />
     <ClCompile Include="me\Geometry.cpp" />
     <ClCompile Include="me\GeometryCache.cpp" />
     <ClCompile Include="me\GeometryInstanceData.cpp" />
@@ -191,11 +196,6 @@
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
-    <ClCompile Include="me\scene2d\CanvasComponent.cpp" />
-    <ClCompile Include="me\scene2d\Element.cpp" />
-    <ClCompile Include="me\scene2d\FPS.cpp" />
-    <ClCompile Include="me\scene2d\Layer.cpp" />
-    <ClCompile Include="me\scene2d\TextElement.cpp" />
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\BBoxRendererComponent.cpp" />
     <ClCompile Include="me\scene\CameraComponent.cpp" />

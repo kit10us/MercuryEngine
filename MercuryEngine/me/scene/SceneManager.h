@@ -3,51 +3,43 @@
 
 #pragma once
 #include <me/scene/Scene.h>
-#include <me/IGameComponent.h>
+#include <me/GameComponent.h>
 #include <me/scene/ISceneManagerComponent.h>
 
 namespace me
 {
     namespace scene
     {
-        class SceneManager : public IGameComponent
+        class SceneManager : public GameComponent
 	    {
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;
 
-		    SceneManager( IGame * game );
+		    SceneManager();
 		    virtual ~SceneManager();
 
-			std::string GetName() const override;
-
-			IGame * GetGame();
-			const IGame * GetGame() const;
-
             void Destroy();
-
-			void SetEnabled( bool enabled );
-			bool GetEnabled() const;			
 
 			size_t GetSceneCount() const;
             Scene::ptr AddScene( std::string name );
 			Scene::ptr FindScene( std::string name ) const;
 			Scene::ptr GetScene( size_t index ) const;
 
-			void OnAttach( IGame * game ) override;
-			void OnDetach( IGame * game ) override;
-			void OnBeforeStartup( IGame * game ) override;
-			void OnAfterStartup( IGame * game ) override;
-			void OnUpdate( IGame * game, UpdateParams params ) override;
-			void OnRender( IGame * game, RenderParams params ) override;
-
+		public: // IGameCompnent...
+			void OnUpdate( UpdateParams params ) override;
+			void OnRender( RenderParams params ) override;
+			
 			int ComponentCount() const;
 			void AddComponent( ISceneManagerComponent::ptr component );
 			void RemoveComponent( ISceneManagerComponent::ptr component );
 			ISceneManagerComponent::ptr GetComponent( int index );
-			ISceneManagerComponent::ptr GetComponent( std::string name, int startIndex = 0 );
-			int FindComponent( std::string name, int startIndex = 0 ) const;
+			ISceneManagerComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
+			int FindComponent( std::string typeName, int startIndex = 0 ) const;
 
-	    private:
+		public: // IComponent...
+			std::string GetWhat() const;
+
+		private:
 			IGame * m_game;
 			std::list< ISceneManagerComponent::ptr > m_components;
 

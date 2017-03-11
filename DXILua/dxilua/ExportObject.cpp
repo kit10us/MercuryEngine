@@ -134,7 +134,7 @@ int Object_SetGeometry( lua_State * state )
 		}
 	}
 
-	AddGeometryComponent( objectProxy->object, game->GetOS(), geometry );
+	AddGeometryComponent( objectProxy->object, geometry );
 
 	return 0;
 }
@@ -200,7 +200,7 @@ int Object_GetComponentCount( lua_State * state )
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 
-	lua_pushnumber( state, objectProxy->object->ComponentCount() );
+	lua_pushnumber( state, objectProxy->object->GetComponentCount() );
 	return 1;
 }
 
@@ -224,7 +224,7 @@ int Object_GetComponent( lua_State * state )
 	return 1;
 }
 
-int Object_GetComponentName( lua_State * state )
+int Object_GetComponentTypeName( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -236,7 +236,7 @@ int Object_GetComponentName( lua_State * state )
 
 	if ( ! component )
 	{
-		lua_pushstring( state, component->GetType().c_str() );
+		lua_pushstring( state, component->GetTypeName().c_str() );
 		return 1;
 	}
 
@@ -261,7 +261,7 @@ int Object_SetModelMatrix( lua_State * state )
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "AddScript", Object_AddScript },
-	{ "GetName", Object_GetName },
+	{ "GetTypeName", Object_GetName },
 	{ "SetEnabled", Object_SetEnabled },
 	{ "GetEnabled", Object_IsEnabled },
 	{ "SetGeometry", Object_SetGeometry },
@@ -270,7 +270,7 @@ static const luaL_Reg ObjectFunctions[] =
 	{ "SetModelMatrix", Object_SetModelMatrix },
 	{ "GetComponentCount", Object_GetComponentCount },
 	{ "GetComponent", Object_GetComponent },
-	{ "GetComponentName", Object_GetComponentName },
+	{ "GetComponentName", Object_GetComponentTypeName },
 	{ "AddTag", Object_AddTag },
 	{ "HasTag", Object_HasTag },
 	{ nullptr, nullptr }

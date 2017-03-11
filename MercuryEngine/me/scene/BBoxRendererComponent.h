@@ -22,7 +22,6 @@ namespace me
 			BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 			virtual ~BBoxRendererComponent();
 
-			std::string GetType() const override;
 			std::string GetWhat() const override;
 
 			bool Renderable() const { return true; }
@@ -38,7 +37,7 @@ namespace me
 			void SetPadding( float padding );
 
 			void OnAttach( Object * object ) override;
-			void OnDetach() override;
+			void OnDetach( Object * object ) override;
 			void OnUpdate( UpdateParams params ) override;
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
 
@@ -46,6 +45,7 @@ namespace me
    
 	    protected:
 			Object * m_object;
+			IOS * m_os;
 			std::list< GeometryComponent * > m_geomertries;
 			Geometry::ptr m_geometry;
 			Effect::ptr m_effect;

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/IComponent.h>
 #include <me/scene/Scene.h>
 #include <memory>
 
@@ -13,7 +14,7 @@ namespace me
 		/// <summary>
 		/// Used to interace with scenes.
 		/// </summary>
-		class ISceneManagerComponent
+		class ISceneManagerComponent : public IComponent
 		{
 		public:
 			typedef std::shared_ptr< ISceneManagerComponent > ptr;

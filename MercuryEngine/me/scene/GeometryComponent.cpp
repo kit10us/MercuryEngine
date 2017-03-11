@@ -15,13 +15,13 @@ GeometryComponent::GeometryComponent( GeometryComponent & component )
 {
 }
 
-GeometryComponent::GeometryComponent( IOS * os )
-	: ObjectComponent( os )
+GeometryComponent::GeometryComponent()
+	: ObjectComponent( "Geometry" )
 {
 }
 
-GeometryComponent::GeometryComponent( IOS * os, Geometry::ptr geometry )
-	: ObjectComponent( os )
+GeometryComponent::GeometryComponent( Geometry::ptr geometry )
+	: ObjectComponent( "Geometry" )
 	, m_geometry( geometry )
 	, m_geometryInstanceData( geometry->CreateInstanceData() )
 {
@@ -29,11 +29,6 @@ GeometryComponent::GeometryComponent( IOS * os, Geometry::ptr geometry )
 
 GeometryComponent::~GeometryComponent()
 {
-}
-
-std::string GeometryComponent::GetType() const
-{
-	return "Geometry";
 }
 
 std::string GeometryComponent::GetWhat() const
@@ -89,9 +84,9 @@ IObjectComponent * GeometryComponent::Duplicate()
 	return duplicate;
 }
 
-GeometryComponent * me::AddGeometryComponent( Object * object, IOS * os, Geometry::ptr geometry )
+GeometryComponent * me::AddGeometryComponent( Object * object, Geometry::ptr geometry )
 {
-	GeometryComponent * component = new GeometryComponent( os, geometry );
+	GeometryComponent * component = new GeometryComponent( geometry );
 	object->AddComponent( IObjectComponent::ptr( component ) );
 	return component;
 }

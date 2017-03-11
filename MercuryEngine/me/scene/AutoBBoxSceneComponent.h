@@ -33,6 +33,8 @@ namespace me
 			void SetPadding( float padding );
 
 			void OnUpdate( Scene * scene, UpdateParams params ) override;
+
+			std::string GetWhat() const override;
    
 	    protected:
 			Effect::ptr m_effect;

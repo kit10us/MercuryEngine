@@ -62,12 +62,12 @@ namespace me
 			/// </summary>
 			bool GetRenderObjects() const;
 
-			int ComponentCount() const;
+			int GetComponentCount() const;
 			void AddComponent( ISceneComponent::ptr component );
 			void RemoveComponent( ISceneComponent::ptr component );
 			ISceneComponent::ptr GetComponent( int index );
-			ISceneComponent::ptr GetComponent( std::string name, int startIndex = 0 );
-			int FindComponent( std::string name, int startIndex = 0 ) const;
+			ISceneComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
+			int FindComponent( std::string typeName, int startIndex = 0 ) const;
 			
 			Object * NewObject( std::string name );
 			bool DestroyObject( Object * object );

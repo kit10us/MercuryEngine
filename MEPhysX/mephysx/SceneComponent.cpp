@@ -11,12 +11,10 @@
 
 using namespace mephysx;
 using namespace me;
-using namespace scene;
 using namespace physx;
 		 
-MEPHYSX_API SceneComponent::SceneComponent( me::IOS * os, GameComponent * gameComponent )
-	: m_os( os )
-	, m_enabled( true )
+MEPHYSX_API SceneComponent::SceneComponent( me::IOS * os, mephysx::GameComponent * gameComponent )
+	: scene::SceneComponent( os, "PhysXScene" )
 	, m_gameComponent( gameComponent )
 {
 	PxSceneDesc sceneDesc( m_gameComponent->GetPhysics()->getTolerancesScale() );
@@ -42,19 +40,19 @@ SceneComponent::~SceneComponent()
 {
 }
 
-const char * SceneComponent::GetName() const
+physx::PxScene * SceneComponent::GetScene()
 {
-	return "PhysXScene";
+	return m_scene.get();
 }
 
-bool SceneComponent::IsEnabled() const
+physx::PxMaterial * SceneComponent::GetMaterial()
 {
-	return m_enabled;
+	return m_material.get();
 }
 
-void SceneComponent::SetEnabled( bool enabled )
+physx::PxControllerManager * SceneComponent::GetControllerManager()
 {
-	m_enabled = enabled;
+	return m_cctManager.get();
 }
 
 void SceneComponent::OnAttach( me::scene::Scene * scene )
@@ -71,6 +69,8 @@ void SceneComponent::OnInit( me::scene::Scene * scene )
 
 void SceneComponent::OnStart( me::scene::Scene * scene )
 {
+	using namespace scene;
+
 	auto physics = m_gameComponent->GetPhysics();
 
 	{
@@ -90,7 +90,9 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 }
 
 void SceneComponent::OnUpdate( me::scene::Scene * scene, UpdateParams params )
-{											
+{			
+	using namespace scene;
+
 	float elapsedTime = params.GetDelta();
 
 	/*
@@ -150,17 +152,25 @@ void SceneComponent::OnResume()
 {
 }
 
-physx::PxScene * SceneComponent::GetScene()
+std::string SceneComponent::GetWhat() const
 {
-	return m_scene.get();
+	return std::string();
 }
 
-physx::PxMaterial * SceneComponent::GetMaterial()
+
+/*
+std::string SceneComponent::GetType() const
 {
-	return m_material.get();
+	return "PhysXScene";
 }
 
-physx::PxControllerManager * SceneComponent::GetControllerManager()
+bool SceneComponent::IsEnabled() const
 {
-	return m_cctManager.get();
+	return m_enabled;
 }
+
+void SceneComponent::SetEnabled( bool enabled )
+{
+	m_enabled = enabled;
+}
+*/

@@ -10,8 +10,14 @@ using namespace me;
 using namespace motivator;
 using namespace input;
 
-ObjectInputMotivator::ObjectInputMotivator( IOS * os )
-	: ObjectComponent( os )
+ObjectInputMotivator::ObjectInputMotivator( const ObjectInputMotivator & objectInputMotivator )
+	: ObjectComponent( objectInputMotivator  )
+{
+}
+
+
+ObjectInputMotivator::ObjectInputMotivator()
+	: ObjectComponent( "ObjectInputMotivator"  )
 {
 }
 
@@ -27,45 +33,6 @@ bool ObjectInputMotivator::Updateable() const
 bool ObjectInputMotivator::Renderable() const
 {
 	return false;
-}
-
-void ObjectInputMotivator::OnAttach( scene::Object * object )
-{
-	m_target = object;
-}
-
-void ObjectInputMotivator::OnDetach()
-{
-	m_target = nullptr;
-}
-
-void ObjectInputMotivator::OnInit()
-{
-}
-
-void ObjectInputMotivator::OnStart()
-{
-}
-
-void ObjectInputMotivator::OnUpdate( UpdateParams params )
-{
-}
-
-void ObjectInputMotivator::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
-{
-}
-
-void ObjectInputMotivator::OnSuspend()
-{
-}
-
-void ObjectInputMotivator::OnResume()
-{
-}
-
-scene::Object * ObjectInputMotivator::GetTarget() const
-{
-	return m_target;
 }
 
 motivator::IInputMotivator * ObjectInputMotivator::GetMotivator()

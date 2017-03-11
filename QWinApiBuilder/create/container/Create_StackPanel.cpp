@@ -158,9 +158,20 @@ void StackPanel::ComputePass2( int fillWidthTotal, int fillHeightTotal, int fill
 {			  
 	// After ComputePass2, I'm guaranteed to have actual sizes.
 	Control::ComputePass2( fillWidthTotal, fillHeightTotal, fillWidthTotalWeight, fillHeightTotalWeight );
+						 
+	// Calculate children width and height available for fill controls/containers...
+	int childrenFillWidth = GetActualWidth();
+	int childrenFillHeight = GetActualHeight();
+	switch ( GetDirection() )
+	{
+	case Stack::Vertical:
+		childrenFillHeight -= m_totalChildrenHeight;
+		break;
+	case Stack::Horizontal:
+		childrenFillWidth -= m_totalChildrenWidth;
+		break;
+	}												 
 
-	int childrenFillWidth = GetActualWidth() - m_totalChildrenWidth;
-	int childrenFillHeight = GetActualHeight() - m_totalChildrenHeight;
 	for ( auto && child : m_children )
 	{
 		switch ( GetDirection() )

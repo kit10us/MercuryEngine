@@ -22,23 +22,17 @@ namespace {
 	};
 }
 
-GameComponent::GameComponent( lua_State * state, me::IGame * game, std::string name, unify::Path path )
-	: m_state( state )
-	, m_game( game )
-	, m_luaName( name )
+GameComponent::GameComponent( lua_State * state, std::string luaName, unify::Path path )
+	: me::GameComponent( "LuaGameScript" )
+	, m_state( state )
+	, m_luaName( luaName )
 	, m_path( path )
-	, m_enabled( true )
 {
 }
 
 GameComponent::~GameComponent()
 {
 	m_state = 0;
-}
-
-std::string GameComponent::GetName() const
-{
-	return "LUA Game Script";
 }
 
 void GameComponent::CallMember( std::string function )
@@ -70,6 +64,8 @@ void GameComponent::CallMember( std::string function )
 
 void GameComponent::OnAttach( me::IGame * game )
 {
+	me::GameComponent::OnAttach( game );
+
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
 	if ( result == LUA_ERRSYNTAX )
@@ -118,29 +114,33 @@ void GameComponent::OnAttach( me::IGame * game )
 
 	CallMember( "OnInit" );
 }
-
-void GameComponent::OnDetach( me::IGame * game )
-{
-}
-			 
-void GameComponent::OnBeforeStartup( me::IGame * game )
+		 
+void GameComponent::OnBeforeStartup()
 {
 	CallMember( "OnBeforeStartup" );
 }
 
-void GameComponent::OnAfterStartup( me::IGame * game )
+void GameComponent::OnAfterStartup()
 {
 	CallMember( "OnAfterStartup" );
 }
 
-void GameComponent::OnUpdate( me::IGame * game, me::UpdateParams params )
+void GameComponent::OnUpdate( me::UpdateParams params )
 {
 	CallMember( "OnUpdate" );
 }
 
-void GameComponent::OnRender( me::IGame * game, me::RenderParams params )
+void GameComponent::OnRender( me::RenderParams params )
 {
 	CallMember( "OnRender" );
 }
 
+void GameComponent::OnDetach( me::IGame * game )
+{
+	me::GameComponent::OnDetach( game );
+}
 
+std::string GameComponent::GetWhat() const
+{
+	return std::string();
+}

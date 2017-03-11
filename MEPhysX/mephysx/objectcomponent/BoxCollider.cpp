@@ -13,21 +13,15 @@ BoxCollider::BoxCollider( BoxCollider & collider )
 	: ColliderBase( collider )
 {
 }
-
-
-BoxCollider::BoxCollider( me::IOS * os, GameComponent * gameComponent, unify::V3< float > halfExt )
-: ColliderBase( os, gameComponent )
+ 
+BoxCollider::BoxCollider( mephysx::GameComponent * gameComponent, unify::V3< float > halfExt )
+: ColliderBase( "BoxCollider", gameComponent )
 {
 	m_shape.reset( gameComponent->GetPhysics()->createShape( PxBoxGeometry( PxVec3( halfExt.x, halfExt.y, halfExt.z ) ), *m_material ), Releaser< PxShape > );
 }
 
 BoxCollider::~BoxCollider()
 {
-}
-
-std::string BoxCollider::GetType() const
-{
-	return "Box Collider";
 }
 
 std::string BoxCollider::GetWhat() const

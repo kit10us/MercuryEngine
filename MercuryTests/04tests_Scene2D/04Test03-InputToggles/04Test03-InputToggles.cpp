@@ -15,9 +15,9 @@
 #include <me/scene/SceneManager.h>
 #include <me/scene/CameraComponent.h>
 
-#include <me/scene2d/CanvasComponent.h>
-#include <me/scene2d/Layer.h>
-#include <me/scene2d/FPS.h>
+#include <me/canvas/CanvasComponent.h>
+#include <me/canvas/Layer.h>
+#include <me/canvas/FPS.h>
 
 using namespace me;
 
@@ -110,11 +110,11 @@ void MyGame::Startup()
 	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 
 	// Add Canvas component...
-	scene2d::CanvasComponent::ptr canvas( new scene2d::CanvasComponent( this ) );
+	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 	mainScene->AddComponent( canvas );
 
 	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-	canvas->GetLayer()->AddElement( scene2d::IElement::ptr( new scene2d::FPS( this, font2, scene2d::Anchor::BottomLeft ) ) );
+	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2, canvas::Anchor::BottomLeft ) ) );
 }
 
 void MyGame::Update( UpdateParams params )

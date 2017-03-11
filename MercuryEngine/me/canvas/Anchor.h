@@ -5,7 +5,7 @@
 
 namespace me
 {
-	namespace scene2d
+	namespace canvas
 	{
 		enum class Anchor
 		{

@@ -9,11 +9,13 @@ using namespace scene;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
-		{ "enabled", 0 },
+		{ "typename", 0 },
+		{ "enabled", 1 },
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
+		{ "typename" },
 		{ "enabled" },
 	};
 }
@@ -28,13 +30,16 @@ const Lookup * ObjectComponent::GetLookup() const
 	return &m_values;
 }
 
-ObjectComponent::ObjectComponent( ObjectComponent & component )
-	: m_os( component.m_os )
+ObjectComponent::ObjectComponent( const ObjectComponent & component )
+	: m_typeName( component.m_typeName )
+	, m_values( component.m_values )
+	, m_object{ nullptr }
 {
 }
 
-ObjectComponent::ObjectComponent( IOS * os )
-: m_os( os )
+ObjectComponent::ObjectComponent( std::string typeName )
+: m_typeName{ typeName }
+, m_object{ nullptr }
 {
 }
 
@@ -42,14 +47,53 @@ ObjectComponent::~ObjectComponent()
 {
 }
 
-IOS * ObjectComponent::GetOS()
+Object* ObjectComponent::GetObject()
 {
-	return m_os;
+	return m_object;
 }
 
-const IOS * ObjectComponent::GetOS() const
+const Object* ObjectComponent::GetObject() const
 {
-	return m_os;
+	return m_object;
+}
+
+void ObjectComponent::OnAttach( Object * object )
+{
+	m_object = object;
+}
+
+void ObjectComponent::OnDetach( Object * object ) 
+{
+	m_object = nullptr;
+}
+
+void ObjectComponent::OnInit() 
+{
+}
+
+void ObjectComponent::OnStart() 
+{
+}
+
+void ObjectComponent::OnUpdate( UpdateParams params ) 
+{
+}
+
+void ObjectComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) 
+{
+}
+
+void ObjectComponent::OnSuspend() 
+{
+}
+
+void ObjectComponent::OnResume() 
+{
+}
+
+std::string ObjectComponent::GetTypeName() const
+{
+	return m_typeName;
 }
 
 bool ObjectComponent::IsEnabled() const
@@ -101,6 +145,8 @@ bool ObjectComponent::SetValue( int index, std::string value )
 	switch ( index )
 	{
 	case 0:
+		return false;
+	case 1:
 		m_enabled = unify::Cast< bool >( value );
 		return true;
 	default:
@@ -119,6 +165,8 @@ std::string ObjectComponent::GetValue( int index ) const
 	switch ( index )
 	{
 	case 0:
+		return m_typeName;
+	case 1:
 		return unify::Cast< std::string >( m_enabled );
 	default:
 		return m_values.GetValue( index - g_ValuesMap.size() );

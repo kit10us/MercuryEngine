@@ -12,9 +12,10 @@ namespace meedr
 	{
 	private:
 		me::IGame * m_game;
+		class SceneViewer* m_sceneViewer;
 
 	public:
-		ScriptEditor( IWindow* parent, int nCmdShow, int x, int y, me::IGame * game );
+		ScriptEditor( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
 
 		void LoadFile( unify::Path path );
 

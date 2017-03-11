@@ -55,11 +55,11 @@ namespace me
 			/// </summary>
 			bool HasTag( std::string tag ) const;
 			
-			int ComponentCount() const;
+			int GetComponentCount() const;
 			void AddComponent( IObjectComponent::ptr component );
 			void RemoveComponent( IObjectComponent::ptr component );
 			IObjectComponent::ptr GetComponent( int index );
-			IObjectComponent::ptr GetComponent( std::string name, int startIndex = 0 );
+			IObjectComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
 			int FindComponent( std::string name, int startIndex = 0 ) const;
 
 			void SetEnabled( bool enabled );
