@@ -13,6 +13,7 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportTexCoords.h>
+#include <dxilua/unify/ExportTexArea.h>
 #include <dxilua/ExportTexture.h> 
 #include <unify/Color.h>
 
@@ -87,12 +88,20 @@ int TerraParameters_SetConstant( lua_State* state )
 int TerraParameters_SetTexArea( lua_State* state )
 {
 	int args = lua_gettop( state );
-	assert( args == 3 );
-
+	
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
-	unify::TexCoords ul( CheckTexCoords( state, 2 ) );
-	unify::TexCoords dr( CheckTexCoords( state, 3 ) );
-	parameters->parameters.Set< unify::TexArea >( "texarea", unify::TexArea( ul, dr )  );
+
+	if ( args == 3 ) // TexCoords x 
+	{
+		unify::TexCoords ul( CheckTexCoords( state, 2 ) );
+		unify::TexCoords dr( CheckTexCoords( state, 3 ) );
+		parameters->parameters.Set< unify::TexArea >( "texarea", unify::TexArea( ul, dr ) );
+	}
+	else if ( args == 2 ) // TexArea
+	{
+		unify::TexArea texArea( CheckTexArea( state, 2 ) );
+		parameters->parameters.Set< unify::TexArea >( "texarea", texArea );
+	}
 	return 0;
 }
 

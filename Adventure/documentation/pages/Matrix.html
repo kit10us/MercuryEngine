@@ -1,0 +1,46 @@
+<html>
+<header>
+<title>Lua for Adveture</title>
+<style type="text/css">
+h1, h3 {
+	display: inline;
+}
+</style>
+</header>
+<body>
+
+ <h1>Matrix</h1>
+ <p> 
+ Matrix is used to create and work with matrices.
+ </p>
+ <h2>Non-Instanced functions</h2>
+ <ul>  
+ <li><b>Matrix.NewIdentity()</b> - Returns an identity matrix.</li>
+ <li><b>Matrix.NewZero()</b> - Returns a matrix full of 0s.</li>
+ <li><b>Matrix.NewTranslate( <a href="v3.html">v3</a> )</b> - Returns a translation matrix.</li>
+ <li><b>Matrix.NewOrthoOffCenterLH( left, right, bottom, top, znear, zfar )</b> - Returns an orthographic off-centered left-handed matrix.</li>
+ <li><b>Matrix.NewScale( number )</b> - Returns a scaling matrix.</li>
+ <li><b>Matrix.NewScale( <a href="v3.html">v3</a> )</b> - Returns a scaling matrix.</li>
+ <li><b>Matrix.NewRotationAboutAxis( <a href="v3.html">v3</a>, <a href="angle.html">angle</a> )</b> - Returns a rotation matrix.</li>
+ <li><b>Matrix.NewPerspectiveFovLH( width, height, znear, zfar )</b> - Returns a perspective field-of-view left-handed matrix.</li>
+ <li><b>Matrix.NewRotationX( <a href="angle.html">angle</a> )</b> - Returns a rotation about the x axis matrix.</li>
+ <li><b>Matrix.NewRotationY( <a href="angle.html">angle</a> )</b> - Returns a rotation about the x axis matrix.</li>
+ <li><b>Matrix.NewRotationZ( <a href="angle.html">angle</a> )</b> - Returns a rotation about the x axis matrix.</li>
+ <li><b>Matrix.NewLookAtLH( <a href="v3.html">eye</a>, <a href="v3.html">at</a>, <a href="v3.html">up</a> )</b> - Returns a "lookat" matrix, where eye is the position of the camera/viewer, at is where to look at, and up is the direction for up; all are v3s.</li>
+ <li><b>Matrix.Add( a, b )</b> - Returns the result of adding two matrices.</li>
+ <li><b>Matrix.Sub( a, b )</b> - Returns the result of subtracting two matrices.</li>
+ <li><b>Matrix.Mul( a, b )</b> - Returns the result of multiplying two matrices.</li>
+ <li><b>Matrix.Div( a, b )</b> - Returns the result of dividing two matrices.</li>
+ </ul>  
+ <h2>Instanced functions</h2>
+ <p>
+ <b>None</b>
+ </p>
+ 
+ <copyright>
+Adventure
+copyright (c) Evil Quail LLC 2017
+all rights reserved
+</copyright>
+</body>
+</html>

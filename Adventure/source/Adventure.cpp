@@ -37,11 +37,6 @@ RegisterGame( game );
 void Adventure::Startup()
 {	  
 	using namespace scene;
-
-	//ITexture::ptr invalid = GetManager< ITexture >()->Find( "invalid" );
-	GetManager< ITexture >()->Add( "invalid", "borgcube.bmp" );
-	GetManager< ITexture >()->Add( "sand", "sand.bmp" );
-	GetManager< ITexture >()->Add( "grass", "grass.bmp" );
 	
 	// Add the main scene.
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
@@ -70,35 +65,20 @@ void Adventure::Startup()
 
 	// Load an effect, then modify it to fit our needs.
 	{
-		Effect::ptr effect = GetManager< Effect >()->Add( "invalid", "EffectTextured.effect" );
-		effect->SetTexture( 0, GetManager< ITexture >()->Find( "invalid" ) );
-		parameters.SetEffect( effect );
-		parameters.SetTexArea( { 1.0f / 4 * 1, 1.0f / 4 * 1, 1.0f / 4 * 2, 1.0f / 4 * 2 } );
-
-		map->SetInvalidGeometry( Geometry::ptr( new Terra( GetOS()->GetRenderer( 0 ), parameters ) ) );
+		map->SetInvalidGeometry( GetManager< Geometry >()->Find( "invallid" ) );
 	}
 
 	// Add a grass ground...
 	{
-		Effect::ptr effect = GetManager< Effect >()->Add( "grass", "EffectTextured.effect" );
-		effect->SetTexture( 0, GetManager< ITexture >()->Find( "grass" ) );
-		parameters.SetEffect( effect );
-		parameters.SetTexArea( unify::TexAreaFull() );
-
 		GroundDesc::ptr ground( new GroundDesc{} );
-		ground->AddDefault( Geometry::ptr( new Terra( GetOS()->GetRenderer( 0 ), parameters ) ) );
+		ground->AddDefault( GetManager< Geometry >()->Find( "grass" ) );
 		map->AddGround( "grass", ground );
 	}
 
 	// Add a sand ground...
 	{
-		Effect::ptr effect = GetManager< Effect >()->Add( "sand", "EffectTextured.effect" );
-		effect->SetTexture( 0, GetManager< ITexture >()->Find( "sand" ) );
-		parameters.SetEffect( effect );
-		parameters.SetTexArea( { 1.0f / 4 * 1, 1.0f / 4 * 1, 1.0f / 4 * 2, 1.0f / 4 * 2 } );
-
 		GroundDesc::ptr ground( new GroundDesc{} );
-		ground->AddDefault( Geometry::ptr( new Terra( GetOS()->GetRenderer( 0 ), parameters ) ) );
+		ground->AddDefault( GetManager< Geometry >()->Find( "sand" ) );
 		map->AddGround( "sand", ground );
 	}
 

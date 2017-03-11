@@ -8,6 +8,6 @@
 #include <unify/TexCoords.h>
 
 DXILUADLL_API unify::TexCoords CheckTexCoords( lua_State * state, int index );
-DXILUADLL_API int PushTexCoords( lua_State * state, unify::TexCoords v2 );
+DXILUADLL_API int PushTexCoords( lua_State * state, unify::TexCoords texCoords );
 
 int ExportTexCoords( lua_State * state );

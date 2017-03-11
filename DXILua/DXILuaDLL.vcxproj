@@ -123,6 +123,7 @@
     <ClInclude Include="dxilua\unify\ExportQuaternion.h" />
     <ClInclude Include="dxilua\unify\ExportSize2.h" />
     <ClInclude Include="dxilua\unify\ExportSize3.h" />
+    <ClInclude Include="dxilua\unify\ExportTexArea.h" />
     <ClInclude Include="dxilua\unify\ExportTexCoords.h" />
     <ClInclude Include="dxilua\unify\ExportV2.h" />
     <ClInclude Include="dxilua\unify\ExportV3.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="dxilua\unify\ExportQuaternion.cpp" />
     <ClCompile Include="dxilua\unify\ExportSize2.cpp" />
     <ClCompile Include="dxilua\unify\ExportSize3.cpp" />
+    <ClCompile Include="dxilua\unify\ExportTexArea.cpp" />
     <ClCompile Include="dxilua\unify\ExportTexCoords.cpp" />
     <ClCompile Include="dxilua\unify\ExportV2.cpp" />
     <ClCompile Include="dxilua\unify\ExportV3.cpp" />

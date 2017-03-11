@@ -83,6 +83,8 @@ SceneViewer::SceneViewer( me::IGame * game )
 	) );
 
 	Create( L"Mercury Engine Viwer", x, y, nCmdShow );
+
+	::SetForegroundWindow( GetParentHandle() );
 }
 
 SceneViewer::~SceneViewer()

@@ -20,6 +20,10 @@ int Debug_LogLine( lua_State * state )
 	{
 		game->LogLine( "<NIL>\n" );
 	}
+	else if ( type == LUA_TUSERDATA )
+	{
+		game->LogLine( "<USERDATA>\n" );
+	}
 	else
 	{
 		std::string log = lua_tostring( state, 1 );			  

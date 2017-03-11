@@ -4,6 +4,7 @@
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportTerra.h>
 #include <dxilua/ExportTerraParameters.h>
+#include <me/Game.h>
 
 using namespace dxilua;
 using namespace me;
@@ -30,19 +31,25 @@ static const luaL_Reg TerraFunctions[] =
 };
 
 int Terra_Constructor( lua_State * state )
-{
+{	
 	int top = lua_gettop( state );
-	int type = lua_type( state, 1 );
+	assert( top == 2 );
 
-	auto game = ScriptEngine::GetGame();
-	
-	TerraParameters * parameters = CheckTerraParameters( state, 1 );
-	Terra * terra( new Terra( game->GetOS()->GetRenderer(0), parameters->parameters ) );
+	auto game = dynamic_cast< me::Game * >( ScriptEngine::GetGame() );
+
+	std::string name = lua_tostring( state, 1 );
+
+	Geometry::ptr geo = game->GetManager < Geometry >()->Find( name );
+	if ( !geo )
+	{
+		TerraParameters * parameters = CheckTerraParameters( state, 2 );
+		geo = game->GetManager< Geometry >()->Add( name, new Terra( game->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
+	}
 
 	TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
 	*geometryProxy = new TerraProxy;
-	(*geometryProxy)->terra = terra;
-	(*geometryProxy)->geometry = Geometry::ptr( terra );
+	(*geometryProxy)->terra = dynamic_cast< Terra* >( geo.get() );
+	(*geometryProxy)->geometry = geo;
 	luaL_setmetatable( state, "Terra" );
 	
 	return 1;

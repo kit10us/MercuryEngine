@@ -7,6 +7,8 @@
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportSize2.h>
 #include <dxilua/unify/ExportSize3.h>
+#include <dxilua/unify/ExportTexCoords.h>
+#include <dxilua/unify/ExportTexArea.h>
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportQuaternion.h>
 #include <dxilua/unify/ExportAngle.h>
@@ -43,6 +45,8 @@ lua_State * dxilua::CreateState()
 	RegisterV3( state );
 	RegisterSize2( state );
 	RegisterSize3( state );
+	ExportTexCoords( state );
+	ExportTexArea( state );
 	ExportMatrix( state );
 	ExportQuaternion( state );
 	RegisterAngle( state );	  

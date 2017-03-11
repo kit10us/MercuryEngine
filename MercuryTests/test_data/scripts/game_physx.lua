@@ -93,7 +93,7 @@ function OnBeforeStartup()
 	terraParams:SetConstant( 0 )
 	terraParams:SetPoints( 100, 100 )
 	terraParams:SetHeightMap( Texture( "test256", "steps.bmp", true, true ), Color.NewGrey( 4 ) )
-	local terraGeo = Terra( terraParams )
+	local terraGeo = Terra( "pit", terraParams )
 	local terra = scene1:NewObject( "terra" )
 	terra:SetGeometry( terraGeo )
 	terra:Transform():SetPosition( V3.New( 0, -12, 0 ) );

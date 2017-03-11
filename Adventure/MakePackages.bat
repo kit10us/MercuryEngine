@@ -37,8 +37,6 @@ xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX11\" /e
 xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX9\" /e
 
 
-QFindReplace.exe setup.xml setup.xml "../../extensions/" "../extensions/"
-
 QFindReplace.exe "%folder%\DX11\setup.xml" "%folder%\DX11\setup.xml" "../../extensions/" "../extensions/"
 
 QFindReplace.exe "%folder%\DX11\setup.xml" "%folder%\DX11\setup.xml" "../../renderers/" "../renderers/"

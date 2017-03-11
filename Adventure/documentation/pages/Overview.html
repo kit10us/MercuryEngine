@@ -1,0 +1,110 @@
+<html>
+<header>
+<title>Lua for Adveture</title>
+<style type="text/css">
+h1, h3 {
+	display: inline;
+}
+</style>
+</header>
+<body>
+
+ <h1>Overview</h1>
+ 
+ <h2>Game flow</h2>
+ <p>
+ It is necessary to have a basic understanding of the flow of the game.
+ The following is a brief overview on the game flow.
+ </p>
+ 
+ <p>
+ There are three kinds of scripts you can create. 
+ The simpliest is a standard LUA script; there is nothing notibly different between this and any other LUA script.
+ You can additionally create two kinds of Component scripts.
+ The first is the GameComponent script.
+ Every game can have exactly one of these.
+ By default, it's called "game.lua", however, this can be overrided when loading the LUA extension (See the XML configuration for the game) with the "startup" node.
+ You can also create ObjectComponent scripts.
+ These scripts are attached to game objects, and can interact with them and their in-game events.
+ </p>
+ 
+ <h3>Game Script functions:</h3><br/>
+ <code>
+ &nbsp;&nbsp;&nbsp;function OnInit()<br/>
+ &nbsp;&nbsp;&nbsp;function OnBeforeStartup() -- Called immediately before Startup.<br/>
+ &nbsp;&nbsp;&nbsp;function OnAfterStartup() -- Called immediately after startup.<br/>
+ &nbsp;&nbsp;&nbsp;function OnUpdate() -- Called when updating.<br/>
+ &nbsp;&nbsp;&nbsp;function OnRender() -- Called when rendering.<br/>
+ </code>
+ <br/>
+
+ <h3>Object Script functions:</h3><br/>
+ <code>
+ &nbsp;&nbsp;&nbsp;function OnInit()<br/>
+ &nbsp;&nbsp;&nbsp;function OnStart() -- Called on starting.<br/>
+ &nbsp;&nbsp;&nbsp;function OnUpdate() -- Called when updating.<br/>
+ &nbsp;&nbsp;&nbsp;function OnSuspend() -- Called when suspending.<br/>
+ &nbsp;&nbsp;&nbsp;function OnResume() -- Called when resuming.<br/>
+ </code>
+ <br/> 
+ 
+ <ul>
+ <li><b>Initialize</b> - Initialize handles engine intialization, and all startup functions.</li>
+ <ol>
+ <li><i>initialize basic data</i> - At this point, commandline parameters are parsed, XML configuration files are loaded, and various other fundemental initializations takes place.</li>
+ <li><i>create displays</i> - The displays are created, and other pieces depending on them.</li>
+ <li><b>OS Startup</b> - The Operating System pieces are initalized.</li>
+ <li><b>Script GameModule OnInit</b> - If a game module was specified from the XML, it's OnInit is called.</li>
+ <li><b>Game Startup</b> - Adventure's code Startup is called.</li>
+ <li><b>Script GameModule OnStart</b> - If a game module was specified from the XML, it's OnStart is called.</li>
+ </ol>
+ </ul>
+ 
+ <h2>Instanced vs non-instanced objects</h2>
+ <p>
+ LUA supports two ways of interfacting with an object, depending of if their are instanced or not instanced. 
+ Instanced objects are objects who are created, or instanced, from a non-instanced object.
+ These are stored in variables by what ever name choosen.
+ Non-instanced objects have no instancing; there is only one of them.
+ All instanced objects come form non-instanced objects.
+ </p>
+ <p>
+ You access functions for non-instanced objects using a dot (.).
+ You access functions for instanced objects by their variables, and with a semi-colon (:).
+ </p>
+ <p>
+ To instance an object, you must use the non-instanced object's name as a function.
+ <p>
+ <b>Here is an example:</b>
+ </p>
+ <p>
+ <code>
+ &nbsp;&nbsp;&nbsp;types = Fruit.Types()</br>
+ &nbsp;&nbsp;&nbsp;first = Fruit( 0 )<br/>
+ &nbsp;&nbsp;&nbsp;print( first:Name() )<br/>
+
+ &nbsp;&nbsp;&nbsp;last = Fruit( types - 1 )<br/>
+ &nbsp;&nbsp;&nbsp;print( last:Name() )<br/>
+
+ &nbsp;&nbsp;&nbsp;banana = Fruit( "banana" )<br/>
+ &nbsp;&nbsp;&nbsp;print( banana:Name() )<br/>
+</code>
+ <p>
+ In the example above, we first access the non-instanced Fruit object's Types function, using a dot (.), to get the number of types of fruit (0 to N).
+ We then create using the non-instanced object constructor/creator function by the same name of the non-instanced object.
+ This produces an instance of Fruit called "first".
+ We access the instanced Fruit's name, using a semicolon, to get the instanced fruit's name.
+ </p>
+ <h2>Optional parameters</h2>
+ <p>
+ Some functions have optional parameters. They are noted with square braces. For example: function( a[, b] ), means the function requires 'a', however 'b' is optional. 
+ </p>
+ 
+  
+ <copyright>
+Adventure
+copyright (c) Evil Quail LLC 2017
+all rights reserved
+</copyright>
+</body>
+</html>

@@ -3,6 +3,7 @@
 
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportEffect.h>
+#include <dxilua/ExportTexture.h>
 #include <me/Game.h>
 
 using namespace dxilua;
@@ -22,11 +23,19 @@ EffectProxy* CheckEffect( lua_State* state, int index )
 	EffectProxy* ud = *(EffectProxy**)luaL_checkudata( state, index, "Effect" );
 	return ud;
 }
-			   
-static const luaL_Reg EffectFunctions[] =
+
+int Effect_SetTexture( lua_State* state )
 {
-	{ nullptr, nullptr }
-};
+	int top = lua_gettop( state );
+
+	EffectProxy* proxy = CheckEffect( state, 1 );
+	int stage = (int)lua_tonumber( state, 2 );
+	TextureProxy* texture = CheckTexture( state, 3 );
+
+	proxy->effect->SetTexture( stage, texture->texture );
+
+	return 0;
+}
 
 int Effect_Constructor( lua_State * state )
 {
@@ -71,6 +80,12 @@ int Effect_Destructor( lua_State * state )
 
 void RegisterEffect( lua_State * state )
 {
+	const luaL_Reg EffectFunctions[] =
+	{
+		{ "SetTexture", Effect_SetTexture },
+		{ nullptr, nullptr }
+	};
+
 	lua_register( state, "Effect", Effect_Constructor );
 	luaL_newmetatable( state, "Effect" );
 	lua_pushcfunction( state, Effect_Destructor ); lua_setfield( state, -2, "__gc" );

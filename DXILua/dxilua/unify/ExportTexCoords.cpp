@@ -29,22 +29,22 @@ unify::TexCoords CheckTexCoords( lua_State * state, int index )
 	return unify::TexCoords( u, v );
 }
 
-int PushTexCoords( lua_State * state, unify::TexCoords TexCoords )
+int PushTexCoords( lua_State * state, unify::TexCoords texCoords )
 {
 	lua_newtable( state ); // Create table.
 
 	lua_pushstring( state, "u" );
-	lua_pushnumber( state, TexCoords.u );
+	lua_pushnumber( state, texCoords.u );
 	lua_settable( state, -3 );
 
 	lua_pushstring( state, "v" );
-	lua_pushnumber( state, TexCoords.v );
+	lua_pushnumber( state, texCoords.v );
 	lua_settable( state, -3 );
 
 	return 1;
 }
 
-int TexCoordsNew( lua_State * state )
+int TexCoords_New( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -57,7 +57,7 @@ int TexCoordsNew( lua_State * state )
 	return 1;
 }
 
-int TexCoordsZero( lua_State * state )
+int TexCoords_NewZero( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 0 );
@@ -67,18 +67,7 @@ int TexCoordsZero( lua_State * state )
 	return 1;
 }
 
-int TexCoordsToString( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::TexCoords TexCoords( CheckTexCoords( state, 1 ) );
-
-	lua_pushstring( state, TexCoords.ToString().c_str() );
-	return 1;
-}
-
-int TexCoordsAdd( lua_State * state )
+int TexCoords_Add( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -91,7 +80,7 @@ int TexCoordsAdd( lua_State * state )
 	return 1;
 }
 
-int TexCoordsSub( lua_State * state )
+int TexCoords_Sub( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -104,7 +93,7 @@ int TexCoordsSub( lua_State * state )
 	return 1;
 }
 
-int TexCoordsMul( lua_State * state )
+int TexCoords_Mul( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -117,7 +106,7 @@ int TexCoordsMul( lua_State * state )
 	return 1;
 }
 
-int TexCoordsDiv( lua_State * state )
+int TexCoords_Div( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -129,18 +118,28 @@ int TexCoordsDiv( lua_State * state )
 	PushTexCoords( state, result );
 	return 1;
 }
+
+int TexCoords_ToString( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	unify::TexCoords TexCoords( CheckTexCoords( state, 1 ) );
+
+	lua_pushstring( state, TexCoords.ToString().c_str() );
+	return 1;
+}
  
 static const luaL_Reg TexCoordsFuncs[] =
 {
-	{ "New", TexCoordsNew },
-	{ "Zero", TexCoordsZero },
+	{ "New",		TexCoords_New },
+	{ "NewZero",	TexCoords_NewZero },
+	{ "Add",		TexCoords_Add },
+	{ "Sub",		TexCoords_Sub },
+	{ "Mul",		TexCoords_Mul },
+	{ "Div",		TexCoords_Div },
 
-	{ "Add", TexCoordsAdd },
-	{ "Sub", TexCoordsSub },
-	{ "Mul", TexCoordsMul },
-	{ "Div", TexCoordsDiv },
-
-	{ "ToString", TexCoordsToString },
+	{ "ToString",	TexCoords_ToString },
 	{ nullptr, nullptr }
 };
 
