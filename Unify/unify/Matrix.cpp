@@ -4,6 +4,9 @@
 #include <unify/Matrix.h>
 #include <unify/Cast.h>
 
+#define WIN32_LEAN_AND_MEAN 
+#include <Windows.h>
+
 using namespace unify;
 
 Matrix::Matrix()
@@ -104,7 +107,6 @@ Matrix::Matrix( Quaternion q, V3< float > translation )
 	float xs = x * x;
 	float ys = y * y;
 	float zs = z * z;
-	float ws = w * w;
 
 	SetRow( 0, { (1.0f - 2.0f * ys - 2.0f * zs),	(2.0f * x * y + 2.0f * w * z),	(2 * x * z - 2.0f * w * y),		0.0f } );
 	SetRow( 1, { (2.0f * x * y - 2.0f * w * z),		(1.0f - 2.0f * xs - 2.0f * zs), (2.0f * y * z + 2.0f * w * x),	0.0f } );
@@ -1054,29 +1056,18 @@ yaxis = cross( zaxis, xaxis )
 Matrix unify::MatrixLookAtLH( const V3< float > & eye, const V3< float > & at, const V3< float > & up )
 {
 	Matrix matrix = unify::MatrixIdentity();
-#if 0
-	unify::V3< float > forward( at - eyePosition );
-	forward.Normalize();
 
-	unify::V3< float > left( unify::V3< float >::V3Cross( up, forward ) );
+	typedef unify::V3< float > V;
 
-	matrix.SetForward( forward );
-	matrix.SetLeft( left );
-	unify::V3< float > orientedUp = unify::V3< float >::V3Cross( forward, left ); // As the specified parameter up means the world's up, this is the relative up for the look at.
-	matrix.SetUp( orientedUp ); // Regenerate up.
-	matrix.SetPosition( -left.Dot( eyePosition ), -up.Dot( eyePosition ), -forward.Dot( eyePosition ) );
-#else
-	V3< float > zaxis = V3< float >::V3Normalized( at - eye );
-	V3< float > xaxis = V3< float >::V3Normalized( unify::V3< float >::V3Cross( up, zaxis ) );
-	V3< float > yaxis = V3< float >::V3Cross( zaxis, xaxis );
+	V zaxis = V::V3Normalized( at - eye );
+	V xaxis = V::V3Normalized( V::V3Cross( up, zaxis ) );
+	V yaxis = V::V3Cross( zaxis, xaxis );
 
-	typedef V3< float > V;
 
-	matrix.SetColumn( 0, { xaxis.x,				yaxis.x,			zaxis.x,			0 } );
-	matrix.SetColumn( 1, { xaxis.y,				yaxis.y,			zaxis.y,			0 } );
-	matrix.SetColumn( 2, { xaxis.z,				yaxis.z,			zaxis.z,			0 } );
-	matrix.SetColumn( 3, { -xaxis.Dot( eye ),	-yaxis.Dot( eye ),	-zaxis.Dot( eye ),	1 } );
-#endif
+	matrix.SetRow( 0, { xaxis.x,				yaxis.x,			zaxis.x,			0 } );
+	matrix.SetRow( 1, { xaxis.y,				yaxis.y,			zaxis.y,			0 } );
+	matrix.SetRow( 2, { xaxis.z,				yaxis.z,			zaxis.z,			0 } );
+	matrix.SetRow( 3, { -xaxis.Dot( eye ),		-yaxis.Dot( eye ),	-zaxis.Dot( eye ),	1 } );
+
 	return matrix;
-
 }
