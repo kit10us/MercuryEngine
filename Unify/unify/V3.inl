@@ -293,3 +293,9 @@ V3< T > V3< T >::V3Inverse( const V3< T > & in )
 {
 	return V3< T >( 1 / in.x, 1 / in.y, 1 / in.z );
 }
+
+template< typename T >
+T V3< T >::V3Dot( const V3< T > & l, const V3< T > &  r )
+{
+	return l.Dot( r );
+}

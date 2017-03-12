@@ -57,11 +57,14 @@ namespace unify
 		bool operator == ( const Matrix & matrix ) const;
 		bool operator != ( const Matrix & matrix ) const;
 
-		float operator()( const RowColumn< unsigned int > & rowColumn );
-		float operator()( unsigned int row, unsigned int column );
+		float &  operator()( const RowColumn< unsigned int > & rowColumn );
+		float & operator()( unsigned int row, unsigned int column );
 
-		float operator()( const RowColumn< unsigned int > & rowColumn ) const;
-		float operator()( unsigned int row, unsigned int column ) const;
+		const float & operator()( const RowColumn< unsigned int > & rowColumn ) const;
+		const float & operator()( unsigned int row, unsigned int column ) const;
+
+		unify::V4< float > & operator()( unsigned int row );
+		const unify::V4< float > & operator()( unsigned int row ) const;
 
 		Matrix & SetRotation( const Quaternion & quaternion );
 		Matrix & Translate( const V3< float > & vector );
@@ -78,6 +81,9 @@ namespace unify
 		void SetUp( float x, float y, float z );
 		void SetForward( float x, float y, float z );
 		void SetPosition( float x, float y, float z );
+
+		void SetRow( size_t row, unify::V4< float > v4 );
+		void SetColumn( size_t column, unify::V4< float > v4 );
 
 		V3< float > GetLeft() const;
 		V3< float > GetUp() const;

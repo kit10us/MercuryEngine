@@ -16,6 +16,7 @@
 
 #include <TerrainMap.h>
 #include <CameraMotivator.h>
+#include <FollowComponent.h>
 
 using namespace me;
 
@@ -40,7 +41,7 @@ void Adventure::Startup()
 	
 	// Add the main scene.
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
-	Scene::ptr mainScene = sceneManager->AddScene( "main" );
+	Scene::ptr mainScene = sceneManager->FindScene( "main" );
 
 	// Add Canvas component...
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
@@ -90,21 +91,20 @@ void Adventure::Startup()
 		map->DrawOnMap( { xp, y }, "sand" );
 		map->DrawOnMap( { xn, y }, "sand" );
 	}
-
-
+															   
 	// Add a camera...
-	Object * camera = mainScene->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
-	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 17, -12 ) );
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );			
-
+	Object * target = mainScene->FindObject( "player" );
 	auto cameraMotivator = new CameraMotivator();
-	auto im = dynamic_cast< motivator::InputMotivator* >(cameraMotivator);
-	auto com = dynamic_cast< scene::IObjectComponent* >(cameraMotivator);
+	target->AddComponent( IObjectComponent::ptr( cameraMotivator ) );
 
-	camera->AddComponent( IObjectComponent::ptr( cameraMotivator ) );
+	Object * camera = mainScene->FindObject( "camera" );
+	if ( camera )
+	{
+		auto follow = new FollowComponent();
+		follow->SetTarget( target );
+		follow->SetOffset( unify::MatrixTranslate( { 0, 17, -12 } ) );
+		camera->AddComponent( IObjectComponent::ptr( follow ) );
+	}
 }
 
 void Adventure::Update( UpdateParams params )

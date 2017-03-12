@@ -46,30 +46,43 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 
 	float speed = unify::Cast< float >( GetValue( "speed" ) );
 
+	using namespace unify;
 	if ( moveLeftMotivation && moveLeftMotivation->IsTrue() )
 	{
-		float factor = -1.0f * params.renderInfo.GetDelta() * speed;
-		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( factor, 0, 0 ) ) );
-		GetObject()->GetFrame().PostMul( translate );
+		float factor = params.renderInfo.GetDelta() * speed;
+		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
+		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
+		position += unify::V3< float >( -factor, 0, 0 );
+		GetObject()->GetFrame().SetPosition( position );
+		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( -90 ) ) );
 	}
 	else if ( moveRightMotivation && moveRightMotivation->IsTrue() )
 	{
-		float factor = 1.0f * params.renderInfo.GetDelta() * speed;
-		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( factor, 0, 0 ) ) );
-		GetObject()->GetFrame().PostMul( translate );
+		float factor = params.renderInfo.GetDelta() * speed;
+		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
+		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
+		position += unify::V3< float >( factor, 0, 0 );
+		GetObject()->GetFrame().SetPosition( position );
+		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( 90 ) ) );
 	}
 
 	if ( moveUpMotivation && moveUpMotivation->IsTrue() )
 	{
-		float factor = 1.0f * params.renderInfo.GetDelta() * speed;
-		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 0, 0, factor ) ) );
-		GetObject()->GetFrame().PostMul( translate );
+		float factor = params.renderInfo.GetDelta() * speed;
+		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
+		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
+		position += unify::V3< float >( 0, 0, factor );
+		GetObject()->GetFrame().SetPosition( position );
+		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( 0 ) ) );
 	}
 	else if ( moveDownMotivation && moveDownMotivation->IsTrue() )
 	{
-		float factor = -1.0f * params.renderInfo.GetDelta() * speed;
-		unify::Matrix translate( unify::MatrixTranslate( unify::V3< float >( 0, 0, factor ) ) );
-		GetObject()->GetFrame().PostMul( translate );
+		float factor = params.renderInfo.GetDelta() * speed;
+		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
+		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
+		position += unify::V3< float >( 0, 0, -factor );
+		GetObject()->GetFrame().SetPosition( position );
+		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( 180 ) ) );
 	}
 }
 

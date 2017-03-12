@@ -92,22 +92,6 @@ int Transform_RotateAbout( lua_State * state )
 	return 0;
 }
 
-int Transform_Scale( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	float scale = (float)lua_tonumber( state, 2 );
-
-	auto x = objectProxy->object->GetComponent( "Geometry" ).get();
-	scene::GeometryComponent * geometry = unify::polymorphic_downcast< scene::GeometryComponent * >( x );
-
-	objectProxy->object->GetFrame().GetModelMatrix().Scale( scale );
-
-	return 0;
-}
-
 int Transform_GetRotation( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -185,6 +169,31 @@ int Transform_PostMulM( lua_State * state )
 
 	return 0;
 }
+ 
+int Transform_SetModelMatrix( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	
+	unify::Matrix matrix{ CheckMatrix( state, 2 ) };
+
+	objectProxy->object->GetFrame().SetModelMatrix( matrix );
+
+	return 0;
+}
+
+int Transform_GetModelMatrix( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 1 );
+
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+	PushMatrix( state, objectProxy->object->GetFrame().GetModelMatrix() );
+
+	return 1;
+}
 
 static const luaL_Reg TransformFunctions[] =
 {
@@ -192,13 +201,15 @@ static const luaL_Reg TransformFunctions[] =
 	{ "LookAt", Transform_LookAt },
 	{ "Orbit", Transform_Orbit },
 	{ "RotateAbout", Transform_RotateAbout },
-	{ "Scale", Transform_Scale },
 	{ "GetRotation", Transform_GetRotation },
 	{ "SetRotation", Transform_SetRotation },
 	{ "PreMulQ", Transform_PreMulQ },
 	{ "PostMulQ", Transform_PostMulQ },
 	{ "PreMulM", Transform_PreMulM },
 	{ "PostMulM", Transform_PostMulM },
+
+	{ "SetModelMatrix", Transform_SetModelMatrix },
+	{ "GetModelMatrix", Transform_GetModelMatrix },
 	{ nullptr, nullptr }
 };
 

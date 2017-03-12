@@ -53,16 +53,15 @@ Matrix::Matrix( Quaternion q, V3< float > translation )
 	rotation.m[1][3] = 0.0f;
 	rotation.m[2][3] = 0.0f;
 	rotation.m[3][3] = 1.0f;
+	*/
 
+	/*
 	Matrix scaleM( MatrixScale( scale ) );
 	Matrix translationM( MatrixTranslate( translation ) );
 	*this = scaleM * rotation * translationM;
 	*/
 
-	float sqw = q.w*q.w;
-	float sqx = q.x*q.x;
-	float sqy = q.y*q.y;
-	float sqz = q.z*q.z;
+	/*
 
 	// invs (inverse square length) is only required if quaternion is not already normalised
 	float invs = 1 / (sqx + sqy + sqz + sqw);
@@ -93,6 +92,24 @@ Matrix::Matrix( Quaternion q, V3< float > translation )
 	m[2][3] = 0.0f;
 
 	m[3][3] = 1.0f;
+	*/
+	
+	//q = q.Conjugate();
+
+	const float & x = q.x;
+	const float & y = q.y;
+	const float & z = q.z;
+	const float & w = q.w;
+
+	float xs = x * x;
+	float ys = y * y;
+	float zs = z * z;
+	float ws = w * w;
+
+	SetRow( 0, { (1.0f - 2.0f * ys - 2.0f * zs),	(2.0f * x * y + 2.0f * w * z),	(2 * x * z - 2.0f * w * y),		0.0f } );
+	SetRow( 1, { (2.0f * x * y - 2.0f * w * z),		(1.0f - 2.0f * xs - 2.0f * zs), (2.0f * y * z + 2.0f * w * x),	0.0f } );
+	SetRow( 2, { (2.0f * x * z + 2.0f * w * y),		(2.0f * y * z - 2.0f * w * x),	(1.0f - 2.0f * xs - 2.0f * ys), 0.0f } );
+	SetRow( 3, { translation, 1.0f } );
 }
 
 Matrix::~Matrix()
@@ -334,25 +351,35 @@ bool Matrix::operator != ( const Matrix & matrix ) const
 	return !(*this == matrix);
 }
 
-float Matrix::operator()( const RowColumn< unsigned int > & rowColumn )
+float & Matrix::operator()( const RowColumn< unsigned int > & rowColumn )
 {
 	return m[rowColumn.row][rowColumn.column];
 }
 
-float Matrix::operator()( unsigned int row, unsigned int column )
+float & Matrix::operator()( unsigned int row, unsigned int column )
 {
 	return m[row][column];
 }
-
-float Matrix::operator()( const RowColumn< unsigned int > & rowColumn ) const
+const float & Matrix::operator()( const RowColumn< unsigned int > & rowColumn ) const
 {
 	return m[rowColumn.row][rowColumn.column];
 }
 
-float Matrix::operator()( unsigned int row, unsigned int column ) const
+const float & Matrix::operator()( unsigned int row, unsigned int column ) const
 {
 	return m[row][column];
 }
+
+unify::V4< float > & Matrix::operator()( unsigned int row )
+{
+	return *(unify::V4< float >*)&m[ row ];
+}
+
+const unify::V4< float > & Matrix::operator()( unsigned int row ) const
+{
+	return *(unify::V4< float >*)&m[ row ];
+}
+
 
 Matrix & Matrix::SetRotation( const Quaternion & quaternion )
 {
@@ -436,6 +463,22 @@ void Matrix::SetPosition( float x, float y, float z )
 	m[3][0] = x;
 	m[3][1] = y;
 	m[3][2] = z;
+}
+
+void Matrix::SetRow( size_t row, unify::V4< float > v4 )
+{
+	m[ row ][ 0 ] = v4.x;
+	m[ row ][ 1 ] = v4.y;
+	m[ row ][ 2 ] = v4.z;
+	m[ row ][ 3 ] = v4.w;
+}
+
+void Matrix::SetColumn( size_t column, unify::V4< float > v4 )
+{
+	m[ 0 ][ column ] = v4.x;
+	m[ 1 ][ column ] = v4.y;
+	m[ 2 ][ column ] = v4.z;
+	m[ 3 ][ column ] = v4.w;
 }
 
 V3< float > Matrix::GetLeft() const
@@ -1002,14 +1045,16 @@ zaxis = normal( At - Eye )
 xaxis = normal( cross( Up, zaxis ) )
 yaxis = cross( zaxis, xaxis )
 
-xaxis.x				yaxis.x			zaxis.x				0
-xaxis.x				yaxis.x			zaxis.x				0
-xaxis.x				yaxis.x			zaxis.x				0
--dot( xaxis, eye )	-dot(yaxis,eye)	-dot(zaxis, eye)	1
+ xaxis.x				yaxis.x				zaxis.x				0
+ xaxis.y				yaxis.y				zaxis.y				0
+ xaxis.z				yaxis.z				zaxis.z				0
+ -dot( xaxis, eye )		-dot(yaxis,eye)		-dot(zaxis, eye)	1
 */
-Matrix unify::MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up )
+
+Matrix unify::MatrixLookAtLH( const V3< float > & eye, const V3< float > & at, const V3< float > & up )
 {
 	Matrix matrix = unify::MatrixIdentity();
+#if 0
 	unify::V3< float > forward( at - eyePosition );
 	forward.Normalize();
 
@@ -1020,5 +1065,18 @@ Matrix unify::MatrixLookAtLH( const V3< float > & eyePosition, const V3< float >
 	unify::V3< float > orientedUp = unify::V3< float >::V3Cross( forward, left ); // As the specified parameter up means the world's up, this is the relative up for the look at.
 	matrix.SetUp( orientedUp ); // Regenerate up.
 	matrix.SetPosition( -left.Dot( eyePosition ), -up.Dot( eyePosition ), -forward.Dot( eyePosition ) );
+#else
+	V3< float > zaxis = V3< float >::V3Normalized( at - eye );
+	V3< float > xaxis = V3< float >::V3Normalized( unify::V3< float >::V3Cross( up, zaxis ) );
+	V3< float > yaxis = V3< float >::V3Cross( zaxis, xaxis );
+
+	typedef V3< float > V;
+
+	matrix.SetColumn( 0, { xaxis.x,				yaxis.x,			zaxis.x,			0 } );
+	matrix.SetColumn( 1, { xaxis.y,				yaxis.y,			zaxis.y,			0 } );
+	matrix.SetColumn( 2, { xaxis.z,				yaxis.z,			zaxis.z,			0 } );
+	matrix.SetColumn( 3, { -xaxis.Dot( eye ),	-yaxis.Dot( eye ),	-zaxis.Dot( eye ),	1 } );
+#endif
 	return matrix;
+
 }

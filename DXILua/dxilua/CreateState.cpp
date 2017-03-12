@@ -12,6 +12,7 @@
 #include <dxilua/unify/ExportMatrix.h>
 #include <dxilua/unify/ExportQuaternion.h>
 #include <dxilua/unify/ExportAngle.h>
+#include <dxilua/ExportComponent.h>
 #include <dxilua/ExportObjectComponent.h>
 #include <dxilua/ExportCameraComponent.h>
 #include <dxilua/ExportDebug.h>
@@ -71,7 +72,9 @@ lua_State * dxilua::CreateState()
 	RegisterInputMotivator( state );
 	RegisterObjectOrbitMotivator( state );
 	RegisterObjectInputMotivator( state );
-	RegisterInputCondition( state );	
+	RegisterInputCondition( state );
+
+	RegisterComponent( state );
 
 	return state;
 }

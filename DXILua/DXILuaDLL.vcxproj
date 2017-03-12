@@ -96,6 +96,7 @@
     <ClInclude Include="dxilua\component\GameComponent.h" />
     <ClInclude Include="dxilua\component\ObjectComponent.h" />
     <ClInclude Include="dxilua\CreateState.h" />
+    <ClInclude Include="dxilua\ExportComponent.h" />
     <ClInclude Include="dxilua\ExportInput.h" />
     <ClInclude Include="dxilua\ExportInputCondition.h" />
     <ClInclude Include="dxilua\ExportInputMotivator.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="dxilua\component\GameComponent.cpp" />
     <ClCompile Include="dxilua\component\ObjectComponent.cpp" />
     <ClCompile Include="dxilua\CreateState.cpp" />
+    <ClCompile Include="dxilua\ExportComponent.cpp" />
     <ClCompile Include="dxilua\ExportInput.cpp" />
     <ClCompile Include="dxilua\ExportInputCondition.cpp" />
     <ClCompile Include="dxilua\ExportInputMotivator.cpp" />

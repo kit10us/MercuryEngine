@@ -129,6 +129,9 @@
     <ClInclude Include="dxilua\unify\ExportTexArea.h">
       <Filter>dxilua\exports\unify</Filter>
     </ClInclude>
+    <ClInclude Include="dxilua\ExportComponent.h">
+      <Filter>dxilua\exports</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="dxilua\unify\ExportTexArea.cpp">
       <Filter>dxilua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="dxilua\ExportComponent.cpp">
+      <Filter>dxilua\exports</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

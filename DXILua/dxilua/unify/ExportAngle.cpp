@@ -18,7 +18,8 @@ int Angle_Degrees( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	float angle = (float)lua_tonumber( state, 1 ) * (3.14159265f / 180.0f);
+	float degrees = (float)lua_tonumber( state, 1 );
+	float angle = degrees * (3.14159265f / 180.0f);
 	lua_pushnumber( state, angle );
 
 	return 1;
@@ -29,7 +30,8 @@ int Angle_Radians( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	float angle = (float)lua_tonumber( state, 1 );
+	float radians = (float)lua_tonumber( state, 1 );
+	float angle = radians;
 	lua_pushnumber( state, angle );
 
 	return 1;

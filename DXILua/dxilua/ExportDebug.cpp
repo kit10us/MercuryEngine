@@ -33,16 +33,19 @@ int Debug_LogLine( lua_State * state )
 	return 0;
 }
 
-static const luaL_Reg debugFuncs[] =
-{
-	{ "LogLine", Debug_LogLine },
-	{ nullptr, nullptr }
-};
-
 int ExportDebug( lua_State * state )
 {
+	static const luaL_Reg debugFuncs[] =
+	{
+		{ "LogLine", Debug_LogLine },
+		{ nullptr, nullptr }
+	};
+
 	luaL_newlib( state, debugFuncs );
 	lua_setglobal( state, "Debug" );
+
+	lua_register( state, "print", Debug_LogLine );
+
 	return 1;
 }
 

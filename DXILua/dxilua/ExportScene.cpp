@@ -101,13 +101,20 @@ int Scene_FindObject( lua_State * state )
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
 
 	std::string name = lua_tostring( state, 2 );
-
+	
 	Object * object = sceneProxy->scene->FindObject( name );
 
-	ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*objectProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-	(*objectProxy)->object = object;
+	if ( !object )
+	{
+		lua_pushnil( state );
+	}
+	else
+	{
+		ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
+		*objectProxy = new ObjectProxy;
+		luaL_setmetatable( state, "Object" );
+		(*objectProxy)->object = object;
+	}
 
 	return 1;
 }
@@ -148,16 +155,6 @@ int Scene_Destructor( lua_State * state )
 			          
 void RegisterScene( lua_State * state )
 {
-	/*
-	using namespace luaw;
-	{
-		LuaClass* lc = new LuaClass( "Scene" );
-		lc->AddFunction( "GetName", 
-
-		delete lc;
-	} 
-	*/
-
 	const luaL_Reg SceneMemberFunctions[] =
 	{
 		{ "GetName", Scene_GetName },
@@ -180,7 +177,6 @@ void RegisterScene( lua_State * state )
 		{ "FindScene", Scene_FindScene },
 		{ nullptr, nullptr }
 	};
-
-	luaL_newlib( state, SceneStaticFunctions );
-	lua_setglobal( state, "Scene" );
+	
+	lua_register( state, "FindScene", Scene_FindScene );
 }
