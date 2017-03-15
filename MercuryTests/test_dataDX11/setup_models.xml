@@ -8,7 +8,9 @@
 	<textureps name="textured_ambient" source="textured_ambient.xml"/>
 	<texturevs name="textured_ambient" source="textured_ambient.xml"/>
 </extension>
+<!--
 <extension source="../../extensions/MEEditor.dll"/>
+-->
 <!--
 <extension source="../../extensions/FBXLoader.dll"/>
 -->

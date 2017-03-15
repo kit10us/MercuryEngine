@@ -12,8 +12,9 @@
 #include <me/scene/BBoxRendererComponent.h>
 #include <me/scene/CameraComponent.h>
 
+#include <me/scene/AutoBBoxSceneComponent.h>
+
 #include <me/scene/SceneManager.h>
-#include <me/scene/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
 
@@ -22,6 +23,9 @@ using namespace me;
 class MyGame : public Game
 {
 protected:
+	scene::Scene * m_scene;
+	scene::Object * m_camera;
+	canvas::TextElement * m_text;
 public:
 	MyGame() : Game( "setup_models.xml" ) {}
 	void Startup() override;
@@ -34,81 +38,139 @@ void MyGame::Startup()
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast<scene::SceneManager *>(GetComponent( "SceneManager", 0 ).get());
 
 	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
 
 	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "EffectColorInstanced3D_SC.effect" );
-	
+
 	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "EffectColorInstanced3D.effect" );
 
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced_ambient", "ColorInstanced_ambient.effect" );
 
-	Scene::ptr scene = sceneManager->AddScene( "scene" );
+	m_scene = sceneManager->AddScene( "scene" ).get();
+
+	/*
+	m_scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
+	*/
+
+
 
 	// Add a camera...
-	Object * camera = scene->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
-	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
+	m_camera = m_scene->NewObject( "camera" );
+	m_camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );
+	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( m_camera->GetComponent( "camera" ).get() );
+	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
+
+	float shapesize = 1.0f;
 
 	// Geo1
 	sg::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
-    cubeParameters.SetSize( unify::Size3< float >( 1, 1, 1 ) );
+	cubeParameters.SetSize( unify::Size3< float >( shapesize, shapesize, shapesize ) );
 	cubeParameters.SetDiffuse( unify::Color::ColorBlue() );
-	Geometry::ptr geo1( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
+	Geometry::ptr geo1( sg::CreateShape( GetOS()->GetRenderer( 0 ), cubeParameters ) );
 
 	// Geo2
 	sg::SphereParameters sphereParameters;
 	sphereParameters.SetEffect( color3DEffect );
-	sphereParameters.SetRadius( 1 );
+	sphereParameters.SetRadius( shapesize );
 	sphereParameters.SetDiffuse( unify::Color::ColorRed() );
 	Geometry::ptr geo2( sg::CreateShape( GetOS()->GetRenderer( 0 ), sphereParameters ) );
 
 	// Geo3
 	sg::ConeParameters coneParameters;
 	coneParameters.SetEffect( color3DEffect );
-	coneParameters.SetHeight( 1 );
-	coneParameters.SetRadius( 1 );
+	coneParameters.SetHeight( shapesize );
+	coneParameters.SetRadius( shapesize );
 	coneParameters.SetDiffuse( unify::Color::ColorGreen() );
 	Geometry::ptr geo3( sg::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) );
 
-	size_t depth = 40;
-	size_t columns = 40;
-	size_t rows = 40;
+
+	// Block object counts...
+	int objectCountX = 10;
+	int objectCountY = 10;
+	int objectCountZ = 10;
 	float spacing = 2.0f;
-	for( size_t d = 0; d < depth; ++d )
+
+	// Block size...
+	auto sectorSpacing = 20.0f;
+	auto sectorSizeX = (shapesize * objectCountX) + (spacing * (objectCountX - 1));
+	auto sectorSizeY = (shapesize * objectCountY) + (spacing * (objectCountY - 1));
+	auto sectorSizeZ = (shapesize * objectCountZ) + (spacing * (objectCountZ - 1));
+
+	// Sets of blocks counts...
+	int sectorsCountX = 3;
+	int sectorsCountY = 1;
+	int sectorsCountZ = 3;
+	auto totalSectorsSizeX = (sectorSizeX * sectorsCountX) + (sectorSpacing * sectorsCountX);
+	auto totalSectorsSizeY = (sectorSizeY * sectorsCountY) + (sectorSpacing * sectorsCountY);
+	auto totalSectorsSizeZ = (sectorSizeZ * sectorsCountZ) + (sectorSpacing * sectorsCountZ);
+
+	// Surround with geometry...
+	for ( int sectorZ = 0; sectorZ < sectorsCountZ; sectorZ++ )
 	{
-		for( size_t c = 0; c < columns; c++ )
+		for ( int sectorY = 0; sectorY < sectorsCountY; sectorY++ )
 		{
-			for( size_t r = 0; r < rows; ++r )
-			{			
-				size_t shape = (columns + d + r) % 3;
+			for ( int sectorX = 0; sectorX < sectorsCountX; sectorX++ )
+			{
+				// Skip center block (camera's area)...
+				if ( sectorX == (sectorsCountX / 2) && sectorY == (sectorsCountY / 2) && sectorZ == (sectorsCountZ / 2) )
+				{
+					continue;
+				}
 
-				auto object = scene->NewObject( "geo" );
-				AddGeometryComponent( object, (shape == 0 ) ? geo1 : (shape == 1) ? geo2 : geo3 );
+				float centerX = (totalSectorsSizeX * -0.5f) + (sectorX * ( sectorSpacing + sectorSizeX)) + ((sectorSpacing + sectorSizeX) * 0.5f);
+				float centerY = (totalSectorsSizeY * -0.5f) + (sectorY * ( sectorSpacing + sectorSizeY)) + ((sectorSpacing + sectorSizeY) * 0.5f);
+				float centerZ = (totalSectorsSizeZ * -0.5f) + (sectorZ * ( sectorSpacing + sectorSizeZ)) + ((sectorSpacing + sectorSizeZ) * 0.5f);
 
-				float x = (rows * spacing * -0.5f) + r * spacing;
-				float y = (columns * spacing * -0.5f) + c * spacing;
-				float z = (depth * spacing * -0.5f) + d * spacing;
+				// Create a block of geometry...
+				for ( auto oz = 0; oz < objectCountZ; oz++ )
+				{
+					for ( auto oy = 0; oy < objectCountY; oy++ )
+					{
+						for ( auto ox = 0; ox < objectCountX; ox++ )
+						{
+							size_t shape = (ox + oy + oz) % 3;
+							auto object = m_scene->NewObject( "geo" );
+							AddGeometryComponent( object, (shape == 0) ? geo1 : (shape == 1) ? geo2 : geo3 );
 
-				object->GetFrame().SetPosition( unify::V3< float >( x, y, z ) );
+							float x = ((shapesize + spacing) * objectCountX * -0.5f) + ox * (shapesize + spacing);
+							float y = ((shapesize + spacing) * objectCountY * -0.5f) + oy * (shapesize + spacing);
+							float z = ((shapesize + spacing) * objectCountZ * -0.5f) + oz * (shapesize + spacing);
+
+							object->GetFrame().SetPosition( { centerX + x, centerY + y, centerZ + z } );
+						}
+					}
+				}
 			}
 		}
 	}
 
-	// Camera is based on number of objects
-	float max = (float)std::max( std::max( depth, columns), rows );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, max * spacing * 0.5f, 0 - max * spacing * 2.0f ) );
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+	/*
+	{
+		// One object test...
+		auto object = m_scene->NewObject( "geo" );
+		AddGeometryComponent( object, geo2 );
 
+		object->GetFrame().SetPosition( { 0.0f, 0.0f, 10.0f } );
+	}
+	*/
 
-	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
-	scene->AddComponent( canvas );
+	m_camera->GetFrame().SetPosition( { 0, 0, 0 } );
+	m_camera->GetFrame().LookAt( { 0, 0, 10 } );
+																	
+	{
+		using namespace canvas;
+		CanvasComponent::ptr canvas( new CanvasComponent( this ) );
+		m_scene->AddComponent( canvas );
 
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2 ) ) );
+		Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );
+		canvas->GetLayer()->AddElement( IElement::ptr( new FPS( this, font2 ) ) );
+
+		m_text = new TextElement( this, font2, "Objects = N", Anchor::BottomLeft );
+		canvas->GetLayer()->AddElement( IElement::ptr( m_text ) );
+	}
 }
 
 void MyGame::Update( UpdateParams params )
@@ -118,10 +180,13 @@ void MyGame::Update( UpdateParams params )
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 
 	// Use of camera controls to simplify camera movement...
-	Object * camera = sceneManager->FindScene( "scene" )->FindObject( "camera" );
-	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
-	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
-	
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+	m_camera->GetFrame().RotateAboutAxis( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
+
+	static float elapsed = 0.0f;
+	if ( elapsed < 0.0f )
+	{
+		m_text->SetText( "Objects = " + unify::Cast< std::string >( m_scene->GetRenderCount() ) );
+		elapsed = 1.0f;
+	}
+	elapsed -= params.GetDelta();
 }

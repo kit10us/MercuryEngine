@@ -77,6 +77,13 @@ void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit )
 	m_mat = Matrix{ m_q, m_p };
 }
 
+void FrameLite::RotateAboutAxis( V3< float > axis, Angle angle )
+{
+	m_mat.RotateAboutAxis( axis, angle );
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
+}
+
 void FrameLite::PreMul( Quaternion q )
 {
 	m_q = q * m_q;
@@ -103,7 +110,7 @@ void FrameLite::PostMul( Matrix m )
 	m_p = m_mat.GetPosition();
 }
 
-Matrix FrameLite::GetMatrix() const
+const Matrix FrameLite::GetMatrix() const
 {
 	if ( m_useModelMatrix )
 	{

@@ -23,9 +23,12 @@ namespace me
 			ObjectStack( Scene * scene, size_t max );
 			virtual ~ObjectStack();
 
-			bool IsResizable() const override;
 			size_t Count() const override;
 			bool Available() const override;
+			
+			void SetCache( bool cache );
+			bool GetCache() const;
+			void ResetCache();
 
 			Object * NewObject( std::string name ) override;
 			bool DestroyObject( Object * object ) override;
@@ -35,15 +38,18 @@ namespace me
 			Object * GetObject( size_t index ) override;
 
 			void Update( UpdateParams params ) override;
-			void CollectRendering( RenderParams params, CameraCache & cameras, GeometryCacheSummation & summation ) override;
+			void CollectCameras( CameraCache & camerasOut ) override;
+			void CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;
 			std::vector< Object > m_objects;
-			size_t m_nextObjectAvailable;
-			size_t m_lastObjectAlive; 
-			size_t m_freeObjects;
-			size_t m_count;
+			int m_nextObjectAvailable;
+			int m_lastObjectAlive; 
+			int m_freeObjects;
+			int m_count;
+			bool m_cache;
+			bool m_resetCache;
 
 			// All objects enter here.
 			std::list< Object * > m_newObjects;

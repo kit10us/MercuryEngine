@@ -26,28 +26,3 @@ void GeometryCache::Reset()
 {
 	m_cache.clear();
 }
-
-GeometryCacheSummation::GeometryCacheSummation()
-{
-}
-
-void GeometryCacheSummation::Add( Geometry * geometry, InstancesSet set )
-{
-	m_summation[ geometry ].push_back( set );
-}
-
-void GeometryCacheSummation::Render( RenderParams params )
-{
-	for( auto && pair : m_summation )
-	{
-		pair.first->Render( params, 0, MatrixFeed( &pair.second[0], pair.second.size(), 1 ) );
-	}
-}
-
-void GeometryCacheSummation::Reset()
-{
-	for( auto && pair : m_summation )
-	{
-		pair.second.clear();
-	}
-}

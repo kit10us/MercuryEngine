@@ -19,11 +19,6 @@ GrowableObjectStack::~GrowableObjectStack()
 {
 }
 
-bool GrowableObjectStack::IsResizable() const
-{
-	return true;
-}
-
 size_t GrowableObjectStack::Count() const
 {
 	size_t count = 0;
@@ -116,11 +111,19 @@ void GrowableObjectStack::Update( UpdateParams params )
 	}
 }
 
-void GrowableObjectStack::CollectRendering( RenderParams params, CameraCache & cameraCache, GeometryCacheSummation & summation )
+void GrowableObjectStack::CollectCameras( CameraCache & camerasOut ) 
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->CollectRendering( params, cameraCache, summation );
+		stack->CollectCameras( camerasOut );
+	}
+}
+
+void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
+{
+	for( auto && stack : m_stacks )
+	{
+		stack->CollectRendering( params, camera, summation );
 	}
 }
 

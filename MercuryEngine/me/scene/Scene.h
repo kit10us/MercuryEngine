@@ -52,16 +52,6 @@ namespace me
 			void SetEnabled( bool enabled );
 			bool GetEnabled() const;
 
-			/// <summary>
-			/// Set if we want to render objects or not.
-			/// </summary>
-			void SetRenderObjects( bool enabled );
-			
-			/// <summary>
-			/// Returns true if we want to render objects.
-			/// </summary>
-			bool GetRenderObjects() const;
-
 			int GetComponentCount() const;
 			void AddComponent( ISceneComponent::ptr component );
 			void RemoveComponent( ISceneComponent::ptr component );
@@ -77,23 +67,18 @@ namespace me
 			Object * GetObject( size_t index ) const;
 			size_t GetObjectCount() const;
 
+			size_t GetRenderCount() const;
+
 		private:
 			IGame * m_game;
-			std::string m_name;
-
+			std::string m_name;	 
 			std::list< ISceneComponent::ptr > m_components;
-
-			IObjectAllocator::ptr m_objectStack;
-
+			IObjectAllocator::ptr m_objectStack;		   
 			bool m_inited;
-			bool m_started;
-
-			// Flags...
+			bool m_started;								   
 			float m_order;
 			bool m_enabled;
-			bool m_renderObjects;
-
-			// Viewport...
+			size_t m_renderCount;
 			me::Viewport m_viewport;
 		};
 	}

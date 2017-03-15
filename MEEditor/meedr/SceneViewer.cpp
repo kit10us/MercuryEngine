@@ -343,6 +343,11 @@ void SceneViewer::UpdateObject_Components( bool force )
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
 	me::scene::Object* object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+
+	if ( object == nullptr )
+	{
+		return;
+	}
 							   
 	components->ResetContent();
 	for ( int i = 0; i < object->GetComponentCount(); i++ )

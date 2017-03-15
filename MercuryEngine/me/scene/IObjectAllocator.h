@@ -21,8 +21,14 @@ namespace me
 
 			~IObjectAllocator() {}
 
-			virtual bool IsResizable() const = 0;
+			/// <summary>
+			/// How many objects are current active.
+			/// </summary>
 			virtual size_t Count() const = 0;
+
+			/// <summary>
+			/// Can we allocate a new object?
+			/// </summary>
 			virtual bool Available() const = 0;
 			   
 			virtual Object * NewObject( std::string name ) = 0;
@@ -33,7 +39,8 @@ namespace me
 			virtual Object * GetObject( size_t index ) = 0;
 
 			virtual void Update( UpdateParams params ) = 0;
-			virtual void CollectRendering( RenderParams params, CameraCache & cameraCache, GeometryCacheSummation & summation ) = 0;
+			virtual void CollectCameras( CameraCache & camerasOut ) = 0;
+			virtual void CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation ) = 0;
 		};
 	}
 }

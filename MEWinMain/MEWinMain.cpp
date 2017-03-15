@@ -17,7 +17,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	{
 		game = GetGameInstance();
 	}
-	catch( std::exception & exception )
+	catch( std::exception exception )
 	{
 		// NOTE: Our goal is to never hit hear in release.
         OutputDebugStringA( "[" );
@@ -68,7 +68,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			game->Draw();
 		} 
 	}
-	catch( std::exception & exception )
+	catch( std::exception exception )
 	{
 		game->LogLine( "Mercury Failure: " );
 		game->LogLine( exception.what(), 4 );

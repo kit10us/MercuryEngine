@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/canvas/FPS.h>
+#include <me/exception/FailedToCreate.h>
 
 using namespace me;
 using namespace canvas;
@@ -11,6 +12,15 @@ FPS::FPS( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float 
 	, m_updateRate( 0.25f )
 	, m_secondsTillUpdate( 0.0f )
 {
+	if ( !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '=' )
+		|| !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '.' )
+		|| !effect->GetTexture( 0 )->GetSpriteDictionary().HasAsciiNumeric() )
+	{
+		throw me::exception::FailedToCreate(
+			"Specified font, \"" + effect->GetTexture( 0 )->GetParameters()->source.ToString()
+			+ "\", is missing too many characters to be used with FPS Canvas element! (requires '=', '.', and 0 to 9)" 
+		);
+	}
 }
 		
 void FPS::Update( UpdateParams params )

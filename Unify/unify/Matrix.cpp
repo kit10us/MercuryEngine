@@ -3,10 +3,6 @@
 
 #include <unify/Matrix.h>
 #include <unify/Cast.h>
-
-#define WIN32_LEAN_AND_MEAN 
-#include <Windows.h>
-
 using namespace unify;
 
 Matrix::Matrix()

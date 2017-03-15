@@ -6,6 +6,8 @@
 #include <me/IRenderer.h>
 #include <me/Display.h>
 #include <medx9/DirectX.h>
+#include <medx9/WindowsOS.h>
+#include <atlbase.h>
 #include <memory>
 
 namespace medx9
@@ -36,6 +38,8 @@ namespace medx9
 													  
 		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::MatrixFeed & matrixFeed ) override;
 
+		me::ISketcher * GetSketcher() override;
+
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;
 		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) const override;
@@ -44,7 +48,11 @@ namespace medx9
 		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) const override;
 
 	private:
-		class Pimpl;
-		std::shared_ptr< Pimpl > m_pimpl;
+		WindowsOS * m_OS;
+		me::Display m_display;
+		D3DPRESENT_PARAMETERS m_pp;
+		CComPtr< IDirect3DDevice9 > m_dxDevice;
+		CComPtr< IDirect3DSwapChain9 > m_swapChain;
+		size_t m_index;
 	};
 }

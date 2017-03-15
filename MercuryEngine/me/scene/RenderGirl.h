@@ -12,13 +12,15 @@ namespace me
 		class RenderGirl
 		{
 			const RenderParams * m_params;
+
+			size_t m_renderCount;
 		public:
 			RenderGirl();
 			~RenderGirl();
 
 			void Begin( const RenderParams * params );
 			void Render( scene::IObjectAllocator * allocator );
-			void End();
+			size_t End();
 		};
 	}
 }

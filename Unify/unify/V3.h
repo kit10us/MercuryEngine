@@ -5,6 +5,7 @@
 
 #include <unify/Unify.h>
 #include <unify/String.h>
+#include <unify/Angle.h>
 
 namespace unify
 {
@@ -59,6 +60,7 @@ namespace unify
 		T Normalize( const V3< T > & norm );
 		const T DistanceTo( const V3<T> & to ) const;
 		T Dot( const V3< T > & a ) const;
+		Angle DotAngle( const V3< T > & a ) const;
 		bool IsZero() const;
 
 		// Named constructors...

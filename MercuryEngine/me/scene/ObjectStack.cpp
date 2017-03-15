@@ -11,21 +11,18 @@ using namespace scene;
 
 ObjectStack::ObjectStack( Scene * scene, size_t max )
 	: m_scene{ scene }
-	, m_freeObjects{ max }
+	, m_freeObjects{ (int)max }
 	, m_count{ 0 }
 	, m_nextObjectAvailable{ 0 }
 	, m_lastObjectAlive{ 0 }
 	, m_objects( max )
+	, m_cache{ true }
+	, m_resetCache{ false }
 {
 }
 
 ObjectStack::~ObjectStack()
 {
-}
-
-bool ObjectStack::IsResizable() const
-{
-	return false;
 }
 
 size_t ObjectStack::Count() const
@@ -38,6 +35,21 @@ bool ObjectStack::Available() const
 	return m_freeObjects > 0;
 }
 
+void ObjectStack::SetCache( bool cache )
+{
+	m_cache = cache;
+}
+
+bool ObjectStack::GetCache() const
+{
+	return m_cache;
+}
+
+void ObjectStack::ResetCache()
+{
+	m_resetCache = true;
+}
+
 Object * ObjectStack::NewObject( std::string name )
 {
 	if ( m_freeObjects == 0 ) return nullptr;
@@ -46,6 +58,8 @@ Object * ObjectStack::NewObject( std::string name )
 	Object * object = &m_objects[ m_nextObjectAvailable ];
 	m_newObjects.push_back( object );
 
+	m_lastObjectAlive = std::max( m_nextObjectAvailable, m_lastObjectAlive );
+
 	object->SetAlive( true );
 	object->SetScene( m_scene );
 	object->SetName( name );
@@ -53,7 +67,7 @@ Object * ObjectStack::NewObject( std::string name )
 	// Find the next available object...
 	// 1. Ensure we are within capacity, or stop.
 	// 2. Stop if we are within capacity, and found an available object.
-	while( ++m_nextObjectAvailable < m_objects.size() && m_objects[ m_nextObjectAvailable ].IsAlive() );
+	while( ++m_nextObjectAvailable < (int)m_objects.size() && m_objects[ m_nextObjectAvailable ].IsAlive() );
 
 	m_freeObjects--;
 	m_count++;
@@ -63,23 +77,42 @@ Object * ObjectStack::NewObject( std::string name )
 
 bool ObjectStack::DestroyObject( Object * object )
 {
-	// TODO: Remove from cached lists 
-	assert( 0 ); // Not supported at the moment.
-
-	for( size_t i = 0; i < m_objects.size(); ++i )
+	// NOTE: Could optimize by storing object index in object.
+	// Find index of object to remove...
+	int objectIndex = 0;
+	for( ; objectIndex < (int)m_objects.size(); ++objectIndex )
 	{
-		if ( &m_objects[ i ] == object )
+		if ( &m_objects[ objectIndex ] == object )
 		{
-			m_objects[ i ].SetAlive( false );
-			if ( i < m_nextObjectAvailable ) m_nextObjectAvailable = i;
-			return true;
+			break;
+		}
+	}
+
+	// If we went past our object count, the object wasn't found.
+	if ( objectIndex >= (int)m_objects.size() )
+	{
+		return false;
+	}
+
+	m_objects[ objectIndex ].SetAlive( false );
+	
+	if ( objectIndex < m_nextObjectAvailable ) m_nextObjectAvailable = objectIndex;
+	m_lastObjectAlive = std::max( m_nextObjectAvailable, m_lastObjectAlive );
+
+	// If we removed the object last in our 'alive' set...
+	if ( objectIndex == m_lastObjectAlive )
+	{
+		// Find the last object alive in the list...
+		for ( int i = objectIndex; i >= 0 && !m_objects[ i ].IsAlive(); m_lastObjectAlive-- )
+		{
+			// Do nothing, loop increment steps handles the work.
 		}
 	}
 	
 	m_freeObjects++;
 	m_count--;
 
-	return false;
+	return true;
 }
 
 Object * ObjectStack::CopyObject( Object * from, std::string name )
@@ -91,9 +124,14 @@ Object * ObjectStack::CopyObject( Object * from, std::string name )
 
 void ObjectStack::CollectObjects( std::vector< Object * > & objects )
 {
-	for( auto && object : m_objects )
+	for ( int i = 0; i <= m_lastObjectAlive; i++ )
 	{
-		if ( ! object.IsAlive() ) continue;
+		auto && object = m_objects[ i ];
+		if ( ! object.IsAlive() )
+		{
+			continue;
+		}
+
 		objects.push_back( &object );
 	}
 }
@@ -125,9 +163,30 @@ void ObjectStack::Update( UpdateParams params )
 	{
 		// Initialize
 		object->Initialize( m_updatables, m_cameras, params );
-		object->CollectGeometry( m_geometries );
+
+		if ( m_cache && ! m_resetCache )
+		{
+			object->CollectGeometry( m_geometries );
+		}
 	}
 	m_newObjects.clear();
+
+	if ( m_cache && m_resetCache )
+	{
+		m_geometries.Reset();
+		for ( int i = 0; i <= m_lastObjectAlive; i++ )
+		{
+			auto && object = m_objects[ i ];
+			if ( ! object.IsAlive() )
+			{
+				continue;
+			}
+
+			// Initialize
+			object.CollectGeometry( m_geometries );
+		}
+		m_resetCache = false;
+	}
 
 	for( auto && updateable : m_updatables )
 	{
@@ -135,11 +194,41 @@ void ObjectStack::Update( UpdateParams params )
 	}
 }
 
-void ObjectStack::CollectRendering( RenderParams params, CameraCache & cameras, GeometryCacheSummation & summation )
-{					  
+void ObjectStack::CollectCameras( CameraCache & camerasOut )
+{
 	for( auto camera : m_cameras )
 	{
-		cameras.push_back( camera );
+		camerasOut.push_back( camera );
+	}
+}
+
+void ObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
+{	
+	if ( ! m_cache )
+	{
+		m_geometries.Reset();
+		for ( int i = 0; i <= m_lastObjectAlive; i++ )
+		{
+			auto && object = m_objects[ i ];
+			if ( !object.IsAlive() )
+			{
+				continue;
+			}
+
+			typedef unify::V3< float > V;
+			V origin = camera.object->GetFrame().GetPosition();
+			V forward = camera.object->GetFrame().GetForward();
+			V position = object.GetFrame().GetPosition() - origin;
+			unify::Angle difference( forward.DotAngle( position ) );
+			if ( difference.ToDegrees() < 45.0f )
+			{
+				object.CollectGeometry( m_geometries );
+			}
+			else
+			{
+				int x( 0 ); x;
+			}
+		}
 	}
 
 	m_geometries.Sum( summation );

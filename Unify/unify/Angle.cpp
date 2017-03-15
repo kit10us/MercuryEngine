@@ -181,7 +181,7 @@ float Angle::ToRadians() const
 
 float Angle::ToDegrees() const
 {
-    return m_radians * (3.14159265f / 180.0f);
+    return m_radians * (180.0f / 3.14159265f);
 }
 
 int Angle::Fix360()

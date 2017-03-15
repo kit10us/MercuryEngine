@@ -15,6 +15,7 @@
 #include <me/canvas/FPS.h>
 
 #include <TerrainMap.h>
+#include <TerrainSceneComponent.h>
 #include <CameraMotivator.h>
 #include <FollowComponent.h>
 
@@ -23,6 +24,7 @@ using namespace me;
 class Adventure : public me::Game
 {
 	TerrainMap::ptr m_map;
+	TerrainSceneComponent::ptr m_mapSC;
 public:
 	Adventure()
 		: Game( "setup.xml" )
@@ -38,18 +40,15 @@ RegisterGame( game );
 void Adventure::Startup()
 {	  
 	using namespace scene;
-	
+
 	// Add the main scene.
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr mainScene = sceneManager->FindScene( "main" );
-
-	// Add Canvas component...
-	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
-	mainScene->AddComponent( canvas );
-
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
-	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2, canvas::Anchor::BottomLeft ) ) );
-
+	if ( ! mainScene )
+	{
+		mainScene = sceneManager->AddScene( "main" );
+	}
+	
 	// Create map...
 	TerrainMap * map = new TerrainMap( { 30, 30 }, { 2, 2 } );
 	m_map.reset( map );
@@ -57,12 +56,20 @@ void Adventure::Startup()
 	land->AddComponent( m_map );
 	land->GetFrame().MoveBy( { -20 * 2 * 0.5f, 0, -20 * 2 * 0.5f } );
 
+	/*
+	TerrainSceneComponent * map = new TerrainSceneComponent( GetOS(), { 30, 30 }, { 2, 2 } );
+	m_mapSC.reset( map );
+	mainScene->AddComponent( m_mapSC );
+	*/
+
+
 	// Reusable...
 	Terra::Parameters parameters;
 	parameters.SetSize( unify::Size< float >( 2, 2 ) );
 	parameters.SetPoints( unify::RowColumn< unsigned int >( 10, 10 ) );
-	parameters.SetConstant( 0.0f );	 
+	parameters.SetConstant( 0.0f );
 
+	// 	scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Load an effect, then modify it to fit our needs.
 	{
@@ -105,6 +112,12 @@ void Adventure::Startup()
 		follow->SetOffset( unify::MatrixTranslate( { 0, 17, -12 } ) );
 		camera->AddComponent( IObjectComponent::ptr( follow ) );
 	}
+
+	// Add Canvas component...
+	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
+	mainScene->AddComponent( canvas );
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
+	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2, canvas::Anchor::TopRight ) ) );
 }
 
 void Adventure::Update( UpdateParams params )

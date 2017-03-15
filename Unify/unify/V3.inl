@@ -195,7 +195,6 @@ const T & V3< T >::operator[]( size_t i ) const
 template< typename T >
 T V3< T >::Length() const
 {
-	//return D3DXVec3Length( (D3DXVECTOR3*)this );
 	return sqrt((x * x) + (y * y) + (z * z));
 }
 
@@ -228,6 +227,12 @@ template< typename T >
 T V3< T >::Dot( const V3< T > & a ) const
 {
 	return x * a.x + y * a.y + z * a.z;
+}
+
+template< typename T >
+Angle V3< T >::DotAngle( const V3< T > & a ) const
+{
+	return AngleInRadians( acos(Dot( a ) / (Length() * a.Length())) );
 }
 
 template< typename T >

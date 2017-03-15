@@ -21,6 +21,9 @@
     <ClCompile Include="source\FollowComponent.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\TerrainSceneComponent.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CameraMotivator.h">
@@ -33,6 +36,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\FollowComponent.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\TerrainSceneComponent.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>

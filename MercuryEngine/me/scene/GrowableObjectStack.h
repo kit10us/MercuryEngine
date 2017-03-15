@@ -20,7 +20,6 @@ namespace me
 			GrowableObjectStack( Scene * scene, size_t max );
 			virtual ~GrowableObjectStack();
 
-			bool IsResizable() const override;
 			size_t Count() const override;
 			bool Available() const override;
 
@@ -32,7 +31,8 @@ namespace me
 			Object* GetObject( size_t index ) override;
 
 			void Update( UpdateParams params ) override;
-			void CollectRendering( RenderParams params, CameraCache & cameraCache, GeometryCacheSummation & summation ) override;
+			void CollectCameras( CameraCache & camerasOut ) override;
+			void CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;

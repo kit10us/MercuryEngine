@@ -16,8 +16,8 @@ Scene::Scene( IGame * game, std::string name )
 , m_started( false )
 , m_order( 0.0f )
 , m_enabled( true )
-, m_renderObjects( true )
 , m_objectStack{new GrowableObjectStack{ this, 4000} }
+, m_renderCount{ 0 }
 {
 }
 
@@ -99,15 +99,10 @@ void Scene::Render( RenderParams params )
 		}
 	}
 
-	if ( m_renderObjects == false )
-	{
-		return;
-	}
-
 	RenderGirl renderGirl;
 	renderGirl.Begin( &params );
 	renderGirl.Render( m_objectStack.get() );
-	renderGirl.End();
+	m_renderCount = renderGirl.End();
 }
 
 void Scene::Suspend()
@@ -190,16 +185,6 @@ void Scene::SetEnabled( bool enabled )
 bool Scene::GetEnabled() const
 {
     return m_enabled;
-}
-
-void Scene::SetRenderObjects( bool enabled )
-{
-	m_renderObjects = enabled;
-}
-
-bool Scene::GetRenderObjects() const
-{
-	return m_renderObjects;
 }
 
 int Scene::GetComponentCount() const
@@ -290,4 +275,9 @@ Object * Scene::GetObject( size_t index ) const
 size_t Scene::GetObjectCount() const
 {
 	return m_objectStack->Count();
+}
+
+size_t Scene::GetRenderCount() const
+{
+	return m_renderCount;
 }
