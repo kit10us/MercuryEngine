@@ -3,15 +3,15 @@
 
 #pragma once
 
-#include <me/scene/ObjectComponent.h>
+#include <me/object/ObjectComponent.h>
 
-class FollowComponent : public me::scene::ObjectComponent
+class FollowComponent : public me::object::ObjectComponent
 {
 public:
 	FollowComponent();
 	~FollowComponent();
 
-	void SetTarget( me::scene::Object * target );
+	void SetTarget( me::object::Object * target );
 	void SetOffset( unify::Matrix offset );
 
 public: // IObjectComponent...
@@ -22,12 +22,12 @@ public: // IObjectComponent...
 	void OnUpdate( me::UpdateParams params ) override;
 
 
-	me::scene::IObjectComponent * Duplicate() override;
+	me::object::IObjectComponent * Duplicate() override;
 
 public: // IComponent
 	std::string GetWhat() const override;
 
 private:
-	me::scene::Object * m_target;
+	me::object::Object * m_target;
 	unify::Matrix m_offset;
 };

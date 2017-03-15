@@ -12,6 +12,7 @@
 using namespace mephysx;
 using namespace me;
 using namespace physx;
+using namespace object;
 		 
 MEPHYSX_API SceneComponent::SceneComponent( me::IOS * os, mephysx::GameComponent * gameComponent )
 	: scene::SceneComponent( os, "PhysXScene" )
@@ -81,7 +82,7 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 		m_scene->addActor( *body );
 
 		//mephysx::ObjectComponent * oc = new mephysx::ObjectComponent( m_os, "PhysX", body );
-		//plane->AddComponent( scene::IObjectComponent::ptr( oc ) );
+		//plane->AddComponent( object::IObjectComponent::ptr( oc ) );
 	}
 
 	auto player = scene->FindObject( "player" );

@@ -1,10 +1,10 @@
 // Copyright (c) 2002 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene/ObjectComponent.h>
+#include <me/object/ObjectComponent.h>
 
 using namespace me;
-using namespace scene;
+using namespace object;
 
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap

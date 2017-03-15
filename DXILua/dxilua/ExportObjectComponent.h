@@ -4,15 +4,15 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/scene/ObjectComponent.h>
+#include <me/object/ObjectComponent.h>
 
 void RegisterObjectComponent( lua_State * state );
 
 
 struct ObjectComponentProxy
 {
-	me::scene::ObjectComponent::ptr component;
+	me::object::ObjectComponent::ptr component;
 };
 
 ObjectComponentProxy* CheckObjectComponent( lua_State* state, int index );
-int PushObjectComponent( lua_State * state, me::scene::ObjectComponent::ptr component );
+int PushObjectComponent( lua_State * state, me::object::ObjectComponent::ptr component );

@@ -3,12 +3,12 @@
 
 #pragma once
 
-#include <me/scene/ObjectComponent.h>
+#include <me/object/ObjectComponent.h>
 #include <unify/Matrix.h>
 
 namespace me
 {
-	namespace scene
+	namespace object
 	{
 		class CameraComponent : public ObjectComponent
 		{
@@ -28,7 +28,7 @@ namespace me
 			/// Set a projection matrix to use with this camera.
 			/// </summary>
 			void SetProjection( const unify::Matrix & projection );
-			
+
 			unify::Matrix GetProjection() const;
 
 			IObjectComponent * Duplicate() override;

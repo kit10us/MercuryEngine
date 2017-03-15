@@ -2,11 +2,12 @@
 // All Rights Reserved
 
 #include <me/scene/RenderGirl.h>
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 #include <me/GeometryCache.h>
 
 using namespace me;
 using namespace scene;
+using namespace object;
 
 RenderGirl::RenderGirl()
 	: m_renderCount{ 0 }

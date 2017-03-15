@@ -28,7 +28,7 @@ namespace dxilua
 
 		me::IGameComponent::ptr LoadGameScript( unify::Path path );
 
-		me::scene::IObjectComponent::ptr LoadObjectScript( unify::Path path );
+		me::object::IObjectComponent::ptr LoadObjectScript( unify::Path path );
 
 		DXILUADLL_API lua_State * GetState();
 

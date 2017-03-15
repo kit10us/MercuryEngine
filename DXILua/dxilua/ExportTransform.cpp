@@ -15,7 +15,7 @@
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
 #include <dxilua/unify/ExportQuaternion.h>
-#include <me/scene/GeometryComponent.h>
+#include <me/object/GeometryComponent.h>
 
 using namespace dxilua;
 using namespace me;

@@ -11,6 +11,7 @@
 using namespace dxilua;
 using namespace me;
 using namespace scene;
+using namespace object;
 using namespace motivator;
 
 ObjectInputMotivatorProxy* CheckObjectInputMotivator( lua_State* state, int index )
@@ -19,7 +20,7 @@ ObjectInputMotivatorProxy* CheckObjectInputMotivator( lua_State* state, int inde
 	return ud;
 }
 
-int PushObjectInputMotivator( lua_State * state, me::scene::ObjectComponent::ptr component )
+int PushObjectInputMotivator( lua_State * state, me::object::ObjectComponent::ptr component )
 {
 	ObjectInputMotivatorProxy ** proxy = (ObjectInputMotivatorProxy**)(lua_newuserdata( state, sizeof( ObjectInputMotivatorProxy* ) ));
 	*proxy = new ObjectInputMotivatorProxy;

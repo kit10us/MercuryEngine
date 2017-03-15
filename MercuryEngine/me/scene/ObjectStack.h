@@ -30,20 +30,20 @@ namespace me
 			bool GetCache() const;
 			void ResetCache();
 
-			Object * NewObject( std::string name ) override;
-			bool DestroyObject( Object * object ) override;
-			Object * CopyObject( Object * from, std::string name ) override; 
-			void CollectObjects( std::vector< Object * > & objects ) override;
-			Object * FindObject( std::string name ) override;
-			Object * GetObject( size_t index ) override;
+			object::Object * NewObject( std::string name ) override;
+			bool DestroyObject( object::Object * object ) override;
+			object::Object * CopyObject( object::Object * from, std::string name ) override; 
+			void CollectObjects( std::vector< object::Object * > & objects ) override;
+			object::Object * FindObject( std::string name ) override;
+			object::Object * GetObject( size_t index ) override;
 
 			void Update( UpdateParams params ) override;
-			void CollectCameras( CameraCache & camerasOut ) override;
-			void CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation ) override;
+			void CollectCameras( object::CameraCache & camerasOut ) override;
+			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;
-			std::vector< Object > m_objects;
+			std::vector< object::Object > m_objects;
 			int m_nextObjectAvailable;
 			int m_lastObjectAlive; 
 			int m_freeObjects;
@@ -52,10 +52,10 @@ namespace me
 			bool m_resetCache;
 
 			// All objects enter here.
-			std::list< Object * > m_newObjects;
+			std::list< object::Object * > m_newObjects;
 
-			IObjectComponent::cache m_updatables;
-			CameraCache m_cameras;
+			object::IObjectComponent::cache m_updatables;
+			object::CameraCache m_cameras;
 			GeometryCache m_geometries;
 		};
 	}

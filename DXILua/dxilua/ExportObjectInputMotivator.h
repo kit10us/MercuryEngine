@@ -10,9 +10,9 @@ void RegisterObjectInputMotivator( lua_State * state );
 
 struct ObjectInputMotivatorProxy
 {
-	me::scene::ObjectComponent::ptr component;
+	me::object::ObjectComponent::ptr component;
 	me::motivator::ObjectInputMotivator * motivator;
 };
 
 ObjectInputMotivatorProxy* CheckObjectInputMotivator( lua_State* state, int index );
-int PushObjectInputMotivator( lua_State * state, me::scene::ObjectComponent::ptr component );
+int PushObjectInputMotivator( lua_State * state, me::object::ObjectComponent::ptr component );

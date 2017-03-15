@@ -28,7 +28,7 @@ ObjectComponent::ObjectComponent( ObjectComponent & component )
 }
 
 ObjectComponent::ObjectComponent( lua_State * state, me::IGame * game, std::string luaName, unify::Path path )
-	: me::scene::ObjectComponent( "LUAScript" )
+	: me::object::ObjectComponent( "LUAScript" )
 	, m_state( state )
 	, m_game( game )
 	, m_path( path )
@@ -157,7 +157,7 @@ void ObjectComponent::OnResume()
 	CallMember( "OnResume" );
 }
 
-me::scene::IObjectComponent * ObjectComponent::Duplicate()
+me::object::IObjectComponent * ObjectComponent::Duplicate()
 {
 	auto duplicate = new ObjectComponent( *this );
 	return duplicate;

@@ -25,7 +25,7 @@ namespace
 }
 
 ObjectOrbitMotivator::ObjectOrbitMotivator( unify::V3< float > origin, unify::V3< float > orbit, unify::Angle angleASecond )
-	: scene::ObjectComponent( "ObjectOrbitMotivator" )
+	: object::ObjectComponent( "ObjectOrbitMotivator" )
 	, m_origin{ origin }
 	, m_orbit{ orbit }
 	, m_angleASecond{ angleASecond }
@@ -75,7 +75,7 @@ void ObjectOrbitMotivator::OnResume()
 {
 }
 
-scene::IObjectComponent * ObjectOrbitMotivator::Duplicate()
+object::IObjectComponent * ObjectOrbitMotivator::Duplicate()
 {
 	auto duplicate = new ObjectOrbitMotivator( m_origin, m_orbit, m_angleASecond );
 	return duplicate;
@@ -83,12 +83,12 @@ scene::IObjectComponent * ObjectOrbitMotivator::Duplicate()
 
 int ObjectOrbitMotivator::GetValueCount() const
 {
-	return scene::ObjectComponent::GetValueCount() + g_ValuesList.size();
+	return object::ObjectComponent::GetValueCount() + g_ValuesList.size();
 }
 
 bool ObjectOrbitMotivator::ValueExists( std::string name ) const
 {
-	if ( scene::ObjectComponent::ValueExists( name ) )
+	if ( object::ObjectComponent::ValueExists( name ) )
 	{
 		return true;
 	}
@@ -111,10 +111,10 @@ std::string ObjectOrbitMotivator::GetValueName( int index ) const
 		return std::string();
 	}
 
-	int baseValueCount = scene::ObjectComponent::GetValueCount();
+	int baseValueCount = object::ObjectComponent::GetValueCount();
 	if ( index < baseValueCount )
 	{
-		return scene::ObjectComponent::GetValueName( index );
+		return object::ObjectComponent::GetValueName( index );
 	}
 	else
 	{
@@ -127,20 +127,20 @@ int ObjectOrbitMotivator::FindValueIndex( std::string name ) const
 	auto && itr = g_ValuesMap.find( name );
 	if ( itr == g_ValuesMap.end() )
 	{
-		return scene::ObjectComponent::FindValueIndex( name );
+		return object::ObjectComponent::FindValueIndex( name );
 	}
 	else
 	{
-		return itr->second + scene::ObjectComponent::GetValueCount();
+		return itr->second + object::ObjectComponent::GetValueCount();
 	}
 }
 
 bool ObjectOrbitMotivator::SetValue( int index, std::string value )
 {
-	int baseValueCount = scene::ObjectComponent::GetValueCount();
+	int baseValueCount = object::ObjectComponent::GetValueCount();
 	if ( index < baseValueCount )
 	{
-		return scene::ObjectComponent::SetValue( index, value );
+		return object::ObjectComponent::SetValue( index, value );
 	}
 
 	switch ( index - baseValueCount )
@@ -167,10 +167,10 @@ bool ObjectOrbitMotivator::SetValue( std::string name, std::string value )
 
 std::string ObjectOrbitMotivator::GetValue( int index ) const
 {
-	int baseValueCount = scene::ObjectComponent::GetValueCount();
+	int baseValueCount = object::ObjectComponent::GetValueCount();
 	if ( index < baseValueCount )
 	{
-		return scene::ObjectComponent::GetValue( index );
+		return object::ObjectComponent::GetValue( index );
 	}
 
 	switch ( index - baseValueCount )

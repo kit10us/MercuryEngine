@@ -4,9 +4,9 @@
 #include <me/scene/Octree.h>
 #include <list>
 
-using namespace me;
-
+using namespace me;	 
 using namespace scene;
+using namespace object;
 
 Octree::Octree( Scene * scene, size_t max )
 	: m_scene{ scene }

@@ -2,12 +2,13 @@
 // All Rights Reserved
 
 #include <me/scene/Scene.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 #include <me/Frustum.h>
 #include <map>
 
 using namespace me;
 using namespace scene;
+using namespace object;
 
 ObjectStack::ObjectStack( Scene * scene, size_t max )
 	: m_scene{ scene }

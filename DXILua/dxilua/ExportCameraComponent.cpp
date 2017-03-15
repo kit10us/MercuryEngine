@@ -17,6 +17,7 @@
 using namespace dxilua;
 using namespace me;
 using namespace scene;
+using namespace object;
 
 CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 {
@@ -24,7 +25,7 @@ CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 	return ud;
 }
 
-int PushCameraComponent( lua_State * state, me::scene::ObjectComponent::ptr component )
+int PushCameraComponent( lua_State * state, me::object::ObjectComponent::ptr component )
 {
 	CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
 	*proxy = new CameraComponentProxy;

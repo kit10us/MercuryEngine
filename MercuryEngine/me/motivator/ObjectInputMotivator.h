@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <me/scene/ObjectComponent.h>
-#include <me/scene/Object.h>
+#include <me/object/ObjectComponent.h>
+#include <me/object/Object.h>
 #include <me/motivator/InputMotivator.h>
 
 namespace me
@@ -14,7 +14,7 @@ namespace me
 		///<summary>
 		/// Motivates an object to orbit.
 		///</summary>
-		class ObjectInputMotivator : public scene::ObjectComponent
+		class ObjectInputMotivator : public object::ObjectComponent
 		{
 		public:
 			ObjectInputMotivator( const ObjectInputMotivator & objectInputMotivator );

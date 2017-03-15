@@ -9,11 +9,12 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <MEWinMain.h>
 
-#include <me/scene/BBoxRendererComponent.h>
+#include <me/object/BBoxRendererComponent.h>
 #include <me/scene/AutoBBoxSceneComponent.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 
 using namespace me;
+using namespace object;
 
 class MyGame : public Game
 {
@@ -72,7 +73,7 @@ void MyGame::Startup()
 	auto progObject = scene->NewObject( "cubeDyna" );
 	AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "cube.xml" ) );
@@ -86,7 +87,7 @@ void MyGame::Startup()
 		modelMatrix.Scale( 0.10f );
 		xmlObject->GetFrame().SetModelMatrix( modelMatrix );
 	}
-	xmlObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	xmlObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
@@ -102,7 +103,7 @@ void MyGame::Startup()
 		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 		aseObject->GetFrame().SetModelMatrix( modelMatrix );
 	}
-	aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "USSVoyager.dae" ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "models/Death Star II/models/Death Star II.dae" ) );
@@ -118,7 +119,7 @@ void MyGame::Startup()
 	auto daeModel = scene->NewObject( "daeModel" );
 	AddGeometryComponent( daeModel, meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	daeModel->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	daeModel->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 	{ 
 		using namespace unify;

@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <me/scene/Object.h>
-#include <me/scene/ObjectComponent.h>
+#include <me/object/Object.h>
+#include <me/object/ObjectComponent.h>
 #include <me/motivator/ObjectInputMotivator.h>
 
 ///<summary>
@@ -21,5 +21,5 @@ public:
 	std::string GetWhat() const override;
 
 	void OnUpdate( me::UpdateParams params ) override;
-	me::scene::IObjectComponent * Duplicate() override;
+	me::object::IObjectComponent * Duplicate() override;
 };

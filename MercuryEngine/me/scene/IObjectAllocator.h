@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 
 #ifdef GetObject
 #undef GetObject
@@ -31,16 +31,16 @@ namespace me
 			/// </summary>
 			virtual bool Available() const = 0;
 			   
-			virtual Object * NewObject( std::string name ) = 0;
-			virtual bool DestroyObject( Object * object ) = 0;
-			virtual Object * CopyObject( Object * object, std::string name ) = 0;
-			virtual void CollectObjects( std::vector< Object * > & objects ) = 0;
-			virtual Object * FindObject( std::string name ) = 0;
-			virtual Object * GetObject( size_t index ) = 0;
+			virtual object::Object * NewObject( std::string name ) = 0;
+			virtual bool DestroyObject( object::Object * object ) = 0;
+			virtual object::Object * CopyObject( object::Object * object, std::string name ) = 0;
+			virtual void CollectObjects( std::vector< object::Object * > & objects ) = 0;
+			virtual object::Object * FindObject( std::string name ) = 0;
+			virtual object::Object * GetObject( size_t index ) = 0;
 
 			virtual void Update( UpdateParams params ) = 0;
-			virtual void CollectCameras( CameraCache & camerasOut ) = 0;
-			virtual void CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation ) = 0;
+			virtual void CollectCameras( object::CameraCache & camerasOut ) = 0;
+			virtual void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) = 0;
 		};
 	}
 }

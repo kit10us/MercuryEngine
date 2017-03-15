@@ -40,7 +40,7 @@ namespace me
 			std::string GetValue( int index ) const override;
 			std::string GetValue( std::string name ) const override;
 			bool SetValue( int index, std::string value ) override;
-			bool SetValue( std::string name, std::string value ) override; 
+			bool SetValue( std::string name, std::string value ) override;
 
 		private:
 			IOS * m_os;

@@ -4,7 +4,7 @@
 #include <mephysx/objectcomponent/ColliderBase.h>
 #include <mephysx/objectcomponent/RigidBody.h>
 #include <mephysx/Util.h>
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 
 using namespace me;
 using namespace mephysx;
@@ -12,7 +12,7 @@ using namespace physx;
 using namespace objectcomponent;
 
 ColliderBase::ColliderBase( ColliderBase & colliderBase )
-	: me::scene::ObjectComponent( colliderBase.GetTypeName() )
+	: me::object::ObjectComponent( colliderBase.GetTypeName() )
 	, m_gameComponent( colliderBase.m_gameComponent )
 	, m_material( colliderBase.m_material )
 	, m_shape( colliderBase.m_shape )
@@ -20,7 +20,7 @@ ColliderBase::ColliderBase( ColliderBase & colliderBase )
 }
 
 ColliderBase::ColliderBase( std::string typeName, mephysx::GameComponent * gameComponent )
-	: me::scene::ObjectComponent( typeName )
+	: me::object::ObjectComponent( typeName )
 	, m_gameComponent( gameComponent )
 	, m_material( gameComponent->GetPhysics()->createMaterial( 0.5f, 0.5f, 0.6f ), Releaser< PxMaterial > )
 {
@@ -30,9 +30,9 @@ ColliderBase::~ColliderBase()
 {
 }
 
-void ColliderBase::OnAttach( me::scene::Object * object )
+void ColliderBase::OnAttach( me::object::Object * object )
 {
-	me::scene::ObjectComponent::OnAttach( object );
+	me::object::ObjectComponent::OnAttach( object );
 
 	// Attach to RigidBody.
 	for( int i = 0; i < object->GetComponentCount(); ++i )
@@ -46,9 +46,9 @@ void ColliderBase::OnAttach( me::scene::Object * object )
 	}
 }
 
-void ColliderBase::OnDetach( me::scene::Object * object )
+void ColliderBase::OnDetach( me::object::Object * object )
 {
-	me::scene::ObjectComponent::OnDetach( object );
+	me::object::ObjectComponent::OnDetach( object );
 }
 		
 physx::PxShape * ColliderBase::GetShape()

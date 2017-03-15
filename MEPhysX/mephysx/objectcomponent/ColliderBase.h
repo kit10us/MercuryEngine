@@ -4,7 +4,7 @@
 #pragma once
 
 #include <MEPhysX.h>
-#include <me/scene/ObjectComponent.h>
+#include <me/object/ObjectComponent.h>
 #include <me/GeometryCache.h>
 #include <mephysx/GameComponent.h>
 #include <me/IOS.h>
@@ -15,7 +15,7 @@ namespace mephysx
 {
 	namespace objectcomponent
 	{
-		class ColliderBase : public me::scene::ObjectComponent
+		class ColliderBase : public me::object::ObjectComponent
 		{
 		protected:
 			ColliderBase( ColliderBase & colliderBase );
@@ -25,8 +25,8 @@ namespace mephysx
 			~ColliderBase();
 
 		public: // IObjectComponent...
-			void OnAttach( me::scene::Object * object ) override;
-			void OnDetach( me::scene::Object * object ) override;
+			void OnAttach( me::object::Object * object ) override;
+			void OnDetach( me::object::Object * object ) override;
 			void OnInit() override {}
 			void OnStart() override {}
 			void OnUpdate( me::UpdateParams params ) override {}

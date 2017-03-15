@@ -15,7 +15,7 @@
 
 using namespace dxilua;
 using namespace me;
-using namespace scene;
+using namespace object;
 using namespace motivator;
 
 ObjectOrbitMotivatorProxy* CheckObjectOrbitMotivator( lua_State* state, int index )
@@ -24,7 +24,7 @@ ObjectOrbitMotivatorProxy* CheckObjectOrbitMotivator( lua_State* state, int inde
 	return ud;
 }
 
-int PushObjectOrbitMotivator( lua_State * state, me::scene::ObjectComponent::ptr component )
+int PushObjectOrbitMotivator( lua_State * state, me::object::ObjectComponent::ptr component )
 {
 	ObjectOrbitMotivatorProxy ** proxy = (ObjectOrbitMotivatorProxy**)(lua_newuserdata( state, sizeof( ObjectOrbitMotivatorProxy* ) ));
 	*proxy = new ObjectOrbitMotivatorProxy;

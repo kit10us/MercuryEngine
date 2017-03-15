@@ -1,10 +1,10 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 
 using namespace me;
-using namespace scene;
+using namespace object;
 
 CameraComponent::CameraComponent( CameraComponent & component )
 	: ObjectComponent( component )

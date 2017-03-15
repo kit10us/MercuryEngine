@@ -5,13 +5,13 @@
 #include <me/Game.h>
 #include <me/scene/SceneManager.h>
 #include <me/scene/Scene.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 #include <me/Mesh.h>
 #include <me/Terra.h>
 #include <me/factory/EffectFactories.h>
 #include <MEWinMain.h>
 
-#include <me/scene/GeometryComponent.h>
+#include <me/object/GeometryComponent.h>
 
 /// <summary>
 /// "Terra geometry creation"
@@ -21,6 +21,7 @@
 
 
 using namespace me;
+using namespace object;
 
 class MyGame : public Game
 {

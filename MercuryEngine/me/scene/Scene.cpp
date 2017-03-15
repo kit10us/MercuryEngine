@@ -2,12 +2,13 @@
 // All Rights Reserved
 
 #include <me/scene/Scene.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 #include <me/Frustum.h>
 #include <me/scene/RenderGirl.h>
 
 using namespace me;
 using namespace scene;
+using namespace object;
 
 Scene::Scene( IGame * game, std::string name )
 : m_game( game )
@@ -185,7 +186,7 @@ void Scene::SetEnabled( bool enabled )
 bool Scene::GetEnabled() const
 {
     return m_enabled;
-}
+}					
 
 int Scene::GetComponentCount() const
 {

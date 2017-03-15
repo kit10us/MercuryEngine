@@ -59,18 +59,18 @@ function OnBeforeStartup()
 				if sh == 0 then
 					local col = i % 3
 					if col == 0 then
-						object:SetGeometry(  cubeGeoRed )
+						object:AddGeometry(  cubeGeoRed )
 					elseif col == 1 then
-						object:SetGeometry(  cubeGeoGreen )
+						object:AddGeometry(  cubeGeoGreen )
 					else
-						object:SetGeometry(  cubeGeoBlue )
+						object:AddGeometry(  cubeGeoBlue )
 					end
 					local pxShape = PhysX.CreateBoxCollider( V3.New( 1.0, 1.0, 1.0 ) )
 					pxShape:AttachTo( object )
 				else
 					local pxShape = PhysX.CreateSphereCollider( 1.0 )
 					pxShape:AttachTo( object )
-					object:SetGeometry( sphereCyan )
+					object:AddGeometry( sphereCyan )
 				end		
 				pxBody = PhysX.CreateRigidBody()	
 				pxBody:AttachTo( object )
@@ -85,7 +85,7 @@ function OnBeforeStartup()
 	planeParameters:SetSize2( Size2.New( 40.0, 40.0 ) )
 	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
 	plane = scene1:NewObject( "plane" )
-	plane:SetGeometry( Geometry( planeParameters ) )
+	plane:AddGeometry( Geometry( planeParameters ) )
 	plane:Transform():SetPosition( V3.New( 0, -20, 0 ) )
 
 	local terraParams = TerraParameters()
@@ -96,7 +96,7 @@ function OnBeforeStartup()
 	terraParams:SetHeightMap( Texture( "test256", "steps.bmp", true, true ), Color.NewGrey( 4 ) )
 	local terraGeo = Terra( terraParams )
 	local terra = scene1:NewObject( "terra" )
-	terra:SetGeometry( terraGeo )
+	terra:AddGeometry( terraGeo )
 	terra:Transform():SetPosition( V3.New( 0, -12, 0 ) );
 	local pxShape = PhysX.CreateHeightFieldCollider( terraGeo, 30, 30 )
 	pxShape:AttachTo( terra )
@@ -107,7 +107,7 @@ function OnBeforeStartup()
 	-- Player
 	local playerGeo = Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" )
 	player = scene1:NewObject( "player" )
-	player:SetGeometry( playerGeo )
+	player:AddGeometry( playerGeo )
 	daeMatrix = Matrix.NewIdentity()
 	daeMatrix = Matrix.Mul( daeMatrix, Matrix.NewScale( 2 ) )
 	daeMatrix = Matrix.Mul( daeMatrix, Matrix.NewRotationAboutAxis( V3.New( 1.0, 0, 0 ), Angle.Degrees( 270.0 ) ) )

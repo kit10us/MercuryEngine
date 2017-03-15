@@ -25,7 +25,7 @@ namespace me
 			void OnUpdate( UpdateParams params ) override;
 
 
-			scene::IObjectComponent * Duplicate() override;
+			object::IObjectComponent * Duplicate() override;
 		};
 	}
 }

@@ -5,6 +5,7 @@
 
 using namespace me;
 using namespace scene;
+using namespace object;
 
 OctreeNode::OctreeNode( IOctreeNode * parent )
 	: m_parent{ parent }

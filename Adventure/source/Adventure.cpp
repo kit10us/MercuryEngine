@@ -5,12 +5,11 @@
 #include <MEWinMain.h>
 #include <me/scene/SceneManager.h>
 #include <me/scene/Scene.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 #include <me/Mesh.h>
 #include <me/Terra.h>
 #include <me/factory/EffectFactories.h>
-#include <me/scene/GeometryComponent.h>
-
+#include <me/object/GeometryComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
 
@@ -20,6 +19,8 @@
 #include <FollowComponent.h>
 
 using namespace me;
+using namespace scene;
+using namespace object;
 
 class Adventure : public me::Game
 {

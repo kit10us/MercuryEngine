@@ -145,7 +145,7 @@ void AutoOIMotivator::OnUpdate( UpdateParams params )
 	}
 }
 
-scene::IObjectComponent * AutoOIMotivator::Duplicate()
+object::IObjectComponent * AutoOIMotivator::Duplicate()
 {
 	return nullptr; // Not supported.
 }

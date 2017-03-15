@@ -2,15 +2,15 @@
 // All Rights Reserved
 
 #include <dxilua/ScriptEngine.h>
-#include <me/scene/ObjectComponent.h>
-#include <me/scene/Object.h>
+#include <me/object/ObjectComponent.h>
+#include <me/object/Object.h>
 #include <me/IGame.h>
 
 namespace melua
 {
 	namespace component
 	{
-		class ObjectComponent : public me::scene::ObjectComponent
+		class ObjectComponent : public me::object::ObjectComponent
 		{
 		protected:
 			ObjectComponent( ObjectComponent & component );
@@ -32,7 +32,7 @@ namespace melua
 			void OnSuspend() override;
 			void OnResume() override;
 
-			me::scene::IObjectComponent * Duplicate();
+			me::object::IObjectComponent * Duplicate();
 
 		public: // IComponent...
 			std::string GetWhat() const;

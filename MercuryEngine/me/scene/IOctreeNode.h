@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 
 namespace me
 {
@@ -13,7 +13,7 @@ namespace me
 		public:
 			virtual ~IOctreeNode() {}
 
-			virtual void Adopt( Object* object ) = 0;
+			virtual void Adopt( object::Object* object ) = 0;
 		};
 	}
 }

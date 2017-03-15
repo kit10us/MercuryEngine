@@ -23,7 +23,7 @@ ObjectComponentProxy* CheckObjectComponent( lua_State* state, int index )
 	return ud;
 }
 
-int PushObjectComponent( lua_State * state, me::scene::ObjectComponent::ptr component )
+int PushObjectComponent( lua_State * state, me::object::ObjectComponent::ptr component )
 {
 	ObjectComponentProxy ** proxy = (ObjectComponentProxy**)(lua_newuserdata( state, sizeof( ObjectComponentProxy* ) ));
 	*proxy = new ObjectComponentProxy;

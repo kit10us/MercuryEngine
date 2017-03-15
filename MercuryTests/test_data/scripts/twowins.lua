@@ -26,47 +26,47 @@ function OnBeforeStartup( me )
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
 	cube = scene1:NewObject( "cube" )
-	cube:SetGeometry( Geometry( "cube", "ShapeCube.shape" ) )
+	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
 	
 	pointfield = scene1:NewObject( "pointfield" )
-	pointfield:SetGeometry( Geometry( "pointfield", "ShapePointField.shape" ) )
+	pointfield:AddGeometry( Geometry( "pointfield", "ShapePointField.shape" ) )
 	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
 		
 	pointring = scene1:NewObject( "pointring" )
-	pointring:SetGeometry( Geometry( "pointring", "ShapePointRing.shape" ) )
+	pointring:AddGeometry( Geometry( "pointring", "ShapePointRing.shape" ) )
 	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
 
 	dashring = scene1:NewObject( "dashring" )
-	dashring:SetGeometry( Geometry( "dashring", "ShapeDashRing.shape" ) )
+	dashring:AddGeometry( Geometry( "dashring", "ShapeDashRing.shape" ) )
 	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
 
 	pyramid = scene1:NewObject( "pyramid" )
-	pyramid:SetGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
+	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
 		
 	circle = scene1:NewObject( "circle" )
-	circle:SetGeometry( Geometry( "circle", "ShapeCircle.shape" ) )
+	circle:AddGeometry( Geometry( "circle", "ShapeCircle.shape" ) )
 	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
 
 	sphere = scene1:NewObject( "sphere" )
-	sphere:SetGeometry( Geometry( "sphere", "ShapeSphere.shape" ) )
+	sphere:AddGeometry( Geometry( "sphere", "ShapeSphere.shape" ) )
 	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
 	   
 	cylinder = scene1:NewObject( "cylinder" )
-	cylinder:SetGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
+	cylinder:AddGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
 
 	tube = scene1:NewObject( "tube" )
-	tube:SetGeometry( Geometry( "tube", "ShapeTube.shape" ) )
+	tube:AddGeometry( Geometry( "tube", "ShapeTube.shape" ) )
 	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
 		
 	plane = scene1:NewObject( "plane" )
-	plane:SetGeometry( Geometry( "plane", "ShapePlane.shape" ) )
+	plane:AddGeometry( Geometry( "plane", "ShapePlane.shape" ) )
 	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
 		
 	cone = scene1:NewObject( "cone" )
-	cone:SetGeometry( Geometry( "cone", "ShapeCone.shape" ) )
+	cone:AddGeometry( Geometry( "cone", "ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
 
 	
@@ -80,19 +80,19 @@ function OnBeforeStartup( me )
 	frontShapeParameters:SetCaps( true )
 	frontShape = Geometry( frontShapeParameters )
 	front = scene1:NewObject( "front" )
-	front:SetGeometry( frontShape )
+	front:AddGeometry( frontShape )
 	front:Transform():SetPosition( V3.New( 0, 0, 10 ) );
 
 	back = scene1:NewObject( "back" )
-	back:SetGeometry( "sphere" )
+	back:AddGeometry( "sphere" )
 	back:Transform():SetPosition( V3.New( 0, 0, -10 ) );
 	
 	up = scene1:NewObject( "pyramid" )
-	up:SetGeometry( "pyramid" )
+	up:AddGeometry( "pyramid" )
 	up:Transform():SetPosition( V3.New( 0, 10, 0 ) );
 
 	down = scene1:NewObject( "down" )
-	down:SetGeometry( "cylinder" )
+	down:AddGeometry( "cylinder" )
 	down:Transform():SetPosition( V3.New( 0, -10, 0 ) );	
 end
 

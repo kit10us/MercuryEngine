@@ -8,7 +8,7 @@
 
 struct PxControllerProxy
 {
-	me::scene::IObjectComponent::ptr component;
+	me::object::IObjectComponent::ptr component;
 	mephysx::objectcomponent::ControllerBase * controller;
 };
 

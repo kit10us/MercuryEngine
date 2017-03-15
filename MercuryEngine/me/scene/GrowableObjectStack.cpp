@@ -5,8 +5,8 @@
 #include <list>
 
 using namespace me;
-
 using namespace scene;
+using namespace object;
 
 GrowableObjectStack::GrowableObjectStack( Scene * scene, size_t max )
 	: m_scene{ scene }

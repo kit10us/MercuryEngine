@@ -4,14 +4,14 @@
 #pragma once
 
 #include <MEPhysX.h>
-#include <me/scene/ObjectComponent.h>
+#include <me/object/ObjectComponent.h>
 #include <mephysx/SceneComponent.h>
 
 namespace mephysx
 {
 	namespace objectcomponent
 	{
-		class ControllerBase : public me::scene::ObjectComponent
+		class ControllerBase : public me::object::ObjectComponent
 		{
 		protected:
 			ControllerBase( ControllerBase & controller );

@@ -4,7 +4,7 @@
 #include <mephysx/objectcomponent/CapsuleCollider.h>
 
 using namespace me;
-using namespace scene;
+using namespace object;
 using namespace mephysx;
 using namespace physx;
 using namespace objectcomponent;

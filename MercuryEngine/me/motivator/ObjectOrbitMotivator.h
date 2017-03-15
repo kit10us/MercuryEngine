@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <me/scene/ObjectComponent.h>
-#include <me/scene/Object.h>
+#include <me/object/ObjectComponent.h>
+#include <me/object/Object.h>
 #include <unify/Angle.h>
 #include <unify/V3.h>
 
@@ -15,7 +15,7 @@ namespace me
 		///<summary>
 		/// Motivates an object to orbit.
 		///</summary>
-		class ObjectOrbitMotivator : public scene::ObjectComponent
+		class ObjectOrbitMotivator : public object::ObjectComponent
 		{
 		public:
 			ObjectOrbitMotivator( unify::V3< float > origin, unify::V3< float > orbit, unify::Angle angleASecond );
@@ -37,7 +37,7 @@ namespace me
 
 			void OnResume() override;
 
-			scene::IObjectComponent * Duplicate() override;
+			object::IObjectComponent * Duplicate() override;
 
 		public: // IComponent...
 			int GetValueCount() const override;

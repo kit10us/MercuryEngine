@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <mephysx/objectcomponent/CapsuleController.h>
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 
 using namespace me;
 using namespace mephysx;
@@ -40,13 +40,13 @@ std::string CapsuleController::GetWhat() const
 	return std::string();
 }
 
-scene::IObjectComponent * CapsuleController::Duplicate()
+object::IObjectComponent * CapsuleController::Duplicate()
 {
 	auto duplicate = new CapsuleController( *this );
 	return duplicate;
 }
 
-void CapsuleController::OnAttach( me::scene::Object * object )
+void CapsuleController::OnAttach( me::object::Object * object )
 {
 	m_controller->setUserData( object );
 }					  

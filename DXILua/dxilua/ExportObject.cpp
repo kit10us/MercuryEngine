@@ -19,13 +19,14 @@
 #include <dxilua/unify/ExportSize3.h>
 #include <dxilua/unify/ExportV2.h>
 #include <dxilua/unify/ExportV3.h>
-#include <me/scene/GeometryComponent.h>
+#include <me/object/GeometryComponent.h>
 
 using namespace dxilua;
 using namespace me;
 using namespace scene;
+using namespace object;
 
-int PushObject( lua_State * state, me::scene::Object * object )
+int PushObject( lua_State * state, me::object::Object * object )
 {
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -99,7 +100,7 @@ int Object_IsEnabled( lua_State * state )
 	return 1;
 }
 
-int Object_SetGeometry( lua_State * state )
+int Object_AddGeometry( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -128,7 +129,7 @@ int Object_SetGeometry( lua_State * state )
 			TerraProxy * terraProxy = CheckTerra( state, 2 );
 			if ( ! terraProxy )
 			{
-				game->ReportError( me::ErrorLevel::Failure, "LUA", "SetGeometry has invalid type!" );
+				game->ReportError( me::ErrorLevel::Failure, "LUA", "AddGeometry has invalid type!" );
 			}
 			geometry = terraProxy->geometry;
 		}
@@ -264,7 +265,7 @@ static const luaL_Reg ObjectFunctions[] =
 	{ "GetTypeName", Object_GetName },
 	{ "SetEnabled", Object_SetEnabled },
 	{ "GetEnabled", Object_IsEnabled },
-	{ "SetGeometry", Object_SetGeometry },
+	{ "AddGeometry", Object_AddGeometry },
 	{ "GetSize", Object_GetSize },
 	{ "Transform", Object_Transform },
 	{ "SetModelMatrix", Object_SetModelMatrix },

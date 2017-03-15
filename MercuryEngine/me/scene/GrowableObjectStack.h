@@ -4,7 +4,7 @@
 
 #include <me/IGame.h>
 #include <me/scene/IObjectAllocator.h>
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 #include <me/scene/ObjectStack.h>
 #include <list>
 
@@ -23,16 +23,16 @@ namespace me
 			size_t Count() const override;
 			bool Available() const override;
 
-			Object * NewObject( std::string name ) override;
-			bool DestroyObject( Object * object ) override;
-			Object * CopyObject( Object * from, std::string name ) override; 
-			void CollectObjects( std::vector< Object * > & objects ) override;
-			Object * FindObject( std::string name ) override;
-			Object* GetObject( size_t index ) override;
+			object::Object * NewObject( std::string name ) override;
+			bool DestroyObject( object::Object * object ) override;
+			object::Object * CopyObject( object::Object * from, std::string name ) override; 
+			void CollectObjects( std::vector< object::Object * > & objects ) override;
+			object::Object * FindObject( std::string name ) override;
+			object::Object * GetObject( size_t index ) override;
 
 			void Update( UpdateParams params ) override;
-			void CollectCameras( CameraCache & camerasOut ) override;
-			void CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation ) override;
+			void CollectCameras( object::CameraCache & camerasOut ) override;
+			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) override;
 
 		private:
 			Scene * m_scene;

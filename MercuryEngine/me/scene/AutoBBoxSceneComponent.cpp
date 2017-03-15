@@ -2,11 +2,12 @@
 // All Rights Reserved
 
 #include <me/scene/AutoBBoxSceneComponent.h>
-#include <me/scene/BBoxRendererComponent.h>
-#include <me/scene/Object.h>
+#include <me/object/BBoxRendererComponent.h>
+#include <me/object/Object.h>
 
 using namespace me;
 using namespace scene;
+using namespace object;
 
 AutoBBoxSceneComponent::AutoBBoxSceneComponent( IOS * os, Effect::ptr effect )
 	: SceneComponent( os, "AutoBBox" )

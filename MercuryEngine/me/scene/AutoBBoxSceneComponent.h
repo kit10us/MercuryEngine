@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/scene/SceneComponent.h>
-#include <me/scene/GeometryComponent.h>
+#include <me/object/GeometryComponent.h>
 #include <me/scene/Scene.h>
 #include <me/Effect.h>
 #include <unify/Color.h>
@@ -16,9 +16,9 @@ namespace me
 		/// <summary>
 		/// Automatically adds a BBoxRendererComponent to all new objects, except those flagged as GUI.
 		/// </summary>
-	    class AutoBBoxSceneComponent : public SceneComponent
-	    {
-	    public:
+		class AutoBBoxSceneComponent : public SceneComponent
+		{
+		public:
 			AutoBBoxSceneComponent( IOS * os, Effect::ptr effect );
 			virtual ~AutoBBoxSceneComponent();
 
@@ -35,11 +35,11 @@ namespace me
 			void OnUpdate( Scene * scene, UpdateParams params ) override;
 
 			std::string GetWhat() const override;
-   
-	    protected:
+
+		protected:
 			Effect::ptr m_effect;
 			float m_padding;
 			unify::Color m_color;
-	    };
+		};
     }
 }

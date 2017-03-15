@@ -3,7 +3,7 @@
 
 #include <mephysx/objectcomponent/RigidBody.h>
 #include <mephysx/Util.h>
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 #include <mephysx/objectcomponent/BoxCollider.h>
 #include <mephysx/SceneComponent.h>
 #include <me/scene/Scene.h>
@@ -15,7 +15,7 @@ using namespace physx;
 using namespace objectcomponent;
 
 RigidBody::RigidBody( RigidBody & rigidBody )
-	: me::scene::ObjectComponent( "RigidBody" )
+	: me::object::ObjectComponent( "RigidBody" )
 	, m_gameComponent( rigidBody.m_gameComponent )
 {
 	PxTransform transform( util::Convert< physx::PxTransform >( unify::MatrixIdentity() ) );
@@ -23,7 +23,7 @@ RigidBody::RigidBody( RigidBody & rigidBody )
 }
 
 RigidBody::RigidBody( mephysx::GameComponent * gameComponent )
-	: me::scene::ObjectComponent( "RigidBody" )
+	: me::object::ObjectComponent( "RigidBody" )
 	, m_gameComponent( gameComponent )
 {
 	PxTransform transform( util::Convert< physx::PxTransform >( unify::MatrixIdentity() ) );
@@ -39,9 +39,9 @@ std::string RigidBody::GetWhat() const
 	return std::string();
 }					 
 
-void RigidBody::OnAttach( me::scene::Object * object )
+void RigidBody::OnAttach( me::object::Object * object )
 {
-	me::scene::ObjectComponent::OnAttach( object );
+	me::object::ObjectComponent::OnAttach( object );
 
 	// Sync physx to object.
 	PxTransform transform( util::Convert< physx::PxTransform >( object->GetFrame().GetMatrix() ) );
@@ -65,12 +65,12 @@ void RigidBody::OnAttach( me::scene::Object * object )
 	sceneComponent->GetScene()->addActor( *m_rigidBody.get() );
 }
 
-void RigidBody::OnDetach( me::scene::Object * object )
+void RigidBody::OnDetach( me::object::Object * object )
 {
-	me::scene::ObjectComponent::OnDetach( object );
+	me::object::ObjectComponent::OnDetach( object );
 }
 
-me::scene::IObjectComponent * RigidBody::Duplicate()
+me::object::IObjectComponent * RigidBody::Duplicate()
 {
 	return new RigidBody( *this );
 }

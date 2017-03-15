@@ -86,7 +86,7 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 	}
 }
 
-scene::IObjectComponent * CameraMotivator::Duplicate()
+object::IObjectComponent * CameraMotivator::Duplicate()
 {
 	return new CameraMotivator( *this );
 }

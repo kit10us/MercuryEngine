@@ -14,7 +14,7 @@ using namespace dxilua;
 using namespace melua;
 using namespace me;
 using namespace scene;
-
+using namespace object;
 
 void GameComponentDeleter( me::IGameComponent * gc )
 {

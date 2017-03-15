@@ -23,7 +23,7 @@ std::string SphereCollider::GetWhat() const
 	return std::string();
 }
 
-scene::IObjectComponent * SphereCollider::Duplicate()
+object::IObjectComponent * SphereCollider::Duplicate()
 {
 	auto duplicate = new SphereCollider( *this );
 	return duplicate;

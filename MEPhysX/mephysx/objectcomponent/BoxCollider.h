@@ -22,7 +22,7 @@ namespace mephysx
 
 			std::string GetWhat() const override;
 
-			me::scene::IObjectComponent * Duplicate() override;
+			me::object::IObjectComponent * Duplicate() override;
 		};
 	}
 }

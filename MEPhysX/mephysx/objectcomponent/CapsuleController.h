@@ -21,9 +21,9 @@ namespace mephysx
 			~CapsuleController();
 
 			std::string GetWhat() const override;
-			me::scene::IObjectComponent * Duplicate() override;
+			me::object::IObjectComponent * Duplicate() override;
 
-			void OnAttach( me::scene::Object * object ) override;
+			void OnAttach( me::object::Object * object ) override;
 		};
 	}
 }

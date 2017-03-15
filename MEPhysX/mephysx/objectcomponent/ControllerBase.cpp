@@ -9,13 +9,13 @@ using namespace physx;
 using namespace objectcomponent;
 
 ControllerBase::ControllerBase( ControllerBase & controller )
-	:  me::scene::ObjectComponent( controller.GetTypeName() )
+	:  me::object::ObjectComponent( controller.GetTypeName() )
 	, m_sceneComponent( controller.m_sceneComponent )
 {
 }
 	
 ControllerBase::ControllerBase( std::string typeName, SceneComponent * sceneComponent )
-	: me::scene::ObjectComponent( typeName )
+	: me::object::ObjectComponent( typeName )
 	, m_sceneComponent( sceneComponent )
 {
 }

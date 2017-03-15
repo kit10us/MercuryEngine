@@ -3,9 +3,8 @@
 
 #include <GroundDesc.h>
 
-
 using namespace me;
-using namespace scene;
+using namespace object;
 
 GroundDesc::GroundDesc()
 {

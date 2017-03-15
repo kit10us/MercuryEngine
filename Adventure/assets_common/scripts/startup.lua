@@ -24,7 +24,7 @@ function MakeTree( scene, position )
 	sphereParameters:SetRadius( 2.0 )
 	sphereParameters:SetDiffuse( Color.NewRGB( 0, 0.8, 0 ) )
 	sphereParameters:SetCenter( V3.New( 0, 5, 0 ) );
-	object:SetGeometry( Geometry( sphereParameters ) )
+	object:AddGeometry( Geometry( sphereParameters ) )
 
 	cylinderParameters = ShapeParameters( "cylinder" )
 	cylinderParameters:SetEffect( color3d )
@@ -34,7 +34,7 @@ function MakeTree( scene, position )
 	cylinderParameters:SetDiffuse( Color.NewRGB( 107/255, 88/255, 37/255 ) )
 	cylinderParameters:SetCaps( true )
 	cylinderParameters:SetCenter( V3.New( 0, 2.5, 0 ) )
-	object:SetGeometry( Geometry( cylinderParameters ) )
+	object:AddGeometry( Geometry( cylinderParameters ) )
 end
 
 function MakeHouse( scene, position )
@@ -58,7 +58,7 @@ function MakeHouse( scene, position )
 	parameters:SetSize3( Size3.New( 6, 6, 10 ) )
 	parameters:SetDiffuse( Color.Mul( Color.NewRGB( .2, 0.1, 0.1 ), Color.NewWhite( 2 ) ) )
 	parameters:SetCenter( V3.New( 0, 3, 0 ) );
-	object:SetGeometry( Geometry( parameters ) )
+	object:AddGeometry( Geometry( parameters ) )
 
 	-- door
 	parameters = ShapeParameters( "cube" )
@@ -66,7 +66,7 @@ function MakeHouse( scene, position )
 	parameters:SetSize3( Size3.New( 2.6, 5, 1 ) )
 	parameters:SetDiffuse( Color.Mul( Color.NewRGB( 107/255, 88/255, 37/255 ), Color.NewWhite( 2 ) )) 
 	parameters:SetCenter( V3.New( 0, 2.5, -5 ) );
-	object:SetGeometry( Geometry( parameters ) )
+	object:AddGeometry( Geometry( parameters ) )
 	
 	-- roof
 	parameters = ShapeParameters( "pyramid" )
@@ -74,7 +74,7 @@ function MakeHouse( scene, position )
 	parameters:SetSize3( Size3.New( 7, 2, 11 ) )
 	parameters:SetDiffuse( Color.Mul( Color.NewRGB( .3, .3, .3 ), Color.NewWhite( 2 ) ) )
 	parameters:SetCenter( V3.New( 0, 7, 0 ) );
-	object:SetGeometry( Geometry( parameters ) )
+	object:AddGeometry( Geometry( parameters ) )
 end
 
 function OnBeforeStartup( me )
@@ -129,19 +129,19 @@ function OnBeforeStartup( me )
 	borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
 	local cube = sceneMain:NewObject( "cube" )
-	cube:SetGeometry( Geometry( "cube", "ShapeCube.shape" ) )
+	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
 	cube:Transform():SetPosition( V3.New( -4.5, 1, 0 ) )
 
 	local pyramid = sceneMain:NewObject( "pyramid" )
-	pyramid:SetGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
+	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
 	pyramid:Transform():SetPosition( V3.New( -4.5, 1, 0 ) )
 	
 	local cylinder = sceneMain:NewObject( "cylinder" )
-	cylinder:SetGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
+	cylinder:AddGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
 	cylinder:Transform():SetPosition( V3.New( 4.5, 1, 0 ) )
 
 	local player = sceneMain:NewObject( "player" )
-	player:SetGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
+	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
 	player:SetModelMatrix( Matrix.NewRotationX( Angle.Degrees( -90 ) ) )
 	player:Transform():SetPosition( V3.New( 0, 0, 0 ) )
 	

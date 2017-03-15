@@ -14,7 +14,7 @@ namespace me
 			OctreeNode( IOctreeNode * parent );
 			virtual ~OctreeNode();
 
-			void Adopt( Object* object ) override;
+			void Adopt( object::Object * object ) override;
 
 		private:
 			IOctreeNode * m_parent;

@@ -8,7 +8,7 @@
 
 struct PxRigidBodyProxy
 {
-	me::scene::IObjectComponent::ptr component;
+	me::object::IObjectComponent::ptr component;
 	physx::PxRigidBody * body;
 };
 

@@ -2,12 +2,12 @@
 // All Rights Reserved
 
 #include <FollowComponent.h>
-#include <me/scene/Object.h>
+#include <me/object/Object.h>
 
 using namespace me;
 
 FollowComponent::FollowComponent()
-	: scene::ObjectComponent( "Follow" )
+	: object::ObjectComponent( "Follow" )
 	, m_target{ nullptr }
 	, m_offset{ unify::MatrixIdentity() }
 {
@@ -17,7 +17,7 @@ FollowComponent::~FollowComponent()
 {
 }
 
-void FollowComponent::SetTarget( me::scene::Object * target )
+void FollowComponent::SetTarget( me::object::Object * target )
 {
 	m_target = target;
 }
@@ -40,7 +40,7 @@ void FollowComponent::OnUpdate( UpdateParams params )
 	}
 }
 
-scene::IObjectComponent * FollowComponent::Duplicate()
+object::IObjectComponent * FollowComponent::Duplicate()
 {
 	return nullptr;
 }

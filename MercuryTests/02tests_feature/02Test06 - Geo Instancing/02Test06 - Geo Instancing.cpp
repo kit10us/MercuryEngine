@@ -9,15 +9,16 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <MEWinMain.h>
 
-#include <me/scene/BBoxRendererComponent.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/BBoxRendererComponent.h>
+#include <me/object/CameraComponent.h>
 
 #include <me/scene/SceneManager.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
 
 using namespace me;
+using namespace object;
 
 class MyGame : public Game
 {

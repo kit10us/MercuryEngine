@@ -59,12 +59,12 @@ namespace me
 			ISceneComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
 			int FindComponent( std::string typeName, int startIndex = 0 ) const;
 			
-			Object * NewObject( std::string name );
-			bool DestroyObject( Object * object );
-			Object * CopyObject( Object * from, std::string name );
-			void CollectObjects( std::vector< Object * > & objects );
-			Object * FindObject( std::string name );	 
-			Object * GetObject( size_t index ) const;
+			object::Object * NewObject( std::string name );
+			bool DestroyObject( object::Object * object );
+			object::Object * CopyObject( object::Object * from, std::string name );
+			void CollectObjects( std::vector< object::Object * > & objects );
+			object::Object * FindObject( std::string name );	 
+			object::Object * GetObject( size_t index ) const;
 			size_t GetObjectCount() const;
 
 			size_t GetRenderCount() const;

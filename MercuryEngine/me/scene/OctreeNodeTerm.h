@@ -14,11 +14,11 @@ namespace me
 			OctreeNodeTerm( IOctreeNode * parent );
 			virtual ~OctreeNodeTerm();
 
-			void Adopt( Object* object ) override;
+			void Adopt( object::Object * object ) override;
 
 		private:
 			IOctreeNode * m_parent;
-			std::list< Object * > m_children;
+			std::list< object::Object * > m_children;
 		};
 	}
 }

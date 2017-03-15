@@ -10,10 +10,11 @@
 #include <sg/ShapeFactory.h>
 #include <MEWinMain.h>
 
-#include <me/scene/BBoxRendererComponent.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/BBoxRendererComponent.h>
+#include <me/object/CameraComponent.h>
 
 using namespace me;
+using namespace object;
 
 class MyGame : public Game
 {
@@ -71,7 +72,7 @@ void MyGame::Startup()
 	auto progObject = scene->NewObject( "cubeDyna" );
 	auto gc = AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
@@ -83,7 +84,7 @@ void MyGame::Startup()
 		aseObject->GetFrame().GetModelMatrix().Scale( 0.090f );
 		aseObject->GetFrame().GetModelMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
 		aseObject->GetFrame().GetModelMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-		aseObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+		aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 0 ) ) );
 	}
 	{

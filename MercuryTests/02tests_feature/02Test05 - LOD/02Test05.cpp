@@ -9,12 +9,13 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <MEWinMain.h>
 
-#include <me/scene/BBoxRendererComponent.h>
-#include <me/scene/CameraComponent.h>
+#include <me/object/BBoxRendererComponent.h>
+#include <me/object/CameraComponent.h>
 
 #include <me/LOD.h>
 
 using namespace me;
+using namespace object;
 
 class MyGame : public Game
 {
@@ -62,7 +63,7 @@ void MyGame::Startup()
 	auto progObject = scene->NewObject( "cubeDyna" );
 	AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( IObjectComponent::ptr( new scene::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
 
 void MyGame::Update( UpdateParams params )

@@ -9,22 +9,21 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <MEWinMain.h>
 
-#include <me/scene/BBoxRendererComponent.h>
-#include <me/scene/CameraComponent.h>
-
+#include <me/object/BBoxRendererComponent.h>
+#include <me/object/CameraComponent.h>
 #include <me/scene/AutoBBoxSceneComponent.h>
-
 #include <me/scene/SceneManager.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
 
 using namespace me;
+using namespace object;
 
 class MyGame : public Game
 {
 protected:
 	scene::Scene * m_scene;
-	scene::Object * m_camera;
+	object::Object * m_camera;
 	canvas::TextElement * m_text;
 public:
 	MyGame() : Game( "setup_models.xml" ) {}

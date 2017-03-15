@@ -40,6 +40,9 @@
     <Filter Include="shape_creation\create">
       <UniqueIdentifier>{1bb3ba82-316b-4cf2-85b0-41726b9a0e95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\object">
+      <UniqueIdentifier>{bf30e370-82b8-4c78-8dbd-23e9dc491875}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -99,22 +102,10 @@
     <ClInclude Include="me\factory\EffectFactories.h">
       <Filter>me\factory</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\BBoxRendererComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\GeometryComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\ISceneManagerComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\SceneComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\SceneManager.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\AutoBBoxSceneComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="sg\CircleParameters.h">
@@ -165,19 +156,10 @@
     <ClInclude Include="sg\BeveledBoxParameters.h">
       <Filter>shape_creation</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\ObjectComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\Scene.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\ISceneComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\Object.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\CameraComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\IObjectComponent.h">
@@ -474,6 +456,30 @@
     <ClInclude Include="sg\CreateShape_Cube.h">
       <Filter>shape_creation\create</Filter>
     </ClInclude>
+    <ClInclude Include="me\object\Object.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\SceneComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\AutoBBoxSceneComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\CameraComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\GeometryComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\IObjectComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\ObjectComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\BBoxRendererComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -500,19 +506,7 @@
     <ClCompile Include="me\factory\GeometryFactory.cpp">
       <Filter>me\factory</Filter>
     </ClCompile>
-    <ClCompile Include="me\scene\BBoxRendererComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\GeometryComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\SceneComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\SceneManager.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
     <ClCompile Include="sg\CircleParameters.cpp">
@@ -564,15 +558,6 @@
       <Filter>shape_creation</Filter>
     </ClCompile>
     <ClCompile Include="me\scene\Scene.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\Object.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\ObjectComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\CameraComponent.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
     <ClCompile Include="me\scene\ComponentInstance.cpp">
@@ -781,6 +766,27 @@
     </ClCompile>
     <ClCompile Include="sg\CreateShape_Cube.cpp">
       <Filter>shape_creation\create</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\Object.cpp">
+      <Filter>me\object</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\SceneComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\GeometryComponent.cpp">
+      <Filter>me\object</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\ObjectComponent.cpp">
+      <Filter>me\object</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\BBoxRendererComponent.cpp">
+      <Filter>me\object</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\CameraComponent.cpp">
+      <Filter>me\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
