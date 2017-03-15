@@ -47,7 +47,9 @@ void MyGame::Startup()
 
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced_ambient", "ColorInstanced_ambient.effect" );
 
-	m_scene = sceneManager->AddScene( "scene" ).get();
+	//m_scene = sceneManager->AddScene( "scene" ).get();
+	auto sm = sceneManager->QueryInterfaceT< scene::SceneManager >( "SceneManager" );
+	m_scene = sm->AddScene( "scene" ).get();
 
 	/*
 	m_scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
@@ -56,7 +58,7 @@ void MyGame::Startup()
 
 
 	// Add a camera...
-	m_camera = m_scene->NewObject( "camera" );
+	m_camera = m_scene->GetObjectAllocator()->NewObject( "camera" );
 	m_camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( m_camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
@@ -131,7 +133,7 @@ void MyGame::Startup()
 						for ( auto ox = 0; ox < objectCountX; ox++ )
 						{
 							size_t shape = (ox + oy + oz) % 3;
-							auto object = m_scene->NewObject( "geo" );
+							auto object = m_scene->GetObjectAllocator()->NewObject( "geo" );
 							AddGeometryComponent( object, (shape == 0) ? geo1 : (shape == 1) ? geo2 : geo3 );
 
 							float x = ((shapesize + spacing) * objectCountX * -0.5f) + ox * (shapesize + spacing);
@@ -149,7 +151,7 @@ void MyGame::Startup()
 	/*
 	{
 		// One object test...
-		auto object = m_scene->NewObject( "geo" );
+		auto object = m_scene->GetObjectAllocator()->NewObject( "geo" );
 		AddGeometryComponent( object, geo2 );
 
 		object->GetFrame().SetPosition( { 0.0f, 0.0f, 10.0f } );

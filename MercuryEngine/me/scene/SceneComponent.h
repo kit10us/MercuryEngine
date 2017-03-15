@@ -19,18 +19,20 @@ namespace me
 			IOS * GetOS();
 			const IOS * GetOS() const;
 
+		protected:
+			void AddInterface( std::string name, IUnknown* ptr );
+
 		public: // ISceneComponent...
 			void OnAttach( Scene * scene ) override;
 			void OnDetach( Scene * scene ) override;
 			void OnInit( Scene * scene ) override;
 			void OnStart( Scene * scene ) override;
 			void OnUpdate( Scene * scene, UpdateParams params ) override;
-			void OnRender( Scene * scene, RenderParams params ) override;
+			void OnRender( Scene * scene, RenderGirl & renderGirl ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 
 		public:	// IComponent...
-			std::string GetTypeName() const override;
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 			int GetValueCount() const override;
@@ -42,11 +44,16 @@ namespace me
 			bool SetValue( int index, std::string value ) override;
 			bool SetValue( std::string name, std::string value ) override;
 
+		public:
+			std::string GetTypeName() const override;
+			IUnknown* QueryInterface( std::string name ) override;
+
 		private:
 			IOS * m_os;
 			std::string m_typeName;
 			bool m_enabled;
 			Lookup m_values;
+			std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}
 }

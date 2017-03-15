@@ -17,6 +17,9 @@ namespace me
 		Lookup * GetLookup();
 		const Lookup * GetLookup() const;
 
+	protected:
+		void AddInterface( std::string name, IUnknown* ptr );
+
 	public:	 // IGameComponent...
 		IGame * GetGame() override;
 		const IGame * GetGame() const override;
@@ -28,7 +31,6 @@ namespace me
 		void OnDetach( IGame * game ) override;
 
 	public:	// IComponent...
-		std::string GetTypeName() const override;
 		bool IsEnabled() const override;
 		void SetEnabled( bool enabled ) override;
 		int GetValueCount() const override;
@@ -38,12 +40,17 @@ namespace me
 		std::string GetValue( int index ) const override;
 		std::string GetValue( std::string name ) const override;
 		bool SetValue( int index, std::string value ) override;
-		bool SetValue( std::string name, std::string value ) override; 
+		bool SetValue( std::string name, std::string value ) override;
+
+	public: // IUnknown...
+		std::string GetTypeName() const override;
+		IUnknown* QueryInterface( std::string name ) override;
 
 	protected:
 		IGame * m_game;
 		std::string m_typeName;
 		bool m_enabled;
 		Lookup m_values;
+		std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 	};
 }

@@ -164,9 +164,9 @@ void ComponentViewer::UpdateTypeSubInstances()
 		subInstanceList->SetEnable( true );
 		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
-		for ( size_t index = 0; index < scene->GetObjectCount(); index++ )
+		for ( size_t index = 0; index < scene->GetObjectAllocator()->Count(); index++ )
 		{
-			subInstanceList->AddString( scene->GetObject( index )->GetName() );
+			subInstanceList->AddString( scene->GetObjectAllocator()->GetObject( index )->GetName() );
 		}
 		subInstanceList->SetCurSel( 0 );
 		break;
@@ -226,7 +226,7 @@ void ComponentViewer::UpdateComponentList()
 	{
 		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
-		auto object = scene->GetObject( subInstanceIndex );
+		auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 		for ( int index = 0; index < object->GetComponentCount(); index++ )
 		{
 			componentList->AddString( object->GetComponent( index )->GetTypeName() );
@@ -310,7 +310,7 @@ void ComponentViewer::UpdateComponentValues()
 	{
 		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
-		auto object = scene->GetObject( subInstanceIndex );
+		auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 		auto component = object->GetComponent( componentIndex );
 		for ( int index = 0; index < component->GetValueCount(); index++ )
 		{
@@ -459,7 +459,7 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			{
 				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
 				auto scene = sceneManager->GetScene( instanceIndex );
-				auto object = scene->GetObject( subInstanceIndex );
+				auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 				component = object->GetComponent( componentIndex ).get();
 			}
 			default:

@@ -239,7 +239,7 @@ void SceneViewer::UpdateObjectList()
 														
 	for ( size_t i = 0; i < scene->ObjectCount(); i++ )
 	{
-		auto object = scene->GetObject( i );
+		auto object = scene->GetObjectAllocator()->GetObject( i );
 		objectListbox->AddString( object->GetName() );
 	}
 
@@ -263,7 +263,7 @@ void SceneViewer::UpdateObject_All()
 	}
 
 	int objectIndex = objectListbox->GetCurSel();
-	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
 
 	if ( ! object )
 	{
@@ -294,7 +294,7 @@ void SceneViewer::UpdateObject_Position( bool force )
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
-	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
 							   
 	if ( force || ! m_editingLock )
 	{ // Shouldn't be editing
@@ -342,7 +342,7 @@ void SceneViewer::UpdateObject_Components( bool force )
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
-	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObject( objectIndex );
+	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
 
 	if ( object == nullptr )
 	{
@@ -384,7 +384,7 @@ void SceneViewer::UpdateObject_ComponentValues()
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
-	auto object = scene->GetObject( objectIndex );
+	auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
 	int componentIndex = components->GetCurSel();
 	if ( componentIndex == -1 )
 	{
@@ -411,7 +411,7 @@ void SceneViewer::OpenObjectComponent()
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetScene( sceneIndex );
 	int objectIndex = objectListbox->GetCurSel();
-	auto object = scene->GetObject( objectIndex );
+	auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
 	int componentIndex = components->GetCurSel();
 	auto component = object->GetComponent( componentIndex );
 	if ( !component )
@@ -556,7 +556,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				int sceneIndex = sceneCombobox->GetCurSel();
 				auto scene = m_sceneManager->GetScene( sceneIndex );
 				int objectIndex = objectListbox->GetCurSel();
-				me::object::Object * object = scene->GetObject( objectIndex );
+				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
 				auto position( object->GetFrame().GetPosition() );
 				position.x = x;
 				object->GetFrame().SetPosition( position );
@@ -578,7 +578,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				int sceneIndex = sceneCombobox->GetCurSel();
 				auto scene = m_sceneManager->GetScene( sceneIndex );
 				int objectIndex = objectListbox->GetCurSel();
-				me::object::Object * object = scene->GetObject( objectIndex );
+				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
 				auto position( object->GetFrame().GetPosition() );
 				position.y = y;
 				object->GetFrame().SetPosition( position );
@@ -600,7 +600,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				int sceneIndex = sceneCombobox->GetCurSel();
 				auto scene = m_sceneManager->GetScene( sceneIndex );
 				int objectIndex = objectListbox->GetCurSel();
-				me::object::Object * object = scene->GetObject( objectIndex );
+				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
 				auto position( object->GetFrame().GetPosition() );
 				position.z = z;
 				object->GetFrame().SetPosition( position );
@@ -643,7 +643,7 @@ ui::IResult* SceneViewer::OnNotify( ui::message::Notify message )
 			int sceneIndex = sceneCombobox->GetCurSel();
 			auto scene = m_sceneManager->GetScene( sceneIndex );
 			int objectIndex = objectListbox->GetCurSel();
-			auto object = scene->GetObject( objectIndex );
+			auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
 			int componentIndex = components->GetCurSel();
 			auto component = object->GetComponent( componentIndex );
 

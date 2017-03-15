@@ -9,10 +9,12 @@ using namespace scene;
 using namespace object;
 
 GrowableObjectStack::GrowableObjectStack( Scene * scene, size_t max )
-	: m_scene{ scene }
+	: ObjectAllocator( "GrowableObjectStack" )
+	, m_scene{ scene }
 	, m_max{ max }
 	, m_stacks{ std::shared_ptr< ObjectStack >( new ObjectStack( scene, max ) ) }
 {	
+	AddInterface( "GrowableObjectStack", this );
 }
 
 GrowableObjectStack::~GrowableObjectStack()

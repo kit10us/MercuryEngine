@@ -11,15 +11,29 @@ namespace me
 	{
 		class RenderGirl
 		{
-			const RenderParams * m_params;
-
+			const RenderParams * m_params;					
 			size_t m_renderCount;
+			//CameraCache m_cameraCache;
+
 		public:
 			RenderGirl();
 			~RenderGirl();
 
+			const RenderParams * GetParams() const;
+
+			/// <summary>
+			/// Begin rendering.
+			/// </summary>
 			void Begin( const RenderParams * params );
+
+			/// <summary>
+			/// Begin rendering.
+			/// </summary>
 			void Render( scene::IObjectAllocator * allocator );
+
+			/// <summary>
+			/// End rendering.
+			/// </summary>
 			size_t End();
 		};
 	}

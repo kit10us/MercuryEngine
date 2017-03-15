@@ -39,7 +39,7 @@ void MyGame::Startup()
 	Scene::ptr scene = sceneManager->AddScene( "scene" );
 
 	// Add a camera...
-	Object * camera = scene->NewObject( "camera" );
+	Object * camera = scene->GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
@@ -60,7 +60,7 @@ void MyGame::Startup()
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = scene->NewObject( "cubeDyna" );
+	auto progObject = scene->GetObjectAllocator()->NewObject( "cubeDyna" );
 	AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );

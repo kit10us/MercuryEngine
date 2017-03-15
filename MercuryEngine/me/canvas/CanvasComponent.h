@@ -27,7 +27,7 @@ namespace me
 			void OnInit( scene::Scene * scene ) override;  
 			void OnStart( scene::Scene * scene ) override; 			
 			void OnUpdate( scene::Scene * scene, UpdateParams params ) override;
-			void OnRender( scene::Scene * scene, RenderParams params ) override;
+			void OnRender( scene::Scene * scene, scene::RenderGirl & renderGirl ) override;
 			void OnSuspend() override;											
 			void OnResume() override;
 

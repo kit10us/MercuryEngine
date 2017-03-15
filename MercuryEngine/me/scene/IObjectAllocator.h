@@ -3,6 +3,7 @@
 #pragma once
 
 #include <me/object/Object.h>
+#include <me/IUnknown.h>
 
 #ifdef GetObject
 #undef GetObject
@@ -14,7 +15,7 @@ namespace me
 
 	namespace scene
 	{
-		class IObjectAllocator
+		class IObjectAllocator : public IUnknown
 		{
 		public:
 			typedef std::shared_ptr< IObjectAllocator > ptr;

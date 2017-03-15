@@ -5,35 +5,20 @@
 
 #include <me/UpdateParams.h>
 #include <me/Lookup.h>
+#include <me/IUnknown.h>
 #include <unify/FrameLite.h>
 #include <string>
 #include <memory>
 
 namespace me
 {
-	class IComponent
+	class IComponent : public IUnknown
 	{
 	public:
 		typedef std::shared_ptr< IComponent > ptr;
 		typedef std::list< IComponent * > cache;
 
 		virtual ~IComponent() {}
-
-
-		///////////////////////////////////
-		/// Identity functions...
-		///////////////////////////////////
-
-		/// <summary>
-		/// Returns the type of the component.
-		/// </summary>
-		virtual std::string GetTypeName() const = 0;
-
-		/// <summary>
-		/// Returns a small text, typically used in debugging to isolate the specific instance of the component.
-		/// </summary>
-		virtual std::string GetWhat() const = 0;
-
 
 		///////////////////////////////////
 		/// State functions...

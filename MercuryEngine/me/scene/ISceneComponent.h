@@ -5,7 +5,7 @@
 
 #include <me/IComponent.h>
 #include <me/UpdateParams.h>
-#include <me/RenderParams.h>
+#include <me/scene/RenderGirl.h>
 #include <string>
 #include <memory>
 
@@ -50,7 +50,7 @@ namespace me
 			/// <summary>
 			/// Called during rendering.
 			/// </summary>
-			virtual void OnRender( Scene * scene, RenderParams params ) = 0;
+			virtual void OnRender( Scene * scene, RenderGirl & rendergirl ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).

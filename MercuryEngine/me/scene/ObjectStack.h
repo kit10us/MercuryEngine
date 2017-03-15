@@ -4,7 +4,7 @@
 
 #include <me/IGame.h>
 #include <me/GeometryCache.h>
-#include <me/scene/IObjectAllocator.h>
+#include <me/scene/ObjectAllocator.h>
 #include <list>
 
 #ifdef GetObject
@@ -17,7 +17,7 @@ namespace me
 	{
 		class Scene;
 
-		class ObjectStack : public IObjectAllocator
+		class ObjectStack : public ObjectAllocator
 		{
 		public:
 			ObjectStack( Scene * scene, size_t max );

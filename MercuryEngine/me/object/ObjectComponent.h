@@ -25,6 +25,9 @@ namespace me
 			Object* GetObject();
 			const Object* GetObject() const;
 
+		protected:
+			void AddInterface( std::string name, IUnknown* ptr );
+
 		public:	 // IObjectComponent...
 			bool Updateable() const override { return false; }
 			bool Renderable() const override { return false; }
@@ -39,7 +42,6 @@ namespace me
 			void OnResume() override;
 
 		public:	// IComponent...
-			std::string GetTypeName() const override;
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 			int GetValueCount() const override;
@@ -51,11 +53,17 @@ namespace me
 			bool SetValue( int index, std::string value ) override;
 			bool SetValue( std::string name, std::string value ) override;
 
+
+		public: // IUnknown...
+			std::string GetTypeName() const override;
+			IUnknown* QueryInterface( std::string name ) override;
+
 		protected:
 			object::Object * m_object;
 			std::string m_typeName;
 			bool m_enabled;
 			Lookup m_values;
+			std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}
 }

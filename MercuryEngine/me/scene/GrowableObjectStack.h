@@ -2,10 +2,10 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/IGame.h>
-#include <me/scene/IObjectAllocator.h>
+#include <me/scene/ObjectAllocator.h>
 #include <me/object/Object.h>
 #include <me/scene/ObjectStack.h>
+#include <me/IUnknown.h>
 #include <list>
 
 namespace me
@@ -14,7 +14,7 @@ namespace me
 	{
 		class Scene;
 
-		class GrowableObjectStack : public IObjectAllocator
+		class GrowableObjectStack : public ObjectAllocator
 		{
 		public:
 			GrowableObjectStack( Scene * scene, size_t max );

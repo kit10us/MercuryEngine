@@ -396,12 +396,6 @@
     <ClInclude Include="me\canvas\Anchor.h">
       <Filter>me\canvas</Filter>
     </ClInclude>
-    <ClInclude Include="me\IComponent.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\GameComponent.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\Octree.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -479,6 +473,21 @@
     </ClInclude>
     <ClInclude Include="me\object\BBoxRendererComponent.h">
       <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ObjectAllocatorComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IComponent.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\GameComponent.h">
+      <Filter>me\core</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IUnknown.h">
+      <Filter>me\i</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ObjectAllocator.h">
+      <Filter>me\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -716,9 +725,6 @@
     <ClCompile Include="me\canvas\CanvasComponent.cpp">
       <Filter>me\canvas</Filter>
     </ClCompile>
-    <ClCompile Include="me\GameComponent.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\Octree.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
@@ -787,6 +793,15 @@
     </ClCompile>
     <ClCompile Include="me\object\CameraComponent.cpp">
       <Filter>me\object</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\ObjectAllocatorComponent.cpp">
+      <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\GameComponent.cpp">
+      <Filter>me\core</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\ObjectAllocator.cpp">
+      <Filter>me\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

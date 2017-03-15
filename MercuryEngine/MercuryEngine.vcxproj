@@ -83,6 +83,7 @@
     <ClInclude Include="me\IRenderer.h" />
     <ClInclude Include="me\ISketcher.h" />
     <ClInclude Include="me\ITexture.h" />
+    <ClInclude Include="me\IUnknown.h" />
     <ClInclude Include="me\IVertexBuffer.h" />
     <ClInclude Include="me\IVertexConstruct.h" />
     <ClInclude Include="me\IVertexShader.h" />
@@ -116,6 +117,8 @@
     <ClInclude Include="me\scene\IOctreeNode.h" />
     <ClInclude Include="me\scene\ISceneComponent.h" />
     <ClInclude Include="me\scene\ISceneManagerComponent.h" />
+    <ClInclude Include="me\scene\ObjectAllocator.h" />
+    <ClInclude Include="me\scene\ObjectAllocatorComponent.h" />
     <ClInclude Include="me\scene\ObjectStack.h" />
     <ClInclude Include="me\scene\Octree.h" />
     <ClInclude Include="me\scene\OctreeNode.h" />
@@ -222,6 +225,8 @@
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\ComponentInstance.cpp" />
     <ClCompile Include="me\scene\GrowableObjectStack.cpp" />
+    <ClCompile Include="me\scene\ObjectAllocator.cpp" />
+    <ClCompile Include="me\scene\ObjectAllocatorComponent.cpp" />
     <ClCompile Include="me\scene\ObjectStack.cpp" />
     <ClCompile Include="me\scene\Octree.cpp" />
     <ClCompile Include="me\scene\OctreeNode.cpp" />

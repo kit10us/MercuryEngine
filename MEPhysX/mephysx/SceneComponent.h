@@ -27,7 +27,7 @@ namespace mephysx
 		void OnInit( me::scene::Scene * scene ) override;
 		void OnStart( me::scene::Scene * scene ) override;
 		void OnUpdate( me::scene::Scene * scene, me::UpdateParams params ) override;
-		void OnRender( me::scene::Scene * scene, me::RenderParams params ) override;
+		void OnRender( me::scene::Scene * scene, me::scene::RenderGirl & renderGirl ) override;
 		void OnSuspend() override;
 		void OnResume() override;
 

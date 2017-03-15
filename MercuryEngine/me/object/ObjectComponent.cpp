@@ -35,12 +35,20 @@ ObjectComponent::ObjectComponent( const ObjectComponent & component )
 	, m_values( component.m_values )
 	, m_object{ nullptr }
 {
+	AddInterface( "IComponent", this );
+	AddInterface( "IObjectComponent", this );
+	AddInterface( "ObjectComponent", this );
+	AddInterface( m_typeName, this );
 }
 
 ObjectComponent::ObjectComponent( std::string typeName )
 : m_typeName{ typeName }
 , m_object{ nullptr }
 {
+	AddInterface( "IComponent", this );
+	AddInterface( "IObjectComponent", this );
+	AddInterface( "ObjectComponent", this );
+	AddInterface( typeName, this );
 }
 
 ObjectComponent::~ObjectComponent()
@@ -55,6 +63,11 @@ Object* ObjectComponent::GetObject()
 const Object* ObjectComponent::GetObject() const
 {
 	return m_object;
+}
+
+void ObjectComponent::AddInterface( std::string name, IUnknown* ptr )
+{
+	m_interfaceMap[ name ] = ptr;
 }
 
 void ObjectComponent::OnAttach( Object * object )
@@ -89,11 +102,6 @@ void ObjectComponent::OnSuspend()
 
 void ObjectComponent::OnResume() 
 {
-}
-
-std::string ObjectComponent::GetTypeName() const
-{
-	return m_typeName;
 }
 
 bool ObjectComponent::IsEnabled() const
@@ -178,3 +186,20 @@ std::string ObjectComponent::GetValue( std::string name ) const
 	int index = FindValueIndex( name );
 	return GetValue( index );
 }
+
+IUnknown* ObjectComponent::QueryInterface( std::string name )
+{
+	auto itr = m_interfaceMap.find( name );
+	if ( itr == m_interfaceMap.end() )
+	{
+		return nullptr;
+	}
+
+	return itr->second;
+}
+
+std::string ObjectComponent::GetTypeName() const
+{
+	return m_typeName;
+}
+

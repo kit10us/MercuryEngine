@@ -35,7 +35,7 @@ void AutoBBoxSceneComponent::OnUpdate( Scene * scene, UpdateParams params )
 {
 	// Ensure all objects have BBoxes...
 	std::vector< Object * > objects;
-	scene->CollectObjects( objects );
+	scene->GetObjectAllocator()->CollectObjects( objects );
 	for( auto && object : objects )
 	{
 		if ( object->GetComponent( "BBoxRenderer", 0 ) ) continue;

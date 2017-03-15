@@ -75,7 +75,7 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 	auto physics = m_gameComponent->GetPhysics();
 
 	{
-		Object * plane = scene->FindObject( "Plane" );
+		Object * plane = scene->GetObjectAllocator()->FindObject( "Plane" );
 		
 		PxRigidStatic* body = PxCreatePlane( *physics, util::Convert< PxPlane >( plane->GetFrame().GetMatrix() ), *m_material );
 		body->userData = plane;
@@ -141,7 +141,7 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, UpdateParams params )
 	*/
 }
 
-void SceneComponent::OnRender( me::scene::Scene * scene, RenderParams params )
+void SceneComponent::OnRender( me::scene::Scene * scene, me::scene::RenderGirl & renderGirl )
 {
 }
 

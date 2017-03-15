@@ -58,7 +58,7 @@ int Scene_NewObject( lua_State * state )
 	SceneProxy * proxy = CheckScene( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	auto object = proxy->scene->NewObject( name );
+	auto object = proxy->scene->GetObjectAllocator()->NewObject( name );
 
 	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
 	*childProxy = new ObjectProxy;
@@ -81,7 +81,7 @@ int Scene_NewCamera( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	Object * child = proxy->scene->NewObject( name );
+	Object * child = proxy->scene->GetObjectAllocator()->NewObject( name );
 	CameraComponent * cameraComponent = new CameraComponent();
 	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
 
@@ -125,7 +125,7 @@ int Scene_GetObjectCount( lua_State * state )
 	int args = lua_gettop( state );
 
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
-	lua_pushnumber( state, sceneProxy->scene->GetObjectCount() );
+	lua_pushnumber( state, sceneProxy->scene->GetObjectAllocator()->Count() );
 	return 1;
 }
 

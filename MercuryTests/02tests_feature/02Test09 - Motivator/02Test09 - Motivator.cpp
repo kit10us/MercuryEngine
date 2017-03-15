@@ -57,7 +57,7 @@ void MyGame::Startup()
 	//scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Add a camera...
-	Object * camera = scene->NewObject( "camera" );
+	Object * camera = scene->GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
@@ -71,7 +71,7 @@ void MyGame::Startup()
 	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = scene->NewObject( "cubeDyna" );
+	auto progObject = scene->GetObjectAllocator()->NewObject( "cubeDyna" );
 	AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
 	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
@@ -79,7 +79,7 @@ void MyGame::Startup()
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", "cube.xml" ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
-	auto xmlObject = scene->NewObject( "XMLObject" );
+	auto xmlObject = scene->GetObjectAllocator()->NewObject( "XMLObject" );
 	AddGeometryComponent( xmlObject, meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	{ 
@@ -93,7 +93,7 @@ void MyGame::Startup()
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
-	auto aseObject = scene->NewObject( "swordASE" );
+	auto aseObject = scene->GetObjectAllocator()->NewObject( "swordASE" );
 	AddGeometryComponent( aseObject, meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	{ 
@@ -108,7 +108,7 @@ void MyGame::Startup()
 
 	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "torus.dae" ) );
 	
-	auto daeModel = scene->NewObject( "daeModel" );
+	auto daeModel = scene->GetObjectAllocator()->NewObject( "daeModel" );
 	AddGeometryComponent( daeModel, meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );

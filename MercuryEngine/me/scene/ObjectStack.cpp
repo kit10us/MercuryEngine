@@ -11,7 +11,8 @@ using namespace scene;
 using namespace object;
 
 ObjectStack::ObjectStack( Scene * scene, size_t max )
-	: m_scene{ scene }
+	: ObjectAllocator( "ObjectStack" )
+	, m_scene{ scene }
 	, m_freeObjects{ (int)max }
 	, m_count{ 0 }
 	, m_nextObjectAvailable{ 0 }

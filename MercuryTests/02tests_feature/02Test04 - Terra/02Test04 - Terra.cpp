@@ -42,7 +42,7 @@ void MyGame::Startup()
 	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
 	Scene::ptr mainScene = sceneManager->AddScene( "main" );
 
-	Object * camera = mainScene->NewObject( "camera" );
+	Object * camera = mainScene->GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "Camera" ).get() );
 	cameraComponent->SetProjection(	unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, GetOS()->GetRenderer(0)->GetViewport().GetSize().AspectRatioWH(), 1, 1000 ) );
@@ -80,7 +80,7 @@ void MyGame::Startup()
 	//parameters.SetDiffuses( unify::ColorUnit::ColorUnitBlack(), unify::ColorUnit::ColorUnitRed(), unify::ColorUnit::ColorUnitBlue(), unify::ColorUnit::ColorUnitWhite() );
 
 	terra = new Terra( GetOS()->GetRenderer( 0 ), parameters );
-	auto land = mainScene->NewObject( "land" );
+	auto land = mainScene->GetObjectAllocator()->NewObject( "land" );
 	AddGeometryComponent( land, Geometry::ptr( terra ) );
 }
 

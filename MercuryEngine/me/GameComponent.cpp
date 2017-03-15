@@ -32,6 +32,10 @@ const Lookup * GameComponent::GetLookup() const
 GameComponent::GameComponent( std::string typeName )
 	: m_typeName{ typeName }
 {
+	AddInterface( "IComponent", this );
+	AddInterface( "IGameComponent", this );
+	AddInterface( "GameComponent", this );
+	AddInterface( typeName, this );
 }
 
 GameComponent::~GameComponent()
@@ -46,6 +50,11 @@ IGame * GameComponent::GetGame()
 const IGame * GameComponent::GetGame() const
 {
 	return m_game;
+}
+
+void GameComponent::AddInterface( std::string name, IUnknown* ptr )
+{
+	m_interfaceMap[ name ] = ptr;
 }
 
 void GameComponent::OnAttach( IGame * game )
@@ -72,11 +81,6 @@ void GameComponent::OnUpdate( UpdateParams params )
 
 void GameComponent::OnRender( RenderParams params )
 {
-}
-
-std::string GameComponent::GetTypeName() const
-{
-	return m_typeName;
 }
 
 bool GameComponent::IsEnabled() const
@@ -161,3 +165,20 @@ std::string GameComponent::GetValue( std::string name ) const
 	int index = FindValueIndex( name );
 	return GetValue( index );
 }
+
+me::IUnknown* GameComponent::QueryInterface( std::string name )
+{
+	auto itr = m_interfaceMap.find( name );
+	if ( itr == m_interfaceMap.end() )
+	{
+		return nullptr;
+	}
+
+	return itr->second;
+}
+
+std::string GameComponent::GetTypeName() const
+{
+	return m_typeName;
+}
+

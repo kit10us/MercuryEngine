@@ -46,8 +46,10 @@ void CanvasComponent::OnUpdate( Scene * scene, UpdateParams params )
 	m_layer->UpdateLayout( UpdateParams{ params.renderer, myRenderInfo }, m_size );
 }
 
-void CanvasComponent::OnRender( Scene * scene, RenderParams params )
+void CanvasComponent::OnRender( Scene * scene, RenderGirl & renderGirl )
 {
+	const RenderParams & params = *renderGirl.GetParams();
+
 	RenderInfo myRenderInfo( params.renderInfo );
 
 	m_size = params.renderer->GetDisplay().GetSize();

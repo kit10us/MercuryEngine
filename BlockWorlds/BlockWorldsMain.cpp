@@ -152,7 +152,7 @@ void MyGame::Startup()
 	Scene::ptr scene = sceneManager->AddScene( "scene" );
 
 	// Add a camera...
-	Object * camera = scene->NewObject( "camera" );
+	Object * camera = scene->GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
@@ -189,7 +189,7 @@ void MyGame::Startup()
 	m_world->GetBlockLibrary().Add( BlockDescription::ptr( new BlockDescription{ "grass", geo1 } ) );
 
 	// Test...
-	auto object = scene->NewObject( "geo" );
+	auto object = scene->GetObjectAllocator()->NewObject( "geo" );
 	AddGeometryComponent( object, geo1 );
 
 	float x = 0.0f;

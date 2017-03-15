@@ -53,7 +53,7 @@ void Adventure::Startup()
 	// Create map...
 	TerrainMap * map = new TerrainMap( { 30, 30 }, { 2, 2 } );
 	m_map.reset( map );
-	auto land = mainScene->NewObject( "land" );
+	auto land = mainScene->GetObjectAllocator()->NewObject( "land" );
 	land->AddComponent( m_map );
 	land->GetFrame().MoveBy( { -20 * 2 * 0.5f, 0, -20 * 2 * 0.5f } );
 

@@ -17,7 +17,12 @@ RenderGirl::RenderGirl()
 RenderGirl::~RenderGirl()
 {
 }
-											 
+
+const RenderParams * RenderGirl::GetParams() const
+{
+	return m_params;
+}
+
 void RenderGirl::Begin( const RenderParams * params )
 {
 	m_params = params;

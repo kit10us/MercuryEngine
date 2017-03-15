@@ -24,6 +24,10 @@ SceneComponent::SceneComponent( IOS * os, std::string typeName )
 : m_os( os )
 , m_typeName( typeName )
 {
+	AddInterface( "IComponent", this );
+	AddInterface( "ISceneComponent", this );
+	AddInterface( "SceneComponent", this );
+	AddInterface( typeName, this );
 }
 
 SceneComponent::~SceneComponent()
@@ -38,6 +42,11 @@ IOS * SceneComponent::GetOS()
 const IOS * SceneComponent::GetOS() const
 {
 	return m_os;
+}
+
+void SceneComponent::AddInterface( std::string name, IUnknown* ptr )
+{
+	m_interfaceMap[ name ] = ptr;
 }
 
 void SceneComponent::OnAttach( Scene * scene )
@@ -60,7 +69,7 @@ void SceneComponent::OnUpdate( Scene * scene, UpdateParams params )
 {
 }
 
-void SceneComponent::OnRender( Scene * scene, RenderParams params ) 
+void SceneComponent::OnRender( Scene * scene, RenderGirl & renderGirl ) 
 {
 }
 
@@ -70,11 +79,6 @@ void SceneComponent::OnSuspend()
 
 void SceneComponent::OnResume()
 {
-}
-
-std::string SceneComponent::GetTypeName() const
-{
-	return m_typeName;
 }
 
 bool SceneComponent::IsEnabled() const
@@ -158,4 +162,20 @@ std::string SceneComponent::GetValue( std::string name ) const
 {
 	int index = FindValueIndex( name );
 	return GetValue( index );
+}
+
+me::IUnknown* SceneComponent::QueryInterface( std::string name )
+{
+	auto itr = m_interfaceMap.find( name );
+	if ( itr == m_interfaceMap.end() )
+	{
+		return nullptr;
+	}
+
+	return itr->second;
+}
+
+std::string SceneComponent::GetTypeName() const
+{
+	return m_typeName;
 }

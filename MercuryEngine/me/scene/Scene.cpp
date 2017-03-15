@@ -3,6 +3,7 @@
 
 #include <me/scene/Scene.h>
 #include <me/object/CameraComponent.h>
+#include <me/scene/ObjectAllocatorComponent.h>
 #include <me/Frustum.h>
 #include <me/scene/RenderGirl.h>
 
@@ -17,9 +18,12 @@ Scene::Scene( IGame * game, std::string name )
 , m_started( false )
 , m_order( 0.0f )
 , m_enabled( true )
-, m_objectStack{new GrowableObjectStack{ this, 4000} }
 , m_renderCount{ 0 }
 {
+	auto objectAllocatorComponent = new ObjectAllocatorComponent( game->GetOS() );
+	AddComponent( ISceneComponent::ptr( objectAllocatorComponent ) );
+
+	m_objectAllocator = objectAllocatorComponent->QueryInterfaceT< IObjectAllocator >( "IObjectAllocator" );
 }
 
 Scene::~Scene()
@@ -33,7 +37,7 @@ std::string Scene::GetName() const
 
 size_t Scene::ObjectCount() const
 {
-	return m_objectStack->Count();
+	return m_objectAllocator->Count();
 }
 
 void Scene::OnInit()
@@ -85,24 +89,21 @@ void Scene::Update( UpdateParams params )
 			component->OnUpdate( this, params );
 		}
 	}
-
-	m_objectStack->Update( params );
 }
 
 void Scene::Render( RenderParams params )
 {
-	// Render scene components
+	RenderGirl renderGirl;
+	renderGirl.Begin( &params );
+		
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnRender( this, params );
+			component->OnRender( this, renderGirl );
 		}
 	}
 
-	RenderGirl renderGirl;
-	renderGirl.Begin( &params );
-	renderGirl.Render( m_objectStack.get() );
 	m_renderCount = renderGirl.End();
 }
 
@@ -115,24 +116,10 @@ void Scene::Suspend()
 			component->OnSuspend();
 		}
 	}	
-
-	std::vector< Object * > objects;
-	m_objectStack->CollectObjects( objects );
-	for( auto && object : objects )
-	{
-		object->OnSuspend();
-	}
 }
 
 void Scene::Resume()
 {
-	std::vector< Object * > objects;
-	m_objectStack->CollectObjects( objects );
-	for( auto && object : objects )
-	{
-		object->OnResume();
-	}
-
 	for ( auto && component : m_components )
 	{
 		if ( component->IsEnabled() )
@@ -216,8 +203,7 @@ ISceneComponent::ptr Scene::GetComponent( int index )
 		++i;
 	}
 
-	assert( 0 );
-	return ISceneComponent::ptr(); // Should never hit here.
+	return ISceneComponent::ptr();
 }
 
 ISceneComponent::ptr Scene::GetComponent( std::string name, int startIndex )
@@ -238,44 +224,14 @@ int Scene::FindComponent( std::string typeName, int startIndex ) const
 	return -1;
 }
 
-Object * Scene::NewObject( std::string name )
+IObjectAllocator * Scene::GetObjectAllocator()
 {
-	Object * object = m_objectStack->NewObject( name );
-	return object;
-}
-
-bool Scene::DestroyObject( Object * object )
-{
-	if ( ! m_objectStack->DestroyObject( object ) )
-	{
-		return false;
-	}
-	return true;
-}
-
-Object * Scene::CopyObject( Object * from, std::string name )
-{
-	return m_objectStack->CopyObject( from, name );
-}
-
-void Scene::CollectObjects( std::vector< Object * > & objects )
-{
-	m_objectStack->CollectObjects( objects );
+	return m_objectAllocator;
 }
 
 Object * Scene::FindObject( std::string name )
 {
-	return m_objectStack->FindObject( name );
-}
-
-Object * Scene::GetObject( size_t index ) const
-{
-	return m_objectStack->GetObject( index );
-}
-
-size_t Scene::GetObjectCount() const
-{
-	return m_objectStack->Count();
+	return m_objectAllocator->FindObject( name );
 }
 
 size_t Scene::GetRenderCount() const

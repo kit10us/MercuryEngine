@@ -58,14 +58,10 @@ namespace me
 			ISceneComponent::ptr GetComponent( int index );
 			ISceneComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
 			int FindComponent( std::string typeName, int startIndex = 0 ) const;
+
+			IObjectAllocator * GetObjectAllocator();
 			
-			object::Object * NewObject( std::string name );
-			bool DestroyObject( object::Object * object );
-			object::Object * CopyObject( object::Object * from, std::string name );
-			void CollectObjects( std::vector< object::Object * > & objects );
 			object::Object * FindObject( std::string name );	 
-			object::Object * GetObject( size_t index ) const;
-			size_t GetObjectCount() const;
 
 			size_t GetRenderCount() const;
 
@@ -73,7 +69,7 @@ namespace me
 			IGame * m_game;
 			std::string m_name;	 
 			std::list< ISceneComponent::ptr > m_components;
-			IObjectAllocator::ptr m_objectStack;		   
+			IObjectAllocator* m_objectAllocator;		   
 			bool m_inited;
 			bool m_started;								   
 			float m_order;

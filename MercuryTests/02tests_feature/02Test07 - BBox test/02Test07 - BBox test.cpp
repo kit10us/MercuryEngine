@@ -44,7 +44,7 @@ void MyGame::Startup()
 	scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Add a camera...
-	Object * camera = scene->NewObject( "camera" );
+	Object * camera = scene->GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
@@ -83,7 +83,7 @@ void MyGame::Startup()
 			{			
 				size_t shape = (columns + d + r) % 3;
 
-				auto object = scene->NewObject( "geo" );
+				auto object = scene->GetObjectAllocator()->NewObject( "geo" );
 				AddGeometryComponent( object, (shape == 0 ) ? geo1 : (shape == 1) ? geo2 : geo3 );
 
 				float x = (rows * spacing * -0.5f) + r * spacing;
