@@ -45,6 +45,8 @@ QFindReplace.exe "%folder%\DX9\setup.xml" "%folder%\DX9\setup.xml" "../../extens
 
 QFindReplace.exe "%folder%\DX9\setup.xml" "%folder%\DX9\setup.xml" "../../renderers/" "../renderers/"
 
+git log -1 > "%folder%\git_log.txt"
+
 echo "Build complete!"
 
 pause
