@@ -21,8 +21,9 @@ namespace {
 }
 
 SceneComponent::SceneComponent( IOS * os, std::string typeName )
-: m_os( os )
-, m_typeName( typeName )
+: m_os{ os }
+, m_typeName{ typeName }
+, m_enabled{ true }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "ISceneComponent", this );
@@ -66,6 +67,10 @@ void SceneComponent::OnStart( Scene * scene )
 }
 
 void SceneComponent::OnUpdate( Scene * scene, UpdateParams params ) 
+{
+}
+
+void SceneComponent::CollectCameras( RenderGirl & renderGirl )
 {
 }
 

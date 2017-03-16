@@ -15,6 +15,8 @@ namespace me
 
 	namespace scene
 	{
+		class RenderGirl;
+
 		class IObjectAllocator : public IUnknown
 		{
 		public:
@@ -40,7 +42,7 @@ namespace me
 			virtual object::Object * GetObject( size_t index ) = 0;
 
 			virtual void Update( UpdateParams params ) = 0;
-			virtual void CollectCameras( object::CameraCache & camerasOut ) = 0;
+			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
 			virtual void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) = 0;
 		};
 	}

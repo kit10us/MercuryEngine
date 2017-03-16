@@ -42,6 +42,11 @@ void ObjectAllocatorComponent::OnUpdate( Scene * scene, UpdateParams params )
 	m_objectStack->Update( params );
 }
 
+void ObjectAllocatorComponent::CollectCameras( RenderGirl & renderGirl )
+{	
+	m_objectStack->CollectCameras( renderGirl );
+}
+
 void ObjectAllocatorComponent::OnRender( Scene * scene, RenderGirl & renderGirl ) 
 {
 	renderGirl.Render( m_objectStack.get() );

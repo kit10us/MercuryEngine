@@ -29,15 +29,17 @@ void RenderGirl::Begin( const RenderParams * params )
 	m_renderCount = 0;
 }
 
+void RenderGirl::AddCamera( object::FinalCamera camera )
+{	
+	m_cameraCache.push_back( camera );
+}
+
 void RenderGirl::Render( scene::IObjectAllocator * allocator )
 {
-	CameraCache cameras;
 	GeometryCacheSummation summation;
-
-	allocator->CollectCameras( cameras );
-						 
+					 
 	// Render all geometry for each camera...
-	for( auto camera : cameras )
+	for( auto camera : m_cameraCache )
 	{	
 		if( camera.camera->GetRenderer() != m_params->renderer->GetIndex() ) continue;
 

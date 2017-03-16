@@ -31,7 +31,7 @@ namespace me
 			object::Object* GetObject( size_t index ) override;
 
 			void Update( UpdateParams params ) override;
-			void CollectCameras( object::CameraCache & camerasOut ) override;
+			void CollectCameras( RenderGirl & renderGirl ) override;
 			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) override;
 
 		private:

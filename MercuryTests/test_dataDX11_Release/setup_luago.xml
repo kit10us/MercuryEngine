@@ -1,0 +1,5 @@
+<xml>
+<include>setup_base.xml</include>
+<extension source="../../extensions/Release/DXILua.dll"/>
+</extension>
+</xml>

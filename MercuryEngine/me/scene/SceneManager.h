@@ -4,7 +4,6 @@
 #pragma once
 #include <me/scene/Scene.h>
 #include <me/GameComponent.h>
-#include <me/scene/ISceneManagerComponent.h>
 
 namespace me
 {
@@ -28,20 +27,12 @@ namespace me
 		public: // IGameCompnent...
 			void OnUpdate( UpdateParams params ) override;
 			void OnRender( RenderParams params ) override;
-			
-			int ComponentCount() const;
-			void AddComponent( ISceneManagerComponent::ptr component );
-			void RemoveComponent( ISceneManagerComponent::ptr component );
-			ISceneManagerComponent::ptr GetComponent( int index );
-			ISceneManagerComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
-			int FindComponent( std::string typeName, int startIndex = 0 ) const;
 
 		public: // IComponent...
 			std::string GetWhat() const;
 
 		private:
 			IGame * m_game;
-			std::list< ISceneManagerComponent::ptr > m_components;
 
 			std::map< std::string, Scene::ptr > m_scenes;
 			std::vector< Scene::ptr > m_sceneList;

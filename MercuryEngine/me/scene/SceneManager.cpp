@@ -12,6 +12,7 @@ using namespace scene;
 SceneManager::SceneManager()
 	: GameComponent( "SceneManager" )
 	, m_focusScene( 0 )
+	, m_enabled{ true }
 {
 }
 
@@ -39,11 +40,6 @@ Scene::ptr SceneManager::AddScene( std::string name )
 	}
 
     Scene::ptr scene( new Scene( GetGame(), name ) );
-
-	for ( auto & component : m_components )
-	{
-		component->OnNewScene( scene.get() );
-	}
 
 	m_scenes[ name ] = scene;
 	m_sceneList.push_back( scene );
@@ -123,52 +119,6 @@ void SceneManager::OnRender( RenderParams params )
         Scene * scene = (*itr);
         scene->Render( params );
     }
-}
-
-int SceneManager::ComponentCount() const
-{
-	return (int)m_components.size();
-}
-
-void SceneManager::AddComponent( ISceneManagerComponent::ptr component )
-{
-	m_components.push_back( component );
-}
-
-void SceneManager::RemoveComponent( ISceneManagerComponent::ptr component )
-{
-}
-
-ISceneManagerComponent::ptr SceneManager::GetComponent( int index )
-{
-	if ( index > (int)m_components.size() ) return ISceneManagerComponent::ptr();
-
-	int i = 0;
-	for ( auto component : m_components )
-	{
-		if ( index == i ) return component;
-		++i;
-	}
-
-	return ISceneManagerComponent::ptr(); // Should never hit here.
-}
-
-ISceneManagerComponent::ptr SceneManager::GetComponent( std::string name, int startIndex )
-{
-	int index = FindComponent( name, startIndex );
-	if ( index == -1 ) return ISceneManagerComponent::ptr();
-	return GetComponent( index );
-}
-
-int SceneManager::FindComponent( std::string name, int startIndex ) const
-{
-	int i = 0;
-	for ( auto component : m_components )
-	{
-		if ( i >= startIndex && unify::StringIs( component->GetTypeName(), name ) ) return i;
-		++i;
-	}
-	return -1;
 }
 
 std::string SceneManager::GetWhat() const

@@ -564,6 +564,7 @@ input::InputType Keyboard::GetInputType( size_t subSource, size_t index ) const
 input::IData::ptr Keyboard::GetInputData( size_t subSource, size_t index ) const
 {
 	if ( subSource > 0 ) return nullptr;
+	if ( m_game->IsUpdateLocked( false ) || ! m_game->GetOS()->GetHasFocus() ) return nullptr;
 
 	if ( index < g_Buttons.size() )
 	{

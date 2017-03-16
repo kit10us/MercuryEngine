@@ -1,0 +1,42 @@
+Initializing: 
+  name:    C:\dev\ws\MercuryTests\02tests_feature\02Test10 - Octree\..\..\..\output\v140_Release\02Test10 - Octree\02Test10 - Octree.exe
+  program: C:/dev/ws/MercuryTests/02tests_feature/output/v140_Release/02Test10 - Octree/02Test10 - Octree.exe
+  path:    C:\dev\ws\MercuryTests\test_dataDX11_Release
+  time:    Thu Mar 16 14:56:14 2017
+
+  Loading setup "setup_models.xml"...
+  Loading setup "setup_base.xml"...
+  Loading extenion "../../extensions/Release/DAELoader.dll"...
+  Effect manager: adding "color_ambient" (../test_data/effects/Color_Ambient.effect).
+  PixelShader manager: adding "color_ambient" (shaders/color_ambient.xml).
+  VertexShader manager: adding "color_ambient" (shaders/color_ambient.xml).
+  Effect manager: adding "textured_ambient" (../test_data/effects/Textured_Ambient.effect).
+  PixelShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
+  VertexShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
+  Texture manager: adding "borgcube" (../test_data/images/borgcube.bmp).
+  Loading extenion "../../extensions/Release/ASELoader.dll"...
+OS Startup
+OS Startup Done
+OnBeforeStartup
+  OnBeforeStart SceneManager...
+OnBeforeStartup Done
+Startup
+  Effect manager: adding "ColorInstanced_ambient" (../test_data/effects/ColorInstanced_ambient.effect).
+  PixelShader manager: adding "colorI_ambient" (shaders/ColorInstanced_ambient.xml).
+  VertexShader manager: adding "colorI_ambient" (shaders/ColorInstanced_ambient.xml).
+  Effect manager: adding "font2" (../test_data/effects/font2.effect).
+  PixelShader manager: adding "textured2D" (shaders/textured2d.xml).
+  VertexShader manager: adding "textured2D" (shaders/textured2d.xml).
+  Texture manager: adding "font2" (../test_data/images/font2.png).
+Startup Done
+OnAfterStartup
+  OnAfterStarutp SceneManager...
+OnAfterStartup Done
+total startup time: 0.558004s
+Shutting down:
+OnDetach
+  Detaching SceneManager
+OnDetachDone
+  time: Thu Mar 16 14:57:01 2017
+
+  frames: 20052, total delta: 0.002292s,  average fps:436.337982

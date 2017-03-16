@@ -196,11 +196,11 @@ void ObjectStack::Update( UpdateParams params )
 	}
 }
 
-void ObjectStack::CollectCameras( CameraCache & camerasOut )
+void ObjectStack::CollectCameras( RenderGirl & renderGirl )
 {
 	for( auto camera : m_cameras )
 	{
-		camerasOut.push_back( camera );
+		renderGirl.AddCamera( camera );
 	}
 }
 

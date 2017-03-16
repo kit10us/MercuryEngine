@@ -47,9 +47,9 @@ namespace me
 			/// </summary>
 			virtual void OnUpdate( Scene * scene, UpdateParams params ) = 0;
 
-			/// <summary>
-			/// Called during rendering.
-			/// </summary>
+
+			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
+			//void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
 			virtual void OnRender( Scene * scene, RenderGirl & rendergirl ) = 0;
 
 			/// <summary>

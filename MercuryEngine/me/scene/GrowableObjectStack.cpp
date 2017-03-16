@@ -113,11 +113,11 @@ void GrowableObjectStack::Update( UpdateParams params )
 	}
 }
 
-void GrowableObjectStack::CollectCameras( CameraCache & camerasOut ) 
+void GrowableObjectStack::CollectCameras( RenderGirl & renderGirl ) 
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->CollectCameras( camerasOut );
+		stack->CollectCameras( renderGirl );
 	}
 }
 

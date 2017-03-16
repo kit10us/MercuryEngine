@@ -34,6 +34,7 @@ ObjectComponent::ObjectComponent( const ObjectComponent & component )
 	: m_typeName( component.m_typeName )
 	, m_values( component.m_values )
 	, m_object{ nullptr }
+	, m_enabled{ true }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "IObjectComponent", this );
@@ -42,8 +43,9 @@ ObjectComponent::ObjectComponent( const ObjectComponent & component )
 }
 
 ObjectComponent::ObjectComponent( std::string typeName )
-: m_typeName{ typeName }
-, m_object{ nullptr }
+	: m_typeName{ typeName }
+	, m_object{ nullptr }
+	, m_enabled{ true }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "IObjectComponent", this );

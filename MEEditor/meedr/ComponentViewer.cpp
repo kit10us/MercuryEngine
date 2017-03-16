@@ -11,7 +11,6 @@ using namespace meedr;
 static std::vector< std::string > TypeNames =
 {
 	"Game",
-	"Scene Manager",
 	"Scene",
 	"Object"
 };
@@ -19,7 +18,6 @@ static std::vector< std::string > TypeNames =
 enum class Types 
 {
 	Game,
-	SceneManager,
 	Scene,
 	Object
 };		  
@@ -93,11 +91,6 @@ void ComponentViewer::UpdateTypeInstances()
 		instanceList->SetEnable( false );
 		break;
 	}
-	case Types::SceneManager:
-	{
-		instanceList->SetEnable( false );
-		break;
-	}
 	case Types::Scene:
 	{
 		instanceList->SetEnable( true );
@@ -149,11 +142,6 @@ void ComponentViewer::UpdateTypeSubInstances()
 		subInstanceList->SetEnable( false );
 		break;
 	}
-	case Types::SceneManager:
-	{
-		subInstanceList->SetEnable( false );
-		break;
-	}
 	case Types::Scene:
 	{
 		subInstanceList->SetEnable( false );
@@ -200,15 +188,6 @@ void ComponentViewer::UpdateComponentList()
 		for ( int index = 0; index < m_game->GetComponentCount(); index++ )
 		{
 			componentList->AddString( m_game->GetComponent( index )->GetTypeName() );
-		}
-		break;
-	}
-	case Types::SceneManager:
-	{
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
-		for ( int index = 0; index < sceneManager->ComponentCount(); index++ )
-		{
-			componentList->AddString( sceneManager->GetComponent( index )->GetName() );
 		}
 		break;
 	}
@@ -265,21 +244,6 @@ void ComponentViewer::UpdateComponentValues()
 	{
 		auto component = m_game->GetComponent( componentIndex );
 		if ( !component )
-		{
-			break;
-		}
-		for ( int index = 0; index < component->GetValueCount(); index++ )
-		{
-			valuesList->InsertItem( 0, index, unify::Cast< std::wstring >( component->GetValue( index ) ) );
-			valuesList->InsertItem( 1, index, unify::Cast< std::wstring >( component->GetValueName( index ) ) );
-		}
-		break;
-	}
-	case Types::SceneManager:
-	{
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
-		auto component = sceneManager->GetComponent( componentIndex );
-		if ( ! component )
 		{
 			break;
 		}
@@ -440,12 +404,6 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			case Types::Game:
 			{
 				component = m_game->GetComponent( componentIndex ).get();
-				break;
-			}
-			case Types::SceneManager:
-			{
-				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
-				component = sceneManager->GetComponent( componentIndex ).get();
 				break;
 			}
 			case Types::Scene:

@@ -102,9 +102,6 @@
     <ClInclude Include="me\factory\EffectFactories.h">
       <Filter>me\factory</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\ISceneManagerComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\SceneManager.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -160,9 +157,6 @@
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\ISceneComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\IObjectComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\ComponentInstance.h">

@@ -24,26 +24,29 @@ echo Building package... %folder%
 
 mkdir %folder%
 
-del .\DX9\log.txt
-del .\DX11\log.txt
+if exist .\DX9_Debug\log.txt del .\DX9_Debug\log.txt
+if exist .\DX11_Debug\log.txt del .\DX11_Debug\log.txt
+if exist .\DX9_Release\log.txt del .\DX9_Release\log.txt
+if exist .\DX11_Release\log.txt del .\DX11_Release\log.txt
 
-xcopy ".\DX9" "%folder%\DX9\" /e
-xcopy ".\DX11" "%folder%\DX11\" /e
+xcopy ".\DX9_Debug" "%folder%\DX9_Debug\" /e
+xcopy ".\DX11_Debug" "%folder%\DX11_Debug\" /e
+xcopy ".\DX9_Release" "%folder%\DX9_Release\" /e
+xcopy ".\DX11_Release" "%folder%\DX11_Release\" /e
 xcopy ".\assets_common" "%folder%\assets_common\" /e
 xcopy ".\documentation" "%folder%\documentation\" /e
-xcopy "..\extensions\*.dll" "%folder%\extensions\" /e
-xcopy "..\renderers\*.dll" "%folder%\renderers\" /e
-xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX11\" /e
-xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX9\" /e
+xcopy "..\extensions\Debug\*.dll" "%folder%\extensions\Debug\" /e
+xcopy "..\extensions\Release\*.dll" "%folder%\extensions\Release\" /e
+xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX9_Debug\" /e
+xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX11_Debug\" /e
+xcopy "..\output\v140_Release\Adventure\*.*" "%folder%\DX9_Release\" /e
+xcopy "..\output\v140_Release\Adventure\*.*" "%folder%\DX11_Release\" /e
 
 
-QFindReplace.exe "%folder%\DX11\setup.xml" "%folder%\DX11\setup.xml" "../../extensions/" "../extensions/"
-
-QFindReplace.exe "%folder%\DX11\setup.xml" "%folder%\DX11\setup.xml" "../../renderers/" "../renderers/"
-
-QFindReplace.exe "%folder%\DX9\setup.xml" "%folder%\DX9\setup.xml" "../../extensions/" "../extensions/"
-
-QFindReplace.exe "%folder%\DX9\setup.xml" "%folder%\DX9\setup.xml" "../../renderers/" "../renderers/"
+QFindReplace.exe "%folder%\DX9_Debug\setup.xml" "%folder%\DX9_Debug\setup.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX11_Debug\setup.xml" "%folder%\DX11_Debug\setup.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX9_Release\setup.xml" "%folder%\DX9_Release\setup.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX11_Release\setup.xml" "%folder%\DX11_Release\setup.xml" "../../extensions/" "../extensions/"
 
 git log -1 > "%folder%\git_log.txt"
 

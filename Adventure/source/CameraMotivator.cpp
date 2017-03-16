@@ -46,43 +46,62 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 
 	float speed = unify::Cast< float >( GetValue( "speed" ) );
 
+	typedef unify::V3< float > V;
+
+	V move{ V::V3Zero() };
+	bool wantMove{};
+	
 	using namespace unify;
 	if ( moveLeftMotivation && moveLeftMotivation->IsTrue() )
 	{
-		float factor = params.renderInfo.GetDelta() * speed;
-		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
-		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
-		position += unify::V3< float >( -factor, 0, 0 );
-		GetObject()->GetFrame().SetPosition( position );
-		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( -90 ) ) );
+		wantMove = true;
+		move += {-1.0f, 0, 0 };
 	}
 	else if ( moveRightMotivation && moveRightMotivation->IsTrue() )
 	{
-		float factor = params.renderInfo.GetDelta() * speed;
-		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
-		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
-		position += unify::V3< float >( factor, 0, 0 );
-		GetObject()->GetFrame().SetPosition( position );
-		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( 90 ) ) );
+		wantMove = true;
+		move += {1.0f, 0, 0 };
 	}
 
 	if ( moveUpMotivation && moveUpMotivation->IsTrue() )
 	{
-		float factor = params.renderInfo.GetDelta() * speed;
-		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
-		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
-		position += unify::V3< float >( 0, 0, factor );
-		GetObject()->GetFrame().SetPosition( position );
-		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( 0 ) ) );
+		wantMove = true;
+		move += {0, 0, 1.0f };
 	}
 	else if ( moveDownMotivation && moveDownMotivation->IsTrue() )
 	{
+		wantMove = true;
+		move += {0, 0, -1.0f };
+	}
+
+	if ( wantMove )
+	{
+		// Normalize, so if we move in an angle, we aren't moving twice as fast.
+		move.Normalize();
+
+		// Determine what direction we are facing
+		unify::Angle direction = move.DotAngle( { 0.0f, 0.0f, 1.0f } );
+		
+		// Account for the left (-x) inversing the direction
+		if ( move.x < 0.0f )
+		{
+			direction *= -1.0f;
+		}
+						  
+		// Accumulate our movement speed...
 		float factor = params.renderInfo.GetDelta() * speed;
+		move *= factor;
+
+		// Reset our rotation to identity (facing up the z-axis).
 		GetObject()->GetFrame().SetRotation( QuaternionIdentity() );
-		unify::V3< float > position = GetObject()->GetFrame().GetPosition();
-		position += unify::V3< float >( 0, 0, -factor );
-		GetObject()->GetFrame().SetPosition( position );
-		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( unify::AngleInDegrees( 180 ) ) );
+
+		// Move our position...
+		V position = GetObject()->GetFrame().GetPosition();
+		position += move;
+		GetObject()->GetFrame().SetPosition( position );	
+
+		// Face the correct direction.
+		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( direction ) );
 	}
 }
 

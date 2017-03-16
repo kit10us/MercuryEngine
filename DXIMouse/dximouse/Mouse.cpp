@@ -147,6 +147,8 @@ input::IData::ptr Mouse::GetInputData( size_t subSource, size_t index ) const
 		return input::IData::ptr();
 	}
 
+	if ( m_game->IsUpdateLocked( false ) || ! m_game->GetOS()->GetHasFocus() ) return nullptr;
+
 	const Source & source = m_subSources[subSource];
 
 	if ( index < g_ButtonNames.size() )

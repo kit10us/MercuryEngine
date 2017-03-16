@@ -4,6 +4,7 @@
 
 #include <me/IGame.h>
 #include <me/scene/IObjectAllocator.h>
+#include <me/object/Object.h>
 
 namespace me
 {
@@ -13,7 +14,7 @@ namespace me
 		{
 			const RenderParams * m_params;					
 			size_t m_renderCount;
-			//CameraCache m_cameraCache;
+			object::CameraCache m_cameraCache;
 
 		public:
 			RenderGirl();
@@ -25,6 +26,8 @@ namespace me
 			/// Begin rendering.
 			/// </summary>
 			void Begin( const RenderParams * params );
+
+			void AddCamera( object::FinalCamera camera );
 
 			/// <summary>
 			/// Begin rendering.

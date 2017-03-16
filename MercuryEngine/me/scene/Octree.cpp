@@ -111,11 +111,11 @@ void Octree::Update( UpdateParams params )
 	}
 }
 
-void Octree::CollectCameras( CameraCache & camerasOut )
+void Octree::CollectCameras( RenderGirl & renderGirl )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->CollectCameras( camerasOut );
+		stack->CollectCameras( renderGirl );
 	}
 }
 

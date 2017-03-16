@@ -22,7 +22,10 @@ namespace me
 			void OnInit( Scene * scene ) override;
 			void OnStart( Scene * scene ) override;
 			void OnUpdate( Scene * scene, UpdateParams params ) override;
+			
+			void CollectCameras( RenderGirl & renderGirl ) override;
 			void OnRender( Scene * scene, RenderGirl & renderGirl ) override;
+			
 			void OnSuspend() override;
 			void OnResume() override;
 

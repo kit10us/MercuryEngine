@@ -177,14 +177,18 @@ function OnAfterStartup( me )
 
 		local motivator = InputMotivator( cameraMotivator );				
 		
+		--[[
 		local gamepad = Input( "Gamepad" )
-		local keyboard = Input( "Keyboard" )
 		if gamepad then	
 			motivator:Add( "moveleft", 	InputCondition( "stick", gamepad, 0, "LeftStick", "x", -1.0, -0.3, 0.0, 0.0 ) )
 			motivator:Add( "moveright", InputCondition( "stick", gamepad, 0, "LeftStick", "x", -0.0, -0.0, 0.3, 1.0 ) )
 			motivator:Add( "moveup", 	InputCondition( "stick", gamepad, 0, "LeftStick", "y", -0.0, -0.0, 0.3, 1.0 ) )
 			motivator:Add( "movedown", 	InputCondition( "stick", gamepad, 0, "LeftStick", "y", -1.0, -0.3, 0.0, 0.0 ) )
-		elseif keyboard then
+		end
+		--]]
+		
+		local keyboard = Input( "Keyboard" )	
+		if keyboard then
 			motivator:Add( "moveleft", 	InputCondition( "button", keyboard, 0, "Left", "Down" ) )
 			motivator:Add( "moveright",	InputCondition( "button", keyboard, 0, "Right", "Down" ) )
 			motivator:Add( "moveup", 	InputCondition( "button", keyboard, 0, "Up", "Down" ) )

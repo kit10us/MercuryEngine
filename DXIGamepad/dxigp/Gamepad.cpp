@@ -163,6 +163,8 @@ me::input::InputType Gamepad::GetInputType( size_t subSource, size_t index ) con
 
 input::IData::ptr Gamepad::GetInputData( size_t subSource, size_t index ) const
 {
+	if ( m_game->IsUpdateLocked( false ) || ! m_game->GetOS()->GetHasFocus() ) return nullptr;
+
 	if ( index < (g_ButtonNames.size()) )
 	{	
 		auto itr = m_states.find( subSource );

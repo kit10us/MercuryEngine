@@ -64,3 +64,5 @@ intermediate/
 /extensions/*.iobj
 /extensions/*.ipdb
 /QFindReplace/Debug
+/QFindReplace/Release
+/extensions/Release

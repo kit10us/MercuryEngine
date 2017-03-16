@@ -95,7 +95,16 @@ void Scene::Render( RenderParams params )
 {
 	RenderGirl renderGirl;
 	renderGirl.Begin( &params );
-		
+
+	// Collect cameras...
+	for( auto && component : m_components )
+	{
+		if( component->IsEnabled() )
+		{
+			component->CollectCameras( renderGirl );
+		}
+	}
+
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
