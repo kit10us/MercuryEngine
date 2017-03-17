@@ -15,8 +15,14 @@
 #include <luaphysx/ExportPxController.h>
 
 #pragma comment( lib, "lua53" )
-#pragma comment( lib, "../extensions/DXILua.lib" )
-#pragma comment( lib, "../extensions/MEPhysX.lib" )
+
+#ifdef _DEBUG
+	#pragma comment( lib, "../extensions/Debug/DXILua.lib" )
+	#pragma comment( lib, "../extensions/Debug/MEPhysX.lib" )
+#else
+	#pragma comment( lib, "../extensions/Release/DXILua.lib" )
+	#pragma comment( lib, "../extensions/Relesase/MEPhysX.lib" )
+#endif
 
 
 void Deleter( me::IGameComponent * se )
@@ -27,10 +33,10 @@ void Deleter( me::IGameComponent * se )
 extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * doc );
 __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * document )
 {
-	auto gcse = game->GetComponent( "LuaScriptEngine", 0 );
+	auto gcse = game->GetComponent( "Lua" );
 	if( !gcse )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "DXILuaPhysXExt", "Lua Extension (\"LuaScriptEngine\") not found!" );
+		game->ReportError( me::ErrorLevel::Failure, "DXILuaPhysXExt", "Lua Extension (\"Lua\") not found!" );
 		return false;
 	}
 	me::IGameComponent * se = dynamic_cast<me::IGameComponent *>(gcse.get());

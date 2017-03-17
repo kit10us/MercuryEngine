@@ -94,7 +94,7 @@ void ComponentViewer::UpdateTypeInstances()
 	case Types::Scene:
 	{
 		instanceList->SetEnable( true );
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 
 		for ( size_t index = 0; index < sceneManager->GetSceneCount(); index++ )
 		{
@@ -106,7 +106,7 @@ void ComponentViewer::UpdateTypeInstances()
 	case Types::Object:
 	{
 		instanceList->SetEnable( true );
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 
 		for ( size_t index = 0; index < sceneManager->GetSceneCount(); index++ )
 		{
@@ -150,7 +150,7 @@ void ComponentViewer::UpdateTypeSubInstances()
 	case Types::Object:
 	{
 		subInstanceList->SetEnable( true );
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
 		for ( size_t index = 0; index < scene->GetObjectAllocator()->Count(); index++ )
 		{
@@ -193,7 +193,7 @@ void ComponentViewer::UpdateComponentList()
 	}
 	case Types::Scene:
 	{
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
 		for ( int index = 0; index < scene->GetComponentCount(); index++ )
 		{
@@ -203,7 +203,7 @@ void ComponentViewer::UpdateComponentList()
 	}
 	case Types::Object:
 	{
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
 		auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 		for ( int index = 0; index < object->GetComponentCount(); index++ )
@@ -256,7 +256,7 @@ void ComponentViewer::UpdateComponentValues()
 	}
 	case Types::Scene:
 	{
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
 		auto component = scene->GetComponent( componentIndex );
 		if ( !component )
@@ -272,7 +272,7 @@ void ComponentViewer::UpdateComponentValues()
 	}
 	case Types::Object:
 	{
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 		auto scene = sceneManager->GetScene( instanceIndex );
 		auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 		auto component = object->GetComponent( componentIndex );
@@ -408,14 +408,14 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			}
 			case Types::Scene:
 			{
-				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 				auto scene = sceneManager->GetScene( instanceIndex );
 				component = scene->GetComponent( componentIndex ).get();
 				break;
 			}
 			case Types::Object:
 			{
-				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager", 0 ).get());
+				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 				auto scene = sceneManager->GetScene( instanceIndex );
 				auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 				component = object->GetComponent( componentIndex ).get();

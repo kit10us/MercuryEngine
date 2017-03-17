@@ -229,7 +229,7 @@ int ObjectComponent_Destructor( lua_State * state )
 
 void RegisterObjectComponent( lua_State * state )
 {
-	const luaL_Reg ObjectComponentMemberFunctions[] =
+	const luaL_Reg memberFunctions[] =
 	{
 		{ "AttachTo", ObjectComponent_AttachTo },
 		{ "SetEnabled", ObjectComponent_SetEnabled },
@@ -245,11 +245,7 @@ void RegisterObjectComponent( lua_State * state )
 		{ nullptr, nullptr }
 	};			   
 
-	lua_register( state, "ObjectComponent", ObjectComponent_Constructor );
-	luaL_newmetatable( state, "ObjectComponent" );
-	lua_pushcfunction( state, ObjectComponent_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, ObjectComponentMemberFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "ObjectComponent", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), ObjectComponent_Constructor, ObjectComponent_Destructor );
 }
 

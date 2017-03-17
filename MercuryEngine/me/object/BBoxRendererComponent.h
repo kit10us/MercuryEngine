@@ -41,7 +41,7 @@ namespace me
 			void OnUpdate( UpdateParams params ) override;
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
 
-			IObjectComponent * Duplicate();
+			IObjectComponent::ptr Duplicate();
 
 		protected:
 			Object * m_object;

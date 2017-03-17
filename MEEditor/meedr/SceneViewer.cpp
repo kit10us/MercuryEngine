@@ -22,7 +22,7 @@ SceneViewer::SceneViewer( me::IGame * game )
 	: Window( (HWND)game->GetOSParameters().hWnd, L"SceneViewerWndClass" )
 	, m_game{ game }
 	, m_openChildren{ 0 } 	
-	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager", 0 ).get() ) }
+	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager" ).get() ) }
 	, m_noScenes{ true }
 {
 	int nCmdShow = game->GetOSParameters().nCmdShow;

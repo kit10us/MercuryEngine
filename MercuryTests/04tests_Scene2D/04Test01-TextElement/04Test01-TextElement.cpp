@@ -40,7 +40,7 @@ RegisterGame( game );
 void MyGame::Startup()
 {
 	using namespace scene;
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 	Scene::ptr mainScene = sceneManager->AddScene( "main" );
 	
 	effect = GetManager< Effect>()->Add( "textured3d", "EffectTextured.effect" );
@@ -198,7 +198,7 @@ void MyGame::Update( UpdateParams params )
 	}
 
 	using namespace scene;
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 	Scene::ptr mainScene = sceneManager->FindScene( "main" );
 	canvas::CanvasComponent * canvas = (canvas::CanvasComponent *)mainScene->GetComponent( "CanvasComponent" ).get();
 

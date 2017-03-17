@@ -29,7 +29,7 @@ int Scene_FindScene( lua_State * state )
 
 	std::string name = lua_tostring( state, 1 );
 
-	auto x = game->GetComponent( "SceneManager", 0 );
+	auto x = game->GetComponent( "SceneManager" );
 	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
@@ -135,7 +135,7 @@ int Scene_Constructor( lua_State * state )
 
 	std::string name = luaL_checkstring( state, -1 );
 
-	auto x = game->GetComponent( "SceneManager", 0 );
+	auto x = game->GetComponent( "SceneManager" );
 	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
@@ -156,7 +156,7 @@ int Scene_Destructor( lua_State * state )
 			          
 void RegisterScene( lua_State * state )
 {
-	const luaL_Reg SceneMemberFunctions[] =
+	const luaL_Reg memberFunctions[] =
 	{
 		{ "GetName", Scene_GetName },
 		{ "NewObject", Scene_NewObject },
@@ -166,12 +166,8 @@ void RegisterScene( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
-	lua_register( state, "Scene", Scene_Constructor );
-	luaL_newmetatable( state, "Scene" );
-	lua_pushcfunction( state, Scene_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, SceneMemberFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), Scene_Constructor, Scene_Destructor );
 
 	const luaL_Reg SceneStaticFunctions[] =
 	{

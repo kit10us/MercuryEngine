@@ -228,11 +228,7 @@ int Transform_Destructor( lua_State * state )
 
 void RegisterTransform( lua_State * state )
 {
-	lua_register( state, "Transform", Transform_Constructor );
-	luaL_newmetatable( state, "Transform" );
-	lua_pushcfunction( state, Transform_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, TransformFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Transform", TransformFunctions, sizeof( TransformFunctions ) / sizeof( luaL_Reg ), Transform_Constructor, Transform_Destructor );
 }
 

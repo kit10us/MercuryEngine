@@ -21,7 +21,7 @@ namespace mephysx
 
 			std::string GetWhat() const override;
 
-			me::object::IObjectComponent * Duplicate() override;
+			me::object::IObjectComponent::ptr Duplicate() override;
 		};
 	}
 }

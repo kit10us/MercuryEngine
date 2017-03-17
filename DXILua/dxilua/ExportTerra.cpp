@@ -4,6 +4,7 @@
 #include <dxilua/ScriptEngine.h>
 #include <dxilua/ExportTerra.h>
 #include <dxilua/ExportTerraParameters.h>
+#include <dxilua/Util.h>
 #include <me/Game.h>
 
 using namespace dxilua;
@@ -33,26 +34,79 @@ static const luaL_Reg TerraFunctions[] =
 int Terra_Constructor( lua_State * state )
 {	
 	int top = lua_gettop( state );
-	assert( top == 2 );
 
 	auto game = dynamic_cast< me::Game * >( ScriptEngine::GetGame() );
 
-	std::string name = lua_tostring( state, 1 );
-
-	Geometry::ptr geo = game->GetManager < Geometry >()->Find( name );
-	if ( !geo )
+	if ( top == 1 )
 	{
-		TerraParameters * parameters = CheckTerraParameters( state, 2 );
-		geo = game->GetManager< Geometry >()->Add( name, new Terra( game->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
+		std::string type = GetTypename( state, 1 );
+
+		// If we only have a string parameters, it's expected to be an existing Terra...
+		if ( type == "string " )
+		{
+			std::string name = lua_tostring( state, 1 );
+			Geometry::ptr geo = game->GetManager < Geometry >()->Find( name );
+			if ( ! geo )
+			{
+				lua_pushnil( state );
+				return 1;
+			}
+			else
+			{
+				TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
+				*geometryProxy = new TerraProxy;
+				(*geometryProxy)->terra = dynamic_cast< Terra* >( geo.get() );
+				(*geometryProxy)->geometry = geo;
+				luaL_setmetatable( state, "Terra" );
+				return 1;
+			}
+		}
+
+		// If we are a single TerraParameters, then we just want a Terra, don't directly register it in our Geometry Manager...
+		else if ( type == "TerraParameters" )
+		{
+			TerraParameters * parameters = CheckTerraParameters( state, 1 );
+			Geometry::ptr geo( new Terra( game->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
+
+			TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
+			*geometryProxy = new TerraProxy;
+			(*geometryProxy)->terra = dynamic_cast< Terra* >( geo.get() );
+			(*geometryProxy)->geometry = geo;
+			luaL_setmetatable( state, "Terra" );																			   	
+			return 1;
+		}	
+		else
+		{
+			lua_pushnil( state );
+			return 1;
+		}
 	}
 
-	TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
-	*geometryProxy = new TerraProxy;
-	(*geometryProxy)->terra = dynamic_cast< Terra* >( geo.get() );
-	(*geometryProxy)->geometry = geo;
-	luaL_setmetatable( state, "Terra" );
-	
-	return 1;
+	// If we have two parameters, then we expect a name and TerraParameters...
+	else if ( top == 2 )
+	{
+		std::string name = lua_tostring( state, 1 );
+
+		Geometry::ptr geo = game->GetManager < Geometry >()->Find( name );
+		if ( !geo )
+		{
+			TerraParameters * parameters = CheckTerraParameters( state, 2 );
+			geo = game->GetManager< Geometry >()->Add( name, new Terra( game->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
+		}
+
+		TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
+		*geometryProxy = new TerraProxy;
+		(*geometryProxy)->terra = dynamic_cast<Terra*>(geo.get());
+		(*geometryProxy)->geometry = geo;
+		luaL_setmetatable( state, "Terra" );
+
+		return 1;
+	}
+	else
+	{
+		lua_pushnil( state );
+		return 1;
+	}
 }
 
 int Terra_Destructor( lua_State * state )
@@ -64,11 +118,7 @@ int Terra_Destructor( lua_State * state )
 
 void RegisterTerra( lua_State * state )
 {
-	lua_register( state, "Terra", Terra_Constructor );
-	luaL_newmetatable( state, "Terra" );
-	lua_pushcfunction( state, Terra_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, TerraFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Terra", TerraFunctions, sizeof( TerraFunctions ) / sizeof( luaL_Reg ), Terra_Constructor, Terra_Destructor );
 }
 

@@ -70,9 +70,9 @@ void RigidStatic::OnDetach( me::object::Object * object )
 }
 
 		
-me::object::IObjectComponent * RigidStatic::Duplicate()
+me::object::IObjectComponent::ptr RigidStatic::Duplicate()
 {
-	return new RigidStatic( *this );
+	return object::IObjectComponent::ptr( new RigidStatic( *this ) );
 }
 
 physx::PxRigidStatic * RigidStatic::GetRigidStatic()

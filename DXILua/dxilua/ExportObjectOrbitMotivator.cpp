@@ -227,11 +227,7 @@ int ObjectOrbitMotivator_Destructor( lua_State * state )
 
 void RegisterObjectOrbitMotivator( lua_State * state )
 {
-	lua_register( state, "ObjectOrbitMotivator", ObjectOrbitMotivator_Constructor );
-	luaL_newmetatable( state, "ObjectOrbitMotivator" );
-	lua_pushcfunction( state, ObjectOrbitMotivator_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, ObjectOrbitMotivatorFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "ObjectOrbitMotivator", ObjectOrbitMotivatorFunctions, sizeof( ObjectOrbitMotivatorFunctions ) / sizeof( luaL_Reg ), ObjectOrbitMotivator_Constructor, ObjectOrbitMotivator_Destructor );
 }
 

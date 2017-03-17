@@ -146,7 +146,7 @@ void MyGame::Startup()
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 	Effect::ptr testEffect = GetManager< Effect >()->Add( "Test", "GrassBlock00.effect" );
 		
 	Scene::ptr scene = sceneManager->AddScene( "scene" );
@@ -213,7 +213,7 @@ void MyGame::Update( UpdateParams params )
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 
 	// Use of camera controls to simplify camera movement...
 	Object * camera = sceneManager->FindScene( "scene" )->FindObject( "camera" );

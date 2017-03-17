@@ -18,6 +18,8 @@
 #include <CameraMotivator.h>
 #include <FollowComponent.h>
 
+#include <mephy/GameComponent.h>
+
 using namespace me;
 using namespace scene;
 using namespace object;
@@ -43,7 +45,7 @@ void Adventure::Startup()
 	using namespace scene;
 
 	// Add the main scene.
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 	Scene::ptr mainScene = sceneManager->FindScene( "main" );
 	if ( ! mainScene )
 	{
@@ -113,6 +115,17 @@ void Adventure::Startup()
 		follow->SetOffset( unify::MatrixTranslate( { 0, 17, -12 } ) );
 		camera->AddComponent( IObjectComponent::ptr( follow ) );
 	}
+
+
+	mephy::GameComponent * physics = {};
+	{												 
+		auto component = GetComponent( "MEPhysics" );
+		physics = dynamic_cast<mephy::GameComponent*>( component.get() );
+	}
+
+	Object * warpObject = mainScene->FindObject( "cube" );
+	//auto warp = physics->CreateBoxCollider( unify::BBox< float >( 1.0f ) );
+	//warpObject->AddComponent( warp );
 
 	// Add Canvas component...
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );

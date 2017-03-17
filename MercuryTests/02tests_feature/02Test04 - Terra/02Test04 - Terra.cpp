@@ -39,7 +39,7 @@ void MyGame::Startup()
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 	Scene::ptr mainScene = sceneManager->AddScene( "main" );
 
 	Object * camera = mainScene->GetObjectAllocator()->NewObject( "camera" );
@@ -88,7 +88,7 @@ void MyGame::Update( UpdateParams params )
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 
 	Object * camera = sceneManager->FindScene( "main" )->FindObject( "camera" );
 	

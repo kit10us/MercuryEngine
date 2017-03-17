@@ -144,7 +144,7 @@ void * Game::Feed( std::string target, void * data )
 			using namespace me;
 			using namespace scene;
 		
-			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
 			Scene::ptr scene = sceneManager->FindScene( "scene1" );
 
 			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
@@ -702,19 +702,19 @@ IGameComponent::ptr Game::GetComponent( int index )
 	return IGameComponent::ptr(); // Should never hit here.
 }
 
-IGameComponent::ptr Game::GetComponent( std::string name, int startIndex )
+IGameComponent::ptr Game::GetComponent( std::string name )
 {
-	int index = FindComponent( name, startIndex );
+	int index = FindComponent( name );
 	if ( index == -1 ) return IGameComponent::ptr();
 	return GetComponent( index );
 }
 
-int Game::FindComponent( std::string typeName, int startIndex ) const
+int Game::FindComponent( std::string typeName ) const
 {
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( i >= startIndex && unify::StringIs( component->GetTypeName(), typeName ) ) return i;
+		if ( unify::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

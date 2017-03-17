@@ -75,10 +75,10 @@ void ObjectOrbitMotivator::OnResume()
 {
 }
 
-object::IObjectComponent * ObjectOrbitMotivator::Duplicate()
+object::IObjectComponent::ptr ObjectOrbitMotivator::Duplicate()
 {
 	auto duplicate = new ObjectOrbitMotivator( m_origin, m_orbit, m_angleASecond );
-	return duplicate;
+	return object::IObjectComponent::ptr( duplicate );
 }
 
 int ObjectOrbitMotivator::GetValueCount() const

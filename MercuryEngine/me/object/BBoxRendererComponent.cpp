@@ -159,8 +159,8 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 	cache.Add( m_geometry.get(), frame );
 }
 					   
-IObjectComponent * BBoxRendererComponent::Duplicate()
+IObjectComponent::ptr BBoxRendererComponent::Duplicate()
 {
 	auto duplicate = new BBoxRendererComponent( *this );
-	return duplicate;
+	return me::object::IObjectComponent::ptr( duplicate );
 }

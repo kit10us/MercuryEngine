@@ -10,6 +10,14 @@ BBox< T >::BBox()
 }
 
 template< typename T >
+BBox< T >::BBox( T squareSize )
+{
+	T halfSquareSize = squareSize / 2;
+	inf = V3< T >{ -squareSize / 2, -squareSize / 2, -squareSize / 2 };
+	sup = V3< T >{ squareSize / 2, squareSize / 2, squareSize / 2 };
+}
+
+template< typename T >
 BBox< T >::BBox( const V3< T > & inInf, const V3< T > & inSup )
 	: BBox()
 {

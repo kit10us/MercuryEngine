@@ -49,9 +49,19 @@ namespace me
 		virtual void OnAfterStartup( ) = 0;
 
 		/// <summary>
+		/// Called before our game's Update.
+		/// </summary>
+		virtual void OnBeforeUpdate() = 0;
+
+		/// <summary>
 		/// Called during game updating.
 		/// </summary>
 		virtual void OnUpdate( UpdateParams params ) = 0;
+
+		/// <summary>
+		/// Called after our game's Update.
+		/// </summary>
+		virtual void OnAfterUpdate() = 0;
 
 		/// <summary>
 		/// Called during game rendering.

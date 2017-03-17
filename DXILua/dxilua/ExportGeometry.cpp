@@ -82,11 +82,7 @@ int Geometry_Destructor( lua_State * state )
 
 void RegisterGeometry( lua_State * state )
 {
-	lua_register( state, "Geometry", Geometry_Constructor );
-	luaL_newmetatable( state, "Geometry" );
-	lua_pushcfunction( state, Geometry_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, GeometryFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Geometry", GeometryFunctions, sizeof( GeometryFunctions ) / sizeof( luaL_Reg ), Geometry_Constructor, Geometry_Destructor );
 }
 

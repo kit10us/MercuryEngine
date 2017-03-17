@@ -34,6 +34,7 @@ xcopy ".\DX11_Debug" "%folder%\DX11_Debug\" /e
 xcopy ".\DX9_Release" "%folder%\DX9_Release\" /e
 xcopy ".\DX11_Release" "%folder%\DX11_Release\" /e
 xcopy ".\assets_common" "%folder%\assets_common\" /e
+xcopy ".\assets_tt" "%folder%\assets_tt\" /e
 xcopy ".\documentation" "%folder%\documentation\" /e
 xcopy "..\extensions\Debug\*.dll" "%folder%\extensions\Debug\" /e
 xcopy "..\extensions\Release\*.dll" "%folder%\extensions\Release\" /e

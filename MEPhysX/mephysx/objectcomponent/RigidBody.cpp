@@ -70,9 +70,9 @@ void RigidBody::OnDetach( me::object::Object * object )
 	me::object::ObjectComponent::OnDetach( object );
 }
 
-me::object::IObjectComponent * RigidBody::Duplicate()
+me::object::IObjectComponent::ptr RigidBody::Duplicate()
 {
-	return new RigidBody( *this );
+	return object::IObjectComponent::ptr( new RigidBody( *this ) );
 }
 		
 physx::PxRigidBody * RigidBody::GetRigidBody()

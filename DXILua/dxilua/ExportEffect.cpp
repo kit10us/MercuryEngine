@@ -86,11 +86,8 @@ void RegisterEffect( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
-	lua_register( state, "Effect", Effect_Constructor );
-	luaL_newmetatable( state, "Effect" );
-	lua_pushcfunction( state, Effect_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, EffectFunctions, 0 );
-	lua_pop( state, 1 );
+
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Effect", EffectFunctions, sizeof( EffectFunctions ) / sizeof( luaL_Reg ), Effect_Constructor, Effect_Destructor );
 }
 

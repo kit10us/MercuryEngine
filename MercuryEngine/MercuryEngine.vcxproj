@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="me\action\ActionList.h" />
+    <ClInclude Include="me\action\IAction.h" />
+    <ClInclude Include="me\action\IgnoreReturn.h" />
     <ClInclude Include="me\BufferSet.h" />
     <ClInclude Include="me\BufferUsage.h" />
     <ClInclude Include="me\canvas\Anchor.h" />
@@ -167,6 +170,8 @@
     <ClInclude Include="sg\TubeParameters.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="me\action\ActionList.cpp" />
+    <ClCompile Include="me\action\IgnoreReturn.cpp" />
     <ClCompile Include="me\BufferSet.cpp" />
     <ClCompile Include="me\BufferUsage.cpp" />
     <ClCompile Include="me\canvas\CanvasComponent.cpp" />

@@ -49,8 +49,8 @@ unify::Matrix CameraComponent::GetProjection() const
 	return m_projection;
 }
 
-IObjectComponent * CameraComponent::Duplicate()
+IObjectComponent::ptr CameraComponent::Duplicate()
 {
 	auto duplicate = new CameraComponent( *this );
-	return duplicate;
+	return me::object::IObjectComponent::ptr( duplicate );
 }

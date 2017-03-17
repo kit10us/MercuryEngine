@@ -36,6 +36,7 @@ namespace dxilua
 
 		DXILUADLL_API void AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector );
 
+		static ScriptEngine* GetInstance();
 		static me::IGame * GetGame();
 
 	public: // IComponent...

@@ -76,7 +76,15 @@ void GameComponent::OnAfterStartup()
 {
 }
 
+void GameComponent::OnBeforeUpdate() 
+{
+}
+
 void GameComponent::OnUpdate( UpdateParams params ) 
+{
+}
+
+void GameComponent::OnAfterUpdate() 
 {
 }
 

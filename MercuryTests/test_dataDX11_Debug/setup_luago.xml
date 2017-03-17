@@ -1,5 +1,4 @@
 <xml>
 <include>setup_base.xml</include>
 <extension source="../../extensions/Debug/DXILua.dll"/>
-</extension>
 </xml>

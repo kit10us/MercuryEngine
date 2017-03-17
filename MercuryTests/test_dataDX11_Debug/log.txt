@@ -1,11 +1,12 @@
 Initializing: 
-  name:    C:\dev\ws\MercuryTests\02tests_feature\02Test06 - Geo Instancing\..\..\..\output\v140_Debug\02Test06 - Geo Instancing\02Test06 - Geo Instancing.exe
-  program: C:/dev/ws/MercuryTests/02tests_feature/output/v140_Debug/02Test06 - Geo Instancing/02Test06 - Geo Instancing.exe
+  name:    C:\dev\ws\MercuryTests\07tests_Physics\07Test01 - PhysXHello\..\..\..\output\v140_Debug\07Test01 - PhysXHello\07Test01 - PhysXHello.exe
+  program: C:/dev/ws/MercuryTests/07tests_Physics/output/v140_Debug/07Test01 - PhysXHello/07Test01 - PhysXHello.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug
-  time:    Thu Mar 16 14:02:08 2017
+  time:    Fri Mar 17 17:51:39 2017
 
-  Loading setup "setup_models.xml"...
-  Loading setup "setup_base.xml"...
+  Loading setup "setup_physx.xml"...
+  Loading extenion "../../extensions/Debug/DXILua.dll"...
+  Loading startup script "../test_data/scripts/game_physx.lua".
   Loading extenion "../../extensions/Debug/DAELoader.dll"...
   Effect manager: adding "color_ambient" (../test_data/effects/Color_Ambient.effect).
   PixelShader manager: adding "color_ambient" (shaders/color_ambient.xml).
@@ -15,28 +16,48 @@ Initializing:
   VertexShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
   Texture manager: adding "borgcube" (../test_data/images/borgcube.bmp).
   Loading extenion "../../extensions/Debug/ASELoader.dll"...
+  Loading extenion "../../extensions/Debug/MEPhysx.dll"...
+  Loading extenion "../../extensions/Debug/DXILuaPhysXExt.dll"...
+  Loading extenion "../../extensions/Debug/DXIKeyboard.dll"...
+  Loading extenion "../../extensions/Debug/DXIMouse.dll"...
+  Loading extenion "../../extensions/Debug/DXIGamepad.dll"...
 OS Startup
 OS Startup Done
 OnBeforeStartup
   OnBeforeStart SceneManager...
-OnBeforeStartup Done
-Startup
-  Effect manager: adding "ColorInstanced_ambient" (../test_data/effects/ColorInstanced_ambient.effect).
-  PixelShader manager: adding "colorI_ambient" (shaders/ColorInstanced_ambient.xml).
-  VertexShader manager: adding "colorI_ambient" (shaders/ColorInstanced_ambient.xml).
+  OnBeforeStart Lua...
+  OnBeforeStart LuaGameScript...
+  Effect manager: adding "color3d" (../test_data/effects/EffectColorInstanced3d.effect).
+  PixelShader manager: adding "color3dI" (shaders/ColorInstanced3d.xml).
+  VertexShader manager: adding "color3dI" (shaders/ColorInstanced3d.xml).
+  Effect manager: adding "borgcube" (../test_data/effects/EffectBorgCube.effect).
+  PixelShader manager: adding "textured3D" (shaders/textured3d.xml).
+  VertexShader manager: adding "textured3D" (shaders/textured3d.xml).
   Effect manager: adding "font2" (../test_data/effects/font2.effect).
   PixelShader manager: adding "textured2D" (shaders/textured2d.xml).
   VertexShader manager: adding "textured2D" (shaders/textured2d.xml).
   Texture manager: adding "font2" (../test_data/images/font2.png).
+  Effect manager: adding "pit_image" (../test_data/effects/EffectPit.effect).
+  Texture manager: adding "pit_image" (../test_data/images/pit.bmp).
+  Texture manager: adding "test256" (../test_data/images/steps.bmp).
+  OnBeforeStart PhysX...
+OnBeforeStartup Done
+Startup
 Startup Done
 OnAfterStartup
   OnAfterStarutp SceneManager...
+  OnAfterStarutp Lua...
+  OnAfterStarutp LuaGameScript...
+  OnAfterStarutp PhysX...
 OnAfterStartup Done
-total startup time: 9.218525s
+total startup time: 3.195995s
 Shutting down:
 OnDetach
   Detaching SceneManager
+  Detaching Lua
+  Detaching LuaGameScript
+  Detaching PhysX
 OnDetachDone
-  time: Thu Mar 16 14:55:39 2017
+  time: Fri Mar 17 17:53:47 2017
 
-  frames: 186493, total delta: 0.017148s,  average fps:58.315170
+  frames: 9835, total delta: 0.012731s,  average fps:78.550499

@@ -4,9 +4,6 @@
     <ClCompile Include="mephysx\SceneComponent.cpp">
       <Filter>mephysx</Filter>
     </ClCompile>
-    <ClCompile Include="mephysx\SceneManagerComponent.cpp">
-      <Filter>mephysx</Filter>
-    </ClCompile>
     <ClCompile Include="mephysx\Util.cpp">
       <Filter>mephysx</Filter>
     </ClCompile>
@@ -47,9 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mephysx\SceneComponent.h">
-      <Filter>mephysx</Filter>
-    </ClInclude>
-    <ClInclude Include="mephysx\SceneManagerComponent.h">
       <Filter>mephysx</Filter>
     </ClInclude>
     <ClInclude Include="mephysx\Releaser.h">

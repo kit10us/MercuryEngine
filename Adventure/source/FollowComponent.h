@@ -7,6 +7,8 @@
 
 class FollowComponent : public me::object::ObjectComponent
 {
+	FollowComponent( FollowComponent & component );
+
 public:
 	FollowComponent();
 	~FollowComponent();
@@ -22,7 +24,7 @@ public: // IObjectComponent...
 	void OnUpdate( me::UpdateParams params ) override;
 
 
-	me::object::IObjectComponent * Duplicate() override;
+	me::object::IObjectComponent::ptr Duplicate() override;
 
 public: // IComponent
 	std::string GetWhat() const override;

@@ -157,10 +157,10 @@ void ObjectComponent::OnResume()
 	CallMember( "OnResume" );
 }
 
-me::object::IObjectComponent * ObjectComponent::Duplicate()
+me::object::IObjectComponent::ptr ObjectComponent::Duplicate()
 {
 	auto duplicate = new ObjectComponent( *this );
-	return duplicate;
+	return me::object::IObjectComponent::ptr( duplicate );
 }
 
 std::string ObjectComponent::GetWhat() const

@@ -73,7 +73,7 @@ namespace me
 			/// <summary>
 			/// Duplicate component.
 			/// </summary>
-			virtual IObjectComponent * Duplicate() = 0;
+			virtual IObjectComponent::ptr Duplicate() = 0;
 		};
 	}
 }

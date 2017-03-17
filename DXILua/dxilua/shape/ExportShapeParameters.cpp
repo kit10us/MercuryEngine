@@ -274,11 +274,7 @@ int ShapeParameters_Destructor( lua_State * state )
 
 void RegisterShapeParameters( lua_State * state )
 {
-	lua_register( state, "ShapeParameters", ShapeParameters_Constructor );
-	luaL_newmetatable( state, "ShapeParameters" );
-	lua_pushcfunction( state, ShapeParameters_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, ShapeParametersFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "ShapeParameters", ShapeParametersFunctions, sizeof( ShapeParametersFunctions ) / sizeof( luaL_Reg ), ShapeParameters_Constructor, ShapeParameters_Destructor );
 }
 

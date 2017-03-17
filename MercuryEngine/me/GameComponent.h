@@ -24,9 +24,14 @@ namespace me
 		IGame * GetGame() override;
 		const IGame * GetGame() const override;
 		void OnAttach( IGame * game ) override;
+		
 		void OnBeforeStartup() override;
 		void OnAfterStartup() override;
+		
+		void OnBeforeUpdate() override;
 		void OnUpdate( UpdateParams params ) override;
+		void OnAfterUpdate() override;
+		
 		void OnRender( RenderParams params ) override;
 		void OnDetach( IGame * game ) override;
 

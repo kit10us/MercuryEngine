@@ -105,7 +105,8 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 	}
 }
 
-object::IObjectComponent * CameraMotivator::Duplicate()
+object::IObjectComponent::ptr CameraMotivator::Duplicate()
 {
-	return new CameraMotivator( *this );
+	auto component = new CameraMotivator( *this );
+	return object::IObjectComponent::ptr( component );
 }

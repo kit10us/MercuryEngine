@@ -81,7 +81,7 @@ static const luaL_Reg PxSceneComponentFunctions[] =
 
 int PxSceneComponent_Constructor( lua_State * state )
 {
-	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX", 0 ).get());
+	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX" ).get());
 	ISceneComponent::ptr component( new mephysx::SceneComponent( g_game->GetOS(), physics ) );
 	return PushPxSceneComponent( state, component );
 }

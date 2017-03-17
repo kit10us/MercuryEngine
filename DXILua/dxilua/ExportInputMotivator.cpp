@@ -141,11 +141,7 @@ void RegisterInputMotivator( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
-	lua_register( state, "InputMotivator", InputMotivator_Constructor );
-	luaL_newmetatable( state, "InputMotivator" );
-	lua_pushcfunction( state, InputMotivator_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, memberFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "InputMotivator", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), InputMotivator_Constructor, InputMotivator_Destructor );
 }
 

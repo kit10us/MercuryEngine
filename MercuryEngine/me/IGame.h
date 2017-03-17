@@ -119,8 +119,8 @@ namespace me
 		virtual void AddComponent( IGameComponent::ptr component ) = 0;
 		virtual void RemoveComponent( IGameComponent::ptr component ) = 0;
 		virtual IGameComponent::ptr GetComponent( int index ) = 0;
-		virtual IGameComponent::ptr GetComponent( std::string name, int startIndex ) = 0 ;
-		virtual int FindComponent( std::string name, int startIndex ) const = 0;	
+		virtual IGameComponent::ptr GetComponent( std::string name ) = 0 ;
+		virtual int FindComponent( std::string name ) const = 0;	
 
 		/// <summary>
 		/// Request access to safely update the game engine. This disables game updates.

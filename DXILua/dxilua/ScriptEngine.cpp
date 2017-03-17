@@ -25,10 +25,11 @@ void GameComponentDeleter( me::IGameComponent * gc )
 ScriptEngine * ScriptEngine::s_se;
 
 ScriptEngine::ScriptEngine()
-	: GameComponent( "LuaScriptEngine" )
-	, m_state{ CreateState() }
+	: GameComponent( "Lua" )
+	, m_state{ luaL_newstate() }
 {
 	s_se = this;
+	RegisterLibraries( m_state );
 }
 
 ScriptEngine::~ScriptEngine()
@@ -122,8 +123,14 @@ DXILUADLL_API void ScriptEngine::AddType( const char * name, const luaL_Reg * fu
 	luaL_newmetatable( m_state, name );
 	lua_pushcfunction( m_state, collector ); lua_setfield( m_state, -2, "__gc" );
 	lua_pushvalue( m_state, -1 ); lua_setfield( m_state, -2, "__index" );
+	lua_pushstring( m_state, name ); lua_setfield( m_state, -2, "_type" );
 	luaL_setfuncs( m_state, functions, 0 );
 	lua_pop( m_state, 1 );
+}
+
+ScriptEngine* ScriptEngine::GetInstance()
+{
+	return s_se;
 }
 
 me::IGame * ScriptEngine::GetGame()

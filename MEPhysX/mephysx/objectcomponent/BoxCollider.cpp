@@ -29,8 +29,8 @@ std::string BoxCollider::GetWhat() const
 	return std::string();
 }
 
-IObjectComponent * BoxCollider::Duplicate()
+IObjectComponent::ptr BoxCollider::Duplicate()
 {
 	auto duplicate = new BoxCollider( *this );
-	return duplicate;
+	return object::IObjectComponent::ptr( duplicate );
 }

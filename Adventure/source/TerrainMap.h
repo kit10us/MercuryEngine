@@ -24,12 +24,17 @@ public:
 	TerrainMap( unify::Size< int > mapSize, unify::Size< int > terraSize );
 	virtual ~TerrainMap();
 
+private:
+	void Initialize();
+
+public:
+
 	std::string GetWhat() const override;
 	bool Renderable() const override;
 	void CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform ) override;
 	void OnSuspend() override;
 	void OnResume() override;
-	IObjectComponent * Duplicate() override;
+	IObjectComponent::ptr Duplicate() override;
 
 	unify::Size< int > GetSize() const;
 

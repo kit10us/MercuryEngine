@@ -53,8 +53,8 @@ int Object_AddScript( lua_State * state )
 
 	auto game = ScriptEngine::GetGame();
 
-	auto gcse = game->GetComponent( type, 0 );
-	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find " + type + " script engine!" );
+	auto gcse = game->GetComponent( type );
+	if( !gcse ) game->ReportError( ErrorLevel::Failure, "Lua", "Could not find game component \"" + type + "\"!" );
 	ScriptEngine * se = dynamic_cast< ScriptEngine *>(gcse.get() );
 
 	auto component = se->LoadObjectScript( source );
@@ -292,11 +292,7 @@ int Object_Destructor( lua_State * state )
 
 void RegisterObject( lua_State * state )
 {
-	lua_register( state, "Object", Object_Constructor );
-	luaL_newmetatable( state, "Object" );
-	lua_pushcfunction( state, Object_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, ObjectFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Object", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Object_Constructor, Object_Destructor );
 }
 

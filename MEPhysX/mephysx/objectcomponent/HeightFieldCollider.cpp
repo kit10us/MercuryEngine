@@ -62,9 +62,9 @@ std::string HeightFieldCollider::GetWhat() const
 	return std::string();
 }
 
-IObjectComponent * HeightFieldCollider::Duplicate()
+IObjectComponent::ptr HeightFieldCollider::Duplicate()
 {
 	auto duplicate = new HeightFieldCollider( *this );
-	return duplicate;
+	return object::IObjectComponent::ptr( duplicate );
 }
 

@@ -29,6 +29,11 @@ namespace unify
 
 		BBox();
 		BBox( const V3< T > & inf, const V3< T > & sup );
+		
+		/// <summary>
+		/// Creates a cube BBox with a size totalling squareSize: -squareSize/2 to squareSize/2.
+		/// </summary>
+		BBox( T squareSize );
 
 		BBox< T > operator * ( const V3< T > & multiplicand ) const;
 		BBox< T > & operator *= ( const V3< T > & multiplicand );

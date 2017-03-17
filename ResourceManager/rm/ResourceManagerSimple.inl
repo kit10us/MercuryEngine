@@ -98,15 +98,21 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );
 	}
 
+	unify::Path foundSource;
 	if ( m_assetPaths != 0 )
 	{
-		source = m_assetPaths->FindAsset( source, relativePath );
+		foundSource = m_assetPaths->FindAsset( source, relativePath );
 	}
 
-	Log_WriteLine( GetName() + " manager: adding \"" + name + "\" (" + source.ToString() + ")." );
+	if ( foundSource.Empty() )
+	{
+		throw unify::Exception( "Asset file not found! (name: \"" + name + "\", source: \"" + source.ToString() + "\")" );
+	}
+
+	Log_WriteLine( GetName() + " manager: adding \"" + name + "\" (" + foundSource.ToString() + ")." );
 
 
-	auto product = factory->second->Produce( source, data );
+	auto product = factory->second->Produce( foundSource, data );
 	if( product )
 	{
 		m_resourceMap[ name ] = product;

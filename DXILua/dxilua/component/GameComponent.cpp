@@ -47,10 +47,17 @@ void GameComponent::CallMember( std::string function )
 
 	if ( r2 != 0 )
 	{
-		if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
+		try
 		{
-			std::string error = lua_tostring( m_state, -1 );
-			m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script " + function + ": " + error );
+			if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
+			{
+				std::string error = lua_tostring( m_state, -1 );
+				m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script \"" + m_path.ToString() +"\" in function " + function + ": " + error );
+			}
+		}
+		catch ( std::exception ex )
+		{
+			m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Exception in script \"" + m_path.ToString() +"\" in function " + function + ":\n " + ex.what() );
 		}
 	}
 	else

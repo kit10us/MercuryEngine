@@ -25,5 +25,6 @@
 <extension source="../../extensions/Release/DXIKeyboard.dll"/>
 <extension source="../../extensions/Release/DXIGamepad.dll"/>
 <extension source="../../extensions/Release/MEEditor.dll"/>
+<extension source="../../extensions/Release/MEPhysics.dll"/>
 <motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 </xml>

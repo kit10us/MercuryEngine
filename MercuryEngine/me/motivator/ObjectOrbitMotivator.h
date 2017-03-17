@@ -37,7 +37,7 @@ namespace me
 
 			void OnResume() override;
 
-			object::IObjectComponent * Duplicate() override;
+			object::IObjectComponent::ptr Duplicate() override;
 
 		public: // IComponent...
 			int GetValueCount() const override;

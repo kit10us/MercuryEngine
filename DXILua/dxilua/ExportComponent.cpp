@@ -225,11 +225,7 @@ void RegisterComponent( lua_State * state )
 		{ nullptr, nullptr }
 	};			   
 
-	lua_register( state, "Component", Component_Constructor );
-	luaL_newmetatable( state, "Component" );
-	lua_pushcfunction( state, Component_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, ComponentMemberFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Component", ComponentMemberFunctions, sizeof( ComponentMemberFunctions ) / sizeof( luaL_Reg ), Component_Constructor, Component_Destructor );
 }
 

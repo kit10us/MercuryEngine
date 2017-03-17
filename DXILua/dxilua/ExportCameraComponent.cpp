@@ -166,11 +166,7 @@ int CameraComponent_Destructor( lua_State * state )
 
 void RegisterCameraComponent( lua_State * state )
 {
-	lua_register( state, "CameraComponent", CameraComponent_Constructor );
-	luaL_newmetatable( state, "CameraComponent" );
-	lua_pushcfunction( state, CameraComponent_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, CameraComponentFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "CameraComponent", CameraComponentFunctions, sizeof( CameraComponentFunctions ) / sizeof( luaL_Reg ), CameraComponent_Constructor, CameraComponent_Destructor );
 }
 

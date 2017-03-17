@@ -31,7 +31,7 @@ void MyGame::Startup()
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager" ).get());
 
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
@@ -135,7 +135,7 @@ void MyGame::Update( UpdateParams params )
 {
 	using namespace scene;
 	
-	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager" ).get());
 
 	// Use of camera controls to simplify camera movement...
 	Object * camera = sceneManager->FindScene( "scene" )->FindObject( "camera" );

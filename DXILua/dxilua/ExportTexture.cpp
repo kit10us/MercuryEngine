@@ -93,11 +93,7 @@ int Texture_Destructor( lua_State * state )
 
 void RegisterTexture( lua_State * state )
 {
-	lua_register( state, "Texture", Texture_Constructor );
-	luaL_newmetatable( state, "Texture" );
-	lua_pushcfunction( state, Texture_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, TextureFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "Texture", TextureFunctions, sizeof( TextureFunctions ) / sizeof( luaL_Reg ), Texture_Constructor, Texture_Destructor );
 }
 

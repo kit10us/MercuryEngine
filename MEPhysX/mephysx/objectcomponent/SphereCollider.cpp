@@ -23,9 +23,9 @@ std::string SphereCollider::GetWhat() const
 	return std::string();
 }
 
-object::IObjectComponent * SphereCollider::Duplicate()
+object::IObjectComponent::ptr SphereCollider::Duplicate()
 {
 	auto duplicate = new SphereCollider( *this );
-	return duplicate;
+	return object::IObjectComponent::ptr( duplicate );
 }
 

@@ -139,11 +139,7 @@ int ObjectInputMotivator_Destructor( lua_State * state )
 
 void RegisterObjectInputMotivator( lua_State * state )
 {
-	lua_register( state, "ObjectInputMotivator", ObjectInputMotivator_Constructor );
-	luaL_newmetatable( state, "ObjectInputMotivator" );
-	lua_pushcfunction( state, ObjectInputMotivator_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, ObjectInputMotivatorFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "ObjectInputMotivator", ObjectInputMotivatorFunctions, sizeof( ObjectInputMotivatorFunctions ) / sizeof( luaL_Reg ), ObjectInputMotivator_Constructor, ObjectInputMotivator_Destructor );
 }
 

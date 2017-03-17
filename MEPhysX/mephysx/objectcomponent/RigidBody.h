@@ -27,7 +27,7 @@ namespace mephysx
 			void OnAttach( me::object::Object * object ) override;
 			void OnDetach( me::object::Object * object ) override;
 
-			me::object::IObjectComponent * Duplicate() override;
+			me::object::IObjectComponent::ptr Duplicate() override;
 
 			MEPHYSX_API physx::PxRigidBody * GetRigidBody();
 			const physx::PxRigidBody * GetRigidBody() const;

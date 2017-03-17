@@ -95,11 +95,7 @@ int InputCondition_Destructor( lua_State * state )
 
 void RegisterInputCondition( lua_State * state )
 {
-	lua_register( state, "InputCondition", InputCondition_Constructor );
-	luaL_newmetatable( state, "InputCondition" );
-	lua_pushcfunction( state, InputCondition_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, InputConditionFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "InputCondition", InputConditionFunctions, sizeof( InputConditionFunctions ) / sizeof( luaL_Reg ), InputCondition_Constructor, InputCondition_Destructor );
 }
 

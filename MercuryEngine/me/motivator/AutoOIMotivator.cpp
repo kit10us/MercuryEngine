@@ -10,6 +10,11 @@ using namespace me;
 using namespace motivator;
 using namespace input;
 
+AutoOIMotivator::AutoOIMotivator( AutoOIMotivator & motivator )
+	: ObjectInputMotivator( motivator )
+{
+}
+
 AutoOIMotivator::AutoOIMotivator()
 	: ObjectInputMotivator()
 {
@@ -145,7 +150,8 @@ void AutoOIMotivator::OnUpdate( UpdateParams params )
 	}
 }
 
-object::IObjectComponent * AutoOIMotivator::Duplicate()
+object::IObjectComponent::ptr AutoOIMotivator::Duplicate()
 {
-	return nullptr; // Not supported.
+	auto duplicate = new AutoOIMotivator( *this );
+	return me::object::IObjectComponent::ptr( duplicate );
 }

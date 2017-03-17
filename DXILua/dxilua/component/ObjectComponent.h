@@ -32,7 +32,7 @@ namespace melua
 			void OnSuspend() override;
 			void OnResume() override;
 
-			me::object::IObjectComponent * Duplicate();
+			me::object::IObjectComponent::ptr Duplicate();
 
 		public: // IComponent...
 			std::string GetWhat() const;

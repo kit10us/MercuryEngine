@@ -91,8 +91,8 @@ namespace me
 		void AddComponent( me::IGameComponent::ptr component ) override;
 		void RemoveComponent( me::IGameComponent::ptr component ) override;
 		me::IGameComponent::ptr GetComponent( int index ) override;
-		me::IGameComponent::ptr GetComponent( std::string typeName, int startIndex ) override;
-		int FindComponent( std::string typeName, int startIndex ) const override;
+		me::IGameComponent::ptr GetComponent( std::string typeName ) override;
+		int FindComponent( std::string typeName ) const override;
 
 		UpdateLock::ptr LockUpdate( bool exclusive );		
 

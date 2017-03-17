@@ -78,10 +78,10 @@ void GeometryComponent::OnResume()
 {
 }
 
-IObjectComponent * GeometryComponent::Duplicate()
+IObjectComponent::ptr GeometryComponent::Duplicate()
 {
 	auto duplicate = new GeometryComponent( *this );
-	return duplicate;
+	return me::object::IObjectComponent::ptr( duplicate );
 }
 
 GeometryComponent * me::AddGeometryComponent( Object * object, Geometry::ptr geometry )

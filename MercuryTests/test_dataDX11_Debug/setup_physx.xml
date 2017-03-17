@@ -5,13 +5,12 @@
 </renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
-<assets>models/</assets>
-<assets>media/</assets>
-<assets>media/shaders/</assets>
+<assets>shaders/</assets>
 <assets>../test_data/</assets>
-<assets>../test_data/media/</assets>
-<assets>../test_data/scripts/</assets>
 <assets>../test_data/effects/</assets>
+<assets>../test_data/images/</assets>
+<assets>../test_data/models/</assets>
+<assets>../test_data/scripts/</assets>
 <motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 
 <extension source="../../extensions/Debug/DXILua.dll">

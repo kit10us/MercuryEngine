@@ -47,14 +47,10 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\extensions\</OutDir>
-    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\extensions\</OutDir>
-    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -109,7 +105,6 @@
     <ClCompile Include="mephysx\objectcomponent\RigidStatic.cpp" />
     <ClCompile Include="mephysx\objectcomponent\SphereCollider.cpp" />
     <ClCompile Include="mephysx\SceneComponent.cpp" />
-    <ClCompile Include="mephysx\SceneManagerComponent.cpp" />
     <ClCompile Include="mephysx\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +121,6 @@
     <ClInclude Include="mephysx\objectcomponent\SphereCollider.h" />
     <ClInclude Include="mephysx\Releaser.h" />
     <ClInclude Include="mephysx\SceneComponent.h" />
-    <ClInclude Include="mephysx\SceneManagerComponent.h" />
     <ClInclude Include="mephysx\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

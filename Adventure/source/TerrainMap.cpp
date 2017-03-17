@@ -15,11 +15,29 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
+TerrainMap::TerrainMap( TerrainMap & component )
+	: ObjectComponent( component )
+	, m_mapSize{ component.m_mapSize }
+	, m_terraSize{ component.m_terraSize }
+{
+	Initialize();
+}
+
 TerrainMap::TerrainMap( unify::Size< int > mapSize, unify::Size< int > terraSize )
 	: ObjectComponent( "TerrainMap" )
 	, m_mapSize{ mapSize }
 	, m_terraSize{ terraSize }
- , m_map{ new size_t[ mapSize.width * mapSize.height ] }
+	, m_map{ new size_t[ mapSize.width * mapSize.height ] }
+{
+	Initialize();
+}
+
+TerrainMap::~TerrainMap()
+{
+	delete[] m_map;
+}
+
+void TerrainMap::Initialize()
 {
 	for ( int y = 0; y < m_mapSize.height; y++ )
 	{
@@ -27,14 +45,9 @@ TerrainMap::TerrainMap( unify::Size< int > mapSize, unify::Size< int > terraSize
 		{
 			size_t square = y * m_mapSize.height + x;
 			m_map[ square ] = 0;
-			m_frames.push_back( unify::FrameLite( unify::MatrixTranslate( { (float)terraSize.width * x, 0, y * (float)terraSize.height } ) ) );
+			m_frames.push_back( unify::FrameLite( unify::MatrixTranslate( { (float)m_terraSize.width * x, 0, y * (float)m_terraSize.height } ) ) );
 		}
 	}
-}
-
-TerrainMap::~TerrainMap()
-{
-	delete[] m_map;
 }
 
 std::string TerrainMap::GetWhat() const
@@ -84,9 +97,10 @@ void TerrainMap::OnResume()
 {
 }
 
-IObjectComponent * TerrainMap::Duplicate()
+IObjectComponent::ptr TerrainMap::Duplicate()
 {
-	return nullptr;
+	auto duplicate = new TerrainMap( *this );
+	return me::object::IObjectComponent::ptr( duplicate );
 }
 
 unify::Size< int > TerrainMap::GetSize() const

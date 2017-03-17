@@ -43,6 +43,9 @@
     <Filter Include="me\object">
       <UniqueIdentifier>{bf30e370-82b8-4c78-8dbd-23e9dc491875}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\action">
+      <UniqueIdentifier>{43b718bc-fbdd-4763-a8dc-39aea0833b5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -483,6 +486,15 @@
     <ClInclude Include="me\scene\ObjectAllocator.h">
       <Filter>me\scene</Filter>
     </ClInclude>
+    <ClInclude Include="me\action\IAction.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\ActionList.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\IgnoreReturn.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -796,6 +808,12 @@
     </ClCompile>
     <ClCompile Include="me\scene\ObjectAllocator.cpp">
       <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\ActionList.cpp">
+      <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\IgnoreReturn.cpp">
+      <Filter>me\action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

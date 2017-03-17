@@ -14,6 +14,9 @@ namespace me
 		///</summary>
 		class AutoOIMotivator : public ObjectInputMotivator
 		{
+		private:
+			AutoOIMotivator( AutoOIMotivator & motivator );
+
 		public:
 			AutoOIMotivator();
 
@@ -25,7 +28,7 @@ namespace me
 			void OnUpdate( UpdateParams params ) override;
 
 
-			object::IObjectComponent * Duplicate() override;
+			object::IObjectComponent::ptr Duplicate() override;
 		};
 	}
 }

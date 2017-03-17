@@ -6,6 +6,13 @@
 
 using namespace me;
 
+FollowComponent::FollowComponent( FollowComponent & component )
+	: object::ObjectComponent( component )
+	, m_target{ component.m_target }
+	, m_offset{ component.m_offset }
+{
+}
+
 FollowComponent::FollowComponent()
 	: object::ObjectComponent( "Follow" )
 	, m_target{ nullptr }
@@ -40,9 +47,10 @@ void FollowComponent::OnUpdate( UpdateParams params )
 	}
 }
 
-object::IObjectComponent * FollowComponent::Duplicate()
+object::IObjectComponent::ptr FollowComponent::Duplicate()
 {
-	return nullptr;
+	auto component = new FollowComponent( *this );
+	return object::IObjectComponent::ptr( component );
 }
 
 std::string FollowComponent::GetWhat() const

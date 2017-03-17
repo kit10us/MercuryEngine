@@ -12,8 +12,8 @@
 ///</summary>
 class CameraMotivator : public me::motivator::ObjectInputMotivator
 {
-public:
 	CameraMotivator( const CameraMotivator & cameraMotivator );
+public:
 	CameraMotivator();
 
 	virtual ~CameraMotivator();
@@ -21,5 +21,5 @@ public:
 	std::string GetWhat() const override;
 
 	void OnUpdate( me::UpdateParams params ) override;
-	me::object::IObjectComponent * Duplicate() override;
+	me::object::IObjectComponent::ptr Duplicate() override;
 };

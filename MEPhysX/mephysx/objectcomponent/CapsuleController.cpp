@@ -40,10 +40,10 @@ std::string CapsuleController::GetWhat() const
 	return std::string();
 }
 
-object::IObjectComponent * CapsuleController::Duplicate()
+object::IObjectComponent::ptr CapsuleController::Duplicate()
 {
 	auto duplicate = new CapsuleController( *this );
-	return duplicate;
+	return object::IObjectComponent::ptr( duplicate );
 }
 
 void CapsuleController::OnAttach( me::object::Object * object )

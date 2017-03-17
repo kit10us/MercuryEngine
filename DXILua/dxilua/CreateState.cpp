@@ -34,10 +34,8 @@
 #include <dxilua/ExportObjectOrbitMotivator.h>
 #include <dxilua/ExportObjectInputMotivator.h>
 
-lua_State * dxilua::CreateState()
+void dxilua::RegisterLibraries( lua_State * state )
 {
-	lua_State * state = luaL_newstate();
-
 	luaL_openlibs( state );
 
 	// Add unify functions...
@@ -75,6 +73,4 @@ lua_State * dxilua::CreateState()
 	RegisterInputCondition( state );
 
 	RegisterComponent( state );
-
-	return state;
 }

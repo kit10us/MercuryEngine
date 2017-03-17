@@ -184,11 +184,7 @@ int TerraParameters_Destructor( lua_State * state )
 
 void RegisterTerraParameters( lua_State * state )
 {
-	lua_register( state, "TerraParameters", TerraParameters_Constructor );
-	luaL_newmetatable( state, "TerraParameters" );
-	lua_pushcfunction( state, TerraParameters_Destructor ); lua_setfield( state, -2, "__gc" );
-	lua_pushvalue( state, -1 ); lua_setfield( state, -2, "__index" );
-	luaL_setfuncs( state, TerraParametersFunctions, 0 );
-	lua_pop( state, 1 );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	se->AddType( "TerraParameters", TerraParametersFunctions, sizeof( TerraParametersFunctions ) / sizeof( luaL_Reg ), TerraParameters_Constructor, TerraParameters_Destructor );
 }
 

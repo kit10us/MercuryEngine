@@ -29,8 +29,8 @@ std::string CapsuleCollider::GetWhat() const
 	return std::string();
 }
 
-IObjectComponent * CapsuleCollider::Duplicate()
+object::IObjectComponent::ptr CapsuleCollider::Duplicate()
 {
 	auto duplicate = new CapsuleCollider( *this );
-	return duplicate;
+	return object::IObjectComponent::ptr( duplicate );
 }

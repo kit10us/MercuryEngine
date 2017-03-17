@@ -31,7 +31,7 @@ namespace me
 
 			unify::Matrix GetProjection() const;
 
-			IObjectComponent * Duplicate() override;
+			IObjectComponent::ptr Duplicate() override;
 
 		protected:
 			unify::Matrix m_projection;

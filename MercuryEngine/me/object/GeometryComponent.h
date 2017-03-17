@@ -38,7 +38,7 @@ namespace me
 			void OnSuspend() override;
 			void OnResume() override;
 
-			IObjectComponent * Duplicate() override;
+			IObjectComponent::ptr Duplicate() override;
 
 		protected:
 			Geometry::ptr m_geometry;

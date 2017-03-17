@@ -6,5 +6,8 @@
 
 namespace dxilua
 {
-	lua_State * CreateState();
+	/// <summary>
+	/// Registers Lua libraries, and our class libraries.
+	/// </summary>
+	void RegisterLibraries( lua_State * state );
 }

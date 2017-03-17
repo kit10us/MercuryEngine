@@ -31,7 +31,7 @@ void MyGame::Startup()
 {
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager" ).get());
 
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
@@ -156,7 +156,7 @@ void MyGame::Update( UpdateParams params )
 	using namespace unify;
 	using namespace scene;
 
-	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager", 0 ).get());
+	SceneManager * sceneManager = dynamic_cast< SceneManager * >(GetComponent( "SceneManager" ).get());
 	Scene::ptr scene = sceneManager->FindScene( "scene" );
 
 	{
