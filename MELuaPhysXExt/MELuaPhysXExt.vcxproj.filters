@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="MELuaPhysXExt.cpp" />
+    <ClCompile Include="luaphysx\ExportPxMaterial.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxSceneComponent.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPhysX.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxShape.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxRigidBody.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxRigidStatic.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+    <ClCompile Include="luaphysx\ExportPxController.cpp">
+      <Filter>luaphysx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="luaphysx">
+      <UniqueIdentifier>{ac8ec3e3-c052-4f17-8b6e-33aa21629e1b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MELuaPhysXExt.h" />
+    <ClInclude Include="luaphysx\ExportPxMaterial.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxSceneComponent.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPhysX.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxShape.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxRigidBody.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxRigidStatic.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+    <ClInclude Include="luaphysx\ExportPxController.h">
+      <Filter>luaphysx</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

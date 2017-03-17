@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="melua">
+      <UniqueIdentifier>{8ad7e456-427b-4d39-b33c-2862f7584d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dll">
+      <UniqueIdentifier>{78801e60-d16a-47b3-b5c9-36c659836dad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="melua\exports">
+      <UniqueIdentifier>{ac2f2130-164b-46e4-bea7-60ee760ccdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="melua\exports\shape">
+      <UniqueIdentifier>{e20edaad-5782-46f5-a9cd-5270462efcbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="melua\exports\unify">
+      <UniqueIdentifier>{f8591f8a-a2a8-4251-b642-f1e1f74015c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="melua\component">
+      <UniqueIdentifier>{4b0c6c43-54a0-4b57-a620-856d74875818}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MELuaDLL.h">
+      <Filter>dll</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\CreateState.h">
+      <Filter>melua</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\shape\ExportShapeParameters.h">
+      <Filter>melua\exports\shape</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportColor.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportV2.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportV3.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportSize3.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportSize2.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportMatrix.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\Util.h">
+      <Filter>melua</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportTexCoords.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportQuaternion.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportAngle.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportCameraComponent.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportDebug.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportEffect.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportGame.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportGeometry.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportInput.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportInputCondition.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportInputMotivator.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportObject.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportObjectComponent.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportObjectInputMotivator.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportObjectOrbitMotivator.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportResources.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportScene.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportTerra.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportTerraParameters.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportTexture.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportTransform.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportUpdate.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\component\GameComponent.h">
+      <Filter>melua\component</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\component\ObjectComponent.h">
+      <Filter>melua\component</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ScriptEngine.h">
+      <Filter>melua\component</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\unify\ExportTexArea.h">
+      <Filter>melua\exports\unify</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportComponent.h">
+      <Filter>melua\exports</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="MELuaDLL.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\CreateState.cpp">
+      <Filter>melua</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\shape\ExportShapeParameters.cpp">
+      <Filter>melua\exports\shape</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportV2.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportV3.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportColor.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportSize3.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportSize2.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportMatrix.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\Util.cpp">
+      <Filter>melua</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportTexCoords.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportQuaternion.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportAngle.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportCameraComponent.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportDebug.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportEffect.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportGame.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportGeometry.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportInput.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportInputCondition.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportInputMotivator.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportObject.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportObjectComponent.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportObjectInputMotivator.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportObjectOrbitMotivator.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportResources.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportScene.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportTerra.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportTerraParameters.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportTexture.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportTransform.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportUpdate.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\component\ObjectComponent.cpp">
+      <Filter>melua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\component\GameComponent.cpp">
+      <Filter>melua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ScriptEngine.cpp">
+      <Filter>melua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\unify\ExportTexArea.cpp">
+      <Filter>melua\exports\unify</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportComponent.cpp">
+      <Filter>melua\exports</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

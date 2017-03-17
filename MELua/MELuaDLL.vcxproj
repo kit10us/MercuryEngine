@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{335B7243-367C-4BA2-83E1-726EFED77CC7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>MELuaDLL</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>MELua</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\MercuryEngine\MEExtensionPropertySheet.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\MercuryEngine\MEExtensionPropertySheet.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;MELUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../Unify;../../packages/lua-5.3.3_pre/include;./;../MELuaLib;../LuaWrapper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;..\..\packages\DirectXTex-master\DirectXTex\Bin\Desktop_2015\Win32\Debug</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MELUADLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../ResourceManager;../QJson/source;../QXML/include;../Unify;../../packages/lua-5.3.3_pre/include;./;../MELuaLib;../LuaWrapper;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\packages\directx\lib\x86;..\..\packages\lua-5.3.3_pre;</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="MELuaDLL.h" />
+    <ClInclude Include="melua\component\GameComponent.h" />
+    <ClInclude Include="melua\component\ObjectComponent.h" />
+    <ClInclude Include="melua\CreateState.h" />
+    <ClInclude Include="melua\ExportComponent.h" />
+    <ClInclude Include="melua\ExportInput.h" />
+    <ClInclude Include="melua\ExportInputCondition.h" />
+    <ClInclude Include="melua\ExportInputMotivator.h" />
+    <ClInclude Include="melua\ExportObjectComponent.h" />
+    <ClInclude Include="melua\ExportObjectInputMotivator.h" />
+    <ClInclude Include="melua\ExportObjectOrbitMotivator.h" />
+    <ClInclude Include="melua\ScriptEngine.h" />
+    <ClInclude Include="melua\ExportCameraComponent.h" />
+    <ClInclude Include="melua\ExportDebug.h" />
+    <ClInclude Include="melua\ExportEffect.h" />
+    <ClInclude Include="melua\ExportGame.h" />
+    <ClInclude Include="melua\ExportGeometry.h" />
+    <ClInclude Include="melua\ExportObject.h" />
+    <ClInclude Include="melua\ExportResources.h" />
+    <ClInclude Include="melua\ExportScene.h" />
+    <ClInclude Include="melua\ExportTerra.h" />
+    <ClInclude Include="melua\ExportTerraParameters.h" />
+    <ClInclude Include="melua\ExportTexture.h" />
+    <ClInclude Include="melua\ExportTransform.h" />
+    <ClInclude Include="melua\ExportUpdate.h" />
+    <ClInclude Include="melua\shape\ExportShapeParameters.h" />
+    <ClInclude Include="melua\unify\ExportAngle.h" />
+    <ClInclude Include="melua\unify\ExportColor.h" />
+    <ClInclude Include="melua\unify\ExportMatrix.h" />
+    <ClInclude Include="melua\unify\ExportQuaternion.h" />
+    <ClInclude Include="melua\unify\ExportSize2.h" />
+    <ClInclude Include="melua\unify\ExportSize3.h" />
+    <ClInclude Include="melua\unify\ExportTexArea.h" />
+    <ClInclude Include="melua\unify\ExportTexCoords.h" />
+    <ClInclude Include="melua\unify\ExportV2.h" />
+    <ClInclude Include="melua\unify\ExportV3.h" />
+    <ClInclude Include="melua\Util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MELuaDLL.cpp" />
+    <ClCompile Include="melua\component\GameComponent.cpp" />
+    <ClCompile Include="melua\component\ObjectComponent.cpp" />
+    <ClCompile Include="melua\CreateState.cpp" />
+    <ClCompile Include="melua\ExportComponent.cpp" />
+    <ClCompile Include="melua\ExportInput.cpp" />
+    <ClCompile Include="melua\ExportInputCondition.cpp" />
+    <ClCompile Include="melua\ExportInputMotivator.cpp" />
+    <ClCompile Include="melua\ExportObjectComponent.cpp" />
+    <ClCompile Include="melua\ExportObjectInputMotivator.cpp" />
+    <ClCompile Include="melua\ExportObjectOrbitMotivator.cpp" />
+    <ClCompile Include="melua\ScriptEngine.cpp" />
+    <ClCompile Include="melua\ExportCameraComponent.cpp" />
+    <ClCompile Include="melua\ExportDebug.cpp" />
+    <ClCompile Include="melua\ExportEffect.cpp" />
+    <ClCompile Include="melua\ExportGame.cpp" />
+    <ClCompile Include="melua\ExportGeometry.cpp" />
+    <ClCompile Include="melua\ExportObject.cpp" />
+    <ClCompile Include="melua\ExportResources.cpp" />
+    <ClCompile Include="melua\ExportScene.cpp" />
+    <ClCompile Include="melua\ExportTerra.cpp" />
+    <ClCompile Include="melua\ExportTerraParameters.cpp" />
+    <ClCompile Include="melua\ExportTexture.cpp" />
+    <ClCompile Include="melua\ExportTransform.cpp" />
+    <ClCompile Include="melua\ExportUpdate.cpp" />
+    <ClCompile Include="melua\shape\ExportShapeParameters.cpp" />
+    <ClCompile Include="melua\unify\ExportAngle.cpp" />
+    <ClCompile Include="melua\unify\ExportColor.cpp" />
+    <ClCompile Include="melua\unify\ExportMatrix.cpp" />
+    <ClCompile Include="melua\unify\ExportQuaternion.cpp" />
+    <ClCompile Include="melua\unify\ExportSize2.cpp" />
+    <ClCompile Include="melua\unify\ExportSize3.cpp" />
+    <ClCompile Include="melua\unify\ExportTexArea.cpp" />
+    <ClCompile Include="melua\unify\ExportTexCoords.cpp" />
+    <ClCompile Include="melua\unify\ExportV2.cpp" />
+    <ClCompile Include="melua\unify\ExportV3.cpp" />
+    <ClCompile Include="melua\Util.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

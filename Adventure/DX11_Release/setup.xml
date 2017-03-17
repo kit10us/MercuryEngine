@@ -11,7 +11,7 @@
 <assets>../assets_common/images/</assets>
 <assets>../assets_common/scripts/</assets>
 <assets>../assets_common/effects/</assets>
-<extension source="../../extensions/Release/DXILua.dll">
+<extension source="../../extensions/Release/MELua.dll">
 	<startup>startup.lua</startup>
 </extension>
 <extension source="../../extensions/Release/DAELoader.dll">

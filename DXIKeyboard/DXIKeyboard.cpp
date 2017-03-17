@@ -1,5 +1,5 @@
-// DXILuaDLL.cpp : Defines the exported functions for the DLL application.
-//
+// Copyright (c) 2002 - 2011, Quentin S. Smith
+// All Rights Reserved
 
 #include "DXIKeyboard.h"
 #include <dxikeyboard/Keyboard.h>

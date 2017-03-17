@@ -14,7 +14,7 @@
 <assets>../test_data/effects/</assets>
 <motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 
-<extension source="../../extensions/Release/DXILua.dll">
+<extension source="../../extensions/Release/MELua.dll">
 	<startup>game_physxPlayer.lua</startup>
 </extension>
 <extension source="../../extensions/Release/DAELoader.dll">
@@ -26,7 +26,7 @@
 	<texturevs name="textured_ambient" source="textured_ambient.xml"/>
 </extension>
 <extension source="../../extensions/Release/MEPhysx.dll"/>
-<extension source="../../extensions/Release/DXILuaPhysXExt.dll"/>
+<extension source="../../extensions/Release/MELuaPhysXExt.dll"/>
 <extension source="../../extensions/Release/DXIKeyboard.dll"/>
 <extension source="../../extensions/Release/DXIMouse.dll"/>
 <extension source="../../extensions/Release/DXIGamepad.dll"/>
