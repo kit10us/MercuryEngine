@@ -131,6 +131,21 @@ std::string unify::StringMinusRight( const std::string & sStringIn, unsigned int
 	return sStringIn.substr( 0, (unsigned int)sStringIn.length() - uLessLength );
 }
 
+std::string unify::StringReplace( const std::string in, std::string find, std::string replace )
+{
+	std::string out;
+
+	size_t left = 0;
+	size_t right = 0;
+	do
+	{
+		right = in.find( find, left );
+		out += in.substr( left, right - left )  + replace;
+		left = right + 1;
+	} while ( right != std::string::npos );
+	return out;	
+}
+
 std::string unify::CleanWhitespace( const std::string & in )
 {
 	if ( in.empty() ) return std::string();

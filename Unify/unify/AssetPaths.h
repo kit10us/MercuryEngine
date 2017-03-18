@@ -13,11 +13,13 @@ namespace unify
 	public:
 		AssetPaths();
 
-		void AddSource( unify::Path source );
+		void AddSource( Path source );
 		
-		unify::Path FindAsset( unify::Path path, unify::Path firstPlace = "" );
+		Path FindAsset( Path path, Path firstPlace = "" );
+
+		std::string GetPaths( Path root = Path() ) const;
 
 	private:
-		std::list< unify::Path > m_paths;
+		std::list< Path > m_paths;
 	};
 }

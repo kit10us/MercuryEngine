@@ -11,8 +11,10 @@ using namespace scene;
 
 SceneManager::SceneManager()
 	: GameComponent( "SceneManager" )
-	, m_focusScene( 0 )
-	, m_enabled{ true }
+	, m_game{ nullptr }
+	, m_focusScene{ nullptr }
+	, m_updateTick{ 0 }
+	, m_renderTick{ 0 }
 {
 }
 

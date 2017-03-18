@@ -60,6 +60,8 @@ namespace unify
 
 		Path & Combine( const Path & left, const Path & right );
 
+		bool IsDirectory() const;
+
 		bool IsExtension( const std::string & extension ) const;
 
 		Path ChangeExtension( std::string extension ) const;

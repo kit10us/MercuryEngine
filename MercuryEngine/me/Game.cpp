@@ -86,8 +86,15 @@ Game::~Game()
 	LogLine( "OnDetach", 0 );
 	for( auto && component : m_components )
 	{
-		LogLine( "Detaching " + component->GetTypeName() );
-		component->OnDetach( this );
+		try
+		{
+			LogLine( "Detaching " + component->GetTypeName() );
+			component->OnDetach( this );
+		}
+		catch ( ... )
+		{
+		}
+
 	}
 	LogLine( "OnDetachDone", 0 );
 
@@ -588,14 +595,23 @@ const input::InputManager * Game::GetInputManager() const
 
 void Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
-	std::shared_ptr< Extension > extension( new Extension( path ) );
+	Extension * extension{ new Extension( path ) };
 
-	if ( ! extension->Load( this, element ) )
+	try
 	{
-		ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
+		if ( ! extension->Load( this, element ) )
+		{
+			delete extension;
+			ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
+		}
+	}
+	catch ( std::exception ex )
+	{
+		delete extension;
+		ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "! Error:\n" + ex.what() );
 	}
 
-	m_extensions.push_back( extension );
+	m_extensions.push_back( std::shared_ptr< Extension >{ extension } );
 }
 
 void Game::LogLine( std::string line, int indent )
@@ -677,7 +693,14 @@ int Game::GetComponentCount() const
 
 void Game::AddComponent( IGameComponent::ptr component )
 {
-	component->OnAttach( this );
+	try
+	{
+		component->OnAttach( this );
+	}
+	catch ( ... )
+	{
+		throw;
+	}
 	m_components.push_back( component );
 }
 

@@ -32,6 +32,7 @@ namespace unify
 	std::string LeftString( std::string stringIn, unsigned int uLength );
 	std::string StringMinusLeft( const std::string & sStringIn, unsigned int uLessLength );
 	std::string StringMinusRight( const std::string & sStringIn, unsigned int uLessLength );
+	std::string StringReplace( const std::string in, std::string find, std::string replace );
 	
 	/// <summary>
 	/// Returns a string where all sets (single or in a row) cariage returns, tabs or spaces are replaced with one space.

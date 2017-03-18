@@ -32,3 +32,23 @@ unify::Path AssetPaths::FindAsset( unify::Path path, unify::Path firstPlace )
 
 	return unify::Path();
 }
+
+std::string AssetPaths::GetPaths( Path root ) const
+{
+	std::string paths;
+	for ( auto path : m_paths )
+	{
+		std::string p;
+		if ( paths.empty() )
+		{		  
+
+			p = (root.DirectoryOnly() + path).Normalize().ToString();
+		}
+		else
+		{
+			p = ";" + (root.DirectoryOnly() + path).Normalize().ToString();
+		}
+		paths += p;
+	}
+	return paths;
+}

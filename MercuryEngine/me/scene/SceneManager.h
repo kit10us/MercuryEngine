@@ -39,7 +39,6 @@ namespace me
 			Scene * m_focusScene;
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;
-			bool m_enabled;
 	    };
     }
 }

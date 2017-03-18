@@ -1,11 +1,12 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include "MELuaPhysXExt.h"
+#include "MEPhysicsLuaExt.h"
 #include <melua/ScriptEngine.h>
 #include <memory.h>
 #include <me/Game.h>
 
+/*
 #include <luaphysx/ExportPhysX.h>
 #include <luaphysx/ExportPxSceneComponent.h>
 #include <luaphysx/ExportPxMaterial.h>
@@ -13,15 +14,16 @@
 #include <luaphysx/ExportPxRigidBody.h>
 #include <luaphysx/ExportPxRigidStatic.h>
 #include <luaphysx/ExportPxController.h>
+  */
 
 #pragma comment( lib, "lua53" )
 
 #ifdef _DEBUG
 	#pragma comment( lib, "../extensions/Debug/MELua.lib" )
-	#pragma comment( lib, "../extensions/Debug/MEPhysX.lib" )
+	#pragma comment( lib, "../extensions/Debug/MEPhysics.lib" )
 #else
 	#pragma comment( lib, "../extensions/Release/MELua.lib" )
-	#pragma comment( lib, "../extensions/Relesase/MEPhysX.lib" )
+	#pragma comment( lib, "../extensions/Relesase/MEPhysics.lib" )
 #endif
 
 
@@ -36,7 +38,7 @@ __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * do
 	auto gcse = game->GetComponent( "Lua" );
 	if( !gcse )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "MELuaPhysXExt", "Lua Extension (\"Lua\") not found!" );
+		game->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension (\"Lua\") not found!" );
 		return false;
 	}
 	me::IGameComponent * se = dynamic_cast<me::IGameComponent *>(gcse.get());
@@ -44,9 +46,10 @@ __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * do
 	melua::ScriptEngine * luaSE = dynamic_cast<melua::ScriptEngine *>(se);
 	if ( ! luaSE )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "MELuaPhysXExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
+		game->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
 	}
 
+	/*
 	RegisterPhysX( luaSE, game );
 	RegisterPxSceneComponent( luaSE, game );
 	RegisterPxMaterial( luaSE, game );
@@ -54,8 +57,8 @@ __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * do
 	RegisterPxRigidBody( luaSE, game );
 	RegisterPxRigidStatic( luaSE, game );
 	RegisterPxController( luaSE, game );
+	*/
 
-	//game->AddScriptEngine( "lua", std::shared_ptr< dxi::scripting::IScriptEngine >( new melua::ScriptEngine( game ), Deleter ) );
 	return true;
 }
 

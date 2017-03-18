@@ -1,3 +1,6 @@
+// Copyright (c) 2002 - 2011, Quentin S. Smith
+// All Rights Reserved
+
 // The following ifdef block is the standard way of creating macros which make exporting 
 // from a DLL simpler. All files within this DLL are compiled with the MELUADLL_EXPORTS
 // symbol defined on the command line. This symbol should not be defined on any project

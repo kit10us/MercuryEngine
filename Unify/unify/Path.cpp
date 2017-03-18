@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <unify/Path.h>
+#include <unify/String.h>
 #include <fstream>
 
 using namespace unify;
@@ -51,7 +52,7 @@ std::vector< std::string > Path::Split() const
 			}
 			else
 			{
-				parts.push_back( m_path.substr( start, p - start ) );
+				parts.push_back( m_path.substr( start, p - start + 1 ) );
 				start = p + 1;
 			}
 		}
@@ -79,10 +80,14 @@ Path & Path::Normalize()
 	std::vector< std::string > parts = Split();
 	for ( std::vector< std::string >::const_iterator itr = parts.begin(); itr != parts.end(); ++itr )
 	{
-		if ( itr != parts.begin() && *itr == ".." ) 
+		if ( itr != parts.begin() && unify::BeginsWith( *itr, ".." ) ) 
 		{
 			itr = parts.erase( itr - 1 ); // Erase what ever leads.
 			itr = parts.erase( itr ); // Erase the "..".
+		}
+		else if ( itr != parts.begin() && unify::BeginsWith( *itr, "." ) ) 
+		{
+			itr = parts.erase( itr ); // Erase the ".".
 		}
 	}
 	return Join( parts );
@@ -118,7 +123,8 @@ Path Path::DirectoryOnly() const
 	}
 	else
 	{
-		return Path( m_path.substr( 0, i ) );
+		std::string s = m_path.substr( 0, i + 1 );
+		return Path( m_path.substr( 0, i + 1 ) );
 	}
 }
 
@@ -193,6 +199,19 @@ Path & Path::Combine( const Path & left, const Path & right )
 
 	m_path = pathOut;
 	return *this;
+}
+
+bool Path::IsDirectory() const
+{
+	char lastChar = m_path[ m_path.length() - 1 ];
+	if ( lastChar == '\\' || lastChar == '/' )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool Path::IsExtension( const std::string & extension ) const

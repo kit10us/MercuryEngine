@@ -32,6 +32,7 @@ const Lookup * GameComponent::GetLookup() const
 GameComponent::GameComponent( std::string typeName )
 	: m_typeName{ typeName }
 	, m_enabled{ true }
+	, m_game{ nullptr }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "IGameComponent", this );

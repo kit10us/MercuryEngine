@@ -43,7 +43,7 @@ WindowsOS::WindowsOS( IGame * game, const qxml::Element * element )
 	{
 		char buffer[ MAX_PATH ];
 		GetCurrentDirectoryA( MAX_PATH, buffer );
-		m_runPath = unify::Path( buffer );
+		m_runPath = unify::Path( std::string( buffer ) + "/" );
 	}
 
 	// TODO: We are also doing this in Game, shouldn't this be in once place?

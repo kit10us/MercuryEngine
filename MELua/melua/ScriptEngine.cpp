@@ -24,12 +24,27 @@ void GameComponentDeleter( me::IGameComponent * gc )
 
 ScriptEngine * ScriptEngine::s_se;
 
-ScriptEngine::ScriptEngine()
+ScriptEngine::ScriptEngine( me::IOS * os )
 	: GameComponent( "Lua" )
 	, m_state{ luaL_newstate() }
+	, m_gameScriptCount{ 0 }
+	, m_objectScriptCount{ 0 }
 {
 	s_se = this;
 	RegisterLibraries( m_state );
+
+	// Set path...
+	std::string path = unify::StringReplace( os->GetAssetPaths().GetPaths( os->GetRunPath() ), ";", "?.lua;" );
+
+    lua_getglobal( m_state, "package" );
+    lua_getfield( m_state, -1, "path" ); // get field "path" from table at top of stack (-1)
+    std::string cur_path = lua_tostring( m_state, -1 ); // grab path string from top of stack
+    cur_path.append( ";" ); // do your path magic here
+    cur_path.append( path );
+    lua_pop( m_state, 1 ); // get rid of the string on the stack we just pushed on line 5
+    lua_pushstring( m_state, cur_path.c_str() ); // push the new one
+    lua_setfield( m_state, -2, "path" ); // set the field "path" in table at -2 with value at top of stack
+    lua_pop( m_state, 1 ); // get rid of package table from top of stack
 }
 
 ScriptEngine::~ScriptEngine()

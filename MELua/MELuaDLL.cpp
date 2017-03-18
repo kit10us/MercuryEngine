@@ -16,7 +16,7 @@ extern "C" MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * e
 MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 {
 	// Add Script Engine...
-	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine();
+	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine( game->GetOS() );
 	game->AddComponent( me::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
 				  
 	// Automatically add "game.lua" GameComponent...
@@ -31,7 +31,8 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	if ( source.Exists() )
 	{
 		game->LogLine( "Loading startup script \"" + source.ToString() + "\"." );
-		game->AddComponent( scriptEngine->LoadGameScript( source ) );
+		auto component = scriptEngine->LoadGameScript( source );
+		game->AddComponent( component );
 	}
 	else
 	{

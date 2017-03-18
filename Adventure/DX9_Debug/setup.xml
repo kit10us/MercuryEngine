@@ -26,5 +26,6 @@
 <extension source="../../extensions/Debug/DXIGamepad.dll"/>
 <extension source="../../extensions/Debug/MEEditor.dll"/>
 <extension source="../../extensions/Debug/MEPhysics.dll"/>
+<extension source="../../extensions/Debug/MEPhysicsLuaExt.dll"/>
 <motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 </xml>

@@ -20,7 +20,7 @@ namespace melua
 	class ScriptEngine : public me::GameComponent
 	{
 	public:
-		ScriptEngine();
+		ScriptEngine( me::IOS * os );
 		~ScriptEngine();
 
 		ExecuteResult ExecuteString( std::string line );

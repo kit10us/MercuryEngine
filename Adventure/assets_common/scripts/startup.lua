@@ -1,81 +1,4 @@
-function MakeTree( scene, position )
-	local name
-	
-	-- Find the first name available...
-	for i = 0, 1000, 1 do
-		name = "tree_" .. i
-		if not scene:FindObject( name )  then		
-			break
-		end
-	end	
-
-	-- Add our object...
-	local object = scene:NewObject( name )
-	object:Transform():SetPosition( position )
-		
-
-	local leaves = Effect( "leaves", "Textured_Ambient.effect" )
-	leaves:SetTexture( 0, Texture( "leaves", "leafsolid.bmp" ) )
-
-		
-	sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( leaves )
-	sphereParameters:SetSegments( 24 )
-	sphereParameters:SetRadius( 2.0 )
-	sphereParameters:SetDiffuse( Color.NewRGB( 0, 0.8, 0 ) )
-	sphereParameters:SetCenter( V3.New( 0, 5, 0 ) );
-	object:AddGeometry( Geometry( sphereParameters ) )
-
-	cylinderParameters = ShapeParameters( "cylinder" )
-	cylinderParameters:SetEffect( color3d )
-	cylinderParameters:SetSegments( 24 )
-	cylinderParameters:SetRadius( 0.7 )
-	cylinderParameters:SetHeight( 5.0 )
-	cylinderParameters:SetDiffuse( Color.NewRGB( 107/255, 88/255, 37/255 ) )
-	cylinderParameters:SetCaps( true )
-	cylinderParameters:SetCenter( V3.New( 0, 2.5, 0 ) )
-	object:AddGeometry( Geometry( cylinderParameters ) )
-end
-
-function MakeHouse( scene, position )
-	local name
-	
-	-- Find the first name available...
-	for i = 0, 1000, 1 do
-		name = "house_" .. i
-		if not scene:FindObject( name )  then		
-			break
-		end
-	end	
-
-	-- Add our object...
-	local object = scene:NewObject( name )
-	object:Transform():SetPosition( position )
-
-	-- Walls
-	parameters = ShapeParameters( "cube" )
-	parameters:SetEffect( color3d )
-	parameters:SetSize3( Size3.New( 6, 6, 10 ) )
-	parameters:SetDiffuse( Color.Mul( Color.NewRGB( .2, 0.1, 0.1 ), Color.NewWhite( 2 ) ) )
-	parameters:SetCenter( V3.New( 0, 3, 0 ) );
-	object:AddGeometry( Geometry( parameters ) )
-
-	-- door
-	parameters = ShapeParameters( "cube" )
-	parameters:SetEffect( color3d )
-	parameters:SetSize3( Size3.New( 2.6, 5, 1 ) )
-	parameters:SetDiffuse( Color.Mul( Color.NewRGB( 107/255, 88/255, 37/255 ), Color.NewWhite( 2 ) )) 
-	parameters:SetCenter( V3.New( 0, 2.5, -5 ) );
-	object:AddGeometry( Geometry( parameters ) )
-	
-	-- roof
-	parameters = ShapeParameters( "pyramid" )
-	parameters:SetEffect( color3d )
-	parameters:SetSize3( Size3.New( 7, 2, 11 ) )
-	parameters:SetDiffuse( Color.Mul( Color.NewRGB( .3, .3, .3 ), Color.NewWhite( 2 ) ) )
-	parameters:SetCenter( V3.New( 0, 7, 0 ) );
-	object:AddGeometry( Geometry( parameters ) )
-end
+require "prefabs"
 
 function OnBeforeStartup( me )
 	-- Load textures
@@ -125,8 +48,8 @@ function OnBeforeStartup( me )
 	camera:Transform():SetPosition( V3.New( 0, 17, -12 ) )
 	camera:Transform():LookAt( V3.New( 0, 0, 0 ) )	
 
-	color3d = Effect( "color3d", "Color_Ambient.effect" )
-	borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
+	local color3d = Effect( "color3d", "Color_Ambient.effect" )
+	local borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
 	local cube = sceneMain:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
@@ -146,10 +69,8 @@ function OnBeforeStartup( me )
 	player:Transform():SetPosition( V3.New( 0, 0, 0 ) )
 	
 	-- Add stuff
-	MakeTree( sceneMain, V3.New( 0, 0, 5 ) )
-	
-	MakeHouse( sceneMain, V3.New( -7, 0, 3 ) )
-	
+	BuildTree( sceneMain, V3.New( 0, 0, 5 ) )	
+	BuildHouse( sceneMain, V3.New( -7, 0, 3 ) )	
 end
 
 function OnAfterStartup( me )
