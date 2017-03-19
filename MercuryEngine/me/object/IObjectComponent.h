@@ -41,11 +41,6 @@ namespace me
 			virtual void OnDetach( Object * objecct ) = 0;
 
 			/// <summary>
-			/// Called once, regardless of enabled or not, before all other events.
-			/// </summary>
-			virtual void OnInit() = 0;
-
-			/// <summary>
 			/// called once, when enabled, only immediatly before the first OnUpdate.
 			/// </summary>
 			virtual void OnStart() = 0;

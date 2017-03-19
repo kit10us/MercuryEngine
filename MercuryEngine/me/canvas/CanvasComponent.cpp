@@ -15,24 +15,18 @@ CanvasComponent::CanvasComponent( IGame * game )
 {
 }
 
-void CanvasComponent::OnAttach( Scene * scene )
+void CanvasComponent::OnAttach( IScene * scene )
 {
+	SceneComponent::OnAttach( scene );
 	m_layer.reset( new Layer( m_game, {0,0}, {100,100}, Anchor::StretchFull ) );
 }
 
-void CanvasComponent::OnDetach( Scene * scene )
+void CanvasComponent::OnDetach( IScene * scene )
 {
+	SceneComponent::OnDetach( scene );
 }
-
-void CanvasComponent::OnInit( Scene * scene )
-{
-}
-
-void CanvasComponent::OnStart( Scene * scene )
-{
-}
-			
-void CanvasComponent::OnUpdate( Scene * scene, UpdateParams params )
+		
+void CanvasComponent::OnUpdate( UpdateParams params )
 {
 	RenderInfo myRenderInfo( params.renderInfo );
 
@@ -46,7 +40,7 @@ void CanvasComponent::OnUpdate( Scene * scene, UpdateParams params )
 	m_layer->UpdateLayout( UpdateParams{ params.renderer, myRenderInfo }, m_size );
 }
 
-void CanvasComponent::OnRender( Scene * scene, RenderGirl & renderGirl )
+void CanvasComponent::OnRender( RenderGirl & renderGirl )
 {
 	const RenderParams & params = *renderGirl.GetParams();
 

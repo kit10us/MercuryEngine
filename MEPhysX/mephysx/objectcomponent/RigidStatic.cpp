@@ -51,17 +51,16 @@ void RigidStatic::OnAttach( me::object::Object * object )
 	// Attach any existing colliders.
 	for ( int i = 0; i < object->GetComponentCount(); ++i )
 	{
-		objectcomponent::ColliderBase * collider = dynamic_cast< objectcomponent::ColliderBase * >(object->GetComponent( i ).get());
+		objectcomponent::ColliderBase * collider = object->GetComponentT< objectcomponent::ColliderBase >( i );
 		if ( collider )
 		{
 			m_rigidStatic->attachShape( *collider->GetShape() );
 		}
 	}
 
-	me::scene::Scene * scene = object->GetScene();
-	ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
-	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
-	sceneComponent->GetScene()->addActor( *m_rigidStatic.get() );
+	auto * scene = object->GetScene();
+	auto component = scene->GetComponentT< SceneComponent >( "PhysXScene" );
+	component->GetPxScene()->addActor( *m_rigidStatic.get() );
 }
 
 void RigidStatic::OnDetach( me::object::Object * object )

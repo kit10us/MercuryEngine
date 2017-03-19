@@ -32,17 +32,6 @@ int PushObjectComponent( lua_State * state, me::object::ObjectComponent::ptr com
 	return 1;
 }														
 
-int ObjectComponent_AttachTo( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	ObjectComponentProxy * cameraComponentProxy = CheckObjectComponent( state, 1 );
-	ObjectProxy * objectProxy = CheckObject( state, 2 );
-	objectProxy->object->AddComponent( cameraComponentProxy->component );
-	return 0;
-}
-
 int ObjectComponent_SetEnabled( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -231,7 +220,6 @@ void RegisterObjectComponent( lua_State * state )
 {
 	const luaL_Reg memberFunctions[] =
 	{
-		{ "AttachTo", ObjectComponent_AttachTo },
 		{ "SetEnabled", ObjectComponent_SetEnabled },
 		{ "GetEnabled", ObjectComponent_GetEnabled },
 		{ "GetType", ObjectComponent_GetType },

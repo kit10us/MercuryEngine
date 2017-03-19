@@ -17,17 +17,15 @@ namespace mephysx
 		MEPHYSX_API SceneComponent( me::IOS * os, GameComponent * gameComponent );
 		~SceneComponent();
 
-		physx::PxScene * GetScene();
-		physx::PxMaterial * GetMaterial();
-		physx::PxControllerManager * GetControllerManager();
+		physx::PxScene * GetPxScene();
+		physx::PxMaterial * GetPxMaterial();
+		physx::PxControllerManager * GetPxControllerManager();
 
 	public: // ISceneComponent...
-		void OnAttach( me::scene::Scene * scene ) override;
-		void OnDetach( me::scene::Scene * scene ) override;
-		void OnInit( me::scene::Scene * scene ) override;
-		void OnStart( me::scene::Scene * scene ) override;
-		void OnUpdate( me::scene::Scene * scene, me::UpdateParams params ) override;
-		void OnRender( me::scene::Scene * scene, me::scene::RenderGirl & renderGirl ) override;
+		void OnBeforeStart() override;
+		void OnAfterStart() override;
+		void OnUpdate( me::UpdateParams params ) override;
+		void OnRender( me::scene::RenderGirl & renderGirl ) override;
 		void OnSuspend() override;
 		void OnResume() override;
 

@@ -27,7 +27,6 @@ namespace mephysx
 		public: // IObjectComponent...
 			void OnAttach( me::object::Object * object ) override;
 			void OnDetach( me::object::Object * object ) override;
-			void OnInit() override {}
 			void OnStart() override {}
 			void OnUpdate( me::UpdateParams params ) override {}
 			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override {}

@@ -59,10 +59,9 @@ void RigidBody::OnAttach( me::object::Object * object )
 	}
 	PxRigidBodyExt::updateMassAndInertia( *m_rigidBody, 10.0f );
 
-	me::scene::Scene * scene = object->GetScene();
-	ISceneComponent::ptr component = scene->GetComponent( "PhysXScene" );
-	SceneComponent * sceneComponent = dynamic_cast< SceneComponent * >( component.get() );
-	sceneComponent->GetScene()->addActor( *m_rigidBody.get() );
+	auto scene = object->GetScene();
+	auto sceneComponent = scene->GetComponentT< SceneComponent >( "PhysXScene" );
+	sceneComponent->GetPxScene()->addActor( *m_rigidBody.get() );
 }
 
 void RigidBody::OnDetach( me::object::Object * object )

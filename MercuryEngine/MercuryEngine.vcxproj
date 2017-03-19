@@ -117,7 +117,9 @@
     <ClInclude Include="me\scene\GrowableObjectStack.h" />
     <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IOctreeNode.h" />
+    <ClInclude Include="me\scene\IScene.h" />
     <ClInclude Include="me\scene\ISceneComponent.h" />
+    <ClInclude Include="me\scene\ISceneManagerComponent.h" />
     <ClInclude Include="me\scene\ObjectAllocator.h" />
     <ClInclude Include="me\scene\ObjectAllocatorComponent.h" />
     <ClInclude Include="me\scene\ObjectStack.h" />
@@ -128,6 +130,7 @@
     <ClInclude Include="me\scene\Scene.h" />
     <ClInclude Include="me\scene\SceneComponent.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
+    <ClInclude Include="me\scene\SceneManagerComponent.h" />
     <ClInclude Include="me\shader\ConstantBuffer.h" />
     <ClInclude Include="me\shader\ConstantVariable.h" />
     <ClInclude Include="me\SpriteDictionary.h" />
@@ -238,6 +241,7 @@
     <ClCompile Include="me\scene\Scene.cpp" />
     <ClCompile Include="me\scene\SceneComponent.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
+    <ClCompile Include="me\scene\SceneManagerComponent.cpp" />
     <ClCompile Include="me\shader\ConstantBuffer.cpp" />
     <ClCompile Include="me\shader\ConstantVariable.cpp" />
     <ClCompile Include="me\SpriteDictionary.cpp" />

@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="02Test06 - Geo Instancing.cpp" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="MyGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4C23CAB-AC17-4ADB-A120-E112A9704BB6}</ProjectGuid>

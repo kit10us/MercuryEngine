@@ -1,5 +1,4 @@
 function OnBeforeStartup()
-
 	color3d = Effect( "color3d", "EffectColorInstanced3d.effect" )
 	borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
@@ -18,7 +17,7 @@ function OnBeforeStartup()
 	-- Add camera...
 	camera = scene1:NewObject( "camera" )
 	cameraComponent = CameraComponent()
-	cameraComponent:AttachTo( camera )
+	camera:Attach( cameraComponent )
 	cameraComponent:SetProjection( proj )
 	camera:Transform():SetPosition( V3.New( 0, 25, -47 ) )
 	camera:Transform():LookAt( V3.NewZero() )

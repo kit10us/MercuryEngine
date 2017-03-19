@@ -55,23 +55,23 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 	if ( moveLeftMotivation && moveLeftMotivation->IsTrue() )
 	{
 		wantMove = true;
-		move += {-1.0f, 0, 0 };
+		move += {moveLeftMotivation->GetValue(), 0, 0 };
 	}
 	else if ( moveRightMotivation && moveRightMotivation->IsTrue() )
 	{
 		wantMove = true;
-		move += {1.0f, 0, 0 };
+		move += {moveRightMotivation->GetValue(), 0, 0 };
 	}
 
 	if ( moveUpMotivation && moveUpMotivation->IsTrue() )
 	{
 		wantMove = true;
-		move += {0, 0, 1.0f };
+		move += {0, 0, moveUpMotivation->GetValue() };
 	}
 	else if ( moveDownMotivation && moveDownMotivation->IsTrue() )
 	{
 		wantMove = true;
-		move += {0, 0, -1.0f };
+		move += {0, 0, moveDownMotivation->GetValue() };
 	}
 
 	if ( wantMove )

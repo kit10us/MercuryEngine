@@ -13,7 +13,7 @@ namespace me
 {
 	namespace scene
 	{
-		class Scene;
+		class IScene;
 
 		class ISceneComponent : public IComponent
 		{
@@ -25,32 +25,30 @@ namespace me
 			/// <summary>
 			/// Called once, when we are first attached to the scene.
 			/// </summary>
-			virtual void OnAttach( Scene * scene ) = 0;
+			virtual void OnAttach( IScene * scene ) = 0;
 
 			/// <summary>
 			/// Called once, when we are detached from the scene.
 			/// </summary>
-			virtual void OnDetach( Scene * scene ) = 0;			 
+			virtual void OnDetach( IScene * scene ) = 0;			 
 
-			/// <summary>
-			/// Called once, regardless of enabled or not, before all other events.
-			/// </summary>
-			virtual void OnInit( Scene * scene ) = 0;
+			virtual void OnEnterScene( me::scene::IScene * previous ) = 0;
+			
+			virtual void OnLeaveScene( me::scene::IScene * next ) = 0;
 
-			/// <summary>
-			/// called once, when enabled, only immediatly before the first OnUpdate.
-			/// </summary>
-			virtual void OnStart( Scene * scene ) = 0;
+			virtual void OnBeforeStart() = 0;
+
+			virtual void OnAfterStart() = 0;
 
 			/// <summary>
 			/// Called every game update cycle.
 			/// </summary>
-			virtual void OnUpdate( Scene * scene, UpdateParams params ) = 0;
+			virtual void OnUpdate( UpdateParams params ) = 0;
 
 
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
 			//void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
-			virtual void OnRender( Scene * scene, RenderGirl & rendergirl ) = 0;
+			virtual void OnRender( RenderGirl & rendergirl ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).

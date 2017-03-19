@@ -89,8 +89,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MELuaDLL.h" />
+    <ClInclude Include="melua\component\AutoSceneManagerComponent.h" />
     <ClInclude Include="melua\component\GameComponent.h" />
     <ClInclude Include="melua\component\ObjectComponent.h" />
+    <ClInclude Include="melua\component\SceneComponent.h" />
     <ClInclude Include="melua\CreateState.h" />
     <ClInclude Include="melua\ExportComponent.h" />
     <ClInclude Include="melua\ExportInput.h" />
@@ -136,8 +138,10 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MELuaDLL.cpp" />
+    <ClCompile Include="melua\component\AutoSceneManagerComponent.cpp" />
     <ClCompile Include="melua\component\GameComponent.cpp" />
     <ClCompile Include="melua\component\ObjectComponent.cpp" />
+    <ClCompile Include="melua\component\SceneComponent.cpp" />
     <ClCompile Include="melua\CreateState.cpp" />
     <ClCompile Include="melua\ExportComponent.cpp" />
     <ClCompile Include="melua\ExportInput.cpp" />

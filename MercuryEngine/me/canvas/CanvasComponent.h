@@ -22,12 +22,10 @@ namespace me
 			Layer * GetLayer();
 
 		public: // ISceneComponent...
-			void OnAttach( scene::Scene * scene ) override;
-			void OnDetach( scene::Scene * scene ) override;
-			void OnInit( scene::Scene * scene ) override;  
-			void OnStart( scene::Scene * scene ) override; 			
-			void OnUpdate( scene::Scene * scene, UpdateParams params ) override;
-			void OnRender( scene::Scene * scene, scene::RenderGirl & renderGirl ) override;
+			void OnAttach( scene::IScene * scene ) override;
+			void OnDetach( scene::IScene * scene ) override;
+			void OnUpdate( UpdateParams params ) override;
+			void OnRender( scene::RenderGirl & renderGirl ) override;
 			void OnSuspend() override;											
 			void OnResume() override;
 

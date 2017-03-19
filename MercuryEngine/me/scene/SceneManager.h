@@ -2,8 +2,9 @@
 // All Rights Reserved
 
 #pragma once
-#include <me/scene/Scene.h>
+#include <me/scene/IScene.h>
 #include <me/GameComponent.h>
+#include <me/scene/ISceneManagerComponent.h>
 
 namespace me
 {
@@ -20,9 +21,17 @@ namespace me
             void Destroy();
 
 			size_t GetSceneCount() const;
-            Scene::ptr AddScene( std::string name );
-			Scene::ptr FindScene( std::string name ) const;
-			Scene::ptr GetScene( size_t index ) const;
+            void AddScene( std::string name, IScene::ptr scene );
+            IScene* AddScene( std::string name );
+			IScene* FindScene( std::string name );
+			IScene* GetScene( size_t index );
+			
+			IScene* GetCurrentCurrent();
+			IScene* GetPrevious();
+
+			bool ChangeScene( std::string name );
+
+			void AddComponent( ISceneManagerComponent::ptr component );
 
 		public: // IGameCompnent...
 			void OnUpdate( UpdateParams params ) override;
@@ -34,11 +43,14 @@ namespace me
 		private:
 			IGame * m_game;
 
-			std::map< std::string, Scene::ptr > m_scenes;
-			std::vector< Scene::ptr > m_sceneList;
-			Scene * m_focusScene;
+			std::map< std::string, IScene::ptr > m_scenes;
+			std::vector< IScene::ptr > m_sceneList;
+			IScene * m_currentScene;
+			IScene * m_previousScene;
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;
+
+			std::vector< ISceneManagerComponent::ptr > m_componentList;
 	    };
     }
 }

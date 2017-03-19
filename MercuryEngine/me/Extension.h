@@ -5,16 +5,21 @@
 
 #include <qxml/Element.h>
 #include <unify/Path.h>
-#include <windows.h>
 
+#define WINDOWS_LEAN_AND_MEAN
+#include <windows.h>
+#ifdef GetCommandLine
+#undef GetCommandLine
+#endif // GetCommandLine
+#ifdef GetObject
+#undef GetObject
+#endif
 #ifdef max
 #undef max
 #endif
-
 #ifdef min
 #undef min
 #endif
-
 
 namespace me
 {

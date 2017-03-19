@@ -38,6 +38,8 @@ void MyGame::Startup()
 
 	Scene::ptr scene = sceneManager->AddScene( "scene" );
 
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
+
 	// Add a camera...
 	Object * camera = scene->GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 

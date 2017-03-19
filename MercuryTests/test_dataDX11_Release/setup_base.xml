@@ -3,7 +3,7 @@
 <renderer source="../../extensions/Release/MercuryEngineDX11.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
-<failuresAsCritial>true</failuresAsCritial>
+<failuresAsCritical>true</failuresAsCritical>
 <logfile>log.txt</logfile>
 <assets>models/</assets>
 <assets>media/</assets>

@@ -2,7 +2,6 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/IGame.h>
 #include <me/scene/IObjectAllocator.h>
 #include <me/object/Object.h>
 

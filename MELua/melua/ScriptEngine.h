@@ -30,6 +30,8 @@ namespace melua
 
 		me::object::IObjectComponent::ptr LoadObjectScript( unify::Path path );
 
+		me::scene::ISceneComponent::ptr LoadSceneScript( unify::Path path );
+
 		MELUADLL_API lua_State * GetState();
 
 		MELUADLL_API void AddLibrary( const char * group, const luaL_Reg * list, int count );

@@ -6,7 +6,7 @@ function OnBeforeStartup()
 	-- Add camera...
 	local camera = scene1:NewObject( "camera" )
 	local cameraComponent = CameraComponent()
-	cameraComponent:AttachTo( camera )
+	camera:Attach( cameraComponent )
 	cameraComponent:SetProjection( proj )
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.New( 0, -2, 0 ) )	

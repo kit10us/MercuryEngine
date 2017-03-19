@@ -52,10 +52,6 @@ const Geometry::ptr GeometryComponent::GetGeometry() const
 	return m_geometry;
 }
 
-void GeometryComponent::OnInit()
-{
-}
-
 void GeometryComponent::OnStart()
 {
 }

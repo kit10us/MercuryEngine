@@ -495,6 +495,15 @@
     <ClInclude Include="me\action\IgnoreReturn.h">
       <Filter>me\action</Filter>
     </ClInclude>
+    <ClInclude Include="me\scene\IScene.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\ISceneManagerComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\SceneManagerComponent.h">
+      <Filter>me\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -814,6 +823,9 @@
     </ClCompile>
     <ClCompile Include="me\action\IgnoreReturn.cpp">
       <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\SceneManagerComponent.cpp">
+      <Filter>me\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

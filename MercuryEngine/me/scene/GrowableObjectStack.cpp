@@ -8,7 +8,7 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-GrowableObjectStack::GrowableObjectStack( Scene * scene, size_t max )
+GrowableObjectStack::GrowableObjectStack( IScene * scene, size_t max )
 	: ObjectAllocator( "GrowableObjectStack" )
 	, m_scene{ scene }
 	, m_max{ max }

@@ -152,7 +152,7 @@ void * Game::Feed( std::string target, void * data )
 			using namespace scene;
 		
 			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
-			Scene::ptr scene = sceneManager->FindScene( "scene1" );
+			IScene* scene = sceneManager->FindScene( "scene1" );
 
 			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 			scene->AddComponent( canvas );
@@ -289,7 +289,7 @@ bool Game::Initialize( OSParameters osParameters )
 						// Delete current log.
 						DeleteFileA( (char*)m_logFile.ToString().c_str() );
 					}
-					else if ( node.IsTagName( "FailuresAsCritial" ) )
+					else if ( node.IsTagName( "failuresAsCritical" ) )
 					{
 						m_failuresAsCritial = unify::Cast< bool >( node.GetText() );
 					}
@@ -423,6 +423,20 @@ bool Game::Initialize( OSParameters osParameters )
 	m_totalStartupTime = micro * 0.000001f;
 
 	LogLine( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s", 0 );
+
+	LogLine( "Creating Main Scene", 0 );
+	auto sceneManager = GetComponentT< scene::SceneManager >( "SceneManager" );
+	auto mainScene = CreateMainScene();
+	if ( mainScene )
+	{
+		sceneManager->AddScene( mainScene->GetName(), mainScene );
+		LogLine( "Main Scene created", 0 );
+	}
+	else
+	{
+		LogLine( "No main screen created", 0 );
+	}
+
 
 	return true;
 }

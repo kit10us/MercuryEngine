@@ -3,6 +3,7 @@
 
 #include <melua/ExportDebug.h>
 #include <melua/ScriptEngine.h>
+#include <melua/Util.h>
 
 using namespace melua;
 using namespace me;
@@ -22,7 +23,7 @@ int Debug_LogLine( lua_State * state )
 	}
 	else if ( type == LUA_TUSERDATA )
 	{
-		game->LogLine( "<USERDATA>\n" );
+		game->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
 	}
 	else
 	{

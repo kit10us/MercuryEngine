@@ -13,12 +13,10 @@ namespace me
 {
 	namespace scene
 	{
-		class Scene;
-
 		class GrowableObjectStack : public ObjectAllocator
 		{
 		public:
-			GrowableObjectStack( Scene * scene, size_t max );
+			GrowableObjectStack( IScene * scene, size_t max );
 			virtual ~GrowableObjectStack();
 
 			size_t Count() const override;
@@ -36,7 +34,7 @@ namespace me
 			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) override;
 
 		private:
-			Scene * m_scene;
+			IScene * m_scene;
 			size_t m_max;
 			std::list< std::shared_ptr< ObjectStack > > m_stacks;
 		};

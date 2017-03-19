@@ -15,7 +15,7 @@ namespace me
 {
 	namespace scene
 	{
-		class Scene;
+		class IScene;
 	}
 
 	namespace object
@@ -62,8 +62,8 @@ namespace me
 			void AddComponent( IObjectComponent::ptr component );
 			void RemoveComponent( IObjectComponent::ptr component );
 			IObjectComponent::ptr GetComponent( int index );
-			IObjectComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
-			int FindComponent( std::string name, int startIndex = 0 ) const;
+			IObjectComponent::ptr GetComponent( std::string typeName );
+			int FindComponent( std::string name ) const;
 
 			void SetEnabled( bool enabled );
 			bool IsEnabled() const;
@@ -86,8 +86,8 @@ namespace me
 			void OnSuspend();
 			void OnResume();
 
-			void SetScene( scene::Scene * scene );
-			scene::Scene * GetScene();
+			void SetScene( scene::IScene * scene );
+			scene::IScene * GetScene();
 
 			bool IsAlive() const;
 			void SetAlive( bool alive );
@@ -95,11 +95,32 @@ namespace me
 		protected:
 			bool m_alive;
 			std::string m_name;
-			scene::Scene * m_scene;
+			scene::IScene * m_scene;
 			bool m_enabled;
 			std::list< std::string > m_tags;
 			std::list< ComponentInstance< IObjectComponent::ptr > > m_components;
 			unify::FrameLite m_frame;
+
+		public:
+			template< typename T >
+			T* GetComponentT( std::string typeName );
+
+			template< typename T >
+			T* GetComponentT( int index );
 		};
+
+		template< typename T >
+		T* Object::GetComponentT( std::string typeName )
+		{
+			auto component = GetComponent( typeName ).get();
+			return dynamic_cast< T* >( component );
+		}
+
+		template< typename T >
+		T* Object::GetComponentT( int index )
+		{
+			auto component = GetComponent( index ).get();
+			return dynamic_cast< T* >( component );
+		}
 	}
 }

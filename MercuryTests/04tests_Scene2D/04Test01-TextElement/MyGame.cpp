@@ -1,0 +1,28 @@
+// Copyright (c) 2002 - 2011, Quentin S. Smith
+// All Rights Reserved
+
+/// <summary>
+/// "The Basics"
+/// goals and requirements:
+/// * Illustrate the core framework components.
+/// * Use low level objects for limited unit-style testing.
+/// </summary>
+
+
+#include <MEWinMain.h>
+#include <me/Game.h>
+#include <MainScene.h>
+
+using namespace me;
+
+class MyGame : public Game
+{
+	scene::IScene::ptr MyGame::CreateMainScene();
+} game;
+
+RegisterGame( game );
+
+scene::IScene::ptr MyGame::CreateMainScene()
+{
+	return scene::IScene::ptr( new MainScene( this ) );
+}

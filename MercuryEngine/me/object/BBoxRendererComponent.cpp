@@ -12,6 +12,7 @@ using namespace object;
 
 BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component )
 	: ObjectComponent( component )
+	, m_os{ component.m_os }
 	, m_effect( component.m_effect )
 	, m_padding( component.m_padding )
 	, m_color( component.m_color )
@@ -52,7 +53,7 @@ void BBoxRendererComponent::OnAttach( Object * object )
 
 	for ( int i = 0; i < object->GetComponentCount(); ++i )
 	{
-		GeometryComponent * geometryComponent = dynamic_cast< GeometryComponent * >(object->GetComponent( i ).get());
+		GeometryComponent * geometryComponent = object->GetComponentT< GeometryComponent >( i );
 		if ( geometryComponent != nullptr )
 		{
 			m_geomertries.push_back( geometryComponent );

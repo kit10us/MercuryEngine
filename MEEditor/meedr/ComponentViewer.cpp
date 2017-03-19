@@ -408,14 +408,14 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			}
 			case Types::Scene:
 			{
-				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
+				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
 				auto scene = sceneManager->GetScene( instanceIndex );
-				component = scene->GetComponent( componentIndex ).get();
+				component = scene->GetComponent( componentIndex );
 				break;
 			}
 			case Types::Object:
 			{
-				auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
+				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
 				auto scene = sceneManager->GetScene( instanceIndex );
 				auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
 				component = object->GetComponent( componentIndex ).get();

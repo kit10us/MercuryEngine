@@ -12,7 +12,7 @@
 <assets>../assets_common/scripts/</assets>
 <assets>../assets_common/effects/</assets>
 <extension source="../../extensions/Debug/MELua.dll">
-	<startup>startup.lua</startup>
+	<auto>../assets_common/scripts/auto/</auto>
 </extension>
 <extension source="../../extensions/Debug/DAELoader.dll">
 	<color name="color_ambient" source="Color_Ambient.effect"/>

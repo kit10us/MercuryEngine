@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/IGame.h>
+#include <me/Game.h>
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 #include <me/Viewport.h>
@@ -18,46 +18,44 @@ namespace me
 {
 	namespace scene
 	{
-		class Scene
+		class Scene : public IScene
 		{
 		public:
-			typedef std::shared_ptr< Scene > ptr;
-
-			Scene( IGame * game, std::string name );
+			Scene( Game * game, std::string name );
 			virtual ~Scene();
 
-			std::string GetName() const;
+		protected: // User defined events...
+			void OnEnterScene( IScene* previous ) override {}
+			void OnLeaveScene( IScene * next ) override {}
+			void OnStart() override {}
+			void OnUpdate( UpdateParams params ) override {}
+			void OnRender( RenderParams params ) override {}
+			void OnSuspend() override {}
+			void OnResume() override {}
+
+		public:
+			void EnterScene( IScene* previous ) override;
+			void LeaveScene( IScene * next ) override;
+			void Start() override;
+			void Update( UpdateParams params ) override;
+			void Render( RenderParams params ) override;
+			void Suspend() override;
+			void Resume() override;
+
+			me::Game * GetGame() override;
+
+			me::IOS * GetOS() override;
+
+			std::string GetName() const override;
 
 			size_t ObjectCount() const;
-
-			void OnInit();
-			void OnStart();
-			void Update( UpdateParams params );
-			void Render( RenderParams params );
-			void Suspend();
-			void Resume();
-
-			void SetSize( const unify::Size< float > & size );
-			unify::Size< float > GetSize() const;
-		    
-			void SetPosition( const unify::V2< float > & position );
-			unify::V2< float > GetPosition() const;
-		    
-			void SetZ( const unify::MinMax< float > & z );
-
-			// Order amongst other scenes...
-			void SetOrder( float order );
-			float GetOrder() const;
-
-			void SetEnabled( bool enabled );
-			bool GetEnabled() const;
 
 			int GetComponentCount() const;
 			void AddComponent( ISceneComponent::ptr component );
 			void RemoveComponent( ISceneComponent::ptr component );
-			ISceneComponent::ptr GetComponent( int index );
-			ISceneComponent::ptr GetComponent( std::string typeName, int startIndex = 0 );
-			int FindComponent( std::string typeName, int startIndex = 0 ) const;
+			ISceneComponent* GetComponent( int index );
+			ISceneComponent* GetComponent( std::string typeName );
+			int FindComponent( std::string typeName ) const;
 
 			IObjectAllocator * GetObjectAllocator();
 			
@@ -65,17 +63,18 @@ namespace me
 
 			size_t GetRenderCount() const;
 
+			template< typename T > 
+			rm::ResourceManagerSimple< T > * GetManager()
+			{
+				return GetGame()->GetManager< T >();
+			}
+
 		private:
-			IGame * m_game;
+			Game * m_game;
 			std::string m_name;	 
 			std::list< ISceneComponent::ptr > m_components;
 			IObjectAllocator* m_objectAllocator;		   
-			bool m_inited;
-			bool m_started;								   
-			float m_order;
-			bool m_enabled;
 			size_t m_renderCount;
-			me::Viewport m_viewport;
 		};
 	}
 }

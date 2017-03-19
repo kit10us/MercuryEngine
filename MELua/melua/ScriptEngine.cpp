@@ -4,13 +4,13 @@
 #include <melua/Util.h>
 #include <melua/ScriptEngine.h>
 #include <melua/component/GameComponent.h>
+#include <melua/component/SceneComponent.h>
 #include <melua/component/ObjectComponent.h>
 #include <melua/CreateState.h>
 #include <melua/ExportObject.h>
 
 #pragma comment( lib, "lua53" )
 
-using namespace melua;
 using namespace melua;
 using namespace me;
 using namespace scene;
@@ -103,6 +103,21 @@ IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 	return module;
 }
 
+ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
+{					
+	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+
+	int top = lua_gettop( m_state );
+
+	std::string luaName = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_objectScriptCount++ );
+
+	lua_State * state = m_state;
+
+	ISceneComponent::ptr module( new component::SceneComponent( m_game, m_state, luaName, path ) );
+
+	return module;
+}
+
 IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
 {					
 	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
@@ -113,7 +128,7 @@ IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
 
 	lua_State * state = m_state;
 
-	IObjectComponent::ptr module( new component::ObjectComponent( m_state, m_game, luaName, path ) );
+	IObjectComponent::ptr module( new component::ObjectComponent( m_game, m_state, luaName, path ) );
 
 	return module;
 }

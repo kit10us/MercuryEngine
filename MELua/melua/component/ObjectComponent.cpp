@@ -23,11 +23,11 @@ namespace {
 }
 
 ObjectComponent::ObjectComponent( ObjectComponent & component )
-	: ObjectComponent( component.m_state, component.m_game, component.m_luaName, component.m_path  )
+	: ObjectComponent( component.m_game, component.m_state, component.m_luaName, component.m_path  )
 {
 }
 
-ObjectComponent::ObjectComponent( lua_State * state, me::IGame * game, std::string luaName, unify::Path path )
+ObjectComponent::ObjectComponent( me::IGame * game, lua_State * state, std::string luaName, unify::Path path )
 	: me::object::ObjectComponent( "LUAScript" )
 	, m_state( state )
 	, m_game( game )
@@ -72,7 +72,7 @@ void ObjectComponent::CallMember( std::string function )
 	lua_pop( m_state, 1 );
 }
 			 
-void ObjectComponent::OnInit()
+void ObjectComponent::OnStart()
 {
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
@@ -129,11 +129,6 @@ void ObjectComponent::OnInit()
 		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
 	}
 
-	CallMember( "OnInit" );
-}
-
-void ObjectComponent::OnStart()
-{
 	CallMember( "OnStart" );
 }
 

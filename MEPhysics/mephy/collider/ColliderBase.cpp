@@ -32,11 +32,6 @@ void ColliderBase::AddOnExitAction( me::action::IAction::ptr action )
 	m_onExit.AddAction( action );
 }
 
-void ColliderBase::OnInit()
-{
-	ObjectComponent::OnInit();
-}
-
 void ColliderBase::OnStart()
 {
 	ObjectComponent::OnStart();

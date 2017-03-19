@@ -1,9 +1,9 @@
 <xml>
 <title>DX9 Test (Release)</title>
 <renderer source="../../extensions/Release/MercuryEngineDX9.dll">
-	<display fullscreen="false" x="10" y="10" width="800" height="640"/>
+	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
-<failureAsCritical>true</failureAsCritical>
+<failuresAsCritical>true</failuresAsCritical>
 <logfile>log.txt</logfile>
 <extension source="../../extensions/Release/MEEditor.dll"/>
 <assets>models/</assets>

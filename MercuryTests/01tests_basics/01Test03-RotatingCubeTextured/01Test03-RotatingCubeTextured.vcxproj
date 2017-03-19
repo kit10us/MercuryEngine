@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="01Test03-RotatingCube.Textured.cpp" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="MyGame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8E34D045-C395-41F3-AEF3-11A085AB6B51}</ProjectGuid>

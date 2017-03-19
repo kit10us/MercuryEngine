@@ -11,13 +11,9 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-Scene::Scene( IGame * game, std::string name )
+Scene::Scene( Game * game, std::string name )
 : m_game( game )
 , m_name{ name }
-, m_inited( false )
-, m_started( false )
-, m_order( 0.0f )
-, m_enabled( true )
 , m_renderCount{ 0 }
 {
 	auto objectAllocatorComponent = new ObjectAllocatorComponent( game->GetOS() );
@@ -30,65 +26,64 @@ Scene::~Scene()
 {
 }
 
-std::string Scene::GetName() const
+void Scene::EnterScene( IScene * previous )
 {
-	return m_name;
-}
+	OnEnterScene( previous );
 
-size_t Scene::ObjectCount() const
-{
-	return m_objectAllocator->Count();
-}
-
-void Scene::OnInit()
-{
 	for ( auto && component : m_components )
 	{
 		if ( component->IsEnabled() )
 		{
-			component->OnInit( this );
+			component->OnEnterScene( previous );
 		}
 	}
 }
 
-void Scene::OnStart()
+void Scene::LeaveScene( IScene * next )
 {
 	for ( auto && component : m_components )
 	{
 		if ( component->IsEnabled() )
 		{
-			component->OnStart( this );
+			component->OnLeaveScene( next );
+		}
+	}
+
+	OnLeaveScene( next );
+}
+
+void Scene::Start()
+{
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnBeforeStart();
+		}
+	}
+
+	OnStart();
+
+	for ( auto && component : m_components )
+	{
+		if ( component->IsEnabled() )
+		{
+			component->OnAfterStart();
 		}
 	}
 }
 
 void Scene::Update( UpdateParams params )
 {
-	if ( ! m_inited )
-	{
-		OnInit();
-		m_inited = true;
-	}
-
-    if ( ! m_enabled )
-    {
-        return;
-    }
-
-	// On first update, call start ONCE.
-	if ( ! m_started )
-	{
-		OnStart();
-		m_started = true;
-	}
-
 	for( auto && component : m_components )
 	{
 		if ( component->IsEnabled( ) )
 		{
-			component->OnUpdate( this, params );
+			component->OnUpdate( params );
 		}
 	}
+
+	OnUpdate( params );
 }
 
 void Scene::Render( RenderParams params )
@@ -109,15 +104,19 @@ void Scene::Render( RenderParams params )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnRender( this, renderGirl );
+			component->OnRender( renderGirl );
 		}
 	}
 
 	m_renderCount = renderGirl.End();
+
+	OnRender( params );
 }
 
 void Scene::Suspend()
 {
+	OnSuspend();
+
 	for ( auto && component : m_components )
 	{
 		if ( component->IsEnabled() )
@@ -136,53 +135,29 @@ void Scene::Resume()
 			component->OnResume();
 		}
 	}
+
+	OnResume();
 }
 
-void Scene::SetSize( const unify::Size< float > & size )
+me::Game * Scene::GetGame()
 {
-	m_viewport.SetSize( size );
+	return m_game;
 }
 
-unify::Size< float > Scene::GetSize() const
+me::IOS * Scene::GetOS()
 {
-	return m_viewport.GetSize();
+	return m_game->GetOS();
 }
 
-void Scene::SetPosition( const unify::V2< float > & position )
+std::string Scene::GetName() const
 {
-	m_viewport.SetUL( position );
+	return m_name;
 }
 
-unify::V2< float > Scene::GetPosition() const
+size_t Scene::ObjectCount() const
 {
-	return m_viewport.GetUL();
+	return m_objectAllocator->Count();
 }
-
-void Scene::SetZ( const unify::MinMax< float > & z )
-{
-	m_viewport.SetMinDepth( z.Min() );
-	m_viewport.SetMaxDepth( z.Max() );
-}
-
-void Scene::SetOrder( float order )
-{
-    m_order = order;
-}
-
-float Scene::GetOrder() const
-{
-    return m_order;
-}
-
-void Scene::SetEnabled( bool enabled )
-{
-    m_enabled = enabled;
-}
-
-bool Scene::GetEnabled() const
-{
-    return m_enabled;
-}					
 
 int Scene::GetComponentCount() const
 {
@@ -201,33 +176,33 @@ void Scene::RemoveComponent( ISceneComponent::ptr component )
 	component->OnDetach( this );
 }
 
-ISceneComponent::ptr Scene::GetComponent( int index )
+ISceneComponent* Scene::GetComponent( int index )
 {
-	if ( index > (int)m_components.size() ) return ISceneComponent::ptr();
+	if ( index > (int)m_components.size() ) return nullptr;
 
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( index == i ) return component;
+		if ( index == i ) return component.get();
 		++i;
 	}
 
-	return ISceneComponent::ptr();
+	return nullptr;
 }
 
-ISceneComponent::ptr Scene::GetComponent( std::string name, int startIndex )
+ISceneComponent* Scene::GetComponent( std::string name )
 {
-	int index = FindComponent( name, startIndex );
-	if ( index == -1 ) return ISceneComponent::ptr();
+	int index = FindComponent( name );
+	if ( index == -1 ) return nullptr;
 	return GetComponent( index );
 }
 
-int Scene::FindComponent( std::string typeName, int startIndex ) const
+int Scene::FindComponent( std::string typeName ) const
 {
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( i >= startIndex && unify::StringIs( component->GetTypeName(), typeName ) ) return i;
+		if ( unify::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

@@ -35,17 +35,6 @@ int PushCameraComponent( lua_State * state, me::object::ObjectComponent::ptr com
 	return 1;
 }														
 
-int CameraComponent_AttachTo( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	CameraComponentProxy * cameraComponentProxy = CheckCameraComponent( state, 1 );
-	ObjectProxy * objectProxy = CheckObject( state, 2 );
-	objectProxy->object->AddComponent( cameraComponentProxy->component );
-	return 0;
-}
-
 int CameraComponent_SetProjection( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -124,7 +113,6 @@ int CameraComponent_IsEnabled( lua_State * state )
 
 static const luaL_Reg CameraComponentFunctions[] =
 {
-	{ "AttachTo", CameraComponent_AttachTo },
 	{ "SetProjection", CameraComponent_SetProjection },
 	{ "GetProjection", CameraComponent_GetProjection },
 	{ "GetRenderer", CameraComponent_GetRenderer },

@@ -21,12 +21,12 @@ CapsuleController::CapsuleController( mephysx::SceneComponent * sceneComponent, 
 	desc.setToDefault();
 	desc.radius = radius;
 	desc.height = height;
-	desc.material = sceneComponent->GetMaterial();
+	desc.material = sceneComponent->GetPxMaterial();
 	// This is done OnAttach: desc.userData = player;
 
 	bool isvalid = desc.isValid();
 
-	PxController * controller = sceneComponent->GetControllerManager()->createController( desc );
+	PxController * controller = sceneComponent->GetPxControllerManager()->createController( desc );
 	
 	m_controller.reset( controller, Releaser< PxController > ); 
 }

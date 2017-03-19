@@ -30,7 +30,6 @@ namespace mephy
 			bool Updateable() const { return true; }
 			bool Renderable() const { return false; }
 
-			void OnInit() override;
 			void OnStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
 			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override;

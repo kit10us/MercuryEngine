@@ -24,19 +24,25 @@ namespace me
 	class Game : public me::IGame
 	{
 	protected: // User overrides...
-
+		
 		virtual bool Setup( me::IOS * os ) override;
 		virtual void Startup() override;		  
 		virtual void Update( UpdateParams params ) override;
 		virtual void Render( RenderParams params ) override;
 		virtual void Shutdown() override;
 
+		scene::IScene::ptr CreateMainScene() override
+		{
+			return scene::IScene::ptr();
+		}
+
 	public:
 		Game( unify::Path setup = "setup.xml" );
 		virtual ~Game();
 
-		me::OSParameters GetOSParameters() const override;
 
+
+		me::OSParameters GetOSParameters() const override;
 
 		void * Feed( std::string target, void * data ) override;
 						

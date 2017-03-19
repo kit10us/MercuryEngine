@@ -34,7 +34,6 @@ namespace me
 
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
-			void OnInit() override;
 			void OnStart() override;
 			void OnUpdate( UpdateParams params ) override;
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;

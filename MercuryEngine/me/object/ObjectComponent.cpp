@@ -82,10 +82,6 @@ void ObjectComponent::OnDetach( Object * object )
 	m_object = nullptr;
 }
 
-void ObjectComponent::OnInit() 
-{
-}
-
 void ObjectComponent::OnStart() 
 {
 }

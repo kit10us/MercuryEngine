@@ -9,8 +9,7 @@ namespace me
 	{
 	public:
 		ComponentInstance()
-			: m_initialized( false )
-			, m_started( false )
+			: m_started( false )
 		{
 		}
 
@@ -35,11 +34,6 @@ namespace me
 			return m_component;
 		}
 
-		void SetInitialized( bool initialized )
-		{
-			m_initialized = initialized;
-		}
-
 		void SetStarted( bool started )
 		{
 			m_started = started;
@@ -56,7 +50,6 @@ namespace me
 		}
 
 	private:
-		bool m_initialized;
 		bool m_started;
 		T m_component;
 	};

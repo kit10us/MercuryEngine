@@ -8,7 +8,7 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-Octree::Octree( Scene * scene, size_t max )
+Octree::Octree( IScene * scene, size_t max )
 	: m_scene{ scene }
 	, m_max{ max }
 	, m_stacks{ std::shared_ptr< ObjectStack >( new ObjectStack( scene, max ) ) }

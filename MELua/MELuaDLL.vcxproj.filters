@@ -132,6 +132,12 @@
     <ClInclude Include="melua\ExportComponent.h">
       <Filter>melua\exports</Filter>
     </ClInclude>
+    <ClInclude Include="melua\component\SceneComponent.h">
+      <Filter>melua\component</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\component\AutoSceneManagerComponent.h">
+      <Filter>melua\component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -247,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="melua\ExportComponent.cpp">
       <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\component\SceneComponent.cpp">
+      <Filter>melua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\component\AutoSceneManagerComponent.cpp">
+      <Filter>melua\component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

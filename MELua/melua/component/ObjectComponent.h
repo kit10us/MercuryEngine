@@ -16,7 +16,7 @@ namespace melua
 			ObjectComponent( ObjectComponent & component );
 
 		public:
-			ObjectComponent( lua_State * state, me::IGame * game, std::string myName, unify::Path path );
+			ObjectComponent( me::IGame * game, lua_State * state, std::string myName, unify::Path path );
 			~ObjectComponent();
 
 			std::string GetLuaName() const;
@@ -25,7 +25,6 @@ namespace melua
 			bool Updateable() const { return false; }
 			bool Renderable() const { return false; }
 
-			void OnInit() override;
 			void OnStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
 			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override;

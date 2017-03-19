@@ -4,13 +4,13 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/scene/Scene.h>
+#include <me/scene/IScene.h>
 
 void RegisterScene( lua_State * state );
 
 struct SceneProxy
 {
-	me::scene::Scene::ptr scene;
+	me::scene::IScene* scene;
 };
 
 MELUADLL_API SceneProxy* CheckScene( lua_State* state, int index );

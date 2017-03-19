@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/scene/IScene.h>
 #include <me/IOS.h>
 #include <unify/TimeDelta.h>
 #include <me/Extension.h>
@@ -43,6 +44,8 @@ namespace me
 	class IGame
 	{
 	protected:
+		virtual scene::IScene::ptr CreateMainScene() = 0;
+
 		/// <summary>
 		/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 		/// </summary>
@@ -66,7 +69,7 @@ namespace me
 		/// <summary>
 		/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.
 		/// </summary>
-		virtual void Shutdown() = 0;																				  
+		virtual void Shutdown() = 0;
 
 	public:
 		virtual ~IGame() {}
@@ -119,8 +122,8 @@ namespace me
 		virtual void AddComponent( IGameComponent::ptr component ) = 0;
 		virtual void RemoveComponent( IGameComponent::ptr component ) = 0;
 		virtual IGameComponent::ptr GetComponent( int index ) = 0;
-		virtual IGameComponent::ptr GetComponent( std::string name ) = 0 ;
-		virtual int FindComponent( std::string name ) const = 0;	
+		virtual IGameComponent::ptr GetComponent( std::string name ) = 0;
+		virtual int FindComponent( std::string name ) const = 0;
 
 		/// <summary>
 		/// Request access to safely update the game engine. This disables game updates.
@@ -131,35 +134,33 @@ namespace me
 		/// Simply reset the UpdateLock::ptr, or let it fall out of scope, to unlock.
 		/// </summary>
 		virtual UpdateLock::ptr LockUpdate( bool exclusive ) = 0;
-		
+
 		/// <summary>
 		/// If exclusive is false, returns true if there is any kind of lock,
 		/// else it returns true only if there is an exclusive lock.
 		/// </summary>
 		virtual bool IsUpdateLocked( bool exclusive ) const = 0;
+
+		template< typename T >
+		T* GetComponentT( std::string typeName );
+
+		template< typename T >
+		T* GetComponentT( int index );
 	};
 
-
-	/// <summary>
-	/// Helper function to get a specific game component.
-	/// </summary>
 	template< typename T >
-	T GetGameComponent( IGame * game, std::string name )
+	T* IGame::GetComponentT( std::string typeName )
 	{
-		IGameComponent::ptr gc = game->GetComponent( name, 0 );
-		if( !gc )
-		{
-			game->ReportError( ErrorLevel::Critical, "Mercury", "Couldn't find game component " + name + "!" );
-			return T();
-		}
+		auto component = GetComponent( typeName );
+		if ( ! component ) return nullptr;
+		return dynamic_cast< T* >( component.get() );
+	}
 
-		T c = dynamic_cast<T>(gc.get());
-		if( !c )
-		{
-			game->ReportError( ErrorLevel::Critical, "Mercury", "Component " + name + " found, however, not expected type or version!" );
-			return T();
-		}
-			
-		return c;
+	template< typename T >
+	T* IGame::GetComponentT( int index )
+	{
+		auto component = GetComponent( index );
+		if ( ! component ) return nullptr;
+		return dynamic_cast< T* >( component.get() );
 	}
 }

@@ -3,8 +3,9 @@
 <renderer source="../../extensions/Debug/MercuryEngineDX11.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
-<failuresAsCritial>true</failuresAsCritial>
+<failuresAsCritical>true</failuresAsCritical>
 <logfile>log.txt</logfile>
+<extension source="../../extensions/Debug/MEEditor.dll"/>
 <assets>shaders/</assets>
 <assets>../test_data/</assets>
 <assets>../test_data/effects/</assets>

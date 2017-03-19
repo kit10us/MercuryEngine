@@ -41,41 +41,33 @@ SceneComponent::~SceneComponent()
 {
 }
 
-physx::PxScene * SceneComponent::GetScene()
+physx::PxScene * SceneComponent::GetPxScene()
 {
 	return m_scene.get();
 }
 
-physx::PxMaterial * SceneComponent::GetMaterial()
+physx::PxMaterial * SceneComponent::GetPxMaterial()
 {
 	return m_material.get();
 }
 
-physx::PxControllerManager * SceneComponent::GetControllerManager()
+physx::PxControllerManager * SceneComponent::GetPxControllerManager()
 {
 	return m_cctManager.get();
 }
 
-void SceneComponent::OnAttach( me::scene::Scene * scene )
+void SceneComponent::OnBeforeStart()
 {
 }
 
-void SceneComponent::OnDetach( me::scene::Scene * scene )
-{
-}
-
-void SceneComponent::OnInit( me::scene::Scene * scene )
-{
-}
-
-void SceneComponent::OnStart( me::scene::Scene * scene )
+void SceneComponent::OnAfterStart()
 {
 	using namespace scene;
 
 	auto physics = m_gameComponent->GetPhysics();
 
 	{
-		Object * plane = scene->GetObjectAllocator()->FindObject( "Plane" );
+		Object * plane = GetScene()->GetObjectAllocator()->FindObject( "Plane" );
 		
 		PxRigidStatic* body = PxCreatePlane( *physics, util::Convert< PxPlane >( plane->GetFrame().GetMatrix() ), *m_material );
 		body->userData = plane;
@@ -85,12 +77,12 @@ void SceneComponent::OnStart( me::scene::Scene * scene )
 		//plane->AddComponent( object::IObjectComponent::ptr( oc ) );
 	}
 
-	auto player = scene->FindObject( "player" );
+	auto player = GetScene()->FindObject( "player" );
 
 	int x(0);x;
 }
 
-void SceneComponent::OnUpdate( me::scene::Scene * scene, UpdateParams params )
+void SceneComponent::OnUpdate( UpdateParams params )
 {			
 	using namespace scene;
 
@@ -141,7 +133,7 @@ void SceneComponent::OnUpdate( me::scene::Scene * scene, UpdateParams params )
 	*/
 }
 
-void SceneComponent::OnRender( me::scene::Scene * scene, me::scene::RenderGirl & renderGirl )
+void SceneComponent::OnRender( me::scene::RenderGirl & renderGirl )
 {
 }
 

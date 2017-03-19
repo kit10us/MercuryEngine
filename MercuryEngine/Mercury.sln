@@ -435,8 +435,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MELua", "..\MELua\MELuaDLL.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MELuaPhysXExt", "..\MELuaPhysXExt\MELuaPhysXExt.vcxproj", "{7CB2DE04-3C02-4689-9B1B-5F40CFB578F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{78A53919-9D3A-435D-AF30-7F08B38C2390} = {78A53919-9D3A-435D-AF30-7F08B38C2390}
+		{335B7243-367C-4BA2-83E1-726EFED77CC7} = {335B7243-367C-4BA2-83E1-726EFED77CC7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MEPhysicsLuaExt", "..\MEPhysicsLuaExt\MEPhysicsLuaExt.vcxproj", "{7AED179B-EF9A-40DC-A652-81F556911371}"
+	ProjectSection(ProjectDependencies) = postProject
+		{528E3F09-BFE4-4651-A773-25A70BD8B0C4} = {528E3F09-BFE4-4651-A773-25A70BD8B0C4}
+		{335B7243-367C-4BA2-83E1-726EFED77CC7} = {335B7243-367C-4BA2-83E1-726EFED77CC7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

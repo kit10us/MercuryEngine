@@ -1,8 +1,8 @@
 Initializing: 
   name:    C:\dev\ws\MercuryTests\07tests_Physics\07Test01 - PhysXHello\..\..\..\output\v140_Debug\07Test01 - PhysXHello\07Test01 - PhysXHello.exe
-  program: C:/dev/ws/MercuryTests/07tests_Physics/output/v140_Debug/07Test01 - PhysXHello/07Test01 - PhysXHello.exe
-  path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug
-  time:    Fri Mar 17 18:30:46 2017
+  program: C:\dev\ws\MercuryTests\07tests_Physics\output\v140_Debug\07Test01 - PhysXHello\07Test01 - PhysXHello.exe
+  path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
+  time:    Sun Mar 19 08:11:01 2017
 
   Loading setup "setup_physx.xml"...
   Loading extenion "../../extensions/Debug/MELua.dll"...
@@ -50,7 +50,9 @@ OnAfterStartup
   OnAfterStarutp LuaGameScript...
   OnAfterStarutp PhysX...
 OnAfterStartup Done
-total startup time: 3.008296s
+total startup time: 4.088313s
+Creating Main Scene
+Main Scene created
 Shutting down:
 OnDetach
   Detaching SceneManager
@@ -58,6 +60,6 @@ OnDetach
   Detaching LuaGameScript
   Detaching PhysX
 OnDetachDone
-  time: Fri Mar 17 18:30:58 2017
+  time: Sun Mar 19 08:11:08 2017
 
-  frames: 514, total delta: 0.016445s,  average fps:60.808384
+  frames: 193, total delta: 0.016555s,  average fps:60.403549

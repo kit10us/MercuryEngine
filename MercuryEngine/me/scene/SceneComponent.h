@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/scene/ISceneComponent.h>
+#include <me/scene/IScene.h>
 #include <me/IOS.h>
 
 namespace me
@@ -19,21 +20,22 @@ namespace me
 			IOS * GetOS();
 			const IOS * GetOS() const;
 
+			IScene* GetScene();
+			const IScene* GetScene() const;
+
 		protected:
 			void AddInterface( std::string name, IUnknown* ptr );
 
 		public: // ISceneComponent...
-			void OnAttach( Scene * scene ) override;
-			void OnDetach( Scene * scene ) override;
-			void OnInit( Scene * scene ) override;
-			void OnStart( Scene * scene ) override;
-			void OnUpdate( Scene * scene, UpdateParams params ) override;
-			
-			
+			void OnAttach( me::scene::IScene * scene ) override;
+			void OnDetach( me::scene::IScene * scene ) override;
+			void OnEnterScene( me::scene::IScene * previous ) override;
+			void OnLeaveScene( me::scene::IScene * next ) override;
+			void OnBeforeStart() override;
+			void OnAfterStart() override;
+			void OnUpdate( UpdateParams params ) override;
 			void CollectCameras( RenderGirl & renderGirl ) override;
-			void OnRender( Scene * scene, RenderGirl & renderGirl ) override;
-			
-			
+			void OnRender( RenderGirl & renderGirl ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 
@@ -57,6 +59,7 @@ namespace me
 			IOS * m_os;
 			std::string m_typeName;
 			bool m_enabled;
+			IScene* m_scene;
 			Lookup m_values;
 			std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};

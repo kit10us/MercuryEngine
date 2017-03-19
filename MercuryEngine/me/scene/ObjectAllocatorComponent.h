@@ -17,14 +17,12 @@ namespace me
 			~ObjectAllocatorComponent();
 
 		public: // ISceneComponent...
-			void OnAttach( Scene * scene ) override;
-			void OnDetach( Scene * scene ) override;
-			void OnInit( Scene * scene ) override;
-			void OnStart( Scene * scene ) override;
-			void OnUpdate( Scene * scene, UpdateParams params ) override;
+			void OnAttach( IScene * scene ) override;
+			void OnDetach( IScene * scene ) override;
+			void OnUpdate( UpdateParams params ) override;
 			
 			void CollectCameras( RenderGirl & renderGirl ) override;
-			void OnRender( Scene * scene, RenderGirl & renderGirl ) override;
+			void OnRender( RenderGirl & renderGirl ) override;
 			
 			void OnSuspend() override;
 			void OnResume() override;

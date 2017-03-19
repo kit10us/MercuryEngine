@@ -94,7 +94,7 @@ IObjectComponent::ptr Object::GetComponent( int index )
 {
 	if ( index > (int)m_components.size() )
 	{
-		return IObjectComponent::ptr();
+		return nullptr;
 	}
 
 	int i = 0;
@@ -104,22 +104,22 @@ IObjectComponent::ptr Object::GetComponent( int index )
 		++i;
 	}
 
-	return IObjectComponent::ptr(); // Should never hit here.
+	return nullptr;
 }
 
-IObjectComponent::ptr Object::GetComponent( std::string name, int startIndex )
+IObjectComponent::ptr Object::GetComponent( std::string name )
 {
-	int index = FindComponent( name, startIndex );
-	if( index == -1 ) return IObjectComponent::ptr();
+	int index = FindComponent( name );
+	if ( index == -1 ) return nullptr;
 	return GetComponent( index );
 }
 	  
-int Object::FindComponent( std::string typeName, int startIndex ) const
+int Object::FindComponent( std::string typeName ) const
 {
 	int i = 0;
 	for( auto && component : m_components )
 	{
-		if( i >= startIndex && unify::StringIs( component.Component()->GetTypeName(), typeName ) ) return i;
+		if( unify::StringIs( component.Component()->GetTypeName(), typeName ) ) return i;
 		++i;
 	}		
 	return -1;
@@ -159,13 +159,6 @@ void Object::Initialize( IObjectComponent::cache & updateables, CameraCache & ca
 	// Update components...
 	for( auto && component : m_components )
 	{
-		// Regardless of enabled, ensure OnInit is always called.
-		if ( component.IsInitialized() == false )
-		{
-			component.Component()->OnInit();
-			component.SetInitialized( true );
-		}
-
 		// Only start and update if enabled.
 		if ( !component.Component()->IsEnabled() ) continue;
 
@@ -222,12 +215,12 @@ void Object::OnResume()
 	}
 }
 
-void Object::SetScene( Scene * scene )
+void Object::SetScene( IScene * scene )
 {
 	m_scene = scene;
 }
 
-Scene * Object::GetScene()
+IScene * Object::GetScene()
 {
 	return m_scene;
 }

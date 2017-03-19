@@ -11,6 +11,7 @@
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportMatrix.h>
 #include <melua/ExportObjectComponent.h>
+#include <melua/ExportCameraComponent.h>
 #include <melua/ExportGeometry.h>
 #include <melua/ExportTerra.h>
 #include <melua/unify/ExportMatrix.h>
@@ -19,6 +20,8 @@
 #include <melua/unify/ExportSize3.h>
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
+#include <melua/Util.h>
+
 #include <me/object/GeometryComponent.h>
 
 using namespace melua;
@@ -213,7 +216,7 @@ int Object_GetComponent( lua_State * state )
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 	std::string name = lua_tostring( state, 2 );
 
-	IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
+	auto component = objectProxy->object->GetComponent( name );
 
 	if ( ! component )
 	{
@@ -221,8 +224,16 @@ int Object_GetComponent( lua_State * state )
 		return 1;
 	}
 
-	PushObjectComponent( state, component );  		
-	return 1;
+	if ( unify::StringIs( component->GetTypeName(), "Camera" ) )
+	{	
+		PushCameraComponent( state, component );
+		return 1;
+	}			 	
+	else
+	{
+		PushObjectComponent( state, component );
+		return 1;
+	}
 }
 
 int Object_GetComponentTypeName( lua_State * state )
@@ -243,6 +254,32 @@ int Object_GetComponentTypeName( lua_State * state )
 
 	PushObjectComponent( state, component );  		
 	return 1;
+}
+
+int Object_Attach( lua_State * state )
+{
+	int args = lua_gettop( state );
+	assert( args == 2 );
+		
+	ObjectProxy * objectProxy = CheckObject( state, 1 );
+
+	std::string type = GetTypename( state, 2 );
+	if ( unify::StringIs( type, "CameraComponent" ) )
+	{
+		CameraComponentProxy * cameraComponentProxy = CheckCameraComponent( state, 2 );
+		objectProxy->object->AddComponent( cameraComponentProxy->component );
+	}
+	else if ( unify::StringIs( type, "ObjectComponent" ) )
+	{
+		ObjectComponentProxy * cameraComponentProxy = CheckObjectComponent( state, 2 );
+		objectProxy->object->AddComponent( cameraComponentProxy->component );
+	}
+	else
+	{
+		auto game = ScriptEngine::GetGame();
+		game->ReportError( me::ErrorLevel::Failure, "Lua", "Attempted to attach am unsupported type, \"" + type + "\", to an object!" );
+	}
+	return 0;
 }
 
 int Object_SetModelMatrix( lua_State * state )
@@ -272,6 +309,7 @@ static const luaL_Reg ObjectFunctions[] =
 	{ "GetComponentCount", Object_GetComponentCount },
 	{ "GetComponent", Object_GetComponent },
 	{ "GetComponentName", Object_GetComponentTypeName },
+	{ "Attach", Object_Attach },
 	{ "AddTag", Object_AddTag },
 	{ "HasTag", Object_HasTag },
 	{ nullptr, nullptr }

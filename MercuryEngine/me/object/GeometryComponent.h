@@ -29,7 +29,6 @@ namespace me
 			Geometry::ptr GetGeometry();
 			const Geometry::ptr GetGeometry() const;
 
-			void OnInit() override;
 			void OnStart() override;
 			void OnUpdate( UpdateParams params ) override;
 

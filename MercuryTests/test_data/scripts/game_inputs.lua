@@ -15,12 +15,10 @@ function OnBeforeStartup( me )
 	-- Add camera...
 	camera = scene1:NewObject( "camera" )
 	cameraComponent = CameraComponent()
-	cameraComponent:AttachTo( camera )
+	camera:Attach( cameraComponent )
 	cameraComponent:SetProjection( proj )
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
-	camera:Transform():LookAt( V3.Zero() )	
-
-	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
+	camera:Transform():LookAt( V3.NewZero() )	
 
 	local cube = scene1:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
@@ -76,7 +74,7 @@ function OnBeforeStartup( me )
 	cone:AddGeometry( Geometry( "cone", "ShapeCone.shape" ) )
 	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "rotatey.lua" )
-	Debug.WriteLine( "cone is " .. type(cone) )
+	print( "cone is " .. type(cone) )
 end
 
 function OnUpdate( me )
@@ -183,15 +181,15 @@ function OnUpdate( me )
 			if gamepad:HasValue( 0, "ThumbRX" ) then
 				local v = gamepad:GetValue( 0, "ThumbRX" )
 				if v > 0.1  or v < -0.1 then
-					camera:Transform():Orbit( V3.Zero(), V2.New( 1, 0 ), Update.GetDelta() * v * 2.0 )
-					camera:Transform():LookAt( V3.Zero() )					
+					camera:Transform():Orbit( V3.NewZero(), V2.New( 1, 0 ), Update.GetDelta() * v * 2.0 )
+					camera:Transform():LookAt( V3.NewZero() )					
 				end
 			end	
 			if gamepad:HasValue( 0, "ThumbRY" ) then
 				local v = gamepad:GetValue( 0, "ThumbRY" )
 				if v > 0.1  or v < -0.1 then
-					camera:Transform():Orbit( V3.Zero(), V2.New( 0, 1 ), Update.GetDelta() * v * 2.0 )
-					camera:Transform():LookAt( V3.Zero() )					
+					camera:Transform():Orbit( V3.NewZero(), V2.New( 0, 1 ), Update.GetDelta() * v * 2.0 )
+					camera:Transform():LookAt( V3.NewZero() )					
 				end
 			end	
 
@@ -223,7 +221,7 @@ function OnUpdate( me )
 			end
 		end
 
-		local axis = V3.Zero()
+		local axis = V3.NewZero()
 		if axisIndex == 0 then
 			axis.x = 1
 		elseif axisIndex == 1 then
@@ -233,7 +231,7 @@ function OnUpdate( me )
 		end
 		group:Transform():RotateAbout( axis, rotation )
 		
-		camera:Transform():Orbit( V3.Zero(), V2.New( 1, 0 ), rotation )
-		camera:Transform():LookAt( V3.Zero() )
+		camera:Transform():Orbit( V3.NewZero(), V2.New( 1, 0 ), rotation )
+		camera:Transform():LookAt( V3.NewZero() )
 	end
 end

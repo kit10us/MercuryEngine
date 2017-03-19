@@ -17,27 +17,23 @@ ObjectAllocatorComponent::~ObjectAllocatorComponent()
 {
 }
 
-void ObjectAllocatorComponent::OnAttach( Scene * scene )
+void ObjectAllocatorComponent::OnAttach( IScene * scene )
 {
+	SceneComponent::OnAttach( scene );
+
 	auto stack = new GrowableObjectStack( scene, 2500 );
 	m_objectStack.reset( stack );
 	AddInterface( "IObjectAllocator", stack );
 }
 
-void ObjectAllocatorComponent::OnDetach( Scene * scene ) 
+void ObjectAllocatorComponent::OnDetach( IScene * scene ) 
 {
 	m_objectStack.reset();
+
+	SceneComponent::OnDetach( scene );
 }
 
-void ObjectAllocatorComponent::OnInit( Scene * scene ) 
-{
-}
-
-void ObjectAllocatorComponent::OnStart( Scene * scene ) 
-{
-}
-
-void ObjectAllocatorComponent::OnUpdate( Scene * scene, UpdateParams params ) 
+void ObjectAllocatorComponent::OnUpdate( UpdateParams params ) 
 {
 	m_objectStack->Update( params );
 }
@@ -47,7 +43,7 @@ void ObjectAllocatorComponent::CollectCameras( RenderGirl & renderGirl )
 	m_objectStack->CollectCameras( renderGirl );
 }
 
-void ObjectAllocatorComponent::OnRender( Scene * scene, RenderGirl & renderGirl ) 
+void ObjectAllocatorComponent::OnRender( RenderGirl & renderGirl ) 
 {
 	renderGirl.Render( m_objectStack.get() );
 }

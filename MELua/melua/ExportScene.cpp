@@ -8,6 +8,7 @@
 #include <melua/ExportCameraComponent.h>
 #include <me/Game.h>
 #include <me/scene/SceneManager.h>
+#include <me/scene/Scene.h>
 
 #include <luaw/LuaClass.h>
 
@@ -143,7 +144,9 @@ int Scene_Constructor( lua_State * state )
 	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
 	*sceneProxy = new SceneProxy;
 	luaL_setmetatable( state, "Scene" );
-	(*sceneProxy)->scene = sceneManager->AddScene( name );
+	auto scene = new Scene( game, name );
+	sceneManager->AddScene( name, IScene::ptr( scene ) );
+	(*sceneProxy)->scene = scene;
 	return 1;
 }
 

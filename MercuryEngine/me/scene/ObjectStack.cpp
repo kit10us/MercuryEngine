@@ -10,7 +10,7 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-ObjectStack::ObjectStack( Scene * scene, size_t max )
+ObjectStack::ObjectStack( IScene * scene, size_t max )
 	: ObjectAllocator( "ObjectStack" )
 	, m_scene{ scene }
 	, m_freeObjects{ (int)max }

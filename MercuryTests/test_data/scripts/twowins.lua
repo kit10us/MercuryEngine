@@ -12,18 +12,17 @@ function OnBeforeStartup( me )
 	-- Add camera...
 	camera = scene1:NewCamera( "camera", proj )	
 	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
-	camera:Transform():LookAt( V3.Zero() )
+	camera:Transform():LookAt( V3.NewZero() )
 
 	if Game.GetRendererCount() > 1 then
 		proj2 = Matrix.NewPerspectiveFovLH( 1, Game.GetWidth() / Game.GetHeight(), 1, 1000 )		--proj2 = Matrix.NewOrthoOffCenterLH( 0, Game.GetWidth(), 0, Game.GetHeight(), -100, 100 )
 		camera2 = scene1:NewCamera( "Camera2", proj )
 		camera2:Transform():SetPosition( V3.New( 0, 0, -27 ) )
-		--camera2:Transform():LookAt( V3.Zero() )
+		camera2:Transform():LookAt( V3.NewZero() )
+		print( "--------------" );
 		cameraComponent = camera2:GetComponent( "Camera" )
-		cameraComponent:SetRenderer( 1 )
+		cameraComponent:SetRenderer( 1 );
 	end
-
-	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
 
 	cube = scene1:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
@@ -110,7 +109,7 @@ function OnUpdate( me )
 		end
 	end
 
-	axis = V3.Zero()
+	axis = V3.NewZero()
 	if axisIndex == 0 then
 		axis.x = 1
 	elseif axisIndex == 1 then
@@ -118,6 +117,4 @@ function OnUpdate( me )
 	elseif axisIndex == 2 then
 		axis.z = 1
 	end
-
-	--TODO: group:Transform():RotateAbout( axis, rotation )
 end

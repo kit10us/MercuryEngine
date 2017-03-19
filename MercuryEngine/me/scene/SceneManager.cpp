@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/SceneManager.h>
+#include <me/scene/Scene.h>
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
 #include <qxml/Document.h>
@@ -12,7 +13,8 @@ using namespace scene;
 SceneManager::SceneManager()
 	: GameComponent( "SceneManager" )
 	, m_game{ nullptr }
-	, m_focusScene{ nullptr }
+	, m_currentScene{ nullptr }
+	, m_previousScene{ nullptr }
 	, m_updateTick{ 0 }
 	, m_renderTick{ 0 }
 {
@@ -33,7 +35,7 @@ size_t SceneManager::GetSceneCount() const
 	return m_scenes.size();
 }
 
-Scene::ptr SceneManager::AddScene( std::string name )
+void SceneManager::AddScene( std::string name, IScene::ptr scene )
 {
 	auto itr = m_scenes.find( name );
 	if ( itr != m_scenes.end() )
@@ -41,23 +43,84 @@ Scene::ptr SceneManager::AddScene( std::string name )
 		throw exception::FailedToCreate( "Attempted to add scene \"" + name + "\", but it already exists!" );
 	}
 
-    Scene::ptr scene( new Scene( GetGame(), name ) );
-
 	m_scenes[ name ] = scene;
 	m_sceneList.push_back( scene );
-    return scene;
+
+	for ( auto component : m_componentList )
+	{
+		component->OnSceneAdded( scene.get() );
+	}										   
+
+	if ( ! m_currentScene )
+	{
+		ChangeScene( name );
+	}
 }
 
-Scene::ptr SceneManager::FindScene( std::string name ) const
+IScene* SceneManager::AddScene( std::string name )
+{
+	Scene* scene = new Scene( dynamic_cast<me::Game*>(GetGame()), name );
+	AddScene( name, IScene::ptr( scene ) );	
+	return scene;
+}
+
+IScene* SceneManager::FindScene( std::string name )
 {
 	auto itr = m_scenes.find( name );
-	return itr == m_scenes.end() ? Scene::ptr() : itr->second;
+	return itr == m_scenes.end() ? nullptr : itr->second.get();
 }
 													  
-Scene::ptr SceneManager::GetScene( size_t index ) const
+IScene* SceneManager::GetScene( size_t index )
 {
-	if ( index >= m_sceneList.size() ) return Scene::ptr();
-	return m_sceneList[ index ];
+	if ( index >= m_sceneList.size() ) return nullptr;
+	return m_sceneList[ index ].get();
+}
+
+IScene* SceneManager::GetCurrentCurrent()
+{
+	return m_currentScene;
+}
+
+IScene* SceneManager::GetPrevious()
+{
+	return m_previousScene;
+}
+
+bool SceneManager::ChangeScene( std::string name )
+{
+	IScene* scene = FindScene( name );
+	if ( ! scene )
+	{
+		return false;
+	}
+	
+	if ( m_currentScene )
+	{
+		m_currentScene->LeaveScene( scene );
+	}
+
+	m_previousScene = m_currentScene;
+	
+	m_currentScene = scene;
+
+	if ( m_currentScene )
+	{
+		m_currentScene->EnterScene( m_previousScene );
+	}				
+
+	scene->Start();
+
+	for ( auto component : m_componentList )
+	{
+		component->OnSceneChange( m_previousScene, m_currentScene );
+	}
+
+	return true;
+}
+
+void SceneManager::AddComponent( ISceneManagerComponent::ptr component )
+{
+	m_componentList.push_back( component );
 }
 
 void SceneManager::OnUpdate( UpdateParams params )
@@ -67,22 +130,12 @@ void SceneManager::OnUpdate( UpdateParams params )
 		return;
 	}
 
-    std::list< Scene * > sceneList;
-    for( std::map< std::string, Scene::ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
-    {
-        Scene * scene = (*itr).second.get();
-        if ( scene->GetEnabled() )
-        {
-            sceneList.push_back( scene );
-        }
-    }
- 
-    // Update all scenes...
-    for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
-    {
-        Scene * scene = (*itr);
-        scene->Update( params );
-    }
+	if ( ! m_currentScene )
+	{
+		return;
+	}
+
+	m_currentScene->Update( params );
 }
 
 void SceneManager::OnRender( RenderParams params )
@@ -92,35 +145,12 @@ void SceneManager::OnRender( RenderParams params )
 		return;
 	}
 
-    // Build a list of visible scenes in order of GetOrder...
-
-    class SortSceneList
-    {
-    public:
-        bool operator()( Scene * a, Scene * b ) const
-        {
-            return a->GetOrder() < b->GetOrder();
-        }
-    };
-
-    std::list< Scene * > sceneList;
-
-    for( std::map< std::string, Scene::ptr >::iterator itr = m_scenes.begin(), end = m_scenes.end(); itr != end; ++itr )
+	if ( !m_currentScene )
 	{
-        Scene * scene = (*itr).second.get();
-        if ( scene->GetEnabled() )
-        {
-            sceneList.push_back( scene );
-        }
+		return;
 	}
 
-    sceneList.sort( SortSceneList() );
-
-    for ( std::list< Scene * >::iterator itr = sceneList.begin(), end = sceneList.end(); itr != end; ++itr )
-    {
-        Scene * scene = (*itr);
-        scene->Render( params );
-    }
+	m_currentScene->Render( params );
 }
 
 std::string SceneManager::GetWhat() const

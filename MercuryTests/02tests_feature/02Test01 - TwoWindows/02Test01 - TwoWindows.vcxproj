@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="02test01.cpp" />
+    <ClCompile Include="MyGame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{419EACD7-76D2-476A-B1A3-8669CE7279F8}</ProjectGuid>

@@ -31,15 +31,15 @@ void AutoBBoxSceneComponent::SetPadding( float padding )
 	m_padding = padding;
 }
 
-void AutoBBoxSceneComponent::OnUpdate( Scene * scene, UpdateParams params )
+void AutoBBoxSceneComponent::OnUpdate( UpdateParams params )
 {
 	// Ensure all objects have BBoxes...
 	std::vector< Object * > objects;
-	scene->GetObjectAllocator()->CollectObjects( objects );
+	GetScene()->GetObjectAllocator()->CollectObjects( objects );
 	for( auto && object : objects )
 	{
-		if ( object->GetComponent( "BBoxRenderer", 0 ) ) continue;
-		if ( ! object->GetComponent( "Geometry", 0 ) ) continue;
+		if ( object->GetComponent( "BBoxRenderer" ) ) continue;
+		if ( ! object->GetComponent( "Geometry" ) ) continue;
 		
 		object->AddComponent( IObjectComponent::ptr( new BBoxRendererComponent( GetOS(), m_effect, m_color ) ) );
 	}

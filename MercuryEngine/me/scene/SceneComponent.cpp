@@ -21,9 +21,10 @@ namespace {
 }
 
 SceneComponent::SceneComponent( IOS * os, std::string typeName )
-: m_os{ os }
-, m_typeName{ typeName }
-, m_enabled{ true }
+	: m_os{ os }
+	, m_typeName{ typeName }
+	, m_enabled{ true }
+	, m_scene{ nullptr }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "ISceneComponent", this );
@@ -45,28 +46,47 @@ const IOS * SceneComponent::GetOS() const
 	return m_os;
 }
 
+ IScene * SceneComponent::GetScene()
+{
+	return m_scene;
+}
+
+const IScene * SceneComponent::GetScene() const
+{
+	return m_scene;
+}
 void SceneComponent::AddInterface( std::string name, IUnknown* ptr )
 {
 	m_interfaceMap[ name ] = ptr;
 }
 
-void SceneComponent::OnAttach( Scene * scene )
+void SceneComponent::OnAttach( IScene * scene )
+{
+	m_scene = scene;
+}
+
+void SceneComponent::OnDetach( IScene * scene ) 
+{
+	m_scene = nullptr;
+}
+
+void SceneComponent::OnEnterScene( me::scene::IScene * previous )
 {
 }
 
-void SceneComponent::OnDetach( Scene * scene ) 
+void SceneComponent::OnLeaveScene( me::scene::IScene * next )
 {
 }
 
-void SceneComponent::OnInit( Scene * scene ) 
+void SceneComponent::OnBeforeStart() 
 {
 }
 
-void SceneComponent::OnStart( Scene * scene ) 
+void SceneComponent::OnAfterStart() 
 {
 }
 
-void SceneComponent::OnUpdate( Scene * scene, UpdateParams params ) 
+void SceneComponent::OnUpdate( UpdateParams params ) 
 {
 }
 
@@ -74,7 +94,7 @@ void SceneComponent::CollectCameras( RenderGirl & renderGirl )
 {
 }
 
-void SceneComponent::OnRender( Scene * scene, RenderGirl & renderGirl ) 
+void SceneComponent::OnRender( RenderGirl & renderGirl ) 
 {
 }
 
