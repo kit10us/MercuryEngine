@@ -154,6 +154,12 @@ std::string Scene::GetName() const
 	return m_name;
 }
 
+void Scene::Restart()
+{
+	m_renderCount = 0;
+	Start();
+}
+
 size_t Scene::ObjectCount() const
 {
 	return m_objectAllocator->Count();

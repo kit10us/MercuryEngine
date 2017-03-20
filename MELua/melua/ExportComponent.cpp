@@ -226,6 +226,6 @@ void RegisterComponent( lua_State * state )
 	};			   
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Component", ComponentMemberFunctions, sizeof( ComponentMemberFunctions ) / sizeof( luaL_Reg ), Component_Constructor, Component_Destructor );
+	se->AddType( { "Component", ComponentMemberFunctions, sizeof( ComponentMemberFunctions ) / sizeof( luaL_Reg ), Component_Constructor, Component_Destructor } );
 }
 

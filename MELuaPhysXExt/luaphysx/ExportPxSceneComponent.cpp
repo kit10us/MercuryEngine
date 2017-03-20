@@ -98,6 +98,6 @@ void RegisterPxSceneComponent( melua::ScriptEngine * luaSE, me::IGame * game )
 	g_game = dynamic_cast< me::Game * >( game );
 	g_luaSE = luaSE;
 
-	luaSE->AddType( "PxSceneComponent", PxSceneComponentFunctions, 2, PxSceneComponent_Constructor, PxSceneComponent_Destructor );
+	luaSE->AddType( { "PxSceneComponent", PxSceneComponentFunctions, 2, PxSceneComponent_Constructor, PxSceneComponent_Destructor } );
 }
 

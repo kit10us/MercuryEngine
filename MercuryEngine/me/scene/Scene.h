@@ -48,6 +48,8 @@ namespace me
 
 			std::string GetName() const override;
 
+			void Restart() override;
+
 			size_t ObjectCount() const;
 
 			int GetComponentCount() const;

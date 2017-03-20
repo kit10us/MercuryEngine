@@ -14,7 +14,7 @@ function OnBeforeStartup()
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
-	camera:Transform():SetPosition( V3.New( 0, 5, -250 ) )
+	camera:Transform():SetPosition( V3( 0, 5, -250 ) )
 	camera:Transform():LookAt( V3.Zero() ) 
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
@@ -27,7 +27,7 @@ function OnBeforeStartup()
 	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
 	cube = group:AddChild( "cube" )
 	cube:AddGeometry( Geometry( cubeParameters ) )
-	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )	
+	cube:Transform():SetPosition( V3( -4.5, 3, 0 ) )	
 
 	local pointfieldParameters = ShapeParameters( "pointfield" )
 	pointfieldParameters:SetEffect( color3d )

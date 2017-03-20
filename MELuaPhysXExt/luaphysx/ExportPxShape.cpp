@@ -80,6 +80,6 @@ void RegisterPxShape( melua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
 
-	luaSE->AddType( "PxShape", PxShapeFunctions, sizeof( PxShapeFunctions ) / sizeof( luaL_Reg ), PxShape_Constructor, PxShape_Destructor );
+	luaSE->AddType( { "PxShape", PxShapeFunctions, sizeof( PxShapeFunctions ) / sizeof( luaL_Reg ), PxShape_Constructor, PxShape_Destructor } );
 }
 

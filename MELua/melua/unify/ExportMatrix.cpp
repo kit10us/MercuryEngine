@@ -84,8 +84,7 @@ int Matrix_NewTranslate( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::V3< float > vector( CheckV3( state, 1 ) );
-
+	unify::V3< float > vector( CheckV3( state, 1 )->v3 );
 	unify::Matrix mat = unify::MatrixTranslate( vector );
 	PushMatrix( state, mat );
 
@@ -124,7 +123,7 @@ int Matrix_NewScale( lua_State * state )
 	int type = lua_type( state, 1 );
 	if ( type == LUA_TTABLE ) // V3
 	{
-		unify::V3< float > scale( CheckV3( state, 1 ) );
+		unify::V3< float > scale( CheckV3( state, 1 )->v3 );
 		mat = unify::MatrixScale( scale );
 	}
 	else
@@ -145,9 +144,9 @@ int Matrix_NewRotationAboutAxis( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::V3< float > axis( CheckV3( state, 1 ) );
+	unify::V3< float > axis( CheckV3( state, 1 )->v3 );
 	float angle = (float)lua_tonumber( state, 2 );
-
+	
 	unify::Matrix mat = unify::MatrixRotationAboutAxis( axis, unify::AngleInRadians( angle ) );
 	PushMatrix( state, mat );
 
@@ -223,10 +222,10 @@ int Matrix_NewLookAtLH( lua_State * state )
 
 	lua_newtable( state );
 
-	unify::V3< float > eye( CheckV3( state, 1 ) );
-	unify::V3< float > at( CheckV3( state, 2 ) );
-	unify::V3< float > up( CheckV3( state, 3 ) );
-
+	unify::V3< float > eye( CheckV3( state, 1 )->v3 );
+	unify::V3< float > at( CheckV3( state, 2 )->v3 );
+	unify::V3< float > up( CheckV3( state, 3 )->v3 );
+	
 	unify::Matrix mat = unify::MatrixLookAtLH( eye, at, up );
 	PushMatrix( state, mat );
 

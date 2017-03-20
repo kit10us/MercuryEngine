@@ -47,17 +47,14 @@ int ObjectOrbitMotivator_AttachTo( lua_State * state )
 
 int ObjectOrbitMotivator_SetOrigin( lua_State * state )
 {
-	/*
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
 	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
 	
-	unify::V3< float > v = CheckV3( state, 2 );
+	unify::V3< float > v = CheckV3( state, 2 )->v3;
 
 	motivatorProxy->motivator->SetValue( "origin", v.ToString() );
-	*/
-	assert( 0 );
 
 	return 0;
 }
@@ -70,7 +67,7 @@ int ObjectOrbitMotivator_GetOrigin( lua_State * state )
 
 	ObjectOrbitMotivatorProxy * motivatorProxy = CheckObjectOrbitMotivator( state, 1 );
 
-	unify::V3< float > v = CheckV3( state, 2 );
+	unify::V3< float > v = CheckV3( state, 2 )->v3;
 
 	PushV3( state, motivatorProxy->motivator->GetOrigin() );
 	*/
@@ -209,13 +206,15 @@ int ObjectOrbitMotivator_Constructor( lua_State * state )
 	int type = lua_type( state, 1 );
 
 	ITexture::ptr texture;
+	assert( 0 );
 
-	unify::V3< float > origin = CheckV3( state, 1 );
-	unify::V3< float > orbit = CheckV3( state, 2 );
-	unify::Angle angleASecond = unify::AngleInRadians( (float)luaL_checknumber( state, 3 ) );
-
-	IObjectComponent::ptr component( new ObjectOrbitMotivator( origin, orbit, angleASecond ) );
-	return PushObjectOrbitMotivator( state, component );
+	//unify::V3< float > origin = CheckV3( state, 1 );
+	//unify::V3< float > orbit = CheckV3( state, 2 );
+	//unify::Angle angleASecond = unify::AngleInRadians( (float)luaL_checknumber( state, 3 ) );
+	//
+	//IObjectComponent::ptr component( new ObjectOrbitMotivator( origin, orbit, angleASecond ) );
+	//return PushObjectOrbitMotivator( state, component );
+	return 0;
 }
 
 int ObjectOrbitMotivator_Destructor( lua_State * state )
@@ -228,6 +227,6 @@ int ObjectOrbitMotivator_Destructor( lua_State * state )
 void RegisterObjectOrbitMotivator( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "ObjectOrbitMotivator", ObjectOrbitMotivatorFunctions, sizeof( ObjectOrbitMotivatorFunctions ) / sizeof( luaL_Reg ), ObjectOrbitMotivator_Constructor, ObjectOrbitMotivator_Destructor );
+	se->AddType( { "ObjectOrbitMotivator", ObjectOrbitMotivatorFunctions, sizeof( ObjectOrbitMotivatorFunctions ) / sizeof( luaL_Reg ), ObjectOrbitMotivator_Constructor, ObjectOrbitMotivator_Destructor } );
 }
 

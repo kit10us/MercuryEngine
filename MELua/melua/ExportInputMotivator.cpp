@@ -53,7 +53,7 @@ int InputMotivator_GetMotivationCount( lua_State * state )
 	return 1;
 }
 
-int InputMotivator_GetMotivationName( lua_State * state )
+int InputMotivator_Name( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
@@ -136,12 +136,12 @@ void RegisterInputMotivator( lua_State * state )
 	{
 		{ "Add", InputMotivator_Add },
 		{ "GetCount", InputMotivator_GetMotivationCount },
-		{ "GetName", InputMotivator_GetMotivationName },
+		{ "Name", InputMotivator_Name },
 		{ "GetCondition", InputMotivator_GetCondition },
 		{ nullptr, nullptr }
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "InputMotivator", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), InputMotivator_Constructor, InputMotivator_Destructor );
+	se->AddType( { "InputMotivator", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), InputMotivator_Constructor, InputMotivator_Destructor } );
 }
 

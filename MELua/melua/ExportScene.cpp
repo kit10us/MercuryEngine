@@ -6,16 +6,24 @@
 #include <melua/ExportObject.h>
 #include <melua/unify/ExportMatrix.h>
 #include <melua/ExportCameraComponent.h>
+#include <melua/Util.h>
 #include <me/Game.h>
 #include <me/scene/SceneManager.h>
-#include <me/scene/Scene.h>
-
-#include <luaw/LuaClass.h>
+#include <me/scene/Scene.h>			  
 
 using namespace melua;
 using namespace me;
 using namespace scene;
 using namespace object;
+
+int PushScene( lua_State * state, me::scene::IScene * scene )
+{
+	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
+	*sceneProxy = new SceneProxy;
+	luaL_setmetatable( state, "Scene" );
+	(*sceneProxy)->scene = scene;
+	return 1;
+}
 
 MELUADLL_API SceneProxy* CheckScene( lua_State* state, int index )
 {
@@ -34,15 +42,12 @@ int Scene_FindScene( lua_State * state )
 	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
+	auto scene = sceneManager->FindScene( name );
 
-	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
-	*sceneProxy = new SceneProxy;
-	luaL_setmetatable( state, "Scene" );
-	(*sceneProxy)->scene = sceneManager->FindScene( name );
-	return 1;
+	return PushScene( state, scene );
 }
 
-int Scene_GetName( lua_State * state )
+int Scene_Name( lua_State * state )
 {
 	int args = lua_gettop( state );
 
@@ -61,12 +66,7 @@ int Scene_NewObject( lua_State * state )
 
 	auto object = proxy->scene->GetObjectAllocator()->NewObject( name );
 
-	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*childProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-	(*childProxy)->object = object;
-
-	return 1;
+	return PushObject( state, object );
 }
 
 int Scene_NewCamera( lua_State * state )
@@ -88,12 +88,7 @@ int Scene_NewCamera( lua_State * state )
 
 	cameraComponent->SetProjection( mat );
 
-	ObjectProxy ** childProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-	*childProxy = new ObjectProxy;
-	luaL_setmetatable( state, "Object" );
-	(*childProxy)->object = child;
-
-	return 1;
+	return PushObject( state, child );
 }
 
 int Scene_FindObject( lua_State * state )
@@ -109,16 +104,12 @@ int Scene_FindObject( lua_State * state )
 	if ( !object )
 	{
 		lua_pushnil( state );
+		return 1;
 	}
 	else
 	{
-		ObjectProxy ** objectProxy = (ObjectProxy**)(lua_newuserdata( state, sizeof( ObjectProxy* ) ));
-		*objectProxy = new ObjectProxy;
-		luaL_setmetatable( state, "Object" );
-		(*objectProxy)->object = object;
+		return PushObject( state, object );
 	}
-
-	return 1;
 }
 
 int Scene_GetObjectCount( lua_State * state )
@@ -141,13 +132,9 @@ int Scene_Constructor( lua_State * state )
 
 	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
 
-	SceneProxy ** sceneProxy = (SceneProxy**)(lua_newuserdata( state, sizeof( SceneProxy* ) ));
-	*sceneProxy = new SceneProxy;
-	luaL_setmetatable( state, "Scene" );
 	auto scene = new Scene( game, name );
 	sceneManager->AddScene( name, IScene::ptr( scene ) );
-	(*sceneProxy)->scene = scene;
-	return 1;
+	return PushScene( state, scene );
 }
 
 int Scene_Destructor( lua_State * state )
@@ -156,12 +143,26 @@ int Scene_Destructor( lua_State * state )
 	delete sceneProxy;
 	return 0;
 }
+
+void RegisterSceneFunctions( lua_State * state )
+{
+	const luaL_Reg memberFunctions[] =
+	{
+		{ "Name", Scene_Name },
+		{ "NewObject", Scene_NewObject },
+		{ "NewCamera", Scene_NewCamera },
+		{ "FindObject", Scene_FindObject },
+		{ "GetObjectCount", Scene_GetObjectCount },
+		{ nullptr, nullptr }
+	};
+	luaL_setfuncs( state, memberFunctions, 0 );
+}
 			          
 void RegisterScene( lua_State * state )
 {
 	const luaL_Reg memberFunctions[] =
 	{
-		{ "GetName", Scene_GetName },
+		{ "Name", Scene_Name },
 		{ "NewObject", Scene_NewObject },
 		{ "NewCamera", Scene_NewCamera },
 		{ "FindObject", Scene_FindObject },
@@ -170,7 +171,7 @@ void RegisterScene( lua_State * state )
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), Scene_Constructor, Scene_Destructor );
+	se->AddType( { "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), Scene_Constructor, Scene_Destructor } );
 
 	const luaL_Reg SceneStaticFunctions[] =
 	{

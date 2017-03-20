@@ -123,9 +123,6 @@
     <ClInclude Include="melua\component\ObjectComponent.h">
       <Filter>melua\component</Filter>
     </ClInclude>
-    <ClInclude Include="melua\ScriptEngine.h">
-      <Filter>melua\component</Filter>
-    </ClInclude>
     <ClInclude Include="melua\unify\ExportTexArea.h">
       <Filter>melua\exports\unify</Filter>
     </ClInclude>
@@ -137,6 +134,12 @@
     </ClInclude>
     <ClInclude Include="melua\component\AutoSceneManagerComponent.h">
       <Filter>melua\component</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\Type.h">
+      <Filter>melua</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ScriptEngine.h">
+      <Filter>melua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,9 +248,6 @@
     <ClCompile Include="melua\component\GameComponent.cpp">
       <Filter>melua\component</Filter>
     </ClCompile>
-    <ClCompile Include="melua\ScriptEngine.cpp">
-      <Filter>melua\component</Filter>
-    </ClCompile>
     <ClCompile Include="melua\unify\ExportTexArea.cpp">
       <Filter>melua\exports\unify</Filter>
     </ClCompile>
@@ -259,6 +259,12 @@
     </ClCompile>
     <ClCompile Include="melua\component\AutoSceneManagerComponent.cpp">
       <Filter>melua\component</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\Type.cpp">
+      <Filter>melua</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ScriptEngine.cpp">
+      <Filter>melua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

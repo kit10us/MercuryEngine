@@ -5,6 +5,7 @@
 #include <melua/component/SceneComponent.h>
 #include <melua/ExportGame.h>
 #include <melua/CreateState.h>
+#include <melua/ExportScene.h>
 
 using namespace melua;
 using namespace component;
@@ -74,12 +75,14 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 {
 	me::scene::SceneComponent::OnAttach( scene );
 
+	int top = 0;
+	std::string type;
+
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
 	if ( result == LUA_ERRSYNTAX )
 	{
 		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
-		assert( 0 );
 	}
 	else if ( result == LUA_ERRFILE )
 	{
@@ -90,18 +93,32 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure in script!" );
 	}
 
-	// Create table for modules _ENV table.
-	lua_newtable( m_state );
+	top = lua_gettop( m_state );
+	assert( top == 1 );
 
-	// Add member variables.
-	lua_pushstring( m_state, m_luaName.c_str() );
-	lua_setfield( m_state, -2, "_name" );
+	// Create table for modules _ENV table.
+	lua_newtable( m_state ); // 2 - table
+
+	// Add field name:scene->GetName()
+	lua_pushstring( m_state, scene->GetName().c_str() ); // 2 - scene->GetName()
+	lua_setfield( m_state, 2, "name" ); // 2 - table
+	
+	// Add variable this:scene
+	{
+		PushScene( m_state, scene ); // 3 - Scene
+		lua_setfield( m_state, 2, "this" ); // 2 - table
+	}
+
+	top = lua_gettop( m_state );
+	assert( top == 2 );
 
 	// Create new metatable for __index to be _G (so missed functions, non-member functions, look in _G).
 	lua_newtable( m_state );
 	lua_getglobal( m_state, "_G" );
 	lua_setfield( m_state, -2, "__index" );
 	lua_setmetatable( m_state, -2 ); // Set global as the metatable
+
+	top = lua_gettop( m_state );
 
 	// Push to registery with a unique name.
 	lua_setfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() );
@@ -117,7 +134,6 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 	{
 		std::string error = lua_tostring( m_state, -1 );
 		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
-		assert( 0 ); // TODO:
 	}
 
 	CallMember( "OnInit" );

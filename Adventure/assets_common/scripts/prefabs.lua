@@ -31,7 +31,7 @@ function BuildTree( scene, position )
 	sphereParameters:SetSegments( 24 )
 	sphereParameters:SetRadius( 2.0 )
 	sphereParameters:SetDiffuse( Color.NewRGB( 0, 0.8, 0 ) )
-	sphereParameters:SetCenter( V3.New( 0, 5, 0 ) );
+	sphereParameters:SetCenter( V3( 0, 5, 0 ) );
 	object:AddGeometry( Geometry( sphereParameters ) )
 
 	cylinderParameters = ShapeParameters( "cylinder" )
@@ -41,7 +41,7 @@ function BuildTree( scene, position )
 	cylinderParameters:SetHeight( 5.0 )
 	cylinderParameters:SetDiffuse( Color.NewRGB( 107/255, 88/255, 37/255 ) )
 	cylinderParameters:SetCaps( true )
-	cylinderParameters:SetCenter( V3.New( 0, 2.5, 0 ) )
+	cylinderParameters:SetCenter( V3( 0, 2.5, 0 ) )
 	object:AddGeometry( Geometry( cylinderParameters ) )
 end
 
@@ -60,7 +60,7 @@ function BuildHouse( scene, position )
 	parameters:SetEffect( color3d )
 	parameters:SetSize3( Size3.New( 6, 6, 10 ) )
 	parameters:SetDiffuse( Color.Mul( Color.NewRGB( .2, 0.1, 0.1 ), Color.NewWhite( 2 ) ) )
-	parameters:SetCenter( V3.New( 0, 3, 0 ) );
+	parameters:SetCenter( V3( 0, 3, 0 ) );
 	object:AddGeometry( Geometry( parameters ) )
 
 	-- door
@@ -68,7 +68,7 @@ function BuildHouse( scene, position )
 	parameters:SetEffect( color3d )
 	parameters:SetSize3( Size3.New( 2.6, 5, 1 ) )
 	parameters:SetDiffuse( Color.Mul( Color.NewRGB( 107/255, 88/255, 37/255 ), Color.NewWhite( 2 ) )) 
-	parameters:SetCenter( V3.New( 0, 2.5, -5 ) );
+	parameters:SetCenter( V3( 0, 2.5, -5 ) );
 	object:AddGeometry( Geometry( parameters ) )
 	
 	-- roof
@@ -76,6 +76,6 @@ function BuildHouse( scene, position )
 	parameters:SetEffect( color3d )
 	parameters:SetSize3( Size3.New( 7, 2, 11 ) )
 	parameters:SetDiffuse( Color.Mul( Color.NewRGB( .3, .3, .3 ), Color.NewWhite( 2 ) ) )
-	parameters:SetCenter( V3.New( 0, 7, 0 ) );
+	parameters:SetCenter( V3( 0, 7, 0 ) );
 	object:AddGeometry( Geometry( parameters ) )
 end

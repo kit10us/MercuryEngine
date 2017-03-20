@@ -119,6 +119,6 @@ int Terra_Destructor( lua_State * state )
 void RegisterTerra( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Terra", TerraFunctions, sizeof( TerraFunctions ) / sizeof( luaL_Reg ), Terra_Constructor, Terra_Destructor );
+	se->AddType( { "Terra", TerraFunctions, sizeof( TerraFunctions ) / sizeof( luaL_Reg ), Terra_Constructor, Terra_Destructor } );
 }
 

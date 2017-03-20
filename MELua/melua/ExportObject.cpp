@@ -67,7 +67,7 @@ int Object_AddScript( lua_State * state )
 	return 0;
 }
 
-int Object_GetName( lua_State * state )
+int Object_Name( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 1 );
@@ -299,7 +299,7 @@ int Object_SetModelMatrix( lua_State * state )
 static const luaL_Reg ObjectFunctions[] =
 {
 	{ "AddScript", Object_AddScript },
-	{ "GetTypeName", Object_GetName },
+	{ "Name", Object_Name },
 	{ "SetEnabled", Object_SetEnabled },
 	{ "GetEnabled", Object_IsEnabled },
 	{ "AddGeometry", Object_AddGeometry },
@@ -331,6 +331,6 @@ int Object_Destructor( lua_State * state )
 void RegisterObject( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Object", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Object_Constructor, Object_Destructor );
+	se->AddType( { "Object", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Object_Constructor, Object_Destructor } );
 }
 

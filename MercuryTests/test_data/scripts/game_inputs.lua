@@ -17,62 +17,62 @@ function OnBeforeStartup( me )
 	cameraComponent = CameraComponent()
 	camera:Attach( cameraComponent )
 	cameraComponent:SetProjection( proj )
-	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
-	camera:Transform():LookAt( V3.NewZero() )	
+	camera:Transform():SetPosition( V3( 0, 5, -17 ) )
+	camera:Transform():LookAt( V3() )	
 
 	local cube = scene1:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
-	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
+	cube:Transform():SetPosition( V3( -4.5, 3, 0 ) )
     cube:AddScript( "rotate", "lua", "rotatex.lua" )
 	
 	local pointfield = scene1:NewObject( "pointfield" )
 	pointfield:AddGeometry( Geometry( "pointfield", "ShapePointField.shape" ) )
-	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
+	pointfield:Transform():SetPosition( V3( -1.5, 3, 0 ) )
     pointfield:AddScript( "rotate", "lua", "rotatey.lua" )
 		
 	local pointring = scene1:NewObject( "pointring" )
 	pointring:AddGeometry( Geometry( "pointring", "ShapePointRing.shape" ) )
-	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
+	pointring:Transform():SetPosition( V3( 1.5, 3, 0 ) )
     pointring:AddScript( "rotate", "lua", "rotatez.lua" )
 
 	local dashring = scene1:NewObject( "dashring" )
 	dashring:AddGeometry( Geometry( "dashring", "ShapeDashRing.shape" ) )
-	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )
+	dashring:Transform():SetPosition( V3( 4.5, 3, 0 ) )
     dashring:AddScript( "rotate", "lua", "rotatex.lua" )
 
 	local pyramid = scene1:NewObject( "pyramid" )
 	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
-	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )
+	pyramid:Transform():SetPosition( V3( -4.5, 0, 0 ) )
     pyramid:AddScript( "rotate", "lua", "rotatey.lua" )
 		
 	local circle = scene1:NewObject( "circle" )
 	circle:AddGeometry( Geometry( "circle", "ShapeCircle.shape" ) )
-	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
+	circle:Transform():SetPosition( V3( -1.5, 0, 0 ) )
     circle:AddScript( "rotate", "lua", "rotatez.lua" )
 
 	local sphere = scene1:NewObject( "sphere" )
 	sphere:AddGeometry( Geometry( "sphere", "ShapeSphere.shape" ) )
-	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
+	sphere:Transform():SetPosition( V3( 1.5, 0, 0 ) )
     sphere:AddScript( "rotate", "lua", "rotatex.lua" )
 	   
 	local cylinder = scene1:NewObject( "cylinder" )
 	cylinder:AddGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
-	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
+	cylinder:Transform():SetPosition( V3( 4.5, 0, 0 ) )
     cylinder:AddScript( "rotate", "lua", "rotatey.lua" )
 
 	local tube = scene1:NewObject( "tube" )
 	tube:AddGeometry( Geometry( "tube", "ShapeTube.shape" ) )
-	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
+	tube:Transform():SetPosition( V3( -4.5, -3, 0 ) )
     tube:AddScript( "rotate", "lua", "rotatez.lua" )
 		
 	local plane = scene1:NewObject( "plane" )
 	plane:AddGeometry( Geometry( "plane", "ShapePlane.shape" ) )
-	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
+	plane:Transform():SetPosition( V3( -1.5, -3, 0 ) )
     plane:AddScript( "rotate", "lua", "rotatex.lua" )
 		
 	cone = scene1:NewObject( "cone" )
 	cone:AddGeometry( Geometry( "cone", "ShapeCone.shape" ) )
-	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
+	cone:Transform():SetPosition( V3( 1.5, -3, 0 ) )
     cone:AddScript( "rotate", "lua", "rotatey.lua" )
 	print( "cone is " .. type(cone) )
 end
@@ -181,15 +181,15 @@ function OnUpdate( me )
 			if gamepad:HasValue( 0, "ThumbRX" ) then
 				local v = gamepad:GetValue( 0, "ThumbRX" )
 				if v > 0.1  or v < -0.1 then
-					camera:Transform():Orbit( V3.NewZero(), V2.New( 1, 0 ), Update.GetDelta() * v * 2.0 )
-					camera:Transform():LookAt( V3.NewZero() )					
+					camera:Transform():Orbit( V3(), V2.New( 1, 0 ), Update.GetDelta() * v * 2.0 )
+					camera:Transform():LookAt( V3() )					
 				end
 			end	
 			if gamepad:HasValue( 0, "ThumbRY" ) then
 				local v = gamepad:GetValue( 0, "ThumbRY" )
 				if v > 0.1  or v < -0.1 then
-					camera:Transform():Orbit( V3.NewZero(), V2.New( 0, 1 ), Update.GetDelta() * v * 2.0 )
-					camera:Transform():LookAt( V3.NewZero() )					
+					camera:Transform():Orbit( V3(), V2.New( 0, 1 ), Update.GetDelta() * v * 2.0 )
+					camera:Transform():LookAt( V3() )					
 				end
 			end	
 
@@ -221,7 +221,7 @@ function OnUpdate( me )
 			end
 		end
 
-		local axis = V3.NewZero()
+		local axis = V3()
 		if axisIndex == 0 then
 			axis.x = 1
 		elseif axisIndex == 1 then
@@ -231,7 +231,7 @@ function OnUpdate( me )
 		end
 		group:Transform():RotateAbout( axis, rotation )
 		
-		camera:Transform():Orbit( V3.NewZero(), V2.New( 1, 0 ), rotation )
-		camera:Transform():LookAt( V3.NewZero() )
+		camera:Transform():Orbit( V3(), V2.New( 1, 0 ), rotation )
+		camera:Transform():LookAt( V3() )
 	end
 end

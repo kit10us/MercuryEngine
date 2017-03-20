@@ -79,7 +79,6 @@ void ObjectComponent::OnStart()
 	if ( result == LUA_ERRSYNTAX )
 	{
 		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
-		assert( 0 );
 	}
 	else if ( result == LUA_ERRFILE )
 	{

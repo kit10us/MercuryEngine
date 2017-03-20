@@ -13,4 +13,7 @@ struct SceneProxy
 	me::scene::IScene* scene;
 };
 
+int PushScene( lua_State * state, me::scene::IScene * scene );
 MELUADLL_API SceneProxy* CheckScene( lua_State* state, int index );
+
+void RegisterSceneFunctions( lua_State * state );

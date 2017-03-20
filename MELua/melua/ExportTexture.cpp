@@ -94,6 +94,6 @@ int Texture_Destructor( lua_State * state )
 void RegisterTexture( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Texture", TextureFunctions, sizeof( TextureFunctions ) / sizeof( luaL_Reg ), Texture_Constructor, Texture_Destructor );
+	se->AddType( { "Texture", TextureFunctions, sizeof( TextureFunctions ) / sizeof( luaL_Reg ), Texture_Constructor, Texture_Destructor } );
 }
 

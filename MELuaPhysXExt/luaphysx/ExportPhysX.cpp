@@ -45,12 +45,13 @@ int PhysX_CreateBoxCollider( lua_State * state )
 	int argc = lua_gettop( state );
 	assert( argc == 1 );
 
-	unify::V3< float > halfExt( CheckV3( state, 1 ) );
-
-	mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX" ).get());
-	me::object::IObjectComponent::ptr collider( new mephysx::objectcomponent::BoxCollider( physics, halfExt ) );
-
-	PushPxShape( state, collider );
+	assert( 0 );
+	//unify::V3< float > halfExt( CheckV3( state, 1 ) );
+	//
+	//mephysx::GameComponent * physics = dynamic_cast< mephysx::GameComponent *>(g_game->GetComponent( "PhysX" ).get());
+	//me::object::IObjectComponent::ptr collider( new mephysx::objectcomponent::BoxCollider( physics, halfExt ) );
+	//
+	//PushPxShape( state, collider );
 
 	return 1;
 }
@@ -144,8 +145,6 @@ static const luaL_Reg PhysXFunctions[] =
 void RegisterPhysX( melua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
-	g_game = dynamic_cast< Game * >(game);
-
 	luaSE->AddLibrary( "PhysX", PhysXFunctions, sizeof( PhysXFunctions ) / sizeof( luaL_Reg ) );
 }
 

@@ -10,11 +10,21 @@
 #include <melua/unify/ExportSize2.h>
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
+#include <melua/Util.h>
 
 using namespace melua;
  
-unify::V3< float > CheckV3( lua_State * state, int index )
+int PushV3( lua_State * state, unify::V3< float > v3 )
 {
+	V3Proxy ** childProxy = (V3Proxy**)(lua_newuserdata( state, sizeof( V3Proxy* ) ));
+	*childProxy = new V3Proxy{ v3 };
+	luaL_setmetatable( state, "V3" );
+	return 1;
+}
+
+V3Proxy* CheckV3( lua_State * state, int index )
+{
+	/*
 	luaL_checktype( state, index, LUA_TTABLE );
 
 	lua_getfield( state, index, "x" );
@@ -28,48 +38,9 @@ unify::V3< float > CheckV3( lua_State * state, int index )
 	lua_pop( state, 3 );
 
 	return unify::V3< float >( x, y, z );
-}
-
-int PushV3( lua_State * state, unify::V3< float > v3 )
-{
-	lua_newtable( state ); // Create table.
-
-	lua_pushstring( state, "x" );
-	lua_pushnumber( state, v3.x );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "y" );
-	lua_pushnumber( state, v3.y );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "z" );
-	lua_pushnumber( state, v3.z );
-	lua_settable( state, -3 );
-	return 1;
-}
-
-int V3_New( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	float x = (float)lua_tonumber( state, 1 );
-	float y = (float)lua_tonumber( state, 2 );
-	float z = (float)lua_tonumber( state, 3 );
-
-	PushV3( state, unify::V3< float >( x, y, z ) );
-
-	return 1;
-}
-
-int V3_NewZero( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 0 );
-
-	PushV3( state, unify::V3< float >( 0, 0, 0 ) );
-
-	return 1;
+	*/
+	V3Proxy* ud = *(V3Proxy**)luaL_checkudata( state, index, "V3" );
+	return ud;
 }
 
 int V3_ToString( lua_State * state )
@@ -77,7 +48,7 @@ int V3_ToString( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	unify::V3< float > v3( CheckV3( state, 1 ) );
+	unify::V3< float > v3( CheckV3( state, 1 )->v3 );
 
 	lua_pushstring( state, v3.ToString().c_str() );
 	return 1;
@@ -88,8 +59,8 @@ int V3_Add( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 	unify::V3< float > result( l + r );
 
 	PushV3( state, result );
@@ -101,8 +72,8 @@ int V3_Sub( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 	unify::V3< float > result( l - r );
 
 	PushV3( state, result );
@@ -114,8 +85,8 @@ int V3_Mul( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 	unify::V3< float > result( l * r );
 
 	PushV3( state, result );
@@ -127,8 +98,8 @@ int V3_Div( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 	unify::V3< float > result( l / r );
 
 	PushV3( state, result );
@@ -138,11 +109,10 @@ int V3_Div( lua_State * state )
 int V3_Length( lua_State * state )
 {
 	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::V3< float > v3( CheckV3( state, 1 ) );
-
-	lua_pushnumber( state, v3.Length() );
+	assert( args == 2 );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
+	lua_pushnumber( state, l.Length() );
 	return 1;
 }
 
@@ -151,9 +121,9 @@ int V3_Normalize( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	unify::V3< float > v3( CheckV3( state, 1 ) );
-
-	PushV3( state, unify::V3< float >::V3Normalized( v3 ) );
+	auto v3( CheckV3( state, 1 ) );
+	float result = v3->v3.Normalize();
+	lua_pushnumber(state, result);
 	return 1;
 }			   
 
@@ -162,8 +132,8 @@ int V3_DistanceTo( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 
 	lua_pushnumber( state, l.DistanceTo( r ) );
 	return 1;
@@ -174,23 +144,10 @@ int V3_Dot( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 
 	lua_pushnumber( state, l.Dot( r ) );
-	return 1;
-}
-
-int V3_Cross( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
-	unify::V3< float > result( unify::V3< float >::V3Cross( l,  r ) );
-
-	PushV3( state, result );
 	return 1;
 }
 
@@ -199,7 +156,7 @@ int V3_Inverse( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	unify::V3< float > v3( CheckV3( state, 1 ) );
+	unify::V3< float > v3( CheckV3( state, 1 )->v3 );
 
 	PushV3( state, unify::V3< float >::V3Inverse( v3 ) );
 	return 1;
@@ -210,8 +167,8 @@ int V3_Lerp( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 3 );
 
-	unify::V3< float > l( CheckV3( state, 1 ) );
-	unify::V3< float > r( CheckV3( state, 2 ) );
+	unify::V3< float > l( CheckV3( state, 1 )->v3 );
+	unify::V3< float > r( CheckV3( state, 2 )->v3 );
 	float delta = (float)lua_tonumber( state, 3 );
 	unify::V3< float > result( unify::V3< float >::V3Lerp( l, r, delta ) );
 
@@ -219,30 +176,139 @@ int V3_Lerp( lua_State * state )
 	return 1;
 }
 
+
+int V3_Constructor( lua_State * state )
+{
+	auto game = ScriptEngine::GetGame();
+
+	int args = lua_gettop( state );
+
+	if ( args == 0 )
+	{
+		return PushV3( state, unify::V3< float >::V3Zero() );
+	}
+	else if ( args == 3 )
+	{
+		float x = (float)luaL_checknumber( state, -3 );
+		float y = (float)luaL_checknumber( state, -2 );
+		float z = (float)luaL_checknumber( state, -1 );
+		return PushV3( state, unify::V3< float >( x, y, z ) );
+	}
+	else
+	{
+		lua_pushnil( state );
+		return 1;
+	}
+}
+
+int V3_V3Cross(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 2);
+
+	unify::V3< float > l(CheckV3(state, 1)->v3);
+	unify::V3< float > r(CheckV3(state, 2)->v3);
+	unify::V3< float > result(unify::V3< float >::V3Cross(l, r));
+
+	PushV3(state, result);
+	return 1;
+}
+
+int V3_V3Lerp(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 3);
+
+	unify::V3< float > l(CheckV3(state, 1)->v3);
+	unify::V3< float > r(CheckV3(state, 2)->v3);
+	float delta = (float)lua_tonumber(state, 3);
+	unify::V3< float > result( unify::V3< float >::V3Lerp( l, r, delta ) );
+
+	PushV3(state, result);
+	return 1;
+}
+
+int V3_Destructor( lua_State * state )
+{
+	auto v3 = CheckV3(state, 1);
+	delete v3;
+	return 0;
+}
+
+int V3_x( lua_State * state )
+{
+	int top = lua_gettop( state );
+
+	V3Proxy * v3Proxy = CheckV3( state, 1 );
+
+	if ( top == 2 ) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber( state, 2 );
+		v3Proxy->v3.x = value;
+	}
+
+	lua_pushnumber( state, v3Proxy->v3.x );
+	return 1;
+}
+
+int V3_y( lua_State * state )
+{
+	int top = lua_gettop( state );
+
+	V3Proxy * v3Proxy = CheckV3( state, 1 );
+
+	if ( top == 2 ) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber( state, 2 );
+		v3Proxy->v3.y = value;
+	}
+
+	lua_pushnumber( state, v3Proxy->v3.y );
+	return 1;
+}
+
+int V3_z( lua_State * state )
+{
+	int top = lua_gettop( state );
+
+	V3Proxy * v3Proxy = CheckV3( state, 1 );
+
+	if ( top == 2 ) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber( state, 2 );
+		v3Proxy->v3.z = value;
+	}
+
+	lua_pushnumber( state, v3Proxy->v3.z );
+	return 1;
+}
+
+
 static const luaL_Reg V3Functions[] =
 {
-	{ "New", V3_New },
-	{ "NewZero", V3_NewZero },
-
-	{ "Add", V3_Add },
-	{ "Sub", V3_Sub },
-	{ "Mul", V3_Mul },
-	{ "Div", V3_Div },
-
-	{ "Length", V3_Length },
 	{ "Normalize", V3_Normalize },
 	{ "DistanceTo", V3_DistanceTo },
 	{ "Dot", V3_Dot },
-	{ "Cross", V3_Cross },
 	{ "Inverse", V3_Inverse },
 	{ "Lerp", V3_Lerp },
-
 	{ "ToString", V3_ToString },
+
+	{ "x", V3_x },
+	{ "y", V3_y },
+	{ "z", V3_z },
+
 	{ nullptr, nullptr }
 };
 
 void RegisterV3( lua_State * state )
 {
-	luaL_newlib( state, V3Functions );
-	lua_setglobal( state, "V3" );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	Type type = { "V3", V3Functions, sizeof( V3Functions ) / sizeof( luaL_Reg ), V3_Constructor, V3_Destructor };
+	type.add = V3_Add;
+	type.sub = V3_Sub;
+	type.mul = V3_Mul;
+	type.div = V3_Div;
+	type.len = V3_Length;
+	type.named_constructors.push_back({ "V3Cross", V3_V3Cross });
+	se->AddType( type );
 }

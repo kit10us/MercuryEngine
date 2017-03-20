@@ -14,7 +14,7 @@ int PushEffect( lua_State * state, me::Effect::ptr effect )
 	EffectProxy ** newProxy = (EffectProxy**)(lua_newuserdata( state, sizeof( EffectProxy* ) ));
 	*newProxy = new EffectProxy();
 	(*newProxy)->effect = effect;
-	luaL_setmetatable( state, "EffectProxy" );
+	luaL_setmetatable( state, "Effect" );
 	return 1;
 }
 
@@ -63,12 +63,7 @@ int Effect_Constructor( lua_State * state )
 		effect = game->GetManager< Effect >()->Add( name, source );
 	}
 
-	EffectProxy ** effectProxy = (EffectProxy**)(lua_newuserdata( state, sizeof( EffectProxy* ) ));
-	*effectProxy = new EffectProxy;
-	(*effectProxy)->effect = effect;
-	luaL_setmetatable( state, "Effect" );
-	
-	return 1;
+	return PushEffect( state, effect );
 }
 
 int Effect_Destructor( lua_State * state )
@@ -88,6 +83,6 @@ void RegisterEffect( lua_State * state )
 
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Effect", EffectFunctions, sizeof( EffectFunctions ) / sizeof( luaL_Reg ), Effect_Constructor, Effect_Destructor );
+	se->AddType( { "Effect", EffectFunctions, sizeof( EffectFunctions ) / sizeof( luaL_Reg ), Effect_Constructor, Effect_Destructor } );
 }
 

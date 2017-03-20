@@ -17,10 +17,10 @@
 using namespace melua;
 using namespace me;
 
-int PushShapeParameters( lua_State * state, ShapeParameters & shapeParameters )
+int PushShapeParameters( lua_State * state, unify::Parameters & parameters )
 {
-	ShapeParameters ** parameters = (ShapeParameters**)(lua_newuserdata( state, sizeof( ShapeParameters* ) ));
-	*parameters = new ShapeParameters( shapeParameters );
+	ShapeParameters ** shapeParameters = (ShapeParameters**)(lua_newuserdata( state, sizeof( ShapeParameters* ) ));
+	*shapeParameters = new ShapeParameters{ parameters };
 	luaL_setmetatable( state, "ShapeParameters" );
 	return 1;
 }
@@ -60,8 +60,8 @@ int ShapeParameters_SetSpecular( lua_State* state )
 int ShapeParameters_SetCenter( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::V3< float > center = CheckV3( state, 2 );
-	parameters->parameters.Set< unify::V3< float > >( "center", center );
+	auto center = CheckV3( state, 2 );
+	parameters->parameters.Set< unify::V3< float > >( "center", center->v3 );
 	return 0;
 }
 
@@ -87,16 +87,16 @@ int ShapeParameters_SetEffect( lua_State* state )
 int CubeParameters_SetInf( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::V3< float > inf( CheckV3( state, 2 ) );
-	parameters->parameters.Set< unify::V3< float > >( "inf", inf );
+	auto inf( CheckV3( state, 2 ) );
+	parameters->parameters.Set< unify::V3< float > >( "inf", inf->v3 );
 	return 0;
 }
 
 int CubeParameters_SetSup( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::V3< float > sup( CheckV3( state, 2 ) );
-	parameters->parameters.Set< unify::V3< float > >( "sup", sup );
+	auto sup( CheckV3( state, 2 ) );
+	parameters->parameters.Set< unify::V3< float > >( "sup", sup->v3 );
 	return 0;
 }
 
@@ -256,13 +256,7 @@ static const luaL_Reg ShapeParametersFunctions[] =
 int ShapeParameters_Constructor( lua_State * state )
 {
 	std::string type = lua_tostring( state, 1 );
-
-	ShapeParameters ** parameters = (ShapeParameters**)(lua_newuserdata( state, sizeof( ShapeParameters* ) ));
-	*parameters = new ShapeParameters;
-	(*parameters)->parameters.Set< sg::Shape::TYPE >( "type", sg::Shape::FromString( type ) );
-	luaL_setmetatable( state, "ShapeParameters" );
-	
-	return 1;
+	return PushShapeParameters( state, unify::Parameters().Set< sg::Shape::TYPE >( "type", sg::Shape::FromString( type ) ) );
 }
 
 int ShapeParameters_Destructor( lua_State * state )
@@ -275,6 +269,6 @@ int ShapeParameters_Destructor( lua_State * state )
 void RegisterShapeParameters( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "ShapeParameters", ShapeParametersFunctions, sizeof( ShapeParametersFunctions ) / sizeof( luaL_Reg ), ShapeParameters_Constructor, ShapeParameters_Destructor );
+	se->AddType( { "ShapeParameters", ShapeParametersFunctions, sizeof( ShapeParametersFunctions ) / sizeof( luaL_Reg ), ShapeParameters_Constructor, ShapeParameters_Destructor } );
 }
 

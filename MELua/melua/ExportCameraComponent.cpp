@@ -155,6 +155,6 @@ int CameraComponent_Destructor( lua_State * state )
 void RegisterCameraComponent( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "CameraComponent", CameraComponentFunctions, sizeof( CameraComponentFunctions ) / sizeof( luaL_Reg ), CameraComponent_Constructor, CameraComponent_Destructor );
+	se->AddType( { "CameraComponent", CameraComponentFunctions, sizeof( CameraComponentFunctions ) / sizeof( luaL_Reg ), CameraComponent_Constructor, CameraComponent_Destructor } );
 }
 

@@ -57,6 +57,8 @@ namespace me
 
 			virtual std::string GetName() const = 0;
 
+			virtual void Restart() = 0;
+
 			virtual size_t ObjectCount() const = 0;
 
 			virtual int GetComponentCount() const = 0;

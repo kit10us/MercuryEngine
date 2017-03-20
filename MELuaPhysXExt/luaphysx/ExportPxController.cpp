@@ -73,6 +73,6 @@ void RegisterPxController( melua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
 
-	luaSE->AddType( "PxController", PxControllerFunctions, sizeof( PxControllerFunctions ) / sizeof( luaL_Reg ), PxController_Constructor, PxController_Destructor );
+	luaSE->AddType( { "PxController", PxControllerFunctions, sizeof( PxControllerFunctions ) / sizeof( luaL_Reg ), PxController_Constructor, PxController_Destructor } );
 }
 

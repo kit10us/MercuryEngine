@@ -108,6 +108,6 @@ void RegisterPxRigidStatic( melua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
 
-	luaSE->AddType( "PxRigidStatic", PxRigidStaticFunctions, sizeof( PxRigidStaticFunctions ) / sizeof( luaL_Reg ), PxRigidStatic_Constructor, PxRigidStatic_Destructor );
+	luaSE->AddType( { "PxRigidStatic", PxRigidStaticFunctions, sizeof( PxRigidStaticFunctions ) / sizeof( luaL_Reg ), PxRigidStatic_Constructor, PxRigidStatic_Destructor } );
 }
 

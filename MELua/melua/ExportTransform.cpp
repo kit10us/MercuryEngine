@@ -33,10 +33,10 @@ int Transform_SetPosition( lua_State * state )
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
 
-	unify::V3< float > position( CheckV3( state, 2 ) );
-
+	unify::V3< float > position( CheckV3( state, 2 )->v3 );
+	
 	auto game = ScriptEngine::GetGame();
-
+	
 	proxy->transform->SetPosition( position );
 
 	return 0;
@@ -48,11 +48,11 @@ int Transform_LookAt( lua_State * state )
 	assert( args == 2 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
-
-	unify::V3< float > position( CheckV3( state, 2 ) );
-
+	
+	unify::V3< float > position( CheckV3( state, 2 )->v3 );
+	
 	auto game = ScriptEngine::GetGame();
-
+	
 	proxy->transform->LookAt( position );
 
 	return 0;
@@ -65,10 +65,10 @@ int Transform_Orbit( lua_State * state )
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
 
-	unify::V3< float > origin( CheckV3( state, 2 ) );
-
+	unify::V3< float > origin( CheckV3( state, 2 )->v3 );
+	
 	unify::V2< float > axis( CheckV2( state, 3 ) );
-
+	
 	float distance = (float)lua_tonumber( state, 4 );
 	
 	proxy->transform->Orbit( origin, axis, unify::AngleInRadians( distance ) );
@@ -82,11 +82,11 @@ int Transform_RotateAbout( lua_State * state )
 	assert( args == 3 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
-
-	unify::V3< float > axis( CheckV3( state, 2 ) );
-
+	
+	unify::V3< float > axis( CheckV3( state, 2 )->v3 );
+	
 	float rotation = (float)lua_tonumber( state, 3 );
-
+	
 	proxy->transform->PreMul( unify::Quaternion( axis, unify::AngleInRadians( rotation ) ) );
 
 	return 0;
@@ -229,6 +229,6 @@ int Transform_Destructor( lua_State * state )
 void RegisterTransform( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Transform", TransformFunctions, sizeof( TransformFunctions ) / sizeof( luaL_Reg ), Transform_Constructor, Transform_Destructor );
+	se->AddType( { "Transform", TransformFunctions, sizeof( TransformFunctions ) / sizeof( luaL_Reg ), Transform_Constructor, Transform_Destructor } );
 }
 

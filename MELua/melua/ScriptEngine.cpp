@@ -147,15 +147,138 @@ MELUADLL_API void ScriptEngine::AddLibrary( const char * group, const luaL_Reg *
 	lua_setglobal( m_state, group );
 }
 
-MELUADLL_API void ScriptEngine::AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector )
+MELUADLL_API void ScriptEngine::AddType( Type type )
 {
-	lua_register( m_state, name, constructor );
-	luaL_newmetatable( m_state, name );
-	lua_pushcfunction( m_state, collector ); lua_setfield( m_state, -2, "__gc" );
-	lua_pushvalue( m_state, -1 ); lua_setfield( m_state, -2, "__index" );
-	lua_pushstring( m_state, name ); lua_setfield( m_state, -2, "_type" );
-	luaL_setfuncs( m_state, functions, 0 );
+	if ( type.constructor )
+	{
+		lua_register( m_state, type.name.c_str(), type.constructor ); // Register our type's constructor.
+	}
+
+	for (auto named_constructor : type.named_constructors)
+	{
+		lua_register( m_state, named_constructor.name.c_str(), named_constructor.function ); // Register our type's constructor.
+	}
+
+	luaL_newmetatable( m_state, type.name.c_str() ); // Create a metatable by the name of our type on top of the stack.
+
+	if ( type.collector )
+	{
+		lua_pushcfunction( m_state, type.collector ); 
+		lua_setfield( m_state, -2, "__gc" ); // Add a garbage collector to our type (metatable).
+	}
+
+	if ( type.newindex )
+	{
+		lua_pushcfunction( m_state, type.newindex ); 
+		lua_setfield( m_state, 1, "__newindex" ); // Add a function to call if we attempt to assign to an unknown member.
+	}
+
+	if ( type.index )
+	{
+		lua_pushcfunction( m_state, type.index ); 
+		lua_setfield( m_state, 1, "__index" );
+	}
+	else
+	{
+		lua_pushvalue( m_state, -1 );
+		lua_setfield( m_state, 1, "__index" );
+	}
+
+	if ( type.add )
+	{
+		lua_pushcfunction( m_state, type.add ); 
+		lua_setfield( m_state, 1, "__add" );
+	}
+
+	if ( type.sub )
+	{
+		lua_pushcfunction( m_state, type.sub ); 
+		lua_setfield( m_state, 1, "__sub" );
+	}
+
+	if ( type.mul )
+	{
+		lua_pushcfunction( m_state, type.mul ); 
+		lua_setfield( m_state, 1, "__mul" );
+	}
+
+	if ( type.div )
+	{
+		lua_pushcfunction( m_state, type.div ); 
+		lua_setfield( m_state, 1, "__div" );
+	}
+
+	if ( type.mod )
+	{
+		lua_pushcfunction( m_state, type.mod ); 
+		lua_setfield( m_state, 1, "__mod" );
+	}
+
+	if ( type.pow )
+	{
+		lua_pushcfunction( m_state, type.pow ); 
+		lua_setfield( m_state, 1, "__pow" );
+	}
+
+	if ( type.unm )
+	{
+		lua_pushcfunction( m_state, type.unm ); 
+		lua_setfield( m_state, 1, "__unm" );
+	}
+
+	if ( type.concat )
+	{
+		lua_pushcfunction( m_state, type.concat ); 
+		lua_setfield( m_state, 1, "__concat" );
+	}
+
+	if ( type.len )
+	{
+		lua_pushcfunction( m_state, type.len ); 
+		lua_setfield( m_state, 1, "__len" );
+	}
+
+	if ( type.eq )
+	{
+		lua_pushcfunction( m_state, type.eq ); 
+		lua_setfield( m_state, 1, "__eq" );
+	}
+
+	if ( type.lt )
+	{
+		lua_pushcfunction( m_state, type.lt ); 
+		lua_setfield( m_state, 1, "__lt" );
+	}
+
+	if ( type.le )
+	{
+		lua_pushcfunction( m_state, type.le ); 
+		lua_setfield( m_state, 1, "__le" );
+	}
+
+	lua_pushstring( m_state, type.name.c_str() ); lua_setfield( m_state, -2, "_type" ); // Add a variable called "_type".
+	luaL_setfuncs( m_state, type.functions, 0 );
 	lua_pop( m_state, 1 );
+
+	m_types[ type.name ] = type;
+}
+
+Type * ScriptEngine::GetType( std::string name )
+{
+	auto itr = m_types.find( name );
+	if ( itr == m_types.end() )
+	{
+		return nullptr;
+	}
+	else
+	{
+		return &itr->second;
+	}
+}
+
+void ScriptEngine::Error( std::string function, std::string message )
+{
+	m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in \"" + function + "\"! " + message );
 }
 
 ScriptEngine* ScriptEngine::GetInstance()

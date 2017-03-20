@@ -78,7 +78,6 @@ void GameComponent::OnAttach( me::IGame * game )
 	if ( result == LUA_ERRSYNTAX )
 	{
 		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
-		assert( 0 );
 	}
 	else if ( result == LUA_ERRFILE )
 	{
@@ -116,7 +115,6 @@ void GameComponent::OnAttach( me::IGame * game )
 	{
 		std::string error = lua_tostring( m_state, -1 );
 		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
-		assert( 0 ); // TODO:
 	}
 
 	CallMember( "OnInit" );

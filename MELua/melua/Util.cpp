@@ -32,12 +32,17 @@ void ShowStack( lua_State *L )
 	OutputDebugStringA( "\n" ); // end the listing
 }
 
+std::string GetTypename( lua_State *L )
+{
+	return GetTypename( L, lua_gettop( L ) );
+}
+
 std::string GetTypename( lua_State *L, int index )
 {
 	int top = lua_gettop( L );
 	int type = lua_type( L, index );
-	switch( type )
-	{					
+	switch ( type )
+	{
 	default:
 	case LUA_TNONE:
 		return "none";
@@ -56,27 +61,35 @@ std::string GetTypename( lua_State *L, int index )
 	case LUA_TFUNCTION:
 		return "function";
 	case LUA_TUSERDATA:
+	{
 		lua_getmetatable( L, index );
-		type = lua_type( L, index + 1 );
-		if ( type != LUA_TTABLE )
+		int subType = lua_type( L, -1 );
+
+		if ( subType != LUA_TTABLE )
 		{
+			lua_pop( L, 1 );
+			assert( top == lua_gettop( L ) );
 			return std::string();
 		}
-		lua_getfield( L, index + 1, "_type" );
-		type = lua_type( L, index + 2 );
-		top = lua_gettop( L );
-		if ( type != LUA_TSTRING )
+		else
 		{
-			lua_pop( L, 2 );
-			return std::string();
+			lua_getfield( L, -1, "_type" );
+			type = lua_type( L, -1 );
+			if ( type != LUA_TSTRING )
+			{
+				lua_pop( L, 2 );
+				assert( top == lua_gettop( L ) );
+				return std::string();
+			}
+			else
+			{
+				std::string typeName = lua_tostring( L, -1 );
+				lua_pop( L, 2 );
+				assert( top == lua_gettop( L ) );
+				return typeName;
+			}
 		}
-		top = lua_gettop( L );
-		{
-			std::string typeName = lua_tostring( L, index + 2 );
-			top = lua_gettop( L );
-			lua_pop( L, 2 );
-			return typeName;
-		}
+	}
 	case LUA_TTHREAD:
 		return "thread";
 	}

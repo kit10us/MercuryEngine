@@ -1,10 +1,16 @@
 require "prefabs"
 
-function OnBeforeStart( me )
+function OnBeforeStart()
 	-- Load textures
 	Texture( "invalid", "borgcube.bmp" )
 	Texture( "sand", "sand.bmp" )
 	Texture( "grass", "grass.bmp" )
+	
+	local a = V3( 1, 2, 3 )
+	print( tostring( a ) )
+	print( tostring( V3() ) )
+	print( tostring( V3Cross( V3( 1, 0, 0 ), V3( 0, 1, 0 ) ) ) )
+	
 	
 	-- Create geometry	
 	local terraParams = TerraParameters()	
@@ -23,6 +29,7 @@ function OnBeforeStart( me )
 	
 	-- Add a grass ground...
 	effect = Effect( "grass", "EffectTextured.effect" )
+	type( effect );
 	effect:SetTexture( 0, Texture( "grass" ) )
 	terraParams:SetEffect( effect )
 	terraParams:SetTexArea( TexArea.NewFull() )
@@ -34,49 +41,51 @@ function OnBeforeStart( me )
 	terraParams:SetEffect( effect )
 	terraParams:SetTexArea( TexArea.New( 1.0 / 4 * 1, 1.0 / 4 * 1, 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
 	Terra( "sand", terraParams )
+
 	
 	-- Scene
-	local sceneMain = FindScene( "main" )
+	local sceneMain = this;
 	
 	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	local camera = sceneMain:NewObject( "camera" )
+	print( "camera = " .. type( camera ) )
+	
 	local cameraComponent = CameraComponent()
 	camera:Attach( cameraComponent )
 	cameraComponent:SetProjection( proj )
-	camera:Transform():SetPosition( V3.New( 0, 17, -12 ) )
-	camera:Transform():LookAt( V3.New( 0, 0, 0 ) )	
+	camera:Transform():SetPosition( V3( 0, 17, -12 ) )
+	camera:Transform():LookAt( V3( 0, 0, 0 ) )	
 
 	local color3d = Effect( "color3d", "Color_Ambient.effect" )
 	local borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
 	local cube = sceneMain:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
-	cube:Transform():SetPosition( V3.New( -4.5, 1, 0 ) )
+	cube:Transform():SetPosition( V3( -4.5, 1, 0 ) )
 
 	local pyramid = sceneMain:NewObject( "pyramid" )
 	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
-	pyramid:Transform():SetPosition( V3.New( -4.5, 1, 0 ) )
+	pyramid:Transform():SetPosition( V3( -4.5, 1, 0 ) )
 	
 	local cylinder = sceneMain:NewObject( "cylinder" )
 	cylinder:AddGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
-	cylinder:Transform():SetPosition( V3.New( 4.5, 1, 0 ) )
+	cylinder:Transform():SetPosition( V3( 4.5, 1, 0 ) )
 
 	local player = sceneMain:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
 	player:SetModelMatrix( Matrix.NewRotationX( Angle.Degrees( -90 ) ) )
-	player:Transform():SetPosition( V3.New( 0, 0, 0 ) )
+	player:Transform():SetPosition( V3( 0, 0, 0 ) )
 	
 	-- Add stuff
-	BuildTree( sceneMain, V3.New( 0, 0, 5 ) )	
-	BuildHouse( sceneMain, V3.New( -7, 0, 3 ) )	
+	BuildTree( sceneMain, V3( 0, 0, 5 ) )	
+	BuildHouse( sceneMain, V3( -7, 0, 3 ) )	
 end
 
-function OnAfterStart( me )
+function OnAfterStart()
 	local sceneMain = FindScene( "main" )
 	local target = sceneMain:FindObject( "player" )
-		
 	local cameraMotivator = target:GetComponent( "CameraMotivator" );
 	
 	if not cameraMotivator then

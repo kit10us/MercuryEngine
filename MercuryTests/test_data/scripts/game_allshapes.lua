@@ -12,7 +12,7 @@ function OnBeforeStartup()
 	
 	-- Add camera...
 	camera = scene1:AddCamera( "camera", proj )	
-	camera:Transform():SetPosition( V3.New( 0, 5, -17 ) )
+	camera:Transform():SetPosition( V3( 0, 5, -17 ) )
 	camera:Transform():LookAt( V3.Zero() )
 
 	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
@@ -23,7 +23,7 @@ function OnBeforeStartup()
 	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
 	cube = scene1:NewObject( "cube" )
 	cube:AddGeometry( Geometry( cubeParameters ) )
-	cube:Transform():SetPosition( V3.New( -4.5, 3, 0 ) )
+	cube:Transform():SetPosition( V3( -4.5, 3, 0 ) )
 
 
 	pointfieldParameters = ShapeParameters( "pointfield" )
@@ -34,7 +34,7 @@ function OnBeforeStartup()
 	pointfieldParameters:SetDiffuse( Color.NewWhite() )
 	pointfield = scene1:NewObject( "pointfield" )
 	pointfield:AddGeometry( Geometry( pointfieldParameters ) )
-	pointfield:Transform():SetPosition( V3.New( -1.5, 3, 0 ) )
+	pointfield:Transform():SetPosition( V3( -1.5, 3, 0 ) )
 	
 	pointringParameters = ShapeParameters( "pointring" )
 	pointringParameters:SetEffect( color3d )
@@ -44,7 +44,7 @@ function OnBeforeStartup()
 	pointringParameters:SetDiffuse( Color.NewRed() )
 	pointring = scene1:NewObject( "pointring" )
 	pointring:AddGeometry( Geometry( pointringParameters ) )
-	pointring:Transform():SetPosition( V3.New( 1.5, 3, 0 ) )
+	pointring:Transform():SetPosition( V3( 1.5, 3, 0 ) )
 
 	dashringParameters = ShapeParameters( "dashring" )
 	dashringParameters:SetEffect( color3d )
@@ -55,7 +55,7 @@ function OnBeforeStartup()
 	dashringParameters:SetDiffuse( Color.NewGreen() )
 	dashring = scene1:NewObject( "dashring" )
 	dashring:AddGeometry( Geometry( dashringParameters ) )
-	dashring:Transform():SetPosition( V3.New( 4.5, 3, 0 ) )	
+	dashring:Transform():SetPosition( V3( 4.5, 3, 0 ) )	
 	
 	pyramidParameters = ShapeParameters( "pyramid" )
 	pyramidParameters:SetEffect( color3d )
@@ -63,7 +63,7 @@ function OnBeforeStartup()
 	pyramidParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
 	pyramid = scene1:NewObject( "pyramid" )
 	pyramid:AddGeometry( Geometry( pyramidParameters ) )
-	pyramid:Transform():SetPosition( V3.New( -4.5, 0, 0 ) )	
+	pyramid:Transform():SetPosition( V3( -4.5, 0, 0 ) )	
 	
 	circleParameters = ShapeParameters( "circle" )
 	circleParameters:SetEffect( color3d );
@@ -72,7 +72,7 @@ function OnBeforeStartup()
 	circleParameters:SetDiffuse( Color.NewBlue() );
 	circle = scene1:NewObject( "circle" )
 	circle:AddGeometry( Geometry( circleParameters ) );
-	circle:Transform():SetPosition( V3.New( -1.5, 0, 0 ) )
+	circle:Transform():SetPosition( V3( -1.5, 0, 0 ) )
 	
 	sphereParameters = ShapeParameters( "sphere" )
 	sphereParameters:SetEffect( color3d )
@@ -81,7 +81,7 @@ function OnBeforeStartup()
 	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
 	sphere = scene1:NewObject( "sphere" )
 	sphere:AddGeometry( Geometry( sphereParameters ) )
-	sphere:Transform():SetPosition( V3.New( 1.5, 0, 0 ) )
+	sphere:Transform():SetPosition( V3( 1.5, 0, 0 ) )
 
 	cylinderParameters = ShapeParameters( "cylinder" )
 	cylinderParameters:SetEffect( color3d )
@@ -92,7 +92,7 @@ function OnBeforeStartup()
 	cylinderParameters:SetCaps( true )
 	cylinder = scene1:NewObject( "cylinder" )
 	cylinder:AddGeometry( Geometry( cylinderParameters ) )
-	cylinder:Transform():SetPosition( V3.New( 4.5, 0, 0 ) )
+	cylinder:Transform():SetPosition( V3( 4.5, 0, 0 ) )
 	
 	tubeParameters = ShapeParameters( "tube" )
 	tubeParameters:SetEffect( color3d )
@@ -103,7 +103,7 @@ function OnBeforeStartup()
 	tubeParameters:SetDiffuse( Color.NewRed() )
 	tube = scene1:NewObject( "tube" )
 	tube:AddGeometry( Geometry( tubeParameters ) )
-	tube:Transform():SetPosition( V3.New( -4.5, -3, 0 ) )
+	tube:Transform():SetPosition( V3( -4.5, -3, 0 ) )
 
 	
 	
@@ -114,7 +114,7 @@ function OnBeforeStartup()
 	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
 	plane = scene1:NewObject( "plane" )
 	plane:AddGeometry( Geometry( planeParameters ) )
-	plane:Transform():SetPosition( V3.New( -1.5, -3, 0 ) )
+	plane:Transform():SetPosition( V3( -1.5, -3, 0 ) )
 	
 
 	coneParameters = ShapeParameters( "cone" )
@@ -125,7 +125,7 @@ function OnBeforeStartup()
 	coneParameters:SetCaps( true )
 	cone = scene1:NewObject( "cone" )
 	cone:AddGeometry( Geometry( coneParameters ) )
-	cone:Transform():SetPosition( V3.New( 1.5, -3, 0 ) )
+	cone:Transform():SetPosition( V3( 1.5, -3, 0 ) )
 end
 
 function OnUpdate()

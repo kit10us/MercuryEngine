@@ -116,6 +116,7 @@
     <ClInclude Include="melua\ExportTransform.h" />
     <ClInclude Include="melua\ExportUpdate.h" />
     <ClInclude Include="melua\shape\ExportShapeParameters.h" />
+    <ClInclude Include="melua\Type.h" />
     <ClInclude Include="melua\unify\ExportAngle.h" />
     <ClInclude Include="melua\unify\ExportColor.h" />
     <ClInclude Include="melua\unify\ExportMatrix.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="melua\ExportTransform.cpp" />
     <ClCompile Include="melua\ExportUpdate.cpp" />
     <ClCompile Include="melua\shape\ExportShapeParameters.cpp" />
+    <ClCompile Include="melua\Type.cpp" />
     <ClCompile Include="melua\unify\ExportAngle.cpp" />
     <ClCompile Include="melua\unify\ExportColor.cpp" />
     <ClCompile Include="melua\unify\ExportMatrix.cpp" />

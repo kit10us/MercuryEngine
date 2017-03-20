@@ -71,12 +71,7 @@ int Input_Constructor( lua_State * state )
 		return 1;
 	}
 
-	InputProxy ** inputProxy = (InputProxy**)(lua_newuserdata( state, sizeof( InputProxy* ) ));
-	*inputProxy = new InputProxy;
-	(*inputProxy)->input = input;
-	luaL_setmetatable( state, "Input" );
-
-	return 1;
+	return PushInput( state, input );
 }
 
 int Input_Destructor( lua_State * state )
@@ -89,6 +84,6 @@ int Input_Destructor( lua_State * state )
 void RegisterInput( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "Input", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Input_Constructor, Input_Destructor );
+	se->AddType( { "Input", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Input_Constructor, Input_Destructor } );
 }
 

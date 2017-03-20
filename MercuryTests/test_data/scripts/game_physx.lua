@@ -19,8 +19,8 @@ function OnBeforeStartup()
 	cameraComponent = CameraComponent()
 	camera:Attach( cameraComponent )
 	cameraComponent:SetProjection( proj )
-	camera:Transform():SetPosition( V3.New( 0, 25, -47 ) )
-	camera:Transform():LookAt( V3.NewZero() )
+	camera:Transform():SetPosition( V3( 0, 25, -47 ) )
+	camera:Transform():LookAt( V3() )
 
 	local i = 1
 
@@ -52,7 +52,7 @@ function OnBeforeStartup()
 				local y = 10 + l * offset
 				local z = (-offset * numC * 0.5) + (c * offset) + c % 3
 				object = scene1:NewObject( "geo_" .. tostring( i ) ); i = i + 1;
-				object:Transform():SetPosition( V3.New( x, y, z ) )
+				object:Transform():SetPosition( V3( x, y, z ) )
 				
 				local sh = i % 2
 				if sh == 0 then
@@ -64,7 +64,7 @@ function OnBeforeStartup()
 					else
 						object:AddGeometry(  cubeGeoBlue )
 					end
-					local pxShape = PhysX.CreateBoxCollider( V3.New( 1.0, 1.0, 1.0 ) )
+					local pxShape = PhysX.CreateBoxCollider( V3( 1.0, 1.0, 1.0 ) )
 					pxShape:AttachTo( object )
 				else
 					local pxShape = PhysX.CreateSphereCollider( 1.0 )
@@ -85,7 +85,7 @@ function OnBeforeStartup()
 	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
 	plane = scene1:NewObject( "plane" )
 	plane:AddGeometry( Geometry( planeParameters ) )
-	plane:Transform():SetPosition( V3.New( 0, -20, 0 ) )
+	plane:Transform():SetPosition( V3( 0, -20, 0 ) )
 
 	local terraParams = TerraParameters()
 	terraParams:SetEffect( Effect( "pit_image", "EffectPit.effect" ) )
@@ -96,7 +96,7 @@ function OnBeforeStartup()
 	local terraGeo = Terra( "pit", terraParams )
 	local terra = scene1:NewObject( "terra" )
 	terra:AddGeometry( terraGeo )
-	terra:Transform():SetPosition( V3.New( 0, -12, 0 ) );
+	terra:Transform():SetPosition( V3( 0, -12, 0 ) );
 	local pxShape = PhysX.CreateHeightFieldCollider( terraGeo, 30, 30 )
 	pxShape:AttachTo( terra )
 	local pxBody = PhysX.CreateRigidStatic()
@@ -106,6 +106,6 @@ function OnBeforeStartup()
 end
 
 function OnUpdate()
-	--group:Transform():RotateAbout( V3.New( 0, 1, 0 ), Update.GetDelta() )
+	--group:Transform():RotateAbout( V3( 0, 1, 0 ), Update.GetDelta() )
 	
 end

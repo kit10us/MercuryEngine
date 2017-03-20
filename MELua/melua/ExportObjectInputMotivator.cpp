@@ -140,6 +140,6 @@ int ObjectInputMotivator_Destructor( lua_State * state )
 void RegisterObjectInputMotivator( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( "ObjectInputMotivator", ObjectInputMotivatorFunctions, sizeof( ObjectInputMotivatorFunctions ) / sizeof( luaL_Reg ), ObjectInputMotivator_Constructor, ObjectInputMotivator_Destructor );
+	se->AddType( { "ObjectInputMotivator", ObjectInputMotivatorFunctions, sizeof( ObjectInputMotivatorFunctions ) / sizeof( luaL_Reg ), ObjectInputMotivator_Constructor, ObjectInputMotivator_Destructor } );
 }
 

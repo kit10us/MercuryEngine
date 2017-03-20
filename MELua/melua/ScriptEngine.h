@@ -6,6 +6,7 @@
 #include <MELuaDLL.h>
 #include <me/GameComponent.h>
 #include <me/scene/Scene.h>
+#include <melua/Type.h>
 #include <lua.hpp>
 
 namespace melua
@@ -36,7 +37,11 @@ namespace melua
 
 		MELUADLL_API void AddLibrary( const char * group, const luaL_Reg * list, int count );
 
-		MELUADLL_API void AddType( const char * name, const luaL_Reg * functions, int count, lua_CFunction constructor, lua_CFunction collector );
+		MELUADLL_API void AddType( Type type );
+
+		Type * GetType( std::string name );
+
+		void Error( std::string function, std::string message );
 
 		static ScriptEngine* GetInstance();
 		static me::IGame * GetGame();
@@ -48,6 +53,8 @@ namespace melua
 		lua_State * m_state;
 		size_t m_gameScriptCount;
 		size_t m_objectScriptCount;
+
+		std::map< std::string, Type > m_types;
 
 		static ScriptEngine * s_se;
 	};

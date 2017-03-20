@@ -134,6 +134,6 @@ void RegisterPxRigidBody( melua::ScriptEngine * luaSE, me::IGame * game )
 {
 	g_luaSE = luaSE;
 
-	luaSE->AddType( "PxRigidBody", PxRigidBodyFunctions, sizeof( PxRigidBodyFunctions ) / sizeof( luaL_Reg ), PxRigidBody_Constructor, PxRigidBody_Destructor );
+	luaSE->AddType( { "PxRigidBody", PxRigidBodyFunctions, sizeof( PxRigidBodyFunctions ) / sizeof( luaL_Reg ), PxRigidBody_Constructor, PxRigidBody_Destructor } );
 }
 
