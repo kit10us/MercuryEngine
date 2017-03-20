@@ -16,6 +16,8 @@
 #include <functional>
 
 #include <me/input/ButtonPressedCondition.h>
+#include <me/input/InputAction.h>
+#include <me/action/QuitGame.h>
 
 // Temporary...
 #include <me/scene/SceneManager.h>
@@ -76,6 +78,7 @@ Game::Game( unify::Path setup )
 	, m_setup( setup )
 	, m_isQuitting( false )
 	, m_totalStartupTime{}
+	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
 {
 }
 
@@ -107,7 +110,6 @@ Game::~Game()
 	
 	m_resourceHub.Clear();
 
-	m_exitMotivation.reset();
 	m_inputManager.Clear();
 
 	m_components.clear();
@@ -411,10 +413,12 @@ bool Game::Initialize( OSParameters osParameters )
 	// Basic motivations...
 	if ( GetInputManager() )
 	{
-		input::IInputSource::ptr keyboard( GetInputManager()->FindSource( "keyboard" ) );
-		if ( keyboard )
+		input::IInputSource::ptr keyboard(GetInputManager()->FindSource("keyboard"));
+		if (keyboard)
 		{
-			m_exitMotivation = input::IInputCondition::ptr( new input::ButtonPressedCondition( keyboard, 0, "Escape" ) );
+			auto condition = input::IInputCondition::ptr( new input::ButtonPressedCondition(keyboard, 0, "Escape"));
+			input::IInputAction::ptr action( new input::InputAction( action::IAction::ptr{ new action::QuitGame(this) } ) );
+			keyboard->AddEvent(m_inputOwnership, condition, action);
 		}
 	}	
 	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
@@ -479,11 +483,6 @@ void Game::Tick()
 	if ( GetOS()->GetHasFocus() )
 	{
 		m_inputManager.Update();
-	}
-
-	if ( m_exitMotivation && m_exitMotivation->IsTrue() )
-	{
-		Quit();
 	}
 
 	m_renderInfo.SetDelta( elapsed );			  

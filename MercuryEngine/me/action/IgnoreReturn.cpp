@@ -7,7 +7,7 @@ using namespace me;
 using namespace action;
 
 IgnoreReturn::IgnoreReturn( IAction::ptr action )
-
+	: m_action{ action }
 {
 }
 

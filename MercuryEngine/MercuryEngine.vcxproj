@@ -22,6 +22,10 @@
     <ClInclude Include="me\action\ActionList.h" />
     <ClInclude Include="me\action\IAction.h" />
     <ClInclude Include="me\action\IgnoreReturn.h" />
+    <ClInclude Include="me\action\LogMessage.h" />
+    <ClInclude Include="me\action\QuitGame.h" />
+    <ClInclude Include="me\action\RepeatAction.h" />
+    <ClInclude Include="me\action\ToggleAction.h" />
     <ClInclude Include="me\BufferSet.h" />
     <ClInclude Include="me\BufferUsage.h" />
     <ClInclude Include="me\canvas\Anchor.h" />
@@ -73,10 +77,13 @@
     <ClInclude Include="me\IndexLock.h" />
     <ClInclude Include="me\input\ButtonCondition.h" />
     <ClInclude Include="me\input\ButtonPressedCondition.h" />
+    <ClInclude Include="me\input\IInputAction.h" />
     <ClInclude Include="me\input\IInputCondition.h" />
     <ClInclude Include="me\input\IInputSource.h" />
+    <ClInclude Include="me\input\InputAction.h" />
     <ClInclude Include="me\input\InputCondition.h" />
     <ClInclude Include="me\input\InputManager.h" />
+    <ClInclude Include="me\input\InputSource.h" />
     <ClInclude Include="me\input\InputType.h" />
     <ClInclude Include="me\input\StickCondition.h" />
     <ClInclude Include="me\input\TriggerCondition.h" />
@@ -175,6 +182,10 @@
   <ItemGroup>
     <ClCompile Include="me\action\ActionList.cpp" />
     <ClCompile Include="me\action\IgnoreReturn.cpp" />
+    <ClCompile Include="me\action\LogMessage.cpp" />
+    <ClCompile Include="me\action\QuitGame.cpp" />
+    <ClCompile Include="me\action\RepeatAction.cpp" />
+    <ClCompile Include="me\action\ToggleAction.cpp" />
     <ClCompile Include="me\BufferSet.cpp" />
     <ClCompile Include="me\BufferUsage.cpp" />
     <ClCompile Include="me\canvas\CanvasComponent.cpp" />
@@ -207,6 +218,7 @@
     <ClCompile Include="me\input\ButtonPressedCondition.cpp" />
     <ClCompile Include="me\input\InputCondition.cpp" />
     <ClCompile Include="me\input\InputManager.cpp" />
+    <ClCompile Include="me\input\InputSource.cpp" />
     <ClCompile Include="me\input\InputType.cpp" />
     <ClCompile Include="me\input\StickCondition.cpp" />
     <ClCompile Include="me\input\TriggerCondition.cpp" />

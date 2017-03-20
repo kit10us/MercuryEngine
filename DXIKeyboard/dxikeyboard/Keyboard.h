@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/input/IInputSource.h>
+#include <me/input/InputSource.h>
 #include <me/IGame.h>
 
 #define DIRECTINPUT_VERSION		0x0800
@@ -22,7 +22,7 @@ namespace dxikeyboard
 		COUNT
 	};
 
-	class Keyboard : public me::input::IInputSource
+	class Keyboard : public me::input::InputSource
 	{
 	public:
 		Keyboard( me::IGame * game );

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/input/IInputSource.h>
+#include <qxml/QXML.h>
 #include <unify/String.h>
 #include <vector>
 #include <map>
@@ -26,6 +27,8 @@ namespace me
 			size_t GetSourceCount() const;
 			IInputSource::ptr GetSource( size_t index ) const;
 			IInputSource::ptr FindSource( std::string name );
+
+			IInputCondition::ptr MakeCondition(const qxml::Element * element);
 
 			void Update();
 

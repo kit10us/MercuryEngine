@@ -52,6 +52,7 @@ namespace meedr
 		ui::IResult* OnNotify( ui::message::Notify message ) override;
 		ui::IResult* OnMenuCommand( ui::message::MenuCommand message ) override;
 		ui::IResult* OnUser( ui::message::User message ) override;
+		ui::IResult* OnDestroy(ui::message::Params) override;
 
 	private:
 		me::IGame * m_game;

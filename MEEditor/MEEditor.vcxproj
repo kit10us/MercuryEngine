@@ -153,6 +153,7 @@
     <ClCompile Include="meedr\ComponentViewer.cpp" />
     <ClCompile Include="meedr\InputBrowser.cpp" />
     <ClCompile Include="meedr\LogViewer.cpp" />
+    <ClCompile Include="meedr\OpenEditorAction.cpp" />
     <ClCompile Include="meedr\ResourceBrowser.cpp" />
     <ClCompile Include="meedr\SceneViewer.cpp" />
     <ClCompile Include="meedr\ScriptEditor.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="meedr\ComponentViewer.h" />
     <ClInclude Include="meedr\InputBrowser.h" />
     <ClInclude Include="meedr\LogViewer.h" />
+    <ClInclude Include="meedr\OpenEditorAction.h" />
     <ClInclude Include="meedr\ResourceBrowser.h" />
     <ClInclude Include="meedr\SceneViewer.h" />
     <ClInclude Include="meedr\ScriptEditor.h" />

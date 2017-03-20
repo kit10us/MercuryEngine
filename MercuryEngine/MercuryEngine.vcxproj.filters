@@ -504,6 +504,27 @@
     <ClInclude Include="me\scene\SceneManagerComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
+    <ClInclude Include="me\input\InputSource.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\IInputAction.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\InputAction.h">
+      <Filter>me\input</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\QuitGame.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\RepeatAction.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\LogMessage.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\ToggleAction.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -826,6 +847,21 @@
     </ClCompile>
     <ClCompile Include="me\scene\SceneManagerComponent.cpp">
       <Filter>me\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\InputSource.cpp">
+      <Filter>me\input</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\QuitGame.cpp">
+      <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\RepeatAction.cpp">
+      <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\LogMessage.cpp">
+      <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\ToggleAction.cpp">
+      <Filter>me\action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

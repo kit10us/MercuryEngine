@@ -25,11 +25,11 @@ StickAxis input::StickAxisFromString( std::string axis )
 	throw std::exception( "Invalid StickAxis!" );
 }
 
-StickCondition::StickCondition( IInputSource::ptr source, size_t subSource, std::string name, StickAxis axis, float cap_low, float threshhold_low, float threshhold_high, float cap_high )
+StickCondition::StickCondition( IInputSource::ptr source, size_t subSource, std::string name, StickAxis axis, float cap_low, float threshold_low, float threshold_high, float cap_high )
 	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
 	, m_axis{ axis }
-	, m_threshhold_low{ threshhold_low }
-	, m_threshhold_high{ threshhold_high }
+	, m_threshold_low{ threshold_low }
+	, m_threshold_high{ threshold_high }
 	, m_cap_low{ cap_low }
 	, m_cap_high{ cap_high }
 {
@@ -66,7 +66,7 @@ bool StickCondition::IsTrue() const
 		value = stickData->axis.z;
 		break;
 	}
-	return (value >= m_cap_low && value <= m_threshhold_low) || (value >= m_threshhold_high && value <= m_cap_high);
+	return (value >= m_cap_low && value <= m_threshold_low) || (value >= m_threshold_high && value <= m_cap_high);
 }
 
 float StickCondition::GetValue() const
@@ -97,7 +97,7 @@ float StickCondition::GetValue() const
 		break;
 	}
 	
-	if ( !((value >= m_cap_low && value <= m_threshhold_low) || (value >= m_threshhold_high && value <= m_cap_high)) )
+	if ( !((value >= m_cap_low && value <= m_threshold_low) || (value >= m_threshold_high && value <= m_cap_high)) )
 	{
 		return 0.0f;
 	}	

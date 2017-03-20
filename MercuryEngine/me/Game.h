@@ -128,13 +128,11 @@ namespace me
 		bool m_isQuitting;
 			
 		me::input::InputManager m_inputManager;
+		unify::Owner::ptr m_inputOwnership;
 
 		std::list< std::shared_ptr< me::Extension > > m_extensions;
 
 		std::list< std::string > m_criticalErrors;
-
-		input::IInputCondition::ptr m_exitMotivation;
-		input::IInputCondition::ptr m_browserMotivation;
 
 		std::weak_ptr< UpdateLock > m_exclusiveLock;
 		std::list< std::weak_ptr< UpdateLock > > m_locks;

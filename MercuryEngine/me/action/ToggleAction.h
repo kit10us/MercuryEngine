@@ -4,24 +4,26 @@
 #pragma once
 
 #include <me/action/IAction.h>
+#include <vector>
 
 namespace me
 {
 	namespace action
 	{
 		/// <summary>
-		/// Ignores an actions return result (forces a true result).
+		/// Performs an action from a set, moving to the next action in the set every time.
 		/// </summary>
-		class IgnoreReturn : public IAction
+		class ToggleAction : public IAction
 		{
 		public:
-			IgnoreReturn( IAction::ptr action );
+			ToggleAction( std::initializer_list< IAction::ptr > actions );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
-			IAction::ptr m_action;
+			std::vector< IAction::ptr > m_actions;
+			size_t m_next;
 		};
 	}
 }

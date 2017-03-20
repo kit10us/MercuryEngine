@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include <me/input/IInputSource.h>
+#include <me/input/InputSource.h>
 #include <me/IGame.h>
 #include <Xinput.h>
 #include <map>
 
 namespace dxigp
 {
-	class Gamepad : public me::input::IInputSource
+	class Gamepad : public me::input::InputSource
 	{
 	public:
 		Gamepad( me::IGame * game );

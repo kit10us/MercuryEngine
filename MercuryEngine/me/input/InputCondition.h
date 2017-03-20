@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/input/IInputCondition.h>
+#include <me/input/IInputSource.h>
 
 namespace me
 {
@@ -15,7 +16,7 @@ namespace me
 			InputCondition( IInputSource::ptr source, size_t subSource, size_t index );
 			virtual ~InputCondition();
 
-			IInputSource::ptr GetSource() const;
+			IInputSource::ptr GetSource() const override;
 			size_t GetIndex() const;
 			size_t GetSubSource() const;
 

@@ -4,6 +4,9 @@
 #pragma once
 
 #include <me/input/InputType.h>
+#include <me/input/IInputCondition.h>
+#include <me/input/IInputAction.h>
+#include <unify/Owner.h>
 #include <memory>
 #include <string>
 
@@ -75,6 +78,21 @@ namespace me
 			/// Set an input, by index's, data.
 			/// </summary>
 			virtual void SetInputData( size_t subSource, size_t index, IData::ptr dataIn ) = 0;
+
+			/// <summary>
+			/// Adds an event: an action to be trigger by an input condition.
+			/// </summary>
+			virtual void AddEvent( unify::Owner::ptr owner, IInputCondition::ptr condition, IInputAction::ptr action ) = 0;
+
+			/// <summary>
+			/// Clears all input events.
+			/// </summary>
+			virtual void ClearEvents() = 0;
+
+			/// <summary>
+			/// Handles all events, returns the number of events that triggered.
+			/// </summary>
+			virtual int HandleEvents() = 0;
 		};
 	}
 }

@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <ui/Window.h>
+#include <MEEditor.h>
 #include <meedr/SceneViewer.h>
 #include <meedr/ResourceBrowser.h>
 #include <meedr/InputBrowser.h>
@@ -732,5 +733,13 @@ ui::IResult* SceneViewer::OnUser( ui::message::User message )
 		m_openChildren--;
 		return new Result( 0 );
 	}
+	return new Unhandled();
+}
+
+ui::IResult* SceneViewer::OnDestroy(ui::message::Params)
+{
+	using namespace ui;
+
+	DestroyEditor();
 	return new Unhandled();
 }

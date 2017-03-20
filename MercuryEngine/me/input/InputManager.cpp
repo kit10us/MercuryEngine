@@ -2,6 +2,10 @@
 // All Rights Reserved
 
 #include <me/input/InputManager.h>
+#include <me/input/ButtonCondition.h>
+#include <me/input/ButtonPressedCondition.h>
+#include <me/input/TriggerCondition.h>
+#include <me/input/StickCondition.h>
 #include <unify/String.h>
 
 using namespace me;
@@ -46,11 +50,70 @@ IInputSource::ptr InputManager::FindSource( std::string name )
 	return nullptr;
 }
 
+IInputCondition::ptr InputManager::MakeCondition(const qxml::Element * element)
+{
+	if (!element)
+	{
+		return IInputCondition::ptr();
+	}
+
+	std::string inputName = element->GetAttribute< std::string >("input");
+	auto source = FindSource(inputName);
+	if (!source)
+	{
+		return IInputCondition::ptr();
+	}
+
+	std::string conditionName = element->GetAttributeElse< std::string >("condition", "" );
+	size_t subSource = element->GetAttributeElse< size_t >("subsource", 0);
+	std::string name = element->GetAttributeElse< std::string >("name", "" );
+	me::input::IInputCondition::ptr condition;
+	if (unify::StringIs(conditionName, "ButtonDown"))
+	{
+		condition.reset( new ButtonCondition(source, subSource, name, true ) );
+	}
+	else if (unify::StringIs(conditionName, "ButtonUp"))
+	{
+		condition.reset( new ButtonCondition(source, subSource, name, false ) );
+	}
+	else if (unify::StringIs(conditionName, "ButtonPressed"))
+	{
+		condition.reset( new ButtonPressedCondition( source, subSource, name ) );
+	}
+	else if (unify::StringIs(conditionName, "Trigger"))
+	{
+		float threshold = element->GetAttributeElse< float >( "threshold", 0.0f );
+		float cap = element->GetAttributeElse< float >( "cap", 1.0f );
+		condition.reset( new TriggerCondition( source, subSource, name, threshold, cap) );
+	}
+	else if (unify::StringIs(conditionName, "Stick"))
+	{
+		StickAxis axis = StickAxisFromString(element->GetAttribute< std::string >("axis"));
+		float cap_low = element->GetAttributeElse< float >("cap_low", -1.0f);
+		float threshold_low = element->GetAttributeElse< float >("threshold_low", 0.0f);
+		float threshold_high = element->GetAttributeElse< float >("threshold_high", 0.0f);
+		float cap_high = element->GetAttributeElse< float >("cap_high", 1.0f);
+		condition.reset( new StickCondition( source, subSource, name, axis, cap_low, threshold_low, threshold_high, cap_high) );
+	}
+	else
+	{
+		return IInputCondition::ptr();
+	}
+
+	return condition;
+
+}
+
 void InputManager::Update()
 {
 	for( auto & source : m_sourceList )
 	{
 		source->Update();
+	}
+
+	for (auto & source : m_sourceList)
+	{
+		source->HandleEvents();
 	}
 }
 

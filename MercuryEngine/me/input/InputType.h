@@ -25,6 +25,7 @@ namespace me
 			Stick,
 		};
 		std::string InputTypeToString( InputType type );
+		InputType StringToInputType(std::string type);
 
 		struct IData
 		{

@@ -12,16 +12,17 @@ namespace me
 		/// <summary>
 		/// Ignores an actions return result (forces a true result).
 		/// </summary>
-		class IgnoreReturn : public IAction
+		class RepeatAction : public IAction
 		{
 		public:
-			IgnoreReturn( IAction::ptr action );
+			RepeatAction( IAction::ptr action, size_t times );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
 			IAction::ptr m_action;
+			size_t m_times;
 		};
 	}
 }

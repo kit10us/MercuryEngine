@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/input/InputCondition.h>
+#include <me/input/IInputSource.h>
 
 namespace me
 {

@@ -1,7 +1,7 @@
 // MELuaDLL.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "MELuaDLL.h"
+#include <MELuaDLL.h>
 #include <melua/ScriptEngine.h>
 #include <melua/component/GameComponent.h>
 #include <melua/component/AutoSceneManagerComponent.h>

@@ -20,3 +20,35 @@ std::string me::input::InputTypeToString( InputType type )
 	case InputType::Stick: return "Stick";
 	}
 }
+
+InputType me::input::StringToInputType(std::string type)
+{
+	if (unify::StringIs(type, "Button"))
+	{
+		return InputType::Button;
+	}
+	else if (unify::StringIs(type, "Toggle"))
+	{
+		return InputType::Toggle;
+	}
+	else if (unify::StringIs(type, "Tracker"))
+	{
+		return InputType::Tracker;
+	}
+	else if (unify::StringIs(type, "Trigger"))
+	{
+		return InputType::Trigger;
+	}
+	else if (unify::StringIs(type, "Motion"))
+	{
+		return InputType::Motion;
+	}
+	else if (unify::StringIs(type, "Stick"))
+	{
+		return InputType::Stick;
+	}
+	else
+	{
+		return InputType::Invalid;
+	}
+}

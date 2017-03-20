@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include <me/input/IInputSource.h>
+#include <me/input/InputSource.h>
 #include <me/IGame.h>
 #include <map>
 
 namespace dximouse
 {
-	class Mouse : public me::input::IInputSource
+	class Mouse : public me::input::InputSource
 	{
 	public:
 		Mouse( me::IGame * game );

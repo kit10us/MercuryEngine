@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/input/IInputSource.h>
+#include <memory>
 
 namespace me
 {
@@ -17,6 +17,8 @@ namespace me
 			virtual ~IInputCondition() {}
 			virtual bool IsTrue() const = 0;
 			virtual float GetValue() const = 0;
+
+			virtual std::shared_ptr < class IInputSource > GetSource() const = 0;
 		};
 	}
 }

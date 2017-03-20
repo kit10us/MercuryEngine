@@ -24,8 +24,10 @@
 </extension>
 <extension source="../../extensions/Debug/DXIKeyboard.dll"/>
 <extension source="../../extensions/Debug/DXIGamepad.dll"/>
-<extension source="../../extensions/Debug/MEEditor.dll"/>
+<extension source="../../extensions/Debug/MEEditor.dll">
+	<openeditor input="keyboard" condition="ButtonPressed" name="F11"/>
+	<openeditor input="gamepad" condition="ButtonPressed" name="Start"/>
+</extension>
 <extension source="../../extensions/Debug/MEPhysics.dll"/>
 <extension source="../../extensions/Debug/MEPhysicsLuaExt.dll"/>
-<motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 </xml>

@@ -4,24 +4,27 @@
 #pragma once
 
 #include <me/action/IAction.h>
+#include <me/IGame.h>
+#include <string>
 
 namespace me
 {
 	namespace action
 	{
 		/// <summary>
-		/// Ignores an actions return result (forces a true result).
+		/// Writes a message to the log. Used for debugging.
 		/// </summary>
-		class IgnoreReturn : public IAction
+		class LogMessage : public IAction
 		{
 		public:
-			IgnoreReturn( IAction::ptr action );
+			LogMessage( IGame * game, std::string message );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
-			IAction::ptr m_action;
+			IGame * m_game;
+			std::string m_message;
 		};
 	}
 }
