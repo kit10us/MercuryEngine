@@ -15,8 +15,8 @@ namespace me
 		public:
 			void OnAttach( SceneManager * sceneManager ) override;
 			void OnDetach( SceneManager * sceneManager ) override;
-			void OnSceneAdded( IScene * scene ) override;
-			void OnSceneChange( IScene * from, IScene * to ) override;
+			void OnSceneStart( IScene * scene ) override;
+			void OnSceneEnd( IScene * from ) override;
 		};
 	}
 }

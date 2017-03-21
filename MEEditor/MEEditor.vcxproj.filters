@@ -24,6 +24,9 @@
     <ClCompile Include="meedr\OpenEditorAction.cpp">
       <Filter>meedr</Filter>
     </ClCompile>
+    <ClCompile Include="meedr\ActionsComponent.cpp">
+      <Filter>meedr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEEditor.h" />
@@ -46,6 +49,9 @@
       <Filter>meedr</Filter>
     </ClInclude>
     <ClInclude Include="meedr\OpenEditorAction.h">
+      <Filter>meedr</Filter>
+    </ClInclude>
+    <ClInclude Include="meedr\ActionsComponent.h">
       <Filter>meedr</Filter>
     </ClInclude>
   </ItemGroup>

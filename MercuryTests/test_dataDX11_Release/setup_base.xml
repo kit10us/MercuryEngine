@@ -13,5 +13,4 @@
 <assets>../test_data/models/</assets>
 <assets>../test_data/scripts/</assets>
 <assets>../test_data/effects/</assets>
-<motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
 </xml>

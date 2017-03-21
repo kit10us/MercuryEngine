@@ -26,10 +26,6 @@ namespace me
 
 		protected: // User Defined Events...
 
-			virtual void OnEnterScene( IScene * previous ) = 0;
-
-			virtual void OnLeaveScene( IScene * next ) = 0;
-
 			virtual void OnStart() = 0;
 
 			virtual void OnUpdate( UpdateParams params ) = 0;
@@ -39,15 +35,16 @@ namespace me
 			virtual void OnSuspend() = 0;
 
 			virtual void OnResume() = 0;
-		
+
+			virtual void OnEnd() = 0;
+
 		public: // Event callers...
-			virtual void EnterScene( IScene* previous ) = 0;
-			virtual void LeaveScene( IScene * next ) = 0;
 			virtual void Start() = 0;
 			virtual void Update( UpdateParams params ) = 0;
 			virtual void Render( RenderParams params ) = 0;
 			virtual void Suspend() = 0;
 			virtual void Resume() = 0;
+			virtual void End() = 0;
 
 		public:
 
@@ -56,8 +53,6 @@ namespace me
 			virtual me::IOS * GetOS() = 0;
 
 			virtual std::string GetName() const = 0;
-
-			virtual void Restart() = 0;
 
 			virtual size_t ObjectCount() const = 0;
 

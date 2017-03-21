@@ -14,6 +14,8 @@
 #include <me/IGameComponent.h>
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
+#include <me/action/IAction.h>
+#include <me/scene/ISceneFactory.h>
 #include <memory>
 
 namespace me
@@ -44,8 +46,7 @@ namespace me
 	class IGame
 	{
 	protected:
-		virtual scene::IScene::ptr CreateMainScene() = 0;
-
+		
 		/// <summary>
 		/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 		/// </summary>
@@ -140,6 +141,11 @@ namespace me
 		/// else it returns true only if there is an exclusive lock.
 		/// </summary>
 		virtual bool IsUpdateLocked( bool exclusive ) const = 0;
+
+		/// <summary>
+		/// Create an Action from an XML node.
+		/// </summary>
+		virtual action::IAction::ptr CreateAction(const qxml::Element * element) = 0;
 
 		template< typename T >
 		T* GetComponentT( std::string typeName );

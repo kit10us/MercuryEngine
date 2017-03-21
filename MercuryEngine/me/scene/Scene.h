@@ -21,34 +21,30 @@ namespace me
 		class Scene : public IScene
 		{
 		public:
-			Scene( Game * game, std::string name );
+			Scene(Game * game, std::string name);
 			virtual ~Scene();
 
 		protected: // User defined events...
-			void OnEnterScene( IScene* previous ) override {}
-			void OnLeaveScene( IScene * next ) override {}
 			void OnStart() override {}
-			void OnUpdate( UpdateParams params ) override {}
-			void OnRender( RenderParams params ) override {}
+			void OnUpdate(UpdateParams params) override {}
+			void OnRender(RenderParams params) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}
+			void OnEnd() override {}
 
 		public:
-			void EnterScene( IScene* previous ) override;
-			void LeaveScene( IScene * next ) override;
 			void Start() override;
 			void Update( UpdateParams params ) override;
 			void Render( RenderParams params ) override;
 			void Suspend() override;
 			void Resume() override;
+			void End() override;
 
 			me::Game * GetGame() override;
 
 			me::IOS * GetOS() override;
 
 			std::string GetName() const override;
-
-			void Restart() override;
 
 			size_t ObjectCount() const;
 

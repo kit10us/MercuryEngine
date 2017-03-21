@@ -17,8 +17,8 @@ namespace melua
 		public: // ISceneComponent... 
 			void OnAttach( me::scene::SceneManager * sceneManager ) override;
 			void OnDetach( me::scene::SceneManager * sceneManager ) override;
-			void OnSceneAdded( me::scene::IScene * scene ) override;
-			void OnSceneChange( me::scene::IScene * from, me::scene::IScene * to ) override;
+			void OnSceneStart( me::scene::IScene * scene ) override;
+			void OnSceneEnd( me::scene::IScene * scene ) override;
 
 		private:
 			melua::ScriptEngine * m_scriptEngine;

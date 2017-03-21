@@ -142,18 +142,6 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 void SceneComponent::OnDetach( me::scene::IScene * scene )
 {
 }
-		 
-void SceneComponent::OnEnterScene( me::scene::IScene * previous )
-{
-	scene::SceneComponent::OnEnterScene( previous );
-	CallMember( "OnEnterScene" );
-}
-
-void SceneComponent::OnLeaveScene( me::scene::IScene * next )
-{
-	CallMember( "OnLeaveScene" );
-	scene::SceneComponent::OnLeaveScene( next );
-}
 
 void SceneComponent::OnBeforeStart()
 {
@@ -181,6 +169,12 @@ void SceneComponent::OnSuspend()
 void SceneComponent::OnResume()
 {
 	CallMember( "OnResume" );
+}
+
+void SceneComponent::OnEnd()
+{
+	CallMember("OnEnd");
+	scene::SceneComponent::OnEnd();
 }
 
 std::string SceneComponent::GetWhat() const

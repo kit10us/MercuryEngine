@@ -21,8 +21,8 @@ namespace me
 
 			virtual void OnAttach( SceneManager * sceneManager ) = 0;
 			virtual void OnDetach( SceneManager * sceneManager ) = 0;
-			virtual void OnSceneAdded( IScene * scene ) = 0;
-			virtual void OnSceneChange( IScene * from, IScene * to ) = 0;
+			virtual void OnSceneStart( IScene * scene ) = 0;
+			virtual void OnSceneEnd( IScene * from ) = 0;
 		};
 	}
 }

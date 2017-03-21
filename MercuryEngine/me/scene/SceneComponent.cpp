@@ -70,14 +70,6 @@ void SceneComponent::OnDetach( IScene * scene )
 	m_scene = nullptr;
 }
 
-void SceneComponent::OnEnterScene( me::scene::IScene * previous )
-{
-}
-
-void SceneComponent::OnLeaveScene( me::scene::IScene * next )
-{
-}
-
 void SceneComponent::OnBeforeStart() 
 {
 }
@@ -103,6 +95,10 @@ void SceneComponent::OnSuspend()
 }
 
 void SceneComponent::OnResume()
+{
+}
+
+void SceneComponent::OnEnd()
 {
 }
 

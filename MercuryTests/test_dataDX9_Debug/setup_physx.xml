@@ -1,19 +1,26 @@
 <xml>
 <include>setup_base.xml</include>
+
 <extension source="../../extensions/Debug/MELua.dll">
 	<startup>game_physx.lua</startup>
 </extension>
+
 <extension source="../../extensions/Debug/DAELoader.dll">
 	<color name="color" source="EffectColor.effect"/>
 	<texture name="texture" source="EffectTextured.effect"/>
 </extension>
+
 <extension source="../../extensions/Debug/ASELoader.dll">
 	<textureps name="textured3d" source="texture3d.xml"/>
 	<texturevs name="textured3d" source="texture3d.xml"/>
 </extension>
+
 <extension source="../../extensions/Debug/MEPhysx.dll"/>
 <extension source="../../extensions/Debug/MELuaPhysXExt.dll"/>
 <extension source="../../extensions/Debug/DXIKeyboard.dll"/>
 <extension source="../../extensions/Debug/DXIMouse.dll"/>
 <extension source="../../extensions/Debug/DXIGamepad.dll"/>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
 </xml>

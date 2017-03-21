@@ -11,6 +11,8 @@
 
 namespace me
 {
+	class IGame;
+
 	namespace input
 	{
 		/// <summary>
@@ -19,7 +21,7 @@ namespace me
 		class InputManager
 		{
 		public:
-			InputManager();
+			InputManager( IGame * game );
 			~InputManager();
 
 			void AddInputSource( IInputSource::ptr source );
@@ -30,11 +32,20 @@ namespace me
 
 			IInputCondition::ptr MakeCondition(const qxml::Element * element);
 
+			/// <summary>
+			/// Parse a node, whose children are "inputaction" nodes. Returns the number of failures.
+			/// It will stop immediately upon a failure, if continueOnFail is false.
+			/// </summary>
+			size_t AddInputActions(unify::Owner::ptr owner, const qxml::Element * parentNode, bool continueOnFail );
+
 			void Update();
 
 			void Clear();
 
 		private:
+			bool AddSingleInputAction(unify::Owner::ptr owner, const qxml::Element * element);
+
+			IGame* m_game;
 			std::vector< IInputSource::ptr > m_sourceList;
 			std::map< std::string, IInputSource::ptr, unify::CaseInsensitiveLessThanTest > m_sourceMap;
 		};

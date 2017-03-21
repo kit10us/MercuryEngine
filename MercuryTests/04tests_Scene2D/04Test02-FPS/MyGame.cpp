@@ -1,27 +1,33 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-/// <summary>
-/// "The Basics"
-/// goals and requirements:
-/// * Illustrate the core framework components.
-/// * Use low level objects for limited unit-style testing.
-/// </summary>
-
 #include <MEWinMain.h>
 #include <me/Game.h>
 #include <MainScene.h>
 
 using namespace me;
 
+class MainSceneFactory : public me::scene::ISceneFactory
+{
+public:
+	me::scene::IScene::ptr Produce(me::Game * game)
+	{
+		return me::scene::IScene::ptr(new MainScene(game));
+	}
+
+	std::string GetName() const
+	{
+		return "Main";
+	}
+};
+
 class MyGame : public Game
 {
-	scene::IScene::ptr MyGame::CreateMainScene();
+public:
+	MyGame()
+		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()))
+	{
+	}
 } game;
 
-RegisterGame( game );
-
-scene::IScene::ptr MyGame::CreateMainScene()
-{
-	return scene::IScene::ptr( new MainScene( this ) );
-}
+RegisterGame(game);

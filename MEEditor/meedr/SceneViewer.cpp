@@ -66,6 +66,7 @@ SceneViewer::SceneViewer( me::IGame * game )
 		{
 			{ "File", 
 				{
+					{ "Restart Scene" },
 					{ "Exit Scene Viewer" },
 					Seperator(),
 					{ "Quit Game" }
@@ -210,11 +211,9 @@ void SceneViewer::UpdateSceneList()
 		m_noScenes = false;
 	}
 
-
 	for ( size_t i = 0; i < m_sceneManager->GetSceneCount(); i++ )
 	{
-		auto scene = m_sceneManager->GetScene( i );
-		sceneCombobox->AddString( scene->GetName() );
+		sceneCombobox->AddString(m_sceneManager->GetSceneName(i));
 	}
 
 	sceneCombobox->SetCurSel( 0 );
@@ -232,7 +231,7 @@ void SceneViewer::UpdateObjectList()
 	objectListbox->ResetContent();
 	
 	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
+	auto scene = m_sceneManager->GetCurrentScene();
 	if ( ! scene )
 	{
 		return;
@@ -257,7 +256,7 @@ void SceneViewer::UpdateObject_All()
 	Edit* name = GetControl< Edit* >( "Name" );
 
 	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
+	auto scene = m_sceneManager->GetCurrentScene();
 	if ( ! scene )
 	{
 		return;
@@ -293,7 +292,7 @@ void SceneViewer::UpdateObject_Position( bool force )
 	Edit* z = GetControl< Edit* >( "Z" );
 				  		 
 	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
+	auto scene = m_sceneManager->GetCurrentScene();
 	int objectIndex = objectListbox->GetCurSel();
 	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
 							   
@@ -341,7 +340,7 @@ void SceneViewer::UpdateObject_Components( bool force )
 	Listbox* components = GetControl< Listbox* >( "Components" );
 				  		 
 	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
+	auto scene = m_sceneManager->GetCurrentScene();
 	int objectIndex = objectListbox->GetCurSel();
 	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
 
@@ -383,7 +382,7 @@ void SceneViewer::UpdateObject_ComponentValues()
 	values->DeleteAllItems();
 
 	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
+	auto scene = m_sceneManager->GetCurrentScene();
 	int objectIndex = objectListbox->GetCurSel();
 	auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
 	int componentIndex = components->GetCurSel();
@@ -410,7 +409,7 @@ void SceneViewer::OpenObjectComponent()
 	Listbox* components = GetControl< Listbox* >( "Components" );
 
 	int sceneIndex = sceneCombobox->GetCurSel();
-	auto scene = m_sceneManager->GetScene( sceneIndex );
+	auto scene = m_sceneManager->GetCurrentScene();
 	int objectIndex = objectListbox->GetCurSel();
 	auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
 	int componentIndex = components->GetCurSel();
@@ -555,7 +554,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 				  		 
 				int sceneIndex = sceneCombobox->GetCurSel();
-				auto scene = m_sceneManager->GetScene( sceneIndex );
+				auto scene = m_sceneManager->GetCurrentScene();
 				int objectIndex = objectListbox->GetCurSel();
 				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
 				auto position( object->GetFrame().GetPosition() );
@@ -577,7 +576,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 				  		 
 				int sceneIndex = sceneCombobox->GetCurSel();
-				auto scene = m_sceneManager->GetScene( sceneIndex );
+				auto scene = m_sceneManager->GetCurrentScene();
 				int objectIndex = objectListbox->GetCurSel();
 				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
 				auto position( object->GetFrame().GetPosition() );
@@ -599,7 +598,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				Listbox* objectListbox = GetControl< Listbox* >( "ObjectList" );
 				  		 
 				int sceneIndex = sceneCombobox->GetCurSel();
-				auto scene = m_sceneManager->GetScene( sceneIndex );
+				auto scene = m_sceneManager->GetCurrentScene();
 				int objectIndex = objectListbox->GetCurSel();
 				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
 				auto position( object->GetFrame().GetPosition() );
@@ -642,7 +641,7 @@ ui::IResult* SceneViewer::OnNotify( ui::message::Notify message )
 			ListView* values = GetControl< ListView* >( "ValuesLidy" );
 
 			int sceneIndex = sceneCombobox->GetCurSel();
-			auto scene = m_sceneManager->GetScene( sceneIndex );
+			auto scene = m_sceneManager->GetCurrentScene();
 			int objectIndex = objectListbox->GetCurSel();
 			auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
 			int componentIndex = components->GetCurSel();
@@ -668,6 +667,10 @@ ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
 	{
 		m_game->Quit();
 		return new Result( 0 );
+	}
+	else if (message.IsFor("Restart Scene"))
+	{
+		m_sceneManager->RestartScene();
 	}
 	else if ( message.IsFor( "Exit Scene Viewer" ) )
 	{

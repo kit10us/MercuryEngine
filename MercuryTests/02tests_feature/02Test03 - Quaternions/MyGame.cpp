@@ -7,17 +7,27 @@
 
 using namespace me;
 
+class MainSceneFactory : public me::scene::ISceneFactory
+{
+public:
+	me::scene::IScene::ptr Produce(me::Game* game)
+	{
+		return me::scene::IScene::ptr(new MainScene(game));
+	}
+
+	std::string GetName() const
+	{
+		return "Main";
+	}
+};
+
 class MyGame : public Game
 {
 public:
-	MyGame() : Game( "setup_models.xml" ) {}
-
-	scene::IScene::ptr MyGame::CreateMainScene();
+	MyGame()
+		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()), "setup_models.xml")
+	{
+	}
 } game;
 
-RegisterGame( game );
-
-scene::IScene::ptr MyGame::CreateMainScene()
-{
-	return scene::IScene::ptr( new MainScene( this ) );
-}
+RegisterGame(game);

@@ -11,6 +11,7 @@
 #include <me/Display.h>
 #include <me/ITexture.h>
 #include <me/Effect.h>
+#include <me/scene/ISceneFactory.h>
 #include <rm/ResourceManagerSimple.h>
 
 typedef std::shared_ptr< rm::ISourceFactory< me::ITexture > > TextureFactoryPtr;
@@ -31,16 +32,10 @@ namespace me
 		virtual void Render( RenderParams params ) override;
 		virtual void Shutdown() override;
 
-		scene::IScene::ptr CreateMainScene() override
-		{
-			return scene::IScene::ptr();
-		}
-
 	public:
-		Game( unify::Path setup = "setup.xml" );
+		Game( unify::Path setup = "setup.xml");
+		Game( scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup = "setup.xml" );
 		virtual ~Game();
-
-
 
 		me::OSParameters GetOSParameters() const override;
 
@@ -104,11 +99,14 @@ namespace me
 
 		bool IsUpdateLocked( bool exclusive ) const;
 
+		action::IAction::ptr CreateAction(const qxml::Element * element) override;
+
 	private:
 		void AddExtension( unify::Path path, const qxml::Element * element );
 
 	private:
 		std::string m_title;
+		scene::ISceneFactory::ptr m_mainSceneFactory;
 		me::OSParameters m_osParameters;
 		std::list< me::IGameComponent::ptr > m_components;
 			

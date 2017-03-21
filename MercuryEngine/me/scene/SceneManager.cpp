@@ -5,6 +5,7 @@
 #include <me/scene/Scene.h>
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
+#include <me/scene/DefaultSceneFactory.h>
 #include <qxml/Document.h>
 
 using namespace me;
@@ -12,9 +13,7 @@ using namespace scene;
 
 SceneManager::SceneManager()
 	: GameComponent( "SceneManager" )
-	, m_game{ nullptr }
 	, m_currentScene{ nullptr }
-	, m_previousScene{ nullptr }
 	, m_updateTick{ 0 }
 	, m_renderTick{ 0 }
 {
@@ -35,7 +34,7 @@ size_t SceneManager::GetSceneCount() const
 	return m_scenes.size();
 }
 
-void SceneManager::AddScene( std::string name, IScene::ptr scene )
+void SceneManager::AddScene( std::string name, ISceneFactory::ptr sceneFactory )
 {
 	auto itr = m_scenes.find( name );
 	if ( itr != m_scenes.end() )
@@ -43,13 +42,8 @@ void SceneManager::AddScene( std::string name, IScene::ptr scene )
 		throw exception::FailedToCreate( "Attempted to add scene \"" + name + "\", but it already exists!" );
 	}
 
-	m_scenes[ name ] = scene;
-	m_sceneList.push_back( scene );
-
-	for ( auto component : m_componentList )
-	{
-		component->OnSceneAdded( scene.get() );
-	}										   
+	m_scenes[ name ] = m_sceneList.size();
+	m_sceneList.push_back( sceneFactory );
 
 	if ( ! m_currentScene )
 	{
@@ -57,65 +51,78 @@ void SceneManager::AddScene( std::string name, IScene::ptr scene )
 	}
 }
 
-IScene* SceneManager::AddScene( std::string name )
+ void SceneManager::AddScene( std::string name )
 {
-	Scene* scene = new Scene( dynamic_cast<me::Game*>(GetGame()), name );
-	AddScene( name, IScene::ptr( scene ) );	
-	return scene;
+	auto sceneFactory = new DefaultSceneFactory( name );
+	AddScene( name, ISceneFactory::ptr( sceneFactory ) );	
 }
 
-IScene* SceneManager::FindScene( std::string name )
+int SceneManager::FindSceneIndex( std::string name )
 {
 	auto itr = m_scenes.find( name );
-	return itr == m_scenes.end() ? nullptr : itr->second.get();
+	return itr == m_scenes.end() ? -1 : itr->second;
 }
 													  
-IScene* SceneManager::GetScene( size_t index )
+std::string SceneManager::GetSceneName( int index )
 {
-	if ( index >= m_sceneList.size() ) return nullptr;
-	return m_sceneList[ index ].get();
+	if ( index >= (int)m_sceneList.size() ) return std::string();
+	auto sceneFactory = m_sceneList[index];
+	return sceneFactory->GetName();
 }
 
-IScene* SceneManager::GetCurrentCurrent()
+IScene* SceneManager::GetCurrentScene()
 {
-	return m_currentScene;
+	return m_currentScene.get();
 }
 
-IScene* SceneManager::GetPrevious()
+std::string SceneManager::GetPreviousSceneName()
 {
-	return m_previousScene;
+	return m_previousSceneName;
 }
 
 bool SceneManager::ChangeScene( std::string name )
 {
-	IScene* scene = FindScene( name );
-	if ( ! scene )
+	// Find scene factory...
+	int index = FindSceneIndex(name);
+	ISceneFactory::ptr sceneFactory = m_sceneList[ index ];
+	if ( ! sceneFactory )
 	{
 		return false;
 	}
 	
+	// Leave current scene...
 	if ( m_currentScene )
 	{
-		m_currentScene->LeaveScene( scene );
-	}
+		m_currentScene->End();
 
-	m_previousScene = m_currentScene;
+		// Let all components mess with the scene before we destroy it...
+		for (auto component : m_componentList)
+		{
+			component->OnSceneEnd( m_currentScene.get());
+		}
+
+		m_previousSceneName = m_currentScene->GetName();
+
+		m_currentScene.reset();
+	}
 	
-	m_currentScene = scene;
+	// Create new scene...
+	m_currentScene = sceneFactory->Produce( dynamic_cast< me::Game* >( m_game ) );
 
-	if ( m_currentScene )
+	// Let all components mess with the scene first...
+	for (auto component : m_componentList)
 	{
-		m_currentScene->EnterScene( m_previousScene );
-	}				
-
-	scene->Start();
-
-	for ( auto component : m_componentList )
-	{
-		component->OnSceneChange( m_previousScene, m_currentScene );
+		component->OnSceneStart( m_currentScene.get() );
 	}
+
+	m_currentScene->Start();	
 
 	return true;
+}
+
+void SceneManager::RestartScene()
+{
+	ChangeScene(m_currentScene->GetName());
 }
 
 void SceneManager::AddComponent( ISceneManagerComponent::ptr component )

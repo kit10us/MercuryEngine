@@ -3,6 +3,7 @@
 
 #include <MEWinMain.h>
 #include <me/Game.h>
+#include <me/scene/DefaultSceneFactory.h>
 
 using namespace me;
 
@@ -10,7 +11,7 @@ class MyGame : public Game
 {
 public:
 	MyGame()
-		: Game( "setup_testgamepad.xml" )
+		: Game(me::scene::ISceneFactory::ptr(new  me::scene::DefaultSceneFactory("Main")), "setup_testgamepad.xml" )
 	{
 	}
 } game;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/IComponent.h>
+#include <me/action/IAction.h>
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
 #include <string>
@@ -72,5 +73,7 @@ namespace me
 		/// Called last, to detach from the game.
 		/// </summary>
 		virtual void OnDetach( IGame * game ) = 0;
+
+		virtual action::IAction::ptr CreateAction(const qxml::Element * element) = 0;
 	};
 }

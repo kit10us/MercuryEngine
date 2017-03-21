@@ -3,16 +3,14 @@
 
 #include <MEWinMain.h>
 #include <me/Game.h>
+#include <me/scene/DefaultSceneFactory.h>
 
 using namespace me;
 
 class MyGame : public Game
 {
 public:
-	MyGame()
-		: Game( "setup_physxPlayer.xml" )
-	{
-	}
+	MyGame() : Game( "setup_physxPlayer.xml" ) {}
 } game;
 
-RegisterGame( game );
+RegisterGame(game);

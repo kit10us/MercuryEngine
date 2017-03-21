@@ -21,15 +21,18 @@ namespace me
             void Destroy();
 
 			size_t GetSceneCount() const;
-            void AddScene( std::string name, IScene::ptr scene );
-            IScene* AddScene( std::string name );
-			IScene* FindScene( std::string name );
-			IScene* GetScene( size_t index );
+            void AddScene( std::string name, ISceneFactory::ptr sceneFactory );
+            void AddScene( std::string name );
 			
-			IScene* GetCurrentCurrent();
-			IScene* GetPrevious();
+			int FindSceneIndex( std::string name );
+			std::string GetSceneName(int index);
+			
+			IScene* GetCurrentScene();
+			std::string GetPreviousSceneName();
 
 			bool ChangeScene( std::string name );
+
+			void RestartScene();
 
 			void AddComponent( ISceneManagerComponent::ptr component );
 
@@ -41,12 +44,10 @@ namespace me
 			std::string GetWhat() const;
 
 		private:
-			IGame * m_game;
-
-			std::map< std::string, IScene::ptr > m_scenes;
-			std::vector< IScene::ptr > m_sceneList;
-			IScene * m_currentScene;
-			IScene * m_previousScene;
+			std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_scenes;
+			std::vector< ISceneFactory::ptr > m_sceneList;
+			IScene::ptr m_currentScene;
+			std::string m_previousSceneName;
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;
 

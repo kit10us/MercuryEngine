@@ -121,11 +121,13 @@
     <ClInclude Include="me\RenderParams.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\ComponentInstance.h" />
+    <ClInclude Include="me\scene\DefaultSceneFactory.h" />
     <ClInclude Include="me\scene\GrowableObjectStack.h" />
     <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IOctreeNode.h" />
     <ClInclude Include="me\scene\IScene.h" />
     <ClInclude Include="me\scene\ISceneComponent.h" />
+    <ClInclude Include="me\scene\ISceneFactory.h" />
     <ClInclude Include="me\scene\ISceneManagerComponent.h" />
     <ClInclude Include="me\scene\ObjectAllocator.h" />
     <ClInclude Include="me\scene\ObjectAllocatorComponent.h" />

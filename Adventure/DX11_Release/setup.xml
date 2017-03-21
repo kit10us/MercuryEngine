@@ -11,21 +11,26 @@
 <assets>../assets_common/images/</assets>
 <assets>../assets_common/scripts/</assets>
 <assets>../assets_common/effects/</assets>
+
 <extension source="../../extensions/Release/MELua.dll">
 	<auto>../assets_common/scripts/auto/</auto>
 </extension>
+
 <extension source="../../extensions/Release/DAELoader.dll">
 	<color name="color_ambient" source="Color_Ambient.effect"/>
 	<texture name="textured_ambient" source="Textured_Ambient.effect"/>
 </extension>
+
 <extension source="../../extensions/Release/ASELoader.dll">
 	<textureps name="textured_ambient" source="textured_ambient.xml"/>
 	<texturevs name="textured_ambient" source="textured_ambient.xml"/>
 </extension>
+
 <extension source="../../extensions/Release/DXIKeyboard.dll"/>
 <extension source="../../extensions/Release/DXIGamepad.dll"/>
-<extension source="../../extensions/Release/MEEditor.dll"/>
 <extension source="../../extensions/Release/MEPhysics.dll"/>
 <extension source="../../extensions/Release/MEPhysicsLuaExt.dll"/>
-<motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
 </xml>

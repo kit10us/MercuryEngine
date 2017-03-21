@@ -84,8 +84,7 @@ function OnBeforeStart()
 end
 
 function OnAfterStart()
-	local sceneMain = FindScene( "main" )
-	local target = sceneMain:FindObject( "player" )
+	local target = this:FindObject( "player" )
 	local cameraMotivator = target:GetComponent( "CameraMotivator" );
 	
 	if not cameraMotivator then

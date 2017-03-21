@@ -31,22 +31,6 @@ MELUADLL_API SceneProxy* CheckScene( lua_State* state, int index )
 	return ud;
 }
 
-int Scene_FindScene( lua_State * state )
-{
-	auto game = ScriptEngine::GetGame();
-	int args = lua_gettop( state );
-
-	std::string name = lua_tostring( state, 1 );
-
-	auto x = game->GetComponent( "SceneManager" );
-	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
-
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
-	auto scene = sceneManager->FindScene( name );
-
-	return PushScene( state, scene );
-}
-
 int Scene_Name( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -121,22 +105,6 @@ int Scene_GetObjectCount( lua_State * state )
 	return 1;
 }
 
-int Scene_Constructor( lua_State * state )
-{
-	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
-
-	std::string name = luaL_checkstring( state, -1 );
-
-	auto x = game->GetComponent( "SceneManager" );
-	if( !x ) game->ReportError( me::ErrorLevel::Failure, "Lua", "Could not find scene manager!" );
-
-	scene::SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(x.get());
-
-	auto scene = new Scene( game, name );
-	sceneManager->AddScene( name, IScene::ptr( scene ) );
-	return PushScene( state, scene );
-}
-
 int Scene_Destructor( lua_State * state )
 {			
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
@@ -171,13 +139,5 @@ void RegisterScene( lua_State * state )
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), Scene_Constructor, Scene_Destructor } );
-
-	const luaL_Reg SceneStaticFunctions[] =
-	{
-		{ "FindScene", Scene_FindScene },
-		{ nullptr, nullptr }
-	};
-	
-	lua_register( state, "FindScene", Scene_FindScene );
+	se->AddType( { "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), 0, Scene_Destructor } );
 }

@@ -31,7 +31,7 @@ void AutoSceneManagerComponent::OnDetach( SceneManager * sceneManager )
 {
 }
 
-void AutoSceneManagerComponent::OnSceneAdded( IScene * scene )
+void AutoSceneManagerComponent::OnSceneStart( IScene * scene )
 {
 	std::string name = scene->GetName();
 	unify::Path scriptPath = m_autoPath + (name + ".lua");
@@ -42,6 +42,6 @@ void AutoSceneManagerComponent::OnSceneAdded( IScene * scene )
 	}
 }
 
-void AutoSceneManagerComponent::OnSceneChange( IScene * from, IScene * to )
+void AutoSceneManagerComponent::OnSceneEnd( IScene * scene )
 {
 }

@@ -5,12 +5,13 @@
 </renderer>
 <failuresAsCritical>true</failureAsCritical>
 <logfile>log.txt</logfile>
-<extension source="../../extensions/Debug/MEEditor.dll"/>
 <assets>shaders/</assets>
 <assets>../test_data/</assets>
 <assets>../test_data/effects/</assets>
 <assets>../test_data/images/</assets>
 <assets>../test_data/models/</assets>
 <assets>../test_data/scripts/</assets>
-<motivator source="Keyboard" subSource="0" type="ButtonPressed" input="Escape" command="Quit"/>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
 </xml>

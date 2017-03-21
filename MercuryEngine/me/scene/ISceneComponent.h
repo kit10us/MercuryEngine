@@ -32,10 +32,6 @@ namespace me
 			/// </summary>
 			virtual void OnDetach( IScene * scene ) = 0;			 
 
-			virtual void OnEnterScene( me::scene::IScene * previous ) = 0;
-			
-			virtual void OnLeaveScene( me::scene::IScene * next ) = 0;
-
 			virtual void OnBeforeStart() = 0;
 
 			virtual void OnAfterStart() = 0;
@@ -44,7 +40,6 @@ namespace me
 			/// Called every game update cycle.
 			/// </summary>
 			virtual void OnUpdate( UpdateParams params ) = 0;
-
 
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
 			//void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
@@ -59,6 +54,11 @@ namespace me
 			/// Called when resuming from suspending.
 			/// </summary>
 			virtual void OnResume() = 0;
+
+			/// <summary>
+			/// Called when our scene ends.
+			/// </summary>
+			virtual void OnEnd() = 0;
 		};
 	}
 }

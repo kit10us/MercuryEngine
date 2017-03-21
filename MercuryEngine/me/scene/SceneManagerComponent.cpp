@@ -14,10 +14,10 @@ void SceneManagerComponent::OnDetach( SceneManager * sceneManager )
 {
 }
 
-void SceneManagerComponent::OnSceneAdded( IScene * scene )
+void SceneManagerComponent::OnSceneStart( IScene * scene )
 {
 }
 
-void SceneManagerComponent::OnSceneChange( IScene * from, IScene * to )
+void SceneManagerComponent::OnSceneEnd( IScene * from )
 {
 }

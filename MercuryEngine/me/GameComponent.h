@@ -35,6 +35,8 @@ namespace me
 		void OnRender( RenderParams params ) override;
 		void OnDetach( IGame * game ) override;
 
+		action::IAction::ptr CreateAction(const qxml::Element * element) override;
+
 	public:	// IComponent...
 		bool IsEnabled() const override;
 		void SetEnabled( bool enabled ) override;

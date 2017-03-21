@@ -2,16 +2,20 @@
 // All Rights Reserved
 
 #include <me/input/InputManager.h>
+#include <me/IGame.h>
 #include <me/input/ButtonCondition.h>
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/TriggerCondition.h>
 #include <me/input/StickCondition.h>
+#include <me/action/IAction.h>
+#include <me/input/InputAction.h>
 #include <unify/String.h>
 
 using namespace me;
 using namespace input;
 
-InputManager::InputManager()
+InputManager::InputManager( IGame * game )
+	: m_game{ game }
 {
 }
 
@@ -101,7 +105,49 @@ IInputCondition::ptr InputManager::MakeCondition(const qxml::Element * element)
 	}
 
 	return condition;
+}
 
+size_t InputManager::AddInputActions(unify::Owner::ptr owner, const qxml::Element * parentNode, bool continueOnFail )
+{
+	size_t failures = 0;
+	for (auto inputActionNode : parentNode->Children("inputaction"))
+	{
+		bool result = AddSingleInputAction(owner, &inputActionNode);
+		if (!result )
+		{
+			if (!continueOnFail)
+			{
+				return false;
+			}
+			failures++;
+		}
+	}
+
+	return failures;
+}
+
+bool InputManager::AddSingleInputAction(unify::Owner::ptr owner, const qxml::Element * element)
+{
+	auto actionNode = element->FindFirstElement("action");
+	if (!actionNode)
+	{
+		return false;
+	}
+
+	auto condition = MakeCondition( element );
+	if (!condition)
+	{
+		return false;
+	}
+
+	auto action = m_game->CreateAction(actionNode);
+	if (!action)
+	{
+		return false;
+	}
+
+	condition->GetSource()->AddEvent(owner, condition, IInputAction::ptr( new InputAction( action ) ) );
+	return true;
 }
 
 void InputManager::Update()

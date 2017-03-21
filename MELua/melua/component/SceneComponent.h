@@ -19,13 +19,12 @@ namespace melua
 		public: // ISceneComponent...
 			void OnAttach( me::scene::IScene * scene ) override;
 			void OnDetach( me::scene::IScene * scene ) override;
-			void OnEnterScene( me::scene::IScene * previous ) override;
-			void OnLeaveScene( me::scene::IScene * next ) override;
 			void OnBeforeStart() override;
 			void OnAfterStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
 			void OnSuspend() override;
 			void OnResume() override;
+			void OnEnd() override;
 
 		public: // IComponent...
 			std::string GetWhat() const override;

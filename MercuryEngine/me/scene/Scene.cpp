@@ -26,32 +26,6 @@ Scene::~Scene()
 {
 }
 
-void Scene::EnterScene( IScene * previous )
-{
-	OnEnterScene( previous );
-
-	for ( auto && component : m_components )
-	{
-		if ( component->IsEnabled() )
-		{
-			component->OnEnterScene( previous );
-		}
-	}
-}
-
-void Scene::LeaveScene( IScene * next )
-{
-	for ( auto && component : m_components )
-	{
-		if ( component->IsEnabled() )
-		{
-			component->OnLeaveScene( next );
-		}
-	}
-
-	OnLeaveScene( next );
-}
-
 void Scene::Start()
 {
 	for ( auto && component : m_components )
@@ -139,6 +113,19 @@ void Scene::Resume()
 	OnResume();
 }
 
+void Scene::End()
+{
+	OnEnd();
+
+	for (auto && component : m_components)
+	{
+		if (component->IsEnabled())
+		{
+			component->OnEnd();
+		}
+	}
+}
+
 me::Game * Scene::GetGame()
 {
 	return m_game;
@@ -152,12 +139,6 @@ me::IOS * Scene::GetOS()
 std::string Scene::GetName() const
 {
 	return m_name;
-}
-
-void Scene::Restart()
-{
-	m_renderCount = 0;
-	Start();
 }
 
 size_t Scene::ObjectCount() const

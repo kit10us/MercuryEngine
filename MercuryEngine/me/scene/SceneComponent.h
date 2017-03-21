@@ -29,8 +29,6 @@ namespace me
 		public: // ISceneComponent...
 			void OnAttach( me::scene::IScene * scene ) override;
 			void OnDetach( me::scene::IScene * scene ) override;
-			void OnEnterScene( me::scene::IScene * previous ) override;
-			void OnLeaveScene( me::scene::IScene * next ) override;
 			void OnBeforeStart() override;
 			void OnAfterStart() override;
 			void OnUpdate( UpdateParams params ) override;
@@ -38,6 +36,7 @@ namespace me
 			void OnRender( RenderGirl & renderGirl ) override;
 			void OnSuspend() override;
 			void OnResume() override;
+			void OnEnd() override;
 
 		public:	// IComponent...
 			bool IsEnabled() const override;

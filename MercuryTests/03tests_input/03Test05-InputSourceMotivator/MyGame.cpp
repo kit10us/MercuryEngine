@@ -10,9 +10,7 @@ class MyGame : public Game
 {
 public:
 	MyGame()
-		: Game( "setup_testinputsourcemotivator.xml" )
-	{
-	}
+		: Game( "setup_testinputsourcemotivator.xml" ) {}
 } game;
 
-RegisterGame( game );
+RegisterGame(game);

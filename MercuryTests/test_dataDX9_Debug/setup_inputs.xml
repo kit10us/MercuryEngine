@@ -14,4 +14,7 @@
 <extension source="../../extensions/Debug/DXIKeyboard.dll"/>
 <extension source="../../extensions/Debug/DXIMouse.dll"/>
 <extension source="../../extensions/Debug/DXIGamepad.dll"/>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
 </xml>

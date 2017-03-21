@@ -69,6 +69,11 @@ void GameComponent::OnDetach( IGame * game )
 	m_game = 0;
 }
 
+action::IAction::ptr GameComponent::CreateAction(const qxml::Element * element)
+{
+	return action::IAction::ptr();
+}
+
 void GameComponent::OnBeforeStartup() 
 {
 }

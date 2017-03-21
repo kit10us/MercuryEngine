@@ -1,5 +1,5 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
-// Alol Rights Reserved
+// All Rights Reserved
 
 #include <me/Game.h>
 #include <me/factory/EffectFactories.h>
@@ -7,9 +7,10 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/GeometryFactory.h>
-#include <sg/ShapeFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/scene/SceneManager.h>
+#include <me/scene/DefaultSceneFactory.h>
+#include <sg/ShapeFactory.h>
 #include <fstream>
 #include <chrono>
 #include <ctime>
@@ -28,7 +29,6 @@
 
 using namespace me;
 using namespace scene;
-
 
 class GameLogger : public rm::ILogger
 {
@@ -72,13 +72,27 @@ void Game::Shutdown()
 	// STUBBED - Provided by user.
 }
 
-Game::Game( unify::Path setup )
+Game::Game( unify::Path setup)
 	: m_title{ "Mercury Engine" }
+	, m_mainSceneFactory{ new me::scene::DefaultSceneFactory( "Main" ) }
+	, m_failuresAsCritial(true)
+	, m_setup(setup)
+	, m_isQuitting(false)
+	, m_totalStartupTime{}
+	, m_inputOwnership{ unify::Owner::Create("Game") }
+	, m_inputManager(this)
+{
+}
+
+Game::Game(scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup )
+	: m_title{ "Mercury Engine" }
+	, m_mainSceneFactory{ mainSceneFactory }
 	, m_failuresAsCritial( true )
 	, m_setup( setup )
 	, m_isQuitting( false )
 	, m_totalStartupTime{}
 	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
+	, m_inputManager( this )
 {
 }
 
@@ -153,8 +167,8 @@ void * Game::Feed( std::string target, void * data )
 			using namespace me;
 			using namespace scene;
 		
-			SceneManager * sceneManager = dynamic_cast< scene::SceneManager * >(GetComponent( "SceneManager" ).get());
-			IScene* scene = sceneManager->FindScene( "scene1" );
+			SceneManager * sceneManager = GetComponentT< scene::SceneManager >( "SceneManager" );
+			IScene* scene = sceneManager->GetCurrentScene();
 
 			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 			scene->AddComponent( canvas );
@@ -351,7 +365,6 @@ bool Game::Initialize( OSParameters osParameters )
 	// Our setup...
 	if( m_setup.Exists() )
 	{
-
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path path )
 		{
 			qxml::Document doc( path );
@@ -370,6 +383,11 @@ bool Game::Initialize( OSParameters osParameters )
 					{
 						unify::Path path( node.GetAttribute< std::string >( "source" ) );
 						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
+					}
+					else if (node.IsTagName("inputactions"))
+					{
+						size_t failures = GetInputManager()->AddInputActions(m_inputOwnership, &node, true );
+						LogLine("Add input actions (failures = " + unify::Cast< std::string >(failures) + ")");
 					}
 				}
 			}
@@ -430,10 +448,9 @@ bool Game::Initialize( OSParameters osParameters )
 
 	LogLine( "Creating Main Scene", 0 );
 	auto sceneManager = GetComponentT< scene::SceneManager >( "SceneManager" );
-	auto mainScene = CreateMainScene();
-	if ( mainScene )
+	if ( m_mainSceneFactory )
 	{
-		sceneManager->AddScene( mainScene->GetName(), mainScene );
+		sceneManager->AddScene(m_mainSceneFactory->GetName(), m_mainSceneFactory);
 		LogLine( "Main Scene created", 0 );
 	}
 	else
@@ -790,4 +807,24 @@ bool Game::IsUpdateLocked( bool exclusive ) const
 	} 
 
 	return exclusive ? false : ! m_locks.empty();
+}
+
+action::IAction::ptr Game::CreateAction(const qxml::Element * element)
+{
+	std::string name = element->GetAttributeElse< std::string >("name", "" );
+	if (element->IsTagName("QuitGame"))
+	{
+		return action::IAction::ptr( new action::QuitGame( this ) );
+	}
+
+	for (auto component : m_components)
+	{
+		auto action = component->CreateAction(element);
+		if (action)
+		{
+			return action;
+		}
+	}
+
+	return action::IAction::ptr();
 }
