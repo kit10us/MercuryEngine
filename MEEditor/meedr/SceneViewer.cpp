@@ -19,8 +19,10 @@ using namespace meedr;
 
 #define USERMESSAGE_UPDATEDATA	0
 
-SceneViewer::SceneViewer( me::IGame * game )
-	: Window( (HWND)game->GetOSParameters().hWnd, L"SceneViewerWndClass" )
+ui::IWindow::ptr s_parent;
+
+SceneViewer::SceneViewer( ui::IWindow::ptr parent, me::IGame * game )
+	: Window( parent.get(), L"SceneViewerWndClass" )
 	, m_game{ game }
 	, m_openChildren{ 0 } 	
 	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager" ).get() ) }
@@ -671,6 +673,7 @@ ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
 	else if (message.IsFor("Restart Scene"))
 	{
 		m_sceneManager->RestartScene();
+		GetParent()->SetForegroundWindow();
 	}
 	else if ( message.IsFor( "Exit Scene Viewer" ) )
 	{

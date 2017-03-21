@@ -55,6 +55,7 @@ const IScene * SceneComponent::GetScene() const
 {
 	return m_scene;
 }
+
 void SceneComponent::AddInterface( std::string name, IUnknown* ptr )
 {
 	m_interfaceMap[ name ] = ptr;
@@ -199,4 +200,9 @@ me::IUnknown* SceneComponent::QueryInterface( std::string name )
 std::string SceneComponent::GetTypeName() const
 {
 	return m_typeName;
+}
+
+std::string SceneComponent::GetWhat() const
+{
+	return std::string();
 }

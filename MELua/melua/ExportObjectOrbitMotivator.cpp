@@ -205,16 +205,12 @@ int ObjectOrbitMotivator_Constructor( lua_State * state )
 	int top = lua_gettop( state );
 	int type = lua_type( state, 1 );
 
-	ITexture::ptr texture;
-	assert( 0 );
-
-	//unify::V3< float > origin = CheckV3( state, 1 );
-	//unify::V3< float > orbit = CheckV3( state, 2 );
-	//unify::Angle angleASecond = unify::AngleInRadians( (float)luaL_checknumber( state, 3 ) );
-	//
-	//IObjectComponent::ptr component( new ObjectOrbitMotivator( origin, orbit, angleASecond ) );
-	//return PushObjectOrbitMotivator( state, component );
-	return 0;
+	unify::V3< float > origin = CheckV3( state, 1 )->v3;
+	unify::V3< float > orbit = CheckV3( state, 2 )->v3;
+	unify::Angle angleASecond = unify::AngleInRadians( (float)luaL_checknumber( state, 3 ) );
+	
+	IObjectComponent::ptr component( new ObjectOrbitMotivator( origin, orbit, angleASecond ) );
+	return PushObjectOrbitMotivator( state, component );
 }
 
 int ObjectOrbitMotivator_Destructor( lua_State * state )

@@ -11,20 +11,23 @@ h1, h3 {
 
  <h1>Size2</h1>
  <p> 
- A two dimensional size consiting of a width and height component (s.width, s.height).
+ Size2 is a two-dimensional size consiting of width, and depth components. 
+ It is a C++ object represented in Lua via a userdata and metatables.
+ It supports the built-in Lua opertations: +, -, *, /, and # with it other Size2s.
  </p>
- <h2>Non-Instanced functions</h2>
+ <h2>Constructors</h2>
  <ul>  
- <li><b>Size2.New( width, height )</b> - Returns a new size of width and height.</li>
- <li><b>Size2.NewZero()</b> - Returns a size of zero (width = height = 0).</li>
- <li><b>Size2.Add( size, size )</b> - Returns the result of adding two sizes.</li>
- <li><b>Size2.Sub( size, size )</b> - Returns the result of subtracting two sizes.</li>
- <li><b>Size2.Mul( size, size )</b> - Returns the result of multiplying two sizes.</li>
- <li><b>Size2.Div( size, size )</b> - Returns the result of dividing two sizes.</li>
- <li><b>Size2.Units( size )</b> - Returns the result of multiplying size's width by it's height (width * height)</li>
- <li><b>Size2.ToString( size )</b> - Converts a size into a string.</li>
+ <li><b>Size2( Size2 )</b> - Returns a new Size2 initialized to the supplied Size2's components.</li>
+ <li><b>Size2( width, height )</b> - Returns a new Size2 initialized to the supplied width and height parameters.</li>
+ <li><b>Size2()</b> - Returns a new Size2 of zero (width = height = 0).</li>
  </ul>  
- <h2>Instanced functions</h2>
+ <h2>Instance functions</h2>
+ <ul>  
+ <li><b>number <i>size2</i>:width()</b> - Returns the width component of the Size2.</li>
+ <li><b>number <i>size2</i>:width( value )</b> - Sets the width component of the Size2, then returns the new value.</li>
+ <li><b>number <i>size2</i>:height()</b> - Returns the height component of the Size2.</li>
+ <li><b>number <i>size2</i>:height( value )</b> - Sets the height component of the Size2, then returns the new value.</li>
+ </ul>  
  <p>
  <b>None</b>
  </p>

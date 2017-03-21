@@ -12,10 +12,12 @@ using namespace component;
 using namespace me;
 using namespace scene;
 
-AutoSceneManagerComponent::AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath )
-	: me::scene::SceneManagerComponent()
+AutoSceneManagerComponent::AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath, unify::Path onceBeforeStart)
+	: me::scene::SceneManagerComponent( "LuaAutoSceneComponent" )
 	, m_scriptEngine{ scriptEngine }
 	, m_autoPath{ autoPath }
+	, m_onceBeforeStart{ onceBeforeStart }
+	, m_once{ false }
 {
 }
 
@@ -33,6 +35,20 @@ void AutoSceneManagerComponent::OnDetach( SceneManager * sceneManager )
 
 void AutoSceneManagerComponent::OnSceneStart( IScene * scene )
 {
+	if (!m_once )
+	{
+		if (!m_onceBeforeStart.Empty())
+		{
+			m_scriptEngine->GetGame()->LogLine("Loading startup script \"" + m_onceBeforeStart.ToString() + "\".");
+			m_scriptEngine->ExecuteFile(m_onceBeforeStart);
+		}
+		else
+		{
+			m_scriptEngine->GetGame()->LogLine("Unable to find startup script \"" + m_onceBeforeStart.ToString() + "\".");
+		}
+		m_once = true;
+	}
+
 	std::string name = scene->GetName();
 	unify::Path scriptPath = m_autoPath + (name + ".lua");
 	if ( scriptPath.Exists() )

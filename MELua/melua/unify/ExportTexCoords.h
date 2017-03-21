@@ -7,7 +7,12 @@
 #include <lua.hpp>
 #include <unify/TexCoords.h>
 
-MELUADLL_API unify::TexCoords CheckTexCoords( lua_State * state, int index );
-MELUADLL_API int PushTexCoords( lua_State * state, unify::TexCoords texCoords );
+struct TexCoordsProxy
+{
+	unify::TexCoords texcoords;
+};
 
-int ExportTexCoords( lua_State * state );
+MELUADLL_API int PushTexCoords(lua_State * state, unify::TexCoords texcoords );
+MELUADLL_API TexCoordsProxy* CheckTexCoords(lua_State * state, int index);
+
+void RegisterTexCoords(lua_State * state);

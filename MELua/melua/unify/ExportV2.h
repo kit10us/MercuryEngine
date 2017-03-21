@@ -7,7 +7,12 @@
 #include <lua.hpp>
 #include <unify/V2.h>
 
-MELUADLL_API unify::V2< float > CheckV2( lua_State * state, int index );
-MELUADLL_API int PushV2( lua_State * state, unify::V2< float > v2 );
+struct V2Proxy
+{
+	unify::V2< float > v2;
+};
 
-int ExportV2( lua_State * state );
+MELUADLL_API int PushV2(lua_State * state, unify::V2< float > v2);
+MELUADLL_API V2Proxy* CheckV2(lua_State * state, int index);
+
+void RegisterV2(lua_State * state);

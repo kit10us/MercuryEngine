@@ -1,0 +1,48 @@
+<html>
+<header>
+<title>Lua for Adveture</title>
+<style type="text/css">
+h1, h3 {
+	display: inline;
+}
+</style>
+</header>
+<body>
+
+ <a id="texarea"> 
+ <h1>TexArea</h1>
+ </a>
+ <a href="#toc">[back to top]</a>
+ <p> 
+ Four dimensional texture coordinates consiting of upper-left (ul) TexCoords (ulu, ulv), and lower-right (dr) TexCoords (dru, drv)
+ </p>
+ <h2>Non-Instanced functions</h2>
+ <ul>  
+ <li><b>TexArea()</b> - Creates a texture area that covers the entire face of an image ( { 0, 0 }, { 1, 1 } ).</li>
+ <li><b>TexArea( TexArea )</b> - Create a TexArea from another TexArea.</li>
+ <li><b>TexArea( TexCoords, TexCoords )</b> - Create a TexArea from two TexCoords.</li>
+ <li><b>TexArea( ulu, ulv, dru, drv )</b> - Create a TexArea from individual components.</li>
+ </ul>  
+ <h2>Instanced functions</h2>
+ <li><b>number <i>texarea</i>:ulu()</b> - Returns the ulu component of the texarea.</li>
+ <li><b>number <i>texarea</i>:ulu( value )</b> - Sets the ulv component of the texarea, then returns the new value.</li>
+ <li><b>number <i>texarea</i>:ulv()</b> - Returns the ulu component of the texarea.</li>
+ <li><b>number <i>texarea</i>:ulv( value )</b> - Sets the ulv component of the texarea, then returns the new value.</li>
+ <li><b>number <i>texarea</i>:dru()</b> - Returns the dru component of the texarea.</li>
+ <li><b>number <i>texarea</i>:dru( value )</b> - Sets the drv component of the texarea, then returns the new value.</li>
+ <li><b>number <i>texarea</i>:drv()</b> - Returns the dru component of the texarea.</li>
+ <li><b>number <i>texarea</i>:drv( value )</b> - Sets the drv component of the texarea, then returns the new value.</li>
+ <li><b>number <i>texarea</i>:ul()</b> - Create TexCoords from the ul of the texarea.</li>
+ <li><b>number <i>texarea</i>:ul( ulu, ulv )</b> - Sets the ulu and ulv components of the texarea, then returns TexCoords from those new values.</li>
+ <li><b>number <i>texarea</i>:ul( TexCoords )</b> - Sets the ulu and ulv components of the texarea, then returns TexCoords from those new values.</li>
+ <li><b>number <i>texarea</i>:dr()</b> - Create TexCoords from the dr of the texarea.</li>
+ <li><b>number <i>texarea</i>:dr( dru, drv )</b> - Sets the dru and drv components of the texarea, then returns TexCoords from those new values.</li>
+ <li><b>number <i>texarea</i>:dr( TexCoords )</b> - Sets the dru and drv components of the texarea, then returns TexCoords from those new values.</li>
+ 
+ <copyright>
+Adventure
+copyright (c) Evil Quail LLC 2017
+all rights reserved
+</copyright>
+</body>
+</html>

@@ -39,7 +39,7 @@ int ShapeParameters_SetDiffuse( lua_State* state )
 	assert( args == 2 );
 
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::ColorUnit diffuse = CheckColor( state, 2 );   
+	unify::ColorUnit diffuse = CheckColor( state, 2 )->color;   
 	parameters->parameters.Set< unify::Color>( "diffuse", diffuse );
 
 	return 0;
@@ -51,7 +51,7 @@ int ShapeParameters_SetSpecular( lua_State* state )
 	assert( args == 2 );
 
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::ColorUnit specular = CheckColor( state, 2 );
+	unify::ColorUnit specular = CheckColor( state, 2 )->color;
 	parameters->parameters.Set< unify::Color>( "specular", specular );
 
 	return 0;
@@ -111,7 +111,7 @@ int CubeParameters_SetSize( lua_State* state )
 int CubeParameters_SetSize2( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::Size< float > size( CheckSize2( state, 2 ) );
+	unify::Size< float > size( CheckSize2( state, 2 )->size2 );
 	parameters->parameters.Set< unify::Size< float > >( "size2", size );
 	return 0;
 }
@@ -119,7 +119,7 @@ int CubeParameters_SetSize2( lua_State* state )
 int CubeParameters_SetSize3( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	unify::Size3< float > size( CheckSize3( state, 2 ) );
+	unify::Size3< float > size( CheckSize3( state, 2 )->size3 );
 	parameters->parameters.Set< unify::Size3< float > >( "size3", size );
 	return 0;
 }
@@ -129,12 +129,12 @@ int CubeParameters_SetDiffuseFaces( lua_State* state )
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
 
 	unify::Color colors[6];
-	colors[0] = CheckColor( state, 2 );
-	colors[1] = CheckColor( state, 3 );
-	colors[2] = CheckColor( state, 4 );
-	colors[3] = CheckColor( state, 5 );
-	colors[4] = CheckColor( state, 6 );
-	colors[5] = CheckColor( state, 7 );
+	colors[0] = CheckColor( state, 2 )->color;
+	colors[1] = CheckColor( state, 3 )->color;
+	colors[2] = CheckColor( state, 4 )->color;
+	colors[3] = CheckColor( state, 5 )->color;
+	colors[4] = CheckColor( state, 6 )->color;
+	colors[5] = CheckColor( state, 7 )->color;
 
 	std::vector< unify::Color > diffuses( &colors[0], &colors[0] + 6 );
 	parameters->parameters.Set< std::vector< unify::Color > >( "diffuses", diffuses );
@@ -146,14 +146,14 @@ int CubeParameters_SetDiffusePoints( lua_State* state )
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
 
 	unify::Color colors[8];
-	colors[0] = CheckColor( state, 2 );
-	colors[1] = CheckColor( state, 3 );
-	colors[2] = CheckColor( state, 4 );
-	colors[3] = CheckColor( state, 5 );
-	colors[4] = CheckColor( state, 6 );
-	colors[5] = CheckColor( state, 7 );
-	colors[6] = CheckColor( state, 8 );
-	colors[7] = CheckColor( state, 9 );
+	colors[0] = CheckColor( state, 2 )->color;
+	colors[1] = CheckColor( state, 3 )->color;
+	colors[2] = CheckColor( state, 4 )->color;
+	colors[3] = CheckColor( state, 5 )->color;
+	colors[4] = CheckColor( state, 6 )->color;
+	colors[5] = CheckColor( state, 7 )->color;
+	colors[6] = CheckColor( state, 8 )->color;
+	colors[7] = CheckColor( state, 9 )->color;
 
 	std::vector< unify::Color > diffuses( &colors[0], &colors[0] + 8 );
 	parameters->parameters.Set< std::vector< unify::Color > >( "diffuses", diffuses );

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <memory>
+#include <me/IComponent.h>
 
 namespace me
 {
@@ -12,7 +12,7 @@ namespace me
 		class SceneManager;
 		class IScene;
 
-		class ISceneManagerComponent
+		class ISceneManagerComponent : public IComponent
 		{
 		public:
 			typedef std::shared_ptr< ISceneManagerComponent > ptr;

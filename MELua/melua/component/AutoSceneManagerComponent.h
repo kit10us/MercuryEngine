@@ -11,7 +11,7 @@ namespace melua
 		class AutoSceneManagerComponent : public me::scene::SceneManagerComponent
 		{
 		public:
-			AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath );
+			AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath, unify::Path onceBeforeStart );
 			~AutoSceneManagerComponent();
 
 		public: // ISceneComponent... 
@@ -23,6 +23,8 @@ namespace melua
 		private:
 			melua::ScriptEngine * m_scriptEngine;
 			unify::Path m_autoPath;
+			unify::Path m_onceBeforeStart;
+			bool m_once;
 		};
 	}
 }

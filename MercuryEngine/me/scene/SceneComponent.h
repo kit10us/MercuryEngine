@@ -50,9 +50,10 @@ namespace me
 			bool SetValue( int index, std::string value ) override;
 			bool SetValue( std::string name, std::string value ) override;
 
-		public:
+		public: // IUnknown...
 			std::string GetTypeName() const override;
 			IUnknown* QueryInterface( std::string name ) override;
+			std::string GetWhat() const override;
 
 		private:
 			IOS * m_os;

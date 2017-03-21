@@ -8,15 +8,16 @@
 #include <Windows.h>
 
 me::IGame * s_game;
-ui::IWindow::ptr s_engineMain;
 
+ui::IWindow::ptr s_rootWindow;
+ui::IWindow::ptr s_engineMain;
 unify::Owner::ptr s_ownership;
 
 void OpenEditor()
 {
 	if (!s_engineMain)
 	{
-		s_engineMain.reset(new meedr::SceneViewer(s_game));
+		s_engineMain.reset(new meedr::SceneViewer(s_rootWindow, s_game));
 	}
 }
 
@@ -29,6 +30,8 @@ extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::El
 {
 	s_game = game;
 	s_ownership = unify::Owner::Create( "MEEditor" );
+
+	s_rootWindow.reset(new ui::Window((HWND)game->GetOSParameters().hWnd));
 
 	{
 		auto component = new meedr::ActionsGameComponent();

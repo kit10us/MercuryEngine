@@ -11,6 +11,7 @@ using namespace meedr;
 static std::vector< std::string > TypeNames =
 {
 	"Game",
+	"SceneManager",
 	"Scene",
 	"Object"
 };
@@ -18,6 +19,7 @@ static std::vector< std::string > TypeNames =
 enum class Types 
 {
 	Game,
+	SceneManager,
 	Scene,
 	Object
 };		  
@@ -42,8 +44,6 @@ ComponentViewer::ComponentViewer( SceneViewer* parent, int nCmdShow, int x, int 
 			AddControl( new Combobox( FillWidth(), DefaultHeight() ), "TypeCombobox" );
 			AddControl( new Static( L"Instances:", SizeToContentWidth(), DefaultHeight() ) );
 			AddControl( new Listbox( FillWidth(), FillHeight() ), "InstanceList" );
-			AddControl( new Static( L"Sub-Instances:", SizeToContentWidth(), DefaultHeight() ) );
-			AddControl( new Listbox( FillWidth(), FillHeight() ), "SubInstanceList" );
 			StepDown();
 		AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(2), 200 ) );
 			AddControl( new Static( L"Components: ", SizeToContentWidth(), DefaultHeight() ) );
@@ -91,6 +91,11 @@ void ComponentViewer::UpdateTypeInstances()
 		instanceList->SetEnable( false );
 		break;
 	}
+	case Types::SceneManager:
+	{
+		instanceList->SetEnable(false);
+		break;
+	}
 	case Types::Scene:
 	{
 		instanceList->SetEnable( false );
@@ -99,57 +104,14 @@ void ComponentViewer::UpdateTypeInstances()
 	case Types::Object:
 	{
 		instanceList->SetEnable( true );
-		auto sceneManager = dynamic_cast<me::scene::SceneManager*>(m_game->GetComponent( "SceneManager" ).get());
 
-		for ( size_t index = 0; index < sceneManager->GetSceneCount(); index++ )
-		{
-			instanceList->AddString( sceneManager->GetSceneName( index ) );
-		}
-		instanceList->SetCurSel( 0 );
-		break;
-	}
-	default:
-		break;
-	}		
-
-	UpdateTypeSubInstances();
-}
-				 
-void ComponentViewer::UpdateTypeSubInstances()
-{
-	using namespace ui;			  
-
-	Combobox* typeCombobox = GetControl< Combobox* >( "TypeCombobox" );
-	Listbox* instanceList = GetControl< Listbox* >( "InstanceList" );
-	Listbox* subInstanceList = GetControl< Listbox* >( "SubInstanceList" );
-
-	subInstanceList->ResetContent();
-
-	size_t typeIndex = typeCombobox->GetCurSel();
-	size_t instanceIndex = instanceList->GetCurSel();
-
-	switch ( (Types)typeIndex )
-	{
-	case Types::Game:
-	{
-		subInstanceList->SetEnable( false );
-		break;
-	}
-	case Types::Scene:
-	{
-		subInstanceList->SetEnable( false );
-		break;
-	}
-	case Types::Object:
-	{
-		subInstanceList->SetEnable( true );
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
 		auto scene = sceneManager->GetCurrentScene();
-		for ( size_t index = 0; index < scene->GetObjectAllocator()->Count(); index++ )
+		for (size_t index = 0; index < scene->GetObjectAllocator()->Count(); index++)
 		{
-			subInstanceList->AddString( scene->GetObjectAllocator()->GetObject( index )->GetName() );
+			instanceList->AddString(scene->GetObjectAllocator()->GetObject(index)->GetName());
 		}
-		subInstanceList->SetCurSel( 0 );
+		instanceList->SetCurSel(0);
 		break;
 	}
 	default:
@@ -164,7 +126,6 @@ void ComponentViewer::UpdateComponentList()
 
 	Combobox* typeCombobox = GetControl< Combobox* >( "TypeCombobox" );
 	Listbox* instanceList = GetControl< Listbox* >( "InstanceList" );
-	Listbox* subInstanceList = GetControl< Listbox* >( "SubInstanceList" );
 	Listbox* componentList = GetControl< Listbox* >( "ComponentList" );
 
 	// Clear contents...
@@ -172,7 +133,6 @@ void ComponentViewer::UpdateComponentList()
 
 	size_t typeIndex = typeCombobox->GetCurSel();
 	size_t instanceIndex = instanceList->GetCurSel();
-	size_t subInstanceIndex = subInstanceList->GetCurSel();
 
 	switch ( (Types)typeIndex )
 	{
@@ -181,6 +141,15 @@ void ComponentViewer::UpdateComponentList()
 		for ( int index = 0; index < m_game->GetComponentCount(); index++ )
 		{
 			componentList->AddString( m_game->GetComponent( index )->GetTypeName() );
+		}
+		break;
+	}
+	case Types::SceneManager:
+	{
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+		for (int index = 0; index < sceneManager->GetComponentCount(); index++)
+		{
+			componentList->AddString(sceneManager->GetComponent(index)->GetTypeName());
 		}
 		break;
 	}
@@ -198,7 +167,7 @@ void ComponentViewer::UpdateComponentList()
 	{
 		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
 		auto scene = sceneManager->GetCurrentScene();
-		auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
+		auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
 		for ( int index = 0; index < object->GetComponentCount(); index++ )
 		{
 			componentList->AddString( object->GetComponent( index )->GetTypeName() );
@@ -219,7 +188,6 @@ void ComponentViewer::UpdateComponentValues()
 
 	Combobox* typeCombobox = GetControl< Combobox* >( "TypeCombobox" );
 	Listbox* instanceList = GetControl< Listbox* >( "InstanceList" );
-	Listbox* subInstanceList = GetControl< Listbox* >( "SubInstanceList" );
 	Listbox* componentList = GetControl< Listbox* >( "ComponentList" );
 	ListView* valuesList = GetControl< ListView* >( "ValuesList" );
 
@@ -228,7 +196,6 @@ void ComponentViewer::UpdateComponentValues()
 
 	size_t typeIndex = typeCombobox->GetCurSel();
 	size_t instanceIndex = instanceList->GetCurSel();
-	size_t subInstanceIndex = subInstanceList->GetCurSel();
 	size_t componentIndex = componentList->GetCurSel();
 
 	switch ( (Types)typeIndex )
@@ -244,6 +211,21 @@ void ComponentViewer::UpdateComponentValues()
 		{
 			valuesList->InsertItem( 0, index, unify::Cast< std::wstring >( component->GetValue( index ) ) );
 			valuesList->InsertItem( 1, index, unify::Cast< std::wstring >( component->GetValueName( index ) ) );
+		}
+		break;
+	}
+	case Types::SceneManager:
+	{
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+		auto component = sceneManager->GetComponent(componentIndex);
+		if (!component)
+		{
+			break;
+		}
+		for (int index = 0; index < component->GetValueCount(); index++)
+		{
+			valuesList->InsertItem(0, index, unify::Cast< std::wstring >(component->GetValue(index)));
+			valuesList->InsertItem(1, index, unify::Cast< std::wstring >(component->GetValueName(index)));
 		}
 		break;
 	}
@@ -267,7 +249,7 @@ void ComponentViewer::UpdateComponentValues()
 	{
 		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
 		auto scene = sceneManager->GetCurrentScene();
-		auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
+		auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
 		auto component = object->GetComponent( componentIndex );
 		for ( int index = 0; index < component->GetValueCount(); index++ )
 		{
@@ -340,17 +322,6 @@ ui::IResult * ComponentViewer::OnControlCommand( ui::message::ControlCommand mes
 		{
 		case Listbox::Event::SelChange:
 		{
-			UpdateTypeSubInstances();
-			break;
-		}
-		}
-	}
-	else if ( message.IsFor( "SubInstanceList" ) )
-	{
-		switch ( (Listbox::Event)message.code )
-		{
-		case Listbox::Event::SelChange:
-		{
 			UpdateComponentList();
 			break;
 		}
@@ -381,13 +352,11 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 
 			Combobox* typeCombobox = GetControl< Combobox* >( "TypeCombobox" );
 			Listbox* instanceList = GetControl< Listbox* >( "InstanceList" );
-			Listbox* subInstanceList = GetControl< Listbox* >( "SubInstanceList" );
 			Listbox* componentList = GetControl< Listbox* >( "ComponentList" );
 			ListView* valuesList = GetControl< ListView* >( "ValuesList" );
 
 			size_t typeIndex = typeCombobox->GetCurSel();
 			size_t instanceIndex = instanceList->GetCurSel();
-			size_t subInstanceIndex = subInstanceList->GetCurSel();
 			size_t componentIndex = componentList->GetCurSel();
 
 			me::IComponent* component = nullptr;
@@ -397,6 +366,12 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			case Types::Game:
 			{
 				component = m_game->GetComponent( componentIndex ).get();
+				break;
+			}
+			case Types::SceneManager:
+			{
+				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+				component = sceneManager->GetComponent(componentIndex);
 				break;
 			}
 			case Types::Scene:
@@ -410,7 +385,7 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			{
 				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
 				auto scene = sceneManager->GetCurrentScene();
-				auto object = scene->GetObjectAllocator()->GetObject( subInstanceIndex );
+				auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
 				component = object->GetComponent( componentIndex ).get();
 			}
 			default:

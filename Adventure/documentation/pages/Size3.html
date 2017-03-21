@@ -11,20 +11,25 @@ h1, h3 {
 
  <h1>Size3</h1>
  <p> 
- A three dimensional size consiting of a width, height and depth component (s.width, s.height, s.depth).
+ Size3 is a three-dimensional size consiting of width, height, and depth components. 
+ It is a C++ object represented in Lua via a userdata and metatables.
+ It supports the built-in Lua opertations: +, -, *, /, and # with it other Size3s.
  </p>
- <h2>Non-Instanced functions</h2>
+ <h2>Constructors</h2>
  <ul>  
- <li><b>Size3.New( width, height, depth )</b> - Returns a new size of width, height, and depth.</li>
- <li><b>Size3.NewZero()</b> - Returns a size of zero (width = height = depth = 0).</li>
- <li><b>Size3.Add( size, size )</b> - Returns the result of adding two sizes.</li>
- <li><b>Size3.Sub( size, size )</b> - Returns the result of subtracting two sizes.</li>
- <li><b>Size3.Mul( size, size )</b> - Returns the result of multiplying two sizes.</li>
- <li><b>Size3.Div( size, size )</b> - Returns the result of dividing two sizes.</li>
- <li><b>Size3.Units( size )</b> - Returns the result of multiplying size's width by it's height and depth (width * height * depth).</li>
- <li><b>Size3.ToString( size )</b> - Converts a size into a string.</li>
+ <li><b>Size3()</b> - Returns a new Size3 of zero (width = height = depth= 0).</li>
+ <li><b>Size3( Size3 )</b> - Returns a new Size3 initialized to the supplied Size3's components.</li>
+ <li><b>Size3( width, height, depth )</b> - Returns a new Size3 initialized to the supplied width, height and z parameters.</li>
  </ul>  
- <h2>Instanced functions</h2>
+ <h2>Instance functions</h2>
+ <ul>  
+ <li><b>number <i>size3</i>:width()</b> - Returns the width component of the Size3.</li>
+ <li><b>number <i>size3</i>:width( value )</b> - Sets the width component of the Size3, then returns the new value.</li>
+ <li><b>number <i>size3</i>:height()</b> - Returns the height component of the Size3.</li>
+ <li><b>number <i>size3</i>:height( value )</b> - Sets the height component of the Size3, then returns the new value.</li>
+ <li><b>number <i>size3</i>:depth()</b> - Returns the depth component of the Size3.</li>
+ <li><b>number <i>size3</i>:depth( value )</b> - Sets the depth component of the Size3, then returns the new value.</li>
+ </ul>  
  <p>
  <b>None</b>
  </p>

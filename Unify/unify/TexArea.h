@@ -34,6 +34,8 @@ namespace unify
 		TexCoords DR() const;
 
 		bool IsZero() const;
+
+		std::string ToString() const;
 	};
 
 	TexArea TexAreaOne();

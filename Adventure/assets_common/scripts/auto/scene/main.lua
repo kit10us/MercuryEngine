@@ -6,15 +6,9 @@ function OnBeforeStart()
 	Texture( "sand", "sand.bmp" )
 	Texture( "grass", "grass.bmp" )
 	
-	local a = V3( 1, 2, 3 )
-	print( tostring( a ) )
-	print( tostring( V3() ) )
-	print( tostring( V3Cross( V3( 1, 0, 0 ), V3( 0, 1, 0 ) ) ) )
-	
-	
 	-- Create geometry	
 	local terraParams = TerraParameters()	
-	terraParams:SetSize( Size2.New( 2, 2 ) )
+	terraParams:SetSize( Size2( 2, 2 ) )
 	terraParams:SetConstant( 0 )
 	terraParams:SetPoints( 10, 10 )
 	
@@ -24,7 +18,7 @@ function OnBeforeStart()
 	effect = Effect( "invalid", "EffectTextured.effect" )
 	effect:SetTexture( 0, Texture("invalid" ) )
 	terraParams:SetEffect( effect )
-	terraParams:SetTexArea( TexArea.New( 1.0 / 4 * 1, 1.0 / 4 * 1 , 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
+	terraParams:SetTexArea( TexArea( 1.0 / 4 * 1, 1.0 / 4 * 1 , 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
 	Terra( "invalid", terraParams )
 	
 	-- Add a grass ground...
@@ -32,21 +26,21 @@ function OnBeforeStart()
 	type( effect );
 	effect:SetTexture( 0, Texture( "grass" ) )
 	terraParams:SetEffect( effect )
-	terraParams:SetTexArea( TexArea.NewFull() )
+	terraParams:SetTexArea( TexArea() )
 	Terra( "grass", terraParams )
 
 	-- Add a sand ground...
 	effect = Effect( "sand", "EffectTextured.effect" )	
 	effect:SetTexture( 0, Texture( "sand" ) )
 	terraParams:SetEffect( effect )
-	terraParams:SetTexArea( TexArea.New( 1.0 / 4 * 1, 1.0 / 4 * 1, 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
+	terraParams:SetTexArea( TexArea( 1.0 / 4 * 1, 1.0 / 4 * 1, 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
 	Terra( "sand", terraParams )
 
 	
 	-- Scene
 	local sceneMain = this;
 	
-	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
+	local proj = MatrixPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
 	local camera = sceneMain:NewObject( "camera" )
@@ -75,7 +69,7 @@ function OnBeforeStart()
 
 	local player = sceneMain:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
-	player:SetModelMatrix( Matrix.NewRotationX( Angle.Degrees( -90 ) ) )
+	player:SetModelMatrix( MatrixRotationX( Angle.Degrees( -90 ) ) )
 	player:Transform():SetPosition( V3( 0, 0, 0 ) )
 	
 	-- Add stuff

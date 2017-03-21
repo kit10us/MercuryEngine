@@ -34,7 +34,6 @@
     <ClCompile Include="unify\TexArea.cpp" />
     <ClCompile Include="unify\TexCoords.cpp" />
     <ClCompile Include="unify\TimeDelta.cpp" />
-    <ClCompile Include="unify\V2.cpp" />
     <ClCompile Include="unify\Variant.cpp" />
   </ItemGroup>
   <ItemGroup>

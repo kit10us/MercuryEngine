@@ -7,7 +7,12 @@
 #include <lua.hpp>
 #include <unify/Size.h>
 
-MELUADLL_API unify::Size< float > CheckSize2( lua_State * state, int index );
-MELUADLL_API int PushSize2( lua_State * state, unify::Size< float > size8 );
+struct Size2Proxy
+{
+	unify::Size< float > size2;
+};
 
-void RegisterSize2( lua_State * state );
+MELUADLL_API int PushSize2(lua_State * state, unify::Size< float > size2);
+MELUADLL_API Size2Proxy* CheckSize2(lua_State * state, int index);
+
+void RegisterSize2(lua_State * state);

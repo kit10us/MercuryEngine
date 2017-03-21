@@ -20,34 +20,24 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine( game->GetOS() );
 	game->AddComponent( me::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
 
-	// Auto-scene script scene manager component..
-	if ( element->HasElements( "auto" ) )
-	{
-		unify::Path autoPath( element->GetElement( "auto" )->GetText() );
-		auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + "scene/" );
-		auto sceneManager = game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
-		sceneManager->AddComponent( me::scene::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );
-	}
-				  
 	// Automatically add "game.lua" GameComponent...
-	unify::Path source( "game.lua" );
-	if ( element->HasElements( "startup" ) )
+	unify::Path source("game.lua");
+	if (element->HasElements("startup"))
 	{
-		source = element->GetElement( "startup" )->GetText();
+		source = element->GetElement("startup")->GetText();
+		unify::Path(game->GetOS()->GetAssetPaths().FindAsset(source));
 	}
+	source = unify::Path(game->GetOS()->GetAssetPaths().FindAsset(source));
 
-	source = unify::Path( game->GetOS()->GetAssetPaths().FindAsset( source ) );
-
-	if ( source.Exists() )
+	// Auto-scene script scene manager component..
+	unify::Path autoPath;
+	if (element->HasElements("auto"))
 	{
-		game->LogLine( "Loading startup script \"" + source.ToString() + "\"." );
-		auto component = scriptEngine->LoadGameScript( source );
-		game->AddComponent( component );
+		unify::Path autoPath(element->GetElement("auto")->GetText());
 	}
-	else
-	{
-		game->LogLine( "Unable to find startup script \"" + source.ToString() + "\"." );
-	}
+	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + "scene/", source );
+	auto sceneManager = game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+	sceneManager->AddComponent( me::scene::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );		  
 
 	return true;
 }

@@ -1,155 +1,124 @@
-local axisIndex = 1
-local totalRotation = 0
+color3d = Effect( "color3d", "EffectColor.effect" )
+borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 
-function OnBeforeStartup()
-	color3d = Effect( "color3d", "EffectColor.effect" )
-	borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
-	
-	scene1 = Scene( "scene1" )
-	root = scene1:FindObject( "root" )
-	
-	proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth() / Game.GetHeight(), 1, 1000 )
-	
-	-- Add camera...
-	camera = scene1:AddCamera( "camera", proj )	
-	camera:Transform():SetPosition( V3( 0, 5, -17 ) )
-	camera:Transform():LookAt( V3.Zero() )
+scene1 = Scene()
+root = scene1:FindObject( "root" )
 
-	scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
-	
-	cubeParameters = ShapeParameters( "cube" )
-	cubeParameters:SetEffect( color3d )
-	cubeParameters:SetSize3( Size3.New( 2, 2, 2 ) )
-	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
-	cube = scene1:NewObject( "cube" )
-	cube:AddGeometry( Geometry( cubeParameters ) )
-	cube:Transform():SetPosition( V3( -4.5, 3, 0 ) )
+proj = MatrixPerspectiveFovLH( math.pi / 4.0, Game.GetWidth() / Game.GetHeight(), 1, 1000 )
+
+-- Add camera...
+camera = scene1:AddCamera( "camera", proj )	
+camera:Transform():SetPosition( V3( 0, 5, -17 ) )
+camera:Transform():LookAt( V3.Zero() )
+
+scene1:SetSize( Game.GetWidth(), Game.GetHeight() )
+
+cubeParameters = ShapeParameters( "cube" )
+cubeParameters:SetEffect( color3d )
+cubeParameters:SetSize3( Size3.New( 2, 2, 2 ) )
+cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
+cube = scene1:NewObject( "cube" )
+cube:AddGeometry( Geometry( cubeParameters ) )
+cube:Transform():SetPosition( V3( -4.5, 3, 0 ) )
 
 
-	pointfieldParameters = ShapeParameters( "pointfield" )
-	pointfieldParameters:SetEffect( color3d )
-	pointfieldParameters:SetMinorRadius( 0.5 )
-	pointfieldParameters:SetMajorRadius( 1.0 )
-	pointfieldParameters:SetCount( 1000 )
-	pointfieldParameters:SetDiffuse( Color.NewWhite() )
-	pointfield = scene1:NewObject( "pointfield" )
-	pointfield:AddGeometry( Geometry( pointfieldParameters ) )
-	pointfield:Transform():SetPosition( V3( -1.5, 3, 0 ) )
-	
-	pointringParameters = ShapeParameters( "pointring" )
-	pointringParameters:SetEffect( color3d )
-	pointringParameters:SetMinorRadius( 0.25 )
-	pointringParameters:SetMajorRadius( 0.75 )
-	pointringParameters:SetCount( 1000 )
-	pointringParameters:SetDiffuse( Color.NewRed() )
-	pointring = scene1:NewObject( "pointring" )
-	pointring:AddGeometry( Geometry( pointringParameters ) )
-	pointring:Transform():SetPosition( V3( 1.5, 3, 0 ) )
+pointfieldParameters = ShapeParameters( "pointfield" )
+pointfieldParameters:SetEffect( color3d )
+pointfieldParameters:SetMinorRadius( 0.5 )
+pointfieldParameters:SetMajorRadius( 1.0 )
+pointfieldParameters:SetCount( 1000 )
+pointfieldParameters:SetDiffuse( Color.NewWhite() )
+pointfield = scene1:NewObject( "pointfield" )
+pointfield:AddGeometry( Geometry( pointfieldParameters ) )
+pointfield:Transform():SetPosition( V3( -1.5, 3, 0 ) )
 
-	dashringParameters = ShapeParameters( "dashring" )
-	dashringParameters:SetEffect( color3d )
-	dashringParameters:SetMinorRadius( 0.5 )
-	dashringParameters:SetMajorRadius( 1.0 )
-	dashringParameters:SetSize( 0.5 )
-	dashringParameters:SetCount( 5 )
-	dashringParameters:SetDiffuse( Color.NewGreen() )
-	dashring = scene1:NewObject( "dashring" )
-	dashring:AddGeometry( Geometry( dashringParameters ) )
-	dashring:Transform():SetPosition( V3( 4.5, 3, 0 ) )	
-	
-	pyramidParameters = ShapeParameters( "pyramid" )
-	pyramidParameters:SetEffect( color3d )
-	pyramidParameters:SetSize3( Size3.New( 2, 2, 2 ) )
-	pyramidParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	pyramid = scene1:NewObject( "pyramid" )
-	pyramid:AddGeometry( Geometry( pyramidParameters ) )
-	pyramid:Transform():SetPosition( V3( -4.5, 0, 0 ) )	
-	
-	circleParameters = ShapeParameters( "circle" )
-	circleParameters:SetEffect( color3d );
-	circleParameters:SetSegments( 24 );
-	circleParameters:SetRadius( 1.0 );
-	circleParameters:SetDiffuse( Color.NewBlue() );
-	circle = scene1:NewObject( "circle" )
-	circle:AddGeometry( Geometry( circleParameters ) );
-	circle:Transform():SetPosition( V3( -1.5, 0, 0 ) )
-	
-	sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( color3d )
-	sphereParameters:SetSegments( 24 )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
-	sphere = scene1:NewObject( "sphere" )
-	sphere:AddGeometry( Geometry( sphereParameters ) )
-	sphere:Transform():SetPosition( V3( 1.5, 0, 0 ) )
+pointringParameters = ShapeParameters( "pointring" )
+pointringParameters:SetEffect( color3d )
+pointringParameters:SetMinorRadius( 0.25 )
+pointringParameters:SetMajorRadius( 0.75 )
+pointringParameters:SetCount( 1000 )
+pointringParameters:SetDiffuse( Color.NewRed() )
+pointring = scene1:NewObject( "pointring" )
+pointring:AddGeometry( Geometry( pointringParameters ) )
+pointring:Transform():SetPosition( V3( 1.5, 3, 0 ) )
 
-	cylinderParameters = ShapeParameters( "cylinder" )
-	cylinderParameters:SetEffect( color3d )
-	cylinderParameters:SetSegments( 24 )
-	cylinderParameters:SetRadius( 1.0 )
-	cylinderParameters:SetHeight( 2.0 )
-	cylinderParameters:SetDiffuse( Color.NewRGB(1, 0, 1 ) )
-	cylinderParameters:SetCaps( true )
-	cylinder = scene1:NewObject( "cylinder" )
-	cylinder:AddGeometry( Geometry( cylinderParameters ) )
-	cylinder:Transform():SetPosition( V3( 4.5, 0, 0 ) )
-	
-	tubeParameters = ShapeParameters( "tube" )
-	tubeParameters:SetEffect( color3d )
-	tubeParameters:SetSegments( 24 )
-	tubeParameters:SetMajorRadius( 1.0 )
-	tubeParameters:SetMinorRadius( 0.5 )
-	tubeParameters:SetHeight( 2.0 )
-	tubeParameters:SetDiffuse( Color.NewRed() )
-	tube = scene1:NewObject( "tube" )
-	tube:AddGeometry( Geometry( tubeParameters ) )
-	tube:Transform():SetPosition( V3( -4.5, -3, 0 ) )
+dashringParameters = ShapeParameters( "dashring" )
+dashringParameters:SetEffect( color3d )
+dashringParameters:SetMinorRadius( 0.5 )
+dashringParameters:SetMajorRadius( 1.0 )
+dashringParameters:SetSize( 0.5 )
+dashringParameters:SetCount( 5 )
+dashringParameters:SetDiffuse( Color.NewGreen() )
+dashring = scene1:NewObject( "dashring" )
+dashring:AddGeometry( Geometry( dashringParameters ) )
+dashring:Transform():SetPosition( V3( 4.5, 3, 0 ) )	
 
-	
-	
-	planeParameters = ShapeParameters( "plane" )
-	planeParameters:SetEffect( color3d )
-	planeParameters:SetSegments( 2 )
-	planeParameters:SetSize2( Size2.New( 2.0, 2.0 ) )
-	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	plane = scene1:NewObject( "plane" )
-	plane:AddGeometry( Geometry( planeParameters ) )
-	plane:Transform():SetPosition( V3( -1.5, -3, 0 ) )
-	
+pyramidParameters = ShapeParameters( "pyramid" )
+pyramidParameters:SetEffect( color3d )
+pyramidParameters:SetSize3( Size3.New( 2, 2, 2 ) )
+pyramidParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
+pyramid = scene1:NewObject( "pyramid" )
+pyramid:AddGeometry( Geometry( pyramidParameters ) )
+pyramid:Transform():SetPosition( V3( -4.5, 0, 0 ) )	
 
-	coneParameters = ShapeParameters( "cone" )
-	coneParameters:SetEffect( borgcubeEffect )
-	coneParameters:SetSegments( 24 )
-	coneParameters:SetRadius( 1 )
-	coneParameters:SetHeight( 2 )
-	coneParameters:SetCaps( true )
-	cone = scene1:NewObject( "cone" )
-	cone:AddGeometry( Geometry( coneParameters ) )
-	cone:Transform():SetPosition( V3( 1.5, -3, 0 ) )
-end
+circleParameters = ShapeParameters( "circle" )
+circleParameters:SetEffect( color3d );
+circleParameters:SetSegments( 24 );
+circleParameters:SetRadius( 1.0 );
+circleParameters:SetDiffuse( Color.NewBlue() );
+circle = scene1:NewObject( "circle" )
+circle:AddGeometry( Geometry( circleParameters ) );
+circle:Transform():SetPosition( V3( -1.5, 0, 0 ) )
 
-function OnUpdate()
-	rotation = Update.GetDelta()
-	
-	totalRotation = totalRotation + rotation
-	pi2 = 3.1415926535 * 2
-	if totalRotation > pi2 then
-		totalRotation = totalRotation - pi2
-		rotation = totalRotation -- Left over
-		axisIndex = axisIndex + 1
-		if axisIndex >= 3 then
-			axisIndex = 0
-		end
-	end
+sphereParameters = ShapeParameters( "sphere" )
+sphereParameters:SetEffect( color3d )
+sphereParameters:SetSegments( 24 )
+sphereParameters:SetRadius( 1.0 )
+sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
+sphere = scene1:NewObject( "sphere" )
+sphere:AddGeometry( Geometry( sphereParameters ) )
+sphere:Transform():SetPosition( V3( 1.5, 0, 0 ) )
 
-	axis = V3.Zero()
-	if axisIndex == 0 then
-		axis.x = 1
-	elseif axisIndex == 1 then
-		axis.y = 1
-	elseif axisIndex == 2 then
-		axis.z = 1
-	end
+cylinderParameters = ShapeParameters( "cylinder" )
+cylinderParameters:SetEffect( color3d )
+cylinderParameters:SetSegments( 24 )
+cylinderParameters:SetRadius( 1.0 )
+cylinderParameters:SetHeight( 2.0 )
+cylinderParameters:SetDiffuse( Color.NewRGB(1, 0, 1 ) )
+cylinderParameters:SetCaps( true )
+cylinder = scene1:NewObject( "cylinder" )
+cylinder:AddGeometry( Geometry( cylinderParameters ) )
+cylinder:Transform():SetPosition( V3( 4.5, 0, 0 ) )
 
-	--group:Transform():RotateAbout( axis, rotation )
-end
+tubeParameters = ShapeParameters( "tube" )
+tubeParameters:SetEffect( color3d )
+tubeParameters:SetSegments( 24 )
+tubeParameters:SetMajorRadius( 1.0 )
+tubeParameters:SetMinorRadius( 0.5 )
+tubeParameters:SetHeight( 2.0 )
+tubeParameters:SetDiffuse( Color.NewRed() )
+tube = scene1:NewObject( "tube" )
+tube:AddGeometry( Geometry( tubeParameters ) )
+tube:Transform():SetPosition( V3( -4.5, -3, 0 ) )
+
+
+
+planeParameters = ShapeParameters( "plane" )
+planeParameters:SetEffect( color3d )
+planeParameters:SetSegments( 2 )
+planeParameters:SetSize2( Size2.New( 2.0, 2.0 ) )
+planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
+plane = scene1:NewObject( "plane" )
+plane:AddGeometry( Geometry( planeParameters ) )
+plane:Transform():SetPosition( V3( -1.5, -3, 0 ) )
+
+
+coneParameters = ShapeParameters( "cone" )
+coneParameters:SetEffect( borgcubeEffect )
+coneParameters:SetSegments( 24 )
+coneParameters:SetRadius( 1 )
+coneParameters:SetHeight( 2 )
+coneParameters:SetCaps( true )
+cone = scene1:NewObject( "cone" )
+cone:AddGeometry( Geometry( coneParameters ) )
+cone:Transform():SetPosition( V3( 1.5, -3, 0 ) )

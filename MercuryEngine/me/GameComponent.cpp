@@ -197,3 +197,7 @@ std::string GameComponent::GetTypeName() const
 	return m_typeName;
 }
 
+std::string GameComponent::GetWhat() const
+{
+	return std::string();
+}

@@ -96,7 +96,7 @@ bool SceneManager::ChangeScene( std::string name )
 		m_currentScene->End();
 
 		// Let all components mess with the scene before we destroy it...
-		for (auto component : m_componentList)
+		for (auto component : m_components)
 		{
 			component->OnSceneEnd( m_currentScene.get());
 		}
@@ -110,7 +110,7 @@ bool SceneManager::ChangeScene( std::string name )
 	m_currentScene = sceneFactory->Produce( dynamic_cast< me::Game* >( m_game ) );
 
 	// Let all components mess with the scene first...
-	for (auto component : m_componentList)
+	for (auto component : m_components)
 	{
 		component->OnSceneStart( m_currentScene.get() );
 	}
@@ -125,9 +125,53 @@ void SceneManager::RestartScene()
 	ChangeScene(m_currentScene->GetName());
 }
 
-void SceneManager::AddComponent( ISceneManagerComponent::ptr component )
+int SceneManager::GetComponentCount() const
 {
-	m_componentList.push_back( component );
+	return (int)m_components.size();
+}
+
+void SceneManager::AddComponent(ISceneManagerComponent::ptr component)
+{
+	component->OnAttach(this);
+	m_components.push_back(component);
+}
+
+void SceneManager::RemoveComponent(ISceneManagerComponent::ptr component)
+{
+	m_components.remove(component);
+	component->OnDetach(this);
+}
+
+ISceneManagerComponent* SceneManager::GetComponent(int index)
+{
+	if (index > (int)m_components.size()) return nullptr;
+
+	int i = 0;
+	for (auto component : m_components)
+	{
+		if (index == i) return component.get();
+		++i;
+	}
+
+	return nullptr;
+}
+
+ISceneManagerComponent* SceneManager::GetComponent(std::string name)
+{
+	int index = FindComponent(name);
+	if (index == -1) return nullptr;
+	return GetComponent(index);
+}
+
+int SceneManager::FindComponent(std::string typeName) const
+{
+	int i = 0;
+	for (auto component : m_components)
+	{
+		if (unify::StringIs(component->GetTypeName(), typeName)) return i;
+		++i;
+	}
+	return -1;
 }
 
 void SceneManager::OnUpdate( UpdateParams params )

@@ -3,13 +3,6 @@
 
 #include <melua/unify/ExportV3.h>
 #include <melua/ScriptEngine.h>
-
-#include <melua/unify/ExportMatrix.h>
-#include <melua/unify/ExportColor.h>
-#include <melua/unify/ExportSize2.h>
-#include <melua/unify/ExportSize2.h>
-#include <melua/unify/ExportV2.h>
-#include <melua/unify/ExportV3.h>
 #include <melua/Util.h>
 
 using namespace melua;
@@ -24,21 +17,6 @@ int PushV3( lua_State * state, unify::V3< float > v3 )
 
 V3Proxy* CheckV3( lua_State * state, int index )
 {
-	/*
-	luaL_checktype( state, index, LUA_TTABLE );
-
-	lua_getfield( state, index, "x" );
-	lua_getfield( state, index, "y" );
-	lua_getfield( state, index, "z" );
-
-	float x = (float)luaL_checknumber( state, -3 );
-	float y = (float)luaL_checknumber( state, -2 );
-	float z = (float)luaL_checknumber( state, -1 );
-
-	lua_pop( state, 3 );
-
-	return unify::V3< float >( x, y, z );
-	*/
 	V3Proxy* ud = *(V3Proxy**)luaL_checkudata( state, index, "V3" );
 	return ud;
 }
@@ -151,6 +129,18 @@ int V3_Dot( lua_State * state )
 	return 1;
 }
 
+int V3_Angle(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 2);
+
+	unify::V3< float > l(CheckV3(state, 1)->v3);
+	unify::V3< float > r(CheckV3(state, 2)->v3);
+
+	lua_pushnumber(state, l.DotAngle(r).ToDegrees());
+	return 1;
+}
+
 int V3_Inverse( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -187,11 +177,16 @@ int V3_Constructor( lua_State * state )
 	{
 		return PushV3( state, unify::V3< float >::V3Zero() );
 	}
+	else if (args == 1)
+	{
+		auto in = CheckV3(state, 1);
+		return PushV3(state, in->v3);
+	}
 	else if ( args == 3 )
 	{
-		float x = (float)luaL_checknumber( state, -3 );
-		float y = (float)luaL_checknumber( state, -2 );
-		float z = (float)luaL_checknumber( state, -1 );
+		float x = (float)luaL_checknumber( state, 1 );
+		float y = (float)luaL_checknumber( state, 2 );
+		float z = (float)luaL_checknumber( state, 3 );
 		return PushV3( state, unify::V3< float >( x, y, z ) );
 	}
 	else
@@ -289,6 +284,7 @@ static const luaL_Reg V3Functions[] =
 	{ "Normalize", V3_Normalize },
 	{ "DistanceTo", V3_DistanceTo },
 	{ "Dot", V3_Dot },
+	{ "Angle", V3_Angle },
 	{ "Inverse", V3_Inverse },
 	{ "Lerp", V3_Lerp },
 	{ "ToString", V3_ToString },
@@ -310,5 +306,6 @@ void RegisterV3( lua_State * state )
 	type.div = V3_Div;
 	type.len = V3_Length;
 	type.named_constructors.push_back({ "V3Cross", V3_V3Cross });
+	type.named_constructors.push_back({ "V3Lerp", V3_V3Lerp });
 	se->AddType( type );
 }

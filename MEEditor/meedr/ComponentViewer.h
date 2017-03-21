@@ -18,7 +18,6 @@ namespace meedr
 
 		void UpdateComponentTypes();
 		void UpdateTypeInstances();
-		void UpdateTypeSubInstances();
 		void UpdateComponentList();
 		void UpdateComponentValues();
 		void GotoComponent( std::string type, int index );

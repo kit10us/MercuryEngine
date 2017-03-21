@@ -16,6 +16,7 @@
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportQuaternion.h>
 #include <me/object/GeometryComponent.h>
+#include <melua/Util.h>
 
 using namespace melua;
 using namespace me;
@@ -40,6 +41,16 @@ int Transform_SetPosition( lua_State * state )
 	proxy->transform->SetPosition( position );
 
 	return 0;
+}
+
+int Transform_GetPosition(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 1);
+
+	TransformProxy * proxy = CheckTransform(state, 1);
+
+	return PushV3( state, proxy->transform->GetPosition() );
 }
 
 int Transform_LookAt( lua_State * state )
@@ -67,7 +78,7 @@ int Transform_Orbit( lua_State * state )
 
 	unify::V3< float > origin( CheckV3( state, 2 )->v3 );
 	
-	unify::V2< float > axis( CheckV2( state, 3 ) );
+	unify::V2< float > axis( CheckV2( state, 3 )->v2 );
 	
 	float distance = (float)lua_tonumber( state, 4 );
 	
@@ -111,62 +122,75 @@ int Transform_SetRotation( lua_State * state )
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
 
-	unify::Quaternion q = CheckQuaternion( state, 2 );
+	unify::Quaternion q = CheckQuaternion( state, 2 )->q;
 
 	proxy->transform->SetRotation( q );
 
 	return 0;
 }
 
-int Transform_PreMulQ( lua_State * state )
+int Transform_GetMatrix(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 1);
+
+	TransformProxy * proxy = CheckTransform(state, 1);
+	PushMatrix(state, proxy->object->GetFrame().GetMatrix());
+
+	return 1;
+}
+
+int Transform_PreMul( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
 	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Quaternion q = CheckQuaternion( state, 2 );
 
-	proxy->transform->PreMul( q );
+	std::string secondType = GetTypename(state, 2);
 
+	if (unify::StringIs(secondType, "Quaternion"))
+	{
+		unify::Quaternion q = CheckQuaternion(state, 2)->q;
+		proxy->transform->PreMul(q);
+	}
+	else if (unify::StringIs(secondType, "Matrix"))
+	{ 
+		unify::Matrix m = CheckMatrix(state, 2)->matrix;
+		proxy->transform->PreMul(m);
+	}
+	else
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+		se->Error("Transform:PreMul", "Invalid parameter type \"" + secondType + "\"!");
+	}
 	return 0;
 }
 
-int Transform_PostMulQ( lua_State * state )
+int Transform_PostMul( lua_State * state )
 {
-	int args = lua_gettop( state );
-	assert( args == 2 );
+	int args = lua_gettop(state);
+	assert(args == 2);
 
-	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Quaternion q = CheckQuaternion( state, 2 );
+	TransformProxy * proxy = CheckTransform(state, 1);
 
-	proxy->transform->PostMul( q );
+	std::string secondType = GetTypename(state, 2);
 
-	return 0;
-}
-
-int Transform_PreMulM( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Matrix m = CheckMatrix( state, 2 );
-
-	proxy->transform->PreMul( m );
-
-	return 0;
-}
-
-int Transform_PostMulM( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	TransformProxy * proxy = CheckTransform( state, 1 );
-	unify::Matrix m = CheckMatrix( state, 2 );
-
-	proxy->transform->PostMul( m );
-
+	if (unify::StringIs(secondType, "Quaternion"))
+	{
+		unify::Quaternion q = CheckQuaternion(state, 2)->q;
+		proxy->transform->PostMul(q);
+	}
+	else if (unify::StringIs(secondType, "Matrix"))
+	{
+		unify::Matrix m = CheckMatrix(state, 2)->matrix;
+		proxy->transform->PostMul(m);
+	}
+	else
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+		se->Error("Transform:PostMul", "Invalid parameter type \"" + secondType + "\"!");
+	}
 	return 0;
 }
  
@@ -175,11 +199,10 @@ int Transform_SetModelMatrix( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	
-	unify::Matrix matrix{ CheckMatrix( state, 2 ) };
+	TransformProxy * proxy = CheckTransform(state, 1);
 
-	objectProxy->object->GetFrame().SetModelMatrix( matrix );
+	unify::Matrix matrix{ CheckMatrix( state, 2 )->matrix };
+	proxy->object->GetFrame().SetModelMatrix( matrix );
 
 	return 0;
 }
@@ -189,8 +212,8 @@ int Transform_GetModelMatrix( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	ObjectProxy * objectProxy = CheckObject( state, 1 );
-	PushMatrix( state, objectProxy->object->GetFrame().GetModelMatrix() );
+	TransformProxy * proxy = CheckTransform(state, 1);
+	PushMatrix( state, proxy->object->GetFrame().GetModelMatrix() );
 
 	return 1;
 }
@@ -198,16 +221,15 @@ int Transform_GetModelMatrix( lua_State * state )
 static const luaL_Reg TransformFunctions[] =
 {
 	{ "SetPosition", Transform_SetPosition },
+	{ "GetPosition", Transform_GetPosition },
 	{ "LookAt", Transform_LookAt },
 	{ "Orbit", Transform_Orbit },
 	{ "RotateAbout", Transform_RotateAbout },
 	{ "GetRotation", Transform_GetRotation },
 	{ "SetRotation", Transform_SetRotation },
-	{ "PreMulQ", Transform_PreMulQ },
-	{ "PostMulQ", Transform_PostMulQ },
-	{ "PreMulM", Transform_PreMulM },
-	{ "PostMulM", Transform_PostMulM },
-
+	{ "GetMatrix", Transform_GetMatrix },
+	{ "PreMul", Transform_PreMul },
+	{ "PostMul", Transform_PostMul },
 	{ "SetModelMatrix", Transform_SetModelMatrix },
 	{ "GetModelMatrix", Transform_GetModelMatrix },
 	{ nullptr, nullptr }

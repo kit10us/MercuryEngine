@@ -40,14 +40,14 @@ void melua::RegisterLibraries( lua_State * state )
 
 	// Add unify functions...
 	RegisterColor( state );
-	ExportV2( state );
+	RegisterV2( state );
 	RegisterV3( state );
 	RegisterSize2( state );
 	RegisterSize3( state );
-	ExportTexCoords( state );
-	ExportTexArea( state );
-	ExportMatrix( state );
-	ExportQuaternion( state );
+	RegisterTexCoords( state );
+	RegisterTexArea( state );
+	RegisterMatrix( state );
+	RegisterQuaternion( state );
 	RegisterAngle( state );	  
 
 	// Add core functions...

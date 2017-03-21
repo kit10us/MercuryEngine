@@ -7,7 +7,12 @@
 #include <lua.hpp>
 #include <unify/Quaternion.h>
 
-MELUADLL_API unify::Quaternion CheckQuaternion( lua_State * state, int index );
-MELUADLL_API int PushQuaternion( lua_State * state, unify::Quaternion v3 );
+struct QuaternionProxy
+{
+	unify::Quaternion q;
+};
 
-void ExportQuaternion( lua_State * state );
+MELUADLL_API int PushQuaternion(lua_State * state, unify::Quaternion martix);
+MELUADLL_API QuaternionProxy* CheckQuaternion(lua_State * state, int index);
+
+void RegisterQuaternion(lua_State * state);

@@ -9,33 +9,14 @@
 
 using namespace ui;
 
-Window::Window( HWND parent, std::wstring className )
-	: m_hInstance{ (HINSTANCE)GetWindowLong( parent, GWL_HINSTANCE ) }
-	, m_className{ className }
+Window::Window( HWND handle )
+	: m_hInstance{ (HINSTANCE)GetWindowLong(handle, GWL_HINSTANCE) }
 	, m_parent{ nullptr }
-	, m_parentHandle{ parent }
-	, m_handle{ 0 }
+	, m_parentHandle{ nullptr }
+	, m_handle{ handle }
 	, m_rootContainer{ nullptr }
 	, m_currentParent{ nullptr }
-{	
-	WNDCLASS wc{};
-	if ( !GetClassInfo( m_hInstance, className.c_str(), &wc ) )
-	{
-		wc.style = CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc = (WNDPROC)Builder_WndProc;
-		wc.cbClsExtra = 0;
-		wc.cbWndExtra = 0;
-		wc.hInstance = m_hInstance;
-		wc.hIcon = LoadIcon( (HINSTANCE)NULL, IDI_APPLICATION );
-		wc.hbrBackground = (HBRUSH)GetSysColorBrush( COLOR_3DFACE );
-		wc.hCursor = LoadCursor( (HINSTANCE)NULL, IDC_ARROW );
-		wc.lpszMenuName = 0;
-		wc.lpszClassName = m_className.c_str();
-		if ( ! RegisterClass( &wc ) )
-		{
-			throw std::exception( "Failed to register window class!" );
-		}
-	}
+{
 }
 
 Window::Window( IWindow* parent, std::wstring className )

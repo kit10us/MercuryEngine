@@ -14,23 +14,20 @@ h1, h3 {
  </a>
  <a href="#toc">[back to top]</a>
  <p> 
- Two dimensional texture coordinates consiting of a u and v component (tc.u, tc.v).
+ Two dimensional texture coordinates consiting of a u and v component.
+ Similar to a V2, however, it's x and y -like components are, instead, u and v.
+ This is to help prevent confusion when we talk of vertex components, so that we can as a vertex's x or a vertex's u value, and know when we are talking about position in 3d or 2d space, or when we are talking about the vertex's texture mapping coordinates.
  </p>
  <h2>Non-Instanced functions</h2>
  <ul>  
- <li><b>TexCoords.New( u, v )</b> - Returns a new texture coordinate of u and v.</li>
- <li><b>TexCoords.NewZero()</b> - Returns texture coordinates of zero (u = v = 0).</li>
- <li><b>TexCoords.Add( tc, tc )</b> - Returns the result of adding two texture coordinates.</li>
- <li><b>TexCoords.Sub( tc, tc )</b> - Returns the result of subtracting two texture coordinates.</li>
- <li><b>TexCoords.Mul( tc, tc)</b> - Returns the result of multiplying two texture coordinates.</li>
- <li><b>TexCoords.Div( tc, tc )</b> - Returns the result of dividing two texture coordinates.</li>
- <li><b>TexCoords.Units( tc )</b> - Returns the result of multiplying texture coordinates' u by it's v (u * v).</li>
- <li><b>TexCoords.ToString( tc )</b> - Converts texture coordinates into a string.</li>
+ <li><b>TexCoords( u, v )</b> - Returns a new texture coordinate of u and v.</li>
+ <li><b>TexCoords()</b> - Returns texture coordinates of zero (u = v = 0).</li>
  </ul>  
  <h2>Instanced functions</h2>
- <p>
- <b>None</b>
- </p>
+ <li><b>number <i>texcoord</i>:u()</b> - Returns the u component of the texcoord.</li>
+ <li><b>number <i>texcoord</i>:u( value )</b> - Sets the v component of the texcoord, then returns the new value.</li>
+ <li><b>number <i>texcoord</i>:v()</b> - Returns the u component of the texcoord.</li>
+ <li><b>number <i>texcoord</i>:v( value )</b> - Sets the v component of the texcoord, then returns the new value.</li>
  
  <copyright>
 Adventure

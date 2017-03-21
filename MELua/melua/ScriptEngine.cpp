@@ -286,9 +286,9 @@ ScriptEngine* ScriptEngine::GetInstance()
 	return s_se;
 }
 
-me::IGame * ScriptEngine::GetGame()
+me::Game * ScriptEngine::GetGame()
 {
-	return s_se->GameComponent::GetGame();
+	return dynamic_cast< me::Game* >( s_se->GameComponent::GetGame() );
 }
 
 std::string ScriptEngine::GetWhat() const

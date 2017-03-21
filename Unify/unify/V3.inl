@@ -236,6 +236,12 @@ Angle V3< T >::DotAngle( const V3< T > & a ) const
 }
 
 template< typename T >
+std::string V3< T >::ToString() const
+{
+	return Cast< std::string >(x) + ", " + Cast< std::string >(y) + ", " + Cast< std::string >(z);
+}
+
+template< typename T >
 bool V3< T >::IsZero() const
 {
 	return ( x == 0 ) && ( y == 0 ) && ( z == 0 );
@@ -245,12 +251,6 @@ template< typename T >
 V3< T > V3< T >::V3Zero()
 {
 	return V3< T >( 0, 0, 0 );
-}
-
-template< typename T >
-std::string V3< T >::ToString() const
-{
-	return Cast< std::string >( x ) + ", " + Cast< std::string >( y ) + ", " + Cast< std::string >( z );
 }
 
 template< typename T >

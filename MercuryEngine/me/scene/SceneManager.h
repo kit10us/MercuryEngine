@@ -34,7 +34,13 @@ namespace me
 
 			void RestartScene();
 
-			void AddComponent( ISceneManagerComponent::ptr component );
+			int GetComponentCount() const;
+			void AddComponent(ISceneManagerComponent::ptr component);
+			void RemoveComponent(ISceneManagerComponent::ptr component);
+			ISceneManagerComponent* GetComponent(int index);
+			ISceneManagerComponent* GetComponent(std::string typeName);
+			int FindComponent(std::string typeName) const;
+
 
 		public: // IGameCompnent...
 			void OnUpdate( UpdateParams params ) override;
@@ -51,7 +57,7 @@ namespace me
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;
 
-			std::vector< ISceneManagerComponent::ptr > m_componentList;
+			std::list< ISceneManagerComponent::ptr > m_components;
 	    };
     }
 }

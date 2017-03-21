@@ -1,0 +1,43 @@
+<html>
+<header>
+<title>Lua for Adveture</title>
+<style type="text/css">
+h1, h3 {
+	display: inline;
+}
+</style>
+</header>
+<body>
+
+ <h1>Transform</h1>
+ <p>
+ Transform lets us modify an <a href="Object.html">Object's</a> transformation.
+ A transformation explains an Object's place in the world, and rotation.
+ </p>
+ <h2>Constructors</h2>
+ <p>
+ <b>None - Get the object transform directly from the <a href="Object.html">Object</a> .</b>
+ </p>
+ <h2>Instanced functions</h2>
+ <ul>
+ <li><b><i>transform</i>:SetPosition( <a href="v3.html">V3</a> )</b> - Set's the absolute position of the object.</li>
+ <li><b><a href="v3.html">V3</a> <i>transform</i>:GetPosition()</b> - Returns the absolute position of the object.</li>
+ <li><b><i>transform</i>:LookAt( <a href="v3.html">V3</a> )</b> - Makes the object "look at" a specific position.</li>
+ <li><b><i>transform</i>:Orbit( <a href="v3.html">V3</a>, <a href="v3.html">V2</a>, distance )</b> - Orbits, or rotates an object around a point in space's X and Y axis, at a distance (Z).</li>
+ <li><b><i>transform</i>:RotateAbout( <a href="v3.html">V3</a>, rotation )</b> - Rotates the object about it's x, y, and/or z axis, by rotation.</li>
+ <li><b><i>transform</i>:SetRotation( <a href="quaternion.html">Quaternion</a> )</b> - Sets the absolute rotation of an object.</li>
+ <li><b><a href="quaternion.html">Quaternion</a> <i>transform</i>:GetRotation()</b> - Returns the absolute rotation of an object.</li>
+ <li><b><a href="matrix.html">Matrix</a> <i>transform</i>:GetMatrix()</b> - Returns the matrix of an object.</li>
+ <li><b><i>transform</i>:PreMul( <a href="quaternion.html">Quaternion</a> or <a href="matrix.html">Matrix</a> )</b> - Performs a multiply against the object (result = Input * object).</li>
+ <li><b><i>transform</i>:PostMul(<a href="quaternion.html">Quaternion</a> or <a href="matrix.html">Matrix</a> )</b> - Performs a multiply against the object (result = object * Input).</li>
+ <li><b><i>transform</i>:SetModelMatrix( <a href="matrix.html">Matrix</a> )</b> - Sets the model matrix of the object. This is a way to make the geometry of the object look different.</li>
+ <li><b><a href="matrix.html">Matrix</a> <i>transform</i>:GetModelMatrix()</b> - Retuns the model matrix of the object.</li>
+ </ul> 
+ 
+<copyright>
+Adventure
+copyright (c) Evil Quail LLC 2017
+all rights reserved
+</copyright>
+ </body>
+</html>

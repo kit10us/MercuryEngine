@@ -11,26 +11,30 @@ h1, h3 {
 
  <h1>Quaternion</h1>
  <p> 
- A quaternion represents a rotation.
+ A quaternion represents a rotation, though, unlike a matrix, it does not represent a position or scale, or other matrix affects.
+ It's advantage of a matrix is that it only has 4 components, instead of 16, like that of a matrix.
+ It also doesn't suffer from gimbal lock, an affect that happens to a matrix over time where it's X, Y and Z axis become less and less perpendicular.
+ Like a four-dimensional vertex, it's represented by an x, y, z, and w component.
+ It's best, however, to avoid setting these directly, as they don't corespond to the same meanings as those of a V4.
+ Instead, prefer the constructors listed in the Constructors section of this document.
+ Like a matrix, order of multiplication matters.
  </p>
- <h2>Non-Instanced functions</h2>
+ <h2>Constructors</h2>
  <ul>  
- <li><b>Quaternion.NewRotationX( <a href="angle.html">angle</a> )</b> - Returns a rotation about the x-axis, quaternion.</li>
- <li><b>Quaternion.NewRotationY( <a href="angle.html">angle</a> )</b> - Returns a rotation about the y-axis, quaternion.</li>
- <li><b>Quaternion.NewRotationZ( <a href="angle.html">angle</a> )</b> - Returns a rotation about the z-axis, quaternion.</li>
- <li><b>Quaternion.New( x, y, z, w )</b> - Returns a quaternion from raw x, y, z and w components..</li>
- <li><b>Quaternion.NewFromEuler( pitch, roll, yaw )</b> - Returns a quaternion from euler coordinates.</li>
- <li><b>Quaternion.NewZero()</b> - Returns a zero quaternion.</li>
- <li><b>Quaternion.NewIdentity()</b> - Returns an identity quaternion.</li>
- <li><b>Quaternion.Add( quaternion, quaternion )</b> - Returns the result of adding two quaternions.</li>
- <li><b>Quaternion.Sub( quaternion, quaternion )</b> - Returns the result of subtracting two quaternions.</li>
- <li><b>Quaternion.Mul( quaternion, quaternion )</b> - Returns the result of multiplying two quaternions.</li>
- <li><b>Quaternion.Conjugate( quaternion )</b> - Returns the result of adding two quaternions.</li>
- <li><b>Quaternion.Normalize( quaternion )</b> - Returns the result of adding two quaternions.</li>
- <li><b>Quaternion.Slerp( quaternion, quaternion, delta )</b> - Returns the result of spherically-linear-interpolating between two quaternions by a delta (0 to 1). This produces an inbetween rotation between two rotations.</li>
- <li><b>Quaternion.ToString( quaternion )</b> - Converts a quaternion into a string.</li>
- </ul>  
- <h2>Instanced functions</h2>
+ <li><b>Quaternion()</b> - Create a identity quaterion.</li>
+ <li><b>Quaternion( Quaternion )</b> - Create a quaternion that's a copy of another quaternion.</li>
+ <li><b>Quaternion( Matrix )</b> - Create a quaternion that's a copy of another rotation of a matrix.</li>
+ <li><b>Quaternion( V3, angle )</b> - Create a quaternion that's a rotation about an axis.</li>
+ <li><b>Quaternion( Quaternion, Quaternion, delta )</b> - Create a quaternion that's a Slerp (spherical-linear interpolation) between two quaternions, by a delta.</li>
+ <li><b>Quaternion( x, y, z, w )</b> - Create a quaternion from component values.</li>
+ <li><b>QuaternionZero()</b> - Create a quatenrion full of 0s.</li>
+ <li><b>QuaternionRotationX( <a href="angle.html">angle</a> )</b> - Create a rotation about the x axis quaternion.</li>
+ <li><b>QuaternionRotationY( <a href="angle.html">angle</a> )</b> - Create a rotation about the y axis quaternion.</li>
+ <li><b>QuaternionRotationZ( <a href="angle.html">angle</a> )</b> - Create a rotation about the z axis quaternion.</li>
+ <li><b>QuaternionEuler( <a href="v3.html">pry</a> )</b> - Creates a Quaternion that from Euler coordinates.</li>
+ <li><b>QuaternionEuler( pitch, roll, yaw )</b> - Creates a Quaternion from Euler coordinates.</li>
+ </ul>   
+  <h2>Instanced functions</h2>
  <p>
  <b>None</b>
  </p>

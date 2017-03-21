@@ -15,25 +15,27 @@ h1, h3 {
  It is a C++ object represented in Lua via a userdata and metatables.
  It supports the built-in Lua opertations: +, -, *, /, and # with it other V3s.
  </p>
- <h2>Non-Instanced functions</h2>
+ <h2>Constructors</h2>
  <ul>  
- <li><b>V3( x, y, z )</b> - Returns a new V3 initialized to the supplirted x, y and z parameters.</li>
+ <li><b>V3( V3 )</b> - Returns a new V3 initialized to the supplied V3's components.</li>
+ <li><b>V3( x, y, z )</b> - Returns a new V3 initialized to the supplied x, y and z parameters.</li>
  <li><b>V3()</b> - Returns a new V3 of zero (x = y = x= 0).</li>
- <li><b>V3Cross( v3, v3 )</b> - Returns a new V3, which is the result of the cross product of two V3s.</li>
- <li><b>V3Lerp( v3, v3, delta )</b> - Returns a new V3, which is the result of the linear interpolation between two v3s.</li>
+ <li><b>V3Cross( V3, V3 )</b> - Returns a new V3, which is the result of the cross product of two V3s.</li>
+ <li><b>V3Lerp( V3, V3, delta )</b> - Returns a new V3, which is the result of the linear interpolation between two V3s.</li>
  </ul>  
- <h2>Instanced functions</h2>
+ <h2>Instance functions</h2>
  <ul>  
- <li><b><i>v3</i>.x()</b> - Returns the x component of the V3.</li>
- <li><b><i>v3</i>.x( value )</b> - Sets the x component of the V3, then returns the new value.</li>
- <li><b><i>v3</i>.y()</b> - Returns the y component of the V3.</li>
- <li><b><i>v3</i>.y( value )</b> - Sets the y component of the V3, then returns the new value.</li>
- <li><b><i>v3</i>.z()</b> - Returns the z component of the V3.</li>
- <li><b><i>v3</i>.z( value )</b> - Sets the z component of the V3, then returns the new value.</li>
- <li><b><i>v3</i>.Normalize()</b> - Returns a normalized v3.</li>
- <li><b><i>v3</i>.DistanceTo( v3 )</b> - Returns the distance between two v3s.</li>
- <li><b><i>v3</i>.Dot( v3 )</b> - Returns the dot product of two v3s</li>
- <li><b><i>v3</i>.Inverse()</b> - Returns the inverse of a v3.</li>
+ <li><b>number <i>v3</i>:x()</b> - Returns the x component of the V3.</li>
+ <li><b>number <i>v3</i>:x( value )</b> - Sets the x component of the V3, then returns the new value.</li>
+ <li><b>number <i>v3</i>:y()</b> - Returns the y component of the V3.</li>
+ <li><b>number <i>v3</i>:y( value )</b> - Sets the y component of the V3, then returns the new value.</li>
+ <li><b>number <i>v3</i>:z()</b> - Returns the z component of the V3.</li>
+ <li><b>number <i>v3</i>:z( value )</b> - Sets the z component of the V3, then returns the new value.</li>
+ <li><b>number <i>v3</i>:Normalize()</b> - Returns a normalized V3.</li>
+ <li><b>number <i>v3</i>:DistanceTo( V3 )</b> - Returns the distance between two V3s.</li>
+ <li><b>number <i>v3</i>:Dot( V3 )</b> - Returns the dot product of two V3s</li>
+ <li><b>number <i>v3</i>:Angle( V3 )</b> - Returns the angle between two V3s in degrees.</li>
+ <li><b><i>v3</i>:Inverse()</b> - Returns the inverse of a V3.</li>
  </ul>  
  <p>
  <b>None</b>

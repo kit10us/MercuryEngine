@@ -68,7 +68,7 @@ int TerraParameters_SetSize( lua_State* state )
 	assert( args == 2 );
 
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
-	unify::Size< float > size = CheckSize2( state, 2 );
+	unify::Size< float > size = CheckSize2( state, 2 )->size2;
 	parameters->parameters.Set< unify::Size< float > >( "size", size );
 
 	return 0;
@@ -93,13 +93,13 @@ int TerraParameters_SetTexArea( lua_State* state )
 
 	if ( args == 3 ) // TexCoords x 
 	{
-		unify::TexCoords ul( CheckTexCoords( state, 2 ) );
-		unify::TexCoords dr( CheckTexCoords( state, 3 ) );
+		unify::TexCoords ul( CheckTexCoords( state, 2 )->texcoords );
+		unify::TexCoords dr( CheckTexCoords( state, 3 )->texcoords );
 		parameters->parameters.Set< unify::TexArea >( "texarea", unify::TexArea( ul, dr ) );
 	}
 	else if ( args == 2 ) // TexArea
 	{
-		unify::TexArea texArea( CheckTexArea( state, 2 ) );
+		unify::TexArea texArea( CheckTexArea( state, 2 )->texarea );
 		parameters->parameters.Set< unify::TexArea >( "texarea", texArea );
 	}
 	return 0;
@@ -128,7 +128,7 @@ int TerraParameters_SetHeightMap( lua_State* state )
 
 	TextureProxy * texture = CheckTexture( state, 2 );
 
-	unify::ColorUnit colorOp( CheckColor( state, 3 ) );
+	unify::ColorUnit colorOp( CheckColor( state, 3 )->color);
 	Terra::TextureOpMap opMap( texture->texture, colorOp );
 
 	parameters->parameters.Set< Terra::TextureOpMap >( "heightmap", opMap );
@@ -146,7 +146,7 @@ int TerraParameters_SetAlphaMap( lua_State* state )
 
 	TextureProxy * texture = CheckTexture( state, 2 );
 
-	unify::Color colorOp( CheckColor( state, 3 ) );
+	unify::Color colorOp( CheckColor( state, 3 )->color);
 	Terra::TextureOpMap opMap( texture->texture, colorOp );
 
 	parameters->parameters.Set< Terra::TextureOpMap >( "alphamap", opMap );

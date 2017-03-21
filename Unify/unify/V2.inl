@@ -200,6 +200,26 @@ void V2< T >::Normalize()
 }
 
 template< typename T >
+const T V2< T >::DistanceTo(const V2< T > & to) const
+{
+	V2<T> d;
+	d = to - *this;
+	return sqrt(( d.x * d.x ) + ( d.y * d.y ));
+}
+
+template< typename T >
+T V2< T >::Dot(const V2< T > & a) const
+{
+	return x * a.x + y * a.y;
+}
+
+template< typename T >
+Angle V2< T >::Angle(const V2< T > & a) const
+{
+	return AngleInRadians(acos(Dot(a) / ( Length() * a.Length() )));
+}
+
+template< typename T >
 bool V2< T >::IsZero() const
 {
 	return ( x == 0 ) && ( y == 0 ) && ( z == 0 );
@@ -218,3 +238,42 @@ V2< T > V2< T >::V2Zero()
 {
 	return V2( 0, 0 );
 }	
+
+template< typename T >
+V2< T > V2< T >::V2Lerp(V2< T > first, V2< T > second, float ratio)
+{
+	V2< T > point(first + ( second - first ) * ratio);
+	return point;
+}
+
+template< typename T >
+V2< T > V2< T >::V2X(T x)
+{
+	return unify::V2< T >(x, 0, 0);
+}
+
+template< typename T >
+V2< T > V2< T >::V2Y(T y)
+{
+	return unify::V2< T >(0, y, 0);
+}
+
+template< typename T >
+V2< T > V2< T >::V2Normalized(const V2< T > & in)
+{
+	V2< T > v(in);
+	v.Normalize();
+	return v;
+}
+
+template< typename T >
+V2< T > V2< T >::V2Inverse(const V2< T > & in)
+{
+	return V2< T >(1 / in.x, 1 / in.y);
+}
+
+template< typename T >
+T V2< T >::V2Dot(const V2< T > & l, const V2< T > &  r)
+{
+	return l.Dot(r);
+}

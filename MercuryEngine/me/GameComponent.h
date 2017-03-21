@@ -52,6 +52,7 @@ namespace me
 	public: // IUnknown...
 		std::string GetTypeName() const override;
 		IUnknown* QueryInterface( std::string name ) override;
+		std::string GetWhat() const override;
 
 	protected:
 		IGame * m_game;

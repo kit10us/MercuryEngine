@@ -14,50 +14,21 @@
 using namespace melua;
 using namespace me;
 
-int PushColor( lua_State * state, unify::ColorUnit color )
+int PushColor(lua_State * state, unify::ColorUnit color )
 {
-	lua_newtable( state ); // Create table.
-
-	lua_pushstring( state, "r" );
-	lua_pushnumber( state, color.component.r );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "g" );
-	lua_pushnumber( state, color.component.g );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "b" );
-	lua_pushnumber( state, color.component.b );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "a" );
-	lua_pushnumber( state, color.component.a );
-	lua_settable( state, -3 );
+	ColorProxy ** childProxy = (ColorProxy**)( lua_newuserdata(state, sizeof(ColorProxy*)) );
+	*childProxy = new ColorProxy{ color };
+	luaL_setmetatable(state, "Color");
 	return 1;
 }
 
-unify::ColorUnit CheckColor( lua_State * state, int index )
+ColorProxy* CheckColor(lua_State * state, int index)
 {
-	luaL_checktype( state, index, LUA_TTABLE );
-
-	lua_getfield( state, index, "r" );
-	float r = (float)luaL_checknumber( state, -1 );
-
-	lua_getfield( state, index, "g" );
-	float g = (float)luaL_checknumber( state, -1 );
-
-	lua_getfield( state, index, "b" );
-	float b = (float)luaL_checknumber( state, -1 );
-
-	lua_getfield( state, index, "a" );
-	float a = (float)luaL_checknumber( state, -1 );
-
-	lua_pop( state, 4 );
-
-	return unify::ColorUnit::ColorUnitRGBA( r, g, b, a );
+	ColorProxy* ud = *(ColorProxy**)luaL_checkudata(state, index, "Color");
+	return ud;
 }
 
-int Color_NewRGBA( lua_State * state )
+int Color_RGBA( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 4 );
@@ -72,7 +43,7 @@ int Color_NewRGBA( lua_State * state )
 	return 1;
 }
 
-int Color_NewARGB( lua_State * state )
+int Color_ARGB( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 4 );
@@ -87,7 +58,7 @@ int Color_NewARGB( lua_State * state )
 	return 1;
 }
 
-int Color_NewRGB( lua_State * state )
+int Color_RGB( lua_State * state )
 {
 	int args = lua_gettop( state );
 	assert( args == 3 );
@@ -101,7 +72,7 @@ int Color_NewRGB( lua_State * state )
 	return 1;
 }
 
-int Color_NewWhite( lua_State * state )
+int Color_White( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float a = 1.0f;
@@ -115,7 +86,7 @@ int Color_NewWhite( lua_State * state )
 	return 1;
 }
 
-int Color_NewRed( lua_State * state )
+int Color_Red( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float r = 1.0f;
@@ -134,7 +105,7 @@ int Color_NewRed( lua_State * state )
 	return 1;
 }
 
-int Color_NewGreen( lua_State * state )
+int Color_Green( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float g = 1.0f;
@@ -153,7 +124,7 @@ int Color_NewGreen( lua_State * state )
 	return 1;
 }
 
-int Color_NewBlue( lua_State * state )
+int Color_Blue( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float b = 1.0f;
@@ -172,7 +143,7 @@ int Color_NewBlue( lua_State * state )
 	return 1;
 }
 
-int Color_NewGrey( lua_State * state )
+int Color_Grey( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float grey = 1.0f;
@@ -191,7 +162,7 @@ int Color_NewGrey( lua_State * state )
 	return 1;
 }
 
-int Color_NewBlack( lua_State * state )
+int Color_Black( lua_State * state )
 {
 	int args = lua_gettop( state );
 	float a = 1.0f;
@@ -205,13 +176,18 @@ int Color_NewBlack( lua_State * state )
 	return 1;
 }
 
-int Color_NewZero( lua_State * state )
+
+int Color_Lerp(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 0 );
+	int args = lua_gettop(state);
+	assert(args == 3);
 
-	PushColor( state, unify::ColorUnit::ColorUnitZero() );
+	unify::ColorUnit l(CheckColor(state, 1)->color);
+	unify::ColorUnit r(CheckColor(state, 2)->color);
+	float delta = (float)lua_tonumber(state, 3);
+	unify::ColorUnit result(unify::ColorUnit::ColorUnitLerp(l, r, delta));
 
+	PushColor(state, result);
 	return 1;
 }
 
@@ -220,7 +196,7 @@ int Color_ToString( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 1 );
 
-	unify::ColorUnit color( CheckColor( state, 1 ) );
+	unify::ColorUnit color( CheckColor( state, 1 )->color );
 
 	lua_pushstring( state, color.ToString().c_str() );
 	return 1;
@@ -231,8 +207,8 @@ int Color_Add( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::ColorUnit l( CheckColor( state, 1 ) );
-	unify::ColorUnit r( CheckColor( state, 2 ) );
+	unify::ColorUnit l( CheckColor( state, 1 )->color );
+	unify::ColorUnit r( CheckColor( state, 2 )->color );
 	unify::ColorUnit result( l + r );
 
 	PushColor( state, result );
@@ -244,8 +220,8 @@ int Color_Sub( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::ColorUnit l( CheckColor( state, 1 ) );
-	unify::ColorUnit r( CheckColor( state, 2 ) );
+	unify::ColorUnit l( CheckColor( state, 1 )->color );
+	unify::ColorUnit r( CheckColor( state, 2 )->color );
 	unify::ColorUnit result( l - r );
 
 	PushColor( state, result );
@@ -257,8 +233,8 @@ int Color_Mul( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::ColorUnit l( CheckColor( state, 1 ) );
-	unify::ColorUnit r( CheckColor( state, 2 ) );
+	unify::ColorUnit l( CheckColor( state, 1 )->color );
+	unify::ColorUnit r( CheckColor( state, 2 )->color );
 	unify::ColorUnit result( l * r );
 
 	PushColor( state, result );
@@ -270,56 +246,115 @@ int Color_Div( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::ColorUnit l( CheckColor( state, 1 ) );
-	unify::ColorUnit r( CheckColor( state, 2 ) );
+	unify::ColorUnit l( CheckColor( state, 1 )->color );
+	unify::ColorUnit r( CheckColor( state, 2 )->color );
 	unify::ColorUnit result( l / r );
 
 	PushColor( state, result );
 	return 1;
 }
 
-int Color_Lerp( lua_State * state )
+int Color_Destructor(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 3 );
+	auto color = CheckColor(state, 1);
+	delete color;
+	return 0;
+}
 
-	unify::ColorUnit l( CheckColor( state, 1 ) );
-	unify::ColorUnit r( CheckColor( state, 2 ) );
-	float delta = (float)lua_tonumber( state, 3 );
-	unify::ColorUnit result( unify::ColorUnit::ColorUnitLerp( l, r, delta ) );
+int Color_r(lua_State * state)
+{
+	int top = lua_gettop(state);
 
-	PushColor( state, result );
+	ColorProxy * colorProxy = CheckColor(state, 1);
+
+	if (top == 2) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber(state, 2);
+		colorProxy->color.component.r = value;
+	}
+
+	lua_pushnumber(state, colorProxy->color.component.r);
+	return 1;
+}
+
+int Color_g(lua_State * state)
+{
+	int top = lua_gettop(state);
+
+	ColorProxy * colorProxy = CheckColor(state, 1);
+
+	if (top == 2) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber(state, 2);
+		colorProxy->color.component.g = value;
+	}
+
+	lua_pushnumber(state, colorProxy->color.component.g);
+	return 1;
+}
+
+int Color_b(lua_State * state)
+{
+	int top = lua_gettop(state);
+
+	ColorProxy * colorProxy = CheckColor(state, 1);
+
+	if (top == 2) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber(state, 2);
+		colorProxy->color.component.b = value;
+	}
+
+	lua_pushnumber(state, colorProxy->color.component.b);
+	return 1;
+}
+
+int Color_a(lua_State * state)
+{
+	int top = lua_gettop(state);
+
+	ColorProxy * colorProxy = CheckColor(state, 1);
+
+	if (top == 2) // If this is an assignment.
+	{
+		float value = (float)lua_tonumber(state, 2);
+		colorProxy->color.component.a = value;
+	}
+
+	lua_pushnumber(state, colorProxy->color.component.a);
 	return 1;
 }
 
 static const luaL_Reg ColorFunctions[] =
 {
-	{ "NewRGBA", Color_NewRGBA },
-	{ "NewARGB", Color_NewARGB },
-	{ "NewRGB", Color_NewRGB },
-	{ "NewWhite", Color_NewWhite },
-	{ "NewRed", Color_NewRed },
-	{ "NewGreen", Color_NewGreen },
-	{ "NewBlue", Color_NewBlue },
-	{ "NewGrey", Color_NewGrey },
-	{ "NewBlack", Color_NewBlack },
-	{ "NewZero", Color_NewZero },
 	{ "ToString", Color_ToString },
-	{ "__tostring", Color_ToString },
-
-
-	{ "Add", Color_Add },
-	{ "Sub", Color_Sub },
-	{ "Mul", Color_Mul },
-	{ "Div", Color_Div },
-
-	{ "Lerp", Color_Lerp },
+	
+	{ "r", Color_r },
+	{ "g", Color_g },
+	{ "b", Color_b },
+	{ "a", Color_a },
 
 	{ nullptr, nullptr }
 };
 
 void RegisterColor( lua_State * state )
 {
-	luaL_newlib( state, ColorFunctions );
-	lua_setglobal( state, "Color" );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	Type type = { "Color", ColorFunctions, sizeof(ColorFunctions) / sizeof(luaL_Reg), nullptr, Color_Destructor };
+	type.add = Color_Add;
+	type.sub = Color_Sub;
+	type.mul = Color_Mul;
+	type.div = Color_Div;
+
+	type.named_constructors.push_back({ "RGBA", Color_RGBA });
+	type.named_constructors.push_back({ "ARGB", Color_ARGB });
+	type.named_constructors.push_back({ "RGB", Color_RGB });
+	type.named_constructors.push_back({ "White", Color_White });
+	type.named_constructors.push_back({ "Red", Color_Red });
+	type.named_constructors.push_back({ "Green", Color_Green });
+	type.named_constructors.push_back({ "Blue", Color_Blue });
+	type.named_constructors.push_back({ "Grey", Color_Grey });
+	type.named_constructors.push_back({ "Black", Color_Black });
+	type.named_constructors.push_back({ "ColorLerp", Color_Lerp });
+	se->AddType(type);
 }

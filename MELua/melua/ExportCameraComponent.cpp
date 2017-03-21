@@ -42,7 +42,7 @@ int CameraComponent_SetProjection( lua_State * state )
 
 	CameraComponentProxy * componentProxy = CheckCameraComponent( state, 1 );
 	
-	unify::Matrix mat = CheckMatrix( state, 2 );
+	unify::Matrix mat = CheckMatrix( state, 2 )->matrix;
 
 	componentProxy->camera->SetProjection( mat );
 

@@ -7,7 +7,12 @@
 #include <lua.hpp>
 #include <unify/TexArea.h>
 
-MELUADLL_API unify::TexArea CheckTexArea( lua_State * state, int index );
-MELUADLL_API int PushTexArea( lua_State * state, unify::TexArea texArea );
+struct TexAreaProxy
+{
+	unify::TexArea texarea;
+};
 
-int ExportTexArea( lua_State * state );
+MELUADLL_API int PushTexArea(lua_State * state, unify::TexArea texarea);
+MELUADLL_API TexAreaProxy* CheckTexArea(lua_State * state, int index);
+
+void RegisterTexArea(lua_State * state);

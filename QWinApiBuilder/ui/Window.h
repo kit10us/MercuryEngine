@@ -28,7 +28,7 @@ namespace ui
 	private:
 		HINSTANCE m_hInstance;
 		std::wstring m_className;
-		IWindow * m_parent;
+		IWindow* m_parent;
 		HWND m_parentHandle;
 		HWND m_handle;
 		create::container::Container * m_rootContainer;
@@ -38,7 +38,7 @@ namespace ui
 		create::Menu::ptr m_menu;
 
 	public:
-		Window( HWND parent, std::wstring className );
+		Window( HWND handle );
 		Window( IWindow* parent, std::wstring className );
 		virtual ~Window();
 

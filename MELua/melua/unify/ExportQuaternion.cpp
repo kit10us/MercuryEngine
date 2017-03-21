@@ -2,250 +2,249 @@
 // All Rights Reserved
 
 #include <melua/unify/ExportQuaternion.h>
-#include <melua/ScriptEngine.h>
-
+#include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportMatrix.h>
-#include <melua/unify/ExportQuaternion.h>
+#include <melua/ScriptEngine.h>
+#include <melua/Util.h>
 
 using namespace melua;
 using namespace me;
- 
-unify::Quaternion CheckQuaternion( lua_State * state, int index )
+
+int PushQuaternion(lua_State * state, unify::Quaternion q)
 {
-	luaL_checktype( state, index, LUA_TTABLE );
-
-	lua_getfield( state, index, "x" );
-	lua_getfield( state, index, "y" );
-	lua_getfield( state, index, "z" );
-	lua_getfield( state, index, "w" );
-
-	float x = (float)luaL_checknumber( state, -4 );
-	float y = (float)luaL_checknumber( state, -3 );
-	float z = (float)luaL_checknumber( state, -2 );
-	float w = (float)luaL_checknumber( state, -1 );
-
-	lua_pop( state, 3 );
-
-	return unify::Quaternion( x, y, z, w );
-}
-
-int PushQuaternion( lua_State * state, unify::Quaternion Quaternion )
-{
-	lua_newtable( state ); // Create table.
-
-	lua_pushstring( state, "x" );
-	lua_pushnumber( state, Quaternion.x );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "y" );
-	lua_pushnumber( state, Quaternion.y );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "z" );
-	lua_pushnumber( state, Quaternion.z );
-	lua_settable( state, -3 );
-
-	lua_pushstring( state, "w" );
-	lua_pushnumber( state, Quaternion.w );
-	lua_settable( state, -3 );
+	QuaternionProxy ** childProxy = (QuaternionProxy**)( lua_newuserdata(state, sizeof(QuaternionProxy*)) );
+	*childProxy = new QuaternionProxy{ q };
+	luaL_setmetatable(state, "Quaternion");
 	return 1;
 }
 
-int Quaternion_New( lua_State * state )
+QuaternionProxy* CheckQuaternion(lua_State * state, int index)
 {
-	int args = lua_gettop( state );
-	assert( args == 3 );
+	QuaternionProxy* ud = *(QuaternionProxy**)luaL_checkudata(state, index, "Quaternion");
+	return ud;
+}
 
-	float x = (float)lua_tonumber( state, 1 );
-	float y = (float)lua_tonumber( state, 2 );
-	float z = (float)lua_tonumber( state, 3 );
-	float w = (float)lua_tonumber( state, 4 );
+int Quaternion_ToString(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 1);
 
-	PushQuaternion( state, unify::Quaternion( x, y, z, w ) );
+	unify::Quaternion q(CheckQuaternion(state, 1)->q);
 
+	lua_pushstring(state, q.ToString().c_str());
 	return 1;
 }
 
-int Quaternion_NewRotationX( lua_State * state )
+int Quaternion_Constructor(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 1 );
+	auto game = ScriptEngine::GetGame();
 
-	float angle = (float)lua_tonumber( state, 1 );
+	int args = lua_gettop(state);
 
-	PushQuaternion( state, unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInRadians( angle ) ) );
+	if (args == 0)
+	{
+		return PushQuaternion(state, unify::QuaternionIdentity());
+	}
+	else if (args == 1)
+	{
+		std::string type = GetTypename(state, 1);
+		if (unify::StringIs(type, "Matrix"))
+		{
+			auto in = CheckMatrix(state, 1);
+			return PushQuaternion(state, in->matrix);
+		}
+		else if (unify::StringIs(type, "Quaternion"))
+		{
+			auto in = CheckQuaternion(state, 1);
+			return PushQuaternion(state, in->q);
+		}
+	}
+	else if (args == 2)
+	{
+		auto axis = CheckV3(state, 1);
+		unify::Angle angle = unify::AngleInRadians( (float)luaL_checknumber(state, 2) );
+		return PushQuaternion(state, unify::Quaternion(axis->v3, angle));
+	}
+	else if (args == 3)
+	{
+		auto q1 = CheckQuaternion(state, 1);
+		auto q2 = CheckQuaternion(state, 2);
+		float delta = (float)luaL_checknumber(state, 3);
+		return PushQuaternion(state, unify::QuaternionSlerp( q1->q, q2->q, delta ));
+	}
+	else if (args == 4)
+	{
+		float x = (float)luaL_checknumber(state, 1);
+		float y = (float)luaL_checknumber(state, 2);
+		float z = (float)luaL_checknumber(state, 3);
+		float w = (float)luaL_checknumber(state, 4);
+		return PushQuaternion(state, unify::Quaternion(x, y, z, w));
+	}
 
+	lua_pushnil(state);
 	return 1;
 }
-						 
-int Quaternion_NewRotationY( lua_State * state )
+
+int Quaternion_QuaternionZero(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 1 );
+	auto game = ScriptEngine::GetGame();
 
-	float angle = (float)lua_tonumber( state, 1 );
-
-	PushQuaternion( state, unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( angle ) ) );
-
-	return 1;
+	return PushQuaternion(state, unify::Quaternion(0, 0, 0, 0));
 }
-						 
-int Quaternion_NewRotationZ( lua_State * state )
+
+
+int Quaternion_QuaternionRotationX(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 1 );
+	int args = lua_gettop(state);
+	assert(args == 1);
 
-	float angle = (float)lua_tonumber( state, 1 );
+	float angle = (float)lua_tonumber(state, 1);
 
-	PushQuaternion( state, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInRadians( angle ) ) );
-
-	return 1;
-}
-						 
-int Quaternion_NewFromEuler( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	float pitch = (float)lua_tonumber( state, 1 );
-	float roll = (float)lua_tonumber( state, 2 );
-	float yaw = (float)lua_tonumber( state, 3 );
-
-	PushQuaternion( state, unify::QuaternionFromEuler( unify::V3< float >( pitch, roll, yaw ) ) );
+	unify::Quaternion q = unify::Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInRadians(angle));
+	PushQuaternion(state, q);
 
 	return 1;
 }
 
-int Quaternion_NewZero( lua_State * state )
+int Quaternion_QuaternionRotationY(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 0 );
+	int args = lua_gettop(state);
+	assert(args == 1);
 
-	PushQuaternion( state, unify::Quaternion( 0, 0, 0, 0 ) );
+	float angle = (float)lua_tonumber(state, 1);
+
+	unify::Quaternion q = unify::Quaternion(unify::V3< float >(0, 1, 0), unify::AngleInRadians(angle));
+	PushQuaternion(state, q);
+
+	return 1;
+}
+int Quaternion_QuaternionRotationZ(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 1);
+
+	float angle = (float)lua_tonumber(state, 1);
+
+	unify::Quaternion q = unify::Quaternion(unify::V3< float >(0, 0, 1), unify::AngleInRadians(angle));
+	PushQuaternion(state, q);
 
 	return 1;
 }
 
-int Quaternion_NewIdentity( lua_State * state )
+int Quaternion_QuaternionEuler(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 0 );
+	int args = lua_gettop(state);
 
-	PushQuaternion( state, unify::QuaternionIdentity() );
+	if (args == 1)
+	{
+		unify::V3< float > v3= CheckV3(state, 1)->v3;
+		return PushQuaternion(state, unify::QuaternionFromEuler(v3));
+	}
+	else if (args == 3)
+	{
+		float pitch = (float)luaL_checknumber(state, 1);
+		float roll = (float)luaL_checknumber(state, 2);
+		float yaw = (float)luaL_checknumber(state, 3);
+		unify::QuaternionFromEuler(unify::V3< float >(pitch, roll, yaw));
+	}
+
+	lua_pushnil(state);
+	return 1;
+}
+
+int Quaternion_Add(lua_State * state)
+{
+	int args = lua_gettop(state);
+	assert(args == 2);
+
+	unify::Quaternion l = CheckQuaternion(state, 1)->q;
+	unify::Quaternion r = CheckQuaternion(state, 2)->q;
+	unify::Quaternion q(l + r);
+
+	PushQuaternion(state, q);
 
 	return 1;
 }
 
-int Quaternion_ToString( lua_State * state )
+int Quaternion_Sub(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 1 );
+	int args = lua_gettop(state);
+	assert(args == 2);
 
-	unify::Quaternion q( CheckQuaternion( state, 1 ) );
+	unify::Quaternion l = CheckQuaternion(state, 1)->q;
+	unify::Quaternion r = CheckQuaternion(state, 2)->q;
+	unify::Quaternion q(l - r);
 
-	lua_pushstring( state, q.ToString().c_str() );
+	PushQuaternion(state, q);
+
 	return 1;
 }
 
-int Quaternion_Add( lua_State * state )
+int Quaternion_Mul(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 2 );
+	int args = lua_gettop(state);
+	assert(args == 2);
 
-	unify::Quaternion l( CheckQuaternion( state, 1 ) );
-	unify::Quaternion r( CheckQuaternion( state, 2 ) );
-	unify::Quaternion result( l + r );
+	std::string typeL = GetTypename(state, 1);
+	std::string typeR = GetTypename(state, 2);
 
-	PushQuaternion( state, result );
+	unify::Quaternion result;
+
+	if (unify::StringIs(typeL, "Quaternion"))
+	{
+		unify::Quaternion l = CheckQuaternion(state, 1)->q;
+
+		if (lua_type(state, 2) == LUA_TNUMBER)
+		{
+			float r = (float)lua_tonumber(state, 2);
+			result = l * r;
+		}
+		else
+		{
+			unify::Quaternion r = CheckQuaternion(state, 2)->q;
+			result = l * r;
+		}
+	}
+	if (unify::StringIs(typeL, "Number"))
+	{
+		float l = (float)lua_tonumber(state, 1);
+		unify::Quaternion r = CheckQuaternion(state, 2)->q;
+		result = r * l;
+	}
+
+	PushQuaternion(state, result);
+
 	return 1;
 }
 
-int Quaternion_Sub( lua_State * state )
+int Quaternion_Destructor(lua_State * state)
 {
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	unify::Quaternion l( CheckQuaternion( state, 1 ) );
-	unify::Quaternion r( CheckQuaternion( state, 2 ) );
-	unify::Quaternion result( l - r );
-
-	PushQuaternion( state, result );
-	return 1;
-}
-
-int Quaternion_Mul( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	unify::Quaternion l( CheckQuaternion( state, 1 ) );
-	unify::Quaternion r( CheckQuaternion( state, 2 ) );
-	unify::Quaternion result( l * r );
-
-	PushQuaternion( state, result );
-	return 1;
-}
-
-int Quaternion_Conjugate( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::Quaternion q( CheckQuaternion( state, 1 ) );
-
-	PushQuaternion( state, q.Conjugate() );
-	return 1;
-}
-
-int Quaternion_Normalize( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	unify::Quaternion q( CheckQuaternion( state, 1 ) );
-
-	PushQuaternion( state, q.Normalize() );
-	return 1;
-}			   
-
-int Quaternion_Slerp( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 3 );
-
-	unify::Quaternion l( CheckQuaternion( state, 1 ) );
-	unify::Quaternion r( CheckQuaternion( state, 2 ) );
-	float delta = (float)lua_tonumber( state, 3 );
-	unify::Quaternion result( unify::QuaternionSlerp( l, r, delta ) );
-
-	PushQuaternion( state, result );
-	return 1;
+	auto q = CheckQuaternion(state, 1);
+	delete q;
+	return 0;
 }
 
 static const luaL_Reg QuaternionFunctions[] =
 {
-	{ "NewRotationX", Quaternion_NewRotationX },
-	{ "NewRotationY", Quaternion_NewRotationY },
-	{ "NewRotationZ", Quaternion_NewRotationZ },  
-	{ "New", Quaternion_New },
-	{ "NewFromEuler", Quaternion_NewFromEuler },
-	{ "NewZero", Quaternion_NewZero },
-	{ "NewIdentity", Quaternion_NewIdentity },
-
-	{ "Add", Quaternion_Add },
-	{ "Sub", Quaternion_Sub },
-	{ "Mul", Quaternion_Mul },
-
-	{ "Conjugate", Quaternion_Conjugate },
-	{ "Normalize", Quaternion_Normalize },
-	{ "Slerp", Quaternion_Slerp },
-
 	{ "ToString", Quaternion_ToString },
+
+
 	{ nullptr, nullptr }
 };
 
-void ExportQuaternion( lua_State * state )
+void RegisterQuaternion(lua_State * state)
 {
-	luaL_newlib( state, QuaternionFunctions );
-	lua_setglobal( state, "Quaternion" );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	Type type = { "Quaternion", QuaternionFunctions, sizeof(QuaternionFunctions) / sizeof(luaL_Reg), Quaternion_Constructor, Quaternion_Destructor };
+	type.add = Quaternion_Add;
+	type.sub = Quaternion_Sub;
+	type.mul = Quaternion_Mul;
+
+	type.named_constructors.push_back({ "QuaternionZero", Quaternion_QuaternionZero });
+	type.named_constructors.push_back({ "QuaternionRotationX", Quaternion_QuaternionRotationX });
+	type.named_constructors.push_back({ "QuaternionRotationY", Quaternion_QuaternionRotationY });
+	type.named_constructors.push_back({ "QuaternionRotationZ", Quaternion_QuaternionRotationZ });
+	type.named_constructors.push_back({ "QuaternionEuler", Quaternion_QuaternionEuler });
+
+	se->AddType(type);
 }

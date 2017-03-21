@@ -51,7 +51,7 @@ int Scene_NewObject( lua_State * state )
 	auto object = proxy->scene->GetObjectAllocator()->NewObject( name );
 
 	return PushObject( state, object );
-}
+} 
 
 int Scene_NewCamera( lua_State * state )
 {
@@ -62,7 +62,7 @@ int Scene_NewCamera( lua_State * state )
 	std::string name = lua_tostring( state, 2 );
 
 	int t = lua_type( state, 3 );
-	unify::Matrix mat = CheckMatrix( state, 3 );
+	unify::Matrix mat = CheckMatrix( state, 3 )->matrix;
 
 	auto game = ScriptEngine::GetGame();
 
@@ -105,25 +105,18 @@ int Scene_GetObjectCount( lua_State * state )
 	return 1;
 }
 
+int Scene_Constructor(lua_State * state)
+{
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >("SceneManager");
+	return PushScene(state, sceneManager->GetCurrentScene());
+}
+
 int Scene_Destructor( lua_State * state )
 {			
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
 	delete sceneProxy;
 	return 0;
-}
-
-void RegisterSceneFunctions( lua_State * state )
-{
-	const luaL_Reg memberFunctions[] =
-	{
-		{ "Name", Scene_Name },
-		{ "NewObject", Scene_NewObject },
-		{ "NewCamera", Scene_NewCamera },
-		{ "FindObject", Scene_FindObject },
-		{ "GetObjectCount", Scene_GetObjectCount },
-		{ nullptr, nullptr }
-	};
-	luaL_setfuncs( state, memberFunctions, 0 );
 }
 			          
 void RegisterScene( lua_State * state )
@@ -139,5 +132,5 @@ void RegisterScene( lua_State * state )
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), 0, Scene_Destructor } );
+	se->AddType( { "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), Scene_Constructor, Scene_Destructor } );
 }

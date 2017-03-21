@@ -44,7 +44,7 @@ namespace melua
 		void Error( std::string function, std::string message );
 
 		static ScriptEngine* GetInstance();
-		static me::IGame * GetGame();
+		static me::Game * GetGame();
 
 	public: // IComponent...
 		std::string GetWhat() const override;

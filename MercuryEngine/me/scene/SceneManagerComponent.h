@@ -12,11 +12,39 @@ namespace me
 	{
 		class SceneManagerComponent : public ISceneManagerComponent
 		{
-		public:
+		protected:
+			SceneManagerComponent(std::string typeName );
+
+			void AddInterface(std::string name, IUnknown* ptr);
+
+		public: // ISceneManagerComponent...
 			void OnAttach( SceneManager * sceneManager ) override;
 			void OnDetach( SceneManager * sceneManager ) override;
 			void OnSceneStart( IScene * scene ) override;
-			void OnSceneEnd( IScene * from ) override;
+			void OnSceneEnd( IScene * scene ) override;
+
+		public:	// IComponent...
+			bool IsEnabled() const override;
+			void SetEnabled(bool enabled) override;
+			int GetValueCount() const override;
+			bool ValueExists(std::string) const override;
+			std::string GetValueName(int index) const override;
+			int FindValueIndex(std::string name) const override;
+			std::string GetValue(int index) const override;
+			std::string GetValue(std::string name) const override;
+			bool SetValue(int index, std::string value) override;
+			bool SetValue(std::string name, std::string value) override;
+
+		public: // IUnknown...
+			std::string GetTypeName() const override;
+			IUnknown* QueryInterface(std::string name) override;
+			std::string GetWhat() const override;
+
+		private:
+			std::string m_typeName;
+			bool m_enabled;
+			Lookup m_values;
+			std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}
 }

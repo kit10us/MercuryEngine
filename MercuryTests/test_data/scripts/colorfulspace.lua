@@ -3,14 +3,14 @@ local totalRotation = 0
 local autoRotate = true
 
 function OnBeforeStartup()
-	local scene1 = Scene( "scene1" )
+	local scene1 = Scene()
 	local root = scene1:FindObject( "root" )
 	
 	color3d = Effect( "color3d", "EffectColor.effect" )
 	borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
 	
-	local proj = Matrix.NewPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1600 )
+	local proj = MatrixPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1600 )
 	
 	-- Add camera...
 	camera = root:AddCamera( "camera", proj )	
@@ -89,20 +89,20 @@ function OnUpdate()
 		if not autoRotate then
 			if keyboard:GetState( 0, "Left", "Down" ) == 1 then
 				local change = 1.0
-				local rotation = Matrix.NewRotationY( Update.GetDelta() * change )
+				local rotation = MatrixRotationY( Update.GetDelta() * change )
 				group:Transform():PostMul( rotation )
 			elseif keyboard:GetState( 0, "Right", "Down" ) == 1 then
 				local change = -1.0
-				local rotation = Matrix.NewRotationY( Update.GetDelta() * change )
+				local rotation = MatrixRotationY( Update.GetDelta() * change )
 				group:Transform():PostMul( rotation )			
 			end			
 			if keyboard:GetState( 0, "Up", "Down" ) == 1 then
 				local change = 1.0
-				local rotation = Matrix.NewRotationX( Update.GetDelta() * change )
+				local rotation = MatrixRotationX( Update.GetDelta() * change )
 				group:Transform():PostMul( rotation )
 			elseif keyboard:GetState( 0, "Down", "Down" ) == 1 then
 				local change = -1.0
-				local rotation = Matrix.NewRotationX( Update.GetDelta() * change )
+				local rotation = MatrixRotationX( Update.GetDelta() * change )
 				group:Transform():PostMul( rotation )			
 			end			
 		end		
@@ -119,10 +119,10 @@ function OnUpdate()
 				local changeX = mouse:GetValue( 0, "ChangeX" )
 				local changeY = mouse:GetValue( 0, "ChangeY" )
 				
-				local rotation = Matrix.NewRotationY( Update.GetDelta() * changeX * 0.2 )
+				local rotation = MatrixRotationY( Update.GetDelta() * changeX * 0.2 )
 				group:Transform():PostMul( rotation )
 
-				local rotation = Matrix.NewRotationX( Update.GetDelta() * changeY * 0.2 )
+				local rotation = MatrixRotationX( Update.GetDelta() * changeY * 0.2 )
 				group:Transform():PostMul( rotation )			
 			end			
 			
@@ -130,7 +130,7 @@ function OnUpdate()
 			if mouseWheel > 0 or mouseWheel < 0 then
 				local v = 1 + ( mouseWheel * Update.GetDelta() )
 				Debug.WriteLine( tostring( v ) ) 
-				local scale = Matrix.NewScale( v )
+				local scale = MatrixScale( v )
 				group:Transform():PostMul( scale )
 			end			
 		end
@@ -150,40 +150,40 @@ function OnUpdate()
 			if gamepad:HasValue( 0, "ThumbLX" ) then
 				local v = gamepad:GetValue( 0, "ThumbLX" )
 				if v > 0.1  or v < -0.1 then
-					local rotation = Matrix.NewRotationY( Update.GetDelta() * v * 2.0 )
+					local rotation = MatrixRotationY( Update.GetDelta() * v * 2.0 )
 					group:Transform():PostMul( rotation )
 				end
 			end	
 			if gamepad:HasValue( 0, "ThumbLY" ) then
 				local v = gamepad:GetValue( 0, "ThumbLY" )
 				if v > 0.1  or v < -0.1 then
-					local rotation = Matrix.NewRotationX( Update.GetDelta() * v * 2.0 )
+					local rotation = MatrixRotationX( Update.GetDelta() * v * 2.0 )
 					group:Transform():PostMul( rotation )
 				end
 			end	
 			
 			if gamepad:HasValue( 0, "LeftTrigger" ) then
 				local v = gamepad:GetValue( 0, "LeftTrigger" )
-				local rotation = Matrix.NewRotationZ( Update.GetDelta() * v * 2.0 )
+				local rotation = MatrixRotationZ( Update.GetDelta() * v * 2.0 )
 				group:Transform():PreMul( rotation )				
 			end
 			if gamepad:HasValue( 0, "RightTrigger" ) then
 				local v = gamepad:GetValue( 0, "RightTrigger" )
-				local rotation = Matrix.NewRotationZ( Update.GetDelta() * v * -2.0 )
+				local rotation = MatrixRotationZ( Update.GetDelta() * v * -2.0 )
 				group:Transform():PreMul( rotation )				
 			end
 			
 			if gamepad:HasValue( 0, "ThumbRX" ) then
 				local v = gamepad:GetValue( 0, "ThumbRX" )
 				if v > 0.1  or v < -0.1 then
-					local rotation = Matrix.NewRotationY( Update.GetDelta() * v * 2.0 )
+					local rotation = MatrixRotationY( Update.GetDelta() * v * 2.0 )
 					camera:Transform():PreMul( rotation )
 				end
 			end	
 			if gamepad:HasValue( 0, "ThumbRY" ) then
 				local v = gamepad:GetValue( 0, "ThumbRY" )
 				if v > 0.1  or v < -0.1 then
-					local rotation = Matrix.NewRotationX( Update.GetDelta() * v * -2.0 )
+					local rotation = MatrixRotationX( Update.GetDelta() * v * -2.0 )
 					camera:Transform():PreMul( rotation )
 				end
 			end	
@@ -191,13 +191,13 @@ function OnUpdate()
 			if gamepad:GetState( 0, "DPAD_DOWN", "Down" ) == 1 then
 				local v = 1 + ( -1 * Update.GetDelta() )
 				Debug.WriteLine( tostring( v ) ) 
-				local scale = Matrix.NewScale( v )
+				local scale = MatrixScale( v )
 				group:Transform():PostMul( scale )
 			end								
 			if gamepad:GetState( 0, "DPAD_UP", "Down" ) == 1 then
 				local v = 1 + ( 1 * Update.GetDelta() )
 				Debug.WriteLine( tostring( v ) ) 
-				local scale = Matrix.NewScale( v )
+				local scale = MatrixScale( v )
 				group:Transform():PostMul( scale )
 			end								
 			

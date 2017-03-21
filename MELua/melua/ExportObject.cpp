@@ -289,7 +289,7 @@ int Object_SetModelMatrix( lua_State * state )
 
 	ObjectProxy * objectProxy = CheckObject( state, 1 );
 
-	unify::Matrix matrix = CheckMatrix( state, 2 );
+	unify::Matrix matrix = CheckMatrix( state, 2 )->matrix;
 
 	objectProxy->object->GetFrame().SetModelMatrix( matrix );
 
@@ -317,7 +317,7 @@ static const luaL_Reg ObjectFunctions[] =
 
 int Object_Constructor( lua_State * state )
 {
-	assert( 0 ); // NOT SUPPORTED.
+
 	return 1;
 }
 

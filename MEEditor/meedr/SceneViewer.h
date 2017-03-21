@@ -21,7 +21,7 @@ namespace meedr
 	class SceneViewer : public ui::Window
 	{
 	public:
-		SceneViewer::SceneViewer( me::IGame * game );
+		SceneViewer::SceneViewer( ui::IWindow::ptr parent, me::IGame * game );
 		~SceneViewer();
 
 		me::IGame * GetGame() const;

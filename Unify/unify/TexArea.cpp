@@ -114,3 +114,8 @@ TexArea unify::TexAreaDouble()
 {
 	return TexArea( 0, 0, 2, 2 );
 }
+
+std::string TexArea::ToString() const
+{
+	return "{ " + Cast< std::string >(ul.u) + ", " + Cast< std::string >(ul.v) + " }, { " + Cast< std::string >(dr.u) + ", " + Cast< std::string >(dr.v) + " }";
+}
