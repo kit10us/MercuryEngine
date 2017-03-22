@@ -22,9 +22,6 @@ namespace melua
 			std::string GetLuaName() const;
 
 		public: // IGameComponent...
-			bool Updateable() const { return false; }
-			bool Renderable() const { return false; }
-
 			void OnStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
 			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override;

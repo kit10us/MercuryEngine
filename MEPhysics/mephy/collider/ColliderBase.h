@@ -27,9 +27,6 @@ namespace mephy
 			void AddOnExitAction( me::action::IAction::ptr onEnterAction );
 
 		public: // IGameComponent...
-			bool Updateable() const { return true; }
-			bool Renderable() const { return false; }
-
 			void OnStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
 			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override;

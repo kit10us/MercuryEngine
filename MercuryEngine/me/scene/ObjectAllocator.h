@@ -13,16 +13,16 @@ namespace me
 		public:
 			ObjectAllocator( std::string typeName );			
 
-		public: // IUnknown...
+		public: // me::IThing...
 			std::string GetTypeName() const override;
 			std::string GetWhat() const override;
-			IUnknown* QueryInterface( std::string name ) override;
+			me::IThing* QueryInterface( std::string name ) override;
 
 		protected:
-			void AddInterface( std::string name, IUnknown* ptr );
+			void AddInterface( std::string name, me::IThing* ptr );
 
 		private:
-			std::map< std::string, IUnknown* > m_interfaces;
+			std::map< std::string, me::IThing* > m_interfaces;
 			std::string m_typeName;
 		};
 	}

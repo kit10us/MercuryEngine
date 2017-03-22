@@ -15,7 +15,7 @@ using namespace physx;
 using namespace objectcomponent;
 
 RigidBody::RigidBody( RigidBody & rigidBody )
-	: me::object::ObjectComponent( "RigidBody" )
+	: me::object::ObjectComponent( rigidBody )
 	, m_gameComponent( rigidBody.m_gameComponent )
 {
 	PxTransform transform( util::Convert< physx::PxTransform >( unify::MatrixIdentity() ) );
@@ -23,7 +23,7 @@ RigidBody::RigidBody( RigidBody & rigidBody )
 }
 
 RigidBody::RigidBody( mephysx::GameComponent * gameComponent )
-	: me::object::ObjectComponent( "RigidBody" )
+	: me::object::ObjectComponent( "RigidBody", false, false )
 	, m_gameComponent( gameComponent )
 {
 	PxTransform transform( util::Convert< physx::PxTransform >( unify::MatrixIdentity() ) );

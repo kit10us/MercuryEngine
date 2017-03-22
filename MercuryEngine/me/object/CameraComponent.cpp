@@ -14,7 +14,7 @@ CameraComponent::CameraComponent( CameraComponent & component )
 }
 
 CameraComponent::CameraComponent()
-	: ObjectComponent( "Camera" )
+	: ObjectComponent( "Camera", false, true )
 	, m_projection( unify::MatrixIdentity() )
 	, m_renderer( 0 )
 {

@@ -29,7 +29,9 @@ CameraMotivator::~CameraMotivator()
 std::string CameraMotivator::GetWhat() const
 {
 	return std::string();
-}								
+}		
+
+#include <me/scene/Scene.h>
 
 void CameraMotivator::OnUpdate( UpdateParams params )
 {
@@ -76,6 +78,10 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 
 	if ( wantMove )
 	{
+		unify::V3< float > p = GetObject()->GetFrame().GetPosition();
+		GetObject()->GetScene()->GetGame()->LogLine( "p = " + p.ToString() );
+		
+
 		// Normalize, so if we move in an angle, we aren't moving twice as fast.
 		move.Normalize();
 
@@ -98,10 +104,17 @@ void CameraMotivator::OnUpdate( UpdateParams params )
 		// Move our position...
 		V position = GetObject()->GetFrame().GetPosition();
 		position += move;
-		GetObject()->GetFrame().SetPosition( position );	
+
+		///assert( position.x != position.x );
+		///assert( position.y != position.y );
+		///assert( position.z != position.z );
+		GetObject()->GetFrame().SetPosition( position );
 
 		// Face the correct direction.
 		GetObject()->GetFrame().SetRotation( unify::MatrixRotationY( direction ) );
+		p = GetObject()->GetFrame().GetPosition();
+		GetObject()->GetScene()->GetGame()->LogLine( "p = " + p.ToString() );
+		GetObject()->GetScene()->GetGame()->LogLine( "..." );
 	}
 }
 

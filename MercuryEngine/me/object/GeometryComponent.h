@@ -21,10 +21,6 @@ namespace me
 			GeometryComponent( Geometry::ptr geometry );
 			virtual ~GeometryComponent();
 
-			std::string GetWhat() const override;
-
-			bool Renderable() const override { return true; }
-
 			void SetGeometry( Geometry::ptr geometry );
 			Geometry::ptr GetGeometry();
 			const Geometry::ptr GetGeometry() const;
@@ -37,7 +33,21 @@ namespace me
 			void OnSuspend() override;
 			void OnResume() override;
 
+		public: // IObjectComponent...
 			IObjectComponent::ptr Duplicate() override;
+
+		public: // IComponent...
+			int GetValueCount() const override;
+			bool ValueExists( std::string ) const override;
+			std::string GetValueName( int index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			std::string GetValue( int index ) const override;
+			std::string GetValue( std::string name ) const override;
+			bool SetValue( int index, std::string value ) override;
+			bool SetValue( std::string name, std::string value ) override;
+
+		public: // IThing...
+			std::string GetWhat() const override;
 
 		protected:
 			Geometry::ptr m_geometry;

@@ -91,7 +91,7 @@ VertexDeclaration::~VertexDeclaration()
 		Destroy();
 }
 
-void VertexDeclaration::Build( const IRenderer * renderer, const IVertexShader & vs )
+void VertexDeclaration::Build( IRenderer * renderer, const IVertexShader & vs )
 {	
 	m_construct = renderer->ProduceVC( *this, vs );
 }

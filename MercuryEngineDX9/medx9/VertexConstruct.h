@@ -20,7 +20,7 @@ namespace medx9
 	class VertexConstruct : public me::IVertexConstruct
 	{
 	public:
-		VertexConstruct( const me::IRenderer * renderer, const me::VertexDeclaration & vd );
+		VertexConstruct( me::IRenderer * renderer, const me::VertexDeclaration & vd );
 		~VertexConstruct();
 
 		void Use() const override;

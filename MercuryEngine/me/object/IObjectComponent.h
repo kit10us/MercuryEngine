@@ -26,9 +26,15 @@ namespace me
 
 			virtual ~IObjectComponent() {}			 
 
-			// TODO: Should remove or replace...
+			/// <summary>
+			/// Does the object require updates?
+			/// </summary>
 			virtual bool Updateable() const = 0;
-			virtual bool Renderable() const = 0;	 
+
+			/// <summary>
+			/// Does the object require rendering?
+			/// </summary>
+			virtual bool Renderable() const = 0;
 
 			/// <summary>
 			/// Called once, when we are first attached to an object.

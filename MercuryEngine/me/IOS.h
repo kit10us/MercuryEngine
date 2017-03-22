@@ -81,6 +81,8 @@ namespace me
 
 		virtual ~IOS() { }
 
+		virtual IGame * GetGame() = 0;
+
 		virtual void * Feed( std::string target, void * data ) = 0;
 
 		/// <summary>

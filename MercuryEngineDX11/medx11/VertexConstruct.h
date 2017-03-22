@@ -17,7 +17,7 @@ namespace medx11
 	class VertexConstruct : public me::IVertexConstruct
 	{
 	public:
-		VertexConstruct( const me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs );
+		VertexConstruct( me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs );
 		~VertexConstruct();
 		
 		void Use() const override;

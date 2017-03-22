@@ -57,24 +57,29 @@ function OnBeforeStart()
 	
 	local cube = sceneMain:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
-	cube:Transform():SetPosition( V3( -4.5, 1, 0 ) )
+	cube:Transform():SetPosition( V3( 4, 1, 0 ) )
 
 	local pyramid = sceneMain:NewObject( "pyramid" )
 	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
-	pyramid:Transform():SetPosition( V3( -4.5, 1, 0 ) )
+	pyramid:Transform():SetPosition( V3( 8, 1, 0 ) )
 	
 	local cylinder = sceneMain:NewObject( "cylinder" )
 	cylinder:AddGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
-	cylinder:Transform():SetPosition( V3( 4.5, 1, 0 ) )
+	cylinder:Transform():SetPosition( V3( 12, 1, 0 ) )
 
 	local player = sceneMain:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
 	player:SetModelMatrix( MatrixRotationX( Angle.Degrees( -90 ) ) )
-	player:Transform():SetPosition( V3( 0, 0, 0 ) )
+	player:Transform():SetPosition( V3( 1, 0, 3 ) )
+	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )
 	
 	-- Add stuff
-	BuildTree( sceneMain, V3( 0, 0, 5 ) )	
-	BuildHouse( sceneMain, V3( -7, 0, 3 ) )	
+	BuildTree( V3( -8, 0, 16 ) )	
+	BuildTree( V3( -3, 0, 11 ) )	
+	BuildTree( V3( 2, 0, 8 ) )	
+	BuildTree( V3( -4, 0, 7 ) )	
+	BuildTree( V3( 0, 0, 5 ) )	
+	BuildHouse( V3( 7, 0, 12 ) )	
 end
 
 function OnAfterStart()
@@ -82,7 +87,7 @@ function OnAfterStart()
 	local cameraMotivator = target:GetComponent( "CameraMotivator" );
 	
 	if not cameraMotivator then
-		Debug.LogLine( "Camera motivator NOT FOUND!" )
+		print( "Camera motivator NOT FOUND!" )
 	else	
 		cameraMotivator:SetValue( "speed", 4.0 );
 	

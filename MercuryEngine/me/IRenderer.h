@@ -20,6 +20,7 @@
 namespace me
 {
 	class VertexDeclaration;
+	class IGame;
 
 	struct CullMode
 	{
@@ -39,7 +40,9 @@ namespace me
 	public:
 		typedef std::shared_ptr< IRenderer > ptr;
 
-		virtual ~IRenderer() {}
+		virtual ~IRenderer() {};
+
+		virtual IGame* GetGame() = 0;
 
 		virtual const me::Display & GetDisplay() const = 0;
 
@@ -68,12 +71,12 @@ namespace me
 
 		virtual ISketcher * GetSketcher() = 0;
 
-		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) const = 0;
-		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) const = 0;
-		virtual IVertexShader::ptr ProduceVS( VertexShaderParameters parameters ) const = 0;
-		virtual IPixelShader::ptr ProducePS( PixelShaderParameters parameters ) const = 0;
-		virtual IVertexConstruct::ptr ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) const = 0;
-		virtual ITexture::ptr ProduceT( TextureParameters parameters ) const = 0;
+		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) = 0;
+		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) = 0;
+		virtual IVertexShader::ptr ProduceVS( VertexShaderParameters parameters ) = 0;
+		virtual IPixelShader::ptr ProducePS( PixelShaderParameters parameters ) = 0;
+		virtual IVertexConstruct::ptr ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) = 0;
+		virtual ITexture::ptr ProduceT( TextureParameters parameters ) = 0;
 	};
 }
 

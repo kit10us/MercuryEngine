@@ -12,7 +12,7 @@ using namespace physx;
 using namespace objectcomponent;
 
 ColliderBase::ColliderBase( ColliderBase & colliderBase )
-	: me::object::ObjectComponent( colliderBase.GetTypeName() )
+	: me::object::ObjectComponent( colliderBase )
 	, m_gameComponent( colliderBase.m_gameComponent )
 	, m_material( colliderBase.m_material )
 	, m_shape( colliderBase.m_shape )
@@ -20,7 +20,7 @@ ColliderBase::ColliderBase( ColliderBase & colliderBase )
 }
 
 ColliderBase::ColliderBase( std::string typeName, mephysx::GameComponent * gameComponent )
-	: me::object::ObjectComponent( typeName )
+	: me::object::ObjectComponent( typeName, false, false )
 	, m_gameComponent( gameComponent )
 	, m_material( gameComponent->GetPhysics()->createMaterial( 0.5f, 0.5f, 0.6f ), Releaser< PxMaterial > )
 {

@@ -6,7 +6,7 @@
 #include <me/object/Object.h>
 #include <me/scene/ObjectStack.h>
 #include <me/scene/RenderGirl.h>
-#include <me/IUnknown.h>
+#include <me/IThing.h>
 #include <list>
 
 namespace me

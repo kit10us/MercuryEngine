@@ -15,8 +15,8 @@ namespace medx9
 	class VertexShader : public me::IVertexShader
 	{
 	public:
-		VertexShader( const me::IRenderer * renderer );
-		VertexShader( const me::IRenderer * renderer, me::VertexShaderParameters parameters );
+		VertexShader( me::IRenderer * renderer );
+		VertexShader( me::IRenderer * renderer, me::VertexShaderParameters parameters );
 
 		~VertexShader();
 
@@ -53,7 +53,7 @@ namespace medx9
 		me::shader::ConstantBuffer::ptr m_constants;
 		me::VertexDeclaration::ptr m_vertexDeclaration;
 
-		const medx9::Renderer * m_renderer;
+		medx9::Renderer * m_renderer;
 
 		CComPtr< ID3DXBuffer > m_codeBuffer;
 		CComPtr< ID3DXConstantTable > m_constantTable;

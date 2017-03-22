@@ -4,6 +4,8 @@
 #include <melua/ExportComponent.h>
 #include <melua/ExportObject.h>
 #include <melua/ScriptEngine.h>
+#include <melua/ExportObjectComponent.h>
+#include <melua/Util.h>
 
 using namespace melua;
 using namespace me;
@@ -190,15 +192,29 @@ int Component_SetValue( lua_State * state )
 	}
 }
 
-
 int Component_Constructor( lua_State * state )
 {
-	int type = lua_type( state, 1 );
-
+	auto se = ScriptEngine::GetInstance();
 	auto game = ScriptEngine::GetGame();
+	int top = lua_gettop( state );
 
-	assert( 0 ); // TODO: Component factory... ugh.
-	return 0;
+	std::string typeA = GetTypename( state );
+	if( top == 2 )
+	{
+		if( unify::StringIs( typeA, "Component" ) )
+		{
+			ComponentProxy* proxy = CheckComponent( state, 1 );
+			return PushComponent( state, proxy->component );
+		}
+		else if( unify::StringIs( typeA, "ObjectComponent" ) )
+		{
+			ObjectComponentProxy* proxy = CheckObjectComponent( state, 1 );
+			return PushObjectComponent( state, proxy->component );
+		}
+	}
+	
+	lua_pushnil( state );
+	return 1;
 }
 
 int Component_Destructor( lua_State * state )

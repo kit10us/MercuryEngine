@@ -19,19 +19,18 @@ namespace me
 			const Lookup * GetLookup() const;
 
 		public:
-			ObjectComponent( std::string type );
+			ObjectComponent( std::string type, bool update, bool render );
 			~ObjectComponent();
 
 			Object* GetObject();
 			const Object* GetObject() const;
 
 		protected:
-			void AddInterface( std::string name, IUnknown* ptr );
+			void AddInterface( std::string name, me::IThing* ptr );
 
 		public:	 // IObjectComponent...
-			bool Updateable() const override { return false; }
-			bool Renderable() const override { return false; }
-
+			bool Updateable() const override;
+			bool Renderable() const override;
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnStart() override;
@@ -53,16 +52,18 @@ namespace me
 			bool SetValue( std::string name, std::string value ) override;
 
 
-		public: // IUnknown...
+		public: // me::IThing...
 			std::string GetTypeName() const override;
-			IUnknown* QueryInterface( std::string name ) override;
+			me::IThing* QueryInterface( std::string name ) override;
 
 		protected:
 			object::Object * m_object;
 			std::string m_typeName;
 			bool m_enabled;
+			bool m_update;
+			bool m_render;
 			Lookup m_values;
-			std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
+			std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}
 }

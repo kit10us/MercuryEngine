@@ -28,7 +28,7 @@ ObjectComponent::ObjectComponent( ObjectComponent & component )
 }
 
 ObjectComponent::ObjectComponent( me::IGame * game, lua_State * state, std::string luaName, unify::Path path )
-	: me::object::ObjectComponent( "LUAScript" )
+	: me::object::ObjectComponent( "LUAScript", false, false )
 	, m_state( state )
 	, m_game( game )
 	, m_path( path )

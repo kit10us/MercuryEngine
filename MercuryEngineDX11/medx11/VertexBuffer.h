@@ -13,8 +13,8 @@ namespace medx11
 	class VertexBuffer : public me::IVertexBuffer
 	{
 	public:
-		VertexBuffer( const me::IRenderer * renderer );
-		VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters );
+		VertexBuffer( me::IRenderer * renderer );
+		VertexBuffer( me::IRenderer * renderer, me::VertexBufferParameters parameters );
 		~VertexBuffer();
 
 		void Create( me::VertexBufferParameters parameters ) override;

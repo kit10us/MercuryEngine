@@ -17,7 +17,10 @@ namespace medx11
 	{
 	public:
 		Renderer( WindowsOS * os, me::Display display, size_t index );
-		virtual ~Renderer();																															   
+		virtual ~Renderer();				
+
+		me::IGame* GetGame() override;
+
 		const me::Display & GetDisplay() const;
 
 		ID3D11Device * GetDxDevice() const;
@@ -41,15 +44,15 @@ namespace medx11
 
 		me::ISketcher * GetSketcher() override;
 
-		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
-		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;
-		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) const override;
-		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) const override;
-		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) const override;
- 		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) const override;
+		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
+		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;
+		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) override;
+		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) override;
+		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) override;
+ 		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) override;
 
 	private:
-		WindowsOS * m_OS;
+		WindowsOS * m_os;
 		me::Display m_display;
 		size_t m_index;
 

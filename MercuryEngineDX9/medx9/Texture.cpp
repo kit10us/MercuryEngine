@@ -15,8 +15,8 @@
 using namespace medx9;
 using namespace me;
 
-Texture::Texture( const me::IRenderer * renderer, TextureParameters parameters )
-	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
+Texture::Texture( me::IRenderer * renderer, TextureParameters parameters )
+	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_useColorKey( false )
 	, m_created( false )
 	, m_parameters( parameters )

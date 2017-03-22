@@ -5,14 +5,14 @@
 
 #include <me/UpdateParams.h>
 #include <me/Lookup.h>
-#include <me/IUnknown.h>
+#include <me/IThing.h>
 #include <unify/FrameLite.h>
 #include <string>
 #include <memory>
 
 namespace me
 {
-	class IComponent : public IUnknown
+	class IComponent : public me::IThing
 	{
 	public:
 		typedef std::shared_ptr< IComponent > ptr;

@@ -673,6 +673,7 @@ ui::IResult* SceneViewer::OnMenuCommand( ui::message::MenuCommand message )
 	else if (message.IsFor("Restart Scene"))
 	{
 		m_sceneManager->RestartScene();
+		UpdateSceneList();
 		GetParent()->SetForegroundWindow();
 	}
 	else if ( message.IsFor( "Exit Scene Viewer" ) )

@@ -7,7 +7,7 @@
 
 using namespace me;
 
-PrimitiveList::PrimitiveList( const me::IRenderer * renderer )
+PrimitiveList::PrimitiveList( me::IRenderer * renderer )
 	: m_renderer( renderer )
 {
 }

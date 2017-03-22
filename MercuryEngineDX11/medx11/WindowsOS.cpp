@@ -111,6 +111,11 @@ WindowsOS::~WindowsOS()
 	m_renderers.clear();
 }
 
+me::IGame * WindowsOS::GetGame()
+{
+	return m_game;
+}
+
 void * WindowsOS::Feed( std::string target, void * data )
 {
 	os::win::OSFood * food = (os::win::OSFood*)data;

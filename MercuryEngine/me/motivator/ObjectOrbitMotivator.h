@@ -25,10 +25,6 @@ namespace me
 		public: // IGameComponent...
 			std::string GetWhat() const override;
 
-			bool Updateable() const override;
-
-			bool Renderable() const override;
-
 			void OnUpdate( UpdateParams params ) override;
 
 			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;

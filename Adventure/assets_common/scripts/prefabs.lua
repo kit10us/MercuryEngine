@@ -1,26 +1,27 @@
-function MakeObjectName( scene, prefix )
+require "colors"
+
+function MakeObjectName( prefix )
+	local this = Scene()
+
 	local name
 	
 	-- Find the first name available...
 	for i = 0, 1000, 1 do
 		name = prefix .. "_" .. i
-		if not scene:FindObject( name )  then		
+		if not this:FindObject( name )  then		
 			break
 		end
 	end	
 	return name
 end
 
-function BuildTree( scene, position )
-	local color3d = Effect( "color3d" )
-	local borgcubeEffect = Effect( "borgcube" )
-
-	local name = MakeObjectName( scene, "tree" )
-	
-	-- Add our object...
-	local object = scene:NewObject( name )
+function BuildTree( position )
+	local this = Scene()
+	local name = MakeObjectName( "tree" )
+	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
-		
+
+	local color3d = Effect( "color3d" )
 
 	local leaves = Effect( "leaves", "Textured_Ambient.effect" )
 	leaves:SetTexture( 0, Texture( "leaves", "leafsolid.bmp" ) )
@@ -30,7 +31,7 @@ function BuildTree( scene, position )
 	sphereParameters:SetEffect( leaves )
 	sphereParameters:SetSegments( 24 )
 	sphereParameters:SetRadius( 2.0 )
-	sphereParameters:SetDiffuse( RGB( 0, 0.8, 0 ) )
+	sphereParameters:SetDiffuse( Green( 0.8 ) )
 	sphereParameters:SetCenter( V3( 0, 5, 0 ) );
 	object:AddGeometry( Geometry( sphereParameters ) )
 
@@ -39,21 +40,20 @@ function BuildTree( scene, position )
 	cylinderParameters:SetSegments( 24 )
 	cylinderParameters:SetRadius( 0.7 )
 	cylinderParameters:SetHeight( 5.0 )
-	cylinderParameters:SetDiffuse( RGB( 107/255, 88/255, 37/255 ) )
+	cylinderParameters:SetDiffuse( Brown() )
 	cylinderParameters:SetCaps( true )
 	cylinderParameters:SetCenter( V3( 0, 2.5, 0 ) )
 	object:AddGeometry( Geometry( cylinderParameters ) )
 end
 
-function BuildHouse( scene, position )
-	local color3d = Effect( "color3d" )
-	local borgcubeEffect = Effect( "borgcube" )
-
-	local name = MakeObjectName( scene, "house" )
-
-	-- Add our object...
-	local object = scene:NewObject( name )
+function BuildHouse( position )
+	this = Scene()
+	local name = MakeObjectName( "house" )
+	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
+
+	local color3d = Effect( "color3d" )
+
 
 	-- Walls
 	parameters = ShapeParameters( "cube" )

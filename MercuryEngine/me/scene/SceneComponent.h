@@ -24,7 +24,7 @@ namespace me
 			const IScene* GetScene() const;
 
 		protected:
-			void AddInterface( std::string name, IUnknown* ptr );
+			void AddInterface( std::string name, me::IThing* ptr );
 
 		public: // ISceneComponent...
 			void OnAttach( me::scene::IScene * scene ) override;
@@ -50,9 +50,9 @@ namespace me
 			bool SetValue( int index, std::string value ) override;
 			bool SetValue( std::string name, std::string value ) override;
 
-		public: // IUnknown...
+		public: // me::IThing...
 			std::string GetTypeName() const override;
-			IUnknown* QueryInterface( std::string name ) override;
+			me::IThing* QueryInterface( std::string name ) override;
 			std::string GetWhat() const override;
 
 		private:
@@ -61,7 +61,7 @@ namespace me
 			bool m_enabled;
 			IScene* m_scene;
 			Lookup m_values;
-			std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
+			std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}
 }

@@ -24,7 +24,7 @@ TerrainMap::TerrainMap( TerrainMap & component )
 }
 
 TerrainMap::TerrainMap( unify::Size< int > mapSize, unify::Size< int > terraSize )
-	: ObjectComponent( "TerrainMap" )
+	: ObjectComponent( "TerrainMap", true, true )
 	, m_mapSize{ mapSize }
 	, m_terraSize{ terraSize }
 	, m_map{ new size_t[ mapSize.width * mapSize.height ] }
@@ -53,11 +53,6 @@ void TerrainMap::Initialize()
 std::string TerrainMap::GetWhat() const
 {
 	return std::string();
-}
-
-bool TerrainMap::Renderable() const
-{ 
-	return true; 
 }
 
 void TerrainMap::CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform )

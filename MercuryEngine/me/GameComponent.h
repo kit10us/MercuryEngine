@@ -18,7 +18,7 @@ namespace me
 		const Lookup * GetLookup() const;
 
 	protected:
-		void AddInterface( std::string name, IUnknown* ptr );
+		void AddInterface( std::string name, me::IThing* ptr );
 
 	public:	 // IGameComponent...
 		IGame * GetGame() override;
@@ -49,9 +49,9 @@ namespace me
 		bool SetValue( int index, std::string value ) override;
 		bool SetValue( std::string name, std::string value ) override;
 
-	public: // IUnknown...
+	public: // me::IThing...
 		std::string GetTypeName() const override;
-		IUnknown* QueryInterface( std::string name ) override;
+		me::IThing* QueryInterface( std::string name ) override;
 		std::string GetWhat() const override;
 
 	protected:
@@ -59,6 +59,6 @@ namespace me
 		std::string m_typeName;
 		bool m_enabled;
 		Lookup m_values;
-		std::map< std::string, IUnknown*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
+		std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 	};
 }

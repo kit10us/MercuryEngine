@@ -30,7 +30,7 @@ SceneManagerComponent::SceneManagerComponent( std::string typeName )
 	AddInterface(typeName, this);
 }
 
-void SceneManagerComponent::AddInterface(std::string name, IUnknown* ptr)
+void SceneManagerComponent::AddInterface(std::string name, me::IThing* ptr)
 {
 	m_interfaceMap[name] = ptr;
 }
@@ -134,7 +134,7 @@ std::string SceneManagerComponent::GetValue(std::string name) const
 	return GetValue(index);
 }
 
-me::IUnknown* SceneManagerComponent::QueryInterface(std::string name)
+me::IThing* SceneManagerComponent::QueryInterface(std::string name)
 {
 	auto itr = m_interfaceMap.find(name);
 	if (itr == m_interfaceMap.end())

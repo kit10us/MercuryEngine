@@ -25,7 +25,7 @@ namespace
 }
 
 ObjectOrbitMotivator::ObjectOrbitMotivator( unify::V3< float > origin, unify::V3< float > orbit, unify::Angle angleASecond )
-	: object::ObjectComponent( "ObjectOrbitMotivator" )
+	: object::ObjectComponent( "ObjectOrbitMotivator", true, false )
 	, m_origin{ origin }
 	, m_orbit{ orbit }
 	, m_angleASecond{ angleASecond }
@@ -41,16 +41,7 @@ std::string ObjectOrbitMotivator::GetWhat() const
 	return std::string();
 }								
 
-bool ObjectOrbitMotivator::Updateable() const
-{
-	return true;
-}
 
-bool ObjectOrbitMotivator::Renderable() const
-{
-	return false;
-}
- 
 void ObjectOrbitMotivator::OnUpdate( UpdateParams params )
 {
 	if ( ! m_enabled )

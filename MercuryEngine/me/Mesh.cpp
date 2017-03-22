@@ -6,7 +6,7 @@
 
 using namespace me;
 
-Mesh::Mesh( const me::IRenderer * renderer )
+Mesh::Mesh( me::IRenderer * renderer )
 	: m_primitiveList{ renderer }
 {
 }

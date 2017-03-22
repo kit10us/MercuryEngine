@@ -17,22 +17,12 @@ ObjectInputMotivator::ObjectInputMotivator( const ObjectInputMotivator & objectI
 
 
 ObjectInputMotivator::ObjectInputMotivator()
-	: ObjectComponent( "ObjectInputMotivator"  )
+	: ObjectComponent( "ObjectInputMotivator", true, false )
 {
 }
 
 ObjectInputMotivator::~ObjectInputMotivator() 
 {
-}
-
-bool ObjectInputMotivator::Updateable() const
-{
-	return true;
-}
-
-bool ObjectInputMotivator::Renderable() const
-{
-	return false;
 }
 
 motivator::IInputMotivator * ObjectInputMotivator::GetMotivator()

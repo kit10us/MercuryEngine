@@ -3,7 +3,7 @@
 #pragma once
 
 #include <me/object/Object.h>
-#include <me/IUnknown.h>
+#include <me/IThing.h>
 
 #ifdef GetObject
 #undef GetObject
@@ -17,7 +17,7 @@ namespace me
 	{
 		class RenderGirl;
 
-		class IObjectAllocator : public IUnknown
+		class IObjectAllocator : public me::IThing
 		{
 		public:
 			typedef std::shared_ptr< IObjectAllocator > ptr;

@@ -5,13 +5,14 @@
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/FailedToLock.h>
+#include <me/IGame.h>
 
 using namespace medx11;
 using namespace me;
 using namespace shader;
 
-PixelShader::PixelShader( const me::IRenderer * renderer )
-	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
+PixelShader::PixelShader( me::IRenderer * renderer )
+	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 	, m_assembly( false )
 	, m_created( false )
 	, m_isTrans( false )
@@ -20,7 +21,7 @@ PixelShader::PixelShader( const me::IRenderer * renderer )
 {
 }
 
-PixelShader::PixelShader( const me::IRenderer * renderer, PixelShaderParameters parameters )
+PixelShader::PixelShader( me::IRenderer * renderer, PixelShaderParameters parameters )
 	: PixelShader( renderer )
 {
 	Create( parameters );
@@ -170,7 +171,7 @@ void PixelShader::Use()
 {
 	auto dxContext = m_renderer->GetDxContext();
 	dxContext->PSSetShader( m_pixelShader, nullptr, 0 );
-
+	
 	// Ensure all buffers have been accessed (defaults)
 	for ( size_t buffer = 0, size = m_constantBuffers.size(); buffer < size; ++buffer )
 	{

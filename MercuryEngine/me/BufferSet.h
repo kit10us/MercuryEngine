@@ -19,7 +19,7 @@ namespace me
 	public:
 		typedef std::shared_ptr< BufferSet > shared_ptr;
 
-		BufferSet( const me::IRenderer * renderer );
+		BufferSet( me::IRenderer * renderer );
 		~BufferSet();
 
 		BufferSet( const BufferSet & ) = delete;
@@ -45,7 +45,7 @@ namespace me
 		void Render( RenderParams params, MatrixFeed & matrixFeed ) const;
 
 	private:
-		const IRenderer * m_renderer;
+		IRenderer * m_renderer;
 		bool m_enabled;
 		me::IVertexBuffer::ptr m_VB;
 		me::IIndexBuffer::ptr m_IB;

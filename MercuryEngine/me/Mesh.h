@@ -22,7 +22,7 @@ namespace me
 	class Mesh : public Geometry
 	{
 	public:
-		Mesh( const IRenderer * renderer );
+		Mesh( IRenderer * renderer );
 		Mesh( unify::Path source, IRenderer * renderer );
 		~Mesh();
 

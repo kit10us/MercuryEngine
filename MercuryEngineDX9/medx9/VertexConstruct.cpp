@@ -93,8 +93,8 @@ D3DVERTEXELEMENT9 ToDX( VertexElement element )
 }
 
 
-VertexConstruct::VertexConstruct( const me::IRenderer * renderer, const VertexDeclaration & vd  )
-	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
+VertexConstruct::VertexConstruct( me::IRenderer * renderer, const VertexDeclaration & vd  )
+	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 {
 	std::vector< D3DVERTEXELEMENT9 > elements;
 

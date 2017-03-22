@@ -18,7 +18,7 @@ namespace me
 	class PrimitiveList
 	{
 	public:
-		PrimitiveList( const me::IRenderer * renderer );
+		PrimitiveList( me::IRenderer * renderer );
 		~PrimitiveList();
 
 		PrimitiveList( const PrimitiveList & ) = delete;
@@ -44,7 +44,7 @@ namespace me
 		void ComputeBounds( unify::BBox< float > & bbox ) const;
 
 	protected:
-		const me::IRenderer * m_renderer;
+		me::IRenderer * m_renderer;
 		std::vector< BufferSet::shared_ptr > m_buffers;
 		unify::FrameSet m_frameSet;
 		frameanimation::AnimationSet m_animationSet;

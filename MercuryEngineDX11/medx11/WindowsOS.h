@@ -28,6 +28,8 @@ namespace medx11
 
 		virtual ~WindowsOS();
 
+		me::IGame * GetGame() override;
+
 		void * Feed( std::string target, void * data ) override;
 
 		std::string GetName() const override;

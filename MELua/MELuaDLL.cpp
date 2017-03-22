@@ -21,21 +21,31 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	game->AddComponent( me::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
 
 	// Automatically add "game.lua" GameComponent...
-	unify::Path source("game.lua");
+	unify::Path startup("game.lua");
 	if (element->HasElements("startup"))
 	{
-		source = element->GetElement("startup")->GetText();
-		unify::Path(game->GetOS()->GetAssetPaths().FindAsset(source));
+		startup = element->GetElement("startup")->GetText();
+		game->LogLine("MELua Loader: \"startup\" node found, setting startupOnce to \"" + startup.ToString() + "\".");
 	}
-	source = unify::Path(game->GetOS()->GetAssetPaths().FindAsset(source));
+	else
+	{
+		game->LogLine("MELua Loader: \"startup\" node NOT found.");
+	}
+	startup = unify::Path(game->GetOS()->GetAssetPaths().FindAsset(startup));
 
 	// Auto-scene script scene manager component..
 	unify::Path autoPath;
 	if (element->HasElements("auto"))
 	{
-		unify::Path autoPath(element->GetElement("auto")->GetText());
+		autoPath = element->GetElement("auto")->GetText();
+		game->LogLine("MELua Loader: \"auto\" node found, setting autoPath to \"" + autoPath.ToString() + "\".");
 	}
-	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + "scene/", source );
+	else
+	{
+		game->LogLine("MELua Loader: \"auto\" node NOT found.");
+	}
+
+	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + "scene/", startup);
 	auto sceneManager = game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
 	sceneManager->AddComponent( me::scene::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );		  
 

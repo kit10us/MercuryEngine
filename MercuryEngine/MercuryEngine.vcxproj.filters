@@ -46,6 +46,27 @@
     <Filter Include="me\action">
       <UniqueIdentifier>{43b718bc-fbdd-4763-a8dc-39aea0833b5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\object\action">
+      <UniqueIdentifier>{99f6a1ba-a884-46fc-864b-d068e036cfda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\dyna">
+      <UniqueIdentifier>{d4046885-170a-4504-bd4b-06e2085a93b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\dyna\position">
+      <UniqueIdentifier>{c39a2bcc-5e35-4241-987e-58020aa57ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\dyna\color">
+      <UniqueIdentifier>{40064361-c965-4a03-aa41-e9841ffc667f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\dyna\delta">
+      <UniqueIdentifier>{67727f74-bf1d-4e28-b39f-8ef2c1f6a5e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\dyna\scale">
+      <UniqueIdentifier>{20fb8935-2a8a-4643-b06c-635b8d00272f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\dyna\rotation">
+      <UniqueIdentifier>{a3932ada-703f-4c0b-a2f9-6cde99d7329c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -480,9 +501,6 @@
     <ClInclude Include="me\GameComponent.h">
       <Filter>me\core</Filter>
     </ClInclude>
-    <ClInclude Include="me\IUnknown.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\ObjectAllocator.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -530,6 +548,93 @@
     </ClInclude>
     <ClInclude Include="me\scene\DefaultSceneFactory.h">
       <Filter>me\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\ObjectActionComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\action\IObjectAction.h">
+      <Filter>me\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\IDynaPosition.h">
+      <Filter>me\dyna</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\position\DP_Absolute.h">
+      <Filter>me\dyna\position</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\position\DP_Object.h">
+      <Filter>me\dyna\position</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\position\DP_Add.h">
+      <Filter>me\dyna\position</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\action\OA_SetPosition.h">
+      <Filter>me\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\action\OA_IgnoreResult.h">
+      <Filter>me\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\action\OA_List.h">
+      <Filter>me\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\IDynaColor.h">
+      <Filter>me\dyna</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\IDynaRotation.h">
+      <Filter>me\dyna</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\IDynaScale.h">
+      <Filter>me\dyna</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\Dyna.h">
+      <Filter>me\dyna</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\scale\DS_Absolute.h">
+      <Filter>me\dyna\scale</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\scale\DS_Add.h">
+      <Filter>me\dyna\scale</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\rotation\DR_Absolute.h">
+      <Filter>me\dyna\rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\rotation\DR_Add.h">
+      <Filter>me\dyna\rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\rotation\DR_Mul.h">
+      <Filter>me\dyna\rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\position\DP_Mul.h">
+      <Filter>me\dyna\position</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\delta\DD_Mul.h">
+      <Filter>me\dyna\delta</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\delta\DD_Add.h">
+      <Filter>me\dyna\delta</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\scale\DS_Delta.h">
+      <Filter>me\dyna\scale</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\IDynaDelta.h">
+      <Filter>me\dyna</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\rotation\DR_Delta.h">
+      <Filter>me\dyna\rotation</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\delta\DD_Absolute.h">
+      <Filter>me\dyna\delta</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\position\DP_Delta.h">
+      <Filter>me\dyna\position</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\color\DC_Delta.h">
+      <Filter>me\dyna\color</Filter>
+    </ClInclude>
+    <ClInclude Include="me\dyna\position\DP_Dampen.h">
+      <Filter>me\dyna\position</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IThing.h">
+      <Filter>me\i</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -868,6 +973,69 @@
     </ClCompile>
     <ClCompile Include="me\action\ToggleAction.cpp">
       <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\ObjectActionComponent.cpp">
+      <Filter>me\object</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\position\DP_Object.cpp">
+      <Filter>me\dyna\position</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\position\DP_Absolute.cpp">
+      <Filter>me\dyna\position</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\position\DP_Add.cpp">
+      <Filter>me\dyna\position</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\action\OA_SetPosition.cpp">
+      <Filter>me\object\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\action\OA_IgnoreResult.cpp">
+      <Filter>me\object\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\action\OA_List.cpp">
+      <Filter>me\object\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\scale\DS_Absolute.cpp">
+      <Filter>me\dyna\scale</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\scale\DS_Add.cpp">
+      <Filter>me\dyna\scale</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\rotation\DR_Add.cpp">
+      <Filter>me\dyna\rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\rotation\DR_Absolute.cpp">
+      <Filter>me\dyna\rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\rotation\DR_Mul.cpp">
+      <Filter>me\dyna\rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\position\DP_Mul.cpp">
+      <Filter>me\dyna\position</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\delta\DD_Mul.cpp">
+      <Filter>me\dyna\delta</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\delta\DD_Add.cpp">
+      <Filter>me\dyna\delta</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\scale\DS_Delta.cpp">
+      <Filter>me\dyna\scale</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\rotation\DR_Delta.cpp">
+      <Filter>me\dyna\rotation</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\delta\DD_Absolute.cpp">
+      <Filter>me\dyna\delta</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\position\DP_Delta.cpp">
+      <Filter>me\dyna\position</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\color\DC_Delta.cpp">
+      <Filter>me\dyna\color</Filter>
+    </ClCompile>
+    <ClCompile Include="me\dyna\position\DP_Dampen.cpp">
+      <Filter>me\dyna\position</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

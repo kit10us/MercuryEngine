@@ -20,7 +20,7 @@ BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component 
 }
 
 BBoxRendererComponent::BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color )
-	: ObjectComponent( "BBoxRenderer" )
+	: ObjectComponent( "BBoxRenderer", false, true )
 	, m_os{ os }
 	, m_effect{ effect }
 	, m_padding{ 0.1f }

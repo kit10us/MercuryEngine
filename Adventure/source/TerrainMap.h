@@ -30,7 +30,6 @@ private:
 public:
 
 	std::string GetWhat() const override;
-	bool Renderable() const override;
 	void CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform ) override;
 	void OnSuspend() override;
 	void OnResume() override;

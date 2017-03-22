@@ -21,9 +21,6 @@ namespace me
 			ObjectInputMotivator();
 
 			virtual ~ObjectInputMotivator();
-
-			bool Updateable() const override;		
-			bool Renderable() const override;		
 															
 			motivator::IInputMotivator * GetMotivator();
 

@@ -5,7 +5,7 @@
 
 using namespace me;
 
-BufferSet::BufferSet( const me::IRenderer * renderer )
+BufferSet::BufferSet( me::IRenderer * renderer )
 	: m_renderer( renderer )
 	, m_enabled( true )
 {

@@ -24,8 +24,6 @@ namespace me
 
 			std::string GetWhat() const override;
 
-			bool Renderable() const { return true; }
-
 			/// <summary>
 			/// Get padding: the amount added to each vertex to increase the size of the visual BBox over the acutal BBox (so we can actually see it).
 			/// </summary>

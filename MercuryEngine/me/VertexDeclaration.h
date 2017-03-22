@@ -29,7 +29,7 @@ namespace me
 
 		~VertexDeclaration();
 
-		void Build( const class IRenderer * renderer, const IVertexShader & vs );
+		void Build( class IRenderer * renderer, const IVertexShader & vs );
 		
 		bool operator==( const VertexDeclaration & b ) const;
 		bool operator!=( const VertexDeclaration & b ) const;

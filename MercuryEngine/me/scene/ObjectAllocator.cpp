@@ -25,7 +25,7 @@ std::string ObjectAllocator::GetWhat() const
 	return std::string();
 }
 
-IUnknown* ObjectAllocator::QueryInterface( std::string name )
+me::IThing* ObjectAllocator::QueryInterface( std::string name )
 {
 	auto itr = m_interfaces.find( name );
 	if ( itr == m_interfaces.end() )
@@ -36,7 +36,7 @@ IUnknown* ObjectAllocator::QueryInterface( std::string name )
 	return itr->second;
 }
 
-void ObjectAllocator::AddInterface( std::string name, IUnknown* ptr )
+void ObjectAllocator::AddInterface( std::string name, me::IThing* ptr )
 {
 	m_interfaces[ name ] = ptr;
 }

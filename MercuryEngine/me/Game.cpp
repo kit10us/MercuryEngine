@@ -395,20 +395,21 @@ bool Game::Initialize( OSParameters osParameters )
 		xmlLoader( m_setup );
 	}
 
-	LogLine( "OS Startup", 0 );
+	LogLine( "OS Startup Begin", 0 );
 	m_os->Startup();
 	LogLine( "OS Startup Done", 0 );
 	
-	LogLine( "OnBeforeStartup", 0 );
+	LogLine( "Game Component's OnBeforeStartup Begin", 0 );
 	for( auto && component : m_components )
 	{
-		LogLine( "OnBeforeStart " + component->GetTypeName() + "..." );
+		LogLine( "OnBeforeStart \"" + component->GetTypeName() + "\" Begin" );
 		component->OnBeforeStartup();
+		LogLine( "OnBeforeStart \"" + component->GetTypeName() + "\" Done");
 	}
-	LogLine( "OnBeforeStartup Done", 0 );
+	LogLine( "Game Component's OnBeforeStartup Done", 0 );
 
 	
-	LogLine( "Startup", 0 );
+	LogLine( "Game's Startup Begin", 0 );
 	try
 	{
 		Startup();
@@ -418,13 +419,14 @@ bool Game::Initialize( OSParameters osParameters )
 		LogLine( "Startup FAILED" );
 		ReportError( ErrorLevel::Critical, "Game", ex.what() );
 	}
-	LogLine( "Startup Done", 0 );
+	LogLine( "Game's Startup Done", 0 );
 
-	LogLine( "OnAfterStartup", 0 );
+	LogLine( "OnAfterStartup Begin", 0 );
 	for( auto && component : m_components )
 	{
-		LogLine( "OnAfterStarutp " + component->GetTypeName() + "..." );
+		LogLine("OnAfterStartup \"" + component->GetTypeName() + "\" Begin");
 		component->OnAfterStartup();
+		LogLine("OnAfterStartup \"" + component->GetTypeName() + "\" Done");
 	}
 	LogLine( "OnAfterStartup Done", 0 );
 

@@ -10,13 +10,13 @@
 using namespace medx11;
 using namespace me;
 
-VertexBuffer::VertexBuffer( const me::IRenderer * renderer )
-	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
+VertexBuffer::VertexBuffer( me::IRenderer * renderer )
+	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 	, m_usage( BufferUsage::Default )
 {
 }
 
-VertexBuffer::VertexBuffer( const me::IRenderer * renderer, me::VertexBufferParameters parameters )
+VertexBuffer::VertexBuffer( me::IRenderer * renderer, me::VertexBufferParameters parameters )
 	: VertexBuffer( renderer )
 {
 	Create( parameters );

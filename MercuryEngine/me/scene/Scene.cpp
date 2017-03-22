@@ -28,23 +28,40 @@ Scene::~Scene()
 
 void Scene::Start()
 {
+	GetGame()->LogLine("Start scene \"" + GetName() + "\" Begin", 0 );
 	for ( auto && component : m_components )
 	{
+
 		if ( component->IsEnabled() )
 		{
+			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnBeforeStart Begin" );
 			component->OnBeforeStart();
+			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnBeforeStart Done");
+		}
+		else
+		{
+			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnBeforeStart Skipped (not enabled)");
 		}
 	}
 
+	GetGame()->LogLine("Scene OnStart Begin");
 	OnStart();
+	GetGame()->LogLine("Scene OnStart End");
 
 	for ( auto && component : m_components )
 	{
-		if ( component->IsEnabled() )
+		if (component->IsEnabled())
 		{
+			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Begin");
 			component->OnAfterStart();
+			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Done");
+		}
+		else
+		{
+			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)");
 		}
 	}
+	GetGame()->LogLine("Start scene \"" + GetName() + "\" Done");
 }
 
 void Scene::Update( UpdateParams params )

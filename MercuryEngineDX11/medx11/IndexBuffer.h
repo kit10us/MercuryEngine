@@ -18,8 +18,8 @@ namespace medx11
 	class IndexBuffer : public me::IIndexBuffer
 	{
 	public:
-		IndexBuffer( const me::IRenderer * renderer );
-		IndexBuffer( const me::IRenderer * renderer, me::IndexBufferParameters parameters );
+		IndexBuffer( me::IRenderer * renderer );
+		IndexBuffer( me::IRenderer * renderer, me::IndexBufferParameters parameters );
 		~IndexBuffer();
 
 		void Create( me::IndexBufferParameters parameters );

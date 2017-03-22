@@ -2,7 +2,7 @@ Initializing:
   name:    C:\dev\ws\MercuryTests\09tests_scripting\09Test01 - Lua\..\..\..\output\v140_Debug\09Test01 - Lua\09Test01 - Lua.exe
   program: C:\dev\ws\MercuryTests\09tests_scripting\output\v140_Debug\09Test01 - Lua\09Test01 - Lua.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Tue Mar 21 16:08:52 2017
+  time:    Tue Mar 21 16:40:11 2017
 
   Loading setup "setup_luago.xml"...
   Loading setup "setup_base.xml"...
@@ -25,7 +25,7 @@ OnAfterStartup
   OnAfterStarutp Lua...
   OnAfterStarutp ActionsGameComponent...
 OnAfterStartup Done
-total startup time: 1.185384s
+total startup time: 1.079532s
 Creating Main Scene
   Loading startup script "../test_data/scripts/game.lua".
   Geometry manager: adding "cube" (../test_data/models/ShapeCube.shape).
@@ -57,6 +57,6 @@ OnDetach
   Detaching Lua
   Detaching ActionsGameComponent
 OnDetachDone
-  time: Tue Mar 21 16:08:59 2017
+  time: Tue Mar 21 16:51:03 2017
 
-  frames: 2654, total delta: 0.002087s,  average fps:479.260498
+  frames: 297246, total delta: 0.002187s,  average fps:457.254272

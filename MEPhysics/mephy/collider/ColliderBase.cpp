@@ -14,7 +14,7 @@ ColliderBase::ColliderBase( ColliderBase & component )
 }
 
 ColliderBase::ColliderBase( std::string name )
-	: ObjectComponent( name )
+	: ObjectComponent( name, true, false )
 {
 }
 

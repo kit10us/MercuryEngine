@@ -9,7 +9,7 @@ struct VS_OUT
 {
 	float4 position		: SV_POSITION;
 	float4 color		: COLOR;
-	float3 normal       : TEXCOORD0;
+	float3 normal       : NORMAL;
 };
 
 cbuffer Constants

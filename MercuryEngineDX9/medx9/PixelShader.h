@@ -13,8 +13,8 @@ namespace medx9
 	class PixelShader : public me::IPixelShader
 	{
 	public:
-		PixelShader( const me::IRenderer * renderer );
-		PixelShader( const me::IRenderer * renderer, me::PixelShaderParameters parameters );
+		PixelShader( me::IRenderer * renderer );
+		PixelShader( me::IRenderer * renderer, me::PixelShaderParameters parameters );
 
 		~PixelShader();
 

@@ -54,8 +54,8 @@ std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 	return outVector;
 }				   
 
-VertexConstruct::VertexConstruct( const me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs )
-	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
+VertexConstruct::VertexConstruct( me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs )
+	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 {
 	if ( vd.GetNumberOfElements() == 0 )
 	{

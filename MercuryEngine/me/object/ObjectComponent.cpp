@@ -11,12 +11,16 @@ namespace {
 	{
 		{ "typename", 0 },
 		{ "enabled", 1 },
+		{ "update", 2 },
+		{ "render", 3 }
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
 		{ "typename" },
 		{ "enabled" },
+		{ "update" },
+		{ "render" }
 	};
 }
 
@@ -35,6 +39,8 @@ ObjectComponent::ObjectComponent( const ObjectComponent & component )
 	, m_values( component.m_values )
 	, m_object{ nullptr }
 	, m_enabled{ true }
+	, m_update{ component.m_update }
+	, m_render{ component.m_render }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "IObjectComponent", this );
@@ -42,10 +48,12 @@ ObjectComponent::ObjectComponent( const ObjectComponent & component )
 	AddInterface( m_typeName, this );
 }
 
-ObjectComponent::ObjectComponent( std::string typeName )
+ObjectComponent::ObjectComponent( std::string typeName, bool update, bool render )
 	: m_typeName{ typeName }
 	, m_object{ nullptr }
 	, m_enabled{ true }
+	, m_update{ update }
+	, m_render{ render }
 {
 	AddInterface( "IComponent", this );
 	AddInterface( "IObjectComponent", this );
@@ -67,9 +75,19 @@ const Object* ObjectComponent::GetObject() const
 	return m_object;
 }
 
-void ObjectComponent::AddInterface( std::string name, IUnknown* ptr )
+void ObjectComponent::AddInterface( std::string name, me::IThing* ptr )
 {
 	m_interfaceMap[ name ] = ptr;
+}
+
+bool ObjectComponent::Updateable() const 
+{ 
+	return m_update; 
+}
+
+bool ObjectComponent::Renderable() const 
+{
+	return m_render; 
 }
 
 void ObjectComponent::OnAttach( Object * object )
@@ -155,6 +173,12 @@ bool ObjectComponent::SetValue( int index, std::string value )
 	case 1:
 		m_enabled = unify::Cast< bool >( value );
 		return true;
+	case 2:
+		m_update = unify::Cast< bool >( value );
+		return true;
+	case 3:
+		m_render = unify::Cast< bool >( value );
+		return true;
 	default:
 		return m_values.SetValue( index - g_ValuesMap.size(), value );
 	}
@@ -174,6 +198,10 @@ std::string ObjectComponent::GetValue( int index ) const
 		return m_typeName;
 	case 1:
 		return unify::Cast< std::string >( m_enabled );
+	case 2:
+		return unify::Cast< std::string >( m_update );
+	case 3:
+		return unify::Cast< std::string >( m_render );
 	default:
 		return m_values.GetValue( index - g_ValuesMap.size() );
 	}
@@ -185,7 +213,7 @@ std::string ObjectComponent::GetValue( std::string name ) const
 	return GetValue( index );
 }
 
-IUnknown* ObjectComponent::QueryInterface( std::string name )
+me::IThing* ObjectComponent::QueryInterface( std::string name )
 {
 	auto itr = m_interfaceMap.find( name );
 	if ( itr == m_interfaceMap.end() )

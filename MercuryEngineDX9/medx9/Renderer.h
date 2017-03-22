@@ -18,7 +18,10 @@ namespace medx9
 	{
 	public:
 		Renderer( WindowsOS * os, me::Display display, size_t index );
-		virtual ~Renderer();																															   
+		virtual ~Renderer();					
+
+		me::IGame * GetGame() override;
+
 		const me::Display & GetDisplay() const;
 
 		IDirect3DDevice9 * GetDxDevice() const;
@@ -40,15 +43,15 @@ namespace medx9
 
 		me::ISketcher * GetSketcher() override;
 
-		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) const override;
-		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) const override;
-		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) const override;
-		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) const override;
-		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) const override;
-		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) const override;
+		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
+		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;
+		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) override;
+		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) override;
+		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) override;
+		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) override;
 
 	private:
-		WindowsOS * m_OS;
+		WindowsOS * m_os;
 		me::Display m_display;
 		D3DPRESENT_PARAMETERS m_pp;
 		CComPtr< IDirect3DDevice9 > m_dxDevice;

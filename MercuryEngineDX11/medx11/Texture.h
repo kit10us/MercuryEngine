@@ -47,7 +47,7 @@ namespace medx11
 
 		static bool s_allowTextureUses;
 
-		Texture( const me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
+		Texture( me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
 		virtual ~Texture();
 
 		// ::Resource...

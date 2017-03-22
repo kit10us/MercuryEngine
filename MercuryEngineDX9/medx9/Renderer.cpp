@@ -18,7 +18,7 @@ using namespace medx9;
 using namespace me;
 
 Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
-		: m_OS( os )
+		: m_os( os )
 		, m_display( display )
 		, m_index( index )
 {
@@ -107,6 +107,11 @@ Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 
 Renderer::~Renderer()
 {
+}
+
+me::IGame * Renderer::GetGame()
+{
+	return m_os->GetGame();
 }
 
 const me::Display & Renderer::GetDisplay() const
@@ -238,32 +243,32 @@ me::ISketcher * Renderer::GetSketcher()
 }
 
 
-me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) const
+me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters )
 {
 	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
 }
 
-me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters ) const
+me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters )
 {
 	return me::IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
 }
 
-me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters )	const
+me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters )
 {
 	return me::IVertexShader::ptr( new VertexShader( this, parameters ) );
 }
 
-me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters ) const
+me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters )
 {
 	return me::IPixelShader::ptr( new PixelShader( this, parameters ) );
 }
 
-me::IVertexConstruct::ptr Renderer::ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) const
+me::IVertexConstruct::ptr Renderer::ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs )
 {
 	return me::IVertexConstruct::ptr( new VertexConstruct( this, vd ) );
 }
 
-me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters ) const
+me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters )
 {
 	return me::ITexture::ptr( new Texture( this, parameters ) );
 }

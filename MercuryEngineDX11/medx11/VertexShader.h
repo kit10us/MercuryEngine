@@ -14,8 +14,8 @@ namespace medx11
 	class VertexShader : public me::IVertexShader
 	{
 	public:
-		VertexShader( const me::IRenderer * renderer );
-		VertexShader( const me::IRenderer * renderer, me::VertexShaderParameters parameters );
+		VertexShader( me::IRenderer * renderer );
+		VertexShader( me::IRenderer * renderer, me::VertexShaderParameters parameters );
 
 		~VertexShader();
 
@@ -55,7 +55,7 @@ namespace medx11
 		me::shader::ConstantBuffer::ptr m_constants;
 
 		me::VertexDeclaration::ptr m_vertexDeclaration;
-		const Renderer * m_renderer;
+		Renderer * m_renderer;
 
 		CComPtr< ID3D11VertexShader > m_vertexShader;
 		CComPtr< ID3D10Blob > m_vertexShaderBuffer;

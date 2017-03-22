@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="source\Adventure.cpp" />
     <ClCompile Include="source\CameraMotivator.cpp" />
-    <ClCompile Include="source\FollowComponent.cpp" />
     <ClCompile Include="source\GroundDesc.cpp" />
     <ClCompile Include="source\MainScene.cpp" />
     <ClCompile Include="source\TerrainMap.cpp" />
@@ -29,7 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CameraMotivator.h" />
-    <ClInclude Include="source\FollowComponent.h" />
     <ClInclude Include="source\GroundDesc.h" />
     <ClInclude Include="source\MainScene.h" />
     <ClInclude Include="source\TerrainMap.h" />

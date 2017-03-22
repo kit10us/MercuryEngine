@@ -8,7 +8,7 @@
 
 namespace me
 {
-	class IUnknown
+	class IThing
 	{
 	public:
 		///////////////////////////////////
@@ -29,7 +29,7 @@ namespace me
 		/// Interface functions...
 		///////////////////////////////////
 
-		virtual IUnknown* QueryInterface( std::string name ) = 0;
+		virtual IThing* QueryInterface( std::string name ) = 0;
 
 		template< typename T >
 		T* QueryInterfaceT( std::string name )

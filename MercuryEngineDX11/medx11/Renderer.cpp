@@ -20,7 +20,7 @@ using namespace medx11;
 using namespace me;
 
 Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
-	: m_OS( os )
+	: m_os( os )
 	, m_display( display )
 	, m_swapChainDesc{}
 	, m_index{ index }
@@ -157,6 +157,11 @@ Renderer::~Renderer()
 	m_instanceBufferM[ 1 ] = nullptr;
 	m_dxContext = nullptr;
 	m_dxDevice = nullptr;
+}
+
+me::IGame * Renderer::GetGame()
+{
+	return m_os->GetGame();
 }
 
 const me::Display & Renderer::GetDisplay() const
@@ -364,32 +369,32 @@ me::ISketcher * Renderer::GetSketcher()
 	return nullptr;
 }
 
-me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) const
+me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) 
 {
 	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
 }
 
-me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters ) const
+me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters ) 
 {
 	return me::IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
 }
 
-me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters ) const
+me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters ) 
 {
 	return me::IVertexShader::ptr( new VertexShader( this, parameters ) );
 }
 
-me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters ) const
+me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters ) 
 {
 	return me::IPixelShader::ptr( new PixelShader( this, parameters ) );
 }
 
-me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters ) const
+me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters ) 
 {
 	return me::ITexture::ptr( new Texture( this, parameters ) );
 }
 
-me::IVertexConstruct::ptr Renderer::ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) const
+me::IVertexConstruct::ptr Renderer::ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) 
 {
 	return me::IVertexConstruct::ptr( new VertexConstruct( this, vd, vs ) );
 }

@@ -54,7 +54,7 @@ const IGame * GameComponent::GetGame() const
 	return m_game;
 }
 
-void GameComponent::AddInterface( std::string name, IUnknown* ptr )
+void GameComponent::AddInterface( std::string name, me::IThing* ptr )
 {
 	m_interfaceMap[ name ] = ptr;
 }
@@ -181,7 +181,7 @@ std::string GameComponent::GetValue( std::string name ) const
 	return GetValue( index );
 }
 
-me::IUnknown* GameComponent::QueryInterface( std::string name )
+me::IThing* GameComponent::QueryInterface( std::string name )
 {
 	auto itr = m_interfaceMap.find( name );
 	if ( itr == m_interfaceMap.end() )

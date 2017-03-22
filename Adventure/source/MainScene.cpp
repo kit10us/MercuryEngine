@@ -13,7 +13,15 @@
 #include <mephy/GameComponent.h>
 
 #include <CameraMotivator.h>
-#include <FollowComponent.h>
+
+
+#include <me/object/ObjectActionComponent.h>
+#include <me/object/action/OA_SetPosition.h>
+
+#include <me/dyna/position/DP_Absolute.h>
+#include <me/dyna/position/DP_Add.h>
+#include <me/dyna/position/DP_Object.h>
+#include <me/dyna/position/DP_Dampen.h>
 
 
 using namespace me;
@@ -83,11 +91,17 @@ void MainScene::OnStart()
 	target->AddComponent( IObjectComponent::ptr( cameraMotivator ) );
 
 	Object * camera = FindObject( "camera" );
-	if ( camera )
+	if (camera)
 	{
-		auto follow = new FollowComponent();
-		follow->SetTarget( target );
-		follow->SetOffset( unify::MatrixTranslate( { 0, 17, -12 } ) );
+		using namespace dyna;
+		typedef IDynaPosition::ptr DP;
+
+		auto follow = new object::ObjectActionComponent( object::action::IObjectAction::ptr( 
+			new object::action::SetPosition( DP(
+				new position::Add( 
+						DP( new position::Object( target ) ), DP(new position::Absolute({ 0, 17, -12 }))
+				)
+			) ) ) );
 		camera->AddComponent( IObjectComponent::ptr( follow ) );
 	}
 

@@ -10,8 +10,8 @@ using namespace medx11;
 using namespace me;
 using namespace shader;
 
-VertexShader::VertexShader( const me::IRenderer * renderer )
-	: m_renderer( dynamic_cast< const Renderer * >(renderer) )
+VertexShader::VertexShader( me::IRenderer * renderer )
+	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 	, m_assembly( false )
 	, m_created( false )
 	, m_locked{ 0 }
@@ -19,7 +19,7 @@ VertexShader::VertexShader( const me::IRenderer * renderer )
 {
 }
 
-VertexShader::VertexShader( const me::IRenderer * renderer, VertexShaderParameters parameters )
+VertexShader::VertexShader( me::IRenderer * renderer, VertexShaderParameters parameters )
 	: VertexShader( renderer )
 {
 	Create( parameters );

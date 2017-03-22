@@ -8,8 +8,8 @@ using namespace medx9;
 using namespace me;
 using namespace shader;
 
-VertexShader::VertexShader( const me::IRenderer * renderer )
-	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
+VertexShader::VertexShader( me::IRenderer * renderer )
+	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_worldMatrixHandle( 0 )
 	, m_viewMatrixHandle( 0 )
 	, m_projectionMatrixHandle( 0 )
@@ -18,8 +18,8 @@ VertexShader::VertexShader( const me::IRenderer * renderer )
 {
 }
 
-VertexShader::VertexShader( const me::IRenderer * renderer, VertexShaderParameters parameters )
-	: m_renderer( dynamic_cast< const Renderer * >( renderer ) )
+VertexShader::VertexShader( me::IRenderer * renderer, VertexShaderParameters parameters )
+	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_worldMatrixHandle( 0 )
 	, m_viewMatrixHandle( 0 )
 	, m_projectionMatrixHandle( 0 )

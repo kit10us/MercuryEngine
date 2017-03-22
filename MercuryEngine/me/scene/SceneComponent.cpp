@@ -56,7 +56,7 @@ const IScene * SceneComponent::GetScene() const
 	return m_scene;
 }
 
-void SceneComponent::AddInterface( std::string name, IUnknown* ptr )
+void SceneComponent::AddInterface( std::string name, IThing* ptr )
 {
 	m_interfaceMap[ name ] = ptr;
 }
@@ -186,7 +186,7 @@ std::string SceneComponent::GetValue( std::string name ) const
 	return GetValue( index );
 }
 
-me::IUnknown* SceneComponent::QueryInterface( std::string name )
+me::IThing* SceneComponent::QueryInterface( std::string name )
 {
 	auto itr = m_interfaceMap.find( name );
 	if ( itr == m_interfaceMap.end() )
