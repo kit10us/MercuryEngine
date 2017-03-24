@@ -53,8 +53,6 @@ namespace me
 
 		virtual const unify::Size< unsigned int > & ImageSize() const = 0;
 
-		virtual bool Use( unsigned int stage ) = 0;
-
 		virtual bool GetRenderable() const = 0;
 
 		virtual bool GetLockable() const = 0;

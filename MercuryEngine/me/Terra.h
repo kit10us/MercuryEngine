@@ -18,7 +18,7 @@
 #include <unify/TexArea.h>
 #include <unify/Parameters.h>
 #include <unify/ColorUnit.h>
-#include <unify/MinMax.h>
+#include <unify/Range.h>
 
 namespace me
 {
@@ -113,7 +113,7 @@ namespace me
 		/// </summary>
 		float GetDepth( unify::RowColumn< unsigned int > rc ) const;
 
-		unify::MinMax< float > GetMinMax() const;
+		unify::Range< float > GetMinMax() const;
 
 		unify::Size< float > GetSize() const;
 
@@ -121,7 +121,7 @@ namespace me
 		unify::Parameters m_parameters;
 		unify::Size< float > m_size;
 		float * m_depth;
-		unify::MinMax< float > m_minmax;
+		unify::Range< float > m_minmax;
 		unify::RowColumn< unsigned int > m_pointCount;
 	};
 }

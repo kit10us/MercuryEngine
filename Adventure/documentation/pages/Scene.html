@@ -25,6 +25,7 @@ h1, h3 {
    <li><b><i>scene</i>:NewCamera( name )</b> - Creates a scene objects and adds a camera component to it.</li>
    <li><b><i>scene</i>:FindObject( name )</b> - Find an existing scene object.</li>
    <li><b><i>scene</i>:GetObjectCount()</b> - Get the number of scene objects the scene owns.</li>
+   <li><b>string <i>scene</i>:GetObjectCount( command, extra )</b> - Sends a command to the scene. Command and extra are strings. Return is a string, which is typically "" on faiure or ignored, else it's value depends on the command.</li>
  </ul> 
 
  <copyright>

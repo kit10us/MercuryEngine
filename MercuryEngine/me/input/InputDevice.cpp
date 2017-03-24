@@ -1,7 +1,7 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/input/InputSource.h>
+#include <me/input/InputDevice.h>
 
 #include <me/input/InputType.h>
 #include <me/action/IAction.h>
@@ -13,25 +13,25 @@ using namespace me;
 using namespace input;
 
 
-InputSource::InputSource()
+InputDevice::InputDevice()
 {
 }
 
-InputSource::~InputSource() 
+InputDevice::~InputDevice() 
 {
 }
 
-void InputSource::AddEvent( unify::Owner::ptr owner, IInputCondition::ptr condition, IInputAction::ptr action )
+void InputDevice::AddEvent( unify::Owner::ptr owner, IInputCondition::ptr condition, IInputAction::ptr action )
 {
 	m_events.push_back({ owner, condition, action });
 }
 
-void InputSource::ClearEvents()
+void InputDevice::ClearEvents()
 {
 	m_events.clear();
 }
 
-int InputSource::HandleEvents()
+int InputDevice::HandleEvents( float delta )
 {
 	int triggered = 0;
 	for( auto itr = m_events.begin(); itr != m_events.end(); )
@@ -44,9 +44,9 @@ int InputSource::HandleEvents()
 		}
 		else
 		{
-			if ( itr->condition->IsTrue() )
+			if ( itr->condition->IsTrue( this ) )
 			{
-				itr->action->Perform(itr->condition.get());
+				itr->action->Perform( this, itr->condition.get(), delta );
 				triggered++;
 			}
 			itr++;

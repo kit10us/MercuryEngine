@@ -126,9 +126,6 @@
     <ClInclude Include="unify\Matrix.h">
       <Filter>unify</Filter>
     </ClInclude>
-    <ClInclude Include="unify\MinMax.h">
-      <Filter>unify</Filter>
-    </ClInclude>
     <ClInclude Include="unify\NinePoint.h">
       <Filter>unify</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
     <ClInclude Include="unify\Owner.h">
       <Filter>unify</Filter>
     </ClInclude>
+    <ClInclude Include="unify\Range.h">
+      <Filter>unify</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="unify\BBox.inl">
@@ -234,9 +234,6 @@
       <Filter>unify</Filter>
     </None>
     <None Include="unify\List.inl">
-      <Filter>unify</Filter>
-    </None>
-    <None Include="unify\MinMax.inl">
       <Filter>unify</Filter>
     </None>
     <None Include="unify\Optional.inl">
@@ -282,6 +279,9 @@
       <Filter>unify</Filter>
     </None>
     <None Include="unify\Math.inl">
+      <Filter>unify</Filter>
+    </None>
+    <None Include="unify\Range.inl">
       <Filter>unify</Filter>
     </None>
   </ItemGroup>

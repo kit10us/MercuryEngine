@@ -6,7 +6,7 @@
 #include <unify/Unify.h>
 #include <unify/V2.h>
 #include <unify/Size.h>
-#include <unify/MinMax.h>
+#include <unify/Range.h>
 
 namespace unify
 {

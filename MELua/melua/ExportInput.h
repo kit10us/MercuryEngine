@@ -10,10 +10,10 @@ void RegisterInput( lua_State * state );
 
 struct InputProxy
 {
-	me::input::IInputSource::ptr input;
+	me::input::IInputDevice::ptr input;
 };
 
-int PushInput( lua_State * state, me::input::IInputSource::ptr inputSource );
+int PushInput( lua_State * state, me::input::IInputDevice::ptr inputSource );
 InputProxy* CheckInput( lua_State* state, int index );
 
 

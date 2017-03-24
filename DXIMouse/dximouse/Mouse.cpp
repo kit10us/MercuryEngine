@@ -40,7 +40,7 @@ Mouse::~Mouse()
 {
 }
 
-std::string Mouse::Name() const
+std::string Mouse::GetName() const
 {
 	return "Mouse";
 }
@@ -97,12 +97,12 @@ size_t Mouse::SubSourceCount() const
 	return m_subSources.size();
 }
 
-size_t Mouse::InputCount( size_t subSource ) const
+size_t Mouse::GetInputCount( size_t subSource ) const
 {
 	return g_ButtonNames.size() + g_TrackerNames.size();
 }
 
-std::string Mouse::InputName( size_t subSource, size_t index ) const
+std::string Mouse::GetInputName( size_t subSource, size_t index ) const
 {
 	if ( index < g_ButtonNames.size() )
 	{	
@@ -118,7 +118,7 @@ std::string Mouse::InputName( size_t subSource, size_t index ) const
 	}
 }
 
-size_t Mouse::InputIndex( size_t subSource, std::string name ) const
+size_t Mouse::GetInputIndex( size_t subSource, std::string name ) const
 {
 	auto && itr = m_nameToIndex.find( name );
 	return itr == m_nameToIndex.end() ? MAXSIZE_T : itr->second;
@@ -190,6 +190,12 @@ input::IData::ptr Mouse::GetInputData( size_t subSource, size_t index ) const
 	{
 		return input::IData::ptr();
 	}
+}
+
+me::input::IData::ptr Mouse::GetInputData( size_t subSource, std::string name ) const
+{
+	size_t index = GetInputIndex( subSource, name );
+	return GetInputData( subSource, index );
 }
 
 void Mouse::SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn )

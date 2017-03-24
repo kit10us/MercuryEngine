@@ -116,6 +116,11 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 		throw unify::Exception( "Terra requires either faces or points!" );
 	}
 
+	if( faces.CellCount() <= 0 )
+	{
+		throw unify::Exception( "Terra faces value is zero! We need at least one face (see \"faces\" or \"points\" parameter)." );
+	}
+
     m_size = parameters.Get< unify::Size< float > > ( "size" );
     const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexAreaFull() );
 	const float constant = parameters.Get< float >( "constant", 0.0f );
@@ -1037,7 +1042,7 @@ float Terra::GetDepth( unify::RowColumn< unsigned int > rc ) const
 
 }
 
-unify::MinMax< float > Terra::GetMinMax() const
+unify::Range< float > Terra::GetMinMax() const
 {
 	return m_minmax;
 }

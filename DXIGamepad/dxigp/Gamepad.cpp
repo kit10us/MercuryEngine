@@ -79,7 +79,7 @@ Gamepad::~Gamepad()
 {
 }
 
-std::string Gamepad::Name() const
+std::string Gamepad::GetName() const
 {
 	return "Gamepad";
 }
@@ -103,12 +103,12 @@ size_t Gamepad::SubSourceCount() const
 	return m_states.size();
 }
 
-size_t Gamepad::InputCount( size_t subSource ) const
+size_t Gamepad::GetInputCount( size_t subSource ) const
 {
 	return g_ButtonNames.size() + g_TriggerNames.size() + g_StickNames.size();
 }
 
-std::string Gamepad::InputName( size_t subSource, size_t index ) const
+std::string Gamepad::GetInputName( size_t subSource, size_t index ) const
 {
 	if ( index < (g_ButtonNames.size()) )
 	{
@@ -128,7 +128,7 @@ std::string Gamepad::InputName( size_t subSource, size_t index ) const
 	}
 }
 
-size_t Gamepad::InputIndex( size_t subSource, std::string name ) const
+size_t Gamepad::GetInputIndex( size_t subSource, std::string name ) const
 {
 	auto && itr = m_nameToIndex.find( name );
 	if ( itr == m_nameToIndex.end() )
@@ -244,6 +244,12 @@ input::IData::ptr Gamepad::GetInputData( size_t subSource, size_t index ) const
 	{
 		return input::IData::ptr();
 	}
+}
+
+me::input::IData::ptr Gamepad::GetInputData( size_t subSource, std::string name ) const
+{
+	size_t index = GetInputIndex( subSource, name );
+	return GetInputData( subSource, index );
 }
 
 void Gamepad::SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn )

@@ -304,7 +304,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 					bufferIndex++;
 				}
 				 
-				method.effect->Use(); 
+				method.effect->Use( this, renderInfo );
 
 				if( method.useIB == false )
 				{
@@ -342,7 +342,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 				
 				m_dxContext->Unmap( m_instanceBufferM[0], 0 );
 
-				method.effect->Use();
+				method.effect->Use( this, renderInfo );
 
 				m_dxContext->IASetVertexBuffers( 1, 1, &m_instanceBufferM[0].p, &bufferStride, &offset );
 
@@ -397,4 +397,28 @@ me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters )
 me::IVertexConstruct::ptr Renderer::ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) 
 {
 	return me::IVertexConstruct::ptr( new VertexConstruct( this, vd, vs ) );
+}
+
+void Renderer::UseTextures( std::vector< me::ITexture::ptr > textures )
+{
+	auto dxContext = GetDxContext();
+
+	if( ! textures.size() )
+	{
+		return;
+	}
+	
+	ID3D11ShaderResourceView** views = new ID3D11ShaderResourceView*[ textures.size() ];
+
+	for( size_t i = 0; i < textures.size(); i++ )
+	{
+		auto texture = reinterpret_cast< medx11::Texture* >( textures[i].get() );
+		views[i] = texture->m_colorMap;
+	}
+
+	{
+		auto texture = reinterpret_cast< medx11::Texture* >( textures[0].get() );
+		dxContext->PSSetSamplers( 0, 1, &texture->m_colorMapSampler.p );
+		dxContext->PSSetShaderResources( 0, textures.size(), views );
+	}
 }

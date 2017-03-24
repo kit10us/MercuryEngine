@@ -384,7 +384,7 @@ Keyboard::~Keyboard()
 	m_pdi = 0;
 }
 
-std::string Keyboard::Name() const
+std::string Keyboard::GetName() const
 {
 	return "Keyboard";
 }
@@ -499,12 +499,12 @@ size_t Keyboard::SubSourceCount() const
 	return 1;
 }
 
-size_t Keyboard::InputCount( size_t subSource ) const
+size_t Keyboard::GetInputCount( size_t subSource ) const
 {
 	return m_nameToIndex.size();
 }
 
-std::string Keyboard::InputName( size_t subSource, size_t index ) const
+std::string Keyboard::GetInputName( size_t subSource, size_t index ) const
 {
 	if ( index < g_Buttons.size() )
 	{
@@ -532,7 +532,7 @@ std::string Keyboard::InputName( size_t subSource, size_t index ) const
 	}
 }
 
-size_t Keyboard::InputIndex( size_t subSource, std::string name ) const
+size_t Keyboard::GetInputIndex( size_t subSource, std::string name ) const
 {	
 	auto && itr = m_nameToIndex.find( name );
 	if ( itr == m_nameToIndex.end() )
@@ -601,6 +601,12 @@ input::IData::ptr Keyboard::GetInputData( size_t subSource, size_t index ) const
 	{
 		return IData::ptr();
 	}
+}
+
+me::input::IData::ptr Keyboard::GetInputData( size_t subSource, std::string name ) const
+{
+	size_t index = GetInputIndex( subSource, name );
+	return GetInputData( subSource, index );
 }
 
 void Keyboard::SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn )

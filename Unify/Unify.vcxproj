@@ -61,7 +61,7 @@
     <ClInclude Include="unify\LinkList.h" />
     <ClInclude Include="unify\List.h" />
     <ClInclude Include="unify\Matrix.h" />
-    <ClInclude Include="unify\MinMax.h" />
+    <ClInclude Include="unify\Range.h" />
     <ClInclude Include="unify\NinePoint.h" />
     <ClInclude Include="unify\Parameters.h" />
     <ClInclude Include="unify\Plane.h" />
@@ -93,7 +93,7 @@
     <None Include="unify\LinkList.inl" />
     <None Include="unify\List.inl" />
     <None Include="unify\Math.inl" />
-    <None Include="unify\MinMax.inl" />
+    <None Include="unify\Range.inl" />
     <None Include="unify\Optional.inl" />
     <None Include="unify\Parameters.inl" />
     <None Include="unify\Ray.inl" />

@@ -22,5 +22,6 @@ namespace sg
 	    ShapeBaseParameters & SetTextureMode( int textureMode );
 		ShapeBaseParameters & SetEffect( me::Effect::ptr effect );
 		ShapeBaseParameters & SetFaceUV( std::vector< unify::TexArea > faceUV );
-    };
+		ShapeBaseParameters & SetFaceUV( size_t index, std::vector< unify::TexArea > faceUV );
+	};
 }

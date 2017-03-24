@@ -105,6 +105,8 @@ namespace me
 
 		virtual bool IsQuitting() const = 0;
 
+		virtual unify::Owner::ptr GetOwnership() = 0;
+
 		virtual input::InputManager * GetInputManager() = 0;
 		virtual const input::InputManager * GetInputManager() const = 0;
 

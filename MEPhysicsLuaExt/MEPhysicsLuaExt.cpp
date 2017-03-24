@@ -23,7 +23,7 @@
 	#pragma comment( lib, "../extensions/Debug/MEPhysics.lib" )
 #else
 	#pragma comment( lib, "../extensions/Release/MELua.lib" )
-	#pragma comment( lib, "../extensions/Relesase/MEPhysics.lib" )
+	#pragma comment( lib, "../extensions/Release/MEPhysics.lib" )
 #endif
 
 

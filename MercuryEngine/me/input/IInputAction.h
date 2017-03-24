@@ -21,7 +21,7 @@ namespace me
 			/// <summary>
 			/// Perform the action.	Returns true on success.
 			/// </summary>
-			virtual bool Perform( IInputCondition * input ) = 0;
+			virtual bool Perform( IInputDevice * device, IInputCondition * input, float delta ) = 0;
 		};
 	}
 }

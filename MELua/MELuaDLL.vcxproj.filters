@@ -81,19 +81,10 @@
     <ClInclude Include="melua\ExportInputCondition.h">
       <Filter>melua\exports</Filter>
     </ClInclude>
-    <ClInclude Include="melua\ExportInputMotivator.h">
-      <Filter>melua\exports</Filter>
-    </ClInclude>
     <ClInclude Include="melua\ExportObject.h">
       <Filter>melua\exports</Filter>
     </ClInclude>
     <ClInclude Include="melua\ExportObjectComponent.h">
-      <Filter>melua\exports</Filter>
-    </ClInclude>
-    <ClInclude Include="melua\ExportObjectInputMotivator.h">
-      <Filter>melua\exports</Filter>
-    </ClInclude>
-    <ClInclude Include="melua\ExportObjectOrbitMotivator.h">
       <Filter>melua\exports</Filter>
     </ClInclude>
     <ClInclude Include="melua\ExportResources.h">
@@ -206,19 +197,10 @@
     <ClCompile Include="melua\ExportInputCondition.cpp">
       <Filter>melua\exports</Filter>
     </ClCompile>
-    <ClCompile Include="melua\ExportInputMotivator.cpp">
-      <Filter>melua\exports</Filter>
-    </ClCompile>
     <ClCompile Include="melua\ExportObject.cpp">
       <Filter>melua\exports</Filter>
     </ClCompile>
     <ClCompile Include="melua\ExportObjectComponent.cpp">
-      <Filter>melua\exports</Filter>
-    </ClCompile>
-    <ClCompile Include="melua\ExportObjectInputMotivator.cpp">
-      <Filter>melua\exports</Filter>
-    </ClCompile>
-    <ClCompile Include="melua\ExportObjectOrbitMotivator.cpp">
       <Filter>melua\exports</Filter>
     </ClCompile>
     <ClCompile Include="melua\ExportResources.cpp">

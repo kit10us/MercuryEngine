@@ -6,7 +6,7 @@
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 #include <me/Viewport.h>
-#include <unify/MinMax.h>
+#include <unify/Range.h>
 #include <list>
 #include <memory>
 
@@ -23,6 +23,8 @@ namespace me
 		public:
 			Scene(Game * game, std::string name);
 			virtual ~Scene();
+
+			unify::Owner::ptr GetOwnership() override;
 
 		protected: // User defined events...
 			void OnStart() override {}
@@ -61,6 +63,8 @@ namespace me
 
 			size_t GetRenderCount() const;
 
+			std::string SendCommand( std::string command, std::string extra );
+
 			template< typename T > 
 			rm::ResourceManagerSimple< T > * GetManager()
 			{
@@ -70,6 +74,7 @@ namespace me
 		private:
 			Game * m_game;
 			std::string m_name;	 
+			unify::Owner::ptr m_ownership;
 			std::list< ISceneComponent::ptr > m_components;
 			IObjectAllocator* m_objectAllocator;		   
 			size_t m_renderCount;

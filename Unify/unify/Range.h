@@ -11,13 +11,13 @@
 namespace unify
 {
 	template< typename T >
-	class MinMax
+	class Range
 	{
 	public:
-		MinMax();
-		MinMax( T min, T max );
-		MinMax( const MinMax & minMax );
-		explicit MinMax( const std::string & text );
+		Range();
+		Range( T min, T max );
+		Range( const Range & range );
+		explicit Range( const std::string & text );
 
 		void Clear();
 		void Add( T value );
@@ -30,9 +30,9 @@ namespace unify
 		/// </summary>
 		bool IsWithin( const T & value ) const;
 
-		MinMax & operator=( const MinMax & minMax );
-		bool operator==( const MinMax & minMax ) const;
-		bool operator!=( const MinMax & minMax ) const;
+		Range & operator=( const Range & range );
+		bool operator==( const Range & range ) const;
+		bool operator!=( const Range & range ) const;
 
 		void operator+=( const T value );
 
@@ -40,5 +40,5 @@ namespace unify
 		bool m_isSet;
 		T m_min, m_max;
 	};
-	#include <unify/MinMax.inl>
+	#include <unify/Range.inl>
 }

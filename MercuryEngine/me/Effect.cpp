@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/Effect.h>
+#include <me/IRenderer.h>
 
 using namespace me;
 
@@ -90,19 +91,13 @@ void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * wo
 	}
 }
 
-void Effect::Use()
+void Effect::Use( IRenderer* renderer, const RenderInfo & renderInfo )
 {		   
 	m_pixelShader->Use();
 
 	m_vertexShader->Use();
 
-	for( size_t i = 0; i < m_textures.size(); ++i )
-	{
-		if ( m_textures[ i ] )
-		{
-			m_textures[ i ]->Use( i );
-		}
-	}
+	renderer->UseTextures( m_textures );
 }
 
 void Effect::SetCulling( CullingMode mode )

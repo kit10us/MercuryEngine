@@ -12,11 +12,11 @@ namespace me
 		class ButtonPressedCondition : public InputCondition
 		{
 		public:
-			ButtonPressedCondition( IInputSource::ptr source, size_t subSource, std::string name );
+			ButtonPressedCondition( size_t subSource, std::string name );
 			virtual ~ButtonPressedCondition();
 
-			bool IsTrue() const override;
-			float GetValue() const override;
+			bool IsTrue( IInputDevice* device ) const override;
+			unify::V3< float > GetValue( IInputDevice* device ) const override;
 		};
 	}
 }

@@ -18,7 +18,7 @@ InputBrowser::InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me:
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 540, 440, 0 ) );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
 	AddControl( new Static( L"Type:", SizeToContentWidth(), DefaultHeight() ) );
-	AddControl( new Combobox( FillWidth(), DefaultHeight() ), "InputSource" );
+	AddControl( new Combobox( FillWidth(), DefaultHeight() ), "InputDevice" );
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, FillWidth(), FillHeight() ) );
 	AddControl( (new Listbox( 260, FillHeight() ) )->SetSorted( false ), "InputNames" );
 	AddContainer( new container::StackPanel( container::Stack::Vertical, FillWidth(), FillHeight() ) );
@@ -44,7 +44,7 @@ void InputBrowser::UpdateInputData()
 		return;
 	}
 
-	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
+	Combobox* inputSource = GetControl< Combobox* >( "InputDevice" );
 	Listbox* inputNames = GetControl< Listbox* >( "InputNames" );
 	Static* inputData = GetControl< Static* >( "InputData" );
  
@@ -102,7 +102,7 @@ void InputBrowser::UpdateInputManagerList()
 {
 	using namespace ui;
 
-	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
+	Combobox* inputSource = GetControl< Combobox* >( "InputDevice" );
 
 	// Clear contents...
 	inputSource->ResetContent();
@@ -116,7 +116,7 @@ void InputBrowser::UpdateInputManagerList()
 	for ( size_t i = 0; i < m_game->GetInputManager()->GetSourceCount(); i++ )
 	{			  
 		auto source = m_game->GetInputManager()->GetSource( i );
-		std::string name = source->Name();
+		std::string name = source->GetName();
 		inputSource->AddString( name );
 	}
 
@@ -124,11 +124,11 @@ void InputBrowser::UpdateInputManagerList()
 	inputSource->SetCurSel( 0 );
 }
 
-void InputBrowser::UpdateInputSourceInputList()
+void InputBrowser::UpdateInputDeviceInputList()
 {
 	using namespace ui;
 
-	Combobox* inputSource = GetControl< Combobox* >( "InputSource" );
+	Combobox* inputSource = GetControl< Combobox* >( "InputDevice" );
 	Listbox* inputNames = GetControl< Listbox* >( "InputNames" );
 
 	// Clear contents...
@@ -144,9 +144,9 @@ void InputBrowser::UpdateInputSourceInputList()
 	auto source = m_game->GetInputManager()->GetSource( sourceIndex );
 	size_t subSource = 0;
 
-	for ( size_t i = 0; i < source->InputCount( subSource ); i++ )
+	for ( size_t i = 0; i < source->GetInputCount( subSource ); i++ )
 	{
-		std::string name = source->InputName( subSource, i ) + " - " + me::input::InputTypeToString( source->GetInputType( subSource, i ) );
+		std::string name = source->GetInputName( subSource, i ) + " - " + me::input::InputTypeToString( source->GetInputType( subSource, i ) );
 		inputNames->AddString( name );
 	}
 
@@ -173,7 +173,7 @@ ui::IResult* InputBrowser::OnAfterCreate( ui::message::Params params )
 	using namespace ui;
 
 	UpdateInputManagerList();
-	UpdateInputSourceInputList();
+	UpdateInputDeviceInputList();
 	m_updateData = std::thread( &InputBrowser::Timer_UpdateInputData, this );
 	return new Result( 0 );
 }
@@ -190,13 +190,13 @@ ui::IResult* InputBrowser::OnControlCommand( ui::message::ControlCommand message
 {
 	using namespace ui;
 
-	if ( message.IsFor( "InputSource" ) )
+	if ( message.IsFor( "InputDevice" ) )
 	{
 		switch ( (Combobox::Event)message.code )
 		{
 		case Combobox::Event::SelEndOk:
 		{
-			UpdateInputSourceInputList();
+			UpdateInputDeviceInputList();
 			break;
 		}
 		}

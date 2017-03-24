@@ -337,7 +337,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				input::ButtonData * data = new input::ButtonData();
 				data->down = true;
 				data->pressed = false;
-				size_t inputIndex = m_mouse->InputIndex( renderer, "LeftButton" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "LeftButton" );
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
@@ -357,7 +357,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				input::ButtonData * data = new input::ButtonData();
 				data->down = false;
 				data->pressed = false;
-				size_t inputIndex = m_mouse->InputIndex( renderer, "LeftButton" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "LeftButton" );
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
@@ -377,7 +377,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				input::ButtonData * data = new input::ButtonData();
 				data->down = true;
 				data->pressed = false;
-				size_t inputIndex = m_mouse->InputIndex( renderer, "RightButton" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "RightButton" );
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
@@ -397,7 +397,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				input::ButtonData * data = new input::ButtonData();
 				data->down = false;
 				data->pressed = false;
-				size_t inputIndex = m_mouse->InputIndex( renderer, "RightButton" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "RightButton" );
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
@@ -417,7 +417,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				input::ButtonData * data = new input::ButtonData();
 				data->down = true;
 				data->pressed = false;
-				size_t inputIndex = m_mouse->InputIndex( renderer, "MiddleButton" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "MiddleButton" );
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
@@ -437,7 +437,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				input::ButtonData * data = new input::ButtonData();
 				data->down = false;
 				data->pressed = false;
-				size_t inputIndex = m_mouse->InputIndex( renderer, "MiddleButton" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "MiddleButton" );
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
 				break;
 			}
@@ -456,7 +456,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 			{
 				trackingMouse = false;
 				input::TrackerData * data = new input::TrackerData();
-				size_t inputIndex = m_mouse->InputIndex( renderer, "Tracker" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "Tracker" );
 				data->set.z = true;
 				data->change.z = zDelta / (float)WHEEL_DELTA;
 				m_mouse->SetInputData( renderer, inputIndex, input::IData::ptr( data ) );
@@ -502,7 +502,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 				mousePosition.y *= static_cast< int >(height / clientHeight);
 
 				input::TrackerData * data = new input::TrackerData();
-				size_t inputIndex = m_mouse->InputIndex( renderer, "Tracker" );
+				size_t inputIndex = m_mouse->GetInputIndex( renderer, "Tracker" );
 				data->set.x = true;
 				data->position.x = (float)mousePosition.x;
 				data->set.y = true;

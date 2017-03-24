@@ -97,10 +97,7 @@
     <ClInclude Include="melua\ExportComponent.h" />
     <ClInclude Include="melua\ExportInput.h" />
     <ClInclude Include="melua\ExportInputCondition.h" />
-    <ClInclude Include="melua\ExportInputMotivator.h" />
     <ClInclude Include="melua\ExportObjectComponent.h" />
-    <ClInclude Include="melua\ExportObjectInputMotivator.h" />
-    <ClInclude Include="melua\ExportObjectOrbitMotivator.h" />
     <ClInclude Include="melua\ScriptEngine.h" />
     <ClInclude Include="melua\ExportCameraComponent.h" />
     <ClInclude Include="melua\ExportDebug.h" />
@@ -147,10 +144,7 @@
     <ClCompile Include="melua\ExportComponent.cpp" />
     <ClCompile Include="melua\ExportInput.cpp" />
     <ClCompile Include="melua\ExportInputCondition.cpp" />
-    <ClCompile Include="melua\ExportInputMotivator.cpp" />
     <ClCompile Include="melua\ExportObjectComponent.cpp" />
-    <ClCompile Include="melua\ExportObjectInputMotivator.cpp" />
-    <ClCompile Include="melua\ExportObjectOrbitMotivator.cpp" />
     <ClCompile Include="melua\ScriptEngine.cpp" />
     <ClCompile Include="melua\ExportCameraComponent.cpp" />
     <ClCompile Include="melua\ExportDebug.cpp" />

@@ -21,7 +21,7 @@ namespace meedr
 
 		void UpdateInputData();
 		void UpdateInputManagerList();
-		void UpdateInputSourceInputList();
+		void UpdateInputDeviceInputList();
 		void Timer_UpdateInputData();
 
 		ui::IResult* OnAfterCreate( ui::message::Params params ) override;

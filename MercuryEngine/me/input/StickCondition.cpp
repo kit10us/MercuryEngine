@@ -4,44 +4,25 @@
 #pragma once
 
 #include <me/input/StickCondition.h>
+#include <Windows.h>
 
 using namespace me;
 using namespace input;
 
-StickAxis input::StickAxisFromString( std::string axis )
-{
-	if ( unify::StringIs( axis, "x" ) )
-	{
-		return StickAxis::X;
-	}
-	else if ( unify::StringIs( axis, "y" ) )
-	{
-		return StickAxis::Y;
-	}
-	else if ( unify::StringIs( axis, "z" ) )
-	{
-		return StickAxis::Z;
-	}
-	throw std::exception( "Invalid StickAxis!" );
-}
-
-StickCondition::StickCondition( IInputSource::ptr source, size_t subSource, std::string name, StickAxis axis, float cap_low, float threshold_low, float threshold_high, float cap_high )
-	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
-	, m_axis{ axis }
-	, m_threshold_low{ threshold_low }
-	, m_threshold_high{ threshold_high }
-	, m_cap_low{ cap_low }
-	, m_cap_high{ cap_high }
+StickCondition::StickCondition( size_t subSource, std::string name, unify::V3< unify::Range< float > > low, unify::V3< unify::Range< float > > high )
+	: InputCondition( subSource, name )
+	, m_low{ low }
+	, m_high{ high }
 {
 }
 
-StickCondition::~StickCondition() 
+StickCondition::~StickCondition()
 {
 }
 										
-bool StickCondition::IsTrue() const
+bool StickCondition::IsTrue( IInputDevice* device ) const
 {
-	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	IData::ptr data = device->GetInputData( GetSubSource(), GetName() );
 	if ( ! data )
 	{
 		return false;
@@ -53,28 +34,24 @@ bool StickCondition::IsTrue() const
 	}
 
 	StickData * stickData = reinterpret_cast<StickData *>(data.get());
-	float value;
-	switch ( m_axis )
+	if( m_low.x.IsWithin( stickData->axis.x ) || m_high.x.IsWithin( stickData->axis.x ) ||
+		m_low.y.IsWithin( stickData->axis.y ) || m_high.y.IsWithin( stickData->axis.y ) ||
+		m_low.z.IsWithin( stickData->axis.z ) || m_high.z.IsWithin( stickData->axis.z ) )
 	{
-	case StickAxis::X:
-		value = stickData->axis.x;
-		break;
-	case StickAxis::Y:
-		value = stickData->axis.y;
-		break;
-	case StickAxis::Z:
-		value = stickData->axis.z;
-		break;
+		return true;
 	}
-	return (value >= m_cap_low && value <= m_threshold_low) || (value >= m_threshold_high && value <= m_cap_high);
-}
-
-float StickCondition::GetValue() const
-{
-	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
-	if ( !data )
+	else
 	{
 		return false;
+	}
+}
+
+unify::V3< float > StickCondition::GetValue( IInputDevice* device ) const
+{
+	IData::ptr data = device->GetInputData( GetSubSource(), GetName() );
+	if ( ! data )
+	{
+		return unify::V3< float >( 0.0f );
 	}
 
 	if ( data->type != InputType::Stick )
@@ -83,26 +60,15 @@ float StickCondition::GetValue() const
 	}
 
 	StickData * stickData = reinterpret_cast<StickData *>(data.get());
-	float value;
-	switch ( m_axis )
+
+	if( m_low.x.IsWithin( stickData->axis.x ) || m_high.x.IsWithin( stickData->axis.x ) || 
+		m_low.y.IsWithin( stickData->axis.y ) || m_high.y.IsWithin( stickData->axis.y ) ||
+		m_low.z.IsWithin( stickData->axis.z ) || m_high.z.IsWithin( stickData->axis.z ) )
 	{
-	case StickAxis::X:
-		value = stickData->axis.x;
-		break;
-	case StickAxis::Y:
-		value = stickData->axis.y;
-		break;
-	case StickAxis::Z:
-		value = stickData->axis.z;
-		break;
+		return stickData->axis;
 	}
-	
-	if ( !((value >= m_cap_low && value <= m_threshold_low) || (value >= m_threshold_high && value <= m_cap_high)) )
-	{
-		return 0.0f;
-	}	
 	else
 	{
-		return value;
+		return unify::V3< float >( 0.0f );
 	}
 }																			 

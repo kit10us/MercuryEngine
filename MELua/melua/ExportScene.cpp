@@ -105,6 +105,27 @@ int Scene_GetObjectCount( lua_State * state )
 	return 1;
 }
 
+int Scene_SendCommand( lua_State * state )
+{
+	int args = lua_gettop( state );
+
+	SceneProxy * sceneProxy = CheckScene( state, 1 );
+
+	std::string command = lua_tostring( state, 2 );
+
+	std::string type = GetTypename( state, 3 );
+
+	std::string extra = "";
+	
+	if( args > 2 )
+	{
+		extra = lua_tostring( state, 3 );
+	}
+	auto result = sceneProxy->scene->SendCommand( command, extra );
+	lua_pushstring( state, result.c_str() );
+	return 1;
+}
+
 int Scene_Constructor(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
@@ -128,6 +149,7 @@ void RegisterScene( lua_State * state )
 		{ "NewCamera", Scene_NewCamera },
 		{ "FindObject", Scene_FindObject },
 		{ "GetObjectCount", Scene_GetObjectCount },
+		{ "SendCommand", Scene_SendCommand },
 		{ nullptr, nullptr }
 	};
 

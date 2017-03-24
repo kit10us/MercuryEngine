@@ -3,13 +3,13 @@
  */
 
 template< typename T >
-MinMax< T >::MinMax()
+Range< T >::Range()
 : m_isSet( false )
 {
 }
 
 template< typename T >
-unify::MinMax< T >::MinMax( T min, T max )
+unify::Range< T >::Range( T min, T max )
 : m_isSet( true )
 , m_min( min )
 , m_max( min )
@@ -18,15 +18,15 @@ unify::MinMax< T >::MinMax( T min, T max )
 }
 
 template< typename T >
-MinMax< T >::MinMax( const MinMax & minMax )
-: m_isSet( minMax.m_isSet )
-, m_min( minMax.m_min )
-, m_max( minMax.m_max )
+Range< T >::Range( const Range & range )
+: m_isSet( range.m_isSet )
+, m_min( range.m_min )
+, m_max( range.m_max )
 {
 }
 
 template< typename T >
-MinMax< T >::MinMax( const std::string & text )
+Range< T >::Range( const std::string & text )
 {
 	std::vector< T > split = Split< T >( text, ',' );
     width = split[ 0 ];
@@ -34,13 +34,13 @@ MinMax< T >::MinMax( const std::string & text )
 }
 
 template< typename T >
-void unify::MinMax< T >::Clear()
+void unify::Range< T >::Clear()
 {
 	m_isSet = false;
 }
 
 template< typename T >
-void unify::MinMax< T >::Add( T value )
+void unify::Range< T >::Add( T value )
 {
 	if( m_isSet )
 	{
@@ -56,54 +56,54 @@ void unify::MinMax< T >::Add( T value )
 }
 
 template< typename T >
-bool unify::MinMax< T >::IsSet() const
+bool unify::Range< T >::IsSet() const
 {
 	return m_isSet;
 }
 
 template< typename T >
-T unify::MinMax< T >::Min() const
+T unify::Range< T >::Min() const
 {
 	assert( m_isSet );
 	return m_min;
 }
 
 template< typename T >
-T unify::MinMax< T >::Max() const
+T unify::Range< T >::Max() const
 {
 	assert( m_isSet );
 	return m_max;
 }
 
 template< typename T >
-bool MinMax< T >::IsWithin( const T & value ) const
+bool Range< T >::IsWithin( const T & value ) const
 {
 	return value >= Min() && value <= Max();
 }
 
 template< typename T >
-MinMax< T > & MinMax< T >::operator=( const MinMax< T > & minMax )
+Range< T > & Range< T >::operator=( const Range< T > & range )
 {
-	m_isSet = minMax.m_isSet;
-	m_min = minMax.m_min;
-	m_max = minMax.m_max;
+	m_isSet = range.m_isSet;
+	m_min = range.m_min;
+	m_max = range.m_max;
 	return *this;
 }
 
 template< typename T >
-bool unify::MinMax< T >::operator==( const MinMax< T > & minMax ) const
+bool unify::Range< T >::operator==( const Range< T > & range ) const
 {
-	return m_isSet == minMax.m_isSet && m_min == minMax.m_min && m_max == minMax.m_max;
+	return m_isSet == range.m_isSet && m_min == range.m_min && m_max == range.m_max;
 }
 
 template< typename T >
-bool unify::MinMax< T >::operator!=( const MinMax< T > & minMax ) const
+bool unify::Range< T >::operator!=( const Range< T > & range ) const
 {
-	return !( *this == minMax );
+	return !( *this == range );
 }
 
 template< typename T >
-void unify::MinMax< T >::operator+=( const T value )
+void unify::Range< T >::operator+=( const T value )
 {
 	Add( value );
 }

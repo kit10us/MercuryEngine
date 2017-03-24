@@ -17,7 +17,7 @@
 #include <functional>
 
 #include <me/input/ButtonPressedCondition.h>
-#include <me/input/InputAction.h>
+#include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
 
 // Temporary...
@@ -433,11 +433,11 @@ bool Game::Initialize( OSParameters osParameters )
 	// Basic motivations...
 	if ( GetInputManager() )
 	{
-		input::IInputSource::ptr keyboard(GetInputManager()->FindSource("keyboard"));
+		input::IInputDevice::ptr keyboard(GetInputManager()->FindSource("keyboard"));
 		if (keyboard)
 		{
-			auto condition = input::IInputCondition::ptr( new input::ButtonPressedCondition(keyboard, 0, "Escape"));
-			input::IInputAction::ptr action( new input::InputAction( action::IAction::ptr{ new action::QuitGame(this) } ) );
+			auto condition = input::IInputCondition::ptr( new input::ButtonPressedCondition( 0, "Escape"));
+			input::IInputAction::ptr action( new input::action::Action( action::IAction::ptr{ new action::QuitGame(this) } ) );
 			keyboard->AddEvent(m_inputOwnership, condition, action);
 		}
 	}	
@@ -499,15 +499,15 @@ void Game::Tick()
 		return;
 	}				  
 
-	if ( GetOS()->GetHasFocus() )
-	{
-		m_inputManager.Update();
-	}
-
-	m_renderInfo.SetDelta( elapsed );			  
+	m_renderInfo.SetDelta( elapsed );
 	auto renderer = GetOS()->GetRenderer( 0 );
 
 	UpdateParams params{ renderer, m_renderInfo };
+
+	if ( GetOS()->GetHasFocus() )
+	{
+		m_inputManager.Update( params );
+	}
 
 	for( auto && component : m_components )
 	{
@@ -613,6 +613,11 @@ void Game::Quit()
 bool Game::IsQuitting() const
 {
 	return m_isQuitting;
+}
+
+unify::Owner::ptr Game::GetOwnership()
+{
+	return m_inputOwnership;
 }
 
 input::InputManager * Game::GetInputManager()

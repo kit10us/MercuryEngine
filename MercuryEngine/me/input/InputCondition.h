@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/input/IInputCondition.h>
-#include <me/input/IInputSource.h>
+#include <me/input/IInputDevice.h>
 
 namespace me
 {
@@ -13,17 +13,15 @@ namespace me
 		class InputCondition : public IInputCondition
 		{
 		public:
-			InputCondition( IInputSource::ptr source, size_t subSource, size_t index );
+			InputCondition( size_t subSource, std::string name );
 			virtual ~InputCondition();
 
-			IInputSource::ptr GetSource() const override;
-			size_t GetIndex() const;
+			std::string GetName() const;
 			size_t GetSubSource() const;
 
 		private:
-			IInputSource::ptr m_source;
-			size_t m_index;
 			size_t m_subSource;
+			std::string m_name;
 		};
 	}
 }

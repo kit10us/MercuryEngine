@@ -77,6 +77,8 @@ namespace me
 		virtual IPixelShader::ptr ProducePS( PixelShaderParameters parameters ) = 0;
 		virtual IVertexConstruct::ptr ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) = 0;
 		virtual ITexture::ptr ProduceT( TextureParameters parameters ) = 0;
+
+		virtual void UseTextures( std::vector< me::ITexture::ptr > textures ) = 0;
 	};
 }
 

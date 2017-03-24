@@ -11,6 +11,9 @@ GeometryCache::GeometryCache()
 
 void GeometryCache::Add( Geometry * geometry, const unify::FrameLite * instance )
 {
+	assert( geometry );
+	assert( instance );
+
 	m_cache[ geometry ].push_back( instance );
 }
 

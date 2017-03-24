@@ -8,8 +8,8 @@
 using namespace me;
 using namespace input;
 
-TriggerCondition::TriggerCondition( IInputSource::ptr source, size_t subSource, std::string name, float threshold, float cap )
-	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
+TriggerCondition::TriggerCondition( size_t subSource, std::string name, float threshold, float cap )
+	: InputCondition( subSource, name )
 	, m_threshold{ threshold }
 	, m_cap{ cap }
 {
@@ -19,9 +19,9 @@ TriggerCondition::~TriggerCondition()
 {
 }
 										
-bool TriggerCondition::IsTrue() const
+bool TriggerCondition::IsTrue( IInputDevice* device ) const
 {
-	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	IData::ptr data = device->GetInputData( GetSubSource(), GetName() );
 	if ( !data )
 	{
 		return false;
@@ -36,12 +36,12 @@ bool TriggerCondition::IsTrue() const
 	return (abs(triggerData->value) >= m_threshold && abs(triggerData->value) <= m_cap );
 }
 
-float TriggerCondition::GetValue() const
+unify::V3< float > TriggerCondition::GetValue( IInputDevice* device ) const
 {
-	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	IData::ptr data = device->GetInputData( GetSubSource(), GetName() );
 	if ( !data )
 	{
-		return false;
+		return unify::V3< float >(0.0f);
 	}
 
 	if ( data->type != InputType::Trigger )
@@ -50,5 +50,5 @@ float TriggerCondition::GetValue() const
 	}
 
 	TriggerData * triggerData = reinterpret_cast<TriggerData *>(data.get());
-	return (abs(triggerData->value) >= m_threshold && abs(triggerData->value) <= m_cap ) ? triggerData->value : 0.0f;
+	return unify::V3< float >( (abs(triggerData->value) >= m_threshold && abs(triggerData->value) <= m_cap ) ? triggerData->value : 0.0f );
 }

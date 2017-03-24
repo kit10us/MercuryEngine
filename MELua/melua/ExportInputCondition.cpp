@@ -4,6 +4,7 @@
 #include <melua/ExportInputCondition.h>
 #include <melua/ExportInput.h>
 #include <melua/ScriptEngine.h>
+#include <melua/unify/ExportV3.h>
 
 #include <me/input/ButtonCondition.h>
 #include <me/input/ButtonPressedCondition.h>
@@ -39,48 +40,58 @@ int InputCondition_Constructor( lua_State * state )
 	auto game = ScriptEngine::GetGame();
 
 	std::string type = luaL_checkstring( state, 1 );
+
 	me::input::IInputCondition::ptr inputCondition;
 
 	if ( unify::StringIs( type, "button" ) )
 	{
-		InputProxy * source = CheckInput( state, 2 );
-		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
-		std::string name = luaL_checkstring( state, 4 );
-		std::string condition = luaL_checkstring( state, 5 );
+		size_t subSource = (size_t)luaL_checkinteger( state, 2 );
+		std::string name = luaL_checkstring( state, 3 );
+		std::string condition = luaL_checkstring( state, 4 );
+
 		if ( unify::StringIs( condition, "down" ) )
 		{
-			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( source->input, subSource, name, true ) );
+			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( subSource, name, true ) );
 		}
 		else if ( unify::StringIs( condition, "up" ) )
 		{
-			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( source->input, subSource, name, false ) );
+			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( subSource, name, false ) );
 		}
 		else if ( unify::StringIs( condition, "pressed" ) )
 		{
-			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonPressedCondition( source->input, subSource, name ) );
+			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonPressedCondition( subSource, name ) );
 		}
 	}
 	else if ( unify::StringIs( type, "stick" ) )
 	{
-		InputProxy * source = CheckInput( state, 2 );
-		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
-		std::string name = luaL_checkstring( state, 4 );
-		std::string axisString = luaL_checkstring( state, 5 );
-		input::StickAxis axis = input::StickAxisFromString( axisString );
-		float cap_low = (float)luaL_checknumber( state, 6 );
-		float threshold_low = (float)luaL_checknumber( state, 7 );
-		float threshold_high = (float)luaL_checknumber( state, 8 );
-		float cap_high = (float)luaL_checknumber( state, 9 );
-		inputCondition = me::input::IInputCondition::ptr( new me::input::StickCondition( source->input, subSource, name, axis, cap_low, threshold_low, threshold_high, cap_high ) );
+		size_t subSource = (size_t)luaL_checkinteger( state, 2 );
+		std::string name = luaL_checkstring( state, 3 );
+
+		unify::V3< float > low_cap = CheckV3( state, 4 )->v3;
+		unify::V3< float > low_threshold = CheckV3( state, 5 )->v3;
+		unify::V3< float > high_threshold = CheckV3( state, 6 )->v3;
+		unify::V3< float > high_cap = CheckV3( state, 7 )->v3;
+
+		unify::V3< unify::Range< float > > low(
+			unify::Range< float >( low_cap.x, low_threshold.x ),
+			unify::Range< float >( low_cap.y, low_threshold.y ),
+			unify::Range< float >( low_cap.z, low_threshold.z )
+		);
+		unify::V3< unify::Range< float > > high(
+			unify::Range< float >( high_threshold.x, high_cap.x ),
+			unify::Range< float >( high_threshold.y, high_cap.y ),
+			unify::Range< float >( high_threshold.z, high_cap.z )
+		);
+
+		inputCondition = me::input::IInputCondition::ptr( new me::input::StickCondition( subSource, name, low, high ) );
 	}
 	else if ( unify::StringIs( type, "trigger" ) )
 	{
-		InputProxy * source = CheckInput( state, 2 );
-		size_t subSource = (size_t)luaL_checkinteger( state, 3 );
-		std::string name = luaL_checkstring( state, 4 );
-		float threshold = (float)luaL_checknumber( state, 5 );
-		float cap = (float)luaL_checknumber( state, 6 );
-		inputCondition = me::input::IInputCondition::ptr( new me::input::TriggerCondition( source->input, subSource, name, threshold, cap ) );
+		size_t subSource = (size_t)luaL_checkinteger( state, 2 );
+		std::string name = luaL_checkstring( state, 3 );
+		float threshold = (float)luaL_checknumber( state, 4 );
+		float cap = (float)luaL_checknumber( state, 5 );
+		inputCondition = me::input::IInputCondition::ptr( new me::input::TriggerCondition( subSource, name, threshold, cap ) );
 	}
 
 	return PushInputCondition( state, inputCondition );

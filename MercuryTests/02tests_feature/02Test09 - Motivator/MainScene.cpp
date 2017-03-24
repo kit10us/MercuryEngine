@@ -9,7 +9,6 @@
 #include <me/object/BBoxRendererComponent.h>
 #include <me/object/CameraComponent.h>
 #include <sg/ShapeCreators.h>
-#include <me/motivator/ObjectOrbitMotivator.h>
 
 using namespace me;
 using namespace scene;
@@ -106,7 +105,4 @@ void MainScene::OnStart()
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 		daeModel->GetFrame().SetModelMatrix( modelMatrix );
 	}
-
-	// Add an orbit motivator...
-	camera->AddComponent( object::ObjectComponent::ptr( new motivator::ObjectOrbitMotivator( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, -1, 0 ), unify::AngleInDegrees( 45.0f ) ) ) );
 }

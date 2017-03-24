@@ -8,6 +8,14 @@ V3< T >::V3()
 }
 
 template< typename T >
+V3< T >::V3( T _xyz )
+	: x( _xyz )
+	, y( _xyz )
+	, z( _xyz )
+{
+}
+
+template< typename T >
 V3< T >::V3( T _x, T _y, T _z ) 
 : x( _x )
 , y( _y )
@@ -161,6 +169,31 @@ bool V3< T >::operator != ( const V3< T > & vec ) const
 }
 
 template< typename T >
+bool V3< T >::operator <= ( const V3< T > & vec ) const
+{
+	return( x <= vec.x && y <= vec.y && z <= vec.z );
+}
+
+template< typename T >
+bool V3< T >::operator < ( const V3< T > & vec ) const
+{
+	return( x < vec.x && y < vec.y && z < vec.z );
+}
+
+template< typename T >
+bool V3< T >::operator >= ( const V3< T > & vec ) const
+{
+	return( x >= vec.x && y >= vec.y && z >= vec.z );
+}
+
+template< typename T >
+bool V3< T >::operator > ( const V3< T > & vec ) const
+{
+	return( x > vec.x && y > vec.y && z > vec.z );
+}
+
+
+template< typename T >
 T & V3< T >::operator[]( size_t i )
 {
     switch( i )
@@ -245,6 +278,42 @@ template< typename T >
 bool V3< T >::IsZero() const
 {
 	return ( x == 0 ) && ( y == 0 ) && ( z == 0 );
+}
+
+template< typename T >
+V3< T > V3< T >::xyz() const
+{
+	return V3< T >( x, y, z );
+}
+
+template< typename T >
+V3< T > V3< T >::xzy() const
+{
+	return V3< T >( x, z, y );
+}
+
+template< typename T >
+V3< T > V3< T >::yzx() const
+{
+	return V3< T >( y, z, x );
+}
+
+template< typename T >
+V3< T > V3< T >::yxz() const
+{
+	return V3< T >( y, x, z );
+}
+
+template< typename T >
+V3< T > V3< T >::zyx() const
+{
+	return V3< T >( z, y, x );
+}
+
+template< typename T >
+V3< T > V3< T >::zxy() const
+{
+	return V3< T >( z, x, y );
 }
 
 template< typename T >

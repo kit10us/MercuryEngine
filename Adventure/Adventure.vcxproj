@@ -20,18 +20,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Adventure.cpp" />
-    <ClCompile Include="source\CameraMotivator.cpp" />
-    <ClCompile Include="source\GroundDesc.cpp" />
     <ClCompile Include="source\MainScene.cpp" />
-    <ClCompile Include="source\TerrainMap.cpp" />
     <ClCompile Include="source\TerrainSceneComponent.cpp" />
+    <ClCompile Include="source\terrain\Base.cpp" />
+    <ClCompile Include="source\terrain\GroundConnection.cpp" />
+    <ClCompile Include="source\terrain\Ground.cpp" />
+    <ClCompile Include="source\terrain\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\CameraMotivator.h" />
-    <ClInclude Include="source\GroundDesc.h" />
     <ClInclude Include="source\MainScene.h" />
-    <ClInclude Include="source\TerrainMap.h" />
     <ClInclude Include="source\TerrainSceneComponent.h" />
+    <ClInclude Include="source\terrain\Base.h" />
+    <ClInclude Include="source\terrain\Direction.h" />
+    <ClInclude Include="source\terrain\GroundConnection.h" />
+    <ClInclude Include="source\terrain\Ground.h" />
+    <ClInclude Include="source\terrain\Map.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{55030E14-EA34-48B1-ABE6-1190FC9FF68D}</ProjectGuid>

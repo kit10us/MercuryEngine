@@ -29,10 +29,7 @@
 #include <melua/ExportTerraParameters.h>
 #include <melua/ExportTerra.h>
 #include <melua/ExportTexture.h>
-#include <melua/ExportInputMotivator.h>
 #include <melua/ExportInputCondition.h>
-#include <melua/ExportObjectOrbitMotivator.h>
-#include <melua/ExportObjectInputMotivator.h>
 
 void melua::RegisterLibraries( lua_State * state )
 {
@@ -67,9 +64,6 @@ void melua::RegisterLibraries( lua_State * state )
 	RegisterTerraParameters( state );
 	RegisterTerra( state );
 	RegisterTexture( state );
-	RegisterInputMotivator( state );
-	RegisterObjectOrbitMotivator( state );
-	RegisterObjectInputMotivator( state );
 	RegisterInputCondition( state );
 
 	RegisterComponent( state );

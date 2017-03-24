@@ -63,8 +63,31 @@ int V3_Mul( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::V3< float > l( CheckV3( state, 1 )->v3 );
-	unify::V3< float > r( CheckV3( state, 2 )->v3 );
+
+	std::string typeL = GetTypename( state, 1 );
+	std::string typeR = GetTypename( state, 2 );
+
+	unify::V3< float > l;
+	unify::V3< float > r;
+
+	if( unify::StringIs( typeL, "V3" ) )
+	{
+		l = CheckV3( state, 1 )->v3;
+	}
+	else if( unify::StringIs( typeL, "Number" ) )
+	{
+		l = unify::V3< float >( (float)lua_tonumber( state, 1 ) );
+	}
+
+	if( unify::StringIs( typeR, "V3" ) )
+	{
+		r = CheckV3( state, 2 )->v3;
+	}
+	else if( unify::StringIs( typeR, "Number" ) )
+	{
+		r = unify::V3< float >( (float)lua_tonumber( state, 2 ) );
+	}
+
 	unify::V3< float > result( l * r );
 
 	PushV3( state, result );
@@ -179,8 +202,17 @@ int V3_Constructor( lua_State * state )
 	}
 	else if (args == 1)
 	{
-		auto in = CheckV3(state, 1);
-		return PushV3(state, in->v3);
+		std::string type = GetTypename( state, 1 );
+		if( unify::StringIs( type, "Number" ) )
+		{
+			float value = (float)lua_tonumber( state, 1 );
+			return PushV3( state, unify::V3< float >( value ) );
+		}
+		else
+		{
+			auto in = CheckV3( state, 1 );
+			return PushV3( state, in->v3 );
+		}
 	}
 	else if ( args == 3 )
 	{

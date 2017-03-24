@@ -45,7 +45,7 @@ namespace me
 		/// </summary>
 		void UpdateData( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size );
 
-		void Use();
+		void Use( IRenderer* renderer, const RenderInfo & renderInfo );
 
 		void SetTexture( unsigned char stage, ITexture::ptr texture );
 		void ClearTextures();

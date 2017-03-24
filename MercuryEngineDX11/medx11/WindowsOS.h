@@ -72,8 +72,8 @@ namespace medx11
 		unify::Path m_programPath;
 		unify::Path m_runPath;
 		std::vector< std::string > m_commandLine;
-		me::input::IInputSource * m_keyboard;
-		me::input::IInputSource * m_mouse;
+		me::input::IInputDevice * m_keyboard;
+		me::input::IInputDevice * m_mouse;
 		bool m_hasFocus;
 		std::list< HWND > m_childHandles; // Handles to be serviced.
 		std::vector< me::Display > m_pendingDisplays;

@@ -112,14 +112,6 @@ void Texture::UnlockRect( unsigned int level )
 {
 }
 
-bool Texture::Use( unsigned int stage )
-{
-	auto dxContext = m_renderer->GetDxContext();
-	dxContext->PSSetShaderResources( 0, 1, &m_colorMap.p );
-	dxContext->PSSetSamplers( 0, 1, &m_colorMapSampler.p );
-	return true;
-}
-
 // Load all possible info (short of bits) about the texture
 void Texture::Preload()
 {

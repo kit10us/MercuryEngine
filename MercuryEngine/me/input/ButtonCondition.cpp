@@ -8,8 +8,8 @@
 using namespace me;
 using namespace input;
 
-ButtonCondition::ButtonCondition( IInputSource::ptr source, size_t subSource, std::string name, bool down )
-	: InputCondition( source, subSource, source->InputIndex( subSource, name ) )
+ButtonCondition::ButtonCondition( size_t subSource, std::string name, bool down )
+	: InputCondition( subSource, name )
 	, m_down{ down }
 {
 }
@@ -18,9 +18,9 @@ ButtonCondition::~ButtonCondition()
 {
 }
 										
-bool ButtonCondition::IsTrue() const
+bool ButtonCondition::IsTrue( IInputDevice* device ) const
 {
-	IData::ptr data = GetSource()->GetInputData( GetSubSource(), GetIndex() );
+	IData::ptr data = device->GetInputData( GetSubSource(), GetName() );
 	if ( !data )
 	{
 		return false;
@@ -35,7 +35,7 @@ bool ButtonCondition::IsTrue() const
 	return buttonData->down == m_down;
 }
 
-float ButtonCondition::GetValue() const
+unify::V3< float > ButtonCondition::GetValue( IInputDevice* device ) const
 {
-	return IsTrue() ? 1.0f : 0.0f;
+	return{ IsTrue( device ) ? 1.0f : 0.0f };
 }

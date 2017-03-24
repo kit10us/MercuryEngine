@@ -2,17 +2,10 @@
 // All Rights Reserved
 
 #include <TerrainSceneComponent.h>
-#include <MEWinMain.h>
-#include <me/scene/SceneManager.h>
-#include <me/scene/Scene.h>
-#include <me/object/CameraComponent.h>
-#include <me/Mesh.h>
-#include <me/Terra.h>
-#include <me/factory/EffectFactories.h>
-#include <me/object/GeometryComponent.h>
 
 using namespace me;
 using namespace scene;
+using namespace terrain;
 
 TerrainSceneComponent::TerrainSceneComponent( IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize )
 	: SceneComponent( os, "TerrainSceneComponent" )
@@ -46,7 +39,7 @@ void TerrainSceneComponent::SetInvalidGeometry( Geometry::ptr geo )
 	m_invalidGeo = geo;
 }
 
-size_t TerrainSceneComponent::AddGround( std::string name, GroundDesc::ptr ground )
+size_t TerrainSceneComponent::AddGround( std::string name, Ground::ptr ground )
 {
 	size_t index = m_descsList.size();
 	m_descMap[ name ] = index;

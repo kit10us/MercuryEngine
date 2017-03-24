@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/input/IInputSource.h>
+#include <me/input/IInputDevice.h>
 #include <list>
 
 namespace me
@@ -13,7 +13,7 @@ namespace me
 		/// <summary>
 		/// Adds common features, so that any other input can inherit these features without having to re-implemenet them.
 		/// </summary>
-		class InputSource : public IInputSource
+		class InputDevice : public IInputDevice
 		{
 			struct Event
 			{
@@ -23,13 +23,13 @@ namespace me
 			};
 
 		public:
-			InputSource();
-			~InputSource();
+			InputDevice();
+			~InputDevice();
 
 			void AddEvent( unify::Owner::ptr owner, IInputCondition::ptr condition, IInputAction::ptr action );
 			void ClearEvents();
 
-			int HandleEvents();
+			int HandleEvents( float delta );
 
 		private:
 			std::list< Event > m_events;

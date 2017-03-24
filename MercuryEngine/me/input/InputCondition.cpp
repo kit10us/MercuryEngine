@@ -8,10 +8,9 @@
 using namespace me;
 using namespace input;
 
-InputCondition::InputCondition( IInputSource::ptr source, size_t subSource, size_t index )
-	: m_source{ source }
-	, m_subSource{ subSource }
-	, m_index{ index }
+InputCondition::InputCondition( size_t subSource, std::string name )
+	: m_subSource{ subSource }
+	, m_name{ name }
 {
 }
 
@@ -19,14 +18,9 @@ InputCondition::~InputCondition()
 {
 }
 
-IInputSource::ptr InputCondition::GetSource() const
+std::string InputCondition::GetName() const
 {
-	return m_source;
-}
-
-size_t InputCondition::GetIndex() const
-{
-	return m_index;
+	return m_name;
 }
 
 size_t InputCondition::GetSubSource() const

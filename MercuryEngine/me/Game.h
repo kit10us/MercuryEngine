@@ -77,6 +77,8 @@ namespace me
 		void Quit();
 		bool IsQuitting() const;
 
+		unify::Owner::ptr GetOwnership();
+
 		me::input::InputManager * GetInputManager();
 		const me::input::InputManager * GetInputManager() const;
 

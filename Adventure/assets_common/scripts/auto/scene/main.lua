@@ -1,50 +1,13 @@
 require "prefabs"
+require "terrain"
 
 function OnBeforeStart()
-	-- Load textures
-	Texture( "invalid", "borgcube.bmp" )
-	Texture( "sand", "sand.bmp" )
-	Texture( "grass", "grass.bmp" )
-	
-	-- Create geometry	
-	local terraParams = TerraParameters()	
-	terraParams:SetSize( Size2( 2, 2 ) )
-	terraParams:SetConstant( 0 )
-	terraParams:SetPoints( 10, 10 )
-	
-	local effect -- used by all terra creation.
-	
-	-- Invalid --
-	effect = Effect( "invalid", "EffectTextured.effect" )
-	effect:SetTexture( 0, Texture("invalid" ) )
-	terraParams:SetEffect( effect )
-	terraParams:SetTexArea( TexArea( 1.0 / 4 * 1, 1.0 / 4 * 1 , 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
-	Terra( "invalid", terraParams )
-	
-	-- Add a grass ground...
-	effect = Effect( "grass", "EffectTextured.effect" )
-	type( effect );
-	effect:SetTexture( 0, Texture( "grass" ) )
-	terraParams:SetEffect( effect )
-	terraParams:SetTexArea( TexArea() )
-	Terra( "grass", terraParams )
-
-	-- Add a sand ground...
-	effect = Effect( "sand", "EffectTextured.effect" )	
-	effect:SetTexture( 0, Texture( "sand" ) )
-	terraParams:SetEffect( effect )
-	terraParams:SetTexArea( TexArea( 1.0 / 4 * 1, 1.0 / 4 * 1, 1.0 / 4 * 2, 1.0 / 4 * 2 ) )
-	Terra( "sand", terraParams )
-
-	
-	-- Scene
-	local sceneMain = this;
+	CreateTerrain( Size2( 30, 30 ),  Size2( 4, 4 ) )
 	
 	local proj = MatrixPerspectiveFovLH( math.pi / 4.0, Game.GetWidth()/ Game.GetHeight(), 1, 1000 )
 	
 	-- Add camera...
-	local camera = sceneMain:NewObject( "camera" )
-	print( "camera = " .. type( camera ) )
+	local camera = this:NewObject( "camera" )
 	
 	local cameraComponent = CameraComponent()
 	camera:Attach( cameraComponent )
@@ -55,22 +18,22 @@ function OnBeforeStart()
 	local color3d = Effect( "color3d", "Color_Ambient.effect" )
 	local borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
-	local cube = sceneMain:NewObject( "cube" )
+	local cube = this:NewObject( "cube" )
 	cube:AddGeometry( Geometry( "cube", "ShapeCube.shape" ) )
-	cube:Transform():SetPosition( V3( 4, 1, 0 ) )
+	cube:Transform():SetPosition( V3( 0, 1, 0 ) )
 
-	local pyramid = sceneMain:NewObject( "pyramid" )
+	local pyramid = this:NewObject( "pyramid" )
 	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ) )
-	pyramid:Transform():SetPosition( V3( 8, 1, 0 ) )
+	pyramid:Transform():SetPosition( V3( -4, 1, 0 ) )
 	
-	local cylinder = sceneMain:NewObject( "cylinder" )
+	local cylinder = this:NewObject( "cylinder" )
 	cylinder:AddGeometry( Geometry( "cylinder", "ShapeCylinder.shape" ) )
-	cylinder:Transform():SetPosition( V3( 12, 1, 0 ) )
+	cylinder:Transform():SetPosition( V3( 0, 1, 4 ) )
 
-	local player = sceneMain:NewObject( "player" )
+	local player = this:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
 	player:SetModelMatrix( MatrixRotationX( Angle.Degrees( -90 ) ) )
-	player:Transform():SetPosition( V3( 1, 0, 3 ) )
+	player:Transform():SetPosition( V3( 32, 0, -32 ) )
 	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )
 	
 	-- Add stuff
@@ -79,10 +42,50 @@ function OnBeforeStart()
 	BuildTree( V3( 2, 0, 8 ) )	
 	BuildTree( V3( -4, 0, 7 ) )	
 	BuildTree( V3( 0, 0, 5 ) )	
-	BuildHouse( V3( 7, 0, 12 ) )	
+	BuildHouse( V3( 7, 0, 12 ) )
 end
 
 function OnAfterStart()
+	print( this:SendCommand( "DrawOnMap", "16, 14, sand" ) )
+
+	-- Top-Left "L"
+	print( this:SendCommand( "DrawOnMap", "16, 12, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "17, 12, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "16, 11, sand" ) )
+
+	-- Top-Right "L"
+	print( this:SendCommand( "DrawOnMap", "21, 12, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "22, 12, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "22, 11, sand" ) )
+
+	-- Bott0m-Left "L"
+	print( this:SendCommand( "DrawOnMap", "16, 8, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "16, 7, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "17, 7, sand" ) )
+
+	-- Botton-Right "L"
+	print( this:SendCommand( "DrawOnMap", "22, 8, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "21, 7, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "22, 7, sand" ) )
+	
+
+	-- Center "+"
+
+	print( this:SendCommand( "DrawOnMap", "19, 12, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "19, 11, sand" ) )
+
+	print( this:SendCommand( "DrawOnMap", "17, 10, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "18, 10, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "19, 10, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "20, 10, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "21, 10, sand" ) )
+	
+	print( this:SendCommand( "DrawOnMap", "19, 9, sand" ) )
+	print( this:SendCommand( "DrawOnMap", "19, 8, sand" ) )
+	
+	
+	
+	
 	local target = this:FindObject( "player" )
 	local cameraMotivator = target:GetComponent( "CameraMotivator" );
 	
@@ -90,27 +93,15 @@ function OnAfterStart()
 		print( "Camera motivator NOT FOUND!" )
 	else	
 		cameraMotivator:SetValue( "speed", 4.0 );
-	
-		--  Get the InputMotivator from the cameraMotivator component.
-		
-		--[[
-		local motivator = Component( "motivator", cameraMotivator )
-		
-		if not motivator then
-			Debug.LogLine( "Motivator not found!" )
-		else
-			Debug.LogLine( "Motivator found." )
-		end
-		--]]
-
-		local motivator = InputMotivator( cameraMotivator );				
 		
 		local gamepad = Input( "Gamepad" )
 		if gamepad then	
-			motivator:Add( "moveleft", 	InputCondition( "stick", gamepad, 0, "LeftStick", "x", -1.0, -0.3, 0.0, 0.0 ) )
-			motivator:Add( "moveright", InputCondition( "stick", gamepad, 0, "LeftStick", "x", -0.0, -0.0, 0.3, 1.0 ) )
-			motivator:Add( "moveup", 	InputCondition( "stick", gamepad, 0, "LeftStick", "y", -0.0, -0.0, 0.3, 1.0 ) )
-			motivator:Add( "movedown", 	InputCondition( "stick", gamepad, 0, "LeftStick", "y", -1.0, -0.3, 0.0, 0.0 ) )
+			
+			local cap_low = V3(-1.0 * 1.0)
+			local threshold_low = V3(-1.0 * 0.3)
+			local threshold_high = V3(1.0 * 0.3)
+			local cap_high = V3(1.0 * 1.0)
+			--motivator:Add( "move", 	InputCondition( "stick", gamepad, 0, "LeftStick", cap_low, threshold_low, threshold_high, cap_high ) )
 		end
 
 		--[[

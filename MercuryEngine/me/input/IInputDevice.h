@@ -27,17 +27,17 @@ namespace me
 		/// <summary>
 		/// A source of inputs.
 		/// </summary>
-		class IInputSource
+		class IInputDevice
 		{
 		public:
-			typedef std::shared_ptr< IInputSource > ptr;
+			typedef std::shared_ptr< IInputDevice > ptr;
 
-			virtual ~IInputSource() {}
+			virtual ~IInputDevice() {}
 
 			/// <summary>
 			/// Name of our source.
 			/// </summaty>
-			virtual std::string Name() const = 0;
+			virtual std::string GetName() const = 0;
 
 			/// <summary>
 			/// Update called once a game cycle to enable us to update and poll our inputs.
@@ -52,17 +52,17 @@ namespace me
 			/// <summary>
 			/// Number of inputs available from this source.
 			/// </summary>
-			virtual size_t InputCount( size_t subSource ) const = 0;
+			virtual size_t GetInputCount( size_t subSource ) const = 0;
 
 			/// <summary>
 			/// Get the name for an input by index.
 			/// </summary>
-			virtual std::string InputName( size_t subSource, size_t index ) const = 0;
+			virtual std::string GetInputName( size_t subSource, size_t index ) const = 0;
 
 			/// <summary>
 			/// Get the index of an input by name.
 			/// </summary>
-			virtual size_t InputIndex( size_t subSource, std::string name ) const = 0;
+			virtual size_t GetInputIndex( size_t subSource, std::string name ) const = 0;
 
 			/// <summary>
 			/// Returns the type of an input, by index.
@@ -73,6 +73,11 @@ namespace me
 			/// Get an input, by index's, data.
 			/// </summary>
 			virtual IData::ptr GetInputData( size_t subSource, size_t index ) const = 0;
+
+			/// <summary>
+			/// Get an input, by index's, data.
+			/// </summary>
+			virtual IData::ptr GetInputData( size_t subSource, std::string name ) const = 0;
 
 			/// <summary>
 			/// Set an input, by index's, data.
@@ -92,7 +97,7 @@ namespace me
 			/// <summary>
 			/// Handles all events, returns the number of events that triggered.
 			/// </summary>
-			virtual int HandleEvents() = 0;
+			virtual int HandleEvents( float delta ) = 0;
 		};
 	}
 }

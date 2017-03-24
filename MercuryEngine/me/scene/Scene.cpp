@@ -15,6 +15,7 @@ Scene::Scene( Game * game, std::string name )
 : m_game( game )
 , m_name{ name }
 , m_renderCount{ 0 }
+, m_ownership{ unify::Owner::Create( name ) }
 {
 	auto objectAllocatorComponent = new ObjectAllocatorComponent( game->GetOS() );
 	AddComponent( ISceneComponent::ptr( objectAllocatorComponent ) );
@@ -24,6 +25,11 @@ Scene::Scene( Game * game, std::string name )
 
 Scene::~Scene()
 {
+}
+
+unify::Owner::ptr Scene::GetOwnership()
+{
+	return m_ownership;
 }
 
 void Scene::Start()
@@ -225,4 +231,10 @@ Object * Scene::FindObject( std::string name )
 size_t Scene::GetRenderCount() const
 {
 	return m_renderCount;
+}
+
+std::string Scene::SendCommand( std::string command, std::string extra )
+{
+	command; extra;
+	return nullptr;
 }

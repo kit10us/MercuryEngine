@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <me/input/IInputSource.h>
+#include <me/input/IInputDevice.h>
+#include <me/UpdateParams.h>
 #include <qxml/QXML.h>
 #include <unify/String.h>
 #include <vector>
@@ -24,11 +25,11 @@ namespace me
 			InputManager( IGame * game );
 			~InputManager();
 
-			void AddInputSource( IInputSource::ptr source );
+			void AddInputDevice( IInputDevice::ptr source );
 
 			size_t GetSourceCount() const;
-			IInputSource::ptr GetSource( size_t index ) const;
-			IInputSource::ptr FindSource( std::string name );
+			IInputDevice::ptr GetSource( size_t index ) const;
+			IInputDevice::ptr FindSource( std::string name );
 
 			IInputCondition::ptr MakeCondition(const qxml::Element * element);
 
@@ -38,7 +39,7 @@ namespace me
 			/// </summary>
 			size_t AddInputActions(unify::Owner::ptr owner, const qxml::Element * parentNode, bool continueOnFail );
 
-			void Update();
+			void Update( UpdateParams params );
 
 			void Clear();
 
@@ -46,8 +47,8 @@ namespace me
 			bool AddSingleInputAction(unify::Owner::ptr owner, const qxml::Element * element);
 
 			IGame* m_game;
-			std::vector< IInputSource::ptr > m_sourceList;
-			std::map< std::string, IInputSource::ptr, unify::CaseInsensitiveLessThanTest > m_sourceMap;
+			std::vector< IInputDevice::ptr > m_sourceList;
+			std::map< std::string, IInputDevice::ptr, unify::CaseInsensitiveLessThanTest > m_sourceMap;
 		};
 	}
 }

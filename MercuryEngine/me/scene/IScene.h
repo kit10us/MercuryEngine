@@ -5,7 +5,8 @@
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 #include <me/Viewport.h>
-#include <unify/MinMax.h>
+#include <unify/Owner.h>
+#include <unify/Range.h>
 #include <list>
 #include <memory>
 
@@ -48,6 +49,8 @@ namespace me
 
 		public:
 
+			virtual unify::Owner::ptr GetOwnership() = 0;
+
 			virtual me::IGame * GetGame() = 0;
 
 			virtual me::IOS * GetOS() = 0;
@@ -73,6 +76,8 @@ namespace me
 			virtual object::Object * FindObject( std::string name ) = 0;
 
 			virtual size_t GetRenderCount() const = 0;
+
+			virtual std::string SendCommand( std::string command, std::string extra ) = 0;
 
 			template< typename T >
 			T* GetComponentT( std::string typeName );

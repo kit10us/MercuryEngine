@@ -18,6 +18,7 @@ namespace unify
 		T x, y, z;
 
 		V3();
+		V3( T xyz );
 		V3( T x, T y, T z );
     	V3( const V3< T > & vec );
 		V3( const T arr[ 3 ] );
@@ -49,6 +50,10 @@ namespace unify
 
 		bool operator == ( const V3< T > & vec ) const;
 		bool operator != ( const V3< T > & vec ) const;
+		bool operator < ( const V3< T > & vec ) const;
+		bool operator <= ( const V3< T > & vec ) const;
+		bool operator > ( const V3< T > & vec ) const;
+		bool operator >= ( const V3< T > & vec ) const;
 
         T & operator[]( size_t i );
         const T & operator[]( size_t i ) const;
@@ -62,6 +67,14 @@ namespace unify
 		T Dot( const V3< T > & a ) const;
 		Angle DotAngle( const V3< T > & a ) const;
 		bool IsZero() const;
+
+		// Swizzles...
+		V3< T > xyz() const;
+		V3< T > xzy() const;
+		V3< T > yzx() const;
+		V3< T > yxz() const;
+		V3< T > zyx() const;
+		V3< T > zxy() const;
 
 		// Named constructors...
 		static V3< T > V3Zero();
