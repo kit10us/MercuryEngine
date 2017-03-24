@@ -408,17 +408,30 @@ void Renderer::UseTextures( std::vector< me::ITexture::ptr > textures )
 		return;
 	}
 	
+	bool usesTextures = false;
+
 	ID3D11ShaderResourceView** views = new ID3D11ShaderResourceView*[ textures.size() ];
 
 	for( size_t i = 0; i < textures.size(); i++ )
 	{
-		auto texture = reinterpret_cast< medx11::Texture* >( textures[i].get() );
-		views[i] = texture->m_colorMap;
+		if( !textures[i] )
+		{
+			views[i] = 0;
+		}
+		else
+		{
+			usesTextures = true;
+			auto texture = reinterpret_cast<medx11::Texture*>( textures[i].get() );
+			views[i] = texture->m_colorMap;
+		}
 	}
 
 	{
-		auto texture = reinterpret_cast< medx11::Texture* >( textures[0].get() );
-		dxContext->PSSetSamplers( 0, 1, &texture->m_colorMapSampler.p );
-		dxContext->PSSetShaderResources( 0, textures.size(), views );
+		if( usesTextures )
+		{
+			auto texture = reinterpret_cast<medx11::Texture*>( textures[0].get() );
+			dxContext->PSSetSamplers( 0, 1, &texture->m_colorMapSampler.p );
+			dxContext->PSSetShaderResources( 0, textures.size(), views );
+		}
 	}
 }

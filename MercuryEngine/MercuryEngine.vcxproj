@@ -175,6 +175,12 @@
     <ClInclude Include="me\VertexUtil.h" />
     <ClInclude Include="me\Viewport.h" />
     <ClInclude Include="me\XMLConvert.h" />
+    <ClInclude Include="sculpter\exception\SculpterFailedToCreate.h" />
+    <ClInclude Include="sculpter\Point.h" />
+    <ClInclude Include="sculpter\PointTable.h" />
+    <ClInclude Include="sculpter\Polygon.h" />
+    <ClInclude Include="sculpter\PolygonTable.h" />
+    <ClInclude Include="sculpter\Shape.h" />
     <ClInclude Include="sg\BeveledBoxParameters.h" />
     <ClInclude Include="sg\CircleParameters.h" />
     <ClInclude Include="sg\ConeParameters.h" />
@@ -307,6 +313,11 @@
     <ClCompile Include="me\VertexUtil.cpp" />
     <ClCompile Include="me\Viewport.cpp" />
     <ClCompile Include="me\XMLConvert.cpp" />
+    <ClCompile Include="sculpter\Point.cpp" />
+    <ClCompile Include="sculpter\PointTable.cpp" />
+    <ClCompile Include="sculpter\Polygon.cpp" />
+    <ClCompile Include="sculpter\PolygonTable.cpp" />
+    <ClCompile Include="sculpter\Shape.cpp" />
     <ClCompile Include="sg\BeveledBoxParameters.cpp" />
     <ClCompile Include="sg\CircleParameters.cpp" />
     <ClCompile Include="sg\ConeParameters.cpp" />

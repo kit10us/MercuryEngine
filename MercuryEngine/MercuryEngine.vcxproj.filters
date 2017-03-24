@@ -67,6 +67,15 @@
     <Filter Include="me\input\action">
       <UniqueIdentifier>{6504af5c-da75-4bc5-a1be-82d7e4897853}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\game">
+      <UniqueIdentifier>{02be47c6-7365-4e9a-bd06-157154e4b1ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sculpter">
+      <UniqueIdentifier>{f6b2a151-a5e8-43d5-b36d-69145d131110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sculpter\exception">
+      <UniqueIdentifier>{ac0a7265-55dc-408f-96a8-15796af4d4ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -621,6 +630,24 @@
     <ClInclude Include="me\input\action\IA_Action.h">
       <Filter>me\input\action</Filter>
     </ClInclude>
+    <ClInclude Include="sculpter\Polygon.h">
+      <Filter>sculpter</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\Point.h">
+      <Filter>sculpter</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\Shape.h">
+      <Filter>sculpter</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\PointTable.h">
+      <Filter>sculpter</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\PolygonTable.h">
+      <Filter>sculpter</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\exception\SculpterFailedToCreate.h">
+      <Filter>sculpter\exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1012,6 +1039,21 @@
     </ClCompile>
     <ClCompile Include="me\input\action\IA_Action.cpp">
       <Filter>me\input\action</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\Polygon.cpp">
+      <Filter>sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\Point.cpp">
+      <Filter>sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\Shape.cpp">
+      <Filter>sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\PointTable.cpp">
+      <Filter>sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\PolygonTable.cpp">
+      <Filter>sculpter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

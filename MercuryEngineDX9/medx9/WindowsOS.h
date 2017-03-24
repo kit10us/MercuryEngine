@@ -10,6 +10,8 @@
 #include <list>
 #include <vector>
 
+#include <Windows.h>
+
 // Undefine Microsoft clashing defines.
 #ifdef CreateWindow
 #undef CreateWindow
@@ -66,6 +68,10 @@ namespace medx9
 		unify::Path GetProgramPath() const override;
 
 		unify::Path GetRunPath() const override;
+
+		bool DeletePath( unify::Path path ) override;
+
+		void DebugOutput( std::string message ) override;
 
 	private:
 		me::IGame * m_game;

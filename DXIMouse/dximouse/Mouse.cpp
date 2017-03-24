@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <dximouse/Mouse.h>
+#include <limits>
 
 using namespace dximouse;
 using namespace me;
@@ -121,7 +122,7 @@ std::string Mouse::GetInputName( size_t subSource, size_t index ) const
 size_t Mouse::GetInputIndex( size_t subSource, std::string name ) const
 {
 	auto && itr = m_nameToIndex.find( name );
-	return itr == m_nameToIndex.end() ? MAXSIZE_T : itr->second;
+	return itr == m_nameToIndex.end() ? std::numeric_limits< size_t >::max() : itr->second;
 }
 
 input::InputType Mouse::GetInputType( size_t subSource, size_t index ) const

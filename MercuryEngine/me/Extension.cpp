@@ -5,6 +5,22 @@
 #include <me/IGame.h>
 #include <qxml/Document.h>
 
+#define WINDOWS_LEAN_AND_MEAN
+#include <windows.h>
+#ifdef GetCommandLine
+#undef GetCommandLine
+#endif // GetCommandLine
+#ifdef GetObject
+#undef GetObject
+#endif
+#ifdef max
+#undef max
+#endif
+#ifdef min
+#undef min
+#endif
+
+
 using namespace me;
 
 typedef bool ( __cdecl *LoaderFunction )(me::IGame *, const qxml::Element * element );
@@ -44,10 +60,10 @@ bool Extension::Load( IGame * game, const qxml::Element * element )
 		return false;
 	}
 	
-	LoaderFunction loader = (LoaderFunction)GetProcAddress( m_moduleHandle, "MELoader" );
+	LoaderFunction loader = (LoaderFunction)GetProcAddress( (HMODULE)m_moduleHandle, "MELoader" );
 	if ( ! loader )
 	{
-		FreeLibrary( m_moduleHandle );
+		FreeLibrary( (HMODULE)m_moduleHandle );
 		m_moduleHandle = 0;
 		return false;
 	}
@@ -59,6 +75,6 @@ bool Extension::Load( IGame * game, const qxml::Element * element )
 
 void Extension::Free()
 {
-	FreeLibrary( m_moduleHandle );
+	FreeLibrary( (HMODULE)m_moduleHandle );
 	m_moduleHandle = 0;
 }

@@ -1,62 +1,66 @@
 Initializing: 
-  name:    C:\dev\ws\MercuryTests\09tests_scripting\09Test01 - Lua\..\..\..\output\v140_Debug\09Test01 - Lua\09Test01 - Lua.exe
-  program: C:\dev\ws\MercuryTests\09tests_scripting\output\v140_Debug\09Test01 - Lua\09Test01 - Lua.exe
+  name:    C:\dev\ws\MercuryTests\02tests_feature\02Test11 - Sculpter\..\..\..\output\v140_Debug\02Test11 - Sculpter\02Test11 - Sculpter.exe
+  program: C:\dev\ws\MercuryTests\02tests_feature\output\v140_Debug\02Test11 - Sculpter\02Test11 - Sculpter.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Tue Mar 21 16:40:11 2017
+  time:    Fri Mar 24 10:57:19 2017
 
-  Loading setup "setup_luago.xml"...
+  Loading setup "setup_models.xml"...
   Loading setup "setup_base.xml"...
-  Loading extenion "../../extensions/Debug/MELua.dll"...
-  Loading extenion "../../extensions/Debug/DXIKeyboard.dll"...
+  Loading extenion "../../extensions/Debug/DAELoader.dll"...
+  Effect manager: adding "color_ambient" (../test_data/effects/Color_Ambient.effect).
+  PixelShader manager: adding "color_ambient" (shaders/color_ambient.xml).
+  VertexShader manager: adding "color_ambient" (shaders/color_ambient.xml).
+  Effect manager: adding "textured_ambient" (../test_data/effects/Textured_Ambient.effect).
+  PixelShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
+  VertexShader manager: adding "textured_ambient" (shaders/textured_ambient.xml).
+  Texture manager: adding "borgcube" (../test_data/images/borgcube.bmp).
+  Loading extenion "../../extensions/Debug/ASELoader.dll"...
   Loading setup "meeditor.xml"...
   Loading extenion "../../extensions/Debug/MEEditor.dll"...
   Loading setup "inputs.xml"...
-OS Startup
+GameComponent summary...
+  SceneManager
+  ActionsGameComponent
+OS Startup Begin
 OS Startup Done
-OnBeforeStartup
-  OnBeforeStart SceneManager...
-  OnBeforeStart Lua...
-  OnBeforeStart ActionsGameComponent...
-OnBeforeStartup Done
-Startup
-Startup Done
-OnAfterStartup
-  OnAfterStarutp SceneManager...
-  OnAfterStarutp Lua...
-  OnAfterStarutp ActionsGameComponent...
+Game Component's OnBeforeStartup Begin
+  OnBeforeStart "SceneManager" Begin
+  OnBeforeStart "SceneManager" Done
+  OnBeforeStart "ActionsGameComponent" Begin
+  OnBeforeStart "ActionsGameComponent" Done
+Game Component's OnBeforeStartup Done
+Game's Startup Begin
+Game's Startup Done
+OnAfterStartup Begin
+  OnAfterStartup "SceneManager" Begin
+  OnAfterStartup "SceneManager" Done
+  OnAfterStartup "ActionsGameComponent" Begin
+  OnAfterStartup "ActionsGameComponent" Done
 OnAfterStartup Done
-total startup time: 1.079532s
+total startup time: 1.043152s
 Creating Main Scene
-  Loading startup script "../test_data/scripts/game.lua".
-  Geometry manager: adding "cube" (../test_data/models/ShapeCube.shape).
-  Effect manager: adding "cube" (../test_data/effects/EffectTextured.effect).
+Start scene "main" Begin
+  Component "ObjectAllocatorComponent" OnBeforeStart Begin
+  Component "ObjectAllocatorComponent" OnBeforeStart Done
+  Scene OnStart Begin
+  Effect manager: adding "color3d" (../test_data/effects/EffectColor.effect).
+  PixelShader manager: adding "color3d" (shaders/color3d.xml).
+  VertexShader manager: adding "color3d" (shaders/color3d.xml).
+  Effect manager: adding "texture3d" (../test_data/effects/EffectTextured.effect).
   PixelShader manager: adding "textured3D" (shaders/textured3d.xml).
   VertexShader manager: adding "textured3D" (shaders/textured3d.xml).
-  Texture manager: adding "borgcube" (../test_data/images/borgcube.bmp).
-  Geometry manager: adding "pointfield" (../test_data/models/ShapePointField.shape).
-  Geometry manager: adding "pointring" (../test_data/models/ShapePointRing.shape).
-  Geometry manager: adding "dashring" (../test_data/models/ShapeDashRing.shape).
-  Geometry manager: adding "pyramid" (../test_data/models/ShapePyramid.shape).
-  Geometry manager: adding "circle" (../test_data/models/ShapeCircle.shape).
-  Geometry manager: adding "sphere" (../test_data/models/ShapeSphere.shape).
-  Geometry manager: adding "cylinder" (../test_data/models/ShapeCylinder.shape).
-  Geometry manager: adding "tube" (../test_data/models/ShapeTube.shape).
-  Geometry manager: adding "plane" (../test_data/models/ShapePlane.shape).
-  Geometry manager: adding "cone" (../test_data/models/ShapeCone.shape).
-  Effect manager: adding "pit_image" (../test_data/effects/EffectPit.effect).
-  Texture manager: adding "pit_image" (../test_data/images/pit.bmp).
-  Texture manager: adding "test256" (../test_data/images/pit.bmp).
-  Effect manager: adding "font2" (../test_data/effects/font2.effect).
-  PixelShader manager: adding "textured2D" (shaders/textured2d.xml).
-  VertexShader manager: adding "textured2D" (shaders/textured2d.xml).
-  Texture manager: adding "font2" (../test_data/images/font2.png).
+  PixelShader manager: adding "texture3d" (shaders/textured3d.xml).
+  VertexShader manager: adding "texture3d" (shaders/textured3d.xml).
+  Scene OnStart End
+  Component "ObjectAllocatorComponent" OnAfterStart Begin
+  Component "ObjectAllocatorComponent" OnAfterStart Done
+  Start scene "main" Done
 Main Scene created
 Shutting down:
 OnDetach
   Detaching SceneManager
-  Detaching Lua
   Detaching ActionsGameComponent
 OnDetachDone
-  time: Tue Mar 21 16:51:03 2017
+  time: Fri Mar 24 10:57:24 2017
 
-  frames: 297246, total delta: 0.002187s,  average fps:457.254272
+  frames: 2473, total delta: 0.001216s,  average fps:822.342712

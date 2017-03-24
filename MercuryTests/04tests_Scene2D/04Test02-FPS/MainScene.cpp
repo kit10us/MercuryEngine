@@ -1,6 +1,7 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
+#include <Windows.h>
 #include <MainScene.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/Layer.h>

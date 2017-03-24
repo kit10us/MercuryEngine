@@ -303,7 +303,7 @@ bool Game::Initialize( OSParameters osParameters )
 						m_logFile = node.GetText();
 
 						// Delete current log.
-						DeleteFileA( (char*)m_logFile.ToString().c_str() );
+						GetOS()->DeletePath( m_logFile );
 					}
 					else if ( node.IsTagName( "failuresAsCritical" ) )
 					{
@@ -672,7 +672,10 @@ void Game::LogLine( std::string line, int indent )
 
 	ofstream out( m_logFile.ToString(), ios_base::out | ios_base::app  );
 	out << text;
-	OutputDebugStringA( text.c_str() );
+	if( GetOS() )
+	{
+		GetOS()->DebugOutput( text );
+	}
 
 	for ( auto && listener : m_logListeners )
 	{

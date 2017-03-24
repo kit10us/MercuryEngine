@@ -43,6 +43,7 @@ namespace medx9
 
 	class Texture : public me::ITexture
 	{
+		friend class Renderer;
 	public:
 		typedef std::shared_ptr< Texture > ptr;
 
@@ -72,8 +73,6 @@ namespace medx9
 		const unsigned int FileHeight() const;
 
 		const unify::Size< unsigned int > & ImageSize() const;
-
-		bool Use( unsigned int stage );
 
 		bool GetRenderable() const;
 

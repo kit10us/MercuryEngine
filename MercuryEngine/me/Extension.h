@@ -6,21 +6,6 @@
 #include <qxml/Element.h>
 #include <unify/Path.h>
 
-#define WINDOWS_LEAN_AND_MEAN
-#include <windows.h>
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif // GetCommandLine
-#ifdef GetObject
-#undef GetObject
-#endif
-#ifdef max
-#undef max
-#endif
-#ifdef min
-#undef min
-#endif
-
 namespace me
 {
 	class IGame;
@@ -37,6 +22,6 @@ namespace me
 	private:
 		unify::Path m_source;
 
-		HMODULE m_moduleHandle; 
+		void* m_moduleHandle;
 	};
 }

@@ -118,12 +118,6 @@ void Texture::UnlockRect( unsigned int level )
 	m_texture->UnlockRect( level );
 }
 
-bool Texture::Use( unsigned int stage )
-{
-	HRESULT hr = m_renderer->GetDxDevice()->SetTexture( stage, m_texture );
-	return SUCCEEDED( hr );
-}
-
 // Load all possible info (short of bits) about the texture
 void Texture::Preload()
 {

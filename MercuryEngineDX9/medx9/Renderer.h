@@ -50,6 +50,8 @@ namespace medx9
 		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) override;
 		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) override;
 
+		void UseTextures( std::vector< me::ITexture::ptr > textures ) override;
+
 	private:
 		WindowsOS * m_os;
 		me::Display m_display;

@@ -1,6 +1,8 @@
 // Copyright (c) 2003 - 2013, Quentin S. Smith
 // All Rights Reserved
 
+#include <Windows.h>
+
 #include <dxigp/Gamepad.h>
 
 #pragma comment( lib, "Xinput9_1_0.lib" )

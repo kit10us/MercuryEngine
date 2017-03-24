@@ -218,7 +218,7 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 		if ( method.effect )
 		{
 			method.effect->UpdateData( renderInfo, &matrix, 1 );
-			method.effect->Use();
+			method.effect->Use( this , renderInfo );
 		}
 
 		// Draw Primitive...
@@ -271,4 +271,18 @@ me::IVertexConstruct::ptr Renderer::ProduceVC( const VertexDeclaration & vd, con
 me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters )
 {
 	return me::ITexture::ptr( new Texture( this, parameters ) );
+}
+
+void Renderer::UseTextures( std::vector< me::ITexture::ptr > textures )
+{
+	HRESULT hr = S_OK;
+	for( int stage = 0; stage < (int)textures.size(); stage++ )
+	{
+		auto texture = reinterpret_cast<medx9::Texture*>( textures[stage].get() );
+		hr = GetDxDevice()->SetTexture( stage, texture->m_texture );
+		if( FAILED( hr ) )
+		{
+			throw exception::Render( "Failed to use textures!" );
+		}
+	}
 }

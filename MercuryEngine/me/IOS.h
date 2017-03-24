@@ -51,8 +51,6 @@ namespace me
 
 	struct OSParameters
 	{
-		//typedef LRESULT ( __stdcall* WndProc )(HWnd, unsigned int, WParam, LParam);
-
 		OSParameters()
 			: hWnd{}
 			, hInstance{}
@@ -158,5 +156,15 @@ namespace me
 		/// Asset path manager.
 		/// </summary>
 		virtual unify::Path GetRunPath() const = 0;
+
+		/// <summary>
+		/// Delete a path.
+		/// </summary>
+		virtual bool DeletePath( unify::Path path ) = 0;
+
+		/// <summary>
+		/// Output a string for debugging.
+		/// </summary>
+		virtual void DebugOutput( std::string message ) = 0;
 	};
 }

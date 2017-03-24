@@ -578,3 +578,14 @@ unify::Path WindowsOS::GetRunPath() const
 {
 	return m_runPath;
 }
+
+bool WindowsOS::DeletePath( unify::Path path )
+{
+	DeleteFileA( (char*)path.ToString().c_str() );
+	return true;
+}
+
+void WindowsOS::DebugOutput( std::string message )
+{
+	OutputDebugStringA( message.c_str() );
+}
