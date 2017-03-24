@@ -29,7 +29,9 @@ namespace mephysx
 		std::shared_ptr< physx::PxErrorCallback > m_errorCallback;
 		physx::PxDefaultAllocator m_defaultAllocatorCallback;
 		std::shared_ptr< physx::PxFoundation > m_foundation;
+#ifdef _DEBUG
 		physx::PxProfileZoneManager * m_profileZoneManager;
+#endif
 		std::shared_ptr< physx::PxPhysics > m_physics;
 		physx::PxDefaultCpuDispatcher * m_dispatcher;
 	};

@@ -395,6 +395,12 @@ bool Game::Initialize( OSParameters osParameters )
 		xmlLoader( m_setup );
 	}
 
+	LogLine( "GameComponent summary...", 0 );
+	for( int i = 0; i < GetComponentCount(); i++ )
+	{
+		LogLine( GetComponent( i )->GetTypeName() );
+	}
+
 	LogLine( "OS Startup Begin", 0 );
 	m_os->Startup();
 	LogLine( "OS Startup Done", 0 );

@@ -61,13 +61,17 @@ void GameComponent::OnAttach( me::IGame * game )
 		return;
 	}
 
-	bool recordMemoryAllocations = true;
+	bool recordMemoryAllocations = false;
+#ifdef _DEBUG
+
+	recordMemoryAllocations = true;
 	m_profileZoneManager = &PxProfileZoneManager::createProfileZoneManager( m_foundation.get() );
 	if ( !m_profileZoneManager )
 	{
 		game->ReportError( ErrorLevel::Failure, "PhysX", "PxProfileZoneManager::createProfileZoneManager failed!" );
 		return;
 	}
+#endif
 
 	m_physics.reset( PxCreatePhysics( PX_PHYSICS_VERSION, *m_foundation, PxTolerancesScale(), recordMemoryAllocations ), Releaser< PxPhysics > );
 	if ( !m_physics )
