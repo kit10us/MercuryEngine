@@ -212,6 +212,12 @@ std::string VertexShader::GetSource() const
 	return m_filePath.ToString();
 }
 
+bool VertexShader::Reload()
+{
+	return false;
+}
+
+
 std::string VertexShader::GetError()
 {
 	return m_errorMessage;

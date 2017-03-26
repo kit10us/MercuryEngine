@@ -675,6 +675,9 @@
     <ClInclude Include="me\input\action\IA_ObjectAction.h">
       <Filter>me\input\action</Filter>
     </ClInclude>
+    <ClInclude Include="me\Blend.h">
+      <Filter>me\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1099,6 +1102,9 @@
     </ClCompile>
     <ClCompile Include="me\input\action\IA_ObjectAction.cpp">
       <Filter>me\input\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Blend.cpp">
+      <Filter>me\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

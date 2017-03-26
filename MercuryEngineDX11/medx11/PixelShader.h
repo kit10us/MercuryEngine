@@ -36,6 +36,8 @@ namespace medx11
 
 		bool IsTrans() override;
 
+		bool Reload() override;
+
 		std::string GetError();
 
 	protected:

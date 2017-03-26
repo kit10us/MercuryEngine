@@ -41,6 +41,8 @@ namespace medx11
 
 		std::string GetSource() const override;
 
+		bool Reload() override;
+
 		std::string GetError();
 
 	protected:	   

@@ -75,6 +75,8 @@ namespace medx11
 
 		const me::TextureParameters * GetParameters() const override;
 
+		bool Reload() override;
+
 	protected:
 		void LoadImage( const unify::Path & filePath );
 		void LoadHeader();

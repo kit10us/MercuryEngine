@@ -61,5 +61,6 @@ namespace me
 		virtual size_t GetBytecodeLength() const = 0;
 		virtual void Use() = 0;
 		virtual std::string GetSource() const = 0;
+		virtual bool Reload() = 0;
 	};
 }

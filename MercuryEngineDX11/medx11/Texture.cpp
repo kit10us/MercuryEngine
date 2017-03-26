@@ -292,3 +292,8 @@ const me::TextureParameters * Texture::GetParameters() const
 {
 	return &m_parameters;
 }
+
+bool Texture::Reload()
+{
+	return false;
+}
