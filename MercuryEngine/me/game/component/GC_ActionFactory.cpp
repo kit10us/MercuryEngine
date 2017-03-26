@@ -5,8 +5,11 @@
 #include <me/scene/SceneManager.h>
 
 // Actions...
-#include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
+#include <me/action/ObjectAction.h>
+
+// Input actions...
+#include <me/input/action/IA_Action.h>
 
 // Object Actions...
 #include <me/object/action/OA_Action.h>
@@ -33,10 +36,18 @@ ActionFactory::~ActionFactory()
 
 action::IAction::ptr ActionFactory::CreateAction( const qxml::Element * element )
 {
-	std::string name = element->GetAttributeElse< std::string >( "name", "" );
 	if( element->IsTagName( "QuitGame" ) )
 	{
 		return action::IAction::ptr( new action::QuitGame( GetGame() ) );
+	}
+	else if( element->IsTagName( "ObjectAction" ) )
+	{
+		std::string objectName = element->GetAttribute< std::string >( "name" );
+
+		auto sceneManager = GetGame()->GetComponentT< scene::SceneManager >();
+		auto object = sceneManager->GetCurrentScene()->FindObject( objectName );
+		auto action = CreateObjectAction( element->GetFirstChild() );
+		return action::IAction::ptr( new action::ObjectAction( object, action ) );
 	}
 
 	return action::IAction::ptr();
@@ -86,4 +97,9 @@ object::action::IObjectAction::ptr ActionFactory::CreateObjectAction( const qxml
 	}
 
 	return object::action::IObjectAction::ptr();
+}
+
+input::IInputAction::ptr ActionFactory::CreateInputAction( const qxml::Element * element )
+{
+	return input::IInputAction::ptr();
 }

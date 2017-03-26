@@ -7,6 +7,7 @@
 #include <unify/FStream.h>
 #include <unify/LinkList.h>
 #include <unify/unify.h>
+#include <memory>
 #include <vector>
 #include <list>
 
@@ -18,6 +19,8 @@ namespace qxml
 	{
 		friend class Document;
 	public:
+		typedef std::shared_ptr< Element > ptr;
+
 		struct NodeType
 		{
 			enum TYPE

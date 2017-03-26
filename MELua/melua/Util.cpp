@@ -77,7 +77,7 @@ namespace melua
 	{
 		lua_pushboolean( L, value );
 		return 1;
-	}		
+	}
 
 	int PushNumber( lua_State *L, float value )
 	{
@@ -88,6 +88,41 @@ namespace melua
 	int PushString( lua_State *L, std::string value )
 	{
 		lua_pushstring( L, value.c_str() );
+		return 1;
+	}
+
+	template<>
+	int Push( lua_State * L, bool value )
+	{
+		lua_pushboolean( L, value ? 1 : 0 );
+		return 1;
+	}
+
+	template<>
+	int Push( lua_State * L, std::string value )
+	{
+		lua_pushstring( L, value.c_str() );
+		return 1;
+	}
+
+	template<>
+	int Push( lua_State * L, float value )
+	{
+		lua_pushnumber( L, value ? 1 : 0 );
+		return 1;
+	}
+
+	template<>
+	int Push( lua_State * L, int value )
+	{
+		lua_pushnumber( L, value );
+		return 1;
+	}
+
+	template<>
+	int Push( lua_State * L, unsigned int value )
+	{
+		lua_pushboolean( L, value ? 1 : 0 );
 		return 1;
 	}
 }

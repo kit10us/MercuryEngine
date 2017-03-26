@@ -37,6 +37,7 @@ namespace me
 
 		action::IAction::ptr CreateAction(const qxml::Element * element) override;
 		object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) override;
+		input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) override;
 
 	public:	// IComponent...
 		bool IsEnabled() const override;

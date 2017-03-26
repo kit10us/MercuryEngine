@@ -6,12 +6,23 @@
 #include <melua/ExportInputCondition.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportV2.h>
+#include <melua/ExportInputAction.h>
+#include <melua/ExportObjectAction.h>
+#include <melua/ExportAction.h>
+
 #include <me/input/IInputCondition.h>
 #include <me/scene/SceneManager.h>
+#include <me/input/action/IA_Action.h>
 
 using namespace melua;
 using namespace me;
 using namespace input;
+
+
+char* InputProxy::Name()
+{
+	return "Input";
+}
 
 int PushInput( lua_State * state, me::input::IInputDevice::ptr input )
 {
@@ -52,44 +63,51 @@ int Input_SubSourceCount( lua_State * state )
 	return 1;
 }
 
-int Input_AddEvent( lua_State * state )
+int Input_AddAction( lua_State * state )
 {
 	int args = lua_gettop( state );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
+	me::Game * game = se->GetGame();
 
 	InputProxy * inputProxy = CheckInput( state, 1 );
-	std::string owner = luaL_checkstring( state, 2 );
+	std::string ownerName = luaL_checkstring( state, 2 );
 
-	unify::Owner::ptr ownership;
-	if( unify::StringIs( owner, "game" ) )
+	unify::Owner::ptr owner;
+	if( unify::StringIs( ownerName, "game" ) )
 	{
-		ownership = se->GetGame()->GetOwnership();
+		owner = se->GetGame()->GetOwnership();
 	}
-	else if( unify::StringIs( owner, "scene" ) )
+	else if( unify::StringIs( ownerName, "scene" ) )
 	{
 		auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >( "SceneManager" );
-		ownership = sceneManager->GetCurrentScene()->GetOwnership();
+		owner = sceneManager->GetCurrentScene()->GetOwnership();
 	}
 	else
 	{
 		lua_pushboolean( state, 0 );
 		return 1;
 	}
-
+	
+	// 3rd parameter is condition.
 	me::input::IInputCondition::ptr condition = CheckInputCondition( state, 3 )->condition;
-
+	
+	std::string type = GetTypename( state, 4 );
 	me::input::IInputAction::ptr action;
+	if( unify::StringIs( type, ActionProxy::Name() ) )
+	{
+		auto action = CheckUserType< ActionProxy >( state, 4 );
+		inputProxy->input->AddEvent( owner, condition, me::input::IInputAction::ptr( new me::input::action::Action( action->action ) ) );
+		return Push( state, true );
+	}
+	else if( unify::StringIs( type, InputActionProxy::Name() ) )
+	{
+		auto inputAction = CheckUserType< InputActionProxy >( state, 4 );
+		inputProxy->input->AddEvent( owner, condition, inputAction->action );
+		return Push( state, true );
+	}
 
-	assert( 0 ); // Need to work out actions first.
-
-	auto input = inputProxy->input;
-	input->AddEvent( ownership, condition, action );
-
-
-	lua_pushstring( state, inputProxy->input->GetName().c_str() );
-
-	return 1;
+	return Push( state, false );
 }
 
 int Input_StickLow( lua_State * state )
@@ -111,14 +129,6 @@ int Input_StickHigh( lua_State * state )
 	PushV3( state, v3 );
 	return 1;
 }
-
-static const luaL_Reg ObjectFunctions[] =
-{
-	{ "GetName", Input_GetName },
-	{ "SubSourceCount", Input_SubSourceCount },
-	{ "AddEvent", Input_AddEvent },
-	{ nullptr, nullptr }
-};
 
 int Input_Constructor( lua_State * state )
 {
@@ -150,7 +160,16 @@ int Input_Destructor( lua_State * state )
 void RegisterInput( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "Input", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Input_Constructor, Input_Destructor };
+
+	const luaL_Reg ObjectFunctions[] =
+	{
+		{ "GetName", Input_GetName },
+		{ "SubSourceCount", Input_SubSourceCount },
+		{ "AddAction", Input_AddAction },
+		{ nullptr, nullptr }
+	};
+
+	Type type = { InputProxy::Name(), ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Input_Constructor, Input_Destructor };
 	type.named_constructors.push_back( { "StickLow", Input_StickLow } );
 	type.named_constructors.push_back( { "StickHeigh", Input_StickHigh } );
 	se->AddType( type );

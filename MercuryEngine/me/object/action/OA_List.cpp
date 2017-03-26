@@ -12,11 +12,11 @@ List::List(std::initializer_list< IObjectAction::ptr > actions)
 {
 }
 
-bool List::Perform( Object* object, const UpdateParams & params)
+bool List::Perform( Object* object, float delta )
 {
 	for (auto action : m_actions)
 	{
-		bool result = action->Perform(object, params);
+		bool result = action->Perform( object, delta );
 		if (!result)
 		{
 			return false;

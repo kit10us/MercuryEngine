@@ -94,8 +94,10 @@
     <ClInclude Include="melua\component\ObjectComponent.h" />
     <ClInclude Include="melua\component\SceneComponent.h" />
     <ClInclude Include="melua\CreateState.h" />
+    <ClInclude Include="melua\ExportAction.h" />
     <ClInclude Include="melua\ExportComponent.h" />
     <ClInclude Include="melua\ExportInput.h" />
+    <ClInclude Include="melua\ExportInputAction.h" />
     <ClInclude Include="melua\ExportInputCondition.h" />
     <ClInclude Include="melua\ExportObjectAction.h" />
     <ClInclude Include="melua\ExportObjectComponent.h" />
@@ -144,8 +146,10 @@
     <ClCompile Include="melua\component\ObjectComponent.cpp" />
     <ClCompile Include="melua\component\SceneComponent.cpp" />
     <ClCompile Include="melua\CreateState.cpp" />
+    <ClCompile Include="melua\ExportAction.cpp" />
     <ClCompile Include="melua\ExportComponent.cpp" />
     <ClCompile Include="melua\ExportInput.cpp" />
+    <ClCompile Include="melua\ExportInputAction.cpp" />
     <ClCompile Include="melua\ExportInputCondition.cpp" />
     <ClCompile Include="melua\ExportObjectAction.cpp" />
     <ClCompile Include="melua\ExportObjectComponent.cpp" />

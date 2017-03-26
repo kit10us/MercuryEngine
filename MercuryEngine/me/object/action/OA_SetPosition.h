@@ -18,7 +18,7 @@ namespace me
 			public:
 				SetPosition( dyna::IDynaPosition::ptr position );
 
-				bool Perform( Object* object, const UpdateParams & params) override;
+				bool Perform( Object* object, float delta ) override;
 
 			private:
 				dyna::IDynaPosition::ptr m_position;

@@ -5,6 +5,7 @@
 
 #include <me/IComponent.h>
 #include <me/action/IAction.h>
+#include <me/input/IInputAction.h>
 #include <me/object/action/IObjectAction.h>
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
@@ -84,5 +85,7 @@ namespace me
 		/// Create an Object Action from an XML node.
 		/// </summary>
 		virtual object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) = 0;
+
+		virtual input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) = 0;
 	};
 }

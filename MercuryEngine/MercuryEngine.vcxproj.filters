@@ -669,6 +669,12 @@
     <ClInclude Include="me\game\component\GC_ActionFactory.h">
       <Filter>me\game\component</Filter>
     </ClInclude>
+    <ClInclude Include="me\action\ObjectAction.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\input\action\IA_ObjectAction.h">
+      <Filter>me\input\action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1087,6 +1093,12 @@
     </ClCompile>
     <ClCompile Include="me\game\component\GC_ActionFactory.cpp">
       <Filter>me\game\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\ObjectAction.cpp">
+      <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\input\action\IA_ObjectAction.cpp">
+      <Filter>me\input\action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

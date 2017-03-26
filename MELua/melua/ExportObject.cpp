@@ -112,7 +112,7 @@ namespace melua
 		}
 		else
 		{
-			GeometryProxy * geometryProxy = CheckGeometry( state, 2 );
+			GeometryProxy * geometryProxy = CheckUserType< GeometryProxy >( state, 2 );
 			if( geometryProxy )
 			{
 				geometry = geometryProxy->geometry;

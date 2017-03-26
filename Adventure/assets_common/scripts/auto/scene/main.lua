@@ -1,28 +1,11 @@
 require "prefabs"
 require "terrain"
+require "map_a"
+require "OA"
+require "OAC"
+require "actions"
 
-
-function SetPositionObjectAction( object, size, target )
-	local physics = MEPhysics()
-	local collider = physics:CreateBoxCollider( size )
-	object:AddComponent( collider:AsObjectComponent() )
-	local document = XMLDocument()
-	local element = document:AddElement( "SetPosition" )
-	element:AddAttribute( "type", "object" )
-	element:AddText( target:GetName() )
-	collider:SetOnEnter( ObjectAction( element ) )	
-end
-
-function SetPositionAbsoluteAction( object, size, position )
-	local physics = MEPhysics()
-	local collider = physics:CreateBoxCollider( size )
-	object:AddComponent( collider:AsObjectComponent() )
-	local document = XMLDocument()
-	local element = document:AddElement( "SetPosition" )
-	element:AddAttribute( "type", "absolute" )
-	element:AddText( tostring( position ) )
-	collider:SetOnEnter( ObjectAction( element ) )	
-end
+local start_position = V3( 4, 0, 0 )
 
 function BuildCube( position )
 	local object = this:NewObject( MakeObjectName( "cube" ) )
@@ -44,7 +27,6 @@ end
 
 function OnBeforeStart()
 	local start_position = V3( 4, 0, 0 )
-
 
 	CreateTerrain( Size2( 30, 30 ),  Size2( 4, 4 ) )
 	
@@ -86,12 +68,10 @@ function OnBeforeStart()
 	local jump1 = BuildCube( V3( 13, 1, 8 ) )	
 	local jump2 = BuildCube( V3( 16, 1, -25 ) )
 
-	SetPositionObjectAction( jump1, V3( 2 ), jump2 )
-	SetPositionObjectAction( jump2, V3( 2 ), pyramid )
-	SetPositionAbsoluteAction( pyramid, V3( 2 ), V3( 4, 30, 0 ) )
-	SetPositionAbsoluteAction( sphere, V3( 2 ), start_position ) 
-
-	
+	jump1:AddComponent( OAC_SetPosition( V3( 2 ), jump2 ) )
+	jump2:AddComponent( OAC_SetPosition( V3( 2 ), pyramid ) )
+	pyramid:AddComponent( OAC_SetPosition( V3( 2 ), V3( 4, 30, 0 ) ) )
+	sphere:AddComponent( OAC_SetPosition( V3( 2 ), start_position ) )	
 
 	local player = this:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )
@@ -110,72 +90,18 @@ function OnBeforeStart()
 end
 
 function OnAfterStart()
-	print( this:SendCommand( "DrawOnMap", "16, 14, sand" ) )
+	CreateMap()
 
-	-- Top-Left "L"
-	this:SendCommand( "DrawOnMap", "16, 12, sand" )
-	this:SendCommand( "DrawOnMap", "17, 12, sand" )
-	this:SendCommand( "DrawOnMap", "16, 11, sand" )
+	local player = this:FindObject( "player" )
 
-	-- Top-Right "L"
-	this:SendCommand( "DrawOnMap", "21, 12, sand" )
-	this:SendCommand( "DrawOnMap", "22, 12, sand" )
-	this:SendCommand( "DrawOnMap", "22, 11, sand" )
-
-	-- Bott0m-Left "L"
-	this:SendCommand( "DrawOnMap", "16, 8, sand" ) 
-	this:SendCommand( "DrawOnMap", "16, 7, sand" ) 
-	this:SendCommand( "DrawOnMap", "17, 7, sand" ) 
-
-	-- Botton-Right "L"
-	this:SendCommand( "DrawOnMap", "22, 8, sand" ) 
-	this:SendCommand( "DrawOnMap", "21, 7, sand" ) 
-	this:SendCommand( "DrawOnMap", "22, 7, sand" ) 
-	
-
-	-- Center "+"
-
-	this:SendCommand( "DrawOnMap", "19, 12, sand" )
-	this:SendCommand( "DrawOnMap", "19, 11, sand" )
-
-	this:SendCommand( "DrawOnMap", "17, 10, sand" )
-	this:SendCommand( "DrawOnMap", "18, 10, sand" )
-	this:SendCommand( "DrawOnMap", "19, 10, sand" )
-	this:SendCommand( "DrawOnMap", "20, 10, sand" )
-	this:SendCommand( "DrawOnMap", "21, 10, sand" )
-	
-	this:SendCommand( "DrawOnMap", "19, 9, sand" ) 
-	this:SendCommand( "DrawOnMap", "19, 8, sand" ) 
-	
-	
-	
-	
-	local target = this:FindObject( "player" )
-	local cameraMotivator = target:GetComponent( "CameraMotivator" );
-	
-	if not cameraMotivator then
-		print( "Camera motivator NOT FOUND!" )
-	else	
-		cameraMotivator:SetValue( "speed", 4.0 );
+	local gamepad = Input( "Gamepad" )
+	if gamepad then	
+		local PressY = InputCondition( "button", 0, "Y", "pressed" )
+		local action = InputAction( player, OA_SetPosition( start_position ) )
+		gamepad:AddAction( "scene", PressY, action )
 		
-		local gamepad = Input( "Gamepad" )
-		if gamepad then	
-			
-			local cap_low = V3(-1.0 * 1.0)
-			local threshold_low = V3(-1.0 * 0.3)
-			local threshold_high = V3(1.0 * 0.3)
-			local cap_high = V3(1.0 * 1.0)
-			--motivator:Add( "move", 	InputCondition( "stick", gamepad, 0, "LeftStick", cap_low, threshold_low, threshold_high, cap_high ) )
-		end
-
-		--[[
-		local keyboard = Input( "Keyboard" )	
-		if keyboard then
-			motivator:Add( "moveleft", 	InputCondition( "button", keyboard, 0, "Left", "Down" ) )
-			motivator:Add( "moveright",	InputCondition( "button", keyboard, 0, "Right", "Down" ) )
-			motivator:Add( "moveup", 	InputCondition( "button", keyboard, 0, "Up", "Down" ) )
-			motivator:Add( "movedown", 	InputCondition( "button", keyboard, 0, "Down", "Down" ) )
-		end	
-		--]]
+		local PressStart = InputCondition( "button", 0, "Back", "pressed" )
+		gamepad:AddAction( "scene", PressStart, A_QuitGame() )
 	end
+
 end

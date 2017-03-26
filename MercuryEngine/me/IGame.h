@@ -155,11 +155,16 @@ namespace me
 		/// </summary>
 		virtual object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) = 0;
 
+		/// <summary>
+		/// Create an Input Action from an XML node.
+		/// </summary>
+		virtual input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) = 0;
+
 		template< typename T >
 		T* GetComponentT( std::string typeName );
 
 		template< typename T >
-		T* GetComponentT( int index );
+		T* GetComponentT();
 	};
 
 	template< typename T >
@@ -171,10 +176,10 @@ namespace me
 	}
 
 	template< typename T >
-	T* IGame::GetComponentT( int index )
+	T* IGame::GetComponentT()
 	{
-		auto component = GetComponent( index );
-		if ( ! component ) return nullptr;
+		auto component = GetComponent( T::Name() );
+		if( !component ) return nullptr;
 		return dynamic_cast< T* >( component.get() );
 	}
 }

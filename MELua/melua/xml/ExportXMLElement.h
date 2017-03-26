@@ -15,10 +15,12 @@ namespace melua
 		MELUADLL_API static char* Name();
 
 		XMLElementProxy( qxml::Element* element );
+		XMLElementProxy( qxml::Element::ptr element );
 
 		qxml::Element* GetElement();
 
 	private:
+		qxml::Element::ptr m_managed;
 		qxml::Element* m_element;
 	};
 

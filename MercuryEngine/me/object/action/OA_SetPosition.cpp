@@ -12,12 +12,12 @@ SetPosition::SetPosition( dyna::IDynaPosition::ptr position )
 {
 }
 
-bool SetPosition::Perform( Object* object, const UpdateParams & params)
+bool SetPosition::Perform( Object* object, float delta )
 {
 	if (m_position)
 	{
 		unify::V3< float > position;
-		dyna::Result result = m_position->GetPosition( position, params.GetDelta());
+		dyna::Result result = m_position->GetPosition( position, delta );
 		if (result == dyna::Result::Success )
 		{
 			object->GetFrame().SetPosition( position );

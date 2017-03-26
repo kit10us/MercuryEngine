@@ -105,6 +105,8 @@ namespace me
 
 		object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) override;
 
+		input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) override;
+
 	private:
 		void AddExtension( unify::Path path, const qxml::Element * element );
 

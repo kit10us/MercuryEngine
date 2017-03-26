@@ -12,11 +12,11 @@ IgnoreResult::IgnoreResult(IObjectAction::ptr action)
 {
 }
 
-bool IgnoreResult::Perform( Object* object, const UpdateParams & params)
+bool IgnoreResult::Perform( Object* object, float delta )
 {
 	if (m_action)
 	{
-		m_action->Perform(object, params);
+		m_action->Perform(object, delta );
 	}
 
 	return true;

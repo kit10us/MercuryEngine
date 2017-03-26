@@ -10,7 +10,7 @@ object::action::Action::Action( me::action::IAction::ptr action )
 {
 }
 
-bool object::action::Action::Perform( me::object::Object* ob, const UpdateParams & params )
+bool object::action::Action::Perform( me::object::Object* ob, float delta )
 {
 	if( m_action )
 	{

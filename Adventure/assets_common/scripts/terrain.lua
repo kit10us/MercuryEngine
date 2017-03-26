@@ -131,6 +131,21 @@ function CreateSand( terra_size )
 	MakeMixTerra( terra_size, "sand", parameters )
 end
 
+function CreateSidewalk( terra_size )
+	local parameters = TerraParameters()	
+	parameters:SetSize( terra_size )
+	parameters:SetConstant( 0 )	
+	parameters:SetPoints( 2, 2 )
+	
+	local effect = Effect( "wall", "EffectTextureMix.effect" )
+	effect:SetTexture( 0, Texture( "wall", "wallx.dds" ) )
+	effect:SetTexture( 1, Texture( "leafsolid", "leafsolid.bmp" ) )
+	effect:SetTexture( 2, Texture( "sidewalk_mix", "river27b_h.bmp" ) )
+	parameters:SetEffect( effect )
+	
+	MakeMixTerra( terra_size, "sidewalk", parameters )
+end
+
 function CreateTerrain( map_size, terra_size )
 	local this = Scene()
 	this:SendCommand( "SetMapWidth", tostring(map_size:width()) )
@@ -140,5 +155,6 @@ function CreateTerrain( map_size, terra_size )
 	this:SendCommand( "MakeMap" )
 	CreateInvalid( terra_size )
 	CreateGrass( terra_size )
-	CreateSand( terra_size )	
+	CreateSand( terra_size )
+	CreateSidewalk( terra_size )
 end

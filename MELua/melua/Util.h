@@ -33,4 +33,25 @@ namespace melua
 	{
 		return *(T**)luaL_checkudata( L, index, T::Name() );
 	}
+
+	template< typename T >
+	int Push( lua_State * L, T value ) 
+	{
+		return PushUserType< T >( L, value );
+	}
+
+	template<>
+	int Push( lua_State * L, bool value );
+
+	template<>
+	int Push( lua_State * L, std::string value );
+
+	template<>
+	int Push( lua_State * L, float value );
+
+	template<>
+	int Push( lua_State * L, int value );
+
+	template<>
+	int Push( lua_State * L, unsigned int value );
 }

@@ -31,7 +31,7 @@ void ObjectActionComponent::OnUpdate(UpdateParams params)
 
 	if (m_action)
 	{
-		m_stopped = !m_action->Perform( GetObject(), params);
+		m_stopped = !m_action->Perform( GetObject(), params.GetDelta());
 	}
 }
 

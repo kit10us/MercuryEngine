@@ -36,7 +36,7 @@ void ColliderBase::PerformOnEnter( Entity * entity, const me::UpdateParams & par
 {
 	if( m_onEnter )
 	{
-		m_onEnter->Perform( entity->GetObject(), params );
+		m_onEnter->Perform( entity->GetObject(), params.GetDelta() );
 	}
 }
 

@@ -17,7 +17,7 @@ namespace me
 			public:
 				IgnoreResult( IObjectAction::ptr action );
 
-				bool Perform( Object* object, const UpdateParams & params) override;
+				bool Perform( Object* object, float delta ) override;
 
 			private:
 				IObjectAction::ptr m_action;

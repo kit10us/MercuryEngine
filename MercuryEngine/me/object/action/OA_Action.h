@@ -22,7 +22,7 @@ namespace me
 			public:
 				Action( me::action::IAction::ptr action );
 
-				bool Perform( Object* object, const UpdateParams & params) override;
+				bool Perform( Object* object, float delta ) override;
 
 			private:
 				me::action::IAction::ptr m_action;

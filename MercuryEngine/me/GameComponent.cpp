@@ -79,6 +79,16 @@ object::action::IObjectAction::ptr GameComponent::CreateObjectAction( const qxml
 	return object::action::IObjectAction::ptr();
 }
 
+input::IInputAction::ptr GameComponent::CreateInputAction( const qxml::Element * element )
+{
+	return input::IInputAction::ptr();
+}
+
+input::IInputAction::ptr CreateInputAction( const qxml::Element * element )
+{
+	return input::IInputAction::ptr();
+}
+
 void GameComponent::OnBeforeStartup()
 {
 }

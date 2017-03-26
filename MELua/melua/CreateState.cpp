@@ -34,7 +34,9 @@
 #include <melua/xml/ExportXMLDocument.h>
 #include <melua/xml/ExportXMLElement.h>
 
+#include <melua/ExportAction.h>
 #include <melua/ExportObjectAction.h>
+#include <melua/ExportInputAction.h>
 
 void melua::RegisterLibraries( lua_State * state )
 {
@@ -76,5 +78,7 @@ void melua::RegisterLibraries( lua_State * state )
 	RegisterXMLDocument( state );
 	RegisterXMLElement( state );
 
+	RegisterAction( state );
 	RegisterObjectAction( state );
+	RegisterInputAction( state );
 }

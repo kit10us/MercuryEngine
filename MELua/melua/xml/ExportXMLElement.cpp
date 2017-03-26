@@ -16,6 +16,12 @@ namespace melua
 	{
 	}
 
+	XMLElementProxy::XMLElementProxy( qxml::Element::ptr element )
+		: m_element{ element.get() }
+		, m_managed{ element }
+	{
+	}
+
 	qxml::Element* XMLElementProxy::GetElement()
 	{
 		return m_element;
@@ -59,8 +65,8 @@ namespace melua
 	{
 		int args = lua_gettop( state );
 
-		assert( 0 ); // TODO:
-		return 0;
+		std::string name = luaL_checkstring( state, 1 );
+		return Push( state, XMLElementProxy{ qxml::Element::ptr( new qxml::Element( name ) ) } );
 	}
 
 	int XMLElement_Destructor( lua_State* state )

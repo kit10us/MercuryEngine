@@ -4,13 +4,13 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/Geometry.h>
+#include <me/action/IAction.h>
 
-struct GeometryProxy
+struct ActionProxy
 {
 	MELUADLL_API static char* Name();
-	me::Geometry::ptr geometry;
+	me::action::IAction::ptr action;
 };
 
-void RegisterGeometry( lua_State * state );
+void RegisterAction( lua_State * state );
 

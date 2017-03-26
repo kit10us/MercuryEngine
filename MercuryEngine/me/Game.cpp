@@ -809,6 +809,10 @@ object::action::IObjectAction::ptr Game::CreateObjectAction( const qxml::Element
 	return object::action::IObjectAction::ptr();
 }
 
+input::IInputAction::ptr Game::CreateInputAction( const qxml::Element * element )
+{
+	return input::IInputAction::ptr();
+}
 
 Game::~Game()
 {

@@ -10,6 +10,7 @@ void RegisterInput( lua_State * state );
 
 struct InputProxy
 {
+	static char * Name();
 	me::input::IInputDevice::ptr input;
 };
 
