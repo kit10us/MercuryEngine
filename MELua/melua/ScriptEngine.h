@@ -7,6 +7,7 @@
 #include <me/GameComponent.h>
 #include <me/scene/Scene.h>
 #include <melua/Type.h>
+#include <melua/Util.h>
 #include <lua.hpp>
 
 namespace melua
@@ -43,8 +44,8 @@ namespace melua
 
 		void Error( std::string function, std::string message );
 
-		static ScriptEngine* GetInstance();
-		static me::Game * GetGame();
+		MELUADLL_API static ScriptEngine* GetInstance();
+		MELUADLL_API me::Game * GetGame();
 
 	public: // IComponent...
 		std::string GetWhat() const override;

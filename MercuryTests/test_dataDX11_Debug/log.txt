@@ -2,7 +2,7 @@ Initializing:
   name:    C:\dev\ws\MercuryTests\02tests_feature\02Test11 - Sculpter\..\..\..\output\v140_Debug\02Test11 - Sculpter\02Test11 - Sculpter.exe
   program: C:\dev\ws\MercuryTests\02tests_feature\output\v140_Debug\02Test11 - Sculpter\02Test11 - Sculpter.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Fri Mar 24 10:57:19 2017
+  time:    Fri Mar 24 19:31:29 2017
 
   Loading setup "setup_models.xml"...
   Loading setup "setup_base.xml"...
@@ -37,7 +37,7 @@ OnAfterStartup Begin
   OnAfterStartup "ActionsGameComponent" Begin
   OnAfterStartup "ActionsGameComponent" Done
 OnAfterStartup Done
-total startup time: 1.043152s
+total startup time: 1.103129s
 Creating Main Scene
 Start scene "main" Begin
   Component "ObjectAllocatorComponent" OnBeforeStart Begin
@@ -61,6 +61,6 @@ OnDetach
   Detaching SceneManager
   Detaching ActionsGameComponent
 OnDetachDone
-  time: Fri Mar 24 10:57:24 2017
+  time: Fri Mar 24 20:42:28 2017
 
-  frames: 2473, total delta: 0.001216s,  average fps:822.342712
+  frames: 4948065, total delta: 0.000861s,  average fps:1161.103516

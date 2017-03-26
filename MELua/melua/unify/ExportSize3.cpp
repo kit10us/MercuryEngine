@@ -96,7 +96,8 @@ int Size3_Length(lua_State * state)
 
 int Size3_Constructor(lua_State * state)
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int args = lua_gettop(state);
 

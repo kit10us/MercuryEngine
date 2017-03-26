@@ -13,13 +13,18 @@ namespace mephy
 			BoxCollider( BoxCollider & component );
 			
 		public:
-			BoxCollider( unify::BBox< float > bbox );
+			static char* Name();
+
+			BoxCollider( unify::V3< float > halfExt );
 			~BoxCollider();
+
+			void TestCollision( Entity* entity, const me::UpdateParams & params ) override;
 
 		public: // IObjectComponent...
 			me::object::IObjectComponent::ptr Duplicate() override;
 
 		private:
+			unify::V3< float > m_halfExt;
 			unify::BBox< float > m_bbox;
 		};
 	}

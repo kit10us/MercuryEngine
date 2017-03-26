@@ -10,8 +10,13 @@ namespace sculpter
 	class Point
 	{
 	public:
+		Point();
 		Point( unify::Matrix matrix );
 		~Point();
+
+		unify::Matrix GetMatrix() const;
+
+		const unify::Matrix & operator()() const;
 
 	private:
 		unify::Matrix m_matrix;

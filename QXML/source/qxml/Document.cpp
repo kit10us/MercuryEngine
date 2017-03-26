@@ -109,7 +109,7 @@ void Document::Load( const unify::Path & filePath )
 					if( unify::RightString( data, 2 ) == "--" ) {  
 						data = unify::RightString( data, (unsigned int)data.length() - 1 );
 						//printf( "COMMENT = \"%s\"\n", data.c_str() );
-						pElement = AddElement( new Element( "COMMENT", Element::NodeType::Comment, this, line ), "COMMENT" );
+						pElement = AddElement( new Element( "COMMENT", Element::NodeType::Comment, this, line ) );
 						pElement->m_data = data;
 						pParent->TakeChild( pElement );
 						data = "";
@@ -157,14 +157,14 @@ void Document::Load( const unify::Path & filePath )
 
 					Element::NodeType::TYPE type = bCommand ? Element::NodeType::Command : Element::NodeType::Element  ;
 					std::string tagName = unify::ListPart( data, {' ', '\t'}, 0 );
-					pElement = AddElement( new Element( tagName, type, this, line ), tagName );
+					pElement = AddElement( new Element( tagName, type, this, line ) );
 
 					// Process out attributes...
 					for( unsigned int i = 1; i < unify::ListPartCount( data, {' ', '\t'} ); i++ )
 					{
 						std::string attribute = unify::ListPart( data, {' ', '\t'}, i );
 						if( attribute == "" ) continue;
-						pElement->AppendAttribute( Attribute::shared_ptr( new Attribute( attribute ) ) );
+						pElement->AddAttribute( Attribute::shared_ptr( new Attribute( attribute ) ) );
 					}
 					// Append as a child to the current parent...
 					if( pParent == 0 )
@@ -263,7 +263,7 @@ const unify::Path & Document::GetPath() const
     return m_filePath;
 }
 
-Element * Document::AddElement( Element * element, const std::string & name )
+Element * Document::AddElement( Element * element )
 {
 	// Ensure we have a root set.
 	if( m_xml == 0 && element->GetType() == Element::NodeType::Command && element->IsTagName( "xml" ) )
@@ -277,5 +277,5 @@ Element * Document::AddElement( Element * element, const std::string & name )
 
     element->m_document = this;
 
-	return m_elementList.AddItem( element, name );
+	return m_elementList.AddItem( element, element->GetTagName() );
 }

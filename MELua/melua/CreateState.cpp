@@ -31,6 +31,11 @@
 #include <melua/ExportTexture.h>
 #include <melua/ExportInputCondition.h>
 
+#include <melua/xml/ExportXMLDocument.h>
+#include <melua/xml/ExportXMLElement.h>
+
+#include <melua/ExportObjectAction.h>
+
 void melua::RegisterLibraries( lua_State * state )
 {
 	luaL_openlibs( state );
@@ -65,6 +70,11 @@ void melua::RegisterLibraries( lua_State * state )
 	RegisterTerra( state );
 	RegisterTexture( state );
 	RegisterInputCondition( state );
-
 	RegisterComponent( state );
+
+	// XML...
+	RegisterXMLDocument( state );
+	RegisterXMLElement( state );
+
+	RegisterObjectAction( state );
 }

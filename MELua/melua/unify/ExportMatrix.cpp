@@ -36,7 +36,8 @@ int Matrix_ToString(lua_State * state)
 
 int Matrix_Constructor(lua_State * state)
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int args = lua_gettop(state);
 
@@ -58,7 +59,8 @@ int Matrix_Constructor(lua_State * state)
 
 int Matrix_MatrixZero( lua_State * state )
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	return PushMatrix(state, unify::MatrixZero());
 }

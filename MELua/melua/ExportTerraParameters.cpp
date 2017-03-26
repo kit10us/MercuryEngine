@@ -122,7 +122,8 @@ int TerraParameters_SetHeightMap( lua_State* state )
 	int args = lua_gettop( state );
 	assert( args == 3 );
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
 
@@ -140,7 +141,8 @@ int TerraParameters_SetAlphaMap( lua_State* state )
 	int args = lua_gettop( state );
 	assert( args == 3 );
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
 

@@ -22,42 +22,24 @@ ColliderBase::~ColliderBase()
 {
 }
 
-void ColliderBase::AddOnEnterAction( me::action::IAction::ptr action )
+void ColliderBase::SetOnEnterAction( me::object::action::IObjectAction::ptr action )
 {
-	m_onEnter.AddAction( action );
+	m_onEnter = action;
 }
 
-void ColliderBase::AddOnExitAction( me::action::IAction::ptr action )
+void ColliderBase::SetOnExitAction( me::object::action::IObjectAction::ptr action )
 {
-	m_onExit.AddAction( action );
+	m_onExit = action;
 }
 
-void ColliderBase::OnStart()
+void ColliderBase::PerformOnEnter( Entity * entity, const me::UpdateParams & params )
 {
-	ObjectComponent::OnStart();
+	if( m_onEnter )
+	{
+		m_onEnter->Perform( entity->GetObject(), params );
+	}
 }
 
-void ColliderBase::OnUpdate( me::UpdateParams params )
+void ColliderBase::PerformOnExit( Entity * entit, const me::UpdateParams & params )
 {
-	ObjectComponent::OnUpdate( params );
-}
-
-void ColliderBase::CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame )
-{																										
-	ObjectComponent::CollectGeometry( cache, frame );
-}
-
-void ColliderBase::OnSuspend()
-{
-	ObjectComponent::OnSuspend();
-}
-
-void ColliderBase::OnResume()
-{
-	ObjectComponent::OnResume();
-}
-
-std::string ColliderBase::GetWhat() const
-{
-	return std::string();
 }

@@ -365,7 +365,7 @@ V3< T > V3< T >::V3Normalized( const V3< T > & in )
 template< typename T >
 V3< T > V3< T >::V3Inverse( const V3< T > & in )
 {
-	return V3< T >( 1 / in.x, 1 / in.y, 1 / in.z );
+	return V3< T >( -in.x, -in.y, -in.z );
 }
 
 template< typename T >

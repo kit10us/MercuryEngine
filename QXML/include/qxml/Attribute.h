@@ -15,8 +15,8 @@ namespace qxml
 		typedef std::shared_ptr< Attribute > shared_ptr;
 
 		Attribute();
-		explicit Attribute( const std::string & attribute );
-		Attribute( const std::string & name, const std::string & value );
+		explicit Attribute( std::string attribute );
+		Attribute( std::string name, const std::string value );
 		~Attribute();
 		const std::string & GetName() const; 
 		const std::string & GetString() const;

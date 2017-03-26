@@ -97,6 +97,7 @@
     <ClInclude Include="melua\ExportComponent.h" />
     <ClInclude Include="melua\ExportInput.h" />
     <ClInclude Include="melua\ExportInputCondition.h" />
+    <ClInclude Include="melua\ExportObjectAction.h" />
     <ClInclude Include="melua\ExportObjectComponent.h" />
     <ClInclude Include="melua\ScriptEngine.h" />
     <ClInclude Include="melua\ExportCameraComponent.h" />
@@ -125,6 +126,8 @@
     <ClInclude Include="melua\unify\ExportV2.h" />
     <ClInclude Include="melua\unify\ExportV3.h" />
     <ClInclude Include="melua\Util.h" />
+    <ClInclude Include="melua\xml\ExportXMLDocument.h" />
+    <ClInclude Include="melua\xml\ExportXMLElement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -144,6 +147,7 @@
     <ClCompile Include="melua\ExportComponent.cpp" />
     <ClCompile Include="melua\ExportInput.cpp" />
     <ClCompile Include="melua\ExportInputCondition.cpp" />
+    <ClCompile Include="melua\ExportObjectAction.cpp" />
     <ClCompile Include="melua\ExportObjectComponent.cpp" />
     <ClCompile Include="melua\ScriptEngine.cpp" />
     <ClCompile Include="melua\ExportCameraComponent.cpp" />
@@ -172,6 +176,8 @@
     <ClCompile Include="melua\unify\ExportV2.cpp" />
     <ClCompile Include="melua\unify\ExportV3.cpp" />
     <ClCompile Include="melua\Util.cpp" />
+    <ClCompile Include="melua\xml\ExportXMLDocument.cpp" />
+    <ClCompile Include="melua\xml\ExportXMLElement.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

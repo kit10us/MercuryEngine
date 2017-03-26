@@ -3,16 +3,20 @@
 
 #pragma once
 
+#include <MELuaDLL.h>
 #include <lua.hpp>
 #include <me/IComponent.h>
 
-void RegisterComponent( lua_State * state );
-
-
-struct ComponentProxy
+namespace melua
 {
-	me::IComponent* component;
-};
+	void RegisterComponent( lua_State * state );
 
-ComponentProxy* CheckComponent( lua_State* state, int index );
-int PushComponent( lua_State * state, me::IComponent* component );
+	struct ComponentProxy
+	{
+		MELUADLL_API static char* Name();
+		me::IComponent* component;
+	};
+
+	MELUADLL_API ComponentProxy* CheckComponent( lua_State* state, int index );
+	MELUADLL_API int PushComponent( lua_State * state, me::IComponent* component );
+}

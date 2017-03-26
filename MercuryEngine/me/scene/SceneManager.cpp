@@ -11,8 +11,14 @@
 using namespace me;
 using namespace scene;
 
+
+char* SceneManager::Name()
+{
+	return "SceneManager";
+}
+
 SceneManager::SceneManager()
-	: GameComponent( "SceneManager" )
+	: GameComponent( Name() )
 	, m_currentScene{ nullptr }
 	, m_updateTick{ 0 }
 	, m_renderTick{ 0 }

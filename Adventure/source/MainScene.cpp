@@ -10,7 +10,6 @@
 #include <me/factory/EffectFactories.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
-#include <mephy/GameComponent.h>
 
 #include <me/input/StickCondition.h>
 
@@ -131,16 +130,6 @@ void MainScene::OnStart()
 		camera->AddComponent( IObjectComponent::ptr( follow ) );
 	}
 
-
-	mephy::GameComponent * physics = {};
-	{												 
-		auto component = GetComponentT< mephy::GameComponent >( "MEPhysics" );
-	}
-
-	Object * warpObject = FindObject( "cube" );
-	//auto warp = physics->CreateBoxCollider( unify::BBox< float >( 1.0f ) );
-	//warpObject->AddComponent( warp );
-
 	// Add Canvas component...
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( GetGame() ) );
 	AddComponent( canvas );
@@ -195,10 +184,10 @@ std::string MainScene::SendCommand( std::string command, std::string extra )
 
 		ground->SetEdge( Direction::Surround, GetManager< Geometry >()->Find( name + "_surround" ) );
 
-		ground->SetEdge( Direction::ULD, GetManager< Geometry >()->Find( name + "_uld" ) );
-		ground->SetEdge( Direction::URD, GetManager< Geometry >()->Find( name + "_urd" ) );
+		ground->SetEdge( Direction::UDL, GetManager< Geometry >()->Find( name + "_udL" ) );
+		ground->SetEdge( Direction::UDR, GetManager< Geometry >()->Find( name + "_udr" ) );
 		ground->SetEdge( Direction::ULR, GetManager< Geometry >()->Find( name + "_ulr" ) );
-		ground->SetEdge( Direction::LRD, GetManager< Geometry >()->Find( name + "_lrd" ) );
+		ground->SetEdge( Direction::DLR, GetManager< Geometry >()->Find( name + "_dlr" ) );
 
 		ground->SetEdge( Direction::UD, GetManager< Geometry >()->Find( name + "_ud" ) );
 		ground->SetEdge( Direction::LR, GetManager< Geometry >()->Find( name + "_lr" ) );

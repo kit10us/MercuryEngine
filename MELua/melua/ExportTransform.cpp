@@ -36,8 +36,9 @@ int Transform_SetPosition( lua_State * state )
 
 	unify::V3< float > position( CheckV3( state, 2 )->v3 );
 	
-	auto game = ScriptEngine::GetGame();
-	
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
+
 	proxy->transform->SetPosition( position );
 
 	return 0;
@@ -62,8 +63,9 @@ int Transform_LookAt( lua_State * state )
 	
 	unify::V3< float > position( CheckV3( state, 2 )->v3 );
 	
-	auto game = ScriptEngine::GetGame();
-	
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
+
 	proxy->transform->LookAt( position );
 
 	return 0;

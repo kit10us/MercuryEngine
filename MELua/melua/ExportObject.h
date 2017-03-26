@@ -7,12 +7,13 @@
 #include <lua.hpp>
 #include <me/object/Object.h>
 
-struct ObjectProxy
+namespace melua
 {
-	me::object::Object * object;
-};
+	struct ObjectProxy
+	{
+		static char* Name();
+		me::object::Object * object;
+	};
 
-MELUADLL_API int PushObject( lua_State * state, me::object::Object * object );
-MELUADLL_API ObjectProxy* CheckObject( lua_State* state, int index );
-
-void RegisterObject( lua_State * state );
+	void RegisterObject( lua_State * state );
+}

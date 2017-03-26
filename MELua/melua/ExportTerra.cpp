@@ -35,7 +35,8 @@ int Terra_Constructor( lua_State * state )
 {	
 	int top = lua_gettop( state );
 
-	auto game = dynamic_cast< me::Game * >( ScriptEngine::GetGame() );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	if ( top == 1 )
 	{

@@ -31,7 +31,7 @@ namespace qxml
 		};
 
 		Element();
-		Element( const std::string & name, NodeType::TYPE type, Document * document, size_t line );
+		Element( std::string name, NodeType::TYPE type = NodeType::Element, Document * document = nullptr, size_t line = 0 );
 		~Element();
 
 		const std::string & GetTagName() const;
@@ -63,7 +63,12 @@ namespace qxml
 		const std::string & GetText() const;
 		unsigned int NumChildren() const;
 		unsigned int Index() const;
-		void AppendAttribute( Attribute::shared_ptr & pAttribute );
+		
+		void AddAttribute( std::string name, std::string value );
+		void AddAttribute( Attribute::shared_ptr & pAttribute );
+
+		Element * AddElement( std::string name, NodeType::TYPE type );
+
 		const std::string & AddText( const std::string & text );
 		void TakeChild( Element * pElement );
 		void TakeSibling( Element * pElement );

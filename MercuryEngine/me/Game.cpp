@@ -10,21 +10,22 @@
 #include <me/exception/FailedToCreate.h>
 #include <me/scene/SceneManager.h>
 #include <me/scene/DefaultSceneFactory.h>
+#include <me/game/component/GC_ActionFactory.h>
 #include <sg/ShapeFactory.h>
 #include <fstream>
 #include <chrono>
 #include <ctime>
 #include <functional>
 
-#include <me/input/ButtonPressedCondition.h>
-#include <me/input/action/IA_Action.h>
-#include <me/action/QuitGame.h>
-
 // Temporary...
 #include <me/scene/SceneManager.h>
 #include <me/object/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
+
+#include <me/input/ButtonPressedCondition.h>
+#include <me/input/action/IA_Action.h>
+#include <me/action/QuitGame.h>
 
 
 using namespace me;
@@ -94,54 +95,6 @@ Game::Game(scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup )
 	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
 	, m_inputManager( this )
 {
-}
-
-Game::~Game()
-{
-	LogLine( "Shutting down:", 0 );
-
-	LogLine( "OnDetach", 0 );
-	for( auto && component : m_components )
-	{
-		try
-		{
-			LogLine( "Detaching " + component->GetTypeName() );
-			component->OnDetach( this );
-		}
-		catch ( ... )
-		{
-		}
-
-	}
-	LogLine( "OnDetachDone", 0 );
-
-
-	// Remove all log listeners.
-	m_logListeners.clear();
-
-	// Call user shutdown.
-	Shutdown();
-	
-	m_resourceHub.Clear();
-
-	m_inputManager.Clear();
-
-	m_components.clear();
-
-	if ( m_os )
-	{
-		m_os->Shutdown();
-		m_os.reset();
-	}
-
-	// Remove extensions...
-	m_extensions.clear();
-
-	auto now = std::chrono::system_clock::now();
-	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	const RenderInfo & renderInfo = GetRenderInfo();
-	LogLine( "time: " + std::string( std::ctime( &t ) ) );
-	LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 }
 
 me::OSParameters Game::GetOSParameters() const
@@ -351,7 +304,10 @@ bool Game::Initialize( OSParameters osParameters )
 	GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 	GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
 
+	// Add internal components...
 	AddComponent( IGameComponent::ptr( new scene::SceneManager() ) );
+	AddComponent( IGameComponent::ptr( new game::component::ActionFactory() ) );
+	
 
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
@@ -827,12 +783,6 @@ bool Game::IsUpdateLocked( bool exclusive ) const
 
 action::IAction::ptr Game::CreateAction(const qxml::Element * element)
 {
-	std::string name = element->GetAttributeElse< std::string >("name", "" );
-	if (element->IsTagName("QuitGame"))
-	{
-		return action::IAction::ptr( new action::QuitGame( this ) );
-	}
-
 	for (auto component : m_components)
 	{
 		auto action = component->CreateAction(element);
@@ -843,4 +793,67 @@ action::IAction::ptr Game::CreateAction(const qxml::Element * element)
 	}
 
 	return action::IAction::ptr();
+}
+
+object::action::IObjectAction::ptr Game::CreateObjectAction( const qxml::Element * element )
+{
+	for( auto component : m_components )
+	{
+		auto action = component->CreateObjectAction( element );
+		if( action )
+		{
+			return action;
+		}
+	}
+
+	return object::action::IObjectAction::ptr();
+}
+
+
+Game::~Game()
+{
+	LogLine( "Shutting down:", 0 );
+
+	LogLine( "OnDetach", 0 );
+	for( auto && component : m_components )
+	{
+		try
+		{
+			LogLine( "Detaching " + component->GetTypeName() );
+			component->OnDetach( this );
+		}
+		catch( ... )
+		{
+		}
+
+	}
+	LogLine( "OnDetachDone", 0 );
+
+
+	// Remove all log listeners.
+	m_logListeners.clear();
+
+	// Call user shutdown.
+	Shutdown();
+
+	m_resourceHub.Clear();
+
+	m_inputManager.Clear();
+
+	m_components.clear();
+
+	if( m_os )
+	{
+		m_os->Shutdown();
+		m_os.reset();
+	}
+
+	// Remove extensions...
+	m_extensions.clear();
+
+	auto now = std::chrono::system_clock::now();
+	std::time_t t = std::chrono::system_clock::to_time_t( now );
+	const RenderInfo & renderInfo = GetRenderInfo();
+	LogLine( "time: " + std::string( std::ctime( &t ) ) );
+	LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 }

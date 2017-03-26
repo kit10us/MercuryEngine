@@ -1,0 +1,32 @@
+<!---------------------------------------->
+<!-- Actions -->
+<!---------------------------------------->
+<QuitGame/>
+
+
+
+
+<!---------------------------------------->
+<!-- Object Actions -->
+<!---------------------------------------->
+
+<!-- Execute a "simple" Action -->
+<Action>
+	--Action--
+</Action>
+
+<!-- example: QuitGame -->
+<Action>
+	<QuitGame/>
+</Action>
+
+<!-- Ignore another Object Action's result (contiune on failure/stop) -->
+<IgnoreResult>
+	--Object Action--
+</IgnoreResult>
+<!------------------------>
+
+<!-- Set position examples -->
+<SetPosition type="absolute">0, 0, 0</SetPosition>	
+<SetPosition type="object">player</SetPosition>
+<!------------------------>

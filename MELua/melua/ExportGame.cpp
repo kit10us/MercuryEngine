@@ -16,7 +16,8 @@ int Game_GetWidth( lua_State * state )
 		renderer = (int)lua_tonumber( state, 1 );
 	}
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	lua_pushnumber( state, game->GetOS()->GetRenderer( renderer )->GetViewport().GetSize().width );
 
@@ -32,7 +33,8 @@ int Game_GetHeight( lua_State * state )
 		renderer = (int)lua_tonumber( state, 1 );
 	}
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	lua_pushnumber( state, game->GetOS()->GetRenderer( renderer )->GetViewport().GetSize().height );
 
@@ -44,7 +46,8 @@ int Game_GetRendererCount( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	float result = (float)game->GetOS()->RendererCount();
 
@@ -58,7 +61,8 @@ int Game_Quit( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	game->Quit();
 
@@ -71,7 +75,8 @@ int Game_Command( lua_State * state )
 	assert( args == 1 );
 
 	std::string command = lua_tostring( state, 1 );			  
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 	game->Feed( "COMMAND", (char*)command.c_str() );
 
 	return 0;

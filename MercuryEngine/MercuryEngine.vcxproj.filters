@@ -67,14 +67,20 @@
     <Filter Include="me\input\action">
       <UniqueIdentifier>{6504af5c-da75-4bc5-a1be-82d7e4897853}</UniqueIdentifier>
     </Filter>
-    <Filter Include="me\game">
-      <UniqueIdentifier>{02be47c6-7365-4e9a-bd06-157154e4b1ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sculpter">
       <UniqueIdentifier>{f6b2a151-a5e8-43d5-b36d-69145d131110}</UniqueIdentifier>
     </Filter>
     <Filter Include="sculpter\exception">
       <UniqueIdentifier>{ac0a7265-55dc-408f-96a8-15796af4d4ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sculpter\spline">
+      <UniqueIdentifier>{5d0ff90c-e3d6-42e7-a6c0-8a51e7d4f6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\game">
+      <UniqueIdentifier>{aac29339-7564-45f1-9767-3a6a011be701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\game\component">
+      <UniqueIdentifier>{3e402593-620c-4452-a024-c7712094596d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -648,6 +654,21 @@
     <ClInclude Include="sculpter\exception\SculpterFailedToCreate.h">
       <Filter>sculpter\exception</Filter>
     </ClInclude>
+    <ClInclude Include="sculpter\Sheet.h">
+      <Filter>sculpter</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\spline\ISpline.h">
+      <Filter>sculpter\spline</Filter>
+    </ClInclude>
+    <ClInclude Include="sculpter\spline\SplineList.h">
+      <Filter>sculpter\spline</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\action\OA_Action.h">
+      <Filter>me\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\component\GC_ActionFactory.h">
+      <Filter>me\game\component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1054,6 +1075,18 @@
     </ClCompile>
     <ClCompile Include="sculpter\PolygonTable.cpp">
       <Filter>sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\Sheet.cpp">
+      <Filter>sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="sculpter\spline\SplineList.cpp">
+      <Filter>sculpter\spline</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\action\OA_Action.cpp">
+      <Filter>me\object\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\game\component\GC_ActionFactory.cpp">
+      <Filter>me\game\component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

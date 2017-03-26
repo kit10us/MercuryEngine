@@ -74,6 +74,14 @@ void Scene::Update( UpdateParams params )
 {
 	for( auto && component : m_components )
 	{
+		if( component->IsEnabled() )
+		{
+			component->OnEarlyUpdate( params );
+		}
+	}
+
+	for( auto && component : m_components )
+	{
 		if ( component->IsEnabled( ) )
 		{
 			component->OnUpdate( params );
@@ -81,6 +89,14 @@ void Scene::Update( UpdateParams params )
 	}
 
 	OnUpdate( params );
+
+	for( auto && component : m_components )
+	{
+		if( component->IsEnabled() )
+		{
+			component->OnLateUpdate( params );
+		}
+	}
 }
 
 void Scene::Render( RenderParams params )

@@ -16,7 +16,9 @@ int Debug_LogLine( lua_State * state )
 	int type = lua_type( state, 1 );
 	std::string typeName( lua_typename( state, type ) );
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
+
 	switch( type )
 	{
 	case LUA_TNIL:
@@ -52,11 +54,11 @@ int Debug_ToString( lua_State * state )
 	assert( args == 1 );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int type = lua_type( state, 1 );
 	std::string typeName( lua_typename( state, type ) );
 
-	auto game = ScriptEngine::GetGame();
 	switch( type )
 	{
 	case LUA_TNIL:

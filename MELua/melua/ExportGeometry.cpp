@@ -37,7 +37,8 @@ int Geometry_Constructor( lua_State * state )
 
 	Geometry::ptr geometry;
 
-	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	try
 	{

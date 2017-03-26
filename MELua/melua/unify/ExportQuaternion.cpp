@@ -37,7 +37,8 @@ int Quaternion_ToString(lua_State * state)
 
 int Quaternion_Constructor(lua_State * state)
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int args = lua_gettop(state);
 
@@ -87,7 +88,8 @@ int Quaternion_Constructor(lua_State * state)
 
 int Quaternion_QuaternionZero(lua_State * state)
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	return PushQuaternion(state, unify::Quaternion(0, 0, 0, 0));
 }

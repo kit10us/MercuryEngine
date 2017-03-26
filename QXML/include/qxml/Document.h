@@ -32,8 +32,9 @@ namespace qxml
 
         const unify::Path & GetPath() const;
 
+		Element * AddElement( Element * element );
+
 	protected:
-		Element * AddElement( Element * element, const std::string & name );
 
 		 unify::Path m_filePath;
 

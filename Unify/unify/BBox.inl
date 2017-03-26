@@ -116,10 +116,10 @@ bool BBox< T >::ContainsPoint( const V3< T > & point )
 {
 	if( ( point.x <= sup.x && point.x >= inf.x ) && ( point.y <= sup.y && point.y >= inf.y ) && ( point.z <= sup.z && point.z >= inf.z ) )
 	{
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 template< typename T >

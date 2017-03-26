@@ -229,3 +229,8 @@ std::string ObjectComponent::GetTypeName() const
 	return m_typeName;
 }
 
+std::string ObjectComponent::GetWhat() const
+{
+	return std::string();
+}
+

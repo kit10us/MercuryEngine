@@ -18,7 +18,8 @@ int Resources_AddResource( lua_State * state )
 	std::string name = lua_tostring( state, 2 );
 	std::string path = lua_tostring( state, 3 );
 
-	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	try
 	{

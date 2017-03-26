@@ -39,7 +39,8 @@ int Effect_SetTexture( lua_State* state )
 
 int Effect_Constructor( lua_State * state )
 {
-	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 	int top = lua_gettop( state );
 
 	if ( top < 1 )

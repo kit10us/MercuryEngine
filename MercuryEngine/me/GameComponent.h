@@ -36,6 +36,7 @@ namespace me
 		void OnDetach( IGame * game ) override;
 
 		action::IAction::ptr CreateAction(const qxml::Element * element) override;
+		object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) override;
 
 	public:	// IComponent...
 		bool IsEnabled() const override;

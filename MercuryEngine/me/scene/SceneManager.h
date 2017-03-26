@@ -15,6 +15,8 @@ namespace me
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;
 
+			static char* Name();
+
 		    SceneManager();
 		    virtual ~SceneManager();
 

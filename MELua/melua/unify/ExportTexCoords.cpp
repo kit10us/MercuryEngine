@@ -87,7 +87,8 @@ int TexCoords_Div(lua_State * state)
 
 int TexCoords_Constructor(lua_State * state)
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int args = lua_gettop(state);
 

@@ -37,7 +37,8 @@ static const luaL_Reg InputConditionFunctions[] =
 
 int InputCondition_Constructor( lua_State * state )
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	std::string type = luaL_checkstring( state, 1 );
 

@@ -55,6 +55,7 @@ namespace me
 		public: // me::IThing...
 			std::string GetTypeName() const override;
 			me::IThing* QueryInterface( std::string name ) override;
+			std::string GetWhat() const override;
 
 		protected:
 			object::Object * m_object;

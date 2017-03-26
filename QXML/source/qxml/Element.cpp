@@ -22,7 +22,7 @@ Element::Element()
 {
 }
 
-Element::Element( const std::string & name, NodeType::TYPE type, Document * document, size_t line )
+Element::Element( std::string name, NodeType::TYPE type, Document * document, size_t line )
 : m_tagName( name )
 , m_index( 0 )
 , m_type( type )
@@ -357,9 +357,21 @@ void Element::TakeSibling( Element * pElement )
 	this->m_nextSibling = pElement;
 }
 
-void Element::AppendAttribute( Attribute::shared_ptr & attribute )
+void Element::AddAttribute( std::string name, std::string value )
 {
-	return m_attributeList.push_back( attribute );
+	m_attributeList.push_back( Attribute::shared_ptr( new Attribute( name, value ) ) );
+}
+
+void Element::AddAttribute( Attribute::shared_ptr & attribute )
+{
+	m_attributeList.push_back( attribute );
+}
+
+Element * Element::AddElement( std::string name, NodeType::TYPE type )
+{
+	Element* element = new Element( name, type, GetDocument() );
+	TakeChild( element );
+	return element;
 }
 
 const std::string & Element::AddText( const std::string & text )

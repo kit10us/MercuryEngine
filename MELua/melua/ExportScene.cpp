@@ -50,7 +50,7 @@ int Scene_NewObject( lua_State * state )
 
 	auto object = proxy->scene->GetObjectAllocator()->NewObject( name );
 
-	return PushObject( state, object );
+	return PushUserType< ObjectProxy >( state, { object } );
 } 
 
 int Scene_NewCamera( lua_State * state )
@@ -64,7 +64,8 @@ int Scene_NewCamera( lua_State * state )
 	int t = lua_type( state, 3 );
 	unify::Matrix mat = CheckMatrix( state, 3 )->matrix;
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	Object * child = proxy->scene->GetObjectAllocator()->NewObject( name );
 	CameraComponent * cameraComponent = new CameraComponent();
@@ -72,7 +73,7 @@ int Scene_NewCamera( lua_State * state )
 
 	cameraComponent->SetProjection( mat );
 
-	return PushObject( state, child );
+	return PushUserType< ObjectProxy >( state, { child }  );
 }
 
 int Scene_FindObject( lua_State * state )
@@ -92,7 +93,7 @@ int Scene_FindObject( lua_State * state )
 	}
 	else
 	{
-		return PushObject( state, object );
+		return PushUserType< ObjectProxy >( state, { object } );
 	}
 }
 
@@ -101,8 +102,7 @@ int Scene_GetObjectCount( lua_State * state )
 	int args = lua_gettop( state );
 
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
-	lua_pushnumber( state, sceneProxy->scene->GetObjectAllocator()->Count() );
-	return 1;
+	return PushNumber( state, (float)sceneProxy->scene->GetObjectAllocator()->Count() );
 }
 
 int Scene_SendCommand( lua_State * state )

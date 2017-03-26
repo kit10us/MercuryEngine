@@ -103,6 +103,8 @@ namespace me
 
 		action::IAction::ptr CreateAction(const qxml::Element * element) override;
 
+		object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) override;
+
 	private:
 		void AddExtension( unify::Path path, const qxml::Element * element );
 
@@ -138,6 +140,8 @@ namespace me
 		std::list< std::weak_ptr< UpdateLock > > m_locks;
 	};
 }
+
+extern "C" me::Game * GetGameInstance();
 
 #define RegisterGame( GAME )														 \
 extern "C" me::Game * GetGameInstance() { return (me::Game*)&GAME; }

@@ -35,7 +35,8 @@ int Texture_Constructor( lua_State * state )
 
 	ITexture::ptr texture;
 
-	auto game = dynamic_cast< Game * >( ScriptEngine::GetGame() );
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 	auto renderer = game->GetOS()->GetRenderer( 0 );
 	
 	// Allow pulling existing from manager...

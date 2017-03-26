@@ -5,7 +5,8 @@
 #include <me/object/ObjectComponent.h>
 #include <me/object/Object.h>
 #include <me/IGame.h>
-#include <me/action/ActionList.h>
+#include <me/object/action/IObjectAction.h>
+#include <mephy/Entity.h>
 
 #pragma once 
 
@@ -23,22 +24,22 @@ namespace mephy
 		public:
 			~ColliderBase();
 
-			void AddOnEnterAction( me::action::IAction::ptr onEnterAction );
-			void AddOnExitAction( me::action::IAction::ptr onEnterAction );
+			MEPHYSICS_API void SetOnEnterAction( me::object::action::IObjectAction::ptr action );
+			MEPHYSICS_API void SetOnExitAction( me::object::action::IObjectAction::ptr action );
+
+			virtual void TestCollision( Entity* entity, const me::UpdateParams & params ) = 0;
+
+		protected:
+			void PerformOnEnter( Entity * entitiy, const me::UpdateParams & params );
+			void PerformOnExit( Entity * entitiy, const me::UpdateParams & params );
 
 		public: // IGameComponent...
-			void OnStart() override;
-			void OnUpdate( me::UpdateParams params ) override;
-			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override;
-			void OnSuspend() override;
-			void OnResume() override;
 
 		public: // IComponent...
-			std::string GetWhat() const;
 
 		private:
-			me::action::ActionList m_onEnter;
-			me::action::ActionList m_onExit;
+			me::object::action::IObjectAction::ptr m_onEnter;
+			me::object::action::IObjectAction::ptr m_onExit;
 		};
 	}
 }

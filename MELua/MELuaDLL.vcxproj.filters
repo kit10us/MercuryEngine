@@ -19,6 +19,9 @@
     <Filter Include="melua\component">
       <UniqueIdentifier>{4b0c6c43-54a0-4b57-a620-856d74875818}</UniqueIdentifier>
     </Filter>
+    <Filter Include="melua\exports\xml">
+      <UniqueIdentifier>{6556c0e2-a9a8-40f5-93e0-73498ec5a5c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MELuaDLL.h">
@@ -131,6 +134,15 @@
     </ClInclude>
     <ClInclude Include="melua\ScriptEngine.h">
       <Filter>melua</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\xml\ExportXMLDocument.h">
+      <Filter>melua\exports\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\xml\ExportXMLElement.h">
+      <Filter>melua\exports\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="melua\ExportObjectAction.h">
+      <Filter>melua\exports</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +259,15 @@
     </ClCompile>
     <ClCompile Include="melua\ScriptEngine.cpp">
       <Filter>melua</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\xml\ExportXMLDocument.cpp">
+      <Filter>melua\exports\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\xml\ExportXMLElement.cpp">
+      <Filter>melua\exports\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\ExportObjectAction.cpp">
+      <Filter>melua\exports</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

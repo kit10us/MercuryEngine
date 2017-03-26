@@ -11,8 +11,9 @@ int Update_GetDelta( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 0 );
 
-	auto game = ScriptEngine::GetGame();
-															  
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
+
 	lua_pushnumber( state, game->GetRenderInfo().GetDelta() );
 
 	return 1;

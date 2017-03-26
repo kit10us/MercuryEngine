@@ -125,7 +125,8 @@ int Input_Constructor( lua_State * state )
 	int top = lua_gettop( state );
 	int type = lua_type( state, 1 );
 
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	std::string name = luaL_checkstring( state, 1 );
 

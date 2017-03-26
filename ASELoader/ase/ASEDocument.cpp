@@ -28,7 +28,7 @@ void Document::Load( const unify::Path & filePath )
 	qxml::Attribute * pAttribute = 0;
 
 	// Our initial parent is the root.
-	qxml::Element * parent = AddElement( new qxml::Element( "Root", qxml::Element::NodeType::Element, nullptr, 0 ) , "Root" );
+	qxml::Element * parent = AddElement( new qxml::Element( "Root", qxml::Element::NodeType::Element, nullptr, 0 ) );
 	qxml::Element * previous = parent;
 
 	if( ! stream.Open( unify::StreamAccessType::STREAMACCESS_READ, (void *)filePath.ToString().c_str() ) )
@@ -75,7 +75,7 @@ void Document::Load( const unify::Path & filePath )
 		std::string name = unify::StringMinusLeft( unify::ListPart( sData, {' ', '\t' }, 0 ), 1 );
 		qxml::Element * element = new qxml::Element( name, qxml::Element::NodeType::Element, nullptr, line );
 		previous = element;
-		AddElement( element, name );
+		AddElement( element );
 		parent->TakeChild( element );
 
 		// Ignore a curly brace'd element...
@@ -96,56 +96,56 @@ void ProcessASEElement( qxml::Element * pElement, std::string text )
 	if( unify::StringIs( tagName, "SCENE_AMBIENT_STATIC" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "r", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "g", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "b", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "r", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "g", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "b", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "INHERIT_POS" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MESH_VERTEX" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MESH_VERTEXNORMAL" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MESH_FACENORMAL" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "x", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "y", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "z", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MESH_TVERT" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "u", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "v", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "w", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "u", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "v", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "w", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MESH_TFACE" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "A", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "C", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "A", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "C", unify::ListPart( text, {' ', '\t'}, 3 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MESH_FACE" ) )
 	{
@@ -159,36 +159,36 @@ void ProcessASEElement( qxml::Element * pElement, std::string text )
 		std::string sCA = unify::ListPart( text, {' ', '\t'}, 12 );
 		std::string sMS = unify::ListPart( text, {' ', '\t'}, 14 );
 		std::string sMM = unify::ListPart( text, {' ', '\t'}, 16 );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", sIndex ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "A", sA ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", sB ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "C", sC ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "AB", sAB ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "BC", sBC ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "CA", sCA ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "MESH_SMOOTHING", sMS ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "MESH_MTLID", sMM ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "index", sIndex ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "A", sA ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", sB ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "C", sC ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "AB", sAB ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "BC", sBC ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "CA", sCA ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "MESH_SMOOTHING", sMS ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "MESH_MTLID", sMM ) ) );
 	}
 	else if( unify::StringIs( tagName, "MATERIAL_AMBIENT" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "R", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "G", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "R", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "G", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MATERIAL_DIFFUSE" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "R", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "G", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "R", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "G", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MATERIAL_SPECULAR" ) )
 	{
 		text = unify::CleanWhitespace( text );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "R", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "G", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
-		pElement->AppendAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "R", unify::ListPart( text, {' ', '\t'}, 0 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "G", unify::ListPart( text, {' ', '\t'}, 1 ) ) ) );
+		pElement->AddAttribute( qxml::Attribute::shared_ptr( new qxml::Attribute( "B", unify::ListPart( text, {' ', '\t'}, 2 ) ) ) );
 	}
 	else if( unify::StringIs( tagName, "MATERIAL_NAME" ) || unify::StringIs( tagName, "MATERIAL_CLASS" ) || unify::StringIs( tagName, "MAP_NAME" ) || unify::StringIs( tagName, "BITMAP" ))
 	{

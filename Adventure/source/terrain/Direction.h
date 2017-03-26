@@ -14,8 +14,8 @@ namespace terrain
 		UL, U, UR,
 		L, C, R,
 		DL, D, DR,
-		ULD, URD,
-		ULR, LRD,
+		UDL, UDR,
+		ULR, DLR,
 		UD, LR,
 		Surround
 	};

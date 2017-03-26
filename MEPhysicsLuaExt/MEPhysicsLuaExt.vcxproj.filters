@@ -3,13 +3,34 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="MEPhysicsLuaExt.cpp" />
+    <ClCompile Include="mephylua\ExportGameComponent.cpp">
+      <Filter>mephylua</Filter>
+    </ClCompile>
+    <ClCompile Include="mephylua\collider\ExportCollider.cpp">
+      <Filter>mephylua\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="mephylua\ExportEntity.cpp">
+      <Filter>mephylua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEPhysicsLuaExt.h" />
+    <ClInclude Include="mephylua\ExportGameComponent.h">
+      <Filter>mephylua</Filter>
+    </ClInclude>
+    <ClInclude Include="mephylua\collider\ExportCollider.h">
+      <Filter>mephylua\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="mephylua\ExportEntity.h">
+      <Filter>mephylua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="mephylua">
       <UniqueIdentifier>{f755efe0-e76d-412f-9fa4-b534ea85a632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mephylua\collider">
+      <UniqueIdentifier>{4d1606f1-7e3d-49db-9b6e-69737219a2da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

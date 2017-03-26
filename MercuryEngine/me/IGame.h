@@ -15,6 +15,7 @@
 #include <me/UpdateParams.h>
 #include <me/RenderParams.h>
 #include <me/action/IAction.h>
+#include <me/object/action/IObjectAction.h>
 #include <me/scene/ISceneFactory.h>
 #include <memory>
 
@@ -148,6 +149,11 @@ namespace me
 		/// Create an Action from an XML node.
 		/// </summary>
 		virtual action::IAction::ptr CreateAction(const qxml::Element * element) = 0;
+
+		/// <summary>
+		/// Create an Object Action from an XML node.
+		/// </summary>
+		virtual object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) = 0;
 
 		template< typename T >
 		T* GetComponentT( std::string typeName );

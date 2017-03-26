@@ -85,6 +85,7 @@
     <ClInclude Include="me\Frustum.h" />
     <ClInclude Include="me\Game.h" />
     <ClInclude Include="me\GameComponent.h" />
+    <ClInclude Include="me\game\component\GC_ActionFactory.h" />
     <ClInclude Include="me\Geometry.h" />
     <ClInclude Include="me\GeometryCache.h" />
     <ClInclude Include="me\GeometryCacheSummation.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="me\MeshAnimation.h" />
     <ClInclude Include="me\MeshInstanceData.h" />
     <ClInclude Include="me\object\action\IObjectAction.h" />
+    <ClInclude Include="me\object\action\OA_Action.h" />
     <ClInclude Include="me\object\action\OA_SetPosition.h" />
     <ClInclude Include="me\object\action\OA_IgnoreResult.h" />
     <ClInclude Include="me\object\action\OA_List.h" />
@@ -181,6 +183,9 @@
     <ClInclude Include="sculpter\Polygon.h" />
     <ClInclude Include="sculpter\PolygonTable.h" />
     <ClInclude Include="sculpter\Shape.h" />
+    <ClInclude Include="sculpter\Sheet.h" />
+    <ClInclude Include="sculpter\spline\ISpline.h" />
+    <ClInclude Include="sculpter\spline\SplineList.h" />
     <ClInclude Include="sg\BeveledBoxParameters.h" />
     <ClInclude Include="sg\CircleParameters.h" />
     <ClInclude Include="sg\ConeParameters.h" />
@@ -257,6 +262,7 @@
     <ClCompile Include="me\Frustum.cpp" />
     <ClCompile Include="me\Game.cpp" />
     <ClCompile Include="me\GameComponent.cpp" />
+    <ClCompile Include="me\game\component\GC_ActionFactory.cpp" />
     <ClCompile Include="me\Geometry.cpp" />
     <ClCompile Include="me\GeometryCache.cpp" />
     <ClCompile Include="me\GeometryCacheSummation.cpp" />
@@ -277,6 +283,7 @@
     <ClCompile Include="me\MatrixFeed.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
+    <ClCompile Include="me\object\action\OA_Action.cpp" />
     <ClCompile Include="me\object\action\OA_SetPosition.cpp" />
     <ClCompile Include="me\object\action\OA_IgnoreResult.cpp" />
     <ClCompile Include="me\object\action\OA_List.cpp" />
@@ -318,6 +325,8 @@
     <ClCompile Include="sculpter\Polygon.cpp" />
     <ClCompile Include="sculpter\PolygonTable.cpp" />
     <ClCompile Include="sculpter\Shape.cpp" />
+    <ClCompile Include="sculpter\Sheet.cpp" />
+    <ClCompile Include="sculpter\spline\SplineList.cpp" />
     <ClCompile Include="sg\BeveledBoxParameters.cpp" />
     <ClCompile Include="sg\CircleParameters.cpp" />
     <ClCompile Include="sg\ConeParameters.cpp" />

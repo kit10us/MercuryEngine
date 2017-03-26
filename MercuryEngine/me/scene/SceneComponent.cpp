@@ -79,7 +79,15 @@ void SceneComponent::OnAfterStart()
 {
 }
 
-void SceneComponent::OnUpdate( UpdateParams params ) 
+void SceneComponent::OnEarlyUpdate( UpdateParams params )
+{
+}
+
+void SceneComponent::OnUpdate( UpdateParams params )
+{
+}
+
+void SceneComponent::OnLateUpdate( UpdateParams params )
 {
 }
 

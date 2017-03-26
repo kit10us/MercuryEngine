@@ -69,24 +69,7 @@ void sg::CreateShape_Cylinder( me::IRenderer * renderer, PrimitiveList & primiti
 	VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
-
-	class V
-	{
-	public:
-		unify::V3< float > pos;
-		unify::V3< float > normal;
-		unify::Color diffuse;
-		unify::Color specular;
-		unify::TexCoords coords;
-	};
-	qjson::Object jsonFormat;
-	jsonFormat.Add( { "Position", "Float3" } );
-	jsonFormat.Add( { "Normal", "Float3" } );
-	jsonFormat.Add( { "Diffuse", "Color" } );
-	jsonFormat.Add( { "Specular", "Color" } );
-	jsonFormat.Add( { "TexCoord", "TexCoord" } );
-	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
-
+	
 	unify::V3< float > pos;
 	unify::V3< float > norm;
 	float rad = 0;

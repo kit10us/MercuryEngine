@@ -98,7 +98,7 @@ void ObjectComponent::OnStart()
 
 	if ( m_object )
 	{
-		PushObject( m_state, m_object );
+		PushUserType< ObjectProxy >( m_state, { m_object } );
 	}
 	else
 	{

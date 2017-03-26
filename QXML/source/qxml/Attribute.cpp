@@ -10,7 +10,7 @@ Attribute::Attribute()
 {
 }
 
-Attribute::Attribute( const std::string & attribute )
+Attribute::Attribute( std::string attribute )
 {
 	m_name = unify::ListPart( attribute, {'='}, 0 );
 	m_value = unify::ListPart( attribute, {'='}, 1 );
@@ -26,7 +26,7 @@ Attribute::Attribute( const std::string & attribute )
 	}
 }
 
-Attribute::Attribute( const std::string & name, const std::string & value )
+Attribute::Attribute( std::string name, std::string value )
 : m_name( name )
 , m_value( value )
 {

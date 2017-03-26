@@ -1,20 +1,13 @@
 // Copyright (c) 2002 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include "MEPhysicsLuaExt.h"
+#include <MEPhysicsLuaExt.h>
+#include <mephylua/ExportGameComponent.h>
+#include <mephylua/collider/ExportCollider.h>
+#include <mephylua/ExportEntity.h>
 #include <melua/ScriptEngine.h>
 #include <memory.h>
 #include <me/Game.h>
-
-/*
-#include <luaphysx/ExportPhysX.h>
-#include <luaphysx/ExportPxSceneComponent.h>
-#include <luaphysx/ExportPxMaterial.h>
-#include <luaphysx/ExportPxShape.h>
-#include <luaphysx/ExportPxRigidBody.h>
-#include <luaphysx/ExportPxRigidStatic.h>
-#include <luaphysx/ExportPxController.h>
-  */
 
 #pragma comment( lib, "lua53" )
 
@@ -49,15 +42,9 @@ __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * do
 		game->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
 	}
 
-	/*
-	RegisterPhysX( luaSE, game );
-	RegisterPxSceneComponent( luaSE, game );
-	RegisterPxMaterial( luaSE, game );
-	RegisterPxShape( luaSE, game );
-	RegisterPxRigidBody( luaSE, game );
-	RegisterPxRigidStatic( luaSE, game );
-	RegisterPxController( luaSE, game );
-	*/
+	mephylua::RegisterGameComponent( luaSE );
+	mephylua::RegisterColliderObjectComponent( luaSE );	
+	mephylua::RegisterEntityObjectComponent( luaSE );
 
 	return true;
 }

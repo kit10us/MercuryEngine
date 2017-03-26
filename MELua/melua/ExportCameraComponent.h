@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <MELuaDLL.h>
 #include <lua.hpp>
 #include <me/object/CameraComponent.h>
 
@@ -15,5 +16,5 @@ struct CameraComponentProxy
 	me::object::CameraComponent * camera;
 };
 
-CameraComponentProxy* CheckCameraComponent( lua_State* state, int index );
-int PushCameraComponent( lua_State * state, me::object::ObjectComponent::ptr component );
+MELUADLL_API CameraComponentProxy* CheckCameraComponent( lua_State* state, int index );
+MELUADLL_API int PushCameraComponent( lua_State * state, me::object::ObjectComponent::ptr component );

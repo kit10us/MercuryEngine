@@ -2,6 +2,8 @@
 -- Note that directions mean "not me in that direction",
 -- so a UL means "I am not to my Up or Left, but I am to the left, and to the right".
 local r = 1.0 / 4  -- 4x4 TexArea ratio.
+
+-- Order key: U, D, L, R
 local area_ul = TexArea( r * 0, r * 0, r * 1, r * 1 )
 local area_u = TexArea( r * 1, r * 0, r * 2, r * 1 )
 local area_ur = TexArea( r * 2, r * 0, r * 3, r * 1 )
@@ -12,14 +14,14 @@ local area_dl = TexArea( r * 0, r * 2, r * 1, r * 3 )
 local area_d = TexArea( r * 1, r * 2, r * 2, r * 3 )
 local area_dr = TexArea( r * 2, r * 2, r * 3, r * 3 )
 
-local area_uld = TexArea( r * 0, r * 3, r * 1, r * 4 )
-local area_urd = TexArea( r * 2, r * 3, r * 3, r * 4 )
+local area_udl = TexArea( r * 0, r * 3, r * 1, r * 4 )
+local area_udr = TexArea( r * 2, r * 3, r * 3, r * 4 )
 local area_ulr = TexArea( r * 3, r * 0, r * 4, r * 1 )
-local area_lrd = TexArea( r * 3, r * 2, r * 4, r * 3 )
+local area_dlr = TexArea( r * 3, r * 2, r * 4, r * 3 )
 
 local area_ud = TexArea( r * 1, r * 3, r * 2, r * 4 )
 local area_lr = TexArea( r * 3, r * 1, r * 4, r * 2 )
-print( "foooooooooooooooooo" )
+
 
 local area_surround = TexArea( r * 3, r * 3, r * 4, r * 4 )
 
@@ -84,17 +86,17 @@ function MakeMixTerra( terra_size, name, parameters )
 	
 	-- 3s...
 	
-	parameters:SetTexArea( area_uld )
-	Terra( name .. "_uld", parameters )
+	parameters:SetTexArea( area_udl )
+	Terra( name .. "_udl", parameters )
 
-	parameters:SetTexArea( area_urd )
-	Terra( name .. "_urd", parameters )
+	parameters:SetTexArea( area_udr )
+	Terra( name .. "_udr", parameters )
 
 	parameters:SetTexArea( area_ulr )
 	Terra( name .. "_ulr", parameters )
 
-	parameters:SetTexArea( area_lrd )
-	Terra( name .. "_lrd", parameters )
+	parameters:SetTexArea( area_dlr )
+	Terra( name .. "_dlr", parameters )
 	
 	
 	-- 2s...

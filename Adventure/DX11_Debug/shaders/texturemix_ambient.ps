@@ -36,7 +36,7 @@ float3 ps_main( in VS_OUT ps_in ) : SV_TARGET
 	
 	float3 normal = normalize( ps_in.normal );	
 	
-	colorA.rgb *= colorMix.rgb;
+	colorA.rgb += float3(1,1,1) - colorMix.rgb;
 	
 	float4 colorFinal = float4(colorA * (colorMix.r)) + float4(colorB * (1-colorMix.r));
 

@@ -149,16 +149,18 @@
     <ClInclude Include="MEPhysics.h" />
     <ClInclude Include="mephy\collider\BoxCollider.h" />
     <ClInclude Include="mephy\collider\ColliderBase.h" />
+    <ClInclude Include="mephy\Entity.h" />
     <ClInclude Include="mephy\GameComponent.h" />
-    <ClInclude Include="mephy\Master.h" />
+    <ClInclude Include="mephy\SceneComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="MEPhysics.cpp" />
     <ClCompile Include="mephy\collider\BoxCollider.cpp" />
     <ClCompile Include="mephy\collider\ColliderBase.cpp" />
+    <ClCompile Include="mephy\Entity.cpp" />
     <ClCompile Include="mephy\GameComponent.cpp" />
-    <ClCompile Include="mephy\Master.cpp" />
+    <ClCompile Include="mephy\SceneComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

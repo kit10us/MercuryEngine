@@ -110,21 +110,10 @@ int CameraComponent_IsEnabled( lua_State * state )
 	return 1;
 }
 
-
-static const luaL_Reg CameraComponentFunctions[] =
-{
-	{ "SetProjection", CameraComponent_SetProjection },
-	{ "GetProjection", CameraComponent_GetProjection },
-	{ "GetRenderer", CameraComponent_GetRenderer },
-	{ "IsEnabled", CameraComponent_IsEnabled } ,
-	{ "SetEnabled", CameraComponent_SetEnabled },
-	{ "SetRenderer", CameraComponent_SetRenderer },
-	{ nullptr, nullptr }
-};
-
 int CameraComponent_Constructor( lua_State * state )
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int args = lua_gettop( state );
 
@@ -135,7 +124,7 @@ int CameraComponent_Constructor( lua_State * state )
 	}
 	else if ( args == 1 )
 	{
-		ObjectComponentProxy * proxy = CheckObjectComponent( state, 1 );
+		ObjectComponentProxy * proxy = CheckUserType< ObjectComponentProxy >( state, 1 );
 		return PushCameraComponent( state, proxy->component );
 	}
 	else
@@ -155,6 +144,17 @@ int CameraComponent_Destructor( lua_State * state )
 void RegisterCameraComponent( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
+
+	static const luaL_Reg CameraComponentFunctions[] =
+	{
+		{ "SetProjection", CameraComponent_SetProjection },
+		{ "GetProjection", CameraComponent_GetProjection },
+		{ "GetRenderer", CameraComponent_GetRenderer },
+		{ "IsEnabled", CameraComponent_IsEnabled },
+		{ "SetEnabled", CameraComponent_SetEnabled },
+		{ "SetRenderer", CameraComponent_SetRenderer },
+		{ nullptr, nullptr }
+	};
 	se->AddType( { "CameraComponent", CameraComponentFunctions, sizeof( CameraComponentFunctions ) / sizeof( luaL_Reg ), CameraComponent_Constructor, CameraComponent_Destructor } );
 }
 

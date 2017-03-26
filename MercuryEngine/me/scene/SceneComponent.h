@@ -31,7 +31,11 @@ namespace me
 			void OnDetach( me::scene::IScene * scene ) override;
 			void OnBeforeStart() override;
 			void OnAfterStart() override;
+			
+			void OnEarlyUpdate( UpdateParams params ) override;
 			void OnUpdate( UpdateParams params ) override;
+			void OnLateUpdate( UpdateParams params ) override;
+
 			void CollectCameras( RenderGirl & renderGirl ) override;
 			void OnRender( RenderGirl & renderGirl ) override;
 			void OnSuspend() override;

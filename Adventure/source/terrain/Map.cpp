@@ -123,10 +123,10 @@ me::Geometry::ptr Map::GetGroundGeometry( const int * type )
 	else if( U == C && L == C && R == C && D != C )	return ground->GetEdge( Direction::D );
 	else if( U == C && L == C && R != C && D != C )	return ground->GetEdge( Direction::DR );
 
-	else if( U != C && L != C && R == C && D != C )	return ground->GetEdge( Direction::ULD );
-	else if( U != C && L == C && R != C && D != C )	return ground->GetEdge( Direction::URD );
+	else if( U != C && L != C && R == C && D != C )	return ground->GetEdge( Direction::UDL );
+	else if( U != C && L == C && R != C && D != C )	return ground->GetEdge( Direction::UDR );
 	else if( U != C && L != C && R != C && D == C )	return ground->GetEdge( Direction::ULR );
-	else if( U == C && L != C && R != C && D != C )	return ground->GetEdge( Direction::LRD );
+	else if( U == C && L != C && R != C && D != C )	return ground->GetEdge( Direction::DLR );
 
 	else if( U != C && L == C && R == C && D != C )	return ground->GetEdge( Direction::UD );
 	else if( U == C && L != C && R != C && D == C )	return ground->GetEdge( Direction::LR );

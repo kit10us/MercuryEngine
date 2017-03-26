@@ -269,7 +269,7 @@ V2< T > V2< T >::V2Normalized(const V2< T > & in)
 template< typename T >
 V2< T > V2< T >::V2Inverse(const V2< T > & in)
 {
-	return V2< T >(1 / in.x, 1 / in.y);
+	return V2< T >( -in.x, -in.y);
 }
 
 template< typename T >

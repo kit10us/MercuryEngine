@@ -168,7 +168,8 @@ int V2_Lerp(lua_State * state)
 
 int V2_Constructor(lua_State * state)
 {
-	auto game = ScriptEngine::GetGame();
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto game = se->GetGame();
 
 	int args = lua_gettop(state);
 
