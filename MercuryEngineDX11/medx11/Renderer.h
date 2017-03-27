@@ -30,6 +30,8 @@ namespace medx11
 		void SetCullMode( me::CullMode::TYPE mode ) override;
 
 		void BeforeRender() override;
+		void BeforeRenderSolids() override;
+		void BeforeRenderTrans() override;
 		void AfterRender() override;
 
 		me::Viewport GetViewport() const override;
@@ -66,6 +68,9 @@ namespace medx11
 		CComPtr< ID3D11Texture2D > m_depthStencilBuffer;
 		CComPtr< ID3D11DepthStencilView > m_depthStencilView;
 		CComPtr< ID3D11RasterizerState > m_rasterizerState;	
+
+		CComPtr< ID3D11DepthStencilState> m_depthStencilState_Solids;
+		CComPtr< ID3D11DepthStencilState> m_depthStencilState_Trans;
 
 		size_t m_totalInstances;
 		CComPtr< ID3D11Buffer > m_instanceBufferM[ 2 ];

@@ -53,5 +53,8 @@ namespace medx11
 		std::vector< ID3D11Buffer * > m_constantBuffers;
 		size_t m_bufferAccessed;
 		size_t m_locked;
+
+		CComPtr< ID3D11BlendState > m_blendState;
+		D3D11_BLEND_DESC m_blendDesc;
 	};
 }

@@ -49,12 +49,22 @@ namespace me
 		virtual Viewport GetViewport() const = 0;
 
 		/// <summary>
-		/// Called before render to allow renderer to perapre.
+		/// Called before rendering.
 		/// </summary>
 		virtual void BeforeRender() = 0;
 
 		/// <summary>
-		/// Called after render to allow renderer to cleanup.
+		/// Called before rendering solids.
+		/// </summary>
+		virtual void BeforeRenderSolids() = 0;
+
+		/// <summary>
+		/// Called before rendering transparencies.
+		/// </summary>
+		virtual void BeforeRenderTrans() = 0;
+
+		/// <summary>
+		/// Called after rendering.
 		/// </summary>
 		virtual void AfterRender() = 0;
 

@@ -17,6 +17,7 @@ PixelShader::PixelShader( me::IRenderer * renderer )
 	, m_isTrans( false )
 	, m_locked( 0 )
 	, m_bufferAccessed( 0 )
+	, m_blendDesc{}
 {
 }
 
@@ -113,6 +114,25 @@ void PixelShader::Create( PixelShaderParameters parameters )
 			assert( !FAILED( result ) );
 		}
 	}
+
+	// Create blend state...
+	if( m_parameters.trans )
+	{
+		m_blendDesc.RenderTarget[0].BlendEnable = parameters.blendDesc.enable ? TRUE : FALSE;
+		m_blendDesc.RenderTarget[0].SrcBlend = (D3D11_BLEND)parameters.blendDesc.src;
+		m_blendDesc.RenderTarget[0].DestBlend = (D3D11_BLEND)parameters.blendDesc.dest;
+		m_blendDesc.RenderTarget[0].BlendOp = (D3D11_BLEND_OP)parameters.blendDesc.op;
+		m_blendDesc.RenderTarget[0].SrcBlendAlpha = (D3D11_BLEND)parameters.blendDesc.srcAlpha;
+		m_blendDesc.RenderTarget[0].DestBlendAlpha = (D3D11_BLEND)parameters.blendDesc.destAlpha;
+		m_blendDesc.RenderTarget[0].BlendOpAlpha = (D3D11_BLEND_OP)parameters.blendDesc.opAlpha;
+		m_blendDesc.RenderTarget[0].RenderTargetWriteMask = (UINT8)parameters.blendDesc.renderTargetWriteMask;
+		HRESULT hr = dxDevice->CreateBlendState( &m_blendDesc, &m_blendState );
+
+		if( FAILED( hr ) )
+		{
+			throw exception::FailedToCreate( "Pixel Shader failed to create blending state!" );
+		}
+	}
 		
 	m_created = true;
 }
@@ -184,6 +204,21 @@ void PixelShader::Use()
 	{
 		dxContext->PSSetConstantBuffers( 0, m_constantBuffers.size(), &m_constantBuffers[0] );
 	}
+
+	// Blending...
+	if( m_blendState )
+	{
+		float blendFactor[4]{ 0.0f, 0.0f, 0.0f, 0.0f };
+		unsigned int sampleMask = 0xffffffff;
+		dxContext->OMSetBlendState( m_blendState, blendFactor, sampleMask );
+	}
+	else
+	{
+		float blendFactor[4]{ 0.0f, 0.0f, 0.0f, 0.0f };
+		unsigned int sampleMask = 0xffffffff;
+		dxContext->OMSetBlendState( nullptr, blendFactor, sampleMask );
+	}
+
 }
 
 std::string PixelShader::GetSource() const

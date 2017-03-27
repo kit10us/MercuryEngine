@@ -25,7 +25,7 @@
 	<trans>true</trans>
 	<blend>
 		<src>SrcAlpha</src>
-		<dest>InvSrcAlpha</dest>
+		<dest>One</dest>
 		<op>add</op>
 		<srcalpha>Zero</srcalpha>
 		<destalpha>One</destalpha>

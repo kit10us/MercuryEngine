@@ -39,6 +39,9 @@ void RenderGirl::Render( scene::IObjectAllocator * allocator )
 	GeometryCacheSummation summationSolids;
 	GeometryCacheSummation summationTrans;
 
+	IRenderer* renderer = m_params->renderer;
+
+
 	// Render all geometry for each camera...
 	for( auto camera : m_cameraCache )
 	{	
@@ -50,8 +53,12 @@ void RenderGirl::Render( scene::IObjectAllocator * allocator )
 		myRenderInfo.SetViewMatrix( camera.object->GetFrame().GetMatrix().Inverse() );
 		myRenderInfo.SetProjectionMatrix( camera.camera->GetProjection() );
 
+		renderer->BeforeRenderSolids();
+
 		summationSolids.Render( RenderParams{ m_params->renderer, myRenderInfo } );
 		m_renderCount += summationSolids.Count();
+
+		renderer->BeforeRenderTrans();
 
 		summationTrans.Render( RenderParams{ m_params->renderer, myRenderInfo } );
 		m_renderCount += summationTrans.Count();

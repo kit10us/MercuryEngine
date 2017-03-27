@@ -16,29 +16,40 @@ function BuildCube( position )
 	return object
 end
 
-function BuildSphere( position )
+function BuildPortalSphere( position )
 	local object = this:NewObject( MakeObjectName( "sphere" ) )
+	
 	local sphereParameters = ShapeParameters( "sphere" )
 	sphereParameters:SetEffect( Effect( "color_Trans", "Color_Trans.effect" ) )
-	sphereParameters:SetSegments( 24 )
+	
+	sphereParameters:SetRadius( 2.0 )
+	sphereParameters:SetDiffuse( Blue( 1, 0.1 ) )
+	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ) )	
+
+	sphereParameters:SetRadius( 1.4 )
+	sphereParameters:SetDiffuse( Blue( 1, 0.1 ) )
+	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ) )	
+
 	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.3 ) )
-	local sphere = Geometry( MakeGeometryName( "sphere"), sphereParameters )
-	object:AddGeometry( sphere )	
+	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
+	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ) )	
+	
+	sphereParameters:SetRadius( 0.8 )
+	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
+	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ) )	
+
+	sphereParameters:SetRadius( 0.6 )
+	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
+	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ) )	
+
+	sphereParameters:SetRadius( 0.2 )
+	sphereParameters:SetDiffuse( White() )
+	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ) )	
+	
 	object:SetModelMatrix( Matrix() * MatrixTranslate( V3( 0, 1, 0 ) ) )
 	object:Transform():SetPosition( position )
 	return object
-	
-	
-	--[[
-		sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( color3d )
-	sphereParameters:SetSegments( 24 )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
-	return Geometry( MakeGeometryName( "sphere", sphereParameters )
-	--]]
-	
+
 end
 
 function OnBeforeStart()
@@ -73,8 +84,7 @@ function OnBeforeStart()
 	BuildCube(   V3( 4 + 4, 28, 4 ) )
 	BuildCube(   V3( 4 + 4, 28, 6 ) )
 	
-	--local sphere = BuildSphere( V3( 4 + 4, 30, 6 ) )
-	local sphere = BuildSphere( V3( 4, 5, 0 ) )
+	local sphere = BuildPortalSphere( V3( 4 + 4, 30, 6 ) )
 	
 	
 	-- Physics tests...

@@ -149,6 +149,41 @@ Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
 		result = m_dxDevice->CreateBuffer( &bufferDesc, nullptr, &m_instanceBufferM[ 1 ] );
 		assert( !FAILED( result ) );
 	}
+
+	{
+		D3D11_DEPTH_STENCIL_DESC desc{};
+		desc.DepthEnable = TRUE;
+		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		desc.DepthFunc = D3D11_COMPARISON_LESS;
+		desc.StencilEnable = FALSE;
+		desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+		desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+		desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		m_dxDevice->CreateDepthStencilState( &desc, &m_depthStencilState_Solids );
+
+		desc.DepthEnable = FALSE;
+		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		desc.DepthFunc = D3D11_COMPARISON_LESS;
+		desc.StencilEnable = FALSE;
+		desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+		desc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+		desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		m_dxDevice->CreateDepthStencilState( &desc, &m_depthStencilState_Trans );
+	}
 }
 
 Renderer::~Renderer()
@@ -189,10 +224,16 @@ void Renderer::BeforeRender()
 	float clearColor[] = { 0.5f, 0.0f, 0.3f, 1.0f };
 	m_dxContext->ClearRenderTargetView( m_renderTargetView, clearColor );
 	m_dxContext->ClearDepthStencilView( m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
+}
 
-	m_dxContext->OMSetDepthStencilState( 0, 0 );
-	float blendFactors[] = { 0, 0, 0, 0 };
-	m_dxContext->OMSetBlendState( 0, blendFactors, std::numeric_limits< unsigned int >::max() );
+void Renderer::BeforeRenderSolids()
+{
+	m_dxContext->OMSetDepthStencilState( m_depthStencilState_Solids, 0 );
+}
+
+void Renderer::BeforeRenderTrans()
+{
+	m_dxContext->OMSetDepthStencilState( m_depthStencilState_Trans, 0 );
 }
 
 void Renderer::AfterRender()
