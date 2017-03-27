@@ -3,7 +3,6 @@
 #pragma once
 
 #include <me/scene/IObjectAllocator.h>
-#include <me/object/Object.h>
 
 namespace me
 {

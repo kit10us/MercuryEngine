@@ -14,7 +14,6 @@ using namespace object;
 Scene::Scene( Game * game, std::string name )
 : m_game( game )
 , m_name{ name }
-, m_renderCount{ 0 }
 , m_ownership{ unify::Owner::Create( name ) }
 {
 	auto objectAllocatorComponent = new ObjectAllocatorComponent( game->GetOS() );
@@ -32,28 +31,26 @@ unify::Owner::ptr Scene::GetOwnership()
 	return m_ownership;
 }
 
-void Scene::Start()
+void Scene::Component_OnBeforeStart()
 {
-	GetGame()->LogLine("Start scene \"" + GetName() + "\" Begin", 0 );
-	for ( auto && component : m_components )
+	for( auto && component : m_components )
 	{
 
-		if ( component->IsEnabled() )
+		if( component->IsEnabled() )
 		{
-			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnBeforeStart Begin" );
+			GetGame()->LogLine( "Component \"" + component->GetTypeName() + "\" OnBeforeStart Begin" );
 			component->OnBeforeStart();
-			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnBeforeStart Done");
+			GetGame()->LogLine( "Component \"" + component->GetTypeName() + "\" OnBeforeStart Done" );
 		}
 		else
 		{
-			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnBeforeStart Skipped (not enabled)");
+			GetGame()->LogLine( "Component \"" + component->GetTypeName() + "\" OnBeforeStart Skipped (not enabled)" );
 		}
 	}
+}
 
-	GetGame()->LogLine("Scene OnStart Begin");
-	OnStart();
-	GetGame()->LogLine("Scene OnStart End");
-
+void Scene::Component_OnAfterStart()
+{
 	for ( auto && component : m_components )
 	{
 		if (component->IsEnabled())
@@ -67,10 +64,9 @@ void Scene::Start()
 			GetGame()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)");
 		}
 	}
-	GetGame()->LogLine("Start scene \"" + GetName() + "\" Done");
 }
 
-void Scene::Update( UpdateParams params )
+void Scene::Component_OnEarlyUpdate( UpdateParams params )
 {
 	for( auto && component : m_components )
 	{
@@ -79,7 +75,10 @@ void Scene::Update( UpdateParams params )
 			component->OnEarlyUpdate( params );
 		}
 	}
+}
 
+void Scene::Component_OnUpdate( UpdateParams params )
+{
 	for( auto && component : m_components )
 	{
 		if ( component->IsEnabled( ) )
@@ -87,8 +86,10 @@ void Scene::Update( UpdateParams params )
 			component->OnUpdate( params );
 		}
 	}
+}
 
-	OnUpdate( params );
+void Scene::Component_OnLateUpdate( UpdateParams params )
+{
 
 	for( auto && component : m_components )
 	{
@@ -99,11 +100,8 @@ void Scene::Update( UpdateParams params )
 	}
 }
 
-void Scene::Render( RenderParams params )
+void Scene::Component_OnRender( RenderGirl renderGirl )
 {
-	RenderGirl renderGirl;
-	renderGirl.Begin( &params );
-
 	// Collect cameras...
 	for( auto && component : m_components )
 	{
@@ -120,16 +118,10 @@ void Scene::Render( RenderParams params )
 			component->OnRender( renderGirl );
 		}
 	}
-
-	m_renderCount = renderGirl.End();
-
-	OnRender( params );
 }
 
-void Scene::Suspend()
+void Scene::Component_OnSuspend()
 {
-	OnSuspend();
-
 	for ( auto && component : m_components )
 	{
 		if ( component->IsEnabled() )
@@ -139,7 +131,7 @@ void Scene::Suspend()
 	}	
 }
 
-void Scene::Resume()
+void Scene::Component_OnResume()
 {
 	for ( auto && component : m_components )
 	{
@@ -148,14 +140,10 @@ void Scene::Resume()
 			component->OnResume();
 		}
 	}
-
-	OnResume();
 }
 
-void Scene::End()
+void Scene::Component_OnEnd()
 {
-	OnEnd();
-
 	for (auto && component : m_components)
 	{
 		if (component->IsEnabled())
@@ -242,11 +230,6 @@ IObjectAllocator * Scene::GetObjectAllocator()
 Object * Scene::FindObject( std::string name )
 {
 	return m_objectAllocator->FindObject( name );
-}
-
-size_t Scene::GetRenderCount() const
-{
-	return m_renderCount;
 }
 
 std::string Scene::SendCommand( std::string command, std::string extra )

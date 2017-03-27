@@ -28,7 +28,7 @@ namespace me
 			void OnStart() override;
 			void OnUpdate( UpdateParams params ) override;
 
-			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform ) override;
+			void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * transform ) override;
 
 			void OnSuspend() override;
 			void OnResume() override;

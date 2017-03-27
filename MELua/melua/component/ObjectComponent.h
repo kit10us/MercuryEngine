@@ -24,7 +24,6 @@ namespace melua
 		public: // IGameComponent...
 			void OnStart() override;
 			void OnUpdate( me::UpdateParams params ) override;
-			void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 

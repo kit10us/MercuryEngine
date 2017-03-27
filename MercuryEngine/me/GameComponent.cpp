@@ -97,7 +97,7 @@ void GameComponent::OnAfterStartup()
 {
 }
 
-void GameComponent::OnBeforeUpdate() 
+void GameComponent::OnEarlyUpdate( UpdateParams params )
 {
 }
 
@@ -105,7 +105,7 @@ void GameComponent::OnUpdate( UpdateParams params )
 {
 }
 
-void GameComponent::OnAfterUpdate() 
+void GameComponent::OnLateUpdate( UpdateParams params )
 {
 }
 

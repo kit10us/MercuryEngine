@@ -16,8 +16,9 @@ ResourceBrowser::ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int 
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 540, 440 ) );
 	AddControl( new Static( L"Type:", 50, DefaultHeight() ) );
-	AddControl( new Combobox( FillWidth(), DefaultHeight() ), "Types" );
-	AddControl( new Listbox( FillWidth(), FillHeight() ), "Assets" );
+	AddControl( new Combobox( 230, DefaultHeight() ), "Types" );
+	AddControl( new Listbox( 230, FillHeight() ), "Assets" );
+	AddControl( new Button( L"Reload Asset", DefaultWidth(), DefaultHeight() ), "ReloadAsset" );
 	Create( L"Asset Viewerr", x, y, nCmdShow );
 }
 									
@@ -188,6 +189,61 @@ void ResourceBrowser::OpenResource()
 	}
 }
 
+void ResourceBrowser::ReloadResource()
+{
+	using namespace ui;
+
+	Combobox* types = GetControl< Combobox* >( "Types" );
+	Listbox* resources = GetControl< Listbox* >( "Assets" );
+
+	size_t typeIndex = types->GetCurSel();
+	size_t i = resources->GetCurSel();
+
+	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
+	unify::Path source;
+
+	if( unify::StringIs( manager->GetName(), "texture" ) )
+	{
+		auto textureManager = reinterpret_cast<rm::ResourceManagerSimple< me::ITexture >*>( manager );
+		auto texture = textureManager->Get( i ).get();
+		texture->Reload();
+	}
+	/*
+	else if( unify::StringIs( manager->GetName(), "effect" ) )
+	{
+		auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::Effect >*>( manager );
+		auto effect = effectManager->Get( i ).get();
+		if( !effect->GetSource().empty() )
+		{
+			source = effect->GetSource();
+		}
+	}
+	*/
+	else if( unify::StringIs( manager->GetName(), "vertexshader" ) )
+	{
+		auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IVertexShader >*>( manager );
+		auto vertexShader = vertexShaderManager->Get( i ).get();
+		vertexShader->Reload();
+	}
+	else if( unify::StringIs( manager->GetName(), "pixelshader" ) )
+	{
+		auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IPixelShader >*>( manager );
+		auto pixelShader = pixelShaderManager->Get( i ).get();
+		pixelShader->Reload();
+	}
+	/*
+	else if( unify::StringIs( manager->GetName(), "geometry" ) )
+	{
+		auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::Geometry >*>( manager );
+		auto geometry = geometryManager->Get( i ).get();
+		if( !geometry->GetSource().empty() )
+		{
+			source = geometry->GetSource();
+		}
+	}
+	*/
+}
+
 ui::IResult * ResourceBrowser::OnCreate( ui::message::Params params )
 {
 	using namespace ui;			  
@@ -231,10 +287,17 @@ ui::IResult * ResourceBrowser::OnControlCommand( ui::message::ControlCommand mes
 		switch ( message.code )
 		{
 		case LBN_DBLCLK:
-		{
 			OpenResource();
 			break;
 		}
+	}
+	else if( message.IsFor( "ReloadAsset" ) )
+	{
+		switch( (Button::Event)message.code )
+		{
+		case Button::Event::Clicked:
+			ReloadResource();
+			break;
 		}
 	}
 	return new Result( 0 );

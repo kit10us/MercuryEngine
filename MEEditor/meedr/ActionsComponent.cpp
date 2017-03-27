@@ -6,8 +6,14 @@
 
 using namespace meedr;
 
+char* ActionsGameComponent::Name()
+{
+	return "ActionsGameComponent";
+}
+
+
 ActionsGameComponent::ActionsGameComponent()
-	: GameComponent( "ActionsGameComponent" )
+	: GameComponent( Name() )
 {
 }
 

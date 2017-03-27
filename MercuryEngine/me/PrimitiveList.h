@@ -43,6 +43,8 @@ namespace me
 
 		void ComputeBounds( unify::BBox< float > & bbox ) const;
 
+		bool IsTrans() const;
+
 	protected:
 		me::IRenderer * m_renderer;
 		std::vector< BufferSet::shared_ptr > m_buffers;

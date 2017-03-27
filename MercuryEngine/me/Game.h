@@ -28,8 +28,6 @@ namespace me
 		
 		virtual bool Setup( me::IOS * os ) override;
 		virtual void Startup() override;		  
-		virtual void Update( UpdateParams params ) override;
-		virtual void Render( RenderParams params ) override;
 		virtual void Shutdown() override;
 
 	public:

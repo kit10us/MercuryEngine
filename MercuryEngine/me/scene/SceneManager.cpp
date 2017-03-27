@@ -22,6 +22,7 @@ SceneManager::SceneManager()
 	, m_currentScene{ nullptr }
 	, m_updateTick{ 0 }
 	, m_renderTick{ 0 }
+	, m_renderCount{ 0 }
 {
 }
 
@@ -99,7 +100,8 @@ bool SceneManager::ChangeScene( std::string name )
 	// Leave current scene...
 	if ( m_currentScene )
 	{
-		m_currentScene->End();
+		m_currentScene->OnEnd();
+		m_currentScene->Component_OnEnd();
 
 		// Let all components mess with the scene before we destroy it...
 		for (auto component : m_components)
@@ -121,7 +123,15 @@ bool SceneManager::ChangeScene( std::string name )
 		component->OnSceneStart( m_currentScene.get() );
 	}
 
-	m_currentScene->Start();	
+	GetGame()->LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin", 0 );
+	m_currentScene->Component_OnBeforeStart();	
+
+	GetGame()->LogLine( "Scene OnStart Begin" );
+	m_currentScene->OnStart();
+	GetGame()->LogLine( "Scene OnStart End" );
+
+	m_currentScene->Component_OnAfterStart();
+	GetGame()->LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
 
 	return true;
 }
@@ -180,19 +190,41 @@ int SceneManager::FindComponent(std::string typeName) const
 	return -1;
 }
 
+
+size_t SceneManager::GetRenderCount() const
+{
+	return m_renderCount;
+}
+
+void SceneManager::OnEarlyUpdate( UpdateParams params )
+{
+	if( m_enabled == false || !m_currentScene )
+	{
+		return;
+	}
+
+	m_currentScene->Component_OnEarlyUpdate( params );
+}
+
 void SceneManager::OnUpdate( UpdateParams params )
 {
-	if ( m_enabled == false )
+	if ( m_enabled == false || ! m_currentScene )
 	{
 		return;
 	}
 
-	if ( ! m_currentScene )
+	m_currentScene->Component_OnUpdate( params );
+	m_currentScene->OnUpdate( params );
+}
+
+void SceneManager::OnLateUpdate( UpdateParams params )
+{
+	if( m_enabled == false || !m_currentScene )
 	{
 		return;
 	}
 
-	m_currentScene->Update( params );
+	m_currentScene->Component_OnLateUpdate( params );
 }
 
 void SceneManager::OnRender( RenderParams params )
@@ -207,7 +239,13 @@ void SceneManager::OnRender( RenderParams params )
 		return;
 	}
 
-	m_currentScene->Render( params );
+	RenderGirl renderGirl;
+	renderGirl.Begin( &params );
+
+	m_currentScene->Component_OnRender( renderGirl );
+	m_currentScene->OnRender( renderGirl );
+
+	m_renderCount = renderGirl.End();
 }
 
 std::string SceneManager::GetWhat() const

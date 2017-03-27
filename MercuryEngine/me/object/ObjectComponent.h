@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/object/IObjectComponent.h>
-#include <me/IOS.h>
+#include <me/object/Object.h>
 
 namespace me
 {
@@ -35,7 +35,7 @@ namespace me
 			void OnDetach( Object * object ) override;
 			void OnStart() override;
 			void OnUpdate( UpdateParams params ) override;
-			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
+			void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 

@@ -150,7 +150,7 @@ bool Map::DrawOnMap( unify::V2< int > pos, std::string ground )
 	return true;
 }
 
-void Map::CollectGeometry( GeometryCache & cache, const unify::FrameLite * transform )
+void Map::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * transform )
 {
 	if( !IsEnabled() )
 	{
@@ -191,18 +191,18 @@ void Map::CollectGeometry( GeometryCache & cache, const unify::FrameLite * trans
 
 			if( type[ (size_t)Direction::C ] == -1 )
 			{
-				cache.Add( m_base->GetGeneric( 0 ).get(), frame );
+				solids.Add( m_base->GetGeneric( 0 ).get(), frame );
 			}
 			else
 			{
 				auto geo = GetGroundGeometry( type );
 				if( !geo )
 				{
-					cache.Add( m_invalid.get(), frame );
+					solids.Add( m_invalid.get(), frame );
 				}
 				else
 				{
-					cache.Add( geo.get(), frame );
+					solids.Add( geo.get(), frame );
 				}
 			}
 		}

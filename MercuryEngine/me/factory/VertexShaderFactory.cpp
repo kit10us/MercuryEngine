@@ -43,6 +43,10 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 		{
 			parameters.vertexDeclaration.reset( new VertexDeclaration( &node ) );
 		}
+		else if( node.IsTagName( "trans" ) )
+		{
+			parameters.trans = unify::Cast< bool >( node.GetText() );
+		}
 	}
 	if ( parameters.vertexDeclaration == nullptr )
 	{

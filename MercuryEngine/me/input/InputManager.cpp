@@ -210,6 +210,11 @@ bool InputManager::AddSingleInputAction(unify::Owner::ptr owner, const qxml::Ele
 
 void InputManager::Update( UpdateParams params )
 {
+	if( !m_game->GetOS()->GetHasFocus() )
+	{
+		return;
+	}
+
 	for( auto & source : m_sourceList )
 	{
 		source->Update();

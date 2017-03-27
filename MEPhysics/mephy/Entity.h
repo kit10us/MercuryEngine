@@ -19,8 +19,13 @@ namespace mephy
 		Entity();
 		~Entity();
 
+		void CaptureEarly();
+		const unify::Matrix & GetEarly() const;
+
 	public: // IObjectComponent...
 		me::object::IObjectComponent::ptr Duplicate() override;
 
+	private:
+		unify::Matrix m_early;
 	};
 }

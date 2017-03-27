@@ -37,6 +37,10 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 		{
 			parameters.constants.reset( new shader::ConstantBuffer( &node ) );
 		}
+		else if( node.IsTagName( "trans" ) )
+		{
+			parameters.trans = unify::Cast< bool >( node.GetText() );
+		}
 	}
 	return renderer->ProducePS( parameters );
 }

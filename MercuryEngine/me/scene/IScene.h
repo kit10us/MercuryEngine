@@ -25,27 +25,25 @@ namespace me
 		public:
 			typedef std::shared_ptr< IScene > ptr;
 
-		protected: // User Defined Events...
+		public:
+			virtual void Component_OnBeforeStart() = 0;
+			virtual void Component_OnAfterStart() = 0;
 
-			virtual void OnStart() = 0;
+			virtual void Component_OnEarlyUpdate( UpdateParams params ) = 0;
+			virtual void Component_OnUpdate( UpdateParams params ) = 0;
+			virtual void Component_OnLateUpdate( UpdateParams params ) = 0;
 
-			virtual void OnUpdate( UpdateParams params ) = 0;
+			virtual void Component_OnRender( RenderGirl renderGirl ) = 0;
+			virtual void Component_OnSuspend() = 0;
+			virtual void Component_OnResume() = 0;
+			virtual void Component_OnEnd() = 0;
 
-			virtual void OnRender( RenderParams params ) = 0;
-
-			virtual void OnSuspend() = 0;
-
-			virtual void OnResume() = 0;
-
+			virtual void OnStart() = 0;			
+			virtual void OnUpdate( UpdateParams params ) = 0;			
+			virtual void OnRender( RenderGirl renderGirl ) = 0;
+			virtual void OnSuspend() = 0;			
+			virtual void OnResume() = 0;			
 			virtual void OnEnd() = 0;
-
-		public: // Event callers...
-			virtual void Start() = 0;
-			virtual void Update( UpdateParams params ) = 0;
-			virtual void Render( RenderParams params ) = 0;
-			virtual void Suspend() = 0;
-			virtual void Resume() = 0;
-			virtual void End() = 0;
 
 		public:
 
@@ -75,21 +73,19 @@ namespace me
 			
 			virtual object::Object * FindObject( std::string name ) = 0;
 
-			virtual size_t GetRenderCount() const = 0;
-
 			virtual std::string SendCommand( std::string command, std::string extra ) = 0;
 
 			template< typename T >
-			T* GetComponentT( std::string typeName );
+			T* GetComponentT();
 
 			template< typename T >
 			T* GetComponentT( int index );
 		};
 
 		template< typename T >
-		T* IScene::GetComponentT( std::string typeName )
+		T* IScene::GetComponentT()
 		{
-			auto component = GetComponent( typeName );
+			auto component = GetComponent( T::Name() );
 			return dynamic_cast< T* >( component );
 		}
 

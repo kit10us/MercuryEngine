@@ -52,9 +52,9 @@ namespace me
 		virtual void OnAfterStartup( ) = 0;
 
 		/// <summary>
-		/// Called before our game's Update.
+		/// Called before OnUpdate.
 		/// </summary>
-		virtual void OnBeforeUpdate() = 0;
+		virtual void OnEarlyUpdate( UpdateParams params ) = 0;
 
 		/// <summary>
 		/// Called during game updating.
@@ -62,9 +62,9 @@ namespace me
 		virtual void OnUpdate( UpdateParams params ) = 0;
 
 		/// <summary>
-		/// Called after our game's Update.
+		/// Called after on OnUpdate.
 		/// </summary>
-		virtual void OnAfterUpdate() = 0;
+		virtual void OnLateUpdate( UpdateParams params ) = 0;
 
 		/// <summary>
 		/// Called during game rendering.

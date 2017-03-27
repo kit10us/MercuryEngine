@@ -43,14 +43,13 @@ namespace medx11
 
 		bool Reload() override;
 
+		bool IsTrans() const override;
+
 		std::string GetError();
 
 	protected:	   
-		unify::Path m_filePath;
-		std::string m_code;
+		me::VertexShaderParameters m_parameters;
 		bool m_assembly;
-		std::string m_entryPointName;
-		std::string m_profile;
 		std::string m_errorMessage;
 		bool m_created;
 		

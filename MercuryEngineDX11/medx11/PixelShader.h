@@ -32,20 +32,14 @@ namespace medx11
 
 		std::string GetSource() const override;
 
-		void SetTrans( bool bTrans ) override;
-
-		bool IsTrans() override;
-
 		bool Reload() override;
+
+		bool IsTrans() const;
 
 		std::string GetError();
 
 	protected:
-		unify::Path m_filePath;
-		std::string m_code;
-		bool m_assembly;
-		std::string m_entryPointName;
-		std::string m_profile;
+		me::PixelShaderParameters m_parameters;
 		std::string m_errorMessage;
 		bool m_created;
 

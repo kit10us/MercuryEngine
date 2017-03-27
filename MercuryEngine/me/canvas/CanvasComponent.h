@@ -17,6 +17,8 @@ namespace me
 		public:
 			typedef std::shared_ptr< canvas::CanvasComponent > ptr;
 
+			static char* Name();
+
 			CanvasComponent( IGame * game );	  
 
 			Layer * GetLayer();

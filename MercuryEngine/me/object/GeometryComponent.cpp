@@ -77,9 +77,16 @@ void GeometryComponent::OnUpdate( UpdateParams params )
 	m_geometry->Update( params, m_geometryInstanceData.get() );
 }
 
-void GeometryComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
+void GeometryComponent::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame )
 {
-	cache.Add( m_geometry.get(), frame );
+	if( m_geometry->IsTrans() )
+	{
+		trans.Add( m_geometry.get(), frame );
+	}
+	else
+	{
+		solids.Add( m_geometry.get(), frame );
+	}
 }
 
 void GeometryComponent::OnSuspend()

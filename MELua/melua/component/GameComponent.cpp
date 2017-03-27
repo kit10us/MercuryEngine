@@ -22,8 +22,13 @@ namespace {
 	};
 }
 
+char* GameComponent::Name()
+{
+	return "LuaGameScript";
+}
+
 GameComponent::GameComponent( lua_State * state, std::string luaName, unify::Path path )
-	: me::GameComponent( "LuaGameScript" )
+	: me::GameComponent( Name() )
 	, m_state( state )
 	, m_luaName( luaName )
 	, m_path( path )

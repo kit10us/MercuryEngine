@@ -115,9 +115,11 @@ void MainScene::OnUpdate( UpdateParams params )
 	params.renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MainScene::OnRender( RenderParams params )
+void MainScene::OnRender( RenderGirl renderGirl )
 {
 	vertexBuffer->Use();
+
+	RenderParams params = *renderGirl.GetParams();
 
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );

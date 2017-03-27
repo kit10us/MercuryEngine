@@ -59,7 +59,7 @@ namespace me
 			/// <summary>
 			/// Called during rendering.
 			/// </summary>
-			virtual void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) = 0;
+			virtual void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame ) = 0;
 
 			/// <summary>
 			/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).

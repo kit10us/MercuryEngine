@@ -4,7 +4,6 @@
 
 #include <me/IOS.h>
 #include <me/object/IObjectComponent.h>
-#include <me/object/CameraComponent.h>
 #include <me/scene/ComponentInstance.h>
 #include <me/Geometry.h>
 #include <me/RenderInfo.h>
@@ -22,8 +21,8 @@ namespace me
 	{
 		struct FinalCamera
 		{
-			Object * object;
-			CameraComponent * camera;
+			class Object * object;
+			class CameraComponent * camera;
 		};
 		typedef std::list< FinalCamera > CameraCache;
 
@@ -83,8 +82,7 @@ namespace me
 			/// </summary>
 			void Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params );
 
-			void CollectGeometry( GeometryCache & geometries );
-
+			void CollectGeometry( GeometryCache & solids, GeometryCache & trans );
 
 			void OnSuspend();
 			void OnResume();

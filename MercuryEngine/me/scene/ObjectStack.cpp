@@ -168,14 +168,15 @@ void ObjectStack::Update( UpdateParams params )
 
 		if ( m_cache && ! m_resetCache )
 		{
-			object->CollectGeometry( m_geometries );
+			object->CollectGeometry( m_solids, m_trans );
 		}
 	}
 	m_newObjects.clear();
 
 	if ( m_cache && m_resetCache )
 	{
-		m_geometries.Reset();
+		m_solids.Reset();
+		m_trans.Reset();
 		for ( int i = 0; i <= m_lastObjectAlive; i++ )
 		{
 			auto && object = m_objects[ i ];
@@ -185,7 +186,7 @@ void ObjectStack::Update( UpdateParams params )
 			}
 
 			// Initialize
-			object.CollectGeometry( m_geometries );
+			object.CollectGeometry( m_solids, m_trans );
 		}
 		m_resetCache = false;
 	}
@@ -204,11 +205,12 @@ void ObjectStack::CollectCameras( RenderGirl & renderGirl )
 	}
 }
 
-void ObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
+void ObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
 {	
 	if ( ! m_cache )
 	{
-		m_geometries.Reset();
+		m_solids.Reset();
+		m_trans.Reset();
 		for ( int i = 0; i <= m_lastObjectAlive; i++ )
 		{
 			auto && object = m_objects[ i ];
@@ -224,7 +226,7 @@ void ObjectStack::CollectRendering( RenderParams params, const FinalCamera & cam
 			unify::Angle difference( forward.DotAngle( position ) );
 			if ( difference.ToDegrees() < 45.0f )
 			{
-				object.CollectGeometry( m_geometries );
+				object.CollectGeometry( m_solids, m_trans );
 			}
 			else
 			{
@@ -233,5 +235,6 @@ void ObjectStack::CollectRendering( RenderParams params, const FinalCamera & cam
 		}
 	}
 
-	m_geometries.Sum( summation );
+	m_solids.Sum( solids );
+	m_trans.Sum( trans );
 }

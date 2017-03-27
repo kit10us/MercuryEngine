@@ -52,7 +52,7 @@ namespace terrain
 		me::Geometry::ptr GetGroundGeometry( const int * type );
 
 	public: // IObjectComponent...
-		void CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * transform ) override;
+		void CollectGeometry( me::GeometryCache & solids, me::GeometryCache & trans, const unify::FrameLite * frame ) override;
 		void OnSuspend() override;
 		void OnResume() override;
 		IObjectComponent::ptr Duplicate() override;

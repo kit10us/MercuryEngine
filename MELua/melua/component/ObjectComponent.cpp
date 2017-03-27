@@ -136,11 +136,6 @@ void ObjectComponent::OnUpdate( me::UpdateParams params )
 	CallMember( "OnUpdate" );
 }
 
-void ObjectComponent::CollectGeometry( me::GeometryCache & cache, const unify::FrameLite * frame )
-{																										
-	// DO NOTHING
-}
-
 void ObjectComponent::OnSuspend()
 {
 	CallMember( "OnSuspend" );

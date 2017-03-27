@@ -59,16 +59,6 @@ namespace me
 		virtual void Startup() = 0;
 
 		/// <summary>
-		/// Update is called to enable objects to perform over-time operations.
-		/// </summary>
-		virtual void Update( UpdateParams params ) = 0;
-
-		/// <summary>
-		/// Render is called to draw graphics.
-		/// </summary>
-		virtual void Render( RenderParams params ) = 0;
-
-		/// <summary>
 		/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.
 		/// </summary>
 		virtual void Shutdown() = 0;
@@ -161,19 +151,8 @@ namespace me
 		virtual input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) = 0;
 
 		template< typename T >
-		T* GetComponentT( std::string typeName );
-
-		template< typename T >
 		T* GetComponentT();
 	};
-
-	template< typename T >
-	T* IGame::GetComponentT( std::string typeName )
-	{
-		auto component = GetComponent( typeName );
-		if ( ! component ) return nullptr;
-		return dynamic_cast< T* >( component.get() );
-	}
 
 	template< typename T >
 	T* IGame::GetComponentT()

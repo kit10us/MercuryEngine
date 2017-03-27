@@ -33,8 +33,8 @@ namespace me
 		const me::IIndexBuffer::ptr BufferSet::GetIndexBuffer() const;
 
 		void AddMethod( RenderMethod & method );
-		std::vector< RenderMethod > & BufferSet::GetRenderMethodBuffer();
-		const std::vector< RenderMethod > & BufferSet::GetRenderMethodBuffer() const;
+		std::vector< RenderMethod > & GetRenderMethodBuffer();
+		const std::vector< RenderMethod > & GetRenderMethodBuffer() const;
 		void ClearMethods();
 
 		void Destroy();

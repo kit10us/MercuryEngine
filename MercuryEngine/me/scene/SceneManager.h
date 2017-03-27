@@ -43,9 +43,12 @@ namespace me
 			ISceneManagerComponent* GetComponent(std::string typeName);
 			int FindComponent(std::string typeName) const;
 
+			size_t SceneManager::GetRenderCount() const;
 
 		public: // IGameCompnent...
+			void OnEarlyUpdate( UpdateParams params ) override;
 			void OnUpdate( UpdateParams params ) override;
+			void OnLateUpdate( UpdateParams params ) override;
 			void OnRender( RenderParams params ) override;
 
 		public: // IComponent...
@@ -58,6 +61,7 @@ namespace me
 			std::string m_previousSceneName;
 			unsigned long long m_updateTick;
 			unsigned long long m_renderTick;
+			size_t m_renderCount;
 
 			std::list< ISceneManagerComponent::ptr > m_components;
 	    };

@@ -11,7 +11,7 @@ namespace mephy
 	class GameComponent : public me::GameComponent
 	{
 	public:
-		static char* Name();
+		MEPHYSICS_API static char* Name();
 
 		GameComponent();
 		~GameComponent();
@@ -21,19 +21,8 @@ namespace mephy
 		MEPHYSICS_API me::object::IObjectComponent::ptr CreateEntity();
 
 	public: // IGameComponent...
-		void OnAttach( me::IGame * game ) override;
-		void OnBeforeStartup() override;
-		void OnAfterStartup() override;
-
-		void OnBeforeUpdate() override;
-		void OnUpdate( me::UpdateParams params ) override;
-		void OnAfterUpdate() override;
-
-		void OnRender( me::RenderParams params ) override;
-		void OnDetach( me::IGame * game ) override;
 
 	public: // IComponent...
-		std::string GetWhat() const override;
 
 	private:
 	};

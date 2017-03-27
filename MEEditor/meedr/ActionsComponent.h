@@ -8,6 +8,8 @@ namespace meedr
 	class ActionsGameComponent : public me::GameComponent
 	{
 	public:
+		static char* Name();
+
 		ActionsGameComponent();
 
 	public: // IGameComponent...

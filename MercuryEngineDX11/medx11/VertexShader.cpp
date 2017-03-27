@@ -46,11 +46,8 @@ void VertexShader::Create( VertexShaderParameters parameters )
 {
 	Destroy();
 
-	m_filePath = parameters.path;
-	m_code = parameters.code;
+	m_parameters = parameters;
 	m_constants = parameters.constants;
-	m_entryPointName = parameters.entryPointName;
-	m_profile = parameters.profile;
 	m_vertexDeclaration = parameters.vertexDeclaration;
 
 	bool debug = false;
@@ -67,11 +64,11 @@ void VertexShader::Create( VertexShaderParameters parameters )
 		flags1 |= D3DCOMPILE_DEBUG;
 	}
 	unsigned int flags2 = 0; // Only used for effect compilation.
-	result = D3DCompileFromFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_entryPointName.c_str(), m_profile.c_str(), flags1, flags2, &m_vertexShaderBuffer, &errorBlob );
+	result = D3DCompileFromFile( unify::Cast< std::wstring >( m_parameters.path.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_parameters.entryPointName.c_str(), m_parameters.profile.c_str(), flags1, flags2, &m_vertexShaderBuffer, &errorBlob );
 	if ( FAILED( result ) )
 	{
 		OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-		throw exception::FailedToCreate( std::string( "Failed to create shader \"" ) + parameters.path.ToString() + "\": " +  std::string( (char*)errorBlob->GetBufferPointer() ) );
+		throw exception::FailedToCreate( std::string( "Failed to create shader \"" ) + m_parameters.path.ToString() + "\": " +  std::string( (char*)errorBlob->GetBufferPointer() ) );
 	}
 
 	auto dxDevice = m_renderer->GetDxDevice();
@@ -209,12 +206,19 @@ void VertexShader::Use()
 
 std::string VertexShader::GetSource() const
 {
-	return m_filePath.ToString();
+	return m_parameters.path.ToString();
 }
 
 bool VertexShader::Reload()
 {
-	return false;
+	Destroy();
+	Create( m_parameters );
+	return true;
+}
+
+bool VertexShader::IsTrans() const
+{
+	return m_parameters.trans;
 }
 
 

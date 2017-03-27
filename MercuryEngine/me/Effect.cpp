@@ -125,14 +125,14 @@ void Effect::SetPixelShader( IPixelShader::ptr shader )
 	m_pixelShader = shader;
 }
 
-IPixelShader::ptr Effect::GetPixelShader()
-{
-	return m_pixelShader;
-}
-
 void Effect::SetVertexShader( IVertexShader::ptr shader )
 {
 	m_vertexShader = shader;
+}
+
+IPixelShader::ptr Effect::GetPixelShader()
+{
+	return m_pixelShader;
 }
 
 IVertexShader::ptr Effect::GetVertexShader()
@@ -145,15 +145,30 @@ ITexture::ptr Effect::GetTexture( unsigned char stage )
 	return m_textures[ stage ];
 }
 
+const IPixelShader::ptr Effect::GetPixelShader() const
+{
+	return m_pixelShader;
+}
+
+const IVertexShader::ptr Effect::GetVertexShader() const
+{
+	return m_vertexShader;
+}
+
+const ITexture::ptr Effect::GetTexture( unsigned char stage ) const
+{
+	return m_textures[stage];
+}
+
 void Effect::AddFrame( size_t frameIndex, float influence )
 {
 	FrameIndexAndInfluence frameIndexAndInfluence( frameIndex, influence );
 	m_frameIndexAndInfluence.push_back( frameIndexAndInfluence );
 }
 
-bool Effect::UsesTransparency()
+bool Effect::IsTrans() const
 {
-	return GetPixelShader() ? GetPixelShader()->IsTrans() : false;
+	return ( GetPixelShader() ? GetPixelShader()->IsTrans() : false ) || ( GetVertexShader() ? GetVertexShader()->IsTrans() : false );
 }
 
 std::string Effect::GetSource() const

@@ -17,6 +17,7 @@ BoxCollider::BoxCollider( BoxCollider & component )
 	: ColliderBase( component )
 	, m_halfExt{ component.m_halfExt }
 	, m_bbox{ component.m_bbox }
+	, m_once{ false }
 {
 }
 
@@ -24,6 +25,7 @@ BoxCollider::BoxCollider( unify::V3< float > halfExt )
 	: ColliderBase( Name() )
 	, m_halfExt{ halfExt }
 	, m_bbox{ halfExt, halfExt * -1.0f }
+	, m_once{ false }
 {
 }
 
@@ -33,19 +35,40 @@ BoxCollider::~BoxCollider()
 
 void BoxCollider::TestCollision( Entity* entity, const me::UpdateParams & params )
 {
-	// Get entity posiiton...
-	auto originalPos = entity->GetObject()->GetFrame().GetPosition();
-	auto pos = entity->GetObject()->GetFrame().GetPosition();
+	// Get entity posiitons...
+	auto earlyPos = entity->GetEarly().GetPosition();
+	auto currentPos = entity->GetObject()->GetFrame().GetPosition();
 	
-	// Transform the entity position into our space...
-	GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( pos );
+	// Transform the entity positions into our space...
+	GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( earlyPos );
+	GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( currentPos );
 
-	auto myPos = GetObject()->GetFrame().GetPosition();
+	bool wasIn;
+	bool isIn;
 
-	if( m_bbox.ContainsPoint( pos ) )
+	// If we are new, then nothing could have been in us before...
+	if( m_once )
+	{
+		wasIn = false;
+	}
+	else
+	{
+		wasIn = m_bbox.ContainsPoint( earlyPos );
+	}
+
+	isIn = m_bbox.ContainsPoint( currentPos );
+
+	if( ! wasIn && isIn )
 	{
 		this->PerformOnEnter( entity, params );
 	}
+
+	else if ( wasIn && ! isIn )
+	{
+		this->PerformOnExit( entity, params );
+	}
+
+	m_once = false;
 }
 
 me::object::IObjectComponent::ptr BoxCollider::Duplicate()

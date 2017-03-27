@@ -295,5 +295,7 @@ const me::TextureParameters * Texture::GetParameters() const
 
 bool Texture::Reload()
 {
-	return false;
+	Destroy();
+	Create();
+	return true;
 }

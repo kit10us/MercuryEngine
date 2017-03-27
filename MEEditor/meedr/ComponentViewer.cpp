@@ -107,7 +107,7 @@ void ComponentViewer::UpdateTypeInstances()
 	{
 		instanceList->SetEnable( true );
 
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
 		for (size_t index = 0; index < scene->GetObjectAllocator()->Count(); index++)
 		{
@@ -148,7 +148,7 @@ void ComponentViewer::UpdateComponentList()
 	}
 	case Types::SceneManager:
 	{
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		for (int index = 0; index < sceneManager->GetComponentCount(); index++)
 		{
 			componentList->AddString(sceneManager->GetComponent(index)->GetTypeName());
@@ -157,7 +157,7 @@ void ComponentViewer::UpdateComponentList()
 	}
 	case Types::Scene:
 	{
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
 		for ( int index = 0; index < scene->GetComponentCount(); index++ )
 		{
@@ -167,7 +167,7 @@ void ComponentViewer::UpdateComponentList()
 	}
 	case Types::Object:
 	{
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
 		auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
 		for ( int index = 0; index < object->GetComponentCount(); index++ )
@@ -218,7 +218,7 @@ void ComponentViewer::UpdateComponentValues()
 	}
 	case Types::SceneManager:
 	{
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto component = sceneManager->GetComponent(componentIndex);
 		if (!component)
 		{
@@ -233,7 +233,7 @@ void ComponentViewer::UpdateComponentValues()
 	}
 	case Types::Scene:
 	{
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
 		auto component = scene->GetComponent( componentIndex );
 		if ( !component )
@@ -249,7 +249,7 @@ void ComponentViewer::UpdateComponentValues()
 	}
 	case Types::Object:
 	{
-		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
 		auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
 		auto component = object->GetComponent( componentIndex );
@@ -372,20 +372,20 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			}
 			case Types::SceneManager:
 			{
-				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >("SceneManager");
+				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 				component = sceneManager->GetComponent(componentIndex);
 				break;
 			}
 			case Types::Scene:
 			{
-				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 				auto scene = sceneManager->GetCurrentScene();
 				component = scene->GetComponent( componentIndex );
 				break;
 			}
 			case Types::Object:
 			{
-				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 				auto scene = sceneManager->GetCurrentScene();
 				auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
 				component = object->GetComponent( componentIndex ).get();

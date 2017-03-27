@@ -25,8 +25,13 @@ using namespace me;
 using namespace game;
 using namespace component;
 
+char* ActionFactory::Name()
+{
+	return "ActionFactory";
+}
+
 ActionFactory::ActionFactory()
-	: GameComponent( "ActionFactory" )
+	: GameComponent( Name() )
 {
 }
 
@@ -78,7 +83,7 @@ object::action::IObjectAction::ptr ActionFactory::CreateObjectAction( const qxml
 		}
 		else if( unify::StringIs( type, "object" ) )
 		{
-			auto sceneManager = GetGame()->GetComponentT< scene::SceneManager >( "SceneManager" );
+			auto sceneManager = GetGame()->GetComponentT< scene::SceneManager >();
 			if( sceneManager )
 			{
 				auto object = sceneManager->GetCurrentScene()->FindObject( element->GetText() );

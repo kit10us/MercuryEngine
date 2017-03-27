@@ -13,7 +13,6 @@ using namespace shader;
 
 PixelShader::PixelShader( me::IRenderer * renderer )
 	: m_renderer( dynamic_cast< Renderer * >(renderer) )
-	, m_assembly( false )
 	, m_created( false )
 	, m_isTrans( false )
 	, m_locked( 0 )
@@ -48,11 +47,8 @@ void PixelShader::Create( PixelShaderParameters parameters )
 {
 	Destroy();
 
-	m_filePath = parameters.path;
-	m_code = parameters.code;
+	m_parameters = parameters;
 	m_constants = parameters.constants;
-	m_entryPointName = parameters.entryPointName;
-	m_profile = parameters.profile;
 
 	bool debug =
 #if defined( DEBUG ) || defined( _DEBUG )
@@ -72,13 +68,13 @@ void PixelShader::Create( PixelShaderParameters parameters )
 
 	unsigned int flags2 = 0; // Only used for effect compilation.
 
-	if ( ! m_code.empty() )
+	if ( ! m_parameters.code.empty() )
 	{
-		result = D3DCompile( m_code.c_str(), m_code.length(), nullptr, nullptr, nullptr, m_entryPointName.c_str(), m_profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
+		result = D3DCompile( m_parameters.code.c_str(), m_parameters.code.length(), nullptr, nullptr, nullptr, m_parameters.entryPointName.c_str(), m_parameters.profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
 	}
-	else if ( ! m_filePath.Empty() )
+	else if ( !m_parameters.path.Empty() )
 	{
-		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_filePath.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_entryPointName.c_str(), m_profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
+		result = D3DCompileFromFile( unify::Cast< std::wstring >( m_parameters.path.ToString() ).c_str(), shaderMacros, D3D_COMPILE_STANDARD_FILE_INCLUDE, m_parameters.entryPointName.c_str(), m_parameters.profile.c_str(), flags1, flags2, &m_pixelShaderBuffer, &errorBlob );
 	}
 	else
 	{
@@ -88,7 +84,7 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	if ( FAILED( result ) )
 	{
 		OutputDebugStringA( (char*)errorBlob->GetBufferPointer() );
-		throw exception::FailedToCreate( std::string( "Failed to create shader \"" ) + m_filePath.ToString() + "\": " +  std::string( (char*)errorBlob->GetBufferPointer() ) );
+		throw exception::FailedToCreate( std::string( "Failed to create shader \"" ) + m_parameters.path.ToString() + "\": " +  std::string( (char*)errorBlob->GetBufferPointer() ) );
 	}
 
 	auto dxDevice = m_renderer->GetDxDevice();
@@ -192,20 +188,17 @@ void PixelShader::Use()
 
 std::string PixelShader::GetSource() const
 {
-	return m_filePath.ToString();
+	return m_parameters.path.ToString();
 }
 
 bool PixelShader::Reload()
 {
-	return false;
+	Destroy();
+	Create( m_parameters );
+	return true;
 }
 
-void PixelShader::SetTrans( bool bTrans )
+bool PixelShader::IsTrans() const
 {
-	m_isTrans = bTrans;
-}
-
-bool PixelShader::IsTrans()
-{
-	return(this && m_isTrans) ? true : FALSE;
+	return m_parameters.trans;
 }

@@ -31,6 +31,10 @@ void SceneComponent::AddEntity( Entity * entity )
 
 void SceneComponent::OnEarlyUpdate( me::UpdateParams params )
 {
+	for( auto entity : m_entities )
+	{
+		entity->CaptureEarly();
+	}
 }
 
 void SceneComponent::OnLateUpdate( me::UpdateParams params )

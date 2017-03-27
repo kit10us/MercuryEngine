@@ -3,7 +3,8 @@
 
 #pragma once
 
-#include <sculpter/PolygonTable.h>
+#include <sculpter/Sheet.h>
+#include <vector>
 #include <memory>
 
 namespace sculpter
@@ -16,7 +17,10 @@ namespace sculpter
 		Shape();
 		~Shape();
 
+		void AddSheet( Sheet::ptr sheet );
+		size_t GetSheetCount() const;
+
 	private:
-		PolygonTable m_polygons;
+		std::vector< Sheet::ptr > m_sheets;
 	};
 }

@@ -58,16 +58,6 @@ void Game::Startup()
 	// STUBBED - optional for derived game class.
 }
 
-void Game::Update( UpdateParams params )
-{
-	// STUBBED - optional for derived game class.
-}
-
-void Game::Render( RenderParams params )
-{
-	// STUBBED - optional for derived game class.
-}
-
 void Game::Shutdown()
 {
 	// STUBBED - Provided by user.
@@ -120,7 +110,7 @@ void * Game::Feed( std::string target, void * data )
 			using namespace me;
 			using namespace scene;
 		
-			SceneManager * sceneManager = GetComponentT< scene::SceneManager >( "SceneManager" );
+			SceneManager * sceneManager = GetComponentT< scene::SceneManager >();
 			IScene* scene = sceneManager->GetCurrentScene();
 
 			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
@@ -411,7 +401,7 @@ bool Game::Initialize( OSParameters osParameters )
 	LogLine( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s", 0 );
 
 	LogLine( "Creating Main Scene", 0 );
-	auto sceneManager = GetComponentT< scene::SceneManager >( "SceneManager" );
+	auto sceneManager = GetComponentT< scene::SceneManager >();
 	if ( m_mainSceneFactory )
 	{
 		sceneManager->AddScene(m_mainSceneFactory->GetName(), m_mainSceneFactory);
@@ -466,9 +456,28 @@ void Game::Tick()
 
 	UpdateParams params{ renderer, m_renderInfo };
 
-	if ( GetOS()->GetHasFocus() )
+
+
+	for( auto && component : m_components )
 	{
-		m_inputManager.Update( params );
+		if( !component->IsEnabled() )
+		{
+			continue;
+		}
+
+		component->OnEarlyUpdate( params );
+	}
+
+	m_inputManager.Update( params );
+
+	for( auto && component : m_components )
+	{
+		if( !component->IsEnabled() )
+		{
+			continue;
+		}
+
+		component->OnUpdate( params );
 	}
 
 	for( auto && component : m_components )
@@ -478,10 +487,8 @@ void Game::Tick()
 			continue;
 		}
 
-		component->OnUpdate( params );
+		component->OnLateUpdate( params );
 	}
-
-	Update( params );
 }
 
 void Game::Draw()
@@ -502,8 +509,6 @@ void Game::Draw()
 
 			component->OnRender( params );
 		}
-
-		Render( params );
 
 		renderer->AfterRender();
 	}

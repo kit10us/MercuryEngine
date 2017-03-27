@@ -7,8 +7,13 @@ using namespace me;
 using namespace canvas;
 using namespace scene;
 
+char * CanvasComponent::Name()
+{
+	return "CanvasComponent";
+}
+
 CanvasComponent::CanvasComponent( IGame * game )
-	: SceneComponent( game->GetOS(), "CanvasComponent" )
+	: SceneComponent( game->GetOS(), Name() )
 	, m_game( game )
 	, m_position( 0, 0 )
 	, m_size( 0, 0 )

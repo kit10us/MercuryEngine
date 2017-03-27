@@ -31,7 +31,7 @@ namespace me
 
 			void Update( UpdateParams params ) override;
 			void CollectCameras( RenderGirl & renderGirl ) override;
-			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) override;
+			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans ) override;
 
 		private:
 			IScene * m_scene;

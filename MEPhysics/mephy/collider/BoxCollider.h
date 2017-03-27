@@ -26,6 +26,7 @@ namespace mephy
 		private:
 			unify::V3< float > m_halfExt;
 			unify::BBox< float > m_bbox;
+			bool m_once;
 		};
 	}
 }

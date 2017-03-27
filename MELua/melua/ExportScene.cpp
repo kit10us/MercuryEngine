@@ -129,7 +129,7 @@ int Scene_SendCommand( lua_State * state )
 int Scene_Constructor(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >("SceneManager");
+	auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >();
 	return PushScene(state, sceneManager->GetCurrentScene());
 }
 

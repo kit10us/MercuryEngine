@@ -46,7 +46,7 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	}
 
 	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + "scene/", startup);
-	auto sceneManager = game->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+	auto sceneManager = game->GetComponentT< me::scene::SceneManager >();
 	sceneManager->AddComponent( me::scene::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );		  
 
 	return true;

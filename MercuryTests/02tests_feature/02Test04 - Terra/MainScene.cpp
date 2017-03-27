@@ -6,6 +6,7 @@
 #include <me/Terra.h>
 #include <me/factory/EffectFactories.h>
 #include <me/object/GeometryComponent.h>				
+#include <me/object/CameraComponent.h>
 
 using namespace me;
 using namespace scene;

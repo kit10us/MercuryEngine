@@ -54,12 +54,12 @@ void MainScene::OnUpdate( UpdateParams params )
 	params.renderInfo.SetProjectionMatrix( unify::MatrixOrthoOffCenterLH( 0, width, height, 0, 0.01f, 100.0f ) );
 }
 
-void MainScene::OnRender( RenderParams params )
+void MainScene::OnRender( me::scene::RenderGirl renderGirl )
 {
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	params.renderer->Render( method, params.renderInfo, MatrixFeed( &instance, 1, 1 ) );
+	renderGirl.GetParams()->renderer->Render( method, renderGirl.GetParams()->renderInfo, MatrixFeed( &instance, 1, 1 ) );
 }

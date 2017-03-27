@@ -25,6 +25,16 @@ Entity::~Entity()
 {
 }
 
+void Entity::CaptureEarly()
+{
+	m_early = GetObject()->GetFrame().GetMatrix();
+}
+
+const unify::Matrix & Entity::GetEarly() const
+{
+	return m_early;
+}
+
 me::object::IObjectComponent::ptr Entity::Duplicate()
 {
 	return me::object::IObjectComponent::ptr( new Entity( *this ) );

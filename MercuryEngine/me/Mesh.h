@@ -36,6 +36,8 @@ namespace me
 
 		std::string GetSource() const override;
 
+		bool IsTrans() const override;
+
 		const unify::BBox< float > & ComputeBounds();
 		PrimitiveList & GetPrimitiveList();
 

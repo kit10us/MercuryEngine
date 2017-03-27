@@ -30,8 +30,8 @@ namespace mephy
 			virtual void TestCollision( Entity* entity, const me::UpdateParams & params ) = 0;
 
 		protected:
-			void PerformOnEnter( Entity * entitiy, const me::UpdateParams & params );
-			void PerformOnExit( Entity * entitiy, const me::UpdateParams & params );
+			void PerformOnEnter( Entity * entity, const me::UpdateParams & params );
+			void PerformOnExit( Entity * entity, const me::UpdateParams & params );
 
 		public: // IGameComponent...
 

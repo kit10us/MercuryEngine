@@ -18,23 +18,7 @@ namespace me
 	struct VertexShaderParameters
 	{
 		VertexShaderParameters()
-		{
-		}
-		
-		VertexShaderParameters(
-			unify::Path _path,
-			std::string _code,
-			std::string _entryPointName,
-			std::string _profile,
-			shader::ConstantBuffer::ptr _constants,
-			VertexDeclaration::ptr _vertexDeclaration
-		)
-			: path( _path )
-			, code( _code )
-			, entryPointName( _entryPointName )
-			, profile( _profile )
-			, constants( _constants )
-			, vertexDeclaration( _vertexDeclaration )
+			: trans{ false }
 		{
 		}
 
@@ -44,6 +28,7 @@ namespace me
 		std::string profile;
 		shader::ConstantBuffer::ptr constants;
 		VertexDeclaration::ptr vertexDeclaration;
+		bool trans;
 	};
 
 	class IVertexShader
@@ -62,5 +47,6 @@ namespace me
 		virtual void Use() = 0;
 		virtual std::string GetSource() const = 0;
 		virtual bool Reload() = 0;
+		virtual bool IsTrans() const = 0;
 	};
 }

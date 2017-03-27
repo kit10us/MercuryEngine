@@ -11,6 +11,8 @@ namespace melua
 		class GameComponent : public me::GameComponent
 		{
 		public:
+			static char* Name();
+
 			GameComponent( lua_State * state, std::string luaName, unify::Path path );
 			~GameComponent();
 

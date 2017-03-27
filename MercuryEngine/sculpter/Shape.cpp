@@ -12,3 +12,13 @@ Shape::Shape()
 Shape::~Shape()
 {
 }
+
+void Shape::AddSheet( Sheet::ptr sheet )
+{
+	m_sheets.push_back( sheet );
+}
+
+size_t Shape::GetSheetCount() const
+{
+	return m_sheets.size();
+}

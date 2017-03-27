@@ -15,23 +15,7 @@ namespace me
 	struct PixelShaderParameters
 	{
 		PixelShaderParameters()
-		{
-		}
-
-		PixelShaderParameters(
-			unify::Path _path,
-			std::string _code,
-			std::string _entryPointName,
-			std::string _profile,
-			shader::ConstantBuffer::ptr _constants,
-			BlendDesc _blend
-		)
-			: path( _path )
-			, code( _code )
-			, entryPointName( _entryPointName )
-			, profile( _profile )
-			, constants( _constants )
-			, blendDesc( _blend )
+			:  trans{ false }
 		{
 		}
 
@@ -41,6 +25,7 @@ namespace me
 		std::string profile;
 		shader::ConstantBuffer::ptr constants;
 		BlendDesc blendDesc;
+		bool trans;
 	};
 
 	class IPixelShader
@@ -49,10 +34,6 @@ namespace me
 		typedef std::shared_ptr< IPixelShader > ptr;
 
 		virtual ~IPixelShader() {}
-
-		virtual void SetTrans( bool bTrans ) = 0;
-
-		virtual bool IsTrans() = 0;
 
 		virtual const shader::ConstantBuffer * GetConstants() const = 0;
 		virtual void LockConstants( size_t buffer, unify::DataLock & lock ) = 0;
@@ -63,5 +44,7 @@ namespace me
 		virtual std::string GetSource() const = 0;
 
 		virtual bool Reload() = 0;
+
+		virtual bool IsTrans() const = 0;
 	};
 }

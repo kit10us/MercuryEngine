@@ -93,3 +93,18 @@ void PrimitiveList::ComputeBounds( unify::BBox< float > & bbox ) const
 		bbox += vb->GetBBox();
 	}
 }
+
+bool PrimitiveList::IsTrans() const
+{
+	for( const auto & bs : m_buffers )
+	{
+		for( const auto & method : bs->GetRenderMethodBuffer() )
+		{
+			if( method.IsTrans() )
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}

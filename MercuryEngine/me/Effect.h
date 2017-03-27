@@ -57,7 +57,10 @@ namespace me
 		IPixelShader::ptr GetPixelShader();
 		IVertexShader::ptr GetVertexShader();
 		ITexture::ptr GetTexture( unsigned char stage );
-		bool UsesTransparency();
+		const IPixelShader::ptr GetPixelShader() const;
+		const IVertexShader::ptr GetVertexShader() const;
+		const ITexture::ptr GetTexture( unsigned char stage ) const;
+		bool IsTrans() const;
 
 		std::string GetSource() const;
 

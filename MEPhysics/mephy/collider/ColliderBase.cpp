@@ -40,6 +40,10 @@ void ColliderBase::PerformOnEnter( Entity * entity, const me::UpdateParams & par
 	}
 }
 
-void ColliderBase::PerformOnExit( Entity * entit, const me::UpdateParams & params )
+void ColliderBase::PerformOnExit( Entity * entity, const me::UpdateParams & params )
 {
+	if( m_onExit )
+	{
+		m_onExit->Perform( entity->GetObject(), params.GetDelta() );
+	}
 }

@@ -18,11 +18,27 @@ end
 
 function BuildSphere( position )
 	local object = this:NewObject( MakeObjectName( "sphere" ) )
-	local sphere = Geometry( "sphere", "ShapeSphere.shape" )
+	local sphereParameters = ShapeParameters( "sphere" )
+	sphereParameters:SetEffect( Effect( "color_Trans", "Color_Trans.effect" ) )
+	sphereParameters:SetSegments( 24 )
+	sphereParameters:SetRadius( 1.0 )
+	sphereParameters:SetDiffuse( Blue( 1, 0.3 ) )
+	local sphere = Geometry( MakeGeometryName( "sphere"), sphereParameters )
 	object:AddGeometry( sphere )	
 	object:SetModelMatrix( Matrix() * MatrixTranslate( V3( 0, 1, 0 ) ) )
 	object:Transform():SetPosition( position )
 	return object
+	
+	
+	--[[
+		sphereParameters = ShapeParameters( "sphere" )
+	sphereParameters:SetEffect( color3d )
+	sphereParameters:SetSegments( 24 )
+	sphereParameters:SetRadius( 1.0 )
+	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
+	return Geometry( MakeGeometryName( "sphere", sphereParameters )
+	--]]
+	
 end
 
 function OnBeforeStart()
@@ -56,7 +72,9 @@ function OnBeforeStart()
 	BuildCube(   V3( 4 + 4, 28, 2 ) )
 	BuildCube(   V3( 4 + 4, 28, 4 ) )
 	BuildCube(   V3( 4 + 4, 28, 6 ) )
-	local sphere = BuildSphere( V3( 4 + 4, 30, 6 ) )
+	
+	--local sphere = BuildSphere( V3( 4 + 4, 30, 6 ) )
+	local sphere = BuildSphere( V3( 4, 5, 0 ) )
 	
 	
 	-- Physics tests...
@@ -68,10 +86,10 @@ function OnBeforeStart()
 	local jump1 = BuildCube( V3( 13, 1, 8 ) )	
 	local jump2 = BuildCube( V3( 16, 1, -25 ) )
 
-	jump1:AddComponent( OAC_SetPosition( V3( 2 ), jump2 ) )
-	jump2:AddComponent( OAC_SetPosition( V3( 2 ), pyramid ) )
-	pyramid:AddComponent( OAC_SetPosition( V3( 2 ), V3( 4, 30, 0 ) ) )
-	sphere:AddComponent( OAC_SetPosition( V3( 2 ), start_position ) )	
+	jump1:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), jump2 ) )
+	jump2:AddComponent( OAC_OnExit_SetPosition( V3( 2 ), pyramid ) )
+	pyramid:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), V3( 4, 30, 0 ) ) )
+	sphere:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), start_position ) )	
 
 	local player = this:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ) )

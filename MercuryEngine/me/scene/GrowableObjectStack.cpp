@@ -121,11 +121,11 @@ void GrowableObjectStack::CollectCameras( RenderGirl & renderGirl )
 	}
 }
 
-void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
+void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
 {
 	for( auto && stack : m_stacks )
 	{
-		stack->CollectRendering( params, camera, summation );
+		stack->CollectRendering( params, camera, solids, trans );
 	}
 }
 

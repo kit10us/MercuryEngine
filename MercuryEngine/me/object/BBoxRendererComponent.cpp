@@ -72,7 +72,7 @@ void BBoxRendererComponent::OnUpdate( UpdateParams params )
 {
 }
 
-void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame )
+void BBoxRendererComponent::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame )
 {
 	if ( !m_effect || !m_geomertries.size() ) return;
 
@@ -157,7 +157,7 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & cache, const unify:
 	set.AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );	 
 
 	m_geometry.reset( mesh );
-	cache.Add( m_geometry.get(), frame );
+	solids.Add( m_geometry.get(), frame );
 }
 					   
 IObjectComponent::ptr BBoxRendererComponent::Duplicate()

@@ -14,6 +14,8 @@ namespace me
 			class ActionFactory : public me::GameComponent
 			{
 			public:
+				static char* Name();
+
 				ActionFactory();
 				~ActionFactory();
 

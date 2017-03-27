@@ -175,7 +175,7 @@ void MainScene::OnUpdate( UpdateParams params )
 		if ( layer > 4 ) layer = 0;
 	}
 
-	auto canvas =GetComponentT< canvas::CanvasComponent >( "CanvasComponent" );
+	auto canvas =GetComponentT< canvas::CanvasComponent >();
 
 	canvas->GetLayer()->FindElement( "layer1" )->SetEnabled( layer == 0 ? true : false );
 	canvas->GetLayer()->FindElement( "layer2" )->SetEnabled( layer == 1 ? true : false );

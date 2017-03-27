@@ -74,6 +74,11 @@ std::string Mesh::GetSource() const
 	return m_source.ToString();
 }
 
+bool Mesh::IsTrans() const
+{
+	return m_primitiveList.IsTrans();
+}
+
 PrimitiveList & Mesh::GetPrimitiveList()
 {
 	return m_primitiveList;

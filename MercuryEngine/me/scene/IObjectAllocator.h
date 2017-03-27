@@ -43,7 +43,7 @@ namespace me
 
 			virtual void Update( UpdateParams params ) = 0;
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
-			virtual void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & summation ) = 0;
+			virtual void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans ) = 0;
 		};
 	}
 }

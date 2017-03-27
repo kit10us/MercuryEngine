@@ -42,6 +42,8 @@ namespace me
 		const unify::BBox< float > & GetBBox() const;
 
 		virtual std::string GetSource() const = 0;
+
+		virtual bool IsTrans() const = 0;
 	protected:
 		unify::BBox< float > m_BBox;
 	};

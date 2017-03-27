@@ -164,7 +164,8 @@ void MainScene::OnUpdate( UpdateParams params )
 	static float elapsed = 0.0f;
 	if ( elapsed < 0.0f )
 	{
-		m_text->SetText( "Objects = " + unify::Cast< std::string >( GetRenderCount() ) );
+		auto sceneManager = GetGame()->GetComponentT< SceneManager >();
+		m_text->SetText( "Objects = " + unify::Cast< std::string >( sceneManager->GetRenderCount() ) );
 		elapsed = 1.0f;
 	}
 	elapsed -= params.GetDelta();

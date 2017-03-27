@@ -25,12 +25,12 @@ GameComponent::~GameComponent()
 
 MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateBoxCollider( unify::V3< float > halfExt )
 {									   
-	auto sceneManager = GetGame()->GetComponentT< me::scene::SceneManager >( me::scene::SceneManager::Name() );
+	auto sceneManager = GetGame()->GetComponentT< me::scene::SceneManager >();
 
 	auto scene = sceneManager->GetCurrentScene();
 
 	// Create the PhysicsSceneComponent only if we have colliders.
-	auto physicsSceneComponent = scene->GetComponentT< mephy::SceneComponent >( mephy::SceneComponent::Name() );
+	auto physicsSceneComponent = scene->GetComponentT< mephy::SceneComponent >();
 	if( !physicsSceneComponent )
 	{
 		physicsSceneComponent = new mephy::SceneComponent( GetGame()->GetOS() );
@@ -44,12 +44,12 @@ MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateBoxCollider
 
 MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateEntity()
 {
-	auto sceneManager = GetGame()->GetComponentT< me::scene::SceneManager >( me::scene::SceneManager::Name() );
+	auto sceneManager = GetGame()->GetComponentT< me::scene::SceneManager >();
 
 	auto scene = sceneManager->GetCurrentScene();
 
 	// Create the PhysicsSceneComponent only if we have colliders.
-	auto physicsSceneComponent = scene->GetComponentT< mephy::SceneComponent >( mephy::SceneComponent::Name() );
+	auto physicsSceneComponent = scene->GetComponentT< mephy::SceneComponent >();
 	if( !physicsSceneComponent )
 	{
 		scene->AddComponent( me::scene::ISceneComponent::ptr( new mephy::SceneComponent( GetGame()->GetOS() ) ) );
@@ -59,43 +59,4 @@ MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateEntity()
 	physicsSceneComponent->AddEntity( entity );
 
 	return me::object::IObjectComponent::ptr( entity );
-}
-
-void GameComponent::OnAttach( me::IGame * game )
-{
-	me::GameComponent::OnAttach( game );
-
-}
-		 
-void GameComponent::OnBeforeStartup()
-{
-}
-
-void GameComponent::OnAfterStartup()
-{
-}
-
-void GameComponent::OnBeforeUpdate()
-{
-}
-
-void GameComponent::OnUpdate( me::UpdateParams params )
-{
-}
-
-void GameComponent::OnAfterUpdate()
-{
-}
-
-void GameComponent::OnRender( me::RenderParams params )
-{
-}
-
-void GameComponent::OnDetach( me::IGame * game )
-{
-}
-
-std::string GameComponent::GetWhat() const
-{
-	return std::string();
 }

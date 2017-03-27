@@ -80,7 +80,7 @@ int Input_AddAction( lua_State * state )
 	}
 	else if( unify::StringIs( ownerName, "scene" ) )
 	{
-		auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >( "SceneManager" );
+		auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >();
 		owner = sceneManager->GetCurrentScene()->GetOwnership();
 	}
 	else

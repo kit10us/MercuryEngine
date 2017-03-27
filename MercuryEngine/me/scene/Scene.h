@@ -26,21 +26,28 @@ namespace me
 
 			unify::Owner::ptr GetOwnership() override;
 
-		protected: // User defined events...
+		public: 
+			void Component_OnBeforeStart();
+			void Component_OnAfterStart();
+
+			void Component_OnEarlyUpdate( UpdateParams params ) override;
+			void Component_OnUpdate( UpdateParams params ) override;
+			void Component_OnLateUpdate( UpdateParams params ) override;
+
+			void Component_OnRender( RenderGirl renderGirl ) override;
+			void Component_OnSuspend() override;
+			void Component_OnResume() override;
+			void Component_OnEnd() override;
+
+			// User defined events...
 			void OnStart() override {}
-			void OnUpdate(UpdateParams params) override {}
-			void OnRender(RenderParams params) override {}
+			void OnUpdate( UpdateParams params ) override {}
+			void OnRender( RenderGirl renderGirl ) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}
 			void OnEnd() override {}
 
 		public:
-			void Start() override;
-			void Update( UpdateParams params ) override;
-			void Render( RenderParams params ) override;
-			void Suspend() override;
-			void Resume() override;
-			void End() override;
 
 			me::Game * GetGame() override;
 
@@ -61,8 +68,6 @@ namespace me
 			
 			object::Object * FindObject( std::string name );	 
 
-			size_t GetRenderCount() const;
-
 			std::string SendCommand( std::string command, std::string extra );
 
 			template< typename T > 
@@ -77,7 +82,6 @@ namespace me
 			unify::Owner::ptr m_ownership;
 			std::list< ISceneComponent::ptr > m_components;
 			IObjectAllocator* m_objectAllocator;		   
-			size_t m_renderCount;
 		};
 	}
 }

@@ -37,7 +37,7 @@ namespace me
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnUpdate( UpdateParams params ) override;
-			void CollectGeometry( GeometryCache & cache, const unify::FrameLite * frame ) override;
+			void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame ) override;
 
 			IObjectComponent::ptr Duplicate();
 

@@ -200,3 +200,8 @@ RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsign
 	method.indexBufferIndex = 0;
 	return method;
 }								   
+
+bool RenderMethod::IsTrans() const
+{
+	return effect->IsTrans();
+}

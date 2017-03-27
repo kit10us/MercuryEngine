@@ -45,6 +45,8 @@ namespace me
 		static unsigned int VertexCountInATriangleStrip( unsigned int triangleCount );
 		static unsigned int VertexCountInATriangleList( unsigned int triangleCount );
 
+		bool IsTrans() const;
+
 	public:
 		PrimitiveType::TYPE primitiveType;
 		unsigned int startVertex;
