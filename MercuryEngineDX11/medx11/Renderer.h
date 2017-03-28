@@ -44,7 +44,6 @@ namespace medx11
 
 		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::MatrixFeed & matrixFeed ) override;
 
-		me::ISketcher * GetSketcher() override;
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;

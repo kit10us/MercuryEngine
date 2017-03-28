@@ -34,7 +34,7 @@ namespace me
 
 		void Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
 
-		std::string GetSource() const override;
+		unify::Path GetSource() const override;
 
 		bool IsTrans() const override;
 

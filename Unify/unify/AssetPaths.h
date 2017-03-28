@@ -15,7 +15,7 @@ namespace unify
 
 		void AddSource( Path source );
 		
-		Path FindAsset( Path path, Path firstPlace = "" );
+		Path FindAsset( Path path, Path firstPlace = Path() );
 
 		std::string GetPaths( Path root = Path() ) const;
 

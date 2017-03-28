@@ -17,7 +17,6 @@ Mesh::Mesh( unify::Path source, IRenderer * renderer )
 {
 }
 
-
 Mesh::~Mesh()
 {
 	Destroy();
@@ -69,9 +68,9 @@ void Mesh::Render( RenderParams params, GeometryInstanceData * instanceData, Mat
 	m_primitiveList.Render( params, matrixFeed );
 }
 
-std::string Mesh::GetSource() const
+unify::Path Mesh::GetSource() const
 {
-	return m_source.ToString();
+	return m_source;
 }
 
 bool Mesh::IsTrans() const

@@ -45,7 +45,7 @@ namespace melua
 		auto objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string name = lua_tostring( state, 2 );
 		std::string type = lua_tostring( state, 3 );
-		unify::Path source = lua_tostring( state, 4 );
+		unify::Path source( lua_tostring( state, 4 ) );
 
 		ScriptEngine * se = ScriptEngine::GetInstance();
 

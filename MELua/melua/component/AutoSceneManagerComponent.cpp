@@ -50,7 +50,7 @@ void AutoSceneManagerComponent::OnSceneStart( IScene * scene )
 	}
 
 	std::string name = scene->GetName();
-	unify::Path scriptPath = m_autoPath + (name + ".lua");
+	unify::Path scriptPath( m_autoPath + unify::Path(name + ".lua"));
 	if ( scriptPath.Exists() )
 	{
 		auto sceneComponent = m_scriptEngine->LoadSceneScript( scriptPath );

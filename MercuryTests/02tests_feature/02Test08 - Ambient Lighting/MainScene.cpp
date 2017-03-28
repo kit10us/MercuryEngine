@@ -21,15 +21,15 @@ MainScene::MainScene( me::Game * game )
 void MainScene::OnStart()
 {
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color_ambient", "Color_Ambient.effect" );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "textured_ambient", "Textured_Ambient.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color_ambient", unify::Path( "Color_Ambient.effect" ) );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "textured_ambient", unify::Path( "Textured_Ambient.effect" ) );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "textured_ambient", "shaders/textured_ambient.xml" );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "textured_ambient", "shaders/textured_ambient.xml" );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "textured_ambient", unify::Path( "shaders/textured_ambient.xml" ) );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "textured_ambient", unify::Path( "shaders/textured_ambient.xml" ) );
 
 	// Add a texture.
-	GetManager< ITexture >()->Add( "borgcube", "borgcube.bmp" );
+	GetManager< ITexture >()->Add( "borgcube", unify::Path( "borgcube.bmp" ) );
 
 	// Create an effect.
 	Effect::ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
@@ -74,7 +74,7 @@ void MainScene::OnStart()
 	*/
 
 	// From an ASE file...
-	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", "ASE_SwordTextured.ASE" ) );
+	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = GetObjectAllocator()->NewObject( "swordASE" );
 	AddGeometryComponent( aseObject, meshASE );

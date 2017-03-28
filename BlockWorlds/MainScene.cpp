@@ -24,7 +24,7 @@ MainScene::MainScene( me::Game * game )
 
 void MainScene::OnStart()
 {
-	Effect::ptr testEffect = GetManager< Effect >()->Add( "Test", "GrassBlock00.effect" );
+	Effect::ptr testEffect = GetManager< Effect >()->Add( "Test", unify::Path( "GrassBlock00.effect" ) );
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
@@ -79,7 +79,7 @@ void MainScene::OnStart()
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( GetGame() ) );
 	AddComponent( canvas );
 
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2 ) ) );
 }
 

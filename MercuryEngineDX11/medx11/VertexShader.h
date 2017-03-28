@@ -39,7 +39,7 @@ namespace medx11
 
 		void Use() override;
 
-		std::string GetSource() const override;
+		unify::Path GetSource() const override;
 
 		bool Reload() override;
 

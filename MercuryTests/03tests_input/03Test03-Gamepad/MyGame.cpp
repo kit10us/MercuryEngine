@@ -11,7 +11,7 @@ class MyGame : public Game
 {
 public:
 	MyGame()
-		: Game(me::scene::ISceneFactory::ptr(new  me::scene::DefaultSceneFactory("Main")), "setup_testgamepad.xml" )
+		: Game(me::scene::ISceneFactory::ptr(new  me::scene::DefaultSceneFactory("Main")), unify::Path( "setup_testgamepad.xml" ) )
 	{
 	}
 } game;

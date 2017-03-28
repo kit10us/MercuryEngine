@@ -17,7 +17,7 @@ MainScene::MainScene( me::Game * game )
 
 void MainScene::OnStart()
 {			 	
-	effect = GetManager< Effect>()->Add( "textured3d", "EffectTextured.effect" );
+	effect = GetManager< Effect>()->Add( "textured3d", unify::Path( "EffectTextured.effect" ) );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;
@@ -86,7 +86,7 @@ void MainScene::OnStart()
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( GetGame() ) );
 	AddComponent( canvas );
 
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2, canvas::Anchor::BottomLeft ) ) );
 }
 

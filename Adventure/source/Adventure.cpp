@@ -25,7 +25,7 @@ class Adventure : public Game
 {
 public:
 	Adventure()
-		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()), "setup.xml" )
+		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()), unify::Path( "setup.xml" ) )
 	{
 	}
 } game;

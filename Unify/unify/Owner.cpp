@@ -19,3 +19,35 @@ std::string Owner::Name() const
 {
 	return m_name;
 }
+
+OwnerProperty::OwnerProperty( std::string name )
+	: m_name{ name }
+{
+}
+
+std::string OwnerProperty::Name() const
+{
+	return m_name;
+}
+
+void OwnerProperty::AddOwner( Owner::ptr owner )
+{
+	m_owners.push_back( owner );
+}
+
+size_t OwnerProperty::Owners() const
+{
+	for( auto itr = m_owners.begin(); itr != m_owners.end(); )
+	{
+		if( itr->expired() )
+		{
+			itr = m_owners.erase( itr );
+		}
+		else
+		{
+			itr++;
+		}
+	}
+
+	return m_owners.size();
+}

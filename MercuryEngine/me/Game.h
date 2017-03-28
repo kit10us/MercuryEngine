@@ -31,8 +31,8 @@ namespace me
 		virtual void Shutdown() override;
 
 	public:
-		Game( unify::Path setup = "setup.xml");
-		Game( scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup = "setup.xml" );
+		Game( unify::Path setup = unify::Path( "setup.xml" ) );
+		Game( scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup = unify::Path( "setup.xml" ) );
 		virtual ~Game();
 
 		me::OSParameters GetOSParameters() const override;

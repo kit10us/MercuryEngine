@@ -7,15 +7,21 @@
 using namespace me;
 
 Effect::Effect()
-	: m_culling{ CullNone }
 {
 }
 
-Effect::Effect( std::string source )
-	: m_culling{ CullNone }
-	, m_source{ source }
+Effect::Effect( unify::Path source )
+	: m_source{ source }
 {
 }
+
+Effect::Effect( IPixelShader::ptr ps, IVertexShader::ptr vs, std::initializer_list< ITexture::ptr > textures )
+	: m_pixelShader{ ps }
+	, m_vertexShader{ vs }
+	, m_textures{ textures }
+{
+}
+
 
 Effect::~Effect()
 {
@@ -23,10 +29,6 @@ Effect::~Effect()
 
 Effect & Effect::operator = ( const Effect & effect )
 {
-	m_culling = effect.m_culling;
-
-	m_frameIndexAndInfluence = effect.m_frameIndexAndInfluence;
-
 	m_vertexShader = effect.m_vertexShader;
 	m_pixelShader = effect.m_pixelShader;
 
@@ -35,7 +37,6 @@ Effect & Effect::operator = ( const Effect & effect )
 
 bool Effect::operator == ( const Effect & effect ) const
 {
-	if( m_culling != effect.m_culling ) return false;
 	if ( m_vertexShader != effect.m_vertexShader ) return false;
 	if ( m_pixelShader != effect.m_pixelShader ) return false;
 
@@ -100,11 +101,6 @@ void Effect::Use( IRenderer* renderer, const RenderInfo & renderInfo )
 	renderer->UseTextures( m_textures );
 }
 
-void Effect::SetCulling( CullingMode mode )
-{
-	m_culling = mode;
-}
-
 void Effect::SetTexture( unsigned char byteStage, ITexture::ptr texture )
 {
 	// Ensure we have enough stages...
@@ -160,18 +156,12 @@ const ITexture::ptr Effect::GetTexture( unsigned char stage ) const
 	return m_textures[stage];
 }
 
-void Effect::AddFrame( size_t frameIndex, float influence )
-{
-	FrameIndexAndInfluence frameIndexAndInfluence( frameIndex, influence );
-	m_frameIndexAndInfluence.push_back( frameIndexAndInfluence );
-}
-
 bool Effect::IsTrans() const
 {
 	return ( GetPixelShader() ? GetPixelShader()->IsTrans() : false ) || ( GetVertexShader() ? GetVertexShader()->IsTrans() : false );
 }
 
-std::string Effect::GetSource() const
+unify::Path Effect::GetSource() const
 {
 	return m_source;
 }

@@ -22,7 +22,6 @@
     <source>color_trans.hlsl</source>
     <entry>ps_main</entry>
     <profile>ps_4_0</profile>
-	<trans>true</trans>
 	<blend>
 		<src>SrcAlpha</src>
 		<dest>One</dest>

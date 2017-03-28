@@ -24,7 +24,7 @@ public:
 class BlockWorlds : public Game
 {
 public:
-	BlockWorlds() : Game( me::scene::ISceneFactory::ptr(new MainSceneFactory()), "setup.xml" ) {}
+	BlockWorlds() : Game( me::scene::ISceneFactory::ptr(new MainSceneFactory()), unify::Path( "setup.xml" ) ) {}
 
 } game;
 

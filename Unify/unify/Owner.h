@@ -5,6 +5,7 @@
 
 #include <string>
 #include <memory>
+#include <list>
 
 namespace unify
 {
@@ -13,16 +14,35 @@ namespace unify
 	/// </summary>
 	class Owner
 	{
-	private:
-		Owner(std::string name);
+		Owner( std::string name );
 	public:
 		typedef std::shared_ptr< Owner > ptr;
 		typedef std::weak_ptr< Owner > weak_ptr;
 
-		static ptr Create(std::string name);
+		static ptr Create( std::string name );
 
 		std::string Name() const;
+
+	private:
+		std::string m_name;		
+	};
+
+	class OwnerProperty
+	{
+		OwnerProperty( std::string name );
+	public:
+		typedef std::shared_ptr< OwnerProperty > ptr;
+
+		static ptr Create( std::string name );
+
+		std::string Name() const;
+
+		void AddOwner( Owner::ptr owner );
+
+		size_t Owners() const;
+
 	private:
 		std::string m_name;
+		mutable std::list< Owner::weak_ptr > m_owners;
 	};
 }

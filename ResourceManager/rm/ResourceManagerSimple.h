@@ -63,18 +63,14 @@ namespace rm
         ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths = nullptr, ILogger::ptr = ILogger::ptr() );
 		~ResourceManagerSimple();
 
-		std::string GetName() const override;
-
 		void Clear();
-
-		bool Exists( std::string name ) const override;
 
 		// Add an entry for a resource.
 		ResourcePtr Add( std::string name, T * resource ) override;
 
-		ResourcePtr Add( std::string name, unify::Path source, unify::Path relativePath = "", void * data = 0 );
-	
-		void AddResource( std::string name, unify::Path path ) override;
+		ResourcePtr Add( std::string name, unify::Path source, unify::Path relativePath = unify::Path(), void * data = 0 );
+
+		ResourcePtr Add( unify::Path source, unify::Path relativePath = unify::Path(), void * data = 0 );
 
 		/// <summary>
 		/// Find an existing resource by name.
@@ -86,10 +82,6 @@ namespace rm
 		/// </summary>
 		ResourcePtr Get( size_t index );
 
-		size_t Count() const override;
-
-		std::string GetResourceName( size_t index ) const override;
-
         void ForEach( ForEachFunctor & functor );
 
 		void AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory );
@@ -97,6 +89,14 @@ namespace rm
 		void Log_Write( std::string text );
 
 		void Log_WriteLine( std::string text );
+
+	public: // IResourceManagerRaw...
+		std::string GetName() const override;
+		void AddResource( std::string name, unify::Path path ) override;
+		bool Exists( std::string name ) const override;
+		size_t Count() const override;
+		std::string GetResourceName( size_t index ) const override;
+		void Clean() override;
 
 	protected:
 		std::string m_resourceName;

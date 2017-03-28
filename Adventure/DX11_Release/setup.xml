@@ -17,8 +17,10 @@
 </extension>
 
 <extension source="../../extensions/Release/DAELoader.dll">
-	<color name="color_ambient" source="Color_Ambient.effect"/>
-	<texture name="textured_ambient" source="Textured_Ambient.effect"/>
+	<colorps name="color_ambient" source="Color_Ambient.xml"/>
+	<colorvs name="color_ambient" source="Color_Ambient.xml"/>
+	<texturedps name="textured_ambient" source="Textured_Ambient.xml"/>
+	<texturedvs name="textured_ambient" source="Textured_Ambient.xml"/>
 </extension>
 
 <extension source="../../extensions/Release/ASELoader.dll">

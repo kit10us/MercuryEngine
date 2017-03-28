@@ -34,11 +34,11 @@ void MainScene::OnStart()
 		parameters.min = Filtering::Point;
 		parameters.mag = Filtering::Point;
 		parameters.mip = Filtering::Point;
-		GetManager< ITexture >()->Add( "4", "4.bmp", "", &parameters );
+		GetManager< ITexture >()->Add( "4", unify::Path( "4.bmp" ), unify::Path(), &parameters );
 	}
 
 	// Load an effect, then modify it to fit our needs.
-	Effect::ptr landEffect = GetManager< Effect >()->Add( "4", "EffectTextured.effect" );
+	Effect::ptr landEffect = GetManager< Effect >()->Add( "4", unify::Path( "EffectTextured.effect" ) );
 	landEffect->SetTexture( 0, GetManager< ITexture >()->Find( "4" ) );
 
 	Terra::Parameters parameters;

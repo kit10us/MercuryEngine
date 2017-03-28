@@ -21,7 +21,7 @@ MainScene::MainScene( me::Game * game )
 
 void MainScene::OnStart()
 {
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );

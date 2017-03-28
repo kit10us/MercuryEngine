@@ -24,7 +24,7 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	unify::Path startup("game.lua");
 	if (element->HasElements("startup"))
 	{
-		startup = element->GetElement("startup")->GetText();
+		startup = unify::Path( element->GetElement("startup")->GetText() );
 		game->LogLine("MELua Loader: \"startup\" node found, setting startupOnce to \"" + startup.ToString() + "\".");
 	}
 	else
@@ -37,7 +37,7 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	unify::Path autoPath;
 	if (element->HasElements("auto"))
 	{
-		autoPath = element->GetElement("auto")->GetText();
+		autoPath = unify::Path( element->GetElement("auto")->GetText() );
 		game->LogLine("MELua Loader: \"auto\" node found, setting autoPath to \"" + autoPath.ToString() + "\".");
 	}
 	else
@@ -45,7 +45,7 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 		game->LogLine("MELua Loader: \"auto\" node NOT found.");
 	}
 
-	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + "scene/", startup);
+	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + unify::Path( "scene/" ), startup);
 	auto sceneManager = game->GetComponentT< me::scene::SceneManager >();
 	sceneManager->AddComponent( me::scene::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );		  
 

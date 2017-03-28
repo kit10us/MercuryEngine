@@ -48,7 +48,7 @@ int Texture_Constructor( lua_State * state )
 	else
 	{
 		std::string name = lua_tostring( state, 1 );
-		unify::Path source = lua_tostring( state, 2 );
+		unify::Path source( lua_tostring( state, 2 ) );
 
 		if ( top >= 3 )
 		{
@@ -69,7 +69,7 @@ int Texture_Constructor( lua_State * state )
 			parameters.renderable = renderable;
 			parameters.source = source;
 
-			texture = game->GetManager< ITexture >()->Add( name, source, "", &parameters );
+			texture = game->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );
 		}
 		else
 		{

@@ -70,7 +70,7 @@ Path & Path::Join( const std::vector< std::string > & pathParts )
 	m_path = std::string();
 	for ( std::vector< std::string >::const_iterator itr = pathParts.begin(), end = pathParts.end(); itr != end; ++itr )
 	{
-		Combine( *this, *itr );
+		Combine( *this, unify::Path( *itr ) );
 	}
 	return *this;
 }
@@ -268,7 +268,7 @@ Path Path::ChangeExtension( std::string extension ) const
 
 Path & Path::ChangeFilename( const Path & newFilename )
 {
-	return Combine( DirectoryOnly(), newFilename.Filename() );
+	return Combine( DirectoryOnly(), unify::Path( newFilename.Filename() ) );
 }
 
 Path & Path::operator=( const Path & path )

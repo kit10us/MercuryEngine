@@ -41,7 +41,7 @@ namespace me
 
 		virtual void Use() = 0;
 
-		virtual std::string GetSource() const = 0;
+		virtual unify::Path GetSource() const = 0;
 
 		virtual bool Reload() = 0;
 

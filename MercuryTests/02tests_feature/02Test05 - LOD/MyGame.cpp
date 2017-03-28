@@ -25,7 +25,7 @@ class MyGame : public Game
 {
 public:
 	MyGame()
-		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()), "setup_models.xml")
+		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()), unify::Path( "setup_models.xml" ) )
 	{
 	}
 } game;

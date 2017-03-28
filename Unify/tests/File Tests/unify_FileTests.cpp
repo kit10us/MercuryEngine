@@ -31,23 +31,23 @@ int main( const int argc, const char ** argv )
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	std::cout << "Test case: file::Filename( \"" << path << "\" )" << std::endl;
-	tempPath = path.Filename();
+	tempPath = unify::Path( path.Filename() );
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	std::cout << "Test case: file::FilenameNoExtension - 1. Full path." << std::endl;
-	tempPath = path.FilenameNoExtension();
+	tempPath = unify::Path(  path.FilenameNoExtension() );
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	std::cout << "Test case: file::Combine - 1. Complete L (without ending slash) and R (with leading slash)." << std::endl;
-	tempPath.Combine( "c:\\directory\\subdirectory", "/file_name.ext" );
+	tempPath.Combine( unify::Path( "c:\\directory\\subdirectory" ) , unify::Path( "/file_name.ext" ) );
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	std::cout << "Test case: file::Combine - 2. Complete L (with ending slash) and R (with leading slash)." << std::endl;
-	tempPath.Combine( "c:\\directory\\subdirectory\\", "/file_name.ext" );
+	tempPath.Combine( unify::Path( "c:\\directory\\subdirectory\\" ) , unify::Path( "/file_name.ext" ) );
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	std::cout << "Test case: file::Combine - 3. Complete L (without ending slash) and R (without leading slash)." << std::endl;
-	tempPath.Combine( "c:\\directory\\subdirectory", "file_name.ext" );
+	tempPath.Combine( unify::Path( "c:\\directory\\subdirectory" ), unify::Path( "file_name.ext" ) );
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	const unify::Path pathInputA( "c:\\directory\\subdirectory/..\\test\\file_name.ext" );
@@ -68,7 +68,7 @@ int main( const int argc, const char ** argv )
 	std::cout << "result: \"" << unify::Path( pathInputA ).Normalize() << std::endl << std::endl;
 
 	std::cout << "Test case: file::Combine( \"c:\\directory\\subdirectory\", \"..\\test\\file_name.ext\" )" << std::endl;
-	tempPath.Combine( "c:\\directory\\subdirectory", "..\\test\\file_name.ext" );
+	tempPath.Combine( unify::Path( "c:\\directory\\subdirectory" ) , unify::Path( "..\\test\\file_name.ext" ) );
 	std::cout << "result: \"" << tempPath << "\"." << std::endl << std::endl;
 
 	std::cout << "Test case: file::IsExtension - 1. Path has extension, ext has no dot (.)." << std::endl;

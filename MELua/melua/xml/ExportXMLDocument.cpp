@@ -73,7 +73,7 @@ namespace melua
 		}
 		else
 		{ // Load an XML document...
-			auto path = lua_tostring( state, 1 );
+			unify::Path path( lua_tostring( state, 1 ) );
 			return PushUserType< XMLDocumentProxy >( state, { std::shared_ptr< qxml::Document >( new qxml::Document( path ) ) } );
 		}
 	}

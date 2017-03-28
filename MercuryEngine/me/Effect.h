@@ -13,14 +13,6 @@
 
 namespace me
 {
-	enum CullingMode
-	{
-		CullNone,
-		CullCW,
-		CullCCW,
-		CullIgnore // Don't modify the culling state.
-	};
-
 	// Used to provide linking between a frame lookup, and the influence the frame has on the transform.
 	typedef std::pair< size_t, float > FrameIndexAndInfluence;
 
@@ -33,7 +25,8 @@ namespace me
 		typedef std::shared_ptr< Effect > ptr;
 
 		Effect();
-		Effect( std::string source );
+		Effect( unify::Path source );
+		Effect( IPixelShader::ptr ps, IVertexShader::ptr vs, std::initializer_list< ITexture::ptr > textures = {} );
 		~Effect();
 
 		Effect & operator = ( const Effect & effect );
@@ -49,7 +42,6 @@ namespace me
 
 		void SetTexture( unsigned char stage, ITexture::ptr texture );
 		void ClearTextures();
-		void SetCulling( CullingMode mode );
 		void SetPixelShader( IPixelShader::ptr shader );
 		void SetVertexShader( IVertexShader::ptr shader );
 		void AddFrame( size_t frameIndex, float influence );
@@ -62,15 +54,12 @@ namespace me
 		const ITexture::ptr GetTexture( unsigned char stage ) const;
 		bool IsTrans() const;
 
-		std::string GetSource() const;
+		unify::Path GetSource() const;
 
 	protected:
-		std::string m_source;
-		CullingMode m_culling;
+		unify::Path m_source;
 		IPixelShader::ptr m_pixelShader;
 		IVertexShader::ptr m_vertexShader;
 		std::vector< ITexture::ptr > m_textures;
-		std::vector< FrameIndexAndInfluence > m_frameIndexAndInfluence;
-		IVertexBuffer::ptr m_scratchVertexBuffer;
 	};
 }

@@ -28,6 +28,12 @@ void ResourceManagerSimple< T >::Clear()
 }
 
 template< class T >
+void ResourceManagerSimple< T >::Clean()
+{
+	// TODO:
+}
+
+template< class T >
 std::shared_ptr< T > ResourceManagerSimple< T >::Find( std::string name )
 {
 	for( auto resource : m_resourceMap )
@@ -122,6 +128,43 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 	}
 
 	throw std::string( GetName() + " manager: No factory found that could produce \"" + name + "\"!" );
+}
+
+template< class T >
+std::shared_ptr< T > ResourceManagerSimple< T >::Add( unify::Path source, unify::Path relativePath, void * data )
+{
+	std::string extension = source.ExtensionOnly();
+	auto factory = m_sourceFactories.find( extension );
+	if( factory == m_sourceFactories.end() )
+	{
+		throw std::string( GetName() + " manager: No factory found that could produce \"" + source.Filename() + "\"!" );
+	}
+
+	unify::Path foundSource;
+	if( m_assetPaths != 0 )
+	{
+		foundSource = m_assetPaths->FindAsset( source, relativePath );
+	}
+
+	if( foundSource.Empty() )
+	{
+		throw unify::Exception( "Asset file not found! (\"" + source.ToString() + "\")" );
+	}
+
+	Log_WriteLine( GetName() + " manager: adding \"" + foundSource.ToString() + "\"." );
+
+	std::string name;
+	auto product = factory->second->Produce( foundSource, data );
+	if( product )
+	{
+		name = product->GetName();
+		m_resourceMap[name] = product;
+		m_resourceList.push_back( product );
+		m_resourceNames.push_back( name );
+		return product;
+	}
+
+	throw std::string( GetName() + " manager: No factory found that could produce \"" + source.Filename() + "\"!" );
 }
 
 template< typename T >

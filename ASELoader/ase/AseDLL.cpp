@@ -25,12 +25,12 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 	const auto texturePS = element->FindFirstElement( "textureps" );
 	std::string texturePSName = texturePS->GetAttribute< std::string >( "name" );
-	unify::Path texturePSPath = texturePS->GetAttribute< std::string >( "source" );
+	unify::Path texturePSPath( texturePS->GetAttribute< std::string >( "source" ) );
 	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( texturePSName, texturePSPath );
 	
 	const auto textureVS = element->FindFirstElement( "texturevs" );
 	std::string textureVSName = textureVS->GetAttribute< std::string >( "name" );
-	unify::Path textureVSPath = textureVS->GetAttribute< std::string >( "source" );
+	unify::Path textureVSPath( textureVS->GetAttribute< std::string >( "source" ) );
 	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( textureVSName, textureVSPath );
 
 	// Setup ASE factories.

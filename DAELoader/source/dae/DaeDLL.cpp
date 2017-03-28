@@ -27,17 +27,11 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 		Effect::ptr m_textured;
 	public:
 
-		MyEffectSolver( Game * game, std::string colorEffectName, unify::Path colorEffectPath, std::string textureEffectName, unify::Path textureEffectPath )
-			: m_game( game )
+		MyEffectSolver( Effect::ptr color, Effect::ptr textured )
+			: m_color{ color }
+			, m_textured{ textured }
 		{
-			m_color = GetGame()->GetManager< Effect >()->Add( colorEffectName, colorEffectPath );
-			m_textured = GetGame()->GetManager< Effect >()->Add( textureEffectName, textureEffectPath );
 		}
-
-		Game * GetGame() override
-		{
-			return m_game;
-		}				  
 
 		Effect::ptr GetEffect( const dae::Shading & shading ) const
 		{
@@ -52,15 +46,102 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 		}
 	};
 
-	const auto color = element->FindFirstElement( "color" );
-	std::string colorEffectName = color->GetAttribute< std::string >( "name" );
-	unify::Path colorEffectPath = color->GetAttribute< std::string >( "source" );
 
-	const auto texture = element->FindFirstElement( "texture" );
-	std::string textureEffectName = texture->GetAttribute< std::string >( "name" );
-	unify::Path textureEffectPath = texture->GetAttribute< std::string >( "source" );
+	Effect::ptr color;
+	{
+		IPixelShader::ptr ps;
+		{
+			const auto node = element->FindFirstElement( "colorps" );
+			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
+			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
 
-	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game->GetOS()->GetRenderer( 0 ), new MyEffectSolver( game, colorEffectName, colorEffectPath, textureEffectName, textureEffectPath ) );
+			if( !name.empty() && path.Empty() )
+			{
+				ps = game->GetManager< IPixelShader >()->Find( name );
+			}
+			else if( name.empty() && ! path.Empty() )
+			{
+				assert( 0 ); // TODO:
+				//ps = game->GetManager< IPixelShader >()->Add( path );
+			}
+			else if( !name.empty() && !path.Empty() )
+			{
+				ps = game->GetManager< IPixelShader >()->Add( name, path );
+			}
+		}
+
+		IVertexShader::ptr vs;
+		{
+			const auto node = element->FindFirstElement( "colorvs" );
+			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
+			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
+
+			if( !name.empty() && path.Empty() )
+			{
+				vs = game->GetManager< IVertexShader >()->Find( name );
+			}
+			else if( name.empty() && !path.Empty() )
+			{
+				assert( 0 ); // TODO:
+				//vs = game->GetManager< IVertexShader >()->Add( path );
+			}
+			else if( !name.empty() && !path.Empty() )
+			{
+				vs = game->GetManager< IVertexShader >()->Add( name, path );
+			}
+		}
+		color.reset( new Effect( ps, vs ) );
+	}
+	
+	Effect::ptr textured;
+	{
+		IPixelShader::ptr ps;
+		{
+			const auto node = element->FindFirstElement( "texturedps" );
+			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
+			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
+
+			if( !name.empty() && path.Empty() )
+			{
+				ps = game->GetManager< IPixelShader >()->Find( name );
+			}
+			else if( name.empty() && !path.Empty() )
+			{
+				assert( 0 ); // TODO:
+							 //ps = game->GetManager< IPixelShader >()->Add( path );
+			}
+			else if( !name.empty() && !path.Empty() )
+			{
+				ps = game->GetManager< IPixelShader >()->Add( name, path );
+			}
+		}
+
+		IVertexShader::ptr vs;
+		{
+			const auto node = element->FindFirstElement( "texturedvs" );
+			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
+			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
+
+			if( !name.empty() && path.Empty() )
+			{
+				vs = game->GetManager< IVertexShader >()->Find( name );
+			}
+			else if( name.empty() && !path.Empty() )
+			{
+				assert( 0 ); // TODO:
+							 //vs = game->GetManager< IVertexShader >()->Add( path );
+			}
+			else if( !name.empty() && !path.Empty() )
+			{
+				vs = game->GetManager< IVertexShader >()->Add( name, path );
+			}
+		}
+		textured.reset( new Effect( ps, vs ) );
+	}
+
+	auto effectSolver = new MyEffectSolver( color, textured );
+
+	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game->GetOS()->GetRenderer( 0 ), effectSolver );
 	game->GetManager< Geometry >()->AddFactory( ".dae", GeometryFactoryPtr( daeFactory ) );
 
 	return true;

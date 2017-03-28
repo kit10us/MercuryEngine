@@ -15,7 +15,7 @@ MainScene::MainScene( me::Game * game )
 void MainScene::OnStart()
 {
 	// Load effect...
-	auto effect = GetManager< Effect>()->Add( "effect", "EffectColorAnimInst3d.effect" );
+	auto effect = GetManager< Effect>()->Add( "effect", unify::Path( "EffectColorAnimInst3d.effect" ) );
 
 	// Create mesh...
 	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <unify/Unify.h>
+#include <unify/Path.h>
 #include <string>
 #include <typeinfo>
 #include <cassert>
@@ -46,7 +47,8 @@ namespace unify
 	template<> unsigned short Cast( const std::string text );
 	template<> std::wstring Cast( const std::string text );
 	template<> const char * Cast( const std::string text );
-	
+	template<> unify::Path Cast( const std::string text );
+
 	template<> bool Cast( const char * text );
 	template<> char Cast( const char * text );
 	template<> unsigned char Cast( const char * text );

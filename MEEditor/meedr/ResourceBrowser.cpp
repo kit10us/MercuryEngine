@@ -75,36 +75,36 @@ void ResourceBrowser::UpdateResourceList()
 		{
 			auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::Effect >*>(manager);
 			auto effect = effectManager->Get( i ).get();
-			if ( !effect->GetSource().empty() )
+			if ( !effect->GetSource().Empty() )
 			{
-				text += "  (" + effect->GetSource() + ")";
+				text += "  (" + effect->GetSource().ToString() + ")";
 			}
 		}
 		else if ( unify::StringIs( manager->GetName(), "vertexshader" ) )
 		{
 			auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IVertexShader >*>(manager);
 			auto vertexShader = vertexShaderManager->Get( i ).get();
-			if ( !vertexShader->GetSource().empty() )
+			if ( !vertexShader->GetSource().Empty() )
 			{
-				text += "  (" + vertexShader->GetSource() + ")";
+				text += "  (" + vertexShader->GetSource().ToString() + ")";
 			}
 		}
 		else if ( unify::StringIs( manager->GetName(), "pixelshader" ) )
 		{
 			auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IPixelShader >*>(manager);
 			auto pixelShader = pixelShaderManager->Get( i ).get();
-			if ( !pixelShader->GetSource().empty() )
+			if ( !pixelShader->GetSource().Empty() )
 			{
-				text += "  (" + pixelShader->GetSource() + ")";
+				text += "  (" + pixelShader->GetSource().ToString() + ")";
 			}
 		}
 		else if ( unify::StringIs( manager->GetName(), "geometry" ) )
 		{
 			auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::Geometry >*>(manager);
 			auto geometry = geometryManager->Get( i ).get();
-			if ( !geometry->GetSource().empty() )
+			if ( !geometry->GetSource().Empty() )
 			{
-				text += "  (" + geometry->GetSource() + ")";
+				text += "  (" + geometry->GetSource().ToString() + ")";
 			}
 		}
 
@@ -141,7 +141,7 @@ void ResourceBrowser::OpenResource()
 	{
 		auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::Effect >*>(manager);
 		auto effect = effectManager->Get( i ).get();
-		if ( !effect->GetSource().empty() )
+		if ( !effect->GetSource().Empty() )
 		{
 			source = effect->GetSource();
 		}
@@ -150,7 +150,7 @@ void ResourceBrowser::OpenResource()
 	{
 		auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IVertexShader >*>(manager);
 		auto vertexShader = vertexShaderManager->Get( i ).get();
-		if ( !vertexShader->GetSource().empty() )
+		if ( !vertexShader->GetSource().Empty() )
 		{
 			source = vertexShader->GetSource();
 		}
@@ -159,7 +159,7 @@ void ResourceBrowser::OpenResource()
 	{
 		auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::IPixelShader >*>(manager);
 		auto pixelShader = pixelShaderManager->Get( i ).get();
-		if ( !pixelShader->GetSource().empty() )
+		if ( !pixelShader->GetSource().Empty() )
 		{
 			source = pixelShader->GetSource();
 		}
@@ -168,7 +168,7 @@ void ResourceBrowser::OpenResource()
 	{
 		auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::Geometry >*>(manager);
 		auto geometry = geometryManager->Get( i ).get();
-		if ( !geometry->GetSource().empty() )
+		if ( !geometry->GetSource().Empty() )
 		{
 			source = geometry->GetSource();
 		}

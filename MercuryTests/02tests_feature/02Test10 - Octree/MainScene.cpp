@@ -31,7 +31,7 @@ void MainScene::OnStart()
 
 	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "EffectColorInstanced3D.effect" );
 
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced_ambient", "ColorInstanced_ambient.effect" );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced_ambient", unify::Path( "ColorInstanced_ambient.effect" ) );
 
 	/*
 	AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
@@ -148,7 +148,7 @@ void MainScene::OnStart()
 		CanvasComponent::ptr canvas( new CanvasComponent( GetGame() ) );
 		AddComponent( canvas );
 
-		Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );
+		Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
 		canvas->GetLayer()->AddElement( IElement::ptr( new FPS( GetGame(), font2 ) ) );
 
 		m_text = new TextElement( GetGame(), font2, "Objects = N", Anchor::BottomLeft );

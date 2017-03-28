@@ -16,7 +16,7 @@ int Resources_AddResource( lua_State * state )
 
 	std::string type = lua_tostring( state, 1 );
 	std::string name = lua_tostring( state, 2 );
-	std::string path = lua_tostring( state, 3 );
+	unify::Path path( lua_tostring( state, 3 ) );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
 	auto game = se->GetGame();

@@ -42,6 +42,11 @@ namespace rm
 		/// Return the name of a specific resource.
 		/// </summary>
 		virtual std::string GetResourceName( size_t index ) const = 0;
+
+		/// <summary>
+		/// Clean out unused resources.
+		/// </summary>
+		virtual void Clean() = 0;
 	};
 
 	template< typename T >

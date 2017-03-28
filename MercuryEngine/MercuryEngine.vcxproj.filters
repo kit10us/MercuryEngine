@@ -414,9 +414,6 @@
     <ClInclude Include="me\scene\Octree.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\ISketcher.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\IOctreeNode.h">
       <Filter>me\scene</Filter>
     </ClInclude>

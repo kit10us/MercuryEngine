@@ -22,7 +22,7 @@ Image::Image( IDocument & document, const qxml::Element * node )
 				filename = filename.erase( 0, strlen( "file:///" ) );
 			}
 																	 			
-			unify::Path source = unify::Path( childNode->GetDocument()->GetPath().DirectoryOnly(), filename ).Normalize();
+			unify::Path source = unify::Path( childNode->GetDocument()->GetPath().DirectoryOnly(), unify::Path( filename ) ).Normalize();
 			m_texture = document.GetRenderer()->ProduceT( {source} );
 		}
 	}

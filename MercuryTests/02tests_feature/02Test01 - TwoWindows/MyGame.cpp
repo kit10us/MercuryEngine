@@ -10,7 +10,7 @@ using namespace me;
 class MyGame : public Game
 {
 public: 
-	MyGame() : Game( "setup_twowins.xml" ) {}
+	MyGame() : Game( unify::Path( "setup_twowins.xml" ) ) {}
 } game;
 
 RegisterGame( game );

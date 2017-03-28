@@ -116,7 +116,7 @@ void * Game::Feed( std::string target, void * data )
 			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
 			scene->AddComponent( canvas );
 
-			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );	
+			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
 			canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2 ) ) );
 		}
 	}
@@ -169,7 +169,7 @@ bool Game::Initialize( OSParameters osParameters )
 	{
 		if( unify::Path( arg ).IsExtension( ".xml" ) )
 		{
-			m_setup = arg;
+			m_setup = unify::Path( arg );
 		}
 	}
 
@@ -243,7 +243,7 @@ bool Game::Initialize( OSParameters osParameters )
 					}
 					else if( node.IsTagName( "logfile" ) )
 					{
-						m_logFile = node.GetText();
+						m_logFile = unify::Path( node.GetText() );
 
 						// Delete current log.
 						GetOS()->DeletePath( m_logFile );
@@ -254,7 +254,7 @@ bool Game::Initialize( OSParameters osParameters )
 					}
 					else if( node.IsTagName( "assets" ) )
 					{
-						GetOS()->GetAssetPaths().AddSource( node.GetText() );
+						GetOS()->GetAssetPaths().AddSource( unify::Path( node.GetText() ) );
 					}
 				}
 			}

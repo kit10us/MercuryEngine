@@ -60,7 +60,7 @@ int Effect_Constructor( lua_State * state )
 	}
 	else
 	{
-		unify::Path source = lua_tostring( state, 2 );
+		unify::Path source( lua_tostring( state, 2 ) );
 		effect = game->GetManager< Effect >()->Add( name, source );
 	}
 

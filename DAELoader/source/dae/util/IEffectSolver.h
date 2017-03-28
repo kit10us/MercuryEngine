@@ -16,7 +16,6 @@ namespace dae
 		public:
 			virtual ~IEffectSolver() {}
 			virtual me::Effect::ptr GetEffect( const dae::Shading & shading ) const = 0;				
-			virtual me::Game * GetGame() = 0;
 		};
 	}
 }

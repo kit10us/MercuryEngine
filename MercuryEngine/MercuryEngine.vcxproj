@@ -118,7 +118,6 @@
     <ClInclude Include="me\IOS.h" />
     <ClInclude Include="me\IPixelShader.h" />
     <ClInclude Include="me\IRenderer.h" />
-    <ClInclude Include="me\ISketcher.h" />
     <ClInclude Include="me\ITexture.h" />
     <ClInclude Include="me\IThing.h" />
     <ClInclude Include="me\IVertexBuffer.h" />

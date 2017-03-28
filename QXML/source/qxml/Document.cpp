@@ -212,7 +212,7 @@ void Document::Destroy()
 {
 	m_elementList.Clear();
 	m_root = 0;
-	m_filePath = "";
+	m_filePath = unify::Path( "" );
 }
 
 Element * Document::GetRoot()

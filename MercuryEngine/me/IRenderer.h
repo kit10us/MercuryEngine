@@ -11,7 +11,6 @@
 #include <me/ITexture.h>
 #include <me/RenderInfo.h>
 #include <me/RenderMethod.h>
-#include <me/ISketcher.h>
 #include <unify/FrameLite.h>
 #include <memory>
 
@@ -78,8 +77,6 @@ namespace me
 		virtual void* GetHandle() const = 0;
 
 		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) = 0;
-
-		virtual ISketcher * GetSketcher() = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) = 0;

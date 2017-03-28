@@ -405,11 +405,6 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 	}
 }
 
-me::ISketcher * Renderer::GetSketcher()
-{
-	return nullptr;
-}
-
 me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) 
 {
 	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );

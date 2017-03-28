@@ -22,7 +22,7 @@ void MainScene::OnStart()
 {
 	using namespace scene;
 
-	effect = GetManager< Effect>()->Add( "textured3d", "EffectTextured.effect" );
+	effect = GetManager< Effect>()->Add( "textured3d", unify::Path( "EffectTextured.effect" ) );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;
@@ -92,7 +92,7 @@ void MainScene::OnStart()
 	AddComponent( canvas );
 
 	// Load a font enabled texture...
-	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", "font2.effect" );
+	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
 
 	canvas::Layer::ptr layer1( new canvas::Layer( GetGame() ) );
 	canvas->GetLayer()->AddElement( layer1, "layer1" );

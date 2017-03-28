@@ -22,6 +22,7 @@
     <ClInclude Include="rm\FactoryFunctor1.h" />
     <ClInclude Include="rm\FactoryFunctor2.h" />
     <ClInclude Include="rm\FactoryFunctor3.h" />
+    <ClInclude Include="rm\IResource.h" />
     <ClInclude Include="rm\IResourceManager.h" />
     <ClInclude Include="rm\ResourceHub.h" />
     <ClInclude Include="rm\ResourceManagerAdvanced.inl">
@@ -40,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dummy.cpp" />
+    <ClCompile Include="rm\IResource.cpp" />
     <ClCompile Include="rm\ResourceHub.cpp" />
     <ClInclude Include="rm\ResourcePack.inl">
       <FileType>Document</FileType>

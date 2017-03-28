@@ -14,8 +14,8 @@ namespace unify
 		std::string m_path;
 	public:
 		Path();
-		Path( const std::string & path );
-		Path( const char * const path );
+		explicit Path( const std::string & path );
+		explicit Path( const char * const path );
 		Path( const Path & left, const Path & right );
 		Path( const std::vector< std::string > & pathParts );
 

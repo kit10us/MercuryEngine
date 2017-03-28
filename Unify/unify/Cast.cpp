@@ -190,6 +190,10 @@ const char * unify::Cast( const std::string text )
 	return text.c_str();
 }
 
+template<> unify::Path unify::Cast( const std::string text )
+{
+	return unify::Path( text );
+}
 
 template<>
 bool unify::Cast( const char * text )

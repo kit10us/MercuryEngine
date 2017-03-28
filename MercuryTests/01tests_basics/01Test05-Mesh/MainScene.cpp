@@ -15,7 +15,7 @@ MainScene::MainScene( me::Game * game )
 void MainScene::OnStart()
 {
 	// Load effect...
-	auto effect = GetManager< Effect>()->Add( "textured_3d", "EffectTextured.effect" );
+	auto effect = GetManager< Effect>()->Add( "textured_3d", unify::Path( "EffectTextured.effect" ) );
 
 	// Create mesh...
 	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );

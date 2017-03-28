@@ -65,7 +65,7 @@ int Geometry_Constructor( lua_State * state )
 		if( unify::StringIs( type1, "string" ) && unify::StringIs( type2, "string" ) )
 		{ // Create a named geometry from a file...
 			std::string name = lua_tostring( state, 1 );
-			unify::Path source = lua_tostring( state, 2 );
+			unify::Path source( lua_tostring( state, 2 ) );
 			geometry = game->GetManager< Geometry >()->Add( name, source );
 			return PushUserType< GeometryProxy >( state, { geometry } );
 		}
