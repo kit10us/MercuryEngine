@@ -102,10 +102,10 @@ void MainScene::OnUpdate( UpdateParams & params )
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
 	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
-	
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
+/*
 	static const float time_limit = 5.0f;
 	static float time = 0.0f;
 	static std::vector< Object* > moving;
@@ -153,4 +153,5 @@ void MainScene::OnUpdate( UpdateParams & params )
 		angle *= (rand() % 2 ) ? 1 : -1;
 		object->GetFrame().Orbit( originPoint[i], unify::Quaternion( unify::V3< float >::V3Normalized( originPoint[i] ), angle ) );
 	}
+	*/
 }

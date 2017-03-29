@@ -2,8 +2,7 @@
 // All Rights Reserved
 
 #pragma once
-#include <me/Viewport.h>
-#include <me/Display.h>
+#include <me/render/Display.h>
 #include <me/IVertexBuffer.h>
 #include <me/IIndexBuffer.h>
 #include <me/IVertexShader.h>
@@ -11,10 +10,9 @@
 #include <me/ITexture.h>
 #include <me/RenderInfo.h>
 #include <me/RenderMethod.h>
+#include <me/render/MatrixFeed.h>
 #include <unify/FrameLite.h>
 #include <memory>
-
-#include <me/MatrixFeed.h>
 
 namespace me
 {
@@ -33,9 +31,9 @@ namespace me
 
 		virtual IGame* GetGame() = 0;
 
-		virtual const me::Display & GetDisplay() const = 0;
+		virtual const render::Display & GetDisplay() const = 0;
 
-		virtual Viewport GetViewport() const = 0;
+		virtual render::Viewport GetViewport() const = 0;
 
 		/// <summary>
 		/// Called before rendering.
@@ -63,7 +61,7 @@ namespace me
 
 		virtual void* GetHandle() const = 0;
 
-		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) = 0;
+		virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, render::MatrixFeed & matrixFeed ) = 0;
 
 		virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) = 0;
 		virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) = 0;

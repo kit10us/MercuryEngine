@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/BufferSet.h>
+#include <me/IRenderer.h>
 
 using namespace me;
 
@@ -84,7 +85,7 @@ bool BufferSet::GetEnabled() const
 	return m_enabled;
 }
 
-void BufferSet::Render( RenderParams params, MatrixFeed & matrixFeed ) const
+void BufferSet::Render( RenderParams params, render::MatrixFeed & matrixFeed ) const
 {
 	if ( !m_enabled ) return;
 

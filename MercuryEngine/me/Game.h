@@ -8,7 +8,7 @@
 #include <me/input/IInputCondition.h>
 #include <me/IGame.h>
 #include <me/IOS.h>
-#include <me/Display.h>
+#include <me/render/Display.h>
 #include <me/ITexture.h>
 #include <me/Effect.h>
 #include <me/scene/ISceneFactory.h>

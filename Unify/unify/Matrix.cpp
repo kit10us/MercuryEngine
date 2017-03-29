@@ -763,6 +763,28 @@ void Matrix::TransformCoord( V3< float > & coord ) const
 	coord.z = m[0][2] * coord.x + m[1][2] * coord.y + m[2][2] * coord.z + m[3][2] * 1.0f;
 }
 
+void Matrix::TransformCoords( V2< float > * coords, size_t size ) const
+{
+	for( size_t i = 0; i < size; i++ )
+	{
+		auto & coord = coords[i];
+		coord.x = m[0][0] * coord.x + m[1][0] * coord.y + m[2][0] * 1.0f + m[3][0] * 1.0f;
+		coord.y = m[0][1] * coord.x + m[1][1] * coord.y + m[2][1] * 1.0f + m[3][1] * 1.0f;
+	}
+}
+
+void Matrix::TransformCoords( V3< float > * coords, size_t size ) const
+{
+	for( size_t i = 0; i < size; i++ )
+	{
+		auto & coord = coords[i];
+		coord.x = m[0][0] * coord.x + m[1][0] * coord.y + m[2][0] * coord.z + m[3][0] * 1.0f;
+		coord.y = m[0][1] * coord.x + m[1][1] * coord.y + m[2][1] * coord.z + m[3][1] * 1.0f;
+		coord.z = m[0][2] * coord.x + m[1][2] * coord.y + m[2][2] * coord.z + m[3][2] * 1.0f;
+	}
+}
+
+
 unify::V2< float > Matrix::TransformCoord_Copy( const unify::V2< float > & coord ) const
 {
 	unify::V2< float > copy( coord );

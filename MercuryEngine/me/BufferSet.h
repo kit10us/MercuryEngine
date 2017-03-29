@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/RenderParams.h>
-#include <me/MatrixFeed.h>
+#include <me/render/MatrixFeed.h>
 #include <me/IVertexBuffer.h>
 #include <me/IIndexBuffer.h>
 #include <me/RenderMethod.h>
@@ -42,7 +42,7 @@ namespace me
 		void SetEnabled( bool enabled );
 		bool GetEnabled() const;
 
-		void Render( RenderParams params, MatrixFeed & matrixFeed ) const;
+		void Render( RenderParams params, render::MatrixFeed & matrixFeed ) const;
 
 	private:
 		IRenderer * m_renderer;

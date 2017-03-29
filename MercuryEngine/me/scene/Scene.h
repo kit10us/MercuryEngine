@@ -6,7 +6,7 @@
 #include <me/scene/SceneManager.h>
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
-#include <me/Viewport.h>
+#include <me/render/Viewport.h>
 #include <unify/Range.h>
 #include <list>
 #include <memory>

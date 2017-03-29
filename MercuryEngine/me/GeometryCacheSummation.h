@@ -5,16 +5,18 @@
 
 #include <me/Geometry.h>
 #include <me/RenderParams.h>
-#include <unify/FrameLite.h>
+#include <me/render/FrameAndMatrix.h>
 						
 namespace me
 {
+	class Geometry;
+
 	class GeometryCacheSummation
 	{
 	public:
 		GeometryCacheSummation();
 
-		void Add( Geometry * geometry, InstancesSet set );
+		void Add( Geometry * geometry, render::InstancesSet set );
 
 		void Render( RenderParams params );
 
@@ -24,7 +26,7 @@ namespace me
 		size_t Count() const;
 
 	private:
-		std::map< Geometry *, std::vector< InstancesSet > > m_summation;
+		std::map< Geometry *, std::vector< render::InstancesSet > > m_summation;
 		size_t m_count;
 	};
 

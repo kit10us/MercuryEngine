@@ -4,24 +4,29 @@
 #include <me/GeometryCache.h>
 						
 using namespace me;
+using namespace render;
 
 GeometryCache::GeometryCache()
 {
 }
 
-void GeometryCache::Add( Geometry * geometry, const unify::FrameLite * instance )
+void GeometryCache::Add( Geometry * geometry, FrameAndMatrix fm )
 {
 	assert( geometry );
-	assert( instance );
+	assert( fm.frame );
 
-	m_cache[ geometry ].push_back( instance );
+	// Push the FM into a vector for the associate geometry.
+	m_cache[ geometry ].push_back( fm );
 }
 
 void GeometryCache::Sum( GeometryCacheSummation & summation )
 {
 	for( auto && set : m_cache )
 	{
-		summation.Add( set.first, { &set.second[0], set.second.size() } );
+		Geometry*  geo = set.first;
+		const FrameAndMatrix * first_fm_ptr = &set.second[0];
+		size_t size = set.second.size();
+		summation.Add( geo, { first_fm_ptr, size} );
 	}
 }
 

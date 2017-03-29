@@ -10,16 +10,16 @@
 #include <medx11/VertexConstruct.h>
 #include <medx11/Texture.h>
 #include <me/RenderMethod.h>
+#include <me/render/MatrixFeed.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/NotImplemented.h>
 #include <cassert>
 
-#include <me/MatrixFeed.h>
-
 using namespace medx11;
 using namespace me;
+using namespace render;
 
-Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
+Renderer::Renderer( WindowsOS * os, Display display, size_t index )
 	: m_os( os )
 	, m_display( display )
 	, m_swapChainDesc{}
@@ -214,12 +214,12 @@ me::IGame * Renderer::GetGame()
 	return m_os->GetGame();
 }
 
-const me::Display & Renderer::GetDisplay() const
+const Display & Renderer::GetDisplay() const
 {
 	return m_display;
 }
 
-me::Viewport Renderer::GetViewport() const
+Viewport Renderer::GetViewport() const
 {
 	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetNearZ(), GetDisplay().GetFarZ() );
 }

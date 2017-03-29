@@ -26,9 +26,9 @@ void GeometryInstanceData::SetMatrix( unify::Matrix matrix )
 	m_matrix = matrix;
 }
 
-unify::Matrix GeometryInstanceData::GetMatrix() const
+const unify::Matrix * GeometryInstanceData::GetMatrix() const
 {
-	return m_matrix;
+	return &m_matrix;
 }
 
 bool GeometryInstanceData::IsMatrixSet() const

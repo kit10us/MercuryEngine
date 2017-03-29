@@ -14,7 +14,7 @@ namespace me
 		~LOD();
 
 		void Update( UpdateParams params, me::GeometryInstanceData * instanceData ) override;
-		void Render( RenderParams params, me::GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
+		void Render( RenderParams params, me::GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) override;
 
 		void Add( me::Geometry::ptr geometry, float distance );
 		me::Geometry::ptr GetLOD( unsigned int index );

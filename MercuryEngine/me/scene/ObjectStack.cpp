@@ -64,6 +64,7 @@ Object * ObjectStack::NewObject( std::string name )
 
 	object->SetAlive( true );
 	object->SetScene( m_scene );
+	object->SetAllocator( this );
 	object->SetName( name );
 
 	// Find the next available object...
@@ -79,42 +80,35 @@ Object * ObjectStack::NewObject( std::string name )
 
 bool ObjectStack::DestroyObject( Object * object )
 {
-	// NOTE: Could optimize by storing object index in object.
-	// Find index of object to remove...
-	int objectIndex = 0;
-	for( ; objectIndex < (int)m_objects.size(); ++objectIndex )
+	auto itr = std::find( m_oldObjects.begin(), m_oldObjects.end(), object );
+	if( itr != m_oldObjects.end() )
 	{
-		if ( &m_objects[ objectIndex ] == object )
-		{
-			break;
-		}
-	}
+		int objectIndex = (Object*)&m_objects[0] - object;
 
-	// If we went past our object count, the object wasn't found.
-	if ( objectIndex >= (int)m_objects.size() )
+		object->SetAlive( false );
+
+		// Our next object available has to be lowest, so if we removed a lower object...
+		m_nextObjectAvailable = std::min( m_nextObjectAvailable, objectIndex );
+
+		// If we removed the object last in our 'alive' set, find the last object alive...
+		if( objectIndex == m_lastObjectAlive )
+		{
+			// Find the last object alive in the list...
+			for( int i = objectIndex; i >= 0 && !m_objects[i].IsAlive(); m_lastObjectAlive-- )
+			{
+				// Do nothing, loop increment steps handles the work.
+			}
+		}
+
+		m_oldObjects.erase( itr );
+
+		m_freeObjects++;
+		return true;
+	}
+	else
 	{
 		return false;
 	}
-
-	m_objects[ objectIndex ].SetAlive( false );
-	
-	if ( objectIndex < m_nextObjectAvailable ) m_nextObjectAvailable = objectIndex;
-	m_lastObjectAlive = std::max( m_nextObjectAvailable, m_lastObjectAlive );
-
-	// If we removed the object last in our 'alive' set...
-	if ( objectIndex == m_lastObjectAlive )
-	{
-		// Find the last object alive in the list...
-		for ( int i = objectIndex; i >= 0 && !m_objects[ i ].IsAlive(); m_lastObjectAlive-- )
-		{
-			// Do nothing, loop increment steps handles the work.
-		}
-	}
-	
-	m_freeObjects++;
-	m_count--;
-
-	return true;
 }
 
 Object * ObjectStack::CopyObject( Object * from, std::string name )
@@ -126,64 +120,96 @@ Object * ObjectStack::CopyObject( Object * from, std::string name )
 
 void ObjectStack::CollectObjects( std::vector< Object * > & objects )
 {
-	for ( int i = 0; i <= m_lastObjectAlive; i++ )
-	{
-		auto && object = m_objects[ i ];
-		if ( ! object.IsAlive() )
-		{
-			continue;
-		}
-
-		objects.push_back( &object );
-	}
+	objects.insert( objects.end(), m_oldObjects.begin(), m_oldObjects.end() );
 }
 
 Object * ObjectStack::FindObject( std::string name )
 {
-	for( auto && object : m_objects )
+	auto itr = std::find_if( m_oldObjects.begin(), m_oldObjects.end(), 
+		[&]( auto & object ) { 
+		return unify::StringIs( object->GetName(), name );
+	} );
+
+	if( itr != m_oldObjects.end() )
 	{
-		if ( object.IsAlive() && unify::StringIs( object.GetName(), name ) )
+		return *itr;
+	}
+
+	itr = std::find_if( m_newObjects.begin(), m_newObjects.end(),
+		[&]( auto & object ) {
+		return unify::StringIs( object->GetName(), name );
+	} );
+
+	return itr == m_newObjects.end() ? nullptr : *itr;
+}
+
+Object * ObjectStack::GetObject( size_t index )
+{
+	// Not possible if...
+	if( (int)index > m_lastObjectAlive )
+	{
+		return nullptr;
+	}
+
+	// NOTE: We don't use our "alive" lists (old or new) because they are considered "unordered".
+
+	// If index is within the unfragmented chunk, this is fastest...
+	// This works because... NOA always points to the first gap in our list
+	if ( (int)index < m_nextObjectAvailable )
+	{
+		return &m_objects[index];
+	}
+
+	// Brute force search...	
+	size_t i = m_nextObjectAvailable + 1; // Only need to start at m_nextObjectAvailable + 1, since (see above) (also, NOA is N/A)
+	size_t end = m_lastObjectAlive + 1; // No need searching beyond the last alive object.
+	size_t count = m_nextObjectAvailable; // Add the number of objects in the first living chunk, PLUS ONE.
+	for( ; i < end; i++ )
+	{
+		// If object is not alive, don't count it.
+		if( !m_objects[i].IsAlive() ) continue;
+
+		if( count == index )
 		{
-			return &object;
+			return &m_objects[i];
+		}
+		else
+		{
+			count++;
 		}
 	}
 	return nullptr;
 }
 
-Object * ObjectStack::GetObject( size_t index )
-{
-	if ( index >= m_objects.size() )
-	{
-		return nullptr;
-	}
-	return &m_objects[ index ];
-}
-
 void ObjectStack::DirtyObject( object::Object* object )
 {
-	assert( 0 );
-	/*
-	// Remove from caches...
-	if( ! m_solids )
-	{
-		m_trans.Remove( object );
-	}
-	*/
+	// If we have no old objects, we just don't care.
+	if( m_oldObjects.empty() ) return;
+
+	// No way to know what is cached, so blow up caches...
+	m_solids.Reset();
+	m_trans.Reset();
+	
+	// All old objects become new objects...
+	m_newObjects.merge( m_oldObjects );
 }
 
 void ObjectStack::Update( UpdateParams params )
 {
-	for( auto && object : m_newObjects )
+	if( m_newObjects.size() )
 	{
-		// Initialize
-		object->Initialize( m_updatables, m_cameras, params );
-
-		if ( m_cache && ! m_resetCache )
+		for( auto && object : m_newObjects )
 		{
-			object->CollectGeometry( m_solids, m_trans );
+			// Initialize
+			object->Initialize( m_updatables, m_cameras, params );
+
+			if( m_cache && !m_resetCache )
+			{
+				object->CollectGeometry( m_solids, m_trans );
+			}
 		}
+		m_oldObjects.merge( m_newObjects );
 	}
-	m_newObjects.clear();
 
 	if ( m_cache && m_resetCache )
 	{

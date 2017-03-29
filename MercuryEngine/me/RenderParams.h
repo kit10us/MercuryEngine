@@ -3,14 +3,13 @@
 
 #pragma once
 
-#include <me/IRenderer.h>
 #include <me/RenderInfo.h>
 
 namespace me
 {
 	struct RenderParams
 	{
-		IRenderer * renderer;
+		class IRenderer * renderer;
 		const RenderInfo & renderInfo;
 		float GetDelta() const { return renderInfo.GetDelta(); };
 	};

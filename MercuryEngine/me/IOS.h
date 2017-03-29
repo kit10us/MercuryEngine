@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/IRenderer.h>
-#include <me/Display.h>
+#include <me/render/Display.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
 #include <unify/AssetPaths.h>
@@ -96,7 +96,7 @@ namespace me
 		/// <summary>
 		/// Add a display.
 		/// </summary>	  
-		virtual void AddDisplay( Display display ) = 0;	
+		virtual void AddDisplay( render::Display display ) = 0;	
 
 		virtual int RendererCount() const = 0;
 

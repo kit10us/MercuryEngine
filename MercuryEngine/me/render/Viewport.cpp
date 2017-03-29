@@ -2,9 +2,10 @@
 // All Rights Reserved
 
 #include <me/Mercury.h>
-#include <me/Viewport.h>
+#include <me/render/Viewport.h>
 
 using namespace me;
+using namespace render;
 
 Viewport::Viewport()
 {

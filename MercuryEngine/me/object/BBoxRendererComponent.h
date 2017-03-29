@@ -22,8 +22,6 @@ namespace me
 			BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 			virtual ~BBoxRendererComponent();
 
-			std::string GetWhat() const override;
-
 			/// <summary>
 			/// Get padding: the amount added to each vertex to increase the size of the visual BBox over the acutal BBox (so we can actually see it).
 			/// </summary>
@@ -34,6 +32,8 @@ namespace me
 			/// </summary>
 			void SetPadding( float padding );
 
+		public: // IObjectComponent...
+
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnUpdate( UpdateParams params ) override;
@@ -41,14 +41,20 @@ namespace me
 
 			IObjectComponent::ptr Duplicate();
 
+		public: // IComponent...
+
+		public: // IThing...
+
 		protected:
 			Object * m_object;
 			IOS * m_os;
+			unify::BBox< float > m_bbox;
 			std::list< GeometryComponent * > m_geomertries;
 			Geometry::ptr m_geometry;
 			Effect::ptr m_effect;
 			float m_padding;
 			unify::Color m_color;
+			int m_componentsChecked;
 		};
     }
 }

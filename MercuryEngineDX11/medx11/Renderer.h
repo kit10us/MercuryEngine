@@ -5,7 +5,7 @@
 
 #include <medx11/DirectX.h>
 #include <me/IRenderer.h>
-#include <me/Display.h>
+#include <me/render/Display.h>
 #include <atlbase.h>
 #include <memory>
 
@@ -16,7 +16,7 @@ namespace medx11
 	class Renderer : public me::IRenderer
 	{
 	public:
-		Renderer( WindowsOS * os, me::Display display, size_t index );
+		Renderer( WindowsOS * os, me::render::Display display, size_t index );
 		virtual ~Renderer();				
 
 		ID3D11Device * GetDxDevice() const;
@@ -27,9 +27,9 @@ namespace medx11
 	public: // IRenderer...
 		me::IGame* GetGame() override;
 
-		const me::Display & GetDisplay() const;
+		const me::render::Display & GetDisplay() const;
 
-		me::Viewport GetViewport() const override;
+		me::render::Viewport GetViewport() const override;
 
 		void BeforeRender() override;
 		void BeforeRenderSolids() override;
@@ -43,7 +43,7 @@ namespace medx11
 
 		void* GetHandle() const override;
 
-		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::MatrixFeed & matrixFeed ) override;
+		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::render::MatrixFeed & matrixFeed ) override;
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;
@@ -56,7 +56,7 @@ namespace medx11
 
 	private:
 		WindowsOS * m_os;
-		me::Display m_display;
+		me::render::Display m_display;
 		size_t m_index;
 
 		CComPtr< ID3D11Device > m_dxDevice;

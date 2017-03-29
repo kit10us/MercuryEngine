@@ -43,7 +43,7 @@ namespace me
 
 		void Update( UpdateParams params, GeometryInstanceData * instanceData ) override;
 
-		void Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed ) override;
+		void Render( RenderParams params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) override;
 
 		unify::Path GetSource() const override;
 

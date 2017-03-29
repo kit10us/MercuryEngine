@@ -53,21 +53,13 @@ void MainScene::OnStart()
 	object->GetFrame().SetPosition( unify::V3< float >( 0, 0, 0 ) );
 	object->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
-	{
-		/*
-		unify::Matrix modelMatrix = MatrixIdentity();
-		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
-		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
-		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
-		object->GetFrame().SetModelMatrix( modelMatrix );
-		*/
-	}
 }
 
 void MainScene::OnUpdate( UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
+	assert( camera );
 
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );

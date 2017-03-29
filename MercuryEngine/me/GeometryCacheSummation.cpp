@@ -10,17 +10,17 @@ GeometryCacheSummation::GeometryCacheSummation()
 {
 }
 
-void GeometryCacheSummation::Add( Geometry * geometry, InstancesSet set )
+void GeometryCacheSummation::Add( Geometry * geometry, render::InstancesSet set )
 {
 	m_summation[ geometry ].push_back( set );
-	m_count += set.instances_size;
+	m_count += set.size;
 }
 
 void GeometryCacheSummation::Render( RenderParams params )
 {
 	for( auto && pair : m_summation )
 	{
-		pair.first->Render( params, 0, MatrixFeed( &pair.second[0], pair.second.size(), 1 ) );
+		pair.first->Render( params, 0, render::MatrixFeed( { &pair.second[0], pair.second.size() }, 1 ) );
 	}
 }
 

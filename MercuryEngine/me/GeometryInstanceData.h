@@ -26,7 +26,7 @@ namespace me
 		virtual void Update( unify::Seconds elapsed );
 
 		void SetMatrix( unify::Matrix matrix );
-		unify::Matrix GetMatrix() const;
+		const unify::Matrix * GetMatrix() const;
 		bool IsMatrixSet() const;
 		void ResetMatrix();
 

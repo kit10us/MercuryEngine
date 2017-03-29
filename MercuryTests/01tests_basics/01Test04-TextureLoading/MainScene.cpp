@@ -125,12 +125,12 @@ void MainScene::OnRender( RenderGirl renderGirl )
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-		params.renderer->Render( method, params.renderInfo, MatrixFeed( &instance, 1, 1 ) );
+		params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
 	}
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-		params.renderer->Render( method, params.renderInfo, MatrixFeed( &instance, 1, 1 ) );
+		params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
 	}
 }

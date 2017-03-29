@@ -8,6 +8,7 @@
 
 #include <me/RenderParams.h>
 #include <me/Geometry.h>
+#include <me/Effect.h>
 #include <unify/unify.h>
 #include <unify/Matrix.h>
 #include <vector>
@@ -32,7 +33,7 @@ namespace me
 
 		bool Empty() const;
 
-		void Render( RenderParams params, MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color );
+		void Render( RenderParams params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color );
 
 	protected:
 		void Render( RenderParams params, unify::Matrix rootMatrix, size_t index, me::Geometry::ptr geometry );

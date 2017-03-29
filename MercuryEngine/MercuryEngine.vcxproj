@@ -37,7 +37,6 @@
     <ClInclude Include="me\canvas\IElement.h" />
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
-    <ClInclude Include="me\Display.h" />
     <ClInclude Include="me\dyna\color\DC_Delta.h" />
     <ClInclude Include="me\dyna\delta\DD_Absolute.h" />
     <ClInclude Include="me\dyna\delta\DD_Add.h" />
@@ -125,7 +124,6 @@
     <ClInclude Include="me\IVertexShader.h" />
     <ClInclude Include="me\LOD.h" />
     <ClInclude Include="me\Lookup.h" />
-    <ClInclude Include="me\MatrixFeed.h" />
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\Mesh.h" />
     <ClInclude Include="me\MeshAnimation.h" />
@@ -147,6 +145,11 @@
     <ClInclude Include="me\RenderInfo.h" />
     <ClInclude Include="me\RenderMethod.h" />
     <ClInclude Include="me\RenderParams.h" />
+    <ClInclude Include="me\render\Display.h" />
+    <ClInclude Include="me\render\FrameAndMatrix.h" />
+    <ClInclude Include="me\render\MatrixFeed.h" />
+    <ClInclude Include="me\render\MatrixFood.h" />
+    <ClInclude Include="me\render\Viewport.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\ComponentInstance.h" />
     <ClInclude Include="me\scene\DefaultSceneFactory.h" />
@@ -179,7 +182,6 @@
     <ClInclude Include="me\VertexDeclaration.h" />
     <ClInclude Include="me\VertexElement.h" />
     <ClInclude Include="me\VertexUtil.h" />
-    <ClInclude Include="me\Viewport.h" />
     <ClInclude Include="me\XMLConvert.h" />
     <ClInclude Include="sculpter\exception\SculpterFailedToCreate.h" />
     <ClInclude Include="sculpter\Point.h" />
@@ -235,7 +237,6 @@
     <ClCompile Include="me\canvas\FPS.cpp" />
     <ClCompile Include="me\canvas\Layer.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
-    <ClCompile Include="me\Display.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />
@@ -288,7 +289,6 @@
     <ClCompile Include="me\ITexture.cpp" />
     <ClCompile Include="me\LOD.cpp" />
     <ClCompile Include="me\Lookup.cpp" />
-    <ClCompile Include="me\MatrixFeed.cpp" />
     <ClCompile Include="me\Mesh.cpp" />
     <ClCompile Include="me\MeshInstanceData.cpp" />
     <ClCompile Include="me\object\action\OA_Action.cpp" />
@@ -304,6 +304,10 @@
     <ClCompile Include="me\PrimitiveList.cpp" />
     <ClCompile Include="me\RenderInfo.cpp" />
     <ClCompile Include="me\RenderMethod.cpp" />
+    <ClCompile Include="me\render\Display.cpp" />
+    <ClCompile Include="me\render\MatrixFeed.cpp" />
+    <ClCompile Include="me\render\MatrixFood.cpp" />
+    <ClCompile Include="me\render\Viewport.cpp" />
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp" />
     <ClCompile Include="me\scene\ComponentInstance.cpp" />
     <ClCompile Include="me\scene\GrowableObjectStack.cpp" />
@@ -327,7 +331,6 @@
     <ClCompile Include="me\VertexDeclaration.cpp" />
     <ClCompile Include="me\VertexElement.cpp" />
     <ClCompile Include="me\VertexUtil.cpp" />
-    <ClCompile Include="me\Viewport.cpp" />
     <ClCompile Include="me\XMLConvert.cpp" />
     <ClCompile Include="sculpter\Point.cpp" />
     <ClCompile Include="sculpter\PointTable.cpp" />

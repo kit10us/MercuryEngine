@@ -6,7 +6,7 @@
 #include <me/GeometryCacheSummation.h>
 #include <me/Geometry.h>
 #include <me/RenderParams.h>
-#include <unify/FrameLite.h>
+#include <me/render/FrameAndMatrix.h>
 						
 namespace me
 {
@@ -14,11 +14,11 @@ namespace me
 	{
 	public:
 		GeometryCache();
-		void Add( Geometry * geometry, const unify::FrameLite * instance );
+		void Add( Geometry * geometry, render::FrameAndMatrix fm );
 		void Sum( GeometryCacheSummation & summation );
 		void Reset();
 
 	private:
-		std::map< Geometry *, std::vector< const unify::FrameLite * > > m_cache;
+		std::map< Geometry *, std::vector< render::FrameAndMatrix > > m_cache;
 	};			  
 }

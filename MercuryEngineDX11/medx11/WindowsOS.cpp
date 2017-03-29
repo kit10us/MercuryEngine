@@ -89,14 +89,14 @@ WindowsOS::WindowsOS( IGame * game, const qxml::Element * element )
 		float nearZ = node.GetAttributeElse< float >( "nearz", 0.0f );
 		float farZ = node.GetAttributeElse< float >( "farz", 1000.0f );
 
-		Display display {};
+		render::Display display {};
 		if ( fullscreen )
 		{
-			display = Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
+			display = render::Display::CreateFullscreenDirectXDisplay( unify::Size< float >( (float)width, (float)height ) );
 		}
 		else
 		{
-			display = Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
+			display = render::Display::CreateWindowedDirectXDisplay( unify::Size< float >( (float)width, (float)height ), unify::V2< float >( (float)x, (float)y ) );
 		}
 
 		display.SetNearZ( nearZ );
@@ -133,7 +133,7 @@ const std::vector< std::string > & WindowsOS::GetCommandLine() const
 	return m_commandLine;
 }
 
-void WindowsOS::AddDisplay( Display display )
+void WindowsOS::AddDisplay( render::Display display )
 {
 	m_pendingDisplays.push_back( display );
 }
@@ -153,7 +153,7 @@ void WindowsOS::CreatePendingDisplays( std::string title )
 	m_pendingDisplays.clear();
 }
 
-void WindowsOS::CreateDisplay( Display display, std::string title )
+void WindowsOS::CreateDisplay( render::Display display, std::string title )
 {
 	bool isPrimary = m_renderers.empty() ? true : false; // Note that this is VERY explicit - we are actual spelling out our intention (even though it looks redundant).
 

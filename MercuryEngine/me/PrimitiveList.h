@@ -25,7 +25,7 @@ namespace me
 
 		void Destroy();
 
-		void Render( RenderParams params, MatrixFeed & matrixFeed ) const;
+		void Render( RenderParams params, render::MatrixFeed & matrixFeed ) const;
 		
 		BufferSet & AddBufferSet();
 		void RemoveBufferSet( size_t i );

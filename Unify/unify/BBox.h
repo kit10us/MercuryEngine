@@ -54,6 +54,9 @@ namespace unify
 		/// Add bouding box with spatial locations (basically, just adds the corners + an offset). This allows us to be a BB of BBs.
 		/// </summary>
 		BBox & AddBBoxWithPosition( const BBox< T > & boundingBox, const V3< T > & position );  
+
+		void AddPoints( const unify::V3< T > * const points, size_t size );
+
 		bool ContainsPoint( const V3< T > & point );
 		const V3< T > Size() const;
 

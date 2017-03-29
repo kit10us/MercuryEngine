@@ -122,5 +122,5 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 
 	unify::Matrix instance = unify::Matrix( q );
-	params.renderer->Render( method, params.renderInfo, MatrixFeed( &instance, 1, 1 ) );
+	params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
 }

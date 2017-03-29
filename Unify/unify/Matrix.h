@@ -16,7 +16,7 @@ namespace unify
 {
 	class Matrix
 	{
-	private:
+		// Named constructors...
 		friend Matrix MatrixIdentity();
 		friend Matrix MatrixZero();
 		friend Matrix MatrixTranslate( const V3< float > & vector );
@@ -30,6 +30,7 @@ namespace unify
 		friend Matrix MatrixRotationY( Angle angle );
 		friend Matrix MatrixRotationZ( Angle angle );
 		friend Matrix MatrixLookAtLH( const V3< float > & eyePosition, const V3< float > & at, const V3< float > & up );
+
 	public:
 
 		Matrix();
@@ -113,6 +114,10 @@ namespace unify
 
 		void TransformCoord( V2< float > & v2 ) const;
 		void TransformCoord( V3< float > & v3 ) const;
+
+		void TransformCoords( V2< float > * coords, size_t size ) const;
+		void TransformCoords( V3< float > * coords, size_t size ) const;
+
 		V2< float > TransformCoord_Copy( const V2< float > & v2 ) const;
 		V3< float > TransformCoord_Copy( const V3< float > & v3 ) const;
 		void TransformNormal( V2< float > & v2 ) const;

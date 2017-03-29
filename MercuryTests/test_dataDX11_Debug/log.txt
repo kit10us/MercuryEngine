@@ -2,7 +2,7 @@ Initializing:
   name:    C:\dev\ws\MercuryTests\02tests_feature\02Test06 - Geo Instancing\..\..\..\output\v140_Debug\02Test06 - Geo Instancing\02Test06 - Geo Instancing.exe
   program: C:\dev\ws\MercuryTests\02tests_feature\output\v140_Debug\02Test06 - Geo Instancing\02Test06 - Geo Instancing.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Wed Mar 29 10:56:58 2017
+  time:    Wed Mar 29 17:48:46 2017
 
   Loading setup "setup_models.xml"...
   Loading setup "setup_base.xml"...
@@ -40,7 +40,7 @@ OnAfterStartup Begin
   OnAfterStartup "ActionsGameComponent" Begin
   OnAfterStartup "ActionsGameComponent" Done
 OnAfterStartup Done
-total startup time: 1.136537s
+total startup time: 1.058174s
 Creating Main Scene
 Starting scene "main" Begin
   Component "ObjectAllocatorComponent" OnBeforeStart Begin
@@ -60,12 +60,3 @@ Starting scene "main" Begin
   Component "CanvasComponent" OnAfterStart Done
   Start scene "main" Done
 Main Scene created
-Shutting down:
-OnDetach
-  Detaching SceneManager
-  Detaching ActionFactory
-  Detaching ActionsGameComponent
-OnDetachDone
-  time: Wed Mar 29 10:57:23 2017
-
-  frames: 627, total delta: 0.023394s,  average fps:42.745949

@@ -31,7 +31,7 @@ void LOD::Update( UpdateParams params, GeometryInstanceData * instanceData )
 	}
 }
 
-void LOD::Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
+void LOD::Render( RenderParams params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed )
 {
 	if( m_list.empty() )
 	{

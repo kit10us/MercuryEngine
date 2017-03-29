@@ -191,18 +191,18 @@ void Map::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const 
 
 			if( type[ (size_t)Direction::C ] == -1 )
 			{
-				solids.Add( m_base->GetGeneric( 0 ).get(), frame );
+				solids.Add( m_base->GetGeneric( 0 ).get(), { frame, nullptr } );
 			}
 			else
 			{
 				auto geo = GetGroundGeometry( type );
 				if( !geo )
 				{
-					solids.Add( m_invalid.get(), frame );
+					solids.Add( m_invalid.get(), { frame, nullptr } );
 				}
 				else
 				{
-					solids.Add( geo.get(), frame );
+					solids.Add( geo.get(), { frame, nullptr } );
 				}
 			}
 		}

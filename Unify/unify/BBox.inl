@@ -132,6 +132,16 @@ BBox< T > & BBox< T >::AddBBoxWithPosition( const BBox< T > & boundingBox, const
 }
 
 template< typename T >
+void BBox< T >::AddPoints( const unify::V3< T > * const points, size_t size )
+{
+	for( size_t i = 0; i < size; i++ )
+	{
+		auto & coord = points[i];
+		( *this ) += coord;
+	}
+}
+
+template< typename T >
 const V3< T > BBox< T >::Size() const
 {
 	return V3< T >( sup - inf );

@@ -70,7 +70,7 @@ void Mesh::Update( UpdateParams params, GeometryInstanceData * instanceData )
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( RenderParams params, GeometryInstanceData * instanceData, MatrixFeed & matrixFeed )
+void Mesh::Render( RenderParams params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed )
 {
 	// TODO:
 	/*

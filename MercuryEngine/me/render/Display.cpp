@@ -1,9 +1,10 @@
 // Copyright (c) 2003 - 2014, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Display.h>
+#include <me/render/Display.h>
 
 using namespace me;
+using namespace render;
 
 Display Display::CreateWindowedDirectXDisplay( unify::Size< float > size, unify::V2< float > position, void* handle, void* parent )
 {

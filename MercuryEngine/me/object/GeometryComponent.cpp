@@ -62,7 +62,7 @@ void GeometryComponent::SetMatrix( unify::Matrix matrix )
 
 unify::Matrix GeometryComponent::GetMatrix() const
 {
-	return m_geometryInstanceData->GetMatrix();
+	return *m_geometryInstanceData->GetMatrix();
 }
 
 void GeometryComponent::OnStart()
@@ -78,11 +78,11 @@ void GeometryComponent::CollectGeometry( GeometryCache & solids, GeometryCache &
 {
 	if( m_geometry->IsTrans() )
 	{
-		trans.Add( m_geometry.get(), frame );
+		trans.Add( m_geometry.get(), { frame, m_geometryInstanceData->GetMatrix() } );
 	}
 	else
 	{
-		solids.Add( m_geometry.get(), frame );
+		solids.Add( m_geometry.get(), { frame, m_geometryInstanceData->GetMatrix() } );
 	}
 }
 

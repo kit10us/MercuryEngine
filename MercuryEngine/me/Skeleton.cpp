@@ -50,7 +50,7 @@ bool Skeleton::Empty() const
 	return m_jointMatrix.empty();
 }
 
-void Skeleton::Render( RenderParams params, MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color )
+void Skeleton::Render( RenderParams params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color )
 {
 	if( Empty() ) return;
 
@@ -72,7 +72,7 @@ void Skeleton::Render( RenderParams params, MatrixFeed & matrixFeed, Effect::ptr
 		for( size_t i = 0; i < m_jointFinalMatrix.size(); i++ )
 		{
 			unify::Matrix matrixFinal =	m_jointFinalMatrix[i];
-			MatrixFeed feed{ &matrixFinal, 1 };
+			render::MatrixFeed feed( render::MatrixFood_Matrices{ &matrixFinal, 1 });
 			m_jointGeo->Render( params, nullptr, feed );
 		}
 	}

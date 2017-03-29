@@ -6,7 +6,7 @@
 #include <me/IOS.h>
 #include <me/IGame.h>
 #include <me/IRenderer.h>
-#include <me/Display.h>
+#include <me/render/Display.h>
 #include <list>
 #include <vector>
 
@@ -39,9 +39,9 @@ namespace medx11
 
 		const std::vector< std::string > & GetCommandLine() const override;
 
-		void AddDisplay( me::Display display );
+		void AddDisplay( me::render::Display display );
 		void CreatePendingDisplays( std::string title );
-		void CreateDisplay( me::Display display, std::string title );
+		void CreateDisplay( me::render::Display display, std::string title );
 		int RendererCount() const override;
 		me::IRenderer * GetRenderer( int index ) const override;
 
@@ -83,7 +83,7 @@ namespace medx11
 		me::input::IInputDevice * m_mouse;
 		bool m_hasFocus;
 		std::list< HWND > m_childHandles; // Handles to be serviced.
-		std::vector< me::Display > m_pendingDisplays;
+		std::vector< me::render::Display > m_pendingDisplays;
 		std::vector< me::IRenderer::ptr > m_renderers;
 		me::OSParameters m_osParameters;
 		unify::AssetPaths m_assetPaths;

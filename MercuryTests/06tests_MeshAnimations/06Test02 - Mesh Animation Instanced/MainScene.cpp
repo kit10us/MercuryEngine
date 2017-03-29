@@ -152,7 +152,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 {
 	RenderParams params = *renderGirl.GetParams();
 
-	class Source : public IMatrixSource
+	class Source : public render::IMatrixSource
 	{
 	private:
 		const unify::FrameLite & m_frame;
@@ -215,7 +215,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	};
 	*/
 
-	std::vector< IMatrixSource * > sources{ &sorces_source[0], &sorces_source[1] };
+	std::vector< render::IMatrixSource * > sources{ &sorces_source[0], &sorces_source[1] };
 
-	mesh->Render( params, nullptr, MatrixFeed( &sources[0], sources.size(), sources[0]->Count() ) );
+	mesh->Render( params, nullptr, render::MatrixFeed( { &sources[0], sources.size() }, sources[0]->Count() ) );
 }
