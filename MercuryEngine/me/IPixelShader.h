@@ -6,6 +6,7 @@
 #include <me/shader/ConstantBuffer.h>
 #include <me/Mercury.h>
 #include <me/Blend.h>
+#include <rm/IResource.h>
 #include <unify/Path.h>
 #include <unify/DataLock.h>
 #include <memory>
@@ -28,7 +29,7 @@ namespace me
 		bool trans;
 	};
 
-	class IPixelShader
+	class IPixelShader : public rm::IResource
 	{
 	public:
 		typedef std::shared_ptr< IPixelShader > ptr;
@@ -42,8 +43,6 @@ namespace me
 		virtual void Use() = 0;
 
 		virtual unify::Path GetSource() const = 0;
-
-		virtual bool Reload() = 0;
 
 		virtual bool IsTrans() const = 0;
 	};

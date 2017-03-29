@@ -77,7 +77,6 @@ void MainScene::OnStart()
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = GetObjectAllocator()->NewObject( "swordASE" );
-	AddGeometryComponent( aseObject, meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -85,7 +84,7 @@ void MainScene::OnStart()
 		modelMatrix.Scale( 0.090f );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
 		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-		aseObject->GetFrame().SetModelMatrix( modelMatrix );
+		AddGeometryComponent( aseObject, meshASE, modelMatrix );
 	}
 	aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
@@ -117,7 +116,7 @@ void MainScene::OnStart()
 	*/
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );

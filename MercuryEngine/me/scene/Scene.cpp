@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/Scene.h>
+#include <me/scene/SceneManager.h>
 #include <me/object/CameraComponent.h>
 #include <me/scene/ObjectAllocatorComponent.h>
 #include <me/Frustum.h>
@@ -15,6 +16,7 @@ Scene::Scene( Game * game, std::string name )
 : m_game( game )
 , m_name{ name }
 , m_ownership{ unify::Owner::Create( name ) }
+, m_sceneManager{}
 {
 	auto objectAllocatorComponent = new ObjectAllocatorComponent( game->GetOS() );
 	AddComponent( ISceneComponent::ptr( objectAllocatorComponent ) );
@@ -66,7 +68,7 @@ void Scene::Component_OnAfterStart()
 	}
 }
 
-void Scene::Component_OnEarlyUpdate( UpdateParams params )
+void Scene::Component_OnEarlyUpdate( UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
@@ -77,7 +79,7 @@ void Scene::Component_OnEarlyUpdate( UpdateParams params )
 	}
 }
 
-void Scene::Component_OnUpdate( UpdateParams params )
+void Scene::Component_OnUpdate( UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
@@ -88,7 +90,7 @@ void Scene::Component_OnUpdate( UpdateParams params )
 	}
 }
 
-void Scene::Component_OnLateUpdate( UpdateParams params )
+void Scene::Component_OnLateUpdate( UpdateParams & params )
 {
 
 	for( auto && component : m_components )
@@ -236,4 +238,9 @@ std::string Scene::SendCommand( std::string command, std::string extra )
 {
 	command; extra;
 	return nullptr;
+}
+
+SceneManager* Scene::GetSceneManager()
+{
+	return m_sceneManager;
 }

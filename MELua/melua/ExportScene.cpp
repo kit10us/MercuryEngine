@@ -62,7 +62,7 @@ int Scene_NewCamera( lua_State * state )
 	std::string name = lua_tostring( state, 2 );
 
 	int t = lua_type( state, 3 );
-	unify::Matrix mat = CheckMatrix( state, 3 )->matrix;
+	unify::Matrix mat = CheckUserType< MatrixProxy >( state, 3 )->matrix;
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
 	auto game = se->GetGame();

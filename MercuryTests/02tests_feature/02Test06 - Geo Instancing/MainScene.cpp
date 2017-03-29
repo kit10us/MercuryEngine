@@ -97,7 +97,7 @@ void MainScene::OnStart()
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2 ) ) );
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
@@ -105,4 +105,52 @@ void MainScene::OnUpdate( UpdateParams params )
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
 	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+
+	static const float time_limit = 5.0f;
+	static float time = 0.0f;
+	static std::vector< Object* > moving;
+	static std::vector< unify::Matrix > originalPositions;
+	static std::vector< unify::V3< float > > originPoint;
+	time -= params.GetDelta();
+	if( time <= 0.0f )
+	{
+		for( size_t i = 0; i < moving.size(); i++ )
+		{
+			auto object = moving[i];
+			object->GetFrame().SetMatrix( originalPositions[ i ] );
+		}
+
+		moving.clear();
+		originalPositions.clear();
+		originPoint.clear();
+
+		for( size_t i = 0; i < 3000; i++ )
+		{
+			size_t count = GetObjectAllocator()->Count();
+			auto chunks = ( count / RAND_MAX ) + 1;
+			size_t offset = (rand() % chunks) * RAND_MAX;
+
+			size_t index = offset + RAND_MAX > count ? rand() % ( count - offset ) : rand();
+			index += offset;
+			auto object = GetObjectAllocator()->GetObject( index );
+			moving.push_back( object );
+			originalPositions.push_back( object->GetFrame().GetMatrix() );
+
+			int axis = rand() % 6;
+			float inv = -1.0f + (float)( (int)axis % 2 ) * 2.0f;
+			axis = axis / 2;
+			float size = 230.0f;
+			originPoint.push_back( { ( axis == 0 ) * inv * size, ( axis == 1 ) * inv * size, ( axis == 2 ) * inv * size} );
+		}
+		time = time_limit;
+	}
+
+	for( size_t i = 0; i < moving.size(); i++ )
+	{
+		auto object = moving[i];
+
+		unify::Angle angle( unify::AngleInDegrees( ( 360 / time_limit ) * params.GetDelta() ) );
+		angle *= (rand() % 2 ) ? 1 : -1;
+		object->GetFrame().Orbit( originPoint[i], unify::Quaternion( unify::V3< float >::V3Normalized( originPoint[i] ), angle ) );
+	}
 }

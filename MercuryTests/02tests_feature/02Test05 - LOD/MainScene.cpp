@@ -51,7 +51,7 @@ void MainScene::OnStart()
 	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );

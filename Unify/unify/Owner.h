@@ -21,7 +21,7 @@ namespace unify
 
 		static ptr Create( std::string name );
 
-		std::string Name() const;
+		std::string GetName() const;
 
 	private:
 		std::string m_name;		
@@ -33,9 +33,11 @@ namespace unify
 	public:
 		typedef std::shared_ptr< OwnerProperty > ptr;
 
-		static ptr Create( std::string name );
+		static ptr Create( std::string name = std::string() );
 
-		std::string Name() const;
+		std::string GetName() const;
+
+		void SetName( std::string name );
 
 		void AddOwner( Owner::ptr owner );
 

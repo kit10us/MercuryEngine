@@ -60,7 +60,7 @@ void ResourceBrowser::UpdateResourceList()
 	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
 	for ( size_t i = 0; i < manager->Count(); i++ )
 	{			  
-		std::string text = manager->GetResourceName( i );
+		std::string text = manager->GetResource( i )->GetName();
 
 		if ( unify::StringIs( manager->GetName(), "texture" ) )
 		{

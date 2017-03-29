@@ -47,12 +47,60 @@ const Node * VisualScene::GetFirstNode() const
 	return m_firstNode.get();
 }
 
-void VisualScene::Build( me::PrimitiveList & pl ) const
+
+
+const Node* FindNode( const Node* node, std::string id )
 {
-	Build( pl, unify::MatrixIdentity(), GetFirstNode() );
+	if( !node ) return nullptr;
+
+	if( unify::StringIs( node->GetID(), id ) )
+	{
+		return node;
+	}
+
+	// Search children...
+	{
+		auto result = FindNode( node->GetFirstChild(), id );
+		if( result )
+		{
+			return result;
+		}
+	}
+
+	// Search siblings...
+	return FindNode( node->GetNext(), id );
 }
 
-void VisualScene::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const
+const Node * VisualScene::FindNode( std::string id ) const
+{
+	// Remove prepended "#" from name if it exists...
+	if( id.at( 0 ) == '#' )
+	{
+		id = id.substr( 1 );
+	}
+
+	const Node* node = ::FindNode( m_firstNode.get(), id );
+	return node;
+}
+
+void VisualScene::Build( me::Mesh & mesh ) const
+{
+	Build( mesh, unify::MatrixIdentity(), GetFirstNode() );
+}
+
+void BuildSkeleton( me::Skeleton & skeleton, const dae::Node * node )
+{
+	if( node == nullptr )
+	{
+		return;
+	}
+
+	skeleton.AddJoint( node->GetName(), node->GetMatrix(), node->GetParent() ? node->GetParent()->GetName() : std::string() );
+	BuildSkeleton( skeleton, node->GetFirstChild() );
+	BuildSkeleton( skeleton, node->GetNext() );
+}
+
+void VisualScene::Build( me::Mesh & mesh, const unify::Matrix & matrix, const dae::Node * node ) const
 {
 	// Iterate this nodes instances...
 	for ( const auto instance : node->GetInstances() )
@@ -63,7 +111,7 @@ void VisualScene::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, c
 			{
 				const InstanceGeometry * instanceGeometry = dynamic_cast< const InstanceGeometry * >( instance.get() );
 				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( instance->GetURL() ) ;
-				geo.Build( pl, matrix * node->GetFinalMatrix(), instanceGeometry->GetBindMaterial()->GetTechniqueCommon() );
+				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceGeometry->GetBindMaterial()->GetTechniqueCommon() );
 			}
 			break;
 		case InstanceSet::InstanceTypeController:
@@ -71,13 +119,15 @@ void VisualScene::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, c
 				const InstanceController * instanceController = dynamic_cast< const InstanceController * >(instance.get());
 				const dae::Controller & controller = *GetDocument().GetLibraryControllers().Find( instanceController->GetURL() );
 				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( controller.GetSkin()->GetSource() );
-				geo.Build( pl, matrix * node->GetFinalMatrix(), instanceController->GetBindMaterial()->GetTechniqueCommon() );
+				const dae::Node * skeleton = FindNode( instanceController->GetSkeleton() );
+				BuildSkeleton( *mesh.GetSkeleton(), skeleton );
+				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceController->GetBindMaterial()->GetTechniqueCommon() );
 			}
 			break;
 		case InstanceSet::InstanceTypeNode:
 			{
 				const dae::Node * referencedNode = GetDocument().GetLibraryNodes().Find( instance->GetURL() );
-				Build( pl, matrix * node->GetFinalMatrix(), referencedNode );
+				Build( mesh, matrix * node->GetFinalMatrix(), referencedNode );
 			}
 			break;
 		}
@@ -86,13 +136,13 @@ void VisualScene::Build( me::PrimitiveList & pl, const unify::Matrix & matrix, c
 	// Iterate children nodes...
 	if ( node->GetFirstChild() )
 	{
-		Build( pl, matrix, node->GetFirstChild() );
+		Build( mesh, matrix, node->GetFirstChild() );
 	}
 
 	// Iterate next sibling...
 	if ( node->GetNext() )
 	{
-		Build( pl, matrix, node->GetNext() );
+		Build( mesh, matrix, node->GetNext() );
 	}
 }
 

@@ -19,22 +19,23 @@ namespace medx11
 		Renderer( WindowsOS * os, me::Display display, size_t index );
 		virtual ~Renderer();				
 
-		me::IGame* GetGame() override;
-
-		const me::Display & GetDisplay() const;
-
 		ID3D11Device * GetDxDevice() const;
 		ID3D11DeviceContext * GetDxContext() const;
 		IDXGISwapChain * GetSwapChain() const;
 
-		void SetCullMode( me::CullMode::TYPE mode ) override;
+
+	public: // IRenderer...
+		me::IGame* GetGame() override;
+
+		const me::Display & GetDisplay() const;
+
+		me::Viewport GetViewport() const override;
 
 		void BeforeRender() override;
 		void BeforeRenderSolids() override;
 		void BeforeRenderTrans() override;
 		void AfterRender() override;
 
-		me::Viewport GetViewport() const override;
 
 		bool IsFullscreen() const override;
 
@@ -43,7 +44,6 @@ namespace medx11
 		void* GetHandle() const override;
 
 		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::MatrixFeed & matrixFeed ) override;
-
 
 		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
 		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;

@@ -51,7 +51,7 @@ int Quaternion_Constructor(lua_State * state)
 		std::string type = GetTypename(state, 1);
 		if (unify::StringIs(type, "Matrix"))
 		{
-			auto in = CheckMatrix(state, 1);
+			auto in = CheckUserType< MatrixProxy >(state, 1);
 			return PushQuaternion(state, in->matrix);
 		}
 		else if (unify::StringIs(type, "Quaternion"))

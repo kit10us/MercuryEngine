@@ -24,18 +24,40 @@ namespace me
 		const size_t instances_size;
 	};		
 
+
 	class MatrixFeed
 	{
+		enum class Phase
+		{
+			InstancesSetPhase,
+			MatrixPointerPhase,
+			FramePointerPhase,
+			IMatrixSourcePhase,
+			MatrixArrayPhase,
+			Done
+		} _phase;
+
+		// Phase 1
 		const InstancesSet * _instancesList;
+		size_t _instancesList_size;
+
+		// Phase 2
 		const unify::Matrix * _matrices;
+		size_t _matrices_size;
+
+		// Phase 3
 		const unify::FrameLite ** _instances;
+		size_t _instances_size;
+
+		// Phase 4
 		IMatrixSource * const * _sources;
+		size_t _sources_size;
 
 		// Shared variables...
-		const size_t _major_size;
 		size_t _major_index;
 		size_t _minor_index;
-		size_t _matricesPerInstance; // guarantees multiples of _stride (for example, with animations that require a specific amount of matrices).
+		size_t _stride; // guarantees multiples of _stride (for example, with animations that require a specific amount of matrices).
+
 
 	public:
 		MatrixFeed();
@@ -44,8 +66,11 @@ namespace me
 		MatrixFeed( const unify::FrameLite ** instances, size_t instances_size, size_t matricesPerInstance = 1 );
 		MatrixFeed( IMatrixSource * const * sources, size_t sources_size, size_t matricesPerInstance = 1 );
 
+		/// <summary>
+		/// Consume MAX amount of matrics at a time.
+		/// </summary>
 		size_t Consume( unify::Matrix * out, size_t max );
-		size_t MatricesPerInstance() const;
+		size_t Stride() const;
 
 		bool Done() const;
 

@@ -7,6 +7,8 @@
 #include <me/TextureLock.h>
 #include <me/Filtering.h>
 #include <me/SpriteDictionary.h>
+#include <rm/IResource.h>
+#include <qxml/Element.h>
 #include <unify/Path.h>
 #include <unify/Size.h>
 #include <unify/Rect.h>
@@ -16,24 +18,9 @@ namespace me
 {
 	struct TextureParameters
 	{
-		TextureParameters()
-			: renderable( true )
-			, lockable( false )
-			, min( me::Filtering::Linear )
-			, mag( me::Filtering::Linear )
-			, mip( me::Filtering::Linear )
-		{
-		}
-
-		TextureParameters( unify::Path _source, bool _renderable = true, bool _lockable = false )
-			: source( _source )
-			, renderable( _renderable )
-			, lockable( _lockable )
-			, min( me::Filtering::Linear )
-			, mag( me::Filtering::Linear )
-			, mip( me::Filtering::Linear )
-		{
-		}
+		TextureParameters();
+		TextureParameters( unify::Path _source, bool _renderable = true, bool _lockable = false );
+		TextureParameters( const qxml::Element * element );
 
 		unify::Path source;
 		bool renderable;
@@ -44,7 +31,7 @@ namespace me
 	};
 
 
-	class ITexture
+	class ITexture : public rm::IResource
 	{
 	public:
 		typedef std::shared_ptr< ITexture > ptr;
@@ -66,7 +53,5 @@ namespace me
 		virtual const SpriteDictionary & GetSpriteDictionary() const = 0;
 
 		virtual const me::TextureParameters * GetParameters() const = 0;
-
-		virtual bool Reload() = 0;
 	};
 }

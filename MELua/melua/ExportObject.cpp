@@ -95,7 +95,6 @@ namespace melua
 	int Object_AddGeometry( lua_State * state )
 	{
 		int args = lua_gettop( state );
-		assert( args == 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -128,7 +127,14 @@ namespace melua
 			}
 		}
 
-		AddGeometryComponent( objectProxy->object, geometry );
+		if( lua_gettop( state ) == 3 )
+		{
+			AddGeometryComponent( objectProxy->object, geometry, CheckUserType< MatrixProxy >( state, 3 )->matrix );
+		}
+		else 
+		{
+			AddGeometryComponent( objectProxy->object, geometry );
+		}
 
 		return 0;
 	}
@@ -272,20 +278,6 @@ namespace melua
 		return 0;
 	}
 
-	int Object_SetModelMatrix( lua_State * state )
-	{
-		int args = lua_gettop( state );
-		assert( args == 2 );
-
-		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
-
-		unify::Matrix matrix = CheckMatrix( state, 2 )->matrix;
-
-		objectProxy->object->GetFrame().SetModelMatrix( matrix );
-
-		return 0;
-	}
-
 	int Object_Constructor( lua_State * state )
 	{
 
@@ -311,7 +303,6 @@ namespace melua
 			{ "AddGeometry", Object_AddGeometry },
 			{ "GetSize", Object_GetSize },
 			{ "Transform", Object_Transform },
-			{ "SetModelMatrix", Object_SetModelMatrix },
 			{ "AddComponent", Object_AddComponent },
 			{ "GetComponentCount", Object_GetComponentCount },
 			{ "GetComponent", Object_GetComponent },

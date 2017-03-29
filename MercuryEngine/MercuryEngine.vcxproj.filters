@@ -675,6 +675,12 @@
     <ClInclude Include="me\Blend.h">
       <Filter>me\core</Filter>
     </ClInclude>
+    <ClInclude Include="me\Skeleton.h">
+      <Filter>me\core</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\FinalCamera.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1101,6 +1107,12 @@
       <Filter>me\input\action</Filter>
     </ClCompile>
     <ClCompile Include="me\Blend.cpp">
+      <Filter>me\core</Filter>
+    </ClCompile>
+    <ClCompile Include="me\ITexture.cpp">
+      <Filter>me\i</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Skeleton.cpp">
       <Filter>me\core</Filter>
     </ClCompile>
   </ItemGroup>

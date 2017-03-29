@@ -13,8 +13,8 @@
 #include <me/RenderMethod.h>
 #include <me/RenderInfo.h>
 #include <me/MeshInstanceData.h>
-#include <me/object/ObjectComponent.h>
 #include <me/PrimitiveList.h>
+#include <me/Skeleton.h>
 #include <unify/unify.h>
 
 namespace me
@@ -26,9 +26,20 @@ namespace me
 		Mesh( unify::Path source, IRenderer * renderer );
 		~Mesh();
 
-		GeometryInstanceData * CreateInstanceData();
-
 		void Destroy();
+
+		const unify::BBox< float > & ComputeBounds();
+
+		PrimitiveList & GetPrimitiveList();
+
+		Skeleton * GetSkeleton();
+
+		const Skeleton * GetSkeleton() const;
+
+		void SetSkeletonEffect( Effect::ptr effect );
+
+	public: // Geometry...
+		GeometryInstanceData * CreateInstanceData() override;
 
 		void Update( UpdateParams params, GeometryInstanceData * instanceData ) override;
 
@@ -38,11 +49,14 @@ namespace me
 
 		bool IsTrans() const override;
 
-		const unify::BBox< float > & ComputeBounds();
-		PrimitiveList & GetPrimitiveList();
+	public: // IResource...
+		bool Reload() override;
 
 	private:
 		unify::Path m_source;
 		PrimitiveList m_primitiveList;
+		Skeleton m_skeleton;
+		Effect::ptr m_skeletonEffect;
+		frameanimation::AnimationSet::ptr m_animations;
 	};
 }

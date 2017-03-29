@@ -82,7 +82,7 @@ void MainScene::OnStart()
 	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;

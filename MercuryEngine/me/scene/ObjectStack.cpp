@@ -159,6 +159,18 @@ Object * ObjectStack::GetObject( size_t index )
 	return &m_objects[ index ];
 }
 
+void ObjectStack::DirtyObject( object::Object* object )
+{
+	assert( 0 );
+	/*
+	// Remove from caches...
+	if( ! m_solids )
+	{
+		m_trans.Remove( object );
+	}
+	*/
+}
+
 void ObjectStack::Update( UpdateParams params )
 {
 	for( auto && object : m_newObjects )

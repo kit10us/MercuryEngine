@@ -1,6 +1,6 @@
 #pragma once
 
-#include <rm/ResourcePack.h>
+#include <rm/IResource.h>
 #include <rm/ISourceFactoryFunctor.h>
 #include <qxml/Element.h>
 #include <unify/Path.h>
@@ -28,6 +28,10 @@ namespace rm
 		/// </summary>
 		virtual void AddResource( std::string name, unify::Path path ) = 0;
 
+		virtual IResource* GetResource( std::string name ) = 0;
+
+		virtual IResource* GetResource( size_t i ) = 0;
+
 		/// <summary>
 		/// Returns true if a resource exists with the specified ID.
 		/// </summary>
@@ -37,11 +41,6 @@ namespace rm
 		/// Returns the number of resources being managed.
 		/// </summary>
 		virtual size_t Count() const = 0;
-
-		/// <summary>
-		/// Return the name of a specific resource.
-		/// </summary>
-		virtual std::string GetResourceName( size_t index ) const = 0;
 
 		/// <summary>
 		/// Clean out unused resources.

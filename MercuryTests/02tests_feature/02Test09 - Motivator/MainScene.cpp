@@ -64,13 +64,12 @@ void MainScene::OnStart()
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", unify::Path( "cube.xml" ) ) );
 	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
 	auto xmlObject = GetObjectAllocator()->NewObject( "XMLObject" );
-	AddGeometryComponent( xmlObject, meshXML );
 	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
 		unify::Matrix modelMatrix = MatrixIdentity();
 		modelMatrix.Scale( 0.10f );
-		xmlObject->GetFrame().SetModelMatrix( modelMatrix );
+		AddGeometryComponent( xmlObject, meshXML, modelMatrix );
 	}
 	xmlObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
@@ -78,7 +77,6 @@ void MainScene::OnStart()
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	auto aseObject = GetObjectAllocator()->NewObject( "swordASE" );
-	AddGeometryComponent( aseObject, meshASE );
 	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
 	{ 
 		using namespace unify;
@@ -86,14 +84,13 @@ void MainScene::OnStart()
 		modelMatrix.Scale( 0.090f );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
 		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-		aseObject->GetFrame().SetModelMatrix( modelMatrix );
+		AddGeometryComponent( aseObject, meshASE, modelMatrix );
 	}
 	aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "torus.dae" ) ) );
 	
 	auto daeModel = GetObjectAllocator()->NewObject( "daeModel" );
-	AddGeometryComponent( daeModel, meshDAE );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
 	daeModel->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
@@ -103,6 +100,6 @@ void MainScene::OnStart()
 		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
-		daeModel->GetFrame().SetModelMatrix( modelMatrix );
+		AddGeometryComponent( daeModel, meshDAE, modelMatrix );
 	}
 }

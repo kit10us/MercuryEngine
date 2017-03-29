@@ -123,6 +123,8 @@ namespace unify
 
 		void LookAtLH( const V3< float > & at, const V3< float > & up );
 
+		void Orbit( const V3< float > & origin, const V2< float > & direction, Angle angle );
+
 		std::string ToString() const;
 		void FromString( std::string text );
 

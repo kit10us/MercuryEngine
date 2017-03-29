@@ -48,6 +48,11 @@ void Object::CopyFrom( std::string name, Object & objectFrom )
 	}
 }
 
+void Object::SetAllocator( scene::IObjectAllocator* allocator )
+{
+	m_allocator = allocator;
+}
+
 void Object::SetName( std::string name )
 {
 	m_name = name;
@@ -233,4 +238,9 @@ bool Object::IsAlive() const
 void Object::SetAlive( bool alive )
 {
 	m_alive = alive;
+}
+
+void Object::MakeDirty()
+{
+	m_allocator->DirtyObject( this );
 }

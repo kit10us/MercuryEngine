@@ -8,8 +8,8 @@
 
 #pragma once
 
+#include <rm/IResourceManager.h>
 #include <qxml/Document.h>
-#include <rm/ResourceManagerBase.h>
 #include <unify/String.h>
 #include <unify/Stream.h>
 #include <unify/Exception.h>
@@ -82,7 +82,17 @@ namespace rm
 		/// </summary>
 		ResourcePtr Get( size_t index );
 
-        void ForEach( ForEachFunctor & functor );
+		IResource* GetResource( std::string name )
+		{
+			return Find( name ).get();
+		}
+
+		IResource* GetResource( size_t i )
+		{
+			return Get( i ).get();
+		}
+		
+		void ForEach( ForEachFunctor & functor );
 
 		void AddFactory( std::string extension, std::shared_ptr< ISourceFactory< T > > factory );
 
@@ -95,7 +105,6 @@ namespace rm
 		void AddResource( std::string name, unify::Path path ) override;
 		bool Exists( std::string name ) const override;
 		size_t Count() const override;
-		std::string GetResourceName( size_t index ) const override;
 		void Clean() override;
 
 	protected:
@@ -104,7 +113,6 @@ namespace rm
 		ILogger::ptr m_logger;
 		std::map< std::string, ResourcePtr > m_resourceMap;
 		std::vector< ResourcePtr > m_resourceList;
-		std::vector< std::string > m_resourceNames;
 		std::map< std::string, std::shared_ptr< ISourceFactory< T > >, unify::CaseInsensitiveLessThanTest > m_sourceFactories;
 	};
 

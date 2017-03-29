@@ -9,10 +9,8 @@
 
 struct MatrixProxy
 {
+	MELUADLL_API static char* Name();
 	unify::Matrix matrix;
 };
-
-MELUADLL_API int PushMatrix(lua_State * state, unify::Matrix martix );
-MELUADLL_API MatrixProxy* CheckMatrix(lua_State * state, int index);
 
 void RegisterMatrix(lua_State * state);

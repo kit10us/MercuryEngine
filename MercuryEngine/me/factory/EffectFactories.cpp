@@ -39,30 +39,8 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 				std::string name = child.GetAttribute< std::string >( "name" );
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
-				TextureParameters parameters;
-				if ( child.HasAttributes( "min" ) )
-				{
-					parameters.min = Filtering::FromString( child.GetAttribute< std::string >( "min" ) );
-				}
-				if ( child.HasAttributes( "mag" ) )
-				{
-					parameters.mag = Filtering::FromString( child.GetAttribute< std::string >( "mag" ) );
-				}
-				if ( child.HasAttributes( "mip" ) )
-				{
-					parameters.mip = Filtering::FromString( child.GetAttribute< std::string >( "mip" ) );
-				}
-				if ( child.HasAttributes( "lockable" ) )
-				{
-					parameters.lockable = child.GetAttribute< bool >( "lockable" );
-				}
-				if ( child.HasAttributes( "renderable" ) )
-				{
-					parameters.renderable = child.GetAttribute< bool >( "renderable" );
-				}
-
-				unify::Path source( child.GetAttribute< std::string >( "source" ) );
-				effect->SetTexture( stage, textureManager->Add( name, source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
+				TextureParameters parameters( &child );
+				effect->SetTexture( stage, textureManager->Add( name, parameters.source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
 			}
 			else if ( child.IsTagName( "blend" ) )
 			{

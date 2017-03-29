@@ -10,7 +10,6 @@
 #include <unify/DataLock.h>
 
 using namespace dae;
-using namespace me;
 
 typedef std::vector< float > VFloat;
 typedef std::vector< int > VInt;
@@ -18,6 +17,7 @@ typedef std::vector< int > VInt;
 Mesh::Mesh( IDocument & document, const qxml::Element * node )
 : DocumentNode( document, node )
 {
+	using namespace me;
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
 	{
 		if ( childNode->IsTagName( "source" ) )
@@ -57,6 +57,7 @@ Mesh::Mesh( IDocument & document, const qxml::Element * node )
 
 void Mesh::GetSources( std::list< ContributingInput > & sources, const Input_Shared * input, int offset, size_t & pStride ) const
 {
+	using namespace me;
 	std::string realName;
 	
 	// Remove prepended "#" from name if it exists...
@@ -88,8 +89,12 @@ void Mesh::GetSources( std::list< ContributingInput > & sources, const Input_Sha
 	}
 }
 
-void Mesh::Build( me::PrimitiveList & accumulatedPL, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
 {
+	using namespace me;
+
+	auto & accumulatedPL = mesh.GetPrimitiveList();
+
 	// polylist and triangles are treated as polylists.
 	for ( const auto polylist : m_polylist )
 	{

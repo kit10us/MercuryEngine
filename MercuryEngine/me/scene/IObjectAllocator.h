@@ -2,8 +2,10 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/object/Object.h>
 #include <me/IThing.h>
+#include <me/object/FinalCamera.h>
+#include <me/UpdateParams.h>
+#include <me/RenderParams.h>
 
 #ifdef GetObject
 #undef GetObject
@@ -40,6 +42,7 @@ namespace me
 			virtual void CollectObjects( std::vector< object::Object * > & objects ) = 0;
 			virtual object::Object * FindObject( std::string name ) = 0;
 			virtual object::Object * GetObject( size_t index ) = 0;
+			virtual void DirtyObject( object::Object* object ) = 0;
 
 			virtual void Update( UpdateParams params ) = 0;
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;

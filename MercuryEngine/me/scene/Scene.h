@@ -3,6 +3,7 @@
 #pragma once
 
 #include <me/Game.h>
+#include <me/scene/SceneManager.h>
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 #include <me/Viewport.h>
@@ -26,13 +27,13 @@ namespace me
 
 			unify::Owner::ptr GetOwnership() override;
 
-		public: 
+		public: // Events...
 			void Component_OnBeforeStart();
 			void Component_OnAfterStart();
 
-			void Component_OnEarlyUpdate( UpdateParams params ) override;
-			void Component_OnUpdate( UpdateParams params ) override;
-			void Component_OnLateUpdate( UpdateParams params ) override;
+			void Component_OnEarlyUpdate( UpdateParams & params ) override;
+			void Component_OnUpdate( UpdateParams & params ) override;
+			void Component_OnLateUpdate( UpdateParams & params ) override;
 
 			void Component_OnRender( RenderGirl renderGirl ) override;
 			void Component_OnSuspend() override;
@@ -41,7 +42,7 @@ namespace me
 
 			// User defined events...
 			void OnStart() override {}
-			void OnUpdate( UpdateParams params ) override {}
+			void OnUpdate( UpdateParams & params ) override {}
 			void OnRender( RenderGirl renderGirl ) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}
@@ -70,6 +71,8 @@ namespace me
 
 			std::string SendCommand( std::string command, std::string extra );
 
+			SceneManager* GetSceneManager();
+
 			template< typename T > 
 			rm::ResourceManagerSimple< T > * GetManager()
 			{
@@ -82,6 +85,7 @@ namespace me
 			unify::Owner::ptr m_ownership;
 			std::list< ISceneComponent::ptr > m_components;
 			IObjectAllocator* m_objectAllocator;		   
+			SceneManager* m_sceneManager;
 		};
 	}
 }

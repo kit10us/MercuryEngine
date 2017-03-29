@@ -20,7 +20,7 @@ function BuildPortalSphere( position )
 	local object = this:NewObject( MakeObjectName( "sphere" ) )
 	
 	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans", "Color_Trans.effect" ) )
+	sphereParameters:SetEffect( Effect( "color_trans", "Color_Trans.effect" ) )
 	
 	sphereParameters:SetRadius( 2.0 )
 	sphereParameters:SetDiffuse( Blue( 1, 0.1 ) )

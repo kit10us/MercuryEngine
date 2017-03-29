@@ -6,6 +6,7 @@
 #include <me/shader/ConstantBuffer.h>
 #include <me/VertexDeclaration.h>
 #include <me/Mercury.h>
+#include <rm/IResource.h>
 #include <unify/Path.h>
 #include <unify/DataLock.h>
 #include <vector>
@@ -31,10 +32,10 @@ namespace me
 		bool trans;
 	};
 
-	class IVertexShader
+	class IVertexShader : public rm::IResource
 	{
 	public:
-		typedef std::shared_ptr< IVertexShader > ptr;
+		typedef std::shared_ptr< IVertexShader > ptr;		
 
 		virtual ~IVertexShader() {}
 
@@ -46,7 +47,6 @@ namespace me
 		virtual size_t GetBytecodeLength() const = 0;
 		virtual void Use() = 0;
 		virtual unify::Path GetSource() const = 0;
-		virtual bool Reload() = 0;
 		virtual bool IsTrans() const = 0;
 	};
 }

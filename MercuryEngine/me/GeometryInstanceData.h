@@ -24,5 +24,14 @@ namespace me
 		virtual ~GeometryInstanceData();
 
 		virtual void Update( unify::Seconds elapsed );
+
+		void SetMatrix( unify::Matrix matrix );
+		unify::Matrix GetMatrix() const;
+		bool IsMatrixSet() const;
+		void ResetMatrix();
+
+	private:
+		bool m_isMatrixSet;
+		unify::Matrix m_matrix;
 	};
 }

@@ -2,6 +2,8 @@
 // All Rights Reserved
 
 #include <MainScene.h>
+#include <me/RenderMethod.h>
+#include <me/VertexUtil.h>
 #include <me/scene/SceneManager.h>
 #include <me/object/Object.h>
 #include <me/Mesh.h>
@@ -73,7 +75,7 @@ void MainScene::OnStart()
 		using namespace unify;
 		unify::Matrix modelMatrix = MatrixIdentity();
 		modelMatrix.Scale( 0.10f );
-		xmlObject->GetFrame().SetModelMatrix( modelMatrix );
+		// TODO: xmlObject->GetFrame().SetModelMatrix( modelMatrix );
 	}
 	xmlObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
@@ -89,25 +91,22 @@ void MainScene::OnStart()
 		modelMatrix.Scale( 0.090f );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
 		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-		aseObject->GetFrame().SetModelMatrix( modelMatrix );
+		// TODO: aseObject->GetFrame().SetModelMatrix( modelMatrix );
 	}
 	aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "USSVoyager.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "models/Death Star II/models/Death Star II.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "enterprise.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "cube.dae" ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "borgcube.dae" ) );
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "torus.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "USSVoyager.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "models/Death Star II/models/Death Star II.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "enterprise.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "cube.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "borgcube.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "torus.dae" ) ) );
 	
 	// Rigged...
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "Mickey_Mouse/Mickey_Mouse.dae" ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "Mickey_Mouse/Mickey_Mouse.dae" ) ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
 
 	auto daeModel = GetObjectAllocator()->NewObject( "daeModel" );
-	AddGeometryComponent( daeModel, meshDAE );
-	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	daeModel->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 	{ 
 		using namespace unify;
@@ -115,11 +114,13 @@ void MainScene::OnStart()
 		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
-		daeModel->GetFrame().SetModelMatrix( modelMatrix );
+		AddGeometryComponent( daeModel, meshDAE, modelMatrix );
 	}
+	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
+	daeModel->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );

@@ -137,9 +137,7 @@ int Transform_GetMatrix(lua_State * state)
 	assert(args == 1);
 
 	TransformProxy * proxy = CheckTransform(state, 1);
-	PushMatrix(state, proxy->object->GetFrame().GetMatrix());
-
-	return 1;
+	return Push< MatrixProxy >( state, { proxy->object->GetFrame().GetMatrix() } );
 }
 
 int Transform_PreMul( lua_State * state )
@@ -158,7 +156,7 @@ int Transform_PreMul( lua_State * state )
 	}
 	else if (unify::StringIs(secondType, "Matrix"))
 	{ 
-		unify::Matrix m = CheckMatrix(state, 2)->matrix;
+		unify::Matrix m = CheckUserType< MatrixProxy >(state, 2)->matrix;
 		proxy->transform->PreMul(m);
 	}
 	else
@@ -185,7 +183,7 @@ int Transform_PostMul( lua_State * state )
 	}
 	else if (unify::StringIs(secondType, "Matrix"))
 	{
-		unify::Matrix m = CheckMatrix(state, 2)->matrix;
+		unify::Matrix m = CheckUserType< MatrixProxy >(state, 2)->matrix;
 		proxy->transform->PostMul(m);
 	}
 	else
@@ -196,30 +194,6 @@ int Transform_PostMul( lua_State * state )
 	return 0;
 }
  
-int Transform_SetModelMatrix( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 2 );
-
-	TransformProxy * proxy = CheckTransform(state, 1);
-
-	unify::Matrix matrix{ CheckMatrix( state, 2 )->matrix };
-	proxy->object->GetFrame().SetModelMatrix( matrix );
-
-	return 0;
-}
-
-int Transform_GetModelMatrix( lua_State * state )
-{
-	int args = lua_gettop( state );
-	assert( args == 1 );
-
-	TransformProxy * proxy = CheckTransform(state, 1);
-	PushMatrix( state, proxy->object->GetFrame().GetModelMatrix() );
-
-	return 1;
-}
-
 static const luaL_Reg TransformFunctions[] =
 {
 	{ "SetPosition", Transform_SetPosition },
@@ -232,8 +206,6 @@ static const luaL_Reg TransformFunctions[] =
 	{ "GetMatrix", Transform_GetMatrix },
 	{ "PreMul", Transform_PreMul },
 	{ "PostMul", Transform_PostMul },
-	{ "SetModelMatrix", Transform_SetModelMatrix },
-	{ "GetModelMatrix", Transform_GetModelMatrix },
 	{ nullptr, nullptr }
 };
 

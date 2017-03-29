@@ -15,7 +15,7 @@ InstanceController::InstanceController( const qxml::Element * node )
 		{
 			m_bind_material.reset( new BindMaterial( childNode ) );
 		}
-		else if ( childNode->IsTagName( "skelton" ) )
+		else if ( childNode->IsTagName( "skeleton" ) )
 		{
 			m_skeleton = childNode->GetText();
 		}

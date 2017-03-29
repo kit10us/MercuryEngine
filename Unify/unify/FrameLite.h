@@ -44,12 +44,13 @@ namespace unify
 		const Matrix GetMatrix() const;
 		void ReadMatrix( Matrix * matrix ) const;
 
+		void SetMatrix( unify::Matrix matrix );
+
 		V3< float > GetLeft() const;
 		V3< float > GetUp() const;
 		V3< float > GetForward() const;
 		Quaternion GetRotation() const;
-		V3< float > GetPosition() const;
-		
+		V3< float > GetPosition() const;		
 
 		void SetLeft( V3< float > left);
 		void SetUp( V3< float > up );
@@ -57,18 +58,9 @@ namespace unify
 		void SetRotation( const Quaternion & rotation );
 		void SetPosition( const V3< float > & position );
 
-		// Model matrix...
-		void SetModelMatrix( Matrix & modelMatrix );
-		Matrix & GetModelMatrix();
-		const Matrix & GetModelMatrix() const;
-		bool GetUseModelMatrix() const;
-
 	protected:
 		unify::Quaternion m_q;
 		unify::V3< float > m_p;
 		unify::Matrix m_mat;
-		
-		bool m_useModelMatrix;
-		unify::Matrix m_modelMatrix;
 	};
 }

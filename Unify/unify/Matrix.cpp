@@ -810,6 +810,21 @@ void Matrix::LookAtLH( const V3< float > & at, const V3< float > & up )
 	*this = unify::MatrixLookAtLH( eyePosition, at, up );
 }
 
+void Matrix::Orbit( const V3< float > & origin, const V2< float > & direction, Angle angle )
+{
+	// Re-origin our position...
+	V3< float > newPosition( GetPosition() - origin );
+
+	Quaternion q = Quaternion( V3< float >( direction.y, direction.x, 0 ), angle );
+
+	newPosition = newPosition * q;
+
+	unify::V3< float > p = newPosition + origin;
+	SetPosition( p );
+	//Quaternion q = GetRotation();
+	//m_mat = Matrix{ m_q, m_p };
+}
+
 std::string Matrix::ToString() const
 {
 	using std::string;

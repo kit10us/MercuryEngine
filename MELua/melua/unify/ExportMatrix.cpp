@@ -9,18 +9,9 @@
 using namespace melua;
 using namespace me;
 
-int PushMatrix(lua_State * state, unify::Matrix matrix)
+MELUADLL_API char* MatrixProxy::Name()
 {
-	MatrixProxy ** childProxy = (MatrixProxy**)( lua_newuserdata(state, sizeof(MatrixProxy*)) );
-	*childProxy = new MatrixProxy{ matrix };
-	luaL_setmetatable(state, "Matrix");
-	return 1;
-}
-
-MatrixProxy* CheckMatrix(lua_State * state, int index)
-{
-	MatrixProxy* ud = *(MatrixProxy**)luaL_checkudata(state, index, "Matrix");
-	return ud;
+	return "Matrix";
 }
 
 int Matrix_ToString(lua_State * state)
@@ -28,7 +19,7 @@ int Matrix_ToString(lua_State * state)
 	int args = lua_gettop(state);
 	assert(args == 1);
 
-	unify::Matrix matrix(CheckMatrix(state, 1)->matrix);
+	unify::Matrix matrix(CheckUserType< MatrixProxy >(state, 1)->matrix);
 
 	lua_pushstring(state, matrix.ToString().c_str());
 	return 1;
@@ -43,12 +34,12 @@ int Matrix_Constructor(lua_State * state)
 
 	if (args == 0)
 	{
-		return PushMatrix(state, unify::MatrixIdentity());
+		return Push< MatrixProxy >( state, { unify::MatrixIdentity() } );
 	}
 	else if (args == 1)
 	{
-		auto in = CheckMatrix(state, 1);
-		return PushMatrix(state, in->matrix);
+		auto in = CheckUserType< MatrixProxy >(state, 1);
+		return Push< MatrixProxy >( state, { in->matrix } );
 	}
 	else
 	{
@@ -62,7 +53,7 @@ int Matrix_MatrixZero( lua_State * state )
 	ScriptEngine * se = ScriptEngine::GetInstance();
 	auto game = se->GetGame();
 
-	return PushMatrix(state, unify::MatrixZero());
+	return Push< MatrixProxy >( state, { unify::MatrixZero() } );
 }
 
 int Matrix_MatrixTranslate( lua_State * state )
@@ -72,9 +63,7 @@ int Matrix_MatrixTranslate( lua_State * state )
 
 	unify::V3< float > vector( CheckV3( state, 1 )->v3 );
 	unify::Matrix mat = unify::MatrixTranslate( vector );
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_MatrixOrthoOffCenterLH( lua_State * state )
@@ -90,9 +79,7 @@ int Matrix_MatrixOrthoOffCenterLH( lua_State * state )
 	float zf = (float)lua_tonumber( state, 6 );
 
 	unify::Matrix mat = unify::MatrixOrthoOffCenterLH( left, right, bottom, top, zn, zf );
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_MatrixScale( lua_State * state )
@@ -114,9 +101,7 @@ int Matrix_MatrixScale( lua_State * state )
 		mat = unify::MatrixScale( scale );
 	}
 
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_MatrixRotationAboutAxis( lua_State * state )
@@ -126,11 +111,9 @@ int Matrix_MatrixRotationAboutAxis( lua_State * state )
 
 	unify::V3< float > axis( CheckV3( state, 1 )->v3 );
 	float angle = (float)lua_tonumber( state, 2 );
-	
-	unify::Matrix mat = unify::MatrixRotationAboutAxis( axis, unify::AngleInRadians( angle ) );
-	PushMatrix( state, mat );
 
-	return 1;
+	unify::Matrix mat = unify::MatrixRotationAboutAxis( axis, unify::AngleInRadians( angle ) );
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_MatrixPerspectiveFovLH( lua_State * state )
@@ -144,7 +127,7 @@ int Matrix_MatrixPerspectiveFovLH( lua_State * state )
 	float zf = (float)lua_tonumber( state, 4 );
 
 	unify::Matrix mat = unify::MatrixPerspectiveFovLH( w, h, zn, zf );
-	PushMatrix( state, mat );
+	Push< MatrixProxy >( state, { mat } );
 
 	return 1;
 }
@@ -157,9 +140,7 @@ int Matrix_MatrixRotationX( lua_State * state )
 	float angle = (float)lua_tonumber( state, 1 );
 
 	unify::Matrix mat = unify::MatrixRotationX( unify::AngleInRadians( angle ) );
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_MatrixRotationY( lua_State * state )
@@ -170,9 +151,7 @@ int Matrix_MatrixRotationY( lua_State * state )
 	float angle = (float)lua_tonumber( state, 1 );
 
 	unify::Matrix mat = unify::MatrixRotationY( unify::AngleInRadians( angle ) );
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 int Matrix_MatrixRotationZ( lua_State * state )
 {
@@ -182,9 +161,7 @@ int Matrix_MatrixRotationZ( lua_State * state )
 	float angle = (float)lua_tonumber( state, 1 );
 
 	unify::Matrix mat = unify::MatrixRotationZ( unify::AngleInRadians( angle ) );
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_MatrixLookAtLH( lua_State * state )
@@ -197,9 +174,7 @@ int Matrix_MatrixLookAtLH( lua_State * state )
 	unify::V3< float > up( CheckV3( state, 3 )->v3 );
 	
 	unify::Matrix mat = unify::MatrixLookAtLH( eye, at, up );
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_Add( lua_State * state )
@@ -207,13 +182,11 @@ int Matrix_Add( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::Matrix l = CheckMatrix( state, 1 )->matrix;
-	unify::Matrix r = CheckMatrix( state, 2 )->matrix;
+	unify::Matrix l = CheckUserType< MatrixProxy >( state, 1 )->matrix;
+	unify::Matrix r = CheckUserType< MatrixProxy >( state, 2 )->matrix;
 	unify::Matrix mat( l + r );
 
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_Sub( lua_State * state )
@@ -221,13 +194,11 @@ int Matrix_Sub( lua_State * state )
 	int args = lua_gettop( state );
 	assert( args == 2 );
 
-	unify::Matrix l = CheckMatrix( state, 1 )->matrix;
-	unify::Matrix r = CheckMatrix( state, 2 )->matrix;
+	unify::Matrix l = CheckUserType< MatrixProxy >( state, 1 )->matrix;
+	unify::Matrix r = CheckUserType< MatrixProxy >( state, 2 )->matrix;
 	unify::Matrix mat( l - r );
 
-	PushMatrix( state, mat );
-
-	return 1;
+	return Push< MatrixProxy >( state, { mat } );
 }
 
 int Matrix_Mul( lua_State * state )
@@ -242,7 +213,7 @@ int Matrix_Mul( lua_State * state )
 
 	if (unify::StringIs(typeL, "Matrix"))
 	{
-		unify::Matrix l = CheckMatrix(state, 1)->matrix;
+		unify::Matrix l = CheckUserType< MatrixProxy >(state, 1)->matrix;
 
 		if (lua_type(state, 2) == LUA_TNUMBER)
 		{
@@ -251,20 +222,18 @@ int Matrix_Mul( lua_State * state )
 		}
 		else
 		{
-			unify::Matrix r = CheckMatrix(state, 2)->matrix;
+			unify::Matrix r = CheckUserType< MatrixProxy >(state, 2)->matrix;
 			result = l * r;
 		}
 	}
 	if (unify::StringIs(typeL, "Number"))
 	{
 		float l = (float)lua_tonumber(state, 1);
-		unify::Matrix r = CheckMatrix(state, 2)->matrix;
+		unify::Matrix r = CheckUserType< MatrixProxy >(state, 2)->matrix;
 		result = r * l;
 	}
 
-	PushMatrix( state, result );
-
-	return 1;
+	return Push< MatrixProxy >( state, { result } );
 }
 
 /*
@@ -328,7 +297,7 @@ void LookAtLH( const V3< float > & at, const V3< float > & up );
 
 int Matrix_Destructor(lua_State * state)
 {
-	auto matrix = CheckMatrix(state, 1);
+	auto matrix = CheckUserType< MatrixProxy >(state, 1);
 	delete matrix;
 	return 0;
 }

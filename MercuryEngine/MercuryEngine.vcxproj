@@ -137,6 +137,7 @@
     <ClInclude Include="me\object\action\OA_List.h" />
     <ClInclude Include="me\object\BBoxRendererComponent.h" />
     <ClInclude Include="me\object\CameraComponent.h" />
+    <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\GeometryComponent.h" />
     <ClInclude Include="me\object\IObjectComponent.h" />
     <ClInclude Include="me\object\Object.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="me\scene\SceneManagerComponent.h" />
     <ClInclude Include="me\shader\ConstantBuffer.h" />
     <ClInclude Include="me\shader\ConstantVariable.h" />
+    <ClInclude Include="me\Skeleton.h" />
     <ClInclude Include="me\SpriteDictionary.h" />
     <ClInclude Include="me\Terra.h" />
     <ClInclude Include="me\TextureLock.h" />
@@ -283,6 +285,7 @@
     <ClCompile Include="me\input\StickCondition.cpp" />
     <ClCompile Include="me\input\TriggerCondition.cpp" />
     <ClCompile Include="me\Instancing.cpp" />
+    <ClCompile Include="me\ITexture.cpp" />
     <ClCompile Include="me\LOD.cpp" />
     <ClCompile Include="me\Lookup.cpp" />
     <ClCompile Include="me\MatrixFeed.cpp" />
@@ -317,6 +320,7 @@
     <ClCompile Include="me\scene\SceneManagerComponent.cpp" />
     <ClCompile Include="me\shader\ConstantBuffer.cpp" />
     <ClCompile Include="me\shader\ConstantVariable.cpp" />
+    <ClCompile Include="me\Skeleton.cpp" />
     <ClCompile Include="me\SpriteDictionary.cpp" />
     <ClCompile Include="me\Terra.cpp" />
     <ClCompile Include="me\TextureMode.cpp" />

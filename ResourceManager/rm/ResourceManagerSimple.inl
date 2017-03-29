@@ -28,12 +28,6 @@ void ResourceManagerSimple< T >::Clear()
 }
 
 template< class T >
-void ResourceManagerSimple< T >::Clean()
-{
-	// TODO:
-}
-
-template< class T >
 std::shared_ptr< T > ResourceManagerSimple< T >::Find( std::string name )
 {
 	for( auto resource : m_resourceMap )
@@ -80,7 +74,6 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, T * reso
 	ResourcePtr resourcePtr( resource );
 	m_resourceMap[ name ] = resourcePtr;
 	m_resourceList.push_back( resourcePtr );
-	m_resourceNames.push_back( name );
 
 	return resourcePtr;
 }
@@ -121,9 +114,9 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 	auto product = factory->second->Produce( foundSource, data );
 	if( product )
 	{
+		product->SetName( name );
 		m_resourceMap[ name ] = product;
 		m_resourceList.push_back( product );
-		m_resourceNames.push_back( name );
 		return product;
 	}
 
@@ -160,7 +153,6 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( unify::Path source, unify:
 		name = product->GetName();
 		m_resourceMap[name] = product;
 		m_resourceList.push_back( product );
-		m_resourceNames.push_back( name );
 		return product;
 	}
 
@@ -179,11 +171,6 @@ size_t ResourceManagerSimple< T >::Count() const
 	return m_resourceMap.size();
 }
 
-template< class T >
-std::string ResourceManagerSimple< T >::GetResourceName( size_t index ) const
-{
-	return m_resourceNames[ index ];
-}
 template< class T >
 void ResourceManagerSimple< T >::ForEach( ForEachFunctor & functor )
 {
@@ -215,5 +202,22 @@ void ResourceManagerSimple< T >::Log_WriteLine( std::string text )
 	if ( m_logger )
 	{
 		m_logger->WriteLine( text );
+	}
+}
+
+template< class T >
+void ResourceManagerSimple< T >::Clean()
+{
+	for( auto itr = m_resourceList.begin(); itr != m_resourceList.end(); )
+	{
+		if( !itr->get()->Owners() )
+		{
+			m_resourceMap.erase( itr->get()->GetName() );
+			itr = m_resourceList.erase( itr );
+		}
+		else
+		{
+			itr++;
+		}
 	}
 }

@@ -29,9 +29,9 @@ namespace me
 			virtual void Component_OnBeforeStart() = 0;
 			virtual void Component_OnAfterStart() = 0;
 
-			virtual void Component_OnEarlyUpdate( UpdateParams params ) = 0;
-			virtual void Component_OnUpdate( UpdateParams params ) = 0;
-			virtual void Component_OnLateUpdate( UpdateParams params ) = 0;
+			virtual void Component_OnEarlyUpdate( UpdateParams & params ) = 0;
+			virtual void Component_OnUpdate( UpdateParams & params ) = 0;
+			virtual void Component_OnLateUpdate( UpdateParams & params ) = 0;
 
 			virtual void Component_OnRender( RenderGirl renderGirl ) = 0;
 			virtual void Component_OnSuspend() = 0;
@@ -39,7 +39,7 @@ namespace me
 			virtual void Component_OnEnd() = 0;
 
 			virtual void OnStart() = 0;			
-			virtual void OnUpdate( UpdateParams params ) = 0;			
+			virtual void OnUpdate( UpdateParams & params ) = 0;			
 			virtual void OnRender( RenderGirl renderGirl ) = 0;
 			virtual void OnSuspend() = 0;			
 			virtual void OnResume() = 0;			

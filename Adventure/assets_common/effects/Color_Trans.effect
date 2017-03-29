@@ -1,6 +1,6 @@
 <?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
-  <effect>
+  <effect name="color_trans">
     <pixelshader name="color_trans" source="shaders/color_trans.xml"/>
     <vertexshader name="color_trans" source="shaders/color_trans.xml"/>
   </effect>

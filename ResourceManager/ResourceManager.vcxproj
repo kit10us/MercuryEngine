@@ -35,7 +35,6 @@
     <ClInclude Include="rm\IFactoryFunctor.h" />
     <ClInclude Include="rm\ISourceFactoryFunctor.h" />
     <ClInclude Include="rm\ResourceManagerAdvanced.h" />
-    <ClInclude Include="rm\ResourceManagerBase.h" />
     <ClInclude Include="rm\ResourceManagerSimple.h" />
     <ClInclude Include="rm\ResourcePack.h" />
   </ItemGroup>
@@ -48,7 +47,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rm\ResourceManagerBase.inl" />
     <None Include="rm\ResourceManagerSimple.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

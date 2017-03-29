@@ -19,7 +19,7 @@ namespace me
 	/// <summary>
 	/// A gathering of rendering effects to be used before rendering primitives.
 	/// </summary>
-	class Effect
+	class Effect : public rm::IResource
 	{
 	public:
 		typedef std::shared_ptr< Effect > ptr;
@@ -44,7 +44,6 @@ namespace me
 		void ClearTextures();
 		void SetPixelShader( IPixelShader::ptr shader );
 		void SetVertexShader( IVertexShader::ptr shader );
-		void AddFrame( size_t frameIndex, float influence );
 		
 		IPixelShader::ptr GetPixelShader();
 		IVertexShader::ptr GetVertexShader();
@@ -55,6 +54,10 @@ namespace me
 		bool IsTrans() const;
 
 		unify::Path GetSource() const;
+
+	public: // IResource...
+		size_t Owners() const;
+		bool Reload() override;
 
 	protected:
 		unify::Path m_source;

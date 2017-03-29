@@ -194,16 +194,6 @@ Renderer::~Renderer()
 	m_dxDevice = nullptr;
 }
 
-me::IGame * Renderer::GetGame()
-{
-	return m_os->GetGame();
-}
-
-const me::Display & Renderer::GetDisplay() const
-{
-	return m_display;
-}
-
 ID3D11Device * Renderer::GetDxDevice() const
 {
 	return m_dxDevice;
@@ -218,7 +208,22 @@ IDXGISwapChain * Renderer::GetSwapChain() const
 {
 	return m_swapChain;
 }
-	   
+
+me::IGame * Renderer::GetGame()
+{
+	return m_os->GetGame();
+}
+
+const me::Display & Renderer::GetDisplay() const
+{
+	return m_display;
+}
+
+me::Viewport Renderer::GetViewport() const
+{
+	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetNearZ(), GetDisplay().GetFarZ() );
+}
+
 void Renderer::BeforeRender()
 {
 	float clearColor[] = { 0.5f, 0.0f, 0.3f, 1.0f };
@@ -239,16 +244,6 @@ void Renderer::BeforeRenderTrans()
 void Renderer::AfterRender()
 {
 	m_swapChain->Present( 0, 0 );
-}
-
-void Renderer::SetCullMode( me::CullMode::TYPE mode )
-{
-	// TODO:
-}
-
-me::Viewport Renderer::GetViewport() const
-{
-	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetNearZ(), GetDisplay().GetFarZ() );
 }
 
 bool Renderer::IsFullscreen() const
@@ -300,7 +295,7 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 	auto && constants = vertexShader->GetConstants();
 	auto worldRef = constants->GetWorld();
 
-	size_t matricesPerInstance = matrixFeed.MatricesPerInstance();	   
+	size_t matricesPerInstance = matrixFeed.Stride();	   
 	size_t write = 0;	  
 
 	switch( instancing )

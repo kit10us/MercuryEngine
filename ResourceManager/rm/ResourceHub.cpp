@@ -24,6 +24,15 @@ void ResourceHub::Clear()
 	m_managerList.clear();
 }
 
+std::vector< std::shared_ptr< IResourceManagerRaw > > m_managerList;
+void ResourceHub::Clean()
+{
+	for( auto manager : m_managerList )
+	{
+		manager->Clean();
+	}
+}
+
 size_t ResourceHub::GetTypeCount() const
 {
 	return m_managerMap.size();

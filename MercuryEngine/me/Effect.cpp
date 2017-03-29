@@ -165,3 +165,13 @@ unify::Path Effect::GetSource() const
 {
 	return m_source;
 }
+
+size_t Effect::Owners() const
+{
+	return IResource::Owners();
+}
+
+bool Effect::Reload()
+{
+	return true; // We don't reload Effects... they have no real data.
+}

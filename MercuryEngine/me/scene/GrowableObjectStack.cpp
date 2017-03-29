@@ -104,6 +104,10 @@ Object * GrowableObjectStack::GetObject( size_t index )
 	return nullptr;
 }
 
+void GrowableObjectStack::DirtyObject( object::Object * object )
+{
+	assert( "We don't own objects!" == 0 );
+}
 
 void GrowableObjectStack::Update( UpdateParams params )
 {

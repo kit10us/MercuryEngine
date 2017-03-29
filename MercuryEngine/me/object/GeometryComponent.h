@@ -19,6 +19,7 @@ namespace me
 		public:
 			GeometryComponent();
 			GeometryComponent( Geometry::ptr geometry );
+			GeometryComponent( Geometry::ptr geometry, unify::Matrix matrix );
 			virtual ~GeometryComponent();
 
 			void SetGeometry( Geometry::ptr geometry );
@@ -29,31 +30,22 @@ namespace me
 			void OnUpdate( UpdateParams params ) override;
 
 			void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * transform ) override;
-
-			void OnSuspend() override;
-			void OnResume() override;
+			
+			void SetMatrix( unify::Matrix matrix );
+			unify::Matrix GetMatrix() const;
 
 		public: // IObjectComponent...
 			IObjectComponent::ptr Duplicate() override;
 
 		public: // IComponent...
-			int GetValueCount() const override;
-			bool ValueExists( std::string ) const override;
-			std::string GetValueName( int index ) const override;
-			int FindValueIndex( std::string name ) const override;
-			std::string GetValue( int index ) const override;
-			std::string GetValue( std::string name ) const override;
-			bool SetValue( int index, std::string value ) override;
-			bool SetValue( std::string name, std::string value ) override;
 
 		public: // IThing...
-			std::string GetWhat() const override;
 
-		protected:
+		private:
 			Geometry::ptr m_geometry;
 			GeometryInstanceData::ptr m_geometryInstanceData;
 		};
     }
 
-	object::GeometryComponent * AddGeometryComponent( object::Object * object, Geometry::ptr geometry );
+	object::GeometryComponent * AddGeometryComponent( object::Object * object, Geometry::ptr geometry, unify::Matrix matrix = unify::MatrixIdentity() );
 }

@@ -39,9 +39,6 @@
     <ClInclude Include="rm\IResourceManager.h">
       <Filter>rm</Filter>
     </ClInclude>
-    <ClInclude Include="rm\ResourceManagerBase.h">
-      <Filter>rm</Filter>
-    </ClInclude>
     <ClInclude Include="rm\ResourceManagerAdvanced.inl">
       <Filter>rm</Filter>
     </ClInclude>
@@ -59,9 +56,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rm\ResourceManagerBase.inl">
-      <Filter>rm</Filter>
-    </None>
     <None Include="rm\ResourceManagerSimple.inl">
       <Filter>rm</Filter>
     </None>

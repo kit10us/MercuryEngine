@@ -22,14 +22,40 @@ Mesh::~Mesh()
 	Destroy();
 }
 
-GeometryInstanceData * Mesh::CreateInstanceData()
-{
-	return new MeshInstanceData( m_primitiveList.GetFrameSet(), m_primitiveList.GetAnimationSet() );
-}
-
 void Mesh::Destroy()
 {
 	m_primitiveList.Destroy();
+}
+
+Skeleton * Mesh::GetSkeleton()
+{
+	return &m_skeleton;
+}
+
+const Skeleton * Mesh::GetSkeleton() const
+{
+	return &m_skeleton;
+}
+
+void Mesh::SetSkeletonEffect( Effect::ptr effect )
+{
+	m_skeletonEffect = effect;
+}
+
+const unify::BBox< float > & Mesh::ComputeBounds()
+{
+	m_primitiveList.ComputeBounds( m_BBox );
+	return m_BBox;
+}
+
+PrimitiveList & Mesh::GetPrimitiveList()
+{
+	return m_primitiveList;
+}
+
+GeometryInstanceData * Mesh::CreateInstanceData()
+{
+	return new MeshInstanceData( m_primitiveList.GetFrameSet(), m_primitiveList.GetAnimationSet() );
 }
 
 void Mesh::Update( UpdateParams params, GeometryInstanceData * instanceData )
@@ -65,7 +91,14 @@ void Mesh::Render( RenderParams params, GeometryInstanceData * instanceData, Mat
 	}
 	*/
 	
-	m_primitiveList.Render( params, matrixFeed );
+	if( !m_skeleton.Empty() && m_skeletonEffect )
+	{
+		m_skeleton.Render( params, matrixFeed, m_skeletonEffect, 0.05f, unify::Color::ColorBlue() );
+	}
+	//else
+	{
+		m_primitiveList.Render( params, matrixFeed );
+	}
 }
 
 unify::Path Mesh::GetSource() const
@@ -78,13 +111,7 @@ bool Mesh::IsTrans() const
 	return m_primitiveList.IsTrans();
 }
 
-PrimitiveList & Mesh::GetPrimitiveList()
+bool Mesh::Reload()
 {
-	return m_primitiveList;
-}
-
-const unify::BBox< float > & Mesh::ComputeBounds()
-{
-	m_primitiveList.ComputeBounds( m_BBox );
-	return m_BBox;
+	return false; // TODO: Will need to keep the factory function for this (which is possible).
 }

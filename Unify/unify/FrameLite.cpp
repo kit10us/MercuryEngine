@@ -9,8 +9,6 @@ FrameLite::FrameLite()
 	: m_q( QuaternionIdentity() )
 	, m_p( 0, 0, 0 )
 	, m_mat{ MatrixIdentity() }
-	, m_useModelMatrix( false )
-	, m_modelMatrix( MatrixIdentity() )
 {
 }
 
@@ -18,8 +16,6 @@ FrameLite::FrameLite( unify::Quaternion q, unify::V3< float > p )
 	: m_q( q )
 	, m_p( p )
 	, m_mat{ m_q, m_p }
-	, m_useModelMatrix( false )
-	, m_modelMatrix( MatrixIdentity() )
 {
 }
 
@@ -27,8 +23,6 @@ FrameLite::FrameLite( unify::Matrix matrix )
 	: m_q( matrix.GetRotation() )
 	, m_p( matrix.GetPosition() )
 	, m_mat{ matrix }
-	, m_useModelMatrix( false )
-	, m_modelMatrix( MatrixIdentity() )
 {
 }
 
@@ -56,16 +50,9 @@ void FrameLite::MoveBy( const V3< float > & by )
 
 void FrameLite::Orbit( const V3< float > & origin, const V2< float > & direction, Angle angle )
 {
-	// Re-origin our position...
-	V3< float > newPosition( m_p - origin );
-
-	Quaternion q = Quaternion( V3< float >( direction.y, direction.x, 0 ), angle );
-
-	newPosition = newPosition * q;
-	
-	m_p = newPosition + origin;
-
-	m_mat = Matrix{ m_q, m_p };
+	m_mat.Orbit( origin, direction, angle );
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
 }
 
 void FrameLite::Orbit( const V3< float > & origin, const Quaternion & orbit )
@@ -112,26 +99,19 @@ void FrameLite::PostMul( Matrix m )
 
 const Matrix FrameLite::GetMatrix() const
 {
-	if ( m_useModelMatrix )
-	{
-		return m_modelMatrix * m_mat;
-	}
-	else
-	{
-		return m_mat;
-	}
+	return m_mat;
 }
 
 void FrameLite::ReadMatrix( Matrix * matrix ) const
 {
-	if ( m_useModelMatrix )
-	{
-		*matrix = m_modelMatrix * m_mat;
-	}
-	else
-	{
-		*matrix = m_mat;
-	}
+	*matrix = m_mat;
+}
+
+void FrameLite::SetMatrix( unify::Matrix matrix )
+{
+	m_mat = matrix;
+	m_q = m_mat.GetRotation();
+	m_p = m_mat.GetPosition();
 }
 
 V3< float > FrameLite::GetLeft() const
@@ -191,26 +171,3 @@ void FrameLite::SetPosition( const V3< float > & position )
 	m_p = position;
 	m_mat = Matrix{ m_q, m_p };
 }
-
-void FrameLite::SetModelMatrix( Matrix & modelMatrix )
-{
-	m_useModelMatrix = true;
-	m_modelMatrix = modelMatrix;
-}
-
-const Matrix & FrameLite::GetModelMatrix() const
-{
-	return m_modelMatrix;
-}
-
-Matrix & FrameLite::GetModelMatrix()
-{
-	m_useModelMatrix = true;
-	return m_modelMatrix;
-}
-
-bool FrameLite::GetUseModelMatrix() const
-{
-	return m_useModelMatrix;
-}
-

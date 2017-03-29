@@ -12,6 +12,8 @@ namespace me
 		class AnimationSet
 		{
 		public:
+			typedef std::shared_ptr< AnimationSet > ptr;
+
 			AnimationSet();
 			~AnimationSet();
 			void AddAnimation( Animation::ptr animation );

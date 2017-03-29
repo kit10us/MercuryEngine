@@ -34,6 +34,11 @@ namespace rm
 		void Clear();
 
 		/// <summary>
+		/// Remove unused (not owned) resources.
+		/// </summary>
+		void Clean();
+
+		/// <summary>
 		/// Returns a specific manager by name.
 		/// </summary>
 		rm::IResourceManagerRaw * GetManagerRaw( std::string name );

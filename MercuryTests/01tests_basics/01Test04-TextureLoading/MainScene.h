@@ -17,6 +17,6 @@ public:
 	MainScene( me::Game * game );
 
 	void OnStart() override;
-	void OnUpdate( me::UpdateParams params ) override;
+	void OnUpdate( me::UpdateParams & params ) override;
 	void OnRender( me::scene::RenderGirl renderGirl ) override;
 };

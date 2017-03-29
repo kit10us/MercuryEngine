@@ -64,11 +64,12 @@ void MainScene::OnStart()
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	{
 		auto aseObject = GetObjectAllocator()->NewObject( "sword1" );
-		gc = AddGeometryComponent( aseObject, meshASE );
 		aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
-		aseObject->GetFrame().GetModelMatrix().Scale( 0.090f );
-		aseObject->GetFrame().GetModelMatrix().RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
-		aseObject->GetFrame().GetModelMatrix().Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+		unify::Matrix matrix = unify::MatrixIdentity();
+		matrix.Scale( 0.090f );
+		matrix.RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
+		matrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
+		gc = AddGeometryComponent( aseObject, meshASE, matrix );
 		aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 		aseObject->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInDegrees( 0 ) ) );
 	}
@@ -136,7 +137,7 @@ void MainScene::OnStart()
 	}
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	using namespace unify;
 	{

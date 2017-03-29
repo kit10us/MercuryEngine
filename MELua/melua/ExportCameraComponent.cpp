@@ -42,7 +42,7 @@ int CameraComponent_SetProjection( lua_State * state )
 
 	CameraComponentProxy * componentProxy = CheckCameraComponent( state, 1 );
 	
-	unify::Matrix mat = CheckMatrix( state, 2 )->matrix;
+	unify::Matrix mat = CheckUserType< MatrixProxy >( state, 2 )->matrix;
 
 	componentProxy->camera->SetProjection( mat );
 
@@ -56,9 +56,7 @@ int CameraComponent_GetProjection( lua_State * state )
 
 	CameraComponentProxy * componentProxy = CheckCameraComponent( state, 1 );
 
-	PushMatrix( state, componentProxy->camera->GetProjection() );
-
-	return 1;
+	return Push< MatrixProxy >( state, { componentProxy->camera->GetProjection() } );
 }
 
 int CameraComponent_GetRenderer( lua_State * state )
@@ -68,9 +66,7 @@ int CameraComponent_GetRenderer( lua_State * state )
 
 	CameraComponentProxy * componentProxy = CheckCameraComponent( state, 1 );
 
-	lua_pushnumber( state, componentProxy->camera->GetRenderer() );
-
-	return 1;
+	return Push( state, componentProxy->camera->GetRenderer() );
 }
 
 int CameraComponent_SetRenderer( lua_State * state )

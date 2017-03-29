@@ -1,0 +1,7 @@
+<?xml profile="1.0" encoding="iso-8859-1"?>
+<xml>
+  <effect>
+    <pixelshader name="color_trans3" source="shaders/color_trans3.xml"/>
+    <vertexshader name="color_trans3" source="shaders/color_trans3.xml"/>
+  </effect>
+</xml>

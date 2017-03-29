@@ -8,6 +8,7 @@
 #include <qxml/QXML.h>
 #include <unify/Matrix.h>
 #include <string>
+#include <memory>
 
 namespace dae
 {
@@ -17,6 +18,8 @@ namespace dae
 	class Node : public DocumentNode
 	{
 	public:
+		typedef std::shared_ptr< Node > ptr;
+
 		/// <summary>
 		/// For hierarchical tree structure.
 		/// </summary>

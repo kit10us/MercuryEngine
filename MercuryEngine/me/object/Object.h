@@ -7,6 +7,7 @@
 #include <me/scene/ComponentInstance.h>
 #include <me/Geometry.h>
 #include <me/RenderInfo.h>
+#include <me/scene/IObjectAllocator.h>
 #include <unify/FrameLite.h>
 #include <list>
 
@@ -19,24 +20,17 @@ namespace me
 
 	namespace object
 	{
-		struct FinalCamera
-		{
-			class Object * object;
-			class CameraComponent * camera;
-		};
-		typedef std::list< FinalCamera > CameraCache;
-
 		/// <notes>
 		/// Objects belong to Scenes. Scenes are collections of objects.
 		/// </notes>
-		class Object
+		class Object	
 		{
 			Object & operator=(Object const &);
 		public:
 			typedef std::shared_ptr< Object* > ptr;
 			typedef std::weak_ptr< Object * > weak_ptr;
 
-			Object();
+			Object();			
 
 			Object( Object && );
 
@@ -46,6 +40,8 @@ namespace me
 			void CopyFrom( std::string name, Object & objectFrom );
 			
 			virtual ~Object();
+
+			void SetAllocator( scene::IObjectAllocator* allocator );
 
 			void SetName( std::string name );
 			std::string GetName() const;
@@ -93,9 +89,12 @@ namespace me
 			bool IsAlive() const;
 			void SetAlive( bool alive );
 
+			void MakeDirty();
+
 		protected:
 			bool m_alive;
 			std::string m_name;
+			me::scene::IObjectAllocator* m_allocator;
 			scene::IScene * m_scene;
 			bool m_enabled;
 			std::list< std::string > m_tags;

@@ -16,12 +16,7 @@
 	<auto>../assets_common/scripts/auto/</auto>
 </extension>
 
-<extension source="../../extensions/Debug/DAELoader.dll">
-	<colorps name="color_ambient" source="Color_Ambient.xml"/>
-	<colorvs name="color_ambient" source="Color_Ambient.xml"/>
-	<texturedps name="textured_ambient" source="Textured_Ambient.xml"/>
-	<texturedvs name="textured_ambient" source="Textured_Ambient.xml"/>
-</extension>
+<include>dae.xml</include>
 
 <extension source="../../extensions/Debug/ASELoader.dll">
 	<textureps name="textured_ambient" source="textured_ambient.xml"/>

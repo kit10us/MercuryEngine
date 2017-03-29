@@ -25,7 +25,7 @@
 namespace me
 {
 	// Abstract graphical object.
-	class Geometry
+	class Geometry : public rm::IResource
 	{
 	public:
 		typedef std::shared_ptr< Geometry > ptr;

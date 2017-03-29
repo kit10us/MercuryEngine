@@ -1,0 +1,8 @@
+<xml>
+<extension source="../../extensions/Debug/DAELoader.dll">
+	<colorps name="color_ambient" source="Color_Ambient.xml"/>
+	<colorvs name="color_ambient" source="Color_Ambient.xml"/>
+	<texturedps name="textured_ambient" source="Textured_Ambient.xml"/>
+	<texturedvs name="textured_ambient" source="Textured_Ambient.xml"/>
+</extension>
+</xml>

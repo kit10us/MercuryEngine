@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/PrimitiveList.h>
+#include <me/Mesh.h>
 #include <dae/Node.h>
 #include <dae/DocumentNode.h>
 #include <string>
@@ -22,13 +22,15 @@ namespace dae
 		const std::string & GetName() const;
 		const Node * GetFirstNode() const;
 
-		void Build( me::PrimitiveList & pl ) const;
+		const Node * FindNode( std::string id ) const;
+
+		void Build( me::Mesh & mesh ) const;
 
 	private:
-		void Build( me::PrimitiveList & pl, const unify::Matrix & matrix, const dae::Node * node ) const;
+		void Build( me::Mesh & mesh, const unify::Matrix & matrix, const dae::Node * node ) const;
 
 		std::string m_id;
 		std::string m_name;		
-		std::shared_ptr< Node > m_firstNode;
+		Node::ptr m_firstNode;
 	};
 }

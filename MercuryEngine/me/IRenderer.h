@@ -21,16 +21,6 @@ namespace me
 	class VertexDeclaration;
 	class IGame;
 
-	struct CullMode
-	{
-		enum TYPE
-		{
-			None,
-			Clockwise,
-			CounteClockwise
-		};
-	};
-
 	/// <summary>
 	/// Supports access to the renderer.
 	/// </summary>
@@ -66,9 +56,6 @@ namespace me
 		/// Called after rendering.
 		/// </summary>
 		virtual void AfterRender() = 0;
-
-		// New support for render states
-		virtual void SetCullMode( CullMode::TYPE mode ) = 0;
 
 		virtual bool IsFullscreen() const = 0;
 

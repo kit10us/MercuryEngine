@@ -19,7 +19,7 @@ me::Geometry::ptr GeometrySourceFactory::Produce( unify::Path path, void * data 
 	dae::Document doc( m_renderer, path, m_effectSolver.get() );
 	me::Mesh * mesh = new me::Mesh( m_renderer );
 	const dae::VisualScene & visualScene = *dynamic_cast< const dae::VisualScene* >(doc.Find( doc.GetScene().GetInstanceVisualScene()->GetURL() ));
-	visualScene.Build( mesh->GetPrimitiveList() );
+	visualScene.Build( *mesh );
 	mesh->ComputeBounds();
 	return me::Geometry::ptr( mesh );
 }

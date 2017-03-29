@@ -131,7 +131,7 @@ void MainScene::OnStart()
 	layer5->AddElement( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "STRETCHFULL", canvas::Anchor::StretchFull ) ) );
 }
 
-void MainScene::OnUpdate( UpdateParams params )
+void MainScene::OnUpdate( UpdateParams & params )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
