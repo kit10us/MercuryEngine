@@ -121,7 +121,7 @@ namespace melua
 				TerraProxy * terraProxy = CheckTerra( state, 2 );
 				if( !terraProxy )
 				{
-					game->ReportError( me::ErrorLevel::Failure, "LUA", "AddGeometry has invalid type!" );
+					Error( state, "AddGeometry has invalid type!" );
 				}
 				geometry = terraProxy->geometry;
 			}
@@ -273,7 +273,7 @@ namespace melua
 		{
 			ScriptEngine * se = ScriptEngine::GetInstance();
 			auto game = se->GetGame();
-			game->ReportError( me::ErrorLevel::Failure, "Lua", "Attempted to attach am unsupported type, \"" + type + "\", to an object!" );
+			Error( state, "Attempted to attach am unsupported type, \"" + type + "\", to an object!" );
 		}
 		return 0;
 	}

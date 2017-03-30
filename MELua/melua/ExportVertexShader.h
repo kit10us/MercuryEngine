@@ -7,12 +7,11 @@
 #include <lua.hpp>
 #include <me/Effect.h>
 
-struct EffectProxy
+struct VertexShaderProxy
 {
 	MELUADLL_API static char* Name();
-
-	me::Effect::ptr effect;
+	me::IVertexShader::ptr shader;
 };
 
-void RegisterEffect( lua_State * state );
+void RegisterVertexShader( lua_State * state );
 

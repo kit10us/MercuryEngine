@@ -50,7 +50,7 @@ void ObjectComponent::CallMember( std::string function )
 	// Get our _ENV...
 	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() ) )						   
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Object not found in lua module! (" + m_luaName + ")" );
+		Error( m_state, "Object not found in lua module! (" + m_luaName + ")" );
 	}
 
 	int r2 = lua_getfield( m_state, -1, function.c_str() );
@@ -60,7 +60,7 @@ void ObjectComponent::CallMember( std::string function )
 		if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
 		{
 			std::string error = lua_tostring( m_state, -1 );
-			m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script " + function + ": " + error );
+			Error( m_state, "Failed in script " + function + ": " + error );
 		}
 	}
 	else
@@ -78,15 +78,15 @@ void ObjectComponent::OnStart()
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
 	if ( result == LUA_ERRSYNTAX )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
+		Error( m_state, luaL_checkstring( m_state, -1 ) );
 	}
 	else if ( result == LUA_ERRFILE )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
+		Error( m_state, "Failure trying to read script \"" + m_path.ToString() + "\"!" );
 	}
 	else if ( result != LUA_OK )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure in script!" );
+		Error( m_state, "Failure in script!" );
 	}
 
 	// Create table for modules _ENV table.
@@ -125,7 +125,7 @@ void ObjectComponent::OnStart()
 	if ( result != LUA_OK )
 	{
 		std::string error = lua_tostring( m_state, -1 );
-		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
+		Error( m_state,"Failed with script initial call: " + error );
 	}
 
 	CallMember( "OnStart" );

@@ -4,135 +4,50 @@ require "map_a"
 require "OA"
 require "OAC"
 require "actions"
+require "shapes"
 
 local start_position = V3( 4, 0, 0 )
 
 function BuildCube( position )
 	local object = this:NewObject( MakeObjectName( "cube" ) )
-	local cube = Geometry( "cube", "ShapeCube.shape" )
-	object:AddGeometry( cube, Matrix() * MatrixTranslate( V3( 0, 1, 0 ) ) )	
+	print( "---------------------------" )
+	local effect = Effect( VertexShader( "textured.xml" ), PixelShader( "textured.xml" ), Texture( "articulate.bmp" ) );
+	print( "---------------------------" )
+	object:AddGeometry( ShapeCube( effect ), Matrix() * MatrixTranslate( V3( 0, 1, 0 ) ) )	
 	object:Transform():SetPosition( position )
 	return object
 end
 
 function BuildPortalSphere( position )
 	local object = this:NewObject( MakeObjectName( "sphere" ) )
+	object:Transform():SetPosition( position )
 	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_trans", "Color_Trans.effect" ) )
+	local sphereParameters = ShapeParameters( "sphere" )	
+	sphereParameters:SetEffect( Effect( PixelShader( "color_trans.xml" ), VertexShader( "color_trans.xml" ) ) )
 	
 	local modelMatrix = Matrix() * MatrixTranslate( V3( 0, 1, 0 ) )
 	
+	local radius = 2.0
 	
-	sphereParameters:SetRadius( 2.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.1 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-
-	sphereParameters:SetRadius( 1.4 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.1 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	
-	sphereParameters:SetRadius( 0.8 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-
-	sphereParameters:SetRadius( 0.6 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
+	for	s = 0, 3, 1 do	
+		sphereParameters:SetRadius( radius )
+		sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
+		object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
+		radius = radius * 0.7
+	end
 
 	sphereParameters:SetRadius( 0.2 )
 	sphereParameters:SetDiffuse( White() )
 	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	
-	object:Transform():SetPosition( position )
 	return object
 end
 
-function BuildTestSpheres()
-	local modelMatrix = Matrix() * MatrixTranslate( V3( 0, 1, 0 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans", "Color_Trans.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 1 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( -3, 0, -10 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans", "Color_Trans.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.6 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( 0, 0, -10 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans", "Color_Trans.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( 3, 0, -10 ) )
-	
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans2", "Color_Trans2.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 1 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )		
-	object:Transform():SetPosition( V3( -3, 0, -13 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans2", "Color_Trans2.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.6 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( 0, 0, -13 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans2", "Color_Trans2.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( 3, 0, -13 ) )
-	
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans3", "Color_Trans3.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 1 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( -3, 0, -16 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans3", "Color_Trans3.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.6 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( 0, 0, -16 ) )
-
-	local object = this:NewObject( MakeObjectName( "sphere" ) )	
-	local sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( Effect( "color_Trans3", "Color_Trans3.effect" ) )
-	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Blue( 1, 0.2 ) )
-	object:AddGeometry( Geometry( MakeGeometryName( "sphere" ), sphereParameters ), modelMatrix )	
-	object:Transform():SetPosition( V3( 3, 0, -16 ) )
-end
-
-
-
-
 function OnBeforeStart()
 	local start_position = V3( 4, 0, 0 )
+	
+	local color_ambient = Effect( PixelShader( "Color_Ambient.xml" ), VertexShader( "Color_Ambient.xml" ) )
+	local color_bubble = Effect( PixelShader( "Color_Bubble.xml" ), VertexShader( "Color_Bubble.xml" ) )
+	
 
 	CreateTerrain( Size2( 30, 30 ),  Size2( 4, 4 ) )
 	
@@ -147,11 +62,9 @@ function OnBeforeStart()
 	camera:Transform():SetPosition( V3( 0, 17, -12 ) )
 	camera:Transform():LookAt( V3( 0, 0, 0 ) )	
 
-	local color3d = Effect( "color3d", "Color_Ambient.effect" )
-	local borgcubeEffect = Effect( "borgcube", "EffectBorgCube.effect" )
 	
 	local pyramid = this:NewObject( "pyramid" )
-	pyramid:AddGeometry( Geometry( "pyramid", "ShapePyramid.shape" ), Matrix() * MatrixTranslate( V3( 0, 1, 0 ) ) )
+	pyramid:AddGeometry( ShapePyramid( color_bubble ), MatrixTranslate( V3( 0, 1, 0 ) ) )
 	pyramid:Transform():SetPosition( V3( 0, 0, 0 ) )
 	
 	-- Create sky castle...
@@ -181,6 +94,7 @@ function OnBeforeStart()
 
 	local player = this:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
+		
 	player:Transform():SetPosition( start_position )
 	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )
 	player:AddComponent( physics:CreateEntity():AsObjectComponent() )
@@ -192,8 +106,6 @@ function OnBeforeStart()
 	BuildTree( V3( -4, 0, 7 ) )	
 	BuildTree( V3( 0, 0, 5 ) )	
 	BuildHouse( V3( 7, 0, 12 ) )
-	
-	BuildTestSpheres()
 end
 
 function OnAfterStart()

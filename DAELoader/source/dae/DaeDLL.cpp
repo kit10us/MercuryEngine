@@ -61,8 +61,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 			}
 			else if( name.empty() && ! path.Empty() )
 			{
-				assert( 0 ); // TODO:
-				//ps = game->GetManager< IPixelShader >()->Add( path );
+				ps = game->GetManager< IPixelShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
@@ -82,15 +81,14 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 			}
 			else if( name.empty() && !path.Empty() )
 			{
-				assert( 0 ); // TODO:
-				//vs = game->GetManager< IVertexShader >()->Add( path );
+				vs = game->GetManager< IVertexShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
 				vs = game->GetManager< IVertexShader >()->Add( name, path );
 			}
 		}
-		color.reset( new Effect( ps, vs ) );
+		color.reset( new Effect( vs, ps ) );
 	}
 	
 	Effect::ptr textured;
@@ -107,8 +105,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 			}
 			else if( name.empty() && !path.Empty() )
 			{
-				assert( 0 ); // TODO:
-							 //ps = game->GetManager< IPixelShader >()->Add( path );
+				ps = game->GetManager< IPixelShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
@@ -128,15 +125,14 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 			}
 			else if( name.empty() && !path.Empty() )
 			{
-				assert( 0 ); // TODO:
-							 //vs = game->GetManager< IVertexShader >()->Add( path );
+				vs = game->GetManager< IVertexShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
 				vs = game->GetManager< IVertexShader >()->Add( name, path );
 			}
 		}
-		textured.reset( new Effect( ps, vs ) );
+		textured.reset( new Effect( vs, ps ) );
 	}
 
 	auto effectSolver = new MyEffectSolver( color, textured );

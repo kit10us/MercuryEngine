@@ -168,8 +168,8 @@ Renderer::Renderer( WindowsOS * os, Display display, size_t index )
 		desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
 		m_dxDevice->CreateDepthStencilState( &desc, &m_depthStencilState_Solids );
 
-		desc.DepthEnable = FALSE;
-		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		desc.DepthEnable = TRUE;
+		desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;// D3D11_DEPTH_WRITE_MASK_ALL;
 		desc.DepthFunc = D3D11_COMPARISON_LESS;
 		desc.StencilEnable = FALSE;
 		desc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;

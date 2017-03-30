@@ -276,11 +276,6 @@ Type * ScriptEngine::GetType( std::string name )
 	}
 }
 
-void ScriptEngine::Error( std::string function, std::string message )
-{
-	m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in \"" + function + "\"! " + message );
-}
-
 ScriptEngine* ScriptEngine::GetInstance()
 {
 	return s_se;
@@ -289,9 +284,4 @@ ScriptEngine* ScriptEngine::GetInstance()
 me::Game * ScriptEngine::GetGame()
 {
 	return dynamic_cast< me::Game* >( GameComponent::GetGame() );
-}
-
-std::string ScriptEngine::GetWhat() const
-{
-	return std::string();
 }

@@ -5,22 +5,18 @@
 </renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
-<assets>models/</assets>
-<assets>media/</assets>
-<assets>media/shaders/</assets>
+<assets>shaders/</assets>
 <assets>../test_data/</assets>
-<assets>../test_data/media/</assets>
-<assets>../test_data/scripts/</assets>
 <assets>../test_data/effects/</assets>
+<assets>../test_data/images/</assets>
+<assets>../test_data/models/</assets>
+<assets>../test_data/scripts/</assets>
 
 <extension source="../../extensions/Release/MELua.dll">
 	<startup>game_physxPlayer.lua</startup>
 </extension>
 
-<extension source="../../extensions/Release/DAELoader.dll">
-	<color name="color_ambient" source="Color_Ambient.effect"/>
-	<texture name="textured_ambient" source="Textured_Ambient.effect"/>
-</extension>
+<include>dae.xml</include>
 
 <extension source="../../extensions/Release/ASELoader.dll">
 	<textureps name="textured_ambient" source="textured_ambient.xml"/>

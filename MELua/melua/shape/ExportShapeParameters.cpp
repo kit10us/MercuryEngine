@@ -76,7 +76,7 @@ int ShapeParameters_SetTextureMode( lua_State* state )
 int ShapeParameters_SetEffect( lua_State* state )
 {
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-	EffectProxy * effectProxy = CheckEffect( state, 2 );
+	EffectProxy * effectProxy = CheckUserType< EffectProxy >( state, 2 );
 
 	parameters->parameters.Set< Effect::ptr >( "effect", effectProxy->effect );
 	return 0;

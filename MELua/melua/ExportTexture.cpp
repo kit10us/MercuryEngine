@@ -3,30 +3,16 @@
 
 #include <melua/ScriptEngine.h>
 #include <melua/ExportTexture.h>
+#include <melua/Util.h>
 #include <me/Game.h>
 
 using namespace melua;
 using namespace me;
 
-int PushTexture( lua_State * state, ITexture::ptr texture )
+char* TextureProxy::Name()
 {
-	TextureProxy ** newProxy = (TextureProxy**)(lua_newuserdata( state, sizeof( TextureProxy* ) ));
-	*newProxy = new TextureProxy();
-	(*newProxy)->texture = texture;
-	luaL_setmetatable( state, "TextureProxy" );
-	return 1;
-}
-
-TextureProxy* CheckTexture( lua_State* state, int index )
-{
-	TextureProxy* ud = *(TextureProxy**)luaL_checkudata( state, index, "Texture" );
-	return ud;
-}
-			   
-static const luaL_Reg TextureFunctions[] =
-{
-	{ nullptr, nullptr }
-};
+	return "Texture";
+}	   
 
 int Texture_Constructor( lua_State * state )
 {
@@ -39,62 +25,78 @@ int Texture_Constructor( lua_State * state )
 	auto game = se->GetGame();
 	auto renderer = game->GetOS()->GetRenderer( 0 );
 	
-	// Allow pulling existing from manager...
-	if ( top == 1 )
+	try
 	{
-		std::string name = lua_tostring( state, 1 );
-		texture = game->GetManager< ITexture >()->Find( name );
-	}
-	else
-	{
-		std::string name = lua_tostring( state, 1 );
-		unify::Path source( lua_tostring( state, 2 ) );
-
-		if ( top >= 3 )
+		// Allow pulling existing from manager...
+		if( top == 1 )
 		{
-			bool renderable = true;
-			if ( top >= 3 )
+			std::string value = lua_tostring( state, 1 );
+			unify::Path path( value );
+			texture = game->GetManager< ITexture >()->Find( value );
+			if( ! texture )
 			{
-				renderable = lua_toboolean( state, 3 ) ? true : false;
+				texture = game->GetManager< ITexture >()->Add( path );
 			}
-
-			bool readable = true;
-			if ( top >= 4 )
-			{
-				readable = lua_toboolean( state, 4 ) ? true : false;
-			}
-
-			TextureParameters parameters;
-			parameters.lockable = readable;
-			parameters.renderable = renderable;
-			parameters.source = source;
-
-			texture = game->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );
 		}
 		else
 		{
-			texture = game->GetManager< ITexture >()->Add( name, source );
+			std::string name = lua_tostring( state, 1 );
+			unify::Path source( lua_tostring( state, 2 ) );
+
+			if( top >= 3 )
+			{
+				bool renderable = true;
+				if( top >= 3 )
+				{
+					renderable = lua_toboolean( state, 3 ) ? true : false;
+				}
+
+				bool readable = true;
+				if( top >= 4 )
+				{
+					readable = lua_toboolean( state, 4 ) ? true : false;
+				}
+
+				TextureParameters parameters;
+				parameters.lockable = readable;
+				parameters.renderable = renderable;
+				parameters.source = source;
+
+				texture = game->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );
+			}
+			else
+			{
+				texture = game->GetManager< ITexture >()->Add( name, source );
+			}
 		}
 	}
+	catch( std::exception ex )
+	{
+		Error( state, ex.what() );
+	}
 
-	TextureProxy ** textureProxy = (TextureProxy**)(lua_newuserdata( state, sizeof( TextureProxy* ) ));
-	*textureProxy = new TextureProxy;
-	(*textureProxy)->texture = texture;
-	luaL_setmetatable( state, "Texture" );
-	
-	return 1;
+	if( !texture )
+	{
+		Error( state, "Unable to find texture by name or filename!" );
+	}
+
+	return Push< TextureProxy >( state, { texture } );
 }
 
 int Texture_Destructor( lua_State * state )
 {
-	TextureProxy * TextureProxy = CheckTexture( state, 1 );
-	delete TextureProxy;
+	TextureProxy * proxy = CheckUserType< TextureProxy >( state, 1 );
+	delete proxy;
 	return 0;
 }
 
 void RegisterTexture( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "Texture", TextureFunctions, sizeof( TextureFunctions ) / sizeof( luaL_Reg ), Texture_Constructor, Texture_Destructor } );
+	const luaL_Reg functions[] =
+	{
+		{ nullptr, nullptr }
+	};
+	se->AddType( { TextureProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), Texture_Constructor, Texture_Destructor } );
 }
 

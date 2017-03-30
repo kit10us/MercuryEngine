@@ -1,22 +1,5 @@
 <?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
-  <pixelshader name="color3d">
-    <source>color_ambient.ps</source>
-    <entry>ps_main</entry>
-    <profile>ps_4_0</profile>
-	<constants>
-	  <buffer>
-	    <element name="AmbientDown" type="Float3">
-		  <default>0.1, 0.1, 0.1</default>
-		</element>
-		<element type="Float1"/>
-	    <element name="AmbientUp" type="Float3">
-		  <default>0.9, 0.9, 0.9</default>
-		</element>
-		<element type="Float1"/>
-	  </buffer>
-	</constants>
-  </pixelshader>
   <vertexshader name="color3d">
     <source>color_ambient.vs</source>
     <entry>vs_main</entry>
@@ -36,4 +19,21 @@
 	  </slot>
     </vertexformat>
   </vertexshader>
+  <pixelshader name="color3d">
+    <source>color_ambient.ps</source>
+    <entry>ps_main</entry>
+    <profile>ps_4_0</profile>
+	<constants>
+	  <buffer>
+	    <element name="AmbientDown" type="Float3">
+		  <default>0.1, 0.1, 0.1</default>
+		</element>
+		<element type="Float1"/>
+	    <element name="AmbientUp" type="Float3">
+		  <default>0.9, 0.9, 0.9</default>
+		</element>
+		<element type="Float1"/>
+	  </buffer>
+	</constants>
+  </pixelshader>
 </xml>

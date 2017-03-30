@@ -1,0 +1,40 @@
+struct VS_OUT
+{
+	float4 position		: SV_POSITION;
+	float4 color		: COLOR;
+	float3 normal       : NORMAL;
+};
+
+cbuffer lighting
+{
+	float3 ShineDirection;
+	float1 ShineStart;
+};
+
+float4 CalculateShine( float3 normal_in, float4 color )
+{
+	float3 normal = normalize( normal_in );
+	float3 direction = normalize( ShineDirection );
+
+	// Calculate the ambient value.
+	float d = dot( normal, direction );	// get dot product (-1 to 1), into d.
+	if ( d >= ShineStart ) // Limit d betweem ShineStart and 1.0 
+	{
+		// Factor is a scalar from 0 to 1, based on the different between ShineStart to 1.0.
+		float factor = (d - ShineStart) / (1 - ShineStart);
+		
+		// Color + (What's left to get to 1) times (shinyness).
+		return color + (1 - color) * factor;
+	}
+	else
+	{
+		return color;
+	}
+}
+
+float4 ps_main( in VS_OUT ps_in ) : SV_TARGET
+{
+	float4 color = saturate( ps_in.color );
+	color = float4(color.rgb * color.rgb, color.a );
+	return CalculateShine( ps_in.normal, color );
+}

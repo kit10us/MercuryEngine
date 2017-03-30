@@ -27,11 +27,11 @@ int Resources_AddResource( lua_State * state )
 	}
 	catch( std::string ex )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "Lua", ex );
+		Error( state, ex );
 	}
 	catch( ... )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "Lua", "Unknown error" );
+		Error( state, "Unknown error" );
 	}
 
 	return 0;

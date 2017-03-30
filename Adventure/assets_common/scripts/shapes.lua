@@ -1,107 +1,107 @@
 require "util"
 
-function CreateShapeCube()
+function ShapeCube( effect )
 	cubeParameters = ShapeParameters( "cube" )
-	cubeParameters:SetEffect( color3d )
-	cubeParameters:SetSize3( Size3.New( 2, 2, 2 ) )
-	cubeParameters:SetDiffuseFaces( Color.NewRed(), Color.NewGreen(), Color.NewBlue(), Color.NewRGB( 1, 1, 0 ), Color.NewRGB( 0, 1, 1 ), Color.NewRGB( 1, 0, 1 ) )
-	return Geometry( MakeGeometryName( "cube", cubeParameters )
+	cubeParameters:SetEffect( effect )
+	cubeParameters:SetSize3( Size3( 2, 2, 2 ) )
+	cubeParameters:SetDiffuseFaces( Red(), Green(), Blue(), RGB( 1, 1, 0 ), RGB( 0, 1, 1 ), RGB( 1, 0, 1 ) )
+	return Geometry( MakeGeometryName( "cube" ), cubeParameters )
 end
 
-function CreateShapePointfield()
+function ShapePointfield( effect )
 	pointfieldParameters = ShapeParameters( "pointfield" )
-	pointfieldParameters:SetEffect( color3d )
+	pointfieldParameters:SetEffect( effect )
 	pointfieldParameters:SetMinorRadius( 0.5 )
 	pointfieldParameters:SetMajorRadius( 1.0 )
 	pointfieldParameters:SetCount( 1000 )
-	pointfieldParameters:SetDiffuse( Color.NewWhite() )
-	return Geometry( MakeGeometryName( "pointfield", pointfieldParameters )
+	pointfieldParameters:SetDiffuse( White() )
+	return Geometry( MakeGeometryName( "pointfield" ), pointfieldParameters )
 end
 
-function CreateShapePointring()
+function ShapePointring( effect )
 	pointringParameters = ShapeParameters( "pointring" )
-	pointringParameters:SetEffect( color3d )
+	pointringParameters:SetEffect( effect )
 	pointringParameters:SetMinorRadius( 0.25 )
 	pointringParameters:SetMajorRadius( 0.75 )
 	pointringParameters:SetCount( 1000 )
-	pointringParameters:SetDiffuse( Color.NewRed() )
-	return Geometry( MakeGeometryName( "pointring", pointringParameters )
+	pointringParameters:SetDiffuse( Red() )
+	return Geometry( MakeGeometryName( "pointring" ), pointringParameters )
 end
 
-function CreateShapeDashring()
+function ShapeDashring( effect )
 	dashringParameters = ShapeParameters( "dashring" )
-	dashringParameters:SetEffect( color3d )
+	dashringParameters:SetEffect( effect )
 	dashringParameters:SetMinorRadius( 0.5 )
 	dashringParameters:SetMajorRadius( 1.0 )
 	dashringParameters:SetSize( 0.5 )
 	dashringParameters:SetCount( 5 )
-	dashringParameters:SetDiffuse( Color.NewGreen() )
-	return Geometry( MakeGeometryName( "dashring", dashringParameters )
+	dashringParameters:SetDiffuse( Green() )
+	return Geometry( MakeGeometryName( "dashring" ), dashringParameters )
 end
 
-function CreateShapePyramid()
+function ShapePyramid( effect )
 	pyramidParameters = ShapeParameters( "pyramid" )
-	pyramidParameters:SetEffect( color3d )
-	pyramidParameters:SetSize3( Size3.New( 2, 2, 2 ) )
-	pyramidParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	return Geometry( MakeGeometryName( "pyramid", pyramidParameters )
+	pyramidParameters:SetEffect( effect )
+	pyramidParameters:SetSize3( Size3( 2, 2, 2 ) )
+	pyramidParameters:SetDiffuse( RGB( 0, 1, 1 ) )
+	return Geometry( MakeGeometryName( "pyramid" ), pyramidParameters )
 end
 
-function CreateShapeCircle()
+function ShapeCircle( effect )
 	circleParameters = ShapeParameters( "circle" )
-	circleParameters:SetEffect( color3d );
+	circleParameters:SetEffect( effect );
 	circleParameters:SetSegments( 24 );
 	circleParameters:SetRadius( 1.0 );
-	circleParameters:SetDiffuse( Color.NewBlue() );
-	return Geometry( MakeGeometryName( "circle", Geometry( circleParameters );
+	circleParameters:SetDiffuse( Blue() );
+	return Geometry( MakeGeometryName( "circle" ), circleParameters )
 end
 
-function CreateShapeSphere()
+function ShapeSphere( effect )
 	sphereParameters = ShapeParameters( "sphere" )
-	sphereParameters:SetEffect( color3d )
+	sphereParameters:SetEffect( effect )
 	sphereParameters:SetSegments( 24 )
 	sphereParameters:SetRadius( 1.0 )
-	sphereParameters:SetDiffuse( Color.NewRGB( 1, 1, 0 ) )
-	return Geometry( MakeGeometryName( "sphere", sphereParameters )
+	sphereParameters:SetDiffuse( RGB( 1, 1, 0 ) )
+	return Geometry( MakeGeometryName( "sphere" ), sphereParameters )
 end
 
-function CreateShapeCylinder()
+function ShapeCylinder( effect )
 	cylinderParameters = ShapeParameters( "cylinder" )
-	cylinderParameters:SetEffect( color3d )
+	cylinderParameters:SetEffect( effect )
 	cylinderParameters:SetSegments( 24 )
 	cylinderParameters:SetRadius( 1.0 )
 	cylinderParameters:SetHeight( 2.0 )
-	cylinderParameters:SetDiffuse( Color.NewRGB(1, 0, 1 ) )
+	cylinderParameters:SetDiffuse( RGB(1, 0, 1 ) )
 	cylinderParameters:SetCaps( true )
-	return Geometry( MakeGeometryName( "cylinder", cylinderParameters )
+	return Geometry( MakeGeometryName( "cylinder" ), cylinderParameters )
 end
 
-function CreateShapeTube()
+function ShapeTube( effect )
 	tubeParameters = ShapeParameters( "tube" )
-	tubeParameters:SetEffect( color3d )
+	tubeParameters:SetEffect( effect )
 	tubeParameters:SetSegments( 24 )
 	tubeParameters:SetMajorRadius( 1.0 )
 	tubeParameters:SetMinorRadius( 0.5 )
 	tubeParameters:SetHeight( 2.0 )
-	tubeParameters:SetDiffuse( Color.NewRed() )
-	return Geometry( MakeGeometryName( "tube", tubeParameters )
+	tubeParameters:SetDiffuse( Red() )
+	return Geometry( MakeGeometryName( "tube" ), tubeParameters )
 end
 
-function CreateShapePlane()
+function ShapePlane( effect )
 	planeParameters = ShapeParameters( "plane" )
-	planeParameters:SetEffect( color3d )
+	planeParameters:SetEffect( effect )
 	planeParameters:SetSegments( 2 )
 	planeParameters:SetSize2( Size2.New( 2.0, 2.0 ) )
-	planeParameters:SetDiffuse( Color.NewRGB( 0, 1, 1 ) )
-	return Geometry( MakeGeometryName( "plane", planeParameters ) )
+	planeParameters:SetDiffuse( RGB( 0, 1, 1 ) )
+	return Geometry( MakeGeometryName( "plane" ), planeParameters )
 end
 
-function CreateShapeCone()
+function ShapeCone( effect )
 	coneParameters = ShapeParameters( "cone" )
 	coneParameters:SetEffect( borgcubeEffect )
 	coneParameters:SetSegments( 24 )
 	coneParameters:SetRadius( 1 )
 	coneParameters:SetHeight( 2 )
 	coneParameters:SetCaps( true )
-	return Geometry( MakeGeometryName( "cone", coneParameters ) )
+	return Geometry( MakeGeometryName( "cone" ), coneParameters )
 end

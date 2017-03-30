@@ -5,7 +5,7 @@
 </renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
-<assets>shaders/</assets>
+<assets>../DX11_common/shaders/</assets>
 <assets>../assets_common/</assets>
 <assets>../assets_common/models/</assets>
 <assets>../assets_common/images/</assets>
@@ -32,5 +32,3 @@
 <include>meeditor.xml</include>
 <include>inputs.xml</include>
 </xml>
-
-

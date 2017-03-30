@@ -42,7 +42,7 @@ void SceneComponent::CallMember( std::string function )
 	// Get our _ENV...
 	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() ) )						   
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "SceneComponent not found! (" + m_luaName + ")" );
+		Error( m_state, "SceneComponent not found! (" + m_luaName + ")" );
 	}
 
 	int r2 = lua_getfield( m_state, -1, function.c_str() );
@@ -82,15 +82,15 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
 	if ( result == LUA_ERRSYNTAX )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", luaL_checkstring( m_state, -1 ) );
+		Error( m_state, luaL_checkstring( m_state, -1 ) );
 	}
 	else if ( result == LUA_ERRFILE )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure trying to read script \"" + m_path.ToString() + "\"!" );
+		Error( m_state, "Failure trying to read script \"" + m_path.ToString() + "\"!" );
 	}
 	else if ( result != LUA_OK )
 	{
-		m_game->ReportError( me::ErrorLevel::Failure, "Lua", "Failure in script!" );
+		Error( m_state, "Failure in script!" );
 	}
 
 	top = lua_gettop( m_state );

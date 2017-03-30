@@ -6,11 +6,11 @@ namespace melua
 {
 	MELUADLL_API std::string GetTypename( lua_State *L );
 	MELUADLL_API std::string GetTypename( lua_State *L, int index );
+	MELUADLL_API std::vector< std::string > GetTypenames( lua_State *L );
 
 	MELUADLL_API int PushNil( lua_State *L );
-	MELUADLL_API int PushBoolean( lua_State *L, bool value );
-	MELUADLL_API int PushNumber( lua_State *L, float value );
-	MELUADLL_API int PushString( lua_State *L, std::string value );
+
+	MELUADLL_API void Error( lua_State *L, std::string error );
 
 	template< typename T >
 	T** CreateUserType( lua_State *L, T from )
@@ -39,6 +39,31 @@ namespace melua
 	{
 		return PushUserType< T >( L, value );
 	}
+
+
+
+	///////////////////////////////// Checks...
+
+	//template< typename T >
+	//typename std::enable_if< !std::is_pointer< T >::value, T* >::type Check( lua_State *L, int index );
+
+	template< typename T >
+	T Check( lua_State *L, int index );
+
+	template<>
+	bool Check( lua_State *L, int index );
+
+	template<>
+	int Check( lua_State *L, int index );
+
+	template<>
+	float Check( lua_State *L, int index );
+
+	template<>
+	std::string Check( lua_State *L, int index );
+
+	///////////////////////////////// Pushes....
+
 
 	template<>
 	int Push( lua_State * L, bool value );

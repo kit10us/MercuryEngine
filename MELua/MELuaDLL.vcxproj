@@ -101,6 +101,8 @@
     <ClInclude Include="melua\ExportInputCondition.h" />
     <ClInclude Include="melua\ExportObjectAction.h" />
     <ClInclude Include="melua\ExportObjectComponent.h" />
+    <ClInclude Include="melua\ExportPixelShader.h" />
+    <ClInclude Include="melua\ExportVertexShader.h" />
     <ClInclude Include="melua\ScriptEngine.h" />
     <ClInclude Include="melua\ExportCameraComponent.h" />
     <ClInclude Include="melua\ExportDebug.h" />
@@ -153,6 +155,8 @@
     <ClCompile Include="melua\ExportInputCondition.cpp" />
     <ClCompile Include="melua\ExportObjectAction.cpp" />
     <ClCompile Include="melua\ExportObjectComponent.cpp" />
+    <ClCompile Include="melua\ExportPixelShader.cpp" />
+    <ClCompile Include="melua\ExportVertexShader.cpp" />
     <ClCompile Include="melua\ScriptEngine.cpp" />
     <ClCompile Include="melua\ExportCameraComponent.cpp" />
     <ClCompile Include="melua\ExportDebug.cpp" />

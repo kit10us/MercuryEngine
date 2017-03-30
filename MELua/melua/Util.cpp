@@ -67,29 +67,27 @@ namespace melua
 		}
 	}
 
+	std::vector< std::string > GetTypenames( lua_State *L )
+	{
+		std::vector< std::string > types;
+		for( int arg = 1, args = lua_gettop( L ); arg <= args; arg++ )
+		{
+			types.push_back( GetTypename( L, arg ) );
+		}
+		return types;
+	}
+
 	int PushNil( lua_State *L )
 	{
 		lua_pushnil( L );
 		return 1;
 	}
 
-	int PushBoolean( lua_State *L, bool value )
+	MELUADLL_API void Error( lua_State *L, std::string error )
 	{
-		lua_pushboolean( L, value );
-		return 1;
+		luaL_error( L, error.c_str() );
 	}
 
-	int PushNumber( lua_State *L, float value )
-	{
-		lua_pushnumber( L, value );
-		return 1;
-	}
-
-	int PushString( lua_State *L, std::string value )
-	{
-		lua_pushstring( L, value.c_str() );
-		return 1;
-	}
 
 	template<>
 	int Push( lua_State * L, bool value )
@@ -125,4 +123,31 @@ namespace melua
 		lua_pushboolean( L, value ? 1 : 0 );
 		return 1;
 	}
+
+
+	template<>
+	bool Check( lua_State *L, int index )
+	{
+		return lua_toboolean( L, index ) ? true : false;
+	}
+
+	template<>
+	int Check( lua_State *L, int index )
+	{
+		return (int)lua_tonumber( L, index );
+	}
+
+	template<>
+	float Check( lua_State *L, int index )
+	{
+		return (float)lua_tonumber( L, index );
+	}
+
+	template<>
+	std::string Check( lua_State *L, int index )
+	{
+		return lua_tostring( L, index );
+	}
 }
+
+

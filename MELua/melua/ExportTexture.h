@@ -9,11 +9,9 @@
 
 struct TextureProxy
 {
+	MELUADLL_API static char* Name();
 	me::ITexture::ptr texture;
 };
-
-MELUADLL_API TextureProxy* CheckTexture( lua_State* state, int index );
-MELUADLL_API int PushTexture( lua_State * state, me::ITexture::ptr effect );
 
 void RegisterTexture( lua_State * state );
 

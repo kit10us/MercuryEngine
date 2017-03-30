@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <melua/CreateState.h>
+
 #include <melua/unify/ExportColor.h>
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
@@ -12,6 +13,7 @@
 #include <melua/unify/ExportMatrix.h>
 #include <melua/unify/ExportQuaternion.h>
 #include <melua/unify/ExportAngle.h>
+
 #include <melua/ExportComponent.h>
 #include <melua/ExportObjectComponent.h>
 #include <melua/ExportCameraComponent.h>
@@ -23,6 +25,8 @@
 #include <melua/ExportUpdate.h>
 #include <melua/ExportTransform.h>
 #include <melua/ExportEffect.h>
+#include <melua/ExportVertexShader.h>
+#include <melua/ExportPixelShader.h>
 #include <melua/shape/ExportShapeParameters.h>
 #include <melua/ExportGeometry.h>
 #include <melua/ExportInput.h>
@@ -67,6 +71,8 @@ void melua::RegisterLibraries( lua_State * state )
 	RegisterShapeParameters( state );
 	RegisterGeometry( state );
 	RegisterEffect( state );
+	RegisterPixelShader( state );
+	RegisterVertexShader( state );
 	RegisterInput( state );
 	RegisterTerraParameters( state );
 	RegisterTerra( state );

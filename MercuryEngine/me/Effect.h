@@ -26,7 +26,9 @@ namespace me
 
 		Effect();
 		Effect( unify::Path source );
-		Effect( IPixelShader::ptr ps, IVertexShader::ptr vs, std::initializer_list< ITexture::ptr > textures = {} );
+		Effect( IVertexShader::ptr vs, IPixelShader::ptr ps, ITexture::ptr texture );
+		Effect( IVertexShader::ptr vs, IPixelShader::ptr ps, std::initializer_list< ITexture::ptr > textures = {} );
+		Effect( IVertexShader::ptr vs, IPixelShader::ptr ps, ITexture::ptr* begin, ITexture::ptr* end );
 		~Effect();
 
 		Effect & operator = ( const Effect & effect );

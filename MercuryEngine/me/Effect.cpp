@@ -15,13 +15,26 @@ Effect::Effect( unify::Path source )
 {
 }
 
-Effect::Effect( IPixelShader::ptr ps, IVertexShader::ptr vs, std::initializer_list< ITexture::ptr > textures )
-	: m_pixelShader{ ps }
-	, m_vertexShader{ vs }
+Effect::Effect( IVertexShader::ptr vs, IPixelShader::ptr ps, ITexture::ptr texture )
+	: m_vertexShader{ vs }
+	, m_pixelShader{ ps }
+	, m_textures{ texture }
+{
+}
+
+Effect::Effect( IVertexShader::ptr vs, IPixelShader::ptr ps, std::initializer_list< ITexture::ptr > textures )
+	: m_vertexShader{ vs }
+	, m_pixelShader{ ps }
 	, m_textures{ textures }
 {
 }
 
+Effect::Effect( IVertexShader::ptr vs, IPixelShader::ptr ps, ITexture::ptr* begin, ITexture::ptr* end )
+	: m_vertexShader{ vs }
+	, m_pixelShader{ ps }
+	, m_textures( begin, end )
+{
+}
 
 Effect::~Effect()
 {

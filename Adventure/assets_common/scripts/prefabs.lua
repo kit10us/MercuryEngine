@@ -7,11 +7,9 @@ function BuildTree( position )
 	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
 
-	local color3d = Effect( "color3d" )
+	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
 
-	local leaves = Effect( "leaves", "Textured_Ambient.effect" )
-	leaves:SetTexture( 0, Texture( "leaves", "leafsolid.bmp" ) )
-
+	local leaves = Effect( VertexShader( "Textured_Ambient.xml" ), PixelShader( "Textured_Ambient.xml" ), Texture( "leaves", "leafsolid.bmp" ) )
 		
 	sphereParameters = ShapeParameters( "sphere" )
 	sphereParameters:SetEffect( leaves )
@@ -22,7 +20,7 @@ function BuildTree( position )
 	object:AddGeometry( Geometry( sphereParameters ) )
 
 	cylinderParameters = ShapeParameters( "cylinder" )
-	cylinderParameters:SetEffect( color3d )
+	cylinderParameters:SetEffect( color_ambient )
 	cylinderParameters:SetSegments( 24 )
 	cylinderParameters:SetRadius( 0.7 )
 	cylinderParameters:SetHeight( 5.0 )
@@ -38,12 +36,11 @@ function BuildHouse( position )
 	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
 
-	local color3d = Effect( "color3d" )
-
+	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
 
 	-- Walls
 	parameters = ShapeParameters( "cube" )
-	parameters:SetEffect( color3d )
+	parameters:SetEffect( color_ambient )
 	parameters:SetSize3( Size3( 6, 6, 10 ) )
 	parameters:SetDiffuse( RGB( .2, 0.1, 0.1 ) * White( 2 ) )
 	parameters:SetCenter( V3( 0, 3, 0 ) )
@@ -51,7 +48,7 @@ function BuildHouse( position )
 
 	-- door
 	parameters = ShapeParameters( "cube" )
-	parameters:SetEffect( color3d )
+	parameters:SetEffect( color_ambient )
 	parameters:SetSize3( Size3( 2.6, 5, 1 ) )
 	parameters:SetDiffuse( RGB( 107/255, 88/255, 37/255 ) * White( 2 ) )
 	parameters:SetCenter( V3( 0, 2.5, -5 ) )
@@ -59,7 +56,7 @@ function BuildHouse( position )
 	
 	-- roof
 	parameters = ShapeParameters( "pyramid" )
-	parameters:SetEffect( color3d )
+	parameters:SetEffect( color_ambient )
 	parameters:SetSize3( Size3( 7, 2, 11 ) )
 	parameters:SetDiffuse( RGB( .3, .3, .3 ) * White( 2 ) )
 	parameters:SetCenter( V3( 0, 7, 0 ) )

@@ -42,13 +42,10 @@ namespace melua
 
 		Type * GetType( std::string name );
 
-		void Error( std::string function, std::string message );
-
 		MELUADLL_API static ScriptEngine* GetInstance();
 		MELUADLL_API me::Game * GetGame();
 
 	public: // IComponent...
-		std::string GetWhat() const override;
 		
 	private:
 		lua_State * m_state;

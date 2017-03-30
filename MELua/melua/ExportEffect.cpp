@@ -4,33 +4,26 @@
 #include <melua/ScriptEngine.h>
 #include <melua/ExportEffect.h>
 #include <melua/ExportTexture.h>
+#include <melua/ExportPixelShader.h>
+#include <melua/ExportVertexShader.h>
+#include <melua/Util.h>
 #include <me/Game.h>
 
 using namespace melua;
 using namespace me;
 
-int PushEffect( lua_State * state, me::Effect::ptr effect )
+char* EffectProxy::Name()
 {
-	EffectProxy ** newProxy = (EffectProxy**)(lua_newuserdata( state, sizeof( EffectProxy* ) ));
-	*newProxy = new EffectProxy();
-	(*newProxy)->effect = effect;
-	luaL_setmetatable( state, "Effect" );
-	return 1;
-}
-
-EffectProxy* CheckEffect( lua_State* state, int index )
-{
-	EffectProxy* ud = *(EffectProxy**)luaL_checkudata( state, index, "Effect" );
-	return ud;
+	return "Effect";
 }
 
 int Effect_SetTexture( lua_State* state )
 {
 	int top = lua_gettop( state );
 
-	EffectProxy* proxy = CheckEffect( state, 1 );
+	EffectProxy* proxy = CheckUserType< EffectProxy >( state, 1 );
 	int stage = (int)lua_tonumber( state, 2 );
-	TextureProxy* texture = CheckTexture( state, 3 );
+	TextureProxy* texture = CheckUserType< TextureProxy >( state, 3 );
 
 	proxy->effect->SetTexture( stage, texture->texture );
 
@@ -45,32 +38,96 @@ int Effect_Constructor( lua_State * state )
 
 	if ( top < 1 )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "LUA", "Effect requires at least the name of the effect as a parameter!" );
+		Error( state, "Effect requires at least the name of the effect as a parameter!" );
 	}
 
-	int type = lua_type( state, 1 );
-
-	Effect::ptr effect;
-
-	std::string name = lua_tostring( state, 1 );
-
-	if ( top == 1 )
+	try
 	{
-		effect = game->GetManager< Effect >()->Find( name );
+
+		if( top == 1 )
+		{
+			std::string name = lua_tostring( state, 1 );
+			auto effect = game->GetManager< Effect >()->Find( name );
+			if( effect )
+			{
+				return Push< EffectProxy >( state, { effect } );
+			}
+			else
+			{
+				return PushNil( state );
+			}
+		}
+		else if( top >= 2 )
+		{
+			std::vector< std::string > types( GetTypenames( state ) );
+
+			// Two paramters, both strings, then it's a name, path.
+			if( unify::StringIs( types[0], "String" ) && unify::StringIs( types[1], "String" ) )
+			{
+				std::string name = lua_tostring( state, 1 );
+				unify::Path source( lua_tostring( state, 2 ) );
+				auto effect = game->GetManager< Effect >()->Add( name, source );
+				return Push< EffectProxy >( state, { effect } );
+			}
+			else // It's a ps, vs, and N textures...
+			{
+				me::IPixelShader::ptr ps;
+				me::IVertexShader::ptr vs;
+				std::vector< me::ITexture::ptr > textures;
+				for( size_t i = 0; i < types.size(); i++ )
+				{
+					if( unify::StringIs( types[i], PixelShaderProxy::Name() ) )
+					{
+						if( ps )
+						{
+							Error( state, "Attempted to create an effect with two pixel shaders!" );
+						}
+						ps = CheckUserType< PixelShaderProxy >( state, i + 1 )->shader;
+					}
+					else if( unify::StringIs( types[i], VertexShaderProxy::Name() ) )
+					{
+						if( vs )
+						{
+							Error( state, "Attempted to create an effect with two vertex shaders!" );
+						}
+						vs = CheckUserType< VertexShaderProxy >( state, i + 1 )->shader;
+					}
+					else if( unify::StringIs( types[i], TextureProxy::Name() ) )
+					{
+						textures.push_back( CheckUserType< TextureProxy >( state, i + 1 )->texture );
+					}
+				}
+
+				if( !ps || !vs )
+				{
+					Error( state, "Invalid PixelShader, or VertexShader!" );
+				}
+
+				if( textures.size() > 0 )
+				{
+					me::Effect::ptr effect( new Effect( vs, ps, &textures[0], &textures[0] + textures.size() ) );
+					return Push< EffectProxy >( state, { effect } );
+				}
+				else
+				{
+					me::Effect::ptr effect( new Effect( vs, ps ) );
+					return Push< EffectProxy >( state, { effect } );
+				}
+			}
+		}
 	}
-	else
+	catch( std::exception ex )
 	{
-		unify::Path source( lua_tostring( state, 2 ) );
-		effect = game->GetManager< Effect >()->Add( name, source );
+		Error( state, ex.what() );
 	}
 
-	return PushEffect( state, effect );
+	return PushNil( state );
 }
 
 int Effect_Destructor( lua_State * state )
 {
-	EffectProxy * EffectProxy = CheckEffect( state, 1 );
-	delete EffectProxy;
+	EffectProxy * effectProxy = CheckUserType< EffectProxy >( state, 1 );
+	delete effectProxy;
 	return 0;
 }
 

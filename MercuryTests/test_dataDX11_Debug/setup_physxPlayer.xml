@@ -16,10 +16,7 @@
 	<startup>game_physxPlayer.lua</startup>
 </extension>
 
-<extension source="../../extensions/Debug/DAELoader.dll">
-	<color name="color_ambient" source="Color_Ambient.effect"/>
-	<texture name="textured_ambient" source="Textured_Ambient.effect"/>
-</extension>
+<include>dae.xml</include>
 
 <extension source="../../extensions/Debug/ASELoader.dll">
 	<textureps name="textured_ambient" source="textured_ambient.xml"/>

@@ -7,12 +7,11 @@
 #include <lua.hpp>
 #include <me/Effect.h>
 
-struct EffectProxy
+struct PixelShaderProxy
 {
 	MELUADLL_API static char* Name();
-
-	me::Effect::ptr effect;
+	me::IPixelShader::ptr shader;
 };
 
-void RegisterEffect( lua_State * state );
+void RegisterPixelShader( lua_State * state );
 

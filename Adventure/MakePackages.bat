@@ -25,10 +25,12 @@ echo Building package... %folder%
 mkdir %folder%
 
 if exist .\DX9_Debug\log.txt del .\DX9_Debug\log.txt
-if exist .\DX11_Debug\log.txt del .\DX11_Debug\log.txt
 if exist .\DX9_Release\log.txt del .\DX9_Release\log.txt
+if exist .\DX11_Debug\log.txt del .\DX11_Debug\log.txt
 if exist .\DX11_Release\log.txt del .\DX11_Release\log.txt
 
+xcopy ".\DX9_common" "%folder%\DX9_common\" /e
+xcopy ".\DX11_common" "%folder%\DX11_common\" /e
 xcopy ".\DX9_Debug" "%folder%\DX9_Debug\" /e
 xcopy ".\DX11_Debug" "%folder%\DX11_Debug\" /e
 xcopy ".\DX9_Release" "%folder%\DX9_Release\" /e
@@ -43,11 +45,29 @@ xcopy "..\output\v140_Debug\Adventure\*.*" "%folder%\DX11_Debug\" /e
 xcopy "..\output\v140_Release\Adventure\*.*" "%folder%\DX9_Release\" /e
 xcopy "..\output\v140_Release\Adventure\*.*" "%folder%\DX11_Release\" /e
 
-
+REM -- debug setup.xml
 QFindReplace.exe "%folder%\DX9_Debug\setup.xml" "%folder%\DX9_Debug\setup.xml" "../../extensions/" "../extensions/"
 QFindReplace.exe "%folder%\DX11_Debug\setup.xml" "%folder%\DX11_Debug\setup.xml" "../../extensions/" "../extensions/"
+
+REM -- release setup.xml
 QFindReplace.exe "%folder%\DX9_Release\setup.xml" "%folder%\DX9_Release\setup.xml" "../../extensions/" "../extensions/"
 QFindReplace.exe "%folder%\DX11_Release\setup.xml" "%folder%\DX11_Release\setup.xml" "../../extensions/" "../extensions/"
+
+REM -- release dae.xml
+QFindReplace.exe "%folder%\DX9_Release\dae.xml" "%folder%\DX9_Release\dae.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX11_Release\dae.xml" "%folder%\DX11_Release\dae.xml" "../../extensions/" "../extensions/"
+
+REM -- debug dae.xml
+QFindReplace.exe "%folder%\DX9_Debug\dae.xml" "%folder%\DX9_Debug\dae.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX11_Debug\dae.xml" "%folder%\DX11_Debug\dae.xml" "../../extensions/" "../extensions/"
+
+REM -- release meeditor.xml
+QFindReplace.exe "%folder%\DX9_Release\meeditor.xml" "%folder%\DX9_Release\meeditor.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX11_Release\meeditor.xml" "%folder%\DX11_Release\meeditor.xml" "../../extensions/" "../extensions/"
+
+REM -- debug meeditor.xml
+QFindReplace.exe "%folder%\DX9_Debug\meeditor.xml" "%folder%\DX9_Debug\meeditor.xml" "../../extensions/" "../extensions/"
+QFindReplace.exe "%folder%\DX11_Debug\meeditor.xml" "%folder%\DX11_Debug\meeditor.xml" "../../extensions/" "../extensions/"
 
 git log -1 > "%folder%\git_log.txt"
 

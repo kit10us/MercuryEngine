@@ -162,7 +162,7 @@ int Transform_PreMul( lua_State * state )
 	else
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		se->Error("Transform:PreMul", "Invalid parameter type \"" + secondType + "\"!");
+		Error( state, "Invalid parameter type \"" + secondType + "\"!");
 	}
 	return 0;
 }
@@ -188,8 +188,7 @@ int Transform_PostMul( lua_State * state )
 	}
 	else
 	{
-		ScriptEngine * se = ScriptEngine::GetInstance();
-		se->Error("Transform:PostMul", "Invalid parameter type \"" + secondType + "\"!");
+		Error( state, "Invalid parameter type \"" + secondType + "\"!" );
 	}
 	return 0;
 }

@@ -102,7 +102,7 @@ int Scene_GetObjectCount( lua_State * state )
 	int args = lua_gettop( state );
 
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
-	return PushNumber( state, (float)sceneProxy->scene->GetObjectAllocator()->Count() );
+	return Push( state, sceneProxy->scene->GetObjectAllocator()->Count() );
 }
 
 int Scene_SendCommand( lua_State * state )

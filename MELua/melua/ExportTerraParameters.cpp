@@ -111,7 +111,7 @@ int TerraParameters_SetEffect( lua_State* state )
 	assert( args == 2 );
 
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
-	EffectProxy * effectProxy = CheckEffect( state, 2 );
+	EffectProxy * effectProxy = CheckUserType< EffectProxy >( state, 2 );
 
 	parameters->parameters.Set< Effect::ptr >( "effect", effectProxy->effect );
 	return 0;
@@ -127,7 +127,7 @@ int TerraParameters_SetHeightMap( lua_State* state )
 
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
 
-	TextureProxy * texture = CheckTexture( state, 2 );
+	TextureProxy * texture = CheckUserType< TextureProxy >( state, 2 );
 
 	unify::ColorUnit colorOp( CheckColor( state, 3 )->color);
 	Terra::TextureOpMap opMap( texture->texture, colorOp );
@@ -146,7 +146,7 @@ int TerraParameters_SetAlphaMap( lua_State* state )
 
 	TerraParameters * parameters = CheckTerraParameters( state, 1 );
 
-	TextureProxy * texture = CheckTexture( state, 2 );
+	TextureProxy * texture = CheckUserType< TextureProxy >( state, 2 );
 
 	unify::Color colorOp( CheckColor( state, 3 )->color);
 	Terra::TextureOpMap opMap( texture->texture, colorOp );
