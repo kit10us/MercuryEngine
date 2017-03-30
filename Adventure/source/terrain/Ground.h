@@ -27,8 +27,13 @@ namespace terrain
 
 		me::Geometry::ptr GetEdge( Direction edge );
 
+		void AddFriend( size_t other );
+
+		bool IsFriend( size_t other ) const;
+
 	private:
 		std::vector< me::Geometry::ptr > m_generics;
 		std::vector< me::Geometry::ptr > m_edges;
+		std::vector< size_t > m_friends;
 	};
 }

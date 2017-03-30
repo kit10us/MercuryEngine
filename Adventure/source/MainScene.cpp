@@ -198,6 +198,16 @@ std::string MainScene::SendCommand( std::string command, std::string extra )
 
 		m_map->AddGround( name, ground );
 	}
+	else if( unify::StringIs( command, "AddMapFriend" ) )
+	{
+		using namespace terrain;
+
+		auto parts = unify::Split< std::string >( extra, ',' );
+		std::string first = unify::Trim( parts[0] );
+		std::string second = unify::Trim( parts[1] );
+		
+		m_map->AddFriend( first, second );
+	}
 	else if(unify::StringIs( command, "GetMapWidth" ) )
 	{
 		return unify::Cast< std::string >( m_mapSize.width );

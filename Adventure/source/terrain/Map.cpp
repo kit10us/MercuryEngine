@@ -62,7 +62,21 @@ int Map::AddGround( std::string name, Ground::ptr ground )
 	size_t index = m_groundList.size();
 	m_groundMap[ name ] = index;
 	m_groundList.push_back( ground );
+	ground->AddFriend( index );
 	return index;
+}
+
+Ground::ptr Map::GetGround( std::string name )
+{
+	auto itr = m_groundMap.find( name );
+	return itr == m_groundMap.end() ? Ground::ptr() : m_groundList[ itr->second ];
+}
+
+void Map::AddFriend( std::string ground, std::string groundFriend )
+{
+	auto g = GetGround( ground );
+	auto f = FindGroundIndex( groundFriend );
+	g->AddFriend( f );
 }
 
 int Map::GetMap( int x, int y ) const
@@ -89,7 +103,7 @@ unify::FrameLite * Map::GetFrame( int x, int y )
 	return &m_frames[y * m_mapSize.height + x];
 }
 
-int Map::FindGround( std::string name ) const
+int Map::FindGroundIndex( std::string name ) const
 {
 	auto itr = m_groundMap.find( name );
 	if( itr == m_groundMap.end() )
@@ -102,34 +116,35 @@ int Map::FindGround( std::string name ) const
 
 me::Geometry::ptr Map::GetGroundGeometry( const int * type )
 {
-	int UL = type[(size_t)Direction::UL];
-	int U = type[(size_t)Direction::U];
-	int UR = type[(size_t)Direction::UR];
-	int L = type[(size_t)Direction::L];
 	int C = type[(size_t)Direction::C];
-	int R = type[(size_t)Direction::R];
-	int DL = type[(size_t)Direction::DL];
-	int D = type[(size_t)Direction::D];
-	int DR = type[(size_t)Direction::DR];
-
 	Ground::ptr ground = m_groundList[C];
-	if     ( U != C && L != C && R == C && D == C )	return ground->GetEdge( Direction::UL );
-	else if( U != C && L == C && R == C && D == C )	return ground->GetEdge( Direction::U );
-	else if( U != C && L == C && R != C && D == C )	return ground->GetEdge( Direction::UR );
-	else if( U == C && L != C && R == C && D == C )	return ground->GetEdge( Direction::L );
-	else if( U == C && L == C && R == C && D == C ) return ground->GetEdge( Direction::C );
-	else if( U == C && L == C && R != C && D == C )	return ground->GetEdge( Direction::R );
-	else if( U == C && L != C && R == C && D != C )	return ground->GetEdge( Direction::DL );
-	else if( U == C && L == C && R == C && D != C )	return ground->GetEdge( Direction::D );
-	else if( U == C && L == C && R != C && D != C )	return ground->GetEdge( Direction::DR );
 
-	else if( U != C && L != C && R == C && D != C )	return ground->GetEdge( Direction::UDL );
-	else if( U != C && L == C && R != C && D != C )	return ground->GetEdge( Direction::UDR );
-	else if( U != C && L != C && R != C && D == C )	return ground->GetEdge( Direction::ULR );
-	else if( U == C && L != C && R != C && D != C )	return ground->GetEdge( Direction::DLR );
+	bool UL =	ground->IsFriend( type[(size_t)Direction::UL]) ? true : false;
+	bool U =	ground->IsFriend( type[(size_t)Direction::U] ) ? true : false;
+	bool UR =	ground->IsFriend( type[(size_t)Direction::UR]) ? true : false;
+	bool L =	ground->IsFriend( type[(size_t)Direction::L] ) ? true : false;
+	bool R =	ground->IsFriend( type[(size_t)Direction::R] ) ? true : false;
+	bool DL =	ground->IsFriend( type[(size_t)Direction::DL]) ? true : false;
+	bool D =	ground->IsFriend( type[(size_t)Direction::D] ) ? true : false;
+	bool DR =	ground->IsFriend( type[(size_t)Direction::DR]) ? true : false;
 
-	else if( U != C && L == C && R == C && D != C )	return ground->GetEdge( Direction::UD );
-	else if( U == C && L != C && R != C && D == C )	return ground->GetEdge( Direction::LR );
+	if     ( !U && !L && R  && D )	return ground->GetEdge( Direction::UL );
+	else if( !U && L  && R  && D )	return ground->GetEdge( Direction::U );
+	else if( !U && L  && !R && D )	return ground->GetEdge( Direction::UR );
+	else if( U  && !L && R  && D )	return ground->GetEdge( Direction::L );
+	else if( U  && L  && R  && D ) return ground->GetEdge( Direction::C );
+	else if( U  && L  && !R && D )	return ground->GetEdge( Direction::R );
+	else if( U  && !L && R  && !D )	return ground->GetEdge( Direction::DL );
+	else if( U  && L  && R  && !D )	return ground->GetEdge( Direction::D );
+	else if( U  && L  && !R && !D )	return ground->GetEdge( Direction::DR );
+
+	else if( !U && !L && R  && !D )	return ground->GetEdge( Direction::UDL );
+	else if( !U && L  && !R && !D )	return ground->GetEdge( Direction::UDR );
+	else if( !U && !L && !R && D )	return ground->GetEdge( Direction::ULR );
+	else if( U  && !L && !R && !D )	return ground->GetEdge( Direction::DLR );
+
+	else if( !U && L  && R  && !D )	return ground->GetEdge( Direction::UD );
+	else if( U  && !L && !R && D )	return ground->GetEdge( Direction::LR );
 
 	else return ground->GetEdge( Direction::Surround );
 }
@@ -138,7 +153,7 @@ bool Map::DrawOnMap( unify::V2< int > pos, std::string ground )
 {
 	int groundIndex = -1;
 	{
-		groundIndex = FindGround( ground );
+		groundIndex = FindGroundIndex( ground );
 	}
 
 	if ( pos.x < 0 || pos.x >= m_mapSize.width || pos.y < 0 || pos.y >= m_mapSize.height )

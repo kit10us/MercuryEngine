@@ -40,6 +40,10 @@ namespace terrain
 		
 		int AddGround( std::string name, Ground::ptr ground );
 
+		Ground::ptr GetGround( std::string name );
+
+		void AddFriend( std::string ground, std::string groundFriend );
+
 		bool DrawOnMap( unify::V2< int > pos, std::string ground );
 
 	private:
@@ -47,7 +51,7 @@ namespace terrain
 
 		unify::FrameLite * GetFrame( int x, int y );
 
-		int FindGround( std::string name ) const;
+		int FindGroundIndex( std::string name ) const;
 
 		me::Geometry::ptr GetGroundGeometry( const int * type );
 

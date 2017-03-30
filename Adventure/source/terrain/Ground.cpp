@@ -45,3 +45,12 @@ me::Geometry::ptr Ground::GetEdge( Direction edge )
 	return m_edges[(size_t)edge];
 }
 
+void Ground::AddFriend( size_t other )
+{
+	m_friends.push_back( other );
+}
+
+bool Ground::IsFriend( size_t other ) const
+{
+	return std::find( m_friends.begin(), m_friends.end(), other ) == m_friends.end() ? false : true;
+}
