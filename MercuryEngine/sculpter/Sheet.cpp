@@ -2,11 +2,13 @@
 // All Rights Reserved
 
 #include <sculpter/Sheet.h>
-#include <me/VertexUtil.h>
+#include <me/render/VertexUtil.h>
 #include <me/Game.h>
 #include <cassert>
 
 using namespace sculpter;
+using namespace me;
+using namespace render;
 
 Sheet::Sheet( Point origin )
 	: m_origin{ origin }
@@ -70,7 +72,7 @@ size_t Sheet::GetSplineCount() const
 	return m_splines.GetSplineCount();
 }
 
-bool Sheet::Create( me::PrimitiveList & primitiveList, unify::Size< float > size, me::Effect::ptr effect ) const
+bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Effect::ptr effect ) const
 {
 	if( !IsComplete() )
 	{

@@ -6,6 +6,7 @@
 
 using namespace me;
 using namespace canvas;
+using namespace render;
 
 FPS::FPS( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: TextElement( game, effect, std::string(), anchor, scale, offset )

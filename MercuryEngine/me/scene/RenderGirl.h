@@ -10,7 +10,7 @@ namespace me
 	{
 		class RenderGirl
 		{
-			const RenderParams * m_params;					
+			const render::Params * m_params;					
 			size_t m_renderCount;
 			object::CameraCache m_cameraCache;
 
@@ -18,12 +18,12 @@ namespace me
 			RenderGirl();
 			~RenderGirl();
 
-			const RenderParams * GetParams() const;
+			const render::Params * GetParams() const;
 
 			/// <summary>
 			/// Begin rendering.
 			/// </summary>
-			void Begin( const RenderParams * params );
+			void Begin( const render::Params * params );
 
 			void AddCamera( object::FinalCamera camera );
 

@@ -19,6 +19,7 @@
 
 using namespace melua;
 using namespace me;
+using namespace render;
 
 int PushTerraParameters( lua_State * state, TerraParameters & shapeParameters )
 {

@@ -3,14 +3,14 @@
 
 #include <Windows.h>
 #include <MainScene.h>
-#include <me/RenderMethod.h>
+#include <me/render/RenderMethod.h>
 #include <me/object/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/Layer.h>
 #include <me/canvas/FPS.h>
 
-
 using namespace me;
+using namespace render;
 using namespace scene;
 
 MainScene::MainScene( me::Game * game )

@@ -6,7 +6,7 @@
 #include <meedr/SceneViewer.h>
 #include <meedr/ComponentViewer.h>
 #include <ui/Window.h>
-#include <me/Geometry.h>
+#include <me/render/Geometry.h>
 
 using namespace meedr;
 

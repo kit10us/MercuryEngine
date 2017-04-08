@@ -9,7 +9,7 @@
 #include <dae/Triangles.h>
 #include <dae/DocumentNode.h>
 #include <dae/BindMaterial_TechniqueCommon.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <qxml/QXML.h>
 #include <map>
 #include <vector>
@@ -28,7 +28,7 @@ namespace dae
 		/// <summary>
 		/// Build a primitive list using a given/optional material.
 		/// </summary>
-		void Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
+		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
 			
 	private:
 		struct ContributingInput
@@ -44,6 +44,5 @@ namespace dae
 		std::shared_ptr< Vertices > m_vertices; // 1
 		std::vector< std::shared_ptr< Polylist > > m_polylist;
 		std::map< std::string, size_t > m_source_map;
-
 	};
 }

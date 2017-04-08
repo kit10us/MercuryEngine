@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <sg/ShapeType.h>
-#include <me/RenderMethod.h>
+#include <me/render/RenderMethod.h>
 #include <unify/String.h>
 #include <unify/Size3.h>
 

@@ -55,7 +55,7 @@ namespace me
 			virtual void OnLateUpdate( UpdateParams params ) = 0;
 
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
-			//void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & summation )
+			//void GrowableObjectStack::CollectRendering( render::Params params, const FinalCamera & camera, GeometryCacheSummation & summation )
 			virtual void OnRender( RenderGirl & rendergirl ) = 0;
 
 			/// <summary>

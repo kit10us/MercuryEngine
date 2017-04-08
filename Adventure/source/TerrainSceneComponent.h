@@ -12,7 +12,7 @@ public:
 
 	unify::Size< int > GetSize() const;
 
-	void SetInvalidGeometry( me::Geometry::ptr geo );	   
+	void SetInvalidGeometry( me::render::Geometry::ptr geo );
 
 	size_t AddGround( std::string, terrain::Ground::ptr ground );
 
@@ -25,7 +25,7 @@ public: // IComponent...
 	}
 
 protected:
-	me::Geometry::ptr m_invalidGeo;
+	me::render::Geometry::ptr m_invalidGeo;
 	std::vector< unify::FrameLite > m_frames;
 	unify::Size< int > m_mapSize;
 	unify::Size< int > m_terraSize;

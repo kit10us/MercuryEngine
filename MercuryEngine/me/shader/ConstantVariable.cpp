@@ -13,7 +13,7 @@ ConstantVariable::ConstantVariable()
 {
 }
 
-ConstantVariable::ConstantVariable( std::string name, ElementFormat::TYPE type, size_t count )
+ConstantVariable::ConstantVariable( std::string name, render::ElementFormat::TYPE type, size_t count )
 	: name( name )
 	, type( type )
 	, count( count )

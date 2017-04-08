@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace object;
 using namespace terrain;
@@ -47,7 +48,7 @@ unify::Size< int > Map::GetSize() const
 	return m_mapSize;
 }
 
-void Map::SetInvalid( me::Geometry::ptr invalid )
+void Map::SetInvalid( Geometry::ptr invalid )
 {
 	m_invalid = invalid;
 }
@@ -114,7 +115,7 @@ int Map::FindGroundIndex( std::string name ) const
 	return itr->second;
 }
 
-me::Geometry::ptr Map::GetGroundGeometry( const int * type )
+Geometry::ptr Map::GetGroundGeometry( const int * type )
 {
 	int C = type[(size_t)Direction::C];
 	Ground::ptr ground = m_groundList[C];

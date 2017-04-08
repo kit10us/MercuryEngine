@@ -7,6 +7,7 @@
 #include <qxml/Document.h>
 
 using namespace me;
+using namespace render;
 
 VertexShaderFactory::VertexShaderFactory( me::IGame * game )
 	: m_game( game )

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/object/ObjectComponent.h>
-#include <me/Geometry.h>
+#include <me/render/Geometry.h>
 #include <unify/Matrix.h>
 
 namespace me
@@ -18,18 +18,18 @@ namespace me
 
 		public:
 			GeometryComponent();
-			GeometryComponent( Geometry::ptr geometry );
-			GeometryComponent( Geometry::ptr geometry, unify::Matrix matrix );
+			GeometryComponent( render::Geometry::ptr geometry );
+			GeometryComponent( render::Geometry::ptr geometry, unify::Matrix matrix );
 			virtual ~GeometryComponent();
 
-			void SetGeometry( Geometry::ptr geometry );
-			Geometry::ptr GetGeometry();
-			const Geometry::ptr GetGeometry() const;
+			void SetGeometry( render::Geometry::ptr geometry );
+			render::Geometry::ptr GetGeometry();
+			const render::Geometry::ptr GetGeometry() const;
 
 			void OnStart() override;
 			void OnUpdate( UpdateParams params ) override;
 
-			void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * transform ) override;
+			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * transform ) override;
 			
 			void SetMatrix( unify::Matrix matrix );
 			unify::Matrix GetMatrix() const;
@@ -42,10 +42,10 @@ namespace me
 		public: // IThing...
 
 		private:
-			Geometry::ptr m_geometry;
-			GeometryInstanceData::ptr m_geometryInstanceData;
+			render::Geometry::ptr m_geometry;
+			render::GeometryInstanceData::ptr m_geometryInstanceData;
 		};
     }
 
-	object::GeometryComponent * AddGeometryComponent( object::Object * object, Geometry::ptr geometry, unify::Matrix matrix = unify::MatrixIdentity() );
+	object::GeometryComponent * AddGeometryComponent( object::Object * object, render::Geometry::ptr geometry, unify::Matrix matrix = unify::MatrixIdentity() );
 }

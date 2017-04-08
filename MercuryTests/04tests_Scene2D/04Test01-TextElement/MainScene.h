@@ -4,13 +4,13 @@
 #pragma once
 
 #include <me/scene/Scene.h>
-#include <me/Effect.h>
-#include <me/IVertexBuffer.h>
+#include <me/render/Effect.h>
+#include <me/render/IVertexBuffer.h>
 
 class MainScene : public me::scene::Scene
 {
-	me::Effect::ptr effect;
-	me::IVertexBuffer::ptr vertexBuffer;
+	me::render::Effect::ptr effect;
+	me::render::IVertexBuffer::ptr vertexBuffer;
 	unify::Quaternion q;
 
 public:

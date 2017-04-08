@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <MainScene.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/object/BBoxRendererComponent.h>
@@ -14,6 +14,7 @@
 #include <sg/ShapeCreators.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace object;
 

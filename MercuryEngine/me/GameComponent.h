@@ -32,7 +32,7 @@ namespace me
 		void OnUpdate( UpdateParams params ) override;
 		void OnLateUpdate( UpdateParams params ) override;
 		
-		void OnRender( RenderParams params ) override;
+		void OnRender( render::Params params ) override;
 		void OnDetach( IGame * game ) override;
 
 		action::IAction::ptr CreateAction(const qxml::Element * element) override;

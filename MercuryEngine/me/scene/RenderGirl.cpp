@@ -3,11 +3,12 @@
 
 #include <me/scene/RenderGirl.h>
 #include <me/object/CameraComponent.h>
-#include <me/GeometryCache.h>
+#include <me/render/GeometryCache.h>
 
 using namespace me;
 using namespace scene;
 using namespace object;
+using namespace render;
 
 RenderGirl::RenderGirl()
 	: m_renderCount{ 0 }
@@ -18,12 +19,12 @@ RenderGirl::~RenderGirl()
 {
 }
 
-const RenderParams * RenderGirl::GetParams() const
+const render::Params * RenderGirl::GetParams() const
 {
 	return m_params;
 }
 
-void RenderGirl::Begin( const RenderParams * params )
+void RenderGirl::Begin( const render::Params * params )
 {
 	m_params = params;
 	m_renderCount = 0;
@@ -55,12 +56,12 @@ void RenderGirl::Render( scene::IObjectAllocator * allocator )
 
 		renderer->BeforeRenderSolids();
 
-		summationSolids.Render( RenderParams{ m_params->renderer, myRenderInfo } );
+		summationSolids.Render( render::Params{ m_params->renderer, myRenderInfo } );
 		m_renderCount += summationSolids.Count();
 
 		renderer->BeforeRenderTrans();
 
-		summationTrans.Render( RenderParams{ m_params->renderer, myRenderInfo } );
+		summationTrans.Render( render::Params{ m_params->renderer, myRenderInfo } );
 		m_renderCount += summationTrans.Count();
 	}
 }

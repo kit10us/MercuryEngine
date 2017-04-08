@@ -10,8 +10,9 @@
 using namespace medx11;
 using namespace me;
 using namespace shader;
+using namespace render;
 
-PixelShader::PixelShader( me::IRenderer * renderer )
+PixelShader::PixelShader( IRenderer * renderer )
 	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 	, m_created( false )
 	, m_isTrans( false )
@@ -21,7 +22,7 @@ PixelShader::PixelShader( me::IRenderer * renderer )
 {
 }
 
-PixelShader::PixelShader( me::IRenderer * renderer, PixelShaderParameters parameters )
+PixelShader::PixelShader( IRenderer * renderer, PixelShaderParameters parameters )
 	: PixelShader( renderer )
 {
 	Create( parameters );

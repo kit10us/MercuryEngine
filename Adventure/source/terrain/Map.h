@@ -4,7 +4,7 @@
 #pragma once 
 
 #include <me/object/CameraComponent.h>
-#include <me/Geometry.h>
+#include <me/render/Geometry.h>
 #include <terrain/Base.h>
 #include <terrain/Ground.h>
 #include <terrain/GroundConnection.h>
@@ -32,7 +32,7 @@ namespace terrain
 		void Initialize();
 
 	public:
-		void SetInvalid( me::Geometry::ptr invalid );
+		void SetInvalid( me::render::Geometry::ptr invalid );
 
 		unify::Size< int > GetSize() const;
 
@@ -53,10 +53,10 @@ namespace terrain
 
 		int FindGroundIndex( std::string name ) const;
 
-		me::Geometry::ptr GetGroundGeometry( const int * type );
+		me::render::Geometry::ptr GetGroundGeometry( const int * type );
 
 	public: // IObjectComponent...
-		void CollectGeometry( me::GeometryCache & solids, me::GeometryCache & trans, const unify::FrameLite * frame ) override;
+		void CollectGeometry( me::render::GeometryCache & solids, me::render::GeometryCache & trans, const unify::FrameLite * frame ) override;
 		void OnSuspend() override;
 		void OnResume() override;
 		IObjectComponent::ptr Duplicate() override;
@@ -69,7 +69,7 @@ namespace terrain
 		unify::Size< int > m_mapSize;
 		unify::Size< float > m_terraSize;
 
-		me::Geometry::ptr m_invalid;
+		me::render::Geometry::ptr m_invalid;
 
 		Base::ptr m_base;
 

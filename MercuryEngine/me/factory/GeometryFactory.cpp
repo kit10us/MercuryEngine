@@ -3,13 +3,14 @@
 
 #include <me/Game.h>
 #include <me/factory/GeometryFactory.h>
-#include <me/VertexUtil.h>
+#include <me/render/VertexUtil.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/NotImplemented.h>
 #include <me/XMLConvert.h>
 #include <qxml/Document.h>
 
 using namespace me;
+using namespace render;
 
 void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * mesh );
 

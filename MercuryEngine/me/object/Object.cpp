@@ -190,7 +190,7 @@ void Object::Initialize( IObjectComponent::cache & updateables, CameraCache & ca
 	}
 }
 
-void Object::CollectGeometry( GeometryCache & solids, GeometryCache & trans )
+void Object::CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans )
 {
 	for( auto && component : m_components )
 	{

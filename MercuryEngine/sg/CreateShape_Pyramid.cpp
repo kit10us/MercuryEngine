@@ -2,23 +2,24 @@
 // All Rights Reserved
 
 #include <sg/ShapeCreators.h>
-#include <me/RenderMethod.h>
-#include <me/TextureMode.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/TextureMode.h>
 #include <me/exception/NotImplemented.h>
-#include <me/BufferUsage.h>
-#include <me/VertexUtil.h>
+#include <me/render/BufferUsage.h>
+#include <me/render/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/Size3.h>
 #include <unify/TexArea.h>
 #include <unify/Angle.h>
 
 using namespace me;
+using namespace render;
 
 const float PI = 3.14159265358979f;
 const float PI2 = 6.28318530717959f;
 const std::string DefaultBufferUsage = "Default";
 
-void sg::CreateShape_Pyramid( me::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
+void sg::CreateShape_Pyramid( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );

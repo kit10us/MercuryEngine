@@ -4,7 +4,7 @@
 #include <me/Game.h>
 #include <sg/ShapeFactory.h>
 #include <me/exception/FailedToCreate.h>
-#include <me/ITexture.h>
+#include <me/render/ITexture.h>
 #include <qxml/Document.h>
 
 using namespace me;
@@ -15,8 +15,10 @@ ShapeFactory::ShapeFactory( IGame * game )
 {
 }
 
-Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
+render::Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
 {	
+	using namespace render;
+
 	auto game = dynamic_cast< Game *>(m_game);
 
 	Mesh::ptr shape;

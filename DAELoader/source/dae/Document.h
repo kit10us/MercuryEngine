@@ -13,8 +13,8 @@
 #include <dae/Scene.h>
 #include <dae/util/IEffectSolver.h>
 #include <dae/Exceptions.h>
-#include <me/IRenderer.h>
-#include <me/Effect.h>
+#include <me/render/IRenderer.h>
+#include <me/render/Effect.h>
 #include <qxml/QXML.h>
 #include <unify/Path.h>
 
@@ -28,14 +28,14 @@ namespace dae
 	class Document : public IDocument
 	{
 	public:
-		Document( me::IRenderer * renderer, const unify::Path & filePath, util::IEffectSolver * effectSolver );
+		Document( me::render::IRenderer * renderer, const unify::Path & filePath, util::IEffectSolver * effectSolver );
 
 		/// <summary>
 		/// DAE attribute: version
 		/// </summary>
 		const std::string & GetVersion() const;
 
-		me::Effect::ptr GetEffect( const Shading & shading ) const;
+		me::render::Effect::ptr GetEffect( const Shading & shading ) const;
 
 		const LibraryNodes & GetLibraryNodes() const;
 		const LibraryMaterials & GetLibraryMaterials() const;
@@ -49,10 +49,10 @@ namespace dae
 		void Add( const std::string & name, DocumentNode * node );
 		const DocumentNode * Find( const std::string & name ) const;
 
-		me::IRenderer * GetRenderer() override;
+		me::render::IRenderer * GetRenderer() override;
 
 	private:
-		me::IRenderer * m_renderer;
+		me::render::IRenderer * m_renderer;
 		std::string m_version;
 		std::shared_ptr< LibraryNodes > m_library_nodes;
 		std::shared_ptr< LibraryMaterials > m_library_materials;

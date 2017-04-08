@@ -7,6 +7,7 @@
 using namespace me;
 using namespace scene;
 using namespace object;
+using namespace render;
 
 GrowableObjectStack::GrowableObjectStack( IScene * scene, size_t max )
 	: ObjectAllocator( "GrowableObjectStack" )
@@ -125,7 +126,7 @@ void GrowableObjectStack::CollectCameras( RenderGirl & renderGirl )
 	}
 }
 
-void GrowableObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
+void GrowableObjectStack::CollectRendering( render::Params params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
 {
 	for( auto && stack : m_stacks )
 	{

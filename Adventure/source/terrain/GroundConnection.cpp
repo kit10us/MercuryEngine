@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using namespace me;
+using namespace render;
 using namespace object;
 using namespace terrain;
 
@@ -16,7 +17,7 @@ GroundConnection::~GroundConnection()
 {
 }
 
-void GroundConnection::AddConnection( Direction direction, me::Geometry::ptr geometry )
+void GroundConnection::AddConnection( Direction direction, Geometry::ptr geometry )
 {
 	m_connection[ (size_t)direction ].geometry = geometry;
 }

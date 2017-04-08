@@ -9,6 +9,7 @@
 
 using namespace medx9;
 using namespace me;
+using namespace render;
 
 D3DVERTEXELEMENT9 ToDX( VertexElement element )
 {
@@ -93,7 +94,7 @@ D3DVERTEXELEMENT9 ToDX( VertexElement element )
 }
 
 
-VertexConstruct::VertexConstruct( me::IRenderer * renderer, const VertexDeclaration & vd  )
+VertexConstruct::VertexConstruct( IRenderer * renderer, const VertexDeclaration & vd  )
 	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 {
 	std::vector< D3DVERTEXELEMENT9 > elements;

@@ -4,10 +4,10 @@
 #pragma once
 
 #include <medx11/Renderer.h>
-#include <me/IIndexBuffer.h>
-#include <me/BufferUsage.h>
-#include <me/IndexLock.h>
-#include <me/BufferUsage.h>
+#include <me/render/IIndexBuffer.h>
+#include <me/render/BufferUsage.h>
+#include <me/render/IndexLock.h>
+#include <me/render/BufferUsage.h>
 #include <unify/unify.h>
 #include <unify/Flags.h>
 #include <atlbase.h>
@@ -15,14 +15,14 @@
 
 namespace medx11
 {
-	class IndexBuffer : public me::IIndexBuffer
+	class IndexBuffer : public me::render::IIndexBuffer
 	{
 	public:
-		IndexBuffer( me::IRenderer * renderer );
-		IndexBuffer( me::IRenderer * renderer, me::IndexBufferParameters parameters );
+		IndexBuffer( me::render::IRenderer * renderer );
+		IndexBuffer( me::render::IRenderer * renderer, me::render::IndexBufferParameters parameters );
 		~IndexBuffer();
 
-		void Create( me::IndexBufferParameters parameters );
+		void Create( me::render::IndexBufferParameters parameters );
 		void Resize( size_t bufferIndex, unsigned int numIndices );
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace medx11
 		void Use() const override;
 
 		bool Locked( size_t bufferIndex ) const override;
-		me::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const override;
+		me::render::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const override;
 		size_t GetStride( size_t bufferIndex ) const override;
 		size_t GetLength( size_t bufferIndex ) const override;
 		size_t GetSizeInBytes( size_t bufferIndex ) const override;
@@ -52,7 +52,7 @@ namespace medx11
 		unsigned int m_createFlags;
 		CComPtr< ID3D11Buffer > m_buffer;
 		mutable bool m_locked;
-		me::BufferUsage::TYPE m_usage;
+		me::render::BufferUsage::TYPE m_usage;
 		unsigned int m_stride; // Size of each item in the buffer.
 		unsigned int m_length; // Number of items we can store in the buffer.
 	};

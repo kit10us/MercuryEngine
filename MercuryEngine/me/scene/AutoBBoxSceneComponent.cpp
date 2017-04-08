@@ -8,6 +8,7 @@
 using namespace me;
 using namespace scene;
 using namespace object;
+using namespace render;
 
 AutoBBoxSceneComponent::AutoBBoxSceneComponent( IOS * os, Effect::ptr effect )
 	: SceneComponent( os, "AutoBBox" )

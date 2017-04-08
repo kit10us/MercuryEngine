@@ -4,13 +4,14 @@
 #include <ase/GeometryFactory.h>
 #include <ase/ASEDocument.h>
 #include <me/exception/FailedToCreate.h>
-#include <me/VertexUtil.h>
+#include <me/render/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/FrameSet.h>
 #include <unify/ColorUnit.h>
 
 using namespace ase;
 using namespace me;
+using namespace render;
 
 GeometryFactory::GeometryFactory( Game * game )
 : m_game( game )

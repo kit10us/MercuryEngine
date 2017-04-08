@@ -5,7 +5,7 @@
 
 #include <sculpter/Point.h>
 #include <sculpter/spline/SplineList.h>
-#include <me/PrimitiveList.h>
+#include <me/render/PrimitiveList.h>
 #include <unify/Size.h>
 #include <array>
 
@@ -34,7 +34,7 @@ namespace sculpter
 		spline::ISpline::ptr GetSpline( size_t index );
 		size_t GetSplineCount() const;
 
-		bool Create( me::PrimitiveList & primitiveList, unify::Size< float > size, me::Effect::ptr ) const;
+		bool Create( me::render::PrimitiveList & primitiveList, unify::Size< float > size, me::render::Effect::ptr ) const;
 
 	private:
 		Point m_origin;

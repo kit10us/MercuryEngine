@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <me/factory/EffectFactories.h>
 #include <terrain/Direction.h>
 
@@ -18,22 +18,22 @@ namespace terrain
 		Ground();
 		~Ground();
 
-		void AddGeneric( me::Geometry::ptr geometry );
+		void AddGeneric( me::render::Geometry::ptr geometry );
 
-		me::Geometry::ptr GetGeneric( size_t i );
+		me::render::Geometry::ptr GetGeneric( size_t i );
 		size_t GetGenericCount() const;
 
-		void SetEdge( Direction edge, me::Geometry::ptr geo );
+		void SetEdge( Direction edge, me::render::Geometry::ptr geo );
 
-		me::Geometry::ptr GetEdge( Direction edge );
+		me::render::Geometry::ptr GetEdge( Direction edge );
 
 		void AddFriend( size_t other );
 
 		bool IsFriend( size_t other ) const;
 
 	private:
-		std::vector< me::Geometry::ptr > m_generics;
-		std::vector< me::Geometry::ptr > m_edges;
+		std::vector< me::render::Geometry::ptr > m_generics;
+		std::vector< me::render::Geometry::ptr > m_edges;
 		std::vector< size_t > m_friends;
 	};
 }

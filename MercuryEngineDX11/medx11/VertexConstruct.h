@@ -4,8 +4,8 @@
 #pragma once
 
 #include <medx11/Renderer.h>
-#include <me/VertexDeclaration.h>
-#include <me/IVertexShader.h>
+#include <me/render/VertexDeclaration.h>
+#include <me/render/IVertexShader.h>
 #include <atlbase.h>
 
 namespace medx11
@@ -14,10 +14,10 @@ namespace medx11
 	/// <summary> 
 	/// Defines the structure of the data in a vertex. 
 	/// </summary>
-	class VertexConstruct : public me::IVertexConstruct
+	class VertexConstruct : public me::render::IVertexConstruct
 	{
 	public:
-		VertexConstruct( me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs );
+		VertexConstruct( me::render::IRenderer * renderer, const me::render::VertexDeclaration & vd, const me::render::IVertexShader & vs );
 		~VertexConstruct();
 		
 		void Use() const override;

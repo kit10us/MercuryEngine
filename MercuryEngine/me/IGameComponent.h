@@ -8,7 +8,7 @@
 #include <me/input/IInputAction.h>
 #include <me/object/action/IObjectAction.h>
 #include <me/UpdateParams.h>
-#include <me/RenderParams.h>
+#include <me/render/RenderParams.h>
 #include <string>
 #include <memory>
 					 
@@ -69,7 +69,7 @@ namespace me
 		/// <summary>
 		/// Called during game rendering.
 		/// </summary>
-		virtual void OnRender( RenderParams params ) = 0;
+		virtual void OnRender( render::Params params ) = 0;
 
 		/// <summary>
 		/// Called last, to detach from the game.

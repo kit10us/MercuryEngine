@@ -7,6 +7,7 @@
 
 using namespace medx11;
 using namespace me;
+using namespace render;
 
 std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 {
@@ -54,7 +55,7 @@ std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 	return outVector;
 }				   
 
-VertexConstruct::VertexConstruct( me::IRenderer * renderer, const me::VertexDeclaration & vd, const me::IVertexShader & vs )
+VertexConstruct::VertexConstruct( IRenderer * renderer, const VertexDeclaration & vd, const IVertexShader & vs )
 	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 {
 	if ( vd.GetNumberOfElements() == 0 )

@@ -7,6 +7,7 @@
 using namespace me;	 
 using namespace scene;
 using namespace object;
+using namespace render;
 
 Octree::Octree( IScene * scene, size_t max )
 	: m_scene{ scene }
@@ -119,7 +120,7 @@ void Octree::CollectCameras( RenderGirl & renderGirl )
 	}
 }
 
-void Octree::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
+void Octree::CollectRendering( render::Params params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
 {
 	for( auto && stack : m_stacks )
 	{

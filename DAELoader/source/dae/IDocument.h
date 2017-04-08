@@ -2,8 +2,8 @@
 // All Rights Reserved
 
 #pragma once
-#include <me/Effect.h>
-#include <me/IRenderer.h>
+#include <me/render/Effect.h>
+#include <me/render/IRenderer.h>
 #include <dae/library_effects/Shading.h>
 
 namespace dae
@@ -22,7 +22,7 @@ namespace dae
 		/// <summary>
 		/// Returns an effect which can best represent the shading's intention.
 		/// </summary>
-		virtual me::Effect::ptr GetEffect( const Shading & shading ) const = 0;
+		virtual me::render::Effect::ptr GetEffect( const Shading & shading ) const = 0;
 
 		virtual const class LibraryNodes & GetLibraryNodes() const = 0;
 		virtual const class LibraryMaterials & GetLibraryMaterials() const = 0;
@@ -34,6 +34,6 @@ namespace dae
 		virtual const class Scene & GetScene() const = 0;
 		virtual void Add( const std::string & name, DocumentNode * node ) = 0;
 		virtual const DocumentNode * Find( const std::string & name ) const = 0;
-		virtual me::IRenderer * GetRenderer() = 0;
+		virtual me::render::IRenderer * GetRenderer() = 0;
 	};
 }

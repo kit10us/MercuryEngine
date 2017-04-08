@@ -51,7 +51,7 @@ void Layer::Update( UpdateParams params )
 	}
 }
 
-void Layer::Render( RenderParams params )
+void Layer::Render( render::Params params )
 {
 	if ( ! IsEnabled() ) return;
 

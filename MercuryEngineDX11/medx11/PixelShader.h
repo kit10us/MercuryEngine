@@ -10,17 +10,17 @@
 
 namespace medx11
 {
-	class PixelShader : public me::IPixelShader
+	class PixelShader : public me::render::IPixelShader
 	{
 	public:
-		PixelShader( me::IRenderer * renderer );
-		PixelShader( me::IRenderer * renderer, me::PixelShaderParameters parameters );
+		PixelShader( me::render::IRenderer * renderer );
+		PixelShader( me::render::IRenderer * renderer, me::render::PixelShaderParameters parameters );
 
 		~PixelShader();
 
 		void Destroy();
 
-		void Create( me::PixelShaderParameters parameters );
+		void Create( me::render::PixelShaderParameters parameters );
 
 		const me::shader::ConstantBuffer * GetConstants() const override;
 
@@ -39,7 +39,7 @@ namespace medx11
 		std::string GetError();
 
 	protected:
-		me::PixelShaderParameters m_parameters;
+		me::render::PixelShaderParameters m_parameters;
 		std::string m_errorMessage;
 		bool m_created;
 

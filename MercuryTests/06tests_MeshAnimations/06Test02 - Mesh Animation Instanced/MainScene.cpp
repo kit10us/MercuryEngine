@@ -4,6 +4,7 @@
 #include <MainScene.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 
 MainScene::MainScene( me::Game * game )
@@ -150,7 +151,7 @@ void MainScene::OnUpdate( UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	RenderParams params = *renderGirl.GetParams();
+	render::Params params = *renderGirl.GetParams();
 
 	class Source : public render::IMatrixSource
 	{

@@ -5,16 +5,16 @@
 
 #include <MELuaDLL.h>
 #include <lua.hpp>
-#include <me/Terra.h>
+#include <me/render/Terra.h>
 
 struct TerraProxy
 {
-	me::Geometry::ptr geometry;
-	me::Terra * terra;
+	me::render::Geometry::ptr geometry;
+	me::render::Terra * terra;
 };
 
 MELUADLL_API TerraProxy* CheckTerra( lua_State* state, int index );
-MELUADLL_API int PushTerra( lua_State * state, me::Geometry::ptr geometry );
+MELUADLL_API int PushTerra( lua_State * state, me::render::Geometry::ptr geometry );
 
 void RegisterTerra( lua_State * state );
 

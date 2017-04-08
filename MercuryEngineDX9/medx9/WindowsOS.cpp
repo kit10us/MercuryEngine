@@ -13,6 +13,7 @@
 #include <medx9/DirectX.h>
 
 using namespace me;
+using namespace render;
 using namespace medx9;
 
 #ifdef GetCommandLine
@@ -229,7 +230,7 @@ int WindowsOS::RendererCount() const
 	return m_renderers.size();
 }
 
-me::IRenderer * WindowsOS::GetRenderer( int index) const
+me::render::IRenderer * WindowsOS::GetRenderer( int index) const
 {
 	return m_renderers[ index ].get();
 }

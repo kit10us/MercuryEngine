@@ -73,6 +73,9 @@
     <ClCompile Include="unify\Owner.cpp">
       <Filter>unify</Filter>
     </ClCompile>
+    <ClCompile Include="unify\Frustum.cpp">
+      <Filter>unify</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unify\Angle.h">
@@ -214,6 +217,9 @@
       <Filter>unify</Filter>
     </ClInclude>
     <ClInclude Include="unify\Range.h">
+      <Filter>unify</Filter>
+    </ClInclude>
+    <ClInclude Include="unify\Frustum.h">
       <Filter>unify</Filter>
     </ClInclude>
   </ItemGroup>

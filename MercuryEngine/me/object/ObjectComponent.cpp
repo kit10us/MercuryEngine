@@ -108,7 +108,7 @@ void ObjectComponent::OnUpdate( UpdateParams params )
 {
 }
 
-void ObjectComponent::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame ) 
+void ObjectComponent::CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) 
 {
 }
 

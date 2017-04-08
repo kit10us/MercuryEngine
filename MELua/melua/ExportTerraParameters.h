@@ -4,7 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/Terra.h>
+#include <me/render/Terra.h>
 
 struct TerraParameters
 {

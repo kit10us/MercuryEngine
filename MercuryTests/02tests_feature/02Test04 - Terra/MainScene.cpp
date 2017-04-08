@@ -2,13 +2,14 @@
 // All Rights Reserved
 
 #include <MainScene.h>
-#include <me/Mesh.h>
-#include <me/Terra.h>
+#include <me/render/Mesh.h>
+#include <me/render/Terra.h>
 #include <me/factory/EffectFactories.h>
 #include <me/object/GeometryComponent.h>				
 #include <me/object/CameraComponent.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace object;
 

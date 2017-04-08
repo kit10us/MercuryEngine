@@ -5,23 +5,23 @@
 
 #include <medx11/Renderer.h>
 #include <me/shader/ConstantBuffer.h>
-#include <me/VertexDeclaration.h>
+#include <me/render/VertexDeclaration.h>
 #include <unify/Path.h>
 #include <atlbase.h>
 
 namespace medx11
 {
-	class VertexShader : public me::IVertexShader
+	class VertexShader : public me::render::IVertexShader
 	{
 	public:
-		VertexShader( me::IRenderer * renderer );
-		VertexShader( me::IRenderer * renderer, me::VertexShaderParameters parameters );
+		VertexShader( me::render::IRenderer * renderer );
+		VertexShader( me::render::IRenderer * renderer, me::render::VertexShaderParameters parameters );
 
 		~VertexShader();
 
 		void Destroy();
 
-		void Create( me::VertexShaderParameters parameters );
+		void Create( me::render::VertexShaderParameters parameters );
 
 		const me::shader::ConstantBuffer * GetConstants() const override;
 
@@ -29,9 +29,9 @@ namespace medx11
 
 		void UnlockConstants( size_t buffer, unify::DataLock & lock ) override;
 
-		void SetVertexDeclaration( me::VertexDeclaration::ptr vertexDeclaration );
+		void SetVertexDeclaration( me::render::VertexDeclaration::ptr vertexDeclaration );
 
-		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
+		me::render::VertexDeclaration::ptr GetVertexDeclaration() const override;
 
 		const void * GetBytecode() const override;
 
@@ -48,14 +48,14 @@ namespace medx11
 		std::string GetError();
 
 	protected:	   
-		me::VertexShaderParameters m_parameters;
+		me::render::VertexShaderParameters m_parameters;
 		bool m_assembly;
 		std::string m_errorMessage;
 		bool m_created;
 		
 		me::shader::ConstantBuffer::ptr m_constants;
 
-		me::VertexDeclaration::ptr m_vertexDeclaration;
+		me::render::VertexDeclaration::ptr m_vertexDeclaration;
 		Renderer * m_renderer;
 
 		CComPtr< ID3D11VertexShader > m_vertexShader;

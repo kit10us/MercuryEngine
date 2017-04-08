@@ -4,6 +4,7 @@
 #include <TerrainSceneComponent.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace terrain;
 

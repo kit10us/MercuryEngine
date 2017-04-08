@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <me/factory/EffectFactories.h>
 #include <terrain/Direction.h>
 #include <array>
@@ -12,7 +12,7 @@ namespace terrain
 {
 	struct Connection
 	{
-		me::Geometry::ptr geometry;
+		me::render::Geometry::ptr geometry;
 	};
 
 	/// <summary>
@@ -29,7 +29,7 @@ namespace terrain
 		/// <summary>
 		/// Add a connection.
 		/// </summary>
-		void AddConnection( Direction direction, me::Geometry::ptr geometry );
+		void AddConnection( Direction direction, me::render::Geometry::ptr geometry );
 
 		/// <summary>
 		/// Gets a connection.

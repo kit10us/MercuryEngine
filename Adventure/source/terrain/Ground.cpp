@@ -4,6 +4,7 @@
 #include <terrain/Ground.h>
 
 using namespace me;
+using namespace render;
 using namespace object;
 using namespace terrain;
 
@@ -35,12 +36,12 @@ size_t Ground::GetGenericCount() const
 	return m_generics.size();
 }
 
-void Ground::SetEdge( Direction edge, me::Geometry::ptr geo )
+void Ground::SetEdge( Direction edge, Geometry::ptr geo )
 {
 	m_edges[(size_t)edge] = geo;
 }
 
-me::Geometry::ptr Ground::GetEdge( Direction edge )
+Geometry::ptr Ground::GetEdge( Direction edge )
 {
 	return m_edges[(size_t)edge];
 }

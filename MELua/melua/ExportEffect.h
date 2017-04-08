@@ -5,13 +5,13 @@
 
 #include <MELuaDLL.h>
 #include <lua.hpp>
-#include <me/Effect.h>
+#include <me/render/Effect.h>
 
 struct EffectProxy
 {
 	MELUADLL_API static char* Name();
 
-	me::Effect::ptr effect;
+	me::render::Effect::ptr effect;
 };
 
 void RegisterEffect( lua_State * state );

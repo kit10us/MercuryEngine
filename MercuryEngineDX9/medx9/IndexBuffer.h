@@ -11,7 +11,7 @@
 
 namespace medx9
 {
-	class IndexBuffer : public me::IIndexBuffer
+	class IndexBuffer : public me::render::IIndexBuffer
 	{
 	public:
 		struct CreateFlags
@@ -28,11 +28,11 @@ namespace medx9
 			};
 		};
 
-		IndexBuffer( me::IRenderer * renderer );
-		IndexBuffer( me::IRenderer * renderer, me::IndexBufferParameters parameters );
+		IndexBuffer( me::render::IRenderer * renderer );
+		IndexBuffer( me::render::IRenderer * renderer, me::render::IndexBufferParameters parameters );
 		~IndexBuffer();
 
-		void Create( me::IndexBufferParameters parameters );
+		void Create( me::render::IndexBufferParameters parameters );
 
 		void Destroy();
 
@@ -46,7 +46,7 @@ namespace medx9
 		void Use() const override;
 
 		bool Locked( size_t bufferIndex ) const override;
-		me::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const;
+		me::render::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const;
 		size_t GetStride( size_t bufferIndex ) const;
 		size_t GetLength( size_t bufferIndex ) const;
 		size_t GetSizeInBytes( size_t bufferIndex ) const override;
@@ -56,7 +56,7 @@ namespace medx9
 		unsigned int m_createFlags;
 		IDirect3DIndexBuffer9 * m_buffer;
 		bool m_locked;
-		me::BufferUsage::TYPE m_usage;
+		me::render::BufferUsage::TYPE m_usage;
 		unsigned int m_stride; // Size of each item in the buffer.
 		unsigned int m_length; // Number of items we can store in the buffer.
 	};

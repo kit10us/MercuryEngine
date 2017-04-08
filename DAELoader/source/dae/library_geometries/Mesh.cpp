@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/Game.h>
-#include <me/VertexUtil.h>
+#include <me/render/VertexUtil.h>
 #include <dae/library_geometries/Mesh.h>
 #include <dae/Document.h>
 #include <unify/V3.h>
@@ -89,7 +89,7 @@ void Mesh::GetSources( std::list< ContributingInput > & sources, const Input_Sha
 	}
 }
 
-void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
 {
 	using namespace me;
 
@@ -108,22 +108,22 @@ void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMater
 		const Effect * effect = GetDocument().GetLibraryEffects().Find( effectURL );
 
 		const Shading & shading = effect->GetProfileCOMMON()->GetTechnique().GetShading();
-		me::Effect::ptr primitiveEffectBase = GetDocument().GetEffect( shading );
-		me::Effect::ptr myEffect( new me::Effect() );
+		me::render::Effect::ptr primitiveEffectBase = GetDocument().GetEffect( shading );
+		me::render::Effect::ptr myEffect( new me::render::Effect() );
 		*myEffect = *primitiveEffectBase; // Copy.
 		myEffect->ClearTextures(); // Clear textures, as we don't want the default texture that might have come with the effect.
 
 		if ( shading.GetDiffuse().GetType() == Shading::Property::ColorType )
 		{
 			diffuse = unify::Color( shading.GetDiffuse().GetColor() );
-			myEffect->SetTexture( 0, me::ITexture::ptr() ); // Unset texture.
+			myEffect->SetTexture( 0, me::render::ITexture::ptr() ); // Unset texture.
 		}
 		else // Is texture...
 		{
 			sampler2DParam = effect->GetProfileCOMMON()->FindNewParam( shading.GetDiffuse().GetTexture() );
 			surfaceParam = effect->GetProfileCOMMON()->FindNewParam( sampler2DParam->GetSampler2D().source );
 			const dae::Image * image = GetDocument().GetLibraryImages().Find( surfaceParam->GetSurface().init_from );
-			me::ITexture::ptr texture( image->GetTexture() );
+			me::render::ITexture::ptr texture( image->GetTexture() );
 			myEffect->SetTexture( 0, texture );
 		}
 
@@ -138,16 +138,16 @@ void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMater
 		// Create our primitive list...
 		size_t numberOfVertices = polylist->GetP().size() / pStride;
 
-		BufferSet & set = accumulatedPL.AddBufferSet();
+		render::BufferSet & set = accumulatedPL.AddBufferSet();
 
-		const VertexDeclaration::ptr vd = myEffect->GetVertexShader()->GetVertexDeclaration();
+		const render::VertexDeclaration::ptr vd = myEffect->GetVertexShader()->GetVertexDeclaration();
 		unsigned short stream = 0;
 
-		VertexElement positionE = CommonVertexElement::Position( stream );
-		VertexElement normalE = CommonVertexElement::Normal( stream );
-		VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
-		VertexElement specularE = CommonVertexElement::Specular( stream );
-		VertexElement texE = CommonVertexElement::TexCoords( stream );
+		render::VertexElement positionE = render::CommonVertexElement::Position( stream );
+		render::VertexElement normalE = render::CommonVertexElement::Normal( stream );
+		render::VertexElement diffuseE = render::CommonVertexElement::Diffuse( stream );
+		render::VertexElement specularE = render::CommonVertexElement::Specular( stream );
+		render::VertexElement texE = render::CommonVertexElement::TexCoords( stream );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[ vd->GetSizeInBytes( 0 ) * numberOfVertices ] );
 		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), numberOfVertices, false, 0 );
@@ -240,7 +240,7 @@ void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMater
 
 		VT * vt = (VT*)lock.GetData();
 
-		set.AddVertexBuffer( { myEffect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vertices.get() } }, BufferUsage::Dynamic, bbox } );
+		set.AddVertexBuffer( { myEffect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vertices.get() } }, render::BufferUsage::Dynamic, bbox } );
 
 		
 		switch( polylist->GetType() )
@@ -254,7 +254,7 @@ void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMater
 				numberOfIndices += ( vc - 2 ) * 3;
 			}
 
-			std::vector< Index32 > indices( numberOfIndices );
+			std::vector< render::Index32 > indices( numberOfIndices );
 			size_t vertexHead = 0; // Tracks the first vertex, increases by vc each iteration.
 			size_t index = 0;
 			for( size_t vci = 0; vci < polylist->GetVCount().size(); ++vci )
@@ -269,21 +269,21 @@ void Mesh::Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMater
 				vertexHead += vc;
 			}
 
-			set.AddIndexBuffer( { { { numberOfIndices, &indices[0] } }, BufferUsage::Staging } );
+			set.AddIndexBuffer( { { { numberOfIndices, &indices[0] } }, render::BufferUsage::Staging } );
 
-			set.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
+			set.AddMethod( render::RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, myEffect ) );
 		}
 		break;
 
 		case Polylist::TrianglesType:
 		{
-			set.AddMethod( RenderMethod::CreateTriangleList( 0, numberOfVertices / 3, myEffect ) );
+			set.AddMethod( render::RenderMethod::CreateTriangleList( 0, numberOfVertices / 3, myEffect ) );
 		}
 		break;
 
 		case Polylist::LinesType:
 		{
-			set.AddMethod( RenderMethod::CreateLineList( 0, numberOfVertices / 2, myEffect ) );
+			set.AddMethod( render::RenderMethod::CreateLineList( 0, numberOfVertices / 2, myEffect ) );
 		}
 		break;
 		}

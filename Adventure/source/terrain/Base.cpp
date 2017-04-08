@@ -4,6 +4,7 @@
 #include <terrain/Base.h>
 
 using namespace me;
+using namespace render;
 using namespace object;
 using namespace terrain;
 

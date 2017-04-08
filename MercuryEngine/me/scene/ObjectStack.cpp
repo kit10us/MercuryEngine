@@ -3,12 +3,13 @@
 
 #include <me/scene/Scene.h>
 #include <me/object/CameraComponent.h>
-#include <me/Frustum.h>
+#include <unify/Frustum.h>
 #include <map>
 
 using namespace me;
 using namespace scene;
 using namespace object;
+using namespace render;
 
 ObjectStack::ObjectStack( IScene * scene, size_t max )
 	: ObjectAllocator( "ObjectStack" )
@@ -243,7 +244,7 @@ void ObjectStack::CollectCameras( RenderGirl & renderGirl )
 	}
 }
 
-void ObjectStack::CollectRendering( RenderParams params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
+void ObjectStack::CollectRendering( render::Params params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
 {	
 	if ( ! m_cache )
 	{

@@ -5,12 +5,12 @@
 
 #include <MELuaDLL.h>
 #include <lua.hpp>
-#include <me/Effect.h>
+#include <me/render/Effect.h>
 
 struct PixelShaderProxy
 {
 	MELUADLL_API static char* Name();
-	me::IPixelShader::ptr shader;
+	me::render::IPixelShader::ptr shader;
 };
 
 void RegisterPixelShader( lua_State * state );

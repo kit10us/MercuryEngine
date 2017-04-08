@@ -83,12 +83,12 @@ const Node * VisualScene::FindNode( std::string id ) const
 	return node;
 }
 
-void VisualScene::Build( me::Mesh & mesh ) const
+void VisualScene::Build( me::render::Mesh & mesh ) const
 {
 	Build( mesh, unify::MatrixIdentity(), GetFirstNode() );
 }
 
-void BuildSkeleton( me::Skeleton & skeleton, const dae::Node * node )
+void BuildSkeleton( me::render::Skeleton & skeleton, const dae::Node * node )
 {
 	if( node == nullptr )
 	{
@@ -100,7 +100,7 @@ void BuildSkeleton( me::Skeleton & skeleton, const dae::Node * node )
 	BuildSkeleton( skeleton, node->GetNext() );
 }
 
-void VisualScene::Build( me::Mesh & mesh, const unify::Matrix & matrix, const dae::Node * node ) const
+void VisualScene::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const dae::Node * node ) const
 {
 	// Iterate this nodes instances...
 	for ( const auto instance : node->GetInstances() )

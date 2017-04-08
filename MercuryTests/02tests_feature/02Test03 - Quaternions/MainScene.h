@@ -4,8 +4,8 @@
 #pragma once
 
 #include <me/scene/Scene.h>
-#include <me/RenderMethod.h>
-#include <me/VertexUtil.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/VertexUtil.h>
 
 
 

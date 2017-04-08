@@ -4,13 +4,13 @@
 #pragma once
 
 #include <me/scene/Scene.h>
-#include <me/RenderMethod.h>
-#include <me/VertexUtil.h>
-#include <me/Mesh.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/VertexUtil.h>
+#include <me/render/Mesh.h>
 
 class MainScene : public me::scene::Scene
 {
-	std::shared_ptr< me::Mesh > mesh;
+	std::shared_ptr< me::render::Mesh > mesh;
 	unify::Quaternion q;
 public:
 	MainScene( me::Game * game );

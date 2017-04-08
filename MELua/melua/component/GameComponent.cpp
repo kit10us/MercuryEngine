@@ -140,7 +140,7 @@ void GameComponent::OnUpdate( me::UpdateParams params )
 	CallMember( "OnUpdate" );
 }
 
-void GameComponent::OnRender( me::RenderParams params )
+void GameComponent::OnRender( me::render::Params params )
 {
 	CallMember( "OnRender" );
 }

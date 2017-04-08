@@ -4,11 +4,12 @@
 #include <ase/AseDLL.h>
 #include <ase/GeometryFactory.h>
 #include <memory.h>
-#include <me/IRenderer.h>
+#include <me/render/IRenderer.h>
 #include <me/Game.h>
 
 using namespace ase;
 using namespace me;
+using namespace render;
 
 void Deleter( GeometryFactory * factory )
 {
@@ -38,7 +39,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 	factory->SetVertexShader( vs );
 	factory->SetPixelShader( ps );
 
-	game->GetManager< me::Geometry >()->AddFactory( "ase", GeometryFactoryPtr( factory ) );
+	game->GetManager< Geometry >()->AddFactory( "ase", GeometryFactoryPtr( factory ) );
 
 
 	return true;

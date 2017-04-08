@@ -8,6 +8,7 @@
 
 using namespace melua;
 using namespace me;
+using namespace render;
 
 char* VertexShaderProxy::Name()
 {
@@ -42,12 +43,12 @@ int VertexShader_Constructor( lua_State * state )
 			unify::Path asPath( value );
 			if( asPath.IsExtension( "xml" ) )
 			{
-				auto vs = game->GetManager< me::IVertexShader >()->Add( asPath );
+				auto vs = game->GetManager< IVertexShader >()->Add( asPath );
 				return Push< VertexShaderProxy >( state, { vs } );
 			}
 			else
 			{
-				auto vs = game->GetManager< me::IVertexShader >()->Find( value );
+				auto vs = game->GetManager< IVertexShader >()->Find( value );
 				if( !vs )
 				{
 					luaL_error( state, "VertexShader not found!" );
@@ -63,7 +64,7 @@ int VertexShader_Constructor( lua_State * state )
 		{
 			std::string name = Check< std::string >( state, 1 );
 			unify::Path path( Check< std::string >( state, 2 ) );
-			auto ps = game->GetManager< me::IVertexShader >()->Add( name, path );
+			auto ps = game->GetManager< IVertexShader >()->Add( name, path );
 			return Push< VertexShaderProxy >( state, { ps } );
 		}
 	}

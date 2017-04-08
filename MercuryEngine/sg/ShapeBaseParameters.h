@@ -3,8 +3,8 @@
 #pragma once
 
 #include <sg/ShapeType.h>
-#include <me/ITexture.h>
-#include <me/Effect.h>
+#include <me/render/ITexture.h>
+#include <me/render/Effect.h>
 #include <unify/Parameters.h>
 #include <unify/Size3.h>
 #include <unify/V3.h>
@@ -20,7 +20,7 @@ namespace sg
     	ShapeBaseParameters & SetSpecular( unify::Color specular );
         ShapeBaseParameters & SetCenter( unify::V3< float > center );
 	    ShapeBaseParameters & SetTextureMode( int textureMode );
-		ShapeBaseParameters & SetEffect( me::Effect::ptr effect );
+		ShapeBaseParameters & SetEffect( me::render::Effect::ptr effect );
 		ShapeBaseParameters & SetFaceUV( std::vector< unify::TexArea > faceUV );
 		ShapeBaseParameters & SetFaceUV( size_t index, std::vector< unify::TexArea > faceUV );
 	};

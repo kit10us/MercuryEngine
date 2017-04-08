@@ -4,7 +4,7 @@
 #include <MainScene.h>
 #include <me/scene/SceneManager.h>
 #include <me/object/Object.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <sg/ShapeCreators.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
@@ -20,6 +20,7 @@
 #include <math.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace object;
 

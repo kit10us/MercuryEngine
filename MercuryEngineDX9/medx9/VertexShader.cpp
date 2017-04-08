@@ -6,9 +6,10 @@
 
 using namespace medx9;
 using namespace me;
+using namespace render;
 using namespace shader;
 
-VertexShader::VertexShader( me::IRenderer * renderer )
+VertexShader::VertexShader( IRenderer * renderer )
 	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_worldMatrixHandle( 0 )
 	, m_viewMatrixHandle( 0 )
@@ -18,7 +19,7 @@ VertexShader::VertexShader( me::IRenderer * renderer )
 {
 }
 
-VertexShader::VertexShader( me::IRenderer * renderer, VertexShaderParameters parameters )
+VertexShader::VertexShader( IRenderer * renderer, VertexShaderParameters parameters )
 	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_worldMatrixHandle( 0 )
 	, m_viewMatrixHandle( 0 )
@@ -47,6 +48,8 @@ void VertexShader::Create( VertexShaderParameters parameters )
 
 	// NOTE: For now, we are going to pull this programatiicaly from the shader: m_constants = parameters.constants;
 	m_vertexDeclaration = parameters.vertexDeclaration;
+
+	m_parameters = parameters;
 
 	if( parameters.path.Empty() == false )
 	{
@@ -222,12 +225,20 @@ void VertexShader::Use()
 	}
 }
 
-std::string VertexShader::GetSource() const
+unify::Path VertexShader::GetSource() const
 {
-	return m_filePath.ToString();
+	return m_filePath;
 }
 
-std::string VertexShader::GetError()
+
+bool VertexShader::Reload()
 {
-	return m_errorMessage;
+	Destroy();
+	Create( m_parameters );
+	return true;
+}
+
+bool VertexShader::IsTrans() const
+{
+	return m_parameters.trans;
 }

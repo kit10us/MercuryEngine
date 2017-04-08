@@ -2,23 +2,24 @@
 // All Rights Reserved
 
 #include <sg/CreateShape_Cube.h>
-#include <me/RenderMethod.h>
-#include <me/TextureMode.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/TextureMode.h>
+#include <me/render/BufferUsage.h>
+#include <me/render/VertexUtil.h>
 #include <me/exception/NotImplemented.h>
-#include <me/BufferUsage.h>
-#include <me/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/Size3.h>
 #include <unify/TexArea.h>
 #include <unify/Angle.h>
 
 using namespace me;
+using namespace render;
 
 const float PI = 3.14159265358979f;
 const float PI2 = 6.28318530717959f;
 const std::string DefaultBufferUsage = "Default";
 
-void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
+void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::V3< float > inf;
 	unify::V3< float > sup;
@@ -40,7 +41,7 @@ void sg::CreateShape_Cube( me::IRenderer * renderer, PrimitiveList & primitiveLi
 
 	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
 	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
-	int textureMode = parameters.Get( "texturemode", me::TextureMode::Correct );
+	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();

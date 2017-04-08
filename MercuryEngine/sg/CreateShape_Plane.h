@@ -3,12 +3,12 @@
 #pragma once
 
 #include <unify/Unify.h>
-#include <me/PrimitiveList.h>
+#include <me/render/PrimitiveList.h>
 #include <unify/Parameters.h>
 
 namespace sg
 {
-	void CreateShape_Plane( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	void CreateShape_Plane( me::render::IRenderer * renderer, me::render::PrimitiveList & primitiveList, unify::Parameters & parameters );
 }
 
 #include <sg/PlaneParameters.h>

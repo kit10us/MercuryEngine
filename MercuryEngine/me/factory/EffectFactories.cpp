@@ -8,6 +8,7 @@
 #include <me/Game.h>
 
 using namespace me;
+using namespace render;
 
 EffectFactory::EffectFactory( me::IGame * game )
 	: m_game( game )

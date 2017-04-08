@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <dae/Node.h>
 #include <dae/DocumentNode.h>
 #include <string>
@@ -24,10 +24,10 @@ namespace dae
 
 		const Node * FindNode( std::string id ) const;
 
-		void Build( me::Mesh & mesh ) const;
+		void Build( me::render::Mesh & mesh ) const;
 
 	private:
-		void Build( me::Mesh & mesh, const unify::Matrix & matrix, const dae::Node * node ) const;
+		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const dae::Node * node ) const;
 
 		std::string m_id;
 		std::string m_name;		

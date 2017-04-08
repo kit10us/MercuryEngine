@@ -6,7 +6,7 @@
 #include <dae/library_geometries/Mesh.h>
 #include <dae/DocumentNode.h>
 #include <dae/library_effects/Effect.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <qxml/QXML.h>
 #include <string>
 
@@ -39,7 +39,7 @@ namespace dae
 		/// <summary>
 		/// Build into a primitive list a complete geometry.
 		/// </summary>
-		void Build( me::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
+		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
 
 	private:
 		std::string m_id;

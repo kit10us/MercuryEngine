@@ -5,8 +5,8 @@
 #include <me/IOS.h>
 #include <me/object/IObjectComponent.h>
 #include <me/scene/ComponentInstance.h>
-#include <me/Geometry.h>
-#include <me/RenderInfo.h>
+#include <me/render/Geometry.h>
+#include <me/render/RenderInfo.h>
 #include <me/scene/IObjectAllocator.h>
 #include <unify/FrameLite.h>
 #include <list>
@@ -78,7 +78,7 @@ namespace me
 			/// </summary>
 			void Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params );
 
-			void CollectGeometry( GeometryCache & solids, GeometryCache & trans );
+			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans );
 
 			void OnSuspend();
 			void OnResume();

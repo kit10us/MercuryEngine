@@ -5,6 +5,7 @@
 #include <MainScene.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace unify;
 
@@ -119,7 +120,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 {
 	vertexBuffer->Use();
 
-	RenderParams params = *renderGirl.GetParams();
+	render::Params params = *renderGirl.GetParams();
 
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );

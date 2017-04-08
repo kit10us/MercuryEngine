@@ -5,12 +5,12 @@
 
 #include <MELuaDLL.h>
 #include <lua.hpp>
-#include <me/ITexture.h>
+#include <me/render/ITexture.h>
 
 struct TextureProxy
 {
 	MELUADLL_API static char* Name();
-	me::ITexture::ptr texture;
+	me::render::ITexture::ptr texture;
 };
 
 void RegisterTexture( lua_State * state );

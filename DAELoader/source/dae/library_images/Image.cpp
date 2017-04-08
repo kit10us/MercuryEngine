@@ -43,7 +43,7 @@ const std::string & Image::GetName() const
 	return m_name;
 }
 
-me::ITexture::ptr Image::GetTexture() const
+me::render::ITexture::ptr Image::GetTexture() const
 {
 	return m_texture;
 }

@@ -7,9 +7,10 @@
 
 using namespace medx9;
 using namespace me;
+using namespace render;
 using namespace shader;
 
-PixelShader::PixelShader( me::IRenderer * renderer )
+PixelShader::PixelShader( IRenderer * renderer )
 	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_assembly( false )
 	, m_created( false )
@@ -17,7 +18,7 @@ PixelShader::PixelShader( me::IRenderer * renderer )
 {
 }
 
-PixelShader::PixelShader( me::IRenderer * renderer, PixelShaderParameters parameters )
+PixelShader::PixelShader( IRenderer * renderer, PixelShaderParameters parameters )
 	: PixelShader( renderer )
 {
 	Create( parameters );
@@ -129,22 +130,19 @@ void PixelShader::Use()
 	}
 }
 
-std::string PixelShader::GetSource() const
+unify::Path PixelShader::GetSource() const
 {
-	return m_parameters.path.ToString();
-}									   
-
-void PixelShader::SetTrans( bool bTrans )
-{
-	m_isTrans = bTrans;
+	return m_parameters.path;
 }
 
-bool PixelShader::IsTrans()
+bool PixelShader::Reload()
 {
-	return(this && m_isTrans) ? true : FALSE;
+	Destroy();
+	Create( m_parameters );
+	return true;
 }
 
-std::string PixelShader::GetError()
+bool PixelShader::IsTrans() const
 {
-	return m_errorMessage;
+	return m_parameters.trans;
 }

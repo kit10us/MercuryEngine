@@ -5,8 +5,8 @@
 #include <me/scene/SceneManager.h>
 #include <me/object/CameraComponent.h>
 #include <me/scene/ObjectAllocatorComponent.h>
-#include <me/Frustum.h>
 #include <me/scene/RenderGirl.h>
+#include <unify/Frustum.h>
 
 using namespace me;
 using namespace scene;

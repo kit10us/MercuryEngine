@@ -3,10 +3,11 @@
 
 #include <me/object/GeometryComponent.h>
 #include <me/object/Object.h>
-#include <me/GeometryCache.h>
+#include <me/render/GeometryCache.h>
 
 using namespace me;
 using namespace object;
+using namespace render;
 
 GeometryComponent::GeometryComponent( GeometryComponent & component )
 	: ObjectComponent( component )

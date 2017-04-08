@@ -4,12 +4,12 @@
 #pragma once
 
 #include <me/scene/Scene.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <me/frameanimation/FrameAnimation.h>
 
 class MainScene : public me::scene::Scene
 {
-	std::shared_ptr< me::Mesh > mesh;
+	std::shared_ptr< me::render::Mesh > mesh;
 	unify::Quaternion q;
 	me::frameanimation::Animation::ptr m_animation;
 public:

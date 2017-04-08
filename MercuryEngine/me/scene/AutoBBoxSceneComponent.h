@@ -6,7 +6,7 @@
 #include <me/scene/SceneComponent.h>
 #include <me/object/GeometryComponent.h>
 #include <me/scene/Scene.h>
-#include <me/Effect.h>
+#include <me/render/Effect.h>
 #include <unify/Color.h>
 
 namespace me
@@ -19,7 +19,7 @@ namespace me
 		class AutoBBoxSceneComponent : public SceneComponent
 		{
 		public:
-			AutoBBoxSceneComponent( IOS * os, Effect::ptr effect );
+			AutoBBoxSceneComponent( IOS * os, render::Effect::ptr effect );
 			virtual ~AutoBBoxSceneComponent();
 
 			/// <summary>
@@ -37,7 +37,7 @@ namespace me
 			std::string GetWhat() const override;
 
 		protected:
-			Effect::ptr m_effect;
+			render::Effect::ptr m_effect;
 			float m_padding;
 			unify::Color m_color;
 		};

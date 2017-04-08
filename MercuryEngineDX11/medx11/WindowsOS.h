@@ -5,7 +5,7 @@
 
 #include <me/IOS.h>
 #include <me/IGame.h>
-#include <me/IRenderer.h>
+#include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <list>
 #include <vector>
@@ -43,7 +43,7 @@ namespace medx11
 		void CreatePendingDisplays( std::string title );
 		void CreateDisplay( me::render::Display display, std::string title );
 		int RendererCount() const override;
-		me::IRenderer * GetRenderer( int index ) const override;
+		me::render::IRenderer * GetRenderer( int index ) const override;
 
 		void SetHasFocus( bool hasFocus ) override;			 
 		bool GetHasFocus() const override;					 
@@ -84,7 +84,7 @@ namespace medx11
 		bool m_hasFocus;
 		std::list< HWND > m_childHandles; // Handles to be serviced.
 		std::vector< me::render::Display > m_pendingDisplays;
-		std::vector< me::IRenderer::ptr > m_renderers;
+		std::vector< me::render::IRenderer::ptr > m_renderers;
 		me::OSParameters m_osParameters;
 		unify::AssetPaths m_assetPaths;
 		HWND m_mainWindow;

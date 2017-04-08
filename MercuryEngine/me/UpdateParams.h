@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include <me/RenderInfo.h>
+#include <me/render/RenderInfo.h>
 
 namespace me
 {
 	struct UpdateParams
 	{
-		IRenderer * renderer;
-		RenderInfo & renderInfo;
+		render::IRenderer * renderer;
+		render::RenderInfo & renderInfo;
 		float GetDelta() const { return renderInfo.GetDelta(); };
 	};
 }

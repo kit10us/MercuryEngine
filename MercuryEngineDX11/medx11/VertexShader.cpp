@@ -9,8 +9,9 @@
 using namespace medx11;
 using namespace me;
 using namespace shader;
+using namespace render;
 
-VertexShader::VertexShader( me::IRenderer * renderer )
+VertexShader::VertexShader( IRenderer * renderer )
 	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 	, m_assembly( false )
 	, m_created( false )
@@ -19,7 +20,7 @@ VertexShader::VertexShader( me::IRenderer * renderer )
 {
 }
 
-VertexShader::VertexShader( me::IRenderer * renderer, VertexShaderParameters parameters )
+VertexShader::VertexShader( IRenderer * renderer, VertexShaderParameters parameters )
 	: VertexShader( renderer )
 {
 	Create( parameters );
@@ -220,7 +221,6 @@ bool VertexShader::IsTrans() const
 {
 	return m_parameters.trans;
 }
-
 
 std::string VertexShader::GetError()
 {

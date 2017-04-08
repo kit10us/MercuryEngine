@@ -28,6 +28,7 @@
 using namespace me;
 using namespace scene;
 using namespace object;
+using namespace render;
 
 namespace melua
 {

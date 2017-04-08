@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/GeometryCache.h>
+#include <me/render/GeometryCache.h>
 #include <me/scene/RenderGirl.h>
 #include <me/scene/ObjectAllocator.h>
 #include <me/scene/IScene.h>
@@ -40,7 +40,7 @@ namespace me
 
 			void Update( UpdateParams params ) override;
 			void CollectCameras( RenderGirl & renderGirl ) override;
-			void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans ) override;
+			void CollectRendering( render::Params params, const object::FinalCamera & camera, render::GeometryCacheSummation & solids, render::GeometryCacheSummation & trans ) override;
 
 		private:
 			IScene * m_scene;
@@ -58,8 +58,8 @@ namespace me
 
 			object::IObjectComponent::cache m_updatables;
 			object::CameraCache m_cameras;
-			GeometryCache m_solids;
-			GeometryCache m_trans;
+			render::GeometryCache m_solids;
+			render::GeometryCache m_trans;
 		};
 	}
 }

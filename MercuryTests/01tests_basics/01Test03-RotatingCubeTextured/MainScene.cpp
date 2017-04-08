@@ -2,11 +2,11 @@
 // All Rights Reserved
 
 #include <Windows.h>
-
 #include <MainScene.h>
 
 using namespace me;
 using namespace scene;
+using namespace render;
 
 MainScene::MainScene( me::Game * game )
 	:Scene( game, "main" )
@@ -116,7 +116,7 @@ void MainScene::OnUpdate( UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	RenderParams params = *renderGirl.GetParams();
+	render::Params params = *renderGirl.GetParams();
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );

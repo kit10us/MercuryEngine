@@ -5,6 +5,7 @@
 #include <me/exception/FailedToCreate.h>
 
 using namespace me;
+using namespace render;
 
 TextureSourceFactory::TextureSourceFactory( me::IGame * game )
 	: m_game( game )

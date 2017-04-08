@@ -5,6 +5,7 @@
 
 using namespace me;
 using namespace bw;
+using namespace render;
 
 BlockDescription::BlockDescription( std::string name, Geometry::ptr geometry )
 	: m_name( name )

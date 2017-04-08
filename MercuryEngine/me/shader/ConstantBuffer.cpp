@@ -6,6 +6,7 @@
 #include <unify/Matrix.h>
 
 using namespace me;
+using namespace render;
 using namespace shader;
 
 ConstantBuffer::ConstantBuffer()

@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/scene/Scene.h>
-#include <me/Mesh.h>
 #include <me/canvas/TextElement.h>
 
 class MainScene : public me::scene::Scene

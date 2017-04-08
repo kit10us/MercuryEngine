@@ -6,7 +6,7 @@
 
 using namespace dae;
 
-Document::Document( me::IRenderer * renderer, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
+Document::Document( me::render::IRenderer * renderer, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
 : m_renderer( renderer )
 , m_effectSolver( effectSolver )
 {
@@ -77,7 +77,7 @@ const std::string & Document::GetVersion() const
 	return m_version;
 }
 
-me::Effect::ptr Document::GetEffect( const Shading & shading ) const
+me::render::Effect::ptr Document::GetEffect( const Shading & shading ) const
 {
 	return m_effectSolver->GetEffect( shading );
 }
@@ -157,7 +157,7 @@ const DocumentNode * Document::Find( const std::string & name ) const
 	}
 }
 
-me::IRenderer * Document::GetRenderer()
+me::render::IRenderer * Document::GetRenderer()
 {
 	return m_renderer;
 }

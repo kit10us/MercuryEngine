@@ -10,7 +10,7 @@
 
 using namespace melua;
 using namespace me;
-
+using namespace render;
 
 char* GeometryProxy::Name()
 {

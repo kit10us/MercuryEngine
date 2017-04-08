@@ -3,17 +3,17 @@
 
 #pragma once
 
-#include <me/Effect.h>
+#include <me/render/Effect.h>
 #include <me/IGame.h>
 #include <rm/ResourceManagerSimple.h>
 
 namespace me
 {
-	class EffectFactory : public rm::ISourceFactory< me::Effect >
+	class EffectFactory : public rm::ISourceFactory< render::Effect >
 	{
 	public:
 		EffectFactory( IGame * game );
-		Effect::ptr Produce( unify::Path source, void * data ) override;
+		render::Effect::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
 		IGame * m_game;

@@ -3,34 +3,34 @@
 
 #pragma once
 
-#include <me/RenderInfo.h>
+#include <me/render/RenderInfo.h>
 #include <medx9/Renderer.h>
-#include <me/IVertexShader.h>
-#include <me/VertexDeclaration.h>
+#include <me/render/IVertexShader.h>
+#include <me/render/VertexDeclaration.h>
 #include <unify/Path.h>
 #include <atlbase.h>
 
 namespace medx9
 {
-	class VertexShader : public me::IVertexShader
+	class VertexShader : public me::render::IVertexShader
 	{
 	public:
-		VertexShader( me::IRenderer * renderer );
-		VertexShader( me::IRenderer * renderer, me::VertexShaderParameters parameters );
+		VertexShader( me::render::IRenderer * renderer );
+		VertexShader( me::render::IRenderer * renderer, me::render::VertexShaderParameters parameters );
 
 		~VertexShader();
 
 		void Destroy();
 
-		void Create( me::VertexShaderParameters parameters );
+		void Create( me::render::VertexShaderParameters parameters );
 
 		const me::shader::ConstantBuffer * GetConstants() const override;
 
 		void LockConstants( size_t buffer, unify::DataLock & lock ) override;	  
 		void UnlockConstants( size_t buffer, unify::DataLock & lock ) override;	  
 
-		void SetVertexDeclaration( me::VertexDeclaration::ptr vertexDeclaration ); 
-		me::VertexDeclaration::ptr GetVertexDeclaration() const override;
+		void SetVertexDeclaration( me::render::VertexDeclaration::ptr vertexDeclaration );
+		me::render::VertexDeclaration::ptr GetVertexDeclaration() const override;
 
 		const void * GetBytecode() const override;
 
@@ -38,11 +38,15 @@ namespace medx9
 
 		void Use() override;
 
-		std::string GetSource() const override;
+		unify::Path GetSource() const override;
 
-		std::string GetError();
+		bool Reload() override;
+
+		bool IsTrans() const override;
 
 	protected:	   
+		me::render::VertexShaderParameters m_parameters;
+
 		unify::Path m_filePath;
 		std::string m_code;
 		bool m_assembly;
@@ -51,7 +55,7 @@ namespace medx9
 		std::string m_errorMessage;
 		bool m_created;
 		me::shader::ConstantBuffer::ptr m_constants;
-		me::VertexDeclaration::ptr m_vertexDeclaration;
+		me::render::VertexDeclaration::ptr m_vertexDeclaration;
 
 		medx9::Renderer * m_renderer;
 

@@ -27,9 +27,9 @@
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
 
-
 using namespace me;
 using namespace scene;
+using namespace render;
 
 class GameLogger : public rm::ILogger
 {
@@ -498,7 +498,7 @@ void Game::Draw()
 		IRenderer * renderer = m_os->GetRenderer( index );
 		renderer->BeforeRender();
 
-		RenderParams params{ renderer, m_renderInfo };
+		render::Params params{ renderer, m_renderInfo };
 										  	
 		for( auto && component : m_components )
 		{

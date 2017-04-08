@@ -5,7 +5,7 @@
 #include <me/IThing.h>
 #include <me/object/FinalCamera.h>
 #include <me/UpdateParams.h>
-#include <me/RenderParams.h>
+#include <me/render/RenderParams.h>
 
 #ifdef GetObject
 #undef GetObject
@@ -13,7 +13,10 @@
 
 namespace me
 {
-	class GeometryCacheSummation;
+	namespace render
+	{
+		class GeometryCacheSummation;
+	}
 
 	namespace scene
 	{
@@ -46,7 +49,7 @@ namespace me
 
 			virtual void Update( UpdateParams params ) = 0;
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
-			virtual void CollectRendering( RenderParams params, const object::FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans ) = 0;
+			virtual void CollectRendering( render::Params params, const object::FinalCamera & camera, render::GeometryCacheSummation & solids, render::GeometryCacheSummation & trans ) = 0;
 		};
 	}
 }

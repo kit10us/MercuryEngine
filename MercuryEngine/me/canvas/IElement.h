@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <me/IRenderer.h>
-#include <me/RenderInfo.h>
+#include <me/render/IRenderer.h>
+#include <me/render/RenderInfo.h>
 #include <memory>
 
 namespace me
@@ -29,7 +29,7 @@ namespace me
 			virtual void UpdateLayout( UpdateParams params, unify::Size< float > area ) = 0;
 
 			virtual void Update( UpdateParams params ) = 0;
-			virtual void Render( RenderParams params ) = 0;
+			virtual void Render( render::Params params ) = 0;
 			virtual void OnSuspend() = 0;
 			virtual void OnResume() = 0;
 		};

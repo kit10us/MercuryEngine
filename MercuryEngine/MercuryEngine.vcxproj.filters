@@ -219,24 +219,6 @@
     <ClInclude Include="me\shader\ConstantVariable.h">
       <Filter>me\shader</Filter>
     </ClInclude>
-    <ClInclude Include="me\ITexture.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexBuffer.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexConstruct.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IVertexShader.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IBuffer.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IConstantBuffer.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
     <ClInclude Include="me\IController.h">
       <Filter>me\i</Filter>
     </ClInclude>
@@ -246,19 +228,7 @@
     <ClInclude Include="me\IGameComponent.h">
       <Filter>me\i</Filter>
     </ClInclude>
-    <ClInclude Include="me\IIndexBuffer.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IInputSource.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
     <ClInclude Include="me\IOS.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IPixelShader.h">
-      <Filter>me\i</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IRenderer.h">
       <Filter>me\i</Filter>
     </ClInclude>
     <ClInclude Include="me\input\IInputCondition.h">
@@ -270,46 +240,13 @@
     <ClInclude Include="me\input\InputType.h">
       <Filter>me\input</Filter>
     </ClInclude>
-    <ClInclude Include="me\BufferSet.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\BufferUsage.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Effect.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\ElementFormat.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
     <ClInclude Include="me\Extension.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Filtering.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Frustum.h">
       <Filter>me\core</Filter>
     </ClInclude>
     <ClInclude Include="me\Game.h">
       <Filter>me\core</Filter>
     </ClInclude>
-    <ClInclude Include="me\Geometry.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\GeometryCache.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\GeometryInstanceData.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IndexLock.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
     <ClInclude Include="me\Instancing.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\LOD.h">
       <Filter>me\core</Filter>
     </ClInclude>
     <ClInclude Include="me\Lookup.h">
@@ -318,49 +255,7 @@
     <ClInclude Include="me\Mercury.h">
       <Filter>me\core</Filter>
     </ClInclude>
-    <ClInclude Include="me\Mesh.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\MeshAnimation.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\MeshInstanceData.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\PrimitiveList.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\RenderInfo.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\RenderMethod.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\RenderParams.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\SpriteDictionary.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Terra.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\TextureLock.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\TextureMode.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
     <ClInclude Include="me\UpdateParams.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\VertexDeclaration.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\VertexElement.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\VertexUtil.h">
       <Filter>me\core</Filter>
     </ClInclude>
     <ClInclude Include="me\XMLConvert.h">
@@ -416,9 +311,6 @@
     </ClInclude>
     <ClInclude Include="me\scene\OctreeNodeTerm.h">
       <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\GeometryCacheSummation.h">
-      <Filter>me\core</Filter>
     </ClInclude>
     <ClInclude Include="sg\CreateShape_DashRing.h">
       <Filter>shape_creation\create</Filter>
@@ -666,12 +558,6 @@
     <ClInclude Include="me\input\action\IA_ObjectAction.h">
       <Filter>me\input\action</Filter>
     </ClInclude>
-    <ClInclude Include="me\Blend.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
-    <ClInclude Include="me\Skeleton.h">
-      <Filter>me\core</Filter>
-    </ClInclude>
     <ClInclude Include="me\object\FinalCamera.h">
       <Filter>me\object</Filter>
     </ClInclude>
@@ -688,6 +574,111 @@
       <Filter>me\render</Filter>
     </ClInclude>
     <ClInclude Include="me\render\FrameAndMatrix.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\BufferSet.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\BufferUsage.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Blend.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\ElementFormat.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Filtering.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Effect.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\ITexture.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IVertexBuffer.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IVertexConstruct.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IVertexShader.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\LOD.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Geometry.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\GeometryCache.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\GeometryCacheSummation.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\GeometryInstanceData.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IBuffer.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IConstantBuffer.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IIndexBuffer.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IndexLock.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IPixelShader.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IRenderer.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\PrimitiveList.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\RenderInfo.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\RenderMethod.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\RenderParams.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Skeleton.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\SpriteDictionary.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Terra.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\TextureLock.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\TextureMode.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\VertexDeclaration.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\VertexElement.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\VertexUtil.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\Mesh.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\MeshInstanceData.h">
       <Filter>me\render</Filter>
     </ClInclude>
   </ItemGroup>
@@ -791,82 +782,16 @@
     <ClCompile Include="me\input\InputType.cpp">
       <Filter>me\input</Filter>
     </ClCompile>
-    <ClCompile Include="me\BufferSet.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\BufferUsage.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Effect.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\ElementFormat.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
     <ClCompile Include="me\Extension.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Filtering.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Frustum.cpp">
       <Filter>me\core</Filter>
     </ClCompile>
     <ClCompile Include="me\Game.cpp">
       <Filter>me\core</Filter>
     </ClCompile>
-    <ClCompile Include="me\Geometry.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\GeometryCache.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\GeometryInstanceData.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\IndexLock.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
     <ClCompile Include="me\Instancing.cpp">
       <Filter>me\core</Filter>
     </ClCompile>
-    <ClCompile Include="me\LOD.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
     <ClCompile Include="me\Lookup.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Mesh.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\MeshInstanceData.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\PrimitiveList.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\RenderInfo.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\RenderMethod.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\SpriteDictionary.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Terra.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\TextureMode.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\VertexDeclaration.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\VertexElement.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\VertexUtil.cpp">
       <Filter>me\core</Filter>
     </ClCompile>
     <ClCompile Include="me\XMLConvert.cpp">
@@ -913,9 +838,6 @@
     </ClCompile>
     <ClCompile Include="me\scene\OctreeNodeTerm.cpp">
       <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\GeometryCacheSummation.cpp">
-      <Filter>me\core</Filter>
     </ClCompile>
     <ClCompile Include="sg\CreateShape_Plane.cpp">
       <Filter>shape_creation\create</Filter>
@@ -1106,15 +1028,6 @@
     <ClCompile Include="me\input\action\IA_ObjectAction.cpp">
       <Filter>me\input\action</Filter>
     </ClCompile>
-    <ClCompile Include="me\Blend.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
-    <ClCompile Include="me\ITexture.cpp">
-      <Filter>me\i</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Skeleton.cpp">
-      <Filter>me\core</Filter>
-    </ClCompile>
     <ClCompile Include="me\render\MatrixFeed.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
@@ -1125,6 +1038,81 @@
       <Filter>me\render</Filter>
     </ClCompile>
     <ClCompile Include="me\render\MatrixFood.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\BufferUsage.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Blend.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\BufferSet.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\ElementFormat.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Filtering.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Effect.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\ITexture.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\LOD.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Geometry.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\GeometryCache.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\GeometryCacheSummation.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\GeometryInstanceData.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\IndexLock.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\RenderInfo.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\RenderMethod.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Skeleton.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\SpriteDictionary.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Terra.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\TextureMode.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\VertexDeclaration.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\VertexElement.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\VertexUtil.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Mesh.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\MeshInstanceData.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\PrimitiveList.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,6 +6,7 @@
 
 using namespace sg;
 using namespace me;
+using namespace render;
 
 ShapeBaseParameters::ShapeBaseParameters()
 {

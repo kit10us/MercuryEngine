@@ -2,13 +2,13 @@
 // All Rights Reserved
 #pragma once
 
+#include <me/render/PrimitiveList.h>
 #include <unify/Unify.h>
-#include <me/PrimitiveList.h>
 #include <unify/Parameters.h>
 
 namespace sg
 {
-	void CreateShape_PointField( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	void CreateShape_PointField( me::render::IRenderer * renderer, me::render::PrimitiveList & primitiveList, unify::Parameters & parameters );
 }
 
 #include <sg/PointFieldParameters.h>

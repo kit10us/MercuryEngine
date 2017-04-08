@@ -10,8 +10,9 @@
 
 using namespace medx9;
 using namespace me;
+using namespace render;
 
-IndexBuffer::IndexBuffer( me::IRenderer * renderer )
+IndexBuffer::IndexBuffer( IRenderer * renderer )
 	: m_renderer( dynamic_cast< Renderer * >(renderer) )
 	, m_buffer{ 0 }
 	, m_locked( false )
@@ -21,7 +22,7 @@ IndexBuffer::IndexBuffer( me::IRenderer * renderer )
 {
 }
 
-IndexBuffer::IndexBuffer( me::IRenderer * renderer, IndexBufferParameters parameters )
+IndexBuffer::IndexBuffer( IRenderer * renderer, IndexBufferParameters parameters )
 	: IndexBuffer( renderer )
 {
 	Create( parameters );

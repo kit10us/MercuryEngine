@@ -4,7 +4,7 @@
 #pragma once
 
 #include <medx11/DirectX.h>
-#include <me/IRenderer.h>
+#include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <atlbase.h>
 #include <memory>
@@ -13,7 +13,7 @@ namespace medx11
 {
 	class WindowsOS;
 
-	class Renderer : public me::IRenderer
+	class Renderer : public me::render::IRenderer
 	{
 	public:
 		Renderer( WindowsOS * os, me::render::Display display, size_t index );
@@ -36,23 +36,22 @@ namespace medx11
 		void BeforeRenderTrans() override;
 		void AfterRender() override;
 
-
 		bool IsFullscreen() const override;
 
 		size_t GetIndex() const override;
 
 		void* GetHandle() const override;
 
-		void Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, me::render::MatrixFeed & matrixFeed ) override;
+		void Render( const me::render::RenderMethod & method, const me::render::RenderInfo & renderInfo, me::render::MatrixFeed & matrixFeed ) override;
 
-		me::IVertexBuffer::ptr ProduceVB( me::VertexBufferParameters parameters ) override;
-		me::IIndexBuffer::ptr ProduceIB( me::IndexBufferParameters parameters ) override;
-		me::IVertexShader::ptr ProduceVS( me::VertexShaderParameters parameters ) override;
-		me::IPixelShader::ptr ProducePS( me::PixelShaderParameters parameters ) override;
-		me::ITexture::ptr ProduceT( me::TextureParameters parameters ) override;
- 		me::IVertexConstruct::ptr ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) override;
+		me::render::IVertexBuffer::ptr ProduceVB( me::render::VertexBufferParameters parameters ) override;
+		me::render::IIndexBuffer::ptr ProduceIB( me::render::IndexBufferParameters parameters ) override;
+		me::render::IVertexShader::ptr ProduceVS( me::render::VertexShaderParameters parameters ) override;
+		me::render::IPixelShader::ptr ProducePS( me::render::PixelShaderParameters parameters ) override;
+		me::render::ITexture::ptr ProduceT( me::render::TextureParameters parameters ) override;
+ 		me::render::IVertexConstruct::ptr ProduceVC( const me::render::VertexDeclaration & vd, const me::render::IVertexShader & vs ) override;
 
-		void UseTextures( std::vector< me::ITexture::ptr > textures ) override;
+		void UseTextures( std::vector< me::render::ITexture::ptr > textures ) override;
 
 	private:
 		WindowsOS * m_os;

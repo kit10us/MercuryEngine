@@ -8,6 +8,7 @@
 
 using namespace melua;
 using namespace me;
+using namespace render;
 
 char* TextureProxy::Name()
 {

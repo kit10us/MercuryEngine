@@ -4,14 +4,14 @@
 #pragma once
 
 #include <me/scene/Scene.h>
-#include <me/RenderMethod.h>
-#include <me/VertexUtil.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/VertexUtil.h>
 
 class MainScene : public me::scene::Scene
 {
-	me::Effect::ptr effectBorg;
-	me::Effect::ptr effect4;
-	me::IVertexBuffer::ptr vertexBuffer;
+	me::render::Effect::ptr effectBorg;
+	me::render::Effect::ptr effect4;
+	me::render::IVertexBuffer::ptr vertexBuffer;
 	unify::Quaternion q;
 public:
 	MainScene( me::Game * game );

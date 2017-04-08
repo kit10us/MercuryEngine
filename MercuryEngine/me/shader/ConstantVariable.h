@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/ElementFormat.h>
+#include <me/render/ElementFormat.h>
 #include <string>
 #include <vector>
 
@@ -14,10 +14,10 @@ namespace me
 		struct ConstantVariable
 		{
 			ConstantVariable();
-			ConstantVariable( std::string name, ElementFormat::TYPE type, size_t count );
+			ConstantVariable( std::string name, render::ElementFormat::TYPE type, size_t count );
 
 			std::string name;
-			ElementFormat::TYPE type;
+			render::ElementFormat::TYPE type;
 			std::vector< float > default;
 			bool hasDefault;
 			size_t count;

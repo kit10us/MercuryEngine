@@ -9,7 +9,7 @@
 #include <medx11/PixelShader.h>
 #include <medx11/VertexConstruct.h>
 #include <medx11/Texture.h>
-#include <me/RenderMethod.h>
+#include <me/render/RenderMethod.h>
 #include <me/render/MatrixFeed.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/NotImplemented.h>
@@ -261,7 +261,7 @@ void* Renderer::GetHandle() const
 	return (HWND)m_display.GetHandle();
 }
  
-void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & renderInfo, MatrixFeed & matrixFeed )
+void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed )
 {
 	int instancingSlot = method.effect->GetVertexShader()->GetVertexDeclaration()->GetInstanceingSlot();
 	Instancing::TYPE instancing = Instancing::None;
@@ -400,37 +400,37 @@ void Renderer::Render( const me::RenderMethod & method, const me::RenderInfo & r
 	}
 }
 
-me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) 
+IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters ) 
 {
-	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
+	return IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
 }
 
-me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters ) 
+IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters ) 
 {
-	return me::IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
+	return IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
 }
 
-me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters ) 
+IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters ) 
 {
-	return me::IVertexShader::ptr( new VertexShader( this, parameters ) );
+	return IVertexShader::ptr( new VertexShader( this, parameters ) );
 }
 
-me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters ) 
+IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters ) 
 {
-	return me::IPixelShader::ptr( new PixelShader( this, parameters ) );
+	return IPixelShader::ptr( new PixelShader( this, parameters ) );
 }
 
-me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters ) 
+ITexture::ptr Renderer::ProduceT( TextureParameters parameters ) 
 {
-	return me::ITexture::ptr( new Texture( this, parameters ) );
+	return ITexture::ptr( new Texture( this, parameters ) );
 }
 
-me::IVertexConstruct::ptr Renderer::ProduceVC( const me::VertexDeclaration & vd, const me::IVertexShader & vs ) 
+IVertexConstruct::ptr Renderer::ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) 
 {
-	return me::IVertexConstruct::ptr( new VertexConstruct( this, vd, vs ) );
+	return IVertexConstruct::ptr( new VertexConstruct( this, vd, vs ) );
 }
 
-void Renderer::UseTextures( std::vector< me::ITexture::ptr > textures )
+void Renderer::UseTextures( std::vector< ITexture::ptr > textures )
 {
 	auto dxContext = GetDxContext();
 

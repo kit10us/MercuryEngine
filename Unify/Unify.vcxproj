@@ -19,6 +19,7 @@
     <ClCompile Include="unify\DataLock.cpp" />
     <ClCompile Include="unify\FrameLite.cpp" />
     <ClCompile Include="unify\FrameSetInstance.cpp" />
+    <ClCompile Include="unify\Frustum.cpp" />
     <ClCompile Include="unify\Owner.cpp" />
     <ClCompile Include="unify\Path.cpp" />
     <ClCompile Include="unify\Frame.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="unify\Exception.h" />
     <ClInclude Include="unify\FrameLite.h" />
     <ClInclude Include="unify\FrameSetInstance.h" />
+    <ClInclude Include="unify\Frustum.h" />
     <ClInclude Include="unify\Math.h" />
     <ClInclude Include="unify\Optional.h" />
     <ClInclude Include="unify\Owner.h" />

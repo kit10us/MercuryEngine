@@ -13,9 +13,9 @@
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
 
-
 using namespace melua;
 using namespace me;
+using namespace render;
 
 int PushShapeParameters( lua_State * state, unify::Parameters & parameters )
 {

@@ -2,13 +2,14 @@
 // All Rights Reserved
 
 #include <me/object/BBoxRendererComponent.h>
-#include <me/GeometryCache.h>
-#include <me/Mesh.h>
-#include <me/VertexUtil.h>
+#include <me/render/GeometryCache.h>
+#include <me/render/Mesh.h>
+#include <me/render/VertexUtil.h>
 #include <me/object/Object.h>
 
 using namespace me;
 using namespace object;
+using namespace render;
 
 BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component )
 	: ObjectComponent( component )

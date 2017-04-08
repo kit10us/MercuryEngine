@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/canvas/Element.h>
-#include <me/Effect.h>
+#include <me/render/Effect.h>
 #include <me/IGame.h>
 
 namespace me
@@ -14,7 +14,7 @@ namespace me
 		class TextElement : public Element
 		{
 		public:
-			TextElement( me::IGame * game, Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+			TextElement( me::IGame * game, render::Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 
 			unify::Size< float > GetSize( unify::Size< float > area ) const override;
 		
@@ -30,7 +30,7 @@ namespace me
 
 			void Update( UpdateParams params ) override;
 		
-			void Render( RenderParams params ) override;
+			void Render( render::Params params ) override;
 		
 			void OnSuspend() override;
 		
@@ -38,8 +38,8 @@ namespace me
 
 		private:
 			std::string m_text;
-			Effect::ptr m_effect;
-			IVertexBuffer::ptr m_vertexBuffer;
+			render::Effect::ptr m_effect;
+			render::IVertexBuffer::ptr m_vertexBuffer;
 			bool m_changed;
 			unify::V2< float > m_scale;
 			bool m_shrinkToFit;

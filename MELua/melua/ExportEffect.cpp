@@ -11,6 +11,7 @@
 
 using namespace melua;
 using namespace me;
+using namespace render;
 
 char* EffectProxy::Name()
 {
@@ -71,9 +72,9 @@ int Effect_Constructor( lua_State * state )
 			}
 			else // It's a ps, vs, and N textures...
 			{
-				me::IPixelShader::ptr ps;
-				me::IVertexShader::ptr vs;
-				std::vector< me::ITexture::ptr > textures;
+				IPixelShader::ptr ps;
+				IVertexShader::ptr vs;
+				std::vector< ITexture::ptr > textures;
 				for( size_t i = 0; i < types.size(); i++ )
 				{
 					if( unify::StringIs( types[i], PixelShaderProxy::Name() ) )
@@ -105,12 +106,12 @@ int Effect_Constructor( lua_State * state )
 
 				if( textures.size() > 0 )
 				{
-					me::Effect::ptr effect( new Effect( vs, ps, &textures[0], &textures[0] + textures.size() ) );
+					Effect::ptr effect( new Effect( vs, ps, &textures[0], &textures[0] + textures.size() ) );
 					return Push< EffectProxy >( state, { effect } );
 				}
 				else
 				{
-					me::Effect::ptr effect( new Effect( vs, ps ) );
+					Effect::ptr effect( new Effect( vs, ps ) );
 					return Push< EffectProxy >( state, { effect } );
 				}
 			}

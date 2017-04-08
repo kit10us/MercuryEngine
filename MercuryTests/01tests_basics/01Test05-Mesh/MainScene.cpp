@@ -5,6 +5,7 @@
 #include <MainScene.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 
 MainScene::MainScene( me::Game * game )
@@ -121,7 +122,7 @@ void MainScene::OnUpdate( UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	RenderParams params = *renderGirl.GetParams();
+	render::Params params = *renderGirl.GetParams();
 	std::vector< const unify::FrameLite * > frames;
 	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
 	frames.push_back( &frame );

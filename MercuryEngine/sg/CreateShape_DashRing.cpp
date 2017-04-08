@@ -2,23 +2,24 @@
 // All Rights Reserved
 
 #include <sg/ShapeCreators.h>
-#include <me/RenderMethod.h>
-#include <me/TextureMode.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/TextureMode.h>
+#include <me/render/BufferUsage.h>
+#include <me/render/VertexUtil.h>
 #include <me/exception/NotImplemented.h>
-#include <me/BufferUsage.h>
-#include <me/VertexUtil.h>
 #include <unify/String.h>
 #include <unify/Size3.h>
 #include <unify/TexArea.h>
 #include <unify/Angle.h>
 
 using namespace me;
+using namespace render;
 
 const float PI = 3.14159265358979f;
 const float PI2 = 6.28318530717959f;
 const std::string DefaultBufferUsage = "Default";
 
-void sg::CreateShape_DashRing( me::IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
+void sg::CreateShape_DashRing( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	float radiusOuter = parameters.Get( "majorradius", 1.0f );
 	float radiusInner = parameters.Get( "minorradius", 0.9f );

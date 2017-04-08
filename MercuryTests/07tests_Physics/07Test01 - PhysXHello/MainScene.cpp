@@ -6,6 +6,7 @@
 #include <me/canvas/FPS.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 
 MainScene::MainScene( me::Game * game )

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <memory>
-#include <me/Geometry.h>
+#include <me/render/Geometry.h>
 
 namespace bw
 {
@@ -12,15 +12,15 @@ namespace bw
 	{
 	public:
 		typedef std::shared_ptr< BlockDescription > ptr;
-		BlockDescription( std::string name, me::Geometry::ptr geometry );
+		BlockDescription( std::string name, me::render::Geometry::ptr geometry );
 
 		std::string GetName();
 
-		me::Geometry::ptr GetGeometry();
+		me::render::Geometry::ptr GetGeometry();
 		
 	private:
 		std::string m_name;
-		me::Geometry::ptr m_geometry;
+		me::render::Geometry::ptr m_geometry;
 	};
 
 	class BlockLibrary

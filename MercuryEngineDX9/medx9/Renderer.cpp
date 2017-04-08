@@ -8,7 +8,7 @@
 #include <medx9/PixelShader.h>
 #include <medx9/VertexConstruct.h>
 #include <medx9/Texture.h>
-#include <me/RenderMethod.h>
+#include <me/render/RenderMethod.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/NotImplemented.h>									
 #include <me/exception/Render.h>
@@ -16,8 +16,9 @@
 
 using namespace medx9;
 using namespace me;
+using namespace render;
 
-Renderer::Renderer( WindowsOS * os, me::Display display, size_t index )
+Renderer::Renderer( WindowsOS * os, Display display, size_t index )
 		: m_os( os )
 		, m_display( display )
 		, m_index( index )
@@ -114,7 +115,7 @@ me::IGame * Renderer::GetGame()
 	return m_os->GetGame();
 }
 
-const me::Display & Renderer::GetDisplay() const
+const Display & Renderer::GetDisplay() const
 {
 	return m_display;
 }
@@ -144,6 +145,14 @@ void Renderer::BeforeRender()
 	}
 }
 
+void Renderer::BeforeRenderSolids()
+{
+}
+
+void Renderer::BeforeRenderTrans()
+{
+}
+
 void Renderer::AfterRender()
 {
 	HRESULT result;
@@ -161,20 +170,7 @@ void Renderer::AfterRender()
 	}
 }
 
-void Renderer::SetCullMode( me::CullMode::TYPE mode )
-{
-	D3DCULL dxCull{};
-	switch ( mode )
-	{
-	case CullMode::None: dxCull = D3DCULL_NONE; break;
-	case CullMode::Clockwise: dxCull = D3DCULL_CW; break;
-	case CullMode::CounteClockwise: dxCull = D3DCULL_CCW; break;
-	};
-
-	m_dxDevice->SetRenderState( D3DRS_CULLMODE, dxCull );
-}
-
-me::Viewport Renderer::GetViewport() const
+Viewport Renderer::GetViewport() const
 {
 	return Viewport( 0, 0, GetDisplay().GetSize().width, GetDisplay().GetSize().height, GetDisplay().GetNearZ(), GetDisplay().GetFarZ() );
 }
@@ -237,43 +233,37 @@ void Renderer::Render( const RenderMethod & method, const RenderInfo & renderInf
 	}
 }
 
-me::ISketcher * Renderer::GetSketcher()
+IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters )
 {
-	return nullptr;
+	return IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
 }
 
-
-me::IVertexBuffer::ptr Renderer::ProduceVB( VertexBufferParameters parameters )
+IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters )
 {
-	return me::IVertexBuffer::ptr( new VertexBuffer( this, parameters ) );
+	return IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
 }
 
-me::IIndexBuffer::ptr Renderer::ProduceIB( IndexBufferParameters parameters )
+IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters )
 {
-	return me::IIndexBuffer::ptr( new IndexBuffer( this, parameters ) );
+	return IVertexShader::ptr( new VertexShader( this, parameters ) );
 }
 
-me::IVertexShader::ptr Renderer::ProduceVS( VertexShaderParameters parameters )
+IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters )
 {
-	return me::IVertexShader::ptr( new VertexShader( this, parameters ) );
+	return IPixelShader::ptr( new PixelShader( this, parameters ) );
 }
 
-me::IPixelShader::ptr Renderer::ProducePS( PixelShaderParameters parameters )
+IVertexConstruct::ptr Renderer::ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs )
 {
-	return me::IPixelShader::ptr( new PixelShader( this, parameters ) );
+	return IVertexConstruct::ptr( new VertexConstruct( this, vd ) );
 }
 
-me::IVertexConstruct::ptr Renderer::ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs )
+ITexture::ptr Renderer::ProduceT( TextureParameters parameters )
 {
-	return me::IVertexConstruct::ptr( new VertexConstruct( this, vd ) );
+	return ITexture::ptr( new Texture( this, parameters ) );
 }
 
-me::ITexture::ptr Renderer::ProduceT( TextureParameters parameters )
-{
-	return me::ITexture::ptr( new Texture( this, parameters ) );
-}
-
-void Renderer::UseTextures( std::vector< me::ITexture::ptr > textures )
+void Renderer::UseTextures( std::vector< ITexture::ptr > textures )
 {
 	HRESULT hr = S_OK;
 	for( int stage = 0; stage < (int)textures.size(); stage++ )

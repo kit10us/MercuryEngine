@@ -9,6 +9,7 @@
 #include <me/canvas/FPS.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 
 MainScene::MainScene( me::Game * game )
@@ -124,7 +125,7 @@ void MainScene::OnUpdate( UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	RenderParams params = *renderGirl.GetParams();
+	render::Params params = *renderGirl.GetParams();
 	vertexBuffer->Use();
 
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );

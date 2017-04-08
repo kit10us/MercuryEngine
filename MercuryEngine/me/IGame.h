@@ -7,13 +7,13 @@
 #include <me/IOS.h>
 #include <unify/TimeDelta.h>
 #include <me/Extension.h>
-#include <me/RenderInfo.h>
+#include <me/render/RenderInfo.h>
 #include <me/input/InputManager.h>
 #include <rm/ResourceManagerSimple.h>
 #include <rm/ResourceHub.h>
 #include <me/IGameComponent.h>
 #include <me/UpdateParams.h>
-#include <me/RenderParams.h>
+#include <me/render/RenderParams.h>
 #include <me/action/IAction.h>
 #include <me/object/action/IObjectAction.h>
 #include <me/scene/ISceneFactory.h>
@@ -87,7 +87,7 @@ namespace me
 		/// <summary>
 		/// Get our RenderInfo.
 		/// </summary>
-		virtual const RenderInfo & GetRenderInfo() const = 0;
+		virtual const render::RenderInfo & GetRenderInfo() const = 0;
 
 		virtual rm::ResourceHub & GetResourceHub() = 0;
 		virtual const rm::ResourceHub & GetResourceHub() const = 0;

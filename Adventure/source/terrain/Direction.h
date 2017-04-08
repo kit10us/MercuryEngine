@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <me/factory/EffectFactories.h>
 #include <array>
 

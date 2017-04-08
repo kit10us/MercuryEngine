@@ -6,6 +6,7 @@
 using namespace me;
 using namespace canvas;
 using namespace scene;
+using namespace render;
 
 char * CanvasComponent::Name()
 {
@@ -47,7 +48,7 @@ void CanvasComponent::OnUpdate( UpdateParams params )
 
 void CanvasComponent::OnRender( RenderGirl & renderGirl )
 {
-	const RenderParams & params = *renderGirl.GetParams();
+	const render::Params & params = *renderGirl.GetParams();
 
 	RenderInfo myRenderInfo( params.renderInfo );
 
@@ -57,7 +58,7 @@ void CanvasComponent::OnRender( RenderGirl & renderGirl )
 	myRenderInfo.SetViewMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
-	m_layer->Render( RenderParams{ params.renderer, myRenderInfo } );
+	m_layer->Render( render::Params{ params.renderer, myRenderInfo } );
 }
 
 void CanvasComponent::OnSuspend()

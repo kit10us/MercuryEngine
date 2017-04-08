@@ -109,7 +109,7 @@ void GameComponent::OnLateUpdate( UpdateParams params )
 {
 }
 
-void GameComponent::OnRender( RenderParams params )
+void GameComponent::OnRender( render::Params params )
 {
 }
 

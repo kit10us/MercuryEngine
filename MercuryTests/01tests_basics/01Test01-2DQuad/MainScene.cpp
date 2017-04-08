@@ -5,6 +5,7 @@
 
 using namespace me;
 using namespace scene;
+using namespace render;
 
 MainScene::MainScene( me::Game * game )
 	:Scene( game, "main" )

@@ -10,17 +10,17 @@
 
 namespace medx9
 {
-	class PixelShader : public me::IPixelShader
+	class PixelShader : public me::render::IPixelShader
 	{
 	public:
-		PixelShader( me::IRenderer * renderer );
-		PixelShader( me::IRenderer * renderer, me::PixelShaderParameters parameters );
+		PixelShader( me::render::IRenderer * renderer );
+		PixelShader( me::render::IRenderer * renderer, me::render::PixelShaderParameters parameters );
 
 		~PixelShader();
 
 		void Destroy();
 
-		void Create( me::PixelShaderParameters parameters );
+		void Create( me::render::PixelShaderParameters parameters );
 
 		const me::shader::ConstantBuffer * GetConstants() const override;
 
@@ -30,16 +30,14 @@ namespace medx9
 
 		void Use() override;
 
-		std::string GetSource() const override;
+		unify::Path GetSource() const override;
 
-		void SetTrans( bool bTrans ) override;
+		bool Reload() override;
 
-		bool IsTrans() override;
-
-		std::string GetError();
+		bool IsTrans() const;
 
 	protected:
-		me::PixelShaderParameters m_parameters;
+		me::render::PixelShaderParameters m_parameters;
 		bool m_assembly;
 		std::string m_errorMessage;
 		bool m_created;

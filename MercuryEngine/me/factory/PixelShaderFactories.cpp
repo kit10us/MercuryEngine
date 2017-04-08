@@ -2,11 +2,12 @@
 // All Rights Reserved
 
 #include <me/factory/PixelShaderFactories.h>
-#include <me/Blend.h>
+#include <me/render/Blend.h>
 #include <me/exception/FailedToCreate.h>
 #include <qxml/Document.h>
 
 using namespace me;
+using namespace render;
 
 PixelShaderFactory::PixelShaderFactory( IGame * game )
 	: m_game( game )

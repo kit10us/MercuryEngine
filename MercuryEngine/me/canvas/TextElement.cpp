@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <me/canvas/TextElement.h>
-#include <me/RenderMethod.h>
-#include <me/VertexUtil.h>
-
+#include <me/render/RenderMethod.h>
+#include <me/render/VertexUtil.h>
 #include <algorithm>
 
 using namespace me;
 using namespace canvas;
+using namespace render;
 
 TextElement::TextElement( me::IGame * game, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: Element( game, offset, {0, 0}, anchor )
@@ -216,7 +216,7 @@ void TextElement::Update( UpdateParams params )
 {
 }
 		
-void TextElement::Render( RenderParams params )
+void TextElement::Render( render::Params params )
 {
 	if ( m_text.empty() ) return;
 	if ( ! IsEnabled() ) return;

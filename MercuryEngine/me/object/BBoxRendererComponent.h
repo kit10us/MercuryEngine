@@ -5,8 +5,8 @@
 
 #include <me/object/ObjectComponent.h>
 #include <me/object/GeometryComponent.h>
-#include <me/Effect.h>
-#include <me/PrimitiveList.h>
+#include <me/render/Effect.h>
+#include <me/render/PrimitiveList.h>
 #include <unify/Color.h>
 
 namespace me
@@ -19,7 +19,7 @@ namespace me
 			BBoxRendererComponent( BBoxRendererComponent & component );
 
 		public:
-			BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
+			BBoxRendererComponent( IOS * os, render::Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 			virtual ~BBoxRendererComponent();
 
 			/// <summary>
@@ -37,7 +37,7 @@ namespace me
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnUpdate( UpdateParams params ) override;
-			void CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame ) override;
+			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) override;
 
 			IObjectComponent::ptr Duplicate();
 
@@ -50,8 +50,8 @@ namespace me
 			IOS * m_os;
 			unify::BBox< float > m_bbox;
 			std::list< GeometryComponent * > m_geomertries;
-			Geometry::ptr m_geometry;
-			Effect::ptr m_effect;
+			render::Geometry::ptr m_geometry;
+			render::Effect::ptr m_effect;
 			float m_padding;
 			unify::Color m_color;
 			int m_componentsChecked;

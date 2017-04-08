@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <MainScene.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <me/object/BBoxRendererComponent.h>
 #include <me/object/CameraComponent.h>
 #include <me/object/CameraComponent.h>
@@ -16,6 +16,7 @@ using namespace me;
 using namespace scene;
 using namespace object;
 using namespace bw;
+using namespace render;
 
 MainScene::MainScene( me::Game * game )
 	:Scene( game, "main" )

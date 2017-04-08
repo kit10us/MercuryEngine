@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/IRenderer.h>
+#include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
@@ -103,7 +103,7 @@ namespace me
 		/// <summary>
 		/// Get the system Renderer interface.
 		/// </summary>
-		virtual IRenderer * GetRenderer( int index ) const = 0;
+		virtual render::IRenderer * GetRenderer( int index ) const = 0;
 
 		/// <summary>
 		/// Set if we have focus. This is dependant on the OS, focus means the user's input

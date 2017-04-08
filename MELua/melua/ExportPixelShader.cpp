@@ -8,6 +8,7 @@
 
 using namespace melua;
 using namespace me;
+using namespace render;
 
 char* PixelShaderProxy::Name()
 {
@@ -43,12 +44,12 @@ int PixelShader_Constructor( lua_State * state )
 			unify::Path asPath( value );
 			if( asPath.IsExtension( "xml" ) )
 			{
-				auto ps = game->GetManager< me::IPixelShader >()->Add( asPath );
+				auto ps = game->GetManager< IPixelShader >()->Add( asPath );
 				return Push< PixelShaderProxy >( state, { ps } );
 			}
 			else
 			{
-				auto ps = game->GetManager< me::IPixelShader >()->Find( value );
+				auto ps = game->GetManager< IPixelShader >()->Find( value );
 				if( !ps )
 				{
 					luaL_error( state, "PixelShader not found!" );
@@ -64,7 +65,7 @@ int PixelShader_Constructor( lua_State * state )
 		{
 			std::string name = Check< std::string >( state, 1 );
 			unify::Path path( Check< std::string >( state, 2 ) );
-			auto ps = game->GetManager< me::IPixelShader >()->Add( name, path );
+			auto ps = game->GetManager< IPixelShader >()->Add( name, path );
 			return Push< PixelShaderProxy >( state, { ps } );
 		}
 	}

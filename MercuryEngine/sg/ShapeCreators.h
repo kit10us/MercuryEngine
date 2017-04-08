@@ -2,13 +2,13 @@
 // All Rights Reserved
 #pragma once
 
-#include <sg/ShapeType.h>
-#include <unify/Unify.h>
-#include <me/PrimitiveList.h>
-#include <me/RenderInfo.h>
+#include <me/render/PrimitiveList.h>
+#include <me/render/RenderInfo.h>
+#include <me/render/Mesh.h>
 #include <unify/Parameters.h>
-#include <me/Mesh.h>
+#include <unify/Unify.h>
 
+#include <sg/ShapeType.h>
 #include <sg/CreateShape_Cube.h>
 #include <sg/CreateShape_PointField.h>
 #include <sg/CreateShape_PointRing.h>
@@ -24,7 +24,7 @@
 
 namespace sg
 {
-	std::shared_ptr< me::Mesh > CreateShape( me::IRenderer * renderer, unify::Parameters & parameters );
-	void CreateShape( me::IRenderer * renderer, me::PrimitiveList & primitiveList, unify::Parameters & parameters );
+	std::shared_ptr< me::render::Mesh > CreateShape( me::render::IRenderer * renderer, unify::Parameters & parameters );
+	void CreateShape( me::render::IRenderer * renderer, me::render::PrimitiveList & primitiveList, unify::Parameters & parameters );
 }
 

@@ -3,7 +3,7 @@
 
 #include <dae/GeometrySourceFactory.h>
 #include <memory.h>
-#include <me/IRenderer.h>
+#include <me/render/IRenderer.h>
 #include <me/IGame.h>
 
 void Deleter( dae::GeometrySourceFactory * factory )
@@ -16,6 +16,7 @@ extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::El
 __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * element )
 {
 	using namespace me;
+	using namespace render;
 
 	auto game = dynamic_cast<Game *>(_game);
 

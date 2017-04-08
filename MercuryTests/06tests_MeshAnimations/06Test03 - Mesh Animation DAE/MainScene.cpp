@@ -2,11 +2,11 @@
 // All Rights Reserved
 
 #include <MainScene.h>
-#include <me/RenderMethod.h>
-#include <me/VertexUtil.h>
+#include <me/render/RenderMethod.h>
+#include <me/render/VertexUtil.h>
 #include <me/scene/SceneManager.h>
 #include <me/object/Object.h>
-#include <me/Mesh.h>
+#include <me/render/Mesh.h>
 #include <sg/ShapeCreators.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
@@ -15,6 +15,7 @@
 #include <me/object/CameraComponent.h>
 
 using namespace me;
+using namespace render;
 using namespace scene;
 using namespace object;
 

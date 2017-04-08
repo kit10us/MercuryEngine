@@ -5,12 +5,12 @@
 
 #include <MELuaDLL.h>
 #include <lua.hpp>
-#include <me/Effect.h>
+#include <me/render/Effect.h>
 
 struct VertexShaderProxy
 {
 	MELUADLL_API static char* Name();
-	me::IVertexShader::ptr shader;
+	me::render::IVertexShader::ptr shader;
 };
 
 void RegisterVertexShader( lua_State * state );

@@ -3,7 +3,7 @@
 
 #pragma once
 #include <medx9/Renderer.h>
-#include <me/TextureLock.h>
+#include <me/render/TextureLock.h>
 #include <unify/Rect.h>
 #include <unify/Color.h>
 #include <unify/TexArea.h>
@@ -41,12 +41,10 @@ namespace medx9
 #define SPRITEANIMLOOP_REPEAT		1	// 1 loop period
 #define SPRITEANIMLOOP_FORWARDBACK	2	// 2 loop periods
 
-	class Texture : public me::ITexture
+	class Texture : public me::render::ITexture
 	{
 		friend class Renderer;
 	public:
-		typedef std::shared_ptr< Texture > ptr;
-
 		struct SpriteArray
 		{
 			SpriteArray() {}
@@ -60,7 +58,7 @@ namespace medx9
 
 		static bool s_allowTextureUses;
 
-		Texture( me::IRenderer * renderer, me::TextureParameters parameters = me::TextureParameters() );
+		Texture( me::render::IRenderer * renderer, me::render::TextureParameters parameters = me::render::TextureParameters() );
 		virtual ~Texture();
 
 		// ::Resource...
@@ -78,13 +76,15 @@ namespace medx9
 
 		bool GetLockable() const;
 
-		void LockRect( unsigned int level, me::TextureLock & lock, const unify::Rect< long > * rect, bool readonly );
+		void LockRect( unsigned int level, me::render::TextureLock & lock, const unify::Rect< long > * rect, bool readonly );
 		void UnlockRect( unsigned int level );
 
-		me::SpriteDictionary & GetSpriteDictionary() override;
-		const me::SpriteDictionary & GetSpriteDictionary() const override;
+		me::render::SpriteDictionary & GetSpriteDictionary() override;
+		const me::render::SpriteDictionary & GetSpriteDictionary() const override;
 
-		const me::TextureParameters * GetParameters() const override;
+		const me::render::TextureParameters * GetParameters() const override;
+
+		bool Reload() override;
 
 	protected:
 		void LoadImage( const unify::Path & filePath );
@@ -92,12 +92,12 @@ namespace medx9
 
 		const Renderer * m_renderer;
 		CComPtr< IDirect3DTexture9 > m_texture;
-		me::TextureParameters m_parameters;
+		me::render::TextureParameters m_parameters;
 		bool m_created;
 		unify::Size< unsigned int > m_fileSize;
 		unify::Size< unsigned int > m_imageSize;
 		bool m_useColorKey;
 		unify::Color m_colorKey;
-		me::SpriteDictionary m_spriteDictionary;
+		me::render::SpriteDictionary m_spriteDictionary;
 	};
 }

@@ -31,7 +31,7 @@ namespace me
 
 			void UpdateLayout( UpdateParams params, unify::Size< float > area );
 			void Update( UpdateParams params ) override;
-			void Render( RenderParams params ) override;
+			void Render( render::Params params ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 

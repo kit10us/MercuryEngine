@@ -9,8 +9,9 @@
 
 using namespace melua;
 using namespace me;
+using namespace render;
 
-int PushTerra( lua_State * state, me::Geometry::ptr geometry )
+int PushTerra( lua_State * state, Geometry::ptr geometry )
 {
 	TerraProxy ** newProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
 	*newProxy = new TerraProxy();

@@ -14,8 +14,9 @@
 
 using namespace medx9;
 using namespace me;
+using namespace render;
 
-Texture::Texture( me::IRenderer * renderer, TextureParameters parameters )
+Texture::Texture( IRenderer * renderer, TextureParameters parameters )
 	: m_renderer( dynamic_cast< Renderer * >( renderer ) )
 	, m_useColorKey( false )
 	, m_created( false )
@@ -219,7 +220,14 @@ const SpriteDictionary & Texture::GetSpriteDictionary() const
 	return m_spriteDictionary;
 }
 
-const me::TextureParameters * Texture::GetParameters() const
+const TextureParameters * Texture::GetParameters() const
 {
 	return &m_parameters;
+}
+
+bool Texture::Reload()
+{
+	Destroy();
+	Create();
+	return true;
 }
