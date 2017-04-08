@@ -4,7 +4,7 @@
 // TODO: Figure out how to generate a template time exception here, for unsupported types, instead of throws.
 
 template< typename T >
-std::vector< T > unify::Split( const std::string & sourceString, const char delimitor )
+std::vector< T > unify::Split( std::string sourceString, const char delimitor )
 {
 	std::vector< T > destination;
 	std::stringstream ss( sourceString );
@@ -17,7 +17,7 @@ std::vector< T > unify::Split( const std::string & sourceString, const char deli
 }
 
 template< typename T >
-std::vector< T > unify::Split( const std::string & sourceString, const std::vector< char > & delimitors, bool includeEmpties )
+std::vector< T > unify::Split( std::string sourceString, const std::vector< char > & delimitors, bool includeEmpties )
 {
 	std::vector< T > destination;
 
@@ -58,7 +58,7 @@ std::vector< T > unify::Split( const std::string & sourceString, const std::vect
 }
 
 template< typename T >
-std::vector< T > unify::SplitOnWhitespace( const std::string & sourceString )
+std::vector< T > unify::SplitOnWhitespace( std::string sourceString )
 {
 	std::vector< char > delimitors;
 	delimitors.push_back( ' ' );

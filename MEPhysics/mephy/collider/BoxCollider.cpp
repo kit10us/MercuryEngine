@@ -60,6 +60,13 @@ void BoxCollider::TestCollision( Entity* entity, const me::UpdateParams & params
 
 	if( ! wasIn && isIn )
 	{
+		/*
+		unify::Ray< float > ray( earlyPos, currentPos );
+
+		unify::V3< float > hitPoint;
+		bool hit = m_bbox.RayTest( ray, hitPoint );
+		*/
+		
 		this->PerformOnEnter( entity, params );
 	}
 

@@ -15,6 +15,7 @@ ColliderBase::ColliderBase( ColliderBase & component )
 
 ColliderBase::ColliderBase( std::string name )
 	: ObjectComponent( name, true, false )
+	, m_isSolid{ true }
 {
 }
 
@@ -25,15 +26,24 @@ ColliderBase::~ColliderBase()
 void ColliderBase::SetOnEnterAction( me::object::action::IObjectAction::ptr action )
 {
 	m_onEnter = action;
+	m_isSolid = false;
 }
 
 void ColliderBase::SetOnExitAction( me::object::action::IObjectAction::ptr action )
 {
 	m_onExit = action;
+	m_isSolid = false;
 }
 
 void ColliderBase::PerformOnEnter( Entity * entity, const me::UpdateParams & params )
 {
+	if( m_isSolid )
+	{
+		auto earlyPos = entity->GetEarly();
+		entity->GetObject()->GetFrame().SetPosition( earlyPos.GetPosition() );
+
+	}
+
 	if( m_onEnter )
 	{
 		m_onEnter->Perform( entity->GetObject(), params.GetDelta() );

@@ -10,7 +10,6 @@
 <assets>../assets_common/models/</assets>
 <assets>../assets_common/images/</assets>
 <assets>../assets_common/scripts/</assets>
-<assets>../assets_common/effects/</assets>
 
 <extension source="../../extensions/Debug/MELua.dll">
 	<auto>../assets_common/scripts/auto/</auto>

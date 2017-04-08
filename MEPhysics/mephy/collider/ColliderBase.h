@@ -40,6 +40,7 @@ namespace mephy
 		private:
 			me::object::action::IObjectAction::ptr m_onEnter;
 			me::object::action::IObjectAction::ptr m_onExit;
+			bool m_isSolid;
 		};
 	}
 }

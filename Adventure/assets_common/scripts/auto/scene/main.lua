@@ -10,10 +10,8 @@ local start_position = V3( 4, 0, 0 )
 
 function BuildCube( position )
 	local object = this:NewObject( MakeObjectName( "cube" ) )
-	print( "---------------------------" )
 	local effect = Effect( VertexShader( "textured.xml" ), PixelShader( "textured.xml" ), Texture( "articulate.bmp" ) );
-	print( "---------------------------" )
-	object:AddGeometry( ShapeCube( effect ), Matrix() * MatrixTranslate( V3( 0, 1, 0 ) ) )	
+	object:AddGeometry( ShapeCube( effect ), MatrixTranslate( V3( 0, 1, 0 ) ) )	
 	object:Transform():SetPosition( position )
 	return object
 end
@@ -25,7 +23,7 @@ function BuildPortalSphere( position )
 	local sphereParameters = ShapeParameters( "sphere" )	
 	sphereParameters:SetEffect( Effect( PixelShader( "color_trans.xml" ), VertexShader( "color_trans.xml" ) ) )
 	
-	local modelMatrix = Matrix() * MatrixTranslate( V3( 0, 1, 0 ) )
+	local modelMatrix = MatrixTranslate( V3( 0, 1, 0 ) )
 	
 	local radius = 2.0
 	

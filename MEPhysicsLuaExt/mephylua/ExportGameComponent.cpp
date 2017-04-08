@@ -24,10 +24,10 @@ namespace mephylua
 	{
 		int argc = lua_gettop( state );
 
-		unify::V3< float > halfExt( CheckV3( state, 2 )->v3 );
+		unify::V3< float > ext( CheckV3( state, 2 )->v3 );
 
 		auto physics = g_game->GetComponentT< mephy::GameComponent >();
-		me::object::IObjectComponent::ptr collider( physics->CreateBoxCollider( halfExt ) );
+		me::object::IObjectComponent::ptr collider( physics->CreateBoxCollider( ext * 0.5f ) );
 		return PushUserType< ColliderObjectComponentProxy >( state, { collider } );
 	}
 

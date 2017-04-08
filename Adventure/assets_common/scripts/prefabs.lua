@@ -28,6 +28,10 @@ function BuildTree( position )
 	cylinderParameters:SetCaps( true )
 	cylinderParameters:SetCenter( V3( 0, 2.5, 0 ) )
 	object:AddGeometry( Geometry( cylinderParameters ) )
+	
+	local physics = MEPhysics()
+	local collider = physics:CreateBoxCollider( V3( 2, 1, 2 ) )
+	object:AddComponent( collider:AsObjectComponent() )
 end
 
 function BuildHouse( position )
@@ -61,4 +65,8 @@ function BuildHouse( position )
 	parameters:SetDiffuse( RGB( .3, .3, .3 ) * White( 2 ) )
 	parameters:SetCenter( V3( 0, 7, 0 ) )
 	object:AddGeometry( Geometry( parameters ) )
+
+	local physics = MEPhysics()
+	local collider = physics:CreateBoxCollider( V3( 7, 1, 11 ) )
+	object:AddComponent( collider:AsObjectComponent() )
 end
