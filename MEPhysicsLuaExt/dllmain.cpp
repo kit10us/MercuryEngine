@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2011, Quentin S. Smith
+// Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers

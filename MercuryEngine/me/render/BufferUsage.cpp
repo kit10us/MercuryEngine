@@ -1,4 +1,4 @@
-// Copyright (c) 2003 - 2014, Quentin S. Smith
+// Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
 #include <me/exception/FailedToCreate.h>

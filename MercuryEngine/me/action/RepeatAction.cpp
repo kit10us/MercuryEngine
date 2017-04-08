@@ -1,4 +1,4 @@
-// Copyright (c) 2003 - 2017, Quentin S. Smith
+// Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
 #include <me/action/RepeatAction.h>
