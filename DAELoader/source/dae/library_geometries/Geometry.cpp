@@ -49,7 +49,7 @@ const Mesh & Geometry::GetMesh() const
 	return *m_mesh;
 }
 
-void Geometry::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Geometry::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const
 {
-	GetMesh().Build( mesh, matrix, technique );
+	GetMesh().Build( mesh, matrix, technique, skin, skeleton );
 }

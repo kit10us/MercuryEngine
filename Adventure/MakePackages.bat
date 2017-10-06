@@ -1,3 +1,9 @@
+rem Copyright (c) 2002 - 2018, Quentin S. Smith
+rem All Rights Reserved
+
+rem This batchfile will create an Adventure build, version by date 
+rem and an appended number.
+
 @echo off
 set year=%date:~10,4%
 set month=%date:~4,2%

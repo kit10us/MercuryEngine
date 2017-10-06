@@ -1,17 +1,17 @@
 Initializing: 
-  name:    C:\dev\ws\MercuryTests\02tests_feature\02Test06 - Geo Instancing\..\..\..\output\v140_Debug\02Test06 - Geo Instancing\02Test06 - Geo Instancing.exe
-  program: C:\dev\ws\MercuryTests\02tests_feature\output\v140_Debug\02Test06 - Geo Instancing\02Test06 - Geo Instancing.exe
+  name:    C:\dev\ws\MercuryTests\06tests_MeshAnimations\06Test03 - Mesh Animation DAE\..\..\..\output\v140_Debug\06Test03 - Mesh Animation DAE\06Test03 - Mesh Animation DAE.exe
+  program: C:\dev\ws\MercuryTests\06tests_MeshAnimations\output\v140_Debug\06Test03 - Mesh Animation DAE\06Test03 - Mesh Animation DAE.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Wed Mar 29 18:19:28 2017
+  time:    Fri Oct  6 13:16:31 2017
 
   Loading setup "setup_models.xml"...
   Loading setup "setup_base.xml"...
   Loading setup "dae.xml"...
   Loading extenion "../../extensions/Debug/DAELoader.dll"...
-  PixelShader manager: adding "color_ambient" (shaders/Color_Ambient.xml).
-  VertexShader manager: adding "color_ambient" (shaders/Color_Ambient.xml).
-  PixelShader manager: adding "textured_ambient" (shaders/Textured_Ambient.xml).
-  VertexShader manager: adding "textured_ambient" (shaders/Textured_Ambient.xml).
+  PixelShader manager: adding "color_ambient" (../test_dataDX11_common/shaders/Color_Ambient.xml).
+  VertexShader manager: adding "color_ambient" (../test_dataDX11_common/shaders/Color_Ambient.xml).
+  PixelShader manager: adding "textured_ambient" (../test_dataDX11_common/shaders/Textured_Ambient.xml).
+  VertexShader manager: adding "textured_ambient" (../test_dataDX11_common/shaders/Textured_Ambient.xml).
   Loading extenion "../../extensions/Debug/ASELoader.dll"...
   Loading setup "meeditor.xml"...
   Loading extenion "../../extensions/Debug/MEEditor.dll"...
@@ -40,24 +40,18 @@ OnAfterStartup Begin
   OnAfterStartup "ActionsGameComponent" Begin
   OnAfterStartup "ActionsGameComponent" Done
 OnAfterStartup Done
-total startup time: 0.904428s
+total startup time: 4.174902s
 Creating Main Scene
 Starting scene "main" Begin
   Component "ObjectAllocatorComponent" OnBeforeStart Begin
   Component "ObjectAllocatorComponent" OnBeforeStart Done
   Scene OnStart Begin
-  Effect manager: adding "ColorInstanced_ambient" (../test_data/effects/ColorInstanced_ambient.effect).
-  PixelShader manager: adding "colorI_ambient" (shaders/ColorInstanced_ambient.xml).
-  VertexShader manager: adding "colorI_ambient" (shaders/ColorInstanced_ambient.xml).
-  Effect manager: adding "font2" (../test_data/effects/font2.effect).
-  PixelShader manager: adding "textured2D" (shaders/textured2d.xml).
-  VertexShader manager: adding "textured2D" (shaders/textured2d.xml).
-  Texture manager: adding "font2" (../test_data/images/font2.png).
+  VertexShader manager: adding "color3d" (../test_dataDX11_common/shaders/color3d.xml).
+  PixelShader manager: adding "color3d" (../test_dataDX11_common/shaders/color3d.xml).
+  Geometry manager: adding "daeModel" (../test_data/models/Mickey_Mouse/Mickey_Mouse.dae).
   Scene OnStart End
   Component "ObjectAllocatorComponent" OnAfterStart Begin
   Component "ObjectAllocatorComponent" OnAfterStart Done
-  Component "CanvasComponent" OnAfterStart Begin
-  Component "CanvasComponent" OnAfterStart Done
   Start scene "main" Done
 Main Scene created
 Shutting down:
@@ -66,6 +60,6 @@ OnDetach
   Detaching ActionFactory
   Detaching ActionsGameComponent
 OnDetachDone
-  time: Wed Mar 29 18:19:43 2017
+  time: Fri Oct  6 13:16:47 2017
 
-  frames: 67, total delta: 0.073493s,  average fps:13.606759
+  frames: 274, total delta: 0.019231s,  average fps:51.999626

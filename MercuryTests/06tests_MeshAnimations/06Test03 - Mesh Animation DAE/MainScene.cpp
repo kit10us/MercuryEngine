@@ -27,14 +27,16 @@ MainScene::MainScene( me::Game * game )
 void MainScene::OnStart()
 {
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
+	IVertexShader::ptr vs_color3D( GetManager< IVertexShader >()->Add( "color3d", unify::Path( "color3d.xml" ) ) );
+	IPixelShader::ptr ps_color3D( GetManager< IPixelShader >()->Add( "color3d", unify::Path( "color3d.xml" ) ) );
+	Effect::ptr color3DEffect( new Effect(  vs_color3D, ps_color3D ) );
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );
 	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800 / 600, 1, 1000 ) );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
+	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -12 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 	auto object = GetObjectAllocator()->NewObject( "object" );
@@ -63,8 +65,6 @@ void MainScene::OnUpdate( UpdateParams & params )
 	assert( camera );
 
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
-	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
-
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
 

@@ -89,7 +89,7 @@ void Mesh::GetSources( std::list< ContributingInput > & sources, const Input_Sha
 	}
 }
 
-void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const
+void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const
 {
 	using namespace me;
 
@@ -108,7 +108,7 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 		const Effect * effect = GetDocument().GetLibraryEffects().Find( effectURL );
 
 		const Shading & shading = effect->GetProfileCOMMON()->GetTechnique().GetShading();
-		me::render::Effect::ptr primitiveEffectBase = GetDocument().GetEffect( shading );
+		me::render::Effect::ptr primitiveEffectBase = GetDocument().GetEffect( effect );
 		me::render::Effect::ptr myEffect( new me::render::Effect() );
 		*myEffect = *primitiveEffectBase; // Copy.
 		myEffect->ClearTextures(); // Clear textures, as we don't want the default texture that might have come with the effect.
@@ -128,6 +128,7 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 		}
 
 		// Determine number of contributing inputs...
+		// This is the mapping of components for each vertex (semantic and source).
 		std::list< ContributingInput > ciList;
 		size_t pStride = 1;
 		for( auto && input : polylist->GetInput() )
@@ -147,36 +148,73 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 		render::VertexElement normalE = render::CommonVertexElement::Normal( stream );
 		render::VertexElement diffuseE = render::CommonVertexElement::Diffuse( stream );
 		render::VertexElement specularE = render::CommonVertexElement::Specular( stream );
-		render::VertexElement texE = render::CommonVertexElement::TexCoords( stream );
+		render::VertexElement texE = render::CommonVertexElement::TexCoords( stream, 0 );
+		render::VertexElement boneIndicesE = render::CommonVertexElement::Generic( stream, 1, me::render::ElementFormat::Int4 );
+		render::VertexElement boneWeightsE = render::CommonVertexElement::Generic( stream, 2, me::render::ElementFormat::Float4 );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[ vd->GetSizeInBytes( 0 ) * numberOfVertices ] );
 		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), numberOfVertices, false, 0 );
 
 		unify::BBox< float > bbox;
 
-		//*
-
+		// Vertices are created by joining a mapping of different (typically smaller sets) of components.
 		size_t pHead = 0;
+		size_t v_consumed = 0;
 		for ( size_t vertexIndex = 0; vertexIndex < numberOfVertices; ++vertexIndex )
 		{
+			// Loop through all contributing inputs for each vertex, and joing values into the vertex...
 			for( auto && ci : ciList )
 			{
 				size_t indexIntoP = pHead + ci.offset;
-				size_t indexOfAttribute = polylist->GetP()[ indexIntoP ];
+				size_t indexOfDAEVertex = polylist->GetP()[ indexIntoP ];
 
 				const std::string metaType = ci.input->GetSemantic(); // Type of data, meta as it's an assumption.
 				const std::vector< float > & floats = ci.source->GetFloatArray().GetArrayContents();
-				size_t offsetOfFloats = indexOfAttribute * ci.input->GetStride();
+				size_t offsetOfFloats = indexOfDAEVertex * ci.input->GetStride();
 
 				if ( unify::StringIs( metaType, "POSITION" ) || unify::StringIs( metaType, "VERTEX" ) )
 				{
-					unify::V3< float > val( floats[ offsetOfFloats + 0 ] //* -1.0f
-					, floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
+					unify::V3< float > val{
+						floats[offsetOfFloats + 0], floats[offsetOfFloats + 1], floats[offsetOfFloats + 2] 
+					};
 					matrix.TransformCoord( val );
 					bbox += val;
 					WriteVertex( *vd, lock, vertexIndex, positionE, val );
 					WriteVertex( *vd, lock, vertexIndex, diffuseE, diffuse );
 
+					// Handle skinning with position.
+					if( skin )
+					{
+						const auto & joints = skin->GetSource( "Controller-joints" )->GetNameArray();
+						const auto & weights = skin->GetSource( "Controller-weights" )->GetFloatArray();
+
+						unify::V4< int > boneIndices(-1);
+						unify::V4< float > boneWeights;
+						std::vector< VertexWeights::JointWeight > v_jw = skin->GetVertexWeights().GetVExpanded()[indexOfDAEVertex];
+
+						for( int b = 0; b < v_jw.size(); b++ )
+						{
+							VertexWeights::JointWeight & jw = v_jw[b];
+
+							if( jw.joint == -1 )
+							{
+								boneIndices[b] = -1;
+							}
+							else
+							{
+								std::string jointName = joints.GetArrayContents()[jw.joint];
+								boneIndices[b] = (int)skeleton->FindJointIndex( jointName );
+							}
+
+							float weight = weights.GetArrayContents()[jw.weight];
+
+							boneWeights[b] = weight;
+						}
+
+						// Write bone information to vertex...
+						WriteVertex( *vd, lock, vertexIndex, boneIndicesE, boneIndices );
+						WriteVertex( *vd, lock, vertexIndex, boneWeightsE, boneWeights );
+					}
 				}
 				else if ( unify::StringIs( metaType, "NORMAL" ) )
 				{
@@ -188,49 +226,10 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 					WriteVertex( *vd, lock, vertexIndex, texE, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
 				}
 			}
+
 			pHead += pStride;
 		}
 
-		//*/
-
-		/*
-		//ORIGINAL:
-
-		// Iterate through the vertices...
-		size_t vertexIndex = 0;
-		for ( size_t pHead = 0; pHead < polylist->GetP().size(); pHead += polylist->GetInput().size(), ++vertexIndex )
-		{
-			for( size_t inputIndex = 0; inputIndex < polylist->GetInput().size(); ++inputIndex )
-			{
-				size_t indexIntoP = pHead + inputIndex; // this is the actual index into the P array, recalling that p = { { vertex0.input0, vertex0.input1}, {vertex1.input0, vertex1.input1 }, etc... }
-				size_t indexOfAttribute = polylist->GetP()[ indexIntoP ];
-
-				const dae::Input_Shared & input = *polylist->GetInput()[ inputIndex ];
-				const dae::Source & source = *GetSource( input.GetSource() );
-				const std::string metaType = input.GetSemantic(); // Type of data, meta as it's an assumption.
-				const std::vector< float > & floats = source.GetFloatArray().GetArrayContents();
-				size_t offsetOfFloats = indexOfAttribute * input.GetStride();
-
-				if ( unify::StringIs( metaType, "POSITION" ) || unify::StringIs( metaType, "VERTEX" ) )
-				{
-					unify::V3< float > val( floats[ offsetOfFloats + 0 ] * -1.0f, floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
-					matrix.TransformCoord( val );
-					bbox += val;
-					WriteVertex( *vd, lock, vertexIndex, positionE, val );
-					WriteVertex( *vd, lock, vertexIndex, diffuseE, diffuse );
-				}
-				else if ( unify::StringIs( metaType, "NORMAL" ) )
-				{
-					unify::V3< float > val( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ], floats[ offsetOfFloats + 2 ] );
-					WriteVertex( *vd, lock, vertexIndex, normalE, val );
-				}
-				else if ( unify::StringIs( metaType, "TEXCOORD" ) )
-				{
-					WriteVertex( *vd, lock, vertexIndex, texE, unify::TexCoords( floats[ offsetOfFloats + 0 ], floats[ offsetOfFloats + 1 ] * -1.0f ) );
-				}
-			}
-		}
-		*/
 
 		struct VT
 		{

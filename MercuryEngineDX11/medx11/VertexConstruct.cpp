@@ -22,6 +22,12 @@ std::vector< D3D11_INPUT_ELEMENT_DESC > ToDX( const VertexElement & element )
 	case ElementFormat::Float2: out.Format = DXGI_FORMAT_R32G32_FLOAT; break;
 	case ElementFormat::Float3: out.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
 	case ElementFormat::Float4: out.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
+
+	case ElementFormat::Int1: out.Format = DXGI_FORMAT_R32_SINT; break;
+	case ElementFormat::Int2: out.Format = DXGI_FORMAT_R32G32_SINT; break;
+	case ElementFormat::Int3: out.Format = DXGI_FORMAT_R32G32B32_SINT; break;
+	case ElementFormat::Int4: out.Format = DXGI_FORMAT_R32G32B32A32_SINT; break;
+
 	case ElementFormat::Matrix4x4: out.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; count = 4; break;
 	case ElementFormat::ColorUNorm: out.Format = DXGI_FORMAT_R8G8B8A8_UNORM; break;
 	case ElementFormat::Unknown: out.Format = DXGI_FORMAT_UNKNOWN; break;

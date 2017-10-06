@@ -44,12 +44,12 @@ namespace me
 		/// </summary>
 		struct CommonVertexElement
 		{
-			static VertexElement Position( unsigned int slot = 0 );
-			static VertexElement Normal( unsigned int slot = 0 );
-			static VertexElement Diffuse( unsigned int slot = 0 );
-			static VertexElement Specular( unsigned int slot = 0 );
-			static VertexElement TexCoords( unsigned int slot = 0 );
-			static VertexElement TexCoords2( unsigned int slot = 0 );
+			static VertexElement Position( unsigned int slot );
+			static VertexElement Normal( unsigned int slot );
+			static VertexElement Diffuse( unsigned int slot );
+			static VertexElement Specular( unsigned int slot );
+			static VertexElement TexCoords( unsigned int slot, unsigned int semanticIndex = 0 );
+			static VertexElement Generic( unsigned int slot, unsigned int semanticIndex, ElementFormat::TYPE format );
 		};
 	}
 }

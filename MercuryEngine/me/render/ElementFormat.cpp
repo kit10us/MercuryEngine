@@ -13,13 +13,21 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 	switch ( format )
 	{
 	case ElementFormat::Float1:
-		return sizeof( float );
+		return sizeof( float ) * 1;
 	case ElementFormat::Float2:
 		return sizeof( float ) * 2;
 	case ElementFormat::Float3:
 		return sizeof( float ) * 3;
 	case ElementFormat::Float4:
 		return sizeof( float ) * 4;
+	case ElementFormat::Int1:
+		return sizeof( int ) * 1;
+	case ElementFormat::Int2:
+		return sizeof( int ) * 2;
+	case ElementFormat::Int3:
+		return sizeof( int ) * 3;
+	case ElementFormat::Int4:
+		return sizeof( int ) * 4;
 	case ElementFormat::Matrix4x4:
 		return sizeof( float ) * 4 * 4;
 	case ElementFormat::ColorUNorm:
@@ -33,11 +41,19 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 
 ElementFormat::TYPE ElementFormat::FromString( std::string format )
 {
-	if ( unify::StringIs( format, "Float1" ) ) return ElementFormat::Float1;
+	if ( unify::StringIs( format, "Float" ) ) return ElementFormat::Float1;
+	else if( unify::StringIs( format, "Float1" ) ) return ElementFormat::Float1;
 	else if ( unify::StringIs( format, "Float2" ) ) return ElementFormat::Float2;
 	else if ( unify::StringIs( format, "TexCoord" ) ) return ElementFormat::Float2;
 	else if ( unify::StringIs( format, "Float3" ) ) return ElementFormat::Float3;
 	else if ( unify::StringIs( format, "Float4" ) ) return ElementFormat::Float4;
+
+	else if( unify::StringIs( format, "Int" ) ) return ElementFormat::Int1;
+	else if( unify::StringIs( format, "Int1" ) ) return ElementFormat::Int1;
+	else if( unify::StringIs( format, "Int2" ) ) return ElementFormat::Int2;
+	else if( unify::StringIs( format, "Int3" ) ) return ElementFormat::Int3;
+	else if( unify::StringIs( format, "Int4" ) ) return ElementFormat::Int4;
+
 	else if ( unify::StringIs( format, "Matrix4x4" ) ) return ElementFormat::Matrix4x4;
 	else if ( unify::StringIs( format, "ColorUNorm" ) ) return ElementFormat::ColorUNorm;
 	else if ( unify::StringIs( format, "Color" ) ) return ElementFormat::ColorUNorm;
@@ -59,6 +75,14 @@ std::string ElementFormat::ToString( ElementFormat::TYPE format )
 		return "Float3";
 	case ElementFormat::Float4:
 		return "Float4";
+	case ElementFormat::Int1:
+		return "Int1";
+	case ElementFormat::Int2:
+		return "Int2";
+	case ElementFormat::Int3:
+		return "Int3";
+	case ElementFormat::Int4:
+		return "Int4";
 	case ElementFormat::Matrix4x4:
 		return "Matrix4x4";
 	case ElementFormat::ColorUNorm:
@@ -119,7 +143,36 @@ bool ElementFormat::Convert( TYPE outFormat, void * outRaw, TYPE inFormat, const
 		default:
 			return false;
 		}
-				
+
+	case ElementFormat::Int4:
+		inCount++;
+	case ElementFormat::Int3:
+		inCount++;
+	case ElementFormat::Int2:
+		inCount++;
+	case ElementFormat::Int1:
+		inCount++;
+
+		switch( outFormat )
+		{
+		case ElementFormat::Int4:
+			outCount++;
+		case ElementFormat::Int3:
+			outCount++;
+		case ElementFormat::Int2:
+			outCount++;
+		case ElementFormat::Int1:
+			outCount++;
+
+			{
+				for( size_t i = 0; i < outCount; i++ )
+				{
+					( (int*)outRaw )[i] = i < inCount ? ( (const int*)inRaw )[i] : 0;
+				}
+			}
+			return true;
+		}
+
 	case ElementFormat::ColorUNorm:
 	{
 		const unify::Color c( *((const unify::Color*)inRaw) );

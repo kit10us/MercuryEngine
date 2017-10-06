@@ -91,13 +91,38 @@ void Mesh::Render( render::Params params, GeometryInstanceData * instanceData, r
 		meshInstanceData->RenderFrames( myRenderInfo.GetWorldMatrix(), true, true );
 	}
 	*/
-	
-	if( !m_skeleton.Empty() && m_skeletonEffect )
+
+	if( m_skeleton.Empty() )
 	{
-		m_skeleton.Render( params, matrixFeed, m_skeletonEffect, 0.05f, unify::Color::ColorBlue() );
+		m_primitiveList.Render( params, matrixFeed );
 	}
-	//else
+	else
 	{
+		// Draw skeleton, if we have an effect for it...
+		if( m_skeletonEffect )
+		{
+			m_skeleton.Render( params, matrixFeed, m_skeletonEffect, 0.05f, unify::Color::ColorBlue() );
+		}
+
+		/*
+		// Draw meshes one at a time...
+		unify::Matrix matrix;
+		MatrixFeed localMatrixFeed;
+		while( matrixFeed.Consume( &matrix, 1 ) )
+		{
+			localMatrixFeed
+			for( size_t i = 0; i < m_jointFinalMatrix.size(); i++ )
+			{
+				unify::Matrix matrixFinal =
+					m_jointFinalMatrix[i]
+					* matrix;
+				render::MatrixFeed feed( render::MatrixFood_Matrices{ &matrixFinal, 1 } );
+				m_jointGeo->Render( params, nullptr, feed );
+			}
+		}
+		matrixFeed.Restart();
+		*/
+
 		m_primitiveList.Render( params, matrixFeed );
 	}
 }

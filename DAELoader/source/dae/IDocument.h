@@ -4,12 +4,11 @@
 #pragma once
 #include <me/render/Effect.h>
 #include <me/render/IRenderer.h>
-#include <dae/library_effects/Shading.h>
 
 namespace dae
 {
 	class DocumentNode;
-	//class Shading;
+	class Effect;
 
 	/// <summary>
 	/// </summary>
@@ -22,7 +21,7 @@ namespace dae
 		/// <summary>
 		/// Returns an effect which can best represent the shading's intention.
 		/// </summary>
-		virtual me::render::Effect::ptr GetEffect( const Shading & shading ) const = 0;
+		virtual me::render::Effect::ptr GetEffect( const Effect * effect ) const = 0;
 
 		virtual const class LibraryNodes & GetLibraryNodes() const = 0;
 		virtual const class LibraryMaterials & GetLibraryMaterials() const = 0;

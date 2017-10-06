@@ -16,6 +16,10 @@ Source::Source( IDocument & document, const qxml::Element * node )
 		{
 			m_float_array.reset( new FloatArray( childNode ) );
 		}
+		else if( childNode->IsTagName( "name_array" ) )
+		{
+			m_name_array.reset( new NameArray( childNode ) );
+		}
 		else if ( childNode->IsTagName( "technique_common" ) )
 		{
 			m_technique_common.reset( new Source_TechniqueCommon( childNode ) );
@@ -24,11 +28,6 @@ Source::Source( IDocument & document, const qxml::Element * node )
 		{
 			throw Exception_NotSupported( childNode->GetTagName() );
 		}
-	}
-
-	if ( m_float_array && m_technique_common )
-	{
-		m_sourceType = m_name;
 	}
 }
 
@@ -47,12 +46,12 @@ const FloatArray & Source::GetFloatArray() const
 	return *m_float_array;
 }
 
+const NameArray & Source::GetNameArray() const
+{
+	return *m_name_array;
+}
+
 const Source_TechniqueCommon & Source::GetTechniqueCommon() const
 {
 	return *m_technique_common;
-}
-
-std::string Source::GetSourceType() const
-{
-	return m_sourceType;
 }

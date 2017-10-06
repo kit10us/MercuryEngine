@@ -5,7 +5,7 @@
 </renderer>
 <failuresAsCritical>true</failuresAsCritical>
 <logfile>log.txt</logfile>
-<assets>shaders/</assets>
+<assets>../test_dataDX11_common/shaders/</assets>
 <assets>../test_data/</assets>
 <assets>../test_data/effects/</assets>
 <assets>../test_data/images/</assets>

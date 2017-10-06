@@ -19,7 +19,7 @@ namespace me
 		public:
 			GeometryComponent();
 			GeometryComponent( render::Geometry::ptr geometry );
-			GeometryComponent( render::Geometry::ptr geometry, unify::Matrix matrix );
+			GeometryComponent( render::Geometry::ptr geometry, unify::Matrix modelMatrix );
 			virtual ~GeometryComponent();
 
 			void SetGeometry( render::Geometry::ptr geometry );

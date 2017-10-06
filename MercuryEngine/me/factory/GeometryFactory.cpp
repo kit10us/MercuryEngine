@@ -92,8 +92,8 @@ void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * me
 					VertexElement normalE = CommonVertexElement::Normal( stream );
 					VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
 					VertexElement specularE = CommonVertexElement::Specular( stream );
-					VertexElement texE = CommonVertexElement::TexCoords( stream );
-					VertexElement texE2 = CommonVertexElement::TexCoords2( stream );
+					VertexElement texE = CommonVertexElement::TexCoords( stream, 0 );
+					VertexElement texE2 = CommonVertexElement::TexCoords( stream, 1 );
 
 					for( auto vertex : buffersetChild.Children( "vertex" ) )
 					{  		

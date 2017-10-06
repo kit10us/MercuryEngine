@@ -28,12 +28,12 @@ GeometryComponent::GeometryComponent( Geometry::ptr geometry )
 {
 }
 
-GeometryComponent::GeometryComponent( Geometry::ptr geometry, unify::Matrix matrix )
+GeometryComponent::GeometryComponent( Geometry::ptr geometry, unify::Matrix modelMatrix )
 	: ObjectComponent( "Geometry", false, true )
 	, m_geometry( geometry )
 	, m_geometryInstanceData( geometry->CreateInstanceData() )
 {
-	m_geometryInstanceData->SetMatrix( matrix );
+	m_geometryInstanceData->SetMatrix( modelMatrix );
 }
 
 GeometryComponent::~GeometryComponent()
@@ -79,11 +79,11 @@ void GeometryComponent::CollectGeometry( GeometryCache & solids, GeometryCache &
 {
 	if( m_geometry->IsTrans() )
 	{
-		trans.Add( m_geometry.get(), { frame, m_geometryInstanceData->GetMatrix() } );
+		trans.Add( m_geometry.get(), me::render::FrameAndMatrix{ frame, m_geometryInstanceData->GetMatrix() } );
 	}
 	else
 	{
-		solids.Add( m_geometry.get(), { frame, m_geometryInstanceData->GetMatrix() } );
+		solids.Add( m_geometry.get(), me::render::FrameAndMatrix{ frame, m_geometryInstanceData->GetMatrix() } );
 	}
 }
 

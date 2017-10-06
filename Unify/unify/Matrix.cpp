@@ -110,6 +110,11 @@ Matrix::Matrix( Quaternion q, V3< float > translation )
 	SetRow( 3, { translation, 1.0f } );
 }
 
+Matrix::Matrix( std::string text )
+{
+	FromString( text );
+}
+
 Matrix::~Matrix()
 {
 }
@@ -880,9 +885,23 @@ void Matrix::FromString( std::string text )
 	size_t index = 0;
 	size_t left = 0;
 	size_t right = 0;
+	
+	char sep = 0;
+
+	if( sep == 0 && text.find( ',' ) != std::string::npos )
+	{
+		sep = ',';
+	}
+	if( sep == 0 && text.find( ' ' ) != std::string::npos )
+	{
+		sep = ' ';
+	}
+
+	assert( sep );
+
 	do
 	{
-		right = text.find( ',', left );
+		right = text.find( sep, left );
 		std::string value = text.substr( left, right - left );
 		linear[index] = Cast< float >( value );
 		left = right + 1;

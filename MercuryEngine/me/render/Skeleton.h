@@ -32,16 +32,12 @@ namespace me
 			~Skeleton();
 
 			void AddJoint( std::string name, unify::Matrix matrix, std::string parent = std::string() );
+			size_t FindJointIndex( std::string name ) const;
 			const unify::Matrix * FindJoint( std::string name ) const;
 
 			bool Empty() const;
 
 			void Render( render::Params params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color );
-
-		protected:
-			void Render( render::Params params, unify::Matrix rootMatrix, size_t index, Geometry::ptr geometry );
-
-			size_t FindJointIndex( std::string name ) const;
 
 		private:
 			std::vector< unify::Matrix > m_jointMatrix;

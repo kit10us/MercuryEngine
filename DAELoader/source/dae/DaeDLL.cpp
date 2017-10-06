@@ -24,25 +24,26 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 	class MyEffectSolver : public dae::util::IEffectSolver
 	{
 		Game * m_game;
-		Effect::ptr m_color;
-		Effect::ptr m_textured;
+		Effect::ptr m_default_color;
+		Effect::ptr m_default_textured;
 	public:
 
-		MyEffectSolver( Effect::ptr color, Effect::ptr textured )
-			: m_color{ color }
-			, m_textured{ textured }
+		MyEffectSolver( Effect::ptr default_color, Effect::ptr default_textured )
+			: m_default_color{ default_color }
+			, m_default_textured{ default_textured }
 		{
 		}
 
-		Effect::ptr GetEffect( const dae::Shading & shading ) const
+		Effect::ptr GetEffect( const dae::Effect * effect ) const
 		{
+			auto & shading = effect->GetProfileCOMMON()->GetTechnique().GetShading();
 			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
 			{
-				return m_color;
+				return m_default_color;
 			}
 			else
 			{
-				return m_textured;
+				return m_default_textured;
 			}
 		}
 	};
@@ -138,7 +139,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 	auto effectSolver = new MyEffectSolver( color, textured );
 
-	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game->GetOS()->GetRenderer( 0 ), effectSolver );
+	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game, effectSolver );
 	game->GetManager< Geometry >()->AddFactory( ".dae", GeometryFactoryPtr( daeFactory ) );
 
 	return true;

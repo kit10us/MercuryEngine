@@ -18,6 +18,7 @@ namespace unify
 		T x, y, z, w;
 
 		V4();
+		V4( T all );
 		V4( T x, T y, T z, T w );
 		V4( const V4< T > & v4 );
 		V4( const T arr[ 4 ] );

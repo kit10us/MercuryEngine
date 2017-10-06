@@ -174,7 +174,7 @@
   <library_visual_scenes>
     <visual_scene id="VisualSceneNode" name="rdmscene">
       <node id="VisualSceneNode1" name="Armature" sid="Armature" type="JOINT">
-        <matrix>1 0 0 0 0 1 0.000000 0 0 -0.000000 1 0 0 0 0 1</matrix>
+        <matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <node id="VisualSceneNode2" name="root_ground" sid="root_ground" type="JOINT">
           <matrix>0.000000 -1 0.000000 0 -1 -0.000000 -0.000000 0 0.000000 -0.000000 -1 0 0 0 0 1</matrix>
           <node id="VisualSceneNode3" name="root_hips" sid="root_hips" type="JOINT">

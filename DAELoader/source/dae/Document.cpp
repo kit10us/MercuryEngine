@@ -6,9 +6,9 @@
 
 using namespace dae;
 
-Document::Document( me::render::IRenderer * renderer, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
-: m_renderer( renderer )
-, m_effectSolver( effectSolver )
+Document::Document( me::Game * game, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
+	: m_game{ game }
+	, m_effectSolver( effectSolver )
 {
 	qxml::Document doc( filePath );
 	qxml::Element * node = doc.GetRoot();
@@ -70,6 +70,71 @@ Document::Document( me::render::IRenderer * renderer, const unify::Path & filePa
 			m_scene.reset( new Scene( *this, childNode ) );
 		}
 	}
+
+	// Load effects...
+	unify::Path effectPath = unify::Path( filePath ).ChangeExtension( "effect" );
+	if( effectPath.Exists() )
+	{
+		qxml::Document * effectDoc( new qxml::Document( effectPath ) );
+		for( auto && effectNode : effectDoc->GetRoot()->Children( "effect" ) )
+		{
+			me::render::IVertexShader::ptr vs;
+			me::render::IPixelShader::ptr ps;
+
+			const qxml::Element* vsNode = effectNode.GetElement( "vertexshader" );
+			const qxml::Element* psNode = effectNode.GetElement( "pixelshader" );
+
+			if( vsNode )
+			{
+				std::string name = vsNode->GetAttributeElse( "name", std::string() );
+				unify::Path source = vsNode->GetAttributeElse( "source", unify::Path() );
+
+				if( !name.empty() && !source.Empty() )
+				{
+					vs = game->GetManager< me::render::IVertexShader >()->Add( name, source );
+				}
+				else if( ! name.empty() && source.Empty() )
+				{
+					vs = game->GetManager< me::render::IVertexShader >()->Find( name );
+				}
+				else if( name.empty() && ! source.Empty() )
+				{
+					vs = game->GetManager< me::render::IVertexShader >()->Add( source );
+				}
+				else
+				{
+					game->ReportError( me::ErrorLevel::Failure, "DAE Loader", "failed in loading effect file \"" + effectPath.ToString() + "\"! VertexShader must have name and/or path!" );
+				}
+			}
+
+			if( psNode )
+			{
+				std::string name = psNode->GetAttributeElse( "name", std::string() );
+				unify::Path source = psNode->GetAttributeElse( "source", unify::Path() );
+
+				if( !name.empty() && !source.Empty() )
+				{
+					ps = game->GetManager< me::render::IPixelShader >()->Add( name, source );
+				}
+				else if( !name.empty() && source.Empty() )
+				{
+					ps = game->GetManager< me::render::IPixelShader >()->Find( name );
+				}
+				else if( name.empty() && !source.Empty() )
+				{
+					ps = game->GetManager< me::render::IPixelShader >()->Add( source );
+				}
+				else
+				{
+					game->ReportError( me::ErrorLevel::Failure, "DAE Loader", "Failed in loading effect file \"" + effectPath.ToString() + "\"! PixelShader must have name and/or path!" );
+				}
+			}
+
+			std::string effectName = effectNode.GetAttribute<std::string >( "name" );
+
+			m_effects[effectName] = me::render::Effect::ptr( new me::render::Effect{ vs, ps } );
+		}
+	}
 }
 
 const std::string & Document::GetVersion() const
@@ -77,9 +142,19 @@ const std::string & Document::GetVersion() const
 	return m_version;
 }
 
-me::render::Effect::ptr Document::GetEffect( const Shading & shading ) const
+me::render::Effect::ptr Document::GetEffect( const Effect * effect ) const
 {
-	return m_effectSolver->GetEffect( shading );
+	// Search for the effect in our document's effect map...
+	auto itr = m_effects.find( effect->GetName() );
+	if( itr != m_effects.end() )
+	{
+		return itr->second;
+	}
+	else
+	{
+		// Return an appropriate default effect...
+		return m_effectSolver->GetEffect( effect );
+	}
 }
 
 const LibraryNodes & Document::GetLibraryNodes() const
@@ -159,5 +234,5 @@ const DocumentNode * Document::Find( const std::string & name ) const
 
 me::render::IRenderer * Document::GetRenderer()
 {
-	return m_renderer;
+	return m_game->GetOS()->GetRenderer(0);
 }

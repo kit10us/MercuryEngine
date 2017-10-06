@@ -111,7 +111,7 @@ void VisualScene::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, 
 			{
 				const InstanceGeometry * instanceGeometry = dynamic_cast< const InstanceGeometry * >( instance.get() );
 				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( instance->GetURL() ) ;
-				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceGeometry->GetBindMaterial()->GetTechniqueCommon() );
+				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceGeometry->GetBindMaterial()->GetTechniqueCommon(), nullptr, nullptr );
 			}
 			break;
 		case InstanceSet::InstanceTypeController:
@@ -121,7 +121,8 @@ void VisualScene::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, 
 				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( controller.GetSkin()->GetSource() );
 				const dae::Node * skeleton = FindNode( instanceController->GetSkeleton() );
 				BuildSkeleton( *mesh.GetSkeleton(), skeleton );
-				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceController->GetBindMaterial()->GetTechniqueCommon() );
+				const dae::Skin * skin = controller.GetSkin().get();
+				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceController->GetBindMaterial()->GetTechniqueCommon(), skin, mesh.GetSkeleton() );
 			}
 			break;
 		case InstanceSet::InstanceTypeNode:

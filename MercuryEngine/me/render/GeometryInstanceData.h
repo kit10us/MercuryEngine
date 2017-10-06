@@ -13,10 +13,12 @@ namespace me
 {
 	namespace render
 	{
-		// This object is created per. geometry user (via Objects). It keeps specific data for
-		// geometry state and charateristics. It's specialized per. geometry. ie., a mesh would
-		// provide a specialized MeshInstanceData.
-		// This pushes all unique data from the geometry, to this object.
+		/// <summary>
+		/// This object is created per. geometry user (via Objects). It keeps specific data for
+		/// geometry state and charateristics. It's specialized per. geometry. ie., a mesh would
+		/// provide a specialized MeshInstanceData.
+		/// This pushes all unique data from the geometry, to this object.
+		/// </summary>
 		class GeometryInstanceData
 		{
 		public:

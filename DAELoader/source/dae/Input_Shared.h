@@ -15,6 +15,8 @@ namespace dae
 	class Input_Shared
 	{
 	public:
+		typedef std::shared_ptr< Input_Shared > ptr;
+
 		Input_Shared( const qxml::Element * node );
 
 		const int GetOffset() const;

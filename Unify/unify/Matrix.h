@@ -36,6 +36,7 @@ namespace unify
 		Matrix();
 		Matrix( const Matrix & matrix );
 		explicit Matrix( Quaternion orientation, V3< float > position = V3< float >( 0, 0, 0 ) );
+		Matrix( std::string text );
 		~Matrix();
 
 		Matrix & operator = ( const Matrix & matrix );

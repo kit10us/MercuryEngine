@@ -1,0 +1,51 @@
+
+  <library_controllers>
+    <controller id="Controller">
+      <skin source="#Geometry">
+        <bind_shape_matrix>1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</bind_shape_matrix>
+        <source id="Controller-joints">
+			<Name_array id="Controller-joints-array" count="73">
+        <source id="Controller-bind_poses">
+			<float_array id="Controller-bind_poses-array" count="1168">
+        <source id="Controller-weights">
+			<float_array id="Controller-weights-array" count="7161">
+		<joints>		
+		<!-- The <vertex_weights> element associates a set of joint-weight pairs with each vertex in the base
+mesh. -->
+        <vertex_weights count="3929">
+          <input semantic="JOINT" source="#Controller-joints" offset="0"/>
+          <input semantic="WEIGHT" source="#Controller-weights" offset="1"/>		
+		  <!-- <vcount> Contains a list of integers, each specifying the number of
+bones associated with one of the influences defined by
+<vertex_weights>. This element has no attributes. -->
+          <vcount> (3929 ints, 3 is max, 1 is min, sum = 8151)		  
+		  <!-- <v> Contains a list of indices that describe which bones and
+attributes are associated with each vertex. An index of -1
+into the array of joints refers to the bind shape. Weights
+should be normalized before use. This element has no
+attributes.-->
+		  <v>	(16302 ints, 7160 is max, 0 is min, sum is 25913363)
+
+  <library_geometries>
+    <geometry id="Geometry" name="MickeyMouse">
+      <mesh>
+        <source id="GeometrySource" name="MickeyMousePos">
+          <float_array id="GeometrySource-array" count="11787">
+		  
+
+-- Checking values to solve how they relate.
+MickeyMousePos (11787 / 3 = 3929) = all vertices
+Joints ( 73 )
+Bind poses (1168 / 73 = 16 ) = Matrices( 73 )
+Weights (7161 / )
+vertex_weights( 32929 )
+
+float_array id="GeometrySource-array" count="11787"  (11787 / 3 = 3929)
+
+		  
+-- Actual vertices...
+numberOfVertices = 20460 (from dae: triangles->p#)
+
+3929 * 2 = 7858
+3929 * 3 = 11787
+

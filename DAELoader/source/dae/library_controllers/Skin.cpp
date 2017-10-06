@@ -1,36 +1,67 @@
+// Copyright (c) 2002 - 2018, Quentin S. Smith
+// All Rights Reserved
+
 #include <dae/library_controllers/Skin.h>
+#include <dae/Source.h>
 
 using namespace dae;
 
 Skin::Skin( IDocument & document, const qxml::Element * node )
 	: DocumentNode( document, node )
-	, m_source( node->GetAttributeElse( "source", std::string() ) )
+	, m_source_attribute( node->GetAttributeElse( "source", std::string() ) )
 {
-	/*
-	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
-	{
-		if ( childNode->HasElements( "convex_mesh" ) )
+	for ( const auto & childNode : node->Children() )
+	{ 
+		if ( childNode.IsTagName( "bind_shape_matrix" ) )
 		{
-			throw Exception_NotSupported( "geometry.convex_mesh" );
+			m_bind_shape_matrix = unify::Matrix( childNode.GetText() );
 		}
-		else if ( childNode->IsTagName( "mesh" ) )
+		else if( childNode.IsTagName( "source" ) )
 		{
-			m_meshSource = MeshSource::Mesh;
-			m_mesh.reset( new Mesh( GetDocument(), childNode ) );
+			std::shared_ptr< Source > source( new Source( document, &childNode ) );
+			m_source.push_back( source );
+			m_source_map[source->GetID()] = m_source.size() - 1;
 		}
-		else if ( childNode->HasElements( "spline" ) )
+		else if( childNode.IsTagName( "joints" ) )
 		{
-			throw Exception_NotSupported( "geometry.spline" );
+			m_joints = Joints::ptr( new Joints( document, &childNode ) );
 		}
-		if ( childNode->HasElements( "brep" ) )
+		else if( childNode.IsTagName( "vertex_weights" ) )
 		{
-			throw Exception_NotSupported( "geometry.brep" );
+			m_vertex_weights = VertexWeights::ptr( new dae::VertexWeights( document, &childNode ) );
 		}
 	}
-	*/
 }
 
 std::string Skin::GetSource() const
 {
-	return m_source;
+	return m_source_attribute;
 }
+
+const Source * Skin::GetSource( std::string id ) const
+{
+	auto itr = m_source_map.find( id );
+	if( itr == m_source_map.end() )
+	{
+		return nullptr;
+	}
+	
+	return m_source[itr->second].get();
+}
+
+const Joints & Skin::GetJoints() const
+{
+	return *m_joints;
+}
+
+const unify::Matrix & Skin::GetBindShapeMatrix() const
+{
+	return m_bind_shape_matrix;
+}
+
+const VertexWeights & Skin::GetVertexWeights() const
+{
+	return *m_vertex_weights;
+}
+
+

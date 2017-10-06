@@ -171,6 +171,18 @@
     <ClInclude Include="source\dae\library_controllers\Morph.h">
       <Filter>dae\library_controllers</Filter>
     </ClInclude>
+    <ClInclude Include="source\dae\NameArray.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\library_controllers\Joints.h">
+      <Filter>dae\library_controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\Input_Unshared.h">
+      <Filter>dae</Filter>
+    </ClInclude>
+    <ClInclude Include="source\dae\library_controllers\VertexWeights.h">
+      <Filter>dae\library_controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\dae\InstanceSet.cpp">
@@ -306,5 +318,17 @@
       <Filter>dae\library_controllers</Filter>
     </ClCompile>
     <ClCompile Include="source\dae\DaeDLL.cpp" />
+    <ClCompile Include="source\dae\NameArray.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_controllers\Joints.cpp">
+      <Filter>dae\library_controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\Input_Unshared.cpp">
+      <Filter>dae</Filter>
+    </ClCompile>
+    <ClCompile Include="source\dae\library_controllers\VertexWeights.cpp">
+      <Filter>dae\library_controllers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

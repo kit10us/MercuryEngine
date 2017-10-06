@@ -39,7 +39,7 @@ namespace dae
 		/// <summary>
 		/// Build into a primitive list a complete geometry.
 		/// </summary>
-		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique ) const;
+		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const;
 
 	private:
 		std::string m_id;

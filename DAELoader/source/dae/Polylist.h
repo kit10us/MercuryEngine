@@ -19,6 +19,8 @@ namespace dae
 	class Polylist : public DocumentNode
 	{
 	public:
+		typedef std::shared_ptr< Polylist > ptr;
+
 		enum Type
 		{
 			PolylistType,

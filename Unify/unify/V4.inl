@@ -7,6 +7,15 @@ V4< T >::V4()
 }
 
 template< typename T >
+V4< T >::V4( T all )
+	: x( all )
+	, y( all )
+	, z( all )
+	, w( all )
+{
+}
+
+template< typename T >
 V4< T >::V4( const V4< T > & v4 )
 	: x( v4.x )
 	, y( v4.y )

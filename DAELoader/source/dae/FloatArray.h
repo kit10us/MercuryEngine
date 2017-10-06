@@ -12,6 +12,7 @@ namespace dae
 {
 	/// <summary>
 	/// DAE node: COLLADA->library_geometries->geometry->mesh->source->float_array (0 or 1)
+	/// DAE node: COLLADA->library_controllers->controller->skin->source->float_array (0 or 1)
 	/// </summary>
 	class FloatArray
 	{

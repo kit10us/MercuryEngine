@@ -314,22 +314,22 @@ VertexElement CommonVertexElement::Specular( unsigned int slot )
 	return specularE;
 }
 
-VertexElement CommonVertexElement::TexCoords( unsigned int slot )
+VertexElement CommonVertexElement::TexCoords( unsigned int slot, unsigned int semanticIndex )
 {
 	VertexElement texE = {};
 	texE.InputSlot = slot;
 	texE.Format = ElementFormat::Float2;
 	texE.SemanticName = "TEXCOORD";
-	texE.SemanticIndex = 0;
+	texE.SemanticIndex = semanticIndex;
 	return texE;
 }
 
-VertexElement CommonVertexElement::TexCoords2( unsigned int slot )
+VertexElement CommonVertexElement::Generic( unsigned int slot, unsigned int semanticIndex, ElementFormat::TYPE format )
 {
-	VertexElement texE2 = {};
-	texE2.InputSlot = slot;
-	texE2.Format = ElementFormat::Float2;
-	texE2.SemanticName = "TEXCOORD";
-	texE2.SemanticIndex = 1;
-	return texE2;
+	VertexElement texE = {};
+	texE.InputSlot = slot;
+	texE.Format = format;
+	texE.SemanticName = "TEXCOORD";
+	texE.SemanticIndex = semanticIndex;
+	return texE;
 }

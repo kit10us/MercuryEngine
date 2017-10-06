@@ -31,7 +31,20 @@ void Skeleton::AddJoint( std::string name, unify::Matrix matrix, std::string par
 	{
 		size_t parentIndex = FindJointIndex( parent );
 		m_parent.push_back( parentIndex );
-		m_jointFinalMatrix.push_back( m_jointFinalMatrix[ parentIndex ] * matrix );
+		m_jointFinalMatrix.push_back( matrix * m_jointFinalMatrix[ parentIndex ] );
+	}
+}
+
+size_t Skeleton::FindJointIndex( std::string name ) const
+{
+	auto itr = m_names.find( name );
+	if( itr == m_names.end() )
+	{
+		return Root;
+	}
+	else
+	{
+		return itr->second;
 	}
 }
 
@@ -72,23 +85,12 @@ void Skeleton::Render( render::Params params, render::MatrixFeed & matrixFeed, E
 	{
 		for( size_t i = 0; i < m_jointFinalMatrix.size(); i++ )
 		{
-			unify::Matrix matrixFinal =	m_jointFinalMatrix[i];
+			unify::Matrix matrixFinal =	
+				m_jointFinalMatrix[i] 
+				* matrix;
 			render::MatrixFeed feed( render::MatrixFood_Matrices{ &matrixFinal, 1 });
 			m_jointGeo->Render( params, nullptr, feed );
 		}
 	}
 	matrixFeed.Restart();
-}
-
-size_t Skeleton::FindJointIndex( std::string name ) const
-{
-	auto itr = m_names.find( name );
-	if( itr == m_names.end() )
-	{
-		return Root;
-	}
-	else
-	{
-		return itr->second;
-	}
 }
