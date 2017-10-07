@@ -7,6 +7,7 @@
 // Actions...
 #include <me/action/QuitGame.h>
 #include <me/action/ObjectAction.h>
+#include <me/action/RestartScene.h>
 
 // Input actions...
 #include <me/input/action/IA_Action.h>
@@ -53,6 +54,10 @@ action::IAction::ptr ActionFactory::CreateAction( const qxml::Element * element 
 		auto object = sceneManager->GetCurrentScene()->FindObject( objectName );
 		auto action = CreateObjectAction( element->GetFirstChild() );
 		return action::IAction::ptr( new action::ObjectAction( object, action ) );
+	}
+	else if( element->IsTagName( "RestartScene" ) )
+	{
+		return action::IAction::ptr( new action::RestartScene( GetGame() ) );
 	}
 
 	return action::IAction::ptr();

@@ -1,4 +1,5 @@
 function CreateMap()
+	local this = Scene()
 	this:SendCommand( "DrawOnMap", "16, 14, sand" )
 
 	-- Top-Left "L"

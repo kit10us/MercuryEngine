@@ -35,7 +35,7 @@ function BuildTree( position )
 end
 
 function BuildHouse( position )
-	this = Scene()
+	local this = Scene()
 	local name = MakeObjectName( "house" )
 	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
@@ -69,4 +69,20 @@ function BuildHouse( position )
 	local physics = MEPhysics()
 	local collider = physics:CreateBoxCollider( V3( 7, 1, 11 ) )
 	object:AddComponent( collider:AsObjectComponent() )
+end
+
+function BuildChest( position )
+	local this = Scene()
+	local name = MakeObjectName( "chest" )
+	local object = this:NewObject( name )
+	object:Transform():SetPosition( position )
+	
+	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
+
+	parameters = ShapeParameters( "cube" )
+	parameters:SetEffect( color_ambient )
+	parameters:SetSize3( Size3( 2, 2, 2 ) )
+	parameters:SetDiffuse( RGB( .2, 0.1, 0.1 ) * White( 2 ) )
+	parameters:SetCenter( V3( 0, 1, 0 ) )
+	object:AddGeometry( Geometry( parameters ) )
 end

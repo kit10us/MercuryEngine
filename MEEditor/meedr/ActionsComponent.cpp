@@ -17,9 +17,9 @@ ActionsGameComponent::ActionsGameComponent()
 {
 }
 
-me::action::IAction::ptr ActionsGameComponent::CreateAction(const qxml::Element * node)
+me::action::IAction::ptr ActionsGameComponent::CreateAction(const qxml::Element * element)
 {
-	if ( unify::StringIs( node->GetAttribute< std::string >("name"), "OpenEditor" ) )
+	if ( element->IsTagName( "OpenEditor" ) )
 	{
 		return me::action::IAction::ptr(new OpenEditorAction());
 	}

@@ -104,6 +104,8 @@ function OnBeforeStart()
 	BuildTree( V3( -4, 0, 7 ) )	
 	BuildTree( V3( 0, 0, 5 ) )	
 	BuildHouse( V3( 7, 0, 12 ) )
+	
+	BuildChest( V3( 13, 0, 0 ) )
 end
 
 function OnAfterStart()

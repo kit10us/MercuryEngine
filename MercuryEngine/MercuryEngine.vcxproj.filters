@@ -675,6 +675,9 @@
     <ClInclude Include="me\IThing.h">
       <Filter>me</Filter>
     </ClInclude>
+    <ClInclude Include="me\action\RestartScene.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1108,6 +1111,9 @@
     </ClCompile>
     <ClCompile Include="me\XMLConvert.cpp">
       <Filter>me</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\RestartScene.cpp">
+      <Filter>me\action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

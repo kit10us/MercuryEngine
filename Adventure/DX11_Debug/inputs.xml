@@ -2,7 +2,10 @@
 <!-- Make sure we do this last, so we can benefit from all register actions, conditions and input sources. -->
 <inputs>
 	<inputaction input="keyboard" condition="ButtonPressed" name="Escape">
-		<action name="QuitGame"/>
+		<QuitGame/>
+	</inputaction>
+	<inputaction input="keyboard" condition="ButtonPressed" name="F5">
+		<QuitGame/>
 	</inputaction>
 </inputs>
 </xml>

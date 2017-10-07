@@ -179,12 +179,6 @@ size_t InputManager::AddInputActions(unify::Owner::ptr owner, const qxml::Elemen
 
 bool InputManager::AddSingleInputAction(unify::Owner::ptr owner, const qxml::Element * element)
 {
-	auto actionNode = element->FindFirstElement("action");
-	if (!actionNode)
-	{
-		return false;
-	}
-
 	std::string inputName = element->GetAttribute< std::string >( "input" );
 	auto source = FindSource( inputName );
 	if( !source )
@@ -198,13 +192,32 @@ bool InputManager::AddSingleInputAction(unify::Owner::ptr owner, const qxml::Ele
 		return false;
 	}
 
+	int actionsAdded = 0;
+	for( const auto actionNode : element->Children() )
+	{
+		auto action = m_game->CreateAction( &actionNode );
+		if( !action )
+		{
+			return false;
+		}
+		source->AddEvent( owner, condition, IInputAction::ptr( new action::Action( action ) ) );
+		actionsAdded++;
+	}
+
+	/*
+	auto actionNode = element->FindFirstElement( "action" );
+	if( !actionNode )
+	{
+		return false;
+	}
+
 	auto action = m_game->CreateAction(actionNode);
 	if (!action)
 	{
 		return false;
 	}
+	*/
 
-	source->AddEvent(owner, condition, IInputAction::ptr( new action::Action( action ) ) );
 	return true;
 }
 

@@ -2,10 +2,13 @@
 <extension source="../../extensions/Debug/MEEditor.dll">
 	<inputs>
 		<inputaction input="keyboard" condition="ButtonPressed" name="F11">
-			<action name="OpenEditor"/>
+			<OpenEditor/>
 		</inputaction>
 		<inputaction input="gamepad" condition="ButtonPressed" name="Start">
-			<action name="OpenEditor"/>
+			<OpenEditor/>
+		</inputaction>
+		<inputaction input="keyboard" condition="ButtonPressed" name="F5">
+			<RestartScene/>
 		</inputaction>
 	</inputs>
 </extension>

@@ -11,12 +11,12 @@ namespace me
 	namespace action
 	{
 		/// <summary>
-		/// Quits out of the game.
+		/// Restarts the current scene.
 		/// </summary>
-		class QuitGame : public IAction
+		class RestartScene : public IAction
 		{
 		public:
-			QuitGame( IGame * game );
+			RestartScene( IGame * game );
 
 		public: // IAction...
 			bool Perform() override;

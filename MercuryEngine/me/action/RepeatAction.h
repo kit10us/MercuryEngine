@@ -10,7 +10,7 @@ namespace me
 	namespace action
 	{
 		/// <summary>
-		/// Ignores an actions return result (forces a true result).
+		/// Repeats an action n times.
 		/// </summary>
 		class RepeatAction : public IAction
 		{
