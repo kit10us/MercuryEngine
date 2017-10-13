@@ -165,10 +165,31 @@ void BBox< T >::Fix()
 }
 
 template< typename T >
-bool BBox< T >::RayTest( const Ray< T > & ray, T t0, T t1 ) const
+bool BBox< T >::Intersects( const Ray & ray ) const
 {
-	T tmin, tmax, tymin, tymax, tzmin, tzmax;
-	V3< T > invDirection = ray.InvDirection();
+	V3< float > d = ( ray.direction + 6 - ray.origin ) * 0.5f;
+	V3< float > e = ( sup - inf ) * 0.5f;
+	V3< float > c = ray.origin + d - ( inf + sup ) * 0.5f;
+	V3< float > ad = d.Absolute();
+
+	const float EPSILON = std::numeric_limits< float >::epsilon();
+
+	if( fabsf( c[0] ) > e[0] + ad[0] ) return false;
+	if( fabsf( c[1] ) > e[1] + ad[1] ) return false;
+	if( fabsf( c[2] ) > e[2] + ad[2] ) return false;
+
+	if( fabsf( d[1] * c[2] - d[2] * c[1] ) > e[1] * ad[2] + e[2] * ad[1] + EPSILON ) return false;
+	if( fabsf( d[2] * c[0] - d[0] * c[2] ) > e[2] * ad[0] + e[0] * ad[2] + EPSILON ) return false;
+	if( fabsf( d[0] * c[1] - d[1] * c[0] ) > e[0] * ad[1] + e[1] * ad[0] + EPSILON ) return false;
+
+	return true;
+}
+
+template< typename T >
+bool BBox< T >::Intersects( const Ray & ray, float distanceBegin, float distanceEnd ) const
+{
+	float tmin, tmax, tymin, tymax, tzmin, tzmax;
+	V3< float > invDirection = ray.InvDirection();
 	V3< int > raySign = ray.Sign();
 
 	tmin = ( (raySign.x == 0 ? inf.x : sup.x) - ray.origin.x) * invDirection.x;
@@ -201,12 +222,75 @@ bool BBox< T >::RayTest( const Ray< T > & ray, T t0, T t1 ) const
 	{
 		tmax = tzmax;
 	}
-	return ((tmin < t1) && (tmax > t0));
+	return ((tmin < distanceEnd ) && (tmax > distanceBegin ));
 }
 
 template< typename T >
-bool BBox< T >::RayTest( const Ray< T > & ray, V3< T > & hitPoint ) const
+bool BBox< T >::Intersects( const Ray & ray, float & distance ) const
 {
+	float tmin, tmax, tymin, tymax, tzmin, tzmax;
+
+	auto orig = ray.origin;
+	auto sign = ray.Sign();
+	auto invdir = ray.InvDirection();
+
+	unify::V3< float > bounds[] = { inf, sup };
+
+	tmin = ( bounds[sign.x].x - orig.x ) * invdir.x;
+	tmax = ( bounds[1 - sign.x].x - orig.x ) * invdir.x;
+	tymin = ( bounds[sign.y].y - orig.y ) * invdir.y;
+	tymax = ( bounds[1 - sign.y].y - orig.y ) * invdir.y;
+
+	if( ( tmin > tymax ) || ( tymin > tmax ) )
+	{
+		return false;
+	}
+
+	if( tymin > tmin )
+	{
+		tmin = tymin;
+	}
+	if( tymax < tmax )
+	{
+		tmax = tymax;
+	}
+
+	tzmin = ( bounds[sign.z].z - orig.z ) * invdir.z;
+	tzmax = ( bounds[1 - sign.y].z - orig.z ) * invdir.z;
+
+	if( ( tmin > tzmax ) || ( tzmin > tmax ) )
+	{
+		return false;
+	}
+
+	if( tzmin > tmin )
+	{
+		tmin = tzmin;
+	}
+	if( tzmax < tmax )
+	{
+		tmax = tzmax;
+	}
+
+	float t = tmin;
+
+	if( t < 0 ) 
+	{
+		t = tmax;
+		if( t < 0 )
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+template< typename T >
+bool BBox< T >::Intersects( const Ray & ray, V3< float > & hitPoint ) const
+{
+	assert( 0 );
+	// TODO:
     return false;
 }
 
@@ -219,10 +303,10 @@ V3< T > BBox< T >::ToBarrycentric( const V3< T > & point ) const
 }
 
 template< typename  T >
-BSphere BBox< T >::MakeBSphere() const
+BSphere< T > BBox< T >::MakeBSphere() const
 {
-	BSphere bsphere;
-	bsphere.AddPoint( sup );
-	bsphere.AddPoint( inf );
+	BSphere< T > bsphere;
+	bsphere += sup;
+	bsphere += inf;
 	return bsphere;
 }

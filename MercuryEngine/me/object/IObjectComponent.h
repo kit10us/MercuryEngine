@@ -7,6 +7,7 @@
 #include <me/UpdateParams.h>
 #include <me/Lookup.h>
 #include <unify/FrameLite.h>
+#include <unify/BBox.h>
 #include <string>
 #include <memory>
 
@@ -27,7 +28,12 @@ namespace me
 			typedef std::shared_ptr< IObjectComponent > ptr;
 			typedef std::list< IObjectComponent * > cache;
 
-			virtual ~IObjectComponent() {}			 
+			virtual ~IObjectComponent() {}			
+
+			/// <summary>
+			/// Adds to a BBox and a matrix (origin) the shape of the object component.
+			/// </summary>
+			virtual void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const = 0;
 
 			/// <summary>
 			/// Does the object require updates?

@@ -87,6 +87,17 @@ void GeometryComponent::CollectGeometry( GeometryCache & solids, GeometryCache &
 	}
 }
 
+void GeometryComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const
+{
+	if( !m_geometry )
+	{
+		return;
+	}
+
+	bbox += m_geometry->GetBBox();
+	matrix.TransformBBox( bbox );
+}
+
 IObjectComponent::ptr GeometryComponent::Duplicate()
 {
 	auto duplicate = new GeometryComponent( *this );

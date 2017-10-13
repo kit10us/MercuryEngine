@@ -105,7 +105,28 @@ function OnBeforeStart()
 	BuildTree( V3( 0, 0, 5 ) )	
 	BuildHouse( V3( 7, 0, 12 ) )
 	
-	BuildChest( V3( 13, 0, 0 ) )
+	chest = BuildChest( V3( 13, 0, 0 ) )
+end
+
+function Action_Use()
+	local this = Scene()
+	local player = this:FindObject( "player" )
+	local withinDistance = 2.5
+
+	local objects = this:FindObjectsWithinSphere( player:GetPosition(), withinDistance )
+	
+	print( "Performing ray test..." )
+	print( "  origin    { " .. tostring( player:GetPosition() ) .. " }" )
+	print( "  direction { " .. tostring( player:GetForward() ) .. " }" )
+	print( "  distance  = " .. withinDistance )
+	
+	print( "  Object = " .. #objects .. "..." )	
+	for i = 1, #objects do
+		local object = objects[ i ].object
+		local distance = objects[ i ].distance
+		local objPos = object:GetPosition()
+		print( "    " .. i .. ": " .. object:GetName() .. " @ " .. distance .. " { " .. tostring( objPos ) .. " }" )
+	end
 end
 
 function OnAfterStart()
@@ -115,12 +136,14 @@ function OnAfterStart()
 
 	local gamepad = Input( "Gamepad" )
 	if gamepad then	
-		local PressY = InputCondition( "button", 0, "Y", "pressed" )
+		local pressY = InputCondition( "button", 0, "Y", "pressed" )
 		local action = InputAction( player, OA_SetPosition( start_position ) )
-		gamepad:AddAction( "scene", PressY, action )
+		gamepad:AddAction( "scene", pressY, action )
 		
-		local PressStart = InputCondition( "button", 0, "Back", "pressed" )
-		gamepad:AddAction( "scene", PressStart, A_QuitGame() )
-	end
-
+		local pressStart = InputCondition( "button", 0, "Back", "pressed" )
+		gamepad:AddAction( "scene", pressStart, A_QuitGame() )
+		
+		local pressA = InputCondition( "button", 0, "A", "pressed" )
+		gamepad:AddAction( "scene", pressA, Action_Use )
+	end	
 end

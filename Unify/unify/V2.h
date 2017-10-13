@@ -53,6 +53,7 @@ namespace unify
 
 		T Length() const;
 		void Normalize();
+		V2< T > Absolute() const;
 		const T DistanceTo(const V2<T> & to) const;
 		T Dot(const V2< T > & a) const;
 		Angle Angle(const V2< T > & a) const;

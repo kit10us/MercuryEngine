@@ -4,17 +4,17 @@
 #include <me/Game.h>
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportObject.h>
-#include <melua/ExportTransform.h>
-#include <melua/ExportScene.h>
+#include <melua/exports/ExportObject.h>
+#include <melua/exports/ExportTransform.h>
+#include <melua/exports/ExportScene.h>
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportMatrix.h>
-#include <melua/ExportComponent.h>
-#include <melua/ExportObjectComponent.h>
-#include <melua/ExportCameraComponent.h>
-#include <melua/ExportGeometry.h>
-#include <melua/ExportTerra.h>
+#include <melua/exports/ExportComponent.h>
+#include <melua/exports/ExportObjectComponent.h>
+#include <melua/exports/ExportCameraComponent.h>
+#include <melua/exports/ExportGeometry.h>
+#include <melua/exports/ExportTerra.h>
 #include <melua/unify/ExportMatrix.h>
 #include <melua/unify/ExportColor.h>
 #include <melua/unify/ExportSize2.h>
@@ -40,6 +40,8 @@ namespace melua
 
 	int Object_AddScript( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 4 );
 
@@ -47,8 +49,6 @@ namespace melua
 		std::string name = lua_tostring( state, 2 );
 		std::string type = lua_tostring( state, 3 );
 		unify::Path source( lua_tostring( state, 4 ) );
-
-		ScriptEngine * se = ScriptEngine::GetInstance();
 
 		auto component = se->LoadObjectScript( source );
 
@@ -59,6 +59,8 @@ namespace melua
 
 	int Object_GetName( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 1 );
 
@@ -71,6 +73,8 @@ namespace melua
 
 	int Object_SetEnabled( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 2 );
 
@@ -83,6 +87,8 @@ namespace melua
 
 	int Object_IsEnabled( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 1 );
 
@@ -95,11 +101,12 @@ namespace melua
 
 	int Object_AddGeometry( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
-		ScriptEngine * se = ScriptEngine::GetInstance();
 		auto game = se->GetGame();
 
 		Geometry::ptr geometry;
@@ -142,6 +149,8 @@ namespace melua
 
 	int Object_GetSize( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 1 );
 
@@ -155,6 +164,8 @@ namespace melua
 
 	int Object_Transform( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 1 );
 
@@ -170,6 +181,8 @@ namespace melua
 
 	int Object_AddTag( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 2 );
 
@@ -183,6 +196,8 @@ namespace melua
 
 	int Object_HasTag( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 2 );
 
@@ -196,6 +211,8 @@ namespace melua
 
 	int Object_GetComponentCount( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 1 );
 
@@ -207,6 +224,8 @@ namespace melua
 
 	int Object_GetComponent( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 2 );
 
@@ -233,6 +252,8 @@ namespace melua
 
 	int Object_GetComponentTypeName( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 2 );
 
@@ -253,6 +274,8 @@ namespace melua
 
 	int Object_AddComponent( lua_State * state )
 	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
 		int args = lua_gettop( state );
 		assert( args == 2 );
 
@@ -279,9 +302,64 @@ namespace melua
 		return 0;
 	}
 
+	int Object_GetPosition( lua_State * state )
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
+		int args = lua_gettop( state );
+
+		if( !se->Assert( args == 1, "Object:GetPosition, invalid number of parameters! Expected 1, had " + unify::Cast< std::string >( args ) + "!" ) )
+		{
+			PushNil( state );
+			return 1;
+		}
+
+		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
+
+		PushV3( state, objectProxy->object->GetFrame().GetPosition() );
+		return 1;
+	}
+
+	int Object_GetForward( lua_State * state )
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
+		int args = lua_gettop( state );
+		assert( args == 1 );
+		
+		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
+
+		PushV3( state, objectProxy->object->GetFrame().GetForward() );
+		return 1;
+	}
+
+	int Object_GetUp( lua_State * state )
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+		int args = lua_gettop( state );
+		assert( args == 1 );
+
+		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
+
+		PushV3( state, objectProxy->object->GetFrame().GetUp() );
+		return 1;
+	}
+
+	int Object_GetLeft( lua_State * state )
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+		int args = lua_gettop( state );
+		assert( args == 1 );
+
+		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
+
+		PushV3( state, objectProxy->object->GetFrame().GetLeft() );
+		return 1;
+	}
+
 	int Object_Constructor( lua_State * state )
 	{
-
+		ScriptEngine * se = ScriptEngine::GetInstance();
 		return 1;
 	}
 
@@ -310,6 +388,10 @@ namespace melua
 			{ "GetComponentName", Object_GetComponentTypeName },
 			{ "AddTag", Object_AddTag },
 			{ "HasTag", Object_HasTag },
+			{ "GetPosition", Object_GetPosition },
+			{ "GetForward", Object_GetForward },
+			{ "GetUp", Object_GetUp },
+			{ "GetLeft", Object_GetLeft },
 			{ nullptr, nullptr }
 		};
 		se->AddType( { "Object", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Object_Constructor, Object_Destructor } );

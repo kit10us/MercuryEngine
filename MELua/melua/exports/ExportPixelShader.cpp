@@ -2,8 +2,8 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportPixelShader.h>
-#include <melua/ExportEffect.h>
+#include <melua/exports/ExportPixelShader.h>
+#include <melua/exports/ExportEffect.h>
 #include <me/Game.h>
 
 using namespace melua;

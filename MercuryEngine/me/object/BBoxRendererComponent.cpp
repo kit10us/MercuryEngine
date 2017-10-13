@@ -44,7 +44,6 @@ void BBoxRendererComponent::SetPadding( float padding )
 {
 	m_padding = padding;
 }
-
 void BBoxRendererComponent::OnAttach( Object * object )
 {
 	ObjectComponent::OnAttach( object );

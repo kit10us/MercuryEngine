@@ -1,8 +1,8 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportInputCondition.h>
-#include <melua/ExportInput.h>
+#include <melua/exports/ExportInputCondition.h>
+#include <melua/exports/ExportInput.h>
 #include <melua/ScriptEngine.h>
 #include <melua/unify/ExportV3.h>
 

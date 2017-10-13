@@ -43,7 +43,7 @@ namespace me
 		/// Perform necessary initialization.
 		/// Returns Setup: false ends the program immediately.
 		/// </summary>
-		bool Initialize( me::OSParameters osParameters );
+		void Initialize( me::OSParameters osParameters );
 
 		/// <summary>
 		/// Optional function to be called on reciept of a drag-and-drop event.

@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportResources.h>
+#include <melua/exports/ExportResources.h>
 #include <melua/ScriptEngine.h>
 #include <me/Game.h>
 

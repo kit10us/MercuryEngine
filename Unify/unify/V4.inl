@@ -239,6 +239,12 @@ void V4< T >::Normalize()
 }
 
 template< typename T >
+V4< T > V4< T >::Absolute() const
+{
+	return{ abs( x ), abs( y ), abs( z ), abs( w ) };
+}
+
+template< typename T >
 T V4< T >::Dot( const V4< T > & v2 ) const
 {
 	return x * v2.x + y * v2.y + z * v2.z + w * v2.w;

@@ -7,7 +7,9 @@
 #include <melua/component/SceneComponent.h>
 #include <melua/component/ObjectComponent.h>
 #include <melua/CreateState.h>
-#include <melua/ExportObject.h>
+#include <melua/exports/ExportObject.h>
+
+#include <Windows.h>
 
 #pragma comment( lib, "lua53" )
 
@@ -284,4 +286,30 @@ ScriptEngine* ScriptEngine::GetInstance()
 me::Game * ScriptEngine::GetGame()
 {
 	return dynamic_cast< me::Game* >( GameComponent::GetGame() );
+}
+
+bool ScriptEngine::Assert( bool isTrue, std::string message )
+{
+	if( isTrue )
+	{
+		return true;
+	}
+	else
+	{
+		int result = MessageBoxA( 0, ( message + "\n\n Continue anyway (yes), stop attempt/function (no), or end program (cancel). ").c_str(), "Lua Script Assert", MB_ICONEXCLAMATION | MB_YESNOCANCEL );
+		switch( result )
+		{
+		case IDYES:
+			return true;
+
+		case IDNO:
+			return false;
+
+		case IDCANCEL:
+		default:
+			Error( m_state, message );
+			return false;
+		}
+	}
+
 }

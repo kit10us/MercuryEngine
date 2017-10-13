@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportObjectAction.h>
+#include <melua/exports/ExportObjectAction.h>
 #include <melua/xml/ExportXMLDocument.h>
 #include <melua/xml/ExportXMLElement.h>
 #include <melua/ScriptEngine.h>

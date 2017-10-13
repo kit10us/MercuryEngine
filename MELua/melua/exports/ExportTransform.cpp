@@ -2,9 +2,9 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportTransform.h>
-#include <melua/ExportObject.h>
-#include <melua/ExportScene.h>
+#include <melua/exports/ExportTransform.h>
+#include <melua/exports/ExportObject.h>
+#include <melua/exports/ExportScene.h>
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportMatrix.h>

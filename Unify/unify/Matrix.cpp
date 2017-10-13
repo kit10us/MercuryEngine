@@ -825,6 +825,29 @@ void Matrix::Transform( V4< float > & coord ) const
 	coord.w = m[0][3] * coord.x + m[1][3] * coord.y + m[2][3] * coord.z + m[3][3] * coord.w;
 }
 
+Ray Matrix::TransformRay( Ray ray ) const
+{
+	Ray out{ ray };
+	TransformCoord( out.origin );
+	TransformNormal( out.direction );
+	return out;
+}
+
+BBox< float > Matrix::TransformBBox( BBox< float > bbox ) const
+{
+	BBox< float > out{ bbox };
+	TransformCoord( out.inf );
+	TransformCoord( out.sup );
+	return out;
+}
+
+BSphere< float > Matrix::TransformBSphere( BSphere< float > bsphere ) const
+{
+	BSphere< float > out{ bsphere };
+	TransformCoord( out.center );
+	return out;
+}
+
 void Matrix::RotateAboutAxis( const V3< float > & axis, Angle angle )
 {
 	Matrix rotation = MatrixRotationAboutAxis( axis, angle );

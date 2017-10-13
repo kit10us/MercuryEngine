@@ -2,59 +2,93 @@
  * All Rights Reserved
  */
 
-inline
-BSphere::BSphere( float _radius )
-: radius( _radius )
+template< typename T >
+BSphere< T >::BSphere()
+	: center{ T(), T(), T() }
+	, radius{ T() }
 {
 }
 
-
-inline
-void BSphere::AddBSphere( const BSphere & sphere )
+template< typename T >
+BSphere< T >::BSphere( V3< T > center )
+	: center{ center }
+	, radius{ T() }
 {
-	if( sphere.radius > radius )
+}
+
+template< typename T >
+BSphere< T >::BSphere( V3< T > center, T radius )
+	: center{ center }
+	, radius{ radius }
+{
+}
+
+template< typename T >
+V3< T > BSphere< T >::GetCenter() const
+{
+	return center;
+}
+
+template< typename T >
+T BSphere< T >::GetRadius() const
+{
+	return radius;
+}
+
+template< typename T >
+BSphere< T > & BSphere< T >::operator+=( const BSphere< T > & sphere )
+{
+	// Handle empty BSpheres...
+	if( sphere.GetRadius() < std::numeric_limits< T >::epsilon() )
 	{
-		radius = sphere.radius;
+		return;
 	}
-}
 
-inline
-void BSphere::AddBSphereWithOffset( const BSphere & sphere, float offsetAsLength )
-{
-	float augmentedRadius = sphere.radius + offsetAsLength;
-	if( augmentedRadius > radius )
+	if( GetRadius() < std::numeric_limits< T >::epsilon() )
 	{
-		radius = augmentedRadius;
+		radius = sphere.GetRadius();
 	}
+
+	// Create extents and add them...
+
+	unify::V3< T > a{ GetCenter() - sphere.GetCenter() };
+	a.Normalize();
+	a = GetCenter() += a * GetRadius();
+	
+	unify::V3< T > b{ sphere.GetCenter() - GetCenter() };
+	b.Normalize();
+	b = sphere.GetCenter() += b * sphere.GetRadius();
+
+	( *this ) += b;
+	( *this ) += a;
+
+
+	return *this;
 }
 
-inline
-void BSphere::AddPoint( V2< float > & point )
+template< typename T >
+BSphere< T > & BSphere< T >::operator+=( V3< T > point )
 {
-	float distanceFromCenter = point.Length();
+	T distanceFromCenter = center.DistanceTo( point );
 	if( distanceFromCenter > radius )
 	{
 		radius = distanceFromCenter;
 	}
+	return *this;
 }
 
-inline
-void BSphere::AddPoint( V3< float > & point )
+template< typename T >
+bool BSphere< T >::Contains( V3< T > point ) const
 {
-	float distanceFromCenter = point.Length();
-	if( distanceFromCenter > radius )
-	{
-		radius = distanceFromCenter;
-	}
+	T distanceFromCenter = center.DistanceTo( point );
+	return distanceFromCenter <= radius;
 }
 
-inline
-void BSphere::AddPoint( V4< float > & point )
+template< typename T >
+bool BSphere< T >::Collides( BSphere< T > sphere ) const
 {
-	float distanceFromCenter = point.Length();
-	if( distanceFromCenter > radius )
-	{
-		radius = distanceFromCenter;
-	}
+	float d = GetCenter().DistanceTo( sphere.GetCenter() );
+	float rt = radius + sphere.radius;
+	bool collides = d < rt;
+	return collides;
 }
-

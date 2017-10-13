@@ -2,10 +2,10 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportEffect.h>
-#include <melua/ExportTexture.h>
-#include <melua/ExportPixelShader.h>
-#include <melua/ExportVertexShader.h>
+#include <melua/exports/ExportEffect.h>
+#include <melua/exports/ExportTexture.h>
+#include <melua/exports/ExportPixelShader.h>
+#include <melua/exports/ExportVertexShader.h>
 #include <melua/Util.h>
 #include <me/Game.h>
 

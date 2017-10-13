@@ -30,6 +30,7 @@
     <ClCompile Include="unify\Parameters.cpp" />
     <ClCompile Include="unify\Plane.cpp" />
     <ClCompile Include="unify\Quaternion.cpp" />
+    <ClCompile Include="unify\Ray.cpp" />
     <ClCompile Include="unify\Stream.cpp" />
     <ClCompile Include="unify\String.cpp" />
     <ClCompile Include="unify\TexArea.cpp" />
@@ -98,7 +99,6 @@
     <None Include="unify\Range.inl" />
     <None Include="unify\Optional.inl" />
     <None Include="unify\Parameters.inl" />
-    <None Include="unify\Ray.inl" />
     <None Include="unify\Rect.inl" />
     <None Include="unify\RowColumn.inl" />
     <None Include="unify\Size.inl" />

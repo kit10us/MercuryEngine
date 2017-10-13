@@ -29,6 +29,7 @@ namespace unify
 		T Length() const;
 		bool IsZero() const;
 		void Normalize();
+		V4< T > Absolute() const;
 		T Dot( const V4< T > & v2 ) const;
 		//void Transform( const TMatrix * pMat );
 

@@ -56,36 +56,83 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 		osParameters.nCmdShow = nCmdShow;
 		osParameters.wndProc = WndProc; 
 
-		if ( ! game->Initialize( osParameters ) )
+		bool retry = true;
+		while( retry )
 		{
-			return 0;
-		}
-
-		const bool forever = true;
-		while( forever )
-		{ 
-			while( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
+			retry = false;
+			try
 			{
-
-				//if ( ! IsDialogMessage( windowsOS->GetHandle(), &msg ) )
+				game->Initialize( osParameters );
+			}
+			catch( std::exception exception )
+			{
+				game->LogLine( "Mercury Failure: " );
+				game->LogLine( exception.what(), 4 );
+				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
+				switch( result )
 				{
-					if( msg.message == WM_QUIT )
-					{
-						break;
-					}
-					TranslateMessage( &msg );
-					DispatchMessage( &msg );
+				case IDABORT:
+					return 0;
+
+				case IDRETRY:
+					retry = true;
+					break;
+
+				case IDIGNORE:
+					// Do nothing.
+					break;
 				}
 			}
+		}
 
-			game->Tick();
-			if( game->IsQuitting() )
+		bool running = true;
+		while( running )
+		{ 
+			try
 			{
-				break;
+				while( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
+				{
+
+					//if ( ! IsDialogMessage( windowsOS->GetHandle(), &msg ) )
+					{
+						if( msg.message == WM_QUIT )
+						{
+							break;
+						}
+						TranslateMessage( &msg );
+						DispatchMessage( &msg );
+					}
+				}
+
+				game->Tick();
+				if( game->IsQuitting() )
+				{
+					break;
+				}
+
+				game->Draw();
 			}
-			
-			game->Draw();
-		} 
+			catch( std::exception exception )
+			{
+				game->LogLine( "Mercury Failure: " );
+				game->LogLine( exception.what(), 4 );
+				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
+				switch( result )
+				{
+				case IDABORT:
+					return -1;
+					break;
+
+				case IDRETRY:
+					// TODO:
+					//break;
+
+				case IDIGNORE:
+					// Do nothing.
+					break;
+				}
+			}
+		}
 	}
 	catch( std::exception exception )
 	{

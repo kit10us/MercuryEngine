@@ -65,8 +65,11 @@ std::string Object::GetName() const
 
 void Object::AddTag( std::string tag )
 {
-	m_tags.push_back( tag );
-	m_tags.sort();
+	if( ! HasTag( tag ) )
+	{
+		m_tags.push_back( tag );
+		m_tags.sort();
+	}
 }
 
 bool Object::HasTag( std::string tag ) const
@@ -157,6 +160,51 @@ unify::FrameLite & Object::GetFrame()
 const unify::FrameLite & Object::GetFrame() const
 {
 	return m_frame;
+}
+
+unify::V3< float > Object::GetPosition() const
+{
+	return m_frame.GetPosition();
+}
+
+unify::BBox< float > Object::GetBBox() const
+{
+	unify::BBox< float > bbox;
+
+	// Update components...
+	for( auto && component : m_components )
+	{
+		// Only start and update if enabled.
+		if( ! component.Component()->IsEnabled() ) continue;
+
+		component.Component()->GetBBox( bbox, GetFrame().GetMatrix() );
+	}
+	return bbox;
+}
+
+unify::BSphere< float > Object::GetBSphere() const
+{
+	return GetBBox().MakeBSphere();
+}
+
+bool Object::Intersects( unify::Ray ray ) const
+{
+	return GetBBox().Intersects( ray );
+}
+
+bool Object::Intersects( unify::Ray ray, float distanceBegin, float distanceEnd ) const
+{
+	return GetBBox().Intersects( ray, distanceBegin, distanceEnd );
+}
+
+bool Object::Intersects( unify::Ray ray, unify::V3< float > & hitPoint ) const
+{
+	return GetBBox().Intersects( ray, hitPoint );
+}
+
+bool Object::Intersects( unify::Ray ray, float & distance ) const
+{
+	return GetBBox().Intersects( ray, distance );
 }
 
 void Object::Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params )

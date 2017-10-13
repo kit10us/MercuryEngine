@@ -2,10 +2,10 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportTerraParameters.h>
+#include <melua/exports/ExportTerraParameters.h>
 
-#include <melua/ExportGeometry.h>
-#include <melua/ExportEffect.h>  
+#include <melua/exports/ExportGeometry.h>
+#include <melua/exports/ExportEffect.h>  
 #include <melua/unify/ExportMatrix.h>
 #include <melua/unify/ExportColor.h>
 #include <melua/unify/ExportSize2.h>
@@ -14,7 +14,7 @@
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportTexCoords.h>
 #include <melua/unify/ExportTexArea.h>
-#include <melua/ExportTexture.h> 
+#include <melua/exports/ExportTexture.h> 
 #include <unify/Color.h>
 
 using namespace melua;

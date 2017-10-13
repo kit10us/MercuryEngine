@@ -200,6 +200,12 @@ void V2< T >::Normalize()
 }
 
 template< typename T >
+V2< T > V2< T >::Absolute() const
+{
+	return{ abs( x ), abs( y ) };
+}
+
+template< typename T >
 const T V2< T >::DistanceTo(const V2< T > & to) const
 {
 	V2<T> d;

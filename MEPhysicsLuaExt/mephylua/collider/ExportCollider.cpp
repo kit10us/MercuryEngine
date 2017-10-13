@@ -2,8 +2,8 @@
 // All Rights Reserved
 
 #include <mephylua/collider/ExportCollider.h>
-#include <melua/ExportObjectComponent.h>
-#include <melua/ExportObjectAction.h>
+#include <melua/exports/ExportObjectComponent.h>
+#include <melua/exports/ExportObjectAction.h>
 #include <melua/Util.h>
 #include <MEPhysicsLuaExt.h>
 

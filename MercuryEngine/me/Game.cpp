@@ -124,7 +124,7 @@ void * Game::Feed( std::string target, void * data )
 	return 0;
 }
 
-bool Game::Initialize( OSParameters osParameters )
+void Game::Initialize( OSParameters osParameters )
 {
 	using namespace std::chrono;
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
@@ -213,7 +213,7 @@ bool Game::Initialize( OSParameters osParameters )
 	// User setup...
 	if ( ! Setup( GetOS() ) )
 	{
-		return false;
+		throw me::exception::FailedToCreate( "Failure attempting to setup with OS configuration!" );
 	}
 
 	// Early setup...
@@ -411,9 +411,6 @@ bool Game::Initialize( OSParameters osParameters )
 	{
 		LogLine( "No main screen created", 0 );
 	}
-
-
-	return true;
 }
 
 void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point )

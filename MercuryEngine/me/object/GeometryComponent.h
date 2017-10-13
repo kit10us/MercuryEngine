@@ -35,6 +35,7 @@ namespace me
 			unify::Matrix GetMatrix() const;
 
 		public: // IObjectComponent...
+			void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const override;
 			IObjectComponent::ptr Duplicate() override;
 
 		public: // IComponent...

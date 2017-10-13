@@ -70,7 +70,24 @@ namespace me
 
 			unify::FrameLite & GetFrame();
 			const unify::FrameLite & GetFrame() const;
-				  
+
+			unify::V3< float > GetPosition() const;
+
+			/// <summary>
+			/// Generates a BBox with a matrix, based on all sub-components, to determine actual physical size of object.
+			/// </summary>
+			unify::BBox< float > GetBBox() const;
+
+			/// <summary>
+			/// 
+			/// </summary>
+			unify::BSphere< float > GetBSphere() const;
+
+			bool Intersects( unify::Ray ray ) const;
+			bool Intersects( unify::Ray ray, float distanceBegin, float distanceEnd ) const;
+			bool Intersects( unify::Ray ray, unify::V3< float > & hitPoint ) const;
+			bool Intersects( unify::Ray ray, float & distance ) const;
+
 			/// <summary>
 			/// Initialize object and it's components.
 			/// Collect updateables.

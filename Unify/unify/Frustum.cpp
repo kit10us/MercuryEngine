@@ -166,7 +166,7 @@ void Frustum::Calculate( const unify::Matrix & worldViewProjection )
 	m_Plane[PLANE_BOTTOM] = unify::Plane::PlaneFromPoints( m_vCorner[ CORNER_Xyz ], m_vCorner[ CORNER_xyz ], m_vCorner[ CORNER_xyZ ] );
 }
 
-bool Frustum::CastPoint( const unify::V2< float > & unit, unify::Ray< float > & rayOut )
+bool Frustum::CastPoint( const unify::V2< float > & unit, unify::Ray & rayOut )
 {
     if ( unit.x < 0 || unit.y < 0 || unit.x > 1.0f || unit.y > 1.0f )
     {

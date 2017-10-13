@@ -3,8 +3,8 @@
 
 #include <melua/ScriptEngine.h>
 #include <melua/shape/ExportShapeParameters.h>
-#include <melua/ExportGeometry.h>
-#include <melua/ExportEffect.h>
+#include <melua/exports/ExportGeometry.h>
+#include <melua/exports/ExportEffect.h>
 #include <sg/ShapeCreators.h>
 #include <melua/unify/ExportMatrix.h>
 #include <melua/unify/ExportColor.h>

@@ -1,10 +1,10 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportComponent.h>
-#include <melua/ExportObject.h>
+#include <melua/exports/ExportComponent.h>
+#include <melua/exports/ExportObject.h>
 #include <melua/ScriptEngine.h>
-#include <melua/ExportObjectComponent.h>
+#include <melua/exports/ExportObjectComponent.h>
 #include <melua/Util.h>
 
 using namespace me;

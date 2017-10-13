@@ -62,7 +62,6 @@ function CreateMap()
 	this:SendCommand( "DrawOnMap", "10, 10, sidewalk" ) 
 	this:SendCommand( "DrawOnMap", "10, 11, sidewalk" ) 
 	this:SendCommand( "DrawOnMap", "10, 12, sidewalk" ) 
-	this:SendCommand( "DrawOnMap", "10, 13, sidewalk" ) 
-	
+	this:SendCommand( "DrawOnMap", "10, 13, sidewalk" ) 	
 	
 end

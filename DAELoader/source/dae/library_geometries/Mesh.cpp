@@ -192,7 +192,7 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 						unify::V4< float > boneWeights;
 						std::vector< VertexWeights::JointWeight > v_jw = skin->GetVertexWeights().GetVExpanded()[indexOfDAEVertex];
 
-						for( int b = 0; b < v_jw.size(); b++ )
+						for( size_t b = 0; b < v_jw.size(); b++ )
 						{
 							VertexWeights::JointWeight & jw = v_jw[b];
 

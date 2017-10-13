@@ -63,6 +63,7 @@ namespace unify
         T Length() const;
 		T Normalize();
 		T Normalize( const V3< T > & norm );
+		V3< T > Absolute() const;
 		const T DistanceTo( const V3<T> & to ) const;
 		T Dot( const V3< T > & a ) const;
 		Angle DotAngle( const V3< T > & a ) const;

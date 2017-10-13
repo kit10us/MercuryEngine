@@ -1,3 +1,8 @@
+--[[
+   On Actions...
+   Actions that can be performed
+--]]
+
 function OA_SetPosition( position )
 	local element = XMLElement( "SetPosition" )
 	

@@ -29,6 +29,7 @@ namespace me
 			void AddInterface( std::string name, me::IThing* ptr );
 
 		public:	 // IObjectComponent...
+			void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const override;
 			bool Updateable() const override;
 			bool Renderable() const override;
 			void OnAttach( Object * object ) override;

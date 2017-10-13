@@ -33,7 +33,6 @@ namespace me
 			void SetPadding( float padding );
 
 		public: // IObjectComponent...
-
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnUpdate( UpdateParams params ) override;

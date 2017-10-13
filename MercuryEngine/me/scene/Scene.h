@@ -67,7 +67,9 @@ namespace me
 
 			IObjectAllocator * GetObjectAllocator();
 			
-			object::Object * FindObject( std::string name );	 
+			object::Object * FindObject( std::string name ) override;	
+			std::list< HitInstance > FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const override;
+			std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const override;
 
 			std::string SendCommand( std::string command, std::string extra );
 

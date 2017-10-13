@@ -3,7 +3,7 @@
 
 #include <melua/Util.h>
 #include <melua/component/ObjectComponent.h>
-#include <melua/ExportObject.h>
+#include <melua/exports/ExportObject.h>
 #include <melua/CreateState.h>
 
 using namespace melua;

@@ -11,18 +11,28 @@
 
 namespace unify
 {
-	// An accumilated radius (from origin).
+	// An accumilated radius (from center).
+	template< typename T = float >
 	class BSphere
 	{
-		float radius;
 	public:
-		BSphere( float radius );
-		void AddBSphere( const BSphere & sphere );
-		void AddBSphereWithOffset( const BSphere & sphere, float offsetAsLength );
-		void AddPoint( V2< float > & point );
-		void AddPoint( V3< float > & point );
-		void AddPoint( V4< float > & point );
+		BSphere();
+		BSphere( V3< T > center );
+		BSphere( V3< T > center, T radius );
+
+		V3< T > center;
+		T radius;
+
+		V3< T > GetCenter() const;
+		T GetRadius() const;
+
+		BSphere & operator+=( const BSphere< T > & sphere );
+		BSphere & operator+=( V3< T > point );
+
+		bool Contains( V3< T > point ) const;
+		bool Collides( BSphere< T > sphere ) const;
 	};
+
 	#include <unify/BSphere.inl>
 }
 

@@ -80,6 +80,11 @@ void ObjectComponent::AddInterface( std::string name, me::IThing* ptr )
 	m_interfaceMap[ name ] = ptr;
 }
 
+void ObjectComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const
+{
+	// DO NOTHING BY DEFAULT.
+}
+
 bool ObjectComponent::Updateable() const 
 { 
 	return m_update; 
@@ -102,22 +107,27 @@ void ObjectComponent::OnDetach( Object * object )
 
 void ObjectComponent::OnStart() 
 {
+	// STUBBED
 }
 
 void ObjectComponent::OnUpdate( UpdateParams params ) 
 {
+	// STUBBED
 }
 
 void ObjectComponent::CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) 
 {
+	// STUBBED
 }
 
 void ObjectComponent::OnSuspend() 
 {
+	// STUBBED
 }
 
 void ObjectComponent::OnResume() 
 {
+	// STUBBED
 }
 
 bool ObjectComponent::IsEnabled() const

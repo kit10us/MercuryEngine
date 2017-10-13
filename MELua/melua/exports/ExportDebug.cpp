@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportDebug.h>
+#include <melua/exports/ExportDebug.h>
 #include <melua/ScriptEngine.h>
 #include <melua/Util.h>
 

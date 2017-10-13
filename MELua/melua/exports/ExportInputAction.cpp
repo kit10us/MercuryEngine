@@ -1,14 +1,14 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportInputAction.h>
-#include <melua/ExportAction.h>
-#include <melua/ExportObjectAction.h>
+#include <melua/exports/ExportInputAction.h>
+#include <melua/exports/ExportAction.h>
+#include <melua/exports/ExportObjectAction.h>
 #include <melua/xml/ExportXMLDocument.h>
 #include <melua/xml/ExportXMLElement.h>
 #include <melua/Util.h>
 
-#include <melua/ExportObject.h>
+#include <melua/exports/ExportObject.h>
 #include <me/input/action/IA_Action.h>
 #include <me/input/action/IA_ObjectAction.h>
 

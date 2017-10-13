@@ -2,8 +2,8 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportTerra.h>
-#include <melua/ExportTerraParameters.h>
+#include <melua/exports/ExportTerra.h>
+#include <melua/exports/ExportTerraParameters.h>
 #include <melua/Util.h>
 #include <me/Game.h>
 

@@ -249,6 +249,12 @@ T V3< T >::Normalize( const V3< T > & norm )
 }
 
 template< typename T >
+V3< T > V3< T >::Absolute() const
+{
+	return{ abs( x ), abs( y ), abs( z ) };
+}
+
+template< typename T >
 const T V3< T >::DistanceTo( const V3< T > & to ) const
 {
 	V3<T> d;

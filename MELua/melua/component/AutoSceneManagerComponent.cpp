@@ -4,7 +4,7 @@
 #include <melua/Util.h>
 #include <melua/component/AutoSceneManagerComponent.h>
 #include <melua/component/SceneComponent.h>
-#include <melua/ExportGame.h>
+#include <melua/exports/ExportGame.h>
 #include <melua/CreateState.h>
 
 using namespace melua;

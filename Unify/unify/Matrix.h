@@ -8,6 +8,8 @@
 #include <unify/V2.h>
 #include <unify/V3.h>
 #include <unify/V4.h>
+#include <unify/Ray.h>
+#include <unify/BBox.h>
 #include <unify/RowColumn.h>
 #include <unify/Quaternion.h>
 #include <unify/Angle.h>
@@ -125,6 +127,11 @@ namespace unify
 		void TransformNormal( V3< float > & v3 ) const;
 
 		void Transform( V4< float > & v4 ) const;
+	
+		Ray TransformRay( Ray ray ) const;
+		BBox< float > TransformBBox( BBox< float > bbox ) const;
+		BSphere< float > TransformBSphere( BSphere< float > bsphere ) const;
+
 		void RotateAboutAxis( const V3< float > & axis, Angle angle );
 
 		void LookAtLH( const V3< float > & at, const V3< float > & up );

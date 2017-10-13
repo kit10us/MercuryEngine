@@ -234,6 +234,62 @@ Object * Scene::FindObject( std::string name )
 	return m_objectAllocator->FindObject( name );
 }
 
+std::list< HitInstance > Scene::FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const
+{
+	std::list< HitInstance > instances;
+
+	for( size_t index = 0; index < m_objectAllocator->Count(); index++ )
+	{
+		auto object = m_objectAllocator->GetObject( index );
+
+		float distance = ray.origin.DistanceTo( object->GetPosition() );
+		if( distance > withinDistance )
+		{
+			continue;
+		}
+
+		unify::Ray rayXformed = object->GetFrame().GetMatrix().Inverse().TransformRay( ray );
+
+		float d{ float() };
+		if ( object->Intersects( rayXformed, d ) )
+		{
+			instances.push_back( { object, distance } );
+		}
+	}
+
+	instances.sort();
+
+	return instances;
+}
+
+std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float > sphere ) const
+{
+	std::list< HitInstance > instances;
+	
+	for( size_t index = 0; index < m_objectAllocator->Count(); index++ )
+	{
+		const auto & object = m_objectAllocator->GetObject( index );
+		
+		unify::V3< float > position = object->GetFrame().GetPosition();
+		auto objectSphere = object->GetBSphere();
+		objectSphere = object->GetFrame().GetMatrix().TransformBSphere( objectSphere );
+
+		if( sphere.Collides( objectSphere ) )
+		{
+			auto Ra = sphere.GetRadius();
+			auto Rb = objectSphere.GetRadius();
+			auto Rt = Ra + Rb;
+			auto D = sphere.GetCenter().DistanceTo( objectSphere.GetCenter() );
+
+			float distance = sphere.GetCenter().DistanceTo( objectSphere.GetCenter() );
+			instances.push_back( { object, distance } );
+		}
+	}
+
+	instances.sort();
+	return instances;
+}
+
 std::string Scene::SendCommand( std::string command, std::string extra )
 {
 	command; extra;

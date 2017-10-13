@@ -76,6 +76,9 @@
     <ClCompile Include="unify\Frustum.cpp">
       <Filter>unify</Filter>
     </ClCompile>
+    <ClCompile Include="unify\Ray.cpp">
+      <Filter>unify</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="unify\Angle.h">
@@ -227,9 +230,6 @@
     <None Include="unify\BBox.inl">
       <Filter>unify</Filter>
     </None>
-    <None Include="unify\BSphere.inl">
-      <Filter>unify</Filter>
-    </None>
     <None Include="unify\BSquare.inl">
       <Filter>unify</Filter>
     </None>
@@ -246,9 +246,6 @@
       <Filter>unify</Filter>
     </None>
     <None Include="unify\Parameters.inl">
-      <Filter>unify</Filter>
-    </None>
-    <None Include="unify\Ray.inl">
       <Filter>unify</Filter>
     </None>
     <None Include="unify\Rect.inl">
@@ -288,6 +285,9 @@
       <Filter>unify</Filter>
     </None>
     <None Include="unify\Range.inl">
+      <Filter>unify</Filter>
+    </None>
+    <None Include="unify\BSphere.inl">
       <Filter>unify</Filter>
     </None>
   </ItemGroup>

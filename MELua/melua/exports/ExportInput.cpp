@@ -2,17 +2,19 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportInput.h>
-#include <melua/ExportInputCondition.h>
+#include <melua/exports/ExportInput.h>
+#include <melua/exports/ExportInputCondition.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportV2.h>
-#include <melua/ExportInputAction.h>
-#include <melua/ExportObjectAction.h>
-#include <melua/ExportAction.h>
+#include <melua/exports/ExportInputAction.h>
+#include <melua/exports/ExportObjectAction.h>
+#include <melua/exports/ExportAction.h>
+#include <melua/FunctionAction.h>
 
 #include <me/input/IInputCondition.h>
 #include <me/scene/SceneManager.h>
 #include <me/input/action/IA_Action.h>
+
 
 using namespace melua;
 using namespace me;
@@ -89,9 +91,10 @@ int Input_AddAction( lua_State * state )
 		return 1;
 	}
 	
-	// 3rd parameter is condition.
+	// 3rd parameter is condition...
 	me::input::IInputCondition::ptr condition = CheckInputCondition( state, 3 )->condition;
 	
+	// 4th parameter is the actions...
 	std::string type = GetTypename( state, 4 );
 	me::input::IInputAction::ptr action;
 	if( unify::StringIs( type, ActionProxy::Name() ) )
@@ -105,6 +108,18 @@ int Input_AddAction( lua_State * state )
 		auto inputAction = CheckUserType< InputActionProxy >( state, 4 );
 		inputProxy->input->AddEvent( owner, condition, inputAction->action );
 		return Push( state, true );
+	}
+	else if( unify::StringIs( type, "function" ) )
+	{
+		std::string t = GetTypename( state, -1 );
+		int ref = luaL_ref( state, LUA_REGISTRYINDEX );
+		auto functionAction = me::action::IAction::ptr( new melua::FunctionAction( ref ) );
+		auto functionInputAction = IInputAction::ptr( new me::input::action::Action( functionAction ) );
+		inputProxy->input->AddEvent( owner, condition, functionInputAction );
+	}
+	else if ( unify::StringIs( type, "table" ) )
+	{
+		// TODO:
 	}
 
 	return Push( state, false );

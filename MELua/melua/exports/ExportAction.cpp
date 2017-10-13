@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportAction.h>
+#include <melua/exports/ExportAction.h>
 #include <melua/xml/ExportXMLDocument.h>
 #include <melua/xml/ExportXMLElement.h>
 #include <melua/Util.h>

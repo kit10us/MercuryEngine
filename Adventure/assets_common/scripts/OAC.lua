@@ -1,3 +1,8 @@
+--[[
+   On Action Conditions...
+   Conditions we can responed to with Actions
+--]]
+
 require "OA"
 
 function OAC_OnEnter_SetPosition( size, position )

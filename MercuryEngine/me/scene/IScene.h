@@ -18,6 +18,17 @@ namespace me
 {
 	class IGame;
 
+	struct HitInstance
+	{
+		object::Object * object;
+		float distance;
+
+		bool operator<( const HitInstance & b ) const
+		{
+			return distance < b.distance;
+		}
+	};
+
 	namespace scene
 	{
 		class IScene
@@ -72,6 +83,10 @@ namespace me
 			virtual IObjectAllocator * GetObjectAllocator() = 0;
 			
 			virtual object::Object * FindObject( std::string name ) = 0;
+
+			virtual std::list< HitInstance > FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const = 0;
+
+			virtual std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const = 0;
 
 			virtual std::string SendCommand( std::string command, std::string extra ) = 0;
 

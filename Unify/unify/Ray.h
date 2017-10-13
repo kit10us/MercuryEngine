@@ -8,18 +8,19 @@
 
 namespace unify
 {
-	template< typename T >
 	class Ray
 	{
 	public:
-		V3< T > origin;
-		V3< T > direction;
+		static Ray RayFromLineSegment( const V3< float > & startPoint, const V3< float > & endPoint );
+		static Ray RayFromOrginAndDirection( const V3< float > & origin, const V3< float > & direction );
 
-		V3< T > InvDirection() const;
+		V3< float > origin;
+		V3< float > direction;
+
+		V3< float > InvDirection() const;
 		V3< int > Sign() const;
 
         Ray();
-		Ray( const V3< T > & originIn, const V3< T > & directionIn );
+		Ray( const V3< float > & originIn, const V3< float > & directionIn );
 	};
-	#include <unify/Ray.inl>
 }

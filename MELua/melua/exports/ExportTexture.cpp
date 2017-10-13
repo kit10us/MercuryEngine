@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportTexture.h>
+#include <melua/exports/ExportTexture.h>
 #include <melua/Util.h>
 #include <me/Game.h>
 

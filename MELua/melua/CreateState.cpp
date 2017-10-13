@@ -14,33 +14,33 @@
 #include <melua/unify/ExportQuaternion.h>
 #include <melua/unify/ExportAngle.h>
 
-#include <melua/ExportComponent.h>
-#include <melua/ExportObjectComponent.h>
-#include <melua/ExportCameraComponent.h>
-#include <melua/ExportDebug.h>
-#include <melua/ExportGame.h>
-#include <melua/ExportObject.h>
-#include <melua/ExportResources.h>
-#include <melua/ExportScene.h>
-#include <melua/ExportUpdate.h>
-#include <melua/ExportTransform.h>
-#include <melua/ExportEffect.h>
-#include <melua/ExportVertexShader.h>
-#include <melua/ExportPixelShader.h>
+#include <melua/exports/ExportComponent.h>
+#include <melua/exports/ExportObjectComponent.h>
+#include <melua/exports/ExportCameraComponent.h>
+#include <melua/exports/ExportDebug.h>
+#include <melua/exports/ExportGame.h>
+#include <melua/exports/ExportObject.h>
+#include <melua/exports/ExportResources.h>
+#include <melua/exports/ExportScene.h>
+#include <melua/exports/ExportUpdate.h>
+#include <melua/exports/ExportTransform.h>
+#include <melua/exports/ExportEffect.h>
+#include <melua/exports/ExportVertexShader.h>
+#include <melua/exports/ExportPixelShader.h>
 #include <melua/shape/ExportShapeParameters.h>
-#include <melua/ExportGeometry.h>
-#include <melua/ExportInput.h>
-#include <melua/ExportTerraParameters.h>
-#include <melua/ExportTerra.h>
-#include <melua/ExportTexture.h>
-#include <melua/ExportInputCondition.h>
+#include <melua/exports/ExportGeometry.h>
+#include <melua/exports/ExportInput.h>
+#include <melua/exports/ExportTerraParameters.h>
+#include <melua/exports/ExportTerra.h>
+#include <melua/exports/ExportTexture.h>
+#include <melua/exports/ExportInputCondition.h>
 
 #include <melua/xml/ExportXMLDocument.h>
 #include <melua/xml/ExportXMLElement.h>
 
-#include <melua/ExportAction.h>
-#include <melua/ExportObjectAction.h>
-#include <melua/ExportInputAction.h>
+#include <melua/exports/ExportAction.h>
+#include <melua/exports/ExportObjectAction.h>
+#include <melua/exports/ExportInputAction.h>
 
 void melua::RegisterLibraries( lua_State * state )
 {

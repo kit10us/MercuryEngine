@@ -52,7 +52,7 @@ namespace unify
 
         // Casts a unit point from across the frustum to a position at the front of the frustom, 
         // and a direction along the frustum. Returns false if unit components are not in the range [ 0, 1 ].
-        bool CastPoint( const unify::V2< float > & unit, unify::Ray< float > & rayOut );
+        bool CastPoint( const unify::V2< float > & unit, unify::Ray & rayOut );
 
 		CULLSTATE CullBBox( unify::BBox< float > * pBBox/*, unify::Plane * BBPlane*/ );
 

@@ -2,8 +2,8 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportVertexShader.h>
-#include <melua/ExportEffect.h>
+#include <melua/exports/ExportVertexShader.h>
+#include <melua/exports/ExportEffect.h>
 #include <me/Game.h>
 
 using namespace melua;

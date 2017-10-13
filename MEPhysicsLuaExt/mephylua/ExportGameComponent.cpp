@@ -4,7 +4,7 @@
 #include <mephylua/ExportGameComponent.h>
 #include <mephylua/collider/ExportCollider.h>
 #include <mephylua/ExportEntity.h>
-#include <melua/ExportComponent.h>
+#include <melua/exports/ExportComponent.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/Util.h>
 

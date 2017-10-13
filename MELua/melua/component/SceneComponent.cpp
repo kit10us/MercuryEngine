@@ -3,9 +3,9 @@
 
 #include <melua/Util.h>
 #include <melua/component/SceneComponent.h>
-#include <melua/ExportGame.h>
+#include <melua/exports/ExportGame.h>
 #include <melua/CreateState.h>
-#include <melua/ExportScene.h>
+#include <melua/exports/ExportScene.h>
 
 using namespace melua;
 using namespace component;
@@ -92,6 +92,9 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 	{
 		Error( m_state, "Failure in script!" );
 	}
+
+	lua_getglobal( m_state, (scene->GetName() + "_env").c_str()  );
+	lua_setupvalue( m_state, -2, 1 );
 
 	top = lua_gettop( m_state );
 	assert( top == 1 );

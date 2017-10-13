@@ -61,17 +61,21 @@ namespace unify
 		const V3< T > Size() const;
 
         // Perform a hit test, return true if hit...
-        bool RayTest( const Ray< T > & ray, T t0, T t1 ) const;
+        bool Intersects( const Ray & ray, float t0, float t1 ) const;
         
 		// ... this version sets hitPoint to the first point of collision.
-        bool RayTest( const Ray< T > & ray, V3< T > & hitPoint ) const;
+        bool Intersects( const Ray & ray, V3< float > & hitPoint ) const;
+
+		bool Intersects( const Ray & ray, float & distance ) const;
+
+		bool Intersects( const Ray & ray ) const;
 
 		/// <description>
 		/// Takes a point and returns a new point barrycentric to the bounding box.
 		/// </description>
 		V3< T > ToBarrycentric( const V3< T > & point ) const;
 
-		BSphere MakeBSphere() const;
+		BSphere< T > MakeBSphere() const;
 
 	private:
 		void Fix(); // Ensures our sup is superior and our inf, inferior.

@@ -45,6 +45,12 @@ namespace melua
 		MELUADLL_API static ScriptEngine* GetInstance();
 		MELUADLL_API me::Game * GetGame();
 
+		/// <summary>
+		/// Asserts that our argument count for a function (top) is correct.
+		/// Returns true if we want to continue execution, else returns false.
+		/// </summary>
+		bool Assert( bool isTrue, std::string message );
+
 	public: // IComponent...
 		
 	private:

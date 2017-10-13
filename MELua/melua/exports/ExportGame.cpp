@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <melua/ExportGame.h>
+#include <melua/exports/ExportGame.h>
 #include <melua/ScriptEngine.h>
 
 using namespace melua;

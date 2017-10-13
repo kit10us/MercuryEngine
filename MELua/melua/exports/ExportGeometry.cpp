@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <melua/ExportGeometry.h>
+#include <melua/exports/ExportGeometry.h>
 #include <melua/shape/ExportShapeParameters.h>
 #include <melua/Util.h>
 #include <sg/ShapeCreators.h>
