@@ -16,7 +16,7 @@ MainScene::MainScene( me::Game * game )
 
 void MainScene::OnStart()
 {
-	effectBorg = GetManager< Effect>()->Add( "borg", unify::Path( "EffectTextured.effect" ) );
+	effectBorg = GetManager< Effect>()->Add( "borg", unify::Path( "EffectTexture.effect" ) );
 	effect4 = GetManager< Effect>()->Add( "4", unify::Path( "Effect4.effect" ) );
 
 	float xscalar = 10.0f;

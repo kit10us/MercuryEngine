@@ -12,7 +12,8 @@ T Element::GetAttributeElse( const std::string & attribute, T value ) const
 {
 	if( HasAttributes( attribute ) )
 	{
-		return GetAttribute( attribute ).get()->Get< T >();
+		T out = GetAttribute( attribute ).get()->Get< T >();
+		return out;
 	}
 	else
 	{

@@ -44,7 +44,7 @@ unify::Size< float > TextElement::GetSize( unify::Size< float > area ) const
 	return textSize;
 }
 
-void TextElement::BuildText( unify::Size< float > area )
+void TextElement::Build( unify::Size< float > area )
 {
 	if ( m_text.empty() ) return;
 
@@ -208,7 +208,7 @@ void TextElement::UpdateLayout( UpdateParams params, unify::Size< float > area )
 
 	if ( m_changed )
 	{
-		BuildText( area );
+		Build( area );
 	}
 }
 

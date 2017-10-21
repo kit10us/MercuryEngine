@@ -8,6 +8,7 @@
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/Layer.h>
 #include <me/canvas/TextElement.h>
+#include <me/canvas/Image.h>
 
 using namespace me;
 using namespace render;
@@ -122,7 +123,7 @@ void MainScene::OnStart()
 		layer2->AddElement( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "BOTTOM", canvas::Anchor::Bottom ) ) );
 		layer2->AddElement( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "BR", canvas::Anchor::BottomRight ) ) );
 	}
-		
+
 	{ // Add another layer with additional text elements...
 		canvas::Layer::ptr layer3( new canvas::Layer( GetGame() ) );
 		canvas->GetLayer()->AddElement( layer3, "layer3" );
@@ -143,6 +144,14 @@ void MainScene::OnStart()
 		canvas::Layer::ptr layer5( new canvas::Layer( GetGame() ) );
 		canvas->GetLayer()->AddElement( layer5, "layer5" );
 		layer5->AddElement( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "STRETCHFULL", canvas::Anchor::StretchFull ) ) );
+	}
+
+
+	{ // Add the heart layer...
+		Effect::ptr heart = GetManager< Effect >()->Add( "heart", unify::Path( "heart.effect" ) );
+		canvas::Layer::ptr layerHeart( new canvas::Layer( GetGame() ) );
+		canvas->GetLayer()->AddElement( layerHeart, "layerHeart" );
+		layerHeart->AddElement( canvas::IElement::ptr( new canvas::Image( GetGame(), heart, canvas::Anchor::TopRight, { 0.25f, 0.25f } ) ) );
 	}
 }
 
@@ -175,14 +184,12 @@ void MainScene::OnUpdate( UpdateParams & params )
 	q = unify::Quaternion( axis, rotation );
 	params.renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
 	params.renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
-
-
+	
 	// Cycle layers...
 	static int layer = 0;
 	static float time = 0.0f;
 	const float cycleAt = 3.0f;
 	time += params.GetDelta();
-
 	while( time >= cycleAt )
 	{
 		time -= cycleAt;
@@ -190,8 +197,8 @@ void MainScene::OnUpdate( UpdateParams & params )
 		if ( layer > 4 ) layer = 0;
 	}
 
-	auto canvas =GetComponentT< canvas::CanvasComponent >();
-
+	// Enable current layer, disable all the others...
+	auto canvas = GetComponentT< canvas::CanvasComponent >();
 	canvas->GetLayer()->FindElement( "layer1" )->SetEnabled( layer == 0 ? true : false );
 	canvas->GetLayer()->FindElement( "layer2" )->SetEnabled( layer == 1 ? true : false );
 	canvas->GetLayer()->FindElement( "layer3" )->SetEnabled( layer == 2 ? true : false );

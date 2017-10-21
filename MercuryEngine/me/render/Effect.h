@@ -57,6 +57,16 @@ namespace me
 			const ITexture::ptr GetTexture( unsigned char stage ) const;
 			bool IsTrans() const;
 
+			/// <summary>
+			/// Returns the largest width, and largest height of the textures.
+			/// </summary>
+			unify::Size< unsigned int > LargestTextureSizes() const;
+
+			/// <summary>
+			/// Returns the smallest width, and smallest height of the textures.
+			/// </summary>
+			unify::Size< unsigned int > SmallestTextureSizes() const;
+
 			unify::Path GetSource() const;
 
 		public: // IResource...
@@ -68,6 +78,7 @@ namespace me
 			IPixelShader::ptr m_pixelShader;
 			IVertexShader::ptr m_vertexShader;
 			std::vector< ITexture::ptr > m_textures;
+			BlendDesc m_blendDesc;
 		};
 	}
 }

@@ -117,7 +117,7 @@ void PixelShader::Create( PixelShaderParameters parameters )
 	}
 
 	// Create blend state...
-	if( m_parameters.trans )
+	//if( m_parameters.trans )
 	{
 		m_blendDesc.RenderTarget[0].BlendEnable = parameters.blendDesc.enable ? TRUE : FALSE;
 		m_blendDesc.RenderTarget[0].SrcBlend = (D3D11_BLEND)parameters.blendDesc.src;

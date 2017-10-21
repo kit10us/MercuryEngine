@@ -14,7 +14,7 @@ MainScene::MainScene( me::Game * game )
 
 void MainScene::OnStart()
 {
-	effect = GetManager< Effect>()->Add( "textured_3d", unify::Path( "EffectColor.effect" ) );
+	effect = GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectColor.effect" ) );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;

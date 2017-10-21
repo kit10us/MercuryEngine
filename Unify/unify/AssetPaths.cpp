@@ -3,6 +3,7 @@
 
 #include <unify/AssetPaths.h>
 #include <unify/Exception.h>
+#include <string>
 #include <cassert>
 
 using namespace unify;
@@ -30,7 +31,16 @@ unify::Path AssetPaths::FindAsset( unify::Path path, unify::Path firstPlace )
 		}
 	}
 
-	return unify::Path();
+	const bool checked = true;
+
+	if( checked )
+	{
+		throw unify::Exception( "Asset \"" + path.ToString() + "\" not found!" );
+	}
+	else
+	{
+		return unify::Path();
+	}
 }
 
 std::string AssetPaths::GetPaths( Path root ) const

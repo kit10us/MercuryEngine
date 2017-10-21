@@ -97,7 +97,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 	{
 		IPixelShader::ptr ps;
 		{
-			const auto node = element->FindFirstElement( "texturedps" );
+			const auto node = element->FindFirstElement( "textureps" );
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
 
@@ -117,7 +117,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 		IVertexShader::ptr vs;
 		{
-			const auto node = element->FindFirstElement( "texturedvs" );
+			const auto node = element->FindFirstElement( "texturevs" );
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
 

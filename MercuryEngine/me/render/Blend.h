@@ -19,7 +19,7 @@ namespace me
 			SrcAlpha = 5,
 			InvSrcAlpha = 6,
 			DestAlpha = 7,
-			InDestAlpha = 8,
+			InvDestAlpha = 8,
 			DestColor = 9,
 			InvDestColor = 10,
 			SrcAlphaSaturation = 11,

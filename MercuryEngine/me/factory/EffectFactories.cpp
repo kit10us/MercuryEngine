@@ -37,29 +37,27 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 
 			if ( child.IsTagName( "texture" ) )
 			{
-				std::string name = child.GetAttribute< std::string >( "name" );
+				TextureParameters parameters( &child );
+
+				std::string name = child.GetAttributeElse< std::string >( "name", parameters.source.FilenameNoExtension() );
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
-				TextureParameters parameters( &child );
 				effect->SetTexture( stage, textureManager->Add( name, parameters.source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
-			}
-			else if ( child.IsTagName( "blend" ) )
-			{
-				std::string blend = child.GetText();
-				// TODO:
 			}
 
 			//void SetCulling( unsigned int dwValue );
 			//void SetLighting( unsigned int dwValue );
 			else if ( child.IsTagName( "pixelshader" ) )
 			{
-				unify::Path source( child.GetAttribute< std::string >( "source" ) );
-				effect->SetPixelShader( pixelShaderManager->Add( child.GetAttribute< std::string >( "name" ), source ) );
+				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
+				unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( path, doc.GetPath().DirectoryOnly() );
+				effect->SetPixelShader( pixelShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
 			}
 			else if ( child.IsTagName( "vertexshader" ) )
 			{
-				unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( unify::Path( child.GetAttribute< std::string >( "source" ) ), doc.GetPath().DirectoryOnly() );
-				effect->SetVertexShader( vertexShaderManager->Add( child.GetAttribute< std::string >( "name" ), source ) );
+				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
+				unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( path, doc.GetPath().DirectoryOnly() );
+				effect->SetVertexShader( vertexShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
 			}
 			//void AddFrame( size_t frameIndex, float influence );
 		}

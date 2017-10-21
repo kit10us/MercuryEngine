@@ -36,5 +36,7 @@ VS_OUT vs_main( in VS_IN vs_in )
 
 float4 ps_main( in VS_OUT ps_in ) : SV_TARGET
 {
-	return diffuseMap.Sample( linearSample, ps_in.uv );
+	float4 ps_out = diffuseMap.Sample( linearSample, ps_in.uv );
+	ps_out.a = 0.0f;
+	return ps_out;
 }

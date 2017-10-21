@@ -1,8 +1,8 @@
 <?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
   <effect>
-    <pixelshader name="textured2D" source="shaders/textured2d.xml"/>
-    <vertexshader name="textured2D" source="shaders/textured2d.xml"/>
+    <pixelshader name="texture2D" source="texture2D_trans.xml"/>
+    <vertexshader name="texture2D" source="texture2d_trans.xml"/>
     <texture name="font2" stage="0" source="font2.png"/>
   </effect>
 </xml>

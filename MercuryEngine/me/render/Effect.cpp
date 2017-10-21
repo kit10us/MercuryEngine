@@ -175,6 +175,42 @@ bool Effect::IsTrans() const
 	return ( GetPixelShader() ? GetPixelShader()->IsTrans() : false ) || ( GetVertexShader() ? GetVertexShader()->IsTrans() : false );
 }
 
+unify::Size< unsigned int > Effect::LargestTextureSizes() const
+{
+	unify::Size< unsigned int > size( 0, 0 );
+	for( auto texture : m_textures )
+	{
+		if( size.width == -1 || size.width < texture->ImageSize().width )
+		{
+			size.width = texture->ImageSize().width;
+		}
+		
+		if( size.height == -1 || size.height < texture->ImageSize().height )
+		{
+			size.height = texture->ImageSize().height;
+		}
+	}
+	return size;
+}
+
+unify::Size< unsigned int > Effect::SmallestTextureSizes() const
+{
+	unify::Size< unsigned int > size( 0, 0 );
+	for( auto texture : m_textures )
+	{
+		if( size.width == -1 || size.width > texture->ImageSize().width )
+		{
+			size.width = texture->ImageSize().width;
+		}
+
+		if( size.height == -1 || size.height > texture->ImageSize().height )
+		{
+			size.height = texture->ImageSize().height;
+		}
+	}
+	return size;
+}
+
 unify::Path Effect::GetSource() const
 {
 	return m_source;

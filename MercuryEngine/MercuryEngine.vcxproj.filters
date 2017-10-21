@@ -678,6 +678,9 @@
     <ClInclude Include="me\action\RestartScene.h">
       <Filter>me\action</Filter>
     </ClInclude>
+    <ClInclude Include="me\canvas\Image.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1114,6 +1117,9 @@
     </ClCompile>
     <ClCompile Include="me\action\RestartScene.cpp">
       <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\Image.cpp">
+      <Filter>me\canvas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,8 @@ BlendDesc::BlendDesc()
 BlendDesc::BlendDesc( const qxml::Element * element )
 	: BlendDesc()
 {
-	enable = unify::Cast< bool >( element->GetAttributeElse( "enable", "true" ) );
+	std::string casted = element->GetAttributeElse< std::string >( "enable", "true" );
+	enable = unify::Cast< bool >( casted );
 
 	if( element->HasElements( "src" ) )
 	{
@@ -66,7 +67,7 @@ Blend unify::Cast( std::string blend )
 	else if ( unify::StringIs( "SrcAlpha", blend ) ) return Blend::SrcAlpha;
 	else if ( unify::StringIs( "InvSrcAlpha", blend ) ) return Blend::InvSrcAlpha;
 	else if ( unify::StringIs( "DestAlpha", blend ) ) return Blend::DestAlpha;
-	else if ( unify::StringIs( "InDestAlpha", blend ) ) return Blend::InDestAlpha;
+	else if ( unify::StringIs( "InvDestAlpha", blend ) ) return Blend::InvDestAlpha;
 	else if ( unify::StringIs( "DestColor", blend ) ) return Blend::DestColor;
 	else if ( unify::StringIs( "InvDestColor", blend ) ) return Blend::InvDestColor;
 	else if ( unify::StringIs( "SrcAlphaSaturation", blend ) ) return Blend::SrcAlphaSaturation;

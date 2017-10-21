@@ -39,7 +39,7 @@ void MainScene::OnStart()
 	}
 
 	// Load an effect, then modify it to fit our needs.
-	Effect::ptr landEffect = GetManager< Effect >()->Add( "4", unify::Path( "EffectTextured.effect" ) );
+	Effect::ptr landEffect = GetManager< Effect >()->Add( "4", unify::Path( "EffectTexture.effect" ) );
 	landEffect->SetTexture( 0, GetManager< ITexture >()->Find( "4" ) );
 
 	Terra::Parameters parameters;

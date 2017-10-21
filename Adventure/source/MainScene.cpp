@@ -135,8 +135,8 @@ void MainScene::OnStart()
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( GetGame() ) );
 	AddComponent( canvas );
 	Effect::ptr font2( new Effect( 
-		GetManager< IVertexShader >()->Add( unify::Path( "textured2d.xml" ) ), 
-		GetManager< IPixelShader>()->Add( unify::Path( "textured2d.xml" ) ),
+		GetManager< IVertexShader >()->Add( unify::Path( "texture2d.xml" ) ), 
+		GetManager< IPixelShader>()->Add( unify::Path( "texture2d.xml" ) ),
 		GetManager< ITexture >()->Add( unify::Path( "font2.png" ) )
 	) );
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2, canvas::Anchor::TopRight ) ) );

@@ -1,5 +1,5 @@
 <xml>
-  <pixelshader name="textured3d_ambient">
+  <pixelshader name="texture3d_ambient">
     <source>textured_ambient.ps</source>
     <entry>ps_main</entry>
     <profile>ps_4_0</profile>

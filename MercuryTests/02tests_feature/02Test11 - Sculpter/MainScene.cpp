@@ -33,11 +33,11 @@ void MainScene::OnStart()
 {
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTextured.effect" ) );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", unify::Path( "shaders/textured3d.xml" ) );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", unify::Path( "shaders/textured3d.xml" ) );
+	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", unify::Path( "shaders/texture3d.xml" ) );
+	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", unify::Path( "shaders/texture3d.xml" ) );
 																									  
 	// Add a texture.
 	GetManager< ITexture >()->Add( "borgcube", unify::Path( "borgcube.bmp" ) );

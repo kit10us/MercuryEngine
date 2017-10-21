@@ -1,7 +1,7 @@
 <?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
   <effect>
-    <pixelshader name="color_ambient" source="shaders/color_ambient.xml"/>
-    <vertexshader name="color_ambient" source="shaders/color_ambient.xml"/>
+    <pixelshader name="color_ambient" source="color_ambient.xml"/>
+    <vertexshader name="color_ambient" source="color_ambient.xml"/>
   </effect>
 </xml>

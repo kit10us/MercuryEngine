@@ -18,7 +18,7 @@ namespace me
 
 			unify::Size< float > GetSize( unify::Size< float > area ) const override;
 		
-			void BuildText( unify::Size< float > area );
+			void Build( unify::Size< float > area );
 
 			void SetText( std::string text );
 
