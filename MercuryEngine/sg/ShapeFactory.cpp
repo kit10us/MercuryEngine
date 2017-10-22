@@ -37,52 +37,52 @@ render::Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
 
 			if( p.IsTagName( "type" ) )
 			{
-				params.Set( p.GetTagName(), Shape::FromString( p.GetText() ) );
+				params.Set( p.GetName(), Shape::FromString( p.GetText() ) );
 			}
 			else if( p.IsTagName( "effect" ) )
 			{
-				params.Set( p.GetTagName(), game->GetManager< Effect >()->Add( p.GetAttribute< std::string >( "name" ), p.GetAttribute< unify::Path >( "source" ), doc.GetPath().DirectoryOnly() ) );
+				params.Set( p.GetName(), game->GetManager< Effect >()->Add( p.GetAttribute< std::string >( "name" ), p.GetAttribute< unify::Path >( "source" ), doc.GetPath().DirectoryOnly() ) );
 			}	 
 			else if ( p.IsTagName( "inf" ) || p.IsTagName( "sup" ) || p.IsTagName( "center" ) || p.IsTagName( "offset" ) )
 			{
-				params.Set( p.GetTagName(), unify::V3< float >( p.GetText() ) );
+				params.Set( p.GetName(), unify::V3< float >( p.GetText() ) );
 			}
 			//else if ( p.IsTagName( " std::vector< unify::Color > diffuses = parameters.Get< std::vector< unify::Color > >( "diffuses", std::vector< unify::Color >() );
 			else if ( p.IsTagName( "count" ) )
 			{
-				params.Set( p.GetTagName(), unify::Cast< unsigned int >( p.GetText() ) );
+				params.Set( p.GetName(), unify::Cast< unsigned int >( p.GetText() ) );
 			}
 			else if ( p.IsTagName( "diffuse" ) || p.IsTagName( "specular" ) )
 			{
-				params.Set( p.GetTagName(), unify::Color( p.GetText() ) );
+				params.Set( p.GetName(), unify::Color( p.GetText() ) );
 			}
 			else if( p.IsTagName( "segments" ) )
 			{
-				params.Set( p.GetTagName(), unify::Cast< unsigned int >( p.GetText() ) );
+				params.Set( p.GetName(), unify::Cast< unsigned int >( p.GetText() ) );
 			}
 			else if( p.IsTagName( "size3" ) )
 			{
-				params.Set( p.GetTagName(), unify::Size3< float >( p.GetText() ) );
+				params.Set( p.GetName(), unify::Size3< float >( p.GetText() ) );
 			}
 			else if( p.IsTagName( "texturemode" ) )
 			{
-				params.Set( p.GetTagName(), TextureMode::FromString( p.GetText() ) );
+				params.Set( p.GetName(), TextureMode::FromString( p.GetText() ) );
 			}
 			else if( p.IsTagName( "radius" ) || p.IsTagName( "majorradius" ) || p.IsTagName( "minorradius" ) || p.IsTagName( "definition" ) || p.IsTagName( "size1" ) || p.IsTagName( "height" ) )
 			{
-				params.Set( p.GetTagName(), unify::Cast< float >( p.GetText() ) );
+				params.Set( p.GetName(), unify::Cast< float >( p.GetText() ) );
 			}
 			else if ( p.IsTagName( "bufferusage" ) )
 			{
-				params.Set( p.GetTagName(), BufferUsage::FromString( p.GetText() ) );
+				params.Set( p.GetName(), BufferUsage::FromString( p.GetText() ) );
 			}
 			else if( p.IsTagName( "texarea" ) )
 			{
-				params.Set( p.GetTagName(), unify::TexArea( p.GetText() ) );
+				params.Set( p.GetName(), unify::TexArea( p.GetText() ) );
 			}
 			else if( p.IsTagName( "caps" ) )
 			{
-				params.Set( p.GetTagName(), unify::Cast< bool >( p.GetText() ) );
+				params.Set( p.GetName(), unify::Cast< bool >( p.GetText() ) );
 			}
 		}
 		shape = CreateShape( m_game->GetOS()->GetRenderer( 0 ), params );

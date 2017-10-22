@@ -13,7 +13,7 @@ namespace me
 		class DeviceFailure : public unify::Exception
 		{
 		public:
-			DeviceFailure( const std::string & deviceName, const std::string & error )
+			DeviceFailure( std::string deviceName, std::string error )
 				: unify::Exception( "Device \"" + deviceName + "\" failure: " + error )
 			{
 			}

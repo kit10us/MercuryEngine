@@ -18,7 +18,7 @@ TexCoords::TexCoords( float u, float v )
 {
 }
 
-TexCoords::TexCoords( const std::string & text )
+TexCoords::TexCoords( std::string text )
 {
 	std::vector< float > split = Split< float >( text, ',' );
     u = split[ 0 ];

@@ -13,11 +13,11 @@ namespace rm
 		class ResourceNotFound : public std::exception
 		{
 		public:
-			ResourceNotFound( const std::string & name )
+			ResourceNotFound( std::string name )
 				: std::exception( std::string( "Resource \"" + name + "\" not found!" ).c_str() )
 			{
 			}
-			ResourceNotFound( const std::string & name, const std::string & type )
+			ResourceNotFound( std::string name, std::string type )
 				: std::exception( std::string( "Resource \"" + name + "\" of type \"" + type + "\" not found!" ).c_str() )
 			{
 			}

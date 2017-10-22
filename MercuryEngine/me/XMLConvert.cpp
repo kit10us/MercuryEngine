@@ -4,7 +4,7 @@
 #include <me/XMLConvert.h>
 #include <unify/color.h>
 
-bool me::XMLConvert( const qxml::Element * element, unify::V3< float > & v3, const std::string & postFix )
+bool me::XMLConvert( const qxml::Element * element, unify::V3< float > & v3, std::string postFix )
 {
 	if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix ) )
 	{
@@ -25,7 +25,7 @@ bool me::XMLConvert( const qxml::Element * element, unify::V3< float > & v3, con
 	return true;
 }
 
-bool me::XMLConvert( const qxml::Element * element, unify::Quaternion & q, const std::string & postFix )
+bool me::XMLConvert( const qxml::Element * element, unify::Quaternion & q, std::string postFix )
 {
 	// Rotation about an axis...
 	if( element->HasAttributes( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix ) )
@@ -66,7 +66,7 @@ bool me::XMLConvert( const qxml::Element * element, unify::Quaternion & q, const
 	return true;
 }
 
-bool me::XMLConvert( const qxml::Element * element, unify::Matrix & matrix, const std::string & postFix )
+bool me::XMLConvert( const qxml::Element * element, unify::Matrix & matrix, std::string postFix )
 {
 	unify::V3< float > scale( 1, 1, 1 );
 	unify::Quaternion rotation( unify::QuaternionIdentity() );
@@ -106,7 +106,7 @@ bool me::XMLConvert( const qxml::Element * element, unify::Matrix & matrix, cons
 	}
 }
 
-bool me::XMLConvert( const qxml::Element * element, unify::TexCoords & texCoords, const std::string & postFix )
+bool me::XMLConvert( const qxml::Element * element, unify::TexCoords & texCoords, std::string postFix )
 {
 	if( element->HasAttributes( "u" + postFix + ",v" + postFix ) )
 	{
@@ -125,7 +125,7 @@ bool me::XMLConvert( const qxml::Element * element, unify::TexCoords & texCoords
 	return true;
 }
 
-bool me::XMLConvert( const qxml::Element * element, unify::ColorUnit & color, const std::string & postFix )
+bool me::XMLConvert( const qxml::Element * element, unify::ColorUnit & color, std::string postFix )
 {
 	if( element->HasAttributes( "red" + postFix + ",green" + postFix + ",blue" + postFix ) )
 	{

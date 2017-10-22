@@ -25,7 +25,7 @@ Variant::Variant( const Variant & vVar )
 }
 
 // String Type Constructor...
-Variant::Variant( const std::string & sSource )
+Variant::Variant( std::string sSource )
 {
 	data.m_pData = 0;
 
@@ -74,7 +74,7 @@ Variant::Variant( void* pData, TYPE type, bool isReference )
 VarBool::VarBool( const bool bBool ) : Variant( bBool ){}
 VarInteger::VarInteger( const int iInt ) : Variant( iInt ){}
 VarFloat::VarFloat( const float fFloat ) : Variant( fFloat ){}
-VarString::VarString( const std::string & sString ) : Variant( sString ){}
+VarString::VarString( std::string sString ) : Variant( sString ){}
 VarReference::VarReference( void* pData, TYPE type ) : Variant( pData, type, true ){}
 VarBoolReference::VarBoolReference( const bool * pBool ) : VarReference( (void*)pBool, Type_Bool ){}
 VarIntegerReference::VarIntegerReference( const int * pInt ) : VarReference( (void*)pInt, Type_Integer ){}
@@ -95,7 +95,7 @@ const std::string Variant::TypeName( const TYPE type )
 	}
 }
 
-const Variant::TYPE Variant::TypeEnum( const std::string & sType )
+const Variant::TYPE Variant::TypeEnum( std::string sType )
 {
 	if( unify::StringIs( sType, "BOOL" ) ) return Type_Bool;
 	else if( unify::StringIs( sType, "INTEGER" ) ) return Type_Integer;
@@ -171,7 +171,7 @@ void Variant::Free()
 
 // Attempt to resolve a string into a variable.
 // Strings need to be wrapped in quotes "string". Else they are considered Resolveable values.
-Variant * Variant::Set( const std::string & sSource )
+Variant * Variant::Set( std::string sSource )
 {
 	if( m_isConstant ) return this;
 
@@ -264,7 +264,7 @@ Variant * Variant::SetReference( void * pVoid, TYPE type )
 	return this;
 }
 
-Variant * Variant::SetString( const std::string & sSource )
+Variant * Variant::SetString( std::string sSource )
 {
 	if( m_isConstant ) return this;
 

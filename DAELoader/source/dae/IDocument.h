@@ -16,7 +16,7 @@ namespace dae
 	{
 	public:
 		virtual ~IDocument(){}
-		virtual const std::string & GetVersion() const = 0;
+		virtual std::string GetVersion() const = 0;
 
 		/// <summary>
 		/// Returns an effect which can best represent the shading's intention.
@@ -31,8 +31,8 @@ namespace dae
 		virtual const class LibraryControllers & GetLibraryControllers() const = 0;
 		virtual const class LibraryVisualScenes & GetLibraryVisualScenes() const = 0;
 		virtual const class Scene & GetScene() const = 0;
-		virtual void Add( const std::string & name, DocumentNode * node ) = 0;
-		virtual const DocumentNode * Find( const std::string & name ) const = 0;
+		virtual void Add( std::string name, DocumentNode * node ) = 0;
+		virtual const DocumentNode * Find( std::string name ) const = 0;
 		virtual me::render::IRenderer * GetRenderer() = 0;
 	};
 }

@@ -29,15 +29,15 @@ IElement::ptr Layer::FindElement( std::string name )
 	return itr->second;
 }
 
-void Layer::UpdateLayout( UpdateParams params, unify::Size< float > area )
+void Layer::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 {
 	if ( ! IsEnabled() ) return;
 
-	Element::UpdateLayout( params, area );
+	Element::UpdateLayout( params, parentArea );
 
 	for( auto && element : m_elements )
 	{
-		element->UpdateLayout( params, GetActualSize() );
+		element->UpdateLayout( params, { parentArea.UL(), GetActualSize() } );
 	}
 }
 

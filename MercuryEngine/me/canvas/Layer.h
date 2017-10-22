@@ -29,7 +29,7 @@ namespace me
 
 			IElement::ptr FindElement( std::string name );
 
-			void UpdateLayout( UpdateParams params, unify::Size< float > area );
+			void UpdateLayout( UpdateParams params, unify::Rect< float > area );
 			void Update( UpdateParams params ) override;
 			void Render( render::Params params ) override;
 			void OnSuspend() override;

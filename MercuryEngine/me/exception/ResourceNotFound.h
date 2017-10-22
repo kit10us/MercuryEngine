@@ -13,11 +13,11 @@ namespace me
 		class ResourceNotFound : public unify::Exception 
 		{
 		public:
-			ResourceNotFound( const std::string & name )
+			ResourceNotFound( std::string name )
 				: unify::Exception( "Resource \"" + name + "\" not found!" )
 			{
 			}
-			ResourceNotFound( const std::string & name, const std::string & type )
+			ResourceNotFound( std::string name, std::string type )
 				: unify::Exception( "Resource \"" + name + "\" of type \"" + type + "\" not found!" )
 			{
 			}

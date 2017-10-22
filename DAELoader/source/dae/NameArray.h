@@ -20,9 +20,9 @@ namespace dae
 		NameArray( const qxml::Element * node );
 
 		int GetCount() const;
-		const std::string & GetID() const;
-		const std::string & GetName() const;
-		const std::string & GetStringContents() const;
+		std::string GetID() const;
+		std::string GetName() const;
+		std::string GetStringContents() const;
 		const std::vector< std::string > & GetArrayContents() const;
 
 	private:

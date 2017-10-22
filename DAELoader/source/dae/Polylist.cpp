@@ -28,7 +28,7 @@ Polylist::Polylist( IDocument & document, const qxml::Element * node )
 	}
 	else
 	{
-		throw unify::Exception( "\"" + node->GetTagName() + "\" is not a supported primitive type for Collada documents!" );
+		throw unify::Exception( "\"" + node->GetName() + "\" is not a supported primitive type for Collada documents!" );
 	}
 
 	for ( const qxml::Element * childNode = node->GetFirstChild(); childNode; childNode = childNode->GetNext() )
@@ -48,7 +48,7 @@ Polylist::Polylist( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & Polylist::GetName() const
+std::string Polylist::GetName() const
 {
 	return m_name;
 }
@@ -58,7 +58,7 @@ int Polylist::GetCount() const
 	return m_count;
 }
 
-const std::string & Polylist::GetMaterial() const
+std::string Polylist::GetMaterial() const
 {
 	return m_material;
 }

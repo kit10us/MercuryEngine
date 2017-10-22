@@ -41,13 +41,14 @@ namespace unify
 		virtual void Close();		
 		virtual unsigned int Read( void* pDest, unsigned int uLength );
 		virtual unsigned int ReadPack( void* pDest, unsigned int uLength );
-		virtual bool Write( const void* pSrc, unsigned int uLength );
-		virtual bool WritePack( const void* pSrc );
+		virtual void Write( const void* pSrc, unsigned int uLength );
+		virtual void WritePack( const void* pSrc );
 		virtual bool Seek( StreamSeekType seek, int iOffset = 0 );
-		void SeFlags( unsigned int uFlags );
-		unsigned int GeFlags();
+		void SetFlags( unsigned int uFlags );
+		unsigned int GetFlags();
 		bool EndOfStream();
 		unsigned int BytesWaiting();
+		bool IsOpen() const;
 
 	protected:
 		FILE * m_pStream;
@@ -55,6 +56,7 @@ namespace unify
 		unsigned int m_uFlags;
 		bool m_bEndOfStream;
 		unsigned int m_uBytesWaiting;
+		bool m_isOpen;
 	};
 }
 

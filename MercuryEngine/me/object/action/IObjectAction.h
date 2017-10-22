@@ -12,6 +12,9 @@ namespace me
 	{
 		namespace action
 		{
+			/// <summary>
+			/// Actions that are performed on an object.
+			/// </summary>
 			class IObjectAction
 			{
 			public:

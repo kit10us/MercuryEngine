@@ -32,8 +32,8 @@ namespace unify
 		/// </summary>
 		void Reset( const FrameSet * frameSet = nullptr );
 
-		bool Exists( const std::string & name ) const;
-		size_t Find( const std::string & name ) const;
+		bool Exists( std::string name ) const;
+		size_t Find( std::string name ) const;
 		const Matrix & Model( size_t index ) const;
 		const Matrix & Local( size_t index ) const;
 		const Matrix & OriginalModel( size_t ) const;

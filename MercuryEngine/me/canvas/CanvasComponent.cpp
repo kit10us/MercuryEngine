@@ -43,7 +43,7 @@ void CanvasComponent::OnUpdate( UpdateParams params )
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
 	m_layer->Update( UpdateParams{ params.renderer, myRenderInfo } );
-	m_layer->UpdateLayout( UpdateParams{ params.renderer, myRenderInfo }, m_size );
+	m_layer->UpdateLayout( UpdateParams{ params.renderer, myRenderInfo }, { { 0, 0 }, m_size } );
 }
 
 void CanvasComponent::OnRender( RenderGirl & renderGirl )

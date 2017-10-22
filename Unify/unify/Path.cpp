@@ -12,7 +12,7 @@ Path::Path()
 {
 }
 
-Path::Path( const std::string & path )
+Path::Path( std::string path )
 : m_path( path )
 {
 }
@@ -214,7 +214,7 @@ bool Path::IsDirectory() const
 	}
 }
 
-bool Path::IsExtension( const std::string & extension ) const
+bool Path::IsExtension( std::string extension ) const
 {
 	std::string leftExtension = ExtensionOnly();
 	if ( leftExtension.empty() )

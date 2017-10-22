@@ -26,17 +26,17 @@ Source::Source( IDocument & document, const qxml::Element * node )
 		}
 		else
 		{
-			throw Exception_NotSupported( childNode->GetTagName() );
+			throw Exception_NotSupported( childNode->GetName() );
 		}
 	}
 }
 
-const std::string & Source::GetID() const
+std::string Source::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Source::GetName() const
+std::string Source::GetName() const
 {
 	return m_name;
 }

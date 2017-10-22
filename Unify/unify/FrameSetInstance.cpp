@@ -64,12 +64,12 @@ void FrameSetInstance::Reset( const FrameSet * frameSet )
 	m_dirty = false;
 }
 
-bool FrameSetInstance::Exists( const std::string & name ) const
+bool FrameSetInstance::Exists( std::string name ) const
 {
 	return m_frameSet->Exists( name );
 }
 
-size_t FrameSetInstance::Find( const std::string & name ) const
+size_t FrameSetInstance::Find( std::string name ) const
 {
 	return m_frameSet->Find( name );
 }

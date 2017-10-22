@@ -13,7 +13,7 @@ namespace me
 		class Startup : public unify::Exception 
 		{
 		public:
-			Startup( const std::string & error )
+			Startup( std::string error )
 				: unify::Exception( error )
 			{
 			}

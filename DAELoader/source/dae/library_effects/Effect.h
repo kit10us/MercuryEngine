@@ -17,8 +17,8 @@ namespace dae
 	public:
 		Effect( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		const ProfileCOMMON * GetProfileCOMMON() const;
 
 	private:

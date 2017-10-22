@@ -29,7 +29,7 @@ Triangles::Triangles( IDocument & document, const qxml::Element * node )
 	m_vertexFormat.reset( new me::render::VertexDeclaration( format ) );
 }
 
-const std::string & Triangles::GetName() const
+std::string Triangles::GetName() const
 {
 	return m_name;
 }
@@ -39,7 +39,7 @@ int Triangles::GetCount() const
 	return m_count;
 }
 
-const std::string & Triangles::GetMaterial() const
+std::string Triangles::GetMaterial() const
 {
 	return m_material;
 }

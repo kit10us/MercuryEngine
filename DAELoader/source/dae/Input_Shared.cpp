@@ -40,12 +40,12 @@ const int Input_Shared::GetOffset() const
 	return m_offset;
 }
 
-const std::string & Input_Shared::GetSemantic() const
+std::string Input_Shared::GetSemantic() const
 {
 	return m_semantic;
 }
 
-const std::string & Input_Shared::GetSource() const
+std::string Input_Shared::GetSource() const
 {
 	return m_source;
 }

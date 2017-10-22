@@ -28,17 +28,17 @@ Image::Image( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & Image::GetID() const
+std::string Image::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Image::GetSID() const
+std::string Image::GetSID() const
 {
 	return m_sid;
 }
 
-const std::string & Image::GetName() const
+std::string Image::GetName() const
 {
 	return m_name;
 }

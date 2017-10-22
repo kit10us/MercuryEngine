@@ -23,7 +23,7 @@ RowColumn<T>::RowColumn( const RowColumn< T > & rc )
 }
 
 template< typename T >
-RowColumn< T >::RowColumn( const std::string & text )
+RowColumn< T >::RowColumn( std::string text )
 {
 	std::vector< T > split = Split< T >( text, ',' );
     row = split[ 0 ];

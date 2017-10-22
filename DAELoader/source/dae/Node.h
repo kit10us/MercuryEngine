@@ -32,9 +32,9 @@ namespace dae
 
 		void Append( std::shared_ptr< Node > node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
-		const std::string & GetSID() const;
+		std::string GetID() const;
+		std::string GetName() const;
+		std::string GetSID() const;
 		const unify::Matrix & GetMatrix() const;
 		unify::Matrix GetFinalMatrix() const;
 		const std::vector< std::shared_ptr< InstanceSet > > & GetInstances() const;

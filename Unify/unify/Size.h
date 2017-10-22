@@ -19,7 +19,7 @@ namespace unify
 		Size();
 		Size( T width, T height );
 		Size( const Size< T > & size );
-		explicit Size( const std::string & text );
+		explicit Size( std::string text );
 				
 		void Zero();
 
@@ -53,6 +53,9 @@ namespace unify
         }
 
 		std::string ToString() const;
+
+		T Width() const;
+		T Height() const;
 
         T Units() const;
 

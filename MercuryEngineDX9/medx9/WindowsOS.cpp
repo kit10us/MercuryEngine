@@ -288,12 +288,12 @@ void WindowsOS::Shutdown()
 {
 }
 
-void WindowsOS::DebugWrite( const std::string & text )
+void WindowsOS::DebugWrite( std::string text )
 {
 	OutputDebugStringA( text.c_str() );
 }
 
-void WindowsOS::DebugWriteLine( const std::string & line )
+void WindowsOS::DebugWriteLine( std::string line )
 {
 	DebugWrite( line + "\n" );
 }

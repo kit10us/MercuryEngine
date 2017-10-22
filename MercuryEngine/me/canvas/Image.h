@@ -16,15 +16,13 @@ namespace me
 		public:
 			Image( me::IGame * game, render::Effect::ptr effect, Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 
-			unify::Size< float > GetSize( unify::Size< float > area ) const override;
+			unify::Size< float > GetContentSize() const override;
 		
-			void Build( unify::Size< float > area );
-
 			void SetScale( unify::V2< float > scale );
 			
 			unify::V2< float > GetScale() const;
 
-			void UpdateLayout( UpdateParams params, unify::Size< float > area ) override;
+			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
 
 			void Update( UpdateParams params ) override;
 		

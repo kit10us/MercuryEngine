@@ -22,7 +22,7 @@ namespace unify
 		V2( T x, T y );
 		V2( const V2< T > & vec );
 		explicit V2( const Size< T > & size );
-        explicit V2( const std::string & text );
+        explicit V2( std::string text );
 		
 		// Conversion operators...
 		V2< T > & operator = ( const Size< T > & size );

@@ -17,7 +17,7 @@ namespace dae
 	public:
 		BindMaterial_TechniqueCommon( const qxml::Element * node );
 		const std::vector< std::shared_ptr< InstanceMaterial > > & GetInstanceMaterial() const;
-		const InstanceMaterial & GetInstanceMaterial( const std::string & name ) const;
+		const InstanceMaterial & GetInstanceMaterial( std::string name ) const;
 
 	private:
 		std::vector< std::shared_ptr< InstanceMaterial > > m_instance_material;

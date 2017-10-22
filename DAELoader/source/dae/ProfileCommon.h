@@ -20,10 +20,10 @@ namespace dae
 	public:
 		ProfileCOMMON( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
+		std::string GetID() const;
 		const Profile_Technique & GetTechnique() const;
 		const std::vector< std::shared_ptr< NewParam > > & GetNewParams() const;
-		const NewParam * FindNewParam( const std::string & sid ) const;
+		const NewParam * FindNewParam( std::string sid ) const;
 
 	private:
 		std::string m_id;

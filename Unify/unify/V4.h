@@ -23,7 +23,7 @@ namespace unify
 		V4( const V4< T > & v4 );
 		V4( const T arr[ 4 ] );
 		V4( const V3< T > & v3, float w = 1.0f );
-        explicit V4( const std::string & text );
+        explicit V4( std::string text );
 
 		void Zero();
 		T Length() const;

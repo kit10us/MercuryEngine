@@ -19,10 +19,10 @@ namespace me
 			typedef std::shared_ptr< Animation > ptr;
 			typedef std::shared_ptr< const Animation > const_ptr;
 
-			Animation( const std::string & name, unify::Seconds duration );
+			Animation( std::string name, unify::Seconds duration );
 			~Animation();
 
-			const std::string & Name() const;
+			std::string Name() const;
 			unify::Seconds Duration() const;
 			bool Loops() const;
 			void AddScaleKey( size_t boneIndex, const ScaleKey & key );

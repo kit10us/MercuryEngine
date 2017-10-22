@@ -20,8 +20,8 @@ namespace dae
 		Input_Shared( const qxml::Element * node );
 
 		const int GetOffset() const;
-		const std::string & GetSemantic() const;
-		const std::string & GetSource() const;
+		std::string GetSemantic() const;
+		std::string GetSource() const;
 		const unify::Optional< int > & GetSet() const;
 		size_t GetStride() const;
 			

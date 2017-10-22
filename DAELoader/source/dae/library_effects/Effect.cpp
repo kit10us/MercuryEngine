@@ -19,12 +19,12 @@ dae::Effect::Effect( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & dae::Effect::GetID() const
+std::string dae::Effect::GetID() const
 {
 	return m_id;
 }
 
-const std::string & dae::Effect::GetName() const
+std::string dae::Effect::GetName() const
 {
 	return m_name;
 }

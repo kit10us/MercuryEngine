@@ -13,7 +13,7 @@ namespace me
 		class OutOfBounds : public unify::Exception 
 		{
 		public:
-			OutOfBounds( const std::string & error )
+			OutOfBounds( std::string error )
 				: unify::Exception( error )
 			{
 			}

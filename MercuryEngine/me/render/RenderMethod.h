@@ -23,7 +23,7 @@ namespace me
 				TriangleStrip
 			};
 
-			static TYPE StringToPrimitiveType( const std::string & type );
+			static TYPE StringToPrimitiveType( std::string type );
 		};
 
 		const unsigned int NoEffect = std::numeric_limits< unsigned int >::max();

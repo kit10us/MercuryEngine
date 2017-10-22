@@ -100,7 +100,7 @@ ColorUnit::ColorUnit( const ColorUnit & color )
 	component.b = color.component.b;
 }
 
-ColorUnit::ColorUnit( const std::string &text, Order order, float defaultAlpha )
+ColorUnit::ColorUnit( std::string text, Order order, float defaultAlpha )
 {
 	component.r = 0;
 	component.g = 0;

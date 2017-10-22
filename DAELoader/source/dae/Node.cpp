@@ -188,17 +188,17 @@ void Node::Append( std::shared_ptr< Node > node )
 	}
 }
 
-const std::string & Node::GetID() const
+std::string Node::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Node::GetName() const
+std::string Node::GetName() const
 {
 	return m_name;
 }
 
-const std::string & Node::GetSID() const
+std::string Node::GetSID() const
 {
 	return m_sid;
 }

@@ -10,7 +10,7 @@ namespace me
 		class NotImplemented : public unify::Exception
 		{
 		public:
-			NotImplemented( const std::string & what = std::string() )
+			NotImplemented( std::string what = std::string() )
 				: Exception( std::string( "Not implemented: " ) + what )
 			{
 			}

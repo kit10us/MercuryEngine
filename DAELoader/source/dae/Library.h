@@ -19,12 +19,12 @@ namespace dae
 	class Library : public DocumentNode
 	{
 	public:
-		Library( IDocument & document, const qxml::Element * node, const std::string & tagName );
+		Library( IDocument & document, const qxml::Element * node, std::string tagName );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		const std::vector< T * > & Ordered() const;
-		const T * Find( const std::string & name ) const;
+		const T * Find( std::string name ) const;
 
 	private:
 		std::string m_id;
@@ -37,7 +37,7 @@ namespace dae
 	};
 
 	template< typename T >
-	Library< T >::Library( IDocument & document, const qxml::Element * node, const std::string & tagName )
+	Library< T >::Library( IDocument & document, const qxml::Element * node, std::string tagName )
 		: DocumentNode( document, node )
 		, m_id( node->GetAttributeElse( "id", std::string() ) )
 		, m_name( node->GetAttributeElse( "name", std::string() ) )
@@ -59,13 +59,13 @@ namespace dae
 	}
 
 	template< typename T >
-	const std::string & Library< T >::GetID() const
+	std::string Library< T >::GetID() const
 	{
 		return m_id;
 	}
 
 	template< typename T >
-	const std::string & Library< T >::GetName() const
+	std::string Library< T >::GetName() const
 	{
 		return m_name;
 	}
@@ -77,7 +77,7 @@ namespace dae
 	}
 
 	template< typename T >
-	const T * Library< T >::Find( const std::string & name ) const
+	const T * Library< T >::Find( std::string name ) const
 	{
 		std::string realName;
 			

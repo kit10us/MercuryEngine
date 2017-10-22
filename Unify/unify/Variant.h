@@ -27,16 +27,16 @@ namespace unify
 		Variant(); 
 		explicit Variant( const Variant & var );
 		explicit Variant( const int source );
-		explicit Variant( const std::string & source );
+		explicit Variant( std::string source );
 		explicit Variant( const float source );
 		Variant( void * pData, TYPE type, bool bReference );
 		~Variant();
 
 		Variant & operator=( const Variant & );
-		Variant * Set( const std::string & sSource );
+		Variant * Set( std::string sSource );
 		Variant * Set( const void * pVoid, TYPE type );
 		Variant * SetReference( void * pVoid, TYPE type );
-		Variant * SetString( const std::string & sSource );
+		Variant * SetString( std::string sSource );
 		Variant * SetInt( const int iInt );
 		Variant * SetBool( const bool bBool );
 		Variant * SetFloat( const float fFloat );
@@ -54,7 +54,7 @@ namespace unify
 		const bool Empty() const;
 		operator std::string();
 		static const std::string TypeName( const TYPE type );
-		static const TYPE TypeEnum( const std::string & sType );
+		static const TYPE TypeEnum( std::string sType );
 
 	private:
 		TYPE m_type;
@@ -79,7 +79,7 @@ namespace unify
 	{public:VarFloat( const float fFloat );};
 
 	class VarString : public Variant
-	{public:VarString( const std::string & sString );};
+	{public:VarString( std::string sString );};
 
 	class VarReference : public Variant
 	{public:VarReference( void * pData, TYPE type );};

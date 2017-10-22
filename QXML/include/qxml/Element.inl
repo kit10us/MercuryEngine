@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 template< typename T >
-T Element::GetAttribute( const std::string & attribute ) const
+T Element::GetAttribute( std::string attribute ) const
 {
 	return GetAttribute( attribute ).get()->Get< T >();
 }
 
 template< typename T >
-T Element::GetAttributeElse( const std::string & attribute, T value ) const
+T Element::GetAttributeElse( std::string attribute, T value ) const
 {
 	if( HasAttributes( attribute ) )
 	{

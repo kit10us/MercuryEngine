@@ -30,7 +30,7 @@ void MainScene::OnStart()
 
 	struct Vertex
 	{
-		float x, y, z;
+		 float x, y, z;
 		float u, v;
 	};
 

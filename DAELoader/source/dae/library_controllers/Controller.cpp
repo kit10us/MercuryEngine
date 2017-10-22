@@ -20,12 +20,12 @@ Controller::Controller( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & Controller::GetID() const
+std::string Controller::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Controller::GetName() const
+std::string Controller::GetName() const
 {
 	return m_name;
 }

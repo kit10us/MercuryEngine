@@ -33,7 +33,7 @@ namespace dae
 
 		NewParam( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetSID() const; // Required.
+		std::string GetSID() const; // Required.
 		Type GetType() const; // Meta (not in the file explicitly).
 		const Surface & GetSurface() const;
 		const Sampler2D & GetSampler2D() const;

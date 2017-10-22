@@ -1,8 +1,8 @@
 Initializing: 
-  name:    C:\dev\ws\MercuryTests\04tests_Scene2D\04Test04-Image\..\..\..\output\v140_Debug\04Test04-Image\04Test04-Image.exe
-  program: C:\dev\ws\MercuryTests\04tests_Scene2D\output\v140_Debug\04Test04-Image\04Test04-Image.exe
+  name:    C:\dev\ws\MercuryTests\04tests_Scene2D\04Test01-TextElement\..\..\..\output\v140_Debug\04Test01-TextElement\04Test01-TextElement.exe
+  program: C:\dev\ws\MercuryTests\04tests_Scene2D\output\v140_Debug\04Test01-TextElement\04Test01-TextElement.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Sat Oct 21 12:59:40 2017
+  time:    Wed Nov  1 12:53:47 2017
 
   Loading setup "setup.xml"...
   Loading setup "setup_base.xml"...
@@ -25,7 +25,7 @@ OnAfterStartup Begin
   OnAfterStartup "ActionFactory" Begin
   OnAfterStartup "ActionFactory" Done
 OnAfterStartup Done
-total startup time: 0.467980s
+total startup time: 0.550817s
 Creating Main Scene
 Starting scene "main" Begin
   Component "ObjectAllocatorComponent" OnBeforeStart Begin
@@ -39,11 +39,6 @@ Starting scene "main" Begin
   PixelShader manager: adding "texture2D" (../test_dataDX11_common/shaders/texture2D_trans.xml).
   VertexShader manager: adding "texture2D" (../test_dataDX11_common/shaders/texture2d_trans.xml).
   Texture manager: adding "font2" (../test_data/images/font2.png).
-  Effect manager: adding "heart" (../test_data/effects/heart.effect).
-  PixelShader manager: adding "texture2d_trans" (../test_dataDX11_common/shaders/texture2d_trans.xml).
-  VertexShader manager: adding "texture2d_trans" (../test_dataDX11_common/shaders/texture2d_trans.xml).
-  Texture manager: adding "heart01" (../test_data/images/heart01.png).
-  Texture manager: adding "heart02" (../test_data/images/heart02.png).
   Scene OnStart End
   Component "ObjectAllocatorComponent" OnAfterStart Begin
   Component "ObjectAllocatorComponent" OnAfterStart Done
@@ -56,6 +51,6 @@ OnDetach
   Detaching SceneManager
   Detaching ActionFactory
 OnDetachDone
-  time: Sat Oct 21 12:59:48 2017
+  time: Wed Nov  1 12:54:07 2017
 
-  frames: 3339, total delta: 0.001928s,  average fps:518.617188
+  frames: 15110, total delta: 0.001285s,  average fps:778.402344

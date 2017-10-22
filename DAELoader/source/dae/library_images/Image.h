@@ -17,9 +17,9 @@ namespace dae
 	public:
 		Image( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetSID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetSID() const;
+		std::string GetName() const;
 		me::render::ITexture::ptr GetTexture() const;
 
 	private:

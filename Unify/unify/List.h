@@ -6,32 +6,11 @@
 #pragma once
 
 #include <unify/Unify.h>
+#include <unify/TLink.h>
 #include <string>
 
 namespace unify
 {
-	typedef unsigned int		QTID;
-	#define QTID_INVALID		unsigned int_MAX
-
-	// A link within the chain of the Link List...
-	template< typename T >
-	class TLink
-	{
-	public:
-		T * m_pItem;
-		unsigned int m_uFlags;		// Extra flags for item	(optional)
-		std::string m_sName;		// Name in static list	(optional)
-		float m_fSortValue;	// sort value for list	(optional)
-
-		TLink< T > * m_pPrevious;
-		TLink< T > * m_pNext;
-
-		~TLink();
-		TLink();
-		TLink( T * pItemIn, const std::string & sNameIn );
-	};
-
-
 	// For traversal
 	template< typename T >
 	class Query
@@ -40,8 +19,8 @@ namespace unify
 		Query();
 
 		TLink< T > * m_pCurrent;
-		const std::string & Name();
-		float SortValue();
+		std::string Name();
+		float SortValue();		
 	};
 
 

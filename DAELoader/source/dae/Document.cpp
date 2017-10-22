@@ -6,7 +6,7 @@
 
 using namespace dae;
 
-Document::Document( me::Game * game, const unify::Path & filePath, dae::util::IEffectSolver * effectSolver )
+Document::Document( me::Game * game, unify::Path filePath, dae::util::IEffectSolver * effectSolver )
 	: m_game{ game }
 	, m_effectSolver( effectSolver )
 {
@@ -148,7 +148,7 @@ Document::Document( me::Game * game, const unify::Path & filePath, dae::util::IE
 	}
 }
 
-const std::string & Document::GetVersion() const
+std::string Document::GetVersion() const
 {
 	return m_version;
 }
@@ -208,7 +208,7 @@ const Scene & Document::GetScene() const
 	return *m_scene;
 }
 
-void Document::Add( const std::string & name, DocumentNode * node )
+void Document::Add( std::string name, DocumentNode * node )
 {
 	std::map< const std::string, DocumentNode * >::const_iterator itr = m_nodes.find( name );
 	if ( itr != m_nodes.end() )
@@ -221,7 +221,7 @@ void Document::Add( const std::string & name, DocumentNode * node )
 	}
 }
 
-const DocumentNode * Document::Find( const std::string & name ) const
+const DocumentNode * Document::Find( std::string name ) const
 {
 	std::string fixedName;
 	if ( name.at( 0 ) == '#' )

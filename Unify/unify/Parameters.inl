@@ -1,5 +1,5 @@
 template< typename T_Type > 
-T_Type Parameters::Get( const std::string & name ) const
+T_Type Parameters::Get( std::string name ) const
 {
     ParameterMap::const_iterator itr = m_parameters.find( name );
     if ( itr == m_parameters.end() )
@@ -15,7 +15,7 @@ T_Type Parameters::Get( const std::string & name ) const
 }
 
 template< typename T_Type > 
-T_Type Parameters::Get( const std::string & name, const T_Type & defaultValue ) const
+T_Type Parameters::Get( std::string name, const T_Type & defaultValue ) const
 {
     ParameterMap::const_iterator itr = m_parameters.find( name );
     if( itr == m_parameters.end() )
@@ -31,7 +31,7 @@ T_Type Parameters::Get( const std::string & name, const T_Type & defaultValue ) 
 }
 
 template< typename T_Type > 
-Parameters & Parameters::Default( const std::string & name, const T_Type & value )
+Parameters & Parameters::Default( std::string name, const T_Type & value )
 {
     if( m_parameters.find( name ) == m_parameters.end() )
     {
@@ -41,7 +41,7 @@ Parameters & Parameters::Default( const std::string & name, const T_Type & value
 }
 
 template< typename T_Type > 
-Parameters & Parameters::Set( const std::string & name, const T_Type & value )
+Parameters & Parameters::Set( std::string name, const T_Type & value )
 {
     m_parameters[ name ] = static_cast<T_Type>(value);
     return *this;

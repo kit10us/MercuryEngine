@@ -11,18 +11,18 @@ namespace dae
 	class Exception_MissingCOLLADA : public unify::Exception
 	{
 	public:
-		Exception_MissingCOLLADA( const std::string & filename );
+		Exception_MissingCOLLADA( std::string filename );
 	};
 
 	class Exception_NotSupported : public unify::Exception
 	{
 	public:
-		Exception_NotSupported( const std::string & feature );
+		Exception_NotSupported( std::string feature );
 	};
 
 	class Exception_MissingChildElement : public unify::Exception
 	{
 	public:
-		Exception_MissingChildElement( const std::string & parent, const std::string & child );
+		Exception_MissingChildElement( std::string parent, std::string child );
 	};
 }

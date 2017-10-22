@@ -33,43 +33,43 @@ Pair::Pair( const Pair & pair )
 {
 }
 
-Pair::Pair( const std::string & name, Value::const_ptr value )
+Pair::Pair( std::string name, Value::const_ptr value )
 	: m_name( name )
 	, m_value( value.get() == nullptr ? std::make_shared< Null >() : value->Clone() )
 {
 }
 
-Pair::Pair( const std::string & name, const Value & value )
+Pair::Pair( std::string name, const Value & value )
 	: m_name( name )
 	, m_value( value.Clone() )
 {
 }
 
-Pair::Pair( const std::string & name, std::string value )
+Pair::Pair( std::string name, std::string value )
 	: m_name( name )
 	, m_value( std::make_shared< String >( value) )
 {
 }
 
-Pair::Pair( const std::string & name, const char * value )
+Pair::Pair( std::string name, const char * value )
 	: m_name( name )
 	, m_value( std::make_shared< String >( std::string( value ) ) )
 {
 }
 
-Pair::Pair( const std::string & name, double value )
+Pair::Pair( std::string name, double value )
 	: m_name( name )
 	, m_value( std::make_shared< Number >( value ) )
 {
 }
 
-Pair::Pair( const std::string & name, int value )
+Pair::Pair( std::string name, int value )
 	: m_name( name )
 	, m_value( std::make_shared< Number >( value ) )
 {
 }
 
-Pair::Pair( const std::string & name, bool value )
+Pair::Pair( std::string name, bool value )
 	: m_name( name )
 {
 	if( value == true )
@@ -82,7 +82,7 @@ Pair::Pair( const std::string & name, bool value )
 	}
 }
 
-const std::string & Pair::GetName() const
+std::string Pair::GetName() const
 {
 	return m_name;
 }

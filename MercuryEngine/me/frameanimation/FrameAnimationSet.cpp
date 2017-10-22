@@ -19,7 +19,7 @@ void AnimationSet::AddAnimation( Animation::ptr animation )
 	m_animations.insert( std::pair< std::string, Animation::ptr >( animation->Name(), animation ) );
 }
 
-Animation::ptr AnimationSet::FindAnimation( const std::string & name )
+Animation::ptr AnimationSet::FindAnimation( std::string name )
 {
 	std::map< std::string, Animation::ptr >::iterator itr = m_animations.find( name );
 	if ( itr == m_animations.end() )
@@ -29,7 +29,7 @@ Animation::ptr AnimationSet::FindAnimation( const std::string & name )
 	return itr->second;
 }
 
-const Animation::ptr AnimationSet::FindAnimation( const std::string & name ) const
+const Animation::ptr AnimationSet::FindAnimation( std::string name ) const
 {
 	std::map< std::string, Animation::ptr >::const_iterator itr = m_animations.find( name );
 	if ( itr == m_animations.end() )

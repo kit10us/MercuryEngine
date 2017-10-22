@@ -5,7 +5,7 @@
 
 using namespace qxml;
 
-bool XMLParameters::CaseInsensitiveLessThanTest::operator() ( const std::string & string1, const std::string & string2 ) const
+bool XMLParameters::CaseInsensitiveLessThanTest::operator() ( std::string string1, std::string string2 ) const
 {
     return _stricmp( string1.c_str(), string2.c_str() ) < 0;
 }
@@ -25,7 +25,7 @@ void XMLParameters::AddConvertor( const std::string name, INodeConvertor::shared
 
 bool XMLParameters::Convert( const qxml::Element * element, unify::Parameters & parameters )
 {
-	ConvertorMap::const_iterator itr = m_convertors.find( element->GetTagName() );
+	ConvertorMap::const_iterator itr = m_convertors.find( element->GetName() );
 
 	if ( itr == m_convertors.end() )
 	{

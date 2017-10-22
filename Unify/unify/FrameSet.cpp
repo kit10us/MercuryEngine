@@ -43,14 +43,14 @@ size_t FrameSet::Add( const Matrix & model, size_t parent, std::string name )
 	return index;
 }
 
-bool FrameSet::Exists( const std::string & name ) const
+bool FrameSet::Exists( std::string name ) const
 {
 	std::map< std::string, size_t >::const_iterator itr = m_nameToIndex.find( name );
 	bool found( itr == m_nameToIndex.end() );
 	return found;
 }
 
-size_t FrameSet::Find( const std::string & name ) const
+size_t FrameSet::Find( std::string name ) const
 {
 	std::map< std::string, size_t >::const_iterator itr = m_nameToIndex.find( name );
 	if( itr == m_nameToIndex.end() )

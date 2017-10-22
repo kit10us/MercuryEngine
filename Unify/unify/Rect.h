@@ -8,6 +8,9 @@
 
 namespace unify
 {
+	/// <summary>
+	/// A rectangle.
+	/// </summary>
 	template< typename T = int >
 	class Rect
 	{
@@ -26,7 +29,11 @@ namespace unify
 		T Height() const;
 
 		V2< T > UL() const;
+		V2< T > UR() const;
+		V2< T > DL() const;
 		V2< T > DR() const;
+
+		Size< T > Size() const;
 
 		void And( const Rect< T > & rect );
 

@@ -9,12 +9,12 @@ Input_Unshared::Input_Unshared( const qxml::Element * node )
 {
 }
 
-const std::string & Input_Unshared::GetSemantic() const
+std::string Input_Unshared::GetSemantic() const
 {
 	return m_semantic;
 }
 
-const std::string & Input_Unshared::GetSource() const
+std::string Input_Unshared::GetSource() const
 {
 	return m_source;
 }

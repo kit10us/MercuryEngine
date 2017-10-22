@@ -16,16 +16,16 @@ namespace me
 			virtual ~MeshAnimatorInterface() {}
 
 			// Will remove any existing animations.
-			virtual void PlaySingleAnimation( const std::string & name, bool forceLoop = false ) = 0;
+			virtual void PlaySingleAnimation( std::string name, bool forceLoop = false ) = 0;
 
 			// Will NOT remove existing animations.
-			virtual void PlayAdditionalAnimation( const std::string & name, bool forceLoop = false ) = 0;
+			virtual void PlayAdditionalAnimation( std::string name, bool forceLoop = false ) = 0;
 
 			virtual void PauseAnimations( bool pause ) = 0;
 			virtual bool Paused() const = 0;
 			virtual size_t AnimationCount() const = 0;
 
-			virtual void RemoveAnimation( const std::string & name ) = 0;
+			virtual void RemoveAnimation( std::string name ) = 0;
 			virtual void RemoveAllAnimations() = 0;
 		};
 
@@ -36,12 +36,12 @@ namespace me
 			~MeshInstanceData();
 
 			// Supporting MeshAnimatorInterface...
-			void PlaySingleAnimation( const std::string & name, bool forceLoop = false );
-			void PlayAdditionalAnimation( const std::string & name, bool forceLoop = false );
+			void PlaySingleAnimation( std::string name, bool forceLoop = false );
+			void PlayAdditionalAnimation( std::string name, bool forceLoop = false );
 			void PauseAnimations( bool pause );
 			bool Paused() const;
 			size_t AnimationCount() const;
-			void RemoveAnimation( const std::string & name );
+			void RemoveAnimation( std::string name );
 			void RemoveAllAnimations();
 
 			void Update( const RenderInfo & renderInfo );

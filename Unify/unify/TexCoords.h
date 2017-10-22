@@ -15,7 +15,7 @@ namespace unify
 
 		TexCoords();
 		TexCoords( float u, float v );
-        explicit TexCoords( const std::string & text );
+        explicit TexCoords( std::string text );
 
 		// OPERATOR OVERLOADING MEMBER FUNCTIONS
 

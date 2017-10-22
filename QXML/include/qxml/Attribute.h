@@ -16,10 +16,10 @@ namespace qxml
 
 		Attribute();
 		explicit Attribute( std::string attribute );
-		Attribute( std::string name, const std::string value );
+		Attribute( std::string name, std::string value );
 		~Attribute();
-		const std::string & GetName() const; 
-		const std::string & GetString() const;
+		std::string GetName() const; 
+		std::string GetString() const;
 
 		template< typename T >
 		T Get() const

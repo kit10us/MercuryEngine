@@ -28,12 +28,12 @@ Profile_Technique::Profile_Technique( const qxml::Element * node )
 	}
 }
 
-const std::string & Profile_Technique::GetID() const
+std::string Profile_Technique::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Profile_Technique::GetSID() const
+std::string Profile_Technique::GetSID() const
 {
 	return m_sid;
 }

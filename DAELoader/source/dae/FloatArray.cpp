@@ -19,12 +19,12 @@ int FloatArray::GetCount() const
 	return m_count;
 }
 
-const std::string & FloatArray::GetID() const
+std::string FloatArray::GetID() const
 {
 	return m_id;
 }
 
-const std::string & FloatArray::GetName() const
+std::string FloatArray::GetName() const
 {
 	return m_name;
 }
@@ -39,7 +39,7 @@ int FloatArray::GetMagnitude() const
 	return m_magnitude;
 }
 
-const std::string & FloatArray::GetStringContents() const
+std::string FloatArray::GetStringContents() const
 {
 	return m_stringContents;
 }

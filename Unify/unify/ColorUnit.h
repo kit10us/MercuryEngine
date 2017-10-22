@@ -47,7 +47,7 @@ namespace unify
 		ColorUnit();
 		ColorUnit( float r, float g, float b, float a );
 		ColorUnit( const ColorUnit & color );
-		explicit ColorUnit( const std::string & text, Order order = RGBA, float defaultAlpha = 1.0f );
+		explicit ColorUnit( std::string text, Order order = RGBA, float defaultAlpha = 1.0f );
 
 		void SetRGBA( float r, float g, float b, float a );
 

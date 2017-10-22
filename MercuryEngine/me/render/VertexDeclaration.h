@@ -39,7 +39,7 @@ namespace me
 			void Destroy();
 
 			size_t GetNumberOfElements() const;
-			bool ElementExists( const std::string & name ) const;
+			bool ElementExists( std::string name ) const;
 
 			/// <summary>
 			/// Get an element by name.

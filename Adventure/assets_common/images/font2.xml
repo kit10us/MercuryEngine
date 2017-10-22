@@ -28,6 +28,9 @@
 <addascii name="7" ulx="287" uly="65" drx="327" dry="127"/>
 <addascii name="8" ulx="328" uly="65" drx="368" dry="127"/>
 <addascii name="9" ulx="369" uly="65" drx="409" dry="127"/>
+<addascii name=":" ulx="411" uly="65" drx="434" dry="127"/>
+<addascii name=";" ulx="436" uly="65" drx="460" dry="127"/>
+<addascii name="<" ulx="462" uly="65" drx="507" dry="127"/>
 
 <addascii name="=" ulx="1" uly="129" drx="46" dry="191"/>
 <addascii name=">" ulx="48" uly="129" drx="93" dry="191"/>
@@ -100,6 +103,6 @@
 <addascii name="|" ulx="117" uly="449" drx="139" dry="511"/>
 <addascii name="}" ulx="141" uly="449" drx="180" dry="511"/>
 <addascii name="~" ulx="182" uly="449" drx="227" dry="511"/>
-<addascii name=" " ulx="229" uly="449" drx="232" dry="511"/>
+<addascii name=" " ulx="229" uly="449" drx="253" dry="511"/>
 
 </header>

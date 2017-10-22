@@ -18,7 +18,7 @@ namespace dae
 
 		int GetCount() const;
 		int GetOffset() const;
-		const std::string & GetSource();
+		std::string GetSource();
 		int GetStride() const;
 
 	private:

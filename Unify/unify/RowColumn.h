@@ -17,7 +17,7 @@ namespace unify
 		RowColumn();
 		RowColumn( T row, T column );
 		RowColumn( const RowColumn< T > & rc );
-		explicit RowColumn( const std::string & text );
+		explicit RowColumn( std::string text );
 				
 		void Zero();
 

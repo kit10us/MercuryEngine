@@ -17,7 +17,7 @@ namespace unify
 		Range();
 		Range( T min, T max );
 		Range( const Range & range );
-		explicit Range( const std::string & text );
+		explicit Range( std::string text );
 
 		void Clear();
 		void Add( T value );

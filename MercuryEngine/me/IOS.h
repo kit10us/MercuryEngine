@@ -135,12 +135,12 @@ namespace me
 		/// <summary>
 		/// Write debug text, no new line.
 		/// </summary>
-		virtual void DebugWrite( const std::string & text ) = 0;
+		virtual void DebugWrite( std::string text ) = 0;
 			
 		/// <summary>
 		/// Write a debug message.
 		/// </summary>
-		virtual void DebugWriteLine( const std::string & line ) = 0;
+		virtual void DebugWriteLine( std::string line ) = 0;
 
 		/// <summary>
 		/// Asset path manager.

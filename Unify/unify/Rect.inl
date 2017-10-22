@@ -29,7 +29,7 @@ Rect< T >::Rect( const V2< T > & vUL, const V2< T > & vDR )
 }
 
 template< typename T >
-Rect< T >::Rect( const V2< T > &vUL, const Size< T > &size )
+Rect< T >::Rect( const V2< T > &vUL, const unify::Size< T > &size )
 : left( vUL.x )
 , top( vUL.y )
 , right( vUL.x + size.width )
@@ -56,9 +56,27 @@ V2< T > Rect< T >::UL() const
 }
 
 template< typename T >
+V2< T > Rect< T >::UR() const
+{
+	return V2< T >( right, top );
+}
+
+template< typename T >
+V2< T > Rect< T >::DL() const
+{
+	return V2< T >( left, bottom );
+}
+
+template< typename T >
 V2< T > Rect< T >::DR() const
 {	
 	return V2< T >( right, bottom );
+}
+
+template< typename T >
+Size< T > Rect< T >::Size() const
+{
+	return{ right - left, bottom - top };
 }
 
 template< typename T >

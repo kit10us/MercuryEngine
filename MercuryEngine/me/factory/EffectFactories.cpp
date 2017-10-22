@@ -32,7 +32,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 
 		for ( auto&& child : effectNode.Children() )
 		{
-			//void SetName( const std::string & sName );
+			//void SetName( std::string sName );
 			//void SetFlags( unsigned int dwFlags );
 
 			if ( child.IsTagName( "texture" ) )

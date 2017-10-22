@@ -17,21 +17,21 @@ namespace unify
 	bool IsNumeric( const char ch );
 
 	// Caseless compare.
-	bool StringIs( const std::string & a, const std::string & b );
-	bool StringIsAny( const std::string & a, const std::list< std::string > & list );
-	bool BeginsWith( const std::string & a, const std::string & b );
-	bool EndsWith( const std::string & a, const std::string & b );
+	bool StringIs( std::string a, std::string b );
+	bool StringIsAny( std::string a, const std::list< std::string > & list );
+	bool BeginsWith( std::string a, std::string b );
+	bool EndsWith( std::string a, std::string b );
 	
-	bool StringIsInt( const std::string & sOne );
-	bool StringIsFloat( const std::string & sOne );
+	bool StringIsInt( std::string sOne );
+	bool StringIsFloat( std::string sOne );
 
 	std::string TrimLeft( std::string stringIn, const char chr );
 	std::string TrimRight( std::string stringIn, const char chr );
 	std::string Trim( std::string stringIn, const char chr = ' ' );
 	std::string RightString( std::string stringIn, std::string::size_type uLength );
 	std::string LeftString( std::string stringIn, unsigned int uLength );
-	std::string StringMinusLeft( const std::string & sStringIn, unsigned int uLessLength );
-	std::string StringMinusRight( const std::string & sStringIn, unsigned int uLessLength );
+	std::string StringMinusLeft( std::string sStringIn, unsigned int uLessLength );
+	std::string StringMinusRight( std::string sStringIn, unsigned int uLessLength );
 	std::string StringReplace( const std::string in, std::string find, std::string replace );
 	
 	/// <summary>
@@ -39,22 +39,22 @@ namespace unify
 	/// For example, "\n\n\n  \t\tHello,  \tWorld\n!     \t\n "  >>  "Hello, World!" (note: no leading or training spaces either)
     /// Doesn't reduce ANY single spaces.
 	/// </summary>
-	std::string CleanWhitespace( const std::string & sIn );
+	std::string CleanWhitespace( std::string sIn );
 
-	std::string ToLower( const std::string & in );
+	std::string ToLower( std::string in );
 
 	
 	// Considers a string as a part of a segmented list by a character, returns that part of the list...
 	// Returns ASAP.
 	// The first iPartIndex is 0.
-	std::string ListPart( const std::string & sString, std::vector< char > seperators, int iPartIndex );	
-	unsigned int ListPartCount(const std::string & sString, std::vector< char > seperators );
+	std::string ListPart( std::string sString, std::vector< char > seperators, int iPartIndex );	
+	unsigned int ListPartCount(std::string sString, std::vector< char > seperators );
 
 	// Binary functor for case insensitive string compares. Useful for maps.
     class CaseInsensitiveLessThanTest
     {
     public:
-        bool operator() (const std::string & string1, const std::string & string2) const;
+        bool operator() (std::string string1, std::string string2) const;
     };  
 
 	// Binary functor for case insensitive string compares. Useful for maps.

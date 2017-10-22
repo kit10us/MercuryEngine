@@ -31,8 +31,8 @@ namespace dae
 
 		Geometry( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		MeshSource::TYPE GetMeshSource() const;
 		const Mesh & GetMesh() const;
 

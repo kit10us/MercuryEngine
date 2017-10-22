@@ -13,7 +13,7 @@ namespace me
 		class Render : public unify::Exception 
 		{
 		public:
-			Render( const std::string & error )
+			Render( std::string error )
 				: unify::Exception( error )
 			{
 			}

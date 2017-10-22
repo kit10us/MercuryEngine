@@ -19,8 +19,8 @@ namespace dae
 
 		Input_Unshared( const qxml::Element * node );
 
-		const std::string & GetSemantic() const;
-		const std::string & GetSource() const;
+		std::string GetSemantic() const;
+		std::string GetSource() const;
 			
 	private:
 		std::string m_semantic;

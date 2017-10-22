@@ -18,13 +18,13 @@ MeshInstanceData::~MeshInstanceData()
 {
 }
 
-void MeshInstanceData::PlaySingleAnimation( const std::string & name, bool forceLoop )
+void MeshInstanceData::PlaySingleAnimation( std::string name, bool forceLoop )
 {
 	m_activeAnimations.clear();
 	PlayAdditionalAnimation( name, forceLoop );
 }
 
-void MeshInstanceData::PlayAdditionalAnimation( const std::string & name, bool forceLoop )
+void MeshInstanceData::PlayAdditionalAnimation( std::string name, bool forceLoop )
 {
 	frameanimation::Animation::const_ptr animation = m_animationSet->FindAnimation( name );
 	m_activeAnimations.push_back( ActiveAnimation( 0, animation, forceLoop ) );
@@ -46,7 +46,7 @@ size_t MeshInstanceData::AnimationCount() const
 	return m_activeAnimations.size();
 }
 
-void MeshInstanceData::RemoveAnimation( const std::string & name )
+void MeshInstanceData::RemoveAnimation( std::string name )
 {
 	for( std::list< ActiveAnimation >::iterator itr = m_activeAnimations.begin(), end = m_activeAnimations.end(); itr != end; ++itr )
 	{

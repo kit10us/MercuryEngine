@@ -14,7 +14,7 @@ namespace unify
 		std::string m_path;
 	public:
 		Path();
-		explicit Path( const std::string & path );
+		explicit Path( std::string path );
 		explicit Path( const char * const path );
 		Path( const Path & left, const Path & right );
 		Path( const std::vector< std::string > & pathParts );
@@ -62,7 +62,7 @@ namespace unify
 
 		bool IsDirectory() const;
 
-		bool IsExtension( const std::string & extension ) const;
+		bool IsExtension( std::string extension ) const;
 
 		Path ChangeExtension( std::string extension ) const;
 

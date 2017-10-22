@@ -20,11 +20,11 @@ namespace dae
 		FloatArray( const qxml::Element * node );
 
 		int GetCount() const;
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		int GetDigits() const;
 		int GetMagnitude() const;
-		const std::string & GetStringContents() const;
+		std::string GetStringContents() const;
 		const std::vector< float > & GetArrayContents() const;
 
 	private:

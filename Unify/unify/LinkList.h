@@ -9,9 +9,11 @@
  */
 #pragma once
 
+#include <unify/TLink.h>
 #include <unify/Unify.h>
 #include <unify/Flags.h>
 #include <unify/List.h>
+
 
 namespace unify 
 {
@@ -32,12 +34,12 @@ namespace unify
 		unsigned int Count();
 
 		void Clear();
-		T * AddItem( T * pItem, const std::string & sName = "" );
-		T * AddItem( T * pItem, unsigned int uFlags, const std::string & sName = "" );
-		T * AddItem( T * pItem, float fSortValue, const std::string & sName = "" );
-		T * AddItem( T * pItem, unsigned int uFlags, float fSortValue, const std::string & sName = "" );
+		T * AddItem( T * item, std::string sName = "" );
+		T * AddItem( T * item, unsigned int uFlags, std::string sName = "" );
+		T * AddItem( T * item, float fSortValue, std::string sName = "" );
+		T * AddItem( T * item, unsigned int uFlags, float fSortValue, std::string sName = "" );
 
-		bool DeleteItem( const std::string & sName );
+		bool DeleteItem( std::string sName );
 		bool DeleteItem( TLink< T > * &pLink );
 		bool DeleteItem( T * pItem );
 
@@ -47,8 +49,8 @@ namespace unify
 		const std::string Name( const T * pItem );
 		const std::string Name( unsigned int uIndex );
 
-		T * Find( const std::string & sName );
-		T * Find( Query< T > * pQuery, const std::string & sName );
+		T * Find( std::string sName );
+		T * Find( Query< T > * pQuery, std::string sName );
 
 		T * GotoFirst( Query< T > * pQuery );
 		T * GotoLast( Query< T > * pQuery );

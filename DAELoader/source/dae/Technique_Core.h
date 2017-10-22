@@ -15,7 +15,7 @@ namespace dae
 	{
 	public:
 		Technique_Core( const qxml::Element * node );
-		const std::string & GetProfile() const;
+		std::string GetProfile() const;
 
 		/// <summary>
 		/// Since the contents are dynamic, use GetXML to retrieve the actual XML node that represents this Technique.

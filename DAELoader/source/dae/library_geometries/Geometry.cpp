@@ -29,12 +29,12 @@ Geometry::Geometry( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & Geometry::GetID() const
+std::string Geometry::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Geometry::GetName() const
+std::string Geometry::GetName() const
 {
 	return m_name;
 }

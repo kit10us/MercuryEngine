@@ -36,7 +36,7 @@ namespace me
 				/// </summary>
 				Staging
 			};
-			static TYPE FromString( const std::string & usage );
+			static TYPE FromString( std::string usage );
 			static std::string ToString( BufferUsage::TYPE usage );
 		};
 

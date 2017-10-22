@@ -19,7 +19,7 @@ namespace qxml
 	{
 		friend class Document;
 	public:
-		typedef std::shared_ptr< Element > ptr;
+		typedef std::shared_ptr< Element > shared_ptr;
 
 		struct NodeType
 		{
@@ -28,8 +28,7 @@ namespace qxml
 				Element,
 				Comment,	
 				CDATA,
-				Command,
-				Text
+				ProcessingInstruction,
 			};
 		};
 
@@ -37,21 +36,21 @@ namespace qxml
 		Element( std::string name, NodeType::TYPE type = NodeType::Element, Document * document = nullptr, size_t line = 0 );
 		~Element();
 
-		const std::string & GetTagName() const;
+		std::string GetName() const;
 
 		// Case insensitive tag name test.
-		bool IsTagName( const std::string & tagName ) const;
+		bool IsTagName( std::string tagName ) const;
 		unsigned int NumAttributes() const;
-		bool HasAttributes( const std::string & name ) const;
-		bool HasElements( const std::string & name ) const;
+		bool HasAttributes( std::string name ) const;
+		bool HasElements( std::string name ) const;
 		Attribute::shared_ptr GetAttribute( unsigned int attribute ) const;
-		Attribute::shared_ptr GetAttribute( const std::string & attribute ) const;
+		Attribute::shared_ptr GetAttribute( std::string attribute ) const;
 	
 		template< typename T >
-		T GetAttribute( const std::string & attribute ) const;
+		T GetAttribute( std::string attribute ) const;
 
 		template< typename T >
-		T GetAttributeElse( const std::string & attribute, T value ) const;
+		T GetAttributeElse( std::string attribute, T value ) const;
 
 		Element * GetParent();
 		const Element * GetParent() const;
@@ -63,25 +62,25 @@ namespace qxml
 		const Element * GetFirstChild() const;
 		Element * GetLastChild();
 		const Element * GetLastChild() const;
-		const std::string & GetText() const;
+		std::string GetText() const;
 		unsigned int NumChildren() const;
 		unsigned int Index() const;
 		
 		void AddAttribute( std::string name, std::string value );
-		void AddAttribute( Attribute::shared_ptr & pAttribute );
 
-		Element * AddElement( std::string name, NodeType::TYPE type );
+		Element * AddElement( std::string name, NodeType::TYPE type = Element::NodeType::Element );
+		Element * AddCData( std::string text );
 
-		const std::string & AddText( const std::string & text );
+		std::string AddText( std::string text );
 		void TakeChild( Element * pElement );
 		void TakeSibling( Element * pElement );
         
-		void FindElements( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes = std::string() ) const;
-		void FindElementsRecursive( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes = std::string() ) const;
+		void FindElements( std::list< const Element * > & elementList, const std::string tagName, std::string attributes = std::string() ) const;
+		void FindElementsRecursive( std::list< const Element * > & elementList, const std::string tagName, std::string attributes = std::string() ) const;
 		
-		const Element * FindFirstElement( const std::string tagName, const std::string & attributes = std::string() ) const;
-		Element * GetElement( const std::string & tagName );
-		const Element * GetElement( const std::string & tagName ) const;
+		const Element * FindFirstElement( const std::string tagName, std::string attributes = std::string() ) const;
+		Element * GetElement( std::string tagName );
+		const Element * GetElement( std::string tagName ) const;
 		NodeType::TYPE GetType() const;
         Document * GetDocument() const;
 		size_t GetLine() const;
@@ -212,7 +211,9 @@ namespace qxml
 		}
 
 	protected:
-        Document * m_document;
+		void AddAttribute( Attribute::shared_ptr pAttribute );
+		
+		Document * m_document;
 		std::string m_tagName;
 		std::vector< Attribute::shared_ptr > m_attributeList;
 		std::string m_data;
@@ -237,7 +238,7 @@ namespace qxml
 	class ElementList : public unify::LinkList< Element >
 	{
 	public:
-		Element * AddElement( Element * pElement );
+		Element * AddElement( Element * element );
 	};
 
 }

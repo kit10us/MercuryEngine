@@ -13,7 +13,7 @@ namespace me
 		class FailedToLock : public unify::Exception 
 		{
 		public:
-			FailedToLock( const std::string & error )
+			FailedToLock( std::string error )
 				: unify::Exception( error )
 			{
 			}

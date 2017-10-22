@@ -16,8 +16,8 @@ namespace dae
 	public:
 		Profile_Technique( const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetSID() const;
+		std::string GetID() const;
+		std::string GetSID() const;
 		const Shading & GetShading() const;
 
 	private:

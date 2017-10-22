@@ -13,7 +13,7 @@ namespace me
 		class Update : public unify::Exception 
 		{
 		public:
-			Update( const std::string & error )
+			Update( std::string error )
 				: unify::Exception( error )
 			{
 			}

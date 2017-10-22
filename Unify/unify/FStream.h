@@ -5,6 +5,7 @@
 
 #include <unify/Unify.h>
 #include <unify/Stream.h>
+#include <unify/Path.h>
 
 namespace unify 
 {
@@ -14,15 +15,15 @@ namespace unify
 		FileStream();
 		~FileStream();
 
-		// TODO: Screw the void * here, this was to allow us to appear more robust, change this to a string.
-		bool Open( StreamAccessType access, void * pData );
+		void Open( StreamAccessType access, unify::Path path );
 		void Close();
 		
 		unsigned int Read( void * pDest, unsigned int uLength );
 		unsigned int ReadPack( void * pDest, unsigned int uLength );
 		
-		bool Write( const void * pSrc, unsigned int uLength );
-		bool WritePack( const void * pSrc );
+		void Write( const void * pSrc, unsigned int uLength ) override;
+		void WritePack( const void * pSrc ) override;
+		void Write( std::string out );
 
 		bool Seek( StreamSeekType seek, int iOffset = 0 );
 

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Adventure.cpp" />
+    <ClCompile Include="source\InventoryObjectComponent.cpp" />
     <ClCompile Include="source\MainScene.cpp" />
     <ClCompile Include="source\TerrainSceneComponent.cpp" />
     <ClCompile Include="source\terrain\Base.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="source\terrain\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\InventoryObjectComponent.h" />
     <ClInclude Include="source\MainScene.h" />
     <ClInclude Include="source\TerrainSceneComponent.h" />
     <ClInclude Include="source\terrain\Base.h" />

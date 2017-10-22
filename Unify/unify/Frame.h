@@ -25,7 +25,7 @@ namespace unify
 		static void CreateNameToIndexMap( std::map< std::string, size_t > & nameToIndexOut, const std::vector< Frame * > & indexToFrameIn );
 
 		Frame();
-		Frame( const std::string & sName );
+		Frame( std::string sName );
 		Frame( const Frame & frame );
 		virtual ~Frame();
 
@@ -84,7 +84,7 @@ namespace unify
 		const Frame * GetPrevious() const;
 		const Frame * GetNext() const;
 
-		const std::string & GetName() const;
+		std::string GetName() const;
 		bool IsDirty() const;
 
 	protected:

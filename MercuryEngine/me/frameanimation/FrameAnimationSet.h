@@ -17,8 +17,8 @@ namespace me
 			AnimationSet();
 			~AnimationSet();
 			void AddAnimation( Animation::ptr animation );
-			Animation::ptr FindAnimation( const std::string & name );
-			const Animation::ptr FindAnimation( const std::string & name ) const;
+			Animation::ptr FindAnimation( std::string name );
+			const Animation::ptr FindAnimation( std::string name ) const;
 
 		private:
 			typedef std::string AnimationName;

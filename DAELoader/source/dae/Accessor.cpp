@@ -23,7 +23,7 @@ int Accessor::GetOffset() const
 	return m_offset;
 }
 
-const std::string & Accessor::GetSource()
+std::string Accessor::GetSource()
 {
 	return m_source;
 }

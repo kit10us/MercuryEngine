@@ -48,7 +48,7 @@ V3< T >::V3( const V2< T > & v2, float z )
 }
 
 template< typename T >
-V3< T >::V3( const std::string & text )
+V3< T >::V3( std::string text )
 {
 	std::vector< T > split = Split< T >( text, ',' );
     x = split[ 0 ];

@@ -10,6 +10,9 @@ namespace me
 {
 	namespace object
 	{
+		/// <summary>
+		/// 
+		/// </summary>
 		class ObjectActionComponent : public ObjectComponent
 		{
 		protected:

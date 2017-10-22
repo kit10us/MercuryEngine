@@ -18,7 +18,7 @@ namespace unify
 		Size3();
 		Size3( T width, T height, T depth );
 		Size3( const Size3< T > & size );
-		explicit Size3( const std::string & text );
+		explicit Size3( std::string text );
 				
 		void Zero();
 

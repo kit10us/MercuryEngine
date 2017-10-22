@@ -57,9 +57,9 @@ namespace medx11
 			
 		void Shutdown() override;
 			
-		void DebugWrite( const std::string & text ) override;
+		void DebugWrite( std::string text ) override;
 
-		void DebugWriteLine( const std::string & line ) override;
+		void DebugWriteLine( std::string line ) override;
 
 		LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 

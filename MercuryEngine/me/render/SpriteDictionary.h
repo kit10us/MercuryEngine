@@ -31,10 +31,10 @@ namespace me
 
 			void LoadDictionary( unify::Path source );
 
-			bool HasSpriteArray( const std::string & name ) const;
-			const SpriteArray & FindSpriteArray( const std::string & name ) const;
+			bool HasSpriteArray( std::string name ) const;
+			const SpriteArray & FindSpriteArray( std::string name ) const;
 			const SpriteArray & GetSpriteArray( unsigned int index ) const;
-			const unify::TexArea & GetSprite( const std::string & arrayName, unsigned int index ) const;
+			const unify::TexArea & GetSprite( std::string arrayName, unsigned int index ) const;
 			unsigned int SpriteArrayCount() const;
 			const unify::TexArea & GetSprite( unsigned int index ) const;
 			unsigned int SpriteCount() const;

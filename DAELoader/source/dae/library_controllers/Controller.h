@@ -19,8 +19,8 @@ namespace dae
 	public:
 		Controller( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 
 		std::shared_ptr< Skin > GetSkin() const;
 		std::shared_ptr< Morph > GetMorph() const;

@@ -64,7 +64,7 @@ ValueType qjson::FromString( std::string type )
 	}
 }
 
-bool Value::BeginsWith( const std::string & a, const std::string & b )
+bool Value::BeginsWith( std::string a, std::string b )
 {
 	if( b.length() > a.length() )
 	{

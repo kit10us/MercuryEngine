@@ -5,7 +5,7 @@ inline Query<T>::Query()
 }
 
 template< typename T >
-inline const std::string & Query<T>::Name()
+inline std::string Query<T>::Name()
 {
 	return m_pCurrent->m_sName;
 }

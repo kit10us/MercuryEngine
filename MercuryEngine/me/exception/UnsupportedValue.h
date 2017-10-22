@@ -13,11 +13,11 @@ namespace me
 		class UnsupportedValue : public unify::Exception
 		{
 		public:
-			UnsupportedValue( const std::string & type, const std::string & value )
+			UnsupportedValue( std::string type, std::string value )
 				: unify::Exception( "Unsupported value \"" + value + "\" of type " + type + "!" )
 			{
 			}
-			UnsupportedValue( const std::string & value )
+			UnsupportedValue( std::string value )
 				: unify::Exception( "Unsupported value \"" + value + "\"!" )
 			{
 			}

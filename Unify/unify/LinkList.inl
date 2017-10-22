@@ -1,33 +1,6 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-/////
-// TLink
-/////
-
-template< typename T >
-TLink< T >::~TLink()
-{
-}
-
-template< typename T >
-TLink< T >::TLink()
-: m_pItem( 0 )
-{
-}
-
-template< typename T >
-TLink< T >::TLink( T * pItemIn, const std::string & sNameIn )
-: m_pItem( pItemIn )
-, m_sName( sNameIn )
-{
-}
-
-
-/////
-// TLinkList
-/////
-
 template< typename T >
 LinkList< T >::LinkList()
 : m_pFirst( 0 )
@@ -69,43 +42,41 @@ void LinkList< T >::Clear()
 	TLink< T > * pNext = 0;
 	while( pLink )
 	{
-		pNext = pLink->m_pNext;
+		pNext = pLink->Next();
 		delete pLink;
 		pLink = pNext;
 	}
-	m_pFirst = 0;
-	m_pLast = 0;
+	m_pFirst = nullptr;
+	m_pLast = nullptr;
 	m_uCount = 0;
 }
 
 template< typename T >
-T* LinkList< T >::AddItem( T* pItem, const std::string & sName )
+T* LinkList< T >::AddItem( T * item, std::string sName )
 {
-	return AddItem( pItem, FLAGNULL, 0.0f, sName );
+	return AddItem( item, FLAGNULL, 0.0f, sName );
 }
 
 template< typename T >
-T * LinkList< T >::AddItem( T * pItem, unsigned int uFlags, const std::string & sName )
+T * LinkList< T >::AddItem( T * item, unsigned int uFlags, std::string sName )
 {
-	return AddItem( pItem, uFlags, 0.0f, sName );
+	return AddItem( item, uFlags, 0.0f, sName );
 }
 
 template< typename T >
-T * LinkList< T >::AddItem( T * pItem, float fSortValue, const std::string & sName )
+T * LinkList< T >::AddItem( T * item, float fSortValue, std::string sName )
 {
-	return AddItem( pItem, FLAGNULL, fSortValue, sName );
+	return AddItem( item, FLAGNULL, fSortValue, sName );
 }
 
 template< typename T> 
-T * LinkList< T >::AddItem( T * pItem, unsigned int uFlags, float fSortValue, const std::string & sName )
+T * LinkList< T >::AddItem( T * item, unsigned int uFlags, float fSortValue, std::string sName )
 {
-	TLink< T > * pNewLink = new TLink< T >( pItem, sName );
+	TLink< T > * pNewLink = new TLink< T >( item, sName );
 	if( ! pNewLink ) return 0;
 
 	pNewLink->m_uFlags = uFlags;
 	pNewLink->m_fSortValue = fSortValue;
-	pNewLink->m_pPrevious = 0;
-	pNewLink->m_pNext = 0;
 
 	if( ! m_pFirst )
 	{
@@ -123,14 +94,14 @@ T * LinkList< T >::AddItem( T * pItem, unsigned int uFlags, float fSortValue, co
 			{
 				while( pLink && pLink->m_fSortValue > pNewLink->m_fSortValue )
 				{
-					pLink = pLink->m_pNext;
+					pLink = pLink->Next();
 				}
 			}
 			else
 			{
 				while( pLink && pLink->m_fSortValue < pNewLink->m_fSortValue )
 				{
-					pLink = pLink->m_pNext;
+					pLink = pLink->Next();
 				}
 			}
 
@@ -142,33 +113,33 @@ T * LinkList< T >::AddItem( T * pItem, unsigned int uFlags, float fSortValue, co
 					m_pFirst = pNewLink;
 				}
 
-				pNewLink->m_pPrevious = pLink->m_pPrevious;
-				if( pNewLink->m_pPrevious )
+				pNewLink->m_previous = pLink->m_previous;
+				if( pNewLink->m_previous )
 				{
-					pNewLink->m_pPrevious->m_pNext = pNewLink;
+					pNewLink->m_previous->m_next = pNewLink;
 				}
-				pNewLink->m_pNext = pLink;
-				pLink->m_pPrevious = pNewLink;
+				pNewLink->m_next = pLink;
+				pLink->m_previous = pNewLink;
 			}
 			else
 			{
-				m_pLast->m_pNext = pNewLink;
-				pNewLink->m_pPrevious = m_pLast;
+				m_pLast->m_next = pNewLink;
+				pNewLink->m_previous = m_pLast;
 				m_pLast = pNewLink;
 			}
 		}
 		
 		else	// Non-sorted...
 		{
-			m_pLast->m_pNext = pNewLink;
-			pNewLink->m_pPrevious = m_pLast;
+			m_pLast->m_next = pNewLink;
+			pNewLink->m_previous = m_pLast;
 			m_pLast = pNewLink;
 		}
 	}
 
 	m_uCount++;
 	
-	return pItem;
+	return item;
 }
 
 template< typename T >
@@ -202,7 +173,7 @@ bool LinkList< T >::DeleteItem( TLink< T > * & pLink )
 }
 
 template< typename T >
-bool LinkList< T >::DeleteItem( const std::string & sName )
+bool LinkList< T >::DeleteItem( std::string sName )
 {
 	if( !m_pFirst ) return false;
 	TLink< T > * pLink = m_pFirst;
@@ -235,45 +206,45 @@ template< typename T >
 T * LinkList< T >::GotoFirst( Query< T > * pQuery )
 {
 	pQuery->m_pCurrent = m_pFirst;
-	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->m_pItem : 0 );
+	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->Item() : 0 );
 }
 
 template< typename T >
 T * LinkList< T >::GotoLast( Query< T > * pQuery )
 {
 	pQuery->m_pCurrent = m_pLast;
-	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->m_pItem : 0 );
+	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->Item() : 0 );
 }
 
 template< typename T > 
 T * LinkList< T >::GotoNext( Query< T > * pQuery )
 {
-	pQuery->m_pCurrent = pQuery->m_pCurrent->m_pNext;
-	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->m_pItem : 0 );
+	pQuery->m_pCurrent = pQuery->m_pCurrent->Next();
+	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->Item() : 0 );
 }
 
 template< typename T > 
 T * LinkList< T >::GotoPrevious( Query< T > * pQuery )
 {
-	pQuery->m_pCurrent = pQuery->m_pCurrent->m_pPrevious;
-	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->m_pItem : 0 );
+	pQuery->m_pCurrent = pQuery->m_pCurrent->Previous();
+	return( pQuery->m_pCurrent ? pQuery->m_pCurrent->Item() : 0 );
 }
 
 template< typename T >
-T * LinkList< T >::Find( const std::string & sName )
+T * LinkList< T >::Find( std::string sName )
 {
 	TLink< T > * pLink = m_pFirst;
 	while( pLink )
 	{
-		if( unify::StringIs( sName, pLink->m_sName ) ) return pLink->m_pItem;
-		pLink = pLink->m_pNext;
+		if( unify::StringIs( sName, pLink->Name() ) ) return pLink->Item();
+		pLink = pLink->Next();
 	}
 	
 	return 0;
 }
 
 template< typename T >
-T * LinkList< T >::Find( Query< T > * pQuery, const std::string & sName )
+T * LinkList< T >::Find( Query< T > * pQuery, std::string sName )
 {
 	pQuery->m_pCurrent = m_pFirst;
 	while( pQuery->m_pCurrent )
@@ -316,6 +287,12 @@ const std::string LinkList< T >::Name( unsigned int uIndex )
 	return "";
 }
 
+template< typename T >
+T * LinkList< T >::Current()
+{
+	return m_pCurrent;
+}
+
 // Return a specific item by index.
 // Return 0 if out of range.
 template< typename T >
@@ -327,8 +304,8 @@ T * LinkList< T >::Item( unsigned int uIndex )
 	unsigned int u = 0;
 	while( pLink ) 
 	{ 
-		if ( u == uIndex ) return pLink->m_pItem;
-		pLink = pLink->m_pNext;
+		if ( u == uIndex ) return pLink->Item();
+		pLink = pLink->Next();
 		u++;
 	}
 	return 0;

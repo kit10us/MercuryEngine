@@ -38,7 +38,7 @@ namespace qxml
         class CaseInsensitiveLessThanTest
         {
         public:
-            bool operator() (const std::string & string1, const std::string & string2) const;
+            bool operator() (std::string string1, std::string string2) const;
         };  
         typedef std::map< std::string, INodeConvertor::shared_ptr, CaseInsensitiveLessThanTest > ConvertorMap;
 		ConvertorMap m_convertors;

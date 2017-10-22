@@ -23,7 +23,7 @@ const std::vector< std::shared_ptr< InstanceMaterial > > & BindMaterial_Techniqu
 	return m_instance_material;
 }
 
-const InstanceMaterial & BindMaterial_TechniqueCommon::GetInstanceMaterial( const std::string & name ) const
+const InstanceMaterial & BindMaterial_TechniqueCommon::GetInstanceMaterial( std::string name ) const
 {
 	std::map< std::string, std::shared_ptr< InstanceMaterial > >::const_iterator itr = m_instance_material_map.find( name );
 	return *itr->second;

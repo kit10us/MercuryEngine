@@ -225,6 +225,12 @@
     <ClInclude Include="unify\Frustum.h">
       <Filter>unify</Filter>
     </ClInclude>
+    <ClInclude Include="unify\Dynamic.h">
+      <Filter>unify</Filter>
+    </ClInclude>
+    <ClInclude Include="unify\TLink.h">
+      <Filter>unify</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="unify\BBox.inl">
@@ -288,6 +294,12 @@
       <Filter>unify</Filter>
     </None>
     <None Include="unify\BSphere.inl">
+      <Filter>unify</Filter>
+    </None>
+    <None Include="unify\Dynamic.inl">
+      <Filter>unify</Filter>
+    </None>
+    <None Include="unify\TLink.inl">
       <Filter>unify</Filter>
     </None>
   </ItemGroup>

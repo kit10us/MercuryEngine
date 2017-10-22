@@ -19,14 +19,19 @@ namespace me
 			virtual bool IsEnabled() const = 0;
 			virtual void SetEnabled( bool enabled ) = 0;
 
+			virtual void SetOffset( unify::V2< float > offset ) = 0;
 			virtual unify::V2< float > GetOffset() const = 0;
-			virtual unify::Size< float > GetSize( unify::Size< float > area ) const = 0;
+
+			/// <summary>
+			/// Returns the size of the content of the element (with no regard to parent).
+			/// </summary>
+			virtual unify::Size< float > GetContentSize() const = 0;
 
 			/// <summary>
 			/// Called immediately after Update, to allow automatic layout processing. Area is the
 			/// actual area space we area inside of.
 			/// </summary>
-			virtual void UpdateLayout( UpdateParams params, unify::Size< float > area ) = 0;
+			virtual void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) = 0;
 
 			virtual void Update( UpdateParams params ) = 0;
 			virtual void Render( render::Params params ) = 0;

@@ -39,8 +39,8 @@ namespace dae
 			Type GetType() const;
 			float GetFloat() const;
 			const unify::ColorUnit & GetColor() const;
-			const std::string & GetTexture() const;
-			const std::string & GetTexCoord() const;
+			std::string GetTexture() const;
+			std::string GetTexCoord() const;
 				
 		private:
 			Type m_type;

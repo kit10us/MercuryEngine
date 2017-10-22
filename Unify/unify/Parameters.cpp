@@ -27,7 +27,7 @@ Parameters & Parameters::Reset()
     return *this;
 }
 
-Parameters & Parameters::Default( const std::string & name, const unify::Any & value )
+Parameters & Parameters::Default( std::string name, const unify::Any & value )
 {
     if( m_parameters.find( name ) == m_parameters.end() )
     {
@@ -36,7 +36,7 @@ Parameters & Parameters::Default( const std::string & name, const unify::Any & v
     return *this;
 }
 
-bool Parameters::Exists( const std::string & name ) const
+bool Parameters::Exists( std::string name ) const
 {
 	std::vector< std::string > split = unify::Split< std::string >( name, ',' );
 	for( std::vector< std::string >::iterator itr = split.begin(); itr != split.end(); ++itr )
@@ -49,7 +49,7 @@ bool Parameters::Exists( const std::string & name ) const
     return true;
 }
 
-Parameters & Parameters::Set( const std::string & name, const char * value )
+Parameters & Parameters::Set( std::string name, const char * value )
 {
 	m_parameters[ name ] = std::string( value );
     return *this;
@@ -57,7 +57,7 @@ Parameters & Parameters::Set( const std::string & name, const char * value )
 
 // Unsigned int specialization to prevent issues with unsigned long int (uint32).
 template<> 
-unsigned int Parameters::Get< unsigned int >( const std::string & name ) const
+unsigned int Parameters::Get< unsigned int >( std::string name ) const
 {
     ParameterMap::const_iterator iterator = m_parameters.find( name );
     if ( iterator == m_parameters.end() )
@@ -80,7 +80,7 @@ unsigned int Parameters::Get< unsigned int >( const std::string & name ) const
 
 // Unsigned int specialization to prevent issues with unsigned long int (uint32).
 template<> 
-unsigned int Parameters::Get< unsigned int >( const std::string & name, const unsigned int & defaultValue ) const
+unsigned int Parameters::Get< unsigned int >( std::string name, const unsigned int & defaultValue ) const
 {
     ParameterMap::const_iterator iterator = m_parameters.find( name );
     if( iterator == m_parameters.end() )

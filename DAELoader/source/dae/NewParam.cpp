@@ -47,7 +47,7 @@ NewParam::NewParam(  IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & NewParam::GetSID() const
+std::string NewParam::GetSID() const
 {
 	return m_sid;
 }

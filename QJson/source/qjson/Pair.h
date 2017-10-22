@@ -14,17 +14,17 @@ namespace qjson
 
 		Pair( const Pair & pair );
 
-		Pair( const std::string & name, Value::const_ptr value );
-		Pair( const std::string & name, const Value & value );
-		Pair( const std::string & name, std::string value );
-		Pair( const std::string & name, const char * value );
-		Pair( const std::string & name, int value );
-		Pair( const std::string & name, double value );
-		Pair( const std::string & name, bool value );
+		Pair( std::string name, Value::const_ptr value );
+		Pair( std::string name, const Value & value );
+		Pair( std::string name, std::string value );
+		Pair( std::string name, const char * value );
+		Pair( std::string name, int value );
+		Pair( std::string name, double value );
+		Pair( std::string name, bool value );
 
 		virtual ~Pair() {}
 
-		const std::string & GetName() const;
+		std::string GetName() const;
 		Value::const_ptr GetValue() const;
 
 		std::string ToString() const;

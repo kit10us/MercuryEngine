@@ -76,7 +76,7 @@ namespace medx11
 		bool Reload() override;
 
 	protected:
-		void LoadImage( const unify::Path & filePath );
+		void LoadImage( unify::Path filePath );
 		void LoadHeader();
 
 		const Renderer * m_renderer;						   

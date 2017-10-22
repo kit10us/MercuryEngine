@@ -12,7 +12,7 @@ Document::Document()
 {
 }
 
-Document::Document( const unify::Path & filePath )
+Document::Document( unify::Path filePath )
 : m_xml( 0 )
 , m_root( 0 )
 {
@@ -25,7 +25,7 @@ Document::~Document()
 	Destroy();
 }
 
-void Document::Load( const unify::Path & filePath )
+void Document::Load( unify::Path filePath )
 {
 	if( ! filePath.Exists() )
 	{
@@ -44,10 +44,7 @@ void Document::Load( const unify::Path & filePath )
 	// Destroy existing document
 	Destroy();
 
-	if( !stream.Open( unify::StreamAccessType::STREAMACCESS_READ, (void *)filePath.ToString().c_str() ) )
-	{
-		throw unify::Exception( "Failed to open XML document!" );
-	}
+	stream.Open( unify::StreamAccessType::STREAMACCESS_READ, filePath );
 
 	m_filePath = filePath;
 
@@ -129,9 +126,9 @@ void Document::Load( const unify::Path & filePath )
 					if( unify::LeftString( data, 1 ) == "/" ) 
 					{
 						data = unify::RightString( data, (unsigned int)data.length() - 1 );
-						if( data != pParent->GetTagName() )
+						if( data != pParent->GetName() )
 						{
-							throw unify::Exception( "Line " + unify::Cast< std::string >( line ) + ": Mismatched end element in file \"" + filePath.ToString() + "\"! (end = " + data + ", open = " + pParent->GetTagName() + ")!" );
+							throw unify::Exception( "Line " + unify::Cast< std::string >( line ) + ": Mismatched end element in file \"" + filePath.ToString() + "\"! (end = " + data + ", open = " + pParent->GetName() + ")!" );
 						}
 						pParent = pParent->GetParent();
 						data = "";
@@ -155,7 +152,7 @@ void Document::Load( const unify::Path & filePath )
 						data = data.substr( 1, data.length() - 2 );
 					}
 
-					Element::NodeType::TYPE type = bCommand ? Element::NodeType::Command : Element::NodeType::Element  ;
+					Element::NodeType::TYPE type = bCommand ? Element::NodeType::ProcessingInstruction : Element::NodeType::Element  ;
 					std::string tagName = unify::ListPart( data, {' ', '\t'}, 0 );
 					pElement = AddElement( new Element( tagName, type, this, line ) );
 
@@ -230,13 +227,13 @@ Element * Document::GetElement( unsigned int uElement )
 	return m_elementList.Item( uElement );
 }
 
-Element * Document::FindElement( const std::string & element )
+Element * Document::FindElement( std::string element )
 {
 	return m_elementList.Find( element );
 }
 
 // Find an element whose attribute is said value.
-Element * Document::FindElement( const std::string & sElement, const std::string & attribute, const std::string & sValue )
+Element * Document::FindElement( std::string sElement, std::string attribute, std::string sValue )
 {
 	unify::Query< Element > query;
 	Element * pElement = m_elementList.GotoFirst( &query );
@@ -255,7 +252,7 @@ Element * Document::FindElement( const std::string & sElement, const std::string
 		pElement = m_elementList.GotoNext( &query );
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 const unify::Path & Document::GetPath() const
@@ -266,7 +263,7 @@ const unify::Path & Document::GetPath() const
 Element * Document::AddElement( Element * element )
 {
 	// Ensure we have a root set.
-	if( m_xml == 0 && element->GetType() == Element::NodeType::Command && element->IsTagName( "xml" ) )
+	if( m_xml == 0 && element->GetType() == Element::NodeType::ProcessingInstruction && element->IsTagName( "xml" ) )
 	{
 		m_xml = element;
 	}
@@ -277,5 +274,5 @@ Element * Document::AddElement( Element * element )
 
     element->m_document = this;
 
-	return m_elementList.AddItem( element, element->GetTagName() );
+	return m_elementList.AddItem( element, element->GetName() );
 }

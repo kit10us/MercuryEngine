@@ -1,0 +1,17 @@
+2016-10-06:
+
+Today I have decided that calling functions such as Startup by the MyGame, the derived game, is not a good idea. The original idea was to enable the end game developer the ability to turn off some "automatic" features, which would be implemented in Startup. To disable these features, you simply implement your own Startup, and just don't call the base Startup.
+This caused a few issues. The intial concept was flawed, most game developers would want these features, and most who use this feature would only do so by accidentally not calling the base classes Startup. Even I did this a number of times.
+Another issue is the order of calling these init/setup/startup functions becomes confusing, and no obvious.
+Simplification will win. If I really need to disable some sort of underlying feature, I should be more direct about it, eg. "Turn off loading extensions."
+
+I also decided to pull all resource loaders except for the "source" loader, the one that loads directly from a file. While the XML node based loading was pretty cool, it was also ultimately a bad idea as it increased hte complexity of the code unnecessarily.
+
+
+2016-10-07:
+
+DLL hell, still. Problem is my global/static/singleton core::Game::GetInstance().
+Mistake? YES! I get it, and it's a quick fix, as well as a way of simplifying the whole passing of Game, and inheritance issue, however, it's still a cop out.
+
+My Google Drive claimed 188 GB of usage. WTF!? Looks like it might be the Trash folder. Worth noting.
+

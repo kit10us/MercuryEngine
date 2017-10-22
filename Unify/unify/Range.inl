@@ -26,7 +26,7 @@ Range< T >::Range( const Range & range )
 }
 
 template< typename T >
-Range< T >::Range( const std::string & text )
+Range< T >::Range( std::string text )
 {
 	std::vector< T > split = Split< T >( text, ',' );
     width = split[ 0 ];

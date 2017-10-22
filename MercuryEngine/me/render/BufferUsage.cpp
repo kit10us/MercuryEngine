@@ -11,7 +11,7 @@
 using namespace me;
 using namespace render;
 
-BufferUsage::TYPE BufferUsage::FromString( const std::string & usage )
+BufferUsage::TYPE BufferUsage::FromString( std::string usage )
 {
 	if ( unify::StringIs( usage, "Default" ) )
 	{

@@ -9,7 +9,7 @@ unify::Tree::Tree()
 {
 }
 
-inline unify::Tree::Tree( const std::string & sName )
+inline unify::Tree::Tree( std::string sName )
 : m_name( sName )
 , m_child( 0 )
 , m_parent( 0 )
@@ -115,12 +115,12 @@ inline void unify::Tree::Detach()
 	}
 }
 
-inline void unify::Tree::SetName( const std::string & name )
+inline void unify::Tree::SetName( std::string name )
 {
 	m_name = name;
 }
 
-inline const std::string & unify::Tree::GetName() const
+inline std::string unify::Tree::GetName() const
 {
 	return m_name;
 }

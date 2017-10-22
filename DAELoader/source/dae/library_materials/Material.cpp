@@ -19,12 +19,12 @@ Material::Material( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & Material::GetID() const
+std::string Material::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Material::GetName() const
+std::string Material::GetName() const
 {
 	return m_name;
 }

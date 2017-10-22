@@ -21,11 +21,23 @@ Size< T >::Size( const Size< T > & size )
 }
 
 template< typename T >
-Size< T >::Size( const std::string & text )
+Size< T >::Size( std::string text )
 {
 	std::vector< T > split = Split< T >( text, ',' );
     width = split[ 0 ];
     height = split[ 1 ];
+}
+
+template< typename T >
+T Size< T >::Width() const
+{
+	return width;
+}
+
+template< typename T >
+T Size< T >::Height() const
+{
+	return height;
 }
 
 template< typename T >

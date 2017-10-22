@@ -10,7 +10,7 @@ Technique_Core::Technique_Core( const qxml::Element * node )
 {
 }
 
-const std::string & Technique_Core::GetProfile() const
+std::string Technique_Core::GetProfile() const
 {
 	return m_profile;
 }

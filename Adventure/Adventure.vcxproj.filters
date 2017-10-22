@@ -30,6 +30,9 @@
     <ClCompile Include="source\terrain\Base.cpp">
       <Filter>source\terrain</Filter>
     </ClCompile>
+    <ClCompile Include="source\InventoryObjectComponent.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\MainScene.h">
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="source\terrain\Base.h">
       <Filter>source\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="source\InventoryObjectComponent.h">
+      <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

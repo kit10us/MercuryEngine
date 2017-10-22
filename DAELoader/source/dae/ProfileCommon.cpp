@@ -21,7 +21,7 @@ ProfileCOMMON::ProfileCOMMON( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & ProfileCOMMON::GetID() const
+std::string ProfileCOMMON::GetID() const
 {
 	return m_id;
 }
@@ -36,7 +36,7 @@ const std::vector< std::shared_ptr< NewParam > > & ProfileCOMMON::GetNewParams()
 	return m_newParams;
 }
 
-const NewParam * ProfileCOMMON::FindNewParam( const std::string & sid ) const
+const NewParam * ProfileCOMMON::FindNewParam( std::string sid ) const
 {
 	std::map< std::string, std::shared_ptr< NewParam > >::const_iterator itr = m_newParamsMap.find( sid );
 	if ( itr == m_newParamsMap.end() )

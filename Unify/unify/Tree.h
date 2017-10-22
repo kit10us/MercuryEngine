@@ -11,14 +11,14 @@ namespace unify
 	{
 	public:
 		Tree();
-		Tree( const std::string & sName );
+		Tree( std::string sName );
 		Tree( const Tree & tree );
 		virtual ~Tree();
 		virtual Tree & operator=( const Tree & tree );
 		virtual void Detach();
 		virtual void AttachTo( Tree * pTo );
-		virtual void SetName( const std::string & name );
-		virtual const std::string & GetName() const;
+		virtual void SetName( std::string name );
+		virtual std::string GetName() const;
 		virtual Tree * GetTopSibling();
 		virtual Tree * GetBottomSibling();
 		virtual Tree * GetRoot();

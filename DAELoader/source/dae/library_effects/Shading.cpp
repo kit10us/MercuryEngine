@@ -53,12 +53,12 @@ const unify::ColorUnit & Shading::Property::GetColor() const
 	return m_color;
 }
 
-const std::string & Shading::Property::GetTexture() const
+std::string Shading::Property::GetTexture() const
 {
 	return m_texture;
 }
 
-const std::string & Shading::Property::GetTexCoord() const
+std::string Shading::Property::GetTexCoord() const
 {
 	return m_texCoord;
 }

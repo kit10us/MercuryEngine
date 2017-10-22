@@ -19,8 +19,8 @@ namespace dae
 	public:
 		Vertices( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		const std::vector< std::shared_ptr< Input_Shared > > & GetInput() const;
 
 	private:

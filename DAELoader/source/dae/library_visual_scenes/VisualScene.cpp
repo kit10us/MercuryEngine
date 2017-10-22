@@ -32,12 +32,12 @@ VisualScene::VisualScene( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & VisualScene::GetID() const
+std::string VisualScene::GetID() const
 {
 	return m_id;
 }
 
-const std::string & VisualScene::GetName() const
+std::string VisualScene::GetName() const
 {
 	return m_name;
 }

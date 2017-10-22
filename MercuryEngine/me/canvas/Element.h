@@ -22,13 +22,15 @@ namespace me
 
 			me::IGame * GetGame();
 
-			void UpdateLayout( UpdateParams params, unify::Size< float > area ) override;
+			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
 
 			void SetAnchor( Anchor anchor );
 			Anchor GetAnchor() const;
 
+			void SetOffset( unify::V2< float > offset ) override;
 			unify::V2< float > GetOffset() const override;
-			unify::Size< float > GetSize( unify::Size< float > area ) const override;
+
+			unify::Size< float > GetContentSize() const override;
 
 			unify::V2< float > GetActualPosition() const;
 			unify::Size< float > GetActualSize() const;

@@ -32,10 +32,12 @@
     <ClInclude Include="me\canvas\CanvasComponent.h" />
     <ClInclude Include="me\canvas\Element.h" />
     <ClInclude Include="me\canvas\FPS.h" />
+    <ClInclude Include="me\canvas\Grid.h" />
     <ClInclude Include="me\canvas\IElement.h" />
     <ClInclude Include="me\canvas\Image.h" />
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
+    <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\dyna\color\DC_Delta.h" />
     <ClInclude Include="me\dyna\delta\DD_Absolute.h" />
     <ClInclude Include="me\dyna\delta\DD_Add.h" />
@@ -232,9 +234,11 @@
     <ClCompile Include="me\canvas\CanvasComponent.cpp" />
     <ClCompile Include="me\canvas\Element.cpp" />
     <ClCompile Include="me\canvas\FPS.cpp" />
+    <ClCompile Include="me\canvas\Grid.cpp" />
     <ClCompile Include="me\canvas\Image.cpp" />
     <ClCompile Include="me\canvas\Layer.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
+    <ClCompile Include="me\canvas\VList.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />

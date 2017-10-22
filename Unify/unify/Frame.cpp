@@ -80,7 +80,7 @@ Frame::Frame()
 {
 }
 
-Frame::Frame( const std::string & name ) 
+Frame::Frame( std::string name ) 
 : m_child( 0 )
 , m_previous( 0 )
 , m_next( 0 )
@@ -167,7 +167,7 @@ const Frame * Frame::GetNext() const
 	return m_next;
 }
 
-const std::string & Frame::GetName() const
+std::string Frame::GetName() const
 {
 	return m_name;
 }

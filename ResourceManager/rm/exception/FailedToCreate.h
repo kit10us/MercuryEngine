@@ -13,7 +13,7 @@ namespace rm
 		class FailedToCreate : public std::exception
 		{
 		public:
-			FailedToCreate( const std::string & error )
+			FailedToCreate( std::string error )
 				: std::exception( error.c_str() )
 			{
 			}

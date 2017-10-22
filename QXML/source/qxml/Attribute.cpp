@@ -38,12 +38,12 @@ Attribute::~Attribute()
 	m_value.clear();
 }
 
-const std::string & Attribute::GetName() const
+std::string Attribute::GetName() const
 {
 	return m_name;
 }
 
-const std::string & Attribute::GetString() const
+std::string Attribute::GetString() const
 {
 	return m_value;
 }

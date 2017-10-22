@@ -25,7 +25,7 @@ namespace qjson
 		typedef std::shared_ptr< Value > shared_ptr;
 		typedef std::shared_ptr< const Value > const_ptr;
 
-		static bool BeginsWith( const std::string & a, const std::string & b );
+		static bool BeginsWith( std::string a, std::string b );
 		
 		/// <summary>
 		/// This function will return a value from text, removing it and associated white-space, modifying the original string.

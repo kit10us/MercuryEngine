@@ -21,7 +21,7 @@ bool unify::IsNumeric( const char ch )
 /// <summary>
 /// Compare two strings for equvilancy, ignoring case.
 /// </summary>
-bool unify::StringIs( const std::string & a, const std::string & b )
+bool unify::StringIs( std::string a, std::string b )
 {
 	return _stricmp( a.c_str(), b.c_str()) == 0;
 }
@@ -29,7 +29,7 @@ bool unify::StringIs( const std::string & a, const std::string & b )
 /// <summary>
 /// Compare a string for equvilancy with any of a list of strings, ignoring case.
 /// </summary>
-bool unify::StringIsAny( const std::string & a, const std::list< std::string > & list )
+bool unify::StringIsAny( std::string a, const std::list< std::string > & list )
 {
 	for( const auto & b : list )
 	{
@@ -38,19 +38,19 @@ bool unify::StringIsAny( const std::string & a, const std::list< std::string > &
 	return false;
 }
 
-bool unify::BeginsWith( const std::string & a, const std::string & b )
+bool unify::BeginsWith( std::string a, std::string b )
 {
 	if ( a.length() < b.length() ) return false;
 	return StringIs( a.substr( 0, b.length() ), b );
 }
 
-bool unify::EndsWith( const std::string & a, const std::string & b )
+bool unify::EndsWith( std::string a, std::string b )
 {
 	if ( a.length() < b.length() ) return false;
 	return StringIs( a.substr( a.length() - b.length() ), b );
 }
 
-bool unify::StringIsInt( const std::string & sOne )
+bool unify::StringIsInt( std::string sOne )
 {
 	const char * pChar = sOne.c_str();
 	if( *pChar == '-' ) pChar++;
@@ -62,7 +62,7 @@ bool unify::StringIsInt( const std::string & sOne )
 	return 1;
 }
 
-bool unify::StringIsFloat( const std::string & sOne )
+bool unify::StringIsFloat( std::string sOne )
 {
 	const char * pChar = sOne.c_str();
 	if( *pChar == '-' ) pChar++;
@@ -118,14 +118,14 @@ std::string unify::LeftString( std::string stringIn, unsigned int uLength )
 
 // Returns a string minus a portion from the front/left side of the string...
 // new size = size - uLessLength
-std::string unify::StringMinusLeft( const std::string & sStringIn, unsigned int uLessLength )
+std::string unify::StringMinusLeft( std::string sStringIn, unsigned int uLessLength )
 {
 	if( uLessLength >= sStringIn.length() ) return std::string();
 	return sStringIn.substr( uLessLength, (unsigned int)sStringIn.length() - uLessLength );
 }
 
 // Returns a string minus a portion from the end/right side of the string...
-std::string unify::StringMinusRight( const std::string & sStringIn, unsigned int uLessLength )
+std::string unify::StringMinusRight( std::string sStringIn, unsigned int uLessLength )
 {
 	if( uLessLength >= sStringIn.length() ) return std::string();
 	return sStringIn.substr( 0, (unsigned int)sStringIn.length() - uLessLength );
@@ -146,7 +146,7 @@ std::string unify::StringReplace( const std::string in, std::string find, std::s
 	return out;	
 }
 
-std::string unify::CleanWhitespace( const std::string & in )
+std::string unify::CleanWhitespace( std::string in )
 {
 	if ( in.empty() ) return std::string();
 
@@ -177,7 +177,7 @@ std::string unify::CleanWhitespace( const std::string & in )
 	return out;
 }
 
-std::string unify::ToLower( const std::string & in )
+std::string unify::ToLower( std::string in )
 {
 	std::string out( in );
 	for( std::size_t i = 0; i < in.length(); ++i )
@@ -188,7 +188,7 @@ std::string unify::ToLower( const std::string & in )
 	return out;
 }
 
-std::string unify::ListPart( const std::string & sString, std::vector< char > seperators, int iPartIndex )
+std::string unify::ListPart( std::string sString, std::vector< char > seperators, int iPartIndex )
 {
 	if( sString == "" ) return "";
 
@@ -224,7 +224,7 @@ std::string unify::ListPart( const std::string & sString, std::vector< char > se
 	return sString.substr( iStart, iLenToCopy );
 }
 
-unsigned int unify::ListPartCount( const std::string & sString, std::vector< char > seperators )
+unsigned int unify::ListPartCount( std::string sString, std::vector< char > seperators )
 {
 	if( sString == "" ) return 0;
 
@@ -262,7 +262,7 @@ unsigned int unify::ListPartCount( const std::string & sString, std::vector< cha
 	return pc + 1;
 }
 
-bool unify::CaseInsensitiveLessThanTest::operator() (const std::string & string1, const std::string & string2) const
+bool unify::CaseInsensitiveLessThanTest::operator() (std::string string1, std::string string2) const
 {
     return _stricmp(string1.c_str(), string2.c_str()) < 0;
 }

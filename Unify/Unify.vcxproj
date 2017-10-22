@@ -49,6 +49,7 @@
     <ClInclude Include="unify\Color.h" />
     <ClInclude Include="unify\ColorUnit.h" />
     <ClInclude Include="unify\DataLock.h" />
+    <ClInclude Include="unify\Dynamic.h" />
     <ClInclude Include="unify\Exception.h" />
     <ClInclude Include="unify\FrameLite.h" />
     <ClInclude Include="unify\FrameSetInstance.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="unify\TexArea.h" />
     <ClInclude Include="unify\TexCoords.h" />
     <ClInclude Include="unify\TimeDelta.h" />
+    <ClInclude Include="unify\TLink.h" />
     <ClInclude Include="unify\Tree.h" />
     <ClInclude Include="unify\Triangle.h" />
     <ClInclude Include="unify\unify.h" />
@@ -93,6 +95,7 @@
     <None Include="unify\BSphere.inl" />
     <None Include="unify\BSquare.inl" />
     <None Include="unify\Cast.inl" />
+    <None Include="unify\Dynamic.inl" />
     <None Include="unify\LinkList.inl" />
     <None Include="unify\List.inl" />
     <None Include="unify\Math.inl" />
@@ -104,6 +107,7 @@
     <None Include="unify\Size.inl" />
     <None Include="unify\Size3.inl" />
     <None Include="unify\String.inl" />
+    <None Include="unify\TLink.inl" />
     <None Include="unify\Tree.inl" />
     <None Include="unify\Triangle.inl" />
     <None Include="unify\V2.inl" />

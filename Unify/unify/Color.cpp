@@ -117,7 +117,7 @@ Color::Color( const ColorUnit & colorUnit )
 		);
 }
 
-Color::Color( const std::string & text, Color::Order order, Color::Component defaultAlpha )
+Color::Color( std::string text, Color::Order order, Color::Component defaultAlpha )
 {
 	component.r = 0;
 	component.g = 0;

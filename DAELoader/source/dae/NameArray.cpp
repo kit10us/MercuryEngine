@@ -17,17 +17,17 @@ int NameArray::GetCount() const
 	return m_count;
 }
 
-const std::string & NameArray::GetID() const
+std::string NameArray::GetID() const
 {
 	return m_id;
 }
 
-const std::string & NameArray::GetName() const
+std::string NameArray::GetName() const
 {
 	return m_name;
 }
 
-const std::string & NameArray::GetStringContents() const
+std::string NameArray::GetStringContents() const
 {
 	return m_stringContents;
 }

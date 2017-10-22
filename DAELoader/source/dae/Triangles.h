@@ -18,9 +18,9 @@ namespace dae
 	public:
 		Triangles( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetName() const;
+		std::string GetName() const;
 		int GetCount() const;
-		const std::string & GetMaterial() const;
+		std::string GetMaterial() const;
 		const std::vector< std::shared_ptr< Input_Shared > > & GetInput() const;
 		const std::vector< int > & GetP() const;
 		me::render::VertexDeclaration::ptr GetVertexFormat() const;

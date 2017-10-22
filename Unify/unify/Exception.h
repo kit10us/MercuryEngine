@@ -12,7 +12,7 @@ namespace unify
     class Exception : public std::exception
     {
     public:
-        Exception( const std::string & what )
+        Exception( std::string what )
 			: std::exception( what.c_str() )
         {
         }

@@ -4,8 +4,12 @@
 	<inputaction input="keyboard" condition="ButtonPressed" name="Escape">
 		<QuitGame/>
 	</inputaction>
+	
 	<inputaction input="keyboard" condition="ButtonPressed" name="F5">
-		<QuitGame/>
+		<FireEvent name="game" command="SaveGame"/>
+	</inputaction>
+	<inputaction input="keyboard" condition="ButtonPressed" name="F8+">
+		<FireEvent name="game" command="LoadGame"/>
 	</inputaction>
 </inputs>
 </xml>

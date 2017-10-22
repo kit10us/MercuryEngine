@@ -18,8 +18,8 @@ namespace dae
 	public:
 		Material( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		const InstanceEffect & GetInstanceEffect() const;
 
 	private:

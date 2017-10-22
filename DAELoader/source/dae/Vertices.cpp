@@ -19,12 +19,12 @@ Vertices::Vertices( IDocument & document, const qxml::Element * node )
 	}
 }
 
-const std::string & Vertices::GetID() const
+std::string Vertices::GetID() const
 {
 	return m_id;
 }
 
-const std::string & Vertices::GetName() const
+std::string Vertices::GetName() const
 {
 	return m_name;
 }

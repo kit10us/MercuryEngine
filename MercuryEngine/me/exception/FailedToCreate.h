@@ -13,7 +13,7 @@ namespace me
 		class FailedToCreate : public unify::Exception 
 		{
 		public:
-			FailedToCreate( const std::string & error )
+			FailedToCreate( std::string error )
 				: unify::Exception( error.c_str() )
 			{
 			}

@@ -3,8 +3,10 @@
 
 #pragma once
 
+#include <qxml/Document.h>
 #include <unify/FStream.h>
 #include <unify/LinkList.h>
+#include <unify/Path.h>
 #include <string>
 
 namespace qxml 
@@ -14,29 +16,26 @@ namespace qxml
 	class ExportDocument
 	{
 	public:
-		ExportDocument();
+		ExportDocument( unify::Path filename, std::string indent = "   " );
 		~ExportDocument();
 
-		bool StartSave( const std::string & filename, unsigned int uTabSize = 3 );
-		bool EndSave();
+		void Close();
 
-		bool ExportComment( const std::string & comment );
-		bool ExportNewline();
+		bool IsOpen() const;
 
-		bool ExportElementStart( const std::string & name );
-		bool ExportElementAttribute( const std::string & attributeName, const std::string & attributeValue );
-		bool ExportElementDataStart();
-		bool ExportElementData( const std::string & data );
-		bool ExportElementEnd();
+		void Indent( unsigned int depth );
+
+		void ExportDocument::WriteDoc( Document & doc );
 
 	protected:
-		bool Indent( unsigned int uSpaces );
-
-	protected:
-		unify::FileStream m_Stream;
+		void WriteElement( Element * element, int depth );
+		
+		unify::FileStream m_stream;
 		unsigned int m_uDepth;
-		unsigned int m_uTabSize;
-		std::string m_filename;
+		std::string m_indent;
+		std::string m_attributeIndent;
+		std::string m_afterElement;
+		unify::Path m_filename;
 
 		bool m_bInElement;
 		unsigned int m_uWritenAttributes;

@@ -7,7 +7,7 @@
 using namespace me;
 using namespace frameanimation;
 
-Animation::Animation( const std::string & name, unify::Seconds duration )
+Animation::Animation( std::string name, unify::Seconds duration )
 : m_name( name ), m_duration( duration )
 {
 }
@@ -16,7 +16,7 @@ Animation::~Animation()
 {
 }
 
-const std::string & Animation::Name() const
+std::string Animation::Name() const
 {
 	return m_name;
 }

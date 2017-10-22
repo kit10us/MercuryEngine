@@ -36,7 +36,7 @@ namespace unify
 		Color();
 		Color( Component r, Component g, Component b, Component a );
 		Color( const Color & color );
-		explicit Color( const std::string & text, Order order = RGBA, Component defaultAlpha = 255 );
+		explicit Color( std::string text, Order order = RGBA, Component defaultAlpha = 255 );
 		explicit Color( const ColorUnit & colorUnit );
 
         // CONVERSIONS

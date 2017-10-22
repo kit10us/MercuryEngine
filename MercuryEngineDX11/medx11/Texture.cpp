@@ -140,7 +140,7 @@ void Texture::LoadHeader()
 }
 
 // Load the actual image file...
-void Texture::LoadImage( const unify::Path & filePath )
+void Texture::LoadImage( unify::Path filePath )
 {
 	auto dxDevice = m_renderer->GetDxDevice();
 

@@ -169,13 +169,13 @@ void SpriteDictionary::LoadDictionary( unify::Path source )
 	}
 }
 
-bool SpriteDictionary::HasSpriteArray( const std::string & name ) const
+bool SpriteDictionary::HasSpriteArray( std::string name ) const
 {
 	SpriteArrayMap::const_iterator itr = m_spriteArrayMap.find( name );
 	return itr == m_spriteArrayMap.end() ? false : true;
 }
 
-const SpriteDictionary::SpriteArray & SpriteDictionary::FindSpriteArray( const std::string & name ) const
+const SpriteDictionary::SpriteArray & SpriteDictionary::FindSpriteArray( std::string name ) const
 {
 	SpriteArrayMap::const_iterator itr = m_spriteArrayMap.find( name );
 	if ( itr == m_spriteArrayMap.end() )
@@ -209,7 +209,7 @@ const unify::TexArea & SpriteDictionary::GetSprite( unsigned int index ) const
 	return m_spriteMasterList[index];
 }
 
-const unify::TexArea & SpriteDictionary::GetSprite( const std::string & arrayName, unsigned int index ) const
+const unify::TexArea & SpriteDictionary::GetSprite( std::string arrayName, unsigned int index ) const
 {
 	const SpriteArrayMap::const_iterator itr = m_spriteArrayMap.find( arrayName );
 	if ( itr == m_spriteArrayMap.end() )

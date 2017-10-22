@@ -31,82 +31,82 @@ me::IGame * Element::GetGame()
 }
 
 
-void Element::UpdateLayout( UpdateParams params, unify::Size< float > area )
+void Element::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 {
 	switch( m_anchor )
 	{
 	case Anchor::Free:
-		m_actualPosition = m_offset;
+		m_actualPosition = parentArea.UL() + m_offset;
 		m_actualSize = m_size;
 		break;
 
 	case Anchor::TopLeft:
-		m_actualPosition = unify::V2< float >{ 0, 0 } + m_offset;
+		m_actualPosition = parentArea.UL() + m_offset + unify::V2< float >{ 0, 0 };
 		m_actualSize = m_size;
 		break;
 	case Anchor::Top:
-		m_actualPosition = unify::V2< float >{ area.width * 0.5f, 0 } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width() * 0.5f, 0 } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::TopRight:
-		m_actualPosition = unify::V2< float >{ area.width, 0 } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width(), 0 } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::StretchTop:
-		m_actualPosition = unify::V2< float >{ 0, m_offset.y };
-		m_actualSize = unify::Size< float >{ area.width, m_size.height };
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ 0, m_offset.y };
+		m_actualSize = unify::Size< float >{ parentArea.Width(), m_size.height };
 		break;
 
 	case Anchor::Left:
-		m_actualPosition = unify::V2< float >{ 0, area.height * 0.5f } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ 0, parentArea.Height() * 0.5f } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::Center:
-		m_actualPosition = area.Center() + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width() * 0.5f, parentArea.Height() * 0.5f } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::Right:
-		m_actualPosition = unify::V2< float >{ area.width, area.height * 0.5f } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width(), parentArea.Height() * 0.5f } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::StretchLeftRight:
-		m_actualPosition = unify::V2< float >{ 0, area.height * 0.5f + m_offset.y };
-		m_actualSize = unify::Size< float >{ area.width, m_size.height };
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ 0, parentArea.Height() * 0.5f + m_offset.y };
+		m_actualSize = unify::Size< float >{ parentArea.Width(), m_size.height };
 		break;
 
 	case Anchor::BottomLeft:
-		m_actualPosition = unify::V2< float >{ 0, area.height } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ 0, parentArea.Height() } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::Bottom:
-		m_actualPosition = unify::V2< float >{ area.width * 0.5f, area.height } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width() * 0.5f, parentArea.Height() } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::BottomRight:
-		m_actualPosition = unify::V2< float >{ area.width, area.height } + m_offset;
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width(), parentArea.Height() } + m_offset;
 		m_actualSize = m_size;
 		break;
 	case Anchor::StretchBottom:
-		m_actualPosition = unify::V2< float >{ 0, area.height + m_offset.y };
-		m_actualSize = unify::Size< float >{ area.width, m_size.height };
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ 0, parentArea.Height() + m_offset.y };
+		m_actualSize = unify::Size< float >{ parentArea.Width(), m_size.height };
 		break;
 
 	case Anchor::StretchLeft:
-		m_actualPosition = unify::V2< float >{ m_offset.x, 0 };
-		m_actualSize = unify::Size< float >{ m_size.width, area.height };
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ m_offset.x, 0 };
+		m_actualSize = unify::Size< float >{ m_size.width, parentArea.Height() };
 		break;
 	case Anchor::StretchTopBottom:
-		m_actualPosition = unify::V2< float >{ area.width * 0.5f + m_offset.x, 0 };
-		m_actualSize = unify::Size< float >{ m_size.width, area.height };
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width() * 0.5f + m_offset.x, 0 };
+		m_actualSize = unify::Size< float >{ m_size.width, parentArea.Height() };
 		break;
 	case Anchor::StretchRight:
-		m_actualPosition = unify::V2< float >{ area.width + m_offset.x, 0 };
-		m_actualSize = unify::Size< float >{ m_size.width, area.height };
+		m_actualPosition = parentArea.UL() + unify::V2< float >{ parentArea.Width() + m_offset.x, 0 };
+		m_actualSize = unify::Size< float >{ m_size.width, parentArea.Height() };
 		break;
 
 	case Anchor::StretchFull:
-		m_actualPosition = area.Center();
-		m_actualSize = area;
+		m_actualPosition = parentArea.UL() + m_offset;
+		m_actualSize = parentArea.Size() - unify::Size< float >( m_offset.x, m_offset.y );
 		break;
 	}
 }
@@ -121,12 +121,17 @@ Anchor Element::GetAnchor() const
 	return m_anchor;
 }
 
+void Element::SetOffset( unify::V2< float > offset )
+{
+	m_offset = offset;
+}
+
 unify::V2< float > Element::GetOffset() const
 {
 	return m_offset;
 }
 
-unify::Size< float > Element::GetSize( unify::Size< float > area ) const
+unify::Size< float > Element::GetContentSize() const
 {
 	return m_size;
 }

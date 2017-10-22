@@ -10,6 +10,7 @@
 #include <me/factory/EffectFactories.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
+#include <me/canvas/VList.h>
 
 #include <me/input/StickCondition.h>
 
@@ -116,16 +117,19 @@ void MainScene::OnStart()
 		gamepad->AddEvent( GetOwnership(), condition, input::IInputAction::ptr( new PlayerMovementStick( target ) ) );
 	}
 
+	// Find the camera created from the scripts.
 	Object * camera = FindObject( "camera" );
 	if (camera)
 	{
 		using namespace dyna;
-		typedef IDynaPosition::ptr DP;
 
+		// Create follow object action, so that every frame our camera follows our target character object.
 		auto follow = new object::ObjectActionComponent( object::action::IObjectAction::ptr( 
-			new object::action::SetPosition( DP(
+			// Create a set position dyna.
+			new object::action::SetPosition( IDynaPosition::ptr(
+				// Use target object PLUS an absolute offset as position
 				new position::Add( 
-						DP( new position::Object( target ) ), DP(new position::Absolute({ 0, 17, -12 }))
+					IDynaPosition::ptr( new position::Object( target ) ), IDynaPosition::ptr(new position::Absolute({ 0, 17, -12 }))
 				)
 			) ) ) );
 		camera->AddComponent( IObjectComponent::ptr( follow ) );
@@ -134,12 +138,29 @@ void MainScene::OnStart()
 	// Add Canvas component...
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( GetGame() ) );
 	AddComponent( canvas );
+
+	// Load font...
 	Effect::ptr font2( new Effect( 
 		GetManager< IVertexShader >()->Add( unify::Path( "texture2d_trans.xml" ) ), 
 		GetManager< IPixelShader>()->Add( unify::Path( "texture2d_trans.xml" ) ),
 		GetManager< ITexture >()->Add( unify::Path( "font2.png" ) )
 	) );
+
+	// Add FPS...
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2, canvas::Anchor::TopRight ) ) );
+	
+	// Add simple menu...
+	{
+		using namespace canvas;
+		auto menu = new canvas::VList( GetGame(), 10, { 100, 1000 }, canvas::Anchor::TopRight );
+		canvas->GetLayer()->AddElement( canvas::IElement::ptr( menu ) );
+		menu->AddItem( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "> First Item", Anchor::TopLeft ) ) );
+		menu->AddItem( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "  Second Item", Anchor::TopLeft ) ) );
+		menu->AddItem( canvas::IElement::ptr( new canvas::TextElement( GetGame(), font2, "  Third Item", Anchor::TopLeft ) ) );
+		menu->SetEnabled( false );
+	}
+
+
 }
 
 std::string MainScene::SendCommand( std::string command, std::string extra )
@@ -247,6 +268,11 @@ std::string MainScene::SendCommand( std::string command, std::string extra )
 		m_map = new Map( m_mapSize, m_terraSize );
 		auto land = GetObjectAllocator()->NewObject( "land" );
 		land->AddComponent( object::IObjectComponent::ptr( m_map ) );
+	}	
+
+	else if( unify::StringIs( command, "SaveGame" ) )
+	{
+		// TODO:
 	}
 
 	return "";

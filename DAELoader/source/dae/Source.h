@@ -24,8 +24,8 @@ namespace dae
 
 		Source( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		const FloatArray & GetFloatArray() const;
 		const NameArray & GetNameArray() const;
 		const Source_TechniqueCommon & GetTechniqueCommon() const;

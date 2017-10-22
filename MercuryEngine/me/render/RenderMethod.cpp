@@ -9,7 +9,7 @@
 using namespace me;
 using namespace render;
 
-PrimitiveType::TYPE PrimitiveType::StringToPrimitiveType( const std::string & type )
+PrimitiveType::TYPE PrimitiveType::StringToPrimitiveType( std::string type )
 {
 	if( unify::StringIs( type, "POINTLIST" ) )
 	{

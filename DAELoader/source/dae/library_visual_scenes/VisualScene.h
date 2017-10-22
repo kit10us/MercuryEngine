@@ -18,8 +18,8 @@ namespace dae
 	public:
 		VisualScene( IDocument & document, const qxml::Element * node );
 
-		const std::string & GetID() const;
-		const std::string & GetName() const;
+		std::string GetID() const;
+		std::string GetName() const;
 		const Node * GetFirstNode() const;
 
 		const Node * FindNode( std::string id ) const;

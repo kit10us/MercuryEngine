@@ -98,10 +98,6 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 		IPixelShader::ptr ps;
 		{
 			const auto node = element->FindFirstElement( "textureps" );
-			if( node == nullptr )
-			{
-				throw unify::Exception( "Missing element \"textureps\" from document \"" + element->GetDocument()->GetPath().ToString() + "\"!" );
-			}
 
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );

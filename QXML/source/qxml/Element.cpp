@@ -41,12 +41,12 @@ Element::~Element()
 {
 }
 
-const std::string & Element::GetTagName() const
+std::string Element::GetName() const
 {
 	return m_tagName;
 }
 
-bool Element::IsTagName( const std::string & tagName ) const
+bool Element::IsTagName( std::string tagName ) const
 {
 	return unify::StringIs( m_tagName, tagName );
 }
@@ -56,7 +56,7 @@ unsigned int Element::NumAttributes() const
 	return (unsigned int)m_attributeList.size();
 }
 
-bool Element::HasAttributes( const std::string & name ) const
+bool Element::HasAttributes( std::string name ) const
 {
 	std::vector< std::string > names = unify::Split< std::string >( name, ',' );
     for( std::vector< std::string >::const_iterator itrTok = names.begin(); itrTok != names.end(); ++itrTok )
@@ -65,7 +65,7 @@ bool Element::HasAttributes( const std::string & name ) const
 		for( auto & itr : m_attributeList )
 		{
             const Attribute & currentAttribute = *itr;
-            const std::string & attributeToFindText = *itrTok;
+            std::string attributeToFindText = *itrTok;
             std::string left;
             std::string right;
             bool notLeft = false;
@@ -138,7 +138,7 @@ bool Element::HasAttributes( const std::string & name ) const
 	return true;
 }
 
-bool Element::HasElements( const std::string & name ) const
+bool Element::HasElements( std::string name ) const
 {
 	std::vector< std::string > names = unify::Split< std::string >( name, ',' );
     for( std::vector< std::string >::const_iterator itrTok = names.begin(); itrTok != names.end(); ++itrTok )
@@ -167,7 +167,7 @@ Attribute::shared_ptr Element::GetAttribute( unsigned int attribute ) const
 	return m_attributeList[ attribute ];
 }
 
-Attribute::shared_ptr Element::GetAttribute( const std::string & attributeName ) const
+Attribute::shared_ptr Element::GetAttribute( std::string attributeName ) const
 {
 	for( std::vector< Attribute::shared_ptr >::const_iterator itr = m_attributeList.begin(), end = m_attributeList.end(); itr != end; ++itr )
 	{
@@ -177,7 +177,7 @@ Attribute::shared_ptr Element::GetAttribute( const std::string & attributeName )
 	throw unify::Exception( GetDocument()->GetPath().ToString() + ": Attribute \"" + attributeName + "\" was not found by name!" );
 }
 
-void Element::FindElements( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes ) const
+void Element::FindElements( std::list< const Element * > & elementList, const std::string tagName, std::string attributes ) const
 {
 	// Get the first child of our parent
 	const Element * element = GetFirstChild();
@@ -191,7 +191,7 @@ void Element::FindElements( std::list< const Element * > & elementList, const st
 	}
 }
 
-void Element::FindElementsRecursive( std::list< const Element * > & elementList, const std::string tagName, const std::string & attributes ) const
+void Element::FindElementsRecursive( std::list< const Element * > & elementList, const std::string tagName, std::string attributes ) const
 {
 	// Get the first child of our parent
 	const Element * element = GetFirstChild();
@@ -206,7 +206,7 @@ void Element::FindElementsRecursive( std::list< const Element * > & elementList,
 	}
 }
 
-const Element * Element::FindFirstElement( const std::string tagName, const std::string & attributes ) const
+const Element * Element::FindFirstElement( const std::string tagName, std::string attributes ) const
 {
 	// Get the first child of our parent
 	const Element * element = GetFirstChild();
@@ -222,7 +222,7 @@ const Element * Element::FindFirstElement( const std::string tagName, const std:
 }
 
 // Search our children for elements with a given tag name...
-Element * Element::GetElement( const std::string & tagName )
+Element * Element::GetElement( std::string tagName )
 {
 	// Get the first child of our parent
 	Element* pElement = GetFirstChild();
@@ -238,7 +238,7 @@ Element * Element::GetElement( const std::string & tagName )
 	return 0;
 }
 
-const Element * Element::GetElement( const std::string & tagName ) const
+const Element * Element::GetElement( std::string tagName ) const
 {
 	// Get the first child of our parent
 	const Element * pElement = GetFirstChild();
@@ -306,7 +306,7 @@ const Element * Element::GetLastChild() const
 }
 
 // Returns the text for an element...
-const std::string & Element::GetText() const
+std::string Element::GetText() const
 {
 	return m_text;
 }
@@ -362,19 +362,26 @@ void Element::AddAttribute( std::string name, std::string value )
 	m_attributeList.push_back( Attribute::shared_ptr( new Attribute( name, value ) ) );
 }
 
-void Element::AddAttribute( Attribute::shared_ptr & attribute )
+void Element::AddAttribute( Attribute::shared_ptr attribute )
 {
 	m_attributeList.push_back( attribute );
 }
 
 Element * Element::AddElement( std::string name, NodeType::TYPE type )
 {
-	Element* element = new Element( name, type, GetDocument() );
+	auto * element = new Element( name, type, GetDocument() );
 	TakeChild( element );
 	return element;
 }
 
-const std::string & Element::AddText( const std::string & text )
+Element * Element::AddCData( std::string text )
+{
+	auto * element = AddElement( "CDATA", NodeType::CDATA );
+	element->AddText( text );
+	return element;
+}
+
+std::string Element::AddText( std::string text )
 {
 	m_text += unify::CleanWhitespace( text );
 	return m_text;
@@ -402,6 +409,6 @@ size_t Element::GetLine() const
 
 Element * ElementList::AddElement( Element * element )
 {
-	AddItem( element, element->GetTagName() );
+	AddItem( element, element->GetName() );
 	return element;
 }

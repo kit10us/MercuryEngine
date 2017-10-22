@@ -28,12 +28,12 @@ namespace dae
 	class Document : public IDocument
 	{
 	public:
-		Document( me::Game * game, const unify::Path & filePath, util::IEffectSolver * effectSolver );
+		Document( me::Game * game, unify::Path filePath, util::IEffectSolver * effectSolver );
 
 		/// <summary>
 		/// DAE attribute: version
 		/// </summary>
-		const std::string & GetVersion() const;
+		std::string GetVersion() const;
 
 		me::render::Effect::ptr GetEffect( const Effect * effect ) const;
 
@@ -46,8 +46,8 @@ namespace dae
 		const LibraryVisualScenes & GetLibraryVisualScenes() const;
 		const Scene & GetScene() const;
 
-		void Add( const std::string & name, DocumentNode * node );
-		const DocumentNode * Find( const std::string & name ) const;
+		void Add( std::string name, DocumentNode * node );
+		const DocumentNode * Find( std::string name ) const;
 
 		me::render::IRenderer * GetRenderer() override;
 

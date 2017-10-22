@@ -132,7 +132,7 @@ size_t VertexDeclaration::GetNumberOfElements() const
 	return m_allElements.size();
 }
 
-bool VertexDeclaration::ElementExists( const std::string & name ) const
+bool VertexDeclaration::ElementExists( std::string name ) const
 {
 	ElementMap::const_iterator itr = m_elementMap.find( name );
 	return !(itr == m_elementMap.end());

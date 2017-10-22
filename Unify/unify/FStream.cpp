@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <unify/FStream.h>
+#include <unify/Exception.h>
 #include <string>
 
 using namespace unify;
@@ -15,7 +16,7 @@ FileStream::~FileStream()
 	Close();
 }
 
-bool FileStream::Open( StreamAccessType access, void * pData )
+void FileStream::Open( StreamAccessType access, unify::Path path )
 {
 	Close();
 
@@ -57,28 +58,21 @@ bool FileStream::Open( StreamAccessType access, void * pData )
 		break;
 	};
 
-	fopen_s( &m_pStream, (char*)pData, mode );
+	fopen_s( &m_pStream, path.ToString().c_str(), mode );
 
 	if( ! m_pStream )
 	{
-		return false;
+		throw unify::Exception( "Failed to open file \"" + path.ToString() + "\"!" );
 	}
 
 	m_Access = access;
 	m_bEndOfStream = false;
 	m_uBytesWaiting = /*BYTES_UNKNOWN*/0;
-
-	return true;
 }
 
 void FileStream::Close()
 {
-	if( m_pStream )
-	{
-		fclose( (FILE*)m_pStream );
-		m_pStream = 0;
-		m_bEndOfStream = false;
-	}
+	Stream::Close();
 }
 
 // Read uLength bytes from stream, return actual bytes read
@@ -131,11 +125,11 @@ unsigned int FileStream::ReadPack( void * pDest, unsigned int uMaxLength )
 }
 
 // Write uLength bytes to stream
-bool FileStream::Write( const void * pSrc, unsigned int uLength )
+void FileStream::Write( const void * pSrc, unsigned int uLength )
 {
-	if( m_Access != STREAMACCESS_WRITE && m_Access != STREAMACCESS_APPEND )
+	if( m_Access != STREAMACCESS_WRITE && m_Access != STREAMACCESS_WRITETEXT && m_Access != STREAMACCESS_APPEND )
 	{
-		return false;
+		throw unify::Exception( "Attempted write, when access mode is not a write supported mode!" );
 	}
 	
 	unsigned int u;
@@ -143,16 +137,14 @@ bool FileStream::Write( const void * pSrc, unsigned int uLength )
 	{
 		fputc( ((unsigned char*)pSrc)[u], (FILE*)m_pStream );
 	}
-
-	return true;
 }
 
 // Write a null terminated string to the stream...
-bool FileStream::WritePack( const void* pSrc )
+void FileStream::WritePack( const void* pSrc )
 {
 	if( m_Access != STREAMACCESS_WRITE && m_Access != STREAMACCESS_WRITETEXT && m_Access != STREAMACCESS_APPEND )
 	{
-		return false;
+		throw unify::Exception( "Attempted write, when access mode is not a write supported mode!" );
 	}
 	
 	unsigned int u;
@@ -160,8 +152,11 @@ bool FileStream::WritePack( const void* pSrc )
 	{
 		fputc( ((unsigned char*)pSrc)[u], (FILE*)m_pStream );
 	}
+}
 
-	return true;
+void FileStream::Write( std::string out )
+{
+	Write( out.c_str(), out.length() );
 }
 
 bool FileStream::Seek( StreamSeekType seek, int iOffset )

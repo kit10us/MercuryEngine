@@ -25,20 +25,20 @@ namespace unify
         virtual Parameters & Reset();
 
         // Default only sets a value if it hasn't already been set. 
-		Parameters & Default( const std::string & name, const unify::Any & value );
+		Parameters & Default( std::string name, const unify::Any & value );
         
         // Default only sets a value if it hasn't already been set. 
 		template< typename T_Type > 
-		Parameters & Default( const std::string & name, const T_Type & value );
+		Parameters & Default( std::string name, const T_Type & value );
 
         template< typename T_Type > 
-		Parameters & Set( const std::string & name, const T_Type & value );
+		Parameters & Set( std::string name, const T_Type & value );
         
-		Parameters & Set( const std::string & name, const char * value );
+		Parameters & Set( std::string name, const char * value );
 	
-        bool Exists( const std::string & name ) const;
-        template< typename T_Type > T_Type Get( const std::string & name ) const;
-        template< typename T_Type > T_Type Get( const std::string & name, const T_Type & defaultValue ) const;
+        bool Exists( std::string name ) const;
+        template< typename T_Type > T_Type Get( std::string name ) const;
+        template< typename T_Type > T_Type Get( std::string name, const T_Type & defaultValue ) const;
         std::string ToString() const;
 
         size_t AuditCount() const;
@@ -55,11 +55,11 @@ namespace unify
 
     // Unsigned int specialization to prevent issues with unsigned long int (uint32).
     // defined in the CPP file.
-    template<> unsigned int Parameters::Get< unsigned int >( const std::string & name ) const;
+    template<> unsigned int Parameters::Get< unsigned int >( std::string name ) const;
 
     // Unsigned int specialization to prevent issues with unsigned long int (uint32).
     // defined in the CPP file.
-    template<> unsigned int Parameters::Get< unsigned int >( const std::string & name, const unsigned int & defaultValue ) const;
+    template<> unsigned int Parameters::Get< unsigned int >( std::string name, const unsigned int & defaultValue ) const;
 
 	#include <unify/Parameters.inl>
 }
