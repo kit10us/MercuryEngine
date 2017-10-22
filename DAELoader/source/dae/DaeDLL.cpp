@@ -25,12 +25,12 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 	{
 		Game * m_game;
 		Effect::ptr m_default_color;
-		Effect::ptr m_default_textured;
+		Effect::ptr m_default_texture;
 	public:
 
-		MyEffectSolver( Effect::ptr default_color, Effect::ptr default_textured )
+		MyEffectSolver( Effect::ptr default_color, Effect::ptr default_texture )
 			: m_default_color{ default_color }
-			, m_default_textured{ default_textured }
+			, m_default_texture{ default_texture }
 		{
 		}
 
@@ -43,7 +43,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 			}
 			else
 			{
-				return m_default_textured;
+				return m_default_texture;
 			}
 		}
 	};
@@ -98,6 +98,11 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 		IPixelShader::ptr ps;
 		{
 			const auto node = element->FindFirstElement( "textureps" );
+			if( node == nullptr )
+			{
+				throw unify::Exception( "Missing element \"textureps\" from document \"" + element->GetDocument()->GetPath().ToString() + "\"!" );
+			}
+
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
 

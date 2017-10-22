@@ -28,7 +28,7 @@ void MainScene::OnStart()
 {
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect") );
+	Effect::ptr texture3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect") );
 
 	// Load shaders.
 	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", unify::Path( "shaders/texture3d.xml" ) );

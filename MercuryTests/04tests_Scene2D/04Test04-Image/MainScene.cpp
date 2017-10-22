@@ -151,7 +151,11 @@ void MainScene::OnStart()
 		Effect::ptr heart = GetManager< Effect >()->Add( "heart", unify::Path( "heart.effect" ) );
 		canvas::Layer::ptr layerHeart( new canvas::Layer( GetGame() ) );
 		canvas->GetLayer()->AddElement( layerHeart, "layerHeart" );
-		layerHeart->AddElement( canvas::IElement::ptr( new canvas::Image( GetGame(), heart, canvas::Anchor::TopRight, { 0.25f, 0.25f } ) ) );
+		layerHeart->AddElement( 
+			canvas::IElement::ptr( 
+				new canvas::Image( GetGame(), heart, canvas::Anchor::TopRight, { 0.25f, 0.25f } ) 
+			) 
+		);
 	}
 }
 

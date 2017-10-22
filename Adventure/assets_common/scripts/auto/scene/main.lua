@@ -10,7 +10,7 @@ local start_position = V3( 4, 0, 0 )
 
 function BuildCube( position )
 	local object = this:NewObject( MakeObjectName( "cube" ) )
-	local effect = Effect( VertexShader( "textured.xml" ), PixelShader( "textured.xml" ), Texture( "articulate.bmp" ) );
+	local effect = Effect( VertexShader( "texture.xml" ), PixelShader( "texture.xml" ), Texture( "articulate.bmp" ) );
 	object:AddGeometry( ShapeCube( effect ), MatrixTranslate( V3( 0, 1, 0 ) ) )	
 	object:Transform():SetPosition( position )
 	return object
@@ -91,7 +91,9 @@ function OnBeforeStart()
 	sphere:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), start_position ) )	
 
 	local player = this:NewObject( "player" )
+	print( "Peter......" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
+	print( "Piper......" )
 		
 	player:Transform():SetPosition( start_position )
 	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )

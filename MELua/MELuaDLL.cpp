@@ -31,7 +31,15 @@ MELUADLL_API bool MELoader( me::IGame * game, const qxml::Element * element )
 	{
 		game->LogLine("MELua Loader: \"startup\" node NOT found.");
 	}
-	startup = unify::Path(game->GetOS()->GetAssetPaths().FindAsset(startup));
+
+	try
+	{
+		startup = unify::Path( game->GetOS()->GetAssetPaths().FindAsset( startup ) );
+	}
+	catch( ... )
+	{
+		startup = unify::Path();
+	}
 
 	// Auto-scene script scene manager component..
 	unify::Path autoPath;

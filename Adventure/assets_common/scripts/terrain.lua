@@ -33,8 +33,8 @@ function CreateInvalid( terra_size )
 	parameters:SetPoints( 2, 2 )	-- In this case, vertices... minimum of 2x2 (quad)
 	
 
-	local vs = VertexShader( "textured.xml" )
-	local ps = PixelShader( "textured.xml" )
+	local vs = VertexShader( "texture.xml" )
+	local ps = PixelShader( "texture.xml" )
 	local t1 = Texture( "invalid", "articulate.bmp" )
 	parameters:SetEffect( Effect( vs, ps, t1 ) )
 
@@ -48,8 +48,8 @@ function CreateGrass( terra_size )
 	parameters:SetConstant( 0 )	
 	parameters:SetPoints( 2, 2 )	-- In this case, vertices... minimum of 2x2 (quad)
 	
-	local vs = VertexShader( "textured.xml" )
-	local ps = PixelShader( "textured.xml" )
+	local vs = VertexShader( "texture.xml" )
+	local ps = PixelShader( "texture.xml" )
 	local t1 = Texture( "grass", "grass1.bmp" )
 	parameters:SetEffect( Effect( vs, ps, t1 ) )
 

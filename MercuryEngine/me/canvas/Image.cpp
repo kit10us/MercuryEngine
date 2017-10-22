@@ -26,21 +26,9 @@ unify::Size< float > Image::GetSize( unify::Size< float > area ) const
 
 void Image::Build( unify::Size< float > area )
 {
-	auto vd = m_effect->GetVertexShader()->GetVertexDeclaration();
-	size_t vertexCount = 6;
-
-	unify::Size< unsigned int > imageSize( m_effect->LargestTextureSizes() );
-
-	size_t vbSizeInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
-	std::shared_ptr< unsigned char > vertices( new unsigned char[vbSizeInBytes] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
-
-	VertexElement positionE = CommonVertexElement::Position( 0 );
-	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
-
 	unify::V2< float > scale( m_scale );
-
-	unify::Size< float > textSize = GetSize( area );
+	unify::Size< float > actualSize = GetSize( area );
+	unify::Size< float > scaledSize{ actualSize.width * scale.x, actualSize.height * scale.y };
 
 	unify::V2< float > posUL( { 0, 0 } );
 	switch( GetAnchor() )
@@ -52,61 +40,61 @@ void Image::Build( unify::Size< float > area )
 		posUL = unify::V2< float >{ 0, 0 };
 		break;
 	case Anchor::Top:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, 0 };
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width * 0.5f, 0 };
 		break;
 	case Anchor::TopRight:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, 0 };
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width, 0 };
 		break;
 	case Anchor::StretchTop:
 		posUL = unify::V2< float >{ 0, 0 };
-		scale.x = scale.x * ( GetActualSize().width / textSize.width );
+		scale.x = scale.x * ( GetActualSize().width / scaledSize.width );
 		break;
 
 	case Anchor::Left:
-		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height * 0.5f };
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - scaledSize.height * 0.5f };
 		break;
 	case Anchor::Center:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, GetActualPosition().y - textSize.height * 0.5f };
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width * 0.5f, GetActualPosition().y - scaledSize.height * 0.5f };
 		break;
 	case Anchor::Right:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, GetActualPosition().y - textSize.height * 0.5f };
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width, GetActualPosition().y - scaledSize.height * 0.5f };
 		break;
 	case Anchor::StretchLeftRight:
-		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height * 0.5f };
-		scale.x = scale.x * ( GetActualSize().width / textSize.width );
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - scaledSize.height * 0.5f };
+		scale.x = scale.x * ( GetActualSize().width / scaledSize.width );
 		break;
 
 	case Anchor::BottomLeft:
-		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height };
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - scaledSize.height };
 		break;
 	case Anchor::Bottom:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, GetActualPosition().y - textSize.height };
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width * 0.5f, GetActualPosition().y - scaledSize.height };
 		break;
 	case Anchor::BottomRight:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, GetActualPosition().y - textSize.height };
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width, GetActualPosition().y - scaledSize.height };
 		break;
 	case Anchor::StretchBottom:
-		posUL = unify::V2< float >{ 0, GetActualPosition().y - textSize.height };
-		scale.x = scale.x * ( GetActualSize().width / textSize.width );
+		posUL = unify::V2< float >{ 0, GetActualPosition().y - scaledSize.height };
+		scale.x = scale.x * ( GetActualSize().width / scaledSize.width );
 		break;
 
 	case Anchor::StretchLeft:
 		posUL = unify::V2< float >{ 0, 0 };
-		scale.y = scale.y * ( GetActualSize().height / textSize.height );
+		scale.y = scale.y * ( GetActualSize().height / scaledSize.height );
 		break;
 	case Anchor::StretchTopBottom:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width * 0.5f, 0 };
-		scale.y = scale.y * ( GetActualSize().height / textSize.height );
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width * 0.5f, 0 };
+		scale.y = scale.y * ( GetActualSize().height / scaledSize.height );
 		break;
 	case Anchor::StretchRight:
-		posUL = unify::V2< float >{ GetActualPosition().x - textSize.width, 0 };
-		scale.y = scale.y * ( GetActualSize().height / textSize.height );
+		posUL = unify::V2< float >{ GetActualPosition().x - scaledSize.width, 0 };
+		scale.y = scale.y * ( GetActualSize().height / scaledSize.height );
 		break;
 
 	case Anchor::StretchFull:
 		posUL = unify::V2< float >{ 0, 0 };
-		scale.x = scale.x * ( GetActualSize().width / textSize.width );
-		scale.y = scale.y * ( GetActualSize().height / textSize.height );
+		scale.x = scale.x * ( GetActualSize().width / scaledSize.width );
+		scale.y = scale.y * ( GetActualSize().height / scaledSize.height );
 		break;
 	}
 
@@ -115,9 +103,22 @@ void Image::Build( unify::Size< float > area )
 	size_t vertex = 0;
 	unify::TexArea texArea = { { 0.0f, 0.0f }, { 1.0f, 1.0f } };
 
-	unify::Size< float > size( imageSize.width * scale.x * texArea.Width(), imageSize.height * scale.y * texArea.Height() );
+	unify::Size< float > size( scaledSize.width * texArea.Width(), scaledSize.height * texArea.Height() );
 
 	unify::V2< float > posDR( posUL.x + size.width, posUL.y + size.height );
+
+	// Write to vertices...
+
+	auto vd = m_effect->GetVertexShader()->GetVertexDeclaration();
+	size_t vertexCount = 6;
+
+	size_t vbSizeInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vbSizeInBytes] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+
+	VertexElement positionE = CommonVertexElement::Position( 0 );
+	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
+
 
 	WriteVertex( *vd, lock, vertex, positionE, unify::V2< float >( posUL.x, posUL.y ) );
 	WriteVertex( *vd, lock, vertex, texcoordsE, unify::TexCoords( texArea.ul.u, texArea.ul.v ) );

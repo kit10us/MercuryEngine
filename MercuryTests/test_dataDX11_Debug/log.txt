@@ -2,7 +2,7 @@ Initializing:
   name:    C:\dev\ws\MercuryTests\04tests_Scene2D\04Test04-Image\..\..\..\output\v140_Debug\04Test04-Image\04Test04-Image.exe
   program: C:\dev\ws\MercuryTests\04tests_Scene2D\output\v140_Debug\04Test04-Image\04Test04-Image.exe
   path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
-  time:    Sat Oct 21 11:51:34 2017
+  time:    Sat Oct 21 12:59:40 2017
 
   Loading setup "setup.xml"...
   Loading setup "setup_base.xml"...
@@ -25,7 +25,7 @@ OnAfterStartup Begin
   OnAfterStartup "ActionFactory" Begin
   OnAfterStartup "ActionFactory" Done
 OnAfterStartup Done
-total startup time: 0.519576s
+total startup time: 0.467980s
 Creating Main Scene
 Starting scene "main" Begin
   Component "ObjectAllocatorComponent" OnBeforeStart Begin
@@ -56,6 +56,6 @@ OnDetach
   Detaching SceneManager
   Detaching ActionFactory
 OnDetachDone
-  time: Sat Oct 21 11:52:35 2017
+  time: Sat Oct 21 12:59:48 2017
 
-  frames: 43432, total delta: 0.001376s,  average fps:726.986267
+  frames: 3339, total delta: 0.001928s,  average fps:518.617188

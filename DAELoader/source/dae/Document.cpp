@@ -89,21 +89,32 @@ Document::Document( me::Game * game, const unify::Path & filePath, dae::util::IE
 				std::string name = vsNode->GetAttributeElse( "name", std::string() );
 				unify::Path source = vsNode->GetAttributeElse( "source", unify::Path() );
 
-				if( !name.empty() && !source.Empty() )
+				try
 				{
-					vs = game->GetManager< me::render::IVertexShader >()->Add( name, source );
+					if( !name.empty() && !source.Empty() )
+					{
+						vs = game->GetManager< me::render::IVertexShader >()->Add( name, source );
+					}
+					else if( !name.empty() && source.Empty() )
+					{
+						vs = game->GetManager< me::render::IVertexShader >()->Find( name );
+					}
+					else if( name.empty() && !source.Empty() )
+					{
+						vs = game->GetManager< me::render::IVertexShader >()->Add( source );
+					}
+					else
+					{
+						game->ReportError( me::ErrorLevel::Failure, "DAE Loader", "VertexShader must have name and/or path!" );
+					}
 				}
-				else if( ! name.empty() && source.Empty() )
+				catch( std::exception ex )
 				{
-					vs = game->GetManager< me::render::IVertexShader >()->Find( name );
+					game->ReportError( me::ErrorLevel::Failure, "DAE Loader", "failed in loading effect file \"" + effectPath.ToString() + "\"! " + ex.what() );
 				}
-				else if( name.empty() && ! source.Empty() )
+				catch( ... )
 				{
-					vs = game->GetManager< me::render::IVertexShader >()->Add( source );
-				}
-				else
-				{
-					game->ReportError( me::ErrorLevel::Failure, "DAE Loader", "failed in loading effect file \"" + effectPath.ToString() + "\"! VertexShader must have name and/or path!" );
+					game->ReportError( me::ErrorLevel::Failure, "DAE Loader", "failed in loading effect file \"" + effectPath.ToString() + "\"!" );
 				}
 			}
 

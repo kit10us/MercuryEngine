@@ -1,7 +1,7 @@
 <xml>
   <shape>
     <type>pointring</type>
-    <effect name="cube" source="EffectTextured.effect"/>
+    <effect name="cube" source="EffectTexture.effect"/>
     <majorradius>.75</majorradius>
     <minorradius>.25</minorradius>
     <count>1000</count>

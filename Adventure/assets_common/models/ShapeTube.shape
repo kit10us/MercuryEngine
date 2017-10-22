@@ -1,7 +1,7 @@
 <xml>
   <shape>
     <type>tube</type>
-    <effect name="cube" source="EffectTextured.effect"/>
+    <effect name="cube" source="EffectTexture.effect"/>
     <segments>24</segments>
     <majorradius>1</majorradius>
     <minorradius>0.5</minorradius>

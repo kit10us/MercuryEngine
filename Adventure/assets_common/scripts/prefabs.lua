@@ -9,7 +9,7 @@ function BuildTree( position )
 
 	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
 
-	local leaves = Effect( VertexShader( "Textured_Ambient.xml" ), PixelShader( "Textured_Ambient.xml" ), Texture( "leaves", "leafsolid.bmp" ) )
+	local leaves = Effect( VertexShader( "Texture_Ambient.xml" ), PixelShader( "Texture_Ambient.xml" ), Texture( "leaves", "leafsolid.bmp" ) )
 		
 	sphereParameters = ShapeParameters( "sphere" )
 	sphereParameters:SetEffect( leaves )

@@ -48,21 +48,8 @@ void TextElement::Build( unify::Size< float > area )
 {
 	if ( m_text.empty() ) return;
 
-	auto vd = m_effect->GetVertexShader()->GetVertexDeclaration();
-	size_t vertexCount = m_text.length() * 6;
-
-
-	unify::Size< unsigned int > imageSize( m_effect->GetTexture(0)->ImageSize() );
-
-	size_t vbSizeInBytes = vd->GetSizeInBytes(0) * vertexCount;
-	std::shared_ptr< unsigned char > vertices( new unsigned char[ vbSizeInBytes ] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes(0), vertexCount, false, 0 );
-
-	VertexElement positionE = CommonVertexElement::Position( 0 );
-	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
-
 	unify::V2< float > scale( m_scale );
-
+	unify::Size< unsigned int > actualSize( m_effect->GetTexture( 0 )->ImageSize() );
 	unify::Size< float > textSize = GetSize( area );
 
 	unify::V2< float > posUL( { 0, 0 } );
@@ -135,12 +122,24 @@ void TextElement::Build( unify::Size< float > area )
 
 	posUL += GetOffset();
 
+	// Write to vertices...
+
+	auto vd = m_effect->GetVertexShader()->GetVertexDeclaration();
+	size_t vertexCount = m_text.length() * 6;
+
+	size_t vbSizeInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
+	std::shared_ptr< unsigned char > vertices( new unsigned char[vbSizeInBytes] );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+
+	VertexElement positionE = CommonVertexElement::Position( 0 );
+	VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
+
 	size_t vertex = 0;
 	for( auto c : m_text )
 	{	
 		unify::TexArea texArea = m_effect->GetTexture(0)->GetSpriteDictionary().GetAscii( c );
 
-		unify::Size< float > size( imageSize.width * scale.x * texArea.Width(), imageSize.height * scale.y * texArea.Height() );
+		unify::Size< float > size( actualSize.width * scale.x * texArea.Width(), actualSize.height * scale.y * texArea.Height() );
 
 		unify::V2< float > posDR( posUL.x + size.width, posUL.y + size.height );
 
