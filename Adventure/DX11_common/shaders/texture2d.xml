@@ -1,19 +1,11 @@
 <xml>
-  <pixelshader name="texture2D_trans">
-    <source>texture2d_trans.hlsl</source>
+  <pixelshader name="texture2D">
+    <source>texture2d.hlsl</source>
     <entry>ps_main</entry>
     <profile>ps_4_0</profile>
-	<blend enabled="true">
-	<src>srcalpha</src>
-	<dest>invsrcalpha</dest>
-	<op>add</op>
-	<srcalpha>zero</srcalpha>
-	<destalpha>zero</destalpha>
-	<opalpha>add</opalpha>
-	</blend>
   </pixelshader>
-  <vertexshader name="texture2D_trans">
-    <source>texture2d_trans.hlsl</source>
+  <vertexshader name="texture2D">
+    <source>texture2d.hlsl</source>
     <entry>vs_main</entry>
     <profile>vs_4_0</profile>
 	<constants>
