@@ -4,15 +4,11 @@
 #pragma once
 
 #include <me/render/Geometry.h>
-#include <me/input/InputManager.h>
 #include <me/input/IInputCondition.h>
 #include <me/IGame.h>
-#include <me/IOS.h>
 #include <me/render/Display.h>
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
-#include <me/scene/ISceneFactory.h>
-#include <rm/ResourceManagerSimple.h>
 
 typedef std::shared_ptr< rm::ISourceFactory< me::render::ITexture > > TextureFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::Effect > > EffectFactoryPtr;
@@ -24,6 +20,12 @@ namespace me
 {
 	class Game : public me::IGame
 	{
+		struct CommandListenerSet
+		{
+			unify::Owner::weak_ptr owner;
+			ICommandListener::ptr listener;
+		};
+
 	protected: // User overrides...
 		
 		virtual bool Setup( IOS * os ) override;
@@ -105,6 +107,14 @@ namespace me
 
 		input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) override;
 
+		void AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener ) override;
+
+		size_t Command( std::string command ) override;
+
+		std::string SendCommand( std::string command, std::string extra ) override;
+
+		std::string SendCommand( size_t id, std::string extra ) override;
+
 	private:
 		void AddExtension( unify::Path path, const qxml::Element * element );
 
@@ -138,6 +148,9 @@ namespace me
 
 		std::weak_ptr< UpdateLock > m_exclusiveLock;
 		std::list< std::weak_ptr< UpdateLock > > m_locks;
+
+		std::vector< std::list< CommandListenerSet > > m_commandListeners;
+		std::map< std::string /* command */, size_t /* command ID */, unify::CaseInsensitiveLessThanTest> m_commandMap;
 	};
 }
 

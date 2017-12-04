@@ -9,6 +9,7 @@
 
 class MainScene : public me::scene::Scene
 {
+public:
 	terrain::Map* m_map;
 	unify::Size< int > m_mapSize;
 	unify::Size< float > m_terraSize;
@@ -18,6 +19,4 @@ public:
 	MainScene( me::Game * game );
 
 	void OnStart() override;
-
-	std::string SendCommand( std::string command, std::string extra );
 };

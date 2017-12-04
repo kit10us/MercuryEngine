@@ -88,8 +88,6 @@ namespace me
 
 			virtual std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const = 0;
 
-			virtual std::string SendCommand( std::string command, std::string extra ) = 0;
-
 			template< typename T >
 			T* GetComponentT();
 

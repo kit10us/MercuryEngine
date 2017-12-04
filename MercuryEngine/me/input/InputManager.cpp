@@ -204,20 +204,6 @@ bool InputManager::AddSingleInputAction(unify::Owner::ptr owner, const qxml::Ele
 		actionsAdded++;
 	}
 
-	/*
-	auto actionNode = element->FindFirstElement( "action" );
-	if( !actionNode )
-	{
-		return false;
-	}
-
-	auto action = m_game->CreateAction(actionNode);
-	if (!action)
-	{
-		return false;
-	}
-	*/
-
 	return true;
 }
 

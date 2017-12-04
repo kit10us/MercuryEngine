@@ -199,6 +199,7 @@ void Game::Initialize( OSParameters osParameters )
 						unify::Path path( node.GetAttribute< std::string >( "source" ) );
 						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
+					// "inputs" handle further on
 				}
 			}
 		};
@@ -256,6 +257,7 @@ void Game::Initialize( OSParameters osParameters )
 					{
 						GetOS()->GetAssetPaths().AddSource( unify::Path( node.GetText() ) );
 					}
+					// "inputs" handle further on
 				}
 			}
 		};
@@ -330,7 +332,7 @@ void Game::Initialize( OSParameters osParameters )
 						unify::Path path( node.GetAttribute< std::string >( "source" ) );
 						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
-					else if (node.IsTagName("inputactions"))
+					else if (node.IsTagName("inputs"))
 					{
 						size_t failures = GetInputManager()->AddInputActions(m_inputOwnership, &node, true );
 						LogLine("Add input actions (failures = " + unify::Cast< std::string >(failures) + ")");
@@ -862,4 +864,64 @@ Game::~Game()
 	const RenderInfo & renderInfo = GetRenderInfo();
 	LogLine( "time: " + std::string( std::ctime( &t ) ) );
 	LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
+}
+
+void Game::AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener )
+{
+	size_t id = 0;
+	auto itr = m_commandMap.find( command );
+	if( itr == m_commandMap.end() )
+	{
+		id = m_commandListeners.size();
+		m_commandMap[ command ] = id;
+		m_commandListeners.push_back( std::list< CommandListenerSet >() );
+	}
+	
+	m_commandListeners[id].push_back( CommandListenerSet{ owner, listener } );
+}
+
+size_t Game::Command( std::string command )
+{
+	auto itr = m_commandMap.find( command );
+	if( itr == m_commandMap.end() )
+	{
+		return std::numeric_limits< size_t >::max();
+	}
+
+	return itr->second;
+}
+
+std::string Game::SendCommand( std::string command, std::string extra )
+{
+	return SendCommand( Command( command ), extra );
+}
+
+std::string Game::SendCommand( size_t id, std::string extra )
+{
+	if( id == std::numeric_limits< size_t >::max() )
+	{
+		return std::string();
+	}
+
+	auto & commandListenerSetList = m_commandListeners[ id ];
+	std::string lastResult;
+	for( auto & itr = commandListenerSetList.begin(); itr != commandListenerSetList.end(); )
+	{
+		// Check if the owner is expired, if so, remove it.
+		if( itr->owner.expired() )
+		{
+			itr = commandListenerSetList.erase( itr );
+		}
+		else
+		{
+			std::string result;
+			result = itr->listener->SendCommand( id, extra );
+			if( result.empty() )
+			{
+				lastResult = result;
+			}
+			itr++;
+		}
+	}
+	return lastResult;
 }

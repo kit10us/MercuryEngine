@@ -17,6 +17,9 @@ namespace me
 		public:
 			Element( me::IGame * game, unify::V2< float > offset = { 0, 0 }, unify::Size< float > size = { 0, 0 }, Anchor anchor = Anchor::Center );
 
+			void SetName( std::string name ) override;
+			std::string GetName() const override;
+
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 
@@ -37,6 +40,7 @@ namespace me
 
 		private:
 			IGame * m_game;
+			std::string m_name;
 			bool m_enabled;
 			Anchor m_anchor;
 			unify::V2< float > m_offset;

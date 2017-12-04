@@ -66,7 +66,9 @@ namespace me
 
 			void OnResume();
 
-			void AddItem( IElement::ptr item );
+			void AddItem( IElement::ptr item, std::string name = std::string() );
+
+			Element::ptr FindItem( std::string name ) const;
 
 		private:
 			bool m_changed;

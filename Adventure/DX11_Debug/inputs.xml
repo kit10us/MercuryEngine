@@ -5,11 +5,14 @@
 		<QuitGame/>
 	</inputaction>
 	
-	<inputaction input="keyboard" condition="ButtonPressed" name="F5">
-		<FireEvent name="game" command="SaveGame"/>
+	<inputaction input="keyboard" condition="ButtonPressed" name="F7">
+		<SendCommand command="SaveGame"/>
 	</inputaction>
-	<inputaction input="keyboard" condition="ButtonPressed" name="F8+">
-		<FireEvent name="game" command="LoadGame"/>
+	<inputaction input="keyboard" condition="ButtonPressed" name="F8">
+		<SendCommand command="LoadGame"/>
+	</inputaction>
+	<inputaction input="keyboard" condition="ButtonPressed" name="F9">
+		<SendCommand command="ToggleMenu"/>
 	</inputaction>
 </inputs>
 </xml>

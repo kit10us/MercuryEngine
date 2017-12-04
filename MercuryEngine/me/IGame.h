@@ -3,20 +3,21 @@
 
 #pragma once
 
-#include <me/scene/IScene.h>
 #include <me/IOS.h>
-#include <unify/TimeDelta.h>
 #include <me/Extension.h>
-#include <me/render/RenderInfo.h>
 #include <me/input/InputManager.h>
-#include <rm/ResourceManagerSimple.h>
-#include <rm/ResourceHub.h>
-#include <me/IGameComponent.h>
-#include <me/UpdateParams.h>
+#include <me/render/RenderInfo.h>
 #include <me/render/RenderParams.h>
 #include <me/action/IAction.h>
 #include <me/object/action/IObjectAction.h>
+#include <me/scene/IScene.h>
 #include <me/scene/ISceneFactory.h>
+#include <me/IGameComponent.h>
+#include <me/UpdateParams.h>
+#include <me/ICommandListener.h>
+#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceHub.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -149,6 +150,26 @@ namespace me
 		/// Create an Input Action from an XML node.
 		/// </summary>
 		virtual input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) = 0;
+
+		/// <summary>
+		/// Add a command listener
+		/// </summary>
+		virtual void AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener ) = 0;
+
+		/// <summmary>
+		/// Fetch the ID for a corresponding command. If a command doesn't already exist, it's created.
+		/// </summary>
+		virtual size_t Command( std::string command ) = 0;
+
+		/// <summary>
+		/// Send a command with extra information, and return a string result.
+		/// Strings are used to best support cross DLL, and scripting support. 
+		virtual std::string SendCommand( std::string command, std::string extra ) = 0;
+			
+		/// <summary>
+		/// Send a command with extra information, and return a string result.
+		/// Strings are used to best support cross DLL, and scripting support. 
+		virtual std::string SendCommand( size_t id, std::string extra ) = 0;
 
 		template< typename T >
 		T* GetComponentT();

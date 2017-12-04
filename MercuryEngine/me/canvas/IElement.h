@@ -16,6 +16,9 @@ namespace me
 		public:
 			typedef std::shared_ptr< IElement > ptr;
 
+			virtual void SetName( std::string name ) = 0;
+			virtual std::string GetName() const = 0;
+
 			virtual bool IsEnabled() const = 0;
 			virtual void SetEnabled( bool enabled ) = 0;
 

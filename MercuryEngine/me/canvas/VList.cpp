@@ -74,8 +74,21 @@ void VList::OnResume()
 {
 }
 
-void VList::AddItem( IElement::ptr item )
+void VList::AddItem( IElement::ptr item, std::string name )
 {
 	m_items.push_back( item );
+	item->SetName( name );
 	m_changed = true;
+}
+
+IElement::ptr VList::FindItem( std::string name ) const
+{
+	for( auto & item : m_items )
+	{
+		if( unify::StringIs( name, item->GetName() ) )
+		{
+			return item;
+		}
+	}
+	throw unify::Exception( "Item not found within VList!" );
 }

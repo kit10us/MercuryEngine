@@ -16,7 +16,7 @@ namespace me
 			InputCondition( size_t subSource, std::string name );
 			virtual ~InputCondition();
 
-			std::string GetName() const;
+			std::string GetName() const override;
 			size_t GetSubSource() const;
 
 		private:

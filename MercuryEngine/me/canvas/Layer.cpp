@@ -19,6 +19,7 @@ void Layer::AddElement( IElement::ptr element )
 void Layer::AddElement( IElement::ptr element, std::string name )
 {
 	AddElement( element );
+	element->SetName( name );
 	m_elementMap[ name ] = element;
 }
 

@@ -179,6 +179,9 @@ int Scene_GetObjectCount( lua_State * state )
 
 int Scene_SendCommand( lua_State * state )
 {
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >();
+
 	int args = lua_gettop( state );
 
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
@@ -193,7 +196,7 @@ int Scene_SendCommand( lua_State * state )
 	{
 		extra = lua_tostring( state, 3 );
 	}
-	auto result = sceneProxy->scene->SendCommand( command, extra );
+	auto result = se->GetGame()->SendCommand( command, extra );
 	lua_pushstring( state, result.c_str() );
 	return 1;
 }

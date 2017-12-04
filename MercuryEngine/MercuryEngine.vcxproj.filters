@@ -687,6 +687,12 @@
     <ClInclude Include="me\canvas\VList.h">
       <Filter>me\canvas</Filter>
     </ClInclude>
+    <ClInclude Include="me\ICommandListener.h">
+      <Filter>me</Filter>
+    </ClInclude>
+    <ClInclude Include="me\action\SendCommand.h">
+      <Filter>me\action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1132,6 +1138,9 @@
     </ClCompile>
     <ClCompile Include="me\canvas\VList.cpp">
       <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\action\SendCommand.cpp">
+      <Filter>me\action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

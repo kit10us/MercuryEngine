@@ -18,6 +18,7 @@ namespace me
 			typedef std::shared_ptr< IInputCondition > ptr;
 
 			virtual ~IInputCondition() {}
+			virtual std::string GetName() const = 0;
 			virtual bool IsTrue( IInputDevice* device ) const = 0;
 			virtual unify::V3< float > GetValue( IInputDevice* device  ) const = 0;
 		};

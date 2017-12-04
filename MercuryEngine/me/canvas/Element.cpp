@@ -15,6 +15,16 @@ Element::Element( me::IGame * game, unify::V2< float > offset, unify::Size< floa
 {
 }
 
+void Element::SetName( std::string name )
+{
+	m_name = name;
+}
+
+std::string Element::GetName() const
+{
+	return m_name;
+}
+
 bool Element::IsEnabled() const
 {
 	return m_enabled;

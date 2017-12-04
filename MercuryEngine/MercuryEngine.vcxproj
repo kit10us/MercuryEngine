@@ -27,6 +27,7 @@
     <ClInclude Include="me\action\QuitGame.h" />
     <ClInclude Include="me\action\RepeatAction.h" />
     <ClInclude Include="me\action\RestartScene.h" />
+    <ClInclude Include="me\action\SendCommand.h" />
     <ClInclude Include="me\action\ToggleAction.h" />
     <ClInclude Include="me\canvas\Anchor.h" />
     <ClInclude Include="me\canvas\CanvasComponent.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
+    <ClInclude Include="me\ICommandListener.h" />
     <ClInclude Include="me\dyna\color\DC_Delta.h" />
     <ClInclude Include="me\dyna\delta\DD_Absolute.h" />
     <ClInclude Include="me\dyna\delta\DD_Add.h" />
@@ -230,6 +232,7 @@
     <ClCompile Include="me\action\QuitGame.cpp" />
     <ClCompile Include="me\action\RepeatAction.cpp" />
     <ClCompile Include="me\action\RestartScene.cpp" />
+    <ClCompile Include="me\action\SendCommand.cpp" />
     <ClCompile Include="me\action\ToggleAction.cpp" />
     <ClCompile Include="me\canvas\CanvasComponent.cpp" />
     <ClCompile Include="me\canvas\Element.cpp" />

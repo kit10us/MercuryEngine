@@ -290,12 +290,6 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 	return instances;
 }
 
-std::string Scene::SendCommand( std::string command, std::string extra )
-{
-	command; extra;
-	return nullptr;
-}
-
 SceneManager* Scene::GetSceneManager()
 {
 	return m_sceneManager;

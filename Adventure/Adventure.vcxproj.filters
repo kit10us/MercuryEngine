@@ -33,6 +33,12 @@
     <ClCompile Include="source\InventoryObjectComponent.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\PlayerMovementStick.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerMovementButtons.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\MainScene.h">
@@ -57,6 +63,12 @@
       <Filter>source\terrain</Filter>
     </ClInclude>
     <ClInclude Include="source\InventoryObjectComponent.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PlayerMovementStick.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PlayerMovementButtons.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
