@@ -5,6 +5,8 @@
 </renderer>
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
+<assets>../DX11_common/</assets>
+<assets>../DX11_common/</assets>
 <assets>../DX11_common/shaders/</assets>
 <assets>../assets_common/</assets>
 <assets>../assets_common/models/</assets>

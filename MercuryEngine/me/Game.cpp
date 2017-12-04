@@ -181,9 +181,18 @@ void Game::Initialize( OSParameters osParameters )
 			ReportError( ErrorLevel::Critical, "Game", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
 		}
 
-		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path path )
+		// First loader pass
+		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
-			qxml::Document doc( path );
+			unify::Path pathDiscovery( source );
+
+			// Attempt to discover the source, if we have an OS.
+			if( GetOS() )
+			{
+				pathDiscovery = GetOS()->GetAssetPaths().FindAsset( pathDiscovery );
+			}
+
+			qxml::Document doc( pathDiscovery );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -199,6 +208,11 @@ void Game::Initialize( OSParameters osParameters )
 						unify::Path path( node.GetAttribute< std::string >( "source" ) );
 						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
+					else if( node.IsTagName( "assets" ) )
+					{
+						GetOS()->GetAssetPaths().AddSource( unify::Path( node.GetText() ) );
+					}
+
 					// "inputs" handle further on
 				}
 			}
@@ -225,9 +239,11 @@ void Game::Initialize( OSParameters osParameters )
 			ReportError( ErrorLevel::Critical, "Game", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
 		}
 
+		// Second loader pass
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
-			qxml::Document doc( source );
+			unify::Path pathDiscovery( GetOS()->GetAssetPaths().FindAsset( source ) );
+			qxml::Document doc( pathDiscovery );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -253,10 +269,7 @@ void Game::Initialize( OSParameters osParameters )
 					{
 						m_failuresAsCritial = unify::Cast< bool >( node.GetText() );
 					}
-					else if( node.IsTagName( "assets" ) )
-					{
-						GetOS()->GetAssetPaths().AddSource( unify::Path( node.GetText() ) );
-					}
+
 					// "inputs" handle further on
 				}
 			}
@@ -313,10 +326,13 @@ void Game::Initialize( OSParameters osParameters )
 	// Our setup...
 	if( m_setup.Exists() )
 	{
-		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path path )
+		// Third and final loader pass.
+		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
-			qxml::Document doc( path );
-			LogLine( "Loading setup \"" + path.ToString() + "\"..." );
+			unify::Path pathDiscovery( GetOS()->GetAssetPaths().FindAsset( source ) );
+			qxml::Document doc( pathDiscovery );
+
+			LogLine( "Loading setup \"" + source.ToString() + "\"..." );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -868,27 +884,26 @@ Game::~Game()
 
 void Game::AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener )
 {
-	size_t id = 0;
-	auto itr = m_commandMap.find( command );
-	if( itr == m_commandMap.end() )
-	{
-		id = m_commandListeners.size();
-		m_commandMap[ command ] = id;
-		m_commandListeners.push_back( std::list< CommandListenerSet >() );
-	}
-	
+	size_t id = Command( command );
 	m_commandListeners[id].push_back( CommandListenerSet{ owner, listener } );
 }
 
 size_t Game::Command( std::string command )
 {
+	size_t id = 0;
 	auto itr = m_commandMap.find( command );
 	if( itr == m_commandMap.end() )
 	{
-		return std::numeric_limits< size_t >::max();
+		id = m_commandListeners.size();
+		m_commandMap[command] = id;
+		m_commandListeners.push_back( std::list< CommandListenerSet >() );
+	}
+	else
+	{
+		id = itr->second;
 	}
 
-	return itr->second;
+	return id;
 }
 
 std::string Game::SendCommand( std::string command, std::string extra )
