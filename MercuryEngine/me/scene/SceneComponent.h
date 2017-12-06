@@ -32,9 +32,9 @@ namespace me
 			void OnBeforeStart() override;
 			void OnAfterStart() override;
 			
-			void OnEarlyUpdate( UpdateParams params ) override;
-			void OnUpdate( UpdateParams params ) override;
-			void OnLateUpdate( UpdateParams params ) override;
+			void OnEarlyUpdate( const UpdateParams & params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
+			void OnLateUpdate( const UpdateParams & params ) override;
 
 			void CollectCameras( RenderGirl & renderGirl ) override;
 			void OnRender( RenderGirl & renderGirl ) override;

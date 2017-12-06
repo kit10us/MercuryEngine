@@ -7,11 +7,14 @@
 #include <me/input/IInputAction.h>
 #include <me/object/Object.h>
 
+class MainScene;
+
 class PlayerMovementStick : public me::input::IInputAction
 {
 	me::object::Object * m_object;
+	MainScene & m_mainScene;
 public:
-	PlayerMovementStick( me::object::Object * object );
+	PlayerMovementStick( MainScene & mainScene );
 
 	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, float delta );
 };

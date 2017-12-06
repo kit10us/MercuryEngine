@@ -35,7 +35,7 @@ namespace me
 		public: // IObjectComponent...
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
-			void OnUpdate( UpdateParams params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
 			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) override;
 
 			IObjectComponent::ptr Duplicate();

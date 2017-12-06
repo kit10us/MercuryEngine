@@ -24,15 +24,15 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 	auto game = dynamic_cast<Game *>(_game);
 
-	const auto texturePS = element->FindFirstElement( "textureps" );
-	std::string texturePSName = texturePS->GetAttribute< std::string >( "name" );
-	unify::Path texturePSPath( texturePS->GetAttribute< std::string >( "source" ) );
-	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( texturePSName, texturePSPath );
+	const auto texturedPS = element->FindFirstElement( "texturedps" );
+	std::string texturedPSName = texturedPS->GetAttribute< std::string >( "name" );
+	unify::Path texturedPSPath( texturedPS->GetAttribute< std::string >( "source" ) );
+	IPixelShader::ptr ps = game->GetManager< IPixelShader >()->Add( texturedPSName, texturedPSPath );
 	
-	const auto textureVS = element->FindFirstElement( "texturevs" );
-	std::string textureVSName = textureVS->GetAttribute< std::string >( "name" );
-	unify::Path textureVSPath( textureVS->GetAttribute< std::string >( "source" ) );
-	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( textureVSName, textureVSPath );
+	const auto texturedVS = element->FindFirstElement( "texturedvs" );
+	std::string texturedVSName = texturedVS->GetAttribute< std::string >( "name" );
+	unify::Path texturedVSPath( texturedVS->GetAttribute< std::string >( "source" ) );
+	IVertexShader::ptr vs = game->GetManager< IVertexShader >()->Add( texturedVSName, texturedVSPath );
 
 	// Setup ASE factories.
 	GeometryFactory * factory = new GeometryFactory( game );

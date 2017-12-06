@@ -24,7 +24,7 @@ FPS::FPS( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float 
 	}
 }
 		
-void FPS::Update( UpdateParams params )
+void FPS::Update( const UpdateParams & params )
 {
 	m_secondsTillUpdate -= params.renderInfo.GetDelta();
 	if ( m_secondsTillUpdate > 0.0f ) return;

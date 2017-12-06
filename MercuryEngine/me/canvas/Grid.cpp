@@ -65,7 +65,7 @@ void Grid::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	*/
 }
 
-void Grid::Update( UpdateParams params )
+void Grid::Update( const UpdateParams & params )
 {
 	if( !IsEnabled() ) return;
 	/*

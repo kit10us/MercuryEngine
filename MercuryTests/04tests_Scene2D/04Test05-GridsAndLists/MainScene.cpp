@@ -130,7 +130,7 @@ void MainScene::OnStart()
 	*/
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;

@@ -155,6 +155,11 @@ std::string Document::GetVersion() const
 
 me::render::Effect::ptr Document::GetEffect( const Effect * effect ) const
 {
+	if( effect == nullptr )
+	{
+		return m_effectSolver->GetEffect( nullptr );
+	}
+
 	// Search for the effect in our document's effect map...
 	auto itr = m_effects.find( effect->GetName() );
 	if( itr != m_effects.end() )

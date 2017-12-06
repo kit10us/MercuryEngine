@@ -20,8 +20,8 @@ namespace mephy
 		void AddEntity( Entity * entity );
 
 	public: // ISceneComponent...
-		void OnEarlyUpdate( me::UpdateParams params ) override;
-		void OnLateUpdate( me::UpdateParams params ) override;
+		void OnEarlyUpdate( const me::UpdateParams & params ) override;
+		void OnLateUpdate( const me::UpdateParams & params ) override;
 
 	private:
 		std::vector< collider::ColliderBase* > m_colliders;

@@ -158,7 +158,7 @@ void SceneComponent::OnAfterStart()
 	scene::SceneComponent::OnAfterStart();
 }
 
-void SceneComponent::OnUpdate( UpdateParams params )
+void SceneComponent::OnUpdate( const UpdateParams & params ) 
 {
 	scene::SceneComponent::OnUpdate( params );
 	CallMember( "OnUpdate" );

@@ -24,7 +24,7 @@ namespace me
 
 			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
 
-			void Update( UpdateParams params ) override;
+			void Update( const UpdateParams & params ) override;
 		
 			void Render( render::Params params ) override;
 		

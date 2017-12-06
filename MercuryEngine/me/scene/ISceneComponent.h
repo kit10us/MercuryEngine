@@ -40,19 +40,19 @@ namespace me
 			/// Called immediately before OnUpdate.
 			/// This is where we apply pre-update affects, those that are automatic, that OnUpdate will likely respond to.
 			/// </summary>
-			virtual void OnEarlyUpdate( UpdateParams params ) = 0;
+			virtual void OnEarlyUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			/// Called every game update cycle.
 			/// This is where users enteract with objecsts and components.
 			/// </summary>
-			virtual void OnUpdate( UpdateParams params ) = 0;
+			virtual void OnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			/// Called immediately after OnUpdate.
 			/// This is where we apply post-update affects, those that are automatic, however, that respond to OnUpdate (user update) changes.
 			/// </summary>
-			virtual void OnLateUpdate( UpdateParams params ) = 0;
+			virtual void OnLateUpdate( const UpdateParams & params ) = 0;
 
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
 			//void GrowableObjectStack::CollectRendering( render::Params params, const FinalCamera & camera, GeometryCacheSummation & summation )

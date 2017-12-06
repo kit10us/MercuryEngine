@@ -174,7 +174,7 @@ void Image::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	}
 }
 
-void Image::Update( UpdateParams params )
+void Image::Update( const UpdateParams & params )
 {
 }
 		

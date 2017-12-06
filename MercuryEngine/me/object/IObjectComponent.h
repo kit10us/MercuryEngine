@@ -63,7 +63,7 @@ namespace me
 			/// <summary>
 			/// Called every game update cycle.
 			/// </summary>
-			virtual void OnUpdate( UpdateParams params ) = 0;
+			virtual void OnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			/// Called during rendering.

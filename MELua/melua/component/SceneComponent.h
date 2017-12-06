@@ -21,7 +21,7 @@ namespace melua
 			void OnDetach( me::scene::IScene * scene ) override;
 			void OnBeforeStart() override;
 			void OnAfterStart() override;
-			void OnUpdate( me::UpdateParams params ) override;
+			void OnUpdate( const me::UpdateParams & params ) override;
 			void OnSuspend() override;
 			void OnResume() override;
 			void OnEnd() override;

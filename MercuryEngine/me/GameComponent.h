@@ -28,9 +28,9 @@ namespace me
 		void OnBeforeStartup() override;
 		void OnAfterStartup() override;
 		
-		void OnEarlyUpdate( UpdateParams params ) override;
-		void OnUpdate( UpdateParams params ) override;
-		void OnLateUpdate( UpdateParams params ) override;
+		void OnEarlyUpdate( const UpdateParams & params ) override;
+		void OnUpdate( const UpdateParams & params ) override;
+		void OnLateUpdate( const UpdateParams & params ) override;
 		
 		void OnRender( render::Params params ) override;
 		void OnDetach( IGame * game ) override;

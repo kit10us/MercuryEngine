@@ -19,7 +19,7 @@ namespace me
 		public: // ISceneComponent...
 			void OnAttach( IScene * scene ) override;
 			void OnDetach( IScene * scene ) override;
-			void OnUpdate( UpdateParams params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
 			
 			void CollectCameras( RenderGirl & renderGirl ) override;
 			void OnRender( RenderGirl & renderGirl ) override;

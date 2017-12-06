@@ -196,7 +196,7 @@ size_t SceneManager::GetRenderCount() const
 	return m_renderCount;
 }
 
-void SceneManager::OnEarlyUpdate( UpdateParams params )
+void SceneManager::OnEarlyUpdate( const UpdateParams & params )
 {
 	if( m_enabled == false || !m_currentScene )
 	{
@@ -206,7 +206,7 @@ void SceneManager::OnEarlyUpdate( UpdateParams params )
 	m_currentScene->Component_OnEarlyUpdate( params );
 }
 
-void SceneManager::OnUpdate( UpdateParams params )
+void SceneManager::OnUpdate( const UpdateParams & params ) 
 {
 	if ( m_enabled == false || ! m_currentScene )
 	{
@@ -217,7 +217,7 @@ void SceneManager::OnUpdate( UpdateParams params )
 	m_currentScene->OnUpdate( params );
 }
 
-void SceneManager::OnLateUpdate( UpdateParams params )
+void SceneManager::OnLateUpdate( const UpdateParams & params )
 {
 	if( m_enabled == false || !m_currentScene )
 	{

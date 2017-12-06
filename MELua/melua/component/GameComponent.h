@@ -20,7 +20,7 @@ namespace melua
 			void OnAttach( me::IGame * game ) override;
 			void OnBeforeStartup() override;
 			void OnAfterStartup() override;
-			void OnUpdate( me::UpdateParams params ) override;
+			void OnUpdate( const me::UpdateParams & params ) override;
 			void OnRender( me::render::Params params ) override;
 			void OnDetach( me::IGame * game ) override;
 

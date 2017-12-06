@@ -32,7 +32,7 @@ namespace me
 			/// </summary>
 			void SetPadding( float padding );
 
-			void OnUpdate( UpdateParams params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
 
 			std::string GetWhat() const override;
 

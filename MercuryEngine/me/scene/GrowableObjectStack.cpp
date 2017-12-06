@@ -110,7 +110,7 @@ void GrowableObjectStack::DirtyObject( object::Object * object )
 	assert( "We don't own objects!" == 0 );
 }
 
-void GrowableObjectStack::Update( UpdateParams params )
+void GrowableObjectStack::Update( const UpdateParams & params )
 {
 	for( auto && stack : m_stacks )
 	{

@@ -110,8 +110,10 @@ void VisualScene::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, 
 		case InstanceSet::InstanceTypeGeometry:
 			{
 				const InstanceGeometry * instanceGeometry = dynamic_cast< const InstanceGeometry * >( instance.get() );
-				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( instance->GetURL() ) ;
-				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceGeometry->GetBindMaterial()->GetTechniqueCommon(), nullptr, nullptr );
+				const dae::Geometry & geo = *GetDocument().GetLibraryGeometries().Find( instance->GetURL() );
+				const BindMaterial * bindMaterial = instanceGeometry->GetBindMaterial();
+				const BindMaterial_TechniqueCommon * techniqueCommon = ( bindMaterial ) ? (&bindMaterial->GetTechniqueCommon()) : nullptr;
+				geo.Build( mesh, matrix * node->GetFinalMatrix(), techniqueCommon, nullptr, nullptr );
 			}
 			break;
 		case InstanceSet::InstanceTypeController:
@@ -122,7 +124,7 @@ void VisualScene::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, 
 				const dae::Node * skeleton = FindNode( instanceController->GetSkeleton() );
 				BuildSkeleton( *mesh.GetSkeleton(), skeleton );
 				const dae::Skin * skin = controller.GetSkin().get();
-				geo.Build( mesh, matrix * node->GetFinalMatrix(), instanceController->GetBindMaterial()->GetTechniqueCommon(), skin, mesh.GetSkeleton() );
+				geo.Build( mesh, matrix * node->GetFinalMatrix(), &instanceController->GetBindMaterial()->GetTechniqueCommon(), skin, mesh.GetSkeleton() );
 			}
 			break;
 		case InstanceSet::InstanceTypeNode:

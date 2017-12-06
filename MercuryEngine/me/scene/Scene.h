@@ -31,9 +31,9 @@ namespace me
 			void Component_OnBeforeStart();
 			void Component_OnAfterStart();
 
-			void Component_OnEarlyUpdate( UpdateParams & params ) override;
-			void Component_OnUpdate( UpdateParams & params ) override;
-			void Component_OnLateUpdate( UpdateParams & params ) override;
+			void Component_OnEarlyUpdate( const UpdateParams & params ) override;
+			void Component_OnUpdate( const UpdateParams & params ) override;
+			void Component_OnLateUpdate( const UpdateParams & params ) override;
 
 			void Component_OnRender( RenderGirl renderGirl ) override;
 			void Component_OnSuspend() override;
@@ -42,7 +42,7 @@ namespace me
 
 			// User defined events...
 			void OnStart() override {}
-			void OnUpdate( UpdateParams & params ) override {}
+			void OnUpdate( const UpdateParams & params ) override {}
 			void OnRender( RenderGirl renderGirl ) override {}
 			void OnSuspend() override {}
 			void OnResume() override {}

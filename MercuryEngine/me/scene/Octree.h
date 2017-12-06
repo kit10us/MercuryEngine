@@ -32,7 +32,7 @@ namespace me
 			object::Object * FindObject( std::string name ) override;
 			object::Object* GetObject( size_t index ) override;
 
-			void Update( UpdateParams params ) override;
+			void Update( const UpdateParams & params ) override;
 			void CollectCameras( RenderGirl & renderGirl ) override;
 			void CollectRendering( render::Params params, const object::FinalCamera & camera, render::GeometryCacheSummation & solids, render::GeometryCacheSummation & trans ) override;
 

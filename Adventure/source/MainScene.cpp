@@ -185,6 +185,8 @@ MainScene::MainScene( me::Game * game )
 	:Scene( game, "main" )
 	, m_mapSize{ 30, 30 }
 	, m_terraSize{ 8, 8 }
+	, m_newMove{ false }
+	, m_move{ unify::V3< float >::V3Zero() }
 {	
 	// Add MainScene command listener (catch -most-)...
 	GetGame()->AddCommandListener( GetOwnership(), "DrawOnMap", me::ICommandListener::ptr{ new MainSceneCommandListener( this ) } );
@@ -238,7 +240,7 @@ void MainScene::OnStart()
 		};
 
 		auto condition = input::IInputCondition::ptr( new input::StickCondition( 0, "LeftStick", low, high ) );
-		gamepad->AddEvent( GetOwnership(), condition, input::IInputAction::ptr( new PlayerMovementStick( target ) ) );
+		gamepad->AddEvent( GetOwnership(), condition, input::IInputAction::ptr( new PlayerMovementStick( *this ) ) );
 	}
 
 	// Get the gamepad Input Device...
@@ -249,7 +251,7 @@ void MainScene::OnStart()
 		auto conditionDown = input::IInputCondition::ptr( new input::ButtonCondition( 0, "Down", true ) );
 		auto conditionLeft = input::IInputCondition::ptr( new input::ButtonCondition( 0, "Left", true ) );
 		auto conditionRight = input::IInputCondition::ptr( new input::ButtonCondition( 0, "Right", true ) );
-		auto buttonAction = input::IInputAction::ptr( new PlayerMovementButtons( target ) );
+		auto buttonAction = input::IInputAction::ptr( new PlayerMovementButtons( *this ) );
 		keyboard->AddEvent( GetOwnership(), conditionUp, buttonAction );
 		keyboard->AddEvent( GetOwnership(), conditionDown, buttonAction );
 		keyboard->AddEvent( GetOwnership(), conditionLeft, buttonAction );
@@ -300,3 +302,45 @@ void MainScene::OnStart()
 	}
 }
 
+void MainScene::OnUpdate( const me::UpdateParams & params )
+{
+	if( m_newMove != 0 )
+	{
+		Object * target = FindObject( "player" );
+		if( target )
+		{
+			// Determine what direction we are facing
+			unify::Angle direction = m_move.DotAngle( { 0.0f, 0.0f, 1.0f } );
+
+			// Account for the left (-x) inversing the direction
+			if( m_move.x < 0.0f )
+			{
+				direction *= -1.0f;
+			}
+
+			// Accumulate our movement speed...
+			float speed = 6.0f;
+			float factor = params.GetDelta() * speed;
+			m_move *= factor;
+
+			// Reset our rotation to identity (facing up the z-axis).
+			target->GetFrame().SetRotation( unify::QuaternionIdentity() );
+
+			// Move our position...
+			unify::V3< float > position = target->GetFrame().GetPosition();
+			position += m_move;
+
+			target->GetFrame().SetPosition( position );
+
+			// Face the correct direction.
+			target->GetFrame().SetRotation( unify::MatrixRotationY( direction ) );
+
+			// Reset move variables...
+			m_newMove = false;
+			m_move = unify::V3< float >::V3Zero();
+		}
+	}
+	else
+	{
+	}
+}

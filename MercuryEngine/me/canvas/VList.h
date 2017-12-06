@@ -58,7 +58,7 @@ namespace me
 
 			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea );
 
-			void Update( UpdateParams params );
+			void Update( const UpdateParams & params );
 
 			void Render( render::Params params );
 

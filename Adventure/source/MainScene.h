@@ -15,8 +15,12 @@ public:
 	unify::Size< float > m_terraSize;
 	TerrainSceneComponent::ptr m_mapSC;
 
+	bool m_newMove;
+	unify::V3< float > m_move;
+
 public:
 	MainScene( me::Game * game );
 
 	void OnStart() override;
+	void OnUpdate( const me::UpdateParams & params ) override;
 };

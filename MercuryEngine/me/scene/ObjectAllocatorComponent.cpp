@@ -33,7 +33,7 @@ void ObjectAllocatorComponent::OnDetach( IScene * scene )
 	SceneComponent::OnDetach( scene );
 }
 
-void ObjectAllocatorComponent::OnUpdate( UpdateParams params ) 
+void ObjectAllocatorComponent::OnUpdate( const UpdateParams & params ) 
 {
 	m_objectStack->Update( params );
 }

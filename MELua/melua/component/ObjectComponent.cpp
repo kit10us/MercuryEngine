@@ -131,7 +131,7 @@ void ObjectComponent::OnStart()
 	CallMember( "OnStart" );
 }
 
-void ObjectComponent::OnUpdate( me::UpdateParams params )
+void ObjectComponent::OnUpdate( const me::UpdateParams & params )
 {
 	CallMember( "OnUpdate" );
 }

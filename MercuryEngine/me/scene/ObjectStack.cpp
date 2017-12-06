@@ -195,7 +195,7 @@ void ObjectStack::DirtyObject( object::Object* object )
 	m_newObjects.merge( m_oldObjects );
 }
 
-void ObjectStack::Update( UpdateParams params )
+void ObjectStack::Update( const UpdateParams & params )
 {
 	if( m_newObjects.size() )
 	{

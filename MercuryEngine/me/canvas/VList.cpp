@@ -45,7 +45,7 @@ void VList::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	}
 }
 
-void VList::Update( UpdateParams params )
+void VList::Update( const UpdateParams & params )
 {
 	if( !IsEnabled() ) return;
 

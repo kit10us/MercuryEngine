@@ -62,7 +62,7 @@ void MainScene::OnStart()
 	AddGeometryComponent( land, Geometry::ptr( terra ) );
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	Object * camera = FindObject( "camera" );
 	

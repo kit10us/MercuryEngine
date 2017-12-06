@@ -26,7 +26,7 @@ namespace me
 		public: // ISceneComponent...
 			void OnAttach( scene::IScene * scene ) override;
 			void OnDetach( scene::IScene * scene ) override;
-			void OnUpdate( UpdateParams params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
 			void OnRender( scene::RenderGirl & renderGirl ) override;
 			void OnSuspend() override;											
 			void OnResume() override;

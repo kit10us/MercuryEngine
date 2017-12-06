@@ -68,7 +68,7 @@ void Scene::Component_OnAfterStart()
 	}
 }
 
-void Scene::Component_OnEarlyUpdate( UpdateParams & params )
+void Scene::Component_OnEarlyUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
@@ -79,7 +79,7 @@ void Scene::Component_OnEarlyUpdate( UpdateParams & params )
 	}
 }
 
-void Scene::Component_OnUpdate( UpdateParams & params )
+void Scene::Component_OnUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
@@ -90,7 +90,7 @@ void Scene::Component_OnUpdate( UpdateParams & params )
 	}
 }
 
-void Scene::Component_OnLateUpdate( UpdateParams & params )
+void Scene::Component_OnLateUpdate( const UpdateParams & params )
 {
 
 	for( auto && component : m_components )

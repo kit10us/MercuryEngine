@@ -42,15 +42,24 @@ void MainScene::OnStart()
 	auto object = GetObjectAllocator()->NewObject( "object" );
 
 	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "Mickey_Mouse/Mickey_Mouse.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "windmill1_01.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "CubeSphereCylinder.dae" ) ) );
+	
+	
 	Mesh* mesh = dynamic_cast<Mesh *>( meshDAE.get() );
 	{
+		// Add a skeleton effect, so we can see the skeleton.
 		mesh->SetSkeletonEffect( color3DEffect );
+	
 		using namespace unify;
 		Matrix modelMatrix = MatrixIdentity();
 		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 		AddGeometryComponent( object, meshDAE, modelMatrix );
+
+		// TODO: While debugging the skeleton animation.
+		//mesh->SetRenderMesh( false );
 	}
 
 	object->GetFrame().SetPosition( unify::V3< float >( 0, 0, 0 ) );
@@ -58,7 +67,7 @@ void MainScene::OnStart()
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );

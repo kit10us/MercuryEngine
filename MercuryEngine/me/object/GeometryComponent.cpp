@@ -70,7 +70,7 @@ void GeometryComponent::OnStart()
 {
 }
 
-void GeometryComponent::OnUpdate( UpdateParams params )
+void GeometryComponent::OnUpdate( const UpdateParams & params )
 {
 	m_geometry->Update( params, m_geometryInstanceData.get() );
 }

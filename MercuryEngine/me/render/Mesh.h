@@ -40,6 +40,11 @@ namespace me
 
 			void SetSkeletonEffect( Effect::ptr effect );
 
+			/// <summary>
+			/// For testing purposes.
+			/// </summary>
+			void SetRenderMesh( bool render );
+
 		public: // Geometry...
 			GeometryInstanceData * CreateInstanceData() override;
 
@@ -60,6 +65,7 @@ namespace me
 			Skeleton m_skeleton;
 			Effect::ptr m_skeletonEffect;
 			frameanimation::AnimationSet::ptr m_animations;
+			bool m_renderMesh;
 		};
 	}
 }

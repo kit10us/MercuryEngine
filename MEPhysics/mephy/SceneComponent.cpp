@@ -29,7 +29,7 @@ void SceneComponent::AddEntity( Entity * entity )
 	m_entities.push_back( entity );
 }
 
-void SceneComponent::OnEarlyUpdate( me::UpdateParams params )
+void SceneComponent::OnEarlyUpdate( const me::UpdateParams & params )
 {
 	for( auto entity : m_entities )
 	{
@@ -37,7 +37,7 @@ void SceneComponent::OnEarlyUpdate( me::UpdateParams params )
 	}
 }
 
-void SceneComponent::OnLateUpdate( me::UpdateParams params )
+void SceneComponent::OnLateUpdate( const me::UpdateParams & params )
 {
 	// Very basic.
 	for( auto collider : m_colliders )

@@ -89,42 +89,54 @@ void Mesh::GetSources( std::list< ContributingInput > & sources, const Input_Sha
 	}
 }
 
-void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const
+void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon * technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const
 {
 	using namespace me;
 
 	auto & accumulatedPL = mesh.GetPrimitiveList();
 
 	// polylist and triangles are treated as polylists.
-	for ( const auto polylist : m_polylist )
+	for( const auto polylist : m_polylist )
 	{
 		unify::Color diffuse = unify::Color::ColorWhite();
 		const NewParam * sampler2DParam = 0;
 		const NewParam * surfaceParam = 0;
 		
-		const std::string target = technique.GetInstanceMaterial( polylist->GetMaterial() ).GetTarget();
-		const Material * material = GetDocument().GetLibraryMaterials().Find( target );
-		std::string effectURL = material->GetInstanceEffect().GetURL();
-		const Effect * effect = GetDocument().GetLibraryEffects().Find( effectURL );
+		const Effect * effect = nullptr;
+		if( technique )
+		{
+			const std::string target = technique->GetInstanceMaterial( polylist->GetMaterial() ).GetTarget();
+			const Material * material = GetDocument().GetLibraryMaterials().Find( target );
+			std::string effectURL = material->GetInstanceEffect().GetURL();
+			effect = GetDocument().GetLibraryEffects().Find( effectURL );
+		}
 
-		const Shading & shading = effect->GetProfileCOMMON()->GetTechnique().GetShading();
+		const Shading * shading = effect ? &effect->GetProfileCOMMON()->GetTechnique().GetShading() : nullptr;
 		me::render::Effect::ptr primitiveEffectBase = GetDocument().GetEffect( effect );
 		me::render::Effect::ptr myEffect( new me::render::Effect() );
 		*myEffect = *primitiveEffectBase; // Copy.
 		myEffect->ClearTextures(); // Clear textures, as we don't want the default texture that might have come with the effect.
 
-		if ( shading.GetDiffuse().GetType() == Shading::Property::ColorType )
+		if( shading )
 		{
-			diffuse = unify::Color( shading.GetDiffuse().GetColor() );
-			myEffect->SetTexture( 0, me::render::ITexture::ptr() ); // Unset texture.
+			if( shading->GetDiffuse().GetType() == Shading::Property::ColorType )
+			{
+				diffuse = unify::Color( shading->GetDiffuse().GetColor() );
+				myEffect->SetTexture( 0, me::render::ITexture::ptr() ); // Unset texture.
+			}
+			else // Is texture...
+			{
+				sampler2DParam = effect->GetProfileCOMMON()->FindNewParam( shading->GetDiffuse().GetTexture() );
+				surfaceParam = effect->GetProfileCOMMON()->FindNewParam( sampler2DParam->GetSampler2D().source );
+				const dae::Image * image = GetDocument().GetLibraryImages().Find( surfaceParam->GetSurface().init_from );
+				me::render::ITexture::ptr texture( image->GetTexture() );
+				myEffect->SetTexture( 0, texture );
+			}
 		}
-		else // Is texture...
+		else
 		{
-			sampler2DParam = effect->GetProfileCOMMON()->FindNewParam( shading.GetDiffuse().GetTexture() );
-			surfaceParam = effect->GetProfileCOMMON()->FindNewParam( sampler2DParam->GetSampler2D().source );
-			const dae::Image * image = GetDocument().GetLibraryImages().Find( surfaceParam->GetSurface().init_from );
-			me::render::ITexture::ptr texture( image->GetTexture() );
-			myEffect->SetTexture( 0, texture );
+			diffuse = unify::Color( unify::Color::ColorGrey( 155 ) );
+			myEffect->SetTexture( 0, me::render::ITexture::ptr() ); // Unset texture.
 		}
 
 		// Determine number of contributing inputs...

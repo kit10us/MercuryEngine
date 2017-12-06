@@ -32,7 +32,7 @@ void CanvasComponent::OnDetach( IScene * scene )
 	SceneComponent::OnDetach( scene );
 }
 		
-void CanvasComponent::OnUpdate( UpdateParams params )
+void CanvasComponent::OnUpdate( const UpdateParams & params )
 {
 	RenderInfo myRenderInfo( params.renderInfo );
 

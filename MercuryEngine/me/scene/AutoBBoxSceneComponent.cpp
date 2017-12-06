@@ -32,7 +32,7 @@ void AutoBBoxSceneComponent::SetPadding( float padding )
 	m_padding = padding;
 }
 
-void AutoBBoxSceneComponent::OnUpdate( UpdateParams params )
+void AutoBBoxSceneComponent::OnUpdate( const UpdateParams & params ) 
 {
 	// Ensure all objects have BBoxes...
 	std::vector< Object * > objects;

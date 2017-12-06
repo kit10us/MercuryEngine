@@ -42,7 +42,7 @@ void Layer::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	}
 }
 
-void Layer::Update( UpdateParams params )
+void Layer::Update( const UpdateParams & params )
 {
 	if ( ! IsEnabled() ) return;
 

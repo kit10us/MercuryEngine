@@ -138,7 +138,7 @@ void MainScene::OnStart()
 	}
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	using namespace unify;
 	{

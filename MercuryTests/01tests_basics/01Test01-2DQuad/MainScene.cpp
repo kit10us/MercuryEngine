@@ -48,7 +48,7 @@ void MainScene::OnStart()
 	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { vertexCount, vertices.get() } }, BufferUsage::Default } );
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	const float width = (float)params.renderer->GetDisplay().GetSize().width;
 	const float height = (float)params.renderer->GetDisplay().GetSize().height;

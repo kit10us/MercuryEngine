@@ -39,7 +39,7 @@ namespace me
 			/// </summary>
 			size_t AddInputActions(unify::Owner::ptr owner, const qxml::Element * parentNode, bool continueOnFail );
 
-			void Update( UpdateParams params );
+			void Update( const UpdateParams & params );
 
 			void Clear();
 

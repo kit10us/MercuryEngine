@@ -35,7 +35,7 @@ namespace me
 			void OnAttach( Object * object ) override;
 			void OnDetach( Object * object ) override;
 			void OnStart() override;
-			void OnUpdate( UpdateParams params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
 			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) override;
 			void OnSuspend() override;
 			void OnResume() override;

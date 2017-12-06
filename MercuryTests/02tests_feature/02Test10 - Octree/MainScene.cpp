@@ -156,7 +156,7 @@ void MainScene::OnStart()
 	}
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	m_camera->GetFrame().RotateAboutAxis( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );

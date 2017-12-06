@@ -47,7 +47,7 @@ namespace me
 			virtual object::Object * GetObject( size_t index ) = 0;
 			virtual void DirtyObject( object::Object* object ) = 0;
 
-			virtual void Update( UpdateParams params ) = 0;
+			virtual void Update( const UpdateParams & params ) = 0;
 			virtual void CollectCameras( RenderGirl & renderGirl ) = 0;
 			virtual void CollectRendering( render::Params params, const object::FinalCamera & camera, render::GeometryCacheSummation & solids, render::GeometryCacheSummation & trans ) = 0;
 		};

@@ -16,5 +16,5 @@ public:
 	MainScene( me::Game * game );
 
 	void OnStart() override;
-	void OnUpdate( me::UpdateParams & params ) override;
+	void OnUpdate( const me::UpdateParams & params ) override;
 };

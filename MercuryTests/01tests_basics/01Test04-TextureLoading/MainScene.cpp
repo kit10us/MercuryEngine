@@ -84,7 +84,7 @@ void MainScene::OnStart()
 	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effectBorg->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	static Angle rotation( AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;

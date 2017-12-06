@@ -98,7 +98,7 @@ void MainScene::OnStart()
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2 ) ) );
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );

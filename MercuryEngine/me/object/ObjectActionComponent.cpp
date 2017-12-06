@@ -22,7 +22,7 @@ ObjectActionComponent::~ObjectActionComponent()
 {
 }
 
-void ObjectActionComponent::OnUpdate(UpdateParams params)
+void ObjectActionComponent::OnUpdate( const UpdateParams & params)
 {
 	if (m_stopped)
 	{

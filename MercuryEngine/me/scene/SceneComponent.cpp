@@ -79,15 +79,15 @@ void SceneComponent::OnAfterStart()
 {
 }
 
-void SceneComponent::OnEarlyUpdate( UpdateParams params )
+void SceneComponent::OnEarlyUpdate( const UpdateParams & params )
 {
 }
 
-void SceneComponent::OnUpdate( UpdateParams params )
+void SceneComponent::OnUpdate( const UpdateParams & params ) 
 {
 }
 
-void SceneComponent::OnLateUpdate( UpdateParams params )
+void SceneComponent::OnLateUpdate( const UpdateParams & params )
 {
 }
 

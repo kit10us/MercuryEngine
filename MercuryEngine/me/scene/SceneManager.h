@@ -46,9 +46,9 @@ namespace me
 			size_t SceneManager::GetRenderCount() const;
 
 		public: // IGameCompnent...
-			void OnEarlyUpdate( UpdateParams params ) override;
-			void OnUpdate( UpdateParams params ) override;
-			void OnLateUpdate( UpdateParams params ) override;
+			void OnEarlyUpdate( const UpdateParams & params ) override;
+			void OnUpdate( const UpdateParams & params ) override;
+			void OnLateUpdate( const UpdateParams & params ) override;
 			void OnRender( render::Params params ) override;
 
 		public: // IComponent...

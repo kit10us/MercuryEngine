@@ -210,7 +210,7 @@ void TextElement::UpdateLayout( UpdateParams params, unify::Rect< float > parent
 	}
 }
 
-void TextElement::Update( UpdateParams params )
+void TextElement::Update( const UpdateParams & params )
 {
 }
 		

@@ -97,15 +97,15 @@ void GameComponent::OnAfterStartup()
 {
 }
 
-void GameComponent::OnEarlyUpdate( UpdateParams params )
+void GameComponent::OnEarlyUpdate( const UpdateParams & params )
 {
 }
 
-void GameComponent::OnUpdate( UpdateParams params ) 
+void GameComponent::OnUpdate( const UpdateParams & params ) 
 {
 }
 
-void GameComponent::OnLateUpdate( UpdateParams params )
+void GameComponent::OnLateUpdate( const UpdateParams & params )
 {
 }
 

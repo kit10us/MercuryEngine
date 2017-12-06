@@ -36,6 +36,12 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 		Effect::ptr GetEffect( const dae::Effect * effect ) const
 		{
+			// Assume default color texture if effect is null...
+			if( effect == nullptr )
+			{
+				return m_default_color;
+			}
+
 			auto & shading = effect->GetProfileCOMMON()->GetTechnique().GetShading();
 			if( shading.GetDiffuse().GetType() == dae::Shading::Property::ColorType )
 			{
@@ -97,7 +103,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 	{
 		IPixelShader::ptr ps;
 		{
-			const auto node = element->FindFirstElement( "textureps" );
+			const auto node = element->FindFirstElement( "texturedps" );
 
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
@@ -118,7 +124,7 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 		IVertexShader::ptr vs;
 		{
-			const auto node = element->FindFirstElement( "texturevs" );
+			const auto node = element->FindFirstElement( "texturedvs" );
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
 

@@ -104,7 +104,7 @@ Object * Octree::GetObject( size_t index )
 }
 
 
-void Octree::Update( UpdateParams params )
+void Octree::Update( const UpdateParams & params )
 {
 	for( auto && stack : m_stacks )
 	{

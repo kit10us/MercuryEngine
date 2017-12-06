@@ -29,7 +29,7 @@ namespace dae
 		/// <summary>
 		/// Build a primitive list using a given/optional material.
 		/// </summary>
-		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon & technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const;
+		void Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const BindMaterial_TechniqueCommon * technique, const dae::Skin * skin, const me::render::Skeleton * skeleton ) const;
 			
 	private:
 		struct ContributingInput

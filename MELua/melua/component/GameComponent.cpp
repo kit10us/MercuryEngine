@@ -135,7 +135,7 @@ void GameComponent::OnAfterStartup()
 	CallMember( "OnAfterStartup" );
 }
 
-void GameComponent::OnUpdate( me::UpdateParams params )
+void GameComponent::OnUpdate( const me::UpdateParams & params )
 {
 	CallMember( "OnUpdate" );
 }

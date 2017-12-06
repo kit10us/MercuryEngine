@@ -2,14 +2,15 @@
 // All Rights Reserved
 
 #include <PlayerMovementStick.h>
+#include <MainScene.h>
 
 using namespace me;
 using namespace render;
 using namespace scene;
 using namespace object;
 
-PlayerMovementStick::PlayerMovementStick( Object * object )
-	: m_object{ object }
+PlayerMovementStick::PlayerMovementStick( MainScene & mainScene )
+	: m_mainScene{ mainScene }
 {
 }
 
@@ -17,35 +18,15 @@ bool PlayerMovementStick::Perform( input::IInputDevice * device, input::IInputCo
 {
 	float speed = 6.0f;
 
-	unify::V3< float > move = condition->GetValue( device ).xzy();
+	unify::V3< float > stick = condition->GetValue( device ).xzy();
 
 	// Normalize, so if we move in an angle, we aren't moving twice as fast.
-	move.Normalize();
-
-	// Determine what direction we are facing
-	unify::Angle direction = move.DotAngle( { 0.0f, 0.0f, 1.0f } );
-
-	// Account for the left (-x) inversing the direction
-	if( move.x < 0.0f )
+	float length = stick.Normalize();
+	if( length > 0.2f )
 	{
-		direction *= -1.0f;
+		m_mainScene.m_newMove = true;
+		m_mainScene.m_move = stick;
 	}
-
-	// Accumulate our movement speed...
-	float factor = delta * speed;
-	move *= factor;
-
-	// Reset our rotation to identity (facing up the z-axis).
-	m_object->GetFrame().SetRotation( unify::QuaternionIdentity() );
-
-	// Move our position...
-	unify::V3< float > position = m_object->GetFrame().GetPosition();
-	position += move;
-
-	m_object->GetFrame().SetPosition( position );
-
-	// Face the correct direction.
-	m_object->GetFrame().SetRotation( unify::MatrixRotationY( direction ) );
 		
 	return true;
 }

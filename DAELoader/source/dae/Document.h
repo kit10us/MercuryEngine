@@ -65,5 +65,6 @@ namespace dae
 		util::IEffectSolver * m_effectSolver;
 		std::map< const std::string, DocumentNode * > m_nodes;
 		std::map< std::string, me::render::Effect::ptr > m_effects;
+		me::render::Effect::ptr m_defaultEffect;
 	};
 }

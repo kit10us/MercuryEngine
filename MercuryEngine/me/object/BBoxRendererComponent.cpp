@@ -56,7 +56,7 @@ void BBoxRendererComponent::OnDetach( Object * object )
 	m_geomertries.clear();
 }
 
-void BBoxRendererComponent::OnUpdate( UpdateParams params )
+void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 {
 	// If there is a change in the object's components, check for new geometry...
 	if( m_componentsChecked < GetObject()->GetComponentCount() )

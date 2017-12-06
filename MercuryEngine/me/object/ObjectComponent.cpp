@@ -110,7 +110,7 @@ void ObjectComponent::OnStart()
 	// STUBBED
 }
 
-void ObjectComponent::OnUpdate( UpdateParams params ) 
+void ObjectComponent::OnUpdate( const UpdateParams & params ) 
 {
 	// STUBBED
 }

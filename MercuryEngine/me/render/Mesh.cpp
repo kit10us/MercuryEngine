@@ -9,12 +9,14 @@ using namespace render;
 
 Mesh::Mesh( IRenderer * renderer )
 	: m_primitiveList{ renderer }
+	, m_renderMesh{ true }
 {
 }
 
 Mesh::Mesh( unify::Path source, IRenderer * renderer )
 	: m_source{ source }
 	, m_primitiveList{ renderer }
+	, m_renderMesh{ true }
 {
 }
 
@@ -41,6 +43,11 @@ const Skeleton * Mesh::GetSkeleton() const
 void Mesh::SetSkeletonEffect( Effect::ptr effect )
 {
 	m_skeletonEffect = effect;
+}
+
+void Mesh::SetRenderMesh( bool render )
+{
+	m_renderMesh = render;
 }
 
 const unify::BBox< float > & Mesh::ComputeBounds()
@@ -94,7 +101,10 @@ void Mesh::Render( render::Params params, GeometryInstanceData * instanceData, r
 
 	if( m_skeleton.Empty() )
 	{
-		m_primitiveList.Render( params, matrixFeed );
+		if( m_renderMesh )
+		{
+			m_primitiveList.Render( params, matrixFeed );
+		}
 	}
 	else
 	{
@@ -123,7 +133,10 @@ void Mesh::Render( render::Params params, GeometryInstanceData * instanceData, r
 		matrixFeed.Restart();
 		*/
 
-		m_primitiveList.Render( params, matrixFeed );
+		if( m_renderMesh )
+		{
+			m_primitiveList.Render( params, matrixFeed );
+		}
 	}
 }
 

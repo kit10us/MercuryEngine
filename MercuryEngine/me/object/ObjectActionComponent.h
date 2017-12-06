@@ -22,7 +22,7 @@ namespace me
 			ObjectActionComponent(action::IObjectAction::ptr action);
 			virtual ~ObjectActionComponent();
 
-			void OnUpdate(UpdateParams params) override;
+			void OnUpdate( const UpdateParams & params ) override;
 
 		public: // IObjectComponent...
 			IObjectComponent::ptr Duplicate() override;

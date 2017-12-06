@@ -127,7 +127,7 @@ void MainScene::OnStart()
 	m_animation->AddRotationKey( 0, RotationKey( 1.0f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
 }
 
-void MainScene::OnUpdate( UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 1;
