@@ -4,7 +4,7 @@
 #include <melua/ScriptEngine.h>
 #include <me/object/ObjectComponent.h>
 #include <me/object/Object.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 namespace melua
 {
@@ -16,7 +16,7 @@ namespace melua
 			ObjectComponent( ObjectComponent & component );
 
 		public:
-			ObjectComponent( me::IGame * game, lua_State * state, std::string myName, unify::Path path );
+			ObjectComponent( me::game::IGame * gameInstance, lua_State * state, std::string myName, unify::Path path );
 			~ObjectComponent();
 
 			std::string GetLuaName() const;
@@ -44,7 +44,7 @@ namespace melua
 			void CallMember( std::string function );
 
 			lua_State * m_state;
-			me::IGame * m_game;
+			me::game::IGame * m_game;
 			std::string m_luaName;
 			unify::Path m_path;
 		};

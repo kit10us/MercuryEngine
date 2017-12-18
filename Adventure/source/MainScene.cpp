@@ -181,8 +181,8 @@ public:
 };
 
 
-MainScene::MainScene( me::Game * game )
-	:Scene( game, "main" )
+MainScene::MainScene( me::game::Game * gameInstance )
+	:Scene( gameInstance, "main" )
 	, m_mapSize{ 30, 30 }
 	, m_terraSize{ 8, 8 }
 	, m_newMove{ false }

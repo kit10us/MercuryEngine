@@ -20,11 +20,11 @@ std::vector< std::string > g_TrackerNames =
 	"Tracker",
 };
 
-Mouse::Mouse( IGame * game )
-	: m_game( game )
+Mouse::Mouse( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
-	m_subSources.resize( game->GetOS()->RendererCount() );
-	m_subSourcesUpdated.resize( game->GetOS()->RendererCount() );
+	m_subSources.resize( gameInstance->GetOS()->RendererCount() );
+	m_subSourcesUpdated.resize( gameInstance->GetOS()->RendererCount() );
 
 	size_t index = 0;
 	for ( auto && name : g_ButtonNames )

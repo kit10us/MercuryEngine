@@ -7,7 +7,7 @@
 #include <melua/exports/ExportPixelShader.h>
 #include <melua/exports/ExportVertexShader.h>
 #include <melua/Util.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -34,7 +34,7 @@ int Effect_SetTexture( lua_State* state )
 int Effect_Constructor( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 	int top = lua_gettop( state );
 
 	if ( top < 1 )
@@ -48,7 +48,7 @@ int Effect_Constructor( lua_State * state )
 		if( top == 1 )
 		{
 			std::string name = lua_tostring( state, 1 );
-			auto effect = game->GetManager< Effect >()->Find( name );
+			auto effect = gameInstance->GetManager< Effect >()->Find( name );
 			if( effect )
 			{
 				return Push< EffectProxy >( state, { effect } );
@@ -67,7 +67,7 @@ int Effect_Constructor( lua_State * state )
 			{
 				std::string name = lua_tostring( state, 1 );
 				unify::Path source( lua_tostring( state, 2 ) );
-				auto effect = game->GetManager< Effect >()->Add( name, source );
+				auto effect = gameInstance->GetManager< Effect >()->Add( name, source );
 				return Push< EffectProxy >( state, { effect } );
 			}
 			else // It's a ps, vs, and N textures...

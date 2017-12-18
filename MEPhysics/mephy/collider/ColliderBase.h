@@ -4,7 +4,7 @@
 #include <MEPhysics.h>
 #include <me/object/ObjectComponent.h>
 #include <me/object/Object.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <me/object/action/IObjectAction.h>
 #include <mephy/Entity.h>
 

@@ -9,8 +9,8 @@ using namespace render;
 using namespace scene;
 using namespace unify;
 
-MainScene::MainScene( me::Game * game )
-	:Scene( game, "main" )
+MainScene::MainScene( me::game::Game * gameInstance )
+	:Scene( gameInstance, "main" )
 {	
 }
 

@@ -212,7 +212,7 @@ int ObjectComponent_SetValue( lua_State * state )
 int ObjectComponent_Constructor( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	auto type = GetTypename( state );
 	if( unify::StringIs( type, "ObjectComponent" ) )

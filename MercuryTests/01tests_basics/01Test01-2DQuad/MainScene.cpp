@@ -7,8 +7,8 @@ using namespace me;
 using namespace scene;
 using namespace render;
 
-MainScene::MainScene( me::Game * game )
-	:Scene( game, "main" )
+MainScene::MainScene( me::game::Game * gameInstance )
+	:Scene( gameInstance, "main" )
 {	
 }
 
@@ -17,7 +17,7 @@ void MainScene::OnStart()
 	const float width = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().width;
 	const float height = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;
 
-	effect = GetManager< Effect>()->Add( "color2d", unify::Path( "EffectColor2D.effect" ) );
+	effect = GetManager< Effect >()->Add( "color2d", unify::Path( "EffectColor2D.effect" ) );
 
 	auto vd = effect->GetVertexShader()->GetVertexDeclaration();
 

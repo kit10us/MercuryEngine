@@ -59,8 +59,8 @@ std::vector< std::string > g_StickNames =
 	"RightStick"
 };
 
-Gamepad::Gamepad( me::IGame * game )
-	: m_game( game )
+Gamepad::Gamepad( me::game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 	size_t index = 0;
 	for ( auto && name : g_ButtonNames )

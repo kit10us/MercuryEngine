@@ -193,7 +193,7 @@ int V3_Lerp( lua_State * state )
 int V3_Constructor( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	int args = lua_gettop( state );
 

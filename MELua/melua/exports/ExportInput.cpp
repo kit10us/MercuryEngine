@@ -70,7 +70,7 @@ int Input_AddAction( lua_State * state )
 	int args = lua_gettop( state );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	me::Game * game = se->GetGame();
+me::game::Game *gameInstance = se->GetGame();
 
 	InputProxy * inputProxy = CheckInput( state, 1 );
 	std::string ownerName = luaL_checkstring( state, 2 );
@@ -151,11 +151,11 @@ int Input_Constructor( lua_State * state )
 	int type = lua_type( state, 1 );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	std::string name = luaL_checkstring( state, 1 );
 
-	IInputDevice::ptr input = game->GetInputManager()->FindSource( name );
+	IInputDevice::ptr input = gameInstance->GetInputManager()->FindSource( name );
 	if ( ! input )
 	{
 		lua_pushnil( state );

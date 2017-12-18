@@ -5,7 +5,7 @@
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/FailedToLock.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 using namespace medx11;
 using namespace me;

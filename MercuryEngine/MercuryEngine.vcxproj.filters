@@ -636,12 +636,6 @@
     <ClInclude Include="me\Extension.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\Game.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\GameComponent.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Instancing.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -661,12 +655,6 @@
       <Filter>me</Filter>
     </ClInclude>
     <ClInclude Include="me\IController.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IGame.h">
-      <Filter>me</Filter>
-    </ClInclude>
-    <ClInclude Include="me\IGameComponent.h">
       <Filter>me</Filter>
     </ClInclude>
     <ClInclude Include="me\IOS.h">
@@ -692,6 +680,18 @@
     </ClInclude>
     <ClInclude Include="me\action\SendCommand.h">
       <Filter>me\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\Game.h">
+      <Filter>me\game</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\GameComponent.h">
+      <Filter>me\game</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\IGame.h">
+      <Filter>me\game</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\IGameComponent.h">
+      <Filter>me\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1112,12 +1112,6 @@
     <ClCompile Include="me\Extension.cpp">
       <Filter>me</Filter>
     </ClCompile>
-    <ClCompile Include="me\Game.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
-    <ClCompile Include="me\GameComponent.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\Instancing.cpp">
       <Filter>me</Filter>
     </ClCompile>
@@ -1141,6 +1135,12 @@
     </ClCompile>
     <ClCompile Include="me\action\SendCommand.cpp">
       <Filter>me\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\game\GameComponent.cpp">
+      <Filter>me\game</Filter>
+    </ClCompile>
+    <ClCompile Include="me\game\Game.cpp">
+      <Filter>me\game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

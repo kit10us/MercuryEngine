@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/render/IVertexShader.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <rm/ResourceManagerSimple.h>
 
 namespace me
@@ -12,10 +12,10 @@ namespace me
 	class VertexShaderFactory : public rm::ISourceFactory< render::IVertexShader >
 	{
 	public:
-		VertexShaderFactory( IGame * game );
+		VertexShaderFactory( game::IGame * gameInstance );
 	render::	IVertexShader::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
-		IGame * m_game;
+		game::IGame * m_game;
 	};
 }

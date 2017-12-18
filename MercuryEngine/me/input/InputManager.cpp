@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/input/InputManager.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <me/input/ButtonCondition.h>
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/TriggerCondition.h>
@@ -14,8 +14,8 @@
 using namespace me;
 using namespace input;
 
-InputManager::InputManager( IGame * game )
-	: m_game{ game }
+InputManager::InputManager( game::IGame * gameInstance )
+	: m_game{ gameInstance }
 {
 }
 

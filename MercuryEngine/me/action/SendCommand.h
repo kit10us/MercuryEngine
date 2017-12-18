@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/action/IAction.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <string>
 
 namespace me
@@ -17,13 +17,13 @@ namespace me
 		class SendCommand : public IAction
 		{
 		public:
-			SendCommand( IGame * game, size_t id, std::string extra );
+			SendCommand( game::IGame * gameInstance, size_t id, std::string extra );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
-			IGame * m_game;
+			game::IGame * m_game;
 			size_t m_id;
 			std::string m_extra;
 		};

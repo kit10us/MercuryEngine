@@ -20,7 +20,7 @@ namespace medx9
 		Renderer( WindowsOS * os, me::render::Display display, size_t index );
 		virtual ~Renderer();					
 
-		me::IGame * GetGame() override;
+		me::game::IGame * GetGame() override;
 
 		const me::render::Display & GetDisplay() const;
 

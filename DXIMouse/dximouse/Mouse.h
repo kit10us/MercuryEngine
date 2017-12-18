@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/input/InputDevice.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <map>
 
 namespace dximouse
@@ -12,7 +12,7 @@ namespace dximouse
 	class Mouse : public me::input::InputDevice
 	{
 	public:
-		Mouse( me::IGame * game );
+		Mouse( me::game::IGame * gameInstance );
 		virtual ~Mouse();
 
 		std::string GetName() const;
@@ -36,7 +36,7 @@ namespace dximouse
 		void SetInputData( size_t subSource, size_t index, me::input::IData::ptr dataIn ) override;
 
 	private:
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 
 		struct Source
 		{

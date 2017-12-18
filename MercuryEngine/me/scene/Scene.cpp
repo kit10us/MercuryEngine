@@ -12,13 +12,13 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-Scene::Scene( Game * game, std::string name )
-: m_game( game )
+Scene::Scene( game::Game * gameInstance, std::string name )
+: m_game( gameInstance )
 , m_name{ name }
 , m_ownership{ unify::Owner::Create( name ) }
 , m_sceneManager{}
 {
-	auto objectAllocatorComponent = new ObjectAllocatorComponent( game->GetOS() );
+	auto objectAllocatorComponent = new ObjectAllocatorComponent( gameInstance->GetOS() );
 	AddComponent( ISceneComponent::ptr( objectAllocatorComponent ) );
 
 	m_objectAllocator = objectAllocatorComponent->QueryInterfaceT< IObjectAllocator >( "IObjectAllocator" );
@@ -154,8 +154,7 @@ void Scene::Component_OnEnd()
 		}
 	}
 }
-
-me::Game * Scene::GetGame()
+game::IGame *Scene::GetGame()
 {
 	return m_game;
 }

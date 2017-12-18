@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/scene/SceneManager.h>
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
@@ -22,7 +22,7 @@ namespace me
 		class Scene : public IScene
 		{
 		public:
-			Scene(Game * game, std::string name);
+			Scene(game::Game * gameInstance, std::string name);
 			virtual ~Scene();
 
 			unify::Owner::ptr GetOwnership() override;
@@ -50,7 +50,7 @@ namespace me
 
 		public:
 
-			me::Game * GetGame() override;
+			game::IGame * GetGame() override;
 
 			me::IOS * GetOS() override;
 
@@ -76,11 +76,11 @@ namespace me
 			template< typename T > 
 			rm::ResourceManagerSimple< T > * GetManager()
 			{
-				return GetGame()->GetManager< T >();
+				return m_game->GetManager< T >();
 			}
 
 		private:
-			Game * m_game;
+			game::Game * m_game;
 			std::string m_name;	 
 			unify::Owner::ptr m_ownership;
 			std::list< ISceneComponent::ptr > m_components;

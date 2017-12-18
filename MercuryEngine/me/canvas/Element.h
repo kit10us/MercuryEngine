@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <me/canvas/Anchor.h>
 #include <me/canvas/IElement.h>
 #include <unify/Size.h>
@@ -15,7 +15,7 @@ namespace me
 		class Element : public IElement
 		{
 		public:
-			Element( me::IGame * game, unify::V2< float > offset = { 0, 0 }, unify::Size< float > size = { 0, 0 }, Anchor anchor = Anchor::Center );
+			Element( game::IGame * gameInstance, unify::V2< float > offset = { 0, 0 }, unify::Size< float > size = { 0, 0 }, Anchor anchor = Anchor::Center );
 
 			void SetName( std::string name ) override;
 			std::string GetName() const override;
@@ -23,7 +23,7 @@ namespace me
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 
-			me::IGame * GetGame();
+			game::IGame * GetGame();
 
 			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
 
@@ -39,7 +39,7 @@ namespace me
 			unify::Size< float > GetActualSize() const;
 
 		private:
-			IGame * m_game;
+			game::IGame * m_game;
 			std::string m_name;
 			bool m_enabled;
 			Anchor m_anchor;

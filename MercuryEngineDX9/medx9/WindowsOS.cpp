@@ -20,13 +20,13 @@ using namespace medx9;
 #undef GetCommandLine
 #endif
 
-WindowsOS::WindowsOS( IGame * game, const qxml::Element * element )
-: m_game( game )
+WindowsOS::WindowsOS( game::IGame * gameInstance, const qxml::Element * element )
+: m_game( gameInstance )
 , m_hasFocus{}
 , m_keyboard{}
 , m_mouse{}
 {
-	m_osParameters = game->GetOSParameters();
+	m_osParameters = gameInstance->GetOSParameters();
 
 	{
 		using namespace std;
@@ -112,7 +112,7 @@ WindowsOS::~WindowsOS()
 	m_renderers.clear();
 }
 
-me::IGame * WindowsOS::GetGame()
+me::game::IGame * WindowsOS::GetGame()
 {
 	return m_game;
 }
@@ -300,14 +300,14 @@ void WindowsOS::DebugWriteLine( std::string line )
 
 LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	IGame & game = *m_game;
+	game::IGame & gameInstance = *m_game;
 	static bool trackingMouse = false;
 
 	switch ( message )
 	{
 	case WM_CLOSE: // Fall through to WM_DESTROY...
 	case WM_DESTROY:
-		game.Quit();
+		gameInstance.Quit();
 		return 0;
 
 	case WM_MOUSELEAVE:

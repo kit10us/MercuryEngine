@@ -26,13 +26,13 @@ int Action_Constructor( lua_State * state )
 	int args = lua_gettop( state );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	std::string type1 = GetTypename( state, 1 );
 	if( unify::StringIs( type1, XMLElementProxy::Name() ) )
 	{ 
 		auto element = CheckUserType< XMLElementProxy >( state, 1 );
-		auto action = game->CreateAction( element->GetElement() );
+		auto action = gameInstance->CreateAction( element->GetElement() );
 		return PushUserType< ActionProxy >( state, { action } );
 	}
 	

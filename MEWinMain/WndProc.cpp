@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 #define WINDOWS_LEAN_AND_MEAN
 #include <windows.h>
@@ -20,7 +20,7 @@
 
 #include <shellapi.h>
 
-extern "C" me::Game * GetGameInstance();
+extern "C" me::game::Game * GetGameInstance();
 
 extern "C"
 LRESULT CALLBACK WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )

@@ -7,8 +7,8 @@
 using namespace me;
 using namespace canvas;
 
-VList::VList( IGame * game, size_t count, unify::Size< float > size, Anchor anchor, unify::V2< float > offset )
-	: Element( game, offset, { 0, 0 }, anchor )
+VList::VList( game::IGame * gameInstance, size_t count, unify::Size< float > size, Anchor anchor, unify::V2< float > offset )
+	: Element( gameInstance, offset, { 0, 0 }, anchor )
 	, m_count{ count }
 	, m_size{ size }
 	, m_changed( true )

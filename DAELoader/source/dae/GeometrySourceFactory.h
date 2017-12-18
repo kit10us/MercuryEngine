@@ -12,12 +12,12 @@ namespace dae
 	class GeometrySourceFactory : public rm::ISourceFactory< me::render::Geometry >
 	{
 	public:
-		GeometrySourceFactory( me::Game * renderer, util::IEffectSolver * effectSolver );
+		GeometrySourceFactory( me::game::Game * renderer, util::IEffectSolver * effectSolver );
 
 		me::render::Geometry::ptr Produce( unify::Path path, void * data ) override;
 
 	private:
-		me::Game * m_game;
+	me::game::Game *m_game;
 		std::shared_ptr< util::IEffectSolver > m_effectSolver;
 	};
 }

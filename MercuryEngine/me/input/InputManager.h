@@ -12,7 +12,10 @@
 
 namespace me
 {
-	class IGame;
+	namespace game
+	{
+		class IGame;
+	}
 
 	namespace input
 	{
@@ -22,7 +25,7 @@ namespace me
 		class InputManager
 		{
 		public:
-			InputManager( IGame * game );
+			InputManager( game::IGame * game );
 			~InputManager();
 
 			void AddInputDevice( IInputDevice::ptr source );
@@ -46,7 +49,7 @@ namespace me
 		private:
 			bool AddSingleInputAction(unify::Owner::ptr owner, const qxml::Element * element);
 
-			IGame* m_game;
+			game::IGame * m_game;
 			std::vector< IInputDevice::ptr > m_sourceList;
 			std::map< std::string, IInputDevice::ptr, unify::CaseInsensitiveLessThanTest > m_sourceMap;
 		};

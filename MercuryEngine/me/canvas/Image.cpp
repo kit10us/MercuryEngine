@@ -10,8 +10,8 @@ using namespace me;
 using namespace canvas;
 using namespace render;
 
-Image::Image( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
-	: Element( game, offset, {0, 0}, anchor )
+Image::Image( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+	: Element( gameInstance, offset, {0, 0}, anchor )
 	, m_effect( effect )
 	, m_changed( true )
 	, m_scale{ scale }

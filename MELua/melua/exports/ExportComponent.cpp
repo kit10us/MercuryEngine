@@ -201,7 +201,7 @@ namespace melua
 	int Component_Constructor( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		auto game = se->GetGame();
+		auto gameInstance = se->GetGame();
 		int top = lua_gettop( state );
 
 		std::string typeA = GetTypename( state );

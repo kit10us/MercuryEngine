@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 
 namespace me
 {
@@ -11,7 +11,7 @@ namespace me
 	{
 		namespace component
 		{
-			class ActionFactory : public me::GameComponent
+			class ActionFactory : public GameComponent
 			{
 			public:
 				static char* Name();

@@ -18,8 +18,8 @@ using namespace object;
 using namespace bw;
 using namespace render;
 
-MainScene::MainScene( me::Game * game )
-	:Scene( game, "main" )
+MainScene::MainScene( me::game::Game * gameInstance )
+	:Scene( gameInstance, "main" )
 {	
 }
 

@@ -7,7 +7,7 @@
 #include <mephylua/ExportEntity.h>
 #include <melua/ScriptEngine.h>
 #include <memory.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 #pragma comment( lib, "lua53" )
 
@@ -20,26 +20,26 @@
 #endif
 
 
-void Deleter( me::IGameComponent * se )
+void Deleter( me::game::IGameComponent * se )
 {
 	delete se;
 }
 				   
-extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * doc );
-__declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Document * document )
+extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Document * doc );
+__declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Document * document )
 {
-	auto gcse = game->GetComponent( "Lua" );
+	auto gcse = gameInstance->GetComponent( "Lua" );
 	if( !gcse )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension (\"Lua\") not found!" );
+		gameInstance->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension (\"Lua\") not found!" );
 		return false;
 	}
-	me::IGameComponent * se = dynamic_cast<me::IGameComponent *>(gcse.get());
+	me::game::IGameComponent * se = dynamic_cast<me::game::IGameComponent *>(gcse.get());
 
 	melua::ScriptEngine * luaSE = dynamic_cast<melua::ScriptEngine *>(se);
 	if ( ! luaSE )
 	{
-		game->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
+		gameInstance->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
 	}
 
 	mephylua::RegisterGameComponent( luaSE );

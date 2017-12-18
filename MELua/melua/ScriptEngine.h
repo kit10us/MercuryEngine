@@ -4,7 +4,7 @@
 #pragma once
 
 #include <MELuaDLL.h>
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 #include <me/scene/Scene.h>
 #include <melua/Type.h>
 #include <melua/Util.h>
@@ -19,7 +19,7 @@ namespace melua
 		Pending
 	};
 
-	class ScriptEngine : public me::GameComponent
+	class ScriptEngine : public me::game::GameComponent
 	{
 	public:
 		ScriptEngine( me::IOS * os );
@@ -28,7 +28,7 @@ namespace melua
 		ExecuteResult ExecuteString( std::string line );
 		ExecuteResult ExecuteFile( unify::Path path );
 
-		me::IGameComponent::ptr LoadGameScript( unify::Path path );
+		me::game::IGameComponent::ptr LoadGameScript( unify::Path path );
 
 		me::object::IObjectComponent::ptr LoadObjectScript( unify::Path path );
 
@@ -43,7 +43,7 @@ namespace melua
 		Type * GetType( std::string name );
 
 		MELUADLL_API static ScriptEngine* GetInstance();
-		MELUADLL_API me::Game * GetGame();
+		MELUADLL_API me::game::Game * GetGame();
 
 		/// <summary>
 		/// Asserts that our argument count for a function (top) is correct.

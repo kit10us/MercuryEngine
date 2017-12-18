@@ -13,7 +13,7 @@ class MainScene : public me::scene::Scene
 	std::shared_ptr< me::render::Mesh > mesh;
 	unify::Quaternion q;
 public:
-	MainScene( me::Game * game );
+	MainScene( me::game::Game * gameInstance );
 
 	void OnStart() override;
 	void OnUpdate( const me::UpdateParams & params ) override;

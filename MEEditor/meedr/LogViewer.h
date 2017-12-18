@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <ui/Window.h>
 
 namespace meedr
@@ -11,11 +11,11 @@ namespace meedr
 	class LogViewer : public ui::Window, me::ILogListener
 	{
 	private:
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 		class SceneViewer*  m_sceneViewer;
 
 	public:
-		LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
+		LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance );
 		~LogViewer();
 
 		// me::ILogListener...

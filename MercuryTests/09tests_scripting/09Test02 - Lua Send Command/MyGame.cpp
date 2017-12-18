@@ -6,15 +6,15 @@
 ///</summary>
 
 #include <MEWinMain.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/scene/DefaultSceneFactory.h>
 
 using namespace me;
 
-class MyGame : public Game
+class MyGame : public game::Game
 {
 public:
 	MyGame() : Game( unify::Path( "setup_luago_sendcommand.xml" ) ) {}
-} game;
+} mygame;
 
-RegisterGame(game);
+RegisterGame(mygame);

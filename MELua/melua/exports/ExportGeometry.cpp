@@ -6,7 +6,7 @@
 #include <melua/shape/ExportShapeParameters.h>
 #include <melua/Util.h>
 #include <sg/ShapeCreators.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -29,7 +29,7 @@ int Geometry_Constructor( lua_State * state )
 	Geometry::ptr geometry;
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	try
 	{
@@ -39,7 +39,7 @@ int Geometry_Constructor( lua_State * state )
 			if( unify::StringIs( type1, "string" ) )
 			{ // Find an existing geometry...
 				std::string name = lua_tostring( state, 1 );
-				geometry = game->GetManager< Geometry >()->Find( name );
+				geometry = gameInstance->GetManager< Geometry >()->Find( name );
 				if( !geometry )
 				{
 					return PushNil( state );
@@ -52,7 +52,7 @@ int Geometry_Constructor( lua_State * state )
 			else if( unify::StringIs( type1, "ShapeParameters" ) )
 			{ // 
 				ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-				geometry = sg::CreateShape( game->GetOS()->GetRenderer( 0 ), parameters->parameters );
+				geometry = sg::CreateShape( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters );
 				return PushUserType< GeometryProxy >( state, { geometry } );
 			}
 			else
@@ -68,14 +68,14 @@ int Geometry_Constructor( lua_State * state )
 			{ // Create a named geometry from a file...
 				std::string name = lua_tostring( state, 1 );
 				unify::Path source( lua_tostring( state, 2 ) );
-				geometry = game->GetManager< Geometry >()->Add( name, source );
+				geometry = gameInstance->GetManager< Geometry >()->Add( name, source );
 				return PushUserType< GeometryProxy >( state, { geometry } );
 			}
 			else if( unify::StringIs( type1, "string" ) && unify::StringIs( type2, "ShapeParameters" ) )
 			{
 				std::string name = lua_tostring( state, 1 );
 				ShapeParameters * parameters = CheckShapeParameters( state, 2 );
-				geometry = sg::CreateShape( game->GetOS()->GetRenderer( 0 ), parameters->parameters );
+				geometry = sg::CreateShape( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters );
 				return PushUserType< GeometryProxy >( state, { geometry } );
 			}
 			else

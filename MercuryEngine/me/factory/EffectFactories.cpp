@@ -5,22 +5,22 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/exception/FailedToCreate.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace me;
 using namespace render;
 
-EffectFactory::EffectFactory( me::IGame * game )
-	: m_game( game )
+EffectFactory::EffectFactory( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 }
 	  
 std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * data )
 {
-	auto game = dynamic_cast<Game *>(m_game);
-	auto textureManager = game->GetManager< ITexture >();
-	auto pixelShaderManager = game->GetManager< IPixelShader >();
-	auto vertexShaderManager = game->GetManager< IVertexShader >();
+	auto gameInstance = dynamic_cast< game::Game * >(m_game);
+	auto textureManager = gameInstance->GetManager< ITexture >();
+	auto pixelShaderManager = gameInstance->GetManager< IPixelShader >();
+	auto vertexShaderManager = gameInstance->GetManager< IVertexShader >();
 
 	Effect* effect{};
 	try

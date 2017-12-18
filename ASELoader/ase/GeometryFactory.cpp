@@ -13,8 +13,8 @@ using namespace ase;
 using namespace me;
 using namespace render;
 
-GeometryFactory::GeometryFactory( Game * game )
-: m_game( game )
+GeometryFactory::GeometryFactory( me::game::Game * gameInstance)
+: m_game( gameInstance )
 {
 }
 
@@ -30,13 +30,13 @@ void GeometryFactory::SetPixelShader( IPixelShader::ptr pixelShader )
 
 Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 {
-	Game & game = *m_game;
+	game::Game & gameInstance = *m_game;
 
 	// Managers to store sub-resources.
-	auto textureManager = game.GetManager< ITexture >();
-	auto pixelShaderManager = game.GetManager< IPixelShader >();
-	auto vertexShaderManager = game.GetManager< IVertexShader >();
-	auto effectManager = game.GetManager< Effect >();
+	auto textureManager = gameInstance.GetManager< ITexture >();
+	auto pixelShaderManager = gameInstance.GetManager< IPixelShader >();
+	auto vertexShaderManager = gameInstance.GetManager< IVertexShader >();
+	auto effectManager = gameInstance.GetManager< Effect >();
 
 	Mesh * mesh = new Mesh( m_game->GetOS()->GetRenderer( 0 ) );
 	PrimitiveList & primitiveList = mesh->GetPrimitiveList();

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/canvas/Element.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 namespace me
 {
@@ -18,7 +18,7 @@ namespace me
 		public:
 			typedef std::shared_ptr< canvas::Layer > ptr;
 
-			Layer( IGame * game, unify::V2< float > position = {0, 0}, unify::Size< float > size = {100,100}, Anchor anchor = Anchor::StretchFull );
+			Layer( game::IGame * gameInstance, unify::V2< float > position = {0, 0}, unify::Size< float > size = {100,100}, Anchor anchor = Anchor::StretchFull );
 
 			void AddElement( IElement::ptr element );
 

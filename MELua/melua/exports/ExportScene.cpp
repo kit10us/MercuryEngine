@@ -8,7 +8,7 @@
 #include <melua/unify/ExportV3.h>
 #include <melua/exports/ExportCameraComponent.h>
 #include <melua/Util.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/scene/SceneManager.h>
 #include <me/scene/Scene.h>		
 
@@ -68,7 +68,7 @@ int Scene_NewCamera( lua_State * state )
 	unify::Matrix mat = CheckUserType< MatrixProxy >( state, 3 )->matrix;
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	Object * child = proxy->scene->GetObjectAllocator()->NewObject( name );
 	CameraComponent * cameraComponent = new CameraComponent();

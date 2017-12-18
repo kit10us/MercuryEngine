@@ -15,7 +15,7 @@ char* GameComponent::Name()
 }
 
 GameComponent::GameComponent()
-	: me::GameComponent( Name() )
+	: me::game::GameComponent( Name() )
 {
 }
 

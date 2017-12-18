@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/Extension.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <qxml/Document.h>
 
 #define WINDOWS_LEAN_AND_MEAN
@@ -23,7 +23,7 @@
 
 using namespace me;
 
-typedef bool ( __cdecl *LoaderFunction )(me::IGame *, const qxml::Element * element );
+typedef bool ( __cdecl *LoaderFunction )( game::IGame *, const qxml::Element * element );
 
 Extension::Extension( unify::Path source )
 	: m_source( source )
@@ -36,14 +36,14 @@ Extension::~Extension()
 	Free();
 }
 
-bool Extension::Load( IGame * game, const qxml::Element * element )
+bool Extension::Load( game::IGame * gameInstance, const qxml::Element * element )
 {
 	if ( ! m_source.Exists() )
 	{
-		game->ReportError( me::ErrorLevel::Critical, "Extension", "Failed to find extenion \"" + m_source.ToString() + "\"!" ); 
+		gameInstance->ReportError( me::ErrorLevel::Critical, "Extension", "Failed to find extenion \"" + m_source.ToString() + "\"!" ); 
 	}
 
-	game->LogLine( "Loading extenion \"" + m_source.ToString() + "\"..." );
+	gameInstance->LogLine( "Loading extenion \"" + m_source.ToString() + "\"..." );
 
 	m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );
 	if ( ! m_moduleHandle )
@@ -51,11 +51,11 @@ bool Extension::Load( IGame * game, const qxml::Element * element )
 		DWORD errorCode = GetLastError();
 		if ( errorCode == ERROR_MOD_NOT_FOUND )
 		{
-			game->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
+			gameInstance->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
 		}
 		else
 		{
-			game->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured (error code: " + unify::Cast< std::string >( errorCode ) + ")!" );
+			gameInstance->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured (error code: " + unify::Cast< std::string >( errorCode ) + ")!" );
 		}
 		return false;
 	}
@@ -68,7 +68,7 @@ bool Extension::Load( IGame * game, const qxml::Element * element )
 		return false;
 	}
 
-	loader( game, element );
+	loader( gameInstance, element );
 
 	return true;
 }											

@@ -37,7 +37,7 @@ int TexArea_ToString(lua_State * state)
 int TexArea_Constructor(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	int args = lua_gettop(state);
 

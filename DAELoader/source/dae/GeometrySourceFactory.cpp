@@ -3,12 +3,12 @@
 
 #include <dae/GeometrySourceFactory.h>
 #include <me/exception/FailedToCreate.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/render/Mesh.h>
 
 using namespace dae;
 
-GeometrySourceFactory::GeometrySourceFactory( me::Game * renderer, util::IEffectSolver * effectSolver )
+GeometrySourceFactory::GeometrySourceFactory( me::game::Game * renderer, util::IEffectSolver * effectSolver )
 	: m_game( renderer )
 	, m_effectSolver( effectSolver )
 {

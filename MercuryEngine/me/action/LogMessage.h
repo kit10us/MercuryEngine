@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/action/IAction.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <string>
 
 namespace me
@@ -17,13 +17,13 @@ namespace me
 		class LogMessage : public IAction
 		{
 		public:
-			LogMessage( IGame * game, std::string message );
+			LogMessage( game::IGame * gameInstance, std::string message );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
-			IGame * m_game;
+			game::IGame * m_game;
 			std::string m_message;
 		};
 	}

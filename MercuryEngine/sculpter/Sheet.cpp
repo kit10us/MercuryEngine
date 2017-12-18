@@ -3,7 +3,7 @@
 
 #include <sculpter/Sheet.h>
 #include <me/render/VertexUtil.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <cassert>
 
 using namespace sculpter;
@@ -153,8 +153,8 @@ bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Ef
 			
 			V pos = m.GetPosition();
 
-			me::IGame* game = GetGameInstance();
-			game->GetOS()->DebugWriteLine( "pos = " + pos.ToString() );
+			me::game::IGame* gameInstance = GetGameInstance();
+			gameInstance->GetOS()->DebugWriteLine( "pos = " + pos.ToString() );
 
 			size_t i = y + x * height;
 			WriteVertex( *vd, lock, i, positionE, pos);

@@ -11,7 +11,7 @@ namespace melua
 		class SceneComponent : public me::scene::SceneComponent
 		{
 		public:
-			SceneComponent( me::IGame * game, lua_State * state, std::string luaName, unify::Path path );
+			SceneComponent( me::game::IGame * gameInstance, lua_State * state, std::string luaName, unify::Path path );
 			~SceneComponent();
 
 			void CallMember( std::string function );
@@ -33,7 +33,7 @@ namespace melua
 			std::string m_luaName;
 			unify::Path m_path;
 			lua_State * m_state;
-			me::IGame* m_game;
+			me::game::IGame* m_game;
 		};
 	}
 }

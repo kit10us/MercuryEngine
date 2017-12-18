@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/factory/GeometryFactory.h>
 #include <me/render/VertexUtil.h>
 #include <me/exception/FailedToCreate.h>
@@ -12,10 +12,10 @@
 using namespace me;
 using namespace render;
 
-void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * mesh );
+void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElement, Mesh * mesh );
 
-GeometryFactory::GeometryFactory( IGame * game )
-	: m_game( game )
+GeometryFactory::GeometryFactory( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 }
 
@@ -34,8 +34,8 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
 	if( version == "1.2" )
 	{
-		auto game = dynamic_cast< Game * >(m_game);
-		LoadMesh_1_2( game, geometryElement, mesh );
+		auto gameInstance = dynamic_cast< game::Game * >(m_game);
+		LoadMesh_1_2( gameInstance, geometryElement, mesh );
 	}
 	else
 	{
@@ -48,13 +48,13 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 }
 
 
-void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * mesh )
+void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElement, Mesh * mesh )
 {
 	// Managers to store sub-resources.
-	auto textureManager = game->GetManager< ITexture >();
-	auto pixelShaderManager = game->GetManager< IPixelShader >();
-	auto vertexShaderManager = game->GetManager< IVertexShader >();
-	auto effectManager = game->GetManager< Effect >();
+	auto textureManager = gameInstance->GetManager< ITexture >();
+	auto pixelShaderManager = gameInstance->GetManager< IPixelShader >();
+	auto vertexShaderManager = gameInstance->GetManager< IVertexShader >();
+	auto effectManager = gameInstance->GetManager< Effect >();
 
 	for( const auto child : geometryElement.Children() )
 	{
@@ -63,7 +63,7 @@ void LoadMesh_1_2( Game * game, const qxml::Element & geometryElement, Mesh * me
 		{
 			for( const auto effect: child.Children() )
 			{
-				unify::Path source = game->GetOS()->GetAssetPaths().FindAsset( unify::Path( effect.GetAttribute< std::string >( "source" ) ), geometryElement.GetDocument()->GetPath().DirectoryOnly() );
+				unify::Path source = gameInstance->GetOS()->GetAssetPaths().FindAsset( unify::Path( effect.GetAttribute< std::string >( "source" ) ), geometryElement.GetDocument()->GetPath().DirectoryOnly() );
 				effectManager->Add( effect.GetAttribute< std::string >( "name" ), source );
 			}
 		}

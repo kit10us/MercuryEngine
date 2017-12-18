@@ -19,7 +19,7 @@ public:
 	unify::V3< float > m_move;
 
 public:
-	MainScene( me::Game * game );
+	MainScene( me::game::Game * gameInstance );
 
 	void OnStart() override;
 	void OnUpdate( const me::UpdateParams & params ) override;

@@ -13,9 +13,9 @@ char * CanvasComponent::Name()
 	return "CanvasComponent";
 }
 
-CanvasComponent::CanvasComponent( IGame * game )
-	: SceneComponent( game->GetOS(), Name() )
-	, m_game( game )
+CanvasComponent::CanvasComponent( game::IGame * gameInstance )
+	: SceneComponent( gameInstance->GetOS(), Name() )
+	, m_game( gameInstance )
 	, m_position( 0, 0 )
 	, m_size( 0, 0 )
 {

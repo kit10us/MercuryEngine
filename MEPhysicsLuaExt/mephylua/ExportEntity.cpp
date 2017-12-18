@@ -10,7 +10,7 @@
 using namespace melua;
 
 static melua::ScriptEngine * g_luaSE;
-static me::IGame * g_game;
+static me::game::IGame * g_game;
 
 namespace mephylua
 {
@@ -43,7 +43,7 @@ namespace mephylua
 	int EntityObjectComponent_Constructor( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		auto game = se->GetGame();
+		auto gameInstance = se->GetGame();
 
 		int args = lua_gettop( state );
 

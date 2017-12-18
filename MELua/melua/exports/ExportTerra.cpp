@@ -5,7 +5,7 @@
 #include <melua/exports/ExportTerra.h>
 #include <melua/exports/ExportTerraParameters.h>
 #include <melua/Util.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -37,7 +37,7 @@ int Terra_Constructor( lua_State * state )
 	int top = lua_gettop( state );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	if ( top == 1 )
 	{
@@ -47,7 +47,7 @@ int Terra_Constructor( lua_State * state )
 		if ( type == "string " )
 		{
 			std::string name = lua_tostring( state, 1 );
-			Geometry::ptr geo = game->GetManager < Geometry >()->Find( name );
+			Geometry::ptr geo = gameInstance->GetManager < Geometry >()->Find( name );
 			if ( ! geo )
 			{
 				lua_pushnil( state );
@@ -68,7 +68,7 @@ int Terra_Constructor( lua_State * state )
 		else if ( type == "TerraParameters" )
 		{
 			TerraParameters * parameters = CheckTerraParameters( state, 1 );
-			Geometry::ptr geo( new Terra( game->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
+			Geometry::ptr geo( new Terra( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
 
 			TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));
 			*geometryProxy = new TerraProxy;
@@ -89,11 +89,11 @@ int Terra_Constructor( lua_State * state )
 	{
 		std::string name = lua_tostring( state, 1 );
 
-		Geometry::ptr geo = game->GetManager < Geometry >()->Find( name );
+		Geometry::ptr geo = gameInstance->GetManager < Geometry >()->Find( name );
 		if ( !geo )
 		{
 			TerraParameters * parameters = CheckTerraParameters( state, 2 );
-			geo = game->GetManager< Geometry >()->Add( name, new Terra( game->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
+			geo = gameInstance->GetManager< Geometry >()->Add( name, new Terra( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters ) );
 		}
 
 		TerraProxy ** geometryProxy = (TerraProxy**)(lua_newuserdata( state, sizeof( TerraProxy* ) ));

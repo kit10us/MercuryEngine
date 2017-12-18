@@ -2,15 +2,15 @@
 // All Rights Reserved
 
 #include <MEWinMain.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/scene/DefaultSceneFactory.h>
 
 using namespace me;
 
-class MyGame : public Game
+class MyGame : public game::Game
 {
 public: 
 	MyGame() : Game( unify::Path( "setup_twowins.xml" ) ) {}
-} game;
+} myGame;
 
-RegisterGame( game );
+RegisterGame( myGame );

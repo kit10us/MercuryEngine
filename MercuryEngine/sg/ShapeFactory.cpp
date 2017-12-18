@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <sg/ShapeFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/render/ITexture.h>
@@ -10,8 +10,8 @@
 using namespace me;
 using namespace sg;
 
-ShapeFactory::ShapeFactory( IGame * game )
-	: m_game( game )
+ShapeFactory::ShapeFactory( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 }
 
@@ -19,7 +19,7 @@ render::Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
 {	
 	using namespace render;
 
-	auto game = dynamic_cast< Game *>(m_game);
+	auto gameInstance = dynamic_cast< game::Game *>(m_game);
 
 	Mesh::ptr shape;
 
@@ -41,7 +41,7 @@ render::Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
 			}
 			else if( p.IsTagName( "effect" ) )
 			{
-				params.Set( p.GetName(), game->GetManager< Effect >()->Add( p.GetAttribute< std::string >( "name" ), p.GetAttribute< unify::Path >( "source" ), doc.GetPath().DirectoryOnly() ) );
+				params.Set( p.GetName(), gameInstance->GetManager< Effect >()->Add( p.GetAttribute< std::string >( "name" ), p.GetAttribute< unify::Path >( "source" ), doc.GetPath().DirectoryOnly() ) );
 			}	 
 			else if ( p.IsTagName( "inf" ) || p.IsTagName( "sup" ) || p.IsTagName( "center" ) || p.IsTagName( "offset" ) )
 			{
@@ -89,7 +89,7 @@ render::Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
 	}
 	catch( std::exception ex )
 	{
-		game->ReportError( ErrorLevel::Failure, "Shape Factory", ex.what() );
+		gameInstance->ReportError( ErrorLevel::Failure, "Shape Factory", ex.what() );
 	}
 
 	

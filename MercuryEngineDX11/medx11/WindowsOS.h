@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/IOS.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <list>
@@ -27,11 +27,11 @@ namespace medx11
 	class WindowsOS : public me::IOS
 	{
 	public:
-		WindowsOS( me::IGame * game, const qxml::Element * element );
+		WindowsOS( me::game::IGame * gameInstance, const qxml::Element * element );
 
 		virtual ~WindowsOS();
 
-		me::IGame * GetGame() override;
+		me::game::IGame * GetGame() override;
 
 		void * Feed( std::string target, void * data ) override;
 
@@ -74,7 +74,7 @@ namespace medx11
 		void DebugOutput( std::string message ) override;
 
 	private:
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 		std::string m_name;
 		unify::Path m_programPath;
 		unify::Path m_runPath;

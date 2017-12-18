@@ -3,18 +3,18 @@
 
 #pragma once
 
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <ui/Window.h>
 
 namespace meedr
 {	  
 	class ResourceBrowser : public ui::Window
 	{
-		me::IGame* m_game;
+		me::game::IGame* m_game;
 		class SceneViewer * m_sceneViewer;
 
 	public:
-		ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
+		ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance );
 
 		void UpdateResourceTypes();
 		void UpdateResourceList();

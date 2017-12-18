@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/action/IAction.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 namespace me
 {
@@ -16,13 +16,13 @@ namespace me
 		class RestartScene : public IAction
 		{
 		public:
-			RestartScene( IGame * game );
+			RestartScene( game::IGame * gameInstance );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
-			IGame * m_game;
+			game::IGame * m_game;
 		};
 	}
 }

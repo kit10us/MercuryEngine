@@ -3,17 +3,17 @@
 #pragma once
 #include <sg/ShapeCreators.h>
 #include <rm/ResourceManagerSimple.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 namespace sg
 {
 	class ShapeFactory : public rm::ISourceFactory< me::render::Geometry >
 	{
 	public:
-		ShapeFactory( me::IGame * game );
+		ShapeFactory( me::game::IGame * gameInstance );
 		me::render::Geometry::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 	};
 }

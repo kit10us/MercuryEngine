@@ -52,7 +52,7 @@ namespace me
 		class VList : public Element
 		{
 		public:
-			VList( IGame * game, size_t count, unify::Size< float > size, Anchor anchor = Anchor::Center, unify::V2< float > offset = { 0, 0 } );
+			VList( game::IGame * gameInstance, size_t count, unify::Size< float > size, Anchor anchor = Anchor::Center, unify::V2< float > offset = { 0, 0 } );
 
 			unify::Size< float > GetContentSize() const;
 

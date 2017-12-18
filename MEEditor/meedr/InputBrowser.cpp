@@ -8,10 +8,10 @@ using namespace meedr;
 
 #define USERMESSAGE_UPDATEDATA	 0
 
-InputBrowser::InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
+InputBrowser::InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance )
 	: Window( parent, L"InputBrowserWndClass" )
 	, m_sceneViewer{ parent }
-	, m_game{ game }
+	, m_game{ gameInstance }
 	, m_closing{ false }
 {
 	using namespace create;

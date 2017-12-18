@@ -6,8 +6,8 @@
 using namespace me;
 using namespace canvas;
 
-Element::Element( me::IGame * game, unify::V2< float > offset, unify::Size< float > size, Anchor anchor )
-	: m_game{ game }
+Element::Element( game::IGame * gameInstance, unify::V2< float > offset, unify::Size< float > size, Anchor anchor )
+	: m_game{ gameInstance }
 	, m_enabled{ true }
 	, m_anchor{ anchor }
 	, m_offset{ offset }
@@ -35,7 +35,7 @@ void Element::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-me::IGame * Element::GetGame()
+game::IGame * Element::GetGame()
 {
 	return m_game;
 }

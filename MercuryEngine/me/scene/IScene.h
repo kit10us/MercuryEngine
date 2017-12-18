@@ -16,7 +16,10 @@
 
 namespace me
 {
-	class IGame;
+	namespace game
+	{
+		class IGame;
+	}
 
 	struct HitInstance
 	{
@@ -60,9 +63,9 @@ namespace me
 
 			virtual unify::Owner::ptr GetOwnership() = 0;
 
-			virtual me::IGame * GetGame() = 0;
+			virtual game::IGame * GetGame() = 0;
 
-			virtual me::IOS * GetOS() = 0;
+			virtual IOS * GetOS() = 0;
 
 			virtual std::string GetName() const = 0;
 

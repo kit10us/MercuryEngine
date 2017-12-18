@@ -1,11 +1,11 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 
 namespace meedr
 {
-	class ActionsGameComponent : public me::GameComponent
+	class ActionsGameComponent : public me::game::GameComponent
 	{
 	public:
 		static char* Name();

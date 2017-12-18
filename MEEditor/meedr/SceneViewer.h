@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <me/scene/SceneManager.h>
 #include <ui/Window.h>
 #include <thread>
@@ -21,10 +21,10 @@ namespace meedr
 	class SceneViewer : public ui::Window
 	{
 	public:
-		SceneViewer::SceneViewer( ui::IWindow::ptr parent, me::IGame * game );
+		SceneViewer::SceneViewer( ui::IWindow::ptr parent, me::game::IGame * gameInstance );
 		~SceneViewer();
 
-		me::IGame * GetGame() const;
+		me::game::IGame * GetGame() const;
 
 		void OpenResourceBrowser();
 		void OpenInputBrowser();
@@ -55,7 +55,7 @@ namespace meedr
 		ui::IResult* OnDestroy(ui::message::Params) override;
 
 	private:
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 		int m_openChildren;
 		IWindow::ptr m_resourceBrowser;
 		IWindow::ptr m_inputBrowser;

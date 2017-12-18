@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <qxml/Document.h>
@@ -9,8 +9,8 @@
 using namespace me;
 using namespace render;
 
-VertexShaderFactory::VertexShaderFactory( me::IGame * game )
-	: m_game( game )
+VertexShaderFactory::VertexShaderFactory( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 }
 

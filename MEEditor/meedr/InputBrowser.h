@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <ui/Window.h>
 #include <thread>
 
@@ -11,12 +11,12 @@ namespace meedr
 {
 	class InputBrowser : public ui::Window
 	{
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 		class SceneViewer* m_sceneViewer;
 		bool m_closing;
 		std::thread m_updateData;
 	public:
-		InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game );
+		InputBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance );
 		~InputBrowser();
 
 		void UpdateInputData();

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 void RegisterInput( lua_State * state );
 

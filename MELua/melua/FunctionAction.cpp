@@ -14,7 +14,7 @@ FunctionAction::FunctionAction( int refIndex )
 bool FunctionAction::Perform()
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	me::Game * game = se->GetGame();
+me::game::Game *gameInstance = se->GetGame();
 	auto state = se->GetState();
 
 	lua_rawgeti( state, LUA_REGISTRYINDEX, m_refIndex );

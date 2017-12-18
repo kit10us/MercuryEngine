@@ -6,8 +6,8 @@
 using namespace me;
 using namespace scene;
 
-MainScene::MainScene( me::Game * game )
-	:Scene( game, "main" )
+MainScene::MainScene( game::Game * gameInstance )
+	: Scene( gameInstance, "main" )
 {	
 }
 

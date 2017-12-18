@@ -115,7 +115,7 @@ bool SceneManager::ChangeScene( std::string name )
 	}
 	
 	// Create new scene...
-	m_currentScene = sceneFactory->Produce( dynamic_cast< me::Game* >( m_game ) );
+	m_currentScene = sceneFactory->Produce( dynamic_cast< me::game::Game* >( m_game ) );
 
 	// Let all components mess with the scene first...
 	for (auto component : m_components)

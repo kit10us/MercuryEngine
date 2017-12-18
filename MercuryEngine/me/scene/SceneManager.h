@@ -3,14 +3,14 @@
 
 #pragma once
 #include <me/scene/IScene.h>
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 #include <me/scene/ISceneManagerComponent.h>
 
 namespace me
 {
     namespace scene
     {
-        class SceneManager : public GameComponent
+        class SceneManager : public game::GameComponent
 	    {
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;

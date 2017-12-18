@@ -348,8 +348,8 @@ std::vector< std::string > g_Toggles
 	"InsertToggle"
 };
 	   
-Keyboard::Keyboard( me::IGame * game )
-	: m_game( game )
+Keyboard::Keyboard( me::game::IGame * gameInstance )
+	: m_game( gameInstance )
 	, m_pdi( 0 )
 	, m_pdiKeyboard( 0 )
 	, m_iKeyDown( 0 )

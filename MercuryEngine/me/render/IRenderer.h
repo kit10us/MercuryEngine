@@ -16,7 +16,10 @@
 
 namespace me
 {
-	class IGame;
+	namespace game
+	{
+		class IGame;
+	}
 
 	namespace render
 	{
@@ -32,7 +35,7 @@ namespace me
 
 			virtual ~IRenderer() {};
 
-			virtual IGame* GetGame() = 0;
+			virtual game::IGame* GetGame() = 0;
 
 			virtual const render::Display & GetDisplay() const = 0;
 

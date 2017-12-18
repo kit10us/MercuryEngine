@@ -18,7 +18,7 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-void GameComponentDeleter( me::IGameComponent * gc )
+void GameComponentDeleter( me::game::IGameComponent * gc )
 {
 	delete gc;
 }
@@ -93,7 +93,7 @@ ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 	return ExecuteResult::Pass;
 }
 
-IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
+game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 {					
 	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
 
@@ -282,10 +282,9 @@ ScriptEngine* ScriptEngine::GetInstance()
 {
 	return s_se;
 }
-
-me::Game * ScriptEngine::GetGame()
+me::game::Game *ScriptEngine::GetGame()
 {
-	return dynamic_cast< me::Game* >( GameComponent::GetGame() );
+	return dynamic_cast< me::game::Game* >( GameComponent::GetGame() );
 }
 
 bool ScriptEngine::Assert( bool isTrue, std::string message )

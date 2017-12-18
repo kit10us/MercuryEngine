@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <me/scene/Scene.h>
 #include <memory>
 
@@ -19,9 +19,9 @@ namespace me
 			{
 			}
 
-			IScene::ptr Produce(me::Game * game) override
+			IScene::ptr Produce( me::game::Game * gameInstance ) override
 			{
-				return IScene::ptr(new Scene( game, m_name ));
+				return IScene::ptr(new Scene( gameInstance, m_name ));
 			}
 
 			std::string GetName() const override

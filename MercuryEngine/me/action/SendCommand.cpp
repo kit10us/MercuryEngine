@@ -6,8 +6,8 @@
 using namespace me;
 using namespace action;
 
-SendCommand::SendCommand( IGame * game, size_t id, std::string extra )
-	: m_game{ game }
+SendCommand::SendCommand( game::IGame * gameInstance, size_t id, std::string extra )
+	: m_game{ gameInstance }
 	, m_id{ id }
 	, m_extra{ extra }
 {

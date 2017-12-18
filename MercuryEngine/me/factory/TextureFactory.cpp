@@ -7,8 +7,8 @@
 using namespace me;
 using namespace render;
 
-TextureSourceFactory::TextureSourceFactory( me::IGame * game )
-	: m_game( game )
+TextureSourceFactory::TextureSourceFactory( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 }
 

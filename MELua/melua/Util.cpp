@@ -86,8 +86,8 @@ namespace melua
 	MELUADLL_API void Error( lua_State *L, std::string error )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		auto game = se->GetGame();
-		game->ReportError( me::ErrorLevel::Failure, "Lua", error );
+		auto gameInstance = se->GetGame();
+		gameInstance->ReportError( me::ErrorLevel::Failure, "Lua", error );
 		luaL_error( L, error.c_str() );
 	}
 

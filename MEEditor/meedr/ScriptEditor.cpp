@@ -9,10 +9,10 @@
 
 using namespace meedr;
 
-ScriptEditor::ScriptEditor( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
+ScriptEditor::ScriptEditor( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance )
 	: Window( parent, L"ScriptEditorWndClass" )
 	, m_sceneViewer{ parent }
-	, m_game{ game }
+	, m_game{ gameInstance }
 {
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 640, 480 ) );

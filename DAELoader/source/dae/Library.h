@@ -6,7 +6,7 @@
 #include <dae/DocumentNode.h>
 #include <dae/Exceptions.h>
 #include <dae/InstanceSet.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <map>
 #include <vector>
 

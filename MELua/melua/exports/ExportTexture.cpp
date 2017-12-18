@@ -4,7 +4,7 @@
 #include <melua/ScriptEngine.h>
 #include <melua/exports/ExportTexture.h>
 #include <melua/Util.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -23,8 +23,8 @@ int Texture_Constructor( lua_State * state )
 	ITexture::ptr texture;
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
-	auto renderer = game->GetOS()->GetRenderer( 0 );
+	auto gameInstance = se->GetGame();
+	auto renderer = gameInstance->GetOS()->GetRenderer( 0 );
 	
 	try
 	{
@@ -33,10 +33,10 @@ int Texture_Constructor( lua_State * state )
 		{
 			std::string value = lua_tostring( state, 1 );
 			unify::Path path( value );
-			texture = game->GetManager< ITexture >()->Find( value );
+			texture = gameInstance->GetManager< ITexture >()->Find( value );
 			if( ! texture )
 			{
-				texture = game->GetManager< ITexture >()->Add( path );
+				texture = gameInstance->GetManager< ITexture >()->Add( path );
 			}
 		}
 		else
@@ -63,11 +63,11 @@ int Texture_Constructor( lua_State * state )
 				parameters.renderable = renderable;
 				parameters.source = source;
 
-				texture = game->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );
+				texture = gameInstance->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );
 			}
 			else
 			{
-				texture = game->GetManager< ITexture >()->Add( name, source );
+				texture = gameInstance->GetManager< ITexture >()->Add( name, source );
 			}
 		}
 	}

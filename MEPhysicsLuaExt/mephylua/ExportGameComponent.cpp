@@ -11,7 +11,7 @@
 using namespace melua;
 
 static melua::ScriptEngine * g_luaSE;
-static me::IGame * g_game;
+static me::game::IGame * g_game;
 
 namespace mephylua
 {
@@ -43,13 +43,13 @@ namespace mephylua
 	int GameComponent_Constructor( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		auto game = se->GetGame();
+		auto gameInstance = se->GetGame();
 
 		int args = lua_gettop( state );
 
 		if( args == 0 )
 		{ // Get GameComponent (loaded automatically by loading the extension)...
-			auto component = game->GetComponentT< mephy::GameComponent >();
+			auto component = gameInstance->GetComponentT< mephy::GameComponent >();
 			return PushUserType< GameComponentProxy >( state, { component }  );
 		}
 		else if( args == 1 )

@@ -39,6 +39,10 @@
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
+    <ClInclude Include="me\game\Game.h" />
+    <ClInclude Include="me\game\GameComponent.h" />
+    <ClInclude Include="me\game\IGame.h" />
+    <ClInclude Include="me\game\IGameComponent.h" />
     <ClInclude Include="me\ICommandListener.h" />
     <ClInclude Include="me\dyna\color\DC_Delta.h" />
     <ClInclude Include="me\dyna\delta\DD_Absolute.h" />
@@ -83,13 +87,9 @@
     <ClInclude Include="me\frameanimation\FrameAnimation.h" />
     <ClInclude Include="me\frameanimation\FrameAnimationKey.h" />
     <ClInclude Include="me\frameanimation\FrameAnimationSet.h" />
-    <ClInclude Include="me\Game.h" />
-    <ClInclude Include="me\GameComponent.h" />
     <ClInclude Include="me\game\component\GC_ActionFactory.h" />
     <ClInclude Include="me\IComponent.h" />
     <ClInclude Include="me\IController.h" />
-    <ClInclude Include="me\IGame.h" />
-    <ClInclude Include="me\IGameComponent.h" />
     <ClInclude Include="me\input\action\IA_Action.h" />
     <ClInclude Include="me\input\action\IA_ObjectAction.h" />
     <ClInclude Include="me\input\ButtonCondition.h" />
@@ -268,9 +268,9 @@
     <ClCompile Include="me\frameanimation\FrameAnimation.cpp" />
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp" />
     <ClCompile Include="me\frameanimation\FrameAnimationSet.cpp" />
-    <ClCompile Include="me\Game.cpp" />
-    <ClCompile Include="me\GameComponent.cpp" />
     <ClCompile Include="me\game\component\GC_ActionFactory.cpp" />
+    <ClCompile Include="me\game\Game.cpp" />
+    <ClCompile Include="me\game\GameComponent.cpp" />
     <ClCompile Include="me\input\action\IA_Action.cpp" />
     <ClCompile Include="me\input\action\IA_ObjectAction.cpp" />
     <ClCompile Include="me\input\ButtonCondition.cpp" />

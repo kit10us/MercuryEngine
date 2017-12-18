@@ -49,7 +49,7 @@ namespace me
 		class Grid : public Element
 		{
 		public:
-			Grid( IGame * game, unify::RowColumn< size_t > rc, unify::Size< float > size, Anchor anchor = Anchor::Center, unify::V2< float > offset = { 0, 0 } );
+			Grid( game::IGame * gameInstance, unify::RowColumn< size_t > rc, unify::Size< float > size, Anchor anchor = Anchor::Center, unify::V2< float > offset = { 0, 0 } );
 
 			unify::Size< float > GetContentSize() const;
 

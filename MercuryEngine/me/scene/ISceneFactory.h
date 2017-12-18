@@ -7,7 +7,10 @@
 
 namespace me
 {
-	class Game;
+	namespace game
+	{
+		class Game;
+	}
 
 	namespace scene
 	{
@@ -20,7 +23,7 @@ namespace me
 
 			~ISceneFactory() {}
 
-			virtual std::shared_ptr< IScene > Produce(me::Game * game ) = 0;
+			virtual std::shared_ptr< IScene > Produce( me::game::Game * gameInstance ) = 0;
 			virtual std::string GetName() const = 0;
 		};
 

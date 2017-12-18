@@ -8,8 +8,8 @@ using namespace me;
 using namespace canvas;
 using namespace render;
 
-FPS::FPS( me::IGame * game, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
-	: TextElement( game, effect, std::string(), anchor, scale, offset )
+FPS::FPS( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+	: TextElement( gameInstance, effect, std::string(), anchor, scale, offset )
 	, m_updateRate( 0.25f )
 	, m_secondsTillUpdate( 0.0f )
 {

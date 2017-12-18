@@ -6,7 +6,7 @@
 #include <me/scene/SceneComponent.h>
 #include <me/canvas/IElement.h>
 #include <me/canvas/Layer.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 namespace me
 {
@@ -19,7 +19,7 @@ namespace me
 
 			static char* Name();
 
-			CanvasComponent( IGame * game );	  
+			CanvasComponent( game::IGame * gameInstance );	  
 
 			Layer * GetLayer();
 
@@ -35,7 +35,7 @@ namespace me
 			std::string GetWhat() const override;
 
 		private:
-			IGame * m_game;
+			game::IGame * m_game;
 			unify::V2< float > m_position;
 			unify::Size< float > m_size;
 			unify::Matrix m_projection;

@@ -4,7 +4,7 @@
 #include <melua/ScriptEngine.h>
 #include <melua/exports/ExportVertexShader.h>
 #include <melua/exports/ExportEffect.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -18,7 +18,7 @@ char* VertexShaderProxy::Name()
 int VertexShader_Constructor( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 	int top = lua_gettop( state );
 
 	if( top < 1 )
@@ -43,12 +43,12 @@ int VertexShader_Constructor( lua_State * state )
 			unify::Path asPath( value );
 			if( asPath.IsExtension( "xml" ) )
 			{
-				auto vs = game->GetManager< IVertexShader >()->Add( asPath );
+				auto vs = gameInstance->GetManager< IVertexShader >()->Add( asPath );
 				return Push< VertexShaderProxy >( state, { vs } );
 			}
 			else
 			{
-				auto vs = game->GetManager< IVertexShader >()->Find( value );
+				auto vs = gameInstance->GetManager< IVertexShader >()->Find( value );
 				if( !vs )
 				{
 					luaL_error( state, "VertexShader not found!" );
@@ -64,7 +64,7 @@ int VertexShader_Constructor( lua_State * state )
 		{
 			std::string name = Check< std::string >( state, 1 );
 			unify::Path path( Check< std::string >( state, 2 ) );
-			auto ps = game->GetManager< IVertexShader >()->Add( name, path );
+			auto ps = gameInstance->GetManager< IVertexShader >()->Add( name, path );
 			return Push< VertexShaderProxy >( state, { ps } );
 		}
 	}

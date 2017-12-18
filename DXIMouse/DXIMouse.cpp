@@ -3,17 +3,17 @@
 
 #include "DXIMouse.h"
 #include <dximouse/Mouse.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 void DeleterMouse( dximouse::Mouse * mouse )
 {
 	delete mouse;
 }
 
-extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
-__declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
+extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element );
+__declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
-	game->GetInputManager()->AddInputDevice( me::input::IInputDevice::ptr( new dximouse::Mouse( game ), DeleterMouse ) );
+	gameInstance->GetInputManager()->AddInputDevice( me::input::IInputDevice::ptr( new dximouse::Mouse( gameInstance ), DeleterMouse ) );
 
 	return true;
 }

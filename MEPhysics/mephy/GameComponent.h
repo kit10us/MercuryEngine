@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <MEPhysics.h>
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 #include <me/object/IObjectComponent.h>
 #include <mephy/collider/ColliderBase.h>
 
 namespace mephy
 {
-	class GameComponent : public me::GameComponent
+	class GameComponent : public me::game::GameComponent
 	{
 	public:
 		MEPHYSICS_API static char* Name();

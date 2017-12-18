@@ -25,7 +25,7 @@ namespace medx11
 
 
 	public: // IRenderer...
-		me::IGame* GetGame() override;
+		me::game::IGame* GetGame() override;
 
 		const me::render::Display & GetDisplay() const;
 

@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 
 namespace melua
 {
 	namespace component
 	{
-		class GameComponent : public me::GameComponent
+		class GameComponent : public me::game::GameComponent
 		{
 		public:
 			static char* Name();
@@ -17,12 +17,12 @@ namespace melua
 			~GameComponent();
 
 		public: // IGameComponent...
-			void OnAttach( me::IGame * game ) override;
+			void OnAttach( me::game::IGame * gameInstance ) override;
 			void OnBeforeStartup() override;
 			void OnAfterStartup() override;
 			void OnUpdate( const me::UpdateParams & params ) override;
 			void OnRender( me::render::Params params ) override;
-			void OnDetach( me::IGame * game ) override;
+			void OnDetach( me::game::IGame * gameInstance ) override;
 
 		public: // IComponent...
 			std::string GetWhat() const override;

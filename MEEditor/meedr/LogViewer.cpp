@@ -11,10 +11,10 @@
 
 using namespace meedr;
 
-LogViewer::LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
+LogViewer::LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance )
 	: Window( parent, L"LogViewerWndClass" )
 	, m_sceneViewer{ parent }
-	, m_game{ game }
+	, m_game{ gameInstance }
 {
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Horizontal, 640, 480 ) );

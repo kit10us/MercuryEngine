@@ -7,23 +7,12 @@
 using namespace me;
 using namespace canvas;
 
-Grid::Grid( IGame * game, unify::RowColumn< size_t > rc, unify::Size< float > size, Anchor anchor, unify::V2< float > offset )
-	: Element( game, offset, { 0, 0 }, anchor )
+Grid::Grid( game::IGame * gameInstance, unify::RowColumn< size_t > rc, unify::Size< float > size, Anchor anchor, unify::V2< float > offset )
+	: Element( gameInstance, offset, { 0, 0 }, anchor )
 	, m_rc{ rc }
 	, m_size{ size }
 	, m_changed( true )
 {
-	/*
-	for( size_t r = 0; r < rc.row; r++ )
-	{
-		m_items.push_back( std::vector< IElement::ptr >( rc.column ) );
-		m_weightRows
-	}
-
-	for( size_t c = 0; c < rc.column; c++ )
-	{
-	}
-	*/
 }
 
 unify::Size< float > Grid::GetContentSize() const

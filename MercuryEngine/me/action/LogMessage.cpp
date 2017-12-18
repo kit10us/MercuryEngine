@@ -6,8 +6,8 @@
 using namespace me;
 using namespace action;
 
-LogMessage::LogMessage( IGame * game, std::string message )
-	: m_game{ game }
+LogMessage::LogMessage( game::IGame * gameInstance, std::string message )
+	: m_game{ gameInstance }
 	, m_message{ message }
 {
 }

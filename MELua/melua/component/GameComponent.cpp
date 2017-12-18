@@ -28,7 +28,7 @@ char* GameComponent::Name()
 }
 
 GameComponent::GameComponent( lua_State * state, std::string luaName, unify::Path path )
-	: me::GameComponent( Name() )
+	: me::game::GameComponent( Name() )
 	, m_state( state )
 	, m_luaName( luaName )
 	, m_path( path )
@@ -74,9 +74,9 @@ void GameComponent::CallMember( std::string function )
 	lua_pop( m_state, 1 );
 }
 
-void GameComponent::OnAttach( me::IGame * game )
+void GameComponent::OnAttach( me::game::IGame * gameInstance )
 {
-	me::GameComponent::OnAttach( game );
+	me::game::GameComponent::OnAttach( gameInstance );
 
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
@@ -145,9 +145,9 @@ void GameComponent::OnRender( me::render::Params params )
 	CallMember( "OnRender" );
 }
 
-void GameComponent::OnDetach( me::IGame * game )
+void GameComponent::OnDetach( me::game::IGame * gameInstance )
 {
-	me::GameComponent::OnDetach( game );
+	me::game::GameComponent::OnDetach( gameInstance );
 }
 
 std::string GameComponent::GetWhat() const

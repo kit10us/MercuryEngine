@@ -17,21 +17,21 @@ int Debug_LogLine( lua_State * state )
 	std::string typeName( lua_typename( state, type ) );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	switch( type )
 	{
 	case LUA_TNIL:
-		game->LogLine( "<NIL>\n" );
+		gameInstance->LogLine( "<NIL>\n" );
 		break;
 	case LUA_TTABLE:
-		game->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
+		gameInstance->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
 		break;
 	case LUA_TUSERDATA:
-		game->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
+		gameInstance->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
 		break;
 	default:
-		game->LogLine( lua_tostring( state, 1 ) );
+		gameInstance->LogLine( lua_tostring( state, 1 ) );
 		break;
 	}
 
@@ -54,7 +54,7 @@ int Debug_ToString( lua_State * state )
 	assert( args == 1 );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	int type = lua_type( state, 1 );
 	std::string typeName( lua_typename( state, type ) );
@@ -62,10 +62,10 @@ int Debug_ToString( lua_State * state )
 	switch( type )
 	{
 	case LUA_TNIL:
-		game->LogLine( "<NIL>\n" );
+		gameInstance->LogLine( "<NIL>\n" );
 		break;
 	case LUA_TTABLE:
-		game->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
+		gameInstance->LogLine( "<" + GetTypename( state, 1 ) + ">\n" );
 		break;
 	case LUA_TUSERDATA:
 

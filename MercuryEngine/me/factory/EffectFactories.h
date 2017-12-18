@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/render/Effect.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <rm/ResourceManagerSimple.h>
 
 namespace me
@@ -12,10 +12,10 @@ namespace me
 	class EffectFactory : public rm::ISourceFactory< render::Effect >
 	{
 	public:
-		EffectFactory( IGame * game );
+		EffectFactory( game::IGame * gameInstance );
 		render::Effect::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
-		IGame * m_game;
+		game::IGame * m_game;
 	};
 }

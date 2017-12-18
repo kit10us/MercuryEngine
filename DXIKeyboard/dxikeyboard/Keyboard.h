@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/input/InputDevice.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 #define DIRECTINPUT_VERSION		0x0800
 #include <dinput.h>
@@ -25,7 +25,7 @@ namespace dxikeyboard
 	class Keyboard : public me::input::InputDevice
 	{
 	public:
-		Keyboard( me::IGame * game );
+		Keyboard( me::game::IGame * gameInstance );
 		virtual ~Keyboard();
 
 		std::string GetName() const;
@@ -52,7 +52,7 @@ namespace dxikeyboard
 
 
 	private:
-		me::IGame * m_game;
+		me::game::IGame * m_game;
 
 		CComPtr< IDirectInput > m_pdi;
 		CComPtr< IDirectInputDevice > m_pdiKeyboard;

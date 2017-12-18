@@ -10,13 +10,13 @@ void Deleter( mephy::GameComponent * component )
 	delete component;
 }
 
-extern "C" MEPHYSICS_API bool MELoader( me::IGame * game, const qxml::Element * element);
+extern "C" MEPHYSICS_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element);
 
-MEPHYSICS_API bool MELoader( me::IGame * game, const qxml::Element * element )
+MEPHYSICS_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
 	// GameComponent
 	mephy::GameComponent * component = new mephy::GameComponent();
-	game->AddComponent( me::IGameComponent::ptr( component, Deleter ) );
+	gameInstance->AddComponent( me::game::IGameComponent::ptr( component, Deleter ) );
 				  
 	return true;
 }

@@ -10,8 +10,8 @@ using namespace me;
 using namespace canvas;
 using namespace render;
 
-TextElement::TextElement( me::IGame * game, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
-	: Element( game, offset, {0, 0}, anchor )
+TextElement::TextElement( me::game::IGame * gameInstance, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+	: Element( gameInstance, offset, {0, 0}, anchor )
 	, m_text( text )
 	, m_effect( effect )
 	, m_changed( true )

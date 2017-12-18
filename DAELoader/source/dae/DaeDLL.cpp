@@ -4,26 +4,26 @@
 #include <dae/GeometrySourceFactory.h>
 #include <memory.h>
 #include <me/render/IRenderer.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 void Deleter( dae::GeometrySourceFactory * factory )
 {
 	delete factory;
 }
 
-extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element );
+extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element );
 
-__declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * element )
+__declspec(dllexport) bool MELoader( me::game::IGame * gameBase, const qxml::Element * element )
 {
 	using namespace me;
 	using namespace render;
 
-	auto game = dynamic_cast<Game *>(_game);
+	auto gameInstance = dynamic_cast<game::Game *>( gameBase );
 
 	// Setup DAE factory.
 	class MyEffectSolver : public dae::util::IEffectSolver
 	{
-		Game * m_game;
+		game::Game * m_game;
 		Effect::ptr m_default_color;
 		Effect::ptr m_default_texture;
 	public:
@@ -65,15 +65,15 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 			if( !name.empty() && path.Empty() )
 			{
-				ps = game->GetManager< IPixelShader >()->Find( name );
+				ps = gameInstance->GetManager< IPixelShader >()->Find( name );
 			}
 			else if( name.empty() && ! path.Empty() )
 			{
-				ps = game->GetManager< IPixelShader >()->Add( path );
+				ps = gameInstance->GetManager< IPixelShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
-				ps = game->GetManager< IPixelShader >()->Add( name, path );
+				ps = gameInstance->GetManager< IPixelShader >()->Add( name, path );
 			}
 		}
 
@@ -85,15 +85,15 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 			if( !name.empty() && path.Empty() )
 			{
-				vs = game->GetManager< IVertexShader >()->Find( name );
+				vs = gameInstance->GetManager< IVertexShader >()->Find( name );
 			}
 			else if( name.empty() && !path.Empty() )
 			{
-				vs = game->GetManager< IVertexShader >()->Add( path );
+				vs = gameInstance->GetManager< IVertexShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
-				vs = game->GetManager< IVertexShader >()->Add( name, path );
+				vs = gameInstance->GetManager< IVertexShader >()->Add( name, path );
 			}
 		}
 		color.reset( new Effect( vs, ps ) );
@@ -110,15 +110,15 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 			if( !name.empty() && path.Empty() )
 			{
-				ps = game->GetManager< IPixelShader >()->Find( name );
+				ps = gameInstance->GetManager< IPixelShader >()->Find( name );
 			}
 			else if( name.empty() && !path.Empty() )
 			{
-				ps = game->GetManager< IPixelShader >()->Add( path );
+				ps = gameInstance->GetManager< IPixelShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
-				ps = game->GetManager< IPixelShader >()->Add( name, path );
+				ps = gameInstance->GetManager< IPixelShader >()->Add( name, path );
 			}
 		}
 
@@ -130,15 +130,15 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 			if( !name.empty() && path.Empty() )
 			{
-				vs = game->GetManager< IVertexShader >()->Find( name );
+				vs = gameInstance->GetManager< IVertexShader >()->Find( name );
 			}
 			else if( name.empty() && !path.Empty() )
 			{
-				vs = game->GetManager< IVertexShader >()->Add( path );
+				vs = gameInstance->GetManager< IVertexShader >()->Add( path );
 			}
 			else if( !name.empty() && !path.Empty() )
 			{
-				vs = game->GetManager< IVertexShader >()->Add( name, path );
+				vs = gameInstance->GetManager< IVertexShader >()->Add( name, path );
 			}
 		}
 		textured.reset( new Effect( vs, ps ) );
@@ -146,8 +146,8 @@ __declspec(dllexport) bool MELoader( me::IGame * _game, const qxml::Element * el
 
 	auto effectSolver = new MyEffectSolver( color, textured );
 
-	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( game, effectSolver );
-	game->GetManager< Geometry >()->AddFactory( ".dae", GeometryFactoryPtr( daeFactory ) );
+	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( gameInstance, effectSolver );
+	gameInstance->GetManager< Geometry >()->AddFactory( ".dae", GeometryFactoryPtr( daeFactory ) );
 
 	return true;
 }

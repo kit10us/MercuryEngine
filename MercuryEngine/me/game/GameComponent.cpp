@@ -1,9 +1,10 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/GameComponent.h>
+#include <me/game/GameComponent.h>
 
 using namespace me;
+using namespace game;
 
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
@@ -59,12 +60,12 @@ void GameComponent::AddInterface( std::string name, me::IThing* ptr )
 	m_interfaceMap[ name ] = ptr;
 }
 
-void GameComponent::OnAttach( IGame * game )
+void GameComponent::OnAttach( game::IGame * gameInstance )
 {
-	m_game = game;
+	m_game = gameInstance;
 }
 
-void GameComponent::OnDetach( IGame * game ) 
+void GameComponent::OnDetach( game::IGame * gameInstance ) 
 {
 	m_game = 0;
 }
@@ -111,6 +112,12 @@ void GameComponent::OnLateUpdate( const UpdateParams & params )
 
 void GameComponent::OnRender( render::Params params )
 {
+}
+
+std::string GameComponent::SendCommand( size_t id, std::string extra )
+{
+	// Stub.
+	return std::string();
 }
 
 bool GameComponent::IsEnabled() const

@@ -23,9 +23,9 @@ namespace {
 	};
 }
 
-SceneComponent::SceneComponent( me::IGame * game, lua_State * state, std::string luaName, unify::Path path )
-	: me::scene::SceneComponent( game->GetOS(), "LuaScene" )
-	, m_game{ game }
+SceneComponent::SceneComponent( me::game::IGame * gameInstance, lua_State * state, std::string luaName, unify::Path path )
+	: me::scene::SceneComponent( gameInstance->GetOS(), "LuaScene" )
+	, m_game{ gameInstance }
 	, m_state( state )
 	, m_luaName( luaName )
 	, m_path( path )

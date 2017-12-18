@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <MEWinMain.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <MainScene.h>
 
 using namespace me;
@@ -10,9 +10,9 @@ using namespace me;
 class MainSceneFactory : public me::scene::ISceneFactory
 {
 public:
-	me::scene::IScene::ptr Produce(me::Game * game)
+	me::scene::IScene::ptr Produce( me::game::Game * gameInstance )
 	{
-		return me::scene::IScene::ptr(new MainScene(game));
+		return me::scene::IScene::ptr( new MainScene( gameInstance ) );
 	}
 
 	std::string GetName() const
@@ -21,13 +21,13 @@ public:
 	}
 };
 
-class MyGame : public Game
+class MyGame : public game::Game
 {
 public:
 	MyGame()
 		: Game(me::scene::ISceneFactory::ptr(new MainSceneFactory()), unify::Path( "setup_models.xml" ) )
 	{
 	}
-} game;
+} myGame;
 
-RegisterGame(game);
+RegisterGame( myGame );

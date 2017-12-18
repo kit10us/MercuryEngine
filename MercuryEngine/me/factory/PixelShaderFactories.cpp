@@ -9,8 +9,8 @@
 using namespace me;
 using namespace render;
 
-PixelShaderFactory::PixelShaderFactory( IGame * game )
-	: m_game( game )
+PixelShaderFactory::PixelShaderFactory( game::IGame * gameInstance )
+	: m_game( gameInstance )
 {
 }
 

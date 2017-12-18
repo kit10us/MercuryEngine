@@ -4,7 +4,7 @@
 #include <melua/ScriptEngine.h>
 #include <melua/exports/ExportPixelShader.h>
 #include <melua/exports/ExportEffect.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -18,7 +18,7 @@ char* PixelShaderProxy::Name()
 int PixelShader_Constructor( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 	int top = lua_gettop( state );
 
 	if( top < 1 )
@@ -44,12 +44,12 @@ int PixelShader_Constructor( lua_State * state )
 			unify::Path asPath( value );
 			if( asPath.IsExtension( "xml" ) )
 			{
-				auto ps = game->GetManager< IPixelShader >()->Add( asPath );
+				auto ps = gameInstance->GetManager< IPixelShader >()->Add( asPath );
 				return Push< PixelShaderProxy >( state, { ps } );
 			}
 			else
 			{
-				auto ps = game->GetManager< IPixelShader >()->Find( value );
+				auto ps = gameInstance->GetManager< IPixelShader >()->Find( value );
 				if( !ps )
 				{
 					luaL_error( state, "PixelShader not found!" );
@@ -65,7 +65,7 @@ int PixelShader_Constructor( lua_State * state )
 		{
 			std::string name = Check< std::string >( state, 1 );
 			unify::Path path( Check< std::string >( state, 2 ) );
-			auto ps = game->GetManager< IPixelShader >()->Add( name, path );
+			auto ps = gameInstance->GetManager< IPixelShader >()->Add( name, path );
 			return Push< PixelShaderProxy >( state, { ps } );
 		}
 	}

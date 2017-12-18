@@ -5,7 +5,7 @@
 
 #include <me/canvas/Element.h>
 #include <me/render/Effect.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 
 namespace me
 {
@@ -14,7 +14,7 @@ namespace me
 		class Image : public Element
 		{
 		public:
-			Image( me::IGame * game, render::Effect::ptr effect, Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+			Image( me::game::IGame * gameInstance, render::Effect::ptr effect, Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 
 			unify::Size< float > GetContentSize() const override;
 		

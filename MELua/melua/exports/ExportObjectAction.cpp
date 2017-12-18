@@ -31,7 +31,7 @@ namespace melua
 	int ObjectAction_Constructor( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		auto game = se->GetGame();
+		auto gameInstance = se->GetGame();
 
 		int args = lua_gettop( state );
 
@@ -41,7 +41,7 @@ namespace melua
 			if( unify::StringIs( type, XMLElementProxy::Name() ) )
 			{
 				auto elementProxy = CheckUserType< XMLElementProxy >( state, 1 );
-				auto actionObject = game->CreateObjectAction( elementProxy->GetElement() );
+				auto actionObject = gameInstance->CreateObjectAction( elementProxy->GetElement() );
 				return PushUserType< ObjectActionProxy >( state, { actionObject } );
 			}
 		}

@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 #include <melua/ScriptEngine.h>
 #include <melua/exports/ExportObject.h>
@@ -107,7 +107,7 @@ namespace melua
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
-		auto game = se->GetGame();
+		auto gameInstance = se->GetGame();
 
 		Geometry::ptr geometry;
 
@@ -115,7 +115,7 @@ namespace melua
 		if( lua_type( state, 2 ) == LUA_TSTRING )
 		{
 			std::string geometryName = lua_tostring( state, 2 );
-			geometry = game->GetManager< Geometry >()->Find( geometryName );
+			geometry = gameInstance->GetManager< Geometry >()->Find( geometryName );
 		}
 		else
 		{
@@ -296,7 +296,7 @@ namespace melua
 		else
 		{
 			ScriptEngine * se = ScriptEngine::GetInstance();
-			auto game = se->GetGame();
+			auto gameInstance = se->GetGame();
 			Error( state, "Attempted to attach am unsupported type, \"" + type + "\", to an object!" );
 		}
 		return 0;

@@ -13,7 +13,7 @@ class MainScene : public me::scene::Scene
 	unify::Quaternion q;
 	me::frameanimation::Animation::ptr m_animation;
 public:
-	MainScene( me::Game * game );
+	MainScene( me::game::Game * gameInstance );
 
 	void OnStart() override;
 	void OnUpdate( const me::UpdateParams & params ) override;

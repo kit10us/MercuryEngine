@@ -209,7 +209,7 @@ IDXGISwapChain * Renderer::GetSwapChain() const
 	return m_swapChain;
 }
 
-me::IGame * Renderer::GetGame()
+me::game::IGame * Renderer::GetGame()
 {
 	return m_os->GetGame();
 }

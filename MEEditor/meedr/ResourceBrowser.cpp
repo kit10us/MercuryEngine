@@ -8,10 +8,10 @@
 
 using namespace meedr;
 					 
-ResourceBrowser::ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
+ResourceBrowser::ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance )
 	: Window( parent, L"ResourceBrowserWndClass" )
 	, m_sceneViewer{ parent }
-	, m_game{ game }
+	, m_game{ gameInstance }
 {
 	using namespace create;
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 540, 440 ) );

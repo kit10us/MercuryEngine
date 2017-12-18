@@ -482,6 +482,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QXML Tests", "..\QXML Tests
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "09Test02 - Lua Send Command", "..\MercuryTests\09tests_scripting\09Test02 - Lua Send Command\09Test02 - Lua Send Command.vcxproj", "{00365530-822C-4C31-92CC-FC7B47C374A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3001C03A-F2E7-411A-A332-8DC5477ECBBB} = {3001C03A-F2E7-411A-A332-8DC5477ECBBB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

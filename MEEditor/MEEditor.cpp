@@ -4,10 +4,10 @@
 #include <MEEditor.h>
 #include <meedr/SceneViewer.h>
 #include <meedr/ActionsComponent.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 #include <Windows.h>
 
-me::IGame * s_game;
+me::game::IGame * s_game;
 
 ui::IWindow::ptr s_rootWindow;
 ui::IWindow::ptr s_engineMain;
@@ -26,19 +26,19 @@ void DestroyEditor()
 	s_engineMain.reset();
 }
 
-extern "C" __declspec(dllexport) bool MELoader( me::IGame * game, const qxml::Element * element )
+extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
-	s_game = game;
+	s_game = gameInstance;
 	s_ownership = unify::Owner::Create( "MEEditor" );
 
-	s_rootWindow.reset(new ui::Window((HWND)game->GetOSParameters().hWnd));
+	s_rootWindow.reset(new ui::Window((HWND)gameInstance->GetOSParameters().hWnd));
 
 	{
 		auto component = new meedr::ActionsGameComponent();
-		game->AddComponent( me::IGameComponent::ptr( component ) );
+		gameInstance->AddComponent( me::game::IGameComponent::ptr( component ) );
 	}
 
-	me::input::InputManager * inputManager = game->GetInputManager();
+	me::input::InputManager * inputManager = gameInstance->GetInputManager();
 
 	if (inputManager)
 	{

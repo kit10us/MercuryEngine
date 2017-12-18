@@ -21,14 +21,14 @@ using namespace meedr;
 
 ui::IWindow::ptr s_parent;
 
-SceneViewer::SceneViewer( ui::IWindow::ptr parent, me::IGame * game )
+SceneViewer::SceneViewer( ui::IWindow::ptr parent, me::game::IGame * gameInstance )
 	: Window( parent.get(), L"SceneViewerWndClass" )
-	, m_game{ game }
+	, m_game{ gameInstance }
 	, m_openChildren{ 0 } 	
-	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( game->GetComponent( "SceneManager" ).get() ) }
+	, m_sceneManager{ dynamic_cast< me::scene::SceneManager* >( gameInstance->GetComponent( "SceneManager" ).get() ) }
 	, m_noScenes{ true }
 {
-	int nCmdShow = game->GetOSParameters().nCmdShow;
+	int nCmdShow = gameInstance->GetOSParameters().nCmdShow;
 	RECT rect{};
 	::GetWindowRect( GetParentHandle(), &rect );
 	int x = rect.right;
@@ -96,7 +96,7 @@ SceneViewer::~SceneViewer()
 	KillTimer( m_timer );
 }
 
-me::IGame * SceneViewer::GetGame() const
+me::game::IGame * SceneViewer::GetGame() const
 {
 	return m_game;
 }

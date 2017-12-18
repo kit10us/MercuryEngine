@@ -28,7 +28,7 @@ namespace dae
 	class Document : public IDocument
 	{
 	public:
-		Document( me::Game * game, unify::Path filePath, util::IEffectSolver * effectSolver );
+		Document( me::game::Game * gameInstance, unify::Path filePath, util::IEffectSolver * effectSolver );
 
 		/// <summary>
 		/// DAE attribute: version
@@ -52,7 +52,7 @@ namespace dae
 		me::render::IRenderer * GetRenderer() override;
 
 	private:
-		me::Game * m_game;
+	me::game::Game *m_game;
 		std::string m_version;
 		std::shared_ptr< LibraryNodes > m_library_nodes;
 		std::shared_ptr< LibraryMaterials > m_library_materials;

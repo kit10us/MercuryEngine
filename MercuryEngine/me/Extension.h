@@ -8,7 +8,10 @@
 
 namespace me
 {
-	class IGame;
+	namespace game
+	{
+		class IGame;
+	}
 
 	class Extension
 	{
@@ -16,7 +19,7 @@ namespace me
 		Extension( unify::Path source );
 		virtual ~Extension();
 
-		bool Load( IGame * game, const qxml::Element * element );
+		bool Load( game::IGame * gameInstance, const qxml::Element * element );
 		void Free();
 
 	private:

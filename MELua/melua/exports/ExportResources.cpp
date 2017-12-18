@@ -3,7 +3,7 @@
 
 #include <melua/exports/ExportResources.h>
 #include <melua/ScriptEngine.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 using namespace melua;
 using namespace me;
@@ -19,11 +19,11 @@ int Resources_AddResource( lua_State * state )
 	unify::Path path( lua_tostring( state, 3 ) );
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	auto game = se->GetGame();
+	auto gameInstance = se->GetGame();
 
 	try
 	{
-		game->GetResourceHub().Load( type, name, path );
+		gameInstance->GetResourceHub().Load( type, name, path );
 	}
 	catch( std::string ex )
 	{

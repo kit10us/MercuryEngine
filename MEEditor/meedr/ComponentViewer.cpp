@@ -26,10 +26,10 @@ enum class Types
 	Object
 };		  
 					 
-ComponentViewer::ComponentViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::IGame * game )
+ComponentViewer::ComponentViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::game::IGame * gameInstance )
 	: Window( parent, L"ComponentViewerWndClass" )
 	, m_sceneViewer{ parent }
-	, m_game{ game }
+	, m_game{ gameInstance }
 {
 
 	struct A {

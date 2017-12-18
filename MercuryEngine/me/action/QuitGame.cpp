@@ -6,8 +6,8 @@
 using namespace me;
 using namespace action;
 
-QuitGame::QuitGame( IGame * game )
-	: m_game{ game }
+QuitGame::QuitGame( game::IGame * gameInstance )
+	: m_game{ gameInstance }
 {
 }
 

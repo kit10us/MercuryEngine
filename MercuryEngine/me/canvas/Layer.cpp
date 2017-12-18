@@ -6,8 +6,8 @@
 using namespace me;
 using namespace canvas;
 
-Layer::Layer( IGame * game, unify::V2< float > position, unify::Size< float > size, Anchor anchor )
-	: Element( game, position, size, anchor )
+Layer::Layer( game::IGame * gameInstance, unify::V2< float > position, unify::Size< float > size, Anchor anchor )
+	: Element( gameInstance, position, size, anchor )
 {
 }
 

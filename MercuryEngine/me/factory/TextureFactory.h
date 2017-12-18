@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 #include <me/render/ITexture.h>
-#include <me/IGame.h>
+#include <me/game/IGame.h>
 #include <rm/ResourceManagerSimple.h>
 
 namespace me
@@ -10,10 +10,10 @@ namespace me
 	class TextureSourceFactory : public rm::ISourceFactory< render::ITexture >
 	{
 	public:
-		TextureSourceFactory( IGame * game );
+		TextureSourceFactory( game::IGame * gameInstance );
 		render::ITexture::ptr Produce( unify::Path source, void * data ) override;
 
 	private:
-		IGame * m_game;
+		game::IGame * m_game;
 	};
 }

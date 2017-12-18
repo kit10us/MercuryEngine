@@ -7,8 +7,8 @@
 using namespace me;
 using namespace action;
 
-RestartScene::RestartScene( IGame * game )
-	: m_game{ game }
+RestartScene::RestartScene( game::IGame * gameInstance )
+	: m_game{ gameInstance }
 {
 }
 

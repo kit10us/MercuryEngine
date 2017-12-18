@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <WndProc.h>
-#include <me/Game.h>
+#include <me/game/Game.h>
 
 #define WINDOWS_LEAN_AND_MEAN
 #include <windows.h>
@@ -24,17 +24,17 @@
 extern "C" LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
 
-extern "C" me::Game * GetGameInstance();
+extern "C" me::game::Game * GetGameInstance();
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow )
 {
 	MSG msg;
 
-	static me::Game * game;
+	static me::game::Game * gameInstance;
 
 	try
 	{
-		game = GetGameInstance();
+		gameInstance = GetGameInstance();
 	}
 	catch( std::exception exception )
 	{
@@ -62,12 +62,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			retry = false;
 			try
 			{
-				game->Initialize( osParameters );
+				gameInstance->Initialize( osParameters );
 			}
 			catch( std::exception exception )
 			{
-				game->LogLine( "Mercury Failure: " );
-				game->LogLine( exception.what(), 4 );
+				gameInstance->LogLine( "Mercury Failure: " );
+				gameInstance->LogLine( exception.what(), 4 );
 				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
 				switch( result )
 				{
@@ -104,18 +104,18 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 					}
 				}
 
-				game->Tick();
-				if( game->IsQuitting() )
+				gameInstance->Tick();
+				if( gameInstance->IsQuitting() )
 				{
 					break;
 				}
 
-				game->Draw();
+				gameInstance->Draw();
 			}
 			catch( std::exception exception )
 			{
-				game->LogLine( "Mercury Failure: " );
-				game->LogLine( exception.what(), 4 );
+				gameInstance->LogLine( "Mercury Failure: " );
+				gameInstance->LogLine( exception.what(), 4 );
 				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
 				switch( result )
 				{
@@ -136,8 +136,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	}
 	catch( std::exception exception )
 	{
-		game->LogLine( "Mercury Failure: " );
-		game->LogLine( exception.what(), 4 );
+		gameInstance->LogLine( "Mercury Failure: " );
+		gameInstance->LogLine( exception.what(), 4 );
 		MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION );
 		return -1;
 	}
