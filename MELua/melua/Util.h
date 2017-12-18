@@ -4,8 +4,19 @@
 
 namespace melua
 {
+	///<summary>
+	/// Returns the name of the type on top.
+	///</summary>
 	MELUADLL_API std::string GetTypename( lua_State *L );
+
+	///<summary>
+	/// Returns the name of the type at stack index.
+	///</summary>
 	MELUADLL_API std::string GetTypename( lua_State *L, int index );
+
+	///<summary>
+	/// Returns a vector of all the types on the stack.
+	///</summary>
 	MELUADLL_API std::vector< std::string > GetTypenames( lua_State *L );
 
 	MELUADLL_API int PushNil( lua_State *L );

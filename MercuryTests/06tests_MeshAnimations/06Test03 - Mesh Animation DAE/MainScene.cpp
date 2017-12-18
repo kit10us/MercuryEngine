@@ -50,12 +50,18 @@ void MainScene::OnStart()
 	{
 		// Add a skeleton effect, so we can see the skeleton.
 		mesh->SetSkeletonEffect( color3DEffect );
-	
+
 		using namespace unify;
 		Matrix modelMatrix = MatrixIdentity();
+
+		// Fix mesh orientation and scale...
 		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
+
+		//modelMatrix.Scale( 8.0f / meshDAE->GetBBox().Size().Length() );
+
+
 		AddGeometryComponent( object, meshDAE, modelMatrix );
 
 		// TODO: While debugging the skeleton animation.

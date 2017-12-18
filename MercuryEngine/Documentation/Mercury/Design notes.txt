@@ -1,0 +1,43 @@
+Input Schemes:
+* Allows grouping of specific input controls/interactions, which enables group enable and disables, group overlap detection (scheme A might map Space to jump, and scheme B might map Space to climb, enabling A and B would produce a conflict, which we can have automatically reported/thrown).
+
+Example:
+
+// Add a scheme that uses one function to control walking...
+Scheme * a = new Scheme( "On foot" );
+a->Add( Key::W, Walk_Function );
+a->Add( Key::A, Walk_Function );
+a->Add( Key::S, Walk_Function );
+a->Add( Key::D, Walk_Funciton );
+a->Add( Key::Up, Walk_Function );
+a->Add( Key::Left, Walk_Function );
+a->Add( Key::Right, Walk_Function );
+a->Add( Key::Down, Walk_Function );
+a->Add( Key::Shift, WalkRunToggle_Function );
+
+void Walk_Function( Input & input, const InputDesc & desc )
+{
+	if ( desc.IsKeyDown( Key::W ) || desc.IsKeyDown( Key::Up ) )
+	{
+		// do walk forward		
+	}
+	else ( desc.IsKeyDown( Key::S ) || desc.IsKeyDown( Key::Down ) )
+	{
+		// do walk backward
+	}
+}
+
+void WalkRunToggle_Function( Input & input, const InputDesc & desc )
+{
+	switch( desc.KeyStatus( Key::LeftShift ) )
+	{
+		case KeyStatus_JustDown:
+			m_run = ! AlwaysRun(); // invert of always run.
+			break;
+		case KeyStatus_JustUp:
+			m_run = AlwaysRun(); // is same as always run (in other words, we aren't modifying out run/walk toggle).
+			break;
+		case KeyStatus_Down: break; // ignore
+		case KeyStatus_Up: break; // ignore
+	}
+}

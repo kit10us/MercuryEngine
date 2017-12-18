@@ -895,6 +895,7 @@ size_t Game::Command( std::string command )
 	if( itr == m_commandMap.end() )
 	{
 		id = m_commandListeners.size();
+		m_commandList.push_back( command );
 		m_commandMap[command] = id;
 		m_commandListeners.push_back( std::list< CommandListenerSet >() );
 	}
@@ -904,6 +905,18 @@ size_t Game::Command( std::string command )
 	}
 
 	return id;
+}
+
+std::string Game::Command( size_t id )
+{
+	if( id >= m_commandList.size() )
+	{
+		return std::string();
+	}
+	else
+	{
+		return m_commandList[id];
+	}
 }
 
 std::string Game::SendCommand( std::string command, std::string extra )

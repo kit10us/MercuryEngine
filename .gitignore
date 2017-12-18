@@ -73,3 +73,5 @@ log.txt
 /MercuryTests/06tests_MeshAnimations/06Test03 - Mesh Animation DAE/Release
 /QXML Tests/Debug
 /QXML Tests/testwrite.xml
+/MercuryEngine/Documentation/*.odg#
+*.odt#

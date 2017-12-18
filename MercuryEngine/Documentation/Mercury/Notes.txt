@@ -1,0 +1,1 @@
+2013/04/11: Moved RotationX, Y and Z functions from members that set the matrix, to static functions that return the matrix, to reduce confusion (kept using as a rotation to an existing matrix).

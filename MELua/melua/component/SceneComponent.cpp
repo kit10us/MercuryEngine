@@ -75,8 +75,7 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 {
 	me::scene::SceneComponent::OnAttach( scene );
 
-	int top = 0;
-	std::string type;
+	auto * se = ScriptEngine::GetInstance();
 
 	// Setup the script...	
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
@@ -96,8 +95,7 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 	lua_getglobal( m_state, (scene->GetName() + "_env").c_str()  );
 	lua_setupvalue( m_state, -2, 1 );
 
-	top = lua_gettop( m_state );
-	assert( top == 1 );
+	se->AssertTop( 1 );
 
 	// Create table for modules _ENV table.
 	lua_newtable( m_state ); // 2 - table
@@ -112,8 +110,7 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 		lua_setfield( m_state, 2, "this" ); // 2 - table
 	}
 
-	top = lua_gettop( m_state );
-	assert( top == 2 );
+	se->AssertTop( 2 );
 
 	// Create new metatable for __index to be _G (so missed functions, non-member functions, look in _G).
 	lua_newtable( m_state );
@@ -121,7 +118,6 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 	lua_setfield( m_state, -2, "__index" );
 	lua_setmetatable( m_state, -2 ); // Set global as the metatable
 
-	top = lua_gettop( m_state );
 
 	// Push to registery with a unique name.
 	lua_setfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() );

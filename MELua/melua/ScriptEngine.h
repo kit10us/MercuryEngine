@@ -51,6 +51,12 @@ namespace melua
 		/// </summary>
 		bool Assert( bool isTrue, std::string message );
 
+		/// <summary>
+		/// Asserts that our top is of a certain amount. If it isn't, then
+		/// in addition to Assert, we print the stack.
+		/// </summary>
+		bool AssertTop( int top );
+
 	public: // IComponent...
 		
 	private:

@@ -311,5 +311,21 @@ bool ScriptEngine::Assert( bool isTrue, std::string message )
 			return false;
 		}
 	}
+}
 
+bool ScriptEngine::AssertTop( int top )
+{
+	int actualTop = lua_gettop( m_state );
+	std::string typeText = "Types:\n";
+	if( top != actualTop )
+	{
+		int i = 1;
+		for( auto typeName : melua::GetTypenames( m_state ) )
+		{
+			typeText += "\n" + unify::Cast< std::string >( i ) + ": " + typeName;
+			i += 1;
+		}
+	}
+
+	return Assert( top == actualTop, "Top is not correct! Expected is " + unify::Cast< std::string >( top ) + ", when actual is " + unify::Cast< std::string >( actualTop ) + ".\n" + typeText );
 }

@@ -1,0 +1,13 @@
+[Ignorant]
+Description: Step each object, renderer.
+Pros: Easy to implement, easy to TS.
+Cons: No culling or ordering, what so ever.
+
+[Ordered]
+Description: cull object, sort.
+Pros: Must faster.
+Cons: Solution is not deterministic - many ways of implementing:
+
+Implementation pass 1:
+1. Culling:
+2. Ordering:

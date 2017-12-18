@@ -111,6 +111,8 @@ namespace me
 
 		size_t Command( std::string command ) override;
 
+		std::string Command( size_t id ) override;
+
 		std::string SendCommand( std::string command, std::string extra ) override;
 
 		std::string SendCommand( size_t id, std::string extra ) override;
@@ -151,6 +153,7 @@ namespace me
 
 		std::vector< std::list< CommandListenerSet > > m_commandListeners;
 		std::map< std::string /* command */, size_t /* command ID */, unify::CaseInsensitiveLessThanTest> m_commandMap;
+		std::vector< std::string > m_commandList;
 	};
 }
 

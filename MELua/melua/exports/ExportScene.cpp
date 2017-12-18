@@ -201,6 +201,76 @@ int Scene_SendCommand( lua_State * state )
 	return 1;
 }
 
+class OnSendCommandListener : public me::ICommandListener
+{
+	me::scene::IScene * m_scene;
+	std::string m_functionCallback;
+public:
+	OnSendCommandListener( me::scene::IScene * scene, std::string functionCallback )
+		: m_scene{ scene }
+		, m_functionCallback{ functionCallback }
+	{
+	}
+
+	std::string SendCommand( size_t id, std::string extra ) override
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+		auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >();
+		
+		auto * state = se->GetState();
+
+		/* the function name */
+		//int r = lua_getglobal( state, m_functionCallback.c_str() );
+		int r = lua_getfield( state, -1, m_functionCallback.c_str() );
+
+		/* the first argument */
+		std::string command = se->GetGame()->Command( id );
+		if( command.empty() )
+		{
+			lua_pushnil( state );
+		}
+		else
+		{
+			lua_pushstring( state, command.c_str() );
+		}
+
+		/* the second argument */
+		if( extra.empty() )
+		{
+			lua_pushnil( state );
+		}
+		else
+		{
+			lua_pushstring( state, extra.c_str() );
+		}
+
+		/* call the function with 2 arguments, return 1 result */
+		lua_call( state, 2, 1);
+
+		int top = lua_gettop( state );
+
+		return ""; // TODO:
+	}
+};
+
+int Scene_AddCommandListener( lua_State * state )
+{
+	ScriptEngine * se = ScriptEngine::GetInstance();
+	auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >();
+
+	se->AssertTop( 3 );
+
+	SceneProxy * sceneProxy = CheckScene( state, 1 );
+
+	std::string command = lua_tostring( state, 2 );
+
+	std::string function = lua_tostring( state, 3 );
+
+	se->GetGame()->AddCommandListener( sceneProxy->scene->GetOwnership(), command, me::ICommandListener::ptr{ new OnSendCommandListener( sceneProxy->scene, function ) } );
+	
+	return 0;
+}
+
 int Scene_Constructor(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
@@ -227,6 +297,7 @@ void RegisterScene( lua_State * state )
 		{ "FindObjectsWithinSphere", Scene_FindObjectsWithinSphere },
 		{ "GetObjectCount", Scene_GetObjectCount },
 		{ "SendCommand", Scene_SendCommand },
+		{ "AddCommandListener", Scene_AddCommandListener },
 		{ nullptr, nullptr }
 	};
 

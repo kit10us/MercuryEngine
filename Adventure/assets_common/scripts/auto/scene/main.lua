@@ -8,6 +8,10 @@ require "shapes"
 
 local start_position = V3( 4, 0, 0 )
 
+function OnSendCommand( command, extra )
+	print( "-----------------------------------Command got: " .. command );
+end
+
 function BuildCube( position )
 	local object = this:NewObject( MakeObjectName( "cube" ) )
 	local effect = Effect( VertexShader( "texture.xml" ), PixelShader( "texture.xml" ), Texture( "articulate.bmp" ) );
@@ -91,9 +95,7 @@ function OnBeforeStart()
 	sphere:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), start_position ) )	
 
 	local player = this:NewObject( "player" )
-	print( "Peter......" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
-	print( "Piper......" )
 		
 	player:Transform():SetPosition( start_position )
 	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )
@@ -132,6 +134,8 @@ function Action_Use()
 end
 
 function OnAfterStart()
+	local this = Scene()
+
 	CreateMap()
 
 	local player = this:FindObject( "player" )
@@ -148,4 +152,9 @@ function OnAfterStart()
 		local pressA = InputCondition( "button", 0, "A", "pressed" )
 		gamepad:AddAction( "scene", pressA, Action_Use )
 	end	
+	
+	-- Todo...
+	--OnSendCommand( "Hello", "World!" );
+	--this:AddCommandListener( "PlayerUse", "OnSendCommand" );
+	--this:SendCommand( "PlayerUse", "Peter" );
 end

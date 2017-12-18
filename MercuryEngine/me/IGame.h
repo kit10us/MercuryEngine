@@ -161,6 +161,11 @@ namespace me
 		/// </summary>
 		virtual size_t Command( std::string command ) = 0;
 
+		/// <summmary>
+		/// Fetch the name from an ID for a corresponding command. Returns an empty string if not found.
+		/// </summary>
+		virtual std::string Command( size_t id ) = 0;
+
 		/// <summary>
 		/// Send a command with extra information, and return a string result.
 		/// Strings are used to best support cross DLL, and scripting support. 

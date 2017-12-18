@@ -14,7 +14,7 @@ using namespace me;
 class MyGame : public Game
 {
 public:
-	MyGame() : Game( unify::Path( "setup_luago.xml" ) ) {}
+	MyGame() : Game( unify::Path( "setup_luago_sendcommand.xml" ) ) {}
 } game;
 
 RegisterGame(game);

@@ -1,0 +1,48 @@
+Initializing: 
+  name:    C:\dev\ws\MercuryTests\09tests_scripting\09Test02 - Lua Send Command\..\..\..\output\v140_Debug\09Test02 - Lua Send Command\09Test02 - Lua Send Command.exe
+  program: C:\dev\ws\MercuryTests\09tests_scripting\output\v140_Debug\09Test02 - Lua Send Command\09Test02 - Lua Send Command.exe
+  path:    C:\dev\ws\MercuryTests\test_dataDX11_Debug/
+  time:    Sun Dec 17 10:05:34 2017
+
+  Loading setup "setup_luago_sendcommand.xml"...
+  Loading setup "setup_base.xml"...
+  Loading extenion "../../extensions/Debug/MELua.dll"...
+  MELua Loader: "startup" node NOT found.
+  MELua Loader: "auto" node found, setting autoPath to "lua_sendcommand".
+  Loading extenion "../../extensions/Debug/DXIKeyboard.dll"...
+  Loading setup "meeditor.xml"...
+  Loading extenion "../../extensions/Debug/MEEditor.dll"...
+  Loading setup "inputs.xml"...
+  Add input actions (failures = 1)
+GameComponent summary...
+  SceneManager
+  ActionFactory
+  Lua
+  ActionsGameComponent
+OS Startup Begin
+OS Startup Done
+Game Component's OnBeforeStartup Begin
+  OnBeforeStart "SceneManager" Begin
+  OnBeforeStart "SceneManager" Done
+  OnBeforeStart "ActionFactory" Begin
+  OnBeforeStart "ActionFactory" Done
+  OnBeforeStart "Lua" Begin
+  OnBeforeStart "Lua" Done
+  OnBeforeStart "ActionsGameComponent" Begin
+  OnBeforeStart "ActionsGameComponent" Done
+Game Component's OnBeforeStartup Done
+Game's Startup Begin
+Game's Startup Done
+OnAfterStartup Begin
+  OnAfterStartup "SceneManager" Begin
+  OnAfterStartup "SceneManager" Done
+  OnAfterStartup "ActionFactory" Begin
+  OnAfterStartup "ActionFactory" Done
+  OnAfterStartup "Lua" Begin
+  OnAfterStartup "Lua" Done
+  OnAfterStartup "ActionsGameComponent" Begin
+  OnAfterStartup "ActionsGameComponent" Done
+OnAfterStartup Done
+total startup time: 1.123662s
+Creating Main Scene
+  Loading startup script "../test_data/scripts/game.lua".
