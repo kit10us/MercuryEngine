@@ -47,6 +47,8 @@ namespace me
 			void OnSuspend() override {}
 			void OnResume() override {}
 			void OnEnd() override {}
+			
+			std::string SendCommand( size_t id, std::string extra ) override { return std::string();  }
 
 		public:
 

@@ -166,7 +166,7 @@ static const luaL_Reg TexCoordsFunctions[] =
 void RegisterTexCoords(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "TexCoords", TexCoordsFunctions, sizeof(TexCoordsFunctions) / sizeof(luaL_Reg), TexCoords_Constructor, TexCoords_Destructor };
+	Type type = { "TexCoords", TexCoordsFunctions, TexCoords_Constructor, TexCoords_Destructor };
 	type.add = TexCoords_Add;
 	type.sub = TexCoords_Sub;
 	type.mul = TexCoords_Mul;

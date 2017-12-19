@@ -151,33 +151,33 @@ MELUADLL_API void ScriptEngine::AddLibrary( const char * group, const luaL_Reg *
 
 MELUADLL_API void ScriptEngine::AddType( Type type )
 {
-	if ( type.constructor )
+	if( type.constructor )
 	{
 		lua_register( m_state, type.name.c_str(), type.constructor ); // Register our type's constructor.
 	}
 
-	for (auto named_constructor : type.named_constructors)
+	for( auto named_constructor : type.named_constructors )
 	{
 		lua_register( m_state, named_constructor.name.c_str(), named_constructor.function ); // Register our type's constructor.
 	}
 
 	luaL_newmetatable( m_state, type.name.c_str() ); // Create a metatable by the name of our type on top of the stack.
 
-	if ( type.collector )
+	if( type.collector )
 	{
-		lua_pushcfunction( m_state, type.collector ); 
+		lua_pushcfunction( m_state, type.collector );
 		lua_setfield( m_state, -2, "__gc" ); // Add a garbage collector to our type (metatable).
 	}
 
-	if ( type.newindex )
+	if( type.newindex )
 	{
-		lua_pushcfunction( m_state, type.newindex ); 
+		lua_pushcfunction( m_state, type.newindex );
 		lua_setfield( m_state, 1, "__newindex" ); // Add a function to call if we attempt to assign to an unknown member.
 	}
 
-	if ( type.index )
+	if( type.index )
 	{
-		lua_pushcfunction( m_state, type.index ); 
+		lua_pushcfunction( m_state, type.index );
 		lua_setfield( m_state, 1, "__index" );
 	}
 	else
@@ -186,75 +186,75 @@ MELUADLL_API void ScriptEngine::AddType( Type type )
 		lua_setfield( m_state, 1, "__index" );
 	}
 
-	if ( type.add )
+	if( type.add )
 	{
-		lua_pushcfunction( m_state, type.add ); 
+		lua_pushcfunction( m_state, type.add );
 		lua_setfield( m_state, 1, "__add" );
 	}
 
-	if ( type.sub )
+	if( type.sub )
 	{
-		lua_pushcfunction( m_state, type.sub ); 
+		lua_pushcfunction( m_state, type.sub );
 		lua_setfield( m_state, 1, "__sub" );
 	}
 
-	if ( type.mul )
+	if( type.mul )
 	{
-		lua_pushcfunction( m_state, type.mul ); 
+		lua_pushcfunction( m_state, type.mul );
 		lua_setfield( m_state, 1, "__mul" );
 	}
 
-	if ( type.div )
+	if( type.div )
 	{
-		lua_pushcfunction( m_state, type.div ); 
+		lua_pushcfunction( m_state, type.div );
 		lua_setfield( m_state, 1, "__div" );
 	}
 
-	if ( type.mod )
+	if( type.mod )
 	{
-		lua_pushcfunction( m_state, type.mod ); 
+		lua_pushcfunction( m_state, type.mod );
 		lua_setfield( m_state, 1, "__mod" );
 	}
 
-	if ( type.pow )
+	if( type.pow )
 	{
-		lua_pushcfunction( m_state, type.pow ); 
+		lua_pushcfunction( m_state, type.pow );
 		lua_setfield( m_state, 1, "__pow" );
 	}
 
-	if ( type.unm )
+	if( type.unm )
 	{
-		lua_pushcfunction( m_state, type.unm ); 
+		lua_pushcfunction( m_state, type.unm );
 		lua_setfield( m_state, 1, "__unm" );
 	}
 
-	if ( type.concat )
+	if( type.concat )
 	{
-		lua_pushcfunction( m_state, type.concat ); 
+		lua_pushcfunction( m_state, type.concat );
 		lua_setfield( m_state, 1, "__concat" );
 	}
 
-	if ( type.len )
+	if( type.len )
 	{
-		lua_pushcfunction( m_state, type.len ); 
+		lua_pushcfunction( m_state, type.len );
 		lua_setfield( m_state, 1, "__len" );
 	}
 
-	if ( type.eq )
+	if( type.eq )
 	{
-		lua_pushcfunction( m_state, type.eq ); 
+		lua_pushcfunction( m_state, type.eq );
 		lua_setfield( m_state, 1, "__eq" );
 	}
 
-	if ( type.lt )
+	if( type.lt )
 	{
-		lua_pushcfunction( m_state, type.lt ); 
+		lua_pushcfunction( m_state, type.lt );
 		lua_setfield( m_state, 1, "__lt" );
 	}
 
-	if ( type.le )
+	if( type.le )
 	{
-		lua_pushcfunction( m_state, type.le ); 
+		lua_pushcfunction( m_state, type.le );
 		lua_setfield( m_state, 1, "__le" );
 	}
 
@@ -262,19 +262,23 @@ MELUADLL_API void ScriptEngine::AddType( Type type )
 	luaL_setfuncs( m_state, type.functions, 0 );
 	lua_pop( m_state, 1 );
 
-	m_types[ type.name ] = type;
+	m_types[type.name] = {};
+	for( int i = 0; i < type.functionCount; i++ )
+	{
+		m_types[type.name].push_back( type.functions[i].name );
+	}
 }
 
-Type * ScriptEngine::GetType( std::string name )
+std::list< std::string > ScriptEngine::GetType( std::string name ) const
 {
 	auto itr = m_types.find( name );
 	if ( itr == m_types.end() )
 	{
-		return nullptr;
+		return {};
 	}
 	else
 	{
-		return &itr->second;
+		return itr->second;
 	}
 }
 
@@ -282,7 +286,8 @@ ScriptEngine* ScriptEngine::GetInstance()
 {
 	return s_se;
 }
-me::game::Game *ScriptEngine::GetGame()
+
+me::game::Game *ScriptEngine::GetGame()
 {
 	return dynamic_cast< me::game::Game* >( GameComponent::GetGame() );
 }
@@ -327,4 +332,22 @@ bool ScriptEngine::AssertTop( int top )
 	}
 
 	return Assert( top == actualTop, "Top is not correct! Expected is " + unify::Cast< std::string >( top ) + ", when actual is " + unify::Cast< std::string >( actualTop ) + ".\n" + typeText );
+}
+
+void ScriptEngine::LogTypes()
+{
+	for( auto & type : m_types )
+	{
+		GetGame()->LogLine( "Added Lua type \"" + type.first + "..." );
+		for( auto && function : type.second )
+		{
+			GetGame()->LogLine( "   " + function );
+		}
+		GetGame()->LogLine( "" );
+	}
+}
+
+void ScriptEngine::OnBeforeStartup()
+{
+	LogTypes();
 }

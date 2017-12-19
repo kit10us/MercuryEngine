@@ -56,8 +56,11 @@ namespace me
 			virtual void OnUpdate( const UpdateParams & params ) = 0;			
 			virtual void OnRender( RenderGirl renderGirl ) = 0;
 			virtual void OnSuspend() = 0;			
-			virtual void OnResume() = 0;			
+			virtual void OnResume() = 0;	
+		
 			virtual void OnEnd() = 0;
+
+			virtual std::string SendCommand( size_t id, std::string extra ) = 0;
 
 		public:
 

@@ -21,7 +21,7 @@ namespace melua
 
 		Type();
 
-		MELUADLL_API Type(std::string name, const luaL_Reg * functions, int functionCount, lua_CFunction constructor = 0, lua_CFunction collector = 0);
+		MELUADLL_API Type(std::string name, const luaL_Reg * functions, lua_CFunction constructor = 0, lua_CFunction collector = 0);
 		
 		std::string name;
 		const luaL_Reg * functions;

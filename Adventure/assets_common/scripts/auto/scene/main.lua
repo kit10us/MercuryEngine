@@ -118,19 +118,29 @@ function Action_Use()
 	local withinDistance = 2.5
 
 	local objects = this:FindObjectsWithinSphere( player:GetPosition(), withinDistance )
-	
+
 	print( "Performing ray test..." )
 	print( "  origin    { " .. tostring( player:GetPosition() ) .. " }" )
 	print( "  direction { " .. tostring( player:GetForward() ) .. " }" )
 	print( "  distance  = " .. withinDistance )
 	
 	print( "  Object = " .. #objects .. "..." )	
+	if #objects > 0 then
+		local object = objects[ 1 ].object
+		local distance = objects[ 1 ].distance
+		if distance < 2 then
+		local objPos = object:GetPosition()
+		print( "    " .. object:GetName() .. " @ " .. distance .. " { " .. tostring( objPos ) .. " }" )
+		end
+	end
+	--[[
 	for i = 1, #objects do
 		local object = objects[ i ].object
 		local distance = objects[ i ].distance
 		local objPos = object:GetPosition()
 		print( "    " .. i .. ": " .. object:GetName() .. " @ " .. distance .. " { " .. tostring( objPos ) .. " }" )
 	end
+	--]]
 end
 
 function OnAfterStart()
@@ -150,11 +160,18 @@ function OnAfterStart()
 		gamepad:AddAction( "scene", pressStart, A_QuitGame() )
 		
 		local pressA = InputCondition( "button", 0, "A", "pressed" )
-		gamepad:AddAction( "scene", pressA, Action_Use )
+		gamepad:AddAction( "scene", pressA, Action_Use )		
 	end	
+	
+	local keyboard = Input( "Keyboard" )
+	if keyboard then
+		local pressSpace = InputCondition( "button", 0, "Space", "pressed" )
+		keyboard:AddAction( "scene", pressSpace, Action_Use );
+	end
 	
 	-- Todo...
 	--OnSendCommand( "Hello", "World!" );
 	--this:AddCommandListener( "PlayerUse", "OnSendCommand" );
-	--this:SendCommand( "PlayerUse", "Peter" );
+	this:SendCommand( "PlayerUse", "Peter" );
 end
+

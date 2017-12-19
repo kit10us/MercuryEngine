@@ -32,8 +32,7 @@ void LogViewer::Log( std::string text )
 	using namespace ui;			  
 
 	Richtext* logText = GetControl< Richtext* >( "LogText" );
-	std::string currentText( logText->GetText() );
-	logText->SetText( currentText + text  );
+	logText->AppendText( text  );
 }
 
 ui::IResult* LogViewer::OnCreate( ui::message::Params params )

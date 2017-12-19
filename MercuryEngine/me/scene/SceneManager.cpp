@@ -248,6 +248,15 @@ void SceneManager::OnRender( render::Params params )
 	m_renderCount = renderGirl.End();
 }
 
+std::string SceneManager::SendCommand( size_t id, std::string extra )
+{
+	if( m_currentScene )
+	{
+		return m_currentScene->SendCommand( id, extra );
+	}
+	return std::string();
+}
+
 std::string SceneManager::GetWhat() const
 {
 	return std::string();

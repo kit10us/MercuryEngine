@@ -230,14 +230,13 @@ static const luaL_Reg QuaternionFunctions[] =
 {
 	{ "ToString", Quaternion_ToString },
 
-
 	{ nullptr, nullptr }
 };
 
 void RegisterQuaternion(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "Quaternion", QuaternionFunctions, sizeof(QuaternionFunctions) / sizeof(luaL_Reg), Quaternion_Constructor, Quaternion_Destructor };
+	Type type = { "Quaternion", QuaternionFunctions, Quaternion_Constructor, Quaternion_Destructor };
 	type.add = Quaternion_Add;
 	type.sub = Quaternion_Sub;
 	type.mul = Quaternion_Mul;

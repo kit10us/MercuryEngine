@@ -932,6 +932,8 @@ std::string Game::SendCommand( size_t id, std::string extra )
 		return std::string();
 	}
 
+	// Listeners...
+
 	auto & commandListenerSetList = m_commandListeners[ id ];
 	std::string lastResult;
 	for( auto & itr = commandListenerSetList.begin(); itr != commandListenerSetList.end(); )
@@ -952,5 +954,12 @@ std::string Game::SendCommand( size_t id, std::string extra )
 			itr++;
 		}
 	}
+
+	// Game components...
+	for( auto component : m_components )
+	{
+		component->SendCommand( id, extra );
+	}
+
 	return lastResult;
 }

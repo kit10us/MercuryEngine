@@ -175,7 +175,7 @@ static const luaL_Reg Size2Functions[] =
 void RegisterSize2(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "Size2", Size2Functions, sizeof(Size2Functions) / sizeof(luaL_Reg), Size2_Constructor, Size2_Destructor };
+	Type type = { "Size2", Size2Functions, Size2_Constructor, Size2_Destructor };
 	type.add = Size2_Add;
 	type.sub = Size2_Sub;
 	type.mul = Size2_Mul;

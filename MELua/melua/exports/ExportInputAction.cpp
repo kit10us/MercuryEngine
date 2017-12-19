@@ -61,6 +61,7 @@ void RegisterInputAction( lua_State * state )
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { InputActionProxy::Name(), GeometryFunctions, sizeof( GeometryFunctions ) / sizeof( luaL_Reg ), InputAction_Constructor, InputAction_Destructor } );
+	Type type = { InputActionProxy::Name(), GeometryFunctions, InputAction_Constructor, InputAction_Destructor };
+	se->AddType( type );
 }
 

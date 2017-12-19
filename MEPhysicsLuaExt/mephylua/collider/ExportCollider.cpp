@@ -115,7 +115,7 @@ namespace mephylua
 			{ nullptr, nullptr }
 		};
 
-		Type type{ ColliderObjectComponentProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), ColliderObjectComponent_Constructor, ColliderObjectComponent_Destructor };
+		Type type{ ColliderObjectComponentProxy::Name(), functions, ColliderObjectComponent_Constructor, ColliderObjectComponent_Destructor };
 		g_luaSE->AddType( type );
 	}
 }

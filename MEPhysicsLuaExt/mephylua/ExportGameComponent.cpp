@@ -84,8 +84,7 @@ namespace mephylua
 			{ nullptr, nullptr }
 		};
 
-		Type type{ GameComponentProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), GameComponent_Constructor, GameComponent_Destructor };
-
+		Type type{ GameComponentProxy::Name(), functions, GameComponent_Constructor, GameComponent_Destructor };
 		luaSE->AddType( type );
 	}
 

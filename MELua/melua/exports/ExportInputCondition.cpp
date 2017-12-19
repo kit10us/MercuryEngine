@@ -108,6 +108,7 @@ int InputCondition_Destructor( lua_State * state )
 void RegisterInputCondition( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "InputCondition", InputConditionFunctions, sizeof( InputConditionFunctions ) / sizeof( luaL_Reg ), InputCondition_Constructor, InputCondition_Destructor } );
+	Type type = { "InputCondition", InputConditionFunctions, InputCondition_Constructor, InputCondition_Destructor };
+	se->AddType( type );
 }
 

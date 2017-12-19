@@ -40,7 +40,7 @@ namespace melua
 
 		MELUADLL_API void AddType( Type type );
 
-		Type * GetType( std::string name );
+		std::list< std::string > GetType( std::string name ) const;
 
 		MELUADLL_API static ScriptEngine* GetInstance();
 		MELUADLL_API me::game::Game * GetGame();
@@ -57,6 +57,10 @@ namespace melua
 		/// </summary>
 		bool AssertTop( int top );
 
+		void OnBeforeStartup() override;
+
+		void LogTypes();
+
 	public: // IComponent...
 		
 	private:
@@ -64,8 +68,9 @@ namespace melua
 		size_t m_gameScriptCount;
 		size_t m_objectScriptCount;
 
-		std::map< std::string, Type > m_types;
+		// Type name { Function Names }
+		std::map< std::string, std::list< std::string > > m_types;
 
-		static ScriptEngine * s_se;
+		static ScriptEngine * s_se;	
 	};
 }

@@ -34,6 +34,7 @@ namespace ui
 
 	public: // WinApi functions...
 		void SetText( std::string text ) override;
+		void AppendText( std::string text );
 		std::string GetText() const override;
 		bool GetEnabled() const override;
 		void SetEnable( bool enable ) override;

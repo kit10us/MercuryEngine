@@ -42,6 +42,15 @@ void Control::SetText( std::string text )
 	SendMessageA( GetHandle(), WM_SETTEXT, 0, (LPARAM)(char*)text.c_str() );
 }
 
+void Control::AppendText( std::string text )
+{
+	std::string currentText = GetText();
+	SetText( currentText + text );
+
+	LRESULT resultA = SendMessage( GetHandle(), EM_GETLINECOUNT, 0, 0 );
+	LRESULT resultB = SendMessageA( GetHandle(), EM_LINESCROLL, 0, resultA ? resultA - 1 : resultA );
+}
+
 std::string Control::GetText() const
 {
 	int length = GetWindowTextLengthA( GetHandle() );

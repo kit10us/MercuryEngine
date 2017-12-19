@@ -184,7 +184,7 @@ void RegisterInput( lua_State * state )
 		{ nullptr, nullptr }
 	};
 
-	Type type = { InputProxy::Name(), ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Input_Constructor, Input_Destructor };
+	Type type = { InputProxy::Name(), ObjectFunctions, Input_Constructor, Input_Destructor };
 	type.named_constructors.push_back( { "StickLow", Input_StickLow } );
 	type.named_constructors.push_back( { "StickHeigh", Input_StickHigh } );
 	se->AddType( type );

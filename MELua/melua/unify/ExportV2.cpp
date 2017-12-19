@@ -267,7 +267,7 @@ static const luaL_Reg V2Functions[] =
 void RegisterV2(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "V2", V2Functions, sizeof(V2Functions) / sizeof(luaL_Reg), V2_Constructor, V2_Destructor };
+	Type type = { "V2", V2Functions, V2_Constructor, V2_Destructor };
 	type.add = V2_Add;
 	type.sub = V2_Sub;
 	type.mul = V2_Mul;

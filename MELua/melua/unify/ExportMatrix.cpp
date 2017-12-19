@@ -306,14 +306,13 @@ static const luaL_Reg MatrixFunctions[] =
 {
 	{ "ToString", Matrix_ToString },
 
-
 	{ nullptr, nullptr }
 };
 
 void RegisterMatrix(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "Matrix", MatrixFunctions, sizeof(MatrixFunctions) / sizeof(luaL_Reg), Matrix_Constructor, Matrix_Destructor };
+	Type type = { "Matrix", MatrixFunctions, Matrix_Constructor, Matrix_Destructor };
 	type.add = Matrix_Add;
 	type.sub = Matrix_Sub;
 	type.mul = Matrix_Mul;

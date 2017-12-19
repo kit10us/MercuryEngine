@@ -142,6 +142,7 @@ void RegisterEffect( lua_State * state )
 
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "Effect", EffectFunctions, sizeof( EffectFunctions ) / sizeof( luaL_Reg ), Effect_Constructor, Effect_Destructor } );
+	Type type = { "Effect", EffectFunctions, Effect_Constructor, Effect_Destructor };
+	se->AddType( type );
 }
 

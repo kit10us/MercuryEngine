@@ -344,3 +344,13 @@ void MainScene::OnUpdate( const me::UpdateParams & params )
 	{
 	}
 }
+
+std::string MainScene::SendCommand( size_t id, std::string extra )
+{
+	if( GetGame()->Command( "PlayerUse" ) == id )
+	{
+ 		int x( 0 ); x;
+	}
+
+	return std::string();
+}

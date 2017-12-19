@@ -51,6 +51,8 @@ namespace me
 			void OnLateUpdate( const UpdateParams & params ) override;
 			void OnRender( render::Params params ) override;
 
+			std::string SendCommand( size_t id, std::string extra ) override;
+
 		public: // IComponent...
 			std::string GetWhat() const;
 

@@ -332,7 +332,7 @@ static const luaL_Reg V3Functions[] =
 void RegisterV3( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "V3", V3Functions, sizeof( V3Functions ) / sizeof( luaL_Reg ), V3_Constructor, V3_Destructor };
+	Type type = { "V3", V3Functions, V3_Constructor, V3_Destructor };
 	type.add = V3_Add;
 	type.sub = V3_Sub;
 	type.mul = V3_Mul;

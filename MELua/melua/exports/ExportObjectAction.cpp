@@ -64,6 +64,7 @@ namespace melua
 		};
 
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		se->AddType( { ObjectActionProxy::Name(), memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), ObjectAction_Constructor } );
+		Type type = { ObjectActionProxy::Name(), memberFunctions, ObjectAction_Constructor };
+		se->AddType( type );
 	}
 }

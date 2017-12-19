@@ -26,10 +26,10 @@ Type::Type()
 {
 }
 
-Type::Type( std::string name, const luaL_Reg * functions, int functionCount, lua_CFunction constructor, lua_CFunction collector )
+Type::Type( std::string name, const luaL_Reg * functions, lua_CFunction constructor, lua_CFunction collector )
 	: name{ name }
 	, functions{ functions }
-	, functionCount{ functionCount }
+	, functionCount{ 0 }
 	, constructor{ constructor }
 	, collector{ collector }
 	, newindex{ 0 }
@@ -47,4 +47,6 @@ Type::Type( std::string name, const luaL_Reg * functions, int functionCount, lua
 	, lt{ 0 }
 	, le{ 0 }
 {
+	// Count functions.
+	for( const auto * function = functions; function && function->name; function++ ) functionCount++;
 }

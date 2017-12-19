@@ -55,6 +55,7 @@ void RegisterAction( lua_State * state )
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { ActionProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), Action_Constructor, Action_Destructor } );
+	Type type = { ActionProxy::Name(), functions, Action_Constructor, Action_Destructor };
+	se->AddType( type );
 }
 

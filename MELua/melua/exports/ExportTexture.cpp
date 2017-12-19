@@ -98,6 +98,7 @@ void RegisterTexture( lua_State * state )
 	{
 		{ nullptr, nullptr }
 	};
-	se->AddType( { TextureProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), Texture_Constructor, Texture_Destructor } );
+	Type type = { TextureProxy::Name(), functions, Texture_Constructor, Texture_Destructor };
+	se->AddType( type );
 }
 

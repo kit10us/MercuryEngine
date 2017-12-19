@@ -188,6 +188,7 @@ int TerraParameters_Destructor( lua_State * state )
 void RegisterTerraParameters( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "TerraParameters", TerraParametersFunctions, sizeof( TerraParametersFunctions ) / sizeof( luaL_Reg ), TerraParameters_Constructor, TerraParameters_Destructor } );
+	Type type = { "TerraParameters", TerraParametersFunctions, TerraParameters_Constructor, TerraParameters_Destructor };
+	se->AddType( type );
 }
 

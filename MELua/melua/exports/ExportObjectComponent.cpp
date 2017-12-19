@@ -252,6 +252,7 @@ void RegisterObjectComponent( lua_State * state )
 	};			   
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "ObjectComponent", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), ObjectComponent_Constructor, ObjectComponent_Destructor } );
+	Type type = { "ObjectComponent", memberFunctions, ObjectComponent_Constructor, ObjectComponent_Destructor };
+	se->AddType( type );
 }
 

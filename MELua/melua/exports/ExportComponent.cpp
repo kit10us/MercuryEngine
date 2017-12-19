@@ -248,6 +248,7 @@ namespace melua
 		};
 
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		se->AddType( { "Component", ComponentMemberFunctions, sizeof( ComponentMemberFunctions ) / sizeof( luaL_Reg ), Component_Constructor, Component_Destructor } );
+		Type type = { "Component", ComponentMemberFunctions, Component_Constructor, Component_Destructor };
+		se->AddType( type );
 	}
 }

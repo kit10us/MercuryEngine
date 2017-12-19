@@ -394,6 +394,8 @@ namespace melua
 			{ "GetLeft", Object_GetLeft },
 			{ nullptr, nullptr }
 		};
-		se->AddType( { "Object", ObjectFunctions, sizeof( ObjectFunctions ) / sizeof( luaL_Reg ), Object_Constructor, Object_Destructor } );
+
+		Type type = { "Object", ObjectFunctions, Object_Constructor, Object_Destructor };
+		se->AddType( type );
 	}
 }

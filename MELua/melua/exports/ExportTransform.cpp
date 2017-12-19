@@ -224,6 +224,7 @@ int Transform_Destructor( lua_State * state )
 void RegisterTransform( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "Transform", TransformFunctions, sizeof( TransformFunctions ) / sizeof( luaL_Reg ), Transform_Constructor, Transform_Destructor } );
+	Type type = { "Transform", TransformFunctions, Transform_Constructor, Transform_Destructor };
+	se->AddType( type );
 }
 

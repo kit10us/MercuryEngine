@@ -340,7 +340,7 @@ static const luaL_Reg ColorFunctions[] =
 void RegisterColor( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "Color", ColorFunctions, sizeof(ColorFunctions) / sizeof(luaL_Reg), nullptr, Color_Destructor };
+	Type type = { "Color", ColorFunctions, nullptr, Color_Destructor };
 	type.add = Color_Add;
 	type.sub = Color_Sub;
 	type.mul = Color_Mul;

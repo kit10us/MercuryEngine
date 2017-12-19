@@ -151,6 +151,8 @@ void RegisterCameraComponent( lua_State * state )
 		{ "SetRenderer", CameraComponent_SetRenderer },
 		{ nullptr, nullptr }
 	};
-	se->AddType( { "CameraComponent", CameraComponentFunctions, sizeof( CameraComponentFunctions ) / sizeof( luaL_Reg ), CameraComponent_Constructor, CameraComponent_Destructor } );
+
+	Type type = { "CameraComponent", CameraComponentFunctions, CameraComponent_Constructor, CameraComponent_Destructor };
+	se->AddType( type );
 }
 

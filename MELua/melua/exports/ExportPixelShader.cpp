@@ -93,6 +93,7 @@ void RegisterPixelShader( lua_State * state )
 
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { PixelShaderProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), PixelShader_Constructor, PixelShader_Destructor } );
+	Type type = { PixelShaderProxy::Name(), functions, PixelShader_Constructor, PixelShader_Destructor };
+	se->AddType( type );
 }
 

@@ -87,6 +87,7 @@ namespace melua
 		};
 
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		se->AddType( { XMLElementProxy::Name(), memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), XMLElement_Constructor, XMLElement_Destructor } );
+		Type type = { XMLElementProxy::Name(), memberFunctions, XMLElement_Constructor, XMLElement_Destructor };
+		se->AddType( type );
 	}
 }

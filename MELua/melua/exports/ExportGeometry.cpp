@@ -102,6 +102,7 @@ int Geometry_Destructor( lua_State * state )
 void RegisterGeometry( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { GeometryProxy::Name(), GeometryFunctions, sizeof( GeometryFunctions ) / sizeof( luaL_Reg ), Geometry_Constructor, Geometry_Destructor } );
+	Type type = { GeometryProxy::Name(), GeometryFunctions, Geometry_Constructor, Geometry_Destructor };
+	se->AddType( type );
 }
 

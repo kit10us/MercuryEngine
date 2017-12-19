@@ -269,6 +269,7 @@ int ShapeParameters_Destructor( lua_State * state )
 void RegisterShapeParameters( lua_State * state )
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "ShapeParameters", ShapeParametersFunctions, sizeof( ShapeParametersFunctions ) / sizeof( luaL_Reg ), ShapeParameters_Constructor, ShapeParameters_Destructor } );
+	Type type = { "ShapeParameters", ShapeParametersFunctions, ShapeParameters_Constructor, ShapeParameters_Destructor };
+	se->AddType( type );
 }
 

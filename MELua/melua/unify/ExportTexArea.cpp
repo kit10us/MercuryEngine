@@ -205,7 +205,6 @@ static const luaL_Reg TexAreaFunctions[] =
 void RegisterTexArea(lua_State * state)
 {
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	Type type = { "TexArea", TexAreaFunctions, sizeof(TexAreaFunctions) / sizeof(luaL_Reg), TexArea_Constructor, TexArea_Destructor };
-
+	Type type = { "TexArea", TexAreaFunctions, TexArea_Constructor, TexArea_Destructor };
 	se->AddType(type);
 }

@@ -302,5 +302,6 @@ void RegisterScene( lua_State * state )
 	};
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { "Scene", memberFunctions, sizeof( memberFunctions ) / sizeof( luaL_Reg ), Scene_Constructor, Scene_Destructor } );
+	Type type = { "Scene", memberFunctions, Scene_Constructor, Scene_Destructor };
+	se->AddType( type );
 }

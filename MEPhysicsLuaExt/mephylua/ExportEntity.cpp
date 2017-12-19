@@ -90,7 +90,7 @@ namespace mephylua
 			{ nullptr, nullptr }
 		};
 
-		Type type{ EntityObjectComponentProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), EntityObjectComponent_Constructor, EntityObjectComponent_Destructor };
+		Type type{ EntityObjectComponentProxy::Name(), functions, EntityObjectComponent_Constructor, EntityObjectComponent_Destructor };
 		g_luaSE->AddType( type );
 	}
 }

@@ -92,6 +92,7 @@ void RegisterVertexShader( lua_State * state )
 
 
 	ScriptEngine * se = ScriptEngine::GetInstance();
-	se->AddType( { VertexShaderProxy::Name(), functions, sizeof( functions ) / sizeof( luaL_Reg ), VertexShader_Constructor, VertexShader_Destructor } );
+	Type type = { VertexShaderProxy::Name(), functions, VertexShader_Constructor, VertexShader_Destructor };
+	se->AddType( type );
 }
 

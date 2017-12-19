@@ -23,4 +23,6 @@ public:
 
 	void OnStart() override;
 	void OnUpdate( const me::UpdateParams & params ) override;
+
+	std::string MainScene::SendCommand( size_t id, std::string extra ) override;
 };
