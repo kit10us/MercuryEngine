@@ -3,7 +3,7 @@
 
 #pragma once 
 
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/render/Geometry.h>
 #include <terrain/Base.h>
 #include <terrain/Ground.h>
@@ -19,7 +19,7 @@ namespace terrain
 	/// 
 	/// </notes>
 
-	class Map : public me::object::ObjectComponent
+	class Map : public me::object::component::ObjectComponent
 	{
 	protected:
 		Map( Map & component );

@@ -22,8 +22,8 @@ InventoryObjectComponent::~InventoryObjectComponent()
 {
 }
 
-IObjectComponent::ptr InventoryObjectComponent::Duplicate()
+component::IObjectComponent::ptr InventoryObjectComponent::Duplicate()
 {
 	auto duplicate = new InventoryObjectComponent( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return me::object::component::IObjectComponent::ptr( duplicate );
 }

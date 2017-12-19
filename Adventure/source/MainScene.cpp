@@ -5,14 +5,14 @@
 
 #include <me/render/Mesh.h>
 #include <me/render/Terra.h>
-#include <me/object/CameraComponent.h>
-#include <me/object/GeometryComponent.h>
+#include <me/object/component/CameraComponent.h>
+#include <me/object/component/GeometryComponent.h>
 #include <me/factory/EffectFactories.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
 #include <me/canvas/VList.h>
 
-#include <me/object/ObjectActionComponent.h>
+#include <me/object/component/ObjectActionComponent.h>
 #include <me/object/action/OA_SetPosition.h>
 
 #include <me/dyna/position/DP_Absolute.h>
@@ -150,7 +150,7 @@ public:
 			using namespace terrain;
 			m_mainScene->m_map = new Map( m_mainScene->m_mapSize, m_mainScene->m_terraSize );
 			auto land = m_mainScene->GetObjectAllocator()->NewObject( "land" );
-			land->AddComponent( object::IObjectComponent::ptr( m_mainScene->m_map ) );
+			land->AddComponent( object::component::IObjectComponent::ptr( m_mainScene->m_map ) );
 		}
 		else if( Is( "SaveGame" ) )
 		{
@@ -265,7 +265,7 @@ void MainScene::OnStart()
 		using namespace dyna;
 
 		// Create follow object action, so that every frame our camera follows our target character object.
-		auto follow = new object::ObjectActionComponent( object::action::IObjectAction::ptr( 
+		auto follow = new object::component::ObjectActionComponent( object::action::IObjectAction::ptr(
 			// Create a set position dyna.
 			new object::action::SetPosition( IDynaPosition::ptr(
 				// Use target object PLUS an absolute offset as position
@@ -273,7 +273,7 @@ void MainScene::OnStart()
 					IDynaPosition::ptr( new position::Object( target ) ), IDynaPosition::ptr(new position::Absolute({ 0, 17, -12 }))
 				)
 			) ) ) );
-		camera->AddComponent( IObjectComponent::ptr( follow ) );
+		camera->AddComponent( component::IObjectComponent::ptr( follow ) );
 	}
 
 	// Add Canvas component...

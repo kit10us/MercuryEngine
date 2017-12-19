@@ -3,7 +3,7 @@
 
 #include <Windows.h>
 #include <MainScene.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/Layer.h>
 #include <me/canvas/FPS.h>

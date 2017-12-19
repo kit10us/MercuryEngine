@@ -16,11 +16,11 @@ namespace mephylua
 	public:
 		static char* Name();
 
-		EntityObjectComponentProxy( me::object::IObjectComponent::ptr component );
+		EntityObjectComponentProxy( me::object::component::IObjectComponent::ptr component );
 
 		~EntityObjectComponentProxy();
 
-		me::object::IObjectComponent::ptr component;
+		me::object::component::IObjectComponent::ptr component;
 		mephy::Entity* entity;
 	};
 }

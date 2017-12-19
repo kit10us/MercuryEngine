@@ -56,7 +56,7 @@ namespace me
 			std::list< object::Object * > m_newObjects;
 			std::list< object::Object * > m_oldObjects;
 
-			object::IObjectComponent::cache m_updatables;
+			object::component::IObjectComponent::cache m_updatables;
 			object::CameraCache m_cameras;
 			render::GeometryCache m_solids;
 			render::GeometryCache m_trans;

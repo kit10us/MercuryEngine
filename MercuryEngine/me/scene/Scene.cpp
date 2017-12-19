@@ -3,7 +3,7 @@
 
 #include <me/scene/Scene.h>
 #include <me/scene/SceneManager.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/scene/ObjectAllocatorComponent.h>
 #include <me/scene/RenderGirl.h>
 #include <unify/Frustum.h>

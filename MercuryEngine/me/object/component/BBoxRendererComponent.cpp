@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/object/BBoxRendererComponent.h>
+#include <me/object/component/BBoxRendererComponent.h>
 #include <me/render/GeometryCache.h>
 #include <me/render/Mesh.h>
 #include <me/render/VertexUtil.h>
@@ -9,6 +9,7 @@
 
 using namespace me;
 using namespace object;
+using namespace component;
 using namespace render;
 
 BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component )
@@ -169,5 +170,5 @@ void BBoxRendererComponent::CollectGeometry( GeometryCache & solids, GeometryCac
 IObjectComponent::ptr BBoxRendererComponent::Duplicate()
 {
 	auto duplicate = new BBoxRendererComponent( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return IObjectComponent::ptr( duplicate );
 }

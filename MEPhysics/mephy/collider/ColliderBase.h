@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <MEPhysics.h>
-#include <me/object/ObjectComponent.h>
+#include <me/object/component/ObjectComponent.h>
 #include <me/object/Object.h>
 #include <me/game/IGame.h>
 #include <me/object/action/IObjectAction.h>
@@ -14,7 +14,7 @@ namespace mephy
 {
 	namespace collider
 	{
-		class ColliderBase : public me::object::ObjectComponent
+		class ColliderBase : public me::object::component::ObjectComponent
 		{
 		protected:
 			ColliderBase( ColliderBase & component );

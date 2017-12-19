@@ -8,10 +8,16 @@ namespace me
 {
 	namespace object
 	{
+		class Object;
+		namespace component
+		{
+			class CameraComponent;
+		}
+
 		struct FinalCamera
 		{
-			class Object * object;
-			class CameraComponent * camera;
+			Object * object;
+			component::CameraComponent * camera;
 		};
 		typedef std::list< FinalCamera > CameraCache;
 

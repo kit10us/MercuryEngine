@@ -19,7 +19,7 @@ namespace mephylua
 		return "MEPhysicEntity";
 	}
 
-	EntityObjectComponentProxy::EntityObjectComponentProxy( me::object::IObjectComponent::ptr component )
+	EntityObjectComponentProxy::EntityObjectComponentProxy( me::object::component::IObjectComponent::ptr component )
 		: component{ component }
 		, entity{ dynamic_cast<mephy::Entity *>( component.get() ) }
 	{

@@ -1,12 +1,13 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/object/GeometryComponent.h>
+#include <me/object/component/GeometryComponent.h>
 #include <me/object/Object.h>
 #include <me/render/GeometryCache.h>
 
 using namespace me;
 using namespace object;
+using namespace component;
 using namespace render;
 
 GeometryComponent::GeometryComponent( GeometryComponent & component )
@@ -101,7 +102,7 @@ void GeometryComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matri
 IObjectComponent::ptr GeometryComponent::Duplicate()
 {
 	auto duplicate = new GeometryComponent( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return IObjectComponent::ptr( duplicate );
 }
 
 namespace me

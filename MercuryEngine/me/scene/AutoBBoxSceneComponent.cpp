@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/AutoBBoxSceneComponent.h>
-#include <me/object/BBoxRendererComponent.h>
+#include <me/object/component/BBoxRendererComponent.h>
 #include <me/object/Object.h>
 
 using namespace me;
@@ -42,7 +42,7 @@ void AutoBBoxSceneComponent::OnUpdate( const UpdateParams & params )
 		if ( object->GetComponent( "BBoxRenderer" ) ) continue;
 		if ( ! object->GetComponent( "Geometry" ) ) continue;
 		
-		object->AddComponent( IObjectComponent::ptr( new BBoxRendererComponent( GetOS(), m_effect, m_color ) ) );
+		object->AddComponent( component::IObjectComponent::ptr( new component::BBoxRendererComponent( GetOS(), m_effect, m_color ) ) );
 	}
 }
 

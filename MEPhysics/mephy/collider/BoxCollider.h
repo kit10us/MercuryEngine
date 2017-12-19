@@ -21,7 +21,7 @@ namespace mephy
 			void TestCollision( Entity* entity, const me::UpdateParams & params ) override;
 
 		public: // IObjectComponent...
-			me::object::IObjectComponent::ptr Duplicate() override;
+			me::object::component::IObjectComponent::ptr Duplicate() override;
 
 		private:
 			unify::V3< float > m_halfExt;

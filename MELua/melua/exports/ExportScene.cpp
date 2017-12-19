@@ -71,8 +71,8 @@ int Scene_NewCamera( lua_State * state )
 	auto gameInstance = se->GetGame();
 
 	Object * child = proxy->scene->GetObjectAllocator()->NewObject( name );
-	CameraComponent * cameraComponent = new CameraComponent();
-	child->AddComponent( IObjectComponent::ptr( cameraComponent ) );
+	component::CameraComponent * cameraComponent = new component::CameraComponent();
+	child->AddComponent( component::IObjectComponent::ptr( cameraComponent ) );
 
 	cameraComponent->SetProjection( mat );
 

@@ -15,7 +15,7 @@
 #include <melua/unify/ExportV2.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/unify/ExportQuaternion.h>
-#include <me/object/GeometryComponent.h>
+#include <me/object/component/GeometryComponent.h>
 #include <melua/Util.h>
 
 using namespace melua;

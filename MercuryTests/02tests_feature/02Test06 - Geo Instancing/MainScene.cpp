@@ -5,10 +5,9 @@
 #include <me/render/Mesh.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
-#include <me/object/BBoxRendererComponent.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/BBoxRendererComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/scene/SceneManager.h>
-#include <me/object/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
 #include <sg/ShapeCreators.h>
@@ -35,8 +34,8 @@ void MainScene::OnStart()
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 
 	// Geo1

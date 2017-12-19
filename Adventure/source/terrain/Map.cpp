@@ -233,10 +233,10 @@ void Map::OnResume()
 {
 }
 
-IObjectComponent::ptr Map::Duplicate()
+component::IObjectComponent::ptr Map::Duplicate()
 {
 	auto duplicate = new Map( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return component::IObjectComponent::ptr( duplicate );
 }
 
 std::string Map::GetWhat() const

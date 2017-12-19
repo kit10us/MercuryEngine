@@ -1,10 +1,11 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 
 using namespace me;
 using namespace object;
+using namespace component;
 
 CameraComponent::CameraComponent( CameraComponent & component )
 	: ObjectComponent( component )
@@ -52,5 +53,5 @@ unify::Matrix CameraComponent::GetProjection() const
 IObjectComponent::ptr CameraComponent::Duplicate()
 {
 	auto duplicate = new CameraComponent( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return IObjectComponent::ptr( duplicate );
 }

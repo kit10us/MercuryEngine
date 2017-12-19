@@ -7,7 +7,6 @@
 #include <melua/CreateState.h>
 
 using namespace melua;
-using namespace melua;
 using namespace component;
 
 namespace {
@@ -28,7 +27,7 @@ ObjectComponent::ObjectComponent( ObjectComponent & component )
 }
 
 ObjectComponent::ObjectComponent( me::game::IGame * gameInstance, lua_State * state, std::string luaName, unify::Path path )
-	: me::object::ObjectComponent( "LUAScript", false, false )
+	: me::object::component::ObjectComponent( "LUAScript", false, false )
 	, m_state( state )
 	, m_game( gameInstance )
 	, m_path( path )
@@ -146,10 +145,10 @@ void ObjectComponent::OnResume()
 	CallMember( "OnResume" );
 }
 
-me::object::IObjectComponent::ptr ObjectComponent::Duplicate()
+me::object::component::IObjectComponent::ptr ObjectComponent::Duplicate()
 {
 	auto duplicate = new ObjectComponent( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return me::object::component::IObjectComponent::ptr( duplicate );
 }
 
 std::string ObjectComponent::GetWhat() const

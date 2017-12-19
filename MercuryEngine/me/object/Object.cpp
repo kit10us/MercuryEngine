@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/object/Object.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/object/component/TagsComponent.h>
 
 using namespace me;
@@ -17,7 +17,7 @@ Object::Object()
 	, m_components{}
 	, m_frame{}
 {
-	AddComponent( me::object::IObjectComponent::ptr{ new TagsComponent() } );
+	AddComponent( component::IObjectComponent::ptr{ new component::TagsComponent() } );
 }
 
 Object::Object( Object && objectFrom )
@@ -43,7 +43,7 @@ void Object::CopyFrom( std::string name, Object & objectFrom )
 
 	for( auto component : objectFrom.m_components )
 	{
-		AddComponent( IObjectComponent::ptr( component.Component()->Duplicate() ) );
+		AddComponent( component::IObjectComponent::ptr( component.Component()->Duplicate() ) );
 	}
 }
 
@@ -67,19 +67,19 @@ int Object::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void Object::AddComponent( IObjectComponent::ptr component )
+void Object::AddComponent( component::IObjectComponent::ptr component )
 {
 	component->OnAttach( this );
-	m_components.push_back( ComponentInstance< IObjectComponent::ptr >( component ) );
+	m_components.push_back( ComponentInstance< component::IObjectComponent::ptr >( component ) );
 }
 
-void Object::RemoveComponent( IObjectComponent::ptr component )
+void Object::RemoveComponent( component::IObjectComponent::ptr component )
 {
 	m_components.remove( component );
 	component->OnDetach( this );
 }
 
-IObjectComponent::ptr Object::GetComponent( int index )
+component::IObjectComponent::ptr Object::GetComponent( int index )
 {
 	if ( index > (int)m_components.size() )
 	{
@@ -96,7 +96,7 @@ IObjectComponent::ptr Object::GetComponent( int index )
 	return nullptr;
 }
 
-IObjectComponent::ptr Object::GetComponent( std::string name )
+component::IObjectComponent::ptr Object::GetComponent( std::string name )
 {
 	int index = FindComponent( name );
 	if ( index == -1 ) return nullptr;
@@ -188,7 +188,7 @@ bool Object::Intersects( unify::Ray ray, float & distance ) const
 	return GetBBox().Intersects( ray, distance );
 }
 
-void Object::Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params )
+void Object::Initialize( component::IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params )
 {
 	// Update components...
 	for( auto && component : m_components )
@@ -210,8 +210,8 @@ void Object::Initialize( IObjectComponent::cache & updateables, CameraCache & ca
 		}
 
 		// Check for a camera...
-		CameraComponent * camera{};
-		camera = dynamic_cast< CameraComponent * >(component.Component().get());
+		component::CameraComponent * camera{};
+		camera = dynamic_cast< component::CameraComponent * >(component.Component().get());
 		if( camera != nullptr )
 		{
 			cameras.push_back( FinalCamera{ this, camera } );

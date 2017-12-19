@@ -24,7 +24,7 @@
 #include <melua/unify/ExportV3.h>
 #include <melua/Util.h>
 
-#include <me/object/GeometryComponent.h>
+#include <me/object/component/GeometryComponent.h>
 
 using namespace me;
 using namespace scene;
@@ -53,7 +53,7 @@ namespace melua
 
 		auto component = se->LoadObjectScript( source );
 
-		objectProxy->object->AddComponent( IObjectComponent::ptr( component ) );
+		objectProxy->object->AddComponent( component::IObjectComponent::ptr( component ) );
 
 		return 0;
 	}
@@ -195,10 +195,10 @@ namespace melua
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
 
-		ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
+		component::ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
 		if( component )
 		{
-			TagsComponent * tagsComponent = dynamic_cast<TagsComponent *>( component.get() );
+			auto * tagsComponent = dynamic_cast< component::TagsComponent * >( component.get() );
 
 			tagsComponent->AddTag( tag, value );
 		}
@@ -216,10 +216,10 @@ namespace melua
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
 
-		ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
+		auto component = objectProxy->object->GetComponent( "Tags" );
 		if( component )
 		{
-			TagsComponent * tagsComponent = dynamic_cast<TagsComponent *>( component.get() );
+			auto * tagsComponent = dynamic_cast< component::TagsComponent * >( component.get() );
 
 			lua_pushboolean( state, tagsComponent->HasTag( tag ) ? 1 : 0 );
 		}
@@ -237,10 +237,10 @@ namespace melua
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
 
-		ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
+		auto component = objectProxy->object->GetComponent( "Tags" );
 		if( component )
 		{
-			TagsComponent * tagsComponent = dynamic_cast<TagsComponent *>( component.get() );
+			auto * tagsComponent = dynamic_cast< component::TagsComponent * >( component.get() );
 
 			lua_pushstring( state, tagsComponent->GetTagValue( tag ).c_str() );
 		}
@@ -299,7 +299,7 @@ namespace melua
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string name = lua_tostring( state, 2 );
 
-		IObjectComponent::ptr component = objectProxy->object->GetComponent( name );
+		auto component = objectProxy->object->GetComponent( name );
 
 		if( !component )
 		{

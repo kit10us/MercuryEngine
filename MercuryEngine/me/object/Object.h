@@ -3,7 +3,7 @@
 #pragma once
 
 #include <me/IOS.h>
-#include <me/object/IObjectComponent.h>
+#include <me/object/component/IObjectComponent.h>
 #include <me/scene/ComponentInstance.h>
 #include <me/render/Geometry.h>
 #include <me/render/RenderInfo.h>
@@ -52,10 +52,10 @@ namespace me
 			std::map< std::string, std::string, unify::CaseInsensitiveLessThanTest > GetTags() const;
 			
 			int GetComponentCount() const;
-			void AddComponent( IObjectComponent::ptr component );
-			void RemoveComponent( IObjectComponent::ptr component );
-			IObjectComponent::ptr GetComponent( int index );
-			IObjectComponent::ptr GetComponent( std::string typeName );
+			void AddComponent( component::IObjectComponent::ptr component );
+			void RemoveComponent( component::IObjectComponent::ptr component );
+			component::IObjectComponent::ptr GetComponent( int index );
+			component::IObjectComponent::ptr GetComponent( std::string typeName );
 			int FindComponent( std::string name ) const;
 
 			void SetEnabled( bool enabled );
@@ -88,7 +88,7 @@ namespace me
 			/// Collect updateables.
 			/// Collect cameras.
 			/// </summary>
-			void Initialize( IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params );
+			void Initialize( component::IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params );
 
 			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans );
 
@@ -109,7 +109,7 @@ namespace me
 			me::scene::IObjectAllocator* m_allocator;
 			scene::IScene * m_scene;
 			bool m_enabled;
-			std::list< ComponentInstance< IObjectComponent::ptr > > m_components;
+			std::list< ComponentInstance< component::IObjectComponent::ptr > > m_components;
 			unify::FrameLite m_frame;
 
 		public:

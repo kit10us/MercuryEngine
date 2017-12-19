@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/RenderGirl.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/render/GeometryCache.h>
 
 using namespace me;

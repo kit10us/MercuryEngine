@@ -6,8 +6,8 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/scene/AutoBBoxSceneComponent.h>
-#include <me/object/BBoxRendererComponent.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/BBoxRendererComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <sg/ShapeCreators.h>
 
 using namespace me;
@@ -43,8 +43,8 @@ void MainScene::OnStart()
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );	 
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
@@ -59,7 +59,7 @@ void MainScene::OnStart()
 	auto progObject = GetObjectAllocator()->NewObject( "cubeDyna" );
 	AddGeometryComponent( progObject, meshProg );
 	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	progObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an XML file...
 	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", unify::Path( "cube.xml" ) ) );
@@ -72,7 +72,7 @@ void MainScene::OnStart()
 		modelMatrix.Scale( 0.10f );
 		AddGeometryComponent( xmlObject, meshXML, modelMatrix );
 	}
-	xmlObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	xmlObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
 	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
@@ -87,13 +87,13 @@ void MainScene::OnStart()
 		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
 		AddGeometryComponent( aseObject, meshASE, modelMatrix );
 	}
-	aseObject->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	aseObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "torus.dae" ) ) );
 	
 	auto daeModel = GetObjectAllocator()->NewObject( "daeModel" );
 	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	daeModel->AddComponent( IObjectComponent::ptr( new object::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	daeModel->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 	{ 
 		using namespace unify;

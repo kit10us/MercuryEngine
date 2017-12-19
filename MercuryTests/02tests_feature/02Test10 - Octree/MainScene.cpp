@@ -3,8 +3,8 @@
 
 #include <MainScene.h>
 #include <me/render/Mesh.h>
-#include <me/object/BBoxRendererComponent.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/BBoxRendererComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <me/scene/AutoBBoxSceneComponent.h>
 #include <me/scene/SceneManager.h>
 #include <me/canvas/CanvasComponent.h>
@@ -41,8 +41,8 @@ void MainScene::OnStart()
 
 	// Add a camera...
 	m_camera = GetObjectAllocator()->NewObject( "camera" );
-	m_camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( m_camera->GetComponent( "camera" ).get() );
+	m_camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( m_camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 
 	float shapesize = 1.0f;

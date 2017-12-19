@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <me/object/ObjectComponent.h>
+#include <me/object/component/ObjectComponent.h>
 #include <me/object/Object.h>
 #include <me/game/IGame.h>
 
@@ -10,7 +10,7 @@ namespace melua
 {
 	namespace component
 	{
-		class ObjectComponent : public me::object::ObjectComponent
+		class ObjectComponent : public me::object::component::ObjectComponent
 		{
 		protected:
 			ObjectComponent( ObjectComponent & component );
@@ -27,7 +27,7 @@ namespace melua
 			void OnSuspend() override;
 			void OnResume() override;
 
-			me::object::IObjectComponent::ptr Duplicate();
+			me::object::component::IObjectComponent::ptr Duplicate();
 
 		public: // IComponent...
 			std::string GetWhat() const;

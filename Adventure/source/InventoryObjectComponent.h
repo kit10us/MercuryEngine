@@ -3,12 +3,12 @@
 
 #pragma once
 
-#include <me/object/ObjectComponent.h>
+#include <me/object/component/ObjectComponent.h>
 #include <unify/Matrix.h>
 
 namespace adventure
 {
-	class InventoryObjectComponent : public me::object::ObjectComponent
+	class InventoryObjectComponent : public me::object::component::ObjectComponent
 	{
 	protected:
 		InventoryObjectComponent( InventoryObjectComponent & component );

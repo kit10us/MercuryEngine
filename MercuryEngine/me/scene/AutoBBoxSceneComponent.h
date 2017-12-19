@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/scene/SceneComponent.h>
-#include <me/object/GeometryComponent.h>
+#include <me/object/component/GeometryComponent.h>
 #include <me/scene/Scene.h>
 #include <me/render/Effect.h>
 #include <unify/Color.h>

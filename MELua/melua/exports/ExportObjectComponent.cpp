@@ -33,7 +33,7 @@ ObjectComponentProxy* CheckUserType< ObjectComponentProxy >( lua_State* state, i
 	return ud;
 }
 
-int PushObjectComponent( lua_State * state, me::object::ObjectComponent::ptr component )
+int PushObjectComponent( lua_State * state, me::object::component::ObjectComponent::ptr component )
 {
 	ObjectComponentProxy ** proxy = (ObjectComponentProxy**)(lua_newuserdata( state, sizeof( ObjectComponentProxy* ) ));
 	*proxy = new ObjectComponentProxy;

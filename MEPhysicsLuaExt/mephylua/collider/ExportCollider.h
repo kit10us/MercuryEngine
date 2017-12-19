@@ -16,11 +16,11 @@ namespace mephylua
 	public:
 		static char* Name();
 
-		ColliderObjectComponentProxy( me::object::IObjectComponent::ptr component );
+		ColliderObjectComponentProxy( me::object::component::IObjectComponent::ptr component );
 
 		~ColliderObjectComponentProxy();
 
-		me::object::IObjectComponent::ptr component;
+		me::object::component::IObjectComponent::ptr component;
 		mephy::collider::ColliderBase* collider;
 	};
 }

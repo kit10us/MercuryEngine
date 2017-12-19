@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/scene/Scene.h>
-#include <me/object/CameraComponent.h>
+#include <me/object/component/CameraComponent.h>
 #include <unify/Frustum.h>
 #include <map>
 

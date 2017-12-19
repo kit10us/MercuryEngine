@@ -120,7 +120,7 @@ ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 	return module;
 }
 
-IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
+me::object::component::IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
 {					
 	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
 
@@ -130,7 +130,7 @@ IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
 
 	lua_State * state = m_state;
 
-	IObjectComponent::ptr module( new component::ObjectComponent( m_game, m_state, luaName, path ) );
+	me::object::component::IObjectComponent::ptr module( new component::ObjectComponent( m_game, m_state, luaName, path ) );
 
 	return module;
 }

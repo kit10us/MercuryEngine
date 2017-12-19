@@ -3,7 +3,7 @@
 
 #include <MEPhysics.h>
 #include <me/game/GameComponent.h>
-#include <me/object/IObjectComponent.h>
+#include <me/object/component/IObjectComponent.h>
 #include <mephy/collider/ColliderBase.h>
 
 namespace mephy
@@ -17,8 +17,8 @@ namespace mephy
 		~GameComponent();
 
 	public:
-		MEPHYSICS_API me::object::IObjectComponent::ptr CreateBoxCollider( unify::V3< float > halfExt );
-		MEPHYSICS_API me::object::IObjectComponent::ptr CreateEntity();
+		MEPHYSICS_API me::object::component::IObjectComponent::ptr CreateBoxCollider( unify::V3< float > halfExt );
+		MEPHYSICS_API me::object::component::IObjectComponent::ptr CreateEntity();
 
 	public: // IGameComponent...
 

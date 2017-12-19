@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <MEPhysics.h>
-#include <me/object/ObjectComponent.h>
+#include <me/object/component/ObjectComponent.h>
 
 #pragma once 
 
 namespace mephy
 {
-	class Entity : public me::object::ObjectComponent
+	class Entity : public me::object::component::ObjectComponent
 	{
 	protected:
 		Entity( Entity & entity );
@@ -23,7 +23,7 @@ namespace mephy
 		const unify::Matrix & GetEarly() const;
 
 	public: // IObjectComponent...
-		me::object::IObjectComponent::ptr Duplicate() override;
+		me::object::component::IObjectComponent::ptr Duplicate() override;
 
 	private:
 		unify::Matrix m_early;

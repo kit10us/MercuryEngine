@@ -321,18 +321,6 @@
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\object\CameraComponent.h">
-      <Filter>me\object</Filter>
-    </ClInclude>
-    <ClInclude Include="me\object\GeometryComponent.h">
-      <Filter>me\object</Filter>
-    </ClInclude>
-    <ClInclude Include="me\object\IObjectComponent.h">
-      <Filter>me\object</Filter>
-    </ClInclude>
-    <ClInclude Include="me\object\BBoxRendererComponent.h">
-      <Filter>me\object</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\ObjectAllocatorComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -377,9 +365,6 @@
     </ClInclude>
     <ClInclude Include="me\scene\DefaultSceneFactory.h">
       <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\object\ObjectActionComponent.h">
-      <Filter>me\object</Filter>
     </ClInclude>
     <ClInclude Include="me\object\action\IObjectAction.h">
       <Filter>me\object\action</Filter>
@@ -696,8 +681,23 @@
     <ClInclude Include="me\object\component\TagsComponent.h">
       <Filter>me\object\component</Filter>
     </ClInclude>
-    <ClInclude Include="me\object\ObjectComponent.h">
-      <Filter>me\object</Filter>
+    <ClInclude Include="me\object\component\GeometryComponent.h">
+      <Filter>me\object\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\component\IObjectComponent.h">
+      <Filter>me\object\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\component\ObjectActionComponent.h">
+      <Filter>me\object\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\component\ObjectComponent.h">
+      <Filter>me\object\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\component\BBoxRendererComponent.h">
+      <Filter>me\object\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\component\CameraComponent.h">
+      <Filter>me\object\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -887,15 +887,6 @@
     <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
-    <ClCompile Include="me\object\GeometryComponent.cpp">
-      <Filter>me\object</Filter>
-    </ClCompile>
-    <ClCompile Include="me\object\BBoxRendererComponent.cpp">
-      <Filter>me\object</Filter>
-    </ClCompile>
-    <ClCompile Include="me\object\CameraComponent.cpp">
-      <Filter>me\object</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\ObjectAllocatorComponent.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
@@ -922,9 +913,6 @@
     </ClCompile>
     <ClCompile Include="me\action\ToggleAction.cpp">
       <Filter>me\action</Filter>
-    </ClCompile>
-    <ClCompile Include="me\object\ObjectActionComponent.cpp">
-      <Filter>me\object</Filter>
     </ClCompile>
     <ClCompile Include="me\dyna\position\DP_Object.cpp">
       <Filter>me\dyna\position</Filter>
@@ -1148,8 +1136,20 @@
     <ClCompile Include="me\object\component\TagsComponent.cpp">
       <Filter>me\object\component</Filter>
     </ClCompile>
-    <ClCompile Include="me\object\ObjectComponent.cpp">
-      <Filter>me\object</Filter>
+    <ClCompile Include="me\object\component\ObjectActionComponent.cpp">
+      <Filter>me\object\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\component\ObjectComponent.cpp">
+      <Filter>me\object\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\component\BBoxRendererComponent.cpp">
+      <Filter>me\object\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\component\CameraComponent.cpp">
+      <Filter>me\object\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\component\GeometryComponent.cpp">
+      <Filter>me\object\component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,11 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <me/object/ObjectActionComponent.h>
+#include <me/object/component/ObjectActionComponent.h>
 
 using namespace me;
 using namespace object;
+using namespace component;
 
 ObjectActionComponent::ObjectActionComponent( ObjectActionComponent & component )
 	: ObjectComponent( component )
@@ -37,7 +38,7 @@ void ObjectActionComponent::OnUpdate( const UpdateParams & params)
 
 IObjectComponent::ptr ObjectActionComponent::Duplicate()
 {
-	return me::object::IObjectComponent::ptr();
+	return IObjectComponent::ptr();
 }
 
 std::string ObjectActionComponent::GetWhat() const

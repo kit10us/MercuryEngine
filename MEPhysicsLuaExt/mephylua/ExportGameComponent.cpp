@@ -27,7 +27,7 @@ namespace mephylua
 		unify::V3< float > ext( CheckV3( state, 2 )->v3 );
 
 		auto physics = g_game->GetComponentT< mephy::GameComponent >();
-		me::object::IObjectComponent::ptr collider( physics->CreateBoxCollider( ext * 0.5f ) );
+		me::object::component::IObjectComponent::ptr collider( physics->CreateBoxCollider( ext * 0.5f ) );
 		return PushUserType< ColliderObjectComponentProxy >( state, { collider } );
 	}
 
@@ -36,7 +36,7 @@ namespace mephylua
 		int argc = lua_gettop( state );
 
 		auto physics = g_game->GetComponentT< mephy::GameComponent >();
-		me::object::IObjectComponent::ptr entity( physics->CreateEntity() );
+		me::object::component::IObjectComponent::ptr entity( physics->CreateEntity() );
 		return PushUserType< EntityObjectComponentProxy >( state, { entity } );
 	}
 

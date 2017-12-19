@@ -78,8 +78,8 @@ void BoxCollider::TestCollision( Entity* entity, const me::UpdateParams & params
 	m_once = false;
 }
 
-me::object::IObjectComponent::ptr BoxCollider::Duplicate()
+me::object::component::IObjectComponent::ptr BoxCollider::Duplicate()
 {
 	auto duplicate = new BoxCollider( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	return me::object::component::IObjectComponent::ptr( duplicate );
 }

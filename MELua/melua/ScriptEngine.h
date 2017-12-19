@@ -30,7 +30,7 @@ namespace melua
 
 		me::game::IGameComponent::ptr LoadGameScript( unify::Path path );
 
-		me::object::IObjectComponent::ptr LoadObjectScript( unify::Path path );
+		me::object::component::IObjectComponent::ptr LoadObjectScript( unify::Path path );
 
 		me::scene::ISceneComponent::ptr LoadSceneScript( unify::Path path );
 

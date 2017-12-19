@@ -19,7 +19,7 @@ namespace mephylua
 		return "MEPhysicCollider";
 	}
 
-	ColliderObjectComponentProxy::ColliderObjectComponentProxy( me::object::IObjectComponent::ptr component )
+	ColliderObjectComponentProxy::ColliderObjectComponentProxy( me::object::component::IObjectComponent::ptr component )
 		: component{ component }
 		, collider{ dynamic_cast<mephy::collider::ColliderBase *>( component.get() ) }
 	{

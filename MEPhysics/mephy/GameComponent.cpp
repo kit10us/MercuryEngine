@@ -23,7 +23,7 @@ GameComponent::~GameComponent()
 {																	 
 }
 
-MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateBoxCollider( unify::V3< float > halfExt )
+MEPHYSICS_API me::object::component::IObjectComponent::ptr GameComponent::CreateBoxCollider( unify::V3< float > halfExt )
 {									   
 	auto sceneManager = GetGame()->GetComponentT< me::scene::SceneManager >();
 
@@ -39,10 +39,10 @@ MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateBoxCollider
 
 	collider::ColliderBase * collider = new collider::BoxCollider( halfExt );
 	physicsSceneComponent->AddCollider( collider );		
-	return me::object::IObjectComponent::ptr( collider );
+	return me::object::component::IObjectComponent::ptr( collider );
 }
 
-MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateEntity()
+MEPHYSICS_API me::object::component::IObjectComponent::ptr GameComponent::CreateEntity()
 {
 	auto sceneManager = GetGame()->GetComponentT< me::scene::SceneManager >();
 
@@ -58,5 +58,5 @@ MEPHYSICS_API me::object::IObjectComponent::ptr GameComponent::CreateEntity()
 	Entity * entity = new Entity();
 	physicsSceneComponent->AddEntity( entity );
 
-	return me::object::IObjectComponent::ptr( entity );
+	return me::object::component::IObjectComponent::ptr( entity );
 }

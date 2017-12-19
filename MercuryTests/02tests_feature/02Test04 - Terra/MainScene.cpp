@@ -5,8 +5,8 @@
 #include <me/render/Mesh.h>
 #include <me/render/Terra.h>
 #include <me/factory/EffectFactories.h>
-#include <me/object/GeometryComponent.h>				
-#include <me/object/CameraComponent.h>
+#include <me/object/component/GeometryComponent.h>				
+#include <me/object/component/CameraComponent.h>
 
 using namespace me;
 using namespace render;
@@ -21,8 +21,8 @@ MainScene::MainScene( me::game::Game * gameInstance )
 void MainScene::OnStart()
 {
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( IObjectComponent::ptr( new CameraComponent() ) );
-	CameraComponent * cameraComponent = unify::polymorphic_downcast< CameraComponent * >( camera->GetComponent( "Camera" ).get() );
+	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "Camera" ).get() );
 	cameraComponent->SetProjection(	unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, GetOS()->GetRenderer(0)->GetViewport().GetSize().AspectRatioWH(), 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 12, -12 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );

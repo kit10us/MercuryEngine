@@ -25,13 +25,13 @@ CameraComponentProxy* CheckCameraComponent( lua_State* state, int index )
 	return ud;
 }
 
-int PushCameraComponent( lua_State * state, me::object::ObjectComponent::ptr component )
+int PushCameraComponent( lua_State * state, me::object::component::ObjectComponent::ptr component )
 {
 	CameraComponentProxy ** proxy = (CameraComponentProxy**)(lua_newuserdata( state, sizeof( CameraComponentProxy* ) ));
 	*proxy = new CameraComponentProxy;
 	luaL_setmetatable( state, "CameraComponent" );
 	(*proxy)->component = component;
-	(*proxy)->camera = dynamic_cast< CameraComponent *>(component.get());
+	(*proxy)->camera = dynamic_cast< component::CameraComponent *>(component.get());
 	return 1;
 }														
 
@@ -115,7 +115,7 @@ int CameraComponent_Constructor( lua_State * state )
 
 	if ( args == 0 )
 	{
-		IObjectComponent::ptr component( new CameraComponent() );
+		component::IObjectComponent::ptr component( new component::CameraComponent() );
 		return PushCameraComponent( state, component );
 	}
 	else if ( args == 1 )
