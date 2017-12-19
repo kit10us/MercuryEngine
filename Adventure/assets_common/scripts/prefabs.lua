@@ -33,6 +33,9 @@ function BuildTree( position )
 	local physics = MEPhysics()
 	local collider = physics:CreateBoxCollider( V3( 2, 1, 2 ) )
 	object:AddComponent( collider:AsObjectComponent() )
+	
+	object:AddTag( "resource" );
+	object:AddTag( "value", "5" );
 end
 
 function BuildHouse( position )

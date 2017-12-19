@@ -115,6 +115,7 @@
     <ClInclude Include="me\object\action\OA_List.h" />
     <ClInclude Include="me\object\BBoxRendererComponent.h" />
     <ClInclude Include="me\object\CameraComponent.h" />
+    <ClInclude Include="me\object\component\TagsComponent.h" />
     <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\GeometryComponent.h" />
     <ClInclude Include="me\object\IObjectComponent.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="me\object\action\OA_List.cpp" />
     <ClCompile Include="me\object\BBoxRendererComponent.cpp" />
     <ClCompile Include="me\object\CameraComponent.cpp" />
+    <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\GeometryComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
     <ClCompile Include="me\object\ObjectActionComponent.cpp" />

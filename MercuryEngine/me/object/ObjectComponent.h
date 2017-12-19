@@ -43,13 +43,16 @@ namespace me
 		public:	// IComponent...
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
-			int GetValueCount() const override;
+			
+			int GetValueCount() const override;			
 			bool ValueExists( std::string ) const override;
 			std::string GetValueName( int index ) const override;
 			int FindValueIndex( std::string name ) const override;
 			std::string GetValue( int index ) const override;
-			std::string GetValue( std::string name ) const override;
 			bool SetValue( int index, std::string value ) override;
+
+			// Help functions...
+			std::string GetValue( std::string name ) const override;
 			bool SetValue( std::string name, std::string value ) override;
 
 

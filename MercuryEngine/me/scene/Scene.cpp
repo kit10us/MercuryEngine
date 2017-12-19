@@ -154,7 +154,8 @@ void Scene::Component_OnEnd()
 		}
 	}
 }
-game::IGame *Scene::GetGame()
+
+game::IGame *Scene::GetGame()
 {
 	return m_game;
 }

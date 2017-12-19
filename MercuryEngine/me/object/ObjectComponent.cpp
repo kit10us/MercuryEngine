@@ -194,12 +194,6 @@ bool ObjectComponent::SetValue( int index, std::string value )
 	}
 }
 
-bool ObjectComponent::SetValue( std::string name, std::string value )
-{
-	int index = FindValueIndex( name );
-	return SetValue( index, value );
-}
-
 std::string ObjectComponent::GetValue( int index ) const
 {
 	switch ( index )
@@ -215,6 +209,12 @@ std::string ObjectComponent::GetValue( int index ) const
 	default:
 		return m_values.GetValue( index - g_ValuesMap.size() );
 	}
+}
+
+bool ObjectComponent::SetValue( std::string name, std::string value )
+{
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
 }
  
 std::string ObjectComponent::GetValue( std::string name ) const

@@ -3,6 +3,7 @@
 
 #include <me/object/Object.h>
 #include <me/object/CameraComponent.h>
+#include <me/object/component/TagsComponent.h>
 
 using namespace me;
 using namespace scene;
@@ -13,10 +14,10 @@ Object::Object()
 	, m_alive{ false }
 	, m_scene{}
 	, m_enabled{ true }
-	, m_tags{}
 	, m_components{}
 	, m_frame{}
 {
+	AddComponent( me::object::IObjectComponent::ptr{ new TagsComponent() } );
 }
 
 Object::Object( Object && objectFrom )
@@ -25,7 +26,6 @@ Object::Object( Object && objectFrom )
 	m_name = objectFrom.m_name;
 	m_scene = objectFrom.m_scene;
 	m_enabled = objectFrom.m_enabled;
-	m_tags = objectFrom.m_tags;
 	m_components = objectFrom.m_components;
 	m_frame = objectFrom.m_frame;
 }
@@ -39,7 +39,6 @@ void Object::CopyFrom( std::string name, Object & objectFrom )
 	m_name = name;
 	m_enabled = objectFrom.m_enabled;
 	m_frame = objectFrom.m_frame;
-	m_tags = objectFrom.m_tags;
 	m_frame = objectFrom.GetFrame();
 
 	for( auto component : objectFrom.m_components )
@@ -61,24 +60,6 @@ void Object::SetName( std::string name )
 std::string Object::GetName() const
 {
 	return m_name;
-}
-
-void Object::AddTag( std::string tag )
-{
-	if( ! HasTag( tag ) )
-	{
-		m_tags.push_back( tag );
-		m_tags.sort();
-	}
-}
-
-bool Object::HasTag( std::string tag ) const
-{	
-	for( auto && item : m_tags )
-	{		  
-		if ( unify::StringIs( item, tag ) ) return true;
-	}
-	return false;
 }
 
 int Object::GetComponentCount() const

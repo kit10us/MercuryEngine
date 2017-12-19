@@ -130,7 +130,9 @@ function Action_Use()
 		local distance = objects[ 1 ].distance
 		if distance < 2 then
 		local objPos = object:GetPosition()
-		print( "    " .. object:GetName() .. " @ " .. distance .. " { " .. tostring( objPos ) .. " }" )
+		print( "   " .. object:GetName() .. " @ " .. distance .. " { " .. tostring( objPos ) .. " }" )
+		print( "   resource: " .. object:HasTag( "resource" ) );
+		print( "   resource count: " .. object:GetTagValue( "value" ) );
 		end
 	end
 	--[[

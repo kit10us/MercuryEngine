@@ -79,6 +79,9 @@
     <Filter Include="me\render">
       <UniqueIdentifier>{ce9c57fc-9afc-4e70-a1cf-2fb55b57fbea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\object\component">
+      <UniqueIdentifier>{5701edfa-1e62-4c61-bb80-aa3d673bec93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -325,9 +328,6 @@
       <Filter>me\object</Filter>
     </ClInclude>
     <ClInclude Include="me\object\IObjectComponent.h">
-      <Filter>me\object</Filter>
-    </ClInclude>
-    <ClInclude Include="me\object\ObjectComponent.h">
       <Filter>me\object</Filter>
     </ClInclude>
     <ClInclude Include="me\object\BBoxRendererComponent.h">
@@ -693,6 +693,12 @@
     <ClInclude Include="me\game\IGameComponent.h">
       <Filter>me\game</Filter>
     </ClInclude>
+    <ClInclude Include="me\object\component\TagsComponent.h">
+      <Filter>me\object\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\object\ObjectComponent.h">
+      <Filter>me\object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -882,9 +888,6 @@
       <Filter>me\scene</Filter>
     </ClCompile>
     <ClCompile Include="me\object\GeometryComponent.cpp">
-      <Filter>me\object</Filter>
-    </ClCompile>
-    <ClCompile Include="me\object\ObjectComponent.cpp">
       <Filter>me\object</Filter>
     </ClCompile>
     <ClCompile Include="me\object\BBoxRendererComponent.cpp">
@@ -1141,6 +1144,12 @@
     </ClCompile>
     <ClCompile Include="me\game\Game.cpp">
       <Filter>me\game</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\component\TagsComponent.cpp">
+      <Filter>me\object\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\object\ObjectComponent.cpp">
+      <Filter>me\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

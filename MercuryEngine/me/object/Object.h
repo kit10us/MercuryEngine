@@ -47,14 +47,9 @@ namespace me
 			std::string GetName() const;
 
 			/// <summary>
-			/// Tags allow us to 'tag' objects, so we can find or filter on them.
+			/// Returns all tags and their values.
 			/// </summary>
-			void AddTag( std::string tag );
-
-			/// <summary>
-			/// Searches for a specific tag, ingnoring case.
-			/// </summary>
-			bool HasTag( std::string tag ) const;
+			std::map< std::string, std::string, unify::CaseInsensitiveLessThanTest > GetTags() const;
 			
 			int GetComponentCount() const;
 			void AddComponent( IObjectComponent::ptr component );
@@ -114,7 +109,6 @@ namespace me
 			me::scene::IObjectAllocator* m_allocator;
 			scene::IScene * m_scene;
 			bool m_enabled;
-			std::list< std::string > m_tags;
 			std::list< ComponentInstance< IObjectComponent::ptr > > m_components;
 			unify::FrameLite m_frame;
 

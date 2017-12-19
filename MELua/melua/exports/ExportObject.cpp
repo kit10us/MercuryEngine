@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/game/Game.h>
+#include <me/object/component/TagsComponent.h>
 
 #include <melua/ScriptEngine.h>
 #include <melua/exports/ExportObject.h>
@@ -184,14 +185,25 @@ namespace melua
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
 		int args = lua_gettop( state );
-		assert( args == 2 );
+
+		std::string value;
+		if( args == 3 )
+		{
+			value = lua_tostring( state, 3 );
+		}
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
 
-		objectProxy->object->AddTag( tag );
+		ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
+		if( component )
+		{
+			TagsComponent * tagsComponent = dynamic_cast<TagsComponent *>( component.get() );
 
-		return 1;
+			tagsComponent->AddTag( tag, value );
+		}
+
+		return 0;
 	}
 
 	int Object_HasTag( lua_State * state )
@@ -204,7 +216,34 @@ namespace melua
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
 
-		lua_pushboolean( state, objectProxy->object->HasTag( tag ) ? 1 : 0 );
+		ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
+		if( component )
+		{
+			TagsComponent * tagsComponent = dynamic_cast<TagsComponent *>( component.get() );
+
+			lua_pushboolean( state, tagsComponent->HasTag( tag ) ? 1 : 0 );
+		}
+
+		return 1;
+	}
+
+	int Object_GetTagValue( lua_State * state )
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
+		int args = lua_gettop( state );
+		assert( args == 2 );
+
+		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
+		std::string tag( lua_tostring( state, 2 ) );
+
+		ObjectComponent::ptr component = objectProxy->object->GetComponent( "Tags" );
+		if( component )
+		{
+			TagsComponent * tagsComponent = dynamic_cast<TagsComponent *>( component.get() );
+
+			lua_pushstring( state, tagsComponent->GetTagValue( tag ).c_str() );
+		}
 
 		return 1;
 	}
@@ -388,6 +427,7 @@ namespace melua
 			{ "GetComponentName", Object_GetComponentTypeName },
 			{ "AddTag", Object_AddTag },
 			{ "HasTag", Object_HasTag },
+			{ "GetTagValue", Object_GetTagValue },
 			{ "GetPosition", Object_GetPosition },
 			{ "GetForward", Object_GetForward },
 			{ "GetUp", Object_GetUp },
