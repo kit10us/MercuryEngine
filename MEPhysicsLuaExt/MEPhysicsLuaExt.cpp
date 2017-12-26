@@ -30,7 +30,7 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml:
 	auto gcse = gameInstance->GetComponent( "Lua" );
 	if( !gcse )
 	{
-		gameInstance->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension (\"Lua\") not found!" );
+		gameInstance->Debug()->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension (\"Lua\") not found!" );
 		return false;
 	}
 	me::game::IGameComponent * se = dynamic_cast<me::game::IGameComponent *>(gcse.get());
@@ -38,7 +38,7 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml:
 	melua::ScriptEngine * luaSE = dynamic_cast<melua::ScriptEngine *>(se);
 	if ( ! luaSE )
 	{
-		gameInstance->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
+		gameInstance->Debug()->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension found, but wrong version (we can't understand how to use it)!" );
 	}
 
 	mephylua::RegisterGameComponent( luaSE );

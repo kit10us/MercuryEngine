@@ -36,6 +36,9 @@
     <ClInclude Include="medx9\VertexConstruct.h">
       <Filter>medx9</Filter>
     </ClInclude>
+    <ClInclude Include="medx9\Debug.h">
+      <Filter>medx9</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="medx9\PixelShader.cpp">
@@ -63,6 +66,9 @@
       <Filter>medx9</Filter>
     </ClCompile>
     <ClCompile Include="medx9\VertexConstruct.cpp">
+      <Filter>medx9</Filter>
+    </ClCompile>
+    <ClCompile Include="medx9\Debug.cpp">
       <Filter>medx9</Filter>
     </ClCompile>
   </ItemGroup>

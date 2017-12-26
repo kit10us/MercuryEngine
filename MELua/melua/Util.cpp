@@ -87,7 +87,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 		auto gameInstance = se->GetGame();
-		gameInstance->ReportError( me::ErrorLevel::Failure, "Lua", error );
+		gameInstance->Debug()->ReportError( me::ErrorLevel::Failure, "Lua", error );
 		luaL_error( L, error.c_str() );
 	}
 

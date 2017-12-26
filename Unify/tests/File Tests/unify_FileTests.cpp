@@ -2,6 +2,7 @@
 #include <iostream>
 #include <conio.h>
 #include <string>
+#include <fstream>
 
 int main( const int argc, const char ** argv )
 {
@@ -82,6 +83,39 @@ int main( const int argc, const char ** argv )
 	std::cout << "Test case: file::IsExtension - 1. Not match." << std::endl;
 	testBool = path.IsExtension( "etx" );
 	std::cout << "result: " << ( testBool ? "true" : "false" ) << "." << std::endl << std::endl;
+
+	{
+		std::cout << "Test case: file::Exists." << std::endl;
+
+		unify::Path file( "test.txt" );
+		std::ofstream stream;
+		stream.open( file.ToString() );
+		stream << "Hello, world!";
+		stream.close();
+		std::cout << "result: " << ( file.Exists() ? "pass" : "failed" ) << std::endl;
+		
+		std::cout << "Test case: file::Rename." << std::endl;
+		unify::Path fileTo( "test_renamed.txt" );
+		if( ! unify::Path::Rename( file, fileTo ) || ! fileTo.Exists() )
+		{
+			std::cout << "  result: fail" << std::endl;
+		}
+		else
+		{
+			std::cout << "  result: pass" << std::endl;
+		}
+
+		std::cout << "Test case: file::Delete." << std::endl;
+		if( !unify::Path::Delete( fileTo ) || fileTo.Exists() )
+		{
+			std::cout << "  result: fail" << std::endl;
+		}
+		else
+		{
+			std::cout << "  result: pass" << std::endl;
+		}
+
+	}
 
 	while( ! _getch() );
 

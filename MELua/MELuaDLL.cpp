@@ -25,11 +25,11 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 	if (element->HasElements("startup"))
 	{
 		startup = unify::Path( element->GetElement("startup")->GetText() );
-		gameInstance->LogLine("MELua Loader: \"startup\" node found, setting startupOnce to \"" + startup.ToString() + "\".");
+		gameInstance->Debug()->LogLine("MELua Loader: \"startup\" node found, setting startupOnce to \"" + startup.ToString() + "\".", 1);
 	}
 	else
 	{
-		gameInstance->LogLine("MELua Loader: \"startup\" node NOT found.");
+		gameInstance->Debug()->LogLine("MELua Loader: \"startup\" node NOT found.", 1);
 	}
 
 	try
@@ -46,11 +46,11 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 	if (element->HasElements("auto"))
 	{
 		autoPath = unify::Path( element->GetElement("auto")->GetText() );
-		gameInstance->LogLine("MELua Loader: \"auto\" node found, setting autoPath to \"" + autoPath.ToString() + "\".");
+		gameInstance->Debug()->LogLine("MELua Loader: \"auto\" node found, setting autoPath to \"" + autoPath.ToString() + "\".",1);
 	}
 	else
 	{
-		gameInstance->LogLine("MELua Loader: \"auto\" node NOT found.");
+		gameInstance->Debug()->LogLine("MELua Loader: \"auto\" node NOT found.",1);
 	}
 
 	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + unify::Path( "scene/" ), startup);

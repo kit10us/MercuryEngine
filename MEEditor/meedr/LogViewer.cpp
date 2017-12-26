@@ -24,7 +24,7 @@ LogViewer::LogViewer( SceneViewer* parent, int nCmdShow, int x, int y, me::game:
 
 LogViewer::~LogViewer()
 {
-	m_game->DetachLogListener( this );
+	m_game->Debug()->DetachLogListener( this );
 }
 
 void LogViewer::Log( std::string text )
@@ -48,7 +48,7 @@ ui::IResult* LogViewer::OnAfterCreate( ui::message::Params params )
 
 	Richtext* logText = GetControl< Richtext* >( "LogText" );
 	logText->SetText( "" );
-	m_game->AttachLogListener( this );
+	m_game->Debug()->AttachLogListener( this );
 	return new Result( 0 );
 }
 
@@ -56,7 +56,7 @@ ui::IResult* LogViewer::OnDestroy( ui::message::Params params )
 {
 	using namespace ui;			  
 
-	m_game->DetachLogListener( this );
+	m_game->Debug()->DetachLogListener( this );
 	GetParent()->SendUserMessage( LOGVIEWER_CLOSED, message::Params{}  );
 	return new Result( 0 );
 }

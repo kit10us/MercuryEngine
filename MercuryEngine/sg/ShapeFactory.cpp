@@ -89,7 +89,7 @@ render::Geometry::ptr ShapeFactory::Produce( unify::Path source, void * data )
 	}
 	catch( std::exception ex )
 	{
-		gameInstance->ReportError( ErrorLevel::Failure, "Shape Factory", ex.what() );
+		gameInstance->Debug()->ReportError( ErrorLevel::Failure, "Shape Factory", ex.what() );
 	}
 
 	

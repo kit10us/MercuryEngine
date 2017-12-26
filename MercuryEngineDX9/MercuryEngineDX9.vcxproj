@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="medx9\Debug.h" />
     <ClInclude Include="medx9\DirectX.h" />
     <ClInclude Include="medx9\IndexBuffer.h" />
     <ClInclude Include="medx9\MEDX9.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="medx9\WindowsOS.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="medx9\Debug.cpp" />
     <ClCompile Include="medx9\IndexBuffer.cpp" />
     <ClCompile Include="medx9\MEDX9.cpp" />
     <ClCompile Include="medx9\PixelShader.cpp" />

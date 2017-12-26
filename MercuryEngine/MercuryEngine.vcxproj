@@ -39,7 +39,6 @@
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
-    <ClInclude Include="me\Debug.h" />
     <ClInclude Include="me\game\Game.h" />
     <ClInclude Include="me\game\GameComponent.h" />
     <ClInclude Include="me\game\IGame.h" />
@@ -91,6 +90,7 @@
     <ClInclude Include="me\game\component\GC_ActionFactory.h" />
     <ClInclude Include="me\IComponent.h" />
     <ClInclude Include="me\IController.h" />
+    <ClInclude Include="me\IDebug.h" />
     <ClInclude Include="me\input\action\IA_Action.h" />
     <ClInclude Include="me\input\action\IA_ObjectAction.h" />
     <ClInclude Include="me\input\ButtonCondition.h" />
@@ -245,7 +245,6 @@
     <ClCompile Include="me\canvas\Layer.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
-    <ClCompile Include="me\Debug.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />

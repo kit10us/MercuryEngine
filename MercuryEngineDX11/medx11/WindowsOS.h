@@ -33,6 +33,9 @@ namespace medx11
 
 		me::game::IGame * GetGame() override;
 
+		me::IDebug * Debug() override;
+		const me::IDebug * Debug() const override;
+
 		void * Feed( std::string target, void * data ) override;
 
 		std::string GetName() const override;
@@ -56,10 +59,6 @@ namespace medx11
 		void Startup() override;
 			
 		void Shutdown() override;
-			
-		void DebugWrite( std::string text ) override;
-
-		void DebugWriteLine( std::string line ) override;
 
 		LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
@@ -69,12 +68,9 @@ namespace medx11
 
 		unify::Path GetRunPath() const override;
 
-		bool DeletePath( unify::Path path ) override;
-
-		void DebugOutput( std::string message ) override;
-
 	private:
 		me::game::IGame * m_game;
+		me::IDebug * m_debug;
 		std::string m_name;
 		unify::Path m_programPath;
 		unify::Path m_runPath;

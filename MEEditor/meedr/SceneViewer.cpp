@@ -476,7 +476,7 @@ void SceneViewer::EditScene( bool edit )
 {
 	using namespace ui;
 
-	m_game->LogLine( "EditScene " + unify::Cast< std::string >( edit ) );
+	m_game->Debug()->LogLine( "EditScene " + unify::Cast< std::string >( edit ), 1 );
 
 	if ( edit )
 	{
@@ -576,7 +576,7 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 		switch ( (Button::Event)message.code )
 		{
 		case Button::Event::Clicked:
-			m_game->LogLine( "here" );
+			m_game->Debug()->LogLine( "here", 1 );
 			EditScene( !m_editingLock );
 			return new Result( 0 );
 		}

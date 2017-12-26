@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/IDebug.h>
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <unify/unify.h>
@@ -81,6 +82,9 @@ namespace me
 
 		virtual game::IGame * GetGame() = 0;
 
+		virtual me::IDebug * Debug() = 0;
+		virtual const me::IDebug * Debug() const = 0;
+
 		virtual void * Feed( std::string target, void * data ) = 0;
 
 		/// <summary>
@@ -133,16 +137,6 @@ namespace me
 		virtual void Shutdown() = 0;
 
 		/// <summary>
-		/// Write debug text, no new line.
-		/// </summary>
-		virtual void DebugWrite( std::string text ) = 0;
-			
-		/// <summary>
-		/// Write a debug message.
-		/// </summary>
-		virtual void DebugWriteLine( std::string line ) = 0;
-
-		/// <summary>
 		/// Asset path manager.
 		/// </summary>
 		virtual unify::AssetPaths & GetAssetPaths() = 0;
@@ -156,15 +150,5 @@ namespace me
 		/// Asset path manager.
 		/// </summary>
 		virtual unify::Path GetRunPath() const = 0;
-
-		/// <summary>
-		/// Delete a path.
-		/// </summary>
-		virtual bool DeletePath( unify::Path path ) = 0;
-
-		/// <summary>
-		/// Output a string for debugging.
-		/// </summary>
-		virtual void DebugOutput( std::string message ) = 0;
 	};
 }

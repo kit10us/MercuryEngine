@@ -699,11 +699,11 @@
     <ClInclude Include="me\object\component\CameraComponent.h">
       <Filter>me\object\component</Filter>
     </ClInclude>
-    <ClInclude Include="me\Debug.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\object\action\OA_SetComponentValue.h">
       <Filter>me\object\action</Filter>
+    </ClInclude>
+    <ClInclude Include="me\IDebug.h">
+      <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1156,9 +1156,6 @@
     </ClCompile>
     <ClCompile Include="me\object\component\GeometryComponent.cpp">
       <Filter>me\object\component</Filter>
-    </ClCompile>
-    <ClCompile Include="me\Debug.cpp">
-      <Filter>me</Filter>
     </ClCompile>
     <ClCompile Include="me\object\action\OA_SetComponentValue.cpp">
       <Filter>me\object\action</Filter>

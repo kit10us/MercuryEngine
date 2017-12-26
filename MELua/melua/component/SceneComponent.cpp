@@ -56,12 +56,12 @@ void SceneComponent::CallMember( std::string function )
 			if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
 			{
 				std::string error = lua_tostring( m_state, -1 );
-				m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script \"" + m_path.ToString() +"\" in function " + function + ": " + error );
+				m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script \"" + m_path.ToString() +"\" in function " + function + ": " + error );
 			}
 		}
 		catch ( std::exception ex )
 		{
-			m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Exception in script \"" + m_path.ToString() +"\" in function " + function + ":\n " + ex.what() );
+			m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Exception in script \"" + m_path.ToString() +"\" in function " + function + ":\n " + ex.what() );
 		}
 	}
 	else
@@ -134,7 +134,7 @@ void SceneComponent::OnAttach( me::scene::IScene * scene )
 	if ( result != LUA_OK )
 	{
 		std::string error = lua_tostring( m_state, -1 );
-		m_game->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
+		m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Failed with script initial call: " + error );
 	}
 
 	CallMember( "OnInit" );

@@ -63,6 +63,7 @@ namespace me
 
 			void SetOS( IOS::ptr os ) final;
 			IOS * GetOS() final;
+			const IOS * GetOS() const final;
 
 			template< typename T >
 			rm::ResourceManagerSimple< T > * GetManager();
@@ -83,14 +84,6 @@ namespace me
 
 			me::input::InputManager * GetInputManager();
 			const me::input::InputManager * GetInputManager() const;
-
-			void LogLine( std::string line, int indent = 2 ) override;
-			void AttachLogListener( ILogListener* listener ) override;
-			void DetachLogListener( ILogListener* litener ) override;
-
-			void ReportError( me::ErrorLevel level, std::string source, std::string error ) override;
-
-			bool HadCriticalError() const override;
 
 			int GetComponentCount() const override;
 			void AddComponent( game::IGameComponent::ptr component ) override;
@@ -119,23 +112,19 @@ namespace me
 
 			std::string SendCommand( size_t id, std::string extra ) override;
 
-			const me::Debug * Debug() const;
+			me::IDebug * Debug() override;
+			const me::IDebug * Debug() const override;
 
 		private:
 			void AddExtension( unify::Path path, const qxml::Element * element );
 
 		private:
-			me::Debug m_debug;
 			std::string m_title;
 			scene::ISceneFactory::ptr m_mainSceneFactory;
 			OSParameters m_osParameters;
 			std::list< me::game::IGameComponent::ptr > m_components;
-
-			bool m_failuresAsCritial;
-
+			
 			unify::Path m_setup;
-			unify::Path m_logFile;
-			std::list< ILogListener* > m_logListeners;
 
 			float m_totalStartupTime;
 
@@ -150,8 +139,6 @@ namespace me
 			unify::Owner::ptr m_inputOwnership;
 
 			std::list< std::shared_ptr< Extension > > m_extensions;
-
-			std::list< std::string > m_criticalErrors;
 
 			std::weak_ptr< UpdateLock > m_exclusiveLock;
 			std::list< std::weak_ptr< UpdateLock > > m_locks;

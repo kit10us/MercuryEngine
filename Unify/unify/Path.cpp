@@ -4,6 +4,7 @@
 #include <unify/Path.h>
 #include <unify/String.h>
 #include <fstream>
+#include <stdio.h>
 
 using namespace unify;
 
@@ -303,4 +304,15 @@ std::ostream & operator<<( std::ostream & os, const Path & path )
 {
 	os << path.ToString();
 	return os;
+}
+
+
+bool Path::Delete( unify::Path path )
+{
+	return remove( (char*)path.ToString().c_str() ) ? false : true;
+}
+
+bool Path::Rename( unify::Path from, unify::Path to )
+{
+	return rename( from.ToString().c_str(), to.ToString().c_str() ) ? false : true;
 }

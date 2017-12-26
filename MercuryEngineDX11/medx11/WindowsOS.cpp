@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <medx11/Debug.h>
 #include <medx11/WindowsOS.h>
 #include <medx11/Renderer.h>
 #include <unify/Exception.h>
@@ -22,6 +23,7 @@ using namespace medx11;
 
 WindowsOS::WindowsOS( game::IGame * gameInstance, const qxml::Element * element )
 	: m_game( gameInstance )
+	, m_debug{ new medx11::Debug{} }
 	, m_hasFocus{}
 	, m_keyboard{}
 	, m_mouse{}
@@ -115,6 +117,16 @@ WindowsOS::~WindowsOS()
 me::game::IGame * WindowsOS::GetGame()
 {
 	return m_game;
+}
+
+me::IDebug * WindowsOS::Debug()
+{
+	return m_debug;
+}
+
+const me::IDebug * WindowsOS::Debug() const
+{
+	return m_debug;
 }
 
 void * WindowsOS::Feed( std::string target, void * data )
@@ -285,16 +297,6 @@ void WindowsOS::Startup()
 
 void WindowsOS::Shutdown()
 {
-}
-
-void WindowsOS::DebugWrite( std::string text )
-{
-	OutputDebugStringA( text.c_str() );
-}
-
-void WindowsOS::DebugWriteLine( std::string line )
-{
-	DebugWrite( line + "\n" );
 }
 
 LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
@@ -578,15 +580,4 @@ unify::Path WindowsOS::GetProgramPath() const
 unify::Path WindowsOS::GetRunPath() const
 {
 	return m_runPath;
-}
-
-bool WindowsOS::DeletePath( unify::Path path )
-{
-	DeleteFileA( (char*)path.ToString().c_str() );
-	return true;
-}
-
-void WindowsOS::DebugOutput( std::string message )
-{
-	OutputDebugStringA( message.c_str() );
 }

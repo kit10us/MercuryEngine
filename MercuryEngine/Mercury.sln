@@ -491,6 +491,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05Test_Scene3D", "05Test_Scene3D", "{CB01984C-F411-4250-BEA9-211BD430BEF6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05Test01 - Add and Remove Objects", "..\MercuryTests\05tests_Scene3D\05Test01 - Add and Remove Objects\05Test01 - Add and Remove Objects.vcxproj", "{D69A7B8F-2294-449F-A48B-56C9086CDAE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3001C03A-F2E7-411A-A332-8DC5477ECBBB} = {3001C03A-F2E7-411A-A332-8DC5477ECBBB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -36,6 +36,9 @@
     <ClInclude Include="medx11\VertexConstruct.h">
       <Filter>medx11</Filter>
     </ClInclude>
+    <ClInclude Include="medx11\Debug.h">
+      <Filter>medx11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="medx11\Renderer.cpp">
@@ -63,6 +66,9 @@
       <Filter>medx11</Filter>
     </ClCompile>
     <ClCompile Include="medx11\VertexConstruct.cpp">
+      <Filter>medx11</Filter>
+    </ClCompile>
+    <ClCompile Include="medx11\Debug.cpp">
       <Filter>medx11</Filter>
     </ClCompile>
   </ItemGroup>

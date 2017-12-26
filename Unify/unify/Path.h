@@ -75,6 +75,16 @@ namespace unify
 
 		std::string ToString() const;
 		std::wstring ToWString() const;
+
+		/// <summary>
+		/// Delete a path.
+		/// </summary>
+		static bool Delete( unify::Path path );
+
+		/// <summary>
+		/// Rename a path.
+		/// </summary>
+		static bool Rename( unify::Path from, unify::Path to );
 	};
 }
 

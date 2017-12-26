@@ -14,6 +14,6 @@ LogMessage::LogMessage( game::IGame * gameInstance, std::string message )
 
 bool LogMessage::Perform()
 {
-	m_game->LogLine(m_message);
+	m_game->Debug()->LogLine( m_message, 1 );
 	return true;
 }

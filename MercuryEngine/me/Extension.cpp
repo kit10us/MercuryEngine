@@ -38,12 +38,20 @@ Extension::~Extension()
 
 bool Extension::Load( game::IGame * gameInstance, const qxml::Element * element )
 {
+	me::IDebug * debug = gameInstance->Debug();
+
 	if ( ! m_source.Exists() )
 	{
-		gameInstance->ReportError( me::ErrorLevel::Critical, "Extension", "Failed to find extenion \"" + m_source.ToString() + "\"!" ); 
+		if( debug )
+		{
+			debug->ReportError( me::ErrorLevel::Critical, "Extension", "Failed to find extenion \"" + m_source.ToString() + "\"!" );
+		}
 	}
 
-	gameInstance->LogLine( "Loading extenion \"" + m_source.ToString() + "\"..." );
+	if( debug )
+	{
+		debug->LogLine( "Loading extenion \"" + m_source.ToString() + "\"...", 1 );
+	}
 
 	m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );
 	if ( ! m_moduleHandle )
@@ -51,11 +59,11 @@ bool Extension::Load( game::IGame * gameInstance, const qxml::Element * element 
 		DWORD errorCode = GetLastError();
 		if ( errorCode == ERROR_MOD_NOT_FOUND )
 		{
-			gameInstance->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
+			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
 		}
 		else
 		{
-			gameInstance->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured (error code: " + unify::Cast< std::string >( errorCode ) + ")!" );
+			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured (error code: " + unify::Cast< std::string >( errorCode ) + ")!" );
 		}
 		return false;
 	}

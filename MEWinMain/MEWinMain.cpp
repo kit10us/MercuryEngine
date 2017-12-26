@@ -66,8 +66,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			}
 			catch( std::exception exception )
 			{
-				gameInstance->LogLine( "Mercury Failure: " );
-				gameInstance->LogLine( exception.what(), 4 );
+				gameInstance->Debug()->LogLine( "Mercury Failure: ", 0 );
+				gameInstance->Debug()->LogLine( exception.what(), 1 );
 				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
 				switch( result )
 				{
@@ -114,8 +114,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			}
 			catch( std::exception exception )
 			{
-				gameInstance->LogLine( "Mercury Failure: " );
-				gameInstance->LogLine( exception.what(), 4 );
+				gameInstance->Debug()->LogLine( "Mercury Failure: ", 0 );
+				gameInstance->Debug()->LogLine( exception.what(), 4 );
 				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
 				switch( result )
 				{
@@ -136,8 +136,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	}
 	catch( std::exception exception )
 	{
-		gameInstance->LogLine( "Mercury Failure: " );
-		gameInstance->LogLine( exception.what(), 4 );
+		gameInstance->Debug()->LogLine( "Mercury Failure: ", 0 );
+		gameInstance->Debug()->LogLine( exception.what(), 4 );
 		MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION );
 		return -1;
 	}

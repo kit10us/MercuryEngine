@@ -5,7 +5,6 @@
 
 #include <me/IOS.h>
 #include <me/Extension.h>
-#include <me/Debug.h>
 #include <me/input/InputManager.h>
 #include <me/render/RenderInfo.h>
 #include <me/render/RenderParams.h>
@@ -23,21 +22,6 @@
 
 namespace me
 {
-	enum class ErrorLevel
-	{
-		Critical, // System is left unstable, we should likely shutdown immediately.
-		Failure, // We have a failure, the module that reported it is likely corrupted.
-		Warning // Error might not be important - state is unknown.
-	};
-
-	class ILogListener
-	{
-	public:
-		~ILogListener() {}
-
-		virtual void Log( std::string text ) = 0;
-	};
-
 	struct UpdateLock
 	{
 		typedef std::shared_ptr< UpdateLock > ptr;
@@ -89,6 +73,21 @@ namespace me
 			virtual IOS * GetOS() = 0;
 
 			/// <summary>
+			/// Get our OS interface.
+			/// </summary>
+			virtual const IOS * GetOS() const = 0;
+
+			/// <summary>
+			/// Get our debugger interface.
+			/// </summary>
+			virtual IDebug * Debug() = 0;
+
+			/// <summary>
+			/// Get our debugger interface.
+			/// </summary>
+			virtual const IDebug * Debug() const = 0;
+
+			/// <summary>
 			/// Get our RenderInfo.
 			/// </summary>
 			virtual const render::RenderInfo & GetRenderInfo() const = 0;
@@ -104,17 +103,6 @@ namespace me
 
 			virtual input::InputManager * GetInputManager() = 0;
 			virtual const input::InputManager * GetInputManager() const = 0;
-
-			virtual void LogLine( std::string line, int indent = 2 ) = 0;
-			virtual void AttachLogListener( ILogListener* listener ) = 0;
-			virtual void DetachLogListener( ILogListener* litener ) = 0;
-
-			/// <summary>
-			/// This is our method of reporting issues, especially from modules.
-			/// </summary>
-			virtual void ReportError( ErrorLevel level, std::string source, std::string error ) = 0;
-
-			virtual bool HadCriticalError() const = 0;
 
 			virtual int GetComponentCount() const = 0;
 			virtual void AddComponent( IGameComponent::ptr component ) = 0;
@@ -178,12 +166,6 @@ namespace me
 			/// Send a command with extra information, and return a string result.
 			/// Strings are used to best support cross DLL, and scripting support. 
 			virtual std::string SendCommand( size_t id, std::string extra ) = 0;
-
-			/// <summary>
-			/// Returns the debug class, which allows standard debugging, and
-			/// pivoting off of debug/release handling.
-			/// </summary>
-			const Debug * Debug() const;
 
 			template< typename T >
 			T* GetComponentT();
