@@ -13,9 +13,11 @@ ColliderBase::ColliderBase( ColliderBase & component )
 {
 }
 
-ColliderBase::ColliderBase( std::string name )
+ColliderBase::ColliderBase( std::string name, bool moveable, float mass )
 	: ObjectComponent( name, true, false )
 	, m_isSolid{ true }
+	, m_moveable{ moveable }
+	, m_mass{ mass }
 {
 }
 
@@ -35,25 +37,68 @@ void ColliderBase::SetOnExitAction( me::object::action::IObjectAction::ptr actio
 	m_isSolid = false;
 }
 
-void ColliderBase::PerformOnEnter( Entity * entity, const me::UpdateParams & params )
+void ColliderBase::SetMoveable( bool moveable )
+{
+	m_moveable = moveable;
+}
+
+bool ColliderBase::GetMoveable() const
+{
+	return m_moveable;
+}
+
+void ColliderBase::SetMass( float mass )
+{
+	m_mass = mass;
+}
+
+float ColliderBase::GetMass() const
+{
+	return m_mass;
+}
+
+void ColliderBase::CaptureEarly()
+{
+	m_early = GetObject()->GetFrame().GetMatrix();
+}
+
+const unify::Matrix & ColliderBase::GetEarly() const
+{
+	return m_early;
+}
+
+void ColliderBase::PerformOnEnter( ColliderBase * collider, const me::UpdateParams & params )
 {
 	if( m_isSolid )
 	{
-		auto earlyPos = entity->GetEarly();
-		entity->GetObject()->GetFrame().SetPosition( earlyPos.GetPosition() );
+		auto earlyPos = collider->GetEarly();
+		collider->GetObject()->GetFrame().SetPosition( earlyPos.GetPosition() );
 
 	}
 
 	if( m_onEnter )
 	{
-		m_onEnter->Perform( entity->GetObject(), params.GetDelta() );
+		m_onEnter->Perform( collider->GetObject(), params.GetDelta() );
 	}
 }
 
-void ColliderBase::PerformOnExit( Entity * entity, const me::UpdateParams & params )
+void ColliderBase::PerformOnExit( ColliderBase * collider, const me::UpdateParams & params )
 {
 	if( m_onExit )
 	{
-		m_onExit->Perform( entity->GetObject(), params.GetDelta() );
+		m_onExit->Perform( collider->GetObject(), params.GetDelta() );
 	}
 }
+
+
+void ColliderBase::OnAttach( me::object::Object * object )
+{
+	ObjectComponent::OnAttach( object );
+}
+
+void ColliderBase::OnDetach( me::object::Object * object )
+{
+	int x( 0 ); x;
+	ObjectComponent::OnDetach( object );
+}
+

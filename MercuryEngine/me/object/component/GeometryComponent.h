@@ -36,8 +36,21 @@ namespace me
 				void SetMatrix( unify::Matrix matrix );
 				unify::Matrix GetMatrix() const;
 
+				void SetVisible( bool visible );
+				bool GetVisible() const;
+
 			public: // IObjectComponent...
 				void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const override;
+
+				int GetValueCount() const;
+				bool ValueExists( std::string name ) const;
+				std::string GetValueName( int index ) const;
+				int FindValueIndex( std::string name ) const;
+				bool SetValue( int index, std::string value );
+				std::string GetValue( int index ) const;
+				bool SetValue( std::string name, std::string value );
+				std::string GetValue( std::string name ) const;
+
 				IObjectComponent::ptr Duplicate() override;
 
 			public: // IComponent...
@@ -47,6 +60,7 @@ namespace me
 			private:
 				render::Geometry::ptr m_geometry;
 				render::GeometryInstanceData::ptr m_geometryInstanceData;
+				bool m_visible;
 			};
 		}
 	}

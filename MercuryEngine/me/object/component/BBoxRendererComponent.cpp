@@ -76,8 +76,11 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 
 				for( auto & geo : m_geomertries )
 				{
+					unify::BBox< float > bbox;
+					geo->GetBBox( bbox, unify::MatrixIdentity() );
+
 					unify::V3< float > corners[8];
-					geo->GetGeometry()->GetBBox().GenerateCorners( corners );
+					bbox.GenerateCorners( corners );
 					modelMatrix.TransformCoords( corners, 8 );
 					m_bbox.AddPoints( corners, 8 );
 				}

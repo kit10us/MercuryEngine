@@ -30,7 +30,6 @@ namespace me
 			object::Object * CopyObject( object::Object * from, std::string name ) override; 
 			void CollectObjects( std::vector< object::Object * > & objects ) override;
 			object::Object * FindObject( std::string name ) override;
-			object::Object* GetObject( size_t index ) override;
 
 			void Update( const UpdateParams & params ) override;
 			void CollectCameras( RenderGirl & renderGirl ) override;

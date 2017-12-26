@@ -29,6 +29,13 @@ namespace melua
 		public: // IComponent...
 			std::string GetWhat() const override;
 
+			int GetValueCount() const override;
+			bool ValueExists( std::string ) const override;
+			std::string GetValueName( int index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			std::string GetValue( int index ) const override;
+			bool SetValue( int index, std::string value ) override;
+
 		private:
 			std::string m_luaName;
 			unify::Path m_path;

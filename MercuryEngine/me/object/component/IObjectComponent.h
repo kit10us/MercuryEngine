@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/render/GeometryCache.h>
 #include <me/IComponent.h>
 #include <me/UpdateParams.h>
 #include <me/Lookup.h>
@@ -13,11 +14,6 @@
 
 namespace me
 {
-	namespace render
-	{
-		class GeometryCache;
-	}
-
 	namespace object
 	{
 		class Object;
@@ -28,9 +24,16 @@ namespace me
 			{
 			public:
 				typedef std::shared_ptr< IObjectComponent > ptr;
+				typedef std::weak_ptr< IObjectComponent > weak_ptr;
 				typedef std::list< IObjectComponent * > cache;
 
 				virtual ~IObjectComponent() {}
+
+				virtual void SetAlias( std::string alias ) = 0;
+				virtual std::string GetAlias() const = 0;
+
+				virtual Object* GetObject() = 0;
+				virtual const Object* GetObject() const = 0;
 
 				/// <summary>
 				/// Adds to a BBox and a matrix (origin) the shape of the object component.

@@ -39,6 +39,7 @@
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
+    <ClInclude Include="me\Debug.h" />
     <ClInclude Include="me\game\Game.h" />
     <ClInclude Include="me\game\GameComponent.h" />
     <ClInclude Include="me\game\IGame.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\object\action\IObjectAction.h" />
     <ClInclude Include="me\object\action\OA_Action.h" />
+    <ClInclude Include="me\object\action\OA_SetComponentValue.h" />
     <ClInclude Include="me\object\action\OA_SetPosition.h" />
     <ClInclude Include="me\object\action\OA_IgnoreResult.h" />
     <ClInclude Include="me\object\action\OA_List.h" />
@@ -243,6 +245,7 @@
     <ClCompile Include="me\canvas\Layer.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
+    <ClCompile Include="me\Debug.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />
@@ -285,6 +288,7 @@
     <ClCompile Include="me\Instancing.cpp" />
     <ClCompile Include="me\Lookup.cpp" />
     <ClCompile Include="me\object\action\OA_Action.cpp" />
+    <ClCompile Include="me\object\action\OA_SetComponentValue.cpp" />
     <ClCompile Include="me\object\action\OA_SetPosition.cpp" />
     <ClCompile Include="me\object\action\OA_IgnoreResult.cpp" />
     <ClCompile Include="me\object\action\OA_List.cpp" />

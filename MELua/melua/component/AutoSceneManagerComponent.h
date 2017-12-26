@@ -20,10 +20,19 @@ namespace melua
 			void OnSceneStart( me::scene::IScene * scene ) override;
 			void OnSceneEnd( me::scene::IScene * scene ) override;
 
+		public: // IComponent
+			int GetValueCount() const override;
+			bool ValueExists( std::string ) const override;
+			std::string GetValueName( int index ) const override;
+			int FindValueIndex( std::string name ) const override;
+			std::string GetValue( int index ) const override;
+			bool SetValue( int index, std::string value ) override;
+
 		private:
+
 			melua::ScriptEngine * m_scriptEngine;
 			unify::Path m_autoPath;
-			unify::Path m_onceBeforeStart;
+			unify::Path m_onceBeforeStartScript;
 			bool m_once;
 		};
 	}

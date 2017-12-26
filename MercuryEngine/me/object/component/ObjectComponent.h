@@ -24,13 +24,17 @@ namespace me
 				ObjectComponent( std::string type, bool update, bool render );
 				~ObjectComponent();
 
-				Object* GetObject();
-				const Object* GetObject() const;
 
 			protected:
 				void AddInterface( std::string name, me::IThing* ptr );
 
 			public:	 // IObjectComponent...
+				void SetAlias( std::string alias ) override;
+				std::string GetAlias() const override;
+
+				Object* GetObject();
+				const Object* GetObject() const;
+
 				void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const override;
 				bool Updateable() const override;
 				bool Renderable() const override;
@@ -66,6 +70,7 @@ namespace me
 			protected:
 				object::Object * m_object;
 				std::string m_typeName;
+				std::string m_alias;
 				bool m_enabled;
 				bool m_update;
 				bool m_render;

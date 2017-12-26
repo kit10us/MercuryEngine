@@ -21,8 +21,8 @@ BoxCollider::BoxCollider( BoxCollider & component )
 {
 }
 
-BoxCollider::BoxCollider( unify::V3< float > halfExt )
-	: ColliderBase( Name() )
+BoxCollider::BoxCollider( unify::V3< float > halfExt, bool moveable, float mass )
+	: ColliderBase( Name(), moveable, mass )
 	, m_halfExt{ halfExt }
 	, m_bbox{ halfExt, halfExt * -1.0f }
 	, m_once{ false }
@@ -33,7 +33,7 @@ BoxCollider::~BoxCollider()
 {
 }
 
-void BoxCollider::TestCollision( Entity* entity, const me::UpdateParams & params )
+void BoxCollider::TestCollision( ColliderBase * entity, const me::UpdateParams & params )
 {
 	// Get entity posiitons...
 	auto earlyPos = entity->GetEarly().GetPosition();

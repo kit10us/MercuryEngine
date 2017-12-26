@@ -15,10 +15,10 @@ namespace mephy
 		public:
 			static char* Name();
 
-			BoxCollider( unify::V3< float > halfExt );
+			BoxCollider( unify::V3< float > halfExt, bool moveable = false, float mass = 0.0f );
 			~BoxCollider();
 
-			void TestCollision( Entity* entity, const me::UpdateParams & params ) override;
+			void TestCollision( ColliderBase * collider, const me::UpdateParams & params ) override;
 
 		public: // IObjectComponent...
 			me::object::component::IObjectComponent::ptr Duplicate() override;

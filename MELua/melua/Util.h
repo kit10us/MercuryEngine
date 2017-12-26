@@ -62,32 +62,32 @@ namespace melua
 	T Check( lua_State *L, int index );
 
 	template<>
-	bool Check( lua_State *L, int index );
+	MELUADLL_API bool Check( lua_State *L, int index );
 
 	template<>
-	int Check( lua_State *L, int index );
+	MELUADLL_API int Check( lua_State *L, int index );
 
 	template<>
-	float Check( lua_State *L, int index );
+	MELUADLL_API float Check( lua_State *L, int index );
 
 	template<>
-	std::string Check( lua_State *L, int index );
+	MELUADLL_API std::string Check( lua_State *L, int index );
 
 	///////////////////////////////// Pushes....
 
 
 	template<>
-	int Push( lua_State * L, bool value );
+	MELUADLL_API int Push( lua_State * L, bool value );
 
 	template<>
-	int Push( lua_State * L, std::string value );
+	MELUADLL_API int Push( lua_State * L, std::string value );
 
 	template<>
-	int Push( lua_State * L, float value );
+	MELUADLL_API int Push( lua_State * L, float value );
 
 	template<>
-	int Push( lua_State * L, int value );
+	MELUADLL_API int Push( lua_State * L, int value );
 
 	template<>
-	int Push( lua_State * L, unsigned int value );
+	MELUADLL_API int Push( lua_State * L, unsigned int value );
 }

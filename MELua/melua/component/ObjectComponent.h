@@ -36,9 +36,7 @@ namespace melua
 			std::string GetValueName( int index ) const override;
 			int FindValueIndex( std::string name ) const override;
 			std::string GetValue( int index ) const override;
-			std::string GetValue( std::string name ) const override;
 			bool SetValue( int index, std::string value ) override;
-			bool SetValue( std::string name, std::string value ) override;
 
 		private:
 			void CallMember( std::string function );

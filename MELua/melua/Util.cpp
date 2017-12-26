@@ -91,6 +91,29 @@ namespace melua
 		luaL_error( L, error.c_str() );
 	}
 
+	template<>
+	bool Check( lua_State *L, int index )
+	{
+		return lua_toboolean( L, index ) ? true : false;
+	}
+
+	template<>
+	int Check( lua_State *L, int index )
+	{
+		return (int)lua_tonumber( L, index );
+	}
+
+	template<>
+	float Check( lua_State *L, int index )
+	{
+		return (float)lua_tonumber( L, index );
+	}
+
+	template<>
+	std::string Check( lua_State *L, int index )
+	{
+		return lua_tostring( L, index );
+	}
 
 	template<>
 	int Push( lua_State * L, bool value )
@@ -125,31 +148,6 @@ namespace melua
 	{
 		lua_pushboolean( L, value ? 1 : 0 );
 		return 1;
-	}
-
-
-	template<>
-	bool Check( lua_State *L, int index )
-	{
-		return lua_toboolean( L, index ) ? true : false;
-	}
-
-	template<>
-	int Check( lua_State *L, int index )
-	{
-		return (int)lua_tonumber( L, index );
-	}
-
-	template<>
-	float Check( lua_State *L, int index )
-	{
-		return (float)lua_tonumber( L, index );
-	}
-
-	template<>
-	std::string Check( lua_State *L, int index )
-	{
-		return lua_tostring( L, index );
 	}
 }
 

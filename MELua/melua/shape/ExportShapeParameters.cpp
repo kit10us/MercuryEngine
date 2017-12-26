@@ -35,8 +35,8 @@ ShapeParameters * CheckShapeParameters( lua_State* state, int index )
 
 int ShapeParameters_SetDiffuse( lua_State* state )
 {
-	int args = lua_gettop( state );
-	assert( args == 2 );
+	auto * se = ScriptEngine::GetInstance();
+	se->AssertTop( 2 );
 
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
 	unify::ColorUnit diffuse = CheckColor( state, 2 )->color;   
@@ -47,8 +47,8 @@ int ShapeParameters_SetDiffuse( lua_State* state )
 
 int ShapeParameters_SetSpecular( lua_State* state )
 {
-	int args = lua_gettop( state );
-	assert( args == 2 );
+	auto * se = ScriptEngine::GetInstance();
+	se->AssertTop( 2 );
 
 	ShapeParameters * parameters = CheckShapeParameters( state, 1 );
 	unify::ColorUnit specular = CheckColor( state, 2 )->color;

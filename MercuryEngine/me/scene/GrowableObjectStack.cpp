@@ -86,25 +86,6 @@ Object * GrowableObjectStack::FindObject( std::string name )
 	return object;
 }
 
-Object * GrowableObjectStack::GetObject( size_t index )
-{
-	// Find stack
-	for ( auto && stack : m_stacks )
-	{
-		if ( index >= stack->Count() )
-		{
-			index -= stack->Count();
-			continue;
-		}
-		else
-		{
-			return stack->GetObject( index );
-		}
-	}
-
-	return nullptr;
-}
-
 void GrowableObjectStack::DirtyObject( object::Object * object )
 {
 	assert( "We don't own objects!" == 0 );

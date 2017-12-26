@@ -11,14 +11,16 @@ namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
 		{ "typename", 0 },
-		{ "enabled", 1 },
-		{ "update", 2 },
-		{ "render", 3 }
+		{ "alias", 1 },
+		{ "enabled", 2 },
+		{ "update", 3 },
+		{ "render", 4 }
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
 		{ "typename" },
+		{ "alias" },
 		{ "enabled" },
 		{ "update" },
 		{ "render" }
@@ -64,6 +66,16 @@ ObjectComponent::ObjectComponent( std::string typeName, bool update, bool render
 
 ObjectComponent::~ObjectComponent()
 {
+}
+
+void ObjectComponent::SetAlias( std::string alias )
+{
+	m_alias = alias;
+}
+
+std::string ObjectComponent::GetAlias() const
+{
+	return m_alias;
 }
 
 Object* ObjectComponent::GetObject()
@@ -181,13 +193,16 @@ bool ObjectComponent::SetValue( int index, std::string value )
 	{
 	case 0:
 		return false;
-	case 1:
-		m_enabled = unify::Cast< bool >( value );
+	case 1: 
+		m_alias = value;
 		return true;
 	case 2:
-		m_update = unify::Cast< bool >( value );
+		m_enabled = unify::Cast< bool >( value );
 		return true;
 	case 3:
+		m_update = unify::Cast< bool >( value );
+		return true;
+	case 4:
 		m_render = unify::Cast< bool >( value );
 		return true;
 	default:
@@ -202,10 +217,12 @@ std::string ObjectComponent::GetValue( int index ) const
 	case 0:
 		return m_typeName;
 	case 1:
-		return unify::Cast< std::string >( m_enabled );
+		return m_alias;
 	case 2:
-		return unify::Cast< std::string >( m_update );
+		return unify::Cast< std::string >( m_enabled );
 	case 3:
+		return unify::Cast< std::string >( m_update );
+	case 4:
 		return unify::Cast< std::string >( m_render );
 	default:
 		return m_values.GetValue( index - g_ValuesMap.size() );

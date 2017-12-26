@@ -17,8 +17,7 @@ namespace mephy
 		~GameComponent();
 
 	public:
-		MEPHYSICS_API me::object::component::IObjectComponent::ptr CreateBoxCollider( unify::V3< float > halfExt );
-		MEPHYSICS_API me::object::component::IObjectComponent::ptr CreateEntity();
+		MEPHYSICS_API me::object::component::IObjectComponent::ptr CreateBoxCollider( unify::V3< float > halfExt, bool moveable = false, float mass = 0.0f );
 
 	public: // IGameComponent...
 

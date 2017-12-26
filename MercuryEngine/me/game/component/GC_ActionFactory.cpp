@@ -17,6 +17,7 @@
 #include <me/object/action/OA_Action.h>
 #include <me/object/action/OA_IgnoreResult.h>
 #include <me/object/action/OA_SetPosition.h>
+#include <me/object/action/OA_SetComponentValue.h>
 #include <me/object/action/OA_List.h>
 
 // Dynas...
@@ -108,6 +109,16 @@ object::action::IObjectAction::ptr ActionFactory::CreateObjectAction( const qxml
 			auto objectAction = new object::action::SetPosition( position );
 			return object::action::IObjectAction::ptr( objectAction );
 		}
+	}
+	else if( element->IsTagName( "SetComponentValue" ) )
+	{
+		std::string typeName = element->GetAttribute< std::string >( "type" );
+		std::string alias = element->GetAttributeElse< std::string >( "alias", std::string() );
+		std::string valueName = element->GetAttribute< std::string >( "valueName" );
+		std::string value = element->GetAttribute< std::string >( "value" );
+
+		auto objectAction = new object::action::SetComponentValue( typeName, alias, valueName, value );
+		return object::action::IObjectAction::ptr( objectAction );
 	}
 
 	return object::action::IObjectAction::ptr();

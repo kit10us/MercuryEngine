@@ -109,12 +109,6 @@ bool SceneManagerComponent::SetValue(int index, std::string value)
 	}
 }
 
-bool SceneManagerComponent::SetValue(std::string name, std::string value)
-{
-	int index = FindValueIndex(name);
-	return SetValue(index, value);
-}
-
 std::string SceneManagerComponent::GetValue(int index) const
 {
 	switch (index)
@@ -126,6 +120,12 @@ std::string SceneManagerComponent::GetValue(int index) const
 	default:
 		return m_values.GetValue(index - g_ValuesMap.size());
 	}
+}
+
+bool SceneManagerComponent::SetValue( std::string name, std::string value )
+{
+	int index = FindValueIndex( name );
+	return SetValue( index, value );
 }
 
 std::string SceneManagerComponent::GetValue(std::string name) const

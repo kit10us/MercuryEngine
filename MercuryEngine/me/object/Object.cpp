@@ -96,24 +96,42 @@ component::IObjectComponent::ptr Object::GetComponent( int index )
 	return nullptr;
 }
 
-component::IObjectComponent::ptr Object::GetComponent( std::string name )
+component::IObjectComponent::ptr Object::GetComponent( std::string typeName, std::string alias )
 {
-	int index = FindComponent( name );
-	if ( index == -1 ) return nullptr;
-	return GetComponent( index );
+	int componentIndex = FindComponent( typeName, alias );
+	return GetComponent( componentIndex );
 }
-	  
-int Object::FindComponent( std::string typeName ) const
+  
+int Object::FindComponent( std::string typeName, std::string alias ) const
 {
 	int i = 0;
 	for( auto && component : m_components )
 	{
-		if( unify::StringIs( component.Component()->GetTypeName(), typeName ) ) return i;
+		if( unify::StringIs( component.Component()->GetTypeName(), typeName ) )
+		{
+			if( alias.empty() )
+			{
+				return i;
+			}
+			else if( unify::StringIs( component.Component()->GetAlias(), alias ) )
+			{
+				return i;
+			}
+		}
 		++i;
 	}		
 	return -1;
-}				
-	   
+}
+
+void Object::ClearComponents()
+{
+	for( auto & itr : m_components )
+	{
+		itr.Component()->OnDetach( this );
+	}
+	m_components.clear();
+}
+
 void Object::SetEnabled( bool enabled )
 {
     m_enabled = enabled;

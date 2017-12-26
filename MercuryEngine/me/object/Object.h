@@ -55,8 +55,9 @@ namespace me
 			void AddComponent( component::IObjectComponent::ptr component );
 			void RemoveComponent( component::IObjectComponent::ptr component );
 			component::IObjectComponent::ptr GetComponent( int index );
-			component::IObjectComponent::ptr GetComponent( std::string typeName );
-			int FindComponent( std::string name ) const;
+			component::IObjectComponent::ptr GetComponent( std::string typeName, std::string alias = std::string() );
+			int FindComponent( std::string name, std::string alias = std::string() ) const;
+			void ClearComponents();
 
 			void SetEnabled( bool enabled );
 			bool IsEnabled() const;

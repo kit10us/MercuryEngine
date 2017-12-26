@@ -238,10 +238,12 @@ void SceneViewer::UpdateObjectList()
 	{
 		return;
 	}
+
+	std::vector< me::object::Object * > objects;
+	scene->GetObjectAllocator()->CollectObjects( objects );
 														
-	for ( size_t i = 0; i < scene->ObjectCount(); i++ )
+	for ( auto * object : objects )
 	{
-		auto object = scene->GetObjectAllocator()->GetObject( i );
 		objectListbox->AddString( object->GetName() );
 	}
 
@@ -265,7 +267,14 @@ void SceneViewer::UpdateObject_All()
 	}
 
 	int objectIndex = objectListbox->GetCurSel();
-	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
+
+	me::object::Object * object = nullptr;
+	if( objectIndex >= 0 )
+	{
+		std::vector< me::object::Object * > objects;
+		scene->GetObjectAllocator()->CollectObjects( objects );
+		object = objects[ objectIndex ];
+	}
 
 	if ( ! object )
 	{
@@ -296,7 +305,14 @@ void SceneViewer::UpdateObject_Position( bool force )
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetCurrentScene();
 	int objectIndex = objectListbox->GetCurSel();
-	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
+
+	me::object::Object * object = nullptr;
+	if( objectIndex >= 0 )
+	{
+		std::vector< me::object::Object * > objects;
+		scene->GetObjectAllocator()->CollectObjects( objects );
+		object = objects[ objectIndex ];
+	}
 							   
 	if ( force || ! m_editingLock )
 	{ // Shouldn't be editing
@@ -343,8 +359,16 @@ void SceneViewer::UpdateObject_Components( bool force )
 				  		 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetCurrentScene();
+	
 	int objectIndex = objectListbox->GetCurSel();
-	me::object::Object * object = objectIndex == -1 ? nullptr : scene->GetObjectAllocator()->GetObject( objectIndex );
+
+	me::object::Object * object = nullptr;
+	if( objectIndex >= 0 )
+	{
+		std::vector< me::object::Object * > objects;
+		scene->GetObjectAllocator()->CollectObjects( objects );
+		object = objects[objectIndex];
+	}
 
 	if ( object == nullptr )
 	{
@@ -385,8 +409,18 @@ void SceneViewer::UpdateObject_ComponentValues()
 
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetCurrentScene();
+	
 	int objectIndex = objectListbox->GetCurSel();
-	auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
+
+	me::object::Object * object = nullptr;
+	if( objectIndex >= 0 )
+	{
+		std::vector< me::object::Object * > objects;
+		scene->GetObjectAllocator()->CollectObjects( objects );
+		object = objects[objectIndex];
+	}
+
+	
 	int componentIndex = components->GetCurSel();
 	if ( componentIndex == -1 )
 	{
@@ -413,7 +447,15 @@ void SceneViewer::OpenObjectComponent()
 	int sceneIndex = sceneCombobox->GetCurSel();
 	auto scene = m_sceneManager->GetCurrentScene();
 	int objectIndex = objectListbox->GetCurSel();
-	auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
+	
+	me::object::Object * object = nullptr;
+	if( objectIndex >= 0 )
+	{
+		std::vector< me::object::Object * > objects;
+		scene->GetObjectAllocator()->CollectObjects( objects );
+		object = objects[objectIndex];
+	}
+
 	int componentIndex = components->GetCurSel();
 	auto component = object->GetComponent( componentIndex );
 	if ( !component )
@@ -558,7 +600,15 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				int sceneIndex = sceneCombobox->GetCurSel();
 				auto scene = m_sceneManager->GetCurrentScene();
 				int objectIndex = objectListbox->GetCurSel();
-				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
+
+				me::object::Object * object = nullptr;
+				if( objectIndex >= 0 )
+				{
+					std::vector< me::object::Object * > objects;
+					scene->GetObjectAllocator()->CollectObjects( objects );
+					object = objects[objectIndex];
+				}
+
 				auto position( object->GetFrame().GetPosition() );
 				position.x = x;
 				object->GetFrame().SetPosition( position );
@@ -580,7 +630,15 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				int sceneIndex = sceneCombobox->GetCurSel();
 				auto scene = m_sceneManager->GetCurrentScene();
 				int objectIndex = objectListbox->GetCurSel();
-				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
+				
+				me::object::Object * object = nullptr;
+				if( objectIndex >= 0 )
+				{
+					std::vector< me::object::Object * > objects;
+					scene->GetObjectAllocator()->CollectObjects( objects );
+					object = objects[objectIndex];
+				}
+
 				auto position( object->GetFrame().GetPosition() );
 				position.y = y;
 				object->GetFrame().SetPosition( position );
@@ -602,7 +660,15 @@ ui::IResult* SceneViewer::OnControlCommand( ui::message::ControlCommand message 
 				int sceneIndex = sceneCombobox->GetCurSel();
 				auto scene = m_sceneManager->GetCurrentScene();
 				int objectIndex = objectListbox->GetCurSel();
-				me::object::Object * object = scene->GetObjectAllocator()->GetObject( objectIndex );
+				
+				me::object::Object * object = nullptr;
+				if( objectIndex >= 0 )
+				{
+					std::vector< me::object::Object * > objects;
+					scene->GetObjectAllocator()->CollectObjects( objects );
+					object = objects[objectIndex];
+				}
+
 				auto position( object->GetFrame().GetPosition() );
 				position.z = z;
 				object->GetFrame().SetPosition( position );
@@ -645,7 +711,15 @@ ui::IResult* SceneViewer::OnNotify( ui::message::Notify message )
 			int sceneIndex = sceneCombobox->GetCurSel();
 			auto scene = m_sceneManager->GetCurrentScene();
 			int objectIndex = objectListbox->GetCurSel();
-			auto object = scene->GetObjectAllocator()->GetObject( objectIndex );
+			
+			me::object::Object * object = nullptr;
+			if( objectIndex >= 0 )
+			{
+				std::vector< me::object::Object * > objects;
+				scene->GetObjectAllocator()->CollectObjects( objects );
+				object = objects[objectIndex];
+			}
+
 			int componentIndex = components->GetCurSel();
 			auto component = object->GetComponent( componentIndex );
 

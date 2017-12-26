@@ -149,7 +149,6 @@
     <ClInclude Include="MEPhysics.h" />
     <ClInclude Include="mephy\collider\BoxCollider.h" />
     <ClInclude Include="mephy\collider\ColliderBase.h" />
-    <ClInclude Include="mephy\Entity.h" />
     <ClInclude Include="mephy\GameComponent.h" />
     <ClInclude Include="mephy\SceneComponent.h" />
   </ItemGroup>
@@ -158,7 +157,6 @@
     <ClCompile Include="MEPhysics.cpp" />
     <ClCompile Include="mephy\collider\BoxCollider.cpp" />
     <ClCompile Include="mephy\collider\ColliderBase.cpp" />
-    <ClCompile Include="mephy\Entity.cpp" />
     <ClCompile Include="mephy\GameComponent.cpp" />
     <ClCompile Include="mephy\SceneComponent.cpp" />
   </ItemGroup>

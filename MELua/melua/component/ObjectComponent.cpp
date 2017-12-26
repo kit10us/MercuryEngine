@@ -12,11 +12,13 @@ using namespace component;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
-		{ "path", 0 },
+		{ "luaName", 0 },
+		{ "path", 1 },
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
+		{ "luaName" },
 		{ "path" },
 	};
 }
@@ -203,34 +205,29 @@ bool ObjectComponent::SetValue( int index, std::string value )
 {
 	switch ( index )
 	{
-	default:
-		return false;
 	case 0:
+		return false;
+
+	case 1:
+		return false;
+
+	default:
 		return false;
 	}
 	return true;
-}
-
-bool ObjectComponent::SetValue( std::string name, std::string value )
-{
-	int index = FindValueIndex( name );
-	return SetValue( index, value );
 }
 
 std::string ObjectComponent::GetValue( int index ) const
 {
 	switch ( index )
 	{
+	case 0:
+		return m_luaName;
+
+	case 1:
+		return m_path.ToString();
+
 	default:
 		return std::string();
-	case 0:
-		return m_path.ToString();
 	}
 }
- 
-std::string ObjectComponent::GetValue( std::string name ) const
-{
-	int index = FindValueIndex( name );
-	return GetValue( index );
-}
-			  

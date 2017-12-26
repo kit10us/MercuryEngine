@@ -14,11 +14,13 @@ using namespace me;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
-		{ "path", 0 },
+		{ "luaName", 0 },
+		{ "path", 1 },
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
+		{ "luaName" },
 		{ "path" },
 	};
 }
@@ -179,4 +181,88 @@ void SceneComponent::OnEnd()
 std::string SceneComponent::GetWhat() const
 {
 	return std::string();
+}
+
+int SceneComponent::GetValueCount() const
+{
+	return me::scene::SceneComponent::GetValueCount() + (int)g_ValuesList.size();
+}
+
+bool SceneComponent::ValueExists( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if( itr != g_ValuesMap.end() )
+	{
+		return true;
+	}
+	return me::scene::SceneComponent::ValueExists( name );
+}
+
+std::string SceneComponent::GetValueName( int index ) const
+{
+	if( index < me::scene::SceneComponent::GetValueCount() )
+	{
+		return me::scene::SceneComponent::GetValueName( index );
+	}
+
+	int localIndex = index - me::scene::SceneComponent::GetValueCount();
+	if( localIndex < (int)g_ValuesList.size() )
+	{
+		return g_ValuesList[localIndex];
+	}
+
+	return std::string();
+}
+
+int SceneComponent::FindValueIndex( std::string name ) const
+{
+	auto && itr = g_ValuesMap.find( name );
+	if( itr != g_ValuesMap.end() )
+	{
+		return itr->second;
+	}
+
+	return me::scene::SceneComponent::FindValueIndex( name );
+}
+
+bool SceneComponent::SetValue( int index, std::string value )
+{
+	if( index < me::scene::SceneComponent::GetValueCount() )
+	{
+		return me::scene::SceneComponent::SetValue( index, value );
+	}
+
+	int localIndex = index - me::scene::SceneComponent::GetValueCount();
+	switch( localIndex )
+	{
+	case 0:
+		return false;
+
+	case 1:
+		return false;
+
+	default:
+		return false;
+	}
+}
+
+std::string SceneComponent::GetValue( int index ) const
+{
+	if( index < me::scene::SceneComponent::GetValueCount() )
+	{
+		return me::scene::SceneComponent::GetValue( index );
+	}
+
+	int localIndex = index - me::scene::SceneComponent::GetValueCount();
+	switch( localIndex )
+	{
+	case 0:
+		return m_luaName;
+
+	case 1:
+		return m_path.ToString();
+
+	default:
+		return std::string();
+	}
 }

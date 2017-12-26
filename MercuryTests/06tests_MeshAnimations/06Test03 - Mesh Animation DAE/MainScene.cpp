@@ -41,8 +41,8 @@ void MainScene::OnStart()
 
 	auto object = GetObjectAllocator()->NewObject( "object" );
 
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "Mickey_Mouse/Mickey_Mouse.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "windmill1_01.dae" ) ) );
+	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "Mickey_Mouse/Mickey_Mouse.dae" ) ) );
+	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "windmill1_01.dae" ) ) );
 	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "CubeSphereCylinder.dae" ) ) );
 	
 	

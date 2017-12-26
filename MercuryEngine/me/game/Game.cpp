@@ -2,15 +2,15 @@
 // All Rights Reserved
 
 #include <me/game/Game.h>
+#include <me/game/component/GC_ActionFactory.h>
+#include <me/exception/FailedToCreate.h>
+#include <me/scene/SceneManager.h>
+#include <me/scene/DefaultSceneFactory.h>
 #include <me/factory/EffectFactories.h>
 #include <me/factory/TextureFactory.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/GeometryFactory.h>
-#include <me/exception/FailedToCreate.h>
-#include <me/scene/SceneManager.h>
-#include <me/scene/DefaultSceneFactory.h>
-#include <me/game/component/GC_ActionFactory.h>
 #include <sg/ShapeFactory.h>
 #include <fstream>
 #include <chrono>
@@ -613,27 +613,6 @@ const input::InputManager * Game::GetInputManager() const
 	return &m_inputManager;
 }
 
-void Game::AddExtension( unify::Path path, const qxml::Element * element )
-{
-	Extension * extension{ new Extension( path ) };
-
-	try
-	{
-		if ( ! extension->Load( this, element ) )
-		{
-			delete extension;
-			ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
-		}
-	}
-	catch ( std::exception ex )
-	{
-		delete extension;
-		ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "! Error:\n" + ex.what() );
-	}
-
-	m_extensions.push_back( std::shared_ptr< Extension >{ extension } );
-}
-
 void Game::LogLine( std::string line, int indent )
 {
 	using namespace std;
@@ -962,4 +941,30 @@ std::string Game::SendCommand( size_t id, std::string extra )
 	}
 
 	return lastResult;
+}
+
+const Debug * Game::Debug() const
+{
+	return &m_debug;
+}
+
+void Game::AddExtension( unify::Path path, const qxml::Element * element )
+{
+	Extension * extension{ new Extension( path ) };
+
+	try
+	{
+		if( !extension->Load( this, element ) )
+		{
+			delete extension;
+			ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
+		}
+	}
+	catch( std::exception ex )
+	{
+		delete extension;
+		ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "! Error:\n" + ex.what() );
+	}
+
+	m_extensions.push_back( std::shared_ptr< Extension >{ extension } );
 }

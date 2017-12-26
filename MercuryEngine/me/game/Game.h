@@ -3,9 +3,9 @@
 
 #pragma once
 
-#include <me/render/Geometry.h>
-#include <me/input/IInputCondition.h>
 #include <me/game/IGame.h>
+#include <me/input/IInputCondition.h>
+#include <me/render/Geometry.h>
 #include <me/render/Display.h>
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
@@ -119,10 +119,13 @@ namespace me
 
 			std::string SendCommand( size_t id, std::string extra ) override;
 
+			const me::Debug * Debug() const;
+
 		private:
 			void AddExtension( unify::Path path, const qxml::Element * element );
 
 		private:
+			me::Debug m_debug;
 			std::string m_title;
 			scene::ISceneFactory::ptr m_mainSceneFactory;
 			OSParameters m_osParameters;

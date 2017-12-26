@@ -43,8 +43,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 4 );
+		se->AssertTop( 4 );
 
 		auto objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string name = lua_tostring( state, 2 );
@@ -62,8 +61,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 1 );
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -76,8 +74,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 2 );
+		se->AssertTop( 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		bool enabled = lua_toboolean( state, 2 ) ? true : false;
@@ -90,8 +87,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 1 );
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -148,12 +144,31 @@ namespace melua
 		return 0;
 	}
 
-	int Object_GetSize( lua_State * state )
+	int Object_ClearGeometry( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
 		int args = lua_gettop( state );
-		assert( args == 1 );
+
+		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
+
+		auto gameInstance = se->GetGame();
+
+		object::component::IObjectComponent::ptr geometryComponent = objectProxy->object->GetComponent( "Geometry" );
+		while( geometryComponent )
+		{
+			objectProxy->object->RemoveComponent( geometryComponent );
+			geometryComponent = objectProxy->object->GetComponent( "Geometry" );
+		}
+
+		return 0;
+	}
+
+	int Object_GetSize( lua_State * state )
+	{
+		ScriptEngine * se = ScriptEngine::GetInstance();
+
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -167,8 +182,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 1 );
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -210,8 +224,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 2 );
+		se->AssertTop( 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
@@ -222,8 +235,10 @@ namespace melua
 			auto * tagsComponent = dynamic_cast< component::TagsComponent * >( component.get() );
 
 			lua_pushboolean( state, tagsComponent->HasTag( tag ) ? 1 : 0 );
+			return 1;
 		}
 
+		lua_pushboolean( state, 0 );
 		return 1;
 	}
 
@@ -231,8 +246,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 2 );
+		se->AssertTop( 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string tag( lua_tostring( state, 2 ) );
@@ -252,8 +266,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 1 );
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -265,8 +278,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 2 );
+		se->AssertTop( 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string name = lua_tostring( state, 2 );
@@ -293,8 +305,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 2 );
+		se->AssertTop( 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 		std::string name = lua_tostring( state, 2 );
@@ -315,8 +326,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 2 );
+		se->AssertTop( 2 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -363,8 +373,7 @@ namespace melua
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
 
-		int args = lua_gettop( state );
-		assert( args == 1 );
+		se->AssertTop( 1 );
 		
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -375,8 +384,8 @@ namespace melua
 	int Object_GetUp( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		int args = lua_gettop( state );
-		assert( args == 1 );
+
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -387,8 +396,8 @@ namespace melua
 	int Object_GetLeft( lua_State * state )
 	{
 		ScriptEngine * se = ScriptEngine::GetInstance();
-		int args = lua_gettop( state );
-		assert( args == 1 );
+
+		se->AssertTop( 1 );
 
 		ObjectProxy * objectProxy = CheckUserType< ObjectProxy >( state, 1 );
 
@@ -419,6 +428,7 @@ namespace melua
 			{ "SetEnabled", Object_SetEnabled },
 			{ "GetEnabled", Object_IsEnabled },
 			{ "AddGeometry", Object_AddGeometry },
+			{ "ClearGeometry", Object_ClearGeometry },
 			{ "GetSize", Object_GetSize },
 			{ "Transform", Object_Transform },
 			{ "AddComponent", Object_AddComponent },

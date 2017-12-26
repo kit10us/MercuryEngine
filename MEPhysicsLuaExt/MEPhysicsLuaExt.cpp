@@ -4,7 +4,6 @@
 #include <MEPhysicsLuaExt.h>
 #include <mephylua/ExportGameComponent.h>
 #include <mephylua/collider/ExportCollider.h>
-#include <mephylua/ExportEntity.h>
 #include <melua/ScriptEngine.h>
 #include <memory.h>
 #include <me/game/Game.h>
@@ -44,7 +43,6 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml:
 
 	mephylua::RegisterGameComponent( luaSE );
 	mephylua::RegisterColliderObjectComponent( luaSE );	
-	mephylua::RegisterEntityObjectComponent( luaSE );
 
 	return true;
 }

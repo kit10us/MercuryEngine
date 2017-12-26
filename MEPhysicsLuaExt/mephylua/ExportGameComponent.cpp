@@ -3,7 +3,6 @@
 
 #include <mephylua/ExportGameComponent.h>
 #include <mephylua/collider/ExportCollider.h>
-#include <mephylua/ExportEntity.h>
 #include <melua/exports/ExportComponent.h>
 #include <melua/unify/ExportV3.h>
 #include <melua/Util.h>
@@ -24,20 +23,24 @@ namespace mephylua
 	{
 		int argc = lua_gettop( state );
 
+		// Size
 		unify::V3< float > ext( CheckV3( state, 2 )->v3 );
+
+		bool moveable = false;
+		if( argc > 2 )
+		{
+			moveable = melua::Check< bool >( state, 3 );
+		}
+
+		float mass = 0.0f;
+		if( argc > 3 )
+		{
+			mass = melua::Check< float >( state, 4 );
+		}
 
 		auto physics = g_game->GetComponentT< mephy::GameComponent >();
 		me::object::component::IObjectComponent::ptr collider( physics->CreateBoxCollider( ext * 0.5f ) );
 		return PushUserType< ColliderObjectComponentProxy >( state, { collider } );
-	}
-
-	int GameComponent_CreateEntity( lua_State * state )
-	{
-		int argc = lua_gettop( state );
-
-		auto physics = g_game->GetComponentT< mephy::GameComponent >();
-		me::object::component::IObjectComponent::ptr entity( physics->CreateEntity() );
-		return PushUserType< EntityObjectComponentProxy >( state, { entity } );
 	}
 
 	int GameComponent_Constructor( lua_State * state )
@@ -80,7 +83,6 @@ namespace mephylua
 		static const luaL_Reg functions[] =
 		{
 			{ "CreateBoxCollider", GameComponent_CreateBoxCollider },
-			{ "CreateEntity", GameComponent_CreateEntity },
 			{ nullptr, nullptr }
 		};
 

@@ -75,3 +75,5 @@ log.txt
 /QXML Tests/testwrite.xml
 /MercuryEngine/Documentation/*.odg#
 *.odt#
+*.log
+*.tlog

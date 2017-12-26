@@ -15,8 +15,8 @@ using namespace melua;
 
 int Angle_Degrees( lua_State * state )
 {
-	int args = lua_gettop( state );
-	assert( args == 1 );
+	auto * se = ScriptEngine::GetInstance();
+	se->AssertTop( 1 );
 
 	float degrees = (float)lua_tonumber( state, 1 );
 	float angle = degrees * (3.14159265f / 180.0f);
@@ -27,8 +27,8 @@ int Angle_Degrees( lua_State * state )
 
 int Angle_Radians( lua_State * state )
 {
-	int args = lua_gettop( state );
-	assert( args == 1 );
+	auto * se = ScriptEngine::GetInstance();
+	se->AssertTop( 1 );
 
 	float radians = (float)lua_tonumber( state, 1 );
 	float angle = radians;

@@ -218,7 +218,7 @@ const Element * Element::FindFirstElement( const std::string tagName, std::strin
 		}
 		element = element->GetNext();
 	}
-    return false;
+    return nullptr;
 }
 
 // Search our children for elements with a given tag name...

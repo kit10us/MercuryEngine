@@ -111,7 +111,15 @@ void ComponentViewer::UpdateTypeInstances()
 		auto scene = sceneManager->GetCurrentScene();
 		for (size_t index = 0; index < scene->GetObjectAllocator()->Count(); index++)
 		{
-			instanceList->AddString(scene->GetObjectAllocator()->GetObject(index)->GetName());
+			me::object::Object * object = nullptr;
+			if( index >= 0 )
+			{
+				std::vector< me::object::Object * > objects;
+				scene->GetObjectAllocator()->CollectObjects( objects );
+				object = objects[index];
+			}
+
+			instanceList->AddString(object->GetName());
 		}
 		instanceList->SetCurSel(0);
 		break;
@@ -169,7 +177,15 @@ void ComponentViewer::UpdateComponentList()
 	{
 		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
-		auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
+		
+		me::object::Object * object = nullptr;
+		if( instanceIndex >= 0 )
+		{
+			std::vector< me::object::Object * > objects;
+			scene->GetObjectAllocator()->CollectObjects( objects );
+			object = objects[instanceIndex];
+		}
+
 		for ( int index = 0; index < object->GetComponentCount(); index++ )
 		{
 			componentList->AddString( object->GetComponent( index )->GetTypeName() );
@@ -251,7 +267,15 @@ void ComponentViewer::UpdateComponentValues()
 	{
 		auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 		auto scene = sceneManager->GetCurrentScene();
-		auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
+		
+		me::object::Object * object = nullptr;
+		if( instanceIndex >= 0 )
+		{
+			std::vector< me::object::Object * > objects;
+			scene->GetObjectAllocator()->CollectObjects( objects );
+			object = objects[instanceIndex];
+		}
+
 		auto component = object->GetComponent( componentIndex );
 		for ( int index = 0; index < component->GetValueCount(); index++ )
 		{
@@ -387,7 +411,15 @@ ui::IResult* ComponentViewer::OnNotify( ui::message::Notify message )
 			{
 				auto sceneManager = m_game->GetComponentT< me::scene::SceneManager >();
 				auto scene = sceneManager->GetCurrentScene();
-				auto object = scene->GetObjectAllocator()->GetObject( instanceIndex );
+
+				me::object::Object * object = nullptr;
+				if( instanceIndex >= 0 )
+				{
+					std::vector< me::object::Object * > objects;
+					scene->GetObjectAllocator()->CollectObjects( objects );
+					object = objects[instanceIndex];
+				}
+
 				component = object->GetComponent( componentIndex ).get();
 			}
 			default:

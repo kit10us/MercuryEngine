@@ -24,7 +24,10 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameBase, const qxml::Ele
 
 	auto gameInstance = dynamic_cast< game::Game * >( gameBase );
 
-	const auto texturedPS = element->FindFirstElement( "texturedps" );
+	const auto * texturedPS = element->FindFirstElement( "texturedps" );
+	
+	gameInstance->Debug()->Assert( texturedPS != nullptr );
+
 	std::string texturedPSName = texturedPS->GetAttribute< std::string >( "name" );
 	unify::Path texturedPSPath( texturedPS->GetAttribute< std::string >( "source" ) );
 	IPixelShader::ptr ps = gameInstance->GetManager< IPixelShader >()->Add( texturedPSName, texturedPSPath );

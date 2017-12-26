@@ -22,9 +22,6 @@
     <ClInclude Include="mephy\SceneComponent.h">
       <Filter>mephy</Filter>
     </ClInclude>
-    <ClInclude Include="mephy\Entity.h">
-      <Filter>mephy</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -39,9 +36,6 @@
       <Filter>mephy</Filter>
     </ClCompile>
     <ClCompile Include="mephy\SceneComponent.cpp">
-      <Filter>mephy</Filter>
-    </ClCompile>
-    <ClCompile Include="mephy\Entity.cpp">
       <Filter>mephy</Filter>
     </ClCompile>
   </ItemGroup>

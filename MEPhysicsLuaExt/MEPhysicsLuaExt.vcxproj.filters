@@ -9,9 +9,6 @@
     <ClCompile Include="mephylua\collider\ExportCollider.cpp">
       <Filter>mephylua\collider</Filter>
     </ClCompile>
-    <ClCompile Include="mephylua\ExportEntity.cpp">
-      <Filter>mephylua</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEPhysicsLuaExt.h" />
@@ -20,9 +17,6 @@
     </ClInclude>
     <ClInclude Include="mephylua\collider\ExportCollider.h">
       <Filter>mephylua\collider</Filter>
-    </ClInclude>
-    <ClInclude Include="mephylua\ExportEntity.h">
-      <Filter>mephylua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

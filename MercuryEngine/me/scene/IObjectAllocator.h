@@ -44,7 +44,6 @@ namespace me
 			virtual object::Object * CopyObject( object::Object * object, std::string name ) = 0;
 			virtual void CollectObjects( std::vector< object::Object * > & objects ) = 0;
 			virtual object::Object * FindObject( std::string name ) = 0;
-			virtual object::Object * GetObject( size_t index ) = 0;
 			virtual void DirtyObject( object::Object* object ) = 0;
 
 			virtual void Update( const UpdateParams & params ) = 0;

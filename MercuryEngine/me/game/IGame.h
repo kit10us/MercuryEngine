@@ -5,6 +5,7 @@
 
 #include <me/IOS.h>
 #include <me/Extension.h>
+#include <me/Debug.h>
 #include <me/input/InputManager.h>
 #include <me/render/RenderInfo.h>
 #include <me/render/RenderParams.h>
@@ -177,6 +178,12 @@ namespace me
 			/// Send a command with extra information, and return a string result.
 			/// Strings are used to best support cross DLL, and scripting support. 
 			virtual std::string SendCommand( size_t id, std::string extra ) = 0;
+
+			/// <summary>
+			/// Returns the debug class, which allows standard debugging, and
+			/// pivoting off of debug/release handling.
+			/// </summary>
+			const Debug * Debug() const;
 
 			template< typename T >
 			T* GetComponentT();

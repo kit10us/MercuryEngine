@@ -84,9 +84,11 @@ bool ObjectStack::DestroyObject( Object * object )
 	auto itr = std::find( m_oldObjects.begin(), m_oldObjects.end(), object );
 	if( itr != m_oldObjects.end() )
 	{
-		int objectIndex = (Object*)&m_objects[0] - object;
+		// Find our object index by subtracting our pointer from the first item.
+		int objectIndex = object - (Object*)&m_objects[0];
 
 		object->SetAlive( false );
+		object->ClearComponents();
 
 		// Our next object available has to be lowest, so if we removed a lower object...
 		m_nextObjectAvailable = std::min( m_nextObjectAvailable, objectIndex );
@@ -95,7 +97,7 @@ bool ObjectStack::DestroyObject( Object * object )
 		if( objectIndex == m_lastObjectAlive )
 		{
 			// Find the last object alive in the list...
-			for( int i = objectIndex; i >= 0 && !m_objects[i].IsAlive(); m_lastObjectAlive-- )
+			for( m_lastObjectAlive; m_lastObjectAlive >= 0 && !m_objects[ m_lastObjectAlive ].IsAlive(); m_lastObjectAlive-- )
 			{
 				// Do nothing, loop increment steps handles the work.
 			}
@@ -104,6 +106,8 @@ bool ObjectStack::DestroyObject( Object * object )
 		m_oldObjects.erase( itr );
 
 		m_freeObjects++;
+
+		m_resetCache = true;
 		return true;
 	}
 	else
@@ -144,44 +148,6 @@ Object * ObjectStack::FindObject( std::string name )
 	return itr == m_newObjects.end() ? nullptr : *itr;
 }
 
-Object * ObjectStack::GetObject( size_t index )
-{
-	// Not possible if...
-	if( (int)index > m_lastObjectAlive )
-	{
-		return nullptr;
-	}
-
-	// NOTE: We don't use our "alive" lists (old or new) because they are considered "unordered".
-
-	// If index is within the unfragmented chunk, this is fastest...
-	// This works because... NOA always points to the first gap in our list
-	if ( (int)index < m_nextObjectAvailable )
-	{
-		return &m_objects[index];
-	}
-
-	// Brute force search...	
-	size_t i = m_nextObjectAvailable + 1; // Only need to start at m_nextObjectAvailable + 1, since (see above) (also, NOA is N/A)
-	size_t end = m_lastObjectAlive + 1; // No need searching beyond the last alive object.
-	size_t count = m_nextObjectAvailable; // Add the number of objects in the first living chunk, PLUS ONE.
-	for( ; i < end; i++ )
-	{
-		// If object is not alive, don't count it.
-		if( !m_objects[i].IsAlive() ) continue;
-
-		if( count == index )
-		{
-			return &m_objects[i];
-		}
-		else
-		{
-			count++;
-		}
-	}
-	return nullptr;
-}
-
 void ObjectStack::DirtyObject( object::Object* object )
 {
 	// If we have no old objects, we just don't care.
@@ -204,30 +170,13 @@ void ObjectStack::Update( const UpdateParams & params )
 			// Initialize
 			object->Initialize( m_updatables, m_cameras, params );
 
+			// If we are caching, and not going to do a reset later, then
 			if( m_cache && !m_resetCache )
 			{
 				object->CollectGeometry( m_solids, m_trans );
 			}
 		}
 		m_oldObjects.merge( m_newObjects );
-	}
-
-	if ( m_cache && m_resetCache )
-	{
-		m_solids.Reset();
-		m_trans.Reset();
-		for ( int i = 0; i <= m_lastObjectAlive; i++ )
-		{
-			auto && object = m_objects[ i ];
-			if ( ! object.IsAlive() )
-			{
-				continue;
-			}
-
-			// Initialize
-			object.CollectGeometry( m_solids, m_trans );
-		}
-		m_resetCache = false;
 	}
 
 	for( auto && updateable : m_updatables )
@@ -246,7 +195,7 @@ void ObjectStack::CollectCameras( RenderGirl & renderGirl )
 
 void ObjectStack::CollectRendering( render::Params params, const FinalCamera & camera, GeometryCacheSummation & solids, GeometryCacheSummation & trans )
 {	
-	if ( ! m_cache )
+	if ( ! m_cache || m_resetCache )
 	{
 		m_solids.Reset();
 		m_trans.Reset();
@@ -258,6 +207,7 @@ void ObjectStack::CollectRendering( render::Params params, const FinalCamera & c
 				continue;
 			}
 
+			// Attempt to cull objects behind our camera.
 			typedef unify::V3< float > V;
 			V origin = camera.object->GetFrame().GetPosition();
 			V forward = camera.object->GetFrame().GetForward();
@@ -272,8 +222,10 @@ void ObjectStack::CollectRendering( render::Params params, const FinalCamera & c
 				int x( 0 ); x;
 			}
 		}
+		m_resetCache = false;
 	}
 
+	// Add our render lists to our total render lists.
 	m_solids.Sum( solids );
 	m_trans.Sum( trans );
 }

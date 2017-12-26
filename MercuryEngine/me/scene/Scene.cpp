@@ -238,10 +238,11 @@ std::list< HitInstance > Scene::FindObjectsWithinRay( unify::Ray ray, float with
 {
 	std::list< HitInstance > instances;
 
-	for( size_t index = 0; index < m_objectAllocator->Count(); index++ )
-	{
-		auto object = m_objectAllocator->GetObject( index );
+	std::vector< object::Object * > objects;
+	m_objectAllocator->CollectObjects( objects );
 
+	for( auto * object : objects )
+	{
 		float distance = ray.origin.DistanceTo( object->GetPosition() );
 		if( distance > withinDistance )
 		{
@@ -265,11 +266,12 @@ std::list< HitInstance > Scene::FindObjectsWithinRay( unify::Ray ray, float with
 std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float > sphere ) const
 {
 	std::list< HitInstance > instances;
+
+	std::vector< me::object::Object * > objects;
+	m_objectAllocator->CollectObjects( objects );
 	
-	for( size_t index = 0; index < m_objectAllocator->Count(); index++ )
+	for( auto * object : objects )
 	{
-		const auto & object = m_objectAllocator->GetObject( index );
-		
 		unify::V3< float > position = object->GetFrame().GetPosition();
 		auto objectSphere = object->GetBSphere();
 		objectSphere = object->GetFrame().GetMatrix().TransformBSphere( objectSphere );

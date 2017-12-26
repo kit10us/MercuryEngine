@@ -84,26 +84,6 @@ Object * Octree::FindObject( std::string name )
 	return object;
 }
 
-Object * Octree::GetObject( size_t index )
-{
-	// Find stack
-	for ( auto && stack : m_stacks )
-	{
-		if ( index >= stack->Count() )
-		{
-			index -= stack->Count();
-			continue;
-		}
-		else
-		{
-			return stack->GetObject( index );
-		}
-	}
-
-	return nullptr;
-}
-
-
 void Octree::Update( const UpdateParams & params )
 {
 	for( auto && stack : m_stacks )

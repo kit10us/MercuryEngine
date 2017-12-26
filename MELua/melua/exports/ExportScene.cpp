@@ -79,6 +79,34 @@ int Scene_NewCamera( lua_State * state )
 	return PushUserType< ObjectProxy >( state, { child }  );
 }
 
+int Scene_DestroyObject( lua_State * state )
+{
+	int args = lua_gettop( state );
+
+	SceneProxy * sceneProxy = CheckScene( state, 1 );
+
+	Object * object{ nullptr };
+
+	if( lua_type( state, 2 ) == LUA_TSTRING )
+	{
+		std::string name = lua_tostring( state, 2 );
+
+		Object * object = sceneProxy->scene->FindObject( name );
+	}
+	else
+	{
+		object = CheckUserType< ObjectProxy > ( state, 2 )->object;
+	}
+
+	if( object )
+	{
+		sceneProxy->scene->GetObjectAllocator()->DestroyObject( object );
+	}
+
+	return 0;
+}
+
+
 int Scene_FindObject( lua_State * state )
 {
 	int args = lua_gettop( state );
@@ -292,6 +320,7 @@ void RegisterScene( lua_State * state )
 		{ "Name", Scene_Name },
 		{ "NewObject", Scene_NewObject },
 		{ "NewCamera", Scene_NewCamera },
+		{ "DestroyObject", Scene_DestroyObject },
 		{ "FindObject", Scene_FindObject },
 		{ "FindObjectsWithinRay", Scene_FindObjectsWithinRay },
 		{ "FindObjectsWithinSphere", Scene_FindObjectsWithinSphere },
