@@ -6,18 +6,16 @@
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <medx9/DirectX.h>
-#include <medx9/WindowsOS.h>
+#include <mewos/WindowsOS.h>
 #include <atlbase.h>
 #include <memory>
 
 namespace medx9
 {
-	class WindowsOS;
-
 	class Renderer : public me::render::IRenderer
 	{
 	public:
-		Renderer( WindowsOS * os, me::render::Display display, size_t index );
+		Renderer( me::IOS * os, me::render::Display display, size_t index );
 		virtual ~Renderer();					
 
 		me::game::IGame * GetGame() override;
@@ -51,7 +49,7 @@ namespace medx9
 		void UseTextures( std::vector< me::render::ITexture::ptr > textures ) override;
 
 	private:
-		WindowsOS * m_os;
+		mewos::WindowsOS * m_os;
 		me::render::Display m_display;
 		D3DPRESENT_PARAMETERS m_pp;
 		CComPtr< IDirect3DDevice9 > m_dxDevice;

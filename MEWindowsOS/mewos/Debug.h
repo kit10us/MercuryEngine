@@ -3,12 +3,13 @@
 
 #pragma once
 
+#include <mewos/MEWindowsOS.h>
 #include <me/IDebug.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
 
-namespace medx9
+namespace mewos
 {
 	class Debug : public me::IDebug
 	{

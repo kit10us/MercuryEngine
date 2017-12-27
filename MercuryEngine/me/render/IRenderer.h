@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #pragma once
+
 #include <me/render/Display.h>
 #include <me/render/IVertexBuffer.h>
 #include <me/render/IIndexBuffer.h>
@@ -21,9 +22,22 @@ namespace me
 		class IGame;
 	}
 
+	class IOS;
+
 	namespace render
 	{
 		class VertexDeclaration;
+		class IRenderer;
+
+		class IRendererFactory
+		{
+		public:
+			typedef std::shared_ptr< IRendererFactory > ptr;
+
+			virtual ~IRendererFactory() {}
+
+			virtual IRenderer * Produce( me::IOS * os, me::render::Display display, size_t index ) = 0;
+		};
 
 		/// <summary>
 		/// Supports access to the renderer.

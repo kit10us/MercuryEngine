@@ -18,8 +18,8 @@ using namespace medx9;
 using namespace me;
 using namespace render;
 
-Renderer::Renderer( WindowsOS * os, Display display, size_t index )
-		: m_os( os )
+Renderer::Renderer( me::IOS * os, Display display, size_t index )
+		: m_os{ dynamic_cast< mewos::WindowsOS * >( os ) }
 		, m_display( display )
 		, m_index( index )
 {

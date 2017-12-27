@@ -24,9 +24,6 @@
     <ClInclude Include="medx9\VertexShader.h">
       <Filter>medx9</Filter>
     </ClInclude>
-    <ClInclude Include="medx9\WindowsOS.h">
-      <Filter>medx9</Filter>
-    </ClInclude>
     <ClInclude Include="medx9\DirectX.h">
       <Filter>medx9</Filter>
     </ClInclude>
@@ -36,7 +33,7 @@
     <ClInclude Include="medx9\VertexConstruct.h">
       <Filter>medx9</Filter>
     </ClInclude>
-    <ClInclude Include="medx9\Debug.h">
+    <ClInclude Include="medx9\RendererFactory.h">
       <Filter>medx9</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,9 +53,6 @@
     <ClCompile Include="medx9\VertexShader.cpp">
       <Filter>medx9</Filter>
     </ClCompile>
-    <ClCompile Include="medx9\WindowsOS.cpp">
-      <Filter>medx9</Filter>
-    </ClCompile>
     <ClCompile Include="medx9\IndexBuffer.cpp">
       <Filter>medx9</Filter>
     </ClCompile>
@@ -68,7 +62,7 @@
     <ClCompile Include="medx9\VertexConstruct.cpp">
       <Filter>medx9</Filter>
     </ClCompile>
-    <ClCompile Include="medx9\Debug.cpp">
+    <ClCompile Include="medx9\RendererFactory.cpp">
       <Filter>medx9</Filter>
     </ClCompile>
   </ItemGroup>

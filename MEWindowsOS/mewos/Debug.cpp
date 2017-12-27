@@ -1,13 +1,14 @@
 // Copyright (c) 2003 - 2011, Quentin S. Smith
 // All Rights Reserved
 
-#include <medx11/Debug.h>
+ #include <mewos/Debug.h>
 #include <unify/Exception.h>
 #include <Windows.h>
 #include <fstream>
 #include <cassert>
 
-using namespace medx11;
+
+using namespace mewos;
 
 Debug::Debug()
 	: m_failuresAsCritial{ true }

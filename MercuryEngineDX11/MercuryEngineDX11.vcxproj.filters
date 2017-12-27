@@ -21,9 +21,6 @@
     <ClInclude Include="medx11\VertexShader.h">
       <Filter>medx11</Filter>
     </ClInclude>
-    <ClInclude Include="medx11\WindowsOS.h">
-      <Filter>medx11</Filter>
-    </ClInclude>
     <ClInclude Include="medx11\DirectX.h">
       <Filter>medx11</Filter>
     </ClInclude>
@@ -36,7 +33,7 @@
     <ClInclude Include="medx11\VertexConstruct.h">
       <Filter>medx11</Filter>
     </ClInclude>
-    <ClInclude Include="medx11\Debug.h">
+    <ClInclude Include="medx11\RendererFactory.h">
       <Filter>medx11</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,9 +50,6 @@
     <ClCompile Include="medx11\VertexShader.cpp">
       <Filter>medx11</Filter>
     </ClCompile>
-    <ClCompile Include="medx11\WindowsOS.cpp">
-      <Filter>medx11</Filter>
-    </ClCompile>
     <ClCompile Include="medx11\PixelShader.cpp">
       <Filter>medx11</Filter>
     </ClCompile>
@@ -68,7 +62,7 @@
     <ClCompile Include="medx11\VertexConstruct.cpp">
       <Filter>medx11</Filter>
     </ClCompile>
-    <ClCompile Include="medx11\Debug.cpp">
+    <ClCompile Include="medx11\RendererFactory.cpp">
       <Filter>medx11</Filter>
     </ClCompile>
   </ItemGroup>
