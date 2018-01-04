@@ -86,7 +86,7 @@ bool BufferSet::GetEnabled() const
 	return m_enabled;
 }
 
-void BufferSet::Render( render::Params params, render::MatrixFeed & matrixFeed ) const
+void BufferSet::Render( const render::Params & params, render::MatrixFeed & matrixFeed ) const
 {
 	if ( !m_enabled ) return;
 

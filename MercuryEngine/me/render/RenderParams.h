@@ -12,7 +12,7 @@ namespace me
 		struct Params
 		{
 			class IRenderer * renderer;
-			const RenderInfo & renderInfo;
+			RenderInfo renderInfo;
 			float GetDelta() const { return renderInfo.GetDelta(); };
 		};
 	}

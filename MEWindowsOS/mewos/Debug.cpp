@@ -23,15 +23,14 @@ Debug::~Debug()
 void Debug::SetLogFile( unify::Path logFile )
 {
 	unify::Path::Rename( logFile, m_logFile );
-
 	m_logFile = logFile;
+	LogLine( "Log file: " + m_logFile.ToString() );
 }
 
 void Debug::SetFailureAsCritical( bool faiureAsCritical )
 {
 	m_failuresAsCritial = faiureAsCritical;
 }
-
 
 bool Debug::Assert( bool assertion ) const
 {

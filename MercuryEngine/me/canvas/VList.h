@@ -60,7 +60,7 @@ namespace me
 
 			void Update( const UpdateParams & params );
 
-			void Render( render::Params params );
+			void Render( const render::Params & params );
 
 			void OnSuspend();
 

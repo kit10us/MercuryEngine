@@ -65,7 +65,7 @@ void Grid::Update( const UpdateParams & params )
 	*/
 }
 
-void Grid::Render( render::Params params )
+void Grid::Render( const render::Params & params )
 {
 	if( !IsEnabled() ) return;
 	if( m_items.empty() ) return;

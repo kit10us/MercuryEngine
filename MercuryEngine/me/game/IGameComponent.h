@@ -71,7 +71,7 @@ namespace me
 			/// <summary>
 			/// Called during game rendering.
 			/// </summary>
-			virtual void OnRender( render::Params params ) = 0;
+			virtual void OnRender( const render::Params & params ) = 0;
 
 			/// <summary>
 			/// Called last, to detach from the game.

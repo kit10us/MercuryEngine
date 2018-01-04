@@ -49,7 +49,7 @@ namespace me
 			void OnEarlyUpdate( const UpdateParams & params ) override;
 			void OnUpdate( const UpdateParams & params ) override;
 			void OnLateUpdate( const UpdateParams & params ) override;
-			void OnRender( render::Params params ) override;
+			void OnRender( const render::Params & params ) override;
 
 			std::string SendCommand( size_t id, std::string extra ) override;
 

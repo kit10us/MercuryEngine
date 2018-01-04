@@ -37,7 +37,7 @@ namespace me
 
 			bool Empty() const;
 
-			void Render( render::Params params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color );
+			void Render( const render::Params & params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color );
 
 		private:
 			std::vector< unify::Matrix > m_jointMatrix;

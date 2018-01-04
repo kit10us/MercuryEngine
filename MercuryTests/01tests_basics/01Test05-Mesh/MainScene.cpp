@@ -16,7 +16,7 @@ MainScene::MainScene( me::game::Game * gameInstance )
 void MainScene::OnStart()
 {
 	// Load effect...
-	auto effect = GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) );
+	auto effect = GetManager< Effect>()->Add( "textured3d", unify::Path( "EffectTexture.effect" ) );
 
 	// Create mesh...
 	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );

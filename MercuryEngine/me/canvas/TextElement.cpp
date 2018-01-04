@@ -214,7 +214,7 @@ void TextElement::Update( const UpdateParams & params )
 {
 }
 		
-void TextElement::Render( render::Params params )
+void TextElement::Render( const render::Params & params )
 {
 	if ( m_text.empty() ) return;
 	if ( ! IsEnabled() ) return;

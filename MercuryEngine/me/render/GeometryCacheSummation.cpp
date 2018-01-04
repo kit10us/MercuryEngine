@@ -17,7 +17,7 @@ void GeometryCacheSummation::Add( Geometry * geometry, render::InstancesSet set 
 	m_count += set.size;
 }
 
-void GeometryCacheSummation::Render( render::Params params )
+void GeometryCacheSummation::Render( const render::Params & params )
 {
 	for( auto && pair : m_summation )
 	{

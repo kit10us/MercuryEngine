@@ -23,7 +23,7 @@ void LOD::Add( Geometry::ptr geometry, float distanceStart )
 	ComputeBounds();
 }
 
-void LOD::Update( UpdateParams params, GeometryInstanceData * instanceData )
+void LOD::Update( const UpdateParams & params, GeometryInstanceData * instanceData )
 {
 	// Update all geometry...
 	for( auto node : m_list )
@@ -32,7 +32,7 @@ void LOD::Update( UpdateParams params, GeometryInstanceData * instanceData )
 	}
 }
 
-void LOD::Render( render::Params params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed )
+void LOD::Render( const render::Params & params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed )
 {
 	if( m_list.empty() )
 	{

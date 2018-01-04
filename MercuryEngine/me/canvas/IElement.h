@@ -37,7 +37,7 @@ namespace me
 			virtual void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) = 0;
 
 			virtual void Update( const UpdateParams & params ) = 0;
-			virtual void Render( render::Params params ) = 0;
+			virtual void Render( const render::Params & params ) = 0;
 			virtual void OnSuspend() = 0;
 			virtual void OnResume() = 0;
 		};

@@ -110,7 +110,7 @@ void GameComponent::OnLateUpdate( const UpdateParams & params )
 {
 }
 
-void GameComponent::OnRender( render::Params params )
+void GameComponent::OnRender( const render::Params & params )
 {
 }
 

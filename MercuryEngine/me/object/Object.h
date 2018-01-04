@@ -56,7 +56,12 @@ namespace me
 			void RemoveComponent( component::IObjectComponent::ptr component );
 			component::IObjectComponent::ptr GetComponent( int index );
 			component::IObjectComponent::ptr GetComponent( std::string typeName, std::string alias = std::string() );
-			int FindComponent( std::string name, std::string alias = std::string() ) const;
+
+			/// <summary>
+			/// Returns components of typeName, and alias. When typename or alias is empty, respectfully, they are ignored.
+			/// </summary>
+			int FindComponent( std::string typeName, std::string alias = std::string() ) const;
+
 			void ClearComponents();
 
 			void SetEnabled( bool enabled );
@@ -91,6 +96,9 @@ namespace me
 			/// </summary>
 			void Initialize( component::IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params );
 
+			/// <summary>
+			/// Collect graphical components, those with geometries, into separate caches for solids and transparencies. This allows us to bulk render, where able.
+			///
 			void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans );
 
 			void OnSuspend();

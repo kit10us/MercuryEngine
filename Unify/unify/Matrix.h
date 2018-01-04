@@ -89,6 +89,9 @@ namespace unify
 		void SetRow( size_t row, unify::V4< float > v4 );
 		void SetColumn( size_t column, unify::V4< float > v4 );
 
+		unify::V4< float > GetRow( size_t row ) const;
+		unify::V4< float > GetColumn( size_t column ) const;
+
 		V3< float > GetLeft() const;
 		V3< float > GetUp() const;
 		V3< float > GetForward() const;

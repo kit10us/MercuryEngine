@@ -124,6 +124,7 @@
     <ClInclude Include="me\object\component\TagsComponent.h" />
     <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\Object.h" />
+    <ClInclude Include="me\render\Billboard.h" />
     <ClInclude Include="me\render\Blend.h" />
     <ClInclude Include="me\render\BufferSet.h" />
     <ClInclude Include="me\render\BufferUsage.h" />
@@ -298,6 +299,7 @@
     <ClCompile Include="me\object\component\ObjectComponent.cpp" />
     <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
+    <ClCompile Include="me\render\Billboard.cpp" />
     <ClCompile Include="me\render\Blend.cpp" />
     <ClCompile Include="me\render\BufferSet.cpp" />
     <ClCompile Include="me\render\BufferUsage.cpp" />

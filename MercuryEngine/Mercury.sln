@@ -490,7 +490,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "09Test02 - Lua Send Command
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MEPhysics2D", "..\MEPhysics2D\MEPhysics2D.vcxproj", "{59E4358B-087A-4C84-878E-2BDAAA541029}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05Test_Scene3D", "05Test_Scene3D", "{CB01984C-F411-4250-BEA9-211BD430BEF6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05tests_Scene3D", "05tests_Scene3D", "{CB01984C-F411-4250-BEA9-211BD430BEF6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05Test01 - Add and Remove Objects", "..\MercuryTests\05tests_Scene3D\05Test01 - Add and Remove Objects\05Test01 - Add and Remove Objects.vcxproj", "{D69A7B8F-2294-449F-A48B-56C9086CDAE4}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -500,6 +500,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MEWindowsOS", "..\MEWindowsOS\MEWindowsOS.vcxproj", "{F6616D72-4655-4061-A9C1-75E5C8F7F4B4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1} = {0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05Test02 - Scene of Shapes", "..\MercuryTests\05tests_Scene3D\05Test02 - Scene of Shapes\05Test02 - Scene of Shapes.vcxproj", "{47086A1E-628E-49F3-B568-5B8240175FCA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3001C03A-F2E7-411A-A332-8DC5477ECBBB} = {3001C03A-F2E7-411A-A332-8DC5477ECBBB}
 	EndProjectSection
 EndProject
 Global
@@ -1150,6 +1155,16 @@ Global
 		{F6616D72-4655-4061-A9C1-75E5C8F7F4B4}.Release|Win32.Build.0 = Release|Win32
 		{F6616D72-4655-4061-A9C1-75E5C8F7F4B4}.Release|x64.ActiveCfg = Release|x64
 		{F6616D72-4655-4061-A9C1-75E5C8F7F4B4}.Release|x64.Build.0 = Release|x64
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Debug|Win32.Build.0 = Debug|Win32
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Debug|x64.ActiveCfg = Debug|x64
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Debug|x64.Build.0 = Debug|x64
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Release|Any CPU.ActiveCfg = Release|Win32
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Release|Win32.ActiveCfg = Release|Win32
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Release|Win32.Build.0 = Release|Win32
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Release|x64.ActiveCfg = Release|x64
+		{47086A1E-628E-49F3-B568-5B8240175FCA}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1237,5 +1252,6 @@ Global
 		{CB01984C-F411-4250-BEA9-211BD430BEF6} = {775AF24E-9BDA-4395-8CE4-0F1E93F33BEE}
 		{D69A7B8F-2294-449F-A48B-56C9086CDAE4} = {CB01984C-F411-4250-BEA9-211BD430BEF6}
 		{F6616D72-4655-4061-A9C1-75E5C8F7F4B4} = {9AC0BAD5-52BD-4E41-B51E-74062D72BCDF}
+		{47086A1E-628E-49F3-B568-5B8240175FCA} = {CB01984C-F411-4250-BEA9-211BD430BEF6}
 	EndGlobalSection
 EndGlobal

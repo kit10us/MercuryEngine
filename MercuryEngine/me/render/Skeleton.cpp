@@ -64,7 +64,7 @@ bool Skeleton::Empty() const
 	return m_jointMatrix.empty();
 }
 
-void Skeleton::Render( render::Params params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color )
+void Skeleton::Render( const render::Params & params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color )
 {
 	if( Empty() ) return;
 

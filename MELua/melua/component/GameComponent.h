@@ -21,7 +21,7 @@ namespace melua
 			void OnBeforeStartup() override;
 			void OnAfterStartup() override;
 			void OnUpdate( const me::UpdateParams & params ) override;
-			void OnRender( me::render::Params params ) override;
+			void OnRender( const me::render::Params & params ) override;
 			void OnDetach( me::game::IGame * gameInstance ) override;
 
 		public: // IComponent...

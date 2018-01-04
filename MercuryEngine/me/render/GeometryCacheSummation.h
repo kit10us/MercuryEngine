@@ -20,7 +20,7 @@ namespace me
 
 			void Add( Geometry * geometry, render::InstancesSet set );
 
-			void Render( render::Params params );
+			void Render( const render::Params & params );
 
 			// Keeps geometry, resets count/instances.
 			void Reset();

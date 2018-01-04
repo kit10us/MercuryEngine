@@ -227,7 +227,7 @@ void SceneManager::OnLateUpdate( const UpdateParams & params )
 	m_currentScene->Component_OnLateUpdate( params );
 }
 
-void SceneManager::OnRender( render::Params params )
+void SceneManager::OnRender( const render::Params & params )
 {
 	if ( m_enabled == false )
 	{

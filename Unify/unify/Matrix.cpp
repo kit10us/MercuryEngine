@@ -484,6 +484,28 @@ void Matrix::SetColumn( size_t column, unify::V4< float > v4 )
 	m[ 3 ][ column ] = v4.w;
 }
 
+unify::V4< float > Matrix::GetRow( size_t row ) const
+{
+	return{
+		m[row][0],
+		m[row][1],
+		m[row][2],
+		m[row][3]
+	};
+}
+
+unify::V4< float > Matrix::GetColumn( size_t column ) const
+{
+	return
+	{
+		m[0][column],
+		m[1][column],
+		m[2][column],
+		m[3][column]
+	};
+}
+
+
 V3< float > Matrix::GetLeft() const
 {
 	return *(V3< float > *)m[0];

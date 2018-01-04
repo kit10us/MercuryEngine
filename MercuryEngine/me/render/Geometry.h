@@ -39,8 +39,8 @@ namespace me
 
 			virtual GeometryInstanceData * CreateInstanceData();
 
-			virtual void Update( UpdateParams params, GeometryInstanceData * instanceData ) = 0;
-			virtual void Render( Params params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) = 0;
+			virtual void Update( const UpdateParams & params, GeometryInstanceData * instanceData ) = 0;
+			virtual void Render( const Params & params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) = 0;
 
 			unify::BBox< float > & GetBBox();
 			const unify::BBox< float > & GetBBox() const;

@@ -44,7 +44,7 @@ namespace me
 			void SetEnabled( bool enabled );
 			bool GetEnabled() const;
 
-			void Render( render::Params params, render::MatrixFeed & matrixFeed ) const;
+			void Render( const render::Params & params, render::MatrixFeed & matrixFeed ) const;
 
 		private:
 			IRenderer * m_renderer;

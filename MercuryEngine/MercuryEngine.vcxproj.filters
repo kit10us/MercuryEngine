@@ -705,6 +705,9 @@
     <ClInclude Include="me\IDebug.h">
       <Filter>me</Filter>
     </ClInclude>
+    <ClInclude Include="me\render\Billboard.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1159,6 +1162,9 @@
     </ClCompile>
     <ClCompile Include="me\object\action\OA_SetComponentValue.cpp">
       <Filter>me\object\action</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Billboard.cpp">
+      <Filter>me\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

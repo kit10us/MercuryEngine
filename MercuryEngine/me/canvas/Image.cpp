@@ -178,7 +178,7 @@ void Image::Update( const UpdateParams & params )
 {
 }
 		
-void Image::Render( render::Params params )
+void Image::Render( const render::Params & params )
 {
 	if ( ! IsEnabled() ) return;
 

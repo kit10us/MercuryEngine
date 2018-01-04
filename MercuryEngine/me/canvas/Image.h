@@ -26,7 +26,7 @@ namespace me
 
 			void Update( const UpdateParams & params ) override;
 		
-			void Render( render::Params params ) override;
+			void Render( const render::Params & params ) override;
 		
 			void OnSuspend() override;
 		

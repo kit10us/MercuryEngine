@@ -24,7 +24,7 @@ void PrimitiveList::Destroy()
 	m_buffers.clear();
 }
 
-void PrimitiveList::Render( render::Params params, MatrixFeed & matrixFeed ) const
+void PrimitiveList::Render( const render::Params & params, MatrixFeed & matrixFeed ) const
 {
 	for( const auto & set : m_buffers )
 	{	

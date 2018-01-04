@@ -1,6 +1,6 @@
 <xml>
-  <pixelshader name="texture2D_trans">
-    <source>texture2d_trans.hlsl</source>
+  <pixelshader name="textured2D_trans">
+    <source>textured2d_trans.hlsl</source>
     <entry>ps_main</entry>
     <profile>ps_4_0</profile>
 	<blend enabled="true">
@@ -12,8 +12,8 @@
 	<opalpha>add</opalpha>
 	</blend>
   </pixelshader>
-  <vertexshader name="texture2D_trans">
-    <source>texture2d_trans.hlsl</source>
+  <vertexshader name="textured2D_trans">
+    <source>textured2d_trans.hlsl</source>
     <entry>vs_main</entry>
     <profile>vs_4_0</profile>
 	<constants>

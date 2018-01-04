@@ -66,7 +66,7 @@ GeometryInstanceData * Mesh::CreateInstanceData()
 	return new MeshInstanceData( m_primitiveList.GetFrameSet(), m_primitiveList.GetAnimationSet() );
 }
 
-void Mesh::Update( UpdateParams params, GeometryInstanceData * instanceData )
+void Mesh::Update( const UpdateParams & params, GeometryInstanceData * instanceData )
 {
 	if( instanceData )
 	{
@@ -78,7 +78,7 @@ void Mesh::Update( UpdateParams params, GeometryInstanceData * instanceData )
 	m_primitiveList.ComputeBounds( GetBBox() );	 
 }
 
-void Mesh::Render( render::Params params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed )
+void Mesh::Render( const render::Params & params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed )
 {
 	// TODO:
 	/*

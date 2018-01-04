@@ -55,7 +55,7 @@ void VList::Update( const UpdateParams & params )
 	}
 }
 
-void VList::Render( render::Params params )
+void VList::Render( const render::Params & params )
 {
 	if( !IsEnabled() ) return;
 	if( m_items.empty() ) return;
