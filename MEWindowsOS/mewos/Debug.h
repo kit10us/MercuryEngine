@@ -8,6 +8,8 @@
 #include <unify/Path.h>
 #include <list>
 #include <string>
+#include <chrono>
+#include <map>
 
 namespace mewos
 {
@@ -16,6 +18,9 @@ namespace mewos
 	public:
 		Debug();
 		virtual ~Debug();
+
+		void SetDebug( bool debug ) override;
+		bool IsDebug() override;
 
 		void SetLogFile( unify::Path logFile ) override;
 		void SetFailureAsCritical( bool faiureAsCritical ) override;
@@ -32,10 +37,23 @@ namespace mewos
 
 		bool HadCriticalError() const override;
 
+		void DebugTimeStampBegin( std::string name ) override;
+		void DebugTimeStampEnd( std::string name )	 override;
+		float DebugGetTimeStamp( std::string name )	 override;
+
 	private:
+		bool m_isDebug;
 		bool m_failuresAsCritial;
 		unify::Path m_logFile;
 		std::list< me::ILogListener* > m_logListeners;
 		std::list< std::string > m_criticalErrors;
+		
+		struct TimeStartEnd
+		{
+			std::chrono::high_resolution_clock::time_point start;
+			std::chrono::high_resolution_clock::time_point end;
+		};
+		
+		std::map< std::string, TimeStartEnd > m_timeStamps;
 	};
 }

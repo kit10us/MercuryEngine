@@ -163,6 +163,9 @@ void ObjectStack::DirtyObject( object::Object* object )
 
 void ObjectStack::Update( const UpdateParams & params )
 {
+	auto * debug = params.renderer->GetGame()->GetOS()->Debug();
+	debug->DebugTimeStampBegin( "CollectGeometries" );
+
 	if( m_newObjects.size() )
 	{
 		for( auto && object : m_newObjects )
@@ -183,6 +186,8 @@ void ObjectStack::Update( const UpdateParams & params )
 	{
 		updateable->OnUpdate( params );
 	}
+
+	debug->DebugTimeStampEnd( "CollectGeometries" );
 }
 
 void ObjectStack::CollectCameras( RenderGirl & renderGirl )

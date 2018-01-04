@@ -30,6 +30,17 @@ namespace me
 		virtual ~IDebug() {}
 
 		/// <summary>
+		/// Enabled or disable debug only features. This is helpful when debug only features help with working with release builds. Or to improve debug time, or isolate code for debugging.
+		/// Debug features begin with Debug.
+		///
+		virtual void SetDebug( bool debug ) = 0;
+
+		/// <summary>
+		/// Returns true if we have debug only features enabled.
+		/// </summary>
+		virtual bool IsDebug() = 0;
+
+		/// <summary>
 		/// Set the log file. Previous log file is renamed to this log file.
 		/// </summary>
 		virtual void SetLogFile( unify::Path logFile ) = 0;
@@ -78,6 +89,21 @@ namespace me
 		/// Returns true if we'd had a critical error.
 		/// </summary>
 		virtual bool HadCriticalError() const = 0;
+
+		/// <summary>
+		/// Begin a time stamp block by name, so we can determine the time it takes to perform a block of code.
+		/// </summary>
+		virtual void DebugTimeStampBegin( std::string name ) = 0;
+
+		/// <summary>
+		/// End a time stamp block.
+		/// </summary>
+		virtual void DebugTimeStampEnd( std::string name ) = 0;
+
+		/// <summary>
+		/// Get the last time it too to perfome a named block, in seconds.
+		/// </summary>
+		virtual float DebugGetTimeStamp( std::string name ) = 0;
 
 	private:
 		bool m_failuresAsCritial;

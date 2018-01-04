@@ -154,4 +154,8 @@ void MainScene::OnUpdate( const UpdateParams & params )
 		object->GetFrame().Orbit( originPoint[i], unify::Quaternion( unify::V3< float >::V3Normalized( originPoint[i] ), angle ) );
 	}
 	*/
+
+	float collectGeometriesTimeS = GetOS()->Debug()->DebugGetTimeStamp( "CollectGeometries" );
+	float renderTimeS = GetOS()->Debug()->DebugGetTimeStamp( "Render" );
+	int x( 0 ); x;
 }

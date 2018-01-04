@@ -1,0 +1,1 @@
+There is a mechanism to simplify interfacing between various components within Mercury, called SendCommand. It works in two ways: a listener/dispatch system, and a feeding mechanism. The most optimal is the listener system, the most simple is the feeding mechanism.

@@ -229,6 +229,9 @@ void SceneManager::OnLateUpdate( const UpdateParams & params )
 
 void SceneManager::OnRender( const render::Params & params )
 {
+	auto * debug = GetGame()->GetOS()->Debug();
+	debug->DebugTimeStampBegin( "Render" );
+	
 	if ( m_enabled == false )
 	{
 		return;
@@ -246,6 +249,8 @@ void SceneManager::OnRender( const render::Params & params )
 	m_currentScene->OnRender( renderGirl );
 
 	m_renderCount = renderGirl.End();
+
+	debug->DebugTimeStampEnd( "Render" );
 }
 
 std::string SceneManager::SendCommand( size_t id, std::string extra )

@@ -12,13 +12,29 @@ using namespace mewos;
 
 Debug::Debug()
 	: m_failuresAsCritial{ true }
-
+	, m_isDebug
+#ifdef _DEBUG
+		{ true }
+#else
+		{ false }
+#endif
 {
 }
 
 Debug::~Debug()
 {
 }
+
+void Debug::SetDebug( bool debug )
+{
+	m_isDebug = debug;
+}
+
+bool Debug::IsDebug()
+{
+	return m_isDebug;
+}
+
 
 void Debug::SetLogFile( unify::Path logFile )
 {
@@ -127,5 +143,49 @@ void Debug::ReportError( me::ErrorLevel level, std::string source, std::string e
 bool Debug::HadCriticalError() const
 {
 	return m_criticalErrors.size() != 0;
+}
+
+void Debug::DebugTimeStampBegin( std::string name )
+{
+	if( !IsDebug() ) return;
+
+	using namespace std::chrono;
+
+	auto now = high_resolution_clock::now();
+	
+	m_timeStamps[name].start = now;
+	m_timeStamps[name].end = now;
+}
+
+void Debug::DebugTimeStampEnd( std::string name )
+{
+	if( !IsDebug() ) return;
+
+	auto itr = m_timeStamps.find( name );
+	if( itr == m_timeStamps.end() )
+	{
+		return;
+	}
+
+	using namespace std::chrono;
+
+	auto now = high_resolution_clock::now();
+
+	m_timeStamps[name].end = now;
+}
+
+float Debug::DebugGetTimeStamp( std::string name )
+{
+	auto itr = m_timeStamps.find( name );
+	if( itr == m_timeStamps.end() )
+	{
+		return 0.0f;
+	}
+	
+	using namespace std::chrono;
+
+	auto durationS = duration_cast< duration< float > >( itr->second.end - itr->second.start );
+
+	return durationS.count();
 }
 
