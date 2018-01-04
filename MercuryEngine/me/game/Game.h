@@ -112,8 +112,8 @@ namespace me
 
 			std::string SendCommand( size_t id, std::string extra ) override;
 
-			me::IDebug * Debug() override;
-			const me::IDebug * Debug() const override;
+			me::os::IDebug * Debug() override;
+			const me::os::IDebug * Debug() const override;
 
 		private:
 			void AddExtension( unify::Path path, const qxml::Element * element );

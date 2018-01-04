@@ -4,7 +4,7 @@
 #pragma once
 
 #include <mewos/MEWindowsOS.h>
-#include <me/IDebug.h>
+#include <me/os/IDebug.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
@@ -13,7 +13,7 @@
 
 namespace mewos
 {
-	class Debug : public me::IDebug
+	class Debug : public me::os::IDebug
 	{
 	public:
 		Debug();

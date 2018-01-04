@@ -5,7 +5,7 @@
 
 #include <me/scene/ISceneComponent.h>
 #include <me/scene/IScene.h>
-#include <me/IOS.h>
+#include <me/os/IOS.h>
 
 namespace me
 {

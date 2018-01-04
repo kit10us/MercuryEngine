@@ -90,7 +90,6 @@
     <ClInclude Include="me\game\component\GC_ActionFactory.h" />
     <ClInclude Include="me\IComponent.h" />
     <ClInclude Include="me\IController.h" />
-    <ClInclude Include="me\IDebug.h" />
     <ClInclude Include="me\input\action\IA_Action.h" />
     <ClInclude Include="me\input\action\IA_ObjectAction.h" />
     <ClInclude Include="me\input\ButtonCondition.h" />
@@ -105,7 +104,6 @@
     <ClInclude Include="me\input\StickCondition.h" />
     <ClInclude Include="me\input\TriggerCondition.h" />
     <ClInclude Include="me\Instancing.h" />
-    <ClInclude Include="me\IOS.h" />
     <ClInclude Include="me\IThing.h" />
     <ClInclude Include="me\Lookup.h" />
     <ClInclude Include="me\Mercury.h" />
@@ -124,6 +122,9 @@
     <ClInclude Include="me\object\component\TagsComponent.h" />
     <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\Object.h" />
+    <ClInclude Include="me\os\IDebug.h" />
+    <ClInclude Include="me\os\ILogListener.h" />
+    <ClInclude Include="me\os\IOS.h" />
     <ClInclude Include="me\render\Billboard.h" />
     <ClInclude Include="me\render\Blend.h" />
     <ClInclude Include="me\render\BufferSet.h" />

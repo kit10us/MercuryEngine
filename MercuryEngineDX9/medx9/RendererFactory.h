@@ -13,7 +13,7 @@
 #include <mewos/WindowsOS.h>
 #include <atlbase.h>
 
-#pragma pop( warning )
+#pragma warning( pop )
 
 #include <memory>
 

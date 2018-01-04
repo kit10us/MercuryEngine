@@ -119,12 +119,12 @@ me::game::IGame * WindowsOS::GetGame()
 	return m_game;
 }
 
-me::IDebug * WindowsOS::Debug()
+me::os::IDebug * WindowsOS::Debug()
 {
 	return m_debug;
 }
 
-const me::IDebug * WindowsOS::Debug() const
+const me::os::IDebug * WindowsOS::Debug() const
 {
 	return m_debug;
 }

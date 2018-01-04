@@ -34,9 +34,9 @@ using namespace render;
 
 class GameLogger : public rm::ILogger
 {
-	me::IDebug * m_debug;
+	me::os::IDebug * m_debug;
 public:
-	GameLogger( me::IDebug * debug ) : m_debug( debug )
+	GameLogger( me::os::IDebug * debug ) : m_debug( debug )
 	{
 	}
 
@@ -868,12 +868,12 @@ std::string Game::SendCommand( size_t id, std::string extra )
 	return lastResult;
 }
 
-IDebug * Game::Debug()
+os::IDebug * Game::Debug()
 {
 	return GetOS() ? GetOS()->Debug() : nullptr;
 }
 
-const IDebug * Game::Debug() const
+const os::IDebug * Game::Debug() const
 {
 	return GetOS() ? GetOS()->Debug() : nullptr;
 }

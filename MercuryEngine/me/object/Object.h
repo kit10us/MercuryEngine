@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/IOS.h>
+#include <me/os/IOS.h>
 #include <me/object/component/IObjectComponent.h>
 #include <me/scene/ComponentInstance.h>
 #include <me/render/Geometry.h>

@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/IOS.h>
+#include <me/os/IOS.h>
 #include <me/Extension.h>
 #include <me/input/InputManager.h>
 #include <me/render/RenderInfo.h>
@@ -80,12 +80,12 @@ namespace me
 			/// <summary>
 			/// Get our debugger interface.
 			/// </summary>
-			virtual IDebug * Debug() = 0;
+			virtual os::IDebug * Debug() = 0;
 
 			/// <summary>
 			/// Get our debugger interface.
 			/// </summary>
-			virtual const IDebug * Debug() const = 0;
+			virtual const os::IDebug * Debug() const = 0;
 
 			/// <summary>
 			/// Get our RenderInfo.

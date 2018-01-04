@@ -4,7 +4,7 @@
 #pragma once
 
 #include <mewos/MEWindowsOS.h>
-#include <me/IOS.h>
+#include <me/os/IOS.h>
 #include <me/game/IGame.h>
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
@@ -34,8 +34,8 @@ namespace mewos
 
 		me::game::IGame * GetGame() override;
 
-		me::IDebug * Debug() override;
-		const me::IDebug * Debug() const override;
+		me::os::IDebug * Debug() override;
+		const me::os::IDebug * Debug() const override;
 
 		void * Feed( std::string target, void * data ) override;
 
@@ -71,7 +71,7 @@ namespace mewos
 
 	private:
 		me::game::IGame * m_game;
-		me::IDebug * m_debug;
+		me::os::IDebug * m_debug;
 		me::render::IRendererFactory::ptr m_rendererFactory;
 		std::string m_name;
 		unify::Path m_programPath;

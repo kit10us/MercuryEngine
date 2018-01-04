@@ -82,6 +82,9 @@
     <Filter Include="me\object\component">
       <UniqueIdentifier>{5701edfa-1e62-4c61-bb80-aa3d673bec93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\os">
+      <UniqueIdentifier>{c2b0c7fe-1452-4cfc-91e6-fa8a2c6ea073}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -642,9 +645,6 @@
     <ClInclude Include="me\IController.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\IOS.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\IThing.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -702,11 +702,17 @@
     <ClInclude Include="me\object\action\OA_SetComponentValue.h">
       <Filter>me\object\action</Filter>
     </ClInclude>
-    <ClInclude Include="me\IDebug.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\render\Billboard.h">
       <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\os\IDebug.h">
+      <Filter>me\os</Filter>
+    </ClInclude>
+    <ClInclude Include="me\os\IOS.h">
+      <Filter>me\os</Filter>
+    </ClInclude>
+    <ClInclude Include="me\os\ILogListener.h">
+      <Filter>me\os</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

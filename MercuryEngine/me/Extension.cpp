@@ -38,7 +38,7 @@ Extension::~Extension()
 
 bool Extension::Load( game::IGame * gameInstance, const qxml::Element * element )
 {
-	me::IDebug * debug = gameInstance->Debug();
+	auto * debug = gameInstance->Debug();
 
 	if ( ! m_source.Exists() )
 	{
