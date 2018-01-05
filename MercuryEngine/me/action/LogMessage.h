@@ -17,13 +17,14 @@ namespace me
 		class LogMessage : public IAction
 		{
 		public:
-			LogMessage( game::IGame * gameInstance, std::string message );
+			LogMessage( game::IGame * gameInstance, std::string section, std::string message );
 
 		public: // IAction...
 			bool Perform() override;
 
 		private:
 			game::IGame * m_game;
+			std::string m_section;
 			std::string m_message;
 		};
 	}

@@ -66,8 +66,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			}
 			catch( std::exception exception )
 			{
-				gameInstance->Debug()->LogLine( "Mercury Failure: ", 0 );
-				gameInstance->Debug()->LogLine( exception.what(), 1 );
+				gameInstance->Debug()->LogLine( "Failure", "Mercury Failure:" );
+				gameInstance->Debug()->LogLine( "Failure", exception.what() );
 				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
 				switch( result )
 				{
@@ -93,15 +93,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 				while( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) == 1 )
 				{
 
-					//if ( ! IsDialogMessage( windowsOS->GetHandle(), &msg ) )
+					if( msg.message == WM_QUIT )
 					{
-						if( msg.message == WM_QUIT )
-						{
-							break;
-						}
-						TranslateMessage( &msg );
-						DispatchMessage( &msg );
+						break;
 					}
+					TranslateMessage( &msg );
+					DispatchMessage( &msg );
 				}
 
 				gameInstance->Tick();
@@ -114,8 +111,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 			}
 			catch( std::exception exception )
 			{
-				gameInstance->Debug()->LogLine( "Mercury Failure: ", 0 );
-				gameInstance->Debug()->LogLine( exception.what(), 4 );
+				gameInstance->Debug()->LogLine( "Failure", "Mercury Failure: " );
+				gameInstance->Debug()->LogLine( "Failure", exception.what() );
 				int result = MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE );
 				switch( result )
 				{
@@ -136,8 +133,8 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 	}
 	catch( std::exception exception )
 	{
-		gameInstance->Debug()->LogLine( "Mercury Failure: ", 0 );
-		gameInstance->Debug()->LogLine( exception.what(), 4 );
+		gameInstance->Debug()->LogLine( "Failure", "Mercury Failure:" );
+		gameInstance->Debug()->LogLine( "Failure", exception.what() );
 		MessageBoxA( 0, exception.what(), "Mercury Failure", MB_ICONEXCLAMATION );
 		return -1;
 	}

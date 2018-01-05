@@ -27,7 +27,6 @@ namespace mewos
 
 		bool Assert( bool assertion ) const override;
 
-		void LogLine( std::string line, int indent = 2 ) override;
 		void LogLine( std::string section, std::string line ) override;
 		void AttachLogListener( me::ILogListener * listener ) override;
 		void DetachLogListener( me::ILogListener * litener ) override;

@@ -108,7 +108,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, unify::P
 		throw unify::Exception( "Asset file not found! (name: \"" + name + "\", source: \"" + source.ToString() + "\")" );
 	}
 
-	Log_WriteLine( GetName() + " manager: adding \"" + name + "\" (" + foundSource.ToString() + ")." );
+	Log_WriteLine( "ResourceManager::Add", GetName() + " manager: adding \"" + name + "\" (" + foundSource.ToString() + ")." );
 
 
 	auto product = factory->second->Produce( foundSource, data );
@@ -144,7 +144,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( unify::Path source, unify:
 		throw unify::Exception( "Asset file not found! (\"" + source.ToString() + "\")" );
 	}
 
-	Log_WriteLine( GetName() + " manager: adding \"" + foundSource.ToString() + "\"." );
+	Log_WriteLine( "ResourceManager::Add", GetName() + " manager: adding \"" + foundSource.ToString() + "\"." );
 
 	std::string name;
 	auto product = factory->second->Produce( foundSource, data );
@@ -197,11 +197,11 @@ void ResourceManagerSimple< T >::Log_Write( std::string text )
 }
 
 template< typename T >
-void ResourceManagerSimple< T >::Log_WriteLine( std::string text )
+void ResourceManagerSimple< T >::Log_WriteLine( std::string section, std::string text )
 {
 	if ( m_logger )
 	{
-		m_logger->WriteLine( text );
+		m_logger->WriteLine( section, text );
 	}
 }
 

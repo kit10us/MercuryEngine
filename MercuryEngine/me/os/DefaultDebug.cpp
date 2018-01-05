@@ -41,7 +41,7 @@ void DefaultDebug::SetLogFile( unify::Path logFile )
 {
 	unify::Path::Rename( logFile, m_logFile );
 	m_logFile = logFile;
-	LogLine( "Log file: " + m_logFile.ToString() );
+	LogLine( "Debug", "Log file: " + m_logFile.ToString() );
 }
 
 void DefaultDebug::SetFailureAsCritical( bool faiureAsCritical )
@@ -63,14 +63,9 @@ bool DefaultDebug::Assert( bool assertion ) const
 	return false;
 }
 
-void DefaultDebug::LogLine( std::string line, int indent )
-{
-	m_logLines.push_back( line );
-}
-
 void DefaultDebug::LogLine( std::string section, std::string line )
 {
-	LogLine( "[" + section + "] " + line, 0 );
+	m_logLines.push_back( "[" + section + "] " + line );
 }
 
 void DefaultDebug::AttachLogListener( me::ILogListener* listener )
@@ -105,10 +100,10 @@ void DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::s
 	{
 	case me::ErrorLevel::Critical:
 		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
-		LogLine( "Critical Failure (" + source + "): " + error );
+		LogLine( "Debug", "Critical Failure (" + source + "): " + error );
 		throw unify::Exception( "Critical Failure (" + source + "): " + error );
 	case me::ErrorLevel::Failure:
-		LogLine( "Failure (" + source + "): " + error );
+		LogLine( "Debug", "Failure (" + source + "): " + error );
 		if( m_failuresAsCritial )
 		{
 			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
@@ -116,7 +111,7 @@ void DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::s
 		}
 		break;
 	case me::ErrorLevel::Warning:
-		LogLine( "Warning (" + source + "): " + error );
+		LogLine( "Debug", "Warning (" + source + "): " + error );
 		break;
 	}
 	return;

@@ -338,12 +338,12 @@ void ScriptEngine::LogTypes()
 {
 	for( auto & type : m_types )
 	{
-		GetGame()->Debug()->LogLine( "Added Lua type \"" + type.first + "...", 1 );
+		GetGame()->Debug()->LogLine( "ScriptEngine::LogTypes", "Added Lua type \"" + type.first + "..." );
 		for( auto && function : type.second )
 		{
-			GetGame()->Debug()->LogLine( "   " + function, 1 );
+			GetGame()->Debug()->LogLine( "ScriptEngine::LogTypes", "   " + function );
 		}
-		GetGame()->Debug()->LogLine( "", 1 );
+		GetGame()->Debug()->LogLine( "ScriptEngine::LogTypes", "" );
 	}
 }
 

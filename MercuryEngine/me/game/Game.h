@@ -115,6 +115,9 @@ namespace me
 			me::os::IDebug * Debug() override;
 			const me::os::IDebug * Debug() const override;
 
+		protected:
+			void Private_Shutdown();
+
 		private:
 			void AddExtension( unify::Path path, const qxml::Element * element );
 

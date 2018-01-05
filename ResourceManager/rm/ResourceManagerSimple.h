@@ -27,7 +27,7 @@ namespace rm
 
 		~ILogger() {}
 
-		virtual void WriteLine( std::string text ) = 0;
+		virtual void WriteLine( std::string section, std::string text ) = 0;
 	};
 
 
@@ -98,7 +98,7 @@ namespace rm
 
 		void Log_Write( std::string text );
 
-		void Log_WriteLine( std::string text );
+		void Log_WriteLine( std::string section, std::string text );
 
 	public: // IResourceManagerRaw...
 		std::string GetName() const override;

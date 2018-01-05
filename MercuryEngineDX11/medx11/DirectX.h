@@ -11,8 +11,11 @@
 #else // NDEBUG
 #endif
 
+#pragma waring( push )
+
 #pragma warning ( disable: 4221 ) // unused lib
 #pragma warning ( disable: 4006 ) // duplicate definition
+#pragma warning( disable: 4005 ) // warning C4005: 'MAKEFOURCC': macro redefinition
 
 #ifdef _DEBUG
 #define D3D_DEBUG_INFO
@@ -42,5 +45,6 @@
 
 #ifdef max
 #undef max
+#pragma warning( pop )
 #endif
 

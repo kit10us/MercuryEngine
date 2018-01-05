@@ -53,12 +53,12 @@ void AutoSceneManagerComponent::OnSceneStart( IScene * scene )
 	{
 		if (!m_onceBeforeStartScript.Empty())
 		{
-			m_scriptEngine->GetGame()->Debug()->LogLine("Loading startup script \"" + m_onceBeforeStartScript.ToString() + "\".", 1);
+			m_scriptEngine->GetGame()->Debug()->LogLine( "AutoSceneManagerComponent::OnSceneStart", "Loading startup script \"" + m_onceBeforeStartScript.ToString() + "\"." );
 			m_scriptEngine->ExecuteFile(m_onceBeforeStartScript);
 		}
 		else
 		{
-			m_scriptEngine->GetGame()->Debug()->LogLine("Unable to find startup script \"" + m_onceBeforeStartScript.ToString() + "\".", 1);
+			m_scriptEngine->GetGame()->Debug()->LogLine( "AutoSceneManagerComponent::OnSceneStart", "Unable to find startup script \"" + m_onceBeforeStartScript.ToString() + "\"." );
 		}
 		m_once = true;
 	}

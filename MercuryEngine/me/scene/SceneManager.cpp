@@ -123,15 +123,16 @@ bool SceneManager::ChangeScene( std::string name )
 		component->OnSceneStart( m_currentScene.get() );
 	}
 
-	GetGame()->Debug()->LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin", 0 );
+	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
 	m_currentScene->Component_OnBeforeStart();	
 
-	GetGame()->Debug()->LogLine( "Scene OnStart Begin", 1 );
+	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "OnStart Begin" );
 	m_currentScene->OnStart();
-	GetGame()->Debug()->LogLine( "Scene OnStart End", 1 );
+
+	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "OnStart End" );
 
 	m_currentScene->Component_OnAfterStart();
-	GetGame()->Debug()->LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done", 1 );
+	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "Start scene \"" + m_currentScene->GetName() + "\" Done" );
 
 	return true;
 }

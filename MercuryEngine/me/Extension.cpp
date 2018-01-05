@@ -50,7 +50,7 @@ bool Extension::Load( game::IGame * gameInstance, const qxml::Element * element 
 
 	if( debug )
 	{
-		debug->LogLine( "Loading extenion \"" + m_source.ToString() + "\"...", 1 );
+		debug->LogLine( "Extension::Load", "Loading extenion \"" + m_source.ToString() + "\"..." );
 	}
 
 	m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );

@@ -53,11 +53,6 @@ namespace me
 			/// <summary>
 			/// Write a line to the log.
 			/// </summary>
-			virtual void LogLine( std::string line, int indent ) = 0;
-
-			/// <summary>
-			/// Write a line to the log.
-			/// </summary>
 			virtual void LogLine( std::string section, std::string line ) = 0;
 
 			/// <summary>

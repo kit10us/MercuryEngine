@@ -154,7 +154,7 @@ bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Ef
 			V pos = m.GetPosition();
 
 			me::game::IGame* gameInstance = GetGameInstance();
-			gameInstance->Debug()->LogLine( "pos = " + pos.ToString(), 1 );
+			gameInstance->Debug()->LogLine( "Sheet::Create", "pos = " + pos.ToString() );
 
 			size_t i = y + x * height;
 			WriteVertex( *vd, lock, i, positionE, pos);

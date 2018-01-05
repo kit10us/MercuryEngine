@@ -40,13 +40,13 @@ void Scene::Component_OnBeforeStart()
 
 		if( component->IsEnabled() )
 		{
-			GetGame()->Debug()->LogLine( "Component \"" + component->GetTypeName() + "\" OnBeforeStart Begin", 1 );
+			GetGame()->Debug()->LogLine( "Scene::OnBeforeStart", "Component \"" + component->GetTypeName() + "\" OnBeforeStart Begin" );
 			component->OnBeforeStart();
-			GetGame()->Debug()->LogLine( "Component \"" + component->GetTypeName() + "\" OnBeforeStart Done", 1 );
+			GetGame()->Debug()->LogLine( "Scene::OnBeforeStart", "Component \"" + component->GetTypeName() + "\" OnBeforeStart Done" );
 		}
 		else
 		{
-			GetGame()->Debug()->LogLine( "Component \"" + component->GetTypeName() + "\" OnBeforeStart Skipped (not enabled)", 1 );
+			GetGame()->Debug()->LogLine( "Scene::OnBeforeStart", "Component \"" + component->GetTypeName() + "\" OnBeforeStart Skipped (not enabled)" );
 		}
 	}
 }
@@ -57,13 +57,13 @@ void Scene::Component_OnAfterStart()
 	{
 		if (component->IsEnabled())
 		{
-			GetGame()->Debug()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Begin", 1 );
+			GetGame()->Debug()->LogLine( "Scene::OnAfterStart", "Component \"" + component->GetTypeName() + "\" OnAfterStart Begin" );
 			component->OnAfterStart();
-			GetGame()->Debug()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Done", 1 );
+			GetGame()->Debug()->LogLine( "Scene::OnAfterStart", "Component \"" + component->GetTypeName() + "\" OnAfterStart Done" );
 		}
 		else
 		{
-			GetGame()->Debug()->LogLine("Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)", 1 );
+			GetGame()->Debug()->LogLine( "Scene::OnAfterStart", "Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)" );
 		}
 	}
 }

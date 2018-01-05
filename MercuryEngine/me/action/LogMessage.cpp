@@ -6,14 +6,15 @@
 using namespace me;
 using namespace action;
 
-LogMessage::LogMessage( game::IGame * gameInstance, std::string message )
+LogMessage::LogMessage( game::IGame * gameInstance, std::string section, std::string message )
 	: m_game{ gameInstance }
+	, m_section{ section }
 	, m_message{ message }
 {
 }
 
 bool LogMessage::Perform()
 {
-	m_game->Debug()->LogLine( m_message, 1 );
+	m_game->Debug()->LogLine( m_section, m_message );
 	return true;
 }

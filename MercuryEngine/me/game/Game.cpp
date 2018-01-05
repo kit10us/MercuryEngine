@@ -41,9 +41,9 @@ public:
 	{
 	}
 
-	void WriteLine( std::string text ) override
+	void WriteLine( std::string section, std::string text ) override
 	{
-		m_debug->LogLine( text, 0 );
+		m_debug->LogLine( section, text );
 	}
 
 };
@@ -128,7 +128,7 @@ void * Game::Feed( std::string target, void * data )
 
 void Game::Initialize( OSParameters osParameters )
 {
-	Debug()->LogLine( "Game::Initialize", "EARLIEST LOG EVER!" );
+	Debug()->LogLine( "Game::Initialize", "Initializing" );
 
 	using namespace std::chrono;
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
@@ -319,11 +319,10 @@ void Game::Initialize( OSParameters osParameters )
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	Debug()->LogLine( "Initializing: ", 0 );
-	Debug()->LogLine( "name:    " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>"), 1 );
-	Debug()->LogLine( "program: " + m_os->GetProgramPath().ToString(), 1 );
-	Debug()->LogLine( "path:    " + m_os->GetRunPath().ToString(), 1 );
-	Debug()->LogLine( "time:    " + std::string( std::ctime( &t ) ), 1 );
+	Debug()->LogLine( "Game::Initialize", "name:    " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") );
+	Debug()->LogLine( "Game::Initialize", "program: " + m_os->GetProgramPath().ToString() );
+	Debug()->LogLine( "Game::Initialize", "path:    " + m_os->GetRunPath().ToString() );
+	Debug()->LogLine( "Game::Initialize", "time:    " + std::string( std::ctime( &t ) ) );
 
 	// Our setup...
 	if( m_setup.Exists() )
@@ -334,7 +333,7 @@ void Game::Initialize( OSParameters osParameters )
 			unify::Path pathDiscovery( GetOS()->GetAssetPaths().FindAsset( source ) );
 			qxml::Document doc( pathDiscovery );
 
-			Debug()->LogLine( "Loading setup \"" + source.ToString() + "\"...", 1 );
+			Debug()->LogLine( "Game::Initialize", "Loading setup \"" + source.ToString() + "\"..." );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -353,7 +352,7 @@ void Game::Initialize( OSParameters osParameters )
 					else if (node.IsTagName("inputs"))
 					{
 						size_t failures = GetInputManager()->AddInputActions(m_inputOwnership, &node, true );
-						Debug()->LogLine("Add input actions (failures = " + unify::Cast< std::string >(failures) + ")", 1);
+						Debug()->LogLine( "Game::Initialize", "Add input actions (failures = " + unify::Cast< std::string >(failures) + ")" );
 					}
 				}
 			}
@@ -361,46 +360,46 @@ void Game::Initialize( OSParameters osParameters )
 		xmlLoader( m_setup );
 	}
 
-	Debug()->LogLine( "GameComponent summary...", 0 );
+	Debug()->LogLine( "Game::Initialize", "GameComponent summary..." );
 	for( int i = 0; i < GetComponentCount(); i++ )
 	{
-		Debug()->LogLine( GetComponent( i )->GetTypeName(), 1 );
+		Debug()->LogLine( "Game::Initialize", GetComponent( i )->GetTypeName() );
 	}
 
-	Debug()->LogLine( "OS Startup Begin", 0 );
+	Debug()->LogLine( "Game::Initialize", "OS Startup Begin" );
 	m_os->Startup();
-	Debug()->LogLine( "OS Startup Done", 0 );
+	Debug()->LogLine( "Game::Initialize", "OS Startup Done" );
 	
-	Debug()->LogLine( "Game Component's OnBeforeStartup Begin", 0 );
+	Debug()->LogLine( "Game::Initialize", "Game Component's OnBeforeStartup Begin" );
 	for( auto && component : m_components )
 	{
-		Debug()->LogLine( "OnBeforeStart \"" + component->GetTypeName() + "\" Begin", 1 );
+		Debug()->LogLine( "Game::Initialize", "OnBeforeStart \"" + component->GetTypeName() + "\" Begin" );
 		component->OnBeforeStartup();
-		Debug()->LogLine( "OnBeforeStart \"" + component->GetTypeName() + "\" Done", 1);
+		Debug()->LogLine( "Game::Initialize", "OnBeforeStart \"" + component->GetTypeName() + "\" Done" );
 	}
-	Debug()->LogLine( "Game Component's OnBeforeStartup Done", 0 );
+	Debug()->LogLine( "Game::Initialize", "Game Component's OnBeforeStartup Done" );
 
 	
-	Debug()->LogLine( "Game's Startup Begin", 0 );
+	Debug()->LogLine( "Game::Initialize", "Game's Startup Begin" );
 	try
 	{
 		Startup();
 	}
 	catch( unify::Exception ex )
 	{
-		Debug()->LogLine( "Startup FAILED", 1 );
+		Debug()->LogLine( "Game::Initialize", "Startup FAILED" );
 		Debug()->ReportError( ErrorLevel::Critical, "Game", ex.what() );
 	}
-	Debug()->LogLine( "Game's Startup Done", 0 );
+	Debug()->LogLine( "Game::Initialize", "Game's Startup Done" );
 
-	Debug()->LogLine( "OnAfterStartup Begin", 0 );
+	Debug()->LogLine( "Game::Initialize", "OnAfterStartup Begin" );
 	for( auto && component : m_components )
 	{
-		Debug()->LogLine( "OnAfterStartup \"" + component->GetTypeName() + "\" Begin", 1 );
+		Debug()->LogLine( "Game::Initialize", "OnAfterStartup \"" + component->GetTypeName() + "\" Begin" );
 		component->OnAfterStartup();
-		Debug()->LogLine( "OnAfterStartup \"" + component->GetTypeName() + "\" Done", 1 );
+		Debug()->LogLine( "Game::Initialize", "OnAfterStartup \"" + component->GetTypeName() + "\" Done" );
 	}
-	Debug()->LogLine( "OnAfterStartup Done", 0 );
+	Debug()->LogLine( "Game::Initialize", "OnAfterStartup Done" );
 
 	// Basic motivations...
 	if ( GetInputManager() )
@@ -418,18 +417,18 @@ void Game::Initialize( OSParameters osParameters )
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
 	m_totalStartupTime = micro * 0.000001f;
 
-	Debug()->LogLine( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s", 0 );
+	Debug()->LogLine( "Game::Initialize", "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s" );
 
-	Debug()->LogLine( "Creating Main Scene", 0 );
+	Debug()->LogLine( "Game::Initialize", "Creating Main Scene" );
 	auto sceneManager = GetComponentT< scene::SceneManager >();
 	if ( m_mainSceneFactory )
 	{
 		sceneManager->AddScene(m_mainSceneFactory->GetName(), m_mainSceneFactory);
-		Debug()->LogLine( "Main Scene created", 0 );
+		Debug()->LogLine( "Game::Initialize", "Main Scene created" );
 	}
 	else
 	{
-		Debug()->LogLine( "No main screen created", 0 );
+		Debug()->LogLine( "Game::Initialize", "No main screen created" );
 	}
 }
 
@@ -747,14 +746,19 @@ input::IInputAction::ptr Game::CreateInputAction( const qxml::Element * element 
 
 Game::~Game()
 {
-	Debug()->LogLine( "Shutting down:", 0 );
+	Private_Shutdown();
+}
 
-	Debug()->LogLine( "OnDetach", 0 );
+void Game::Private_Shutdown()
+{
+	Debug()->LogLine( "Game::Private_Shutdown", "Shutting down:" );
+
+	Debug()->LogLine( "Game::Private_Shutdown", "OnDetach" );
 	for( auto && component : m_components )
 	{
 		try
 		{
-			Debug()->LogLine( "Detaching " + component->GetTypeName(), 1 );
+			Debug()->LogLine( "Game::Private_Shutdown", "Detaching " + component->GetTypeName() );
 			component->OnDetach( this );
 		}
 		catch( ... )
@@ -762,9 +766,8 @@ Game::~Game()
 		}
 
 	}
-	Debug()->LogLine( "OnDetachDone", 0 );
+	Debug()->LogLine( "Game::Private_Shutdown", "OnDetachDone" );
 
-	// Call user shutdown.
 	Shutdown();
 
 	m_resourceHub.Clear();
@@ -776,8 +779,8 @@ Game::~Game()
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
 	const RenderInfo & renderInfo = GetRenderInfo();
-	Debug()->LogLine( "time: " + std::string( std::ctime( &t ) ), 1 );
-	Debug()->LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ), 1 );
+	Debug()->LogLine( "Game::Private_Shutdown", "time: " + std::string( std::ctime( &t ) ) );
+	Debug()->LogLine( "Game::Private_Shutdown", "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 
 	if( m_os )
 	{
@@ -786,10 +789,9 @@ Game::~Game()
 	}
 	m_os.reset();
 
-	
+
 	// Remove extensions...
 	m_extensions.clear();
-
 }
 
 void Game::AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener )
