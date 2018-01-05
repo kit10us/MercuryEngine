@@ -4,7 +4,7 @@
 #pragma once
 
 #include <mewos/MEWindowsOS.h>
-#include <me/os/IOS.h>
+#include <me/os/DefaultOS.h>
 #include <me/game/IGame.h>
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
@@ -28,7 +28,7 @@ namespace mewos
 	class WindowsOS : public me::IOS
 	{
 	public:
-		WindowsOS( me::game::IGame * gameInstance, const qxml::Element * element, me::render::IRendererFactory::ptr rendererFactory );
+		WindowsOS( me::os::DefaultOS & defaultOS, const qxml::Element * element, me::render::IRendererFactory::ptr rendererFactory );
 
 		virtual ~WindowsOS();
 
@@ -41,7 +41,7 @@ namespace mewos
 
 		std::string GetName() const override;
 
-		const std::vector< std::string > & GetCommandLine() const override;
+		std::vector< std::string > GetCommandLine() const override;
 
 		void AddDisplay( me::render::Display display );
 		void CreatePendingDisplays( std::string title );

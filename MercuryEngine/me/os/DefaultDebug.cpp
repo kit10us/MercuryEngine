@@ -1,16 +1,17 @@
 // Copyright (c) 2003 - 2011, Quentin S. Smith
 // All Rights Reserved
 
- #include <mewos/Debug.h>
+#include <me/os/DefaultDebug.h>
 #include <unify/Exception.h>
 #include <Windows.h>
 #include <fstream>
 #include <cassert>
 
 
-using namespace mewos;
+using namespace me;
+using namespace os;
 
-Debug::Debug( me::os::DefaultDebug & defaultDebug )
+DefaultDebug::DefaultDebug()
 	: m_failuresAsCritial{ true }
 	, m_isDebug
 #ifdef _DEBUG
@@ -18,39 +19,37 @@ Debug::Debug( me::os::DefaultDebug & defaultDebug )
 #else
 		{ false }
 #endif
-	, m_logLines{ defaultDebug.GetLogLines() }
-	, m_flushedLogLines{ 0 }
 {
 }
 
-Debug::~Debug()
+DefaultDebug::~DefaultDebug()
 {
 }
 
-void Debug::SetDebug( bool debug )
+void DefaultDebug::SetDebug( bool debug )
 {
 	m_isDebug = debug;
 }
 
-bool Debug::IsDebug()
+bool DefaultDebug::IsDebug()
 {
 	return m_isDebug;
 }
 
 
-void Debug::SetLogFile( unify::Path logFile )
+void DefaultDebug::SetLogFile( unify::Path logFile )
 {
 	unify::Path::Rename( logFile, m_logFile );
 	m_logFile = logFile;
 	LogLine( "Log file: " + m_logFile.ToString() );
 }
 
-void Debug::SetFailureAsCritical( bool faiureAsCritical )
+void DefaultDebug::SetFailureAsCritical( bool faiureAsCritical )
 {
 	m_failuresAsCritial = faiureAsCritical;
 }
 
-bool Debug::Assert( bool assertion ) const
+bool DefaultDebug::Assert( bool assertion ) const
 {
 	bool debug =
 #ifdef _DEBUG
@@ -64,28 +63,17 @@ bool Debug::Assert( bool assertion ) const
 	return false;
 }
 
-void Debug::LogLine( std::string line, int indent )
+void DefaultDebug::LogLine( std::string line, int indent )
 {
-	using namespace std;
-
-	std::string text = "";
-	for( int i = 0; i < indent; i++ )
-	{
-		text += " ";
-	}
-	text += line + "\n";
-
-	m_logLines.push_back( text );
-
-	Flush();
+	m_logLines.push_back( line );
 }
 
-void Debug::LogLine( std::string section, std::string line )
+void DefaultDebug::LogLine( std::string section, std::string line )
 {
 	LogLine( "[" + section + "] " + line, 0 );
 }
 
-void Debug::AttachLogListener( me::ILogListener* listener )
+void DefaultDebug::AttachLogListener( me::ILogListener* listener )
 {
 	using namespace std;
 
@@ -101,17 +89,17 @@ void Debug::AttachLogListener( me::ILogListener* listener )
 	m_logListeners.push_back( listener );
 }
 
-void Debug::DetachLogListener( me::ILogListener* listener )
+void DefaultDebug::DetachLogListener( me::ILogListener* listener )
 {
 	m_logListeners.remove( listener );
 }
 
-void Debug::DetachAllLogListeners()
+void DefaultDebug::DetachAllLogListeners()
 {
 	m_logListeners.clear();
 }
 
-void Debug::ReportError( me::ErrorLevel level, std::string source, std::string error )
+void DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error )
 {
 	switch( level )
 	{
@@ -134,12 +122,12 @@ void Debug::ReportError( me::ErrorLevel level, std::string source, std::string e
 	return;
 }
 
-bool Debug::HadCriticalError() const
+bool DefaultDebug::HadCriticalError() const
 {
 	return m_criticalErrors.size() != 0;
 }
 
-void Debug::DebugTimeStampBegin( std::string name )
+void DefaultDebug::DebugTimeStampBegin( std::string name )
 {
 	if( !IsDebug() ) return;
 
@@ -151,7 +139,7 @@ void Debug::DebugTimeStampBegin( std::string name )
 	m_timeStamps[name].end = now;
 }
 
-void Debug::DebugTimeStampEnd( std::string name )
+void DefaultDebug::DebugTimeStampEnd( std::string name )
 {
 	if( !IsDebug() ) return;
 
@@ -168,7 +156,7 @@ void Debug::DebugTimeStampEnd( std::string name )
 	m_timeStamps[name].end = now;
 }
 
-float Debug::DebugGetTimeStamp( std::string name )
+float DefaultDebug::DebugGetTimeStamp( std::string name )
 {
 	auto itr = m_timeStamps.find( name );
 	if( itr == m_timeStamps.end() )
@@ -183,28 +171,7 @@ float Debug::DebugGetTimeStamp( std::string name )
 	return durationS.count();
 }
 
-const std::vector< std::string > & Debug::GetLogLines() const
+const std::vector< std::string > & DefaultDebug::GetLogLines() const
 {
 	return m_logLines;
-}
-
-void Debug::Flush()
-{
-	if( m_logFile.Empty() ) return;
-
-	using namespace std;
-
-	for( m_flushedLogLines; m_flushedLogLines != m_logLines.size(); m_flushedLogLines++ )
-	{
-		std::string text{ m_logLines[m_flushedLogLines] };
-		ofstream out( m_logFile.ToString(), ios_base::out | ios_base::app );
-		out << text;
-
-		OutputDebugStringA( text.c_str() );
-
-		for( auto && listener : m_logListeners )
-		{
-			listener->Log( text );
-		}
-	}
 }

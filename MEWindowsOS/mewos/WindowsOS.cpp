@@ -21,14 +21,15 @@ using namespace mewos;
 #undef GetCommandLine
 #endif
 
-WindowsOS::WindowsOS( game::IGame * gameInstance, const qxml::Element * element, me::render::IRendererFactory::ptr rendererFactory )
-	: m_game( gameInstance )
-	, m_debug{ new mewos::Debug{} }
+WindowsOS::WindowsOS( me::os::DefaultOS & defaultOS, const qxml::Element * element, me::render::IRendererFactory::ptr rendererFactory )
+	: m_game( defaultOS.GetGame() )
+	, m_debug{ new mewos::Debug( dynamic_cast< me::os::DefaultDebug & >( *defaultOS.Debug() ) ) }
 	, m_rendererFactory{ rendererFactory }
 	, m_hasFocus{}
 	, m_keyboard{}
 	, m_mouse{}
-	, m_osParameters{ gameInstance->GetOSParameters() }
+	, m_osParameters{ defaultOS.GetGame()->GetOSParameters() }
+	, m_assetPaths{ defaultOS.GetAssetPaths() }
 {
 	{
 		using namespace std;
@@ -141,7 +142,7 @@ std::string WindowsOS::GetName() const
 	return m_name;
 }
 
-const std::vector< std::string > & WindowsOS::GetCommandLine() const
+std::vector< std::string > WindowsOS::GetCommandLine() const
 {
 	return m_commandLine;
 }

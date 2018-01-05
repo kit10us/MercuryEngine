@@ -714,6 +714,12 @@
     <ClInclude Include="me\os\ILogListener.h">
       <Filter>me\os</Filter>
     </ClInclude>
+    <ClInclude Include="me\os\DefaultDebug.h">
+      <Filter>me\os</Filter>
+    </ClInclude>
+    <ClInclude Include="me\os\DefaultOS.h">
+      <Filter>me\os</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1171,6 +1177,12 @@
     </ClCompile>
     <ClCompile Include="me\render\Billboard.cpp">
       <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\os\DefaultOS.cpp">
+      <Filter>me\os</Filter>
+    </ClCompile>
+    <ClCompile Include="me\os\DefaultDebug.cpp">
+      <Filter>me\os</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

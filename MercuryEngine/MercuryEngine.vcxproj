@@ -122,6 +122,8 @@
     <ClInclude Include="me\object\component\TagsComponent.h" />
     <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\Object.h" />
+    <ClInclude Include="me\os\DefaultDebug.h" />
+    <ClInclude Include="me\os\DefaultOS.h" />
     <ClInclude Include="me\os\IDebug.h" />
     <ClInclude Include="me\os\ILogListener.h" />
     <ClInclude Include="me\os\IOS.h" />
@@ -300,6 +302,8 @@
     <ClCompile Include="me\object\component\ObjectComponent.cpp" />
     <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
+    <ClCompile Include="me\os\DefaultDebug.cpp" />
+    <ClCompile Include="me\os\DefaultOS.cpp" />
     <ClCompile Include="me\render\Billboard.cpp" />
     <ClCompile Include="me\render\Blend.cpp" />
     <ClCompile Include="me\render\BufferSet.cpp" />

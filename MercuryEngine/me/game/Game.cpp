@@ -1,6 +1,7 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
+#include <me/os/DefaultOS.h>
 #include <me/game/Game.h>
 #include <me/game/component/GC_ActionFactory.h>
 #include <me/exception/FailedToCreate.h>
@@ -66,6 +67,7 @@ void Game::Shutdown()
 
 Game::Game( unify::Path setup)
 	: m_title{ "Mercury Engine" }
+	, m_os{ new os::DefaultOS( this ) }
 	, m_mainSceneFactory{ new me::scene::DefaultSceneFactory( "Main" ) }
 	, m_setup(setup)
 	, m_isQuitting(false)
@@ -77,6 +79,7 @@ Game::Game( unify::Path setup)
 
 Game::Game(scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup )
 	: m_title{ "Mercury Engine" }
+	, m_os{ new os::DefaultOS( this ) }
 	, m_mainSceneFactory{ mainSceneFactory }
 	, m_setup( setup )
 	, m_isQuitting( false )
@@ -125,6 +128,8 @@ void * Game::Feed( std::string target, void * data )
 
 void Game::Initialize( OSParameters osParameters )
 {
+	Debug()->LogLine( "Game::Initialize", "EARLIEST LOG EVER!" );
+
 	using namespace std::chrono;
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 

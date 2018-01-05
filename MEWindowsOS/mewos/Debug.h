@@ -4,7 +4,7 @@
 #pragma once
 
 #include <mewos/MEWindowsOS.h>
-#include <me/os/IDebug.h>
+#include <me/os/DefaultDebug.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
@@ -16,7 +16,7 @@ namespace mewos
 	class Debug : public me::os::IDebug
 	{
 	public:
-		Debug();
+		Debug( me::os::DefaultDebug & defaulDebug );
 		virtual ~Debug();
 
 		void SetDebug( bool debug ) override;
@@ -41,6 +41,13 @@ namespace mewos
 		void DebugTimeStampEnd( std::string name )	 override;
 		float DebugGetTimeStamp( std::string name )	 override;
 
+		const std::vector< std::string > & GetLogLines() const override;
+
+		/// <summary>
+		/// Flush log lines by outputting lines logged, and ensuring our logged lines are consumed.
+		/// </summary>
+		void Flush();
+
 	private:
 		bool m_isDebug;
 		bool m_failuresAsCritial;
@@ -55,5 +62,7 @@ namespace mewos
 		};
 		
 		std::map< std::string, TimeStartEnd > m_timeStamps;
+		std::vector< std::string > m_logLines;
+		size_t m_flushedLogLines;
 	};
 }

@@ -95,7 +95,7 @@ namespace me
 		/// <summary>
 		/// Get a vector of command line arguments, where 0 is the first argument.
 		/// </summary>
-		virtual const std::vector< std::string > & GetCommandLine() const = 0;
+		virtual std::vector< std::string > GetCommandLine() const = 0;
 
 		/// <summary>
 		/// Add a display.

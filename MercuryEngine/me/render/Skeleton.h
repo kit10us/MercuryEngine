@@ -17,6 +17,10 @@
 #include <memory>
 #include <limits>
 
+#ifdef max
+#undef max
+#endif
+
 namespace me
 {
 	namespace render

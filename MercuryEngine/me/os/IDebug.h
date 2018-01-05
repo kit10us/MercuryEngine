@@ -100,6 +100,11 @@ namespace me
 			/// </summary>
 			virtual float DebugGetTimeStamp( std::string name ) = 0;
 
+			/// <summary>
+			/// Logged lines are stored, and indexable.
+			/// </summary>
+			virtual const std::vector< std::string > & GetLogLines() const = 0;
+
 		private:
 			bool m_failuresAsCritial;
 			unify::Path m_logFile;

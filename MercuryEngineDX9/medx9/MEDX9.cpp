@@ -17,7 +17,7 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml:
 {
 	gameInstance->SetOS( 
 		me::IOS::ptr( 
-			new mewos::WindowsOS( gameInstance, element, me::render::IRendererFactory::ptr{ new medx9::RendererFactory } ) 
+			new mewos::WindowsOS( dynamic_cast< me::os::DefaultOS & >( *gameInstance->GetOS() ), element, me::render::IRendererFactory::ptr{ new medx9::RendererFactory } )
 		) 
 	);
 
