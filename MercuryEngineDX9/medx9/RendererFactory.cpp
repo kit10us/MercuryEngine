@@ -8,7 +8,7 @@
 
 using namespace medx9;
 
-me::render::IRenderer * RendererFactory::Produce( me::IOS * os, me::render::Display display, size_t index )
+me::render::IRenderer * RendererFactory::Produce( me::os::IOS * os, me::render::Display display, size_t index )
 {
 	return new medx9::Renderer( os, display, index );
 }

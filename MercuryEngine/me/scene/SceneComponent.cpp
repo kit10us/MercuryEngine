@@ -20,7 +20,7 @@ namespace {
 	};
 }
 
-SceneComponent::SceneComponent( IOS * os, std::string typeName )
+SceneComponent::SceneComponent( os::IOS * os, std::string typeName )
 	: m_os{ os }
 	, m_typeName{ typeName }
 	, m_enabled{ true }
@@ -36,12 +36,12 @@ SceneComponent::~SceneComponent()
 {
 }
 
-IOS * SceneComponent::GetOS()
+os::IOS * SceneComponent::GetOS()
 {
 	return m_os;
 }
 
-const IOS * SceneComponent::GetOS() const
+const os::IOS * SceneComponent::GetOS() const
 {
 	return m_os;
 }

@@ -49,7 +49,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdL
 
 	try
 	{
-		me::OSParameters osParameters;
+		me::os::OSParameters osParameters;
 		osParameters.hInstance = hInstance;
 		osParameters.hPrevInstance = hPrevInstance;
 		osParameters.lpszCmdLine = lpszCmdLine;

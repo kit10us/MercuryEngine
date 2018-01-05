@@ -54,7 +54,7 @@ namespace me
 
 			game::IGame * GetGame() override;
 
-			me::IOS * GetOS() override;
+			me::os::IOS * GetOS() override;
 
 			std::string GetName() const override;
 

@@ -14,11 +14,11 @@ namespace me
 		class SceneComponent : public ISceneComponent
 		{
 		public:
-			SceneComponent( IOS * os, std::string typeName );
+			SceneComponent( os::IOS * os, std::string typeName );
 			~SceneComponent();
 
-			IOS * GetOS();
-			const IOS * GetOS() const;
+			os::IOS * GetOS();
+			const os::IOS * GetOS() const;
 
 			IScene* GetScene();
 			const IScene* GetScene() const;
@@ -60,7 +60,7 @@ namespace me
 			std::string GetWhat() const override;
 
 		private:
-			IOS * m_os;
+			os::IOS * m_os;
 			std::string m_typeName;
 			bool m_enabled;
 			IScene* m_scene;

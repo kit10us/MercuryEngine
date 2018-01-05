@@ -1,16 +1,17 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <mephy/GameComponent.h>
-#include <mephy/collider/BoxCollider.h>
-#include <mephy/SceneComponent.h>
+#include <mephy/phy3d/GameComponent3D.h>
+#include <mephy/phy3d/collider/BoxCollider3D.h>
+#include <mephy/phy3d/SceneComponent3D.h>
 #include <me/scene/SceneManager.h>
 
 using namespace mephy;
+using namespace phy3d;
 
 char* GameComponent::Name()
 {
-	return "MEPhysics";
+	return "MEPhysics3D";
 }
 
 GameComponent::GameComponent()
@@ -29,10 +30,10 @@ MEPHYSICS_API me::object::component::IObjectComponent::ptr GameComponent::Create
 	auto scene = sceneManager->GetCurrentScene();
 
 	// Create the PhysicsSceneComponent only if we have colliders.
-	auto physicsSceneComponent = scene->GetComponentT< mephy::SceneComponent >();
+	auto physicsSceneComponent = scene->GetComponentT< mephy::phy3d::SceneComponent >();
 	if( !physicsSceneComponent )
 	{
-		physicsSceneComponent = new mephy::SceneComponent( GetGame()->GetOS() );
+		physicsSceneComponent = new mephy::phy3d::SceneComponent( GetGame()->GetOS() );
 		scene->AddComponent( me::scene::ISceneComponent::ptr( physicsSceneComponent ) );
 	}
 

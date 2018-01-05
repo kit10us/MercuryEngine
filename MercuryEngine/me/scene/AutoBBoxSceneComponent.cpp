@@ -10,7 +10,7 @@ using namespace scene;
 using namespace object;
 using namespace render;
 
-AutoBBoxSceneComponent::AutoBBoxSceneComponent( IOS * os, Effect::ptr effect )
+AutoBBoxSceneComponent::AutoBBoxSceneComponent( os::IOS * os, Effect::ptr effect )
 	: SceneComponent( os, "AutoBBox" )
 	, m_effect( effect )
 	, m_padding( 0.1f )

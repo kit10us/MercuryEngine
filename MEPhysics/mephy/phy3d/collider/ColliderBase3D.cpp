@@ -1,9 +1,10 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <mephy/collider/ColliderBase.h>
+#include <mephy/phy3d/collider/ColliderBase3D.h>
 
 using namespace mephy;
+using namespace phy3d;
 using namespace collider;
 using namespace me;
 using namespace object;

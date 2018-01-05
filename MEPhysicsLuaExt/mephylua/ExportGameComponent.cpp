@@ -38,7 +38,7 @@ namespace mephylua
 			mass = melua::Check< float >( state, 4 );
 		}
 
-		auto physics = g_game->GetComponentT< mephy::GameComponent >();
+		auto physics = g_game->GetComponentT< mephy::phy3d::GameComponent >();
 		me::object::component::IObjectComponent::ptr collider( physics->CreateBoxCollider( ext * 0.5f ) );
 		return PushUserType< ColliderObjectComponentProxy >( state, { collider } );
 	}
@@ -52,13 +52,13 @@ namespace mephylua
 
 		if( args == 0 )
 		{ // Get GameComponent (loaded automatically by loading the extension)...
-			auto component = gameInstance->GetComponentT< mephy::GameComponent >();
+			auto component = gameInstance->GetComponentT< mephy::phy3d::GameComponent >();
 			return PushUserType< GameComponentProxy >( state, { component }  );
 		}
 		else if( args == 1 )
 		{ // Get a GameComponent from a me::IComponent...
 			auto proxy = CheckUserType< ComponentProxy >( state, 1 );
-			auto component = dynamic_cast< mephy::GameComponent* >( proxy->component );
+			auto component = dynamic_cast< mephy::phy3d::GameComponent* >( proxy->component );
 			return PushUserType< GameComponentProxy >( state, { component } );
 		}
 		else

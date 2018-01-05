@@ -15,7 +15,7 @@ namespace medx11
 	class Renderer : public me::render::IRenderer
 	{
 	public:
-		Renderer( me::IOS * os, me::render::Display display, size_t index );
+		Renderer( me::os::IOS * os, me::render::Display display, size_t index );
 		virtual ~Renderer();				
 
 		ID3D11Device * GetDxDevice() const;

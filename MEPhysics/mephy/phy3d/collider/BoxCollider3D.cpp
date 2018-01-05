@@ -1,19 +1,20 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <mephy2d/collider/RectangleCollider.h>
+#include <mephy/phy3d/collider/BoxCollider3D.h>
 
-using namespace mephy2d;
+using namespace mephy;
+using namespace phy3d;
 using namespace collider;
 using namespace me;
 using namespace collider;
 
-char* RectangleCollider::Name()
+char* BoxCollider::Name()
 {
-	return "MEPhy2DRectangleCollider";
+	return "MEPhyBoxCollider";
 }
 
-RectangleCollider::RectangleCollider( RectangleCollider & component )
+BoxCollider::BoxCollider( BoxCollider & component )
 	: ColliderBase( component )
 	, m_halfExt{ component.m_halfExt }
 	, m_bbox{ component.m_bbox }
@@ -21,19 +22,19 @@ RectangleCollider::RectangleCollider( RectangleCollider & component )
 {
 }
 
-RectangleCollider::RectangleCollider( unify::V3< float > halfExt )
-	: ColliderBase( Name() )
+BoxCollider::BoxCollider( unify::V3< float > halfExt, bool moveable, float mass )
+	: ColliderBase( Name(), moveable, mass )
 	, m_halfExt{ halfExt }
 	, m_bbox{ halfExt, halfExt * -1.0f }
 	, m_once{ false }
 {
 }
 
-RectangleCollider::~RectangleCollider()
+BoxCollider::~BoxCollider()
 {
 }
 
-void RectangleCollider::TestCollision( Entity* entity, const me::UpdateParams & params )
+void BoxCollider::TestCollision( ColliderBase * entity, const me::UpdateParams & params )
 {
 	// Get entity posiitons...
 	auto earlyPos = entity->GetEarly().GetPosition();
@@ -78,8 +79,8 @@ void RectangleCollider::TestCollision( Entity* entity, const me::UpdateParams & 
 	m_once = false;
 }
 
-me::object::IObjectComponent::ptr RectangleCollider::Duplicate()
+me::object::component::IObjectComponent::ptr BoxCollider::Duplicate()
 {
-	auto duplicate = new RectangleCollider( *this );
-	return me::object::IObjectComponent::ptr( duplicate );
+	auto duplicate = new BoxCollider( *this );
+	return me::object::component::IObjectComponent::ptr( duplicate );
 }

@@ -8,7 +8,7 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
-ObjectAllocatorComponent::ObjectAllocatorComponent( IOS * os )
+ObjectAllocatorComponent::ObjectAllocatorComponent( os::IOS * os )
 : SceneComponent( os, "ObjectAllocatorComponent" )
 {
 }

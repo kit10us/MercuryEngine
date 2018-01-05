@@ -147,18 +147,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="MEPhysics.h" />
-    <ClInclude Include="mephy\collider\BoxCollider.h" />
-    <ClInclude Include="mephy\collider\ColliderBase.h" />
-    <ClInclude Include="mephy\GameComponent.h" />
-    <ClInclude Include="mephy\SceneComponent.h" />
+    <ClInclude Include="mephy\phy3d\collider\BoxCollider3D.h" />
+    <ClInclude Include="mephy\phy3d\collider\ColliderBase3D.h" />
+    <ClInclude Include="mephy\phy3d\GameComponent3D.h" />
+    <ClInclude Include="mephy\phy3d\SceneComponent3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="MEPhysics.cpp" />
-    <ClCompile Include="mephy\collider\BoxCollider.cpp" />
-    <ClCompile Include="mephy\collider\ColliderBase.cpp" />
-    <ClCompile Include="mephy\GameComponent.cpp" />
-    <ClCompile Include="mephy\SceneComponent.cpp" />
+    <ClCompile Include="mephy\phy3d\collider\BoxCollider3D.cpp" />
+    <ClCompile Include="mephy\phy3d\collider\ColliderBase3D.cpp" />
+    <ClCompile Include="mephy\phy3d\GameComponent3D.cpp" />
+    <ClCompile Include="mephy\phy3d\SceneComponent3D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

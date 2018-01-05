@@ -27,7 +27,7 @@ namespace me
 {
 	namespace os
 	{
-		class DefaultOS : public me::IOS
+		class DefaultOS : public me::os::IOS
 		{
 		public:
 			DefaultOS( me::game::IGame * gameInstance );

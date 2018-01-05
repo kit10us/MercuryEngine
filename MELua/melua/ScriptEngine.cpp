@@ -26,7 +26,7 @@ void GameComponentDeleter( me::game::IGameComponent * gc )
 
 ScriptEngine * ScriptEngine::s_se;
 
-ScriptEngine::ScriptEngine( me::IOS * os )
+ScriptEngine::ScriptEngine( me::os::IOS * os )
 	: GameComponent( "Lua" )
 	, m_state{ luaL_newstate() }
 	, m_gameScriptCount{ 0 }

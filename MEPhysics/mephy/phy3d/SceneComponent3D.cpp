@@ -1,16 +1,17 @@
 // Copyright (c) 2002 - 2018, Quentin S. Smith
 // All Rights Reserved
 
-#include <mephy/SceneComponent.h>
+#include <mephy/phy3d/SceneComponent3D.h>
 
 using namespace mephy;
+using namespace phy3d;
 
 char* SceneComponent::Name()
 {
 	return "MEPhysicsSceneComponent";
 }
 
-SceneComponent::SceneComponent( me::IOS * os )
+SceneComponent::SceneComponent( me::os::IOS * os )
 	: me::scene::SceneComponent( os, Name() )
 {
 }

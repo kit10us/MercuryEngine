@@ -13,7 +13,7 @@ namespace me
 		class ObjectAllocatorComponent : public SceneComponent
 		{
 		public:
-			ObjectAllocatorComponent( IOS * os );
+			ObjectAllocatorComponent( os::IOS * os );
 			~ObjectAllocatorComponent();
 
 		public: // ISceneComponent...

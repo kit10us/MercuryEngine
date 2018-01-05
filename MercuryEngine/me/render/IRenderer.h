@@ -22,7 +22,10 @@ namespace me
 		class IGame;
 	}
 
-	class IOS;
+	namespace os
+	{
+		class IOS;
+	}
 
 	namespace render
 	{
@@ -36,7 +39,7 @@ namespace me
 
 			virtual ~IRendererFactory() {}
 
-			virtual IRenderer * Produce( me::IOS * os, me::render::Display display, size_t index ) = 0;
+			virtual IRenderer * Produce( me::os::IOS * os, me::render::Display display, size_t index ) = 0;
 		};
 
 		/// <summary>

@@ -16,7 +16,7 @@ extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, 
 __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
 	gameInstance->SetOS( 
-		me::IOS::ptr( 
+		me::os::IOS::ptr( 
 			new mewos::WindowsOS( dynamic_cast< me::os::DefaultOS & >( *gameInstance->GetOS() ), element, me::render::IRendererFactory::ptr{ new medx11::RendererFactory } ) 
 		) 
 	);

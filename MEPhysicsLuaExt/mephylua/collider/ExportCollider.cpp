@@ -21,7 +21,7 @@ namespace mephylua
 
 	ColliderObjectComponentProxy::ColliderObjectComponentProxy( me::object::component::IObjectComponent::ptr component )
 		: component{ component }
-		, collider{ dynamic_cast<mephy::collider::ColliderBase *>( component.get() ) }
+		, collider{ dynamic_cast<mephy::phy3d::collider::ColliderBase *>( component.get() ) }
 	{
 	}
 

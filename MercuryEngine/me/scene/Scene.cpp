@@ -160,7 +160,7 @@ game::IGame *Scene::GetGame()
 	return m_game;
 }
 
-me::IOS * Scene::GetOS()
+me::os::IOS * Scene::GetOS()
 {
 	return m_game->GetOS();
 }

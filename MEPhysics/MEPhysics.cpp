@@ -2,10 +2,10 @@
 //
 
 #include "MEPhysics.h"
-#include <mephy/GameComponent.h>
+#include <mephy/phy3d/GameComponent3D.h>
 #include <memory.h>
 
-void Deleter( mephy::GameComponent * component )
+void Deleter( mephy::phy3d::GameComponent * component )
 {
 	delete component;
 }
@@ -15,7 +15,7 @@ extern "C" MEPHYSICS_API bool MELoader( me::game::IGame * gameInstance, const qx
 MEPHYSICS_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
 	// GameComponent
-	mephy::GameComponent * component = new mephy::GameComponent();
+	mephy::phy3d::GameComponent * component = new mephy::phy3d::GameComponent();
 	gameInstance->AddComponent( me::game::IGameComponent::ptr( component, Deleter ) );
 				  
 	return true;

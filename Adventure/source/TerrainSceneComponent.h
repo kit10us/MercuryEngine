@@ -7,7 +7,7 @@
 class TerrainSceneComponent : public me::scene::SceneComponent
 {
 public:
-	TerrainSceneComponent( me::IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize );
+	TerrainSceneComponent( me::os::IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize );
 	virtual ~TerrainSceneComponent();
 
 	unify::Size< int > GetSize() const;

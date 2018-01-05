@@ -21,7 +21,7 @@ namespace me
 				BBoxRendererComponent( BBoxRendererComponent & component );
 
 			public:
-				BBoxRendererComponent( IOS * os, render::Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
+				BBoxRendererComponent( os::IOS * os, render::Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
 				virtual ~BBoxRendererComponent();
 
 				/// <summary>
@@ -48,7 +48,7 @@ namespace me
 
 			protected:
 				Object * m_object;
-				IOS * m_os;
+				os::IOS * m_os;
 				unify::BBox< float > m_bbox;
 				std::list< GeometryComponent * > m_geomertries;
 				render::Geometry::ptr m_geometry;

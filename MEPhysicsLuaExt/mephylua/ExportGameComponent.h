@@ -5,7 +5,7 @@
 
 #include <MELuaDLL.h>
 #include <melua/ScriptEngine.h>
-#include <mephy/GameComponent.h>
+#include <mephy/phy3d/GameComponent3D.h>
 
 namespace mephylua
 {
@@ -14,6 +14,6 @@ namespace mephylua
 	struct GameComponentProxy
 	{
 		static char* Name();
-		mephy::GameComponent * component;
+		mephy::phy3d::GameComponent * component;
 	};
 }

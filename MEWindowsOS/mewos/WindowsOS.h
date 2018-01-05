@@ -28,7 +28,7 @@
 
 namespace mewos
 {
-	class WindowsOS : public me::IOS
+	class WindowsOS : public me::os::IOS
 	{
 	public:
 		WindowsOS( me::os::DefaultOS & defaultOS, const qxml::Element * element, me::render::IRendererFactory::ptr rendererFactory );
@@ -86,7 +86,7 @@ namespace mewos
 		std::list< HWND > m_childHandles; // Handles to be serviced.
 		std::vector< me::render::Display > m_pendingDisplays;
 		std::vector< me::render::IRenderer::ptr > m_renderers;
-		me::OSParameters m_osParameters;
+		me::os::OSParameters m_osParameters;
 		unify::AssetPaths m_assetPaths;
 		HWND m_mainWindow;
 	};

@@ -19,7 +19,7 @@ namespace me
 		class AutoBBoxSceneComponent : public SceneComponent
 		{
 		public:
-			AutoBBoxSceneComponent( IOS * os, render::Effect::ptr effect );
+			AutoBBoxSceneComponent( os::IOS * os, render::Effect::ptr effect );
 			virtual ~AutoBBoxSceneComponent();
 
 			/// <summary>

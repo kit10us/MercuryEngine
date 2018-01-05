@@ -30,7 +30,7 @@ namespace me
 
 		protected: // User overrides...
 
-			virtual bool Setup( IOS * os ) override;
+			virtual bool Setup( os::IOS * os ) override;
 			virtual void Startup() override;
 			virtual void Shutdown() override;
 
@@ -39,7 +39,7 @@ namespace me
 			Game( scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup = unify::Path( "setup.xml" ) );
 			virtual ~Game();
 
-			OSParameters GetOSParameters() const override;
+			os::OSParameters GetOSParameters() const override;
 
 			void * Feed( std::string target, void * data ) override;
 
@@ -47,7 +47,7 @@ namespace me
 			/// Perform necessary initialization.
 			/// Returns Setup: false ends the program immediately.
 			/// </summary>
-			void Initialize( me::OSParameters osParameters );
+			void Initialize( os::OSParameters osParameters );
 
 			/// <summary>
 			/// Optional function to be called on reciept of a drag-and-drop event.
@@ -61,9 +61,9 @@ namespace me
 
 			virtual const render::RenderInfo & GetRenderInfo() const final;
 
-			void SetOS( IOS::ptr os ) final;
-			IOS * GetOS() final;
-			const IOS * GetOS() const final;
+			void SetOS( os::IOS::ptr os ) final;
+			os::IOS * GetOS() final;
+			const os::IOS * GetOS() const final;
 
 			template< typename T >
 			rm::ResourceManagerSimple< T > * GetManager();
@@ -124,14 +124,14 @@ namespace me
 		private:
 			std::string m_title;
 			scene::ISceneFactory::ptr m_mainSceneFactory;
-			OSParameters m_osParameters;
+			os::OSParameters m_osParameters;
 			std::list< me::game::IGameComponent::ptr > m_components;
 			
 			unify::Path m_setup;
 
 			float m_totalStartupTime;
 
-			std::shared_ptr< IOS > m_os;
+			os::IOS::ptr m_os;
 			rm::ResourceHub m_resourceHub;
 
 			render::RenderInfo m_renderInfo;

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <lua.hpp>
-#include <mephy/collider/ColliderBase.h>
+#include <mephy/phy3d/collider/ColliderBase3D.h>
 #include <melua/ScriptEngine.h>
 
 namespace mephylua
@@ -21,6 +21,6 @@ namespace mephylua
 		~ColliderObjectComponentProxy();
 
 		me::object::component::IObjectComponent::ptr component;
-		mephy::collider::ColliderBase* collider;
+		mephy::phy3d::collider::ColliderBase* collider;
 	};
 }

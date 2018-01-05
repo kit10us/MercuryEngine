@@ -22,7 +22,7 @@ BBoxRendererComponent::BBoxRendererComponent( BBoxRendererComponent & component 
 {
 }
 
-BBoxRendererComponent::BBoxRendererComponent( IOS * os, Effect::ptr effect, unify::Color color )
+BBoxRendererComponent::BBoxRendererComponent( os::IOS * os, Effect::ptr effect, unify::Color color )
 	: ObjectComponent( "BBoxRenderer", true, true )
 	, m_os{ os }
 	, m_effect{ effect }

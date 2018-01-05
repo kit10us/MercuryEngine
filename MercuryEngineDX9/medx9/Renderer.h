@@ -15,7 +15,7 @@ namespace medx9
 	class Renderer : public me::render::IRenderer
 	{
 	public:
-		Renderer( me::IOS * os, me::render::Display display, size_t index );
+		Renderer( me::os::IOS * os, me::render::Display display, size_t index );
 		virtual ~Renderer();					
 
 		me::game::IGame * GetGame() override;

@@ -11,7 +11,7 @@
 #else // NDEBUG
 #endif
 
-#pragma waring( push )
+#pragma warning( push )
 
 #pragma warning ( disable: 4221 ) // unused lib
 #pragma warning ( disable: 4006 ) // duplicate definition
@@ -45,6 +45,6 @@
 
 #ifdef max
 #undef max
-#pragma warning( pop )
 #endif
 
+#pragma warning( pop )

@@ -49,7 +49,7 @@ public:
 };
 
 
-bool Game::Setup( IOS * os )
+bool Game::Setup( os::IOS * os )
 {
 	// STUBBED - optional for derived game class.
 	return true;
@@ -89,7 +89,7 @@ Game::Game(scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup )
 {
 }
 
-me::OSParameters Game::GetOSParameters() const
+me::os::OSParameters Game::GetOSParameters() const
 {
 	return m_osParameters;
 }
@@ -126,7 +126,7 @@ void * Game::Feed( std::string target, void * data )
 	return 0;
 }
 
-void Game::Initialize( OSParameters osParameters )
+void Game::Initialize( os::OSParameters osParameters )
 {
 	Debug()->LogLine( "Game::Initialize", "Initializing" );
 
@@ -536,17 +536,17 @@ const RenderInfo & Game::GetRenderInfo() const
 	return m_renderInfo;
 }
 
-void Game::SetOS( me::IOS::ptr os )
+void Game::SetOS( os::IOS::ptr os )
 {
 	m_os = os;
 }
 
-IOS * Game::GetOS()
+os::IOS * Game::GetOS()
 {
 	return m_os.get();
 }
 
-const IOS * Game::GetOS() const
+const os::IOS * Game::GetOS() const
 {
 	return m_os.get();
 }

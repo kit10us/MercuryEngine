@@ -8,7 +8,7 @@ using namespace render;
 using namespace scene;
 using namespace terrain;
 
-TerrainSceneComponent::TerrainSceneComponent( IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize )
+TerrainSceneComponent::TerrainSceneComponent( os::IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize )
 	: SceneComponent( os, "TerrainSceneComponent" )
 	, m_mapSize{ mapSize }
 	, m_terraSize{ terraSize }

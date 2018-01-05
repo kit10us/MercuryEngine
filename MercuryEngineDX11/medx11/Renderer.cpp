@@ -18,7 +18,7 @@ using namespace medx11;
 using namespace me;
 using namespace render;
 
-Renderer::Renderer( me::IOS * os, Display display, size_t index )
+Renderer::Renderer( me::os::IOS * os, Display display, size_t index )
 	: m_os{ dynamic_cast<mewos::WindowsOS *>( os ) }
 	, m_display( display )
 	, m_swapChainDesc{}

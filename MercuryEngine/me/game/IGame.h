@@ -39,7 +39,7 @@ namespace me
 			/// <summary>
 			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.
 			/// </summary>
-			virtual bool Setup( IOS * os ) = 0;
+			virtual bool Setup( os::IOS * os ) = 0;
 
 			/// <summary>
 			/// Startup is called to load assets and create game objects before Updating and Rendering. It is called once.
@@ -54,7 +54,7 @@ namespace me
 		public:
 			virtual ~IGame() {}
 
-			virtual OSParameters GetOSParameters() const = 0;
+			virtual os::OSParameters GetOSParameters() const = 0;
 
 			/// <summary>
 			/// Feed messages to gameInstance, and it's sub-systems.
@@ -65,17 +65,17 @@ namespace me
 
 			virtual void Draw() = 0;
 
-			virtual void SetOS( me::IOS::ptr os ) = 0;
+			virtual void SetOS( me::os::IOS::ptr os ) = 0;
 
 			/// <summary>
 			/// Get our OS interface.
 			/// </summary>
-			virtual IOS * GetOS() = 0;
+			virtual os::IOS * GetOS() = 0;
 
 			/// <summary>
 			/// Get our OS interface.
 			/// </summary>
-			virtual const IOS * GetOS() const = 0;
+			virtual const os::IOS * GetOS() const = 0;
 
 			/// <summary>
 			/// Get our debugger interface.
