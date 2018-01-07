@@ -157,6 +157,19 @@ void MainScene::OnStart()
 			) 
 		);
 	}
+	
+	/*
+	{ // Add an image that uses a sprite...
+		Effect::ptr heart = GetManager< Effect >()->Add( unify::Path( "textured2D.effect" ) );
+		canvas::Layer::ptr layerHeart( new canvas::Layer( GetGame() ) );
+		canvas->GetLayer()->AddElement( layerHeart, "layerHeart" );
+		layerHeart->AddElement(
+			canvas::IElement::ptr(
+				new canvas::Image( GetGame(), heart, canvas::Anchor::TopRight, { 0.25f, 0.25f } )
+			)
+		);
+	}
+	*/
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )

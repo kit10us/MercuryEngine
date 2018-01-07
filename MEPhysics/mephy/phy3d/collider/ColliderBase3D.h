@@ -43,7 +43,7 @@ namespace mephy
 				void PerformOnEnter( ColliderBase * collider, const me::UpdateParams & params );
 				void PerformOnExit( ColliderBase * collider, const me::UpdateParams & params );
 
-			public: // IGameComponent...
+			public: // ObjectComponent...
 				void OnAttach( me::object::Object * object ) override;
 				void OnDetach( me::object::Object * objecct ) override;
 

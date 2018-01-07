@@ -8,7 +8,7 @@ using namespace phy3d;
 
 char* SceneComponent::Name()
 {
-	return "MEPhysicsSceneComponent";
+	return "MEPhysicsSceneComponent3D";
 }
 
 SceneComponent::SceneComponent( me::os::IOS * os )
