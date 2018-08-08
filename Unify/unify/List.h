@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2018 Quentin S. Smith
+// Copyright (c) 2002 - 2019 Evil Quail LLC
 // All Rights Reserved
 
 //	QList is a virtual list inherited by other lits. It provides a set of common methods.

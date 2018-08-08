@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2010 Quentin S. Smith
+// Copyright (c) 2002 - 2010 Evil Quail LLC
 // All Rights Reserved
  
 #include <me/render/Terra.h>

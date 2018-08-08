@@ -1,4 +1,4 @@
-// Copyright (c) 2003 - 2013, Quentin S. Smith
+// Copyright (c) 2003 - 2013, Evil Quail LLC
 // All Rights Reserved
 
 #include <meogl3/VertexDeclaration.h>

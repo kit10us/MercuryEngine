@@ -1,3 +1,6 @@
+// Copyright (c) 2002 - 2019, Evil Quail LLC
+// All Rights Reserved
+
 template< typename T >
 inline Query<T>::Query()
 {

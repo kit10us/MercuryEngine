@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2013, Quentin S. Smith
+// Copyright (c) 2002 - 2013, Evil Quail LLC
 // All Rights Reserved
 
 #include <mephysx/objectcomponent/HeightFieldCollider.h>

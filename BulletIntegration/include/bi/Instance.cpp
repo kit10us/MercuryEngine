@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2011, Quentin S. Smith
+// Copyright (c) 2002 - 2011, Evil Quail LLC
 // All Rights Reserved
 
 #include <bi/Instance.h>

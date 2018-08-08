@@ -1,3 +1,6 @@
+// Copyright (c) 2002 - 2019, Evil Quail LLC
+// All Rights Reserved
+
 template< typename T_Type > 
 T_Type Parameters::Get( std::string name ) const
 {
