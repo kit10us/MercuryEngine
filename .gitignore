@@ -77,3 +77,7 @@ log.txt
 *.odt#
 *.log
 *.tlog
+
+## External GIT sources
+/Unify
+external

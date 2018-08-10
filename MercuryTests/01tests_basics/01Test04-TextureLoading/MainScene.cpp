@@ -95,7 +95,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 
 	rotation += AngleInDegrees( params.GetDelta() * 90.0f );
-	if( rotation.Fix360() != 0 )
+	if( rotation.Normalize() != 0 )
 	{
 		++axisIndex;
 		if( axisIndex >= 3 )

@@ -62,6 +62,12 @@ bool Effect::operator != ( const Effect & effect ) const
 	return !( *this == effect );
 }
 
+Effect::ptr Effect::Duplicate()
+{
+	Effect::ptr newEffect{ new Effect( *this ) };
+	return newEffect;
+}
+
 void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size )
 {
 	unify::DataLock lock;

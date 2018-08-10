@@ -37,6 +37,8 @@ namespace me
 			bool operator ==( const Effect & effect ) const;
 			bool operator !=( const Effect & effect ) const;
 
+			Effect::ptr Duplicate();
+
 			/// <summary>
 			/// This updates data to the vertex shader; don't use this if you intend to do this manually (this is likely to be deprecated.
 			/// </summary>
