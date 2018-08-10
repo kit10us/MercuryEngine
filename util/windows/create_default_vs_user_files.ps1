@@ -15,9 +15,7 @@ Get-ChildItem -Path $ProjectParentDir -Directory | Where-Object { $_ -match '^[0
 
                         echo "...$DestFile"
                         copy $SourceFile $DestFile
-                        
                     }
-                
             }
     }
 
