@@ -8,40 +8,16 @@
 
 #pragma once
 
+#include <rm/ILogger.h>
+#include <rm/ISourceFactory.h>
 #include <rm/IResourceManager.h>
-#include <qxml/Document.h>
-#include <unify/String.h>
-#include <unify/Stream.h>
 #include <unify/Exception.h>
-#include <unify/Stream.h>
 #include <unify/AssetPaths.h>
 #include <map>
 #include <memory>
 
 namespace rm
 {
-	class ILogger
-	{
-	public:
-		typedef std::shared_ptr< ILogger > ptr;
-
-		~ILogger() {}
-
-		virtual void WriteLine( std::string section, std::string text ) = 0;
-	};
-
-
-	/// <summary>
-	/// Factory from a source path.
-	/// </summary>
-	template< typename T >
-	class ISourceFactory
-	{
-	public:
-		~ISourceFactory() {}
-		virtual std::shared_ptr< T > Produce( unify::Path path, void * data ) = 0;
-	};
-
 	// A base for a resource list...
 	template< typename T >
 	class ResourceManagerSimple	: public IResourceManager< T >
