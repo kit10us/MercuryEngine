@@ -1,5 +1,6 @@
-#include <unify/Angle.h>
-#include <unify/V3.h>
+// Copyright (c) 2002 - 2019, Evil Quail LLC
+// All Rights Reserved
+
 #include <unify/Matrix.h>
 #include <memory>
 
@@ -11,45 +12,55 @@ using namespace object;
 class SpacialData
 {
 public:
-	SpacialData(float distance, unify::Angle orbitStart, unify::Angle orbitVelocity, unify::Angle rotationStart, unify::Angle rotationVelocity)
-		: m_distance(distance)
-		, m_orbit(orbitStart)
-		, m_orbitVelocity(orbitVelocity)
-		, m_rotation(rotationStart)
-		, m_rotationVelocity(rotationVelocity)
+	SpacialData( unify::Matrix original, unify::V3< float > axis, unify::TimeDelta rotation, unify::TimeDelta orbit, float daysOrbitParent )
+		: m_matrix{ original }
+		, m_axis{ axis }
+		, m_rotation{ rotation }
+		, m_orbit{ orbit }
+		, m_daysOrbitParent{ daysOrbitParent }
 	{
 	}
-
 
 	virtual ~SpacialData()
 	{
 	}
 
-	virtual void Update(const UpdateParams & params, const SpacialData * parentData )
+	virtual void Update(const UpdateParams & params, const SpacialData * parentData, float speedOfTime )
 	{
-		m_orbit += m_orbitVelocity * params.GetDelta();
-
-		unify::V3< float > origin{ parentData ? parentData->m_position : unify::V3< float >::V3Zero() };
-		m_position = unify::V3< float >::V3RotateAbout(origin, m_distance, m_rotation, unify::V3< float >::V3Z(1));
-
-		m_rotation += m_rotationVelocity;
+		m_matrix = 
+			unify::MatrixRotationAboutAxis( 
+				unify::V3< float >::V3Y( 1.0f ), 
+				unify::AngleInDegrees( params.GetDelta() * m_orbit.GetSeconds() ) 
+			)
+			* m_matrix;
+		
+		m_matrix *= unify::MatrixTranslate( 
+		{ 
+			parentData ? parentData->GetMatrix().GetPosition() : unify::V3< float >::V3Zero() 
+		} 
+		);
+		
+		if ( m_daysOrbitParent != 0.0f )
+		{
+			m_matrix *= unify::MatrixRotationAboutAxis( 
+				m_axis, 
+				unify::AnglePI2() / m_daysOrbitParent
+				* params.GetDelta()
+				* speedOfTime
+				);
+		}
 	}
 
 	unify::Matrix GetMatrix() const
 	{
-		using namespace unify;
-		auto matrix = unify::MatrixIdentity();
-		matrix.RotateAboutAxis( unify::V3< float >( 0, 1, 0 ), m_orbit );
-		matrix.SetPosition( m_position );
-		return matrix;
+		return m_matrix;
 	}
 
 private:
-	float m_distance;
-	unify::Angle m_orbit;
-	unify::Angle m_orbitVelocity;
-	unify::Angle m_rotation;
-	unify::Angle m_rotationVelocity;
-	unify::Angle m_velocity;
-	unify::V3< float > m_position;
+	unify::V3< float > m_axis;
+	unify::TimeDelta m_rotation;
+	unify::TimeDelta m_orbit;
+	unify::Matrix m_matrix;
+	float m_hoursRotate;
+	float m_daysOrbitParent;
 };

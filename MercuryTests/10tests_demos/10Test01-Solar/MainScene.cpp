@@ -18,7 +18,6 @@ using namespace object;
 
 #include <SolarBody.h>
 
-
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
 {	
@@ -26,29 +25,31 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-		auto TM = GetManager< ITexture >();
-		auto EM = GetManager< Effect >();
+	using namespace unify;
 
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", Path( "EffectColor.effect" ) );
+	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", Path( "EffectTexture.effect" ) );
 
-	GetManager< ITexture >()->Add( "01Mercury", unify::Path( "solar\\01Mercury.bmp" ) );
-	//textured3DEffect->SetTexture( 0, GetManager< ITexture >()->Find( "01Mercury" ) );
-
+	auto AddPlanetEffect = [&]( std::string name, std::string path )
+	{
+		auto effect{ textured3DEffect->Duplicate() };
+		effect->SetTexture(0, GetManager< ITexture >()->Add( name, unify::Path(path)));
+		return effect;
+	};
 
 	// Add an object to act as a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+	camera->GetFrame().SetPosition( V3< float >( 0, 5, -17 ) );
+	camera->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
 
 	// Add a camera component to the camera object
 	auto * cameraComponent = new component::CameraComponent();
-	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800 / 600, 1, 1000 ) );
+	cameraComponent->SetProjection( MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800 / 600, 1, 1000 ) );
 	camera->AddComponent( component::IObjectComponent::ptr( cameraComponent ) );
 
 	auto createObject = [&]( sg::ShapeBaseParameters parameters ) //->me::object::Object*
 	{
-		const unify::V3< float > startPos{ unify::V3< float >::V3Zero() };
+		const unify::V3< float > startPos{ V3< float >::V3Zero() };
 		
 		static int objectIndex = 0;
 		std::string objectName = "object " + unify::Cast< std::string >( objectIndex++ );
@@ -66,34 +67,107 @@ void MainScene::OnStart()
 	// Create solar bodies...
 
 	{
-		auto effext{ textured3DEffect->Duplicate() };
-		effext->SetTexture( 0, TM->Add("00sun", unify::Path("solar\\00sun.jpg")));
-
 		sg::SphereParameters parameters;
-		parameters.SetEffect(effext);
+		parameters.SetEffect( AddPlanetEffect( "00sun", "solar\\00sun.jpg" ) );
 		parameters.SetRadius( 1.0f );
-		//	parameters.SetDiffuse( unify::Color::ColorRed() );
 		auto object = createObject(parameters);
-		m_rootSolarBody.reset( new SolarBody( "Sun", object, SpacialData( 0.0f, unify::AngleZero(), unify::AngleZero(), unify::AngleZero(), unify::AngleZero() ) ) );
+
+		m_rootSolarBody.reset( 
+			new SolarBody( "Sun", object, 
+				SpacialData( 
+					MatrixIdentity(), 
+					V3< float >::V3Y( 1.0f ), 
+					TimeDeltaInSeconds( 10.0f ),
+					TimeDeltaInSeconds( 10.0f ),
+					0.0f
+				) 
+			) 
+		);
 	}
 
 	{
-		auto effext{ textured3DEffect->Duplicate() };
-		effext->SetTexture(0, TM->Add("01Mercury", unify::Path("solar\\01Mercury.bmp")));
-		
 		sg::SphereParameters parameters;
-		parameters.SetEffect(effext);
+		parameters.SetEffect( AddPlanetEffect( "01Mercury", "solar\\01Mercury.bmp" ) );
 		parameters.SetRadius(0.5f);
 		auto object = createObject(parameters);
 
 		m_rootSolarBody->AddChild( 
 			SolarBody::ptr( 
-				new SolarBody( "Earth", object, 
-					SpacialData( 3.0f, unify::AngleInDegrees( 0.f ), unify::AngleInDegrees( 10.0f ), unify::AngleInDegrees( 0.0f ), unify::AngleInDegrees( 10.0f ) 
+				new SolarBody( "Mercury", object, 
+					SpacialData( 
+						MatrixTranslate( { 3.0f, 0.0f, 0.0f } ), 
+						V3< float >::V3Y( 1.0f ),
+						TimeDeltaInSeconds( 0.0f ),
+						TimeDeltaInSeconds( 0.0f ),
+						87.969f
 						) 
 					) 
 				)
 			);
+	}
+
+	{
+		sg::SphereParameters parameters;
+		parameters.SetEffect( AddPlanetEffect( "02Venus", "solar\\02Venus.bmp" ) );
+		parameters.SetRadius( 0.5f );
+		auto object = createObject( parameters );
+
+		m_rootSolarBody->AddChild(
+			SolarBody::ptr(
+				new SolarBody( "Venus", object,
+					SpacialData(
+						MatrixTranslate( { 5.0f, 0.0f, 0.0f } ),
+						V3< float >::V3Y( 1.0f ),
+						TimeDeltaInSeconds( 5.0f ),
+						TimeDeltaInSeconds( 0.0f ),
+						224.7f
+						)
+					)
+				)
+			);
+	}
+
+	{
+		sg::SphereParameters parameters;
+		parameters.SetEffect( AddPlanetEffect( "03Earth", "solar\\03Earth.bmp" ) );
+		parameters.SetRadius( 0.5f );
+		auto object = createObject( parameters );
+
+		SolarBody::ptr earth(
+				new SolarBody( "Earth", object,
+					SpacialData(
+						MatrixTranslate( { 7.0f, 0.0f, 0.0f } ),
+						V3< float >( 0.0f, 1.0f, 0.0f ),
+						TimeDeltaInSeconds( 5.0f ),
+						TimeDeltaInSeconds( 0.0f ),
+						365.2564f
+						)
+					)
+				);
+		m_rootSolarBody->AddChild( earth );
+		/*
+		{
+			sg::SphereParameters parameters;
+			parameters.SetEffect( AddPlanetEffect( "03.01Moon", "solar\\03.01Moon.jpg" ) );
+			parameters.SetRadius( 0.25f );
+			auto object = createObject( parameters );
+
+			earth->AddChild(
+				SolarBody::ptr(
+					new SolarBody( "Earth's Moon", object,
+						SpacialData(
+							unify::MatrixTranslate( { 2.0f, 0.0f, 0.0f } ),
+							V3< float >( 0.0f, 1.0f, 0.0f ),
+							TimeDeltaInSeconds( 5.0f ),
+							TimeDeltaInSeconds( 0.0f ),
+							27.3f
+							)
+						)
+					)
+				);
+
+		}
+		*/
 	}
 }
 
@@ -102,12 +176,12 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
 	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() * 0.015f ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
 	// Update solar system...
 	if ( m_rootSolarBody )
 	{
-		m_rootSolarBody->Update( params, nullptr );
+		m_rootSolarBody->Update( params, nullptr, 10.0f );
 	}
 }
