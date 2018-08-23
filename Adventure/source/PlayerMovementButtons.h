@@ -16,5 +16,5 @@ class PlayerMovementButtons : public me::input::IInputAction
 public:
 	PlayerMovementButtons( MainScene & mainScene );
 
-	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, float delta );
+	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, unify::TimeDelta delta );
 };

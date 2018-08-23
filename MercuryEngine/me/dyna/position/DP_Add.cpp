@@ -13,7 +13,7 @@ Add::Add( IDynaPosition::ptr positionA, IDynaPosition::ptr positionB )
 {
 }
 
-Result Add::GetPosition(unify::V3< float > & out, float delta)
+Result Add::GetPosition(unify::V3< float > & out, unify::TimeDelta delta)
 {
 	if ( m_positionA && m_positionB )
 	{

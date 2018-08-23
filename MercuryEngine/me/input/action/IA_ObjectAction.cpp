@@ -15,7 +15,7 @@ namespace me
 			{
 			}
 
-			bool ObjectAction::Perform( IInputDevice * device, IInputCondition* input, float delta )
+			bool ObjectAction::Perform( IInputDevice * device, IInputCondition* input, unify::TimeDelta delta )
 			{
 				// We ignore the device.
 				// We ignore the input.

@@ -27,7 +27,7 @@ void MeshInstanceData::PlaySingleAnimation( std::string name, bool forceLoop )
 void MeshInstanceData::PlayAdditionalAnimation( std::string name, bool forceLoop )
 {
 	frameanimation::Animation::const_ptr animation = m_animationSet->FindAnimation( name );
-	m_activeAnimations.push_back( ActiveAnimation( 0, animation, forceLoop ) );
+	m_activeAnimations.push_back( ActiveAnimation( unify::TimeDeltaZero(), animation, forceLoop ) );
 	m_playing = true;
 }
 
@@ -69,7 +69,7 @@ void MeshInstanceData::Update( const RenderInfo & renderInfo )
 	{
 		for( std::list< ActiveAnimation >::iterator itr = m_activeAnimations.begin(), end = m_activeAnimations.end(); itr != end; ++itr )
 		{
-			unify::Seconds & progress = itr->m_time;
+			auto & progress = itr->m_time;
 			frameanimation::Animation::const_ptr animation = itr->m_animation;
 			progress += renderInfo.GetDelta();
 			if( progress >= animation->Duration() )
@@ -109,7 +109,7 @@ void MeshInstanceData::SyncFrames()
 	m_frameSetInstance.Reset();
 	for( std::list< ActiveAnimation >::iterator itr = m_activeAnimations.begin(), end = m_activeAnimations.end(); itr != end; ++itr )
 	{
-		unify::Seconds & progress = itr->m_time;
+		auto progress = itr->m_time;
 		frameanimation::Animation::const_ptr animation = itr->m_animation;
 
 		animation->ApplyToFrames( progress, m_frameSetInstance );

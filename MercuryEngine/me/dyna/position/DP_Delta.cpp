@@ -13,7 +13,7 @@ Delta::Delta( IDynaPosition::ptr position, IDynaDelta::ptr delta )
 {
 }
 
-Result Delta::GetPosition(unify::V3< float >  & out, float delta)
+Result Delta::GetPosition(unify::V3< float >  & out, unify::TimeDelta delta)
 {
 	if( !m_position || !m_delta )
 	{

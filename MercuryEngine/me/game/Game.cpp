@@ -445,7 +445,7 @@ void Game::Tick()
 	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
 	duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
-	unify::Seconds elapsed = micro * 0.000001f;
+	unify::TimeDelta elapsed = unify::TimeDeltaInMicros( (float)micro );
 	lastTime = currentTime;
 
 	// Remove expired locks...

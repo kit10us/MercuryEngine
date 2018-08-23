@@ -31,9 +31,11 @@ void MainScene::OnStart()
 	Effect::ptr texture3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect") );
 
 	// Load shaders.
-	IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", unify::Path( "shaders/texture3d.xml" ) );
-	IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", unify::Path( "shaders/texture3d.xml" ) );
-																									  
+	//IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", unify::Path( "shaders/textured3d.xml" ) );
+	//IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", unify::Path( "shaders/textured3d.xml" ) );
+	IPixelShader::ptr ps = texture3DEffect->GetPixelShader();
+	IVertexShader::ptr vs = texture3DEffect->GetVertexShader();
+
 	// Add a texture.
 	GetManager< ITexture >()->Add( "borgcube", unify::Path( "borgcube.bmp" ) );
 
@@ -125,7 +127,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
 	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
 	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );

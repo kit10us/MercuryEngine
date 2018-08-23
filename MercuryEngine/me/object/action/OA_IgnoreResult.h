@@ -17,7 +17,7 @@ namespace me
 			public:
 				IgnoreResult( IObjectAction::ptr action );
 
-				bool Perform( Object* object, float delta ) override;
+				bool Perform( Object* object, unify::TimeDelta delta ) override;
 
 			private:
 				IObjectAction::ptr m_action;

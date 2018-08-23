@@ -20,7 +20,7 @@ namespace me
 			public:
 				Delta( IDynaRotation::ptr rotaiton, IDynaDelta::ptr delta );
 
-				Result GetRotation(unify::Quaternion & out, float delta) override;
+				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
 
 			private:
 				IDynaRotation::ptr m_rotation;

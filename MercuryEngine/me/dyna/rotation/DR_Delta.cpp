@@ -13,7 +13,7 @@ Delta::Delta( IDynaRotation::ptr rotation, IDynaDelta::ptr delta )
 {
 }
 
-Result Delta::GetRotation(unify::Quaternion & out, float delta)
+Result Delta::GetRotation(unify::Quaternion & out, unify::TimeDelta delta)
 {
 	if( !m_rotation || !m_delta )
 	{

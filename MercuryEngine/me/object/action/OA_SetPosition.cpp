@@ -12,7 +12,7 @@ SetPosition::SetPosition( dyna::IDynaPosition::ptr position )
 {
 }
 
-bool SetPosition::Perform( Object* object, float delta )
+bool SetPosition::Perform( Object* object, unify::TimeDelta delta )
 {
 	if (m_position)
 	{

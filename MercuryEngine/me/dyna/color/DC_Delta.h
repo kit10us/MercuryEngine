@@ -20,7 +20,7 @@ namespace me
 			public:
 				Delta( IDynaColor::ptr rotaiton, IDynaDelta::ptr delta );
 
-				Result GetColor(unify::ColorUnit & out, float delta) override;
+				Result GetColor(unify::ColorUnit & out, unify::TimeDelta delta) override;
 
 			private:
 				IDynaColor::ptr m_color;

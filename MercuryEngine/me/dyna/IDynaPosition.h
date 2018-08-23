@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <unify/V3.h>
 #include <me/dyna/Dyna.h>
+#include <unify/V3.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -17,7 +18,7 @@ namespace me
 			typedef std::shared_ptr< IDynaPosition > ptr;
 			~IDynaPosition() {}
 
-			virtual Result GetPosition( unify::V3< float > & out, float delta ) = 0;
+			virtual Result GetPosition( unify::V3< float > & out, unify::TimeDelta delta ) = 0;
 		};
 	}
 }

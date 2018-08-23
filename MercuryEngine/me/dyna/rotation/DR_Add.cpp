@@ -13,7 +13,7 @@ Add::Add( IDynaRotation::ptr rotationA, IDynaRotation::ptr rotationB )
 {
 }
 
-Result Add::GetRotation(unify::Quaternion & out, float delta)
+Result Add::GetRotation(unify::Quaternion & out, unify::TimeDelta delta)
 {
 	if ( m_rotationA && m_rotationB )
 	{

@@ -14,7 +14,7 @@ PlayerMovementButtons::PlayerMovementButtons( MainScene & mainScene )
 {
 }
 
-bool PlayerMovementButtons::Perform( input::IInputDevice * device, input::IInputCondition * condition, float delta )
+bool PlayerMovementButtons::Perform( input::IInputDevice * device, input::IInputCondition * condition, unify::TimeDelta delta )
 {
 	if( !condition->IsTrue( device ) )
 	{

@@ -10,7 +10,7 @@ object::action::Action::Action( me::action::IAction::ptr action )
 {
 }
 
-bool object::action::Action::Perform( me::object::Object* ob, float delta )
+bool object::action::Action::Perform( me::object::Object* ob, unify::TimeDelta delta )
 {
 	if( m_action )
 	{

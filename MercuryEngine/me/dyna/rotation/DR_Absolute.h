@@ -19,7 +19,7 @@ namespace me
 			public:
 				Absolute(unify::Quaternion q);
 
-				Result GetRotation(unify::Quaternion & out, float delta) override;
+				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
 
 			private:
 				unify::Quaternion m_q;

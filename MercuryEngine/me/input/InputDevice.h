@@ -29,7 +29,7 @@ namespace me
 			void AddEvent( unify::Owner::ptr owner, IInputCondition::ptr condition, IInputAction::ptr action );
 			void ClearEvents();
 
-			int HandleEvents( float delta );
+			int HandleEvents( unify::TimeDelta delta );
 
 		private:
 			std::list< Event > m_events;

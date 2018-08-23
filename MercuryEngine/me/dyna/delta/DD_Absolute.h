@@ -17,12 +17,12 @@ namespace me
 			class Absolute : public IDynaDelta
 			{
 			public:
-				Absolute( float delta );
+				Absolute( unify::TimeDelta delta );
 
-				Result GetDelta( float & delta ) override;
+				Result GetDelta( unify::TimeDelta & delta ) override;
 
 			private:
-				float m_delta;
+				unify::TimeDelta m_delta;
 			};
 		}
 	}

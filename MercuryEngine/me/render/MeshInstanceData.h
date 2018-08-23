@@ -57,12 +57,12 @@ namespace me
 
 			struct ActiveAnimation
 			{
-				ActiveAnimation( unify::Seconds time, me::frameanimation::Animation::const_ptr animation, bool forceLoop )
+				ActiveAnimation( unify::TimeDelta time, me::frameanimation::Animation::const_ptr animation, bool forceLoop )
 					: m_time( time ), m_animation( animation ), m_forceLoop( forceLoop )
 				{
 				}
 
-				unify::Seconds m_time;
+				unify::TimeDelta m_time;
 				me::frameanimation::Animation::const_ptr m_animation;
 				bool m_forceLoop;
 			};

@@ -19,7 +19,7 @@ namespace me
 			public:
 				Absolute(unify::V3< float > v3);
 
-				Result GetPosition(unify::V3< float > & out, float delta) override;
+				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
 
 			private:
 				unify::V3< float > m_v3;

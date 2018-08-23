@@ -2,6 +2,7 @@
 
 #include <unify/V3.h>
 #include <unify/Quaternion.h>
+#include <unify/TimeDelta.h>
 #include <list>
 
 namespace me
@@ -15,25 +16,25 @@ namespace me
 		public:
 			typedef std::list< Key< T > > list;
 
-			Key( float time, const T & value );
+			Key( unify::TimeDelta time, const T & value );
 			bool operator<( const Key< T > & otherKey );
-			bool operator<( float time ) const;
-			float Time() const;
+			bool operator<( unify::TimeDelta time ) const;
+			unify::TimeDelta Time() const;
 			const T & Value() const;
 
 		private:
-			float m_time;
+			unify::TimeDelta m_time;
 			T m_value;
 		};
 
 		template< typename T >
-		void FindLeftRight( float time, const typename Key< T >::list & timeline, typename Key< T >::list::const_iterator & leftItr, typename Key< T >::list::const_iterator & rightItr );
+		void FindLeftRight( unify::TimeDelta time, const typename Key< T >::list & timeline, typename Key< T >::list::const_iterator & leftItr, typename Key< T >::list::const_iterator & rightItr );
 
 		template< typename T >
-		T InterpretValue( float time, const typename Key< T >::list & timeline, T defaultValue );
+		T InterpretValue( unify::TimeDelta time, const typename Key< T >::list & timeline, T defaultValue );
 
 		template<>
-		unify::Quaternion InterpretValue< unify::Quaternion >( float time, const typename Key< unify::Quaternion >::list & timeline, unify::Quaternion defaultValue );
+		unify::Quaternion InterpretValue< unify::Quaternion >( unify::TimeDelta time, const typename Key< unify::Quaternion >::list & timeline, unify::Quaternion defaultValue );
 
 		typedef Key< unify::V3< float > > ScaleKey;
 		typedef Key< unify::Quaternion > RotationKey;

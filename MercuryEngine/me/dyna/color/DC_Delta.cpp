@@ -13,7 +13,7 @@ Delta::Delta( IDynaColor::ptr color, IDynaDelta::ptr delta )
 {
 }
 
-Result Delta::GetColor(unify::ColorUnit & out, float delta)
+Result Delta::GetColor(unify::ColorUnit & out, unify::TimeDelta delta)
 {
 	if( !m_color || !m_delta )
 	{

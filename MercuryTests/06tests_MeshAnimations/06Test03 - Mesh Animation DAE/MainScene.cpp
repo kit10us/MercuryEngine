@@ -79,7 +79,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	Object * camera = FindObject( "camera" );
 	assert( camera );
 
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
 
@@ -87,6 +87,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	static float x = 0.0f;
 	auto object = GetObjectAllocator()->FindObject( "object" );
 	object->GetFrame().SetPosition( unify::V3< float >( x < 10.0f ? (-5.0f + x) : (15.0f - x) , 0, 0 ) );
-	x += params.GetDelta();
+	x += params.GetDelta().GetMS();
 	if( x >= 20.0f ) x = 0.0f;
 }

@@ -63,21 +63,21 @@ void RenderInfo::IncrementFrameID()
 	++m_frameID;
 }
 
-float RenderInfo::GetDelta() const
+unify::TimeDelta RenderInfo::GetDelta() const
 {
 	return m_delta;
 }
 
-void RenderInfo::SetDelta( float delta )
+void RenderInfo::SetDelta( unify::TimeDelta delta )
 {
 	m_delta = delta;
 	m_totalDelta += delta;
 	m_deltaCount++;
 }
 
-float RenderInfo::GetTotalDelta() const
+unify::TimeDelta RenderInfo::GetTotalDelta() const
 {
-	return m_totalDelta / m_deltaCount;
+	return m_totalDelta / (float)m_deltaCount;
 }
 
 float RenderInfo::GetDeltaCount() const
@@ -85,14 +85,14 @@ float RenderInfo::GetDeltaCount() const
 	return (float)m_deltaCount;
 }
 
-float RenderInfo::GetAverageDelta() const
+unify::TimeDelta RenderInfo::GetAverageDelta() const
 {
-	return m_totalDelta / m_deltaCount;
+	return m_totalDelta / (float)m_deltaCount;
 }
 
 float RenderInfo::GetFPS() const
 {
-	return 1.0f / GetAverageDelta();
+	return 1.0f / GetAverageDelta().GetMS();
 }
 
 void RenderInfo::SetViewMatrix( const unify::Matrix & matrix )

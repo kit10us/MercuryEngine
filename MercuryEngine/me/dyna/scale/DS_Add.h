@@ -19,7 +19,7 @@ namespace me
 			public:
 				Add( IDynaScale::ptr scaleA, IDynaScale ::ptr scaleB );
 
-				Result GetScale(unify::V3< float > & out, float delta) override;
+				Result GetScale(unify::V3< float > & out, unify::TimeDelta delta) override;
 
 			private:
 				IDynaScale::ptr m_scaleA;

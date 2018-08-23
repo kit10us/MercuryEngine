@@ -94,7 +94,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	const float width = GetOS()->GetRenderer(0)->GetViewport().GetSize().width;
 	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 
-	rotation += AngleInDegrees( params.GetDelta() * 90.0f );
+	rotation += AngleInDegrees( params.GetDelta().GetSeconds() * 90.0f );
 	if( rotation.Normalize() != 0 )
 	{
 		++axisIndex;

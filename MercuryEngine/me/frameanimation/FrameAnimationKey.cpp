@@ -1,7 +1,7 @@
 #include <me/frameanimation/FrameAnimationKey.h>
 
 template<>
-unify::Quaternion me::frameanimation::InterpretValue< unify::Quaternion >( float time, const typename RotationKey::list & timeline, unify::Quaternion defaultValue )
+unify::Quaternion me::frameanimation::InterpretValue< unify::Quaternion >( unify::TimeDelta time, const typename RotationKey::list & timeline, unify::Quaternion defaultValue )
 {
 	if( timeline.empty() )
 	{
@@ -27,7 +27,7 @@ unify::Quaternion me::frameanimation::InterpretValue< unify::Quaternion >( float
 	// tB<--------->E
 	if( leftItr == timeline.end() )
 	{
-		mix = time / rightItr->Time();
+		mix = time.GetMS() / rightItr->Time().GetMS();
 		leftValue = defaultValue;
 		rightValue = rightItr->Value();
 	}
@@ -35,7 +35,7 @@ unify::Quaternion me::frameanimation::InterpretValue< unify::Quaternion >( float
 	// B<----t----->E
 	else
 	{
-		mix = ( time - leftItr->Time() ) / ( rightItr->Time() - leftItr->Time() );
+		mix = ( time - leftItr->Time() ).GetMS() / ( rightItr->Time() - leftItr->Time() ).GetMS();
 		leftValue = leftItr->Value();
 		rightValue = rightItr->Value();
 	}

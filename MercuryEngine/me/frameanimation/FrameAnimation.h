@@ -19,11 +19,11 @@ namespace me
 			typedef std::shared_ptr< Animation > ptr;
 			typedef std::shared_ptr< const Animation > const_ptr;
 
-			Animation( std::string name, unify::Seconds duration );
+			Animation( std::string name, unify::TimeDelta duration );
 			~Animation();
 
 			std::string Name() const;
-			unify::Seconds Duration() const;
+			unify::TimeDelta Duration() const;
 			bool Loops() const;
 			void AddScaleKey( size_t boneIndex, const ScaleKey & key );
 			void AddRotationKey( size_t boneIndex, const RotationKey & key );
@@ -32,12 +32,12 @@ namespace me
 			/// <summary>
 			/// Apply to frames, returning the actual elapsed time clamped to our timeline.
 			/// </summary>
-			float ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const;
+			unify::TimeDelta ApplyToFrames( unify::TimeDelta elapsedTime, unify::FrameSetInstance & frameSetInstance ) const;
 
 		private:
 			std::string m_name;
 			bool m_loops;
-			unify::Seconds m_duration;
+			unify::TimeDelta m_duration;
 			typedef size_t TargetFrameIndex;
 			std::map< TargetFrameIndex, SRTTimeline > m_boneAnimations;
 		};

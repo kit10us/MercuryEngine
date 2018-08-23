@@ -6,6 +6,7 @@
 #include <unify/Unify.h>
 #include <unify/Matrix.h>
 #include <unify/FrameSet.h>
+#include <unify/TimeDelta.h>
 #include <bitset>
 
 namespace me
@@ -29,14 +30,14 @@ namespace me
 			unsigned int FrameID() const;
 			void IncrementFrameID();
 
-			float GetDelta() const;
-			void SetDelta( float delta );
+			unify::TimeDelta GetDelta() const;
+			void SetDelta( unify::TimeDelta delta );
 
-			float GetTotalDelta() const;
+			unify::TimeDelta GetTotalDelta() const;
 
 			float GetDeltaCount() const;
 
-			float GetAverageDelta() const;
+			unify::TimeDelta GetAverageDelta() const;
 
 			float GetFPS() const;
 
@@ -52,8 +53,8 @@ namespace me
 		protected:
 			float m_distanceFromCamera;		// Distance from camera
 			unsigned int m_frameID;
-			float m_delta;
-			float m_totalDelta;
+			unify::TimeDelta m_delta;
+			unify::TimeDelta m_totalDelta;
 			unsigned int m_deltaCount;
 			unify::Matrix m_view;
 			unify::Matrix m_projection;

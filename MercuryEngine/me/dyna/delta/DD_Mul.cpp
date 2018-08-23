@@ -12,7 +12,7 @@ Mul::Mul( IDynaDelta ::ptr deltaA )
 {
 }
 
-Result Mul::GetDelta(float & delta)
+Result Mul::GetDelta( unify::TimeDelta & delta)
 {
 	if ( m_deltaA )
 	{

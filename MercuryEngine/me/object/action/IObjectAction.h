@@ -22,7 +22,7 @@ namespace me
 
 				virtual ~IObjectAction() {}
 
-				virtual bool Perform(Object* object, float delta ) = 0;
+				virtual bool Perform(Object* object, unify::TimeDelta delta ) = 0;
 			};
 		}
 	}

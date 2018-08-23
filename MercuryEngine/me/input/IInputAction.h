@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/input/IInputCondition.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -21,7 +22,7 @@ namespace me
 			/// <summary>
 			/// Perform the action.	Returns true on success.
 			/// </summary>
-			virtual bool Perform( IInputDevice * device, IInputCondition * input, float delta ) = 0;
+			virtual bool Perform( IInputDevice * device, IInputCondition * input, unify::TimeDelta delta ) = 0;
 		};
 	}
 }

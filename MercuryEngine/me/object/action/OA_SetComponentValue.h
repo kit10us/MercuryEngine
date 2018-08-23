@@ -19,7 +19,7 @@ namespace me
 				SetComponentValue( std::string componentName, std::string valueName, std::string value );
 				SetComponentValue( std::string componentName, std::string componentAlias, std::string valueName, std::string value );
 
-				bool Perform( Object* object, float delta ) override;
+				bool Perform( Object* object, unify::TimeDelta delta ) override;
 
 			private:
 				std::string m_componentName;

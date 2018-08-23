@@ -7,7 +7,7 @@
 using namespace me;
 using namespace frameanimation;
 
-Animation::Animation( std::string name, unify::Seconds duration )
+Animation::Animation( std::string name, unify::TimeDelta duration )
 : m_name( name ), m_duration( duration )
 {
 }
@@ -21,7 +21,7 @@ std::string Animation::Name() const
 	return m_name;
 }
 
-unify::Seconds Animation::Duration() const
+unify::TimeDelta Animation::Duration() const
 {
 	return m_duration;
 }
@@ -70,9 +70,9 @@ void Animation::AddTranslationKey( size_t boneIndex, const TranslationKey & key 
 	boneTimeline.translation.sort();
 }
 
-float Animation::ApplyToFrames( float elapsedTime, unify::FrameSetInstance & frameSetInstance ) const
+unify::TimeDelta Animation::ApplyToFrames( unify::TimeDelta elapsedTime, unify::FrameSetInstance & frameSetInstance ) const
 {
-	while ( elapsedTime < 0.0f ) elapsedTime += Duration();
+	while ( elapsedTime < unify::TimeDeltaZero() ) elapsedTime += Duration();
 	while ( elapsedTime > Duration() ) elapsedTime -= Duration();
 
 	// Apply animation

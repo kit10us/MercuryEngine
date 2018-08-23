@@ -135,7 +135,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	const float width = (float)params.renderer->GetViewport().GetSize().width;
 	const float height = (float)params.renderer->GetViewport().GetSize().height;
 
-	rotation += unify::AngleInDegrees( params.GetDelta() * 90.0f );
+	rotation += unify::AngleInDegrees( params.GetDelta().GetDays() * 90.0f );
 	/*
 	if( rotation.Fix360() != 0 )
 	{
@@ -209,7 +209,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	frameSet.Add( unify::MatrixIdentity(), 0 );
 	unify::FrameSetInstance frameSetInstance( &frameSet );
 	m_animation->ApplyToFrames( progress, frameSetInstance );
-	progress += params.GetDelta();
+	progress += params.GetDelta().GetMS();
 	frameSetInstance.UpdateLocals();
 	
 	Source source{ frame, frameSetInstance.Local( 0 ) };

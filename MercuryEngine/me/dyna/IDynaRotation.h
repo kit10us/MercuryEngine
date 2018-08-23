@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <unify/Quaternion.h>
 #include <me/dyna/Dyna.h>
+#include <unify/Quaternion.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -17,7 +18,7 @@ namespace me
 			typedef std::shared_ptr< IDynaRotation > ptr;
 			~IDynaRotation() {}
 
-			virtual Result GetRotation( unify::Quaternion & out, float delta ) = 0;
+			virtual Result GetRotation( unify::Quaternion & out, unify::TimeDelta delta ) = 0;
 		};
 	}
 }

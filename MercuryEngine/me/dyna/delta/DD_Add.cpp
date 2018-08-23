@@ -12,7 +12,7 @@ Add::Add( IDynaDelta::ptr deltaA )
 {
 }
 
-Result Add::GetDelta(float & delta)
+Result Add::GetDelta( unify::TimeDelta & delta)
 {
 	if ( m_deltaA )
 	{

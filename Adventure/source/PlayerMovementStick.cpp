@@ -14,7 +14,7 @@ PlayerMovementStick::PlayerMovementStick( MainScene & mainScene )
 {
 }
 
-bool PlayerMovementStick::Perform( input::IInputDevice * device, input::IInputCondition * condition, float delta )
+bool PlayerMovementStick::Perform( input::IInputDevice * device, input::IInputCondition * condition, unify::TimeDelta delta )
 {
 	float speed = 6.0f;
 

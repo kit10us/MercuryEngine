@@ -320,7 +320,7 @@ void MainScene::OnUpdate( const me::UpdateParams & params )
 
 			// Accumulate our movement speed...
 			float speed = 6.0f;
-			float factor = params.GetDelta() * speed;
+			float factor = params.GetDelta().GetSeconds() * speed;
 			m_move *= factor;
 
 			// Reset our rotation to identity (facing up the z-axis).

@@ -16,5 +16,5 @@ class PlayerMovementStick : public me::input::IInputAction
 public:
 	PlayerMovementStick( MainScene & mainScene );
 
-	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, float delta );
+	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, unify::TimeDelta delta );
 };

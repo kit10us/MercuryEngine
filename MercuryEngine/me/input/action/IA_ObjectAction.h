@@ -26,7 +26,7 @@ namespace me
 				/// <summary>
 				/// Perform the action.	Returns true on success.
 				/// </summary>
-				bool Perform( IInputDevice * device, IInputCondition* input, float delta ) override;
+				bool Perform( IInputDevice * device, IInputCondition* input, unify::TimeDelta delta ) override;
 
 			private:
 				me::object::Object * m_object;

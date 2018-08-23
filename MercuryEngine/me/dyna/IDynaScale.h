@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <unify/V3.h>
 #include <me/dyna/Dyna.h>
+#include <unify/V3.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -17,7 +18,7 @@ namespace me
 			typedef std::shared_ptr< IDynaScale > ptr;
 			~IDynaScale() {}
 
-			virtual Result GetScale( unify::V3< float > & out, float delta ) = 0;
+			virtual Result GetScale( unify::V3< float > & out, unify::TimeDelta delta ) = 0;
 		};
 	}
 }

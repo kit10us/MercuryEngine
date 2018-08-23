@@ -30,7 +30,7 @@ public:
 		m_matrix = 
 			unify::MatrixRotationAboutAxis( 
 				unify::V3< float >::V3Y( 1.0f ), 
-				unify::AngleInDegrees( params.GetDelta() * m_orbit.GetSeconds() ) 
+				unify::AngleInDegrees( params.GetDelta().GetSeconds() * m_orbit.GetSeconds() ) 
 			)
 			* m_matrix;
 		
@@ -45,7 +45,7 @@ public:
 			m_matrix *= unify::MatrixRotationAboutAxis( 
 				m_axis, 
 				unify::AnglePI2() / m_daysOrbitParent
-				* params.GetDelta()
+				* params.GetDelta().GetSeconds()
 				* speedOfTime
 				);
 		}

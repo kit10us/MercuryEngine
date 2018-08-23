@@ -10,8 +10,8 @@ using namespace render;
 
 FPS::FPS( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: TextElement( gameInstance, effect, std::string(), anchor, scale, offset )
-	, m_updateRate( 0.25f )
-	, m_secondsTillUpdate( 0.0f )
+	, m_updateRate{ unify::TimeDeltaInSeconds( 0.25f ) }
+	, m_timeTillUpdate{ unify::TimeDeltaZero() }
 {
 	if ( !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '=' )
 		|| !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '.' )
@@ -26,16 +26,16 @@ FPS::FPS( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, uni
 		
 void FPS::Update( const UpdateParams & params )
 {
-	m_secondsTillUpdate -= params.renderInfo.GetDelta();
-	if ( m_secondsTillUpdate > 0.0f ) return;
+	m_timeTillUpdate -= params.renderInfo.GetDelta();
+	if ( m_timeTillUpdate > unify::TimeDeltaZero() ) return;
 	
-	m_secondsTillUpdate = m_updateRate;
+	m_timeTillUpdate = m_updateRate;
 
 	std::string average = unify::Cast< std::string >( params.renderInfo.GetFPS() );
 	size_t p = average.find( '.' );
 	average = average.substr( 0, p < 3 ? 5 : p + 2 );
 
-	std::string instant = unify::Cast< std::string >( 1.0f / params.renderInfo.GetDelta() );
+	std::string instant = unify::Cast< std::string >( 1.0f / params.renderInfo.GetDelta().GetMS() );
 	p = instant.find( '.' );
 	instant = instant.substr( 0, p < 3 ? 5 : p + 2 );
 

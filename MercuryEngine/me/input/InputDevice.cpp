@@ -31,7 +31,7 @@ void InputDevice::ClearEvents()
 	m_events.clear();
 }
 
-int InputDevice::HandleEvents( float delta )
+int InputDevice::HandleEvents( unify::TimeDelta delta )
 {
 	int triggered = 0;
 	for( auto itr = m_events.begin(); itr != m_events.end(); )

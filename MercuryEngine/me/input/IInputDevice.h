@@ -7,6 +7,7 @@
 #include <me/input/IInputCondition.h>
 #include <me/input/IInputAction.h>
 #include <unify/Owner.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 #include <string>
 
@@ -97,7 +98,7 @@ namespace me
 			/// <summary>
 			/// Handles all events, returns the number of events that triggered.
 			/// </summary>
-			virtual int HandleEvents( float delta ) = 0;
+			virtual int HandleEvents( unify::TimeDelta delta ) = 0;
 		};
 	}
 }

@@ -159,14 +159,14 @@ void MainScene::OnStart()
 void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
-	m_camera->GetFrame().RotateAboutAxis( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta() ) );
+	m_camera->GetFrame().RotateAboutAxis( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 
-	static float elapsed = 0.0f;
-	if ( elapsed < 0.0f )
+	static unify::TimeDelta elapsed = unify::TimeDeltaZero();
+	if ( elapsed < unify::TimeDeltaZero())
 	{
 		auto sceneManager = GetGame()->GetComponentT< SceneManager >();
 		m_text->SetText( "Objects = " + unify::Cast< std::string >( sceneManager->GetRenderCount() ) );
-		elapsed = 1.0f;
+		elapsed = unify::TimeDeltaOne();
 	}
 	elapsed -= params.GetDelta();
 }

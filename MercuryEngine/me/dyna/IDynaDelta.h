@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/dyna/Dyna.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -16,7 +17,7 @@ namespace me
 			typedef std::shared_ptr< IDynaDelta > ptr;
 			~IDynaDelta() {}
 
-			virtual Result GetDelta( float & delta ) = 0;
+			virtual Result GetDelta( unify::TimeDelta & delta ) = 0;
 		};
 	}
 }

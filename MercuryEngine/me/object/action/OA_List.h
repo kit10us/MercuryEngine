@@ -17,7 +17,7 @@ namespace me
 			public:
 				List( std::initializer_list< IObjectAction::ptr > actions );
 
-				bool Perform( Object* object, float delta ) override;
+				bool Perform( Object* object, unify::TimeDelta delta ) override;
 
 			private:
 				std::vector< IObjectAction::ptr > m_actions;

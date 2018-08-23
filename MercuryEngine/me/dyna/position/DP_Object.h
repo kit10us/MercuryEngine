@@ -20,7 +20,7 @@ namespace me
 			public:
 				Object( object::Object * object );
 
-				Result GetPosition(unify::V3< float > & out, float delta) override;
+				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
 
 			private:
 				object::Object * m_object;

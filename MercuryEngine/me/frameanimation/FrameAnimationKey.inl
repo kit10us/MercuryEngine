@@ -1,6 +1,7 @@
 template< typename T >
-Key<T>::Key( float time, const T & value )
-: m_time( time ), m_value( value )
+Key<T>::Key( unify::TimeDelta time, const T & value )
+: m_time( time )
+, m_value( value )
 {
 }
 
@@ -11,13 +12,13 @@ bool Key<T>::operator<( const Key< T > & otherKey )
 }
 
 template< typename T >
-bool Key<T>::operator<( float time ) const
+bool Key<T>::operator<( unify::TimeDelta time ) const
 {
 	return m_time < time;
 }
 
 template< typename T >
-float Key<T>::Time() const
+unify::TimeDelta Key<T>::Time() const
 {
 	return m_time;
 }
@@ -29,7 +30,7 @@ const T & Key<T>::Value() const
 }
 
 template< typename T >
-void me::frameanimation::FindLeftRight( float time, const typename Key< T >::list & timeline, typename Key< T >::list::const_iterator & leftItr, typename Key< T >::list::const_iterator & rightItr )
+void me::frameanimation::FindLeftRight( unify::TimeDelta time, const typename Key< T >::list & timeline, typename Key< T >::list::const_iterator & leftItr, typename Key< T >::list::const_iterator & rightItr )
 {
 	std::list< Key< T > >::const_iterator end = timeline.end();
 	for( rightItr = timeline.begin(), leftItr = end; rightItr != end && (*rightItr) < time; ++rightItr )
@@ -39,7 +40,7 @@ void me::frameanimation::FindLeftRight( float time, const typename Key< T >::lis
 }
 
 template< typename T >
-T me::frameanimation::InterpretValue( float time, const typename Key< T >::list & timeline, T defaultValue )
+T me::frameanimation::InterpretValue( unify::TimeDelta time, const typename Key< T >::list & timeline, T defaultValue )
 {
 	if( timeline.empty() )
 	{

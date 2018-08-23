@@ -13,10 +13,10 @@ Dampen::Dampen( IDynaPosition::ptr position, float rate )
 	, m_rate{ rate }
 	, m_acceleration{ 0, 0, 0 }
 {
-	position->GetPosition( m_current, 1 );
+	position->GetPosition( m_current, unify::TimeDeltaZero() );
 }
 
-Result Dampen::GetPosition(unify::V3< float > & out, float delta)
+Result Dampen::GetPosition(unify::V3< float > & out, unify::TimeDelta delta)
 {
 	if( !m_target )
 	{

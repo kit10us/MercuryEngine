@@ -12,7 +12,7 @@ Absolute::Absolute(unify::V3< float > v3)
 {
 }
 
-Result Absolute::GetPosition(unify::V3< float > & out, float delta)
+Result Absolute::GetPosition(unify::V3< float > & out, unify::TimeDelta delta)
 {
 	out = m_v3;
 	return Result::Success;

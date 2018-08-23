@@ -13,7 +13,7 @@ Mul::Mul( IDynaRotation::ptr rotationA, IDynaRotation::ptr rotationB )
 {
 }
 
-Result Mul::GetRotation(unify::Quaternion & out, float delta)
+Result Mul::GetRotation(unify::Quaternion & out, unify::TimeDelta delta)
 {
 	if ( m_rotationA && m_rotationB )
 	{

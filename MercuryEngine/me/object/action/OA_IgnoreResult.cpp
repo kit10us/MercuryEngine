@@ -12,7 +12,7 @@ IgnoreResult::IgnoreResult(IObjectAction::ptr action)
 {
 }
 
-bool IgnoreResult::Perform( Object* object, float delta )
+bool IgnoreResult::Perform( Object* object, unify::TimeDelta delta )
 {
 	if (m_action)
 	{

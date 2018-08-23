@@ -13,7 +13,7 @@ Mul::Mul( IDynaPosition::ptr positionA, IDynaPosition::ptr positionB )
 {
 }
 
-Result Mul::GetPosition(unify::V3< float > & out, float delta)
+Result Mul::GetPosition(unify::V3< float > & out, unify::TimeDelta delta)
 {
 	if ( m_positionA && m_positionB )
 	{

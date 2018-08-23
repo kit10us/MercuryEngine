@@ -12,7 +12,7 @@ List::List(std::initializer_list< IObjectAction::ptr > actions)
 {
 }
 
-bool List::Perform( Object* object, float delta )
+bool List::Perform( Object* object, unify::TimeDelta delta )
 {
 	for (auto action : m_actions)
 	{

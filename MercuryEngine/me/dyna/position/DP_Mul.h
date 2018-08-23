@@ -19,7 +19,7 @@ namespace me
 			public:
 				Mul( IDynaPosition::ptr positionA, IDynaPosition::ptr positionB );
 
-				Result GetPosition(unify::V3< float > & out, float delta) override;
+				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
 
 			private:
 				IDynaPosition::ptr m_positionA;

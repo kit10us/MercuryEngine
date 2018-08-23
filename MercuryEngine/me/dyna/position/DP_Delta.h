@@ -20,7 +20,7 @@ namespace me
 			public:
 				Delta( IDynaPosition::ptr rotaiton, IDynaDelta::ptr delta );
 
-				Result GetPosition(unify::V3< float > & out, float delta) override;
+				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
 
 			private:
 				IDynaPosition::ptr m_position;

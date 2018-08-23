@@ -11,6 +11,6 @@ namespace me
 	{
 		render::IRenderer * renderer;
 		render::RenderInfo & renderInfo;
-		float GetDelta() const { return renderInfo.GetDelta(); };
+		unify::TimeDelta GetDelta() const { return renderInfo.GetDelta(); };
 	};
 }

@@ -466,6 +466,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

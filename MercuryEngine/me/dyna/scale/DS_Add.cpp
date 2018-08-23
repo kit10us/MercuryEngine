@@ -13,7 +13,7 @@ Add::Add( IDynaScale::ptr scaleA, IDynaScale::ptr scaleB )
 {
 }
 
-Result Add::GetScale(unify::V3< float > & out, float delta)
+Result Add::GetScale(unify::V3< float > & out, unify::TimeDelta delta)
 {
 	if ( m_scaleA && m_scaleB )
 	{

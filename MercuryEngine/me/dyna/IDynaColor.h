@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <unify/ColorUnit.h>
 #include <me/dyna/Dyna.h>
+#include <unify/ColorUnit.h>
+#include <unify/TimeDelta.h>
 #include <memory>
 
 namespace me
@@ -17,7 +18,7 @@ namespace me
 			typedef std::shared_ptr< IDynaColor > ptr;
 			~IDynaColor() {}
 
-			virtual Result GetColor( unify::ColorUnit & out, float delta ) = 0;
+			virtual Result GetColor( unify::ColorUnit & out, unify::TimeDelta delta ) = 0;
 		};
 	}
 }

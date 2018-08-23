@@ -12,7 +12,7 @@ Absolute::Absolute(unify::Quaternion q)
 {
 }
 
-Result Absolute::GetRotation(unify::Quaternion & out, float delta)
+Result Absolute::GetRotation(unify::Quaternion & out, unify::TimeDelta delta)
 {
 	out = m_q;
 	return Result::Success;

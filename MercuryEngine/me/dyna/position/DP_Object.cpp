@@ -12,7 +12,7 @@ Object::Object( object::Object * object )
 {
 }
 
-Result Object::GetPosition(unify::V3< float > & out, float delta)
+Result Object::GetPosition(unify::V3< float > & out, unify::TimeDelta delta)
 {
 	if (m_object)
 	{

@@ -19,7 +19,7 @@ namespace me
 			public:
 				Add( IDynaDelta::ptr deltaA );
 
-				Result GetDelta(float & delta) override;
+				Result GetDelta( unify::TimeDelta & delta) override;
 
 			private:
 				IDynaDelta::ptr m_deltaA;

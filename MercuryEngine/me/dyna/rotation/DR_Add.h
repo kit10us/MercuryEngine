@@ -19,7 +19,7 @@ namespace me
 			public:
 				Add( IDynaRotation::ptr rotationA, IDynaRotation ::ptr rotationB );
 
-				Result GetRotation(unify::Quaternion & out, float delta) override;
+				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
 
 			private:
 				IDynaRotation::ptr m_rotationA;

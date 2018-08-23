@@ -16,8 +16,8 @@ namespace me
 		
 			void Update( const UpdateParams & params ) override;
 		private:
-			float m_updateRate;
-			float m_secondsTillUpdate;
+			unify::TimeDelta m_updateRate;
+			unify::TimeDelta m_timeTillUpdate;
 		};
 	}
 }

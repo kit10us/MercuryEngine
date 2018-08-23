@@ -14,6 +14,6 @@ ObjectAction::ObjectAction( object::Object* object, object::action::IObjectActio
 
 bool ObjectAction::Perform()
 {
-	m_action->Perform( m_object, 1.0f );
+	m_action->Perform( m_object, unify::TimeDeltaOne() );
 	return true;
 }
