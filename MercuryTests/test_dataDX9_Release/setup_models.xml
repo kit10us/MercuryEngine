@@ -3,12 +3,12 @@
 
 <extension source="../../extensions/Release/DAELoader.dll">
 	<color name="color" source="EffectColor.effect"/>
-	<texture name="texture" source="EffectTextured.effect"/>
+	<texture name="texture" source="EffectTexture.effect"/>
 </extension>
 
 <extension source="../../extensions/Release/ASELoader.dll">
-	<textureps name="textured3d" source="texture3d.xml"/>
-	<texturevs name="textured3d" source="texture3d.xml"/>
+	<textureps name="texture3d" source="texture3d.xml"/>
+	<texturevs name="texture3d" source="texture3d.xml"/>
 </extension>
 
 <include>meeditor.xml</include>

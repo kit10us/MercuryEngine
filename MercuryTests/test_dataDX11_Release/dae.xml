@@ -2,7 +2,7 @@
 <extension source="../../extensions/Release/DAELoader.dll">
 	<colorps name="color_ambient" source="color_ambient.xml"/>
 	<colorvs name="color_ambient" source="color_ambient.xml"/>
-	<texturedps name="textured_ambient" source="textured_ambient.xml"/>
-	<texturedvs name="textured_ambient" source="textured_ambient.xml"/>
+	<textureps name="texture_ambient" source="texture_ambient.xml"/>
+	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
 </extension>
 </xml>

@@ -1,6 +1,6 @@
 <xml>
   <pixelshader name="texture2d">
-    <source>textured2d.hlsl</source>
+    <source>texture2d.hlsl</source>
     <entry>ps_main</entry>
 	<profile>ps_1_1</profile>
 	<constants>
@@ -10,7 +10,7 @@
 	</constants>
   </pixelshader>
   <vertexshader name="texture2d">
-    <source>textured2d.hlsl</source>
+    <source>texture2d.hlsl</source>
 	<entry>vs_main</entry>
     <profile>vs_1_1</profile>
 	<constants>

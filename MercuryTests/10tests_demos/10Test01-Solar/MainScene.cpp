@@ -28,11 +28,11 @@ void MainScene::OnStart()
 	using namespace unify;
 
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", Path( "EffectColor.effect" ) );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "texture3d", Path( "EffectTexture.effect" ) );
+	Effect::ptr texture3DEffect = GetManager< Effect >()->Add( "texture3d", Path( "EffectTexture.effect" ) );
 
 	auto AddPlanetEffect = [&]( std::string name, std::string path )
 	{
-		auto effect{ textured3DEffect->Duplicate() };
+		auto effect{ texture3DEffect->Duplicate() };
 		effect->SetTexture(0, GetManager< ITexture >()->Add( name, unify::Path(path)));
 		return effect;
 	};

@@ -61,7 +61,7 @@ void MainScene::OnStart()
 	progObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
-	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
+	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTexture.ASE" ) ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	{
 		auto aseObject = GetObjectAllocator()->NewObject( "sword1" );

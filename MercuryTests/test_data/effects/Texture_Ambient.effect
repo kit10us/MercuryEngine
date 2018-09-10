@@ -1,8 +1,8 @@
 <?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
   <effect>
-    <pixelshader name="textured_ambient" source="textured_ambient.xml"/>
-    <vertexshader name="textured_ambient" source="textured_ambient.xml"/>
+    <pixelshader name="texture_ambient" source="texture_ambient.xml"/>
+    <vertexshader name="texture_ambient" source="texture_ambient.xml"/>
     <texture name="borgcube" stage="0" source="borgcube.bmp"/>
   </effect>
 </xml>

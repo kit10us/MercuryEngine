@@ -26,18 +26,20 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
+	using namespace unify;
+
 	// Add common effects...
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
-	Effect::ptr texture3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect") );
+	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", Path( "EffectColor.effect" ) );
+	Effect::ptr texture3DEffect = GetManager< Effect >()->Add( "texture3d", Path( "EffectTexture.effect") );
 
 	// Load shaders.
-	//IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", unify::Path( "shaders/textured3d.xml" ) );
-	//IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", unify::Path( "shaders/textured3d.xml" ) );
+	//IPixelShader::ptr ps = GetManager< IPixelShader >()->Add( "texture3d", Path( "shaders/texture3d.xml" ) );
+	//IVertexShader::ptr vs = GetManager< IVertexShader >()->Add( "texture3d", Path( "shaders/texture3d.xml" ) );
 	IPixelShader::ptr ps = texture3DEffect->GetPixelShader();
 	IVertexShader::ptr vs = texture3DEffect->GetVertexShader();
 
 	// Add a texture.
-	GetManager< ITexture >()->Add( "borgcube", unify::Path( "borgcube.bmp" ) );
+	GetManager< ITexture >()->Add( "borgcube", Path( "borgcube.bmp" ) );
 
 	// Create an effect.
 	Effect::ptr borgCubeEffect = GetManager< Effect >()->Add( "borgcube", new Effect );
@@ -45,90 +47,90 @@ void MainScene::OnStart()
 	borgCubeEffect->SetPixelShader( ps );
 	borgCubeEffect->SetTexture( 0, GetManager< ITexture >()->Find( "borgcube" ) );
 
-	//scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
-	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
-	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
-	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
+	auto * cameraComponent = polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	cameraComponent->SetProjection( MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
+	camera->GetFrame().SetPosition( { 0, 5, -17 } );
+	camera->GetFrame().LookAt( { 0, 0, 0 } );
 
 	// From dynamically generated geometry (shape creator)...
-	sg::CubeParameters cubeParameters;
-	cubeParameters.SetEffect( color3DEffect );
-    cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
-	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
-	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
-	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
-	auto progObject = GetObjectAllocator()->NewObject( "cubeDyna" );
-	AddGeometryComponent( progObject, meshProg );
-	progObject->GetFrame().SetPosition( unify::V3< float >( 0 - 0.0f, 0, 0 ) );
-	progObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	{
+		sg::CubeParameters cubeParameters;
+		cubeParameters.SetEffect( color3DEffect );
+		cubeParameters.SetSize( Size3< float >( 2, 2, 2 ) );
+		cubeParameters.SetDiffuseFaces( Color::ColorRed(), Color::ColorGreen(), Color::ColorBlue(), Color::ColorYellow(), Color::ColorCyan(), Color::ColorMagenta() );
+		Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
+		PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
+		auto object = GetObjectAllocator()->NewObject( "cubeDyna" );
+		AddGeometryComponent( object, meshProg );
+		object->GetFrame().SetPosition( { 0 - 0.0f, 0, 0 } );
+		object->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+	}
 
 	// From an XML file...
-	Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", unify::Path( "cube.xml" ) ) );
-	PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
-	auto xmlObject = GetObjectAllocator()->NewObject( "XMLObject" );
-	AddGeometryComponent( xmlObject, meshXML );
-	xmlObject->GetFrame().SetPosition( unify::V3< float >( 0 - 2.5f, 0, 0 ) );
-	{ 
-		using namespace unify;
-		unify::Matrix modelMatrix = MatrixIdentity();
+	{
+		Geometry::ptr meshXML( GetManager< Geometry >()->Add( "cubeXML", Path( "cube.xml" ) ) );
+		PrimitiveList & plXML = ((Mesh*)meshXML.get())->GetPrimitiveList();
+		auto object = GetObjectAllocator()->NewObject( "XMLObject" );
+	
+		Matrix modelMatrix = MatrixIdentity();
 		modelMatrix.Scale( 0.10f );
-		// TODO: xmlObject->GetFrame().SetModelMatrix( modelMatrix );
+		modelMatrix.Translate( { 0 - 2.5f, 0, 0 } );
+	
+		AddGeometryComponent( object, meshXML, modelMatrix );
+		object->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	}
-	xmlObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
-	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
-	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
-	auto aseObject = GetObjectAllocator()->NewObject( "swordASE" );
-	AddGeometryComponent( aseObject, meshASE );
-	aseObject->GetFrame().SetPosition( unify::V3< float >( 0 + 2.5f, 0, 0 ) );
-	{ 
-		using namespace unify;
-		unify::Matrix modelMatrix = MatrixIdentity();
+	{
+		Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", Path( "ASE_SwordTextured.ASE" ) ) );
+		PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
+		auto object = GetObjectAllocator()->NewObject( "swordASE" );
+
+		Matrix modelMatrix = MatrixIdentity();
 		modelMatrix.Scale( 0.090f );
-		modelMatrix.RotateAboutAxis( unify::V3< float >( -1.0f, 0.0f, 0.0f ), unify::AngleInDegrees( 90 ) );
-		modelMatrix.Translate( unify::V3< float >( 0, 1.0f, 0.0f ) );
-		// TODO: aseObject->GetFrame().SetModelMatrix( modelMatrix );
+		modelMatrix.RotateAboutAxis( { -1.0f, 0.0f, 0.0f }, AngleInDegrees( 90 ) );
+		modelMatrix.Translate( { 0, 1.0f, 0.0f } );
+
+		AddGeometryComponent( object, meshASE, modelMatrix  );
+		object->GetFrame().SetPosition( { 0 + 2.5f, 0, 0 } );
+		object->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	}
-	aseObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "USSVoyager.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "models/Death Star II/models/Death Star II.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "enterprise.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "cube.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "borgcube.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "torus.dae" ) ) );
-	
-	// Rigged...
-	Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", unify::Path( "Mickey_Mouse/Mickey_Mouse.dae" ) ) );
-	//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
-
-	auto daeModel = GetObjectAllocator()->NewObject( "daeModel" );
-	const unify::BBox< float > & bboxD = meshDAE->GetBBox();
 	{ 
-		using namespace unify;
-		unify::Matrix modelMatrix = MatrixIdentity();
+		auto object = GetObjectAllocator()->NewObject( "daeModel" );
+
+		// DISABLED: Various other dae models we can/should test.
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "USSVoyager.dae" ) ) );
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "models/Death Star II/models/Death Star II.dae" ) ) );
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "enterprise.dae" ) ) );
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "cube.dae" ) ) );
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "borgcube.dae" ) ) );
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "torus.dae" ) ) );
+
+		// Rigged...
+		Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", Path( "Mickey_Mouse/Mickey_Mouse.dae" ) ) );
+		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
+
+		Matrix modelMatrix = MatrixIdentity();
 		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
-		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
-		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
-		AddGeometryComponent( daeModel, meshDAE, modelMatrix );
+		modelMatrix.RotateAboutAxis( { 1.0f, 0, 0 }, AngleInDegrees( 270.0f ) );
+		modelMatrix.RotateAboutAxis( { 0, 1.0f, 0 }, AngleInDegrees( -90.0f ) );
+		AddGeometryComponent( object, meshDAE, modelMatrix );
+		object->GetFrame().SetPosition( { 0 - 5.0f, 0, 0 } );
+		object->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	}
-	daeModel->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-	daeModel->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
+	using namespace unify;
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
 	
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
-	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );
-	
-	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+	camera->GetFrame().Orbit( { 0, 0, 0 }, { 1, 0 }, unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
+	camera->GetFrame().LookAt( { 0, 0, 0 }, { 0, 1, 0 } );
 }

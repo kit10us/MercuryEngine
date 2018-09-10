@@ -99,11 +99,16 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameBase, const qxml::Ele
 		color.reset( new Effect( vs, ps ) );
 	}
 	
-	Effect::ptr textured;
+	Effect::ptr texture;
 	{
 		IPixelShader::ptr ps;
 		{
-			const auto node = element->FindFirstElement( "texturedps" );
+			std::string shaderElementName( "textureps" );
+			const auto node = element->FindFirstElement( shaderElementName );
+			if ( ! node )
+			{
+				throw unify::Exception( "Cannot find \"" + shaderElementName + "\" node in \"" + element->GetDocument()->GetPath().ToString() + "\"." );
+			}
 
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
@@ -124,7 +129,7 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameBase, const qxml::Ele
 
 		IVertexShader::ptr vs;
 		{
-			const auto node = element->FindFirstElement( "texturedvs" );
+			const auto node = element->FindFirstElement( "texturevs" );
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path path( node->GetAttributeElse< std::string >( "source", std::string() ) );
 
@@ -141,10 +146,10 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameBase, const qxml::Ele
 				vs = gameInstance->GetManager< IVertexShader >()->Add( name, path );
 			}
 		}
-		textured.reset( new Effect( vs, ps ) );
+		texture.reset( new Effect( vs, ps ) );
 	}
 
-	auto effectSolver = new MyEffectSolver( color, textured );
+	auto effectSolver = new MyEffectSolver( color, texture );
 
 	dae::GeometrySourceFactory * daeFactory = new dae::GeometrySourceFactory( gameInstance, effectSolver );
 	gameInstance->GetManager< Geometry >()->AddFactory( ".dae", GeometryFactoryPtr( daeFactory ) );
