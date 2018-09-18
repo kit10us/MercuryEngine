@@ -161,12 +161,13 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	// Use of camera controls to simplify camera movement...
 	m_camera->GetFrame().RotateAboutAxis( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 
-	static unify::TimeDelta elapsed = unify::TimeDeltaZero();
-	if ( elapsed < unify::TimeDeltaZero())
+	static unify::TimeDelta timer = {};
+	timer += params.GetDelta();
+	if (timer > unify::TimeDeltaInSeconds( 1.0f ))
 	{
+		timer = unify::TimeDelta();
+
 		auto sceneManager = GetGame()->GetComponentT< SceneManager >();
 		m_text->SetText( "Objects = " + unify::Cast< std::string >( sceneManager->GetRenderCount() ) );
-		elapsed = unify::TimeDeltaOne();
 	}
-	elapsed -= params.GetDelta();
 }

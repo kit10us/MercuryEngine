@@ -42,11 +42,11 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
 
-	static unify::TimeDelta timer = unify::TimeDeltaInMS( 0.0f );
+	static unify::TimeDelta timer = {};
 	timer += params.GetDelta();
-	if( timer > unify::TimeDeltaOne() )
+	if( timer > unify::TimeDeltaInSeconds( 1.0f ) )
 	{
-		timer = unify::TimeDeltaZero();
+		timer = unify::TimeDelta();
 
 		// Delete existing object...
 		if( m_objectIndex > 0 )

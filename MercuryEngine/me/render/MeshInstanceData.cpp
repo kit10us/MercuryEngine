@@ -27,7 +27,7 @@ void MeshInstanceData::PlaySingleAnimation( std::string name, bool forceLoop )
 void MeshInstanceData::PlayAdditionalAnimation( std::string name, bool forceLoop )
 {
 	frameanimation::Animation::const_ptr animation = m_animationSet->FindAnimation( name );
-	m_activeAnimations.push_back( ActiveAnimation( unify::TimeDeltaZero(), animation, forceLoop ) );
+	m_activeAnimations.push_back( ActiveAnimation( unify::TimeDelta(), animation, forceLoop ) );
 	m_playing = true;
 }
 

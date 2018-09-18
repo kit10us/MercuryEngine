@@ -116,7 +116,8 @@ void MainScene::OnStart()
 		//Geometry::ptr meshDAE( GetManager< Geometry >()->Add( "daeModel", "SuperMarioGalaxy_Mario/mario.dae" ) );
 
 		Matrix modelMatrix = MatrixIdentity();
-		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
+		unify::V3< float > sizeV3{ meshDAE->GetBBox().Size().width, meshDAE->GetBBox().Size().height, meshDAE->GetBBox().Size().depth };
+		modelMatrix.Scale( sizeV3 / 4.0f );
 		modelMatrix.RotateAboutAxis( { 1.0f, 0, 0 }, AngleInDegrees( 270.0f ) );
 		modelMatrix.RotateAboutAxis( { 0, 1.0f, 0 }, AngleInDegrees( -90.0f ) );
 		AddGeometryComponent( object, meshDAE, modelMatrix );

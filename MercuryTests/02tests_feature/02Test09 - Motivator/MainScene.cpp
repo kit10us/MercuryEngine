@@ -98,7 +98,8 @@ void MainScene::OnStart()
 	{ 
 		using namespace unify;
 		unify::Matrix modelMatrix = MatrixIdentity();
-		modelMatrix.Scale( 4.0f / meshDAE->GetBBox().Size().Length() );
+		unify::V3< float > sizeV3{ meshDAE->GetBBox().Size().width, meshDAE->GetBBox().Size().height, meshDAE->GetBBox().Size().depth };
+		modelMatrix.Scale( sizeV3 / 4.0f );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 1.0f, 0, 0 ), unify::AngleInDegrees( 270.0f ) );
 		modelMatrix.RotateAboutAxis( unify::V3< float >( 0, 1.0f, 0 ), unify::AngleInDegrees( -90.0f ) );
 		AddGeometryComponent( daeModel, meshDAE, modelMatrix );

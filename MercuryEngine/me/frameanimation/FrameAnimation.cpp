@@ -72,7 +72,7 @@ void Animation::AddTranslationKey( size_t boneIndex, const TranslationKey & key 
 
 unify::TimeDelta Animation::ApplyToFrames( unify::TimeDelta elapsedTime, unify::FrameSetInstance & frameSetInstance ) const
 {
-	while ( elapsedTime < unify::TimeDeltaZero() ) elapsedTime += Duration();
+	while ( elapsedTime < unify::TimeDelta() ) elapsedTime += Duration();
 	while ( elapsedTime > Duration() ) elapsedTime -= Duration();
 
 	// Apply animation

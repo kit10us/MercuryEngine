@@ -11,7 +11,7 @@ using namespace render;
 FPS::FPS( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: TextElement( gameInstance, effect, std::string(), anchor, scale, offset )
 	, m_updateRate{ unify::TimeDeltaInSeconds( 0.25f ) }
-	, m_timeTillUpdate{ unify::TimeDeltaZero() }
+	, m_timeTillUpdate{ unify::TimeDelta() }
 {
 	if ( !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '=' )
 		|| !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '.' )
@@ -27,7 +27,7 @@ FPS::FPS( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, uni
 void FPS::Update( const UpdateParams & params )
 {
 	m_timeTillUpdate -= params.renderInfo.GetDelta();
-	if ( m_timeTillUpdate > unify::TimeDeltaZero() ) return;
+	if ( m_timeTillUpdate > unify::TimeDelta() ) return;
 	
 	m_timeTillUpdate = m_updateRate;
 

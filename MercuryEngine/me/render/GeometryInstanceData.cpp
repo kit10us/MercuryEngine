@@ -14,8 +14,9 @@ GeometryInstanceData::~GeometryInstanceData()
 {
 }
 
-void GeometryInstanceData::Update( unify::Seconds elapsed )
+void GeometryInstanceData::Update( unify::TimeDelta elapsed )
 {
+	// Do nothing.
 	elapsed;
 }
 

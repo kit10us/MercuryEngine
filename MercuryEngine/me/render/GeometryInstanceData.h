@@ -27,7 +27,7 @@ namespace me
 			GeometryInstanceData();
 			virtual ~GeometryInstanceData();
 
-			virtual void Update( unify::Seconds elapsed );
+			virtual void Update( unify::TimeDelta elapsed );
 
 			void SetMatrix( unify::Matrix matrix );
 			const unify::Matrix * GetMatrix() const;
