@@ -111,7 +111,7 @@ void Mesh::Render( const render::Params & params, GeometryInstanceData * instanc
 		// Draw skeleton, if we have an effect for it...
 		if( m_skeletonEffect )
 		{
-			m_skeleton.Render( params, matrixFeed, m_skeletonEffect, 0.05f, unify::Color::ColorBlue() );
+			m_skeleton.Render( params, matrixFeed, m_skeletonEffect, 0.05f, unify::ColorBlue() );
 		}
 
 		/*

@@ -52,7 +52,7 @@ void MainScene::OnStart()
 	parameters.SetTexArea( unify::TexAreaFull() );
 
 	//parameters.SetHeightMap( Terra::TextureOpMap( GetManager< ITexture >()->Find( "land" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 0.7f, 0.25f, -1.0f ) ) );	
-	parameters.SetHeightMap( Terra::TextureOpMap( GetManager< ITexture >()->Find( "4" ), unify::ColorUnit::ColorUnitARGB( 0.0f, 3.0f, 2.0f, 1.0f ) ) );
+	parameters.SetHeightMap( Terra::TextureOpMap( GetManager< ITexture >()->Find( "4" ), unify::ColorUnitARGB( 0.0f, 3.0f, 2.0f, 1.0f ) ) );
 
 	//parameters.SetDiffuse( unify::ColorUnit::ColorUnitRed() );
 	//parameters.SetDiffuses( unify::ColorUnit::ColorUnitBlack(), unify::ColorUnit::ColorUnitRed(), unify::ColorUnit::ColorUnitBlue(), unify::ColorUnit::ColorUnitWhite() );

@@ -24,8 +24,8 @@ void sg::CreateShape_PointRing( IRenderer * renderer, PrimitiveList & primitiveL
 	float majorRadius = parameters.Get( "majorradius", 0.5f );	// Size radius
 	float minorRadius = parameters.Get( "minorradius", 1.0f );	// Radius of ring
 	unsigned int count = parameters.Get< unsigned int >( "count", 100 );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
+	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();

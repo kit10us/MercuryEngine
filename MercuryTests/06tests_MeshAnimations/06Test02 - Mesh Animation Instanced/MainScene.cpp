@@ -84,10 +84,10 @@ void MainScene::OnStart()
 		float result_infl1 = infl1.Result();
 		float result_infl2 = infl2.Result();
 
-  		vbRaw[ i * 4 + 0 ] = { -x,  y, -z, unify::Color::ColorRed( color ),		result_infl0, result_infl1, result_infl2, 0 };
-		vbRaw[ i * 4 + 1 ] = {  x,  y, -z, unify::Color::ColorGreen( color ),	result_infl0, result_infl1, result_infl2, 0 };
-		vbRaw[ i * 4 + 2 ] = {  x,  y, z, unify::Color::ColorBlue( color ),		result_infl0, result_infl1, result_infl2, 0 };
-		vbRaw[ i * 4 + 3 ] = { -x,  y, z, unify::Color::ColorWhite( color ),	result_infl0, result_infl1, result_infl2, 0 };
+  		vbRaw[ i * 4 + 0 ] = { -x,  y, -z, unify::ColorRed( color ),		result_infl0, result_infl1, result_infl2, 0 };
+		vbRaw[ i * 4 + 1 ] = {  x,  y, -z, unify::ColorGreen( color ),	result_infl0, result_infl1, result_infl2, 0 };
+		vbRaw[ i * 4 + 2 ] = {  x,  y, z, unify::ColorBlue( color ),		result_infl0, result_infl1, result_infl2, 0 };
+		vbRaw[ i * 4 + 3 ] = { -x,  y, z, unify::ColorWhite( color ),	result_infl0, result_infl1, result_infl2, 0 };
 	};
 
 	size_t index = 0;

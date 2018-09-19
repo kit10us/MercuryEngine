@@ -24,8 +24,8 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 	float radius = parameters.Get( "radius", 0.5f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
 	float height = parameters.Get( "height", 1.0f );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
+	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
 	// TODO: support top and bottom texArea.

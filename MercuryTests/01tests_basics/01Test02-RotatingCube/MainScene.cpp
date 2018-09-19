@@ -29,52 +29,52 @@ void MainScene::OnStart()
 	Vertex vbRaw[] =
 	{
 		// Z-Near...
-		{ -xscalar, yscalar, zscalar, unify::Color::ColorRed() },
-		{ xscalar, yscalar, zscalar, unify::Color::ColorGreen() },
-		{ -xscalar, -yscalar, zscalar, unify::Color::ColorBlue() },
-		{ xscalar, yscalar, zscalar, unify::Color::ColorGreen() },
-		{ xscalar, -yscalar, zscalar, unify::Color::ColorWhite() },
-		{ -xscalar, -yscalar, zscalar, unify::Color::ColorBlue() },
+		{ -xscalar, yscalar, zscalar, unify::ColorRed() },
+		{ xscalar, yscalar, zscalar, unify::ColorGreen() },
+		{ -xscalar, -yscalar, zscalar, unify::ColorBlue() },
+		{ xscalar, yscalar, zscalar, unify::ColorGreen() },
+		{ xscalar, -yscalar, zscalar, unify::ColorWhite() },
+		{ -xscalar, -yscalar, zscalar, unify::ColorBlue() },
 
 		// Z-Near...
-		{ xscalar, yscalar, -zscalar, unify::Color::ColorRed() },
-		{ -xscalar, yscalar, -zscalar, unify::Color::ColorGreen() },
-		{ xscalar, -yscalar, -zscalar, unify::Color::ColorBlue() },
-		{ -xscalar, yscalar, -zscalar, unify::Color::ColorGreen() },
-		{ -xscalar, -yscalar, -zscalar, unify::Color::ColorWhite() },
-		{ xscalar, -yscalar, -zscalar, unify::Color::ColorBlue() },
+		{ xscalar, yscalar, -zscalar, unify::ColorRed() },
+		{ -xscalar, yscalar, -zscalar, unify::ColorGreen() },
+		{ xscalar, -yscalar, -zscalar, unify::ColorBlue() },
+		{ -xscalar, yscalar, -zscalar, unify::ColorGreen() },
+		{ -xscalar, -yscalar, -zscalar, unify::ColorWhite() },
+		{ xscalar, -yscalar, -zscalar, unify::ColorBlue() },
 
 		// X-Min...
-		{ -xscalar, yscalar, zscalar, unify::Color::ColorRed() },
-		{ -xscalar, yscalar, -zscalar, unify::Color::ColorGreen() },
-		{ -xscalar, -yscalar, zscalar, unify::Color::ColorBlue() },
-		{ -xscalar, yscalar, -zscalar, unify::Color::ColorGreen() },
-		{ -xscalar, -yscalar, -zscalar, unify::Color::ColorWhite() },
-		{ -xscalar, -yscalar, zscalar, unify::Color::ColorBlue() },
+		{ -xscalar, yscalar, zscalar, unify::ColorRed() },
+		{ -xscalar, yscalar, -zscalar, unify::ColorGreen() },
+		{ -xscalar, -yscalar, zscalar, unify::ColorBlue() },
+		{ -xscalar, yscalar, -zscalar, unify::ColorGreen() },
+		{ -xscalar, -yscalar, -zscalar, unify::ColorWhite() },
+		{ -xscalar, -yscalar, zscalar, unify::ColorBlue() },
 
 		// X-Max...
-		{ xscalar, yscalar, -zscalar, unify::Color::ColorRed() },
-		{ xscalar, yscalar, zscalar, unify::Color::ColorGreen() },
-		{ xscalar, -yscalar, -zscalar, unify::Color::ColorBlue() },
-		{ xscalar, yscalar, zscalar, unify::Color::ColorGreen() },
-		{ xscalar, -yscalar, zscalar, unify::Color::ColorWhite() },
-		{ xscalar, -yscalar, -zscalar, unify::Color::ColorBlue() },
+		{ xscalar, yscalar, -zscalar, unify::ColorRed() },
+		{ xscalar, yscalar, zscalar, unify::ColorGreen() },
+		{ xscalar, -yscalar, -zscalar, unify::ColorBlue() },
+		{ xscalar, yscalar, zscalar, unify::ColorGreen() },
+		{ xscalar, -yscalar, zscalar, unify::ColorWhite() },
+		{ xscalar, -yscalar, -zscalar, unify::ColorBlue() },
 
 		// Y-Min...
-		{ -xscalar, yscalar, zscalar, unify::Color::ColorRed() },
-		{ xscalar, yscalar, zscalar, unify::Color::ColorGreen() },
-		{ -xscalar, yscalar, -zscalar, unify::Color::ColorBlue() },
-		{ xscalar, yscalar, zscalar, unify::Color::ColorGreen() },
-		{ xscalar, yscalar, -zscalar, unify::Color::ColorWhite() },
-		{ -xscalar, yscalar, -zscalar, unify::Color::ColorBlue() },
+		{ -xscalar, yscalar, zscalar, unify::ColorRed() },
+		{ xscalar, yscalar, zscalar, unify::ColorGreen() },
+		{ -xscalar, yscalar, -zscalar, unify::ColorBlue() },
+		{ xscalar, yscalar, zscalar, unify::ColorGreen() },
+		{ xscalar, yscalar, -zscalar, unify::ColorWhite() },
+		{ -xscalar, yscalar, -zscalar, unify::ColorBlue() },
 
 		// Y-Max...
-		{ -xscalar, -yscalar, -zscalar, unify::Color::ColorRed() },
-		{ xscalar, -yscalar, -zscalar, unify::Color::ColorGreen() },
-		{ -xscalar, -yscalar, zscalar, unify::Color::ColorBlue() },
-		{ xscalar, -yscalar, -zscalar, unify::Color::ColorGreen() },
-		{ xscalar, -yscalar, zscalar, unify::Color::ColorWhite() },
-		{ -xscalar, -yscalar, zscalar, unify::Color::ColorBlue() }
+		{ -xscalar, -yscalar, -zscalar, unify::ColorRed() },
+		{ xscalar, -yscalar, -zscalar, unify::ColorGreen() },
+		{ -xscalar, -yscalar, zscalar, unify::ColorBlue() },
+		{ xscalar, -yscalar, -zscalar, unify::ColorGreen() },
+		{ xscalar, -yscalar, zscalar, unify::ColorWhite() },
+		{ -xscalar, -yscalar, zscalar, unify::ColorBlue() }
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 

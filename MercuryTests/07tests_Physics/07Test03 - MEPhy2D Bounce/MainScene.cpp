@@ -55,7 +55,7 @@ void MainScene::OnStart()
 		sg::CubeParameters cubeParameters;
 		cubeParameters.SetEffect( color3DEffect );
 		cubeParameters.SetSize( unify::Size3< float >( 10, 1, 10 ) );
-		cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
+		cubeParameters.SetDiffuseFaces( unify::ColorRed(), unify::ColorGreen(), unify::ColorBlue(), unify::ColorYellow(), unify::ColorCyan(), unify::ColorMagenta() );
 		meshGround = sg::CreateShape( GetOS()->GetRenderer( 0 ), cubeParameters );
 	}
 
@@ -64,7 +64,7 @@ void MainScene::OnStart()
 		sg::CubeParameters cubeParameters;
 		cubeParameters.SetEffect( color3DEffect );
 		cubeParameters.SetSize( unify::Size3< float >( 1, 1, 1 ) );
-		cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
+		cubeParameters.SetDiffuseFaces( unify::ColorRed(), unify::ColorGreen(), unify::ColorBlue(), unify::ColorYellow(), unify::ColorCyan(), unify::ColorMagenta() );
 		meshCube = sg::CreateShape( GetOS()->GetRenderer( 0 ), cubeParameters );
 	}
 
@@ -73,7 +73,7 @@ void MainScene::OnStart()
 		sg::SphereParameters sphereParameters;
 		sphereParameters.SetEffect( color3DEffect );
 		sphereParameters.SetRadius( 0.5f );
-		sphereParameters.SetDiffuse( unify::Color::ColorRed() );
+		sphereParameters.SetDiffuse( unify::ColorRed() );
 		meshSphere = sg::CreateShape( GetOS()->GetRenderer( 0 ), sphereParameters );
 	}
 

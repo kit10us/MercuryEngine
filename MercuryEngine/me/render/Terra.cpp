@@ -127,10 +127,10 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	const float constant = parameters.Get< float >( "constant", 0.0f );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 
-	unify::ColorUnit diffuseUL = parameters.Get< unify::ColorUnit >( "diffuseul", unify::ColorUnit::ColorUnitWhite() );
-	unify::ColorUnit diffuseUR = parameters.Get< unify::ColorUnit >( "diffuseur", unify::ColorUnit::ColorUnitWhite() );
-	unify::ColorUnit diffuseDL = parameters.Get< unify::ColorUnit >( "diffusedl", unify::ColorUnit::ColorUnitWhite() );
-	unify::ColorUnit diffuseDR = parameters.Get< unify::ColorUnit >( "diffusedr", unify::ColorUnit::ColorUnitWhite() );
+	unify::ColorUnit diffuseUL = parameters.Get< unify::ColorUnit >( "diffuseul", unify::ColorUnitWhite() );
+	unify::ColorUnit diffuseUR = parameters.Get< unify::ColorUnit >( "diffuseur", unify::ColorUnitWhite() );
+	unify::ColorUnit diffuseDL = parameters.Get< unify::ColorUnit >( "diffusedl", unify::ColorUnitWhite() );
+	unify::ColorUnit diffuseDR = parameters.Get< unify::ColorUnit >( "diffusedr", unify::ColorUnitWhite() );
 
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 		  
@@ -374,7 +374,7 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 
 		unsigned int uSurfaceOffsetH = (unsigned int)(imageSize.width * height_uv.u);
 		pBuffer = pBufferColumnStart + uSurfaceOffsetH;
-		unify::Color pixel = unify::Color::ColorARGB( *pBuffer );
+		unify::Color pixel = unify::ColorARGB( *pBuffer );
 		unify::ColorUnit result( tom.colorOp * pixel );
 
 		// Perform modification to vertex...
@@ -456,7 +456,7 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 
 		unsigned int uSurfaceOffsetH = (unsigned int)(imageSize.width * height_uv.u);
 		pBuffer = pBufferColumnStart + uSurfaceOffsetH;
-		unify::Color pixel = unify::Color::ColorARGB( *pBuffer );
+		unify::Color pixel = unify::ColorARGB( *pBuffer );
 		unify::ColorUnit result( tom.colorOp * pixel );
 
 		// Perform modification to vertex...
@@ -978,7 +978,7 @@ bool Terra::RenderNormals()
 		ReadVertex( *vd, lock, dwVertex, &vFromNorm, FVF::Normal );
 
 		pVertex[dwNormal].p = vFromPos;
-		pVertex[dwNormal].diffuse = unify::Color::White();
+		pVertex[dwNormal].diffuse = unify::White();
 		dwNormal++;
 
 		unify::V3< float > v;
@@ -988,7 +988,7 @@ bool Terra::RenderNormals()
 										//unify::V3< float >(	pFromVertex[dwVertex].n.x * fNormalSize,
 										//	pFromVertex[dwVertex].n.y * fNormalSize,
 										//	pFromVertex[dwVertex].n.z * fNormalSize );
-		pVertex[dwNormal].diffuse = unify::Color::White();
+		pVertex[dwNormal].diffuse = unify::White();
 		dwNormal++;
 	}
 	NormalsVB.Unlock();

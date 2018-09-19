@@ -69,7 +69,7 @@ void MainScene::OnStart()
 		sg::CubeParameters parameters;
 		parameters.SetEffect(color3DEffect);
 		parameters.SetSize(unify::Size3< float >(1, 1, 1));
-		parameters.SetDiffuseFaces(unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta());
+		parameters.SetDiffuseFaces(unify::ColorRed(), unify::ColorGreen(), unify::ColorBlue(), unify::ColorYellow(), unify::ColorCyan(), unify::ColorMagenta());
 		auto object = createObject( parameters );
 	}
 
@@ -119,7 +119,7 @@ void MainScene::OnStart()
 		sg::SphereParameters parameters;
 		parameters.SetEffect( color3DEffect );
 		parameters.SetRadius( 0.5f );
-		parameters.SetDiffuse( unify::Color::ColorRed() );
+		parameters.SetDiffuse( unify::ColorRed() );
 		auto object = createObject(parameters);
 	}
 

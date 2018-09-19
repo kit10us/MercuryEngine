@@ -21,7 +21,7 @@ namespace me
 				BBoxRendererComponent( BBoxRendererComponent & component );
 
 			public:
-				BBoxRendererComponent( os::IOS * os, render::Effect::ptr effect, unify::Color color = unify::Color::ColorBlue( 155 ) );
+				BBoxRendererComponent( os::IOS * os, render::Effect::ptr effect, unify::Color color = unify::ColorBlue( 155 ) );
 				virtual ~BBoxRendererComponent();
 
 				/// <summary>

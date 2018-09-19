@@ -22,8 +22,8 @@ const std::string DefaultBufferUsage = "Default";
 void sg::CreateShape_Plane( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::Size< float > size = parameters.Get( "size2", unify::Size< float >( 1.0f, 1.0f ) );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
+	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 1 );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	unify::TexArea texArea = parameters.Get( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );

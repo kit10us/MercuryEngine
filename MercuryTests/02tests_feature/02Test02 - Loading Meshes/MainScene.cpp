@@ -61,7 +61,7 @@ void MainScene::OnStart()
 		sg::CubeParameters cubeParameters;
 		cubeParameters.SetEffect( color3DEffect );
 		cubeParameters.SetSize( Size3< float >( 2, 2, 2 ) );
-		cubeParameters.SetDiffuseFaces( Color::ColorRed(), Color::ColorGreen(), Color::ColorBlue(), Color::ColorYellow(), Color::ColorCyan(), Color::ColorMagenta() );
+		cubeParameters.SetDiffuseFaces( ColorRed(), ColorGreen(), ColorBlue(), ColorYellow(), ColorCyan(), ColorMagenta() );
 		Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 		PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 		auto object = GetObjectAllocator()->NewObject( "cubeDyna" );

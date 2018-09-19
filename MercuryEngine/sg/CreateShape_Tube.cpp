@@ -25,8 +25,8 @@ void sg::CreateShape_Tube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	float inner = parameters.Get( "minorradius", 0.3f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
 	float height = parameters.Get( "height", 1.0f );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
+	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();

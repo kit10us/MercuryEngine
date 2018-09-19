@@ -53,7 +53,7 @@ void MainScene::OnStart()
 	sg::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
     cubeParameters.SetSize( unify::Size3< float >( 2, 2, 2 ) );
-	cubeParameters.SetDiffuseFaces( unify::Color::ColorRed(), unify::Color::ColorGreen(), unify::Color::ColorBlue(), unify::Color::ColorYellow(), unify::Color::ColorCyan(), unify::Color::ColorMagenta() );
+	cubeParameters.SetDiffuseFaces( unify::ColorRed(), unify::ColorGreen(), unify::ColorBlue(), unify::ColorYellow(), unify::ColorCyan(), unify::ColorMagenta() );
 	Geometry::ptr meshProg( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 	PrimitiveList & plProg = ((Mesh*)meshProg.get())->GetPrimitiveList();
 	auto progObject = GetObjectAllocator()->NewObject( "cubeDyna" );

@@ -9,7 +9,7 @@ using namespace dae;
 Shading::Property::Property()
 : m_type( UnknownType )
 , m_float( 0 )
-, m_color( unify::ColorUnit::ColorUnitWhite() )
+, m_color( unify::ColorUnitWhite() )
 {
 }
 

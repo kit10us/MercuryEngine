@@ -23,8 +23,8 @@ void sg::CreateShape_Sphere( IRenderer * renderer, PrimitiveList & primitiveList
 {
 	float radius = parameters.Get( "radius", 1.0f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
+	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();

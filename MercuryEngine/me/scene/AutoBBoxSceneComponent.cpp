@@ -14,7 +14,7 @@ AutoBBoxSceneComponent::AutoBBoxSceneComponent( os::IOS * os, Effect::ptr effect
 	: SceneComponent( os, "AutoBBox" )
 	, m_effect( effect )
 	, m_padding( 0.1f )
-	, m_color( unify::Color::ColorBlue( 155 ) )
+	, m_color( unify::ColorBlue( 155 ) )
 {
 }
 

@@ -98,7 +98,7 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 	// polylist and triangles are treated as polylists.
 	for( const auto polylist : m_polylist )
 	{
-		unify::Color diffuse = unify::Color::ColorWhite();
+		unify::Color diffuse = unify::ColorWhite();
 		const NewParam * sampler2DParam = 0;
 		const NewParam * surfaceParam = 0;
 		
@@ -135,7 +135,7 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 		}
 		else
 		{
-			diffuse = unify::Color( unify::Color::ColorGrey( 155 ) );
+			diffuse = unify::Color( unify::ColorGrey( 155 ) );
 			myEffect->SetTexture( 0, me::render::ITexture::ptr() ); // Unset texture.
 		}
 

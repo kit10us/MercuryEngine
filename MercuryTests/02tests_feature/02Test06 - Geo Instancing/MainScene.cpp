@@ -42,14 +42,14 @@ void MainScene::OnStart()
 	sg::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( color3DEffect );
     cubeParameters.SetSize( unify::Size3< float >( 1, 1, 1 ) );
-	cubeParameters.SetDiffuse( unify::Color::ColorBlue() );
+	cubeParameters.SetDiffuse( unify::ColorBlue() );
 	Geometry::ptr geo1( sg::CreateShape( GetOS()->GetRenderer(0), cubeParameters ) );
 
 	// Geo2
 	sg::SphereParameters sphereParameters;
 	sphereParameters.SetEffect( color3DEffect );
 	sphereParameters.SetRadius( 1 );
-	sphereParameters.SetDiffuse( unify::Color::ColorRed() );
+	sphereParameters.SetDiffuse( unify::ColorRed() );
 	Geometry::ptr geo2( sg::CreateShape( GetOS()->GetRenderer( 0 ), sphereParameters ) );
 
 	// Geo3
@@ -57,7 +57,7 @@ void MainScene::OnStart()
 	coneParameters.SetEffect( color3DEffect );
 	coneParameters.SetHeight( 1 );
 	coneParameters.SetRadius( 1 );
-	coneParameters.SetDiffuse( unify::Color::ColorGreen() );
+	coneParameters.SetDiffuse( unify::ColorGreen() );
 	Geometry::ptr geo3( sg::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) );
 
 	size_t depth = 40;

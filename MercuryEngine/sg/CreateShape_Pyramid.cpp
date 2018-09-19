@@ -22,8 +22,8 @@ const std::string DefaultBufferUsage = "Default";
 void sg::CreateShape_Pyramid( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
 	unify::Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::Color::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::Color::ColorWhite() );
+	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );

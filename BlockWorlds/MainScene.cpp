@@ -37,7 +37,7 @@ void MainScene::OnStart()
 	sg::CubeParameters cubeParameters;
 	cubeParameters.SetEffect( testEffect );
     cubeParameters.SetSize( unify::Size3< float >( 10, 10, 10 ) );
-	cubeParameters.SetDiffuse( unify::Color::ColorBlue() );
+	cubeParameters.SetDiffuse( unify::ColorBlue() );
 	cubeParameters.SetFaceUV( 
 	{ 
 		// Top

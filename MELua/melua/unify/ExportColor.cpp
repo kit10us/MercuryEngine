@@ -38,7 +38,7 @@ int Color_RGBA( lua_State * state )
 	float b = (float)lua_tonumber( state, 3 );
 	float a = (float)lua_tonumber( state, 4 );
 
-	PushColor( state, unify::ColorUnit::ColorUnitRGBA( r, g, b, a ) );
+	PushColor( state, unify::ColorUnitRGBA( r, g, b, a ) );
 
 	return 1;
 }
@@ -53,7 +53,7 @@ int Color_ARGB( lua_State * state )
 	float g = (float)lua_tonumber( state, 3 );
 	float b = (float)lua_tonumber( state, 4 );
 
-	PushColor( state, unify::ColorUnit::ColorUnitARGB( a, r, g, b ) );
+	PushColor( state, unify::ColorUnitARGB( a, r, g, b ) );
 
 	return 1;
 }
@@ -67,7 +67,7 @@ int Color_RGB( lua_State * state )
 	float g = (float)lua_tonumber( state, 2 );
 	float b = (float)lua_tonumber( state, 3 );
 
-	PushColor( state, unify::ColorUnit::ColorUnitRGB( r, g, b ) );
+	PushColor( state, unify::ColorUnitRGB( r, g, b ) );
 
 	return 1;
 }
@@ -81,7 +81,7 @@ int Color_White( lua_State * state )
 		a = (float)lua_tonumber( state, 1 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitWhite( a ) );
+	PushColor( state, unify::ColorUnitWhite( a ) );
 
 	return 1;
 }
@@ -100,7 +100,7 @@ int Color_Red( lua_State * state )
 		a = (float)lua_tonumber( state, 2 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitRGBA( r, 0.0f, 0.0f, a ) );
+	PushColor( state, unify::ColorUnitRGBA( r, 0.0f, 0.0f, a ) );
 
 	return 1;
 }
@@ -119,7 +119,7 @@ int Color_Green( lua_State * state )
 		a = (float)lua_tonumber( state, 2 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitGreen( g, a ) );
+	PushColor( state, unify::ColorUnitGreen( g, a ) );
 
 	return 1;
 }
@@ -138,7 +138,7 @@ int Color_Blue( lua_State * state )
 		a = (float)lua_tonumber( state, 2 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitRGBA( 0.0f, 0.0f, b, a ) );
+	PushColor( state, unify::ColorUnitRGBA( 0.0f, 0.0f, b, a ) );
 
 	return 1;
 }
@@ -157,7 +157,7 @@ int Color_Grey( lua_State * state )
 		a = (float)lua_tonumber( state, 2 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitGrey( grey, a ) );
+	PushColor( state, unify::ColorUnitGrey( grey, a ) );
 
 	return 1;
 }
@@ -171,7 +171,7 @@ int Color_Black( lua_State * state )
 		a = (float)lua_tonumber( state, 1 );
 	}
 
-	PushColor( state, unify::ColorUnit::ColorUnitBlack( a ) );
+	PushColor( state, unify::ColorUnitBlack( a ) );
 
 	return 1;
 }
@@ -185,7 +185,7 @@ int Color_Lerp(lua_State * state)
 	unify::ColorUnit l(CheckColor(state, 1)->color);
 	unify::ColorUnit r(CheckColor(state, 2)->color);
 	float delta = (float)lua_tonumber(state, 3);
-	unify::ColorUnit result(unify::ColorUnit::ColorUnitLerp(l, r, delta));
+	unify::ColorUnit result(unify::ColorUnitLerp(l, r, delta));
 
 	PushColor(state, result);
 	return 1;
