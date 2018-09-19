@@ -20,8 +20,8 @@ unify::Parameters & BeveledBoxParameters::Reset()
 
 BeveledBoxParameters & BeveledBoxParameters::SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation )
 {
-    Set< unify::V3< float > >( "inf", transformation.TransformCoord_Copy( bbox.inf ) );
-    Set< unify::V3< float > >( "sup", transformation.TransformCoord_Copy( bbox.sup ) );
+    Set< unify::V3< float > >( "inf", transformation.TransformCoord( bbox.GetInf() ) );
+    Set< unify::V3< float > >( "sup", transformation.TransformCoord( bbox.GetSup() ) );
     return *this;
 } 
 

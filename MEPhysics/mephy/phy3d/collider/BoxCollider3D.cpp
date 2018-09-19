@@ -36,13 +36,9 @@ BoxCollider::~BoxCollider()
 
 void BoxCollider::TestCollision( ColliderBase * entity, const me::UpdateParams & params )
 {
-	// Get entity posiitons...
-	auto earlyPos = entity->GetEarly().GetPosition();
-	auto currentPos = entity->GetObject()->GetFrame().GetPosition();
-	
 	// Transform the entity positions into our space...
-	GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( earlyPos );
-	GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( currentPos );
+	auto earlyPos = GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( entity->GetEarly().GetPosition() );
+	auto currentPos = GetObject()->GetFrame().GetMatrix().Inverse().TransformCoord( entity->GetObject()->GetFrame().GetPosition() );
 
 	bool wasIn;
 	bool isIn;

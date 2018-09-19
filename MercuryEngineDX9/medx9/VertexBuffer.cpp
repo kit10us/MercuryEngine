@@ -51,7 +51,7 @@ void VertexBuffer::Create( VertexBufferParameters parameters )
 
 		auto dxDevice = m_renderer->GetDxDevice();
 
-		unsigned int createFlags = FLAGNULL;
+		unsigned int createFlags = FLAG00;
 		D3DPOOL pool = D3DPOOL_DEFAULT;
 		switch( m_usage[ bufferIndex ] )
 		{

@@ -189,7 +189,7 @@ void Mesh::Build( me::render::Mesh & mesh, const unify::Matrix & matrix, const B
 					unify::V3< float > val{
 						floats[offsetOfFloats + 0], floats[offsetOfFloats + 1], floats[offsetOfFloats + 2] 
 					};
-					matrix.TransformCoord( val );
+					val = matrix.TransformCoord( val );
 					bbox += val;
 					WriteVertex( *vd, lock, vertexIndex, positionE, val );
 					WriteVertex( *vd, lock, vertexIndex, diffuseE, diffuse );

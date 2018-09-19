@@ -92,7 +92,7 @@ namespace me
 			bool ApplyAlphaMap( TextureOpMap tom );
 			bool ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexArea );
 			bool ApplyTransparent( unsigned int uFlags, float fValue, float fTolerance = 0.0f );
-			bool Smooth( unsigned int uFlags = FLAGNULL );
+			bool Smooth( unsigned int uFlags = FLAG00 );
 			bool MakeWrappable( unsigned int uFlags = WRAP_COLUMNS | WRAP_ROWS );
 			bool FixSide( unsigned int	uFlags, float fToDepth );
 			bool AlignSide( unsigned int uFlags, Terra* pTerraIn );

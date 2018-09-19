@@ -45,7 +45,7 @@ void IndexBuffer::Create( IndexBufferParameters parameters )
 
 	auto dxDevice = m_renderer->GetDxDevice();
 
-	unsigned int createFlags = FLAGNULL;
+	unsigned int createFlags = FLAG00;
 	// Some of these are not required.
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::DoNotClip ) )	createFlags |= D3DUSAGE_DONOTCLIP;
 	if ( unify::CheckFlag( parameters.flags, CreateFlags::NPatches ) )	createFlags |= D3DUSAGE_NPATCHES;
