@@ -127,7 +127,7 @@ LRESULT DefaultOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 	return 0;
 }
 
-unify::AssetPaths & DefaultOS::GetAssetPaths()
+rm::AssetPaths & DefaultOS::GetAssetPaths()
 {
 	return m_assetPaths;
 }

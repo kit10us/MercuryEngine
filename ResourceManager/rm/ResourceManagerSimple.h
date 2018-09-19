@@ -12,7 +12,7 @@
 #include <rm/ISourceFactory.h>
 #include <rm/IResourceManager.h>
 #include <unify/Exception.h>
-#include <unify/AssetPaths.h>
+#include <rm/AssetPaths.h>
 #include <map>
 #include <memory>
 
@@ -36,7 +36,7 @@ namespace rm
 
 		typedef std::shared_ptr< T > ResourcePtr;
 
-        ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths = nullptr, ILogger::ptr = ILogger::ptr() );
+        ResourceManagerSimple( std::string resourceName, rm::AssetPaths * assetPaths = nullptr, ILogger::ptr = ILogger::ptr() );
 		~ResourceManagerSimple();
 
 		void Clear();
@@ -85,7 +85,7 @@ namespace rm
 
 	protected:
 		std::string m_resourceName;
-		unify::AssetPaths * m_assetPaths;
+		rm::AssetPaths * m_assetPaths;
 		ILogger::ptr m_logger;
 		std::map< std::string, ResourcePtr > m_resourceMap;
 		std::vector< ResourcePtr > m_resourceList;

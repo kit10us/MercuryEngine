@@ -8,7 +8,7 @@
 #include <me/render/Display.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
-#include <unify/AssetPaths.h>
+#include <rm/AssetPaths.h>
 #include <vector>
 #include <string>
 #include <memory>
@@ -138,7 +138,7 @@ namespace me
 			/// <summary>
 			/// Asset path manager.
 			/// </summary>
-			virtual unify::AssetPaths & GetAssetPaths() = 0;
+			virtual rm::AssetPaths & GetAssetPaths() = 0;
 
 			/// <summary>
 			/// Asset path manager.

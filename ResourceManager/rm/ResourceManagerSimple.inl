@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 template< class T >
-ResourceManagerSimple< T >::ResourceManagerSimple( std::string resourceName, unify::AssetPaths * assetPaths, ILogger::ptr logger )
+ResourceManagerSimple< T >::ResourceManagerSimple( std::string resourceName, rm::AssetPaths * assetPaths, ILogger::ptr logger )
 	: m_resourceName( resourceName )
 	, m_assetPaths( assetPaths )
 	, m_logger( logger )

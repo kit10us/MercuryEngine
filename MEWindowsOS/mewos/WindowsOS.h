@@ -11,8 +11,6 @@
 #include <list>
 #include <vector>
 
-
-
 #define WINDOWS_LEAN_AND_MEAN
 #include <Windows.h>
 
@@ -66,7 +64,7 @@ namespace mewos
 
 		LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
-		unify::AssetPaths & GetAssetPaths() override;
+		rm::AssetPaths & GetAssetPaths() override;
 
 		unify::Path GetProgramPath() const override;
 
@@ -87,7 +85,7 @@ namespace mewos
 		std::vector< me::render::Display > m_pendingDisplays;
 		std::vector< me::render::IRenderer::ptr > m_renderers;
 		me::os::OSParameters m_osParameters;
-		unify::AssetPaths m_assetPaths;
+		rm::AssetPaths m_assetPaths;
 		HWND m_mainWindow;
 	};
 }

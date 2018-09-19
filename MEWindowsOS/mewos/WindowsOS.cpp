@@ -566,7 +566,7 @@ LRESULT WindowsOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 	return DefWindowProc( handle, message, wParam, lParam );
 }
 
-unify::AssetPaths & WindowsOS::GetAssetPaths()
+rm::AssetPaths & WindowsOS::GetAssetPaths()
 {
 	return m_assetPaths;
 }

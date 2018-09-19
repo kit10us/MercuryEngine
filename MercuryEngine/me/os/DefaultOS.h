@@ -7,7 +7,7 @@
 #include <me/game/IGame.h>
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
-#include <unify/AssetPaths.h>
+#include <rm/AssetPaths.h>
 #include <list>
 #include <vector>
 
@@ -64,7 +64,7 @@ namespace me
 
 			LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
-			unify::AssetPaths & GetAssetPaths() override;
+			rm::AssetPaths & GetAssetPaths() override;
 
 			unify::Path GetProgramPath() const override;
 
@@ -74,7 +74,7 @@ namespace me
 			me::game::IGame * m_game;
 			me::os::IDebug * m_debug;
 			unify::Path m_runPath;
-			unify::AssetPaths m_assetPaths;
+			rm::AssetPaths m_assetPaths;
 		};
 	}
 }
