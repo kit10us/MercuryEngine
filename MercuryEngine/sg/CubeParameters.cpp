@@ -20,8 +20,8 @@ unify::Parameters & CubeParameters::Reset()
 
 CubeParameters & CubeParameters::SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation )
 {
-    Set< unify::V3< float > >( "inf", transformation.TransformCoord( bbox.GetInf() ) );
-    Set< unify::V3< float > >( "sup", transformation.TransformCoord( bbox.GetSup() ) );
+    Set< unify::V3< float > >( "inf", transformation.TransformCoord( bbox.inf ) );
+    Set< unify::V3< float > >( "sup", transformation.TransformCoord( bbox.sup ) );
     return *this;
 } 
 

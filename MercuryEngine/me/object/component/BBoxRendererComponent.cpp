@@ -103,45 +103,45 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 
 		// All from inf...
 
-		WriteVertex( *vd, lock, 0, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetInf().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 1, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetInf().y, m_bbox.GetInf().z ) );
+		WriteVertex( *vd, lock, 0, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.inf.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 1, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.inf.y, m_bbox.inf.z ) );
 
-		WriteVertex( *vd, lock, 2, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetInf().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetSup().y, m_bbox.GetInf().z ) );
+		WriteVertex( *vd, lock, 2, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.inf.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.sup.y, m_bbox.inf.z ) );
 
-		WriteVertex( *vd, lock, 4, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetInf().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 5, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetInf().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 4, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.inf.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 5, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.inf.y, m_bbox.sup.z ) );
 
 		// All from sup...
 
-		WriteVertex( *vd, lock, 6, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetSup().y, m_bbox.GetSup().z ) );
-		WriteVertex( *vd, lock, 7, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetSup().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 6, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.sup.y, m_bbox.sup.z ) );
+		WriteVertex( *vd, lock, 7, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.sup.y, m_bbox.sup.z ) );
 
-		WriteVertex( *vd, lock, 8, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetSup().y, m_bbox.GetSup().z ) );
-		WriteVertex( *vd, lock, 9, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetInf().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 8, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.sup.y, m_bbox.sup.z ) );
+		WriteVertex( *vd, lock, 9, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.inf.y, m_bbox.sup.z ) );
 
-		WriteVertex( *vd, lock, 10, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetSup().y, m_bbox.GetSup().z ) );
-		WriteVertex( *vd, lock, 11, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetSup().y, m_bbox.GetInf().z ) );
+		WriteVertex( *vd, lock, 10, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.sup.y, m_bbox.sup.z ) );
+		WriteVertex( *vd, lock, 11, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.sup.y, m_bbox.inf.z ) );
 
 		// Others...
 
-		WriteVertex( *vd, lock, 12, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetInf().y, m_bbox.GetSup().z ) );
-		WriteVertex( *vd, lock, 13, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetInf().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 12, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.inf.y, m_bbox.sup.z ) );
+		WriteVertex( *vd, lock, 13, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.inf.y, m_bbox.sup.z ) );
 
-		WriteVertex( *vd, lock, 14, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetInf().y, m_bbox.GetSup().z ) );
-		WriteVertex( *vd, lock, 15, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetSup().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 14, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.inf.y, m_bbox.sup.z ) );
+		WriteVertex( *vd, lock, 15, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.sup.y, m_bbox.sup.z ) );
 
-		WriteVertex( *vd, lock, 16, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetSup().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 17, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetSup().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 16, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.sup.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 17, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.sup.y, m_bbox.sup.z ) );
 
-		WriteVertex( *vd, lock, 18, positionE, unify::V3< float >( m_bbox.GetInf().x, m_bbox.GetSup().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 19, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetSup().y, m_bbox.GetInf().z ) );
+		WriteVertex( *vd, lock, 18, positionE, unify::V3< float >( m_bbox.inf.x, m_bbox.sup.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 19, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.sup.y, m_bbox.inf.z ) );
 
-		WriteVertex( *vd, lock, 20, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetInf().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 21, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetInf().y, m_bbox.GetSup().z ) );
+		WriteVertex( *vd, lock, 20, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.inf.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 21, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.inf.y, m_bbox.sup.z ) );
 
-		WriteVertex( *vd, lock, 22, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetInf().y, m_bbox.GetInf().z ) );
-		WriteVertex( *vd, lock, 23, positionE, unify::V3< float >( m_bbox.GetSup().x, m_bbox.GetSup().y, m_bbox.GetInf().z ) );
+		WriteVertex( *vd, lock, 22, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.inf.y, m_bbox.inf.z ) );
+		WriteVertex( *vd, lock, 23, positionE, unify::V3< float >( m_bbox.sup.x, m_bbox.sup.y, m_bbox.inf.z ) );
 
 		// Set all colors the same...
 		for( size_t i = 0; i < vertexCount; ++i )
