@@ -11,7 +11,7 @@
       <AdditionalLibraryDirectories>..\..\lib\$(DefaultPlatformToolset)_$(Configuration);..\lib\$(DefaultPlatformToolset)_$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;../MercuryEngine;../../unify;../QXML/include;../QJson/source;../ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;../../unify;../../qxml;../../QJson;../ResourceManager;../MercuryEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

@@ -92,7 +92,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;MERCURYENGINEOGL3_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;../MercuryEngine;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\unify;..\..\qjson\source;..\..\qxml;..\ResourceManager;..\MercuryEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MERCURYENGINEOGL3_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;..\unify;..\QJson\source;..\qxml\include;..\ResourceManager;../MercuryEngine;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\unify;..\..\qjson\source;..\..\qxml;..\ResourceManager;..\MercuryEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

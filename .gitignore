@@ -81,3 +81,4 @@ log.txt
 ## External GIT sources
 /Unify
 external
+/ASELoader/Debug/*.idb
