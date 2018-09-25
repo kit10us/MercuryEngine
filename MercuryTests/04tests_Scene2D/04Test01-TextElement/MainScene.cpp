@@ -181,8 +181,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	static int layer = 0;
 	static float time = 0.0f;
 	const float cycleAt = 3.0f;
-	time += params.GetDelta().GetMS();
-
+	time += params.GetDelta().GetSeconds();
 	while( time >= cycleAt )
 	{
 		time -= cycleAt;
