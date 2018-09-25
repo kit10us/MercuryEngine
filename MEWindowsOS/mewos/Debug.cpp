@@ -40,7 +40,7 @@ bool Debug::IsDebug()
 
 void Debug::SetLogFile( unify::Path logFile )
 {
-	unify::Path::Rename( logFile, m_logFile );
+	logFile.Rename( m_logFile );
 	m_logFile = logFile;
 	LogLine( "Debug", "Log file: " + m_logFile.ToString() );
 }
