@@ -38,7 +38,7 @@ void VList::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 		unify::V2< float > offset{ GetOffset() };
 		for( auto && item : m_items )
 		{
-			item->UpdateLayout( params, { parentArea.UL() + offset, unify::Size< float >{ itemWidth, itemHeight } } );
+			item.GetItem()->UpdateLayout( params, { parentArea.UL() + offset, unify::Size< float >{ itemWidth, itemHeight } } );
 			offset.y += itemHeight;
 		}
 		m_changed = false;
@@ -51,7 +51,7 @@ void VList::Update( const UpdateParams & params )
 
 	for( auto && item : m_items )
 	{
-		item->Update( params );
+		item.GetItem()->Update( params );
 	}
 }
 
@@ -62,7 +62,7 @@ void VList::Render( const render::Params & params )
 
 	for( auto && item : m_items )
 	{
-		item->Render( params );
+		item.GetItem()->Render( params );
 	}
 }
 
@@ -74,20 +74,21 @@ void VList::OnResume()
 {
 }
 
-void VList::AddItem( IElement::ptr item, std::string name )
+void VList::AddItem( IElement::ptr item, std::string name, std::string tag )
 {
-	m_items.push_back( item );
+	auto listItem = ListItem{ item, tag };
+	m_items.push_back( listItem );
 	item->SetName( name );
 	m_changed = true;
 }
 
-IElement::ptr VList::FindItem( std::string name ) const
+IElement::ptr VList::FindItem( std::string name )
 {
-	for( auto & item : m_items )
+	for (auto && item : m_items)
 	{
-		if( unify::StringIs( name, item->GetName() ) )
+		if (unify::StringIs( name, item.GetItem()->GetName() ))
 		{
-			return item;
+			return item.GetItem();
 		}
 	}
 	throw unify::Exception( "Item not found within VList!" );

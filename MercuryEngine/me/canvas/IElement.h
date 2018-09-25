@@ -5,6 +5,8 @@
 
 #include <me/render/IRenderer.h>
 #include <me/render/RenderInfo.h>
+#include <me/UpdateParams.h>
+#include <me/render/RenderParams.h>
 #include <memory>
 
 namespace me
@@ -15,6 +17,7 @@ namespace me
 		{
 		public:
 			typedef std::shared_ptr< IElement > ptr;
+			typedef std::shared_ptr< const IElement > const_ptr;
 
 			virtual void SetName( std::string name ) = 0;
 			virtual std::string GetName() const = 0;

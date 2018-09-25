@@ -29,6 +29,7 @@
     <ClInclude Include="me\canvas\IElement.h" />
     <ClInclude Include="me\canvas\Image.h" />
     <ClInclude Include="me\canvas\Layer.h" />
+    <ClInclude Include="me\canvas\ListItem.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\game\Game.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="me\canvas\Grid.cpp" />
     <ClCompile Include="me\canvas\Image.cpp" />
     <ClCompile Include="me\canvas\Layer.cpp" />
+    <ClCompile Include="me\canvas\ListItem.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />

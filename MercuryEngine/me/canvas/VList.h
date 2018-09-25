@@ -4,48 +4,12 @@
 #pragma once
 
 #include <me/canvas/Element.h>
-#include <me/render/Effect.h>
+#include <me/canvas/ListItem.h>
 
 namespace me
 {
 	namespace canvas
 	{
-		// TODO: Note sure if I want this.
-		class ListItem
-		{
-		public:
-			ListItem( IElement::ptr );
-
-			IElement::ptr GetItem();
-
-		private:
-			IElement::ptr m_item;
-		};
-
-		class SelectedCB
-		{
-		public:
-			SelectedCB( IElement::ptr item, size_t index )  
-				: m_item{ item }
-				, m_index{ index }
-			{
-			}
-
-			IElement::ptr GetItem() const
-			{
-				return m_item;
-			}
-
-			size_t GetIndex() const 
-			{
-				return m_index;
-			}
-
-		private:
-			IElement::ptr m_item;
-			size_t m_index;
-		};
-
 		/// <summary>
 		/// Create a simple menu system.
 		/// </summary>
@@ -66,16 +30,16 @@ namespace me
 
 			void OnResume();
 
-			void AddItem( IElement::ptr item, std::string name = std::string() );
+			void AddItem( IElement::ptr item, std::string name = std::string(), std::string tag = std::string() );
 
-			Element::ptr FindItem( std::string name ) const;
+			Element::ptr FindItem( std::string name );
 
 		private:
 			bool m_changed;
 			unify::RowColumn< size_t > m_rc;
 			unify::Size< float > m_size;
 			size_t m_count;
-			std::vector< IElement::ptr > m_items;
+			std::vector< ListItem > m_items;
 			size_t m_selected;
 		};
 	}

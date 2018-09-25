@@ -720,6 +720,9 @@
     <ClInclude Include="me\os\DefaultOS.h">
       <Filter>me\os</Filter>
     </ClInclude>
+    <ClInclude Include="me\canvas\ListItem.h">
+      <Filter>me\canvas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1183,6 +1186,9 @@
     </ClCompile>
     <ClCompile Include="me\os\DefaultDebug.cpp">
       <Filter>me\os</Filter>
+    </ClCompile>
+    <ClCompile Include="me\canvas\ListItem.cpp">
+      <Filter>me\canvas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
