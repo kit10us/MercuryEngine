@@ -21,8 +21,6 @@
 // Temporary...
 #include <me/scene/SceneManager.h>
 #include <me/object/component/CameraComponent.h>
-#include <me/canvas/CanvasComponent.h>
-#include <me/canvas/FPS.h>
 
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
@@ -106,20 +104,6 @@ void * Game::Feed( std::string target, void * data )
 		if ( unify::StringIs( command, "QUIT" ) )
 		{
 			Quit();
-		}
-		else if ( unify::StringIs( command, "ADDFPS" ) )
-		{
-			using namespace me;
-			using namespace scene;
-		
-			SceneManager * sceneManager = GetComponentT< scene::SceneManager >();
-			IScene* scene = sceneManager->GetCurrentScene();
-
-			canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( this ) );
-			scene->AddComponent( canvas );
-
-			Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
-			canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( this, font2 ) ) );
 		}
 	}
 	
