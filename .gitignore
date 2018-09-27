@@ -82,3 +82,5 @@ log.txt
 /Unify
 external
 /ASELoader/Debug/*.idb
+/MercuryEngineDX11/Debug/*.idb
+/MercuryEngineDX9/Debug/*.idb
