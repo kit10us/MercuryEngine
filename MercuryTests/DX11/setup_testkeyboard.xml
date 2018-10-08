@@ -1,12 +1,18 @@
 <xml>
-<include>setup_base.xml</include>
+<include>setup.xml</include>
+
+<extension source="?EXTENSIONS?/MELua.dll">
+	<startup>game_inputs.lua</startup>
+</extension>
 
 <include>dae.xml</include>
 
-<extension source="../../extensions/Debug/ASELoader.dll">
+<extension source="?EXTENSIONS?/ASELoader.dll">
 	<textureps name="texture_ambient" source="texture_ambient.xml"/>
 	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
 </extension>
+
+<extension source="?EXTENSIONS?/DXIKeyboard.dll"/>
 
 <include>meeditor.xml</include>
 <include>inputs.xml</include>

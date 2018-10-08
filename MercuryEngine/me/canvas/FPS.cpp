@@ -35,7 +35,7 @@ void FPS::Update( const UpdateParams & params )
 	size_t p = average.find( '.' );
 	average = average.substr( 0, p < 3 ? 5 : p + 2 );
 
-	std::string instant = unify::Cast< std::string >( 1.0f / params.renderInfo.GetDelta().GetMS() );
+	std::string instant = unify::Cast< std::string >( 1.0f / params.renderInfo.GetDelta().GetSeconds() );
 	p = instant.find( '.' );
 	instant = instant.substr( 0, p < 3 ? 5 : p + 2 );
 

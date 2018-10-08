@@ -1,0 +1,15 @@
+<xml>
+
+<include>setup.xml</include>
+
+<include>dae.xml</include>
+
+<extension source="?EXTENSIONS?/ASELoader.dll">
+	<textureps name="texture_ambient" source="texture_ambient.xml"/>
+	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
+</extension>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
+
+</xml>

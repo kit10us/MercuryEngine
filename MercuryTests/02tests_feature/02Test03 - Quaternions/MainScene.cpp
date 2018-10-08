@@ -61,7 +61,7 @@ void MainScene::OnStart()
 	progObject->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 
 	// From an ASE file...
-	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTexture.ASE" ) ) );
+	Geometry::ptr meshASE( GetManager< Geometry >()->Add( "swordASE", unify::Path( "ASE_SwordTextured.ASE" ) ) );
 	PrimitiveList & plASE = ((Mesh*)meshASE.get())->GetPrimitiveList();
 	{
 		auto aseObject = GetObjectAllocator()->NewObject( "sword1" );
@@ -219,7 +219,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	}
 	{
 		auto sword = FindObject( "sword13" );
-		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 1 ), unify::AngleInRadians( -params.GetDelta().GetMS() ) ) );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 1 ), unify::AngleInRadians( -params.GetDelta().GetSeconds() ) ) );
 		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
 		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
 	}
@@ -231,7 +231,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	}
 	{
 		auto sword = FindObject( "sword15" );
-		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 1 ), unify::AngleInRadians( -params.GetDelta().GetMS() ) ) );
+		sword->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 1, 0, 1 ), unify::AngleInRadians( -params.GetDelta().GetSeconds() ) ) );
 		sword->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
 		sword->GetFrame().PreMul( Quaternion( unify::V3< float >( 1, 0, 0 ), unify::AngleInDegrees( -90 ) ) );
 	}
@@ -244,6 +244,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 
 	auto camera = FindObject( "camera" );
-	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta().GetMS() * - 1.0f) ) );
+	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() * - 1.0f) ) );
 	camera->GetFrame().LookAt( V3< float >( 0, 0, 0 ) );
 }

@@ -140,7 +140,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	const float width = (float)params.renderer->GetViewport().GetSize().width;
 	const float height = (float)params.renderer->GetViewport().GetSize().height;
 
-	rotation += unify::AngleInDegrees( params.GetDelta().GetMS() * 360.0f );
+	rotation += unify::AngleInDegrees( params.GetDelta().GetSeconds() * 360.0f );
 	if( rotation.Normalize() != 0 )
 	{
 		++axisIndex;
@@ -164,7 +164,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	static int layer = 0;
 	static float time = 0.0f;
 	const float cycleAt = 3.0f;
-	time += params.GetDelta().GetMS();
+	time += params.GetDelta().GetSeconds();
 	while( time >= cycleAt )
 	{
 		time -= cycleAt;

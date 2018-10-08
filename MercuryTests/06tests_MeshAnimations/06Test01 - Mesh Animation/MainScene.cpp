@@ -209,7 +209,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	frameSet.Add( unify::MatrixIdentity(), 0 );
 	unify::FrameSetInstance frameSetInstance( &frameSet );
 	m_animation->ApplyToFrames( progress, frameSetInstance );
-	progress += params.GetDelta().GetMS();
+	progress += params.GetDelta().GetSeconds();
 	frameSetInstance.UpdateLocals();
 	
 	Source source{ frame, frameSetInstance.Local( 0 ) };

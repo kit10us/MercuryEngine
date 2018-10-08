@@ -27,7 +27,7 @@ unify::Quaternion me::frameanimation::InterpretValue< unify::Quaternion >( unify
 	// tB<--------->E
 	if( leftItr == timeline.end() )
 	{
-		mix = time.GetMS() / rightItr->Time().GetMS();
+		mix = time.GetSeconds() / rightItr->Time().GetSeconds();
 		leftValue = defaultValue;
 		rightValue = rightItr->Value();
 	}
@@ -35,7 +35,7 @@ unify::Quaternion me::frameanimation::InterpretValue< unify::Quaternion >( unify
 	// B<----t----->E
 	else
 	{
-		mix = ( time - leftItr->Time() ).GetMS() / ( rightItr->Time() - leftItr->Time() ).GetMS();
+		mix = ( time - leftItr->Time() ).GetSeconds() / ( rightItr->Time() - leftItr->Time() ).GetSeconds();
 		leftValue = leftItr->Value();
 		rightValue = rightItr->Value();
 	}

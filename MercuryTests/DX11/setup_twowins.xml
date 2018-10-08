@@ -1,0 +1,11 @@
+<xml>
+
+<include>setup.xml</include>
+
+<extension source="?EXTENSIONS?/MELua.dll">
+	<startup>twowins.lua</startup>
+</extension>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
+</xml>

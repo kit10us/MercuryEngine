@@ -14,7 +14,7 @@ int Update_GetDelta( lua_State * state )
 	ScriptEngine * se = ScriptEngine::GetInstance();
 	auto gameInstance = se->GetGame();
 
-	lua_pushnumber( state, gameInstance->GetRenderInfo().GetDelta().GetMS() );
+	lua_pushnumber( state, gameInstance->GetRenderInfo().GetDelta().GetSeconds() );
 
 	return 1;
 }

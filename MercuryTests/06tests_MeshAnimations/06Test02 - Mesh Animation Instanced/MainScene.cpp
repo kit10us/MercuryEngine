@@ -135,7 +135,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	const float width = (float)params.renderer->GetViewport().GetSize().width;
 	const float height = (float)params.renderer->GetViewport().GetSize().height;
 
-	rotation += unify::AngleInDegrees( params.GetDelta().GetMS() * 90.0f );
+	rotation += unify::AngleInDegrees( params.GetDelta().GetSeconds() * 90.0f );
 
 	unify::V3< float > eye( 0.0f, 1.0f, -50.0f );
 	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
@@ -201,7 +201,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	m_animation->ApplyToFrames( progress, frameSetInstance2 );
 	frameSetInstance1.UpdateLocals();
 	frameSetInstance2.UpdateLocals();
-	progress += params.GetDelta().GetMS();
+	progress += params.GetDelta().GetSeconds();
 
 
 	Source sorces_source[] = {

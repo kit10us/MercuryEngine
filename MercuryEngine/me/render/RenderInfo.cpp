@@ -92,7 +92,7 @@ unify::TimeDelta RenderInfo::GetAverageDelta() const
 
 float RenderInfo::GetFPS() const
 {
-	return 1.0f / GetAverageDelta().GetMS();
+	return 1.0f / GetAverageDelta().GetSeconds();
 }
 
 void RenderInfo::SetViewMatrix( const unify::Matrix & matrix )

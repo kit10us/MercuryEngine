@@ -86,3 +86,4 @@ external
 /MercuryEngineDX9/Debug/*.idb
 /Adventure/DX11/log_DX11_Debug.txt
 /Adventure/DX11/log_DX11_Release.txt
+/MercuryTests/DX11/log_Debug_DX11.txt

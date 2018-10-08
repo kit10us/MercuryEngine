@@ -88,6 +88,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	static float x = 0.0f;
 	auto object = GetObjectAllocator()->FindObject( "object" );
 	object->GetFrame().SetPosition( unify::V3< float >( x < 10.0f ? (-5.0f + x) : (15.0f - x) , 0, 0 ) );
-	x += params.GetDelta().GetMS();
+	x += params.GetDelta().GetSeconds();
 	if( x >= 20.0f ) x = 0.0f;
 }

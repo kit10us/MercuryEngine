@@ -1,11 +1,12 @@
 <xml>
-<include>setup_base.xml</include>
+
+<include>setup.xml</include>
 <logfile>lua_sendcommand_log.txt</logfile>
 
-<extension source="../../extensions/Debug/MELua.dll">
+<extension source="?EXTENSIONS?/MELua.dll">
 	<auto>lua_sendcommand</auto>
 </extension>
-<extension source="../../extensions/Debug/DXIKeyboard.dll"/>
+<extension source="?EXTENSIONS?/DXIKeyboard.dll"/>
 
 <include>meeditor.xml</include>
 <include>inputs.xml</include>
