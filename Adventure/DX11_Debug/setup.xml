@@ -1,16 +1,13 @@
 <xml>
-<title>Adventure DX11 (Debug)</title>
-<renderer source="../../extensions/Debug/MercuryEngineDX11.dll">
+<define name="RENDERER">DX11</define>
+
+<assets>../assets_common/</assets>
+<include>setup_common.xml</include>
+
+<renderer source="../../extensions/?TARGET?/MercuryEngine?RENDERER?.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
 <failuresAsCritial>true</failuresAsCritial>
-<logfile>log.txt</logfile>
-<assets>../DX11_common/</assets>
-<assets>../DX11_common/shaders/</assets>
-<assets>../assets_common/</assets>
-<assets>../assets_common/models/</assets>
-<assets>../assets_common/images/</assets>
-<assets>../assets_common/scripts/</assets>
 
 <extension source="../../extensions/Debug/MELua.dll">
 	<auto>../assets_common/scripts/auto/</auto>

@@ -1,0 +1,13 @@
+<xml>
+
+<title>Adventure ?RENDERER? (?TARGET?)</title>
+
+<logfile>log.txt</logfile>
+
+<assets>../?RENDERER?_common/</assets>
+<assets>../?RENDERER?_common/shaders/</assets>
+<assets>../assets_common/models/</assets>
+<assets>../assets_common/images/</assets>
+<assets>../assets_common/scripts/</assets>
+
+</xml>

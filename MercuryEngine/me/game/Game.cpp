@@ -1,6 +1,11 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
+#include <chrono>
+#include <ctime>
+#include <functional>
+#include <map>
+
 #include <me/os/DefaultOS.h>
 #include <me/game/Game.h>
 #include <me/game/component/GC_ActionFactory.h>
@@ -13,10 +18,6 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/GeometryFactory.h>
 #include <sg/ShapeFactory.h>
-
-#include <chrono>
-#include <ctime>
-#include <functional>
 
 // Temporary...
 #include <me/scene/SceneManager.h>
@@ -114,6 +115,24 @@ void Game::Initialize( os::OSParameters osParameters )
 {
 	Debug()->LogLine( "Game::Initialize", "Initializing" );
 
+	std::map< std::string, std::string > defines;
+#ifdef _DEBUG
+	defines[ "TARGET" ] = "Debug";
+#else
+	defines[ "TARGET" ] = "Release";
+#endif
+	defines[ "BOB" ] = "tim";
+	
+	auto ReplaceDefines = [&]( std::string in )->std::string
+	{
+		std::string temp = in;
+		for( auto itr = defines.begin(); itr != defines.end(); ++itr )
+		{
+			temp = unify::StringReplace( temp, "?" + itr->first + "?", itr->second );
+		}
+		return temp;
+	};
+
 	using namespace std::chrono;
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 
@@ -189,16 +208,20 @@ void Game::Initialize( os::OSParameters osParameters )
 				{
 					if ( node.IsTagName( "include" ) )
 					{
-						xmlLoader( unify::Path( node.GetText() ) );
+						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+					}
+					else if( node.IsTagName( "define" ) )
+					{
+						defines[ ReplaceDefines( node.GetAttribute< std::string >( "name" ) ) ] = ReplaceDefines( node.GetText() );
 					}
 					else if( node.IsTagName( "renderer" ) )
 					{
-						unify::Path path( node.GetAttribute< std::string >( "source" ) );
+						unify::Path path( ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) );
 						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
 					else if( node.IsTagName( "assets" ) )
 					{
-						GetOS()->GetAssetPaths().AddSource( unify::Path( node.GetText() ) );
+						GetOS()->GetAssetPaths().AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
 					}
 
 					// "inputs" handle further on
@@ -240,19 +263,19 @@ void Game::Initialize( os::OSParameters osParameters )
 				{			
 					if ( node.IsTagName( "include" ) )
 					{
-						xmlLoader( unify::Path( node.GetText() ) );
+						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
 					}
 					else if ( node.IsTagName( "title" ) )
 					{
-						m_title = node.GetText();
+						m_title = ReplaceDefines( node.GetText() );
 					}
 					else if( node.IsTagName( "logfile" ) )
 					{
-						Debug()->SetLogFile( unify::Path( node.GetText() ) );
+						Debug()->SetLogFile( unify::Path( ReplaceDefines( node.GetText() ) ) );
 					}
 					else if ( node.IsTagName( "failuresAsCritical" ) )
 					{
-						Debug()->SetFailureAsCritical( unify::Cast< bool >( node.GetText() ) );
+						Debug()->SetFailureAsCritical( unify::Cast< bool >( ReplaceDefines( node.GetText() ) ) );
 					}
 
 					// "inputs" handle further on
@@ -326,11 +349,11 @@ void Game::Initialize( os::OSParameters osParameters )
 				{
 					if ( node.IsTagName( "include" ) )
 					{
-						xmlLoader( unify::Path( node.GetText() ) );
+						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
 					}
 					else if( node.IsTagName( "extension" ) )
 					{
-						unify::Path path( node.GetAttribute< std::string >( "source" ) );
+						unify::Path path( ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) );
 						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
 					}
 					else if (node.IsTagName("inputs"))

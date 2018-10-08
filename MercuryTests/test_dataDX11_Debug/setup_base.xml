@@ -1,6 +1,7 @@
 <xml>
-<title>DX11 Test (Debug)</title>
-<renderer source="../../extensions/Debug/MercuryEngineDX11.dll">
+
+<title>DX11 Test ($TARGET$)</title>
+<renderer source="../../extensions/?TARGET?/MercuryEngineDX11.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
 <failuresAsCritical>true</failuresAsCritical>

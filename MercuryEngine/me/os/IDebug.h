@@ -27,7 +27,7 @@ namespace me
 			/// <summary>
 			/// Enabled or disable debug only features. This is helpful when debug only features help with working with release builds. Or to improve debug time, or isolate code for debugging.
 			/// Debug features begin with Debug.
-			///
+			/// </summary>
 			virtual void SetDebug( bool debug ) = 0;
 
 			/// <summary>
