@@ -13,9 +13,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A01E2EE-39F1-488F-A6EC-0C0C60E06346}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DXIGamePad</RootNamespace>
+    <RootNamespace>MEGamepad</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>DXIGamepad</ProjectName>
+    <ProjectName>MEGamepad</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -89,12 +89,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="DXIGamepad.cpp" />
-    <ClCompile Include="dxigp\Gamepad.cpp" />
+    <ClCompile Include="MEGamepad.cpp" />
+    <ClCompile Include="megp\Gamepad.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXIGamepad.h" />
-    <ClInclude Include="dxigp\Gamepad.h" />
+    <ClInclude Include="MEGamepad.h" />
+    <ClInclude Include="megp\Gamepad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,7 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DXIGamepad.cpp">
+    <ClCompile Include="MEGamepad.cpp">
       <Filter>dll</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXIGamepad.h">
+    <ClInclude Include="MEGamepad.h">
       <Filter>dll</Filter>
     </ClInclude>
     <ClInclude Include="dxigp\Gamepad.h">

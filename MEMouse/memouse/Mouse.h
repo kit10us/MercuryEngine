@@ -5,16 +5,15 @@
 
 #include <me/input/InputDevice.h>
 #include <me/game/IGame.h>
-#include <Xinput.h>
 #include <map>
 
-namespace dxigp
+namespace memouse
 {
-	class Gamepad : public me::input::InputDevice
+	class Mouse : public me::input::InputDevice
 	{
 	public:
-		Gamepad( me::game::IGame * gameInstance );
-		virtual ~Gamepad();
+		Mouse( me::game::IGame * gameInstance );
+		virtual ~Mouse();
 
 		std::string GetName() const;
 
@@ -38,8 +37,40 @@ namespace dxigp
 
 	private:
 		me::game::IGame * m_game;
+
+		struct Source
+		{
+			Source()
+				: LeftButton( false )
+				, LeftButtonPressed( false )
+				, RightButton( false )
+				, RightButtonPressed( false )
+				, MiddleButton( false )
+				, MiddleButtonPressed( false )
+				, PositionX( -1.0f )
+				, PositionY( -1.0f )
+				, ChangeX( 0.0f )
+				, ChangeY( 0.0f )
+				, MouseWheel( 0.0f )
+			{
+			}
+
+			bool LeftButton;
+			bool LeftButtonPressed;
+			bool RightButton;
+			bool RightButtonPressed;
+			bool MiddleButton;
+			bool MiddleButtonPressed;
+
+			float PositionX;
+			float ChangeX;
+			float PositionY;
+			float ChangeY;
+			float MouseWheel;
+		};
+
 		std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_nameToIndex;
-		std::map< DWORD, XINPUT_STATE > m_states;
-		std::map< DWORD, XINPUT_STATE > m_prevStates;
+		std::vector< Source > m_subSources;
+		std::vector< Source > m_subSourcesUpdated;
 	};
 }

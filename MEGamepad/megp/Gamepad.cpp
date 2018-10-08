@@ -3,11 +3,11 @@
 
 #include <Windows.h>
 
-#include <dxigp/Gamepad.h>
+#include <megp/Gamepad.h>
 
 #pragma comment( lib, "Xinput9_1_0.lib" )
 
-using namespace dxigp;
+using namespace megp;
 using namespace me;
 using namespace input;
 

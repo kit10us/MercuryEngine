@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{29E6506F-BA76-4C2C-9272-1E882C553E46}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>DXIKeyboard</RootNamespace>
+    <RootNamespace>MEKeyboard</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -88,12 +88,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="DXIKeyboard.cpp" />
-    <ClCompile Include="dxikeyboard\Keyboard.cpp" />
+    <ClCompile Include="MEKeyboard.cpp" />
+    <ClCompile Include="mekeyboard\Keyboard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXIKeyboard.h" />
-    <ClInclude Include="dxikeyboard\Keyboard.h" />
+    <ClInclude Include="MEKeyboard.h" />
+    <ClInclude Include="mekeyboard\Keyboard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

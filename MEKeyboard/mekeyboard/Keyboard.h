@@ -11,7 +11,7 @@
 #include <atlbase.h>
 #include <string>
 
-namespace dxikeyboard
+namespace mekeyboard
 {
 	enum KeyStatus
 	{

@@ -1,19 +1,22 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include "DXIKeyboard.h"
-#include <dxikeyboard/Keyboard.h>
+#include <Windows.h>
+
+#include "MEGamepad.h"
+#include <megp/Gamepad.h>
 #include <me/game/IGame.h>
 
-void DeleterKeyboard( dxikeyboard::Keyboard * keyboard )
+
+void DeleterGamepad( megp::Gamepad * gamepad )
 {
-	delete keyboard;
+	delete gamepad;
 }
 
 extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element );
 __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
-	gameInstance->GetInputManager()->AddInputDevice( me::input::IInputDevice::ptr( new dxikeyboard::Keyboard( gameInstance ), DeleterKeyboard ) );
+	gameInstance->GetInputManager()->AddInputDevice( me::input::IInputDevice::ptr( new megp::Gamepad( gameInstance ), DeleterGamepad ) );
 
 	return true;
 }

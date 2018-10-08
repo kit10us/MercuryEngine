@@ -1,11 +1,11 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include "DXIMouse.h"
-#include <dximouse/Mouse.h>
+#include "MEMouse.h"
+#include <memouse/Mouse.h>
 #include <me/game/Game.h>
 
-void DeleterMouse( dximouse::Mouse * mouse )
+void DeleterMouse( memouse::Mouse * mouse )
 {
 	delete mouse;
 }
@@ -13,7 +13,7 @@ void DeleterMouse( dximouse::Mouse * mouse )
 extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element );
 __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
-	gameInstance->GetInputManager()->AddInputDevice( me::input::IInputDevice::ptr( new dximouse::Mouse( gameInstance ), DeleterMouse ) );
+	gameInstance->GetInputManager()->AddInputDevice( me::input::IInputDevice::ptr( new memouse::Mouse( gameInstance ), DeleterMouse ) );
 
 	return true;
 }

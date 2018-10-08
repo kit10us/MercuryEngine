@@ -1,10 +1,10 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <dximouse/Mouse.h>
+#include <memouse/Mouse.h>
 #include <limits>
 
-using namespace dximouse;
+using namespace memouse;
 using namespace me;
 using namespace input;
 

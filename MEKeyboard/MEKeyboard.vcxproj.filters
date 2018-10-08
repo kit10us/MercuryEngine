@@ -4,7 +4,7 @@
     <Filter Include="dll">
       <UniqueIdentifier>{967a87bb-1265-4f8a-9368-33568ee2031c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dxikeyboard">
+    <Filter Include="mekeyboard">
       <UniqueIdentifier>{b3d58e75-88da-4297-b7f7-91035d438f0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -15,16 +15,16 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>dll</Filter>
     </ClCompile>
-    <ClCompile Include="dxikeyboard\Keyboard.cpp">
-      <Filter>dxikeyboard</Filter>
+    <ClCompile Include="mekeyboard\Keyboard.cpp">
+      <Filter>mekeyboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DXIKeyboard.h">
+    <ClInclude Include="MEKeyboard.h">
       <Filter>dll</Filter>
     </ClInclude>
-    <ClInclude Include="dxikeyboard\Keyboard.h">
-      <Filter>dxikeyboard</Filter>
+    <ClInclude Include="mekeyboard\Keyboard.h">
+      <Filter>mekeyboard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

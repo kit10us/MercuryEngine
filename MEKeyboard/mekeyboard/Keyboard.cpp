@@ -1,11 +1,11 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <dxikeyboard/Keyboard.h>
+#include <mekeyboard/Keyboard.h>
 #include <me/exception/DeviceFailure.h>
 #include <dinput.h>
 
-using namespace dxikeyboard;
+using namespace mekeyboard;
 using namespace me;
 using namespace input;
 
