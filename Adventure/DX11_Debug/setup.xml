@@ -6,7 +6,6 @@
 <failuresAsCritial>true</failuresAsCritial>
 <logfile>log.txt</logfile>
 <assets>../DX11_common/</assets>
-<assets>../DX11_common/</assets>
 <assets>../DX11_common/shaders/</assets>
 <assets>../assets_common/</assets>
 <assets>../assets_common/models/</assets>
@@ -20,8 +19,8 @@
 <include>dae.xml</include>
 
 <extension source="../../extensions/Debug/ASELoader.dll">
-	<texturedps name="texture_ambient" source="texture_ambient.xml"/>
-	<texturedvs name="texture_ambient" source="texture_ambient.xml"/>
+	<textureps name="texture_ambient" source="texture_ambient.xml"/>
+	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
 </extension>
 
 <extension source="../../extensions/Debug/DXIKeyboard.dll"/>

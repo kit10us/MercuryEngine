@@ -107,7 +107,7 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameBase, const qxml::Ele
 			const auto node = element->FindFirstElement( shaderElementName );
 			if ( ! node )
 			{
-				throw unify::Exception( "Cannot find \"" + shaderElementName + "\" node in \"" + element->GetDocument()->GetPath().ToString() + "\"." );
+				gameInstance->Debug()->ReportError( me::ErrorLevel::Critical, "MEDae", "Cannot find \"" + shaderElementName + "\" node in \"" + element->GetDocument()->GetPath().ToString() + "\"." );
 			}
 
 			std::string name = node->GetAttributeElse< std::string >( "name", std::string() );

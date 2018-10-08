@@ -37,6 +37,10 @@ ScriptEngine::ScriptEngine( me::os::IOS * os )
 
 	// Set path...
 	std::string path = unify::StringReplace( os->GetAssetPaths().GetPaths( os->GetRunPath() ), ";", "?.lua;" );
+	if ( path != "" )
+	{
+		path += "?.lua";
+	}
 
     lua_getglobal( m_state, "package" );
     lua_getfield( m_state, -1, "path" ); // get field "path" from table at top of stack (-1)

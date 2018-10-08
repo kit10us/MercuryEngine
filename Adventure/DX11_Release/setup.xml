@@ -18,8 +18,8 @@
 <include>dae.xml</include>
 
 <extension source="../../extensions/Release/ASELoader.dll">
-	<texturedps name="texture_ambient" source="texture_ambient.xml"/>
-	<texturedvs name="texture_ambient" source="texture_ambient.xml"/>
+	<textureps name="texture_ambient" source="texture_ambient.xml"/>
+	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
 </extension>
 
 <extension source="../../extensions/Release/DXIKeyboard.dll"/>
