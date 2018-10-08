@@ -121,7 +121,6 @@ void Game::Initialize( os::OSParameters osParameters )
 #else
 	defines[ "TARGET" ] = "Release";
 #endif
-	defines[ "BOB" ] = "tim";
 	
 	auto ReplaceDefines = [&]( std::string in )->std::string
 	{

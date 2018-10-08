@@ -84,3 +84,5 @@ external
 /ASELoader/Debug/*.idb
 /MercuryEngineDX11/Debug/*.idb
 /MercuryEngineDX9/Debug/*.idb
+/Adventure/DX11/log_DX11_Debug.txt
+/Adventure/DX11/log_DX11_Release.txt

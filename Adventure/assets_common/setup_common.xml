@@ -1,13 +1,44 @@
 <xml>
 
+<define name="EXTENSIONS">../../extensions/?TARGET?</define>
+
 <title>Adventure ?RENDERER? (?TARGET?)</title>
 
-<logfile>log.txt</logfile>
+<logfile>log_?RENDERER?_?TARGET?.txt</logfile>
 
-<assets>../?RENDERER?_common/</assets>
-<assets>../?RENDERER?_common/shaders/</assets>
+<assets>../?RENDERER?/</assets>
+<assets>../?RENDERER?/shaders/</assets>
 <assets>../assets_common/models/</assets>
 <assets>../assets_common/images/</assets>
 <assets>../assets_common/scripts/</assets>
+
+<failuresAsCritial>true</failuresAsCritial>
+
+
+<renderer source="?EXTENSIONS?/MercuryEngine?RENDERER?.dll">
+	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
+</renderer>
+
+<extension source="?EXTENSIONS?/MELua.dll">
+	<auto>../assets_common/scripts/auto/</auto>
+</extension>
+
+<include>dae.xml</include>
+
+<extension source="?EXTENSIONS?/ASELoader.dll">
+	<textureps name="texture_ambient" source="texture_ambient.xml"/>
+	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
+</extension>
+
+<extension source="?EXTENSIONS?/DXIKeyboard.dll"/>
+
+<extension source="?EXTENSIONS?/DXIGamepad.dll"/>
+
+<extension source="?EXTENSIONS?/MEPhysics.dll"/>
+
+<extension source="?EXTENSIONS?/MEPhysicsLuaExt.dll"/>
+
+<include>meeditor.xml</include>
+<include>inputs.xml</include>
 
 </xml>
