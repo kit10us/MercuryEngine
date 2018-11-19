@@ -19,10 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DB681FB9-B57F-4E30-AF4E-F9FCD4C70C53}</ProjectGuid>
+    <ProjectGuid>{B1E784AC-096D-4285-8278-B4CF77334EA3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My04Test02FPS</RootNamespace>
+    <RootNamespace>My04Test05GridsAndLists</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>04Test06-GridsAndLists</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -148,11 +149,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MainScene.cpp" />
-    <ClCompile Include="MyGame.cpp" />
+    <ClInclude Include="MainScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainScene.h" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="MyGame.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

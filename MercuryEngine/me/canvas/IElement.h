@@ -13,6 +13,9 @@ namespace me
 {
 	namespace canvas
 	{
+		/// <summary>
+		/// The interface for all other canvas elements.
+		/// </summary>
 		class IElement
 		{
 		public:

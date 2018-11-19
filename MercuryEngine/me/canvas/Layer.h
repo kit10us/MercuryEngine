@@ -19,7 +19,10 @@ namespace me
 			typedef std::shared_ptr< canvas::Layer > ptr;
 
 			Layer( game::IGame * gameInstance, unify::V2< float > position = {0, 0}, unify::Size< float > size = {100,100}, Anchor anchor = Anchor::StretchFull );
-
+			
+			/// <summary>
+			/// Add an unnamed element.
+			/// </summary>			
 			void AddElement( IElement::ptr element );
 
 			/// <summary>
@@ -27,7 +30,36 @@ namespace me
 			/// </summary>
 			void AddElement( IElement::ptr element, std::string name );
 
+			/// <summary>
+			/// Remove an element.
+			/// </summary>
+			void RemoveElement( IElement::ptr element );
+
+			/// <summary>
+			/// Remove an element by name.
+			/// </summary>
+			void RemoveElement( std::string name );
+
+			/// <summary>
+			/// Find an element by name.
+			/// </summary>
 			IElement::ptr FindElement( std::string name );
+
+			/// <summary>
+			/// Get the name of an element, if it is named. Returns an empty string if not found.
+			/// </summary>
+			std::string ElementName( IElement::const_ptr element ) const;
+
+			/// <summary>
+			/// Bring an element to the front.
+			/// </summary>
+			void BringToFront( IElement::ptr element );
+
+			/// <summary>
+			/// Send an element to the back.
+			/// </summary>
+			void SendToBack( IElement::ptr element );
+			
 
 			void UpdateLayout( UpdateParams params, unify::Rect< float > area );
 			void Update( const UpdateParams & params ) override;
