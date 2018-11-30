@@ -13,6 +13,7 @@ using namespace component;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
+		// Name, Index into value.
 		{ "luaName", 0 },
 		{ "path", 1 },
 	};
@@ -29,99 +30,83 @@ char* GameComponent::Name()
 	return "LuaGameScript";
 }
 
-GameComponent::GameComponent( lua_State * state, std::string luaName, unify::Path path )
+GameComponent::GameComponent( Script * script )
 	: me::game::GameComponent( Name() )
-	, m_state( state )
-	, m_luaName( luaName )
-	, m_path( path )
+	, m_script{ script }
 {
 }
 
 GameComponent::~GameComponent()
 {
-	m_state = 0;
 }
 
 void GameComponent::CallMember( std::string function )
 {
 	// Get our _ENV...
-	if ( !lua_getfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() ) )						   
+	if ( ! m_script->GetField( LUA_REGISTRYINDEX, m_script->GetName() ) )						   
 	{
-		Error( m_state, "GameComponent not found! (" + m_luaName + ")" );
+		Error( m_script->GetState(), "GameComponent not found! (" + m_script->GetName() + ")" );
 	}
 
-	int r2 = lua_getfield( m_state, -1, function.c_str() );
+	int r2 = m_script->GetField( -1, function );
 
 	if ( r2 != 0 )
 	{
 		try
 		{
-			if ( lua_pcall( m_state, 0, 0, 0 ) != 0 )
+			if (m_script->PCall( 0, 0, 0 ) != 0 )
 			{
-				std::string error = lua_tostring( m_state, -1 );
-				Error( m_state, "Failed in script \"" + m_path.ToString() +"\" in function " + function + ": " + error );
+				std::string error = m_script->ToString( -1 );
+				Error( m_script->GetState(), "Failed in script \"" + m_script->GetPath().ToString() +"\" in function " + function + ": " + error );
 			}
 		}
 		catch ( std::exception ex )
 		{
-			Error( m_state, "Exception in script \"" + m_path.ToString() +"\" in function " + function + ":\n " + ex.what() );
+			Error( m_script->GetState(), "Exception in script \"" + m_script->GetPath().ToString() +"\" in function " + function + ":\n " + ex.what() );
 		}
 	}
 	else
 	{
-		lua_pop( m_state, 1 );
+		m_script->Pop( 1 );
 	}
 
 	// Pop our _ENV.
-	lua_pop( m_state, 1 );
+	m_script->Pop( 1 );
 }
 
 void GameComponent::OnAttach( me::game::IGame * gameInstance )
 {
 	me::game::GameComponent::OnAttach( gameInstance );
 
-	// Setup the script...	
-	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );
-	if ( result == LUA_ERRSYNTAX )
-	{
-		Error( m_state, luaL_checkstring( m_state, -1 ) );
-	}
-	else if ( result == LUA_ERRFILE )
-	{
-		Error( m_state, "Failure trying to read script \"" + m_path.ToString() + "\"!" );
-	}
-	else if ( result != LUA_OK )
-	{
-		Error( m_state, "Failure in script!" );
-	}
+	m_script->Reload();
 
 	// Create table for modules _ENV table.
-	lua_newtable( m_state );
+	m_script->NewTable();
 
 	// Add member variables.
-	lua_pushstring( m_state, m_luaName.c_str() );
-	lua_setfield( m_state, -2, "_name" );
+	m_script->PushString( m_script->GetName() );
+	m_script->SetField( -2, "_name" );
 
 	// Create new metatable for __index to be _G (so missed functions, non-member functions, look in _G).
-	lua_newtable( m_state );
-	lua_getglobal( m_state, "_G" );
-	lua_setfield( m_state, -2, "__index" );
-	lua_setmetatable( m_state, -2 ); // Set global as the metatable
+	m_script->NewTable();
+	m_script->GetGlobal( "_G" );
+	m_script->SetField( -2, "__index" );
+	m_script->SetMetatable( -2 ); // Set global as the metatable
 
 	// Push to registery with a unique name.
-	lua_setfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() );
+	m_script->SetField( LUA_REGISTRYINDEX, m_script->GetName() );
 
 	// Retrieve registry.
-	int i = lua_getfield( m_state, LUA_REGISTRYINDEX, m_luaName.c_str() );
+	int i = m_script->GetField( LUA_REGISTRYINDEX, m_script->GetName() );
 
 	// Set the upvalue (_ENV)
-	const char * uv = lua_setupvalue( m_state, -2, 1 );
+	std::string uv = m_script->SetUpValue( -2, 1 );
 
-	result = lua_pcall( m_state, 0, LUA_MULTRET, 0 );
+	int result = m_script->PCall( 0, LUA_MULTRET, 0 );
 	if ( result != LUA_OK )
 	{
-		std::string error = lua_tostring( m_state, -1 );
-		Error( m_state, "Failed with script initial call: " + error );
+		std::string error = m_script->ToString( -1 );
+		Error( m_script->GetState(), "Failed with script initial call: " + error );
 	}
 
 	CallMember( "OnInit" );
@@ -231,10 +216,10 @@ std::string GameComponent::GetValue( int index ) const
 	switch( localIndex )
 	{
 	case 0:
-		return m_luaName;
+		return m_script->GetName();
 
 	case 1:
-		return m_path.ToString();
+		return m_script->GetPath().ToString();
 
 	default:
 		return std::string();

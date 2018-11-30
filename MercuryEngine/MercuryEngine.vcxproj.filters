@@ -85,6 +85,9 @@
     <Filter Include="me\os">
       <UniqueIdentifier>{c2b0c7fe-1452-4cfc-91e6-fa8a2c6ea073}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\script">
+      <UniqueIdentifier>{cd89aa73-1bd5-48bf-ad7a-9596c2625234}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -723,6 +726,12 @@
     <ClInclude Include="me\canvas\ListItem.h">
       <Filter>me\canvas</Filter>
     </ClInclude>
+    <ClInclude Include="me\script\IScript.h">
+      <Filter>me\script</Filter>
+    </ClInclude>
+    <ClInclude Include="me\factory\ScriptFactory.h">
+      <Filter>me\factory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1189,6 +1198,12 @@
     </ClCompile>
     <ClCompile Include="me\canvas\ListItem.cpp">
       <Filter>me\canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="me\factory\ScriptFactory.cpp">
+      <Filter>me\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="me\script\IScript.cpp">
+      <Filter>me\script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

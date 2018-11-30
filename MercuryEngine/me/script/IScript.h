@@ -1,0 +1,24 @@
+// Copyright (c) 2002 - 2018, Evil Quail LLC
+// All Rights Reserved
+
+#pragma once
+
+#include <rm/IResource.h>
+#include <unify/Path.h>
+#include <memory>
+
+namespace me
+{
+	namespace script
+	{
+		class IScript : public rm::IResource
+		{
+		public:
+			typedef std::shared_ptr< IScript > ptr;
+
+			IScript( std::string name );
+
+			virtual ~IScript();
+		};
+	}
+}

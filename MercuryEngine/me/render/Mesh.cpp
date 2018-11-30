@@ -13,7 +13,7 @@ Mesh::Mesh( IRenderer * renderer )
 {
 }
 
-Mesh::Mesh( unify::Path source, IRenderer * renderer )
+Mesh::Mesh( std::string source, IRenderer * renderer )
 	: m_source{ source }
 	, m_primitiveList{ renderer }
 	, m_renderMesh{ true }
@@ -140,7 +140,7 @@ void Mesh::Render( const render::Params & params, GeometryInstanceData * instanc
 	}
 }
 
-unify::Path Mesh::GetSource() const
+std::string Mesh::GetSource() const
 {
 	return m_source;
 }

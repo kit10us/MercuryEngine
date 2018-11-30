@@ -9,12 +9,14 @@
 #include <me/render/Display.h>
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
+#include <me/script/IScript.h>
 
 typedef std::shared_ptr< rm::ISourceFactory< me::render::ITexture > > TextureFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::Effect > > EffectFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::IPixelShader > > PixelShaderFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::IVertexShader > > VertexShaderFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::Geometry > > GeometryFactoryPtr;
+typedef std::shared_ptr< rm::ISourceFactory< me::script::IScript > > ScriptFactoryPtr;
 																	   
 namespace me
 {
@@ -73,6 +75,7 @@ namespace me
 			template<> rm::ResourceManagerSimple< render::IPixelShader > * GetManager();
 			template<> rm::ResourceManagerSimple< render::IVertexShader > * GetManager();
 			template<> rm::ResourceManagerSimple< render::Geometry > * GetManager();
+			template<> rm::ResourceManagerSimple< script::IScript > * GetManager();
 
 			rm::ResourceHub & GetResourceHub() override;
 			const rm::ResourceHub & GetResourceHub() const override;

@@ -17,7 +17,7 @@ GeometrySourceFactory::GeometrySourceFactory( me::game::Game * renderer, util::I
 me::render::Geometry::ptr GeometrySourceFactory::Produce( unify::Path path, void * data )
 {
 	dae::Document doc( m_game, path, m_effectSolver.get() );
-	me::render::Mesh * mesh = new me::render::Mesh( m_game->GetOS()->GetRenderer(0) );
+	me::render::Mesh * mesh = new me::render::Mesh( "file: " + path.ToString(), m_game->GetOS()->GetRenderer(0) );
 	const dae::VisualScene & visualScene = *dynamic_cast< const dae::VisualScene* >(doc.Find( doc.GetScene().GetInstanceVisualScene()->GetURL() ));
 	visualScene.Build( *mesh );
 	mesh->ComputeBounds();

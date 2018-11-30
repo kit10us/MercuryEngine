@@ -45,7 +45,7 @@ namespace me
 			unify::BBox< float > & GetBBox();
 			const unify::BBox< float > & GetBBox() const;
 
-			virtual unify::Path GetSource() const = 0;
+			virtual std::string GetSource() const = 0;
 
 			virtual bool IsTrans() const = 0;
 		protected:

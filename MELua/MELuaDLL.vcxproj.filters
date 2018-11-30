@@ -159,6 +159,9 @@
     <ClInclude Include="melua\exports\ExportAction.h">
       <Filter>melua\exports</Filter>
     </ClInclude>
+    <ClInclude Include="melua\Script.h">
+      <Filter>melua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="melua\exports\ExportCameraComponent.cpp">
       <Filter>melua\exports</Filter>
+    </ClCompile>
+    <ClCompile Include="melua\Script.cpp">
+      <Filter>melua</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

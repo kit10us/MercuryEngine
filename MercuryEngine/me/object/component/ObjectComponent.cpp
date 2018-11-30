@@ -10,6 +10,7 @@ using namespace component;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
+		// Name, Index into value.
 		{ "typename", 0 },
 		{ "alias", 1 },
 		{ "enabled", 2 },

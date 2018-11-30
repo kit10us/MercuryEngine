@@ -102,9 +102,9 @@ void ResourceBrowser::UpdateResourceList()
 		{
 			auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Geometry >*>(manager);
 			auto geometry = geometryManager->Get( i ).get();
-			if ( !geometry->GetSource().Empty() )
+			if ( !geometry->GetSource().empty() )
 			{
-				text += "  (" + geometry->GetSource().ToString() + ")";
+				text += "  (" + geometry->GetSource() + ")";
 			}
 		}
 
@@ -168,9 +168,9 @@ void ResourceBrowser::OpenResource()
 	{
 		auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Geometry >*>(manager);
 		auto geometry = geometryManager->Get( i ).get();
-		if ( !geometry->GetSource().Empty() )
+		if ( !geometry->GetSource().empty() && unify::BeginsWith( geometry->GetSource(), "file:" ) )
 		{
-			source = geometry->GetSource();
+			source = unify::Path( unify::StringMinusLeft( geometry->GetSource(), 5 ) );
 		}
 	}
 

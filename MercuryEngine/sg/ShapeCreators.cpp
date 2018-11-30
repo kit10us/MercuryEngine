@@ -21,7 +21,7 @@ const std::string DefaultBufferUsage = "Default";
 
 std::shared_ptr< Mesh > sg::CreateShape( IRenderer * renderer, unify::Parameters & parameters )
 {
-	std::shared_ptr< Mesh > mesh( new Mesh( renderer ) );
+	std::shared_ptr< Mesh > mesh( new Mesh( "Shape::" + Shape::ToString( parameters.Get< Shape::TYPE >( "type" ) ), renderer ) );
 	CreateShape( renderer, mesh->GetPrimitiveList(), parameters );
 	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 	return mesh;

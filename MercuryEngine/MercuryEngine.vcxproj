@@ -32,6 +32,7 @@
     <ClInclude Include="me\canvas\ListItem.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
+    <ClInclude Include="me\factory\ScriptFactory.h" />
     <ClInclude Include="me\game\Game.h" />
     <ClInclude Include="me\game\GameComponent.h" />
     <ClInclude Include="me\game\IGame.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="me\scene\SceneComponent.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
     <ClInclude Include="me\scene\SceneManagerComponent.h" />
+    <ClInclude Include="me\script\IScript.h" />
     <ClInclude Include="me\shader\ConstantBuffer.h" />
     <ClInclude Include="me\shader\ConstantVariable.h" />
     <ClInclude Include="me\UpdateParams.h" />
@@ -264,6 +266,7 @@
     <ClCompile Include="me\factory\EffectFactories.cpp" />
     <ClCompile Include="me\factory\GeometryFactory.cpp" />
     <ClCompile Include="me\factory\PixelShaderFactories.cpp" />
+    <ClCompile Include="me\factory\ScriptFactory.cpp" />
     <ClCompile Include="me\factory\TextureFactory.cpp" />
     <ClCompile Include="me\factory\VertexShaderFactory.cpp" />
     <ClCompile Include="me\frameanimation\FrameAnimation.cpp" />
@@ -342,6 +345,7 @@
     <ClCompile Include="me\scene\SceneComponent.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
     <ClCompile Include="me\scene\SceneManagerComponent.cpp" />
+    <ClCompile Include="me\script\IScript.cpp" />
     <ClCompile Include="me\shader\ConstantBuffer.cpp" />
     <ClCompile Include="me\shader\ConstantVariable.cpp" />
     <ClCompile Include="me\XMLConvert.cpp" />

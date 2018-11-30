@@ -12,6 +12,7 @@ using namespace component;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
+		// Name, Index into value.
 		{ "luaName", 0 },
 		{ "path", 1 },
 	};

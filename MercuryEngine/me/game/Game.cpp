@@ -18,6 +18,7 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/GeometryFactory.h>
 #include <sg/ShapeFactory.h>
+#include <me/factory/ScriptFactory.h>
 
 // Temporary...
 #include <me/scene/SceneManager.h>
@@ -270,7 +271,9 @@ void Game::Initialize( os::OSParameters osParameters )
 					}
 					else if( node.IsTagName( "logfile" ) )
 					{
-						Debug()->SetLogFile( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						unify::Path logFile( ReplaceDefines( node.GetText() ) );
+						logFile.Delete();
+						Debug()->SetLogFile( logFile );
 					}
 					else if ( node.IsTagName( "failuresAsCritical" ) )
 					{
@@ -315,6 +318,9 @@ void Game::Initialize( os::OSParameters osParameters )
 		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
+
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< script::IScript >( "Script", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< script::IScript >()->AddFactory( ".lua", ScriptFactoryPtr( new script::ScriptFactory( this ) ) );
 	}
 
 	// Add internal components...
@@ -586,6 +592,12 @@ template<> rm::ResourceManagerSimple< IVertexShader > * Game::GetManager()
 template<> rm::ResourceManagerSimple< Geometry > * Game::GetManager()
 {
 	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< Geometry > * >(GetResourceHub().GetManager< Geometry >( "Geometry" ));
+	return manager;
+}
+
+template<> rm::ResourceManagerSimple< script::IScript > * Game::GetManager()
+{
+	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< script::IScript > * >( GetResourceHub().GetManager< script::IScript >( "Script" ) );
 	return manager;
 }
 

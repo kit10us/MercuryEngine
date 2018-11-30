@@ -15,6 +15,7 @@ using namespace scene;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
+		// Name, Index into value.
 		{ "autoPath", 0 },
 		{ "onceBeforeStartScript", 1 },
 	};

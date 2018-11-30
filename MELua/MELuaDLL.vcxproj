@@ -117,6 +117,7 @@
     <ClInclude Include="melua\exports\ExportUpdate.h" />
     <ClInclude Include="melua\exports\ExportVertexShader.h" />
     <ClInclude Include="melua\FunctionAction.h" />
+    <ClInclude Include="melua\Script.h" />
     <ClInclude Include="melua\ScriptEngine.h" />
     <ClInclude Include="melua\shape\ExportShapeParameters.h" />
     <ClInclude Include="melua\Type.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="melua\exports\ExportUpdate.cpp" />
     <ClCompile Include="melua\exports\ExportVertexShader.cpp" />
     <ClCompile Include="melua\FunctionAction.cpp" />
+    <ClCompile Include="melua\Script.cpp" />
     <ClCompile Include="melua\ScriptEngine.cpp" />
     <ClCompile Include="melua\shape\ExportShapeParameters.cpp" />
     <ClCompile Include="melua\Type.cpp" />

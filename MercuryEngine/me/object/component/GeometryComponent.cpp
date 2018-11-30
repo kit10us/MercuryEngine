@@ -13,13 +13,17 @@ using namespace render;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
-		{ "visible", 1 }
+		// Name, Index into value.
+		{ "visible", 1 },
+		{ "source", 2 }
 	};
 
 	std::vector< std::string > g_ValuesList
 	{
-		{ "visible" }
+		{ "visible" },
+		{ "source" }
 	};
+
 }
 
 GeometryComponent::GeometryComponent( GeometryComponent & component )
@@ -199,6 +203,8 @@ std::string GeometryComponent::GetValue( int index ) const
 	{
 	case 0:
 		return unify::Cast< std::string >( m_visible );
+	case 1:
+		return ! m_geometry ? "<null>" : m_geometry->GetSource();
 
 	default:
 		return std::string();

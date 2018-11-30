@@ -101,9 +101,9 @@ bool Billboard::IsTrans() const
 	return m_primitiveList.IsTrans();
 }
 
-unify::Path Billboard::GetSource() const
+std::string Billboard::GetSource() const
 {
-	return unify::Path(); // Programmatically generated, so no source.
+	return "Billboard";
 }
 
 bool Billboard::Reload()

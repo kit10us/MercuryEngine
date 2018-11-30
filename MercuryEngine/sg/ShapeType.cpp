@@ -26,3 +26,22 @@ Shape::TYPE Shape::FromString( const std::string type )
 	if( unify::StringIs( type, "cone" ) ) return Shape::Cone;
 	return Shape::INVALID;
 }
+
+std::string Shape::ToString( Shape::TYPE type )
+{
+	switch( type )
+	{
+		case Shape::Cube: return "cube";
+		case Shape::PointField: return "pointField";
+		case Shape::PointRing: return "pointRing";
+		case Shape::DashRing: return "dashRing";
+		case Shape::Pyramid: return "pyramid";
+		case Shape::Circle: return "circle";
+		case Shape::Sphere: return "sphere";
+		case Shape::Cylinder: return "cylinder";
+		case Shape::Tube: return "tube";
+		case Shape::Plane: return "plane";
+		case Shape::Cone: return "cone";
+		case Shape::BeveledBox: return "bevelBox";
+}
+}

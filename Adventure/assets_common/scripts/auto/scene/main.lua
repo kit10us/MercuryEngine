@@ -96,6 +96,7 @@ function OnBeforeStart()
 
 	local player = this:NewObject( "player" )
 	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
+	-- player:AddGeometry( Geometry( "player", "Karen_Suit_dae/Karen_Suit.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
 		
 	player:Transform():SetPosition( start_position )
 	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )

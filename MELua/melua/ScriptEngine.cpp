@@ -8,6 +8,8 @@
 #include <melua/component/ObjectComponent.h>
 #include <melua/CreateState.h>
 #include <melua/exports/ExportObject.h>
+#include <melua/Script.h>
+#include <me/game/Game.h>
 
 #include <Windows.h>
 
@@ -105,7 +107,12 @@ game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 
 	std::string luaName = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_gameScriptCount++ );
 
-	IGameComponent::ptr module( new component::GameComponent( m_state, luaName, path ), GameComponentDeleter );
+	auto game = dynamic_cast< me::game::Game* >(m_game);
+	auto script = new Script( m_state, luaName, path );
+	game->GetManager< script::IScript >()->Add( "luaName", script );
+
+	IGameComponent::ptr module( new component::GameComponent( script ), GameComponentDeleter );
+
 	return module;
 }
 
@@ -119,7 +126,11 @@ ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 
 	lua_State * state = m_state;
 
-	ISceneComponent::ptr module( new component::SceneComponent( m_game, m_state, luaName, path ) );
+	auto game = dynamic_cast< me::game::Game* >(m_game);
+	auto script = new Script( m_state, luaName, path );
+	game->GetManager< script::IScript >()->Add( "luaName", script );
+
+	ISceneComponent::ptr module( new component::SceneComponent( m_game, script ) );
 
 	return module;
 }

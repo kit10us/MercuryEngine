@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
+#include <melua/Script.h>
 #include <me/game/GameComponent.h>
 
 namespace melua
@@ -13,7 +14,7 @@ namespace melua
 		public:
 			static char* Name();
 
-			GameComponent( lua_State * state, std::string luaName, unify::Path path );
+			GameComponent( Script * script );
 			~GameComponent();
 
 		public: // IGameComponent...
@@ -37,9 +38,7 @@ namespace melua
 		private:
 			void CallMember( std::string function );
 
-			lua_State * m_state;
-			std::string m_luaName;
-			unify::Path m_path;
+			Script * m_script;
 		};
 	}
 }

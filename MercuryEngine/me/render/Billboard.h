@@ -40,7 +40,7 @@ namespace me
 
 			bool IsTrans() const override;
 
-			unify::Path GetSource() const override;
+			std::string GetSource() const override;
 
 		public: // IResource...
 			bool Reload() override;

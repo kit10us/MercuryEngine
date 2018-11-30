@@ -9,6 +9,7 @@ using namespace game;
 namespace {
 	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
+		// Name, Index into value.
 		{ "typename", 0 },
 		{ "enabled", 1 }
 	};

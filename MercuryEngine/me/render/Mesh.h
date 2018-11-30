@@ -25,7 +25,7 @@ namespace me
 		{
 		public:
 			Mesh( IRenderer * renderer );
-			Mesh( unify::Path source, IRenderer * renderer );
+			Mesh( std::string source, IRenderer * renderer );
 			~Mesh();
 
 			void Destroy();
@@ -52,7 +52,7 @@ namespace me
 
 			void Render( const render::Params & params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) override;
 
-			unify::Path GetSource() const override;
+			std::string GetSource() const override;
 
 			bool IsTrans() const override;
 
@@ -60,7 +60,7 @@ namespace me
 			bool Reload() override;
 
 		private:
-			unify::Path m_source;
+			std::string m_source;
 			PrimitiveList m_primitiveList;
 			Skeleton m_skeleton;
 			Effect::ptr m_skeletonEffect;

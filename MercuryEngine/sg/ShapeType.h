@@ -27,6 +27,7 @@ namespace sg
 		};
     		
 		static TYPE FromString( const std::string type );
+		static std::string ToString( TYPE type );
 	};
 
     struct CreationAttributes

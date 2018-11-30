@@ -25,14 +25,14 @@
 
 <include>dae.xml</include>
 
-<extension source="?EXTENSIONS?/ASELoader.dll">
+<extension source="?EXTENSIONS?/MEASELoader.dll">
 	<textureps name="texture_ambient" source="texture_ambient.xml"/>
 	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
 </extension>
 
-<extension source="?EXTENSIONS?/DXIKeyboard.dll"/>
+<extension source="?EXTENSIONS?/MEKeyboard.dll"/>
 
-<extension source="?EXTENSIONS?/DXIGamepad.dll"/>
+<extension source="?EXTENSIONS?/MEGamepad.dll"/>
 
 <extension source="?EXTENSIONS?/MEPhysics.dll"/>
 

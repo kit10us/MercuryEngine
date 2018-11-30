@@ -3,6 +3,7 @@
 
 #include <melua/ScriptEngine.h>
 #include <me/scene/SceneComponent.h>
+#include <melua/Script.h>
 
 namespace melua
 {
@@ -11,7 +12,7 @@ namespace melua
 		class SceneComponent : public me::scene::SceneComponent
 		{
 		public:
-			SceneComponent( me::game::IGame * gameInstance, lua_State * state, std::string luaName, unify::Path path );
+			SceneComponent( me::game::IGame * gameInstance, Script * script );
 			~SceneComponent();
 
 			void CallMember( std::string function );
@@ -37,9 +38,7 @@ namespace melua
 			bool SetValue( int index, std::string value ) override;
 
 		private:
-			std::string m_luaName;
-			unify::Path m_path;
-			lua_State * m_state;
+			Script * m_script;
 			me::game::IGame* m_game;
 		};
 	}
