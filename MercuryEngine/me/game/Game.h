@@ -16,7 +16,6 @@ typedef std::shared_ptr< rm::ISourceFactory< me::render::Effect > > EffectFactor
 typedef std::shared_ptr< rm::ISourceFactory< me::render::IPixelShader > > PixelShaderFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::IVertexShader > > VertexShaderFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::Geometry > > GeometryFactoryPtr;
-typedef std::shared_ptr< rm::ISourceFactory< me::script::IScript > > ScriptFactoryPtr;
 																	   
 namespace me
 {
@@ -69,7 +68,7 @@ namespace me
 
 			template< typename T >
 			rm::ResourceManagerSimple< T > * GetManager();
-
+						
 			template<> rm::ResourceManagerSimple< render::ITexture > * GetManager();
 			template<> rm::ResourceManagerSimple< render::Effect > * GetManager();
 			template<> rm::ResourceManagerSimple< render::IPixelShader > * GetManager();

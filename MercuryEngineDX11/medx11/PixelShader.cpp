@@ -222,9 +222,9 @@ void PixelShader::Use()
 
 }
 
-unify::Path PixelShader::GetSource() const
+std::string PixelShader::GetSource() const
 {
-	return m_parameters.path;
+	return m_parameters.path.ToXPath();
 }
 
 bool PixelShader::Reload()

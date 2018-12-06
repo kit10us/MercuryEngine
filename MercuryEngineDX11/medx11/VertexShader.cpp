@@ -205,9 +205,9 @@ void VertexShader::Use()
 	m_bufferAccessed = 0;
 }
 
-unify::Path VertexShader::GetSource() const
+std::string VertexShader::GetSource() const
 {
-	return m_parameters.path;
+	return m_parameters.path.ToXPath();
 }
 
 bool VertexShader::Reload()

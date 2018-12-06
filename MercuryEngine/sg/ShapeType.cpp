@@ -43,5 +43,6 @@ std::string Shape::ToString( Shape::TYPE type )
 		case Shape::Plane: return "plane";
 		case Shape::Cone: return "cone";
 		case Shape::BeveledBox: return "bevelBox";
+		default: return "<unknown>";
 }
 }

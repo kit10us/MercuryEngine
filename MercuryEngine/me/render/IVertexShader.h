@@ -46,7 +46,6 @@ namespace me
 			virtual const void * GetBytecode() const = 0;
 			virtual size_t GetBytecodeLength() const = 0;
 			virtual void Use() = 0;
-			virtual unify::Path GetSource() const = 0;
 			virtual bool IsTrans() const = 0;
 		};
 	}

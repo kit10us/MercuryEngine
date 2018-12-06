@@ -16,6 +16,8 @@ namespace rm
 	class ISourceFactory
 	{
 	public:
+		typedef std::shared_ptr< ISourceFactory< T > > shared_ptr;
+
 		~ISourceFactory() {}
 		virtual std::shared_ptr< T > Produce( unify::Path path, void * data ) = 0;
 	};

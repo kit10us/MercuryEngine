@@ -54,12 +54,12 @@ void SceneComponent::CallMember( std::string function )
 			if ( m_script->PCall( 0, 0, 0 ) != 0 )
 			{
 				std::string error = m_script->ToString( -1 );
-				m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script \"" + m_script->GetPath().ToString() +"\" in function " + function + ": " + error );
+				m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Failed in script \"" + m_script->GetSource() +"\" in function " + function + ": " + error );
 			}
 		}
 		catch ( std::exception ex )
 		{
-			m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Exception in script \"" + m_script->GetPath().ToString() + "\" in function " + function + ":\n " + ex.what() );
+			m_game->Debug()->ReportError( me::ErrorLevel::Failure, "LUA", "Exception in script \"" + m_script->GetSource() + "\" in function " + function + ":\n " + ex.what() );
 		}
 	}
 	else
@@ -238,7 +238,7 @@ std::string SceneComponent::GetValue( int index ) const
 		return m_script->GetName();
 
 	case 1:
-		return m_script->GetPath().ToString();
+		return m_script->GetSource();
 
 	default:
 		return std::string();

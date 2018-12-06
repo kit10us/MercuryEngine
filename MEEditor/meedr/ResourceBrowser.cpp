@@ -5,6 +5,7 @@
 #include <meedr/ResourceBrowser.h>
 #include <ui/Window.h>
 #include <me/render/Geometry.h>
+#include <me/script/IScript.h>
 
 using namespace meedr;
 					 
@@ -19,7 +20,7 @@ ResourceBrowser::ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int 
 	AddControl( new Combobox( 230, DefaultHeight() ), "Types" );
 	AddControl( new Listbox( 230, FillHeight() ), "Assets" );
 	AddControl( new Button( L"Reload Asset", DefaultWidth(), DefaultHeight() ), "ReloadAsset" );
-	Create( L"Asset Viewerr", x, y, nCmdShow );
+	Create( L"Asset Viewer", x, y, nCmdShow );
 }
 									
 void ResourceBrowser::UpdateResourceTypes()
@@ -58,56 +59,12 @@ void ResourceBrowser::UpdateResourceList()
 
 	// Fill in resource types...
 	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
+
 	for ( size_t i = 0; i < manager->Count(); i++ )
 	{			  
 		std::string text = manager->GetResource( i )->GetName();
-
-		if ( unify::StringIs( manager->GetName(), "texture" ) )
-		{
-			auto textureManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::ITexture >*>(manager);
-			auto texture = textureManager->Get( i ).get();
-			if ( !texture->GetParameters()->source.Empty() )
-			{
-				text += "  (" + texture->GetParameters()->source.ToString() + ")";
-			}
-		}	 
-		else if ( unify::StringIs( manager->GetName(), "effect" ) )
-		{
-			auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Effect >*>(manager);
-			auto effect = effectManager->Get( i ).get();
-			if ( !effect->GetSource().Empty() )
-			{
-				text += "  (" + effect->GetSource().ToString() + ")";
-			}
-		}
-		else if ( unify::StringIs( manager->GetName(), "vertexshader" ) )
-		{
-			auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::IVertexShader >*>(manager);
-			auto vertexShader = vertexShaderManager->Get( i ).get();
-			if ( !vertexShader->GetSource().Empty() )
-			{
-				text += "  (" + vertexShader->GetSource().ToString() + ")";
-			}
-		}
-		else if ( unify::StringIs( manager->GetName(), "pixelshader" ) )
-		{
-			auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::IPixelShader >*>(manager);
-			auto pixelShader = pixelShaderManager->Get( i ).get();
-			if ( !pixelShader->GetSource().Empty() )
-			{
-				text += "  (" + pixelShader->GetSource().ToString() + ")";
-			}
-		}
-		else if ( unify::StringIs( manager->GetName(), "geometry" ) )
-		{
-			auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Geometry >*>(manager);
-			auto geometry = geometryManager->Get( i ).get();
-			if ( !geometry->GetSource().empty() )
-			{
-				text += "  (" + geometry->GetSource() + ")";
-			}
-		}
-
+		auto resource = manager->GetResource( i );
+		text += "  (" + resource->GetSource() + ")";
 		resources->AddString( text.c_str() );
 	}
 
@@ -126,53 +83,8 @@ void ResourceBrowser::OpenResource()
 	size_t i = resources->GetCurSel();
 
 	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
-	unify::Path source;
-
-	if ( unify::StringIs( manager->GetName(), "texture" ) )
-	{
-		auto textureManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::ITexture >*>(manager);
-		auto texture = textureManager->Get( i ).get();
-		if ( !texture->GetParameters()->source.Empty() )
-		{
-			source = texture->GetParameters()->source;
-		}
-	}
-	else if ( unify::StringIs( manager->GetName(), "effect" ) )
-	{
-		auto effectManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Effect >*>(manager);
-		auto effect = effectManager->Get( i ).get();
-		if ( !effect->GetSource().Empty() )
-		{
-			source = effect->GetSource();
-		}
-	}
-	else if ( unify::StringIs( manager->GetName(), "vertexshader" ) )
-	{
-		auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::IVertexShader >*>(manager);
-		auto vertexShader = vertexShaderManager->Get( i ).get();
-		if ( !vertexShader->GetSource().Empty() )
-		{
-			source = vertexShader->GetSource();
-		}
-	}
-	else if ( unify::StringIs( manager->GetName(), "pixelshader" ) )
-	{
-		auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::IPixelShader >*>(manager);
-		auto pixelShader = pixelShaderManager->Get( i ).get();
-		if ( !pixelShader->GetSource().Empty() )
-		{
-			source = pixelShader->GetSource();
-		}
-	}
-	else if ( unify::StringIs( manager->GetName(), "geometry" ) )
-	{
-		auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Geometry >*>(manager);
-		auto geometry = geometryManager->Get( i ).get();
-		if ( !geometry->GetSource().empty() && unify::BeginsWith( geometry->GetSource(), "file:" ) )
-		{
-			source = unify::Path( unify::StringMinusLeft( geometry->GetSource(), 5 ) );
-		}
-	}
+	auto resource = manager->GetResource( i );
+	unify::Path source( resource->GetSource() );
 
 	if ( source.Exists() )
 	{
@@ -200,32 +112,8 @@ void ResourceBrowser::ReloadResource()
 	size_t i = resources->GetCurSel();
 
 	auto manager = m_game->GetResourceHub().GetManagerRaw( typeIndex );
-	unify::Path source;
-
-	if( unify::StringIs( manager->GetName(), "texture" ) )
-	{
-		auto textureManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::ITexture >*>( manager );
-		auto texture = textureManager->Get( i ).get();
-		texture->Reload();
-	}
-	else if( unify::StringIs( manager->GetName(), "vertexshader" ) )
-	{
-		auto vertexShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::IVertexShader >*>( manager );
-		auto vertexShader = vertexShaderManager->Get( i ).get();
-		vertexShader->Reload();
-	}
-	else if( unify::StringIs( manager->GetName(), "pixelshader" ) )
-	{
-		auto pixelShaderManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::IPixelShader >*>( manager );
-		auto pixelShader = pixelShaderManager->Get( i ).get();
-		pixelShader->Reload();
-	}
-	else if( unify::StringIs( manager->GetName(), "geometry" ) )
-	{
-		auto geometryManager = reinterpret_cast<rm::ResourceManagerSimple< me::render::Geometry >*>( manager );
-		auto geometry = geometryManager->Get( i ).get();
-		geometry->Reload();
-	}
+	auto resource = manager->GetResource( i );
+	resource->Reload();
 }
 
 ui::IResult * ResourceBrowser::OnCreate( ui::message::Params params )

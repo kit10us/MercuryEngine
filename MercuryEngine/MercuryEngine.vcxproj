@@ -32,7 +32,6 @@
     <ClInclude Include="me\canvas\ListItem.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
-    <ClInclude Include="me\factory\ScriptFactory.h" />
     <ClInclude Include="me\game\Game.h" />
     <ClInclude Include="me\game\GameComponent.h" />
     <ClInclude Include="me\game\IGame.h" />
@@ -266,7 +265,6 @@
     <ClCompile Include="me\factory\EffectFactories.cpp" />
     <ClCompile Include="me\factory\GeometryFactory.cpp" />
     <ClCompile Include="me\factory\PixelShaderFactories.cpp" />
-    <ClCompile Include="me\factory\ScriptFactory.cpp" />
     <ClCompile Include="me\factory\TextureFactory.cpp" />
     <ClCompile Include="me\factory\VertexShaderFactory.cpp" />
     <ClCompile Include="me\frameanimation\FrameAnimation.cpp" />

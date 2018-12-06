@@ -38,7 +38,7 @@ namespace medx9
 
 		void Use() override;
 
-		unify::Path GetSource() const override;
+		std::string GetSource() const override;
 
 		bool Reload() override;
 

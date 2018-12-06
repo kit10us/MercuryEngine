@@ -16,7 +16,7 @@ namespace me
 		public:
 			typedef std::shared_ptr< IScript > ptr;
 
-			IScript( std::string name );
+			IScript();
 
 			virtual ~IScript();
 		};

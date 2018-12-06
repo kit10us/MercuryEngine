@@ -26,6 +26,8 @@ namespace rm
 
 		virtual bool Reload() = 0;
 
+		virtual std::string GetSource() const = 0;
+
 	private:
 		unify::OwnerProperty::ptr m_property;
 	};

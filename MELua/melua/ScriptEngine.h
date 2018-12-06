@@ -22,7 +22,7 @@ namespace melua
 	class ScriptEngine : public me::game::GameComponent
 	{
 	public:
-		ScriptEngine( me::os::IOS * os );
+		ScriptEngine( me::game::IGame * game );
 		~ScriptEngine();
 
 		ExecuteResult ExecuteString( std::string line );
@@ -64,6 +64,7 @@ namespace melua
 	public: // IComponent...
 		
 	private:
+		me::game::IGame * m_game;
 		lua_State * m_state;
 		size_t m_gameScriptCount;
 		size_t m_objectScriptCount;

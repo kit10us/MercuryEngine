@@ -225,11 +225,10 @@ void VertexShader::Use()
 	}
 }
 
-unify::Path VertexShader::GetSource() const
+std::string VertexShader::GetSource() const
 {
-	return m_filePath;
+	return m_filePath.ToXPath();
 }
-
 
 bool VertexShader::Reload()
 {

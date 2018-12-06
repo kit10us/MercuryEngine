@@ -5,10 +5,8 @@
 
 using namespace melua;
 
-Script::Script( lua_State * state, std::string luaName, unify::Path path )
-	: IScript( luaName )
-	, m_state{ state }
-	, m_luaName{ luaName }
+Script::Script( lua_State * state, unify::Path path )
+	: m_state{ state }
 	, m_path{ path }
 {
 }
@@ -99,7 +97,7 @@ lua_State * Script::GetState()
 	return m_state;
 }
 
-unify::Path Script::GetPath() const
+std::string Script::GetSource() const
 {
-	return m_path;
+	return m_path.ToXPath();
 }

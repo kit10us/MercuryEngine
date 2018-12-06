@@ -69,11 +69,10 @@ namespace me
 			/// </summary>
 			unify::Size< unsigned int > SmallestTextureSizes() const;
 
-			unify::Path GetSource() const;
-
 		public: // IResource...
 			size_t Owners() const;
 			bool Reload() override;
+			std::string GetSource() const override;
 
 		protected:
 			unify::Path m_source;

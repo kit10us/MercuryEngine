@@ -44,8 +44,6 @@ namespace me
 
 			virtual void Use() = 0;
 
-			virtual unify::Path GetSource() const = 0;
-
 			virtual bool IsTrans() const = 0;
 		};
 	}

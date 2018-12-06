@@ -8,8 +8,9 @@
 #include <melua/component/ObjectComponent.h>
 #include <melua/CreateState.h>
 #include <melua/exports/ExportObject.h>
-#include <melua/Script.h>
+#include <melua/ScriptFactory.h>
 #include <me/game/Game.h>
+#include <rm/ResourceManagerSimple.h>
 
 #include <Windows.h>
 
@@ -20,6 +21,8 @@ using namespace me;
 using namespace scene;
 using namespace object;
 
+typedef std::shared_ptr< rm::ISourceFactory< me::script::IScript > > ScriptFactoryPtr;
+
 void GameComponentDeleter( me::game::IGameComponent * gc )
 {
 	delete gc;
@@ -28,15 +31,25 @@ void GameComponentDeleter( me::game::IGameComponent * gc )
 
 ScriptEngine * ScriptEngine::s_se;
 
-ScriptEngine::ScriptEngine( me::os::IOS * os )
+ScriptEngine::ScriptEngine( me::game::IGame * game )
 	: GameComponent( "Lua" )
+	, m_game{ game }
 	, m_state{ luaL_newstate() }
 	, m_gameScriptCount{ 0 }
 	, m_objectScriptCount{ 0 }
 {
+	auto gameInstance = dynamic_cast< me::game::Game* >(GetGame());
+
+	auto manager = m_game->GetResourceHub().GetManagerRaw( "script" );
+	auto scriptManager = reinterpret_cast<rm::ResourceManagerSimple< me::script::IScript >*>(manager);
+
+	scriptManager->AddFactory( ".lua", ScriptFactoryPtr( new melua::ScriptFactory( this ) ) );
+
+	auto os = game->GetOS();
+
 	s_se = this;
 	RegisterLibraries( m_state );
-
+	
 	// Set path...
 	std::string path = unify::StringReplace( os->GetAssetPaths().GetPaths( os->GetRunPath() ), ";", "?.lua;" );
 	if ( path != "" )
@@ -108,8 +121,11 @@ game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 	std::string luaName = "__" + path.FilenameNoExtension() + "_" + unify::Cast< std::string >( m_gameScriptCount++ );
 
 	auto game = dynamic_cast< me::game::Game* >(m_game);
-	auto script = new Script( m_state, luaName, path );
-	game->GetManager< script::IScript >()->Add( "luaName", script );
+	auto script = new Script( m_state, path );
+	auto manager = m_game->GetResourceHub().GetManagerRaw( "script" );
+	auto scriptManager = reinterpret_cast<rm::ResourceManagerSimple< me::script::IScript >*>(manager);
+
+	scriptManager->Add( luaName, script );
 
 	IGameComponent::ptr module( new component::GameComponent( script ), GameComponentDeleter );
 
@@ -127,8 +143,11 @@ ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 	lua_State * state = m_state;
 
 	auto game = dynamic_cast< me::game::Game* >(m_game);
-	auto script = new Script( m_state, luaName, path );
-	game->GetManager< script::IScript >()->Add( "luaName", script );
+	auto script = new Script( m_state, path );
+	auto manager = m_game->GetResourceHub().GetManagerRaw( "script" );
+	auto scriptManager = reinterpret_cast<rm::ResourceManagerSimple< me::script::IScript >*>(manager);
+
+	scriptManager->Add( luaName, script );
 
 	ISceneComponent::ptr module( new component::SceneComponent( m_game, script ) );
 

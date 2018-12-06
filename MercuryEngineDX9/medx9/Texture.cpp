@@ -230,3 +230,9 @@ bool Texture::Reload()
 	Create();
 	return true;
 }
+
+std::string Texture::GetSource() const
+{
+	return m_parameters.source.ToXPath();
+}
+

@@ -17,7 +17,7 @@ extern "C" MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxm
 MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
 	// Add Script Engine...
-	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine( gameInstance->GetOS() );
+	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine( gameInstance );
 	gameInstance->AddComponent( me::game::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
 
 	// Automatically add "game.lua" GameComponent...

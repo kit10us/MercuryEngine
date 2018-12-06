@@ -75,6 +75,8 @@ namespace medx11
 
 		bool Reload() override;
 
+		std::string GetSource() const override;
+
 	protected:
 		void LoadImage( unify::Path filePath );
 		void LoadHeader();

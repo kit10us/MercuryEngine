@@ -6,8 +6,7 @@
 using namespace me;
 using namespace script;
 		
-IScript::IScript( std::string name )
-	: IResource( name )
+IScript::IScript()
 {
 }
 

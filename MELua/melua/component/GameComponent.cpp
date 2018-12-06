@@ -57,12 +57,12 @@ void GameComponent::CallMember( std::string function )
 			if (m_script->PCall( 0, 0, 0 ) != 0 )
 			{
 				std::string error = m_script->ToString( -1 );
-				Error( m_script->GetState(), "Failed in script \"" + m_script->GetPath().ToString() +"\" in function " + function + ": " + error );
+				Error( m_script->GetState(), "Failed in script \"" + m_script->GetSource() +"\" in function " + function + ": " + error );
 			}
 		}
 		catch ( std::exception ex )
 		{
-			Error( m_script->GetState(), "Exception in script \"" + m_script->GetPath().ToString() +"\" in function " + function + ":\n " + ex.what() );
+			Error( m_script->GetState(), "Exception in script \"" + m_script->GetSource() +"\" in function " + function + ":\n " + ex.what() );
 		}
 	}
 	else
@@ -219,7 +219,7 @@ std::string GameComponent::GetValue( int index ) const
 		return m_script->GetName();
 
 	case 1:
-		return m_script->GetPath().ToString();
+		return m_script->GetSource();
 
 	default:
 		return std::string();

@@ -217,9 +217,9 @@ unify::Size< unsigned int > Effect::SmallestTextureSizes() const
 	return size;
 }
 
-unify::Path Effect::GetSource() const
+std::string Effect::GetSource() const
 {
-	return m_source;
+	return m_source.ToString();
 }
 
 size_t Effect::Owners() const

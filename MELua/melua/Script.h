@@ -12,7 +12,7 @@ namespace melua
 	class Script : public me::script::IScript
 	{
 	public:
-		Script( lua_State * state, std::string luaName, unify::Path path );
+		Script( lua_State * state, unify::Path path );
 		~Script();
 
 		void GetGlobal( std::string  );
@@ -37,14 +37,13 @@ namespace melua
 
 		lua_State * GetState();
 
-		unify::Path GetPath() const;
+		std::string GetSource() const override;
 
 	public: // IResource...
 		size_t Owners() const;
 		bool Reload() override;
 
 		lua_State * m_state;
-		std::string m_luaName;
 		unify::Path m_path;
 	};
 }

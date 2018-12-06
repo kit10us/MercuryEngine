@@ -729,9 +729,6 @@
     <ClInclude Include="me\script\IScript.h">
       <Filter>me\script</Filter>
     </ClInclude>
-    <ClInclude Include="me\factory\ScriptFactory.h">
-      <Filter>me\factory</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1198,9 +1195,6 @@
     </ClCompile>
     <ClCompile Include="me\canvas\ListItem.cpp">
       <Filter>me\canvas</Filter>
-    </ClCompile>
-    <ClCompile Include="me\factory\ScriptFactory.cpp">
-      <Filter>me\factory</Filter>
     </ClCompile>
     <ClCompile Include="me\script\IScript.cpp">
       <Filter>me\script</Filter>

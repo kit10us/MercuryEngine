@@ -18,7 +18,6 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/GeometryFactory.h>
 #include <sg/ShapeFactory.h>
-#include <me/factory/ScriptFactory.h>
 
 // Temporary...
 #include <me/scene/SceneManager.h>
@@ -320,7 +319,6 @@ void Game::Initialize( os::OSParameters osParameters )
 		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
 
 		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< script::IScript >( "Script", &GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< script::IScript >()->AddFactory( ".lua", ScriptFactoryPtr( new script::ScriptFactory( this ) ) );
 	}
 
 	// Add internal components...
