@@ -1,0 +1,8 @@
+<xml>
+<extension source="?EXTENSIONS?/MEDAELoader.dll">
+	<colorps name="color_ambient" source="color3d.xml"/>
+	<colorvs name="color_ambient" source="color3d.xml"/>
+	<textureps name="texture_ambient" source="texture3d.xml"/>
+	<texturevs name="texture_ambient" source="texture3d.xml"/>
+</extension>
+</xml>

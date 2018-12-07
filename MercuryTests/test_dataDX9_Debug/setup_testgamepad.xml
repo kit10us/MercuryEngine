@@ -1,21 +1,14 @@
 <xml>
-<include>setup_base.xml</include>
+<include>setup.xml</include>
 
-<extension source="../../extensions/Debug/MELua.dll">
+<extension source="?EXTENSIONS?/MELua.dll">
 	<startup>game_inputs.lua</startup>
 </extension>
 
-<extension source="../../extensions/Debug/DAELoader.dll">
-	<color name="color" source="EffectColor.effect"/>
-	<texture name="texture" source="EffectTextured.effect"/>
-</extension>
+<include>ext_dae.xml</include>
+<include>ext_ase.xml</include>
 
-<extension source="../../extensions/Debug/ASELoader.dll">
-	<textureps name="textured3d" source="texture3d.xml"/>
-	<texturevs name="textured3d" source="texture3d.xml"/>
-</extension>
-
-<extension source="../../extensions/Debug/DXIGamepad.dll"/>
+<extension source="?EXTENSIONS?/DXIGamepad.dll"/>
 
 <include>meeditor.xml</include>
 <include>inputs.xml</include>

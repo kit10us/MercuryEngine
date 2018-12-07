@@ -5,7 +5,7 @@
 
 #include <meedr/SceneViewer.h>
 #include <meedr/ComponentViewer.h>
-#include <ui/Window.h>
+#include <wab/ui/Window.h>
 #include <me/render/Geometry.h>
 
 using namespace meedr;

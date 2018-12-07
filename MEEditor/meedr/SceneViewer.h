@@ -5,7 +5,7 @@
 
 #include <me/game/IGame.h>
 #include <me/scene/SceneManager.h>
-#include <ui/Window.h>
+#include <wab/ui/Window.h>
 #include <thread>
 
 #define RESOURCEBROWSER_CLOSED	0

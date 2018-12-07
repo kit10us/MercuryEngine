@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ui">
+      <UniqueIdentifier>{b9a74087-c86c-47f2-9e87-25fddf73d37e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="create">
+      <UniqueIdentifier>{e9dffd18-2376-49a7-aa98-9d25ac03b6c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="create\container">
+      <UniqueIdentifier>{40552907-990c-4096-942e-ab5d35747453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\message">
+      <UniqueIdentifier>{911d38e6-50c1-435d-9714-598234e89f30}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="create\Create_Control.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Edit.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Listbox.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Richtext.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Static.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Treeview.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Button.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Combobox.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="create\container\Create_Container.cpp">
+      <Filter>create\container</Filter>
+    </ClCompile>
+    <ClCompile Include="create\container\Create_StackPanel.cpp">
+      <Filter>create\container</Filter>
+    </ClCompile>
+    <ClCompile Include="create\container\Create_Canvas.cpp">
+      <Filter>create\container</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Listbox.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Richtext.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Static.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Treeview.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Button.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Combobox.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Control.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Edit.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_ListView.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ListView.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Builder_WndProc.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="create\Create_Menu.cpp">
+      <Filter>create</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\Menu.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\MenuItem.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="create\Create_Control.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Edit.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_IControl.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Listbox.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Richtext.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Static.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Treeview.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Button.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Combobox.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="create\container\Create_Canvas.h">
+      <Filter>create\container</Filter>
+    </ClInclude>
+    <ClInclude Include="create\container\Create_Container.h">
+      <Filter>create\container</Filter>
+    </ClInclude>
+    <ClInclude Include="create\container\Create_StackPanel.h">
+      <Filter>create\container</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Listbox.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\POD.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Richtext.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Static.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Treeview.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Window.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Builder.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Button.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Combobox.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Control.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Edit.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\IControl.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_ListView.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ListView.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Builder_WndProc.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="create\Create_Menu.h">
+      <Filter>create</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\Menu.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\MenuItem.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Messages.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\MenuSelect.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\MenuCommand.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Message.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Timer.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Notify.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\Params.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\ControlCommand.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\message\User.h">
+      <Filter>ui\message</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\IWindow.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

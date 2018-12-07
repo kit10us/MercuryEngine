@@ -3,7 +3,7 @@
 
 #include <meedr/SceneViewer.h>
 #include <meedr/ScriptEditor.h>
-#include <ui/Window.h>
+#include <wab/ui/Window.h>
 
 #include <vector>
 

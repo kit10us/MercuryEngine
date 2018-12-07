@@ -3,7 +3,7 @@
 
 #include <meedr/SceneViewer.h>
 #include <meedr/ResourceBrowser.h>
-#include <ui/Window.h>
+#include <wab/ui/Window.h>
 #include <me/render/Geometry.h>
 #include <me/script/IScript.h>
 

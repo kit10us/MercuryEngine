@@ -1,0 +1,5 @@
+<xml>
+<extension source="?EXTENSIONS?/MELua.dll">
+	<auto>../assets_common/scripts/auto/</auto>
+</extension>
+</xml>

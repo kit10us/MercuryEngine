@@ -1,8 +1,8 @@
 <xml>
-<include>setup_base.xml</include>
+<include>setup.xml</include>
 
-<extension source="../../extensions/Debug/MELua.dll"/>
-<extension source="../../extensions/Debug/DXIKeyboard.dll"/>
+<extension source="?EXTENSIONS?/MELua.dll"/>
+<extension source="?EXTENSIONS?/DXIKeyboard.dll"/>
 
 <include>meeditor.xml</include>
 <include>inputs.xml</include>

@@ -1,7 +1,7 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <ui/Window.h>
+#include <wab/ui/Window.h>
 #include <MEEditor.h>
 #include <meedr/SceneViewer.h>
 #include <meedr/ResourceBrowser.h>
@@ -9,7 +9,7 @@
 #include <meedr/ScriptEditor.h>
 #include <meedr/LogViewer.h>
 #include <meedr/ComponentViewer.h>
-#include <ui/Builder.h>
+#include <wab/ui/Builder.h>
 
 #include <Richedit.h>
 #include <ShObjIdl.h>

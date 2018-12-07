@@ -14,31 +14,20 @@
 
 <failuresAsCritial>true</failuresAsCritial>
 
-
 <renderer source="?EXTENSIONS?/MercuryEngine?RENDERER?.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
 
-<extension source="?EXTENSIONS?/MELua.dll">
-	<auto>../assets_common/scripts/auto/</auto>
-</extension>
-
-<include>dae.xml</include>
-
-<extension source="?EXTENSIONS?/MEASELoader.dll">
-	<textureps name="texture_ambient" source="texture_ambient.xml"/>
-	<texturevs name="texture_ambient" source="texture_ambient.xml"/>
-</extension>
+<include>ext_lua.xml</include>
+<include>ext_dae.xml</include>
+<include>ext_ase.xml</include>
 
 <extension source="?EXTENSIONS?/MEKeyboard.dll"/>
-
 <extension source="?EXTENSIONS?/MEGamepad.dll"/>
-
 <extension source="?EXTENSIONS?/MEPhysics.dll"/>
-
 <extension source="?EXTENSIONS?/MEPhysicsLuaExt.dll"/>
 
-<include>meeditor.xml</include>
-<include>inputs.xml</include>
+<include>ext_editor.xml</include>
+<include>ext_inputs.xml</include>
 
 </xml>

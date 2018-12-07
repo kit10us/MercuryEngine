@@ -1,0 +1,306 @@
+[Game::Initialize] Initializing[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MercuryEngineDX9.dll"...[Debug] Log file: log_DX9_Debug.txt
+[Game::Initialize] name:    C:\ws\ws\Adventure\..\output\v140_Debug\Adventure\Adventure.exe
+[Game::Initialize] program: C:/ws/ws/output/v140_Debug/Adventure/Adventure.exe
+[Game::Initialize] path:    C:\ws\ws\Adventure\DX9_Debug/
+[Game::Initialize] time:    Fri Dec  7 14:44:15 2018
+
+[Game::Initialize] Loading setup "setup.xml"...
+[Game::Initialize] Loading setup "setup_common.xml"...
+[Game::Initialize] Loading setup "ext_lua.xml"...
+[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MELua.dll"...
+[Lau::MELoader] "startup" node NOT found.
+[Lau::MELoader] "auto" node found, setting autoPath to "../assets_common/scripts/auto/".
+[Game::Initialize] Loading setup "ext_dae.xml"...
+[Extension::Load] Loading extenion "../DX9/../../extensions/Debug/MEDAELoader.dll"...
+[ResourceManager::Add] PixelShader manager: adding "color_ambient" (../DX9/shaders/color3d.xml).
+[ResourceManager::Add] VertexShader manager: adding "color_ambient" (../DX9/shaders/color3d.xml).
+[ResourceManager::Add] PixelShader manager: adding "texture_ambient" (../DX9/shaders/texture3d.xml).
+[ResourceManager::Add] VertexShader manager: adding "texture_ambient" (../DX9/shaders/texture3d.xml).
+[Game::Initialize] Loading setup "ext_ase.xml"...
+[Extension::Load] Loading extenion "../DX9/../../extensions/Debug/MEASELoader.dll"...
+[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MEKeyboard.dll"...
+[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MEGamepad.dll"...
+[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MEPhysics.dll"...
+[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MEPhysicsLuaExt.dll"...
+[Game::Initialize] Loading setup "ext_editor.xml"...
+[Extension::Load] Loading extenion "../assets_common/../../extensions/Debug/MEEditor.dll"...
+[Game::Initialize] Loading setup "ext_inputs.xml"...
+[Game::Initialize] Add input actions (failures = 0)
+[Game::Initialize] GameComponent summary...
+[Game::Initialize] SceneManager
+[Game::Initialize] ActionFactory
+[Game::Initialize] Lua
+[Game::Initialize] MEPhysics3D
+[Game::Initialize] MEPhysics2D
+[Game::Initialize] ActionsGameComponent
+[Game::Initialize] OS Startup Begin
+[Game::Initialize] OS Startup Done
+[Game::Initialize] Game Component's OnBeforeStartup Begin
+[Game::Initialize] OnBeforeStart "SceneManager" Begin
+[Game::Initialize] OnBeforeStart "SceneManager" Done
+[Game::Initialize] OnBeforeStart "ActionFactory" Begin
+[Game::Initialize] OnBeforeStart "ActionFactory" Done
+[Game::Initialize] OnBeforeStart "Lua" Begin
+[ScriptEngine::LogTypes] Added Lua type "Action...
+[ScriptEngine::LogTypes]    Perform
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "CameraComponent...
+[ScriptEngine::LogTypes]    SetProjection
+[ScriptEngine::LogTypes]    GetProjection
+[ScriptEngine::LogTypes]    GetRenderer
+[ScriptEngine::LogTypes]    IsEnabled
+[ScriptEngine::LogTypes]    SetEnabled
+[ScriptEngine::LogTypes]    SetRenderer
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Color...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    r
+[ScriptEngine::LogTypes]    g
+[ScriptEngine::LogTypes]    b
+[ScriptEngine::LogTypes]    a
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Component...
+[ScriptEngine::LogTypes]    SetEnabled
+[ScriptEngine::LogTypes]    GetEnabled
+[ScriptEngine::LogTypes]    GetType
+[ScriptEngine::LogTypes]    GetWhat
+[ScriptEngine::LogTypes]    GetValueCount
+[ScriptEngine::LogTypes]    ValueExists
+[ScriptEngine::LogTypes]    GetValueName
+[ScriptEngine::LogTypes]    FindValueIndex
+[ScriptEngine::LogTypes]    GetValue
+[ScriptEngine::LogTypes]    SetValue
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Effect...
+[ScriptEngine::LogTypes]    SetTexture
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Geometry...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Input...
+[ScriptEngine::LogTypes]    GetName
+[ScriptEngine::LogTypes]    SubSourceCount
+[ScriptEngine::LogTypes]    AddAction
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "InputAction...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "InputCondition...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "MEPhysicCollider...
+[ScriptEngine::LogTypes]    AsObjectComponent
+[ScriptEngine::LogTypes]    SetOnEnter
+[ScriptEngine::LogTypes]    SetOnExit
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "MEPhysics...
+[ScriptEngine::LogTypes]    CreateBoxCollider
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Matrix...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Object...
+[ScriptEngine::LogTypes]    AddScript
+[ScriptEngine::LogTypes]    GetName
+[ScriptEngine::LogTypes]    SetEnabled
+[ScriptEngine::LogTypes]    GetEnabled
+[ScriptEngine::LogTypes]    AddGeometry
+[ScriptEngine::LogTypes]    ClearGeometry
+[ScriptEngine::LogTypes]    GetSize
+[ScriptEngine::LogTypes]    Transform
+[ScriptEngine::LogTypes]    AddComponent
+[ScriptEngine::LogTypes]    GetComponentCount
+[ScriptEngine::LogTypes]    GetComponent
+[ScriptEngine::LogTypes]    GetComponentName
+[ScriptEngine::LogTypes]    AddTag
+[ScriptEngine::LogTypes]    HasTag
+[ScriptEngine::LogTypes]    GetTagValue
+[ScriptEngine::LogTypes]    GetPosition
+[ScriptEngine::LogTypes]    GetForward
+[ScriptEngine::LogTypes]    GetUp
+[ScriptEngine::LogTypes]    GetLeft
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "ObjectAction...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "ObjectComponent...
+[ScriptEngine::LogTypes]    SetEnabled
+[ScriptEngine::LogTypes]    GetEnabled
+[ScriptEngine::LogTypes]    GetType
+[ScriptEngine::LogTypes]    GetWhat
+[ScriptEngine::LogTypes]    GetValueCount
+[ScriptEngine::LogTypes]    ValueExists
+[ScriptEngine::LogTypes]    GetValueName
+[ScriptEngine::LogTypes]    FindValueIndex
+[ScriptEngine::LogTypes]    GetValue
+[ScriptEngine::LogTypes]    SetValue
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "PixelShader...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Quaternion...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Scene...
+[ScriptEngine::LogTypes]    Name
+[ScriptEngine::LogTypes]    NewObject
+[ScriptEngine::LogTypes]    NewCamera
+[ScriptEngine::LogTypes]    DestroyObject
+[ScriptEngine::LogTypes]    FindObject
+[ScriptEngine::LogTypes]    FindObjectsWithinRay
+[ScriptEngine::LogTypes]    FindObjectsWithinSphere
+[ScriptEngine::LogTypes]    GetObjectCount
+[ScriptEngine::LogTypes]    SendCommand
+[ScriptEngine::LogTypes]    AddCommandListener
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "ShapeParameters...
+[ScriptEngine::LogTypes]    SetDiffuse
+[ScriptEngine::LogTypes]    SetSpecular
+[ScriptEngine::LogTypes]    SetCenter
+[ScriptEngine::LogTypes]    SetTextureMode
+[ScriptEngine::LogTypes]    SetEffect
+[ScriptEngine::LogTypes]    SetInf
+[ScriptEngine::LogTypes]    SetSup
+[ScriptEngine::LogTypes]    SetSize
+[ScriptEngine::LogTypes]    SetSize2
+[ScriptEngine::LogTypes]    SetSize3
+[ScriptEngine::LogTypes]    SetDiffuseFaces
+[ScriptEngine::LogTypes]    SetDiffusePoints
+[ScriptEngine::LogTypes]    SetMajorRadius
+[ScriptEngine::LogTypes]    SetMinorRadius
+[ScriptEngine::LogTypes]    SetCount
+[ScriptEngine::LogTypes]    SetSegments
+[ScriptEngine::LogTypes]    SetRadius
+[ScriptEngine::LogTypes]    SetHeight
+[ScriptEngine::LogTypes]    SetCaps
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Size2...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    width
+[ScriptEngine::LogTypes]    height
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Size3...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    width
+[ScriptEngine::LogTypes]    height
+[ScriptEngine::LogTypes]    depth
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Terra...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "TerraParameters...
+[ScriptEngine::LogTypes]    SetFaces
+[ScriptEngine::LogTypes]    SetPoints
+[ScriptEngine::LogTypes]    SetSize
+[ScriptEngine::LogTypes]    SetConstant
+[ScriptEngine::LogTypes]    SetTexArea
+[ScriptEngine::LogTypes]    SetEffect
+[ScriptEngine::LogTypes]    SetHeightMap
+[ScriptEngine::LogTypes]    SetAlphahMap
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "TexArea...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    ulu
+[ScriptEngine::LogTypes]    ulv
+[ScriptEngine::LogTypes]    dru
+[ScriptEngine::LogTypes]    drv
+[ScriptEngine::LogTypes]    ul
+[ScriptEngine::LogTypes]    dr
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "TexCoords...
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    u
+[ScriptEngine::LogTypes]    v
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Texture...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "Transform...
+[ScriptEngine::LogTypes]    SetPosition
+[ScriptEngine::LogTypes]    GetPosition
+[ScriptEngine::LogTypes]    LookAt
+[ScriptEngine::LogTypes]    Orbit
+[ScriptEngine::LogTypes]    RotateAbout
+[ScriptEngine::LogTypes]    GetRotation
+[ScriptEngine::LogTypes]    SetRotation
+[ScriptEngine::LogTypes]    GetMatrix
+[ScriptEngine::LogTypes]    PreMul
+[ScriptEngine::LogTypes]    PostMul
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "V2...
+[ScriptEngine::LogTypes]    Normalize
+[ScriptEngine::LogTypes]    DistanceTo
+[ScriptEngine::LogTypes]    Dot
+[ScriptEngine::LogTypes]    Angle
+[ScriptEngine::LogTypes]    Inverse
+[ScriptEngine::LogTypes]    Lerp
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    x
+[ScriptEngine::LogTypes]    y
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "V3...
+[ScriptEngine::LogTypes]    Normalize
+[ScriptEngine::LogTypes]    DistanceTo
+[ScriptEngine::LogTypes]    Dot
+[ScriptEngine::LogTypes]    Angle
+[ScriptEngine::LogTypes]    Inverse
+[ScriptEngine::LogTypes]    Lerp
+[ScriptEngine::LogTypes]    ToString
+[ScriptEngine::LogTypes]    x
+[ScriptEngine::LogTypes]    y
+[ScriptEngine::LogTypes]    z
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "VertexShader...
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "XMLDocument...
+[ScriptEngine::LogTypes]    AddElement
+[ScriptEngine::LogTypes]    GetRootElement
+[ScriptEngine::LogTypes]    FindElement
+[ScriptEngine::LogTypes] 
+[ScriptEngine::LogTypes] Added Lua type "XMLElement...
+[ScriptEngine::LogTypes]    AddAttribute
+[ScriptEngine::LogTypes]    AddElement
+[ScriptEngine::LogTypes]    AddText
+[ScriptEngine::LogTypes] 
+[Game::Initialize] OnBeforeStart "Lua" Done
+[Game::Initialize] OnBeforeStart "MEPhysics3D" Begin
+[Game::Initialize] OnBeforeStart "MEPhysics3D" Done
+[Game::Initialize] OnBeforeStart "MEPhysics2D" Begin
+[Game::Initialize] OnBeforeStart "MEPhysics2D" Done
+[Game::Initialize] OnBeforeStart "ActionsGameComponent" Begin
+[Game::Initialize] OnBeforeStart "ActionsGameComponent" Done
+[Game::Initialize] Game Component's OnBeforeStartup Done
+[Game::Initialize] Game's Startup Begin
+[Game::Initialize] Game's Startup Done
+[Game::Initialize] OnAfterStartup Begin
+[Game::Initialize] OnAfterStartup "SceneManager" Begin
+[Game::Initialize] OnAfterStartup "SceneManager" Done
+[Game::Initialize] OnAfterStartup "ActionFactory" Begin
+[Game::Initialize] OnAfterStartup "ActionFactory" Done
+[Game::Initialize] OnAfterStartup "Lua" Begin
+[Game::Initialize] OnAfterStartup "Lua" Done
+[Game::Initialize] OnAfterStartup "MEPhysics3D" Begin
+[Game::Initialize] OnAfterStartup "MEPhysics3D" Done
+[Game::Initialize] OnAfterStartup "MEPhysics2D" Begin
+[Game::Initialize] OnAfterStartup "MEPhysics2D" Done
+[Game::Initialize] OnAfterStartup "ActionsGameComponent" Begin
+[Game::Initialize] OnAfterStartup "ActionsGameComponent" Done
+[Game::Initialize] OnAfterStartup Done
+[Game::Initialize] total startup time: 6.384750s
+[Game::Initialize] Creating Main Scene
+[AutoSceneManagerComponent::OnSceneStart] Unable to find startup script "".
+[Scene::ChangeScene] Starting scene "main" Begin
+[Scene::OnBeforeStart] Component "ObjectAllocatorComponent" OnBeforeStart Begin
+[Scene::OnBeforeStart] Component "ObjectAllocatorComponent" OnBeforeStart Done
+[Scene::OnBeforeStart] Component "LuaScene" OnBeforeStart Begin
+[Debug] Failure (Lua): Asset "Color_Ambient.xml" not found!
+[Debug] Failure (LUA): Exception in script "file://../assets_common/scripts/auto/scene/main.lua" in function OnBeforeStart:
+ Failure (Lua): Asset "Color_Ambient.xml" not found!
+[Failure] Mercury Failure:
+[Failure] Failure (LUA): Exception in script "file://../assets_common/scripts/auto/scene/main.lua" in function OnBeforeStart:
+ Failure (Lua): Asset "Color_Ambient.xml" not found!
+[Game::Private_Shutdown] Shutting down:
+[Game::Private_Shutdown] OnDetach
+[Game::Private_Shutdown] Detaching SceneManager
+[Game::Private_Shutdown] Detaching ActionFactory
+[Game::Private_Shutdown] Detaching Lua
+[Game::Private_Shutdown] Detaching MEPhysics3D
+[Game::Private_Shutdown] Detaching MEPhysics2D
+[Game::Private_Shutdown] Detaching ActionsGameComponent
+[Game::Private_Shutdown] OnDetachDone
+[Game::Private_Shutdown] time: Fri Dec  7 14:44:25 2018
+
+[Game::Private_Shutdown] frames: 0, total delta: -nan(ind)s,  average fps:-nan(ind)

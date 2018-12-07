@@ -1,11 +1,7 @@
 <xml>
-<include>setup_base.xml</include>
+<include>setup.xml</include>
 
-<extension source="../../extensions/Debug/DAELoader.dll">
-	<color name="color" source="EffectColor.effect"/>
-	<texture name="texture" source="EffectTextured.effect"/>
-</extension>
-
+<include>ext_dae.xml</include>
 <include>meeditor.xml</include>
 <include>inputs.xml</include>
 </xml>

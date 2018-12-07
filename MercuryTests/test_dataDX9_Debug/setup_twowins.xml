@@ -1,4 +1,7 @@
 <xml>
+
+<include>setup.xml</include>
+
 <title>DX9 Test (Debug)</title>
 
 <renderer source="../../extensions/Debug/MercuryEngineDX9.dll">
