@@ -1,6 +1,7 @@
 <xml>
 
 <define name="EXTENSIONS">../../extensions/?TARGET?</define>
+<define name="EXTENSIONS_PATH">../../../extensions/?TARGET?</define>
 
 <title>Adventure ?RENDERER? (?TARGET?)</title>
 
