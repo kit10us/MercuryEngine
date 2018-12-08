@@ -28,7 +28,7 @@ namespace {
 }
 
 AutoSceneManagerComponent::AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath, unify::Path onceBeforeStartScript )
-	: me::scene::SceneManagerComponent( "LuaAutoSceneComponent" )
+	: me::scene::SceneManagerComponent( "LuaAutoSceneManagerComponent" )
 	, m_scriptEngine{ scriptEngine }
 	, m_autoPath{ autoPath }
 	, m_onceBeforeStartScript{ onceBeforeStartScript }

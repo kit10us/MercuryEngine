@@ -14,7 +14,7 @@ end
 
 function BuildCube( position )
 	local object = this:NewObject( MakeObjectName( "cube" ) )
-	local effect = Effect( VertexShader( "texture.xml" ), PixelShader( "texture.xml" ), Texture( "articulate.bmp" ) );
+	local effect = Effect( VertexShader( "texture" ), PixelShader( "texture" ), Texture( "articulate" ) );
 	object:AddGeometry( ShapeCube( effect ), MatrixTranslate( V3( 0, 1, 0 ) ) )	
 	object:Transform():SetPosition( position )
 	return object
@@ -25,7 +25,7 @@ function BuildPortalSphere( position )
 	object:Transform():SetPosition( position )
 	
 	local sphereParameters = ShapeParameters( "sphere" )	
-	sphereParameters:SetEffect( Effect( PixelShader( "color_trans.xml" ), VertexShader( "color_trans.xml" ) ) )
+	sphereParameters:SetEffect( Effect( PixelShader( "color_trans" ), VertexShader( "color_trans" ) ) )
 	
 	local modelMatrix = MatrixTranslate( V3( 0, 1, 0 ) )
 	
@@ -47,8 +47,8 @@ end
 function OnBeforeStart()
 	local start_position = V3( 4, 0, 0 )
 	
-	local color_ambient = Effect( PixelShader( "Color_Ambient.xml" ), VertexShader( "Color_Ambient.xml" ) )
-	local color_bubble = Effect( PixelShader( "Color_Bubble.xml" ), VertexShader( "Color_Bubble.xml" ) )
+	local color_ambient = Effect( PixelShader( "Color_Ambient" ), VertexShader( "Color_Ambient" ) )
+	local color_bubble = Effect( PixelShader( "Color_Bubble" ), VertexShader( "Color_Bubble" ) )
 	
 
 	CreateTerrain( Size2( 30, 30 ),  Size2( 4, 4 ) )
@@ -95,8 +95,7 @@ function OnBeforeStart()
 	sphere:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), start_position ) )	
 
 	local player = this:NewObject( "player" )
-	player:AddGeometry( Geometry( "player", "Mickey_Mouse/Mickey_Mouse.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
-	-- player:AddGeometry( Geometry( "player", "Karen_Suit_dae/Karen_Suit.dae" ), MatrixRotationX( Angle.Degrees( -90 ) ) )
+	player:AddGeometry( "player", MatrixRotationX( Angle.Degrees( -90 ) ) )
 		
 	player:Transform():SetPosition( start_position )
 	player:Transform():PreMul( MatrixRotationY( Angle.Degrees( 180 ) ) )

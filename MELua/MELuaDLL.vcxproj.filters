@@ -4,9 +4,6 @@
     <Filter Include="melua">
       <UniqueIdentifier>{8ad7e456-427b-4d39-b33c-2862f7584d35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dll">
-      <UniqueIdentifier>{78801e60-d16a-47b3-b5c9-36c659836dad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="melua\exports">
       <UniqueIdentifier>{ac2f2130-164b-46e4-bea7-60ee760ccdc6}</UniqueIdentifier>
     </Filter>
@@ -24,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MELuaDLL.h">
-      <Filter>dll</Filter>
-    </ClInclude>
     <ClInclude Include="melua\CreateState.h">
       <Filter>melua</Filter>
     </ClInclude>
@@ -159,20 +153,15 @@
     <ClInclude Include="melua\exports\ExportAction.h">
       <Filter>melua\exports</Filter>
     </ClInclude>
-    <ClInclude Include="melua\Script.h">
+    <ClInclude Include="melua\ScriptFactory.h">
       <Filter>melua</Filter>
     </ClInclude>
-    <ClInclude Include="melua\ScriptFactory.h">
+    <ClInclude Include="MELuaDLL.h" />
+    <ClInclude Include="melua\Script.h">
       <Filter>melua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>dll</Filter>
-    </ClCompile>
-    <ClCompile Include="MELuaDLL.cpp">
-      <Filter>dll</Filter>
-    </ClCompile>
     <ClCompile Include="melua\CreateState.cpp">
       <Filter>melua</Filter>
     </ClCompile>
@@ -305,10 +294,12 @@
     <ClCompile Include="melua\exports\ExportCameraComponent.cpp">
       <Filter>melua\exports</Filter>
     </ClCompile>
-    <ClCompile Include="melua\Script.cpp">
+    <ClCompile Include="melua\ScriptFactory.cpp">
       <Filter>melua</Filter>
     </ClCompile>
-    <ClCompile Include="melua\ScriptFactory.cpp">
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="MELuaDLL.cpp" />
+    <ClCompile Include="melua\Script.cpp">
       <Filter>melua</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,9 +7,9 @@ function BuildTree( position )
 	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
 
-	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
+	local color_ambient = Effect( VertexShader( "color_ambient" ), PixelShader( "color_ambient" ) )
 
-	local leaves = Effect( VertexShader( "Texture_Ambient.xml" ), PixelShader( "Texture_Ambient.xml" ), Texture( "leaves", "leafsolid.bmp" ) )
+	local leaves = Effect( VertexShader( "Texture_Ambient" ), PixelShader( "Texture_Ambient" ), Texture( "leaves" ) )
 		
 	sphereParameters = ShapeParameters( "sphere" )
 	sphereParameters:SetEffect( leaves )
@@ -45,7 +45,7 @@ function BuildHouse( position )
 	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
 
-	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
+	local color_ambient = Effect( VertexShader( "color_ambient" ), PixelShader( "color_ambient" ) )
 
 	-- Walls
 	parameters = ShapeParameters( "cube" )
@@ -83,7 +83,7 @@ function BuildChest( position )
 	local object = this:NewObject( name )
 	object:Transform():SetPosition( position )
 	
-	local color_ambient = Effect( VertexShader( "color_ambient.xml" ), PixelShader( "color_ambient.xml" ) )
+	local color_ambient = Effect( VertexShader( "color_ambient" ), PixelShader( "color_ambient" ) )
 
 	parameters = ShapeParameters( "cube" )
 	parameters:SetEffect( color_ambient )

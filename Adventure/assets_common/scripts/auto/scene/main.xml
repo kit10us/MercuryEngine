@@ -1,0 +1,34 @@
+<xml>
+
+<asset type="pixelshader" name="texture" source="texture.xml"/>
+<asset type="vertexshader" name="texture" source="texture.xml"/>
+
+<asset type="pixelshader" name="color_trans" source="color_trans.xml"/> 
+<asset type="vertexshader" name="color_trans" source="color_trans.xml"/>
+
+<asset type="pixelshader" name="Color_Ambient" source="Color_Ambient.xml"/> 
+<asset type="vertexshader" name="Color_Ambient" source="Color_Ambient.xml"/>
+
+<asset type="vertexshader" name="Texture_Ambient" source="Texture_Ambient.xml"/>
+<asset type="pixelshader" name="Texture_Ambient" source="Texture_Ambient.xml"/>
+
+<asset type="pixelshader" name="Color_Bubble" source="Color_Bubble.xml"/> 
+<asset type="vertexshader" name="Color_Bubble" source="Color_Bubble.xml"/>
+
+
+<asset type="vertexShader" name="texturemix_ambient" source="texturemix_ambient.xml"/>
+<asset type="pixelShader" name="texturemix_ambient" source="texturemix_ambient.xml"/>
+
+<asset type="texture" name="articulate" source="articulate.bmp"/>
+<asset type="texture" name="leaves" source="leafsolid.bmp"/>
+<asset type="Texture" name="invalid" source="articulate.bmp"/>
+<asset type="texture" name="sand" source="sand_tile.bmp"/>
+<asset type="texture" name="grass" source="grass1.bmp"/>
+<asset type="texture" name="sand_mix" source="sand_mix.png"/>
+<asset type="texture" name="wall" source="wallx.dds"/>
+<asset type="texture" name="leafsolid" source="leafsolid.bmp"/>
+<asset type="texture" name="sidewalk_mix" source="river27b_h.bmp"/>
+
+<asset type="geometry" name="player" source="Mickey_Mouse/Mickey_Mouse.dae"/>
+
+</xml>

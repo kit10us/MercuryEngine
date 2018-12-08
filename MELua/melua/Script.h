@@ -37,11 +37,10 @@ namespace melua
 
 		lua_State * GetState();
 
-		std::string GetSource() const override;
-
 	public: // IResource...
 		size_t Owners() const;
 		bool Reload() override;
+		std::string GetSource() const override;
 
 		lua_State * m_state;
 		unify::Path m_path;

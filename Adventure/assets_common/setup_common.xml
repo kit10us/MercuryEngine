@@ -21,6 +21,7 @@
 <include>ext_lua.xml</include>
 <include>ext_dae.xml</include>
 <include>ext_ase.xml</include>
+<include>ext_sal.xml</include>
 
 <extension source="?EXTENSIONS?/MEKeyboard.dll"/>
 <extension source="?EXTENSIONS?/MEGamepad.dll"/>
