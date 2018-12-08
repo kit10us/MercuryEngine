@@ -18,21 +18,16 @@
     <ClInclude Include="rm\IResource.h" />
     <ClInclude Include="rm\IResourceManager.h" />
     <ClInclude Include="rm\ResourceHub.h" />
-    <ClInclude Include="rm\ResourceManagerAdvanced.inl">
-      <FileType>Document</FileType>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rm\exception\FailedToCreate.h" />
     <ClInclude Include="rm\exception\ResourceNotFound.h" />
     <ClInclude Include="rm\IFactoryFunctor.h" />
     <ClInclude Include="rm\ISourceFactoryFunctor.h" />
-    <ClInclude Include="rm\ResourceManagerAdvanced.h" />
     <ClInclude Include="rm\ResourceManagerSimple.h" />
     <ClInclude Include="rm\ResourcePack.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dummy.cpp" />
     <ClCompile Include="rm\AssetPaths.cpp" />
     <ClCompile Include="rm\IResource.cpp" />
     <ClCompile Include="rm\ResourceHub.cpp" />
