@@ -24,6 +24,9 @@ void OpenEditor()
 void DestroyEditor()
 {
 	s_engineMain.reset();
+
+	HWND activeWindow = GetActiveWindow();
+	SetActiveWindow( activeWindow );
 }
 
 extern "C" __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
