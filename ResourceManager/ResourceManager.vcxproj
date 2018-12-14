@@ -15,8 +15,10 @@
     <ClInclude Include="rm\FactoryFunctor1.h" />
     <ClInclude Include="rm\FactoryFunctor2.h" />
     <ClInclude Include="rm\FactoryFunctor3.h" />
+    <ClInclude Include="rm\ILogger.h" />
     <ClInclude Include="rm\IResource.h" />
     <ClInclude Include="rm\IResourceManager.h" />
+    <ClInclude Include="rm\ISourceFactory.h" />
     <ClInclude Include="rm\ResourceHub.h" />
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +26,7 @@
     <ClInclude Include="rm\exception\ResourceNotFound.h" />
     <ClInclude Include="rm\IFactoryFunctor.h" />
     <ClInclude Include="rm\ISourceFactoryFunctor.h" />
-    <ClInclude Include="rm\ResourceManagerSimple.h" />
+    <ClInclude Include="rm\ResourceManager.h" />
     <ClInclude Include="rm\ResourcePack.h" />
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +38,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rm\ResourceManagerSimple.inl" />
+    <None Include="rm\ResourceManager.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B973C604-ADA5-4F9D-B681-BAC20018C501}</ProjectGuid>

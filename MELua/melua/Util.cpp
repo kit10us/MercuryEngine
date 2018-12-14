@@ -1,6 +1,7 @@
 #pragma once
 
 #include <melua/Util.h>
+#include <melua/Script.h>
 
 namespace melua
 {
@@ -148,6 +149,44 @@ namespace melua
 	{
 		lua_pushboolean( L, value ? 1 : 0 );
 		return 1;
+	}
+
+	int Include( lua_State * L )
+	{
+		std::string name = Check< std::string >( L, 1 );
+
+		ScriptEngine * se = ScriptEngine::GetInstance();
+		auto gameInstance = se->GetGame();
+
+		gameInstance->Debug()->LogLine( "Including script \"" + name + "\" from Lua script.", "Lua" );
+
+		auto scriptManager = gameInstance->GetResourceHub().GetManager< me::script::IScript >( "script" );
+
+		unify::Path path{ name };
+		path.ChangeExtension( "lua" );
+		path = gameInstance->GetOS()->GetAssetPaths().FindAsset( path );
+
+		auto script = new Script( L, path, true );
+		scriptManager->Add( name, script );
+		
+		melua::Call( L, "require", 0, name );
+		return 0;
+	}
+
+	int Call( lua_State * L, std::string function, int return_count )
+	{
+		lua_getglobal( L, function.c_str() );
+		lua_call( L, 0, return_count );
+		return return_count;
+	}
+
+	/// <summary>
+	/// Final Recursive call that requires arguments
+	/// </summary>
+	int CallRecursive( lua_State * L, std::string function, CallParams callParams )
+	{
+		lua_call( L, callParams.arg_count, callParams.return_count );
+		return callParams.return_count;
 	}
 }
 

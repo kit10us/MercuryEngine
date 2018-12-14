@@ -5,9 +5,10 @@
 
 using namespace melua;
 
-Script::Script( lua_State * state, unify::Path path )
+Script::Script( lua_State * state, unify::Path path, bool isLuaInclude )
 	: m_state{ state }
 	, m_path{ path }
+	, m_isLuaInclude{ isLuaInclude }
 {
 }
 		
@@ -68,6 +69,13 @@ size_t Script::Owners() const
 
 bool Script::Reload()
 {
+	// If we are a script include from within another Lua script, we can't reload directly - ignore the call.
+	// We simply want to track that the script exists and where it came from.
+	if ( m_isLuaInclude )
+	{
+		return true;
+	}
+
 	auto * se = ScriptEngine::GetInstance(); // Setup the script...	
 
 	int result = luaL_loadfile( m_state, m_path.ToString().c_str() );

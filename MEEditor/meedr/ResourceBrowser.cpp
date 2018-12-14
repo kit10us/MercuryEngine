@@ -18,7 +18,7 @@ ResourceBrowser::ResourceBrowser( SceneViewer* parent, int nCmdShow, int x, int 
 	AddContainer( new container::StackPanel( container::Stack::Vertical, 540, 440 ) );
 	AddControl( new Static( L"Type:", 50, DefaultHeight() ) );
 	AddControl( new Combobox( 230, DefaultHeight() ), "Types" );
-	AddControl( new Listbox( 230, FillHeight() ), "Assets" );
+	AddControl( (new Listbox( 230, FillHeight() ))->SetHScroll( true ), "Assets" );
 	AddControl( new Button( L"Reload Asset", DefaultWidth(), DefaultHeight() ), "ReloadAsset" );
 	Create( L"Asset Viewer", x, y, nCmdShow );
 }

@@ -12,7 +12,7 @@ namespace melua
 	class Script : public me::script::IScript
 	{
 	public:
-		Script( lua_State * state, unify::Path path );
+		Script( lua_State * state, unify::Path path, bool isLuaInclude = false );
 		~Script();
 
 		void GetGlobal( std::string  );
@@ -44,5 +44,6 @@ namespace melua
 
 		lua_State * m_state;
 		unify::Path m_path;
+		bool m_isLuaInclude;
 	};
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <rm/IResource.h>
-#include <rm/ISourceFactoryFunctor.h>
 #include <qxml/Element.h>
 #include <unify/Path.h>
 #include <map>

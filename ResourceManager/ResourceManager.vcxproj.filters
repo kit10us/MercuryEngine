@@ -39,9 +39,6 @@
     <ClInclude Include="rm\IResourceManager.h">
       <Filter>rm</Filter>
     </ClInclude>
-    <ClInclude Include="rm\ResourceManagerSimple.h">
-      <Filter>rm</Filter>
-    </ClInclude>
     <ClInclude Include="rm\ResourceHub.h">
       <Filter>rm</Filter>
     </ClInclude>
@@ -51,11 +48,16 @@
     <ClInclude Include="rm\AssetPaths.h">
       <Filter>rm</Filter>
     </ClInclude>
+    <ClInclude Include="rm\ResourceManager.h" />
+    <ClInclude Include="rm\ILogger.h">
+      <Filter>rm</Filter>
+    </ClInclude>
+    <ClInclude Include="rm\ISourceFactory.h">
+      <Filter>rm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rm\ResourceManagerSimple.inl">
-      <Filter>rm</Filter>
-    </None>
+    <None Include="rm\ResourceManager.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rm\ResourceHub.cpp">

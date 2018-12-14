@@ -281,11 +281,7 @@ void MainScene::OnStart()
 	AddComponent( canvas );
 
 	// Load font...
-	Effect::ptr font2( new Effect( 
-		GetManager< IVertexShader >()->Add( unify::Path( "texture2d_trans.xml" ) ), 
-		GetManager< IPixelShader>()->Add( unify::Path( "texture2d_trans.xml" ) ),
-		GetManager< ITexture >()->Add( unify::Path( "font2.png" ) )
-	) );
+	Effect::ptr font2( GetManager< Effect >()->Find( "font2" ) );
 
 	// Add FPS...
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2, canvas::Anchor::TopRight ) ) );

@@ -73,6 +73,7 @@ std::shared_ptr< T > ResourceManagerSimple< T >::Add( std::string name, T * reso
 
 	ResourcePtr resourcePtr( resource );
 	m_resourceMap[ name ] = resourcePtr;
+	resource->SetName( name );
 	m_resourceList.push_back( resourcePtr );
 
 	return resourcePtr;

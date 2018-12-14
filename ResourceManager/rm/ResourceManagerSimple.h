@@ -37,7 +37,7 @@ namespace rm
 		typedef std::shared_ptr< T > ResourcePtr;
 
         ResourceManagerSimple( std::string resourceName, rm::AssetPaths * assetPaths = nullptr, ILogger::ptr = ILogger::ptr() );
-		~ResourceManagerSimple();
+		~ResourceManagerSimple();	
 
 		void Clear();
 

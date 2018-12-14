@@ -87,4 +87,7 @@ void melua::RegisterLibraries( lua_State * state )
 	RegisterAction( state );
 	RegisterObjectAction( state );
 	RegisterInputAction( state );
+
+	lua_register( state, "include", melua::Include );
+
 }

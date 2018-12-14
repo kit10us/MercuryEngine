@@ -1,10 +1,12 @@
-require "prefabs"
-require "terrain"
-require "map_a"
-require "OA"
-require "OAC"
-require "actions"
-require "shapes"
+include "prefabs"
+include "terrain"
+include "map_a"
+include "OA"
+include "OAC"
+include "shapes"
+
+include  "actions/Action_QuitGame"
+include  "actions/Action_Use"
 
 local start_position = V3( 4, 0, 0 )
 
@@ -181,9 +183,9 @@ function OnAfterStart()
 		gamepad:AddAction( "scene", pressY, action )
 		
 		local pressStart = InputCondition( "button", 0, "Back", "pressed" )
-		gamepad:AddAction( "scene", pressStart, A_QuitGame() )
+		gamepad:AddAction( "scene", pressStart, Action_QuitGame() )
 		
-		local pressA = InputCondition( "button", 0, "A", "pressed" )
+		local pressA = InputCondition( "button", 0, "F", "pressed" )
 		gamepad:AddAction( "scene", pressA, Action_Use )		
 	end	
 	
