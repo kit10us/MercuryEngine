@@ -9,7 +9,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\;..\MEPhysics;..\MEWinMain;..\unify;..\dxi\source;..\qxml\include;..\QJson\source;..\ResourceManager;..\DAELoader\source;..\MercuryEngine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\MEPhysics;..\MEWinMain;..\unify;..\dxi\source;..\qxml\include;..\QJson\source;..\..\ResourceManager;..\DAELoader\source;..\MercuryEngine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\lib\$(DefaultPlatformToolset)_$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

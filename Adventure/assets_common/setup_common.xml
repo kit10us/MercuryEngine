@@ -1,6 +1,5 @@
 <xml>
 
-<define name="EXTENSIONS">../../extensions/?TARGET?</define>
 <define name="EXTENSIONS_PATH">../../../extensions/?TARGET?</define>
 
 <title>Adventure ?RENDERER? (?TARGET?)</title>
@@ -15,7 +14,7 @@
 
 <failuresAsCritial>true</failuresAsCritial>
 
-<renderer source="?EXTENSIONS?/MercuryEngine?RENDERER?.dll">
+<renderer source="?EXTENSIONS_PATH?/MERenderer?RENDERER?.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
 
@@ -24,10 +23,10 @@
 <include>ext_ase.xml</include>
 <include>ext_sal.xml</include>
 
-<extension source="?EXTENSIONS?/MEKeyboard.dll"/>
-<extension source="?EXTENSIONS?/MEGamepad.dll"/>
-<extension source="?EXTENSIONS?/MEPhysics.dll"/>
-<extension source="?EXTENSIONS?/MEPhysicsLuaExt.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEKeyboard.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEGamepad.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEPhysics.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEPhysicsLuaExt.dll"/>
 
 <include>ext_editor.xml</include>
 <include>ext_inputs.xml</include>

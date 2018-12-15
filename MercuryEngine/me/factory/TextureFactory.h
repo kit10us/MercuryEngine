@@ -3,7 +3,7 @@
 #pragma once
 #include <me/render/ITexture.h>
 #include <me/game/IGame.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 
 namespace me
 {

@@ -2,9 +2,9 @@
 
 <title>?RENDERER? Test (?TARGET?)</title>
 
-<define name="EXTENSIONS">../../extensions/?TARGET?</define>
+<define name="EXTENSIONS">../../../extensions/?TARGET?</define>
 
-<renderer source="?EXTENSIONS?/MercuryEngine?RENDERER?.dll">
+<renderer source="?EXTENSIONS?/MERenderer?RENDERER?.dll">
 	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
 </renderer>
 

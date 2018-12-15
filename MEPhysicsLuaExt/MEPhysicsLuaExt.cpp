@@ -11,13 +11,12 @@
 #pragma comment( lib, "lua53" )
 
 #ifdef _DEBUG
-	#pragma comment( lib, "../extensions/Debug/MELua.lib" )
-	#pragma comment( lib, "../extensions/Debug/MEPhysics.lib" )
+	#pragma comment( lib, "../../extensions/Debug/MELua.lib" )
+	#pragma comment( lib, "../../extensions/Debug/MEPhysics.lib" )
 #else
-	#pragma comment( lib, "../extensions/Release/MELua.lib" )
-	#pragma comment( lib, "../extensions/Release/MEPhysics.lib" )
+	#pragma comment( lib, "../../extensions/Release/MELua.lib" )
+	#pragma comment( lib, "../../extensions/Release/MEPhysics.lib" )
 #endif
-
 
 void Deleter( me::game::IGameComponent * se )
 {

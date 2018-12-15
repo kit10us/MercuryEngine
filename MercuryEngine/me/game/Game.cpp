@@ -215,8 +215,11 @@ void Game::Initialize( os::OSParameters osParameters )
 					}
 					else if( node.IsTagName( "renderer" ) )
 					{
-						unify::Path path( ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) );
-						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
+						unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
+						unify::Path pathDiscovery{ 
+							GetOS()->GetAssetPaths().FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() ) 
+						};
+						AddExtension( path, &node );
 					}
 					else if( node.IsTagName( "assets" ) )
 					{
@@ -297,7 +300,7 @@ void Game::Initialize( os::OSParameters osParameters )
 	{
 		rm::ILogger::ptr logger( new GameLogger( Debug() ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< ITexture >( "Texture", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< ITexture >( "Texture", &GetOS()->GetAssetPaths(), logger ) ) );
 
 		TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
 		GetManager< ITexture >()->AddFactory( ".dds", textureFactoryPtr );
@@ -305,20 +308,20 @@ void Game::Initialize( os::OSParameters osParameters )
 		GetManager< ITexture >()->AddFactory( ".bmp", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< Effect >( "Effect", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< Effect >( "Effect", &GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManagerSimple< script::IScript >( "Script", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< script::IScript >( "Script", &GetOS()->GetAssetPaths(), logger ) ) );
 	}
 
 	// Add internal components...
@@ -356,8 +359,11 @@ void Game::Initialize( os::OSParameters osParameters )
 					}
 					else if( node.IsTagName( "extension" ) )
 					{
-						unify::Path path( ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) );
-						AddExtension( node.GetDocument()->GetPath().DirectoryOnly() + path, &node );
+						unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
+						unify::Path pathDiscovery{
+							GetOS()->GetAssetPaths().FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
+						};
+						AddExtension( path, &node );
 					}
 					else if (node.IsTagName("inputs"))
 					{
@@ -562,40 +568,40 @@ const os::IOS * Game::GetOS() const
 }
 
 template<>
-rm::ResourceManagerSimple< ITexture > * Game::GetManager()
+rm::ResourceManager< ITexture > * Game::GetManager()
 {
 	auto rm = GetResourceHub().GetManager< ITexture >( "texture" );
-	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< ITexture > * >( rm );
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< ITexture > * >( rm );
 	return manager;
 }
 
-template<> rm::ResourceManagerSimple< Effect > * Game::GetManager()
+template<> rm::ResourceManager< Effect > * Game::GetManager()
 {
-	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< Effect > * >(GetResourceHub().GetManager< Effect >( "effect" ));
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< Effect > * >(GetResourceHub().GetManager< Effect >( "effect" ));
 	return manager;
 }
 
-template<> rm::ResourceManagerSimple< IPixelShader > * Game::GetManager()
+template<> rm::ResourceManager< IPixelShader > * Game::GetManager()
 {
-	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< IPixelShader > * >(GetResourceHub().GetManager< IPixelShader >( "PixelShader" ));
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< IPixelShader > * >(GetResourceHub().GetManager< IPixelShader >( "PixelShader" ));
 	return manager;
 }
 
-template<> rm::ResourceManagerSimple< IVertexShader > * Game::GetManager()
+template<> rm::ResourceManager< IVertexShader > * Game::GetManager()
 {
-	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< IVertexShader > * >(GetResourceHub().GetManager< IVertexShader >( "VertexShader" ));
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< IVertexShader > * >(GetResourceHub().GetManager< IVertexShader >( "VertexShader" ));
 	return manager;
 }
 
-template<> rm::ResourceManagerSimple< Geometry > * Game::GetManager()
+template<> rm::ResourceManager< Geometry > * Game::GetManager()
 {
-	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< Geometry > * >(GetResourceHub().GetManager< Geometry >( "Geometry" ));
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< Geometry > * >(GetResourceHub().GetManager< Geometry >( "Geometry" ));
 	return manager;
 }
 
-template<> rm::ResourceManagerSimple< script::IScript > * Game::GetManager()
+template<> rm::ResourceManager< script::IScript > * Game::GetManager()
 {
-	auto manager = unify::polymorphic_downcast< rm::ResourceManagerSimple< script::IScript > * >( GetResourceHub().GetManager< script::IScript >( "Script" ) );
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< script::IScript > * >( GetResourceHub().GetManager< script::IScript >( "Script" ) );
 	return manager;
 }
 
@@ -910,13 +916,13 @@ void Game::AddExtension( unify::Path path, const qxml::Element * element )
 		if( !extension->Load( this, element ) )
 		{
 			delete extension;
-			Debug()->ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "!" );
+			throw std::exception( "unknown failure" );
 		}
 	}
 	catch( std::exception ex )
 	{
 		delete extension;
-		Debug()->ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "! Error:\n" + ex.what() );
+		Debug()->ReportError( ErrorLevel::Critical, "Game", "Failed to load extension " + path.ToString() + "! \nError:\n" + ex.what() );
 	}
 
 	m_extensions.push_back( std::shared_ptr< Extension >{ extension } );

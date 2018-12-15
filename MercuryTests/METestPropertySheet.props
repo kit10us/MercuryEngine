@@ -3,17 +3,17 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\..\..\packages\directx\Include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <IntDir>..\..\..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>..\..\..\output\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;..\..\..\..\unify;..\..\..\..\qxml;..\..\..\..\qjson;..\..\..\ResourceManager;..\..\..\MercuryEngine;..\..\..\MEWinMain;..\..\..\MEWindowsOS;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\..\unify;..\..\..\..\qxml;..\..\..\..\qjson;..\..\..\..\ResourceManager;..\..\..\MercuryEngine;..\..\..\../MEWinMain;..\..\..\../MEWindowsOS;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>..\..\..\..\lib\$(DefaultPlatformToolset)_$(Configuration);..\..\..\lib\$(DefaultPlatformToolset)_$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\..\lib\$(DefaultPlatformToolset)_$(Configuration);%AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

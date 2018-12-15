@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 #include <me/render/IPixelShader.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 #include <me/game/IGame.h>
 
 namespace me

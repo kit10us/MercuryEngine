@@ -5,7 +5,7 @@
 
 #include <me/render/Effect.h>
 #include <me/game/IGame.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 
 namespace me
 {

@@ -10,7 +10,7 @@
 #include <melua/exports/ExportObject.h>
 #include <melua/ScriptFactory.h>
 #include <me/game/Game.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 
 #include <Windows.h>
 
@@ -41,7 +41,7 @@ ScriptEngine::ScriptEngine( me::game::IGame * game )
 	auto gameInstance = dynamic_cast< me::game::Game* >(GetGame());
 
 	auto manager = m_game->GetResourceHub().GetManagerRaw( "script" );
-	auto scriptManager = reinterpret_cast<rm::ResourceManagerSimple< me::script::IScript >*>(manager);
+	auto scriptManager = reinterpret_cast<rm::ResourceManager< me::script::IScript >*>(manager);
 
 	scriptManager->AddFactory( ".lua", ScriptFactoryPtr( new melua::ScriptFactory( this ) ) );
 
@@ -123,7 +123,7 @@ game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 	auto game = dynamic_cast< me::game::Game* >(m_game);
 	auto script = new Script( m_state, path );
 	auto manager = m_game->GetResourceHub().GetManagerRaw( "script" );
-	auto scriptManager = reinterpret_cast<rm::ResourceManagerSimple< me::script::IScript >*>(manager);
+	auto scriptManager = reinterpret_cast<rm::ResourceManager< me::script::IScript >*>(manager);
 
 	scriptManager->Add( luaName, script );
 
@@ -145,7 +145,7 @@ ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 	auto game = dynamic_cast< me::game::Game* >(m_game);
 	auto script = new Script( m_state, path );
 	auto manager = m_game->GetResourceHub().GetManagerRaw( "script" );
-	auto scriptManager = reinterpret_cast<rm::ResourceManagerSimple< me::script::IScript >*>(manager);
+	auto scriptManager = reinterpret_cast<rm::ResourceManager< me::script::IScript >*>(manager);
 
 	scriptManager->Add( luaName, script );
 

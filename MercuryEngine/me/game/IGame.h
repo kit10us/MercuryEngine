@@ -15,7 +15,7 @@
 #include <me/game/IGameComponent.h>
 #include <me/UpdateParams.h>
 #include <me/ICommandListener.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 #include <rm/ResourceHub.h>
 #include <unify/TimeDelta.h>
 #include <memory>

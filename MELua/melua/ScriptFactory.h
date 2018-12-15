@@ -6,7 +6,7 @@
 #include <melua/ScriptEngine.h>
 #include <me/script/IScript.h>
 #include <me/game/IGame.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 
 namespace melua
 {

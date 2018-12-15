@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 #include <sg/ShapeCreators.h>
-#include <rm/ResourceManagerSimple.h>
+#include <rm/ResourceManager.h>
 #include <me/game/IGame.h>
 
 namespace sg

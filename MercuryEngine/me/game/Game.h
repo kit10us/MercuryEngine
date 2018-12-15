@@ -67,14 +67,14 @@ namespace me
 			const os::IOS * GetOS() const final;
 
 			template< typename T >
-			rm::ResourceManagerSimple< T > * GetManager();
+			rm::ResourceManager< T > * GetManager();
 						
-			template<> rm::ResourceManagerSimple< render::ITexture > * GetManager();
-			template<> rm::ResourceManagerSimple< render::Effect > * GetManager();
-			template<> rm::ResourceManagerSimple< render::IPixelShader > * GetManager();
-			template<> rm::ResourceManagerSimple< render::IVertexShader > * GetManager();
-			template<> rm::ResourceManagerSimple< render::Geometry > * GetManager();
-			template<> rm::ResourceManagerSimple< script::IScript > * GetManager();
+			template<> rm::ResourceManager< render::ITexture > * GetManager();
+			template<> rm::ResourceManager< render::Effect > * GetManager();
+			template<> rm::ResourceManager< render::IPixelShader > * GetManager();
+			template<> rm::ResourceManager< render::IVertexShader > * GetManager();
+			template<> rm::ResourceManager< render::Geometry > * GetManager();
+			template<> rm::ResourceManager< script::IScript > * GetManager();
 
 			rm::ResourceHub & GetResourceHub() override;
 			const rm::ResourceHub & GetResourceHub() const override;

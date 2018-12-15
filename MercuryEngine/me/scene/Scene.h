@@ -76,7 +76,7 @@ namespace me
 			SceneManager* GetSceneManager();
 
 			template< typename T > 
-			rm::ResourceManagerSimple< T > * GetManager()
+			rm::ResourceManager< T > * GetManager()
 			{
 				return m_game->GetManager< T >();
 			}

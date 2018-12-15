@@ -1,5 +1,5 @@
 <xml>
-<extension source="?EXTENSIONS?/MEEditor.dll">
+<extension source="?EXTENSIONS_PATH?/MEEditor.dll">
 	<inputs>
 		<inputaction input="keyboard" condition="ButtonPressed" name="F2">
 			<OpenEditor/>

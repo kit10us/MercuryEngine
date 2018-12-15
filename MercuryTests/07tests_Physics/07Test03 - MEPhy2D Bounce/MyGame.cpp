@@ -8,9 +8,9 @@
 using namespace me;
 
 #ifdef _DEBUG
-#pragma comment( lib, "../../../extensions/Debug/MEPhysics.lib" )
+#pragma comment( lib, "../../../../extensions/Debug/MEPhysics.lib" )
 #else
-#pragma comment( lib, "../../../extensions/Release/MEPhysics.lib" )
+#pragma comment( lib, "../../../../extensions/Release/MEPhysics.lib" )
 #endif
 
 class MainSceneFactory : public me::scene::ISceneFactory
