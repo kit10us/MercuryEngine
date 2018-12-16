@@ -54,7 +54,7 @@ void MainScene::OnStart()
 		std::string objectName = "object " + unify::Cast< std::string >( objectIndex++ );
 		auto object = GetObjectAllocator()->NewObject( objectName );
 		
-		unify::V3< float > pos = startPos + unify::V3< float >{ (changePerRow * row) + (changePerColumn * column) + (changePerPage * page ) };
+		unify::V3< float > pos = startPos + unify::V3< float >{ (changePerRow * (float)row) + (changePerColumn * (float)column) + (changePerPage * (float)page ) };
 		object->GetFrame().SetPosition( pos );
 
 		Geometry::ptr meshProg(sg::CreateShape(GetOS()->GetRenderer(0), parameters));

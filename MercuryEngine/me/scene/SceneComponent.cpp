@@ -166,7 +166,8 @@ bool SceneComponent::SetValue( int index, std::string value )
 		m_enabled = unify::Cast< bool >( value );
 		return true;
 	default:
-		return m_values.SetValue( index - g_ValuesMap.size(), value );
+		m_values.SetValue( index - g_ValuesMap.size(), value );
+		return true;
 	}
 }
 
@@ -193,6 +194,16 @@ std::string SceneComponent::GetValue( std::string name ) const
 {
 	int index = FindValueIndex( name );
 	return GetValue( index );
+}
+
+Interop * SceneComponent::GetLookup()
+{
+	return &m_values;
+}
+
+const Interop * SceneComponent::GetLookup() const
+{
+	return &m_values;
 }
 
 me::IThing* SceneComponent::QueryInterface( std::string name )

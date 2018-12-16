@@ -97,8 +97,8 @@
     <ClInclude Include="me\input\StickCondition.h" />
     <ClInclude Include="me\input\TriggerCondition.h" />
     <ClInclude Include="me\Instancing.h" />
+    <ClInclude Include="me\Interop.h" />
     <ClInclude Include="me\IThing.h" />
-    <ClInclude Include="me\Lookup.h" />
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\object\action\IObjectAction.h" />
     <ClInclude Include="me\object\action\OA_Action.h" />
@@ -284,7 +284,7 @@
     <ClCompile Include="me\input\StickCondition.cpp" />
     <ClCompile Include="me\input\TriggerCondition.cpp" />
     <ClCompile Include="me\Instancing.cpp" />
-    <ClCompile Include="me\Lookup.cpp" />
+    <ClCompile Include="me\Interop.cpp" />
     <ClCompile Include="me\object\action\OA_Action.cpp" />
     <ClCompile Include="me\object\action\OA_SetComponentValue.cpp" />
     <ClCompile Include="me\object\action\OA_SetPosition.cpp" />

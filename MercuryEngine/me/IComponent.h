@@ -3,12 +3,11 @@
 
 #pragma once
 
-#include <me/UpdateParams.h>
-#include <me/Lookup.h>
 #include <me/IThing.h>
-#include <unify/FrameLite.h>
+#include <me/Interop.h>
 #include <string>
 #include <memory>
+#include <list>
 
 namespace me
 {
@@ -38,6 +37,9 @@ namespace me
 		///////////////////////////////////
 		/// Value interop functions...
 		///////////////////////////////////
+
+		virtual Interop * GetLookup() = 0;
+		virtual const Interop * GetLookup() const = 0;
 
 		/// <summary>
 		/// Returns the number of values.

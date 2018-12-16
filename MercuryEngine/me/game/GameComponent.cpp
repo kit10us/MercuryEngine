@@ -21,12 +21,12 @@ namespace {
 	};
 }
 
-Lookup * GameComponent::GetLookup()
+Interop * GameComponent::GetLookup()
 {
 	return &m_values;
 }
 
-const Lookup * GameComponent::GetLookup() const
+const Interop * GameComponent::GetLookup() const
 {
 	return &m_values;
 }
@@ -39,7 +39,6 @@ GameComponent::GameComponent( std::string typeName )
 	AddInterface( "IComponent", this );
 	AddInterface( "IGameComponent", this );
 	AddInterface( "GameComponent", this );
-	AddInterface( typeName, this );
 }
 
 GameComponent::~GameComponent()
@@ -175,7 +174,8 @@ bool GameComponent::SetValue( int index, std::string value )
 		m_enabled = unify::Cast< bool >( value );
 		return true;
 	default:
-		return m_values.SetValue( index - g_ValuesMap.size(), value );
+		m_values.SetValue( index - g_ValuesMap.size(), value );
+		return true;
 	}
 }
 

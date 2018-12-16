@@ -16,9 +16,6 @@ namespace me
 			GameComponent( std::string type );
 			~GameComponent();
 
-			Lookup * GetLookup();
-			const Lookup * GetLookup() const;
-
 		protected:
 			void AddInterface( std::string name, me::IThing* ptr );
 
@@ -44,6 +41,9 @@ namespace me
 			std::string SendCommand( size_t id, std::string extra ) override;
 
 		public:	// IComponent...
+			Interop * GetLookup() override;
+			const Interop * GetLookup() const override;
+
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
 			int GetValueCount() const override;
@@ -64,7 +64,7 @@ namespace me
 			IGame * m_game;
 			std::string m_typeName;
 			bool m_enabled;
-			Lookup m_values;
+			Interop m_values;
 			std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}

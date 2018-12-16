@@ -17,9 +17,6 @@ namespace me
 			protected:
 				ObjectComponent( const ObjectComponent & component );
 
-				Lookup * GetLookup();
-				const Lookup * GetLookup() const;
-
 			public:
 				ObjectComponent( std::string type, bool update, bool render );
 				~ObjectComponent();
@@ -61,6 +58,8 @@ namespace me
 				std::string GetValue( std::string name ) const override;
 				bool SetValue( std::string name, std::string value ) override;
 
+				Interop * GetLookup() override;
+				const Interop * GetLookup() const override;
 
 			public: // me::IThing...
 				std::string GetTypeName() const override;
@@ -74,7 +73,7 @@ namespace me
 				bool m_enabled;
 				bool m_update;
 				bool m_render;
-				Lookup m_values;
+				Interop m_values;
 				std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 			};
 		}

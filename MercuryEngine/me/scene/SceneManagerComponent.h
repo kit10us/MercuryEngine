@@ -38,6 +38,9 @@ namespace me
 			std::string GetValue( std::string name ) const override;
 			bool SetValue(std::string name, std::string value) override;
 
+			Interop * GetLookup() override;
+			const Interop * GetLookup() const override;
+
 		public: // me::IThing...
 			std::string GetTypeName() const override;
 			me::IThing* QueryInterface(std::string name) override;
@@ -46,7 +49,7 @@ namespace me
 		private:
 			std::string m_typeName;
 			bool m_enabled;
-			Lookup m_values;
+			Interop m_values;
 			std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}

@@ -630,9 +630,6 @@
     <ClInclude Include="me\Instancing.h">
       <Filter>me</Filter>
     </ClInclude>
-    <ClInclude Include="me\Lookup.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Mercury.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -728,6 +725,9 @@
     </ClInclude>
     <ClInclude Include="me\script\IScript.h">
       <Filter>me\script</Filter>
+    </ClInclude>
+    <ClInclude Include="me\Interop.h">
+      <Filter>me</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1136,9 +1136,6 @@
     <ClCompile Include="me\Instancing.cpp">
       <Filter>me</Filter>
     </ClCompile>
-    <ClCompile Include="me\Lookup.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\XMLConvert.cpp">
       <Filter>me</Filter>
     </ClCompile>
@@ -1198,6 +1195,9 @@
     </ClCompile>
     <ClCompile Include="me\script\IScript.cpp">
       <Filter>me\script</Filter>
+    </ClCompile>
+    <ClCompile Include="me\Interop.cpp">
+      <Filter>me</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

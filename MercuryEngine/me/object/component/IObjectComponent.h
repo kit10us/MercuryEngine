@@ -6,7 +6,6 @@
 #include <me/render/GeometryCache.h>
 #include <me/IComponent.h>
 #include <me/UpdateParams.h>
-#include <me/Lookup.h>
 #include <unify/FrameLite.h>
 #include <unify/BBox.h>
 #include <string>

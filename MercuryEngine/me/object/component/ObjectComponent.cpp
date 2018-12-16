@@ -28,12 +28,12 @@ namespace {
 	};
 }
 
-Lookup * ObjectComponent::GetLookup()
+Interop * ObjectComponent::GetLookup()
 {
 	return &m_values;
 }
 
-const Lookup * ObjectComponent::GetLookup() const
+const Interop * ObjectComponent::GetLookup() const
 {
 	return &m_values;
 }
@@ -207,7 +207,8 @@ bool ObjectComponent::SetValue( int index, std::string value )
 		m_render = unify::Cast< bool >( value );
 		return true;
 	default:
-		return m_values.SetValue( index - g_ValuesMap.size(), value );
+		m_values.SetValue( index - g_ValuesMap.size(), value );
+		return true;
 	}
 }
 
