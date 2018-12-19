@@ -97,7 +97,11 @@
     <ClInclude Include="me\input\StickCondition.h" />
     <ClInclude Include="me\input\TriggerCondition.h" />
     <ClInclude Include="me\Instancing.h" />
-    <ClInclude Include="me\Interop.h" />
+    <ClInclude Include="me\interop\CastValue.h" />
+    <ClInclude Include="me\interop\Interop.h" />
+    <ClInclude Include="me\interop\IValue.h" />
+    <ClInclude Include="me\interop\MyThing.h" />
+    <ClInclude Include="me\interop\ReferenceCast.h" />
     <ClInclude Include="me\IThing.h" />
     <ClInclude Include="me\Mercury.h" />
     <ClInclude Include="me\object\action\IObjectAction.h" />
@@ -284,7 +288,7 @@
     <ClCompile Include="me\input\StickCondition.cpp" />
     <ClCompile Include="me\input\TriggerCondition.cpp" />
     <ClCompile Include="me\Instancing.cpp" />
-    <ClCompile Include="me\Interop.cpp" />
+    <ClCompile Include="me\interop\Interop.cpp" />
     <ClCompile Include="me\object\action\OA_Action.cpp" />
     <ClCompile Include="me\object\action\OA_SetComponentValue.cpp" />
     <ClCompile Include="me\object\action\OA_SetPosition.cpp" />
@@ -385,6 +389,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="me\frameanimation\FrameAnimationKey.inl" />
+    <None Include="me\interop\MyThing.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1}</ProjectGuid>

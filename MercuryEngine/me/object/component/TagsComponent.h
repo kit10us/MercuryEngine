@@ -40,13 +40,6 @@ namespace me
 			public: // IObjectComponent...
 				IObjectComponent::ptr Duplicate() override;
 
-				int GetValueCount() const override;
-				bool ValueExists( std::string ) const override;
-				std::string GetValueName( int index ) const override;
-				int FindValueIndex( std::string name ) const override;
-				std::string GetValue( int index ) const override;
-				bool SetValue( int index, std::string value ) override;
-
 			public: // IComponent...
 
 			public: // IThing...

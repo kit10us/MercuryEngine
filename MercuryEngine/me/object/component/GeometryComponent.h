@@ -24,8 +24,19 @@ namespace me
 				GeometryComponent( render::Geometry::ptr geometry, unify::Matrix modelMatrix );
 				virtual ~GeometryComponent();
 
+				/// <summary>
+				/// Set the geometry.
+				/// </summary>
 				void SetGeometry( render::Geometry::ptr geometry );
+
+				/// <summary>
+				/// Get the geometry.
+				/// </summary>
 				render::Geometry::ptr GetGeometry();
+
+				/// <summary>
+				/// Get the geometry.
+				/// </summary>
 				const render::Geometry::ptr GetGeometry() const;
 
 				void OnStart() override;
@@ -33,23 +44,18 @@ namespace me
 
 				void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * transform ) override;
 
+				/// <summary>
+				/// Set the matrix.
+				/// </summary>
 				void SetMatrix( unify::Matrix matrix );
+				
+				/// <summary>
+				/// Get the matrix.
+				/// </summary>
 				unify::Matrix GetMatrix() const;
-
-				void SetVisible( bool visible );
-				bool GetVisible() const;
 
 			public: // IObjectComponent...
 				void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const override;
-
-				int GetValueCount() const;
-				bool ValueExists( std::string name ) const;
-				std::string GetValueName( int index ) const;
-				int FindValueIndex( std::string name ) const;
-				bool SetValue( int index, std::string value );
-				std::string GetValue( int index ) const;
-				bool SetValue( std::string name, std::string value );
-				std::string GetValue( std::string name ) const;
 
 				IObjectComponent::ptr Duplicate() override;
 

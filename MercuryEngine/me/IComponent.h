@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/IThing.h>
-#include <me/Interop.h>
+#include <me/interop/Interop.h>
 #include <string>
 #include <memory>
 #include <list>
@@ -38,47 +38,16 @@ namespace me
 		/// Value interop functions...
 		///////////////////////////////////
 
-		virtual Interop * GetLookup() = 0;
-		virtual const Interop * GetLookup() const = 0;
+		/// <summary>
+		/// Interop features allow communications between various extensions and scripts.
+		/// This function returns the interop interface.
+		/// </summamry>
+		virtual interop::Interop * GetLookup() = 0;
 
 		/// <summary>
-		/// Returns the number of values.
-		/// </summary>
-		virtual int GetValueCount() const = 0;
-
-		/// <summary>
-		/// Check if a values exists.
-		/// </summary>
-		virtual bool ValueExists( std::string ) const = 0;
-
-		/// <summary>
-		/// Get the name of a value by index.
-		/// </summary>
-		virtual std::string GetValueName( int index ) const = 0;
-
-		/// <summary>
-		/// Returns the index of a value by name.
-		/// </summary>
-		virtual int FindValueIndex( std::string name ) const = 0;
-
-		/// <summary>
-		/// Get a value by index.
-		/// </summary>
-		virtual std::string GetValue( int index ) const = 0;
-
-		/// <summary>
-		/// Get a value by name.
-		/// </summary>
-		virtual std::string GetValue( std::string name ) const = 0;
-
-		/// <summary>
-		/// Set a value by index.
-		/// </summary>
-		virtual bool SetValue( int index, std::string value ) = 0;
-
-		/// <summary>
-		/// Set a value.
-		/// </summary>
-		virtual bool SetValue( std::string name, std::string value ) = 0; 
+		/// Interop features allow communications between various extensions and scripts.
+		/// This function returns a constant version of the interop interface.
+		/// </summamry>
+		virtual const interop::Interop * GetLookup() const = 0;
 	};
 }

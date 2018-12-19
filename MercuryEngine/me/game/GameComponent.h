@@ -41,19 +41,12 @@ namespace me
 			std::string SendCommand( size_t id, std::string extra ) override;
 
 		public:	// IComponent...
-			Interop * GetLookup() override;
-			const Interop * GetLookup() const override;
+			bool GameComponent::IsEnabled() const;
 
-			bool IsEnabled() const override;
-			void SetEnabled( bool enabled ) override;
-			int GetValueCount() const override;
-			bool ValueExists( std::string ) const override;
-			std::string GetValueName( int index ) const override;
-			int FindValueIndex( std::string name ) const override;
-			std::string GetValue( int index ) const override;
-			std::string GetValue( std::string name ) const override;
-			bool SetValue( int index, std::string value ) override;
-			bool SetValue( std::string name, std::string value ) override;
+			void GameComponent::SetEnabled( bool enabled );
+
+			interop::Interop * GetLookup() override;
+			const interop::Interop * GetLookup() const override;
 
 		public: // me::IThing...
 			std::string GetTypeName() const override;
@@ -64,7 +57,7 @@ namespace me
 			IGame * m_game;
 			std::string m_typeName;
 			bool m_enabled;
-			Interop m_values;
+			interop::Interop m_values;
 			std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}

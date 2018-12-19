@@ -2,41 +2,11 @@
 // All Rights Reserved
 
 #include <me/object/component/ObjectComponent.h>
+#include <me/interop/ReferenceCast.h>
 
 using namespace me;
 using namespace object;
 using namespace component;
-
-namespace {
-	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
-	{
-		// Name, Index into value.
-		{ "typename", 0 },
-		{ "alias", 1 },
-		{ "enabled", 2 },
-		{ "update", 3 },
-		{ "render", 4 }
-	};
-
-	std::vector< std::string > g_ValuesList
-	{
-		{ "typename" },
-		{ "alias" },
-		{ "enabled" },
-		{ "update" },
-		{ "render" }
-	};
-}
-
-Interop * ObjectComponent::GetLookup()
-{
-	return &m_values;
-}
-
-const Interop * ObjectComponent::GetLookup() const
-{
-	return &m_values;
-}
 
 ObjectComponent::ObjectComponent( const ObjectComponent & component )
 	: m_typeName( component.m_typeName )
@@ -50,6 +20,12 @@ ObjectComponent::ObjectComponent( const ObjectComponent & component )
 	AddInterface( "IObjectComponent", this );
 	AddInterface( "ObjectComponent", this );
 	AddInterface( m_typeName, this );
+
+	GetLookup()->Add( "typename", interop::IValue::ptr{ new interop::ReferenceCast< std::string >( m_typeName, false, true ) } );
+	GetLookup()->Add( "alias", interop::IValue::ptr{ new interop::ReferenceCast< std::string >( m_alias ) } );
+	GetLookup()->Add( "enabled", interop::IValue::ptr{ new interop::ReferenceCast< bool >( m_enabled ) } );
+	GetLookup()->Add( "update", interop::IValue::ptr{ new interop::ReferenceCast< bool >( m_update ) } );
+	GetLookup()->Add( "render", interop::IValue::ptr{ new interop::ReferenceCast< bool >( m_render ) } );
 }
 
 ObjectComponent::ObjectComponent( std::string typeName, bool update, bool render )
@@ -63,6 +39,12 @@ ObjectComponent::ObjectComponent( std::string typeName, bool update, bool render
 	AddInterface( "IObjectComponent", this );
 	AddInterface( "ObjectComponent", this );
 	AddInterface( typeName, this );
+
+	GetLookup()->Add( "typename", interop::IValue::ptr{ new interop::ReferenceCast< std::string >( m_typeName, false, true ) } );
+	GetLookup()->Add( "alias", interop::IValue::ptr{ new interop::ReferenceCast< std::string >( m_alias ) } );
+	GetLookup()->Add( "enabled", interop::IValue::ptr{ new interop::ReferenceCast< bool >( m_enabled ) } );
+	GetLookup()->Add( "update", interop::IValue::ptr{ new interop::ReferenceCast< bool >( m_update ) } );
+	GetLookup()->Add( "render", interop::IValue::ptr{ new interop::ReferenceCast< bool >( m_render ) } );
 }
 
 ObjectComponent::~ObjectComponent()
@@ -91,7 +73,7 @@ const Object* ObjectComponent::GetObject() const
 
 void ObjectComponent::AddInterface( std::string name, me::IThing* ptr )
 {
-	m_interfaceMap[ name ] = ptr;
+	m_interfaceMap[name] = ptr;
 }
 
 void ObjectComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const
@@ -99,14 +81,14 @@ void ObjectComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matrix 
 	// DO NOTHING BY DEFAULT.
 }
 
-bool ObjectComponent::Updateable() const 
-{ 
-	return m_update; 
+bool ObjectComponent::Updateable() const
+{
+	return m_update;
 }
 
-bool ObjectComponent::Renderable() const 
+bool ObjectComponent::Renderable() const
 {
-	return m_render; 
+	return m_render;
 }
 
 void ObjectComponent::OnAttach( Object * object )
@@ -114,32 +96,32 @@ void ObjectComponent::OnAttach( Object * object )
 	m_object = object;
 }
 
-void ObjectComponent::OnDetach( Object * object ) 
+void ObjectComponent::OnDetach( Object * object )
 {
 	m_object = nullptr;
 }
 
-void ObjectComponent::OnStart() 
+void ObjectComponent::OnStart()
 {
 	// STUBBED
 }
 
-void ObjectComponent::OnUpdate( const UpdateParams & params ) 
+void ObjectComponent::OnUpdate( const UpdateParams & params )
 {
 	// STUBBED
 }
 
-void ObjectComponent::CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) 
+void ObjectComponent::CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame )
 {
 	// STUBBED
 }
 
-void ObjectComponent::OnSuspend() 
+void ObjectComponent::OnSuspend()
 {
 	// STUBBED
 }
 
-void ObjectComponent::OnResume() 
+void ObjectComponent::OnResume()
 {
 	// STUBBED
 }
@@ -154,99 +136,20 @@ void ObjectComponent::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-int ObjectComponent::GetValueCount() const
+interop::Interop * ObjectComponent::GetLookup()
 {
-	return (int)g_ValuesList.size() + m_values.Count();
+	return &m_values;
 }
 
-bool ObjectComponent::ValueExists( std::string name ) const
+const interop::Interop * ObjectComponent::GetLookup() const
 {
-	auto && itr = g_ValuesMap.find( name );
-	if ( itr != g_ValuesMap.end() )
-	{
-		return true;
-	}
-	return m_values.Exists( name );
-}
-
-std::string ObjectComponent::GetValueName( int index ) const
-{
-	if ( index < (int)g_ValuesList.size() )
-	{
-		return g_ValuesList[ index ];
-	}
-	return m_values.GetName( index - (int)g_ValuesList.size() );
-}
-
-int ObjectComponent::FindValueIndex( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if ( itr != g_ValuesMap.end() )
-	{
-		return itr->second;
-	}
-	return m_values.Find( name ) + g_ValuesMap.size();
-}
-
-bool ObjectComponent::SetValue( int index, std::string value )
-{
-	switch ( index )
-	{
-	case 0:
-		return false;
-	case 1: 
-		m_alias = value;
-		return true;
-	case 2:
-		m_enabled = unify::Cast< bool >( value );
-		return true;
-	case 3:
-		m_update = unify::Cast< bool >( value );
-		return true;
-	case 4:
-		m_render = unify::Cast< bool >( value );
-		return true;
-	default:
-		m_values.SetValue( index - g_ValuesMap.size(), value );
-		return true;
-	}
-}
-
-std::string ObjectComponent::GetValue( int index ) const
-{
-	switch ( index )
-	{
-	case 0:
-		return m_typeName;
-	case 1:
-		return m_alias;
-	case 2:
-		return unify::Cast< std::string >( m_enabled );
-	case 3:
-		return unify::Cast< std::string >( m_update );
-	case 4:
-		return unify::Cast< std::string >( m_render );
-	default:
-		return m_values.GetValue( index - g_ValuesMap.size() );
-	}
-}
-
-bool ObjectComponent::SetValue( std::string name, std::string value )
-{
-	int index = FindValueIndex( name );
-	return SetValue( index, value );
-}
- 
-std::string ObjectComponent::GetValue( std::string name ) const
-{
-	int index = FindValueIndex( name );
-	return GetValue( index );
+	return &m_values;
 }
 
 me::IThing* ObjectComponent::QueryInterface( std::string name )
 {
 	auto itr = m_interfaceMap.find( name );
-	if ( itr == m_interfaceMap.end() )
+	if (itr == m_interfaceMap.end())
 	{
 		return nullptr;
 	}

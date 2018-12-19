@@ -4,27 +4,12 @@
 #include <me/object/component/GeometryComponent.h>
 #include <me/object/Object.h>
 #include <me/render/GeometryCache.h>
+#include <me/interop/MyThing.h>
 
 using namespace me;
 using namespace object;
 using namespace component;
 using namespace render;
-
-namespace {
-	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
-	{
-		// Name, Index into value.
-		{ "visible", 1 },
-		{ "source", 2 }
-	};
-
-	std::vector< std::string > g_ValuesList
-	{
-		{ "visible" },
-		{ "source" }
-	};
-
-}
 
 GeometryComponent::GeometryComponent( GeometryComponent & component )
 	: ObjectComponent( component )
@@ -32,28 +17,67 @@ GeometryComponent::GeometryComponent( GeometryComponent & component )
 	, m_geometryInstanceData( component.m_geometry->CreateInstanceData() )
 	, m_visible{ true }
 {
+	{
+		me::interop::Getter< const me::object::component::IObjectComponent * > geometryNameGetter =
+			[&]( const me::object::component::IObjectComponent * component ) -> std::string {
+			return dynamic_cast< const GeometryComponent * >(component)->GetGeometry()->GetName();
+		};
+
+		GetLookup()->Add( "geometryName", interop::IValue::ptr{
+			new interop::MyThing< me::object::component::IObjectComponent * >( this, geometryNameGetter ) 
+		} ); 
+	}
+
+	{
+		me::interop::Getter< const me::object::component::IObjectComponent * > geometrySourceGetter =
+			[&]( const me::object::component::IObjectComponent * component ) -> std::string {
+			return dynamic_cast< const GeometryComponent * >(component)->GetGeometry()->GetSource();
+		};
+
+		GetLookup()->Add( "geometrySource", interop::IValue::ptr{
+			new interop::MyThing< me::object::component::IObjectComponent * >( this, geometrySourceGetter ) 
+		} );
+	}
 }
 
 GeometryComponent::GeometryComponent()
 	: ObjectComponent( "Geometry", false, true )
 	, m_visible{ true }
 {
+	{
+		me::interop::Getter< const me::object::component::IObjectComponent * > geometryNameGetter =
+			[&]( const me::object::component::IObjectComponent * component ) -> std::string {
+			return dynamic_cast< const GeometryComponent * >(component)->GetGeometry()->GetName();
+		};
+
+		GetLookup()->Add( "geometryName", interop::IValue::ptr{
+			new interop::MyThing< GeometryComponent * >( this, geometryNameGetter )
+		} );
+	}
+
+	{
+		me::interop::Getter< const me::object::component::IObjectComponent * > geometrySourceGetter =
+			[&]( const me::object::component::IObjectComponent * component ) -> std::string {
+			return dynamic_cast< const GeometryComponent * >(component)->GetGeometry()->GetSource();
+		};
+
+		GetLookup()->Add( "geometrySource", interop::IValue::ptr{
+			new interop::MyThing< me::object::component::IObjectComponent * >( this, geometrySourceGetter )
+		} );
+	}
 }
 
 GeometryComponent::GeometryComponent( Geometry::ptr geometry )
-	: ObjectComponent( "Geometry", false, true )
-	, m_geometry( geometry )
-	, m_geometryInstanceData( geometry->CreateInstanceData() )
-	, m_visible{ true }
+	: GeometryComponent()
 {
+	m_geometry = geometry;
+	m_geometryInstanceData = me::render::GeometryInstanceData::ptr( geometry->CreateInstanceData() );
 }
 
 GeometryComponent::GeometryComponent( Geometry::ptr geometry, unify::Matrix modelMatrix )
-	: ObjectComponent( "Geometry", false, true )
-	, m_geometry( geometry )
-	, m_geometryInstanceData( geometry->CreateInstanceData() )
-	, m_visible{ true }
+	: GeometryComponent( geometry )
 {
+	m_geometryInstanceData = render::GeometryInstanceData::ptr( geometry->CreateInstanceData() );
 	m_geometryInstanceData->SetMatrix( modelMatrix );
 }
 
@@ -65,16 +89,6 @@ void GeometryComponent::SetGeometry( Geometry::ptr geometry )
 {
 	m_geometry = geometry;
 	m_geometryInstanceData.reset( geometry->CreateInstanceData() );
-}
-
-void GeometryComponent::SetVisible( bool visible )
-{
-	m_visible = visible;
-}
-
-bool GeometryComponent::GetVisible() const
-{
-	return m_visible;
 }
 
 Geometry::ptr GeometryComponent::GetGeometry()
@@ -127,100 +141,6 @@ void GeometryComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matri
 
 	bbox += m_geometry->GetBBox();
 	matrix.TransformBBox( bbox );
-}
-
-
-int GeometryComponent::GetValueCount() const
-{
-	return ObjectComponent::GetValueCount() + g_ValuesList.size();
-}
-
-bool GeometryComponent::ValueExists( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if( itr != g_ValuesMap.end() )
-	{
-		return true;
-	}
-
-	return ObjectComponent::ValueExists( name );
-}
-
-std::string GeometryComponent::GetValueName( int index ) const
-{
-	if( index < ObjectComponent::GetValueCount() )
-	{
-		return ObjectComponent::GetValueName( index );
-	}
-
-	int myIndex = index - ObjectComponent::GetValueCount();
-	if( myIndex < (int)g_ValuesList.size() )
-	{
-		return g_ValuesList[myIndex];
-	}
-
-	return std::string();
-}
-
-int GeometryComponent::FindValueIndex( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if( itr != g_ValuesMap.end() )
-	{
-		return itr->second;
-	}
-	return ObjectComponent::FindValueIndex( name );
-}
-
-bool GeometryComponent::SetValue( int index, std::string value )
-{
-	if( index <= ObjectComponent::GetValueCount() )
-	{
-		return ObjectComponent::SetValue( index, value );
-	}
-
-	int myIndex = index - ObjectComponent::GetValueCount();
-	switch( myIndex )
-	{
-	case 0:
-		m_visible = unify::Cast< bool >( value );
-		return true;
-
-	default:
-		return false;
-	}
-}
-
-std::string GeometryComponent::GetValue( int index ) const
-{
-	if( index <= ObjectComponent::GetValueCount() )
-	{
-		return ObjectComponent::GetValue( index );
-	}
-
-	int myIndex = index - ObjectComponent::GetValueCount();
-	switch( myIndex )
-	{
-	case 0:
-		return unify::Cast< std::string >( m_visible );
-	case 1:
-		return ! m_geometry ? "<null>" : m_geometry->GetSource();
-
-	default:
-		return std::string();
-	}
-}
-
-bool GeometryComponent::SetValue( std::string name, std::string value )
-{
-	int index = FindValueIndex( name );
-	return SetValue( index, value );
-}
-
-std::string GeometryComponent::GetValue( std::string name ) const
-{
-	int index = FindValueIndex( name );
-	return GetValue( index );
 }
 
 IObjectComponent::ptr GeometryComponent::Duplicate()

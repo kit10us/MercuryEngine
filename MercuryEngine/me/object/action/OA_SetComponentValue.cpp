@@ -25,6 +25,6 @@ SetComponentValue::SetComponentValue( std::string componentName, std::string com
 
 bool SetComponentValue::Perform( Object* object, unify::TimeDelta delta )
 {
-	object->GetComponent( m_componentName, m_componentAlias )->SetValue( m_valueName, m_value );
+	object->GetComponent( m_componentName, m_componentAlias )->GetLookup()->SetValue( m_valueName, m_value );
 	return true;
 }

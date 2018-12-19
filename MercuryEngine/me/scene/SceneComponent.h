@@ -45,17 +45,9 @@ namespace me
 		public:	// IComponent...
 			bool IsEnabled() const override;
 			void SetEnabled( bool enabled ) override;
-			int GetValueCount() const override;
-			bool ValueExists( std::string ) const override;
-			std::string GetValueName( int index ) const override;
-			int FindValueIndex( std::string name ) const override;
-			std::string GetValue( int index ) const override;
-			std::string GetValue( std::string name ) const override;
-			bool SetValue( int index, std::string value ) override;
-			bool SetValue( std::string name, std::string value ) override;
 			
-			Interop * GetLookup() override;
-			const Interop * GetLookup() const override;
+			interop::Interop * GetLookup() override;
+			const interop::Interop * GetLookup() const override;
 
 		public: // me::IThing...
 			std::string GetTypeName() const override;
@@ -67,7 +59,7 @@ namespace me
 			std::string m_typeName;
 			bool m_enabled;
 			IScene* m_scene;
-			Interop m_values;
+			interop::Interop m_values;
 			std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 		};
 	}

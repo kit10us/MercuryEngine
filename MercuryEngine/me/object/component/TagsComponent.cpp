@@ -64,6 +64,7 @@ IObjectComponent::ptr TagsComponent::Duplicate()
 	return IObjectComponent::ptr( duplicate );
 }
 
+/*
 int TagsComponent::GetValueCount() const
 {
 	return ObjectComponent::GetValueCount() + m_tagValues.size();
@@ -146,3 +147,4 @@ std::string TagsComponent::GetValue( int index ) const
 
 	return std::string();
 }
+*/

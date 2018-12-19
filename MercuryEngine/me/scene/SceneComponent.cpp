@@ -122,86 +122,12 @@ void SceneComponent::SetEnabled( bool enabled )
 	m_enabled = enabled;
 }
 
-int SceneComponent::GetValueCount() const
-{
-	return (int)g_ValuesList.size() + m_values.Count();
-}
-
-bool SceneComponent::ValueExists( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if ( itr != g_ValuesMap.end() )
-	{
-		return true;
-	}
-	return m_values.Exists( name );
-}
-
-std::string SceneComponent::GetValueName( int index ) const
-{
-	if ( index < (int)g_ValuesList.size() )
-	{
-		return g_ValuesList[ index ];
-	}
-	return m_values.GetName( index - (int)g_ValuesList.size() );
-}
-
-int SceneComponent::FindValueIndex( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if ( itr != g_ValuesMap.end() )
-	{
-		return itr->second;
-	}
-	return m_values.Find( name ) + g_ValuesMap.size();
-}
-
-bool SceneComponent::SetValue( int index, std::string value )
-{
-	switch ( index )
-	{
-	case 0:
-		return false;
-	case 1:
-		m_enabled = unify::Cast< bool >( value );
-		return true;
-	default:
-		m_values.SetValue( index - g_ValuesMap.size(), value );
-		return true;
-	}
-}
-
-bool SceneComponent::SetValue( std::string name, std::string value )
-{
-	int index = FindValueIndex( name );
-	return SetValue( index, value );
-}
-
-std::string SceneComponent::GetValue( int index ) const
-{
-	switch ( index )
-	{
-	case 0:
-		return m_typeName;
-	case 1:
-		return unify::Cast< std::string >( m_enabled );
-	default:
-		return m_values.GetValue( index - g_ValuesMap.size() );
-	}
-}
- 
-std::string SceneComponent::GetValue( std::string name ) const
-{
-	int index = FindValueIndex( name );
-	return GetValue( index );
-}
-
-Interop * SceneComponent::GetLookup()
+interop::Interop * SceneComponent::GetLookup()
 {
 	return &m_values;
 }
 
-const Interop * SceneComponent::GetLookup() const
+const interop::Interop * SceneComponent::GetLookup() const
 {
 	return &m_values;
 }

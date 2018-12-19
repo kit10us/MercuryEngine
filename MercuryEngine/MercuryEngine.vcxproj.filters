@@ -88,6 +88,9 @@
     <Filter Include="me\script">
       <UniqueIdentifier>{cd89aa73-1bd5-48bf-ad7a-9596c2625234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\interop">
+      <UniqueIdentifier>{01a81207-3fab-4de3-bd88-9c1526479245}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -726,8 +729,20 @@
     <ClInclude Include="me\script\IScript.h">
       <Filter>me\script</Filter>
     </ClInclude>
-    <ClInclude Include="me\Interop.h">
-      <Filter>me</Filter>
+    <ClInclude Include="me\interop\Interop.h">
+      <Filter>me\interop</Filter>
+    </ClInclude>
+    <ClInclude Include="me\interop\IValue.h">
+      <Filter>me\interop</Filter>
+    </ClInclude>
+    <ClInclude Include="me\interop\ReferenceCast.h">
+      <Filter>me\interop</Filter>
+    </ClInclude>
+    <ClInclude Include="me\interop\CastValue.h">
+      <Filter>me\interop</Filter>
+    </ClInclude>
+    <ClInclude Include="me\interop\MyThing.h">
+      <Filter>me\interop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1196,13 +1211,16 @@
     <ClCompile Include="me\script\IScript.cpp">
       <Filter>me\script</Filter>
     </ClCompile>
-    <ClCompile Include="me\Interop.cpp">
-      <Filter>me</Filter>
+    <ClCompile Include="me\interop\Interop.cpp">
+      <Filter>me\interop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="me\frameanimation\FrameAnimationKey.inl">
       <Filter>me\frameanimation</Filter>
+    </None>
+    <None Include="me\interop\MyThing.inl">
+      <Filter>me\interop</Filter>
     </None>
   </ItemGroup>
 </Project>

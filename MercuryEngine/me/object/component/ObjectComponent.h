@@ -47,19 +47,8 @@ namespace me
 				bool IsEnabled() const override;
 				void SetEnabled( bool enabled ) override;
 
-				int GetValueCount() const override;
-				bool ValueExists( std::string ) const override;
-				std::string GetValueName( int index ) const override;
-				int FindValueIndex( std::string name ) const override;
-				std::string GetValue( int index ) const override;
-				bool SetValue( int index, std::string value ) override;
-
-				// Help functions...
-				std::string GetValue( std::string name ) const override;
-				bool SetValue( std::string name, std::string value ) override;
-
-				Interop * GetLookup() override;
-				const Interop * GetLookup() const override;
+				interop::Interop * GetLookup() override;
+				const interop::Interop * GetLookup() const override;
 
 			public: // me::IThing...
 				std::string GetTypeName() const override;
@@ -73,7 +62,7 @@ namespace me
 				bool m_enabled;
 				bool m_update;
 				bool m_render;
-				Interop m_values;
+				interop::Interop m_values;
 				std::map< std::string, me::IThing*, unify::CaseInsensitiveLessThanTest > m_interfaceMap;
 			};
 		}
