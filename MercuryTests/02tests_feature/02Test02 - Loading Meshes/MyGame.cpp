@@ -7,27 +7,19 @@
 
 using namespace me;
 
-class MainSceneFactory : public me::scene::ISceneFactory
-{
-public:
-	me::scene::IScene::ptr Produce( me::game::Game * gameInstance )
-	{
-		return me::scene::IScene::ptr( new MainScene( gameInstance ) );
-	}
-
-	std::string GetName() const
-	{
-		return "Main";
-	}
-};
-
 class MyGame : public game::Game
 {
 public:
 	MyGame()
-		: Game( me::scene::ISceneFactory::ptr(new MainSceneFactory()), unify::Path( "setup_models.xml" ) )
+		: Game( "Main", unify::Path( "setup_models.xml" ) )
 	{
 	}
+
+	void AddScenes( scene::SceneManager * sceneManager ) override
+	{
+		sceneManager->AddScene( "Main", me::scene::IScene::ptr( new MainScene( this ) ) );
+	}
+
 } myGame;
 
 RegisterGame( myGame );

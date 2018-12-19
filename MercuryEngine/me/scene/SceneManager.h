@@ -23,7 +23,7 @@ namespace me
             void Destroy();
 
 			size_t GetSceneCount() const;
-            void AddScene( std::string name, ISceneFactory::ptr sceneFactory );
+            void AddScene( std::string name, IScene::ptr sceneFactory );
             void AddScene( std::string name );
 			
 			int FindSceneIndex( std::string name );
@@ -57,8 +57,7 @@ namespace me
 			std::string GetWhat() const;
 
 		private:
-			std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanTest > m_scenes;
-			std::vector< ISceneFactory::ptr > m_sceneList;
+			unify::Lookup< std::string, IScene::ptr > m_scenes;
 			IScene::ptr m_currentScene;
 			std::string m_previousSceneName;
 			unsigned long long m_updateTick;

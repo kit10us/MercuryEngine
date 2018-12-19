@@ -11,7 +11,6 @@
 #include <me/game/component/GC_ActionFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/scene/SceneManager.h>
-#include <me/scene/DefaultSceneFactory.h>
 #include <me/factory/EffectFactories.h>
 #include <me/factory/TextureFactory.h>
 #include <me/factory/VertexShaderFactory.h>
@@ -67,7 +66,7 @@ void Game::Shutdown()
 Game::Game( unify::Path setup)
 	: m_title{ "Mercury Engine" }
 	, m_os{ new os::DefaultOS( this ) }
-	, m_mainSceneFactory{ new me::scene::DefaultSceneFactory( "Main" ) }
+	, m_startScene{ "Main" }
 	, m_setup(setup)
 	, m_isQuitting(false)
 	, m_totalStartupTime{}
@@ -76,10 +75,10 @@ Game::Game( unify::Path setup)
 {
 }
 
-Game::Game(scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup )
+Game::Game( std::string startScene, unify::Path setup )
 	: m_title{ "Mercury Engine" }
 	, m_os{ new os::DefaultOS( this ) }
-	, m_mainSceneFactory{ mainSceneFactory }
+	, m_startScene{ startScene }
 	, m_setup( setup )
 	, m_isQuitting( false )
 	, m_totalStartupTime{}
@@ -435,21 +434,29 @@ void Game::Initialize( os::OSParameters osParameters )
 
 	Debug()->LogLine( "Game::Initialize", "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s" );
 
-	Debug()->LogLine( "Game::Initialize", "Creating Main Scene" );
+	Debug()->LogLine( "Game::Initialize", "Adding user specified scenes." );
 	auto sceneManager = GetComponentT< scene::SceneManager >();
-	if ( m_mainSceneFactory )
+	AddScenes( sceneManager );
+	if ( ! m_startScene.empty() )
 	{
-		sceneManager->AddScene(m_mainSceneFactory->GetName(), m_mainSceneFactory);
-		Debug()->LogLine( "Game::Initialize", "Main Scene created" );
+		Debug()->LogLine( "Game::Initialize", "Creating starting scene." );
+		sceneManager->ChangeScene( m_startScene );
 	}
 	else
 	{
-		Debug()->LogLine( "Game::Initialize", "No main screen created" );
+		Debug()->LogLine( "Game::Initialize", "No start scene specified." );
 	}
+}
+
+void Game::AddScenes( scene::SceneManager * sceneManager )
+{
+	// STUBBED
+	sceneManager;
 }
 
 void Game::OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point )
 {
+	// STUBBED
 	files; // Not used.
 	point; // Not used.
 }

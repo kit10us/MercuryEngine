@@ -298,7 +298,7 @@ void MainScene::OnStart()
 	}
 }
 
-void MainScene::OnUpdate( const me::UpdateParams & params )
+void MainScene::OnUpdate( const UpdateParams & params )
 {
 	if( m_newMove != 0 )
 	{

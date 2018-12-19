@@ -9,7 +9,6 @@
 
 class MainScene : public me::scene::Scene
 {
-	me::render::Effect::ptr effect;
 	me::render::IVertexBuffer::ptr vertexBuffer;
 	unify::Quaternion q;
 

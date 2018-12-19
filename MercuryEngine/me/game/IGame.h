@@ -10,8 +10,7 @@
 #include <me/render/RenderParams.h>
 #include <me/action/IAction.h>
 #include <me/object/action/IObjectAction.h>
-#include <me/scene/IScene.h>
-#include <me/scene/ISceneFactory.h>
+#include <me/scene/SceneManager.h>
 #include <me/game/IGameComponent.h>
 #include <me/UpdateParams.h>
 #include <me/ICommandListener.h>
@@ -35,6 +34,10 @@ namespace me
 		class IGame
 		{
 		protected:
+			/// <summary>
+			/// Add scenes to the scene manager.
+			/// </summary>
+			virtual void AddScenes( scene::SceneManager * sceneManager ) = 0;
 
 			/// <summary>
 			/// Setup is the initial event that is called to setup the game. It is the earliest point to instigate configuration.

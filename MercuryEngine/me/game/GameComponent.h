@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/game/IGameComponent.h>
-#include <me/game/IGame.h>
 
 namespace me
 {

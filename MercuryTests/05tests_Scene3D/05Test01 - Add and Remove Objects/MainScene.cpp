@@ -83,7 +83,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 				PrimitiveList & plProg = ( (Mesh*)meshProg.get() )->GetPrimitiveList();
 
 				auto component = AddGeometryComponent( object, meshProg );
-				component->SetValue( "alias", "cube" );
+				component->GetLookup()->SetValue( "alias", "cube" );
 
 			}
 			else
@@ -96,7 +96,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 				PrimitiveList & plProg = ( (Mesh*)meshProg.get() )->GetPrimitiveList();
 
 				auto component = AddGeometryComponent( object, meshProg );
-				component->SetValue( "alias", "sphere" );
+				component->GetLookup()->SetValue( "alias", "sphere" );
 			}
 		}
 	}

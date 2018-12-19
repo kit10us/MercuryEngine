@@ -5,7 +5,6 @@
 #include <me/scene/Scene.h>
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
-#include <me/scene/DefaultSceneFactory.h>
 #include <qxml/Document.h>
 
 using namespace me;
@@ -33,48 +32,32 @@ SceneManager::~SceneManager()
 
 void SceneManager::Destroy()
 {
-    m_scenes.clear();
+    m_scenes.Clear();
 }
 
 size_t SceneManager::GetSceneCount() const
 {
-	return m_scenes.size();
+	return m_scenes.Count();
 }
 
-void SceneManager::AddScene( std::string name, ISceneFactory::ptr sceneFactory )
+void SceneManager::AddScene( std::string name, IScene::ptr scene )
 {
-	auto itr = m_scenes.find( name );
-	if ( itr != m_scenes.end() )
+	if( m_scenes.Exists( name ) )
 	{
 		throw exception::FailedToCreate( "Attempted to add scene \"" + name + "\", but it already exists!" );
 	}
 
-	m_scenes[ name ] = m_sceneList.size();
-	m_sceneList.push_back( sceneFactory );
-
-	if ( ! m_currentScene )
-	{
-		ChangeScene( name );
-	}
-}
-
- void SceneManager::AddScene( std::string name )
-{
-	auto sceneFactory = new DefaultSceneFactory( name );
-	AddScene( name, ISceneFactory::ptr( sceneFactory ) );	
+	m_scenes.Add( name, scene );
 }
 
 int SceneManager::FindSceneIndex( std::string name )
 {
-	auto itr = m_scenes.find( name );
-	return itr == m_scenes.end() ? -1 : itr->second;
+	return m_scenes.Find( name );
 }
 													  
 std::string SceneManager::GetSceneName( int index )
 {
-	if ( index >= (int)m_sceneList.size() ) return std::string();
-	auto sceneFactory = m_sceneList[index];
-	return sceneFactory->GetName();
+	return m_scenes.GetName( index );
 }
 
 IScene* SceneManager::GetCurrentScene()
@@ -89,13 +72,7 @@ std::string SceneManager::GetPreviousSceneName()
 
 bool SceneManager::ChangeScene( std::string name )
 {
-	// Find scene factory...
-	int index = FindSceneIndex(name);
-	ISceneFactory::ptr sceneFactory = m_sceneList[ index ];
-	if ( ! sceneFactory )
-	{
-		return false;
-	}
+	IScene::ptr newScene = m_scenes.GetValue( name );
 	
 	// Leave current scene...
 	if ( m_currentScene )
@@ -115,7 +92,7 @@ bool SceneManager::ChangeScene( std::string name )
 	}
 	
 	// Create new scene...
-	m_currentScene = sceneFactory->Produce( dynamic_cast< me::game::Game* >( m_game ) );
+	m_currentScene = newScene;
 
 	// Let all components mess with the scene first...
 	for (auto component : m_components)

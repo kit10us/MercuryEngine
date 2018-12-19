@@ -372,9 +372,6 @@
     <ClInclude Include="me\scene\ISceneFactory.h">
       <Filter>me\scene</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\DefaultSceneFactory.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\object\action\IObjectAction.h">
       <Filter>me\object\action</Filter>
     </ClInclude>

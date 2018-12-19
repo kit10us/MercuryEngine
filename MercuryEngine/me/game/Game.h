@@ -32,12 +32,13 @@ namespace me
 		protected: // User overrides...
 
 			virtual bool Setup( os::IOS * os ) override;
+			virtual void AddScenes( scene::SceneManager * sceneManager ) override;
 			virtual void Startup() override;
 			virtual void Shutdown() override;
 
 		public:
 			Game( unify::Path setup = unify::Path( "setup.xml" ) );
-			Game( scene::ISceneFactory::ptr mainSceneFactory, unify::Path setup = unify::Path( "setup.xml" ) );
+			Game( std::string startScene, unify::Path setup = unify::Path( "setup.xml" ) );
 			virtual ~Game();
 
 			os::OSParameters GetOSParameters() const override;
@@ -125,7 +126,7 @@ namespace me
 
 		private:
 			std::string m_title;
-			scene::ISceneFactory::ptr m_mainSceneFactory;
+			std::string m_startScene;
 			os::OSParameters m_osParameters;
 			std::list< me::game::IGameComponent::ptr > m_components;
 			

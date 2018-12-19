@@ -3,7 +3,6 @@
 
 #include <MEWinMain.h>
 #include <me/game/Game.h>
-#include <me/scene/DefaultSceneFactory.h>
 
 using namespace me;
 

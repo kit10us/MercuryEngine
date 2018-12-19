@@ -167,7 +167,6 @@
     <ClInclude Include="me\render\Viewport.h" />
     <ClInclude Include="me\scene\AutoBBoxSceneComponent.h" />
     <ClInclude Include="me\scene\ComponentInstance.h" />
-    <ClInclude Include="me\scene\DefaultSceneFactory.h" />
     <ClInclude Include="me\scene\GrowableObjectStack.h" />
     <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IOctreeNode.h" />

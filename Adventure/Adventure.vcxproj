@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="source\Adventure.cpp" />
     <ClCompile Include="source\InventoryObjectComponent.cpp" />
+    <ClCompile Include="source\LoadScene.cpp" />
     <ClCompile Include="source\MainScene.cpp" />
     <ClCompile Include="source\PlayerMovementButtons.cpp" />
     <ClCompile Include="source\PlayerMovementStick.cpp" />
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\InventoryObjectComponent.h" />
+    <ClInclude Include="source\LoadScene.h" />
     <ClInclude Include="source\MainScene.h" />
     <ClInclude Include="source\PlayerMovementButtons.h" />
     <ClInclude Include="source\PlayerMovementStick.h" />

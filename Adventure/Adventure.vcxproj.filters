@@ -39,6 +39,9 @@
     <ClCompile Include="source\PlayerMovementButtons.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\LoadScene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\MainScene.h">
@@ -69,6 +72,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\PlayerMovementButtons.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\LoadScene.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
