@@ -159,7 +159,7 @@ bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & elemen
 	{
 		for ( auto && element : buffer )
 		{
-			if ( unify::StringIs( element.SemanticName, toFind.SemanticName ) && element.SemanticIndex == toFind.SemanticIndex && element.InputSlot == toFind.InputSlot )
+			if ( unify::string::StringIs( element.SemanticName, toFind.SemanticName ) && element.SemanticIndex == toFind.SemanticIndex && element.InputSlot == toFind.InputSlot )
 			{
 				elementOut = element;
 				return true;

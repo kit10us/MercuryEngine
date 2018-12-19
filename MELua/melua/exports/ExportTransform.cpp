@@ -149,12 +149,12 @@ int Transform_PreMul( lua_State * state )
 
 	std::string secondType = GetTypename(state, 2);
 
-	if (unify::StringIs(secondType, "Quaternion"))
+	if (unify::string::StringIs(secondType, "Quaternion"))
 	{
 		unify::Quaternion q = CheckQuaternion(state, 2)->q;
 		proxy->transform->PreMul(q);
 	}
-	else if (unify::StringIs(secondType, "Matrix"))
+	else if (unify::string::StringIs(secondType, "Matrix"))
 	{ 
 		unify::Matrix m = CheckUserType< MatrixProxy >(state, 2)->matrix;
 		proxy->transform->PreMul(m);
@@ -176,12 +176,12 @@ int Transform_PostMul( lua_State * state )
 
 	std::string secondType = GetTypename(state, 2);
 
-	if (unify::StringIs(secondType, "Quaternion"))
+	if (unify::string::StringIs(secondType, "Quaternion"))
 	{
 		unify::Quaternion q = CheckQuaternion(state, 2)->q;
 		proxy->transform->PostMul(q);
 	}
-	else if (unify::StringIs(secondType, "Matrix"))
+	else if (unify::string::StringIs(secondType, "Matrix"))
 	{
 		unify::Matrix m = CheckUserType< MatrixProxy >(state, 2)->matrix;
 		proxy->transform->PostMul(m);

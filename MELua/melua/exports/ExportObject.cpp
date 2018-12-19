@@ -291,7 +291,7 @@ namespace melua
 			return 1;
 		}
 
-		if( unify::StringIs( component->GetTypeName(), "Camera" ) )
+		if( unify::string::StringIs( component->GetTypeName(), "Camera" ) )
 		{
 			return PushCameraComponent( state, component );
 		}
@@ -332,12 +332,12 @@ namespace melua
 
 		std::string type = GetTypename( state, 2 );
 
-		if( unify::StringIs( type, "CameraComponent" ) )
+		if( unify::string::StringIs( type, "CameraComponent" ) )
 		{
 			CameraComponentProxy * cameraComponentProxy = CheckCameraComponent( state, 2 );
 			objectProxy->object->AddComponent( cameraComponentProxy->component );
 		}
-		else if( unify::StringIs( type, "ObjectComponent" ) )
+		else if( unify::string::StringIs( type, "ObjectComponent" ) )
 		{
 			ObjectComponentProxy * cameraComponentProxy = CheckUserType< ObjectComponentProxy >( state, 2 );
 			objectProxy->object->AddComponent( cameraComponentProxy->component );

@@ -31,13 +31,13 @@ int VertexShader_Constructor( lua_State * state )
 		auto type = GetTypename( state, 1 );
 
 		// Extract from an effect...
-		if( top == 1 && unify::StringIs( type, EffectProxy::Name() ) )
+		if( top == 1 && unify::string::StringIs( type, EffectProxy::Name() ) )
 		{
 			Effect::ptr effect = CheckUserType< EffectProxy >( state, 1 )->effect;
 			return Push< VertexShaderProxy >( state, { effect->GetVertexShader() } );
 		}
 
-		if( top == 1 && unify::StringIs( type, "String" ) )
+		if( top == 1 && unify::string::StringIs( type, "String" ) )
 		{
 			std::string value = Check< std::string >( state, 1 );
 			unify::Path asPath( value );
@@ -60,7 +60,7 @@ int VertexShader_Constructor( lua_State * state )
 			}
 		}
 
-		if( top == 2 && unify::StringIs( type, "String" ) && unify::StringIs( GetTypename( state, 2 ), "String" ) )
+		if( top == 2 && unify::string::StringIs( type, "String" ) && unify::string::StringIs( GetTypename( state, 2 ), "String" ) )
 		{
 			std::string name = Check< std::string >( state, 1 );
 			unify::Path path( Check< std::string >( state, 2 ) );

@@ -51,7 +51,7 @@ namespace me
 
 			game::IGame * m_game;
 			std::vector< IInputDevice::ptr > m_sourceList;
-			std::map< std::string, IInputDevice::ptr, unify::CaseInsensitiveLessThanTest > m_sourceMap;
+			std::map< std::string, IInputDevice::ptr, unify::string::CaseInsensitiveLessThanTest > m_sourceMap;
 		};
 	}
 }

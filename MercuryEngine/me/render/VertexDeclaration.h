@@ -75,7 +75,7 @@ namespace me
 			struct BufferItem {
 				size_t buffer, item;
 			};
-			typedef std::map< std::string, BufferItem, unify::CaseInsensitiveLessThanTest > ElementMap;
+			typedef std::map< std::string, BufferItem, unify::string::CaseInsensitiveLessThanTest > ElementMap;
 
 			size_t m_numberOfSlots;
 			std::vector< VertexElement > m_allElements;

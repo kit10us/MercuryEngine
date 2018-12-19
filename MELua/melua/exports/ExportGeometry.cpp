@@ -36,7 +36,7 @@ int Geometry_Constructor( lua_State * state )
 		if( args == 1 )
 		{
 			std::string type1 = GetTypename( state, 1 );
-			if( unify::StringIs( type1, "string" ) )
+			if( unify::string::StringIs( type1, "string" ) )
 			{ // Find an existing geometry...
 				std::string name = lua_tostring( state, 1 );
 				geometry = gameInstance->GetManager< Geometry >()->Find( name );
@@ -49,7 +49,7 @@ int Geometry_Constructor( lua_State * state )
 					PushUserType< GeometryProxy >( state, { geometry } );
 				}
 			}
-			else if( unify::StringIs( type1, "ShapeParameters" ) )
+			else if( unify::string::StringIs( type1, "ShapeParameters" ) )
 			{ // 
 				ShapeParameters * parameters = CheckShapeParameters( state, 1 );
 				geometry = sg::CreateShape( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters );
@@ -64,14 +64,14 @@ int Geometry_Constructor( lua_State * state )
 		{
 			std::string type1 = GetTypename( state, 1 );
 			std::string type2 = GetTypename( state, 2 );
-			if( unify::StringIs( type1, "string" ) && unify::StringIs( type2, "string" ) )
+			if( unify::string::StringIs( type1, "string" ) && unify::string::StringIs( type2, "string" ) )
 			{ // Create a named geometry from a file...
 				std::string name = lua_tostring( state, 1 );
 				unify::Path source( lua_tostring( state, 2 ) );
 				geometry = gameInstance->GetManager< Geometry >()->Add( name, source );
 				return PushUserType< GeometryProxy >( state, { geometry } );
 			}
-			else if( unify::StringIs( type1, "string" ) && unify::StringIs( type2, "ShapeParameters" ) )
+			else if( unify::string::StringIs( type1, "string" ) && unify::string::StringIs( type2, "ShapeParameters" ) )
 			{
 				std::string name = lua_tostring( state, 1 );
 				ShapeParameters * parameters = CheckShapeParameters( state, 2 );

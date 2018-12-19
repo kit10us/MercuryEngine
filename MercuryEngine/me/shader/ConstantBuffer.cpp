@@ -81,21 +81,21 @@ size_t ConstantBuffer::AddVariable( size_t bufferIndex, ConstantVariable variabl
 	m_map[variable.name].buffer = bufferIndex;
 	m_map[variable.name].index = myIndex;
 
-	if ( unify::StringIs( variable.name, "world" ) || unify::StringIs( variable.name, "worldmatrix" ) )
+	if ( unify::string::StringIs( variable.name, "world" ) || unify::string::StringIs( variable.name, "worldmatrix" ) )
 	{
 		if ( !m_world.IsSet() )
 		{
 			m_world = myReference;
 		}
 	}
-	else if ( unify::StringIs( variable.name, "view" ) || unify::StringIs( variable.name, "viewmatrix" ) )
+	else if ( unify::string::StringIs( variable.name, "view" ) || unify::string::StringIs( variable.name, "viewmatrix" ) )
 	{
 		if ( !m_view.IsSet() )
 		{
 			m_view = myReference;
 		}
 	}
-	else if ( unify::StringIs( variable.name, "projection" ) || unify::StringIs( variable.name, "projectionmatrix" ) )
+	else if ( unify::string::StringIs( variable.name, "projection" ) || unify::string::StringIs( variable.name, "projectionmatrix" ) )
 	{
 		if ( !m_projection.IsSet() )
 		{

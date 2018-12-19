@@ -14,6 +14,14 @@ namespace melua
 			AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath, unify::Path onceBeforeStart );
 			~AutoSceneManagerComponent();
 
+			unify::Path GetAutoPath() const;
+			void SetAutoPath( unify::Path autoPath );
+
+			unify::Path GetOnceBeforeStartScript() const;
+			void SetOnceBeforeStartScript( unify::Path onceBeforeStartScript );
+
+			bool GetOnceBeforeStart() const;
+
 		public: // ISceneComponent... 
 			void OnAttach( me::scene::SceneManager * sceneManager ) override;
 			void OnDetach( me::scene::SceneManager * sceneManager ) override;
@@ -21,19 +29,13 @@ namespace melua
 			void OnSceneEnd( me::scene::IScene * scene ) override;
 
 		public: // IComponent
-			int GetValueCount() const override;
-			bool ValueExists( std::string ) const override;
-			std::string GetValueName( int index ) const override;
-			int FindValueIndex( std::string name ) const override;
-			std::string GetValue( int index ) const override;
-			bool SetValue( int index, std::string value ) override;
 
 		private:
 
 			melua::ScriptEngine * m_scriptEngine;
 			unify::Path m_autoPath;
 			unify::Path m_onceBeforeStartScript;
-			bool m_once;
+			bool m_onceBeforeStart;
 		};
 	}
 }

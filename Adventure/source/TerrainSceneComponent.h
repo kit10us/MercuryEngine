@@ -31,7 +31,7 @@ protected:
 	unify::Size< int > m_terraSize;
 	
 	std::vector< terrain::Ground::ptr > m_descsList;
-	std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_descMap;
+	std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanTest > m_descMap;
 
 	size_t * m_map;
 };

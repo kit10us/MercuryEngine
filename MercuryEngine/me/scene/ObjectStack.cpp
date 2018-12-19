@@ -132,7 +132,7 @@ Object * ObjectStack::FindObject( std::string name )
 {
 	auto itr = std::find_if( m_oldObjects.begin(), m_oldObjects.end(), 
 		[&]( auto & object ) { 
-		return unify::StringIs( object->GetName(), name );
+		return unify::string::StringIs( object->GetName(), name );
 	} );
 
 	if( itr != m_oldObjects.end() )
@@ -142,7 +142,7 @@ Object * ObjectStack::FindObject( std::string name )
 
 	itr = std::find_if( m_newObjects.begin(), m_newObjects.end(),
 		[&]( auto & object ) {
-		return unify::StringIs( object->GetName(), name );
+		return unify::string::StringIs( object->GetName(), name );
 	} );
 
 	return itr == m_newObjects.end() ? nullptr : *itr;

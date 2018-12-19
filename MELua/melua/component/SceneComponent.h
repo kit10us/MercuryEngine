@@ -17,6 +17,8 @@ namespace melua
 
 			void CallMember( std::string function );
 
+			const Script * GetScript() const;
+
 		public: // ISceneComponent...
 			void OnAttach( me::scene::IScene * scene ) override;
 			void OnDetach( me::scene::IScene * scene ) override;
@@ -29,13 +31,6 @@ namespace melua
 
 		public: // IComponent...
 			std::string GetWhat() const override;
-
-			int GetValueCount() const override;
-			bool ValueExists( std::string ) const override;
-			std::string GetValueName( int index ) const override;
-			int FindValueIndex( std::string name ) const override;
-			std::string GetValue( int index ) const override;
-			bool SetValue( int index, std::string value ) override;
 
 		private:
 			Script * m_script;

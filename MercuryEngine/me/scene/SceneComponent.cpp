@@ -7,7 +7,7 @@ using namespace me;
 using namespace scene;
 
 namespace {
-	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
+	std::map< std::string, int, unify::string::CaseInsensitiveLessThanTest > g_ValuesMap
 	{
 		// Name, Index into value.
 		{ "typename", 0 },

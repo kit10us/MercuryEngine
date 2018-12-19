@@ -41,22 +41,22 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 
 ElementFormat::TYPE ElementFormat::FromString( std::string format )
 {
-	if ( unify::StringIs( format, "Float" ) ) return ElementFormat::Float1;
-	else if( unify::StringIs( format, "Float1" ) ) return ElementFormat::Float1;
-	else if ( unify::StringIs( format, "Float2" ) ) return ElementFormat::Float2;
-	else if ( unify::StringIs( format, "TexCoord" ) ) return ElementFormat::Float2;
-	else if ( unify::StringIs( format, "Float3" ) ) return ElementFormat::Float3;
-	else if ( unify::StringIs( format, "Float4" ) ) return ElementFormat::Float4;
+	if ( unify::string::StringIs( format, "Float" ) ) return ElementFormat::Float1;
+	else if( unify::string::StringIs( format, "Float1" ) ) return ElementFormat::Float1;
+	else if ( unify::string::StringIs( format, "Float2" ) ) return ElementFormat::Float2;
+	else if ( unify::string::StringIs( format, "TexCoord" ) ) return ElementFormat::Float2;
+	else if ( unify::string::StringIs( format, "Float3" ) ) return ElementFormat::Float3;
+	else if ( unify::string::StringIs( format, "Float4" ) ) return ElementFormat::Float4;
 
-	else if( unify::StringIs( format, "Int" ) ) return ElementFormat::Int1;
-	else if( unify::StringIs( format, "Int1" ) ) return ElementFormat::Int1;
-	else if( unify::StringIs( format, "Int2" ) ) return ElementFormat::Int2;
-	else if( unify::StringIs( format, "Int3" ) ) return ElementFormat::Int3;
-	else if( unify::StringIs( format, "Int4" ) ) return ElementFormat::Int4;
+	else if( unify::string::StringIs( format, "Int" ) ) return ElementFormat::Int1;
+	else if( unify::string::StringIs( format, "Int1" ) ) return ElementFormat::Int1;
+	else if( unify::string::StringIs( format, "Int2" ) ) return ElementFormat::Int2;
+	else if( unify::string::StringIs( format, "Int3" ) ) return ElementFormat::Int3;
+	else if( unify::string::StringIs( format, "Int4" ) ) return ElementFormat::Int4;
 
-	else if ( unify::StringIs( format, "Matrix4x4" ) ) return ElementFormat::Matrix4x4;
-	else if ( unify::StringIs( format, "ColorUNorm" ) ) return ElementFormat::ColorUNorm;
-	else if ( unify::StringIs( format, "Color" ) ) return ElementFormat::ColorUNorm;
+	else if ( unify::string::StringIs( format, "Matrix4x4" ) ) return ElementFormat::Matrix4x4;
+	else if ( unify::string::StringIs( format, "ColorUNorm" ) ) return ElementFormat::ColorUNorm;
+	else if ( unify::string::StringIs( format, "Color" ) ) return ElementFormat::ColorUNorm;
 	else
 	{
 		throw unify::Exception( "Conversion of " + format + " not found!" );

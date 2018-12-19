@@ -10,11 +10,11 @@ using namespace render;
 
 SlotClass::TYPE SlotClass::FromString( std::string value )
 {
-	if ( unify::StringIs( value, "vertex" ) )
+	if ( unify::string::StringIs( value, "vertex" ) )
 	{
 		return SlotClass::Vertex;
 	}
-	else if ( unify::StringIs( value, "object" ) )
+	else if ( unify::string::StringIs( value, "object" ) )
 	{
 		return SlotClass::Object;
 	}
@@ -63,84 +63,84 @@ VertexElement::VertexElement( const qxml::Element & element )
 	if ( element.HasAttributes( "name" ) )
 	{
 		std::string name = element.GetAttribute( "name" )->GetString();
-		if ( unify::StringIs( name, "POSITION" ) )
+		if ( unify::string::StringIs( name, "POSITION" ) )
 		{
 			SemanticName = "POSITION";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
+		else if ( unify::string::StringIs( name, "BLENDWEIGHT" ) )
 		{
 			SemanticName = "BLENDWEIGHT";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "BLENDINDICES" ) )
+		else if ( unify::string::StringIs( name, "BLENDINDICES" ) )
 		{
 			SemanticName = "BLENDINDICES";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "NORMAL" ) )
+		else if ( unify::string::StringIs( name, "NORMAL" ) )
 		{
 			SemanticName = "NORMAL";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "PSIZE" ) )
+		else if ( unify::string::StringIs( name, "PSIZE" ) )
 		{
 			SemanticName = "PSIZE";
 			SemanticIndex = 0;
 		}
-		else if ( unify::BeginsWith( name, "TEXCOORD" ) )
+		else if ( unify::string::BeginsWith( name, "TEXCOORD" ) )
 		{
 			SemanticName = "TEXCOORD";
 			std::string n = name.substr( strlen( "TEXCOORD" ) );
 			SemanticIndex = unify::Cast< unsigned char >( n );
 		}
-		else if ( unify::BeginsWith( name, "TEX" ) )
+		else if ( unify::string::BeginsWith( name, "TEX" ) )
 		{
 			SemanticName = "TEXCOORD";
 			std::string n = name.substr( strlen( "TEX" ) );
 			SemanticIndex = unify::Cast< unsigned char >( n );
 		}
-		else if ( unify::StringIs( name, "TANGENT" ) )
+		else if ( unify::string::StringIs( name, "TANGENT" ) )
 		{
 			SemanticName = "TANGENT";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "BINORMAL" ) )
+		else if ( unify::string::StringIs( name, "BINORMAL" ) )
 		{
 			SemanticName = "BINORMAL";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "TESSFACTOR" ) )
+		else if ( unify::string::StringIs( name, "TESSFACTOR" ) )
 		{
 			SemanticName = "TESSFACTOR";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "POSITIONT" ) )
+		else if ( unify::string::StringIs( name, "POSITIONT" ) )
 		{
 			SemanticName = "POSITIONT";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
+		else if ( unify::string::StringIs( name, "DIFFUSE" ) || unify::string::StringIs( name, "COLOR" ) )
 		{
 			SemanticName = "COLOR";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "SPECULAR" ) )
+		else if ( unify::string::StringIs( name, "SPECULAR" ) )
 		{
 			SemanticName = "COLOR";
 			SemanticIndex = 1;
 		}
-		else if ( unify::StringIs( name, "FOG" ) )
+		else if ( unify::string::StringIs( name, "FOG" ) )
 		{
 			SemanticName = "FOG";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "DEPTH" ) )
+		else if ( unify::string::StringIs( name, "DEPTH" ) )
 		{
 			SemanticName = "DEPTH";
 			SemanticIndex = 0;
 		}
-		else if ( unify::StringIs( name, "SAMPLE" ) )
+		else if ( unify::string::StringIs( name, "SAMPLE" ) )
 		{
 			SemanticName = "SAMPLE";
 			SemanticIndex = 0;
@@ -173,84 +173,84 @@ VertexElement::VertexElement( const qjson::Pair & pair )
 	InputSlot = 0;
 
 	std::string name = pair.GetName();
-	if ( unify::StringIs( name, "POSITION" ) )
+	if ( unify::string::StringIs( name, "POSITION" ) )
 	{
 		SemanticName = "POSITION";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "BLENDWEIGHT" ) )
+	else if ( unify::string::StringIs( name, "BLENDWEIGHT" ) )
 	{
 		SemanticName = "BLENDWEIGHT";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "BLENDINDICES" ) )
+	else if ( unify::string::StringIs( name, "BLENDINDICES" ) )
 	{
 		SemanticName = "BLENDINDICES";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "NORMAL" ) )
+	else if ( unify::string::StringIs( name, "NORMAL" ) )
 	{
 		SemanticName = "NORMAL";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "PSIZE" ) )
+	else if ( unify::string::StringIs( name, "PSIZE" ) )
 	{
 		SemanticName = "PSIZE";
 		SemanticIndex = 0;
 	}
-	else if ( unify::BeginsWith( name, "TEXCOORD" ) )
+	else if ( unify::string::BeginsWith( name, "TEXCOORD" ) )
 	{
 		SemanticName = "TEXCOORD";
 		std::string n = name.substr( strlen( "TEXCOORD" ) );
 		SemanticIndex = unify::Cast< unsigned char >( n );
 	}
-	else if ( unify::BeginsWith( name, "TEX" ) )
+	else if ( unify::string::BeginsWith( name, "TEX" ) )
 	{
 		SemanticName = "TEXCOORD";
 		std::string n = name.substr( strlen( "TEX" ) );
 		SemanticIndex = unify::Cast< unsigned char >( n );
 	}
-	else if ( unify::StringIs( name, "TANGENT" ) )
+	else if ( unify::string::StringIs( name, "TANGENT" ) )
 	{
 		SemanticName = "TANGENT";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "BINORMAL" ) )
+	else if ( unify::string::StringIs( name, "BINORMAL" ) )
 	{
 		SemanticName = "BINORMAL";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "TESSFACTOR" ) )
+	else if ( unify::string::StringIs( name, "TESSFACTOR" ) )
 	{
 		SemanticName = "TESSFACTOR";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "POSITIONT" ) )
+	else if ( unify::string::StringIs( name, "POSITIONT" ) )
 	{
 		SemanticName = "POSITIONT";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "DIFFUSE" ) || unify::StringIs( name, "COLOR" ) )
+	else if ( unify::string::StringIs( name, "DIFFUSE" ) || unify::string::StringIs( name, "COLOR" ) )
 	{
 		SemanticName = "COLOR";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "SPECULAR" ) )
+	else if ( unify::string::StringIs( name, "SPECULAR" ) )
 	{
 		SemanticName = "COLOR";
 		SemanticIndex = 1;
 	}
-	else if ( unify::StringIs( name, "FOG" ) )
+	else if ( unify::string::StringIs( name, "FOG" ) )
 	{
 		SemanticName = "FOG";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "DEPTH" ) )
+	else if ( unify::string::StringIs( name, "DEPTH" ) )
 	{
 		SemanticName = "DEPTH";
 		SemanticIndex = 0;
 	}
-	else if ( unify::StringIs( name, "SAMPLE" ) )
+	else if ( unify::string::StringIs( name, "SAMPLE" ) )
 	{
 		SemanticName = "SAMPLE";
 		SemanticIndex = 0;

@@ -60,44 +60,44 @@ BlendDesc::BlendDesc( const qxml::Element * element )
 template<>
 Blend unify::Cast( std::string blend )
 {
-	if( unify::StringIs( "Zero", blend ) ) return Blend::Zero;
-	else if ( unify::StringIs( "One", blend ) ) return Blend::One;
-	else if ( unify::StringIs( "SrcColor", blend ) ) return Blend::SrcColor;
-	else if ( unify::StringIs( "InvSrcColor", blend ) ) return Blend::InvSrcColor;
-	else if ( unify::StringIs( "SrcAlpha", blend ) ) return Blend::SrcAlpha;
-	else if ( unify::StringIs( "InvSrcAlpha", blend ) ) return Blend::InvSrcAlpha;
-	else if ( unify::StringIs( "DestAlpha", blend ) ) return Blend::DestAlpha;
-	else if ( unify::StringIs( "InvDestAlpha", blend ) ) return Blend::InvDestAlpha;
-	else if ( unify::StringIs( "DestColor", blend ) ) return Blend::DestColor;
-	else if ( unify::StringIs( "InvDestColor", blend ) ) return Blend::InvDestColor;
-	else if ( unify::StringIs( "SrcAlphaSaturation", blend ) ) return Blend::SrcAlphaSaturation;
-	else if ( unify::StringIs( "BlendFactor", blend ) ) return Blend::BlendFactor;
-	else if ( unify::StringIs( "InvBlendFactor", blend ) ) return Blend::InvBlendFactor;
-	else if ( unify::StringIs( "Src1Color", blend ) ) return Blend::Src1Color;
-	else if ( unify::StringIs( "InSrc1Color", blend ) ) return Blend::InSrc1Color;
-	else if ( unify::StringIs( "Src1Alpha", blend ) ) return Blend::Src1Alpha;
-	else if ( unify::StringIs( "InSrc1Alpha", blend ) ) return Blend::InSrc1Alpha;
+	if( unify::string::StringIs( "Zero", blend ) ) return Blend::Zero;
+	else if ( unify::string::StringIs( "One", blend ) ) return Blend::One;
+	else if ( unify::string::StringIs( "SrcColor", blend ) ) return Blend::SrcColor;
+	else if ( unify::string::StringIs( "InvSrcColor", blend ) ) return Blend::InvSrcColor;
+	else if ( unify::string::StringIs( "SrcAlpha", blend ) ) return Blend::SrcAlpha;
+	else if ( unify::string::StringIs( "InvSrcAlpha", blend ) ) return Blend::InvSrcAlpha;
+	else if ( unify::string::StringIs( "DestAlpha", blend ) ) return Blend::DestAlpha;
+	else if ( unify::string::StringIs( "InvDestAlpha", blend ) ) return Blend::InvDestAlpha;
+	else if ( unify::string::StringIs( "DestColor", blend ) ) return Blend::DestColor;
+	else if ( unify::string::StringIs( "InvDestColor", blend ) ) return Blend::InvDestColor;
+	else if ( unify::string::StringIs( "SrcAlphaSaturation", blend ) ) return Blend::SrcAlphaSaturation;
+	else if ( unify::string::StringIs( "BlendFactor", blend ) ) return Blend::BlendFactor;
+	else if ( unify::string::StringIs( "InvBlendFactor", blend ) ) return Blend::InvBlendFactor;
+	else if ( unify::string::StringIs( "Src1Color", blend ) ) return Blend::Src1Color;
+	else if ( unify::string::StringIs( "InSrc1Color", blend ) ) return Blend::InSrc1Color;
+	else if ( unify::string::StringIs( "Src1Alpha", blend ) ) return Blend::Src1Alpha;
+	else if ( unify::string::StringIs( "InSrc1Alpha", blend ) ) return Blend::InSrc1Alpha;
 	throw std::exception( "Bad cast from string for Blend!" );
 }
 
 template<>
 BlendOp unify::Cast( std::string blendOp )
 {
-	if ( unify::StringIs( "Add", blendOp ) ) return BlendOp::Add;
-	else if ( unify::StringIs( "Subteact", blendOp ) ) return BlendOp::Subteact;
-	else if ( unify::StringIs( "RevSubtract", blendOp ) ) return BlendOp::RevSubtract;
-	else if ( unify::StringIs( "Min", blendOp ) ) return BlendOp::Min;
-	else if ( unify::StringIs( "Max", blendOp ) ) return BlendOp::Max;
+	if ( unify::string::StringIs( "Add", blendOp ) ) return BlendOp::Add;
+	else if ( unify::string::StringIs( "Subteact", blendOp ) ) return BlendOp::Subteact;
+	else if ( unify::string::StringIs( "RevSubtract", blendOp ) ) return BlendOp::RevSubtract;
+	else if ( unify::string::StringIs( "Min", blendOp ) ) return BlendOp::Min;
+	else if ( unify::string::StringIs( "Max", blendOp ) ) return BlendOp::Max;
 	throw std::exception( "Bad cast from string for BlendOp!" );
 }
 
 template<>
 ColorWriteEnable unify::Cast( std::string in )
 {
-	if ( unify::StringIs( "Red", in ) ) return ColorWriteEnable::Red;
-	else if ( unify::StringIs( "Green", in ) ) return ColorWriteEnable::Green;
-	else if ( unify::StringIs( "Blue", in ) ) return ColorWriteEnable::Blue;
-	else if ( unify::StringIs( "Alpha", in ) ) return ColorWriteEnable::Alpha;
-	else if ( unify::StringIs( "All", in ) ) return ColorWriteEnable::All;
+	if ( unify::string::StringIs( "Red", in ) ) return ColorWriteEnable::Red;
+	else if ( unify::string::StringIs( "Green", in ) ) return ColorWriteEnable::Green;
+	else if ( unify::string::StringIs( "Blue", in ) ) return ColorWriteEnable::Blue;
+	else if ( unify::string::StringIs( "Alpha", in ) ) return ColorWriteEnable::Alpha;
+	else if ( unify::string::StringIs( "All", in ) ) return ColorWriteEnable::All;
 	throw std::exception( "Bad cast from string for ColorWriteEnable!" );
 }

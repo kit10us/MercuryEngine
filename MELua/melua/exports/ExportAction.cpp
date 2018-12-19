@@ -29,7 +29,7 @@ int Action_Constructor( lua_State * state )
 	auto gameInstance = se->GetGame();
 
 	std::string type1 = GetTypename( state, 1 );
-	if( unify::StringIs( type1, XMLElementProxy::Name() ) )
+	if( unify::string::StringIs( type1, XMLElementProxy::Name() ) )
 	{ 
 		auto element = CheckUserType< XMLElementProxy >( state, 1 );
 		auto action = gameInstance->CreateAction( element->GetElement() );

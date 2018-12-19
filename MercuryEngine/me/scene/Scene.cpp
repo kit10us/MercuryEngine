@@ -218,7 +218,7 @@ int Scene::FindComponent( std::string typeName ) const
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( unify::StringIs( component->GetTypeName(), typeName ) ) return i;
+		if ( unify::string::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

@@ -74,7 +74,7 @@ namespace terrain
 		Base::ptr m_base;
 
 		std::vector< Ground::ptr > m_groundList;
-		std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_groundMap;
+		std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanTest > m_groundMap;
 
 		int * m_map;
 	};

@@ -82,7 +82,7 @@ namespace melua
 		assert( args == 1 );
 
 		ComponentProxy * componentProxy = CheckComponent( state, 1 );
-		lua_pushnumber( state, componentProxy->component->GetValueCount() );
+		lua_pushnumber( state, componentProxy->component->GetLookup()->Count() );
 		return 1;
 	}
 
@@ -95,7 +95,7 @@ namespace melua
 
 		std::string name = lua_tostring( state, 2 );
 
-		lua_pushboolean( state, componentProxy->component->ValueExists( name ) );
+		lua_pushboolean( state, componentProxy->component->GetLookup()->Exists( name ) );
 		return 1;
 	}
 
@@ -108,7 +108,7 @@ namespace melua
 
 		int index = (int)lua_tonumber( state, 2 );
 
-		lua_pushstring( state, componentProxy->component->GetValueName( index ).c_str() );
+		lua_pushstring( state, componentProxy->component->GetLookup()->GetValue( index ).c_str() );
 		return 1;
 	}
 
@@ -121,7 +121,7 @@ namespace melua
 
 		std::string name = lua_tostring( state, 2 );
 
-		lua_pushnumber( state, componentProxy->component->FindValueIndex( name ) );
+		lua_pushnumber( state, componentProxy->component->GetLookup()->Find( name ) );
 		return 1;
 	}
 
@@ -137,13 +137,13 @@ namespace melua
 		if( type == LUA_TNUMBER )
 		{
 			int index = (int)lua_tonumber( state, 2 );
-			lua_pushstring( state, componentProxy->component->GetValue( index ).c_str() );
+			lua_pushstring( state, componentProxy->component->GetLookup()->GetValue( index ).c_str() );
 			return 1;
 		}
 		else if( type == LUA_TSTRING )
 		{
 			std::string name = lua_tostring( state, 2 );
-			lua_pushstring( state, componentProxy->component->GetValue( name ).c_str() );
+			lua_pushstring( state, componentProxy->component->GetLookup()->GetValue( name ).c_str() );
 			return 1;
 		}
 		else
@@ -183,13 +183,13 @@ namespace melua
 		if( type == LUA_TNUMBER )
 		{
 			int index = (int)lua_tonumber( state, 2 );
-			state, componentProxy->component->SetValue( index, value );
+			state, componentProxy->component->GetLookup()->SetValue( index, value );
 			return 0;
 		}
 		else if( type == LUA_TSTRING )
 		{
 			std::string name = lua_tostring( state, 2 );
-			componentProxy->component->SetValue( name, value );
+			componentProxy->component->GetLookup()->SetValue( name, value );
 			return 0;
 		}
 		else
@@ -207,12 +207,12 @@ namespace melua
 		std::string typeA = GetTypename( state );
 		if( top == 2 )
 		{
-			if( unify::StringIs( typeA, "Component" ) )
+			if( unify::string::StringIs( typeA, "Component" ) )
 			{
 				ComponentProxy* proxy = CheckComponent( state, 1 );
 				return PushComponent( state, proxy->component );
 			}
-			else if( unify::StringIs( typeA, "ObjectComponent" ) )
+			else if( unify::string::StringIs( typeA, "ObjectComponent" ) )
 			{
 				ObjectComponentProxy* proxy = CheckUserType< ObjectComponentProxy >( state, 1 );
 				return PushUserType< ObjectComponentProxy >( state, { proxy->component } );

@@ -55,10 +55,10 @@ public:
 				return "false";
 			}
 
-			std::vector< std::string > args( unify::Split< std::string >( extra, ',' ) );
+			std::vector< std::string > args( unify::string::Split< std::string >( extra, ',' ) );
 
 			unify::V2< int > pos( unify::Cast< int >( args[0] ), unify::Cast< int >( args[1] ) );
-			std::string type = unify::Trim( args[2] );
+			std::string type = unify::string::Trim( args[2] );
 
 			m_mainScene->m_map->DrawOnMap( pos, type );
 
@@ -107,9 +107,9 @@ public:
 		{
 			using namespace terrain;
 
-			auto parts = unify::Split< std::string >( extra, ',' );
-			std::string first = unify::Trim( parts[0] );
-			std::string second = unify::Trim( parts[1] );
+			auto parts = unify::string::Split< std::string >( extra, ',' );
+			std::string first = unify::string::Trim( parts[0] );
+			std::string second = unify::string::Trim( parts[1] );
 
 			m_mainScene->m_map->AddFriend( first, second );
 		}

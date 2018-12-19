@@ -44,26 +44,26 @@ int InputCondition_Constructor( lua_State * state )
 
 	me::input::IInputCondition::ptr inputCondition;
 
-	if ( unify::StringIs( type, "button" ) )
+	if ( unify::string::StringIs( type, "button" ) )
 	{
 		size_t subSource = (size_t)luaL_checkinteger( state, 2 );
 		std::string name = luaL_checkstring( state, 3 );
 		std::string condition = luaL_checkstring( state, 4 );
 
-		if ( unify::StringIs( condition, "down" ) )
+		if ( unify::string::StringIs( condition, "down" ) )
 		{
 			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( subSource, name, true ) );
 		}
-		else if ( unify::StringIs( condition, "up" ) )
+		else if ( unify::string::StringIs( condition, "up" ) )
 		{
 			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonCondition( subSource, name, false ) );
 		}
-		else if ( unify::StringIs( condition, "pressed" ) )
+		else if ( unify::string::StringIs( condition, "pressed" ) )
 		{
 			inputCondition = me::input::IInputCondition::ptr( new me::input::ButtonPressedCondition( subSource, name ) );
 		}
 	}
-	else if ( unify::StringIs( type, "stick" ) )
+	else if ( unify::string::StringIs( type, "stick" ) )
 	{
 		size_t subSource = (size_t)luaL_checkinteger( state, 2 );
 		std::string name = luaL_checkstring( state, 3 );
@@ -86,7 +86,7 @@ int InputCondition_Constructor( lua_State * state )
 
 		inputCondition = me::input::IInputCondition::ptr( new me::input::StickCondition( subSource, name, low, high ) );
 	}
-	else if ( unify::StringIs( type, "trigger" ) )
+	else if ( unify::string::StringIs( type, "trigger" ) )
 	{
 		size_t subSource = (size_t)luaL_checkinteger( state, 2 );
 		std::string name = luaL_checkstring( state, 3 );

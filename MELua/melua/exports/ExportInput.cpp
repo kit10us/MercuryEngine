@@ -76,11 +76,11 @@ me::game::Game *gameInstance = se->GetGame();
 	std::string ownerName = luaL_checkstring( state, 2 );
 
 	unify::Owner::ptr owner;
-	if( unify::StringIs( ownerName, "game" ) )
+	if( unify::string::StringIs( ownerName, "game" ) )
 	{
 		owner = se->GetGame()->GetOwnership();
 	}
-	else if( unify::StringIs( ownerName, "scene" ) )
+	else if( unify::string::StringIs( ownerName, "scene" ) )
 	{
 		auto sceneManager = se->GetGame()->GetComponentT< me::scene::SceneManager >();
 		owner = sceneManager->GetCurrentScene()->GetOwnership();
@@ -97,19 +97,19 @@ me::game::Game *gameInstance = se->GetGame();
 	// 4th parameter is the actions...
 	std::string type = GetTypename( state, 4 );
 	me::input::IInputAction::ptr action;
-	if( unify::StringIs( type, ActionProxy::Name() ) )
+	if( unify::string::StringIs( type, ActionProxy::Name() ) )
 	{
 		auto action = CheckUserType< ActionProxy >( state, 4 );
 		inputProxy->input->AddEvent( owner, condition, me::input::IInputAction::ptr( new me::input::action::Action( action->action ) ) );
 		return Push( state, true );
 	}
-	else if( unify::StringIs( type, InputActionProxy::Name() ) )
+	else if( unify::string::StringIs( type, InputActionProxy::Name() ) )
 	{
 		auto inputAction = CheckUserType< InputActionProxy >( state, 4 );
 		inputProxy->input->AddEvent( owner, condition, inputAction->action );
 		return Push( state, true );
 	}
-	else if( unify::StringIs( type, "function" ) )
+	else if( unify::string::StringIs( type, "function" ) )
 	{
 		std::string t = GetTypename( state, -1 );
 		int ref = luaL_ref( state, LUA_REGISTRYINDEX );
@@ -117,7 +117,7 @@ me::game::Game *gameInstance = se->GetGame();
 		auto functionInputAction = IInputAction::ptr( new me::input::action::Action( functionAction ) );
 		inputProxy->input->AddEvent( owner, condition, functionInputAction );
 	}
-	else if ( unify::StringIs( type, "table" ) )
+	else if ( unify::string::StringIs( type, "table" ) )
 	{
 		// TODO:
 	}

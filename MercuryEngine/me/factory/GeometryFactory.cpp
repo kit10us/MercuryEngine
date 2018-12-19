@@ -181,14 +181,14 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 				}	 
 				else if( buffersetChild.IsTagName( "indexlist" ) )
 				{
-					unsigned int numIndices = unify::ListPartCount( buffersetChild.GetText(), {','} );
+					unsigned int numIndices = unify::string::ListPartCount( buffersetChild.GetText(), {','} );
 
 					std::vector< Index32 > indices( numIndices );
 
 					// Load indices...
 					for( unsigned int u = 0; u < numIndices; u++ )
 					{
-						indices[u] = (Index32)unify::Cast< int >( unify::ListPart( buffersetChild.GetText(), {','}, u ) );
+						indices[u] = (Index32)unify::Cast< int >( unify::string::ListPart( buffersetChild.GetText(), {','}, u ) );
 					}
 
 					set.AddIndexBuffer( { { { numIndices, &indices[0] } }, BufferUsage::Default } );

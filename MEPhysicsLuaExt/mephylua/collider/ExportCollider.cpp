@@ -78,7 +78,7 @@ namespace mephylua
 		{ // From an IObjectComponent::ptr.
 
 			auto type = GetTypename( state, 1 );
-			if( unify::StringIs( type, ObjectComponentProxy::Name() ) )
+			if( unify::string::StringIs( type, ObjectComponentProxy::Name() ) )
 			{
 				auto proxy = CheckUserType< ObjectComponentProxy >( state, 1 );
 				return PushUserType< ColliderObjectComponentProxy >( state, { proxy->component }  );

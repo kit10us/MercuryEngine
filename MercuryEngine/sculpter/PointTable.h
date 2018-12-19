@@ -23,6 +23,6 @@ namespace sculpter
 
 	private:
 		std::vector< Point > m_points;
-		std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_namedPoints;
+		std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanTest > m_namedPoints;
 	};
 }

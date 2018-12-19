@@ -13,17 +13,17 @@ const float PI2 = 6.28318530717959f;
 
 Shape::TYPE Shape::FromString( const std::string type )
 {
-	if( unify::StringIs( type, "cube" ) ) return Shape::Cube;
-	if( unify::StringIs( type, "pointfield" ) ) return Shape::PointField;
-	if( unify::StringIs( type, "pointring" ) ) return Shape::PointRing;
-	if( unify::StringIs( type, "dashring" ) ) return Shape::DashRing;
-	if( unify::StringIs( type, "pyramid" ) ) return Shape::Pyramid;
-	if( unify::StringIs( type, "circle" ) ) return Shape::Circle;
-	if( unify::StringIs( type, "sphere" ) ) return Shape::Sphere;
-	if( unify::StringIs( type, "cylinder" ) ) return Shape::Cylinder;
-	if( unify::StringIs( type, "tube" ) ) return Shape::Tube;
-	if( unify::StringIs( type, "plane" ) ) return Shape::Plane;
-	if( unify::StringIs( type, "cone" ) ) return Shape::Cone;
+	if( unify::string::StringIs( type, "cube" ) ) return Shape::Cube;
+	if( unify::string::StringIs( type, "pointfield" ) ) return Shape::PointField;
+	if( unify::string::StringIs( type, "pointring" ) ) return Shape::PointRing;
+	if( unify::string::StringIs( type, "dashring" ) ) return Shape::DashRing;
+	if( unify::string::StringIs( type, "pyramid" ) ) return Shape::Pyramid;
+	if( unify::string::StringIs( type, "circle" ) ) return Shape::Circle;
+	if( unify::string::StringIs( type, "sphere" ) ) return Shape::Sphere;
+	if( unify::string::StringIs( type, "cylinder" ) ) return Shape::Cylinder;
+	if( unify::string::StringIs( type, "tube" ) ) return Shape::Tube;
+	if( unify::string::StringIs( type, "plane" ) ) return Shape::Plane;
+	if( unify::string::StringIs( type, "cone" ) ) return Shape::Cone;
 	return Shape::INVALID;
 }
 

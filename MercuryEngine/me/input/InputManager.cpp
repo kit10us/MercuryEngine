@@ -65,25 +65,25 @@ IInputCondition::ptr InputManager::MakeCondition(const qxml::Element * element)
 	size_t subSource = element->GetAttributeElse< size_t >("subsource", 0);
 	std::string name = element->GetAttributeElse< std::string >("name", "" );
 	me::input::IInputCondition::ptr condition;
-	if (unify::StringIs(conditionName, "ButtonDown"))
+	if (unify::string::StringIs(conditionName, "ButtonDown"))
 	{
 		condition.reset( new ButtonCondition( subSource, name, true ) );
 	}
-	else if (unify::StringIs(conditionName, "ButtonUp"))
+	else if (unify::string::StringIs(conditionName, "ButtonUp"))
 	{
 		condition.reset( new ButtonCondition( subSource, name, false ) );
 	}
-	else if (unify::StringIs(conditionName, "ButtonPressed"))
+	else if (unify::string::StringIs(conditionName, "ButtonPressed"))
 	{
 		condition.reset( new ButtonPressedCondition( subSource, name ) );
 	}
-	else if (unify::StringIs(conditionName, "Trigger"))
+	else if (unify::string::StringIs(conditionName, "Trigger"))
 	{
 		float threshold = element->GetAttributeElse< float >( "threshold", 0.0f );
 		float cap = element->GetAttributeElse< float >( "cap", 1.0f );
 		condition.reset( new TriggerCondition( subSource, name, threshold, cap) );
 	}
-	else if (unify::StringIs(conditionName, "Stick"))
+	else if (unify::string::StringIs(conditionName, "Stick"))
 	{
 		//     low                high
 		//  cap   threshold threshold   cap

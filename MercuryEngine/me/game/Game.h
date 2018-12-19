@@ -149,7 +149,7 @@ namespace me
 			std::list< std::weak_ptr< UpdateLock > > m_locks;
 
 			std::vector< std::list< CommandListenerSet > > m_commandListeners;
-			std::map< std::string /* command */, size_t /* command ID */, unify::CaseInsensitiveLessThanTest> m_commandMap;
+			std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanTest> m_commandMap;
 			std::vector< std::string > m_commandList;
 		};
 	}

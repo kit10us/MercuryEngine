@@ -13,19 +13,19 @@ using namespace render;
 
 BufferUsage::TYPE BufferUsage::FromString( std::string usage )
 {
-	if ( unify::StringIs( usage, "Default" ) )
+	if ( unify::string::StringIs( usage, "Default" ) )
 	{
 		return Default;
 	}
-	else if ( unify::StringIs( usage, "Immutable" ) )
+	else if ( unify::string::StringIs( usage, "Immutable" ) )
 	{
 		return Immutable;
 	}
-	else if ( unify::StringIs( usage, "Dynamic" ) )
+	else if ( unify::string::StringIs( usage, "Dynamic" ) )
 	{
 		return Dynamic;
 	}
-	else if ( unify::StringIs( usage, "Staging" ) ) 
+	else if ( unify::string::StringIs( usage, "Staging" ) ) 
 	{
 		return Staging;
 	}

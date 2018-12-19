@@ -121,7 +121,7 @@ void SpriteDictionary::LoadDictionary( unify::Path source )
 			}
 
 
-			if ( unify::StringIs( name, "null" ) )
+			if ( unify::string::StringIs( name, "null" ) )
 			{
 				m_asciiNull = area;
 			}

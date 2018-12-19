@@ -5,28 +5,30 @@
 #include <melua/component/ObjectComponent.h>
 #include <melua/exports/ExportObject.h>
 #include <melua/CreateState.h>
+#include <me/interop/MyThing.h>
 
 using namespace melua;
 using namespace component;
 
-namespace {
-	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
-	{
-		// Name, Index into value.
-		{ "luaName", 0 },
-		{ "path", 1 },
-	};
-
-	std::vector< std::string > g_ValuesList
-	{
-		{ "luaName" },
-		{ "path" },
-	};
-}
-
 ObjectComponent::ObjectComponent( ObjectComponent & component )
 	: ObjectComponent( component.m_game, component.m_state, component.m_luaName, component.m_path  )
 {
+	using namespace me;
+	using namespace interop;
+
+	GetLookup()->Add( "luaName",
+		me::interop::IValue::ptr{ new interop::MyThing< ObjectComponent * >(
+			this,
+			[&]( const ObjectComponent * component ) -> std::string { return component->GetLuaName(); }
+			)
+	} );
+
+	GetLookup()->Add( "luaPath",
+		me::interop::IValue::ptr{ new interop::MyThing< ObjectComponent * >(
+			this,
+			[&]( const ObjectComponent * component ) -> std::string { return component->GetPath().ToString(); }
+			)
+	} );
 }
 
 ObjectComponent::ObjectComponent( me::game::IGame * gameInstance, lua_State * state, std::string luaName, unify::Path path )
@@ -35,6 +37,22 @@ ObjectComponent::ObjectComponent( me::game::IGame * gameInstance, lua_State * st
 	, m_game( gameInstance )
 	, m_path( path )
 {
+	using namespace me;
+	using namespace interop;
+
+	GetLookup()->Add( "luaName",
+		me::interop::IValue::ptr{ new interop::MyThing< ObjectComponent * >(
+			this,
+			[&]( const ObjectComponent * component ) -> std::string { return component->GetLuaName(); }
+			)
+	} );
+
+	GetLookup()->Add( "path",
+		me::interop::IValue::ptr{ new interop::MyThing< ObjectComponent * >(
+			this,
+			[&]( const ObjectComponent * component ) -> std::string { return component->GetPath().ToString(); }
+			)
+	} );
 }
 
 ObjectComponent::~ObjectComponent()
@@ -45,6 +63,11 @@ ObjectComponent::~ObjectComponent()
 std::string ObjectComponent::GetLuaName() const
 {
 	return m_luaName;
+}
+
+unify::Path ObjectComponent::GetPath() const
+{
+	return m_path;
 }
 
 void ObjectComponent::CallMember( std::string function )
@@ -157,78 +180,4 @@ me::object::component::IObjectComponent::ptr ObjectComponent::Duplicate()
 std::string ObjectComponent::GetWhat() const
 {
 	return m_path.Filename();
-}
-
-int ObjectComponent::GetValueCount() const
-{
-	return (int)g_ValuesList.size();
-}
-
-bool ObjectComponent::ValueExists( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if ( itr == g_ValuesMap.end() )
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-std::string ObjectComponent::GetValueName( int index ) const
-{
-	if ( index >= (int)g_ValuesList.size() )
-	{
-		return std::string();
-	}
-	else
-	{
-		return g_ValuesList[ index ];
-	}
-}
-
-int ObjectComponent::FindValueIndex( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if ( itr == g_ValuesMap.end() )
-	{
-		return -1;
-	}
-	else
-	{
-		return itr->second;
-	}
-}
-
-bool ObjectComponent::SetValue( int index, std::string value )
-{
-	switch ( index )
-	{
-	case 0:
-		return false;
-
-	case 1:
-		return false;
-
-	default:
-		return false;
-	}
-	return true;
-}
-
-std::string ObjectComponent::GetValue( int index ) const
-{
-	switch ( index )
-	{
-	case 0:
-		return m_luaName;
-
-	case 1:
-		return m_path.ToString();
-
-	default:
-		return std::string();
-	}
 }

@@ -5,25 +5,11 @@
 #include <melua/component/GameComponent.h>
 #include <melua/exports/ExportGame.h>
 #include <melua/CreateState.h>
+#include <me/interop/MyThing.h>
 
-using namespace melua;
+using namespace me;
 using namespace melua;
 using namespace component;
-
-namespace {
-	std::map< std::string, int, unify::CaseInsensitiveLessThanTest > g_ValuesMap
-	{
-		// Name, Index into value.
-		{ "luaName", 0 },
-		{ "path", 1 },
-	};
-
-	std::vector< std::string > g_ValuesList
-	{
-		{ "luaName" },
-		{ "path" },
-	};
-}
 
 char* GameComponent::Name()
 {
@@ -34,10 +20,31 @@ GameComponent::GameComponent( Script * script )
 	: me::game::GameComponent( Name() )
 	, m_script{ script }
 {
+	using namespace me;
+	using namespace interop;
+
+	GetLookup()->Add( "luaName",
+		me::interop::IValue::ptr{ new interop::MyThing< GameComponent * >(
+			this,
+			[&]( const GameComponent * component ) -> std::string { return component->GetScript()->GetName(); }
+			)
+	} );
+
+	GetLookup()->Add( "path",
+		me::interop::IValue::ptr{ new interop::MyThing< GameComponent * >(
+			this,
+			[&]( const GameComponent * component ) -> std::string { return component->GetScript()->GetSource(); }
+			)
+	} );
 }
 
 GameComponent::~GameComponent()
 {
+}
+
+const Script * GameComponent::GetScript() const
+{
+	return m_script;
 }
 
 void GameComponent::CallMember( std::string function )
@@ -140,88 +147,4 @@ void GameComponent::OnDetach( me::game::IGame * gameInstance )
 std::string GameComponent::GetWhat() const
 {
 	return std::string();
-}
-
-int GameComponent::GetValueCount() const
-{
-	return me::game::GameComponent::GetValueCount() + (int)g_ValuesList.size();
-}
-
-bool GameComponent::ValueExists( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if( itr != g_ValuesMap.end() )
-	{
-		return true;
-	}
-	return me::game::GameComponent::ValueExists( name );
-}
-
-std::string GameComponent::GetValueName( int index ) const
-{
-	if( index < me::game::GameComponent::GetValueCount() )
-	{
-		return me::game::GameComponent::GetValueName( index );
-	}
-
-	int localIndex = index - me::game::GameComponent::GetValueCount();
-	if( localIndex < (int)g_ValuesList.size() )
-	{
-		return g_ValuesList[localIndex];
-	}
-
-	return std::string();
-}
-
-int GameComponent::FindValueIndex( std::string name ) const
-{
-	auto && itr = g_ValuesMap.find( name );
-	if( itr != g_ValuesMap.end() )
-	{
-		return itr->second;
-	}
-
-	return me::game::GameComponent::FindValueIndex( name );
-}
-
-bool GameComponent::SetValue( int index, std::string value )
-{
-	if( index < me::game::GameComponent::GetValueCount() )
-	{
-		return me::game::GameComponent::SetValue( index, value );
-	}
-
-	int localIndex = index - me::game::GameComponent::GetValueCount();
-	switch( localIndex )
-	{
-	case 0:
-		return false;
-
-	case 1:
-		return false;
-
-	default:
-		return false;
-	}
-}
-
-std::string GameComponent::GetValue( int index ) const
-{
-	if( index < me::game::GameComponent::GetValueCount() )
-	{
-		return me::game::GameComponent::GetValue( index );
-	}
-
-	int localIndex = index - me::game::GameComponent::GetValueCount();
-	switch( localIndex )
-	{
-	case 0:
-		return m_script->GetName();
-
-	case 1:
-		return m_script->GetSource();
-
-	default:
-		return std::string();
-	}
 }

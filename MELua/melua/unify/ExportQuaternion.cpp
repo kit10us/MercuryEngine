@@ -49,12 +49,12 @@ int Quaternion_Constructor(lua_State * state)
 	else if (args == 1)
 	{
 		std::string type = GetTypename(state, 1);
-		if (unify::StringIs(type, "Matrix"))
+		if (unify::string::StringIs(type, "Matrix"))
 		{
 			auto in = CheckUserType< MatrixProxy >(state, 1);
 			return PushQuaternion(state, in->matrix);
 		}
-		else if (unify::StringIs(type, "Quaternion"))
+		else if (unify::string::StringIs(type, "Quaternion"))
 		{
 			auto in = CheckQuaternion(state, 1);
 			return PushQuaternion(state, in->q);
@@ -192,7 +192,7 @@ int Quaternion_Mul(lua_State * state)
 
 	unify::Quaternion result;
 
-	if (unify::StringIs(typeL, "Quaternion"))
+	if (unify::string::StringIs(typeL, "Quaternion"))
 	{
 		unify::Quaternion l = CheckQuaternion(state, 1)->q;
 
@@ -207,7 +207,7 @@ int Quaternion_Mul(lua_State * state)
 			result = l * r;
 		}
 	}
-	if (unify::StringIs(typeL, "Number"))
+	if (unify::string::StringIs(typeL, "Number"))
 	{
 		float l = (float)lua_tonumber(state, 1);
 		unify::Quaternion r = CheckQuaternion(state, 2)->q;

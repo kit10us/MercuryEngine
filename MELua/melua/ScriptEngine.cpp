@@ -51,7 +51,7 @@ ScriptEngine::ScriptEngine( me::game::IGame * game )
 	RegisterLibraries( m_state );
 	
 	// Set path...
-	std::string path = unify::StringReplace( os->GetAssetPaths().GetPaths( os->GetRunPath() ), ";", "?.lua;" );
+	std::string path = unify::string::StringReplace( os->GetAssetPaths().GetPaths( os->GetRunPath() ), ";", "?.lua;" );
 	if ( path != "" )
 	{
 		path += "?.lua";

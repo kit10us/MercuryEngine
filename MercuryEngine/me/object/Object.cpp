@@ -107,13 +107,13 @@ int Object::FindComponent( std::string typeName, std::string alias ) const
 	int i = 0;
 	for( auto && component : m_components )
 	{
-		if( unify::StringIs( component.Component()->GetTypeName(), typeName ) )
+		if( unify::string::StringIs( component.Component()->GetTypeName(), typeName ) )
 		{
 			if( alias.empty() )
 			{
 				return i;
 			}
-			else if( unify::StringIs( component.Component()->GetAlias(), alias ) )
+			else if( unify::string::StringIs( component.Component()->GetAlias(), alias ) )
 			{
 				return i;
 			}

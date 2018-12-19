@@ -29,13 +29,13 @@ int InputAction_Constructor( lua_State * state )
 
 	std::string type1 = GetTypename( state, 1 );
 	std::string type2 = GetTypename( state, 2 );
-	if( unify::StringIs( type1, XMLElementProxy::Name() ) )
+	if( unify::string::StringIs( type1, XMLElementProxy::Name() ) )
 	{ 
 		auto element = CheckUserType< XMLElementProxy >( state, 1 );
 		auto action = gameInstance->CreateInputAction( element->GetElement() );
 		return PushUserType< InputActionProxy >( state, { action } );
 	}
-	else if( unify::StringIs( type1, ObjectProxy::Name() ) && unify::StringIs( type2, ObjectActionProxy::Name() ) )
+	else if( unify::string::StringIs( type1, ObjectProxy::Name() ) && unify::string::StringIs( type2, ObjectActionProxy::Name() ) )
 	{
 		auto object = CheckUserType< ObjectProxy >( state, 1 )->object;
 		auto objectAction = CheckUserType< ObjectActionProxy >( state, 2 )->GetAction();

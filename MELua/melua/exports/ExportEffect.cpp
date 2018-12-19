@@ -63,7 +63,7 @@ int Effect_Constructor( lua_State * state )
 			std::vector< std::string > types( GetTypenames( state ) );
 
 			// Two paramters, both strings, then it's a name, path.
-			if( unify::StringIs( types[0], "String" ) && unify::StringIs( types[1], "String" ) )
+			if( unify::string::StringIs( types[0], "String" ) && unify::string::StringIs( types[1], "String" ) )
 			{
 				std::string name = lua_tostring( state, 1 );
 				unify::Path source( lua_tostring( state, 2 ) );
@@ -77,7 +77,7 @@ int Effect_Constructor( lua_State * state )
 				std::vector< ITexture::ptr > textures;
 				for( size_t i = 0; i < types.size(); i++ )
 				{
-					if( unify::StringIs( types[i], PixelShaderProxy::Name() ) )
+					if( unify::string::StringIs( types[i], PixelShaderProxy::Name() ) )
 					{
 						if( ps )
 						{
@@ -85,7 +85,7 @@ int Effect_Constructor( lua_State * state )
 						}
 						ps = CheckUserType< PixelShaderProxy >( state, i + 1 )->shader;
 					}
-					else if( unify::StringIs( types[i], VertexShaderProxy::Name() ) )
+					else if( unify::string::StringIs( types[i], VertexShaderProxy::Name() ) )
 					{
 						if( vs )
 						{
@@ -93,7 +93,7 @@ int Effect_Constructor( lua_State * state )
 						}
 						vs = CheckUserType< VertexShaderProxy >( state, i + 1 )->shader;
 					}
-					else if( unify::StringIs( types[i], TextureProxy::Name() ) )
+					else if( unify::string::StringIs( types[i], TextureProxy::Name() ) )
 					{
 						textures.push_back( CheckUserType< TextureProxy >( state, i + 1 )->texture );
 					}

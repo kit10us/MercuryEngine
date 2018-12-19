@@ -57,7 +57,7 @@ namespace me
 			std::string GetWhat() const;
 
 		private:
-			std::map< std::string, size_t, unify::CaseInsensitiveLessThanTest > m_scenes;
+			std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanTest > m_scenes;
 			std::vector< ISceneFactory::ptr > m_sceneList;
 			IScene::ptr m_currentScene;
 			std::string m_previousSceneName;

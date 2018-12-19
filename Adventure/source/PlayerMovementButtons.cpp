@@ -23,19 +23,19 @@ bool PlayerMovementButtons::Perform( input::IInputDevice * device, input::IInput
 
 	m_mainScene.m_newMove = true;
 			
-	if( unify::StringIs( condition->GetName(), "Up" ) )
+	if( unify::string::StringIs( condition->GetName(), "Up" ) )
 	{
 		m_mainScene.m_move.z = 1.0f;
 	}
-	else if( unify::StringIs( condition->GetName(), "Down" ) )
+	else if( unify::string::StringIs( condition->GetName(), "Down" ) )
 	{
 		m_mainScene.m_move.z = -1.0f;
 	}
-	else if( unify::StringIs( condition->GetName(), "Left" ) )
+	else if( unify::string::StringIs( condition->GetName(), "Left" ) )
 	{
 		m_mainScene.m_move.x = -1.0f;
 	}
-	else if( unify::StringIs( condition->GetName(), "Right" ) )
+	else if( unify::string::StringIs( condition->GetName(), "Right" ) )
 	{
 		m_mainScene.m_move.x = 1.0f;
 	}

@@ -69,7 +69,7 @@ namespace me
 
 		private:
 			std::list< IElement::ptr > m_elements;
-			std::map< std::string, IElement::ptr, unify::CaseInsensitiveLessThanTest > m_elementMap;
+			std::map< std::string, IElement::ptr, unify::string::CaseInsensitiveLessThanTest > m_elementMap;
 		};
 	}
 }

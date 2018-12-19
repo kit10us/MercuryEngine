@@ -50,7 +50,7 @@ void MeshInstanceData::RemoveAnimation( std::string name )
 {
 	for( std::list< ActiveAnimation >::iterator itr = m_activeAnimations.begin(), end = m_activeAnimations.end(); itr != end; ++itr )
 	{
-		if( unify::StringIs( itr->m_animation.get()->Name(), name ) )
+		if( unify::string::StringIs( itr->m_animation.get()->Name(), name ) )
 		{
 			m_activeAnimations.erase( itr );
 			break;

@@ -93,7 +93,7 @@ int ObjectComponent_GetValueCount( lua_State * state )
 	assert( args == 1 );
 
 	ObjectComponentProxy * componentProxy = CheckUserType< ObjectComponentProxy >( state, 1 );
-	lua_pushnumber( state, componentProxy->component->GetValueCount() );
+	lua_pushnumber( state, componentProxy->component->GetLookup()->Count() );
 	return 1;
 }			
 
@@ -106,7 +106,7 @@ int ObjectComponent_ValueExists( lua_State * state )
 
 	std::string name = lua_tostring( state, 2 );
 
-	lua_pushboolean( state, componentProxy->component->ValueExists( name ) );
+	lua_pushboolean( state, componentProxy->component->GetLookup()->Exists( name ) );
 	return 1;
 }			
 
@@ -119,7 +119,7 @@ int ObjectComponent_GetValueName( lua_State * state )
 
 	int index = (int)lua_tonumber( state, 2 );
 
-	lua_pushstring( state, componentProxy->component->GetValueName( index ).c_str() );
+	lua_pushstring( state, componentProxy->component->GetLookup()->GetName( index ).c_str() );
 	return 1;
 }			
 
@@ -132,7 +132,7 @@ int ObjectComponent_FindValueIndex( lua_State * state )
 
 	std::string name = lua_tostring( state, 2 );
 
-	lua_pushnumber( state, componentProxy->component->FindValueIndex( name ) );
+	lua_pushnumber( state, componentProxy->component->GetLookup()->Find( name ) );
 	return 1;
 }			
 
@@ -148,13 +148,13 @@ int ObjectComponent_GetValue( lua_State * state )
 	if ( type == LUA_TNUMBER )
 	{
 		int index = (int)lua_tonumber( state, 2 );
-		lua_pushstring( state, componentProxy->component->GetValue( index ).c_str() );
+		lua_pushstring( state, componentProxy->component->GetLookup()->GetValue( index ).c_str() );
 		return 1;
 	}
 	else if ( type == LUA_TSTRING )
 	{
 		std::string name = lua_tostring( state, 2 );
-		lua_pushstring( state, componentProxy->component->GetValue( name ).c_str() );
+		lua_pushstring( state, componentProxy->component->GetLookup()->GetValue( name ).c_str() );
 		return 1;
 	}
 	else
@@ -194,13 +194,13 @@ int ObjectComponent_SetValue( lua_State * state )
 	if ( type == LUA_TNUMBER )
 	{
 		int index = (int)lua_tonumber( state, 2 );
-		state, componentProxy->component->SetValue( index, value );
+		state, componentProxy->component->GetLookup()->SetValue( index, value );
 		return 0;
 	}
 	else if ( type == LUA_TSTRING )
 	{
 		std::string name = lua_tostring( state, 2 );
-		componentProxy->component->SetValue( name, value );
+		componentProxy->component->GetLookup()->SetValue( name, value );
 		return 0;
 	}
 	else
@@ -215,11 +215,11 @@ int ObjectComponent_Constructor( lua_State * state )
 	auto gameInstance = se->GetGame();
 
 	auto type = GetTypename( state );
-	if( unify::StringIs( type, "ObjectComponent" ) )
+	if( unify::string::StringIs( type, "ObjectComponent" ) )
 	{
 		return PushUserType< ObjectComponentProxy >( state, *CheckUserType< ObjectComponentProxy >( state, 1 ) );
 	}
-	else if( unify::StringIs( type, "Component" ) )
+	else if( unify::string::StringIs( type, "Component" ) )
 	{
 		return PushUserType< ComponentProxy >( state, *CheckUserType< ComponentProxy >( state, 1 ) );
 	}

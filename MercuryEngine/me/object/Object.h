@@ -49,7 +49,7 @@ namespace me
 			/// <summary>
 			/// Returns all tags and their values.
 			/// </summary>
-			std::map< std::string, std::string, unify::CaseInsensitiveLessThanTest > GetTags() const;
+			std::map< std::string, std::string, unify::string::CaseInsensitiveLessThanTest > GetTags() const;
 			
 			int GetComponentCount() const;
 			void AddComponent( component::IObjectComponent::ptr component );

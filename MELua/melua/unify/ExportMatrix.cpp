@@ -211,7 +211,7 @@ int Matrix_Mul( lua_State * state )
 
 	unify::Matrix result;
 
-	if (unify::StringIs(typeL, "Matrix"))
+	if (unify::string::StringIs(typeL, "Matrix"))
 	{
 		unify::Matrix l = CheckUserType< MatrixProxy >(state, 1)->matrix;
 
@@ -226,7 +226,7 @@ int Matrix_Mul( lua_State * state )
 			result = l * r;
 		}
 	}
-	if (unify::StringIs(typeL, "Number"))
+	if (unify::string::StringIs(typeL, "Number"))
 	{
 		float l = (float)lua_tonumber(state, 1);
 		unify::Matrix r = CheckUserType< MatrixProxy >(state, 2)->matrix;

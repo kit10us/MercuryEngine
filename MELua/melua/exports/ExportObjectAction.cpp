@@ -38,7 +38,7 @@ namespace melua
 		if( args == 1 )
 		{ 
 			std::string type = GetTypename( state, 1 );
-			if( unify::StringIs( type, XMLElementProxy::Name() ) )
+			if( unify::string::StringIs( type, XMLElementProxy::Name() ) )
 			{
 				auto elementProxy = CheckUserType< XMLElementProxy >( state, 1 );
 				auto actionObject = gameInstance->CreateObjectAction( elementProxy->GetElement() );

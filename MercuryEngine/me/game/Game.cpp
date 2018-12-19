@@ -95,14 +95,14 @@ me::os::OSParameters Game::GetOSParameters() const
 
 void * Game::Feed( std::string target, void * data )
 {
-	if ( unify::StringIs( target, "OS" ) )
+	if ( unify::string::StringIs( target, "OS" ) )
 	{
 		return m_os->Feed( target, data );
 	}
-	else if ( unify::StringIs( target, "COMMAND" ) )
+	else if ( unify::string::StringIs( target, "COMMAND" ) )
 	{
 		char * command = (char *)data;
-		if ( unify::StringIs( command, "QUIT" ) )
+		if ( unify::string::StringIs( command, "QUIT" ) )
 		{
 			Quit();
 		}
@@ -127,7 +127,7 @@ void Game::Initialize( os::OSParameters osParameters )
 		std::string temp = in;
 		for( auto itr = defines.begin(); itr != defines.end(); ++itr )
 		{
-			temp = unify::StringReplace( temp, "?" + itr->first + "?", itr->second );
+			temp = unify::string::StringReplace( temp, "?" + itr->first + "?", itr->second );
 		}
 		return temp;
 	};
@@ -691,7 +691,7 @@ int Game::FindComponent( std::string typeName ) const
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( unify::StringIs( component->GetTypeName(), typeName ) ) return i;
+		if ( unify::string::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

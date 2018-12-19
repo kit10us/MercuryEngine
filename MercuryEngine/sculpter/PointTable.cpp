@@ -23,7 +23,7 @@ PointTable::PointTable( Point origin )
 
 void PointTable::AddNamedPoint( std::string name, Point point )
 {
-	if( ! m_points.size() && ! unify::StringIs( name, "origin" ) )
+	if( ! m_points.size() && ! unify::string::StringIs( name, "origin" ) )
 	{
 		throw exception::FailedToCreate( "First point in Point Table must be named \"origin\"." );
 	}

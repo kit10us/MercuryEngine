@@ -86,7 +86,7 @@ IElement::ptr VList::FindItem( std::string name )
 {
 	for (auto && item : m_items)
 	{
-		if (unify::StringIs( name, item.GetItem()->GetName() ))
+		if (unify::string::StringIs( name, item.GetItem()->GetName() ))
 		{
 			return item.GetItem();
 		}
