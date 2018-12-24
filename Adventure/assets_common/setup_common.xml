@@ -31,4 +31,6 @@
 <include>ext_editor.xml</include>
 <include>ext_inputs.xml</include>
 
+<startScene>main</startScene>
+
 </xml>

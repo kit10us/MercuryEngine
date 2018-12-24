@@ -1,7 +1,6 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <Windows.h>
 #include <LoadScene.h>
 #include <me/render/RenderMethod.h>
 #include <me/object/component/CameraComponent.h>
@@ -12,11 +11,20 @@
 using namespace me;
 using namespace render;
 
+LoadScene::LoadScene( me::game::Game * gameInstance )
+	: Scene( gameInstance, "loadscene" )
+{
+}
+
 void LoadScene::OnStart()
 {
 	using namespace scene;
 
-	Effect::ptr effect = GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) );
+	Effect effect{ 
+		GetManager< IVertexShader >()->Find( "texture"), 
+		GetManager< IPixelShader >()->Find( "texture" ), 
+		GetManager< ITexture >()->Find( "loadscreen" )
+	};
 
 	// Add Canvas component...
 	// A canvas component takes care of drawing all 2d elements.
@@ -79,4 +87,23 @@ void LoadScene::OnStart()
 
 void LoadScene::OnUpdate( const UpdateParams & params )
 {
+	// Cycle layers...
+	static int layer = 0;
+	static float time = 0.0f;
+	const float cycleAt = 3.0f;
+	time += params.GetDelta().GetSeconds();
+	while (time >= cycleAt)
+	{
+		time -= cycleAt;
+		layer++;
+		if (layer > 4) layer = 0;
+	}
+
+	auto canvas = GetComponentT< canvas::CanvasComponent >();
+
+	canvas->GetLayer()->FindElement( "layer1" )->SetEnabled( layer == 0 ? true : false );
+	canvas->GetLayer()->FindElement( "layer2" )->SetEnabled( layer == 1 ? true : false );
+	canvas->GetLayer()->FindElement( "layer3" )->SetEnabled( layer == 2 ? true : false );
+	canvas->GetLayer()->FindElement( "layer4" )->SetEnabled( layer == 3 ? true : false );
+	canvas->GetLayer()->FindElement( "layer5" )->SetEnabled( layer == 4 ? true : false );
 }

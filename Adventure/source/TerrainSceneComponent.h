@@ -1,6 +1,8 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
+#pragma once
+
 #include <me/scene/SceneComponent.h>
 #include <terrain/Map.h>
 

@@ -7,6 +7,7 @@
 #include <melua/exports/ExportGame.h>
 #include <melua/CreateState.h>
 #include <me/interop/MyThing.h>
+#include <me/debug/Block.h>
 
 using namespace melua;
 using namespace component;
@@ -83,16 +84,17 @@ void AutoSceneManagerComponent::OnDetach( SceneManager * sceneManager )
 
 void AutoSceneManagerComponent::OnSceneStart( IScene * scene )
 {
+	debug::Block block{ m_scriptEngine->GetGame()->Debug(), "AutoSceneManagerComponent::OnSceneStart" };
 	if (!m_onceBeforeStart)
 	{
 		if (!m_onceBeforeStartScript.Empty())
 		{
-			m_scriptEngine->GetGame()->Debug()->LogLine( "AutoSceneManagerComponent::OnSceneStart", "Loading startup script \"" + m_onceBeforeStartScript.ToString() + "\"." );
+			block.LogLine( "Loading startup script \"" + m_onceBeforeStartScript.ToString() + "\"." );
 			m_scriptEngine->ExecuteFile(m_onceBeforeStartScript);
 		}
 		else
 		{
-			m_scriptEngine->GetGame()->Debug()->LogLine( "AutoSceneManagerComponent::OnSceneStart", "Unable to find startup script \"" + m_onceBeforeStartScript.ToString() + "\"." );
+			block.LogLine( "Unable to find startup script \"" + m_onceBeforeStartScript.ToString() + "\"." );
 		}
 		m_onceBeforeStart = true;
 	}

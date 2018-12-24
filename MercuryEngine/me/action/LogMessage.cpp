@@ -15,6 +15,6 @@ LogMessage::LogMessage( game::IGame * gameInstance, std::string section, std::st
 
 bool LogMessage::Perform()
 {
-	m_game->Debug()->LogLine( m_section, m_message );
+	m_game->Debug()->LogSectionLine( m_section, m_message );
 	return true;
 }

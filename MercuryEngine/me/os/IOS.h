@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/os/IDebug.h>
+#include <me/debug/IDebug.h>
 #include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <unify/unify.h>
@@ -55,7 +55,7 @@ namespace me
 				: hWnd{}
 				, hInstance{}
 				, hPrevInstance{}
-				, lpszCmdLine{}
+				, cmdLine{}
 				, wndProc{}
 			{
 			}
@@ -63,7 +63,7 @@ namespace me
 			os::win::HWnd hWnd;
 			os::win::HInstance hInstance;
 			os::win::HInstance hPrevInstance;
-			char* lpszCmdLine;
+			std::string cmdLine;
 			int nCmdShow;
 			os::win::WndProc wndProc;
 		};
@@ -81,8 +81,8 @@ namespace me
 
 			virtual game::IGame * GetGame() = 0;
 
-			virtual me::os::IDebug * Debug() = 0;
-			virtual const me::os::IDebug * Debug() const = 0;
+			virtual me::debug::IDebug * Debug() = 0;
+			virtual const me::debug::IDebug * Debug() const = 0;
 
 			virtual void * Feed( std::string target, void * data ) = 0;
 

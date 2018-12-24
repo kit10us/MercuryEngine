@@ -91,6 +91,9 @@
     <Filter Include="me\interop">
       <UniqueIdentifier>{01a81207-3fab-4de3-bd88-9c1526479245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\debug">
+      <UniqueIdentifier>{6d406bab-589e-499a-8a19-941c419549c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -705,16 +708,7 @@
     <ClInclude Include="me\render\Billboard.h">
       <Filter>me\render</Filter>
     </ClInclude>
-    <ClInclude Include="me\os\IDebug.h">
-      <Filter>me\os</Filter>
-    </ClInclude>
     <ClInclude Include="me\os\IOS.h">
-      <Filter>me\os</Filter>
-    </ClInclude>
-    <ClInclude Include="me\os\ILogListener.h">
-      <Filter>me\os</Filter>
-    </ClInclude>
-    <ClInclude Include="me\os\DefaultDebug.h">
       <Filter>me\os</Filter>
     </ClInclude>
     <ClInclude Include="me\os\DefaultOS.h">
@@ -740,6 +734,18 @@
     </ClInclude>
     <ClInclude Include="me\interop\MyThing.h">
       <Filter>me\interop</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\DefaultDebug.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\IDebug.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\ILogListener.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\Block.h">
+      <Filter>me\debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1199,9 +1205,6 @@
     <ClCompile Include="me\os\DefaultOS.cpp">
       <Filter>me\os</Filter>
     </ClCompile>
-    <ClCompile Include="me\os\DefaultDebug.cpp">
-      <Filter>me\os</Filter>
-    </ClCompile>
     <ClCompile Include="me\canvas\ListItem.cpp">
       <Filter>me\canvas</Filter>
     </ClCompile>
@@ -1210,6 +1213,12 @@
     </ClCompile>
     <ClCompile Include="me\interop\Interop.cpp">
       <Filter>me\interop</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\DefaultDebug.cpp">
+      <Filter>me\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\Block.cpp">
+      <Filter>me\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

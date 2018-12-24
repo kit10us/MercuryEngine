@@ -4,6 +4,7 @@
 #include <sculpter/Sheet.h>
 #include <me/render/VertexUtil.h>
 #include <me/game/Game.h>
+#include <me/debug/Block.h>
 #include <cassert>
 
 using namespace sculpter;
@@ -74,6 +75,9 @@ size_t Sheet::GetSplineCount() const
 
 bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Effect::ptr effect ) const
 {
+	me::game::IGame* gameInstance = GetGameInstance();
+	debug::Block block( gameInstance->Debug(), "Sheet::Create" );
+
 	if( !IsComplete() )
 	{
 		return false;
@@ -153,8 +157,7 @@ bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Ef
 			
 			V pos = m.GetPosition();
 
-			me::game::IGame* gameInstance = GetGameInstance();
-			gameInstance->Debug()->LogLine( "Sheet::Create", "pos = " + pos.ToString() );
+			block.LogLine( "pos = " + pos.ToString() );
 
 			size_t i = y + x * height;
 			WriteVertex( *vd, lock, i, positionE, pos);

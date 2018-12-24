@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/os/DefaultDebug.h>
+#include <me/debug/DefaultDebug.h>
 #include <me/os/DefaultOS.h>
 #include <me/exception/FailedToCreate.h>
 #include <unify/Exception.h>
@@ -20,7 +20,7 @@ using namespace os;
 
 DefaultOS::DefaultOS( me::game::IGame * gameInstance )
 	: m_game{ gameInstance }
-	, m_debug{ new DefaultDebug{} }
+	, m_debug{ new debug::DefaultDebug{} }
 {
 	{
 		char buffer[MAX_PATH];
@@ -39,12 +39,12 @@ me::game::IGame * DefaultOS::GetGame()
 	return m_game;
 }
 
-me::os::IDebug * DefaultOS::Debug()
+me::debug::IDebug * DefaultOS::Debug()
 {
 	return m_debug;
 }
 
-const me::os::IDebug * DefaultOS::Debug() const
+const me::debug::IDebug * DefaultOS::Debug() const
 {
 	return m_debug;
 }

@@ -32,4 +32,5 @@
 <asset type="geometry" name="player" source="Mickey_Mouse/Mickey_Mouse.dae"/>
 
 <asset type="effect" name="font2" source="font2.effect"/>
+
 </xml>

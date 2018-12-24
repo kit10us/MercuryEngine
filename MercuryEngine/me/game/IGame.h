@@ -83,12 +83,12 @@ namespace me
 			/// <summary>
 			/// Get our debugger interface.
 			/// </summary>
-			virtual os::IDebug * Debug() = 0;
+			virtual debug::IDebug * Debug() = 0;
 
 			/// <summary>
 			/// Get our debugger interface.
 			/// </summary>
-			virtual const os::IDebug * Debug() const = 0;
+			virtual const debug::IDebug * Debug() const = 0;
 
 			/// <summary>
 			/// Get our RenderInfo.

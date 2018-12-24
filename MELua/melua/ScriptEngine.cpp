@@ -10,6 +10,7 @@
 #include <melua/exports/ExportObject.h>
 #include <melua/ScriptFactory.h>
 #include <me/game/Game.h>
+#include <me/debug/Block.h>
 #include <rm/ResourceManager.h>
 
 #include <Windows.h>
@@ -370,14 +371,14 @@ bool ScriptEngine::AssertTop( int top )
 
 void ScriptEngine::LogTypes()
 {
+	debug::Block block( GetGame()->Debug(), "MELua::ScriptEngine::LogTypes" );
 	for( auto & type : m_types )
 	{
-		GetGame()->Debug()->LogLine( "ScriptEngine::LogTypes", "Added Lua type \"" + type.first + "..." );
+		debug::Block typeBlock( block, type.first );
 		for( auto && function : type.second )
 		{
-			GetGame()->Debug()->LogLine( "ScriptEngine::LogTypes", "   " + function );
+			typeBlock.LogLine( function );
 		}
-		GetGame()->Debug()->LogLine( "ScriptEngine::LogTypes", "" );
 	}
 }
 

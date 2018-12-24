@@ -35,8 +35,8 @@ namespace me
 
 			me::game::IGame * GetGame() override;
 
-			me::os::IDebug * Debug() override;
-			const me::os::IDebug * Debug() const override;
+			me::debug::IDebug * Debug() override;
+			const me::debug::IDebug * Debug() const override;
 
 			void * Feed( std::string target, void * data ) override;
 
@@ -72,7 +72,7 @@ namespace me
 
 		protected:
 			me::game::IGame * m_game;
-			me::os::IDebug * m_debug;
+			me::debug::IDebug * m_debug;
 			unify::Path m_runPath;
 			rm::AssetPaths m_assetPaths;
 		};

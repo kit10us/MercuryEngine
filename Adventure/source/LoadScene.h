@@ -10,7 +10,6 @@
 class LoadScene : public me::scene::Scene
 {
 public:
-public:
 	LoadScene( me::game::Game * gameInstance );
 
 	void OnStart() override;

@@ -2,6 +2,7 @@
 //
 
 #include <MELuaDLL.h>
+#include <me/debug/Block.h>
 #include <melua/ScriptEngine.h>
 #include <melua/component/GameComponent.h>
 #include <melua/component/AutoSceneManagerComponent.h>
@@ -16,6 +17,8 @@ extern "C" MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxm
 
 MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
+	me::debug::Block block( gameInstance->Debug(), "MELua::MELoader" );
+
 	// Add Script Engine...
 	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine( gameInstance );
 	gameInstance->AddComponent( me::game::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
@@ -25,11 +28,11 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 	if (element->HasElements("startup"))
 	{
 		startup = unify::Path( element->GetElement("startup")->GetText() );
-		gameInstance->Debug()->LogLine( "Lau::MELoader", "\"startup\" node found, setting startupOnce to \"" + startup.ToString() + "\"." );
+		block.LogLine( "startup node found, \"" + startup.ToString() + "\"." );
 	}
 	else
 	{
-		gameInstance->Debug()->LogLine( "Lau::MELoader", "\"startup\" node NOT found." );
+		block.LogLine( "startup node not found." );
 	}
 
 	try
@@ -46,11 +49,11 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 	if (element->HasElements("auto"))
 	{
 		autoPath = unify::Path( element->GetElement("auto")->GetText() );
-		gameInstance->Debug()->LogLine( "Lau::MELoader", "\"auto\" node found, setting autoPath to \"" + autoPath.ToString() + "\"." );
+		block.LogLine( "\"auto\" node found, setting autoPath to \"" + autoPath.ToString() + "\"." );
 	}
 	else
 	{
-		gameInstance->Debug()->LogLine( "Lau::MELoader", "\"auto\" node NOT found." );
+		block.LogLine( "\"auto\" node NOT found." );
 	}
 
 	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + unify::Path( "scene/" ), startup);

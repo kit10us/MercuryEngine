@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/os/ILogListener.h>
+#include <me/debug/ILogListener.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
@@ -17,8 +17,11 @@ namespace me
 		Warning // Error might not be important - state is unknown.
 	};
 
-	namespace os
+	namespace debug
 	{
+		/// <summary>
+		/// Debugging features used to better troubleshoot issues.
+		/// </summary>
 		class IDebug
 		{
 		public:
@@ -46,14 +49,59 @@ namespace me
 			virtual void SetFailureAsCritical( bool faiureAsCritical ) = 0;
 
 			/// <summary>
+			/// Set text to append to the end of every section.
+			/// </summary>
+			virtual void SetAppendSectionText( std::string text ) = 0;
+
+			/// <summary>
+			/// Get text to append to the end of every section.
+			/// </summary>
+			virtual std::string GetAppendSectionText() const = 0;
+
+			/// <summary>
+			/// Set text to prepend to the end of every section.
+			/// </summary>
+			virtual void SetPrependSectionText( std::string text ) = 0;
+
+			/// <summary>
+			/// Get text to prepend to the end of every section.
+			/// </summary>
+			virtual std::string GetPrependSectionText() const = 0;
+
+			/// <summary>
+			/// Set text to append to the end of every line.
+			/// </summary>
+			virtual void SetAppendLineText( std::string text ) = 0;
+
+			/// <summary>
+			/// Get text to append to the end of every line.
+			/// </summary>
+			virtual std::string GetAppendLineText() const = 0;
+
+			/// <summary>
+			/// Set text to prepend to the end of every line.
+			/// </summary>
+			virtual void SetPrependLineText( std::string text ) = 0;
+			
+			/// <summary>
+			/// Get text to prepend to the end of every line.
+			/// </summary>
+			virtual std::string GetPrependLineText( ) const = 0;
+
+			/// <summary>
 			/// Assert.
 			/// </summary>
 			virtual bool Assert( bool assertion ) const = 0;
 
 			/// <summary>
-			/// Write a line to the log.
+			/// Write line to the log noting what section the line comes from.
 			/// </summary>
-			virtual void LogLine( std::string section, std::string line ) = 0;
+			virtual void LogSectionLine( std::string section, std::string line ) = 0;
+
+			/// <summary>
+			/// Write a line to the log. The section comes from the top of the block.
+			/// </summary>
+			virtual void LogLine( std::string line ) = 0;
 
 			/// <summary>
 			/// Attach a listener, to listen for log activity.
@@ -100,11 +148,20 @@ namespace me
 			/// </summary>
 			virtual const std::vector< std::string > & GetLogLines() const = 0;
 
-		private:
-			bool m_failuresAsCritial;
-			unify::Path m_logFile;
-			std::list< ILogListener* > m_logListeners;
-			std::list< std::string > m_criticalErrors;
+			/// <summary>
+			/// Push a block, a mechanism to track where we are in our code.
+			/// </summary>
+			virtual void PushBlock( std::string name ) = 0;
+
+			/// <summary>
+			/// Pop a block, a mechanism to track where we are in our code.
+			/// </summary>
+			virtual void PopBlock( std::string name ) = 0;
+
+			/// <summary>
+			/// Returns the entire blocks.
+			/// </summary>
+			virtual std::string GetBlocks() const = 0;
 		};
 	}
 }

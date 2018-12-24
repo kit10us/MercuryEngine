@@ -6,6 +6,7 @@
 #include <me/object/component/CameraComponent.h>
 #include <me/scene/ObjectAllocatorComponent.h>
 #include <me/scene/RenderGirl.h>
+#include <me/debug/Block.h>
 #include <unify/Frustum.h>
 
 using namespace me;
@@ -35,35 +36,38 @@ unify::Owner::ptr Scene::GetOwnership()
 
 void Scene::Component_OnBeforeStart()
 {
+	debug::Block block( GetGame()->Debug(), "Scene::OnBeforeStart" );
+
 	for( auto && component : m_components )
 	{
-
+		debug::Block onBeforStartBlock( block, "Component \"" + component->GetTypeName() );
 		if( component->IsEnabled() )
 		{
-			GetGame()->Debug()->LogLine( "Scene::OnBeforeStart", "Component \"" + component->GetTypeName() + "\" OnBeforeStart Begin" );
+			onBeforStartBlock.LogLine( "enabled" );
 			component->OnBeforeStart();
-			GetGame()->Debug()->LogLine( "Scene::OnBeforeStart", "Component \"" + component->GetTypeName() + "\" OnBeforeStart Done" );
 		}
 		else
 		{
-			GetGame()->Debug()->LogLine( "Scene::OnBeforeStart", "Component \"" + component->GetTypeName() + "\" OnBeforeStart Skipped (not enabled)" );
+			onBeforStartBlock.LogLine( "disabled, skipping" );
 		}
 	}
 }
 
 void Scene::Component_OnAfterStart()
 {
+	debug::Block block( GetGame()->Debug(), "Scene::OnAfterStart" );
+
 	for ( auto && component : m_components )
 	{
 		if (component->IsEnabled())
 		{
-			GetGame()->Debug()->LogLine( "Scene::OnAfterStart", "Component \"" + component->GetTypeName() + "\" OnAfterStart Begin" );
+			block.LogLine( "Component \"" + component->GetTypeName() + "\" OnAfterStart Begin" );
 			component->OnAfterStart();
-			GetGame()->Debug()->LogLine( "Scene::OnAfterStart", "Component \"" + component->GetTypeName() + "\" OnAfterStart Done" );
+			block.LogLine( "Component \"" + component->GetTypeName() + "\" OnAfterStart Done" );
 		}
 		else
 		{
-			GetGame()->Debug()->LogLine( "Scene::OnAfterStart", "Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)" );
+			block.LogLine( "Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)" );
 		}
 	}
 }

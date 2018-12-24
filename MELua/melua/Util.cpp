@@ -2,6 +2,7 @@
 
 #include <melua/Util.h>
 #include <melua/Script.h>
+#include <me/debug/Block.h>
 
 namespace melua
 {
@@ -153,12 +154,14 @@ namespace melua
 
 	int Include( lua_State * L )
 	{
-		std::string name = Check< std::string >( L, 1 );
-
 		ScriptEngine * se = ScriptEngine::GetInstance();
 		auto gameInstance = se->GetGame();
 
-		gameInstance->Debug()->LogLine( "Including script \"" + name + "\" from Lua script.", "Lua" );
+		me::debug::Block block( gameInstance->Debug(), "MELua include" );
+
+		std::string name = Check< std::string >( L, 1 );
+
+		block.LogLine( "Including script \"" + name + "\" from Lua script." );
 
 		auto scriptManager = gameInstance->GetResourceHub().GetManager< me::script::IScript >( "script" );
 

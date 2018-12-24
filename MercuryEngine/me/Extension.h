@@ -16,15 +16,11 @@ namespace me
 	class Extension
 	{
 	public:
-		Extension( unify::Path source );
+		Extension( game::IGame * gameInstance, unify::Path source, const qxml::Element * element );
 		virtual ~Extension();
-
-		bool Load( game::IGame * gameInstance, const qxml::Element * element );
-		void Free();
 
 	private:
 		unify::Path m_source;
-
 		void* m_moduleHandle;
 	};
 }

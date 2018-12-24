@@ -9,9 +9,6 @@
 
 class MainScene : public me::scene::Scene
 {
-	me::render::IVertexBuffer::ptr vertexBuffer;
-	unify::Quaternion q;
-
 public:
 	MainScene( me::game::Game * gameInstance );
 

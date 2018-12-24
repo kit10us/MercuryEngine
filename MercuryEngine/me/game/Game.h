@@ -29,8 +29,29 @@ namespace me
 				ICommandListener::ptr listener;
 			};
 
-		protected: // User overrides...
+			std::string m_title;
+			os::IOS::ptr m_os;
+			std::string m_startScene;
+			unify::Path m_setup;
+			bool m_isQuitting;
+			float m_totalStartupTime;
+			unify::Owner::ptr m_inputOwnership;
+			input::InputManager m_inputManager;
 
+			os::OSParameters m_osParameters;
+			std::list< me::game::IGameComponent::ptr > m_components;
+			rm::ResourceHub m_resourceHub;
+			render::RenderInfo m_renderInfo;
+
+			std::list< std::shared_ptr< Extension > > m_extensions;
+			std::weak_ptr< UpdateLock > m_exclusiveLock;
+			std::list< std::weak_ptr< UpdateLock > > m_locks;
+
+			std::vector< std::list< CommandListenerSet > > m_commandListeners;
+			std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanTest> m_commandMap;
+			std::vector< std::string > m_commandList;
+
+		protected: // User overrides...
 			virtual bool Setup( os::IOS * os ) override;
 			virtual void AddScenes( scene::SceneManager * sceneManager ) override;
 			virtual void Startup() override;
@@ -43,6 +64,9 @@ namespace me
 
 			os::OSParameters GetOSParameters() const override;
 
+			/// <summary>
+			/// Interop feature that sends a chunk of data to a target.
+			/// </summary>
 			void * Feed( std::string target, void * data ) override;
 
 			/// <summary>
@@ -115,43 +139,14 @@ namespace me
 
 			std::string SendCommand( size_t id, std::string extra ) override;
 
-			me::os::IDebug * Debug() override;
-			const me::os::IDebug * Debug() const override;
+			me::debug::IDebug * Debug() override;
+			const me::debug::IDebug * Debug() const override;
 
 		protected:
 			void Private_Shutdown();
 
 		private:
 			void AddExtension( unify::Path path, const qxml::Element * element );
-
-		private:
-			std::string m_title;
-			std::string m_startScene;
-			os::OSParameters m_osParameters;
-			std::list< me::game::IGameComponent::ptr > m_components;
-			
-			unify::Path m_setup;
-
-			float m_totalStartupTime;
-
-			os::IOS::ptr m_os;
-			rm::ResourceHub m_resourceHub;
-
-			render::RenderInfo m_renderInfo;
-
-			bool m_isQuitting;
-
-			input::InputManager m_inputManager;
-			unify::Owner::ptr m_inputOwnership;
-
-			std::list< std::shared_ptr< Extension > > m_extensions;
-
-			std::weak_ptr< UpdateLock > m_exclusiveLock;
-			std::list< std::weak_ptr< UpdateLock > > m_locks;
-
-			std::vector< std::list< CommandListenerSet > > m_commandListeners;
-			std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanTest> m_commandMap;
-			std::vector< std::string > m_commandList;
 		};
 	}
 }

@@ -211,9 +211,7 @@ void MainScene::OnStart()
 {
 	using namespace terrain;
 
-	{
-		m_map->SetInvalid( GetManager< Geometry >()->Find( "invalid" ) );
-	}
+	m_map->SetInvalid( GetManager< Geometry >()->Find( "invalid" ) );
 
 	// Add a grass ground...
 	{

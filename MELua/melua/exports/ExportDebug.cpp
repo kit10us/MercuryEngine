@@ -22,16 +22,16 @@ int Debug_LogLine( lua_State * state )
 	switch( type )
 	{
 	case LUA_TNIL:
-		gameInstance->Debug()->LogLine( "Lua", "<NIL>\n" );
+		gameInstance->Debug()->LogSectionLine( "Lua", "<NIL>" );
 		break;
 	case LUA_TTABLE:
-		gameInstance->Debug()->LogLine( "Lua", "<" + GetTypename( state, 1 ) + ">\n" );
+		gameInstance->Debug()->LogSectionLine( "Lua", "<" + GetTypename( state, 1 ) + ">" );
 		break;
 	case LUA_TUSERDATA:
-		gameInstance->Debug()->LogLine( "Lua", "<" + GetTypename( state, 1 ) + ">\n" );
+		gameInstance->Debug()->LogSectionLine( "Lua", "<" + GetTypename( state, 1 ) + ">" );
 		break;
 	default:
-		gameInstance->Debug()->LogLine( "Lua", lua_tostring( state, 1 ) );
+		gameInstance->Debug()->LogSectionLine( "Lua", lua_tostring( state, 1 ) );
 		break;
 	}
 
@@ -62,10 +62,10 @@ int Debug_ToString( lua_State * state )
 	switch( type )
 	{
 	case LUA_TNIL:
-		gameInstance->Debug()->LogLine( "Lua::Debug_ToString", "<NIL>\n" );
+		gameInstance->Debug()->LogSectionLine( "Lua::Debug_ToString", "<NIL>" );
 		break;
 	case LUA_TTABLE:
-		gameInstance->Debug()->LogLine( "Lua::Debug_ToString", "<" + GetTypename( state, 1 ) + ">\n" );
+		gameInstance->Debug()->LogSectionLine( "Lua::Debug_ToString", "<" + GetTypename( state, 1 ) + ">" );
 		break;
 	case LUA_TUSERDATA:
 

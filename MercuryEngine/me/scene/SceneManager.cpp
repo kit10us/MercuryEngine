@@ -5,6 +5,7 @@
 #include <me/scene/Scene.h>
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
+#include <me/debug/Block.h>
 #include <qxml/Document.h>
 
 using namespace me;
@@ -40,14 +41,14 @@ size_t SceneManager::GetSceneCount() const
 	return m_scenes.Count();
 }
 
-void SceneManager::AddScene( std::string name, IScene::ptr scene )
+void SceneManager::AddScene( IScene::ptr scene )
 {
-	if( m_scenes.Exists( name ) )
+	if( m_scenes.Exists( scene->GetName() ) )
 	{
-		throw exception::FailedToCreate( "Attempted to add scene \"" + name + "\", but it already exists!" );
+		throw exception::FailedToCreate( "Attempted to add scene \"" + scene->GetName() + "\", but it already exists!" );
 	}
 
-	m_scenes.Add( name, scene );
+	m_scenes.Add( scene->GetName(), scene );
 }
 
 int SceneManager::FindSceneIndex( std::string name )
@@ -72,6 +73,8 @@ std::string SceneManager::GetPreviousSceneName()
 
 bool SceneManager::ChangeScene( std::string name )
 {
+	debug::Block block( GetGame()->Debug(), "Scene::ChangeScene" );
+
 	IScene::ptr newScene = m_scenes.GetValue( name );
 	
 	// Leave current scene...
@@ -100,16 +103,16 @@ bool SceneManager::ChangeScene( std::string name )
 		component->OnSceneStart( m_currentScene.get() );
 	}
 
-	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
+	block.LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
 	m_currentScene->Component_OnBeforeStart();	
 
-	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "OnStart Begin" );
+	block.LogLine( "OnStart Begin" );
 	m_currentScene->OnStart();
 
-	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "OnStart End" );
+	block.LogLine( "OnStart End" );
 
 	m_currentScene->Component_OnAfterStart();
-	GetGame()->Debug()->LogLine( "Scene::ChangeScene", "Start scene \"" + m_currentScene->GetName() + "\" Done" );
+	block.LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
 
 	return true;
 }

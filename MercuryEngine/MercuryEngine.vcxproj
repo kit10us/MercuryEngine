@@ -32,6 +32,10 @@
     <ClInclude Include="me\canvas\ListItem.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
+    <ClInclude Include="me\debug\Block.h" />
+    <ClInclude Include="me\debug\DefaultDebug.h" />
+    <ClInclude Include="me\debug\IDebug.h" />
+    <ClInclude Include="me\debug\ILogListener.h" />
     <ClInclude Include="me\game\Game.h" />
     <ClInclude Include="me\game\GameComponent.h" />
     <ClInclude Include="me\game\IGame.h" />
@@ -119,10 +123,7 @@
     <ClInclude Include="me\object\component\TagsComponent.h" />
     <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\Object.h" />
-    <ClInclude Include="me\os\DefaultDebug.h" />
     <ClInclude Include="me\os\DefaultOS.h" />
-    <ClInclude Include="me\os\IDebug.h" />
-    <ClInclude Include="me\os\ILogListener.h" />
     <ClInclude Include="me\os\IOS.h" />
     <ClInclude Include="me\render\Billboard.h" />
     <ClInclude Include="me\render\Blend.h" />
@@ -247,6 +248,8 @@
     <ClCompile Include="me\canvas\ListItem.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
+    <ClCompile Include="me\debug\Block.cpp" />
+    <ClCompile Include="me\debug\DefaultDebug.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />
@@ -300,7 +303,6 @@
     <ClCompile Include="me\object\component\ObjectComponent.cpp" />
     <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
-    <ClCompile Include="me\os\DefaultDebug.cpp" />
     <ClCompile Include="me\os\DefaultOS.cpp" />
     <ClCompile Include="me\render\Billboard.cpp" />
     <ClCompile Include="me\render\Blend.cpp" />

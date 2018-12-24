@@ -23,8 +23,7 @@ namespace me
             void Destroy();
 
 			size_t GetSceneCount() const;
-            void AddScene( std::string name, IScene::ptr sceneFactory );
-            void AddScene( std::string name );
+            void AddScene( IScene::ptr sceneFactory );
 			
 			int FindSceneIndex( std::string name );
 			std::string GetSceneName(int index);
