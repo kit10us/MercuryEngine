@@ -13,6 +13,7 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/GeometryFactory.h>
 #include <me/debug/Block.h>
+#include <me/game/GameLogger.h>
 #include <sg/ShapeFactory.h>
 
 // Temporary...
@@ -33,22 +34,6 @@ using namespace me;
 using namespace game;
 using namespace scene;
 using namespace render;
-
-class GameLogger : public rm::ILogger
-{
-	debug::IDebug * m_debug;
-public:
-	GameLogger( debug::IDebug * debug ) : m_debug( debug )
-	{
-	}
-
-	void WriteLine( std::string section, std::string text ) override
-	{
-		m_debug->LogSectionLine( section, text );
-	}
-
-};
-
 
 bool Game::Setup( os::IOS * os )
 {
