@@ -10,6 +10,8 @@ namespace me
 	class TextureSourceFactory : public rm::ISourceFactory< render::ITexture >
 	{
 	public:
+		typedef std::shared_ptr< rm::ISourceFactory< me::render::ITexture > > ptr;
+		
 		TextureSourceFactory( game::IGame * gameInstance );
 		render::ITexture::ptr Produce( unify::Path source, void * data ) override;
 

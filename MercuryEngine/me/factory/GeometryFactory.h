@@ -11,6 +11,8 @@ namespace me
 	class GeometryFactory : public rm::ISourceFactory< render::Geometry >
 	{
 	public:
+		typedef std::shared_ptr< rm::ISourceFactory< me::render::Geometry > > ptr;
+
 		GeometryFactory( game::IGame * gameInstance );
 		render::Geometry::ptr Produce( unify::Path source, void * data ) override;
 

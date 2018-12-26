@@ -134,8 +134,8 @@ void Game::Initialize( os::OSParameters osParameters )
 
 	// Add setup script manager.
 	{
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< script::IScript >()->AddFactory( ".xml", ScriptFactoryPtr( new setup::SetupScriptFactory( this ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< script::IScript >()->AddFactory( ".xml", setup::SetupScriptFactory::ptr( new setup::SetupScriptFactory( this ) ) );
 	}
 
 	// Parse the commandline...
@@ -304,25 +304,25 @@ void Game::Initialize( os::OSParameters osParameters )
 
 	// Create asset managers...
 	{
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< ITexture >( "Texture", GetOS()->GetAssetPaths(), logger ) ) );
-		TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< ITexture >( "Texture", GetOS()->GetAssetPaths(), logger ) ) );
+		TextureSourceFactory::ptr textureFactoryPtr( new TextureSourceFactory( this ) );
 		GetManager< ITexture >()->AddFactory( ".dds", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".png", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".bmp", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< Effect >( "Effect", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< Effect >( "Effect", GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< Effect >()->AddFactory( ".effect", EffectFactory::ptr( new EffectFactory( this ) ) );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< IPixelShader >( "PixelShader", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory( this ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< IPixelShader >( "PixelShader", GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactory::ptr( new PixelShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< IVertexShader >( "VertexShader", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory( this ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< IVertexShader >( "VertexShader", GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactory::ptr( new VertexShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< Geometry >( "Geometry", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
-		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< Geometry >( "Geometry", GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactory::ptr( new GeometryFactory( this ) ) );
+		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactory::ptr( new sg::ShapeFactory( this ) ) );
 	}
 
 	// Add internal components...

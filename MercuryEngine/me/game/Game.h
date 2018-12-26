@@ -11,14 +11,7 @@
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
 #include <me/script/IScript.h>
-
-typedef std::shared_ptr< rm::ISourceFactory< me::script::IScript > > ScriptFactoryPtr;
-typedef std::shared_ptr< rm::ISourceFactory< me::render::ITexture > > TextureFactoryPtr;
-typedef std::shared_ptr< rm::ISourceFactory< me::render::Effect > > EffectFactoryPtr;
-typedef std::shared_ptr< rm::ISourceFactory< me::render::IPixelShader > > PixelShaderFactoryPtr;
-typedef std::shared_ptr< rm::ISourceFactory< me::render::IVertexShader > > VertexShaderFactoryPtr;
-typedef std::shared_ptr< rm::ISourceFactory< me::render::Geometry > > GeometryFactoryPtr;
-																	   
+						   
 namespace me
 {
 	namespace game
