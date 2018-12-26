@@ -25,7 +25,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 	{
 		if ( node.IsTagName( "source" ) )
 		{
-			parameters.path = m_game->GetOS()->GetAssetPaths().FindAsset( unify::Path( node.GetText() ), node.GetDocument()->GetPath().DirectoryOnly() );
+			parameters.path = m_game->GetOS()->GetAssetPaths()->FindAsset( unify::Path( node.GetText() ), node.GetDocument()->GetPath().DirectoryOnly() );
 		}
 		else if ( node.IsTagName( "entry" ) )
 		{

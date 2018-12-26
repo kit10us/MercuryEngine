@@ -52,7 +52,7 @@ ScriptEngine::ScriptEngine( me::game::IGame * game )
 	RegisterLibraries( m_state );
 	
 	// Set path...
-	std::string path = unify::string::StringReplace( os->GetAssetPaths().GetPaths( os->GetRunPath() ), ";", "?.lua;" );
+	std::string path = unify::string::StringReplace( os->GetAssetPaths()->GetPaths( os->GetRunPath() ), ";", "?.lua;" );
 	if ( path != "" )
 	{
 		path += "?.lua";
@@ -96,7 +96,7 @@ ExecuteResult ScriptEngine::ExecuteString( std::string line )
 
 ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 {
-	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+	path = m_game->GetOS()->GetAssetPaths()->FindAsset( path );
 
 	int result = luaL_loadfile( m_state, path.ToString().c_str() );
 	if( result != LUA_OK )
@@ -115,7 +115,7 @@ ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 
 game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 {					
-	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+	path = m_game->GetOS()->GetAssetPaths()->FindAsset( path );
 
 	int top = lua_gettop( m_state );
 
@@ -135,7 +135,7 @@ game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 
 ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 {					
-	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+	path = m_game->GetOS()->GetAssetPaths()->FindAsset( path );
 
 	int top = lua_gettop( m_state );
 
@@ -157,7 +157,7 @@ ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 
 me::object::component::IObjectComponent::ptr ScriptEngine::LoadObjectScript( unify::Path path )
 {					
-	path = m_game->GetOS()->GetAssetPaths().FindAsset( path );
+	path = m_game->GetOS()->GetAssetPaths()->FindAsset( path );
 
 	int top = lua_gettop( m_state );
 

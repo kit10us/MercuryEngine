@@ -1,16 +1,12 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <chrono>
-#include <ctime>
-#include <functional>
-#include <map>
-
 #include <me/os/DefaultOS.h>
 #include <me/game/Game.h>
 #include <me/game/component/GC_ActionFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/scene/SceneManager.h>
+#include <me/setup/SetupScriptFactory.h>
 #include <me/factory/EffectFactories.h>
 #include <me/factory/TextureFactory.h>
 #include <me/factory/VertexShaderFactory.h>
@@ -26,6 +22,12 @@
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
+
+#include <chrono>
+#include <ctime>
+#include <functional>
+#include <map>
+
 
 using namespace me;
 using namespace game;
@@ -107,6 +109,7 @@ void * Game::Feed( std::string target, void * data )
 void Game::Initialize( os::OSParameters osParameters )
 {
 	debug::Block block( Debug(), "Game::Initialize" );
+	rm::ILogger::ptr logger( new GameLogger( Debug() ) );
 
 	std::map< std::string, std::string > defines;
 	defines[ "TARGET" ] = Debug()->IsDebug() ? "Debug" : "Release";
@@ -127,6 +130,13 @@ void Game::Initialize( os::OSParameters osParameters )
 	m_totalStartupTime = {};
 
 	m_osParameters = osParameters;
+
+
+	// Add setup script manager.
+	{
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
+		GetManager< script::IScript >()->AddFactory( ".xml", ScriptFactoryPtr( new setup::SetupScriptFactory( this ) ) );
+	}
 
 	// Parse the commandline...
 	std::vector< std::string > commandLineVector;
@@ -177,18 +187,14 @@ void Game::Initialize( os::OSParameters osParameters )
 
 		// First loader pass
 		debug::Block xmlLoaderBlock( block, "xmlLoader first pass" );
+		auto scriptManager = GetManager< script::IScript >();
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
 			xmlLoaderBlock.LogLine( "loading \"" + source.ToString() + "\"" );
-			unify::Path pathDiscovery( source );
 
-			// Attempt to discover the source, if we have an OS.
-			if( GetOS() )
-			{
-				pathDiscovery = GetOS()->GetAssetPaths().FindAsset( pathDiscovery );
-			}
+			auto script = scriptManager->Add( source.ToString(), source );
 
-			qxml::Document doc( pathDiscovery );
+			qxml::Document doc( unify::Path{ script->GetSource() } );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -207,13 +213,13 @@ void Game::Initialize( os::OSParameters osParameters )
 					{
 						unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
 						unify::Path pathDiscovery{ 
-							GetOS()->GetAssetPaths().FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() ) 
+							GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() ) 
 						};
 						AddExtension( path, &node );
 					}
 					else if( node.IsTagName( "assets" ) )
 					{
-						GetOS()->GetAssetPaths().AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						GetOS()->GetAssetPaths()->AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
 					}
 
 					// "inputs" handle further on
@@ -245,12 +251,14 @@ void Game::Initialize( os::OSParameters osParameters )
 
 		// Second loader pass
 		debug::Block xmlLoaderBlock( block, "xmlLoader second pass" );
+		auto scriptManager = GetManager< script::IScript >();
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
 			xmlLoaderBlock.LogLine( "loading \"" + source.ToString() + "\"" );
 
-			unify::Path pathDiscovery( GetOS()->GetAssetPaths().FindAsset( source ) );
-			qxml::Document doc( pathDiscovery );
+			auto script = scriptManager->Add( source.ToString(), source );
+
+			qxml::Document doc( unify::Path{ script->GetSource() } );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -296,30 +304,25 @@ void Game::Initialize( os::OSParameters osParameters )
 
 	// Create asset managers...
 	{
-		rm::ILogger::ptr logger( new GameLogger( Debug() ) );
-
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< ITexture >( "Texture", &GetOS()->GetAssetPaths(), logger ) ) );
-
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< ITexture >( "Texture", GetOS()->GetAssetPaths(), logger ) ) );
 		TextureFactoryPtr textureFactoryPtr( new TextureSourceFactory( this ) );
 		GetManager< ITexture >()->AddFactory( ".dds", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".png", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".bmp", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< Effect >( "Effect", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< Effect >( "Effect", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Effect >()->AddFactory( ".effect", EffectFactoryPtr( new EffectFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< IPixelShader >( "PixelShader", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< IPixelShader >( "PixelShader", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactoryPtr( new PixelShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< IVertexShader >( "VertexShader", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< IVertexShader >( "VertexShader", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactoryPtr( new VertexShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< Geometry >( "Geometry", &GetOS()->GetAssetPaths(), logger ) ) );
+		GetResourceHub().AddManager( rm::IResourceManagerRaw::shared_ptr( new rm::ResourceManager< Geometry >( "Geometry", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactoryPtr( new GeometryFactory( this ) ) );
 		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactoryPtr( new sg::ShapeFactory( this ) ) );
-
-		GetResourceHub().AddManager( std::shared_ptr< rm::IResourceManagerRaw >( new rm::ResourceManager< script::IScript >( "Script", &GetOS()->GetAssetPaths(), logger ) ) );
 	}
 
 	// Add internal components...
@@ -341,7 +344,7 @@ void Game::Initialize( os::OSParameters osParameters )
 		// Third and final loader pass.
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{
-			unify::Path pathDiscovery( GetOS()->GetAssetPaths().FindAsset( source ) );
+			unify::Path pathDiscovery( GetOS()->GetAssetPaths()->FindAsset( source ) );
 			qxml::Document doc( pathDiscovery );
 
 			block.LogLine( "Loading setup \"" + source.ToString() + "\"..." );
@@ -359,7 +362,7 @@ void Game::Initialize( os::OSParameters osParameters )
 					{
 						unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
 						unify::Path pathDiscovery{
-							GetOS()->GetAssetPaths().FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
+							GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
 						};
 						AddExtension( path, &node );
 					}
@@ -575,6 +578,14 @@ const os::IOS * Game::GetOS() const
 }
 
 template<>
+rm::ResourceManager< script::IScript > * Game::GetManager()
+{
+	auto rm = GetResourceHub().GetManager< script::IScript >( "script" );
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< script::IScript > * >( rm );
+	return manager;
+}
+
+template<>
 rm::ResourceManager< ITexture > * Game::GetManager()
 {
 	auto rm = GetResourceHub().GetManager< ITexture >( "texture" );
@@ -603,12 +614,6 @@ template<> rm::ResourceManager< IVertexShader > * Game::GetManager()
 template<> rm::ResourceManager< Geometry > * Game::GetManager()
 {
 	auto manager = unify::polymorphic_downcast< rm::ResourceManager< Geometry > * >(GetResourceHub().GetManager< Geometry >( "Geometry" ));
-	return manager;
-}
-
-template<> rm::ResourceManager< script::IScript > * Game::GetManager()
-{
-	auto manager = unify::polymorphic_downcast< rm::ResourceManager< script::IScript > * >( GetResourceHub().GetManager< script::IScript >( "Script" ) );
 	return manager;
 }
 

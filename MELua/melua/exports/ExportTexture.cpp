@@ -36,7 +36,7 @@ int Texture_Constructor( lua_State * state )
 			texture = gameInstance->GetManager< ITexture >()->Find( value );
 			if( ! texture )
 			{
-				texture = gameInstance->GetManager< ITexture >()->Add( path );
+				texture = gameInstance->GetManager< ITexture >()->Add( value, unify::Path{ path } );
 			}
 		}
 		else

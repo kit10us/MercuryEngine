@@ -37,7 +37,7 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 
 	try
 	{
-		startup = unify::Path( gameInstance->GetOS()->GetAssetPaths().FindAsset( startup ) );
+		startup = unify::Path( gameInstance->GetOS()->GetAssetPaths()->FindAsset( startup ) );
 	}
 	catch( ... )
 	{

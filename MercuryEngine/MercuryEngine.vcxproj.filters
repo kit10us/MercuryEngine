@@ -94,6 +94,9 @@
     <Filter Include="me\debug">
       <UniqueIdentifier>{6d406bab-589e-499a-8a19-941c419549c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\setup">
+      <UniqueIdentifier>{4efdc3d6-55b8-4af1-9794-de458e8bba6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -747,6 +750,12 @@
     <ClInclude Include="me\debug\Block.h">
       <Filter>me\debug</Filter>
     </ClInclude>
+    <ClInclude Include="me\setup\SetupScriptFactory.h">
+      <Filter>me\setup</Filter>
+    </ClInclude>
+    <ClInclude Include="me\setup\SetupScript.h">
+      <Filter>me\setup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1219,6 +1228,12 @@
     </ClCompile>
     <ClCompile Include="me\debug\Block.cpp">
       <Filter>me\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="me\setup\SetupScriptFactory.cpp">
+      <Filter>me\setup</Filter>
+    </ClCompile>
+    <ClCompile Include="me\setup\SetupScript.cpp">
+      <Filter>me\setup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

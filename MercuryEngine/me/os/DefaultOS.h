@@ -64,7 +64,7 @@ namespace me
 
 			LRESULT WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam );
 
-			rm::AssetPaths & GetAssetPaths() override;
+			rm::AssetPaths::ptr GetAssetPaths() override;
 
 			unify::Path GetProgramPath() const override;
 
@@ -74,7 +74,7 @@ namespace me
 			me::game::IGame * m_game;
 			me::debug::IDebug * m_debug;
 			unify::Path m_runPath;
-			rm::AssetPaths m_assetPaths;
+			rm::AssetPaths::ptr m_assetPaths;
 		};
 	}
 }

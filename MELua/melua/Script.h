@@ -38,7 +38,6 @@ namespace melua
 		lua_State * GetState();
 
 	public: // IResource...
-		size_t Owners() const;
 		bool Reload() override;
 		std::string GetSource() const override;
 

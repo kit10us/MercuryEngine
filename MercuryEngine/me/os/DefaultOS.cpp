@@ -21,6 +21,7 @@ using namespace os;
 DefaultOS::DefaultOS( me::game::IGame * gameInstance )
 	: m_game{ gameInstance }
 	, m_debug{ new debug::DefaultDebug{} }
+	, m_assetPaths{ new rm::AssetPaths }
 {
 	{
 		char buffer[MAX_PATH];
@@ -127,7 +128,7 @@ LRESULT DefaultOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lPa
 	return 0;
 }
 
-rm::AssetPaths & DefaultOS::GetAssetPaths()
+rm::AssetPaths::ptr DefaultOS::GetAssetPaths()
 {
 	return m_assetPaths;
 }

@@ -44,7 +44,7 @@ int PixelShader_Constructor( lua_State * state )
 			unify::Path asPath( value );
 			if( asPath.IsExtension( "xml" ) )
 			{
-				auto ps = gameInstance->GetManager< IPixelShader >()->Add( asPath );
+				auto ps = gameInstance->GetManager< IPixelShader >()->Add( value, asPath );
 				return Push< PixelShaderProxy >( state, { ps } );
 			}
 			else

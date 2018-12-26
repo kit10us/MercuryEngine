@@ -63,7 +63,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 		{
 			for( const auto effect: child.Children() )
 			{
-				unify::Path source = gameInstance->GetOS()->GetAssetPaths().FindAsset( unify::Path( effect.GetAttribute< std::string >( "source" ) ), geometryElement.GetDocument()->GetPath().DirectoryOnly() );
+				unify::Path source = gameInstance->GetOS()->GetAssetPaths()->FindAsset( unify::Path( effect.GetAttribute< std::string >( "source" ) ), geometryElement.GetDocument()->GetPath().DirectoryOnly() );
 				effectManager->Add( effect.GetAttribute< std::string >( "name" ), source );
 			}
 		}

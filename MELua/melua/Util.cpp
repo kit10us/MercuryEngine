@@ -167,7 +167,7 @@ namespace melua
 
 		unify::Path path{ name };
 		path.ChangeExtension( "lua" );
-		path = gameInstance->GetOS()->GetAssetPaths().FindAsset( path );
+		path = gameInstance->GetOS()->GetAssetPaths()->FindAsset( path );
 
 		auto script = new Script( L, path, true );
 		scriptManager->Add( name, script );

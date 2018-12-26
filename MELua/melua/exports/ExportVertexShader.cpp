@@ -43,7 +43,7 @@ int VertexShader_Constructor( lua_State * state )
 			unify::Path asPath( value );
 			if( asPath.IsExtension( "xml" ) )
 			{
-				auto vs = gameInstance->GetManager< IVertexShader >()->Add( asPath );
+				auto vs = gameInstance->GetManager< IVertexShader >()->Add( value, asPath );
 				return Push< VertexShaderProxy >( state, { vs } );
 			}
 			else

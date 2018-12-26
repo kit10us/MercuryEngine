@@ -138,7 +138,7 @@ namespace me
 			/// <summary>
 			/// Asset path manager.
 			/// </summary>
-			virtual rm::AssetPaths & GetAssetPaths() = 0;
+			virtual rm::AssetPaths::ptr GetAssetPaths() = 0;
 
 			/// <summary>
 			/// Asset path manager.

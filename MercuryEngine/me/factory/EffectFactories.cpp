@@ -50,13 +50,13 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 			else if ( child.IsTagName( "pixelshader" ) )
 			{
 				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
-				unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( path, doc.GetPath().DirectoryOnly() );
+				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 				effect->SetPixelShader( pixelShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
 			}
 			else if ( child.IsTagName( "vertexshader" ) )
 			{
 				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
-				unify::Path source = m_game->GetOS()->GetAssetPaths().FindAsset( path, doc.GetPath().DirectoryOnly() );
+				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 				effect->SetVertexShader( vertexShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
 			}
 			//void AddFrame( size_t frameIndex, float influence );

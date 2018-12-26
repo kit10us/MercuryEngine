@@ -187,6 +187,8 @@
     <ClInclude Include="me\scene\SceneManager.h" />
     <ClInclude Include="me\scene\SceneManagerComponent.h" />
     <ClInclude Include="me\script\IScript.h" />
+    <ClInclude Include="me\setup\SetupScript.h" />
+    <ClInclude Include="me\setup\SetupScriptFactory.h" />
     <ClInclude Include="me\shader\ConstantBuffer.h" />
     <ClInclude Include="me\shader\ConstantVariable.h" />
     <ClInclude Include="me\UpdateParams.h" />
@@ -349,6 +351,8 @@
     <ClCompile Include="me\scene\SceneManager.cpp" />
     <ClCompile Include="me\scene\SceneManagerComponent.cpp" />
     <ClCompile Include="me\script\IScript.cpp" />
+    <ClCompile Include="me\setup\SetupScript.cpp" />
+    <ClCompile Include="me\setup\SetupScriptFactory.cpp" />
     <ClCompile Include="me\shader\ConstantBuffer.cpp" />
     <ClCompile Include="me\shader\ConstantVariable.cpp" />
     <ClCompile Include="me\XMLConvert.cpp" />

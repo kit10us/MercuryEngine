@@ -62,11 +62,6 @@ int Script::PCall( int nargs, int nresults, int errfunc )
 	return lua_pcall( m_state, nargs, nresults, errfunc );
 }
 
-size_t Script::Owners() const
-{
-	return IResource::Owners();
-}
-
 bool Script::Reload()
 {
 	// If we are a script include from within another Lua script, we can't reload directly - ignore the call.

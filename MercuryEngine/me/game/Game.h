@@ -7,10 +7,12 @@
 #include <me/input/IInputCondition.h>
 #include <me/render/Geometry.h>
 #include <me/render/Display.h>
+#include <me/script/IScript.h>
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
 #include <me/script/IScript.h>
 
+typedef std::shared_ptr< rm::ISourceFactory< me::script::IScript > > ScriptFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::ITexture > > TextureFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::Effect > > EffectFactoryPtr;
 typedef std::shared_ptr< rm::ISourceFactory< me::render::IPixelShader > > PixelShaderFactoryPtr;
@@ -93,13 +95,13 @@ namespace me
 
 			template< typename T >
 			rm::ResourceManager< T > * GetManager();
-						
+
+			template<> rm::ResourceManager< script::IScript > * GetManager();
 			template<> rm::ResourceManager< render::ITexture > * GetManager();
 			template<> rm::ResourceManager< render::Effect > * GetManager();
 			template<> rm::ResourceManager< render::IPixelShader > * GetManager();
 			template<> rm::ResourceManager< render::IVertexShader > * GetManager();
 			template<> rm::ResourceManager< render::Geometry > * GetManager();
-			template<> rm::ResourceManager< script::IScript > * GetManager();
 
 			rm::ResourceHub & GetResourceHub() override;
 			const rm::ResourceHub & GetResourceHub() const override;
