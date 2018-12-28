@@ -1,4 +1,0 @@
-del PhysX3DEBUG_x86.dll
-del PhysX3CommonDEBUG_x86.dll
-del nvToolsExt32_1.dll
-del PhysX3CharacterKinematicDEBUG_x86.dll

@@ -11,7 +11,6 @@ class MyGame : public game::Game
 {
 public:
 	MyGame()
-		: Game( "Main" )
 	{
 	}
 

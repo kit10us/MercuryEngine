@@ -9,7 +9,7 @@ using namespace me;
 class MyGame : public game::Game
 {
 public:
-	MyGame() : Game( unify::Path( "setup_physxPlayer.xml" ) ) {}
+	MyGame() : Game( unify::Path( "PhysXPlayer.xml" ) ) {}
 } myGame;
 
 RegisterGame( myGame );

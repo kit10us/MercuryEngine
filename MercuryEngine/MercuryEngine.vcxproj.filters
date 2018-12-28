@@ -97,6 +97,9 @@
     <Filter Include="me\setup">
       <UniqueIdentifier>{4efdc3d6-55b8-4af1-9794-de458e8bba6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\phy">
+      <UniqueIdentifier>{c7ff00cf-c058-4bf5-9aaa-ca3645441a86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -759,6 +762,12 @@
     <ClInclude Include="me\game\GameLogger.h">
       <Filter>me\game</Filter>
     </ClInclude>
+    <ClInclude Include="me\phy\Entity.h">
+      <Filter>me\phy</Filter>
+    </ClInclude>
+    <ClInclude Include="me\phy\PhySceneComponent.h">
+      <Filter>me\phy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1240,6 +1249,12 @@
     </ClCompile>
     <ClCompile Include="me\game\GameLogger.cpp">
       <Filter>me\game</Filter>
+    </ClCompile>
+    <ClCompile Include="me\phy\Entity.cpp">
+      <Filter>me\phy</Filter>
+    </ClCompile>
+    <ClCompile Include="me\phy\PhySceneComponent.cpp">
+      <Filter>me\phy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

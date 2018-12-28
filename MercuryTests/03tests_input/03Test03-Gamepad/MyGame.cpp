@@ -10,7 +10,7 @@ class MyGame : public game::Game
 {
 public:
 	MyGame()
-		: Game( "Main", unify::Path( "setup_testgamepad.xml" ) )
+		: Game( unify::Path( "TestGamepad.xml" ) )
 	{
 	}
 } myGame;

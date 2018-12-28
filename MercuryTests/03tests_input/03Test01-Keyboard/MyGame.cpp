@@ -9,7 +9,7 @@ using namespace me;
 class MyGame : public game::Game
 {
 public:
-	MyGame() : Game( unify::Path( "setup_testkeyboard.xml" ) ) {}
+	MyGame() : Game( unify::Path( "TestKeyboard.xml" ) ) {}
 } myGame;
 
 RegisterGame( myGame );

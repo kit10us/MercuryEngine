@@ -11,13 +11,13 @@ class MyGame : public game::Game
 {
 public:
 	MyGame()
-		: Game( "Main", unify::Path( "setup_models.xml" ) )
+		: Game( unify::Path( "Models.xml" ) )
 	{
 	}
 
 	void AddScenes( scene::SceneManager * sceneManager ) override
 	{
-		sceneManager->AddScene( "Main", me::scene::IScene::ptr( new MainScene( this ) ) );
+		sceneManager->AddScene( me::scene::IScene::ptr( new MainScene( this ) ) );
 	}
 
 } myGame;

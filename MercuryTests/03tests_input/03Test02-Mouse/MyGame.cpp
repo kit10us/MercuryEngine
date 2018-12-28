@@ -9,7 +9,7 @@ using namespace me;
 class MyGame : public game::Game
 {
 public:
-	MyGame() : Game( unify::Path( "setup_testmouse.xml" ) ) {}
+	MyGame() : Game( unify::Path( "TestMouse.xml" ) ) {}
 } myGame;
 
 RegisterGame( myGame );

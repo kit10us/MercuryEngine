@@ -10,9 +10,6 @@
     <Filter Include="mephy\phy3d\collider">
       <UniqueIdentifier>{5cb52cd6-096c-4eab-8c0d-04ccdd7ecb95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mephy\phy2d">
-      <UniqueIdentifier>{93a99669-eae2-4551-bb9c-8f6699f603cd}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MEPhysics.h" />
@@ -27,15 +24,6 @@
     </ClInclude>
     <ClInclude Include="mephy\phy3d\GameComponent3D.h">
       <Filter>mephy\phy3d</Filter>
-    </ClInclude>
-    <ClInclude Include="mephy\phy2d\GameComponent2D.h">
-      <Filter>mephy\phy2d</Filter>
-    </ClInclude>
-    <ClInclude Include="mephy\phy2d\SceneComponent2D.h">
-      <Filter>mephy\phy2d</Filter>
-    </ClInclude>
-    <ClInclude Include="mephy\phy2d\Entity.h">
-      <Filter>mephy\phy2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -52,15 +40,6 @@
     </ClCompile>
     <ClCompile Include="mephy\phy3d\GameComponent3D.cpp">
       <Filter>mephy\phy3d</Filter>
-    </ClCompile>
-    <ClCompile Include="mephy\phy2d\GameComponent2D.cpp">
-      <Filter>mephy\phy2d</Filter>
-    </ClCompile>
-    <ClCompile Include="mephy\phy2d\SceneComponent2D.cpp">
-      <Filter>mephy\phy2d</Filter>
-    </ClCompile>
-    <ClCompile Include="mephy\phy2d\Entity.cpp">
-      <Filter>mephy\phy2d</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

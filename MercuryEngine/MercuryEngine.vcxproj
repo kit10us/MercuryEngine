@@ -126,6 +126,8 @@
     <ClInclude Include="me\object\Object.h" />
     <ClInclude Include="me\os\DefaultOS.h" />
     <ClInclude Include="me\os\IOS.h" />
+    <ClInclude Include="me\phy\Entity.h" />
+    <ClInclude Include="me\phy\PhySceneComponent.h" />
     <ClInclude Include="me\render\Billboard.h" />
     <ClInclude Include="me\render\Blend.h" />
     <ClInclude Include="me\render\BufferSet.h" />
@@ -308,6 +310,8 @@
     <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
     <ClCompile Include="me\os\DefaultOS.cpp" />
+    <ClCompile Include="me\phy\Entity.cpp" />
+    <ClCompile Include="me\phy\PhySceneComponent.cpp" />
     <ClCompile Include="me\render\Billboard.cpp" />
     <ClCompile Include="me\render\Blend.cpp" />
     <ClCompile Include="me\render\BufferSet.cpp" />

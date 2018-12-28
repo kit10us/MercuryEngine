@@ -10,7 +10,7 @@ class MyGame : public game::Game
 {
 public:
 	MyGame()
-		: Game( unify::Path( "setup_testinputsourcemotivator.xml" ) ) {}
+		: Game( unify::Path( "TestInputSourceMotivator.xml" ) ) {}
 } myGame;
 
 RegisterGame( myGame );

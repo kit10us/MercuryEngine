@@ -53,8 +53,8 @@ namespace me
 			virtual void Shutdown() override;
 
 		public:
-			Game( unify::Path setup = unify::Path( "setup.xml" ) );
-			Game( std::string startScene, unify::Path setup = unify::Path( "setup.xml" ) );
+			Game( unify::Path setup = unify::Path( "Setup.xml" ) );
+			Game( std::string startScene, unify::Path setup = unify::Path( "Setup.xml" ) );
 			virtual ~Game();
 
 			os::OSParameters GetOSParameters() const override;
