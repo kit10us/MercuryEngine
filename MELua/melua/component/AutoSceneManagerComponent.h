@@ -2,13 +2,13 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <me/scene/SceneManagerComponent.h>
+#include <me/scene/component/SceneManagerComponent.h>
 
 namespace melua
 {
 	namespace component
 	{
-		class AutoSceneManagerComponent : public me::scene::SceneManagerComponent
+		class AutoSceneManagerComponent : public me::scene::component::SceneManagerComponent
 		{
 		public:
 			AutoSceneManagerComponent( melua::ScriptEngine * scriptEngine, unify::Path autoPath, unify::Path onceBeforeStart );

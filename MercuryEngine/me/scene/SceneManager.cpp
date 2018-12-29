@@ -127,19 +127,19 @@ int SceneManager::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void SceneManager::AddComponent(ISceneManagerComponent::ptr component)
+void SceneManager::AddComponent( component::ISceneManagerComponent::ptr component )
 {
 	component->OnAttach(this);
 	m_components.push_back(component);
 }
 
-void SceneManager::RemoveComponent(ISceneManagerComponent::ptr component)
+void SceneManager::RemoveComponent( component::ISceneManagerComponent::ptr component )
 {
-	m_components.remove(component);
-	component->OnDetach(this);
+	m_components.remove( component );
+	component->OnDetach( this );
 }
 
-ISceneManagerComponent* SceneManager::GetComponent(int index)
+component::ISceneManagerComponent* SceneManager::GetComponent(int index)
 {
 	if (index > (int)m_components.size()) return nullptr;
 
@@ -153,7 +153,7 @@ ISceneManagerComponent* SceneManager::GetComponent(int index)
 	return nullptr;
 }
 
-ISceneManagerComponent* SceneManager::GetComponent(std::string name)
+component::ISceneManagerComponent* SceneManager::GetComponent(std::string name)
 {
 	int index = FindComponent(name);
 	if (index == -1) return nullptr;
@@ -170,7 +170,6 @@ int SceneManager::FindComponent(std::string typeName) const
 	}
 	return -1;
 }
-
 
 size_t SceneManager::GetRenderCount() const
 {

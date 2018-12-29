@@ -32,7 +32,6 @@
 
 using namespace me;
 using namespace game;
-using namespace scene;
 using namespace render;
 
 bool Game::Setup( os::IOS * os )
@@ -311,8 +310,8 @@ void Game::Initialize( os::OSParameters osParameters )
 	}
 
 	// Add internal components...
-	AddComponent( IGameComponent::ptr( new scene::SceneManager() ) );
-	AddComponent( IGameComponent::ptr( new game::component::ActionFactory() ) );
+	AddComponent( component::IGameComponent::ptr( new scene::SceneManager() ) );
+	AddComponent( component::IGameComponent::ptr( new game::component::ActionFactory() ) );
 	
 
 	// Log start of program.
@@ -642,7 +641,7 @@ int Game::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void Game::AddComponent( IGameComponent::ptr component )
+void Game::AddComponent( component::IGameComponent::ptr component )
 {
 	try
 	{
@@ -655,15 +654,15 @@ void Game::AddComponent( IGameComponent::ptr component )
 	m_components.push_back( component );
 }
 
-void Game::RemoveComponent( IGameComponent::ptr component )
+void Game::RemoveComponent( component::IGameComponent::ptr component )
 {
 	m_components.remove( component );
 	component->OnDetach( this );
 }
 
-IGameComponent::ptr Game::GetComponent( int index )
+component::IGameComponent::ptr Game::GetComponent( int index )
 {
-	if ( index > (int)m_components.size() ) return IGameComponent::ptr();
+	if ( index > (int)m_components.size() ) return component::IGameComponent::ptr();
 
 	int i = 0;
 	for ( auto component : m_components )
@@ -673,13 +672,13 @@ IGameComponent::ptr Game::GetComponent( int index )
 	}
 
 	assert( 0 );
-	return IGameComponent::ptr(); // Should never hit here.
+	return component::IGameComponent::ptr(); // Should never hit here.
 }
 
-IGameComponent::ptr Game::GetComponent( std::string name )
+component::IGameComponent::ptr Game::GetComponent( std::string name )
 {
 	int index = FindComponent( name );
-	if ( index == -1 ) return IGameComponent::ptr();
+	if ( index == -1 ) return component::IGameComponent::ptr();
 	return GetComponent( index );
 }
 

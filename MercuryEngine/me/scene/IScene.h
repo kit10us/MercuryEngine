@@ -2,7 +2,7 @@
 // All Rights Reserved
 #pragma once
 
-#include <me/scene/ISceneComponent.h>
+#include <me/scene/component/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 #include <me/render/Viewport.h>
 #include <unify/Owner.h>
@@ -155,22 +155,22 @@ namespace me
 			/// <summary>
 			///
 			/// </summary>
-			virtual void AddComponent( ISceneComponent::ptr component ) = 0;
+			virtual void AddComponent( component::ISceneComponent::ptr component ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void RemoveComponent( ISceneComponent::ptr component ) = 0;
+			virtual void RemoveComponent( component::ISceneComponent::ptr component ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual ISceneComponent* GetComponent( int index ) = 0;
+			virtual component::ISceneComponent* GetComponent( int index ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual ISceneComponent* GetComponent( std::string typeName ) = 0;
+			virtual component::ISceneComponent* GetComponent( std::string typeName ) = 0;
 
 			/// <summary>
 			///

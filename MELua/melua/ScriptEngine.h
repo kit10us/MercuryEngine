@@ -4,7 +4,7 @@
 #pragma once
 
 #include <MELuaDLL.h>
-#include <me/game/GameComponent.h>
+#include <me/game/component/GameComponent.h>
 #include <me/scene/Scene.h>
 #include <melua/Type.h>
 #include <melua/Util.h>
@@ -19,7 +19,7 @@ namespace melua
 		Pending
 	};
 
-	class ScriptEngine : public me::game::GameComponent
+	class ScriptEngine : public me::game::component::GameComponent
 	{
 	public:
 		ScriptEngine( me::game::IGame * game );
@@ -28,11 +28,11 @@ namespace melua
 		ExecuteResult ExecuteString( std::string line );
 		ExecuteResult ExecuteFile( unify::Path path );
 
-		me::game::IGameComponent::ptr LoadGameScript( unify::Path path );
+		me::game::component::IGameComponent::ptr LoadGameScript( unify::Path path );
 
 		me::object::component::IObjectComponent::ptr LoadObjectScript( unify::Path path );
 
-		me::scene::ISceneComponent::ptr LoadSceneScript( unify::Path path );
+		me::scene::component::ISceneComponent::ptr LoadSceneScript( unify::Path path );
 
 		MELUADLL_API lua_State * GetState();
 

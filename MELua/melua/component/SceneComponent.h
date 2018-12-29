@@ -2,14 +2,14 @@
 // All Rights Reserved
 
 #include <melua/ScriptEngine.h>
-#include <me/scene/SceneComponent.h>
+#include <me/scene/component/SceneComponent.h>
 #include <melua/Script.h>
 
 namespace melua
 {
 	namespace component
 	{
-		class SceneComponent : public me::scene::SceneComponent
+		class SceneComponent : public me::scene::component::SceneComponent
 		{
 		public:
 			SceneComponent( me::game::IGame * gameInstance, Script * script );

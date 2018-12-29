@@ -13,24 +13,24 @@ using namespace component;
 using namespace me;
 
 SceneComponent::SceneComponent( me::game::IGame * gameInstance, Script * script )
-	: me::scene::SceneComponent( gameInstance->GetOS(), "LuaScene" )
+	: me::scene::component::SceneComponent( gameInstance->GetOS(), "LuaScene" )
 	, m_game{ gameInstance }
 	, m_script( script )
 {
 	{
-		me::interop::Getter< const me::scene::ISceneComponent * > scriptNameGetter =
-			[&]( const me::scene::ISceneComponent * component ) -> std::string {
+		me::interop::Getter< const me::scene::component::ISceneComponent * > scriptNameGetter =
+			[&]( const me::scene::component::ISceneComponent * component ) -> std::string {
 			return dynamic_cast< const SceneComponent * >( component )->GetScript()->GetName();
 		};
 
 		GetLookup()->Add( "luaName", interop::IValue::ptr{
-			new interop::MyThing< scene::ISceneComponent * >( this, scriptNameGetter )
+			new interop::MyThing< scene::component::ISceneComponent * >( this, scriptNameGetter )
 		} );
 	}
 
 	{
-		me::interop::Getter< const me::scene::ISceneComponent * > scriptSourceGetter =
-			[&]( const scene::ISceneComponent * component ) -> std::string {
+		me::interop::Getter< const me::scene::component::ISceneComponent * > scriptSourceGetter =
+			[&]( const scene::component::ISceneComponent * component ) -> std::string {
 			return dynamic_cast< const SceneComponent * >( component )->GetScript()->GetSource();
 		};
 
@@ -85,7 +85,7 @@ const Script * SceneComponent::GetScript() const
 
 void SceneComponent::OnAttach( me::scene::IScene * scene )
 {
-	me::scene::SceneComponent::OnAttach( scene );
+	me::scene::component::SceneComponent::OnAttach( scene );
 
 	m_script->Reload();
 	
@@ -136,19 +136,19 @@ void SceneComponent::OnDetach( me::scene::IScene * scene )
 
 void SceneComponent::OnBeforeStart()
 {
-	scene::SceneComponent::OnBeforeStart();
+	scene::component::SceneComponent::OnBeforeStart();
 	CallMember( "OnBeforeStart" );
 }
 
 void SceneComponent::OnAfterStart()
 {
 	CallMember( "OnAfterStart" );
-	scene::SceneComponent::OnAfterStart();
+	scene::component::SceneComponent::OnAfterStart();
 }
 
 void SceneComponent::OnUpdate( const UpdateParams & params ) 
 {
-	scene::SceneComponent::OnUpdate( params );
+	scene::component::SceneComponent::OnUpdate( params );
 	CallMember( "OnUpdate" );
 }
 
@@ -165,7 +165,7 @@ void SceneComponent::OnResume()
 void SceneComponent::OnEnd()
 {
 	CallMember("OnEnd");
-	scene::SceneComponent::OnEnd();
+	scene::component::SceneComponent::OnEnd();
 }
 
 std::string SceneComponent::GetWhat() const

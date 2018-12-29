@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/scene/SceneComponent.h>
+#include <me/scene/component/SceneComponent.h>
 #include <me/canvas/IElement.h>
 #include <me/canvas/Layer.h>
 #include <me/game/IGame.h>
@@ -12,7 +12,7 @@ namespace me
 {
 	namespace canvas
 	{
-		class CanvasComponent : public scene::SceneComponent
+		class CanvasComponent : public scene::component::SceneComponent
 		{
 		public:
 			typedef std::shared_ptr< canvas::CanvasComponent > ptr;

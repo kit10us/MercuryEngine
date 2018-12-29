@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <MEPhysics.h>
-#include <me/game/GameComponent.h>
+#include <me/game/component/GameComponent.h>
 #include <me/object/component/IObjectComponent.h>
 #include <mephy/phy3d/collider/ColliderBase3D.h>
 
@@ -10,7 +10,7 @@ namespace mephy
 {
 	namespace phy3d
 	{
-		class GameComponent : public me::game::GameComponent
+		class GameComponent : public me::game::component::GameComponent
 		{
 		public:
 			MEPHYSICS_API static char* Name();

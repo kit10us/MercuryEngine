@@ -10,8 +10,6 @@
 
 using namespace me;
 using namespace render;
-using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -20,6 +18,8 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
+	using namespace object;
+
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
 	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
 	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "Camera" ).get() );
@@ -64,6 +64,8 @@ void MainScene::OnStart()
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
+	using namespace object;
+
 	Object * camera = FindObject( "camera" );
 	
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) );

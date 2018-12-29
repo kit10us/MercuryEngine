@@ -2,14 +2,14 @@
 // All Rights Reserved
 
 #include <MEPhysics.h>
-#include <me/scene/SceneComponent.h>
+#include <me/scene/component/SceneComponent.h>
 #include <mephy/phy3d/collider/ColliderBase3D.h>
 
 namespace mephy
 {
 	namespace phy3d
 	{
-		class SceneComponent : public me::scene::SceneComponent
+		class SceneComponent : public me::scene::component::SceneComponent
 		{
 		public:
 			static char* Name();

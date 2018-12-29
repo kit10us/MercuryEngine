@@ -12,16 +12,16 @@
 
 using namespace me;
 using namespace render;
-using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
-	:Scene( gameInstance, "main" )
+	: Scene( gameInstance, "main" )
 {	
 }
 
 void MainScene::OnStart()
 {
+	using namespace object;
+
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
 	Effect::ptr texture3DEffect = GetManager< Effect >()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) );
@@ -40,9 +40,9 @@ void MainScene::OnStart()
 	borgCubeEffect->SetTexture( 0, GetManager< ITexture >()->Find( "borgcube" ) );
 
 	// Add a camera...
-	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent()  ) );
-	component::CameraComponent * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	object::Object * camera = GetObjectAllocator()->NewObject( "camera" );
+	camera->AddComponent( component::IObjectComponent::ptr( new object::component::CameraComponent()  ) );
+	component::CameraComponent * cameraComponent = unify::polymorphic_downcast< object::component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -10 ) );

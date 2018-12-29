@@ -3,14 +3,14 @@
 
 #pragma once
 #include <me/scene/IScene.h>
-#include <me/game/GameComponent.h>
-#include <me/scene/ISceneManagerComponent.h>
+#include <me/game/component/GameComponent.h>
+#include <me/scene/component/ISceneManagerComponent.h>
 
 namespace me
 {
     namespace scene
     {
-        class SceneManager : public game::GameComponent
+        class SceneManager : public game::component::GameComponent
 	    {
 	    public:
 			typedef std::shared_ptr< SceneManager > shared_ptr;
@@ -36,12 +36,15 @@ namespace me
 			void RestartScene();
 
 			int GetComponentCount() const;
-			void AddComponent(ISceneManagerComponent::ptr component);
-			void RemoveComponent(ISceneManagerComponent::ptr component);
-			ISceneManagerComponent* GetComponent(int index);
-			ISceneManagerComponent* GetComponent(std::string typeName);
+			void AddComponent( component::ISceneManagerComponent::ptr component );
+			void RemoveComponent( component::ISceneManagerComponent::ptr component );
+			component::ISceneManagerComponent* GetComponent(int index);
+			component::ISceneManagerComponent* GetComponent(std::string typeName);
 			int FindComponent(std::string typeName) const;
 
+			/// <summary>
+			/// Returns the number of objects rendered.
+			/// </summary>
 			size_t SceneManager::GetRenderCount() const;
 
 		public: // IGameCompnent...
@@ -63,7 +66,7 @@ namespace me
 			unsigned long long m_renderTick;
 			size_t m_renderCount;
 
-			std::list< ISceneManagerComponent::ptr > m_components;
+			std::list< component::ISceneManagerComponent::ptr > m_components;
 	    };
     }
 }

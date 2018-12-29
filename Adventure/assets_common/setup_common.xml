@@ -25,6 +25,7 @@
 
 <extension source="?EXTENSIONS_PATH?/MEKeyboard.dll"/>
 <extension source="?EXTENSIONS_PATH?/MEGamepad.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEPhy2D.dll"/>
 <extension source="?EXTENSIONS_PATH?/MEPhysics.dll"/>
 <extension source="?EXTENSIONS_PATH?/MEPhysicsLuaExt.dll"/>
 

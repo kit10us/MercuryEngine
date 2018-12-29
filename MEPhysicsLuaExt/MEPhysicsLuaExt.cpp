@@ -18,7 +18,7 @@
 	#pragma comment( lib, "../../extensions/Release/MEPhysics.lib" )
 #endif
 
-void Deleter( me::game::IGameComponent * se )
+void Deleter( me::game::component::IGameComponent * se )
 {
 	delete se;
 }
@@ -32,7 +32,7 @@ __declspec(dllexport) bool MELoader( me::game::IGame * gameInstance, const qxml:
 		gameInstance->Debug()->ReportError( me::ErrorLevel::Failure, "MEPhysicsLuaExt", "Lua Extension (\"Lua\") not found!" );
 		return false;
 	}
-	me::game::IGameComponent * se = dynamic_cast<me::game::IGameComponent *>(gcse.get());
+	me::game::component::IGameComponent * se = dynamic_cast<me::game::component::IGameComponent *>(gcse.get());
 
 	melua::ScriptEngine * luaSE = dynamic_cast<melua::ScriptEngine *>(se);
 	if ( ! luaSE )

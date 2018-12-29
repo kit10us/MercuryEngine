@@ -15,7 +15,7 @@ char* GameComponent::Name()
 }
 
 GameComponent::GameComponent()
-	: me::game::GameComponent( Name() )
+	: me::game::component::GameComponent( Name() )
 {
 }
 
@@ -34,7 +34,7 @@ MEPHYSICS_API me::object::component::IObjectComponent::ptr GameComponent::Create
 	if( !physicsSceneComponent )
 	{
 		physicsSceneComponent = new mephy::phy3d::SceneComponent( GetGame()->GetOS() );
-		scene->AddComponent( me::scene::ISceneComponent::ptr( physicsSceneComponent ) );
+		scene->AddComponent( me::scene::component::ISceneComponent::ptr( physicsSceneComponent ) );
 	}
 
 	me::object::component::IObjectComponent::ptr collider{ new collider::BoxCollider( halfExt, moveable, mass ) };

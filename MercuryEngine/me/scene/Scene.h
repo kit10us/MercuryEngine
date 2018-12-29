@@ -4,7 +4,7 @@
 
 #include <me/game/Game.h>
 #include <me/scene/SceneManager.h>
-#include <me/scene/ISceneComponent.h>
+#include <me/scene/component/ISceneComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 #include <me/render/Viewport.h>
 #include <unify/Range.h>
@@ -61,10 +61,10 @@ namespace me
 			size_t ObjectCount() const;
 
 			int GetComponentCount() const;
-			void AddComponent( ISceneComponent::ptr component );
-			void RemoveComponent( ISceneComponent::ptr component );
-			ISceneComponent* GetComponent( int index );
-			ISceneComponent* GetComponent( std::string typeName );
+			void AddComponent( component::ISceneComponent::ptr component );
+			void RemoveComponent( component::ISceneComponent::ptr component );
+			component::ISceneComponent* GetComponent( int index );
+			component::ISceneComponent* GetComponent( std::string typeName );
 			int FindComponent( std::string typeName ) const;
 
 			IObjectAllocator * GetObjectAllocator();
@@ -85,7 +85,7 @@ namespace me
 			game::Game * m_game;
 			std::string m_name;	 
 			unify::Owner::ptr m_ownership;
-			std::list< ISceneComponent::ptr > m_components;
+			std::list< component::ISceneComponent::ptr > m_components;
 			IObjectAllocator* m_objectAllocator;		   
 			SceneManager* m_sceneManager;
 		};

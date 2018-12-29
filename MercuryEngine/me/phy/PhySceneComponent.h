@@ -4,13 +4,13 @@
 #pragma once 
 
 #include <me/phy/Entity.h>
-#include <me/scene/SceneComponent.h>
+#include <me/scene/component/SceneComponent.h>
 
 namespace me
 {
 	namespace phy
 	{
-		class PhySceneComponent : public me::scene::SceneComponent
+		class PhySceneComponent : public me::scene::component::SceneComponent
 		{
 		public:
 			PhySceneComponent( me::os::IOS * os, std::string name );

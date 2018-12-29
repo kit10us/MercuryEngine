@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/game/GameComponent.h>
+#include <me/game/component/GameComponent.h>
 
 namespace me
 {

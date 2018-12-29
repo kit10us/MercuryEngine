@@ -17,6 +17,13 @@ namespace me
 		Warning // Error might not be important - state is unknown.
 	};
 
+	enum class ReportErrorResult
+	{
+		Continue,
+		Retry,
+		Abort
+	};
+
 	namespace debug
 	{
 		/// <summary>
@@ -121,7 +128,7 @@ namespace me
 			/// <summary>
 			/// Report an error.
 			/// </summary>
-			virtual void ReportError( me::ErrorLevel level, std::string source, std::string error ) = 0;
+			virtual ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error ) = 0;
 
 			/// <summary>
 			/// Returns true if we'd had a critical error.
@@ -161,7 +168,7 @@ namespace me
 			/// <summary>
 			/// Returns the entire blocks.
 			/// </summary>
-			virtual std::string GetBlocks() const = 0;
+			virtual std::string GetBlocks( std::string newline ) const = 0;
 		};
 	}
 }

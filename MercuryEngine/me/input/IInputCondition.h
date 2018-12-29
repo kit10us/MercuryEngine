@@ -12,6 +12,9 @@ namespace me
 	{
 		class IInputDevice;
 
+		/// <summary>
+		/// Defines a condition that lets us test against an input device, so we can test if we want to respond to this condition.
+		/// </summary>
 		class IInputCondition
 		{
 		public:

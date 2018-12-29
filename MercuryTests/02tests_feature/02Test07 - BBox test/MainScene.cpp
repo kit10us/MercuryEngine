@@ -6,7 +6,7 @@
 #include <sg/ShapeCreators.h>
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
-#include <me/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/component/AutoBBoxSceneComponent.h>
 #include <me/object/component/CameraComponent.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
@@ -25,12 +25,12 @@ void MainScene::OnStart()
 {
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced_ambient", unify::Path( "ColorInstanced_ambient.effect" ) );
 
-	AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
+	AddComponent( scene::component::SceneComponent::ptr( new scene::component::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
-	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	camera->AddComponent( object::component::IObjectComponent::ptr( new object::component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< object::component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 
 	// Geo1

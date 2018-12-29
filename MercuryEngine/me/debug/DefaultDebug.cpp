@@ -15,7 +15,7 @@ DefaultDebug::DefaultDebug()
 	, m_prependSectionText{ "[" }
 	, m_appendSectionText{ "]" }
 	, m_prependLineText{ " " }
-	, m_appendLineText{ "\r" }
+	, m_appendLineText{ "\n" }
 	, m_isDebug
 #ifdef _DEBUG
 		{ true }
@@ -114,7 +114,7 @@ void DefaultDebug::LogSectionLine( std::string section, std::string line )
 
 void DefaultDebug::LogLine( std::string line )
 {
-	LogSectionLine( GetBlocks(), line );
+	LogSectionLine( GetBlocks( " " ), line );
 }
 
 void DefaultDebug::AttachLogListener( me::ILogListener* listener )
@@ -143,7 +143,7 @@ void DefaultDebug::DetachAllLogListeners()
 	m_logListeners.clear();
 }
 
-void DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error )
+ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error )
 {
 	Block( this, "Debug" );
 
@@ -166,7 +166,7 @@ void DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::s
 		break;
 	}
 
-	return;
+	return ReportErrorResult::Continue;
 }
 
 bool DefaultDebug::HadCriticalError() const
@@ -248,12 +248,12 @@ void DefaultDebug::PopBlock( std::string name )
 /// <summary>
 /// Pop a block, a mechanism to track where we are in our code.
 /// </summary>
-std::string DefaultDebug::GetBlocks() const
+std::string DefaultDebug::GetBlocks( std::string newline ) const
 {
 	std::string blocks{};
 	for( auto itr = m_blocks.begin(); itr != m_blocks.end(); ++itr )
 	{
-		blocks.append( *itr ); 
+		blocks += *itr + newline; 
 	}
 	return blocks;
 }

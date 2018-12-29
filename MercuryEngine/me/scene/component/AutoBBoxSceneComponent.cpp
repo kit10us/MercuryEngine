@@ -1,14 +1,14 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/component/AutoBBoxSceneComponent.h>
 #include <me/object/component/BBoxRendererComponent.h>
 #include <me/object/Object.h>
 
 using namespace me;
 using namespace scene;
-using namespace object;
 using namespace render;
+using namespace component;
 
 AutoBBoxSceneComponent::AutoBBoxSceneComponent( os::IOS * os, Effect::ptr effect )
 	: SceneComponent( os, "AutoBBox" )
@@ -35,14 +35,14 @@ void AutoBBoxSceneComponent::SetPadding( float padding )
 void AutoBBoxSceneComponent::OnUpdate( const UpdateParams & params ) 
 {
 	// Ensure all objects have BBoxes...
-	std::vector< Object * > objects;
+	std::vector< object::Object * > objects;
 	GetScene()->GetObjectAllocator()->CollectObjects( objects );
 	for( auto && object : objects )
 	{
 		if ( object->GetComponent( "BBoxRenderer" ) ) continue;
 		if ( ! object->GetComponent( "Geometry" ) ) continue;
 		
-		object->AddComponent( component::IObjectComponent::ptr( new component::BBoxRendererComponent( GetOS(), m_effect, m_color ) ) );
+		object->AddComponent( object::component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), m_effect, m_color ) ) );
 	}
 }
 

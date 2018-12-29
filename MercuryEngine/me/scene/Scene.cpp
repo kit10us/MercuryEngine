@@ -4,14 +4,13 @@
 #include <me/scene/Scene.h>
 #include <me/scene/SceneManager.h>
 #include <me/object/component/CameraComponent.h>
-#include <me/scene/ObjectAllocatorComponent.h>
+#include <me/scene/component/ObjectAllocatorComponent.h>
 #include <me/scene/RenderGirl.h>
 #include <me/debug/Block.h>
 #include <unify/Frustum.h>
 
 using namespace me;
 using namespace scene;
-using namespace object;
 
 Scene::Scene( game::Game * gameInstance, std::string name )
 : m_game( gameInstance )
@@ -19,8 +18,8 @@ Scene::Scene( game::Game * gameInstance, std::string name )
 , m_ownership{ unify::Owner::Create( name ) }
 , m_sceneManager{}
 {
-	auto objectAllocatorComponent = new ObjectAllocatorComponent( gameInstance->GetOS() );
-	AddComponent( ISceneComponent::ptr( objectAllocatorComponent ) );
+	auto objectAllocatorComponent = new component::ObjectAllocatorComponent( gameInstance->GetOS() );
+	AddComponent( component::ISceneComponent::ptr( objectAllocatorComponent ) );
 
 	m_objectAllocator = objectAllocatorComponent->QueryInterfaceT< IObjectAllocator >( "IObjectAllocator" );
 }
@@ -184,19 +183,19 @@ int Scene::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void Scene::AddComponent( ISceneComponent::ptr component )
+void Scene::AddComponent( component::ISceneComponent::ptr component )
 {
 	component->OnAttach( this );
 	m_components.push_back( component );
 }
 
-void Scene::RemoveComponent( ISceneComponent::ptr component )
+void Scene::RemoveComponent( component::ISceneComponent::ptr component )
 {
 	m_components.remove( component );
 	component->OnDetach( this );
 }
 
-ISceneComponent* Scene::GetComponent( int index )
+component::ISceneComponent* Scene::GetComponent( int index )
 {
 	if ( index > (int)m_components.size() ) return nullptr;
 
@@ -210,7 +209,7 @@ ISceneComponent* Scene::GetComponent( int index )
 	return nullptr;
 }
 
-ISceneComponent* Scene::GetComponent( std::string name )
+component::ISceneComponent* Scene::GetComponent( std::string name )
 {
 	int index = FindComponent( name );
 	if ( index == -1 ) return nullptr;
@@ -233,7 +232,7 @@ IObjectAllocator * Scene::GetObjectAllocator()
 	return m_objectAllocator;
 }
 
-Object * Scene::FindObject( std::string name )
+object::Object * Scene::FindObject( std::string name )
 {
 	return m_objectAllocator->FindObject( name );
 }

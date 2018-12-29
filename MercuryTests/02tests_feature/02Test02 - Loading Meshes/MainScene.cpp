@@ -11,13 +11,11 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/object/component/BBoxRendererComponent.h>
-#include <me/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/component/AutoBBoxSceneComponent.h>
 #include <me/object/component/CameraComponent.h>
 
 using namespace me;
 using namespace render;
-using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -27,6 +25,7 @@ MainScene::MainScene( me::game::Game * gameInstance )
 void MainScene::OnStart()
 {
 	using namespace unify;
+	using namespace object;
 
 	// Add common effects...
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", Path( "EffectColor.effect" ) );
@@ -128,7 +127,8 @@ void MainScene::OnStart()
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
-	using namespace unify;
+	using namespace object;
+
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
 	

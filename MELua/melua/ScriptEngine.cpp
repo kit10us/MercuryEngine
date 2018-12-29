@@ -24,7 +24,7 @@ using namespace object;
 
 typedef std::shared_ptr< rm::ISourceFactory< me::script::IScript > > ScriptFactoryPtr;
 
-void GameComponentDeleter( me::game::IGameComponent * gc )
+void GameComponentDeleter( me::game::component::IGameComponent * gc )
 {
 	delete gc;
 }
@@ -113,7 +113,7 @@ ExecuteResult ScriptEngine::ExecuteFile( unify::Path path )
 	return ExecuteResult::Pass;
 }
 
-game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
+game::component::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 {					
 	path = m_game->GetOS()->GetAssetPaths()->FindAsset( path );
 
@@ -133,7 +133,7 @@ game::IGameComponent::ptr ScriptEngine::LoadGameScript( unify::Path path )
 	return module;
 }
 
-ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
+scene::component::ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 {					
 	path = m_game->GetOS()->GetAssetPaths()->FindAsset( path );
 
@@ -150,7 +150,7 @@ ISceneComponent::ptr ScriptEngine::LoadSceneScript( unify::Path path )
 
 	scriptManager->Add( luaName, script );
 
-	ISceneComponent::ptr module( new component::SceneComponent( m_game, script ) );
+	scene::component::ISceneComponent::ptr module( new component::SceneComponent( m_game, script ) );
 
 	return module;
 }

@@ -13,7 +13,6 @@
 using namespace me;
 using namespace render;
 using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -26,9 +25,9 @@ void MainScene::OnStart()
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
 
 	// Add a camera...
-	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
-	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	object::Object * camera = GetObjectAllocator()->NewObject( "camera" );
+	camera->AddComponent( object::component::IObjectComponent::ptr( new object::component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< object::component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
@@ -37,7 +36,7 @@ void MainScene::OnStart()
 void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
-	Object * camera = FindObject( "camera" );
+	object::Object * camera = FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );

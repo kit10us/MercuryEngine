@@ -9,7 +9,7 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/object/component/BBoxRendererComponent.h>
-#include <me/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/component/AutoBBoxSceneComponent.h>
 #include <me/object/component/CameraComponent.h>
 
 #include <sculpter/Shape.h>
@@ -21,8 +21,6 @@
 
 using namespace me;
 using namespace render;
-using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -51,9 +49,9 @@ void MainScene::OnStart()
 	//scene->AddComponent( scene::SceneComponent::ptr( new scene::AutoBBoxSceneComponent( GetOS(), color3DEffect ) ) );
 
 	// Add a camera...
-	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
-	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	object::Object * camera = GetObjectAllocator()->NewObject( "camera" );
+	camera->AddComponent( object::component::IObjectComponent::ptr( new object::component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< object::component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800/600, 1, 1000 ) );
 	camera->GetFrame().SetPosition( unify::V3< float >( 0, 5, -17 ) );
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
@@ -69,7 +67,7 @@ void MainScene::OnStart()
 		auto object = GetObjectAllocator()->NewObject( "cubeDyna" );
 		AddGeometryComponent( object, meshProg );
 		object->GetFrame().SetPosition( unify::V3< float >( 0 - 5.0f, 0, 0 ) );
-		object->AddComponent( component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
+		object->AddComponent( object::component::IObjectComponent::ptr( new object::component::BBoxRendererComponent( GetOS(), color3DEffect ) ) );
 	}
 
 
@@ -171,7 +169,7 @@ void MainScene::OnStart()
 void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
-	Object * camera = FindObject( "camera" );
+	object::Object * camera = FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.GetDelta().GetSeconds() ) );
 	//camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::Quaternion( unify::V3< float >( 0, 1, 0 ), unify::AngleInRadians( renderInfo.GetDelta() ) ) );

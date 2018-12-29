@@ -68,7 +68,7 @@ namespace me
 			void DetachLogListener( me::ILogListener * litener ) override;
 			void DetachAllLogListeners() override;
 
-			void ReportError( me::ErrorLevel level, std::string source, std::string error ) override;
+			ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error ) override;
 
 			bool HadCriticalError() const override;
 
@@ -80,7 +80,7 @@ namespace me
 
 			void PushBlock( std::string name ) override;
 			void PopBlock( std::string name ) override;
-			std::string GetBlocks() const override;
+			std::string GetBlocks( std::string newline ) const override;
 
 		};
 	}

@@ -100,6 +100,9 @@
     <Filter Include="me\phy">
       <UniqueIdentifier>{c7ff00cf-c058-4bf5-9aaa-ca3645441a86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\scene\component">
+      <UniqueIdentifier>{ff0af658-e6b9-421b-9bfa-1264f9e897fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -211,9 +214,6 @@
       <Filter>shape_creation</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\Scene.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\ISceneComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\ComponentInstance.h">
@@ -333,15 +333,6 @@
     <ClInclude Include="me\object\Object.h">
       <Filter>me\object</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\SceneComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\AutoBBoxSceneComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\ObjectAllocatorComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\scene\ObjectAllocator.h">
       <Filter>me\scene</Filter>
     </ClInclude>
@@ -355,12 +346,6 @@
       <Filter>me\action</Filter>
     </ClInclude>
     <ClInclude Include="me\scene\IScene.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\ISceneManagerComponent.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\scene\SceneManagerComponent.h">
       <Filter>me\scene</Filter>
     </ClInclude>
     <ClInclude Include="me\input\IInputAction.h">
@@ -678,13 +663,7 @@
     <ClInclude Include="me\game\Game.h">
       <Filter>me\game</Filter>
     </ClInclude>
-    <ClInclude Include="me\game\GameComponent.h">
-      <Filter>me\game</Filter>
-    </ClInclude>
     <ClInclude Include="me\game\IGame.h">
-      <Filter>me\game</Filter>
-    </ClInclude>
-    <ClInclude Include="me\game\IGameComponent.h">
       <Filter>me\game</Filter>
     </ClInclude>
     <ClInclude Include="me\object\component\TagsComponent.h">
@@ -767,6 +746,30 @@
     </ClInclude>
     <ClInclude Include="me\phy\PhySceneComponent.h">
       <Filter>me\phy</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\component\GameComponent.h">
+      <Filter>me\game\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\game\component\IGameComponent.h">
+      <Filter>me\game\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\component\SceneComponent.h">
+      <Filter>me\scene\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\component\SceneManagerComponent.h">
+      <Filter>me\scene\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\component\AutoBBoxSceneComponent.h">
+      <Filter>me\scene\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\component\ISceneComponent.h">
+      <Filter>me\scene\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\component\ISceneManagerComponent.h">
+      <Filter>me\scene\component</Filter>
+    </ClInclude>
+    <ClInclude Include="me\scene\component\ObjectAllocatorComponent.h">
+      <Filter>me\scene\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -950,15 +953,6 @@
     <ClCompile Include="me\object\Object.cpp">
       <Filter>me\object</Filter>
     </ClCompile>
-    <ClCompile Include="me\scene\SceneComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\AutoBBoxSceneComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\ObjectAllocatorComponent.cpp">
-      <Filter>me\scene</Filter>
-    </ClCompile>
     <ClCompile Include="me\scene\ObjectAllocator.cpp">
       <Filter>me\scene</Filter>
     </ClCompile>
@@ -967,9 +961,6 @@
     </ClCompile>
     <ClCompile Include="me\action\IgnoreReturn.cpp">
       <Filter>me\action</Filter>
-    </ClCompile>
-    <ClCompile Include="me\scene\SceneManagerComponent.cpp">
-      <Filter>me\scene</Filter>
     </ClCompile>
     <ClCompile Include="me\action\QuitGame.cpp">
       <Filter>me\action</Filter>
@@ -1190,9 +1181,6 @@
     <ClCompile Include="me\action\SendCommand.cpp">
       <Filter>me\action</Filter>
     </ClCompile>
-    <ClCompile Include="me\game\GameComponent.cpp">
-      <Filter>me\game</Filter>
-    </ClCompile>
     <ClCompile Include="me\game\Game.cpp">
       <Filter>me\game</Filter>
     </ClCompile>
@@ -1255,6 +1243,21 @@
     </ClCompile>
     <ClCompile Include="me\phy\PhySceneComponent.cpp">
       <Filter>me\phy</Filter>
+    </ClCompile>
+    <ClCompile Include="me\game\component\GameComponent.cpp">
+      <Filter>me\game\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\component\SceneComponent.cpp">
+      <Filter>me\scene\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\component\SceneManagerComponent.cpp">
+      <Filter>me\scene\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\component\AutoBBoxSceneComponent.cpp">
+      <Filter>me\scene\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\scene\component\ObjectAllocatorComponent.cpp">
+      <Filter>me\scene\component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

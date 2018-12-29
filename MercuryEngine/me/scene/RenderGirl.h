@@ -33,7 +33,7 @@ namespace me
 			void Render( scene::IObjectAllocator * allocator );
 
 			/// <summary>
-			/// End rendering.
+			/// End rendering. Returns the number of objects rendered.
 			/// </summary>
 			size_t End();
 		};

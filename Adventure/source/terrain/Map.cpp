@@ -6,8 +6,6 @@
 
 using namespace me;
 using namespace render;
-using namespace scene;
-using namespace object;
 using namespace terrain;
 
 Map::Map( Map & component )
@@ -233,10 +231,10 @@ void Map::OnResume()
 {
 }
 
-component::IObjectComponent::ptr Map::Duplicate()
+object::component::IObjectComponent::ptr Map::Duplicate()
 {
 	auto duplicate = new Map( *this );
-	return component::IObjectComponent::ptr( duplicate );
+	return object::component::IObjectComponent::ptr( duplicate );
 }
 
 std::string Map::GetWhat() const

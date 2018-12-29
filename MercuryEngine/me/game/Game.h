@@ -34,7 +34,7 @@ namespace me
 			input::InputManager m_inputManager;
 
 			os::OSParameters m_osParameters;
-			std::list< me::game::IGameComponent::ptr > m_components;
+			std::list< me::game::component::IGameComponent::ptr > m_components;
 			rm::ResourceHub m_resourceHub;
 			render::RenderInfo m_renderInfo;
 
@@ -108,10 +108,10 @@ namespace me
 			const me::input::InputManager * GetInputManager() const;
 
 			int GetComponentCount() const override;
-			void AddComponent( game::IGameComponent::ptr component ) override;
-			void RemoveComponent( game::IGameComponent::ptr component ) override;
-			game::IGameComponent::ptr GetComponent( int index ) override;
-			game::IGameComponent::ptr GetComponent( std::string typeName ) override;
+			void AddComponent( game::component::IGameComponent::ptr component ) override;
+			void RemoveComponent( game::component::IGameComponent::ptr component ) override;
+			game::component::IGameComponent::ptr GetComponent( int index ) override;
+			game::component::IGameComponent::ptr GetComponent( std::string typeName ) override;
 			int FindComponent( std::string typeName ) const override;
 
 			UpdateLock::ptr LockUpdate( bool exclusive );

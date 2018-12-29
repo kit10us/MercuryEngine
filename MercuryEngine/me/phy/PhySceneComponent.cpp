@@ -7,7 +7,7 @@ using namespace me;
 using namespace phy;
 
 PhySceneComponent::PhySceneComponent( me::os::IOS * os, std::string name )
-	: me::scene::SceneComponent( os, "MEPhy2DSceneComponent" )
+	: me::scene::component::SceneComponent( os, "MEPhy2DSceneComponent" )
 {
 }
 

@@ -3,10 +3,10 @@
 
 #pragma once
 
-#include <me/scene/SceneComponent.h>
+#include <me/scene/component/SceneComponent.h>
 #include <terrain/Map.h>
 
-class TerrainSceneComponent : public me::scene::SceneComponent
+class TerrainSceneComponent : public me::scene::component::SceneComponent
 {
 public:
 	TerrainSceneComponent( me::os::IOS * os, unify::Size< int > mapSize, unify::Size< int > terraSize );

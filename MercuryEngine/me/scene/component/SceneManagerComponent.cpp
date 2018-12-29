@@ -1,11 +1,14 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/scene/SceneManagerComponent.h>
+#include <me/scene/component/SceneManagerComponent.h>
+#include <me/game/IGame.h>
+#include <me/scene/SceneManager.h>
 #include <me/interop/ReferenceCast.h>
 
 using namespace me;
 using namespace scene;
+using namespace component;
 
 SceneManagerComponent::SceneManagerComponent( std::string typeName )
 	: m_typeName{ typeName }
@@ -24,12 +27,20 @@ void SceneManagerComponent::AddInterface(std::string name, me::IThing* ptr)
 	m_interfaceMap[name] = ptr;
 }
 
+ISceneComponent::ptr SceneManagerComponent::CreateSceneComponent( std::string type )
+{
+	GetSceneManager()->GetGame()->Debug()->ReportError( ErrorLevel::Failure, "SceneManagerComponent::CreateSceneComponent", "Scene component type \"" + type + "\" not found!" );
+	return {};
+}
+
 void SceneManagerComponent::OnAttach( SceneManager * sceneManager )
 {
+	m_sceneManager = sceneManager;
 }
 
 void SceneManagerComponent::OnDetach( SceneManager * sceneManager )
 {
+	m_sceneManager = 0;
 }
 
 void SceneManagerComponent::OnSceneStart( IScene * scene )
@@ -38,6 +49,11 @@ void SceneManagerComponent::OnSceneStart( IScene * scene )
 
 void SceneManagerComponent::OnSceneEnd( IScene * from )
 {
+}
+
+SceneManager * SceneManagerComponent::GetSceneManager()
+{
+	return m_sceneManager;
 }
 
 bool SceneManagerComponent::IsEnabled() const

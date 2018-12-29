@@ -12,8 +12,6 @@
 
 using namespace me;
 using namespace render;
-using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -22,6 +20,8 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
+	using namespace object;
+
 	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
 
 	// Add a camera...
@@ -54,6 +54,8 @@ void MainScene::OnStart()
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
+	using namespace object;
+
 	// Use of camera controls to simplify camera movement...
 	Object * camera = FindObject( "camera" );
 	

@@ -8,7 +8,7 @@
 #include <melua/component/AutoSceneManagerComponent.h>
 #include <memory.h>
 
-void ScriptEngineDeleter( me::game::IGameComponent * se )
+void ScriptEngineDeleter( me::game::component::IGameComponent * se )
 {
 	delete se;
 }
@@ -21,7 +21,7 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 
 	// Add Script Engine...
 	melua::ScriptEngine * scriptEngine = new melua::ScriptEngine( gameInstance );
-	gameInstance->AddComponent( me::game::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
+	gameInstance->AddComponent( me::game::component::IGameComponent::ptr( scriptEngine, ScriptEngineDeleter ) );
 
 	// Automatically add "game.lua" GameComponent...
 	unify::Path startup("game.lua");
@@ -58,7 +58,7 @@ MELUADLL_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element 
 
 	auto autoSceneManagerComponent = new melua::component::AutoSceneManagerComponent( scriptEngine, autoPath + unify::Path( "scene/" ), startup);
 	auto sceneManager = gameInstance->GetComponentT< me::scene::SceneManager >();
-	sceneManager->AddComponent( me::scene::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );		  
+	sceneManager->AddComponent( me::scene::component::ISceneManagerComponent::ptr( autoSceneManagerComponent ) );		  
 
 	return true;
 }

@@ -12,7 +12,7 @@ char* SceneComponent::Name()
 }
 
 SceneComponent::SceneComponent( me::os::IOS * os )
-	: me::scene::SceneComponent( os, Name() )
+	: me::scene::component::SceneComponent( os, Name() )
 {
 }
 

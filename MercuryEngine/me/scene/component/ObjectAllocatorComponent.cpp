@@ -1,12 +1,12 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/scene/ObjectAllocatorComponent.h>
+#include <me/scene/component/ObjectAllocatorComponent.h>
 #include <me/scene/GrowableObjectStack.h>
 
 using namespace me;
 using namespace scene;
-using namespace object;
+using namespace component;
 
 ObjectAllocatorComponent::ObjectAllocatorComponent( os::IOS * os )
 : SceneComponent( os, "ObjectAllocatorComponent" )
@@ -50,7 +50,7 @@ void ObjectAllocatorComponent::OnRender( RenderGirl & renderGirl )
 
 void ObjectAllocatorComponent::OnSuspend() 
 {
-	std::vector< Object * > objects;
+	std::vector< object::Object * > objects;
 	m_objectStack->CollectObjects( objects );
 	for( auto && object : objects )
 	{
@@ -60,7 +60,7 @@ void ObjectAllocatorComponent::OnSuspend()
 
 void ObjectAllocatorComponent::OnResume()
 {
-	std::vector< Object * > objects;
+	std::vector< object::Object * > objects;
 	m_objectStack->CollectObjects( objects );
 	for( auto && object : objects )
 	{

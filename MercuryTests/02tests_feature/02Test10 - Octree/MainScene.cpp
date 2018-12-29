@@ -5,7 +5,7 @@
 #include <me/render/Mesh.h>
 #include <me/object/component/BBoxRendererComponent.h>
 #include <me/object/component/CameraComponent.h>
-#include <me/scene/AutoBBoxSceneComponent.h>
+#include <me/scene/component/AutoBBoxSceneComponent.h>
 #include <me/scene/SceneManager.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
@@ -16,7 +16,6 @@
 using namespace me;
 using namespace render;
 using namespace scene;
-using namespace object;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -41,8 +40,8 @@ void MainScene::OnStart()
 
 	// Add a camera...
 	m_camera = GetObjectAllocator()->NewObject( "camera" );
-	m_camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );
-	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( m_camera->GetComponent( "camera" ).get() );
+	m_camera->AddComponent( object::component::IObjectComponent::ptr( new object::component::CameraComponent() ) );
+	auto * cameraComponent = unify::polymorphic_downcast< object::component::CameraComponent * >( m_camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 
 	float shapesize = 1.0f;

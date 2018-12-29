@@ -17,7 +17,7 @@ char* GameComponent::Name()
 }
 
 GameComponent::GameComponent( Script * script )
-	: me::game::GameComponent( Name() )
+	: me::game::component::GameComponent( Name() )
 	, m_script{ script }
 {
 	using namespace me;
@@ -83,7 +83,7 @@ void GameComponent::CallMember( std::string function )
 
 void GameComponent::OnAttach( me::game::IGame * gameInstance )
 {
-	me::game::GameComponent::OnAttach( gameInstance );
+	me::game::component::GameComponent::OnAttach( gameInstance );
 
 	m_script->Reload();
 
@@ -141,7 +141,7 @@ void GameComponent::OnRender( const me::render::Params & params )
 
 void GameComponent::OnDetach( me::game::IGame * gameInstance )
 {
-	me::game::GameComponent::OnDetach( gameInstance );
+	me::game::component::GameComponent::OnDetach( gameInstance );
 }
 
 std::string GameComponent::GetWhat() const

@@ -241,7 +241,7 @@ void MainScene::OnStart()
 		gamepad->AddEvent( GetOwnership(), condition, input::IInputAction::ptr( new PlayerMovementStick( *this ) ) );
 	}
 
-	// Get the gamepad Input Device...
+	// Get the keyboard Input Device...
 	auto keyboard = GetGame()->GetInputManager()->FindSource( "keyboard" );
 	if( keyboard )
 	{
@@ -271,7 +271,7 @@ void MainScene::OnStart()
 					IDynaPosition::ptr( new position::Object( target ) ), IDynaPosition::ptr(new position::Absolute({ 0, 17, -12 }))
 				)
 			) ) ) );
-		camera->AddComponent( component::IObjectComponent::ptr( follow ) );
+		camera->AddComponent( object::component::IObjectComponent::ptr( follow ) );
 	}
 
 	// Add Canvas component...

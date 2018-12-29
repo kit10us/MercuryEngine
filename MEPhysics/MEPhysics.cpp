@@ -15,7 +15,7 @@ extern "C" MEPHYSICS_API bool MELoader( me::game::IGame * gameInstance, const qx
 MEPHYSICS_API bool MELoader( me::game::IGame * gameInstance, const qxml::Element * element )
 {
 	mephy::phy3d::GameComponent * component = new mephy::phy3d::GameComponent();
-	gameInstance->AddComponent( me::game::IGameComponent::ptr( component, Deleter3D ) );
+	gameInstance->AddComponent( me::game::component::IGameComponent::ptr( component, Deleter3D ) );
 
 	return true;
 }

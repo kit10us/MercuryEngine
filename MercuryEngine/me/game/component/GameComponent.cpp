@@ -1,11 +1,12 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/game/GameComponent.h>
+#include <me/game/component/GameComponent.h>
 #include <me/interop/ReferenceCast.h>
 
 using namespace me;
 using namespace game;
+using namespace component;
 
 GameComponent::GameComponent( std::string typeName )
 	: m_typeName{ typeName }

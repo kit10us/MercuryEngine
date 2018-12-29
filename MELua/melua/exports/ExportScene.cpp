@@ -17,7 +17,6 @@
 using namespace melua;
 using namespace me;
 using namespace scene;
-using namespace object;
 
 int PushScene( lua_State * state, me::scene::IScene * scene )
 {
@@ -70,9 +69,9 @@ int Scene_NewCamera( lua_State * state )
 	ScriptEngine * se = ScriptEngine::GetInstance();
 	auto gameInstance = se->GetGame();
 
-	Object * child = proxy->scene->GetObjectAllocator()->NewObject( name );
-	component::CameraComponent * cameraComponent = new component::CameraComponent();
-	child->AddComponent( component::IObjectComponent::ptr( cameraComponent ) );
+	object::Object * child = proxy->scene->GetObjectAllocator()->NewObject( name );
+	object::component::CameraComponent * cameraComponent = new object::component::CameraComponent();
+	child->AddComponent( object::component::IObjectComponent::ptr( cameraComponent ) );
 
 	cameraComponent->SetProjection( mat );
 
@@ -85,13 +84,13 @@ int Scene_DestroyObject( lua_State * state )
 
 	SceneProxy * sceneProxy = CheckScene( state, 1 );
 
-	Object * object{ nullptr };
+	object::Object * object{ nullptr };
 
 	if( lua_type( state, 2 ) == LUA_TSTRING )
 	{
 		std::string name = lua_tostring( state, 2 );
 
-		Object * object = sceneProxy->scene->FindObject( name );
+		object::Object * object = sceneProxy->scene->FindObject( name );
 	}
 	else
 	{
@@ -115,7 +114,7 @@ int Scene_FindObject( lua_State * state )
 
 	std::string name = lua_tostring( state, 2 );
 	
-	Object * object = sceneProxy->scene->FindObject( name );
+	object::Object * object = sceneProxy->scene->FindObject( name );
 
 	if ( !object )
 	{

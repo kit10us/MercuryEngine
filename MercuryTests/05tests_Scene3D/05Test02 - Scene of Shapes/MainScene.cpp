@@ -32,9 +32,9 @@ void MainScene::OnStart()
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ) );
 
 	// Add a camera component to the camera object
-	auto * cameraComponent = new component::CameraComponent();
+	auto * cameraComponent = new object::component::CameraComponent();
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800 / 600, 1, 1000 ) );
-	camera->AddComponent( component::IObjectComponent::ptr( cameraComponent ) );
+	camera->AddComponent( object::component::IObjectComponent::ptr( cameraComponent ) );
 
 	auto createObject = [&]( sg::ShapeBaseParameters parameters)->me::object::Object*
 	{

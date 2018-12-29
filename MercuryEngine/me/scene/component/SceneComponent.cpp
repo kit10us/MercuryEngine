@@ -1,10 +1,11 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/scene/SceneComponent.h>
+#include <me/scene/component/SceneComponent.h>
 
 using namespace me;
 using namespace scene;
+using namespace component;
 
 namespace {
 	std::map< std::string, int, unify::string::CaseInsensitiveLessThanTest > g_ValuesMap

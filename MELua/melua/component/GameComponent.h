@@ -3,13 +3,13 @@
 
 #include <melua/ScriptEngine.h>
 #include <melua/Script.h>
-#include <me/game/GameComponent.h>
+#include <me/game/component/GameComponent.h>
 
 namespace melua
 {
 	namespace component
 	{
-		class GameComponent : public me::game::GameComponent
+		class GameComponent : public me::game::component::GameComponent
 		{
 		public:
 			static char* Name();

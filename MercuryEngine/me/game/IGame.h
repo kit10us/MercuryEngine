@@ -11,7 +11,7 @@
 #include <me/action/IAction.h>
 #include <me/object/action/IObjectAction.h>
 #include <me/scene/SceneManager.h>
-#include <me/game/IGameComponent.h>
+#include <me/game/component/IGameComponent.h>
 #include <me/UpdateParams.h>
 #include <me/ICommandListener.h>
 #include <rm/ResourceManager.h>
@@ -108,10 +108,10 @@ namespace me
 			virtual const input::InputManager * GetInputManager() const = 0;
 
 			virtual int GetComponentCount() const = 0;
-			virtual void AddComponent( IGameComponent::ptr component ) = 0;
-			virtual void RemoveComponent( IGameComponent::ptr component ) = 0;
-			virtual IGameComponent::ptr GetComponent( int index ) = 0;
-			virtual IGameComponent::ptr GetComponent( std::string name ) = 0;
+			virtual void AddComponent( component::IGameComponent::ptr component ) = 0;
+			virtual void RemoveComponent( component::IGameComponent::ptr component ) = 0;
+			virtual component::IGameComponent::ptr GetComponent( int index ) = 0;
+			virtual component::IGameComponent::ptr GetComponent( std::string name ) = 0;
 			virtual int FindComponent( std::string name ) const = 0;
 
 			/// <summary>
