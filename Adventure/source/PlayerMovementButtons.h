@@ -5,16 +5,20 @@
 
 #include <me/input/IInputAction.h>
 #include <me/input/IInputCondition.h>
-#include <me/object/Object.h>
+#include <adv/PlayerMovement.h>
 
-class MainScene;
-
-class PlayerMovementButtons : public me::input::IInputAction
+namespace adv
 {
-	me::object::Object * m_object;
-	MainScene & m_mainScene;
-public:
-	PlayerMovementButtons( MainScene & mainScene );
+	/// <summary>
+	/// Player movement controlled through button presses.
+	/// <summary>
+	class PlayerMovementButtons : public me::input::IInputAction
+	{
+		PlayerMovement::ptr m_playerMovement;
+		MovementDirection m_direction;
+	public:
+		PlayerMovementButtons( PlayerMovement::ptr playerMovement, MovementDirection direction );
 
-	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, unify::TimeDelta delta );
-};
+		bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, unify::TimeDelta delta );
+	};
+}

@@ -27,8 +27,8 @@ namespace me
 		{
 			Object & operator=(Object const &);
 		public:
-			typedef std::shared_ptr< Object* > ptr;
-			typedef std::weak_ptr< Object * > weak_ptr;
+			typedef std::shared_ptr< Object > ptr;
+			typedef std::weak_ptr< Object > weak_ptr;
 
 			Object();			
 

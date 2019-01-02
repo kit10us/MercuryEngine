@@ -6,6 +6,7 @@
 #include <me/scene/Scene.h>
 #include <terrain/Map.h>
 #include <TerrainSceneComponent.h>
+#include <adv/PlayerMovement.h>
 
 class MainScene : public me::scene::Scene
 {
@@ -14,9 +15,7 @@ public:
 	unify::Size< int > m_mapSize;
 	unify::Size< float > m_terraSize;
 	TerrainSceneComponent::ptr m_mapSC;
-
-	bool m_newMove;
-	unify::V3< float > m_move;
+	adv::PlayerMovement::ptr m_playerMovement;
 
 public:
 	MainScene( me::game::Game * gameInstance );

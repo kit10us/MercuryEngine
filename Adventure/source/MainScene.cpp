@@ -31,6 +31,8 @@ using namespace render;
 using namespace scene;
 using namespace object;
 
+using namespace adv;
+
 class MainSceneCommandListener : public ICommandListener
 {
 	MainScene * m_mainScene;
@@ -38,7 +40,6 @@ public:
 	MainSceneCommandListener( MainScene * mainScene )
 		: m_mainScene{ mainScene }
 	{
-
 	}
 
 	std::string SendCommand( size_t id, std::string extra ) override
@@ -185,8 +186,7 @@ MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
 	, m_mapSize{ 30, 30 }
 	, m_terraSize{ 8, 8 }
-	, m_newMove{ false }
-	, m_move{ unify::V3< float >::V3Zero() }
+	, m_playerMovement{ new adv::PlayerMovement{ 6.0f } }
 {	
 	// Add MainScene command listener (catch -most-)...
 	GetGame()->AddCommandListener( GetOwnership(), "DrawOnMap", me::ICommandListener::ptr{ new MainSceneCommandListener( this ) } );
@@ -237,23 +237,58 @@ void MainScene::OnStart()
 			unify::Range< float >( 1.0f * 0.3f, 1.0f )
 		};
 
-		auto condition = input::IInputCondition::ptr( new input::StickCondition( 0, "LeftStick", low, high ) );
-		gamepad->AddEvent( GetOwnership(), condition, input::IInputAction::ptr( new PlayerMovementStick( *this ) ) );
+		gamepad->AddEvent( 
+			GetOwnership(), 
+			input::IInputCondition::ptr( new input::StickCondition( 0, "LeftStick", low, high ) ),
+			input::IInputAction::ptr( new PlayerMovementStick( m_playerMovement ) ) 
+		);
 	}
 
 	// Get the keyboard Input Device...
 	auto keyboard = GetGame()->GetInputManager()->FindSource( "keyboard" );
 	if( keyboard )
 	{
-		auto conditionUp = input::IInputCondition::ptr( new input::ButtonCondition( 0, "UP", true ) );
-		auto conditionDown = input::IInputCondition::ptr( new input::ButtonCondition( 0, "Down", true ) );
-		auto conditionLeft = input::IInputCondition::ptr( new input::ButtonCondition( 0, "Left", true ) );
-		auto conditionRight = input::IInputCondition::ptr( new input::ButtonCondition( 0, "Right", true ) );
-		auto buttonAction = input::IInputAction::ptr( new PlayerMovementButtons( *this ) );
-		keyboard->AddEvent( GetOwnership(), conditionUp, buttonAction );
-		keyboard->AddEvent( GetOwnership(), conditionDown, buttonAction );
-		keyboard->AddEvent( GetOwnership(), conditionLeft, buttonAction );
-		keyboard->AddEvent( GetOwnership(), conditionRight, buttonAction );
+		keyboard->AddEvent(
+			GetOwnership(),
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "W", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Up ) )
+		);
+		keyboard->AddEvent(
+			GetOwnership(),
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "S", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Down ) )
+		);
+		keyboard->AddEvent(
+			GetOwnership(),
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "A", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Left ) )
+		);
+		keyboard->AddEvent(
+			GetOwnership(),
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "D", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Right ) )
+		);
+
+		keyboard->AddEvent(
+			GetOwnership(), 
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "UP", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Up ) ) 
+		);
+		keyboard->AddEvent( 
+			GetOwnership(), 
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "Down", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Down ) ) 
+		);
+		keyboard->AddEvent( 
+			GetOwnership(), 
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "Left", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Left ) ) 
+		);
+		keyboard->AddEvent( 
+			GetOwnership(), 
+			input::IInputCondition::ptr( new input::ButtonCondition( 0, "Right", true ) ),
+			input::IInputAction::ptr( new PlayerMovementButtons( m_playerMovement, adv::MovementDirection::Right ) ) 
+		);
 	}
 
 	// Find the camera created from the scripts.
@@ -298,44 +333,10 @@ void MainScene::OnStart()
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
-	if( m_newMove != 0 )
+	Object * target = FindObject( "player" );
+	if( target )
 	{
-		Object * target = FindObject( "player" );
-		if( target )
-		{
-			// Determine what direction we are facing
-			unify::Angle direction = m_move.DotAngle( { 0.0f, 0.0f, 1.0f } );
-
-			// Account for the left (-x) inversing the direction
-			if( m_move.x < 0.0f )
-			{
-				direction *= -1.0f;
-			}
-
-			// Accumulate our movement speed...
-			float speed = 6.0f;
-			float factor = params.GetDelta().GetSeconds() * speed;
-			m_move *= factor;
-
-			// Reset our rotation to identity (facing up the z-axis).
-			target->GetFrame().SetRotation( unify::QuaternionIdentity() );
-
-			// Move our position...
-			unify::V3< float > position = target->GetFrame().GetPosition();
-			position += m_move;
-
-			target->GetFrame().SetPosition( position );
-
-			// Face the correct direction.
-			target->GetFrame().SetRotation( unify::MatrixRotationY( direction ) );
-
-			// Reset move variables...
-			m_newMove = false;
-			m_move = unify::V3< float >::V3Zero();
-		}
-	}
-	else
-	{
+		m_playerMovement->Update( target, params );
 	}
 }
 

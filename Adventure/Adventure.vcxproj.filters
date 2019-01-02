@@ -7,6 +7,9 @@
     <Filter Include="source\terrain">
       <UniqueIdentifier>{05e43263-ec6f-4681-84fb-471775164830}</UniqueIdentifier>
     </Filter>
+    <Filter Include="adv">
+      <UniqueIdentifier>{2f427405-076d-42a9-9c07-e2f7fd92e8f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Adventure.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="source\LoadScene.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\adv\PlayerMovement.cpp">
+      <Filter>adv</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\MainScene.h">
@@ -76,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="source\LoadScene.h">
       <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\adv\PlayerMovement.h">
+      <Filter>adv</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

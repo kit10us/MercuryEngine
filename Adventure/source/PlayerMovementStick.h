@@ -5,16 +5,15 @@
 
 #include <me/input/IInputCondition.h>
 #include <me/input/IInputAction.h>
-#include <me/object/Object.h>
+#include <adv/PlayerMovement.h>
 
 class MainScene;
 
 class PlayerMovementStick : public me::input::IInputAction
 {
-	me::object::Object * m_object;
-	MainScene & m_mainScene;
+	adv::PlayerMovement::ptr m_playerMovement;
 public:
-	PlayerMovementStick( MainScene & mainScene );
+	PlayerMovementStick( adv::PlayerMovement::ptr playerMovement );
 
 	bool Perform( me::input::IInputDevice * device, me::input::IInputCondition * condition, unify::TimeDelta delta );
 };
