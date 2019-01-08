@@ -215,5 +215,5 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	Source source{ frame, frameSetInstance.Local( 0 ) };
 
 	std::vector< render::IMatrixSource * > sources{ &source };
-	mesh->Render( params, nullptr, render::MatrixFeed( { &sources[0], sources.size() }, sources[0]->Count() ) );
+	mesh->Render( params, nullptr, render::MatrixFeed( render::MatrixFood_IMatrixSource{ &sources[0], sources.size() }, sources[0]->Count() ) );
 }

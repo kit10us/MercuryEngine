@@ -80,5 +80,5 @@ void MainScene::OnRender( me::scene::RenderGirl renderGirl )
 	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	renderGirl.GetParams()->renderer->Render( method, renderGirl.GetParams()->renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
+	renderGirl.GetParams()->renderer->Render( method, renderGirl.GetParams()->renderInfo, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 }

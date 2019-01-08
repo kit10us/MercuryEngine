@@ -73,12 +73,20 @@ namespace me
 			std::list< HitInstance > FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const override;
 			std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const override;
 
+			void AddResources( unify::Path path ) override;
+
 			SceneManager* GetSceneManager();
 
 			template< typename T > 
 			rm::ResourceManager< T > * GetManager()
 			{
 				return m_game->GetManager< T >();
+			}
+
+			template< typename T >
+			std::shared_ptr< T > GetAsset( std::string name )
+			{
+				return GetManager< T >()->Find( name );
 			}
 
 		private:

@@ -88,7 +88,7 @@ void Skeleton::Render( const render::Params & params, render::MatrixFeed & matri
 			unify::Matrix matrixFinal =	
 				m_jointFinalMatrix[i] 
 				* matrix;
-			render::MatrixFeed feed( render::MatrixFood_Matrices{ &matrixFinal, 1 });
+			render::MatrixFeed feed( render::MatrixFood_Matrices{ &matrixFinal, 1 }, 1);
 			m_jointGeo->Render( params, nullptr, feed );
 		}
 	}

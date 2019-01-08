@@ -295,6 +295,21 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 	return instances;
 }
 
+void Scene::AddResources( unify::Path path )
+{
+	auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
+	qxml::Document doc( realPath );
+
+	for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
+	{
+		auto type = (*itr).GetAttribute< std::string >( "type" );
+		auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
+		unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
+
+		GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
+	}
+}
+
 SceneManager* Scene::GetSceneManager()
 {
 	return m_sceneManager;

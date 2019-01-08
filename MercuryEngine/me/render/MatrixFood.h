@@ -23,53 +23,61 @@ namespace me
 			virtual unify::Matrix GetMatrix( size_t i ) const = 0;
 			virtual void CopyMatrices( unify::Matrix * matrices ) const = 0;
 		};
-		
-		struct MatrixFood_InstancesSet
+
+		class MatrixFoodBase
 		{
-			MatrixFood_InstancesSet( const InstancesSet * instancesList = 0, size_t size = 0 )
-				: instancesList{ instancesList }
-				, size{ size }
-				{
-				}
+		protected:
+			MatrixFoodBase( size_t size );
+
+		public:
+			/// <description>
+			/// Read a matrix from our source, returning the number of matrices read.
+			/// </description>
+			virtual void ReadMatrices( unify::Matrix * out, size_t & read, size_t max, size_t & minorIndex, size_t & majorIndex ) const = 0;
+
+			/// <description>
+			///
+			/// </description>
+			size_t GetSize() const;
+
+		private:
+			size_t m_size;
+		};
+		
+		struct MatrixFood_InstancesSet : public MatrixFoodBase
+		{
+			MatrixFood_InstancesSet( const InstancesSet * instancesList, size_t size );
+
+			void ReadMatrices( unify::Matrix * out, size_t & read, size_t max, size_t & minorIndex, size_t & majorIndex ) const override;
 
 			const InstancesSet * instancesList;
-			size_t size;
 		};
 
-		struct MatrixFood_Matrices
+		struct MatrixFood_Matrices : public MatrixFoodBase
 		{
-			MatrixFood_Matrices( const unify::Matrix * matrices = 0,	size_t size = 0 )
-				: matrices{ matrices }
-				, size{ size }
-			{
-			}
+			MatrixFood_Matrices( const unify::Matrix * matrices, size_t size );
+
+			void ReadMatrices( unify::Matrix * out, size_t & read, size_t max, size_t & minorIndex, size_t & majorIndex ) const override;
 
 			const unify::Matrix * matrices;
-			size_t size;
 		};
 
-		struct MatrixFood_Frames
+		struct MatrixFood_Frames : public MatrixFoodBase
 		{
-			MatrixFood_Frames( const unify::FrameLite ** instances = 0, size_t size = 0 )
-				: instances{ instances }
-				, size{ size }
-			{
-			}
+			MatrixFood_Frames( const unify::FrameLite ** instances, size_t size );
+
+			void ReadMatrices( unify::Matrix * out, size_t & read, size_t max, size_t & minorIndex, size_t & majorIndex ) const override;
 			
 			const unify::FrameLite ** instances;
-			size_t size;
 		};
 
-		struct MatrixFood_IMatrixSource
+		struct MatrixFood_IMatrixSource : public MatrixFoodBase
 		{
-			MatrixFood_IMatrixSource( IMatrixSource * const * sources = 0, size_t size = 0 )
-				: sources{ sources }
-				, size{ size }
-			{
-			}
+			MatrixFood_IMatrixSource( IMatrixSource * const * sources, size_t size );
+
+			void ReadMatrices( unify::Matrix * out, size_t & read, size_t max, size_t & minorIndex, size_t & majorIndex ) const override;
 
 			IMatrixSource * const * sources;
-			size_t size;
 		};
 	}
 }

@@ -11,38 +11,10 @@ namespace me
 	{
 		class MatrixFeed
 		{
-			enum class Phase
-			{
-				InstancesSetPhase,
-				MatrixPointerPhase,
-				FramePointerPhase,
-				IMatrixSourcePhase,
-				MatrixArrayPhase,
-				Done
-			} m_phase;
-
-			size_t m_stride; // guarantees multiples of _stride (for example, with animations that require a specific amount of matrices).
-			size_t m_major_index;
-			size_t m_minor_index;
-							 
-			// Phase 1
-			MatrixFood_InstancesSet m_instancesSet_food;
-
-			// Phase 2
-			MatrixFood_Matrices m_matrices_food;
-
-			// Phase 3
-			MatrixFood_Frames m_frames_food;
-
-			// Phase 4
-			MatrixFood_IMatrixSource m_matrixsource_food;
+			const MatrixFoodBase * m_food;
 
 		public:
-			MatrixFeed();
-			MatrixFeed( MatrixFood_InstancesSet food, size_t stride = 1 );
-			MatrixFeed( MatrixFood_Matrices food, size_t stride = 1 );
-			MatrixFeed( MatrixFood_Frames food, size_t stride = 1 );
-			MatrixFeed( MatrixFood_IMatrixSource food, size_t stride = 1 );
+			MatrixFeed( const MatrixFoodBase & food, size_t stride );
 
 			/// <summary>
 			/// Consume MAX amount of matrics at a time.
@@ -53,6 +25,12 @@ namespace me
 			bool Done() const;
 
 			void Restart();
+
+		private:
+			bool m_done;
+			size_t m_stride; // guarantees multiples of _stride (for example, with animations that require a specific amount of matrices).
+			size_t m_major_index;
+			size_t m_minor_index;
 		};
 	}
 }

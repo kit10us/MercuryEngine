@@ -187,7 +187,7 @@ void Image::Render( const render::Params & params )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 2, m_effect ) );
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }  );
+	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
 	params.renderer->Render( method, params.renderInfo, matrixFeed );
 }
 		

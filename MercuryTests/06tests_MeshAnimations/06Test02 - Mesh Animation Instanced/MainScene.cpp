@@ -4,8 +4,6 @@
 #include <MainScene.h>
 
 using namespace me;
-using namespace render;
-using namespace scene;
 
 MainScene::MainScene( me::game::Game * gameInstance )
 	:Scene( gameInstance, "main" )
@@ -14,11 +12,18 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	// Load effect...
-	auto effect = GetManager< Effect>()->Add( "effect", unify::Path( "EffectColorAnimInst3d.effect" ) );
+	using namespace render;
+
+	// Load resources...
+	AddResources( unify::Path{ "resources/MeshAnimation.xml" } );
+
+	auto effect = Effect::ptr{ new me::render::Effect( 
+		GetAsset< IVertexShader >( "ColorAnimInst3d" ), 
+		GetAsset< IPixelShader >( "ColorAnimInst3d" )
+	) };
 
 	// Create mesh...
-	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );
+	m_mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );
 
 	struct Vertex
 	{
@@ -113,7 +118,7 @@ void MainScene::OnStart()
 		AddTriangle( 7, 4, 0 );
 	}
 
-	auto & bs = mesh->GetPrimitiveList().AddBufferSet();
+	auto & bs = m_mesh->GetPrimitiveList().AddBufferSet();
 	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 	bs.AddIndexBuffer( { { { numberOfIndices, &ibRaw[0] } } } );
 	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, effect ) );
@@ -143,23 +148,23 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 	unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 	
-	q = unify::Quaternion( axis, rotation );
+	m_q = unify::Quaternion( axis, rotation );
+	m_q = unify::QuaternionIdentity();
 	
 	params.renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
 	params.renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
-void MainScene::OnRender( RenderGirl renderGirl )
+void MainScene::OnRender( scene::RenderGirl renderGirl )
 {
-	render::Params params = *renderGirl.GetParams();
-
+	// Per-mesh instance constants.
 	class Source : public render::IMatrixSource
 	{
 	private:
-		const unify::FrameLite & m_frame;
-		const unify::Matrix & m_matrix;
+		unify::FrameLite m_frame;
+		unify::Matrix m_matrix;
 	public:
-		Source( const unify::FrameLite & frame, const unify::Matrix & matrix )
+		Source( unify::FrameLite frame, unify::Matrix matrix )
 			: m_frame{ frame }
 			, m_matrix{ matrix }
 		{
@@ -175,9 +180,9 @@ void MainScene::OnRender( RenderGirl renderGirl )
 			switch ( i )
 			{
 			case 0:
-				return m_frame.GetMatrix();
+				//return m_frame.GetMatrix();
 			case 1:
-				return m_matrix;
+				//return m_matrix;
 			default:
 				return unify::MatrixIdentity();
 			}
@@ -201,22 +206,46 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	m_animation->ApplyToFrames( progress, frameSetInstance2 );
 	frameSetInstance1.UpdateLocals();
 	frameSetInstance2.UpdateLocals();
+	
+	render::Params params = *renderGirl.GetParams();
 	progress += params.GetDelta().GetSeconds();
 
-
 	Source sorces_source[] = {
-		{ { q, unify::V3< float >( -10, 0, 0 ) }, frameSetInstance1.Local(0) }, 
-		{ { q, unify::V3< float >( 10, 0, 0 ) }, frameSetInstance2.Local(0) } 
+		//{ { m_q, unify::V3< float >( -10, 0, 0 ) }, unify::MatrixIdentity() /*frameSetInstance1.Local(0)*/ }, 
+		//{ { m_q, unify::V3< float >( 10, 0, 0 ) }, unify::MatrixIdentity() /*frameSetInstance2.Local(0)*/ } 
+		Source{ unify::MatrixTranslate( { 0, 0, 0 } ), unify::MatrixTranslate( { -10, 0, 0 } ) },
+		Source{ unify::MatrixTranslate( { 0, 0, 0 } ), unify::MatrixTranslate( { 10, 0, 0 } ) }
 	};
-
-	/*
-	Source sorces_source[] = {
-		{ { unify::MatrixIdentity() }, frameSetInstance.Local( 0 ) },
-		{ { unify::MatrixIdentity() }, frameSetInstance.Local( 0 ) }
-	};
-	*/
 
 	std::vector< render::IMatrixSource * > sources{ &sorces_source[0], &sorces_source[1] };
 
-	mesh->Render( params, nullptr, render::MatrixFeed( { &sources[0], sources.size() }, sources[0]->Count() ) );
+	/*
+	{
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
+
+	unify::Matrix instance{ Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
+	params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
+	}
+	{
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
+
+	unify::Matrix instance{ Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
+	params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
+	}
+	*/
+
+	std::vector< const unify::FrameLite * > frames;
+	unify::FrameLite frame( m_q, unify::V3< float >( 0, 0, 0 ) );
+	frames.push_back( &frame );
+	m_mesh->Render( params, nullptr, render::MatrixFeed( render::MatrixFood_Frames{ &frames[0], frames.size() }, 1 ) );
+
+
+	/*
+	m_mesh->Render( 
+		params, nullptr, render::MatrixFeed( 
+			{ &sources[0], sources.size() }, // food (starting chunk)
+			sources[0]->Count() // stride (from chunk to chunk)
+		) 
+	);
+	*/
 }

@@ -198,6 +198,11 @@ namespace me
 			virtual std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const = 0;
 
 			/// <summary>
+			/// Loads a resource file connected to the scene.
+			/// </summary>
+			virtual void AddResources( unify::Path path ) = 0;
+
+			/// <summary>
 			///
 			/// </summary>
 			template< typename T >

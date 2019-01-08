@@ -91,7 +91,7 @@ void Billboard::Render( const render::Params & params, GeometryInstanceData * in
 	lookAt.LookAtLH( viewMatrix.GetPosition(), unify::V3< float >{ 0.0f, 1.0f, 0.0f } );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	render::MatrixFeed matrixFeedLocal( render::MatrixFood_Matrices{ &instance, 1 } );
+	render::MatrixFeed matrixFeedLocal( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
 
 	m_primitiveList.Render( localParams, matrixFeedLocal );
 }

@@ -9,8 +9,8 @@
 
 class MainScene : public me::scene::Scene
 {
-	std::shared_ptr< me::render::Mesh > mesh;
-	unify::Quaternion q;
+	std::shared_ptr< me::render::Mesh > m_mesh;
+	unify::Quaternion m_q;
 	me::frameanimation::Animation::ptr m_animation;
 public:
 	MainScene( me::game::Game * gameInstance );

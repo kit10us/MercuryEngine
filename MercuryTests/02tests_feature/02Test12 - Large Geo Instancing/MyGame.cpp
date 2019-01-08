@@ -11,6 +11,7 @@ class MyGame : public game::Game
 {
 public:
 	MyGame()
+		: Game( unify::Path( "Models.xml" ) )
 	{
 	}
 

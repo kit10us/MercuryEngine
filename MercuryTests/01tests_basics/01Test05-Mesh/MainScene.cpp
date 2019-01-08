@@ -126,5 +126,5 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	std::vector< const unify::FrameLite * > frames;
 	unify::FrameLite frame( q, unify::V3< float >( 0, 0, 0 ) );
 	frames.push_back( &frame );
-	mesh->Render( params, nullptr, render::MatrixFeed( { &frames[0], frames.size() }, 1 ) );
+	mesh->Render( params, nullptr, render::MatrixFeed( render::MatrixFood_Frames{ &frames[0], frames.size() }, 1 ) );
 }

@@ -24,13 +24,6 @@ namespace me
 			}
 		};
 
-		/*
-		struct InstancesSet
-		{
-		const unify::FrameLite ** instances;
-		const size_t size;
-		};
-		*/
 		struct InstancesSet
 		{
 			InstancesSet( const FrameAndMatrix * instances, const size_t size )

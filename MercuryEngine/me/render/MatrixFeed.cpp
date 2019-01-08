@@ -6,52 +6,12 @@
 using namespace me;
 using namespace render;
 
-MatrixFeed::MatrixFeed()
-	: m_phase{ Phase::InstancesSetPhase }
-	, m_stride{ 1 }
-
-	, m_major_index{ 0 }
-	, m_minor_index{ 0 }
-{
-}
-
-MatrixFeed::MatrixFeed( MatrixFood_InstancesSet food, size_t stride )
-	: m_phase{ Phase::InstancesSetPhase }
+MatrixFeed::MatrixFeed( const MatrixFoodBase & food, size_t stride )
+	: m_done{ false }
 	, m_stride{ stride }	
 	, m_major_index{ 0 }
 	, m_minor_index{ 0 }
-
-	, m_instancesSet_food{ food }
-{
-}
-
-MatrixFeed::MatrixFeed( MatrixFood_Matrices food, size_t stride )
-	: m_phase{ Phase::InstancesSetPhase }
-	, m_stride{ stride }
-	, m_major_index{ 0 }
-	, m_minor_index{ 0 }
-
-	, m_matrices_food{ food }
-{
-}
-
-MatrixFeed::MatrixFeed( MatrixFood_Frames food, size_t stride )
-	: m_phase{ Phase::InstancesSetPhase }
-	, m_stride{ stride }
-	, m_major_index{ 0 }
-	, m_minor_index{ 0 }
-
-	, m_frames_food{ food }
-{
-}
-
-MatrixFeed::MatrixFeed( MatrixFood_IMatrixSource food, size_t stride )
-	: m_phase{ Phase::InstancesSetPhase }
-	, m_stride{ stride }
-	, m_major_index{ 0 }
-	, m_minor_index{ 0 }
-
-	, m_matrixsource_food { food }
+	, m_food{ &food }
 {
 }
 
@@ -62,73 +22,20 @@ size_t MatrixFeed::Consume( unify::Matrix * out, size_t max )
 	// Align to the amount of reads/writes we actually want.
 	max = max - (max % m_stride );
 
-	while( m_phase != Phase::Done )
+	while( ! m_done && read != max )
 	{
-		// Determine our current phase...
-		if( m_phase == Phase::InstancesSetPhase &&  m_major_index >= m_instancesSet_food.size )
+		if ( m_major_index >= m_food->GetSize() )
 		{
 			m_major_index = 0;
-			m_phase = Phase::MatrixPointerPhase;
+			m_done = true;
 		}
-		if( m_phase == Phase::MatrixPointerPhase && m_major_index >= m_matrices_food.size )
+		else
 		{
-			m_major_index = 0;
-			m_phase = Phase::FramePointerPhase;
-		}
-		if( m_phase == Phase::FramePointerPhase && m_major_index >= m_frames_food.size )
-		{
-			m_major_index = 0;
-			m_phase = Phase::IMatrixSourcePhase;
-		}
-		if( m_phase == Phase::IMatrixSourcePhase && m_major_index >= m_matrixsource_food.size )
-		{
-			m_major_index = 0;
-			m_phase = Phase::Done;
-		}
-
-		switch( m_phase )
-		{
-		case Phase::InstancesSetPhase:
-			while( m_major_index < m_instancesSet_food.size && read < max )
-			{
-				auto && instances = m_instancesSet_food.instancesList[m_major_index];
-				const FrameAndMatrix & fm = instances.instances[m_minor_index++];
-				out[read++] = fm.Final();
-				if( m_minor_index >= instances.size )
-				{
-					m_minor_index = 0;
-					m_major_index++;
-				}
-			}
-			break;
-		case Phase::MatrixPointerPhase:
-			while( m_major_index < m_matrices_food.size && read < max )
-			{
-				out[read++] = m_matrices_food.matrices[m_major_index++];
-			}
-			break;
-		case Phase::FramePointerPhase:
-			while( m_major_index < m_frames_food.size && read < max )
-			{
-				m_frames_food.instances[m_major_index++]->ReadMatrix( &out[read++] );
-			}
-			break;
-		case Phase::IMatrixSourcePhase:
-			while( m_major_index < m_matrixsource_food.size && read < max )
-			{
-				m_matrixsource_food.sources[m_major_index]->CopyMatrices( &out[read] );
-				read += m_matrixsource_food.sources[m_major_index++]->Count();
-			}
-			break;
-		}
-
-		if( m_phase == Phase::Done || read == max )
-		{
-			return read;
+			m_food->ReadMatrices( out, read, max, m_minor_index, m_major_index );
 		}
 	}
 
-	return 0;
+	return read;
 }
 
 size_t MatrixFeed::Stride() const
@@ -138,12 +45,12 @@ size_t MatrixFeed::Stride() const
 
 bool MatrixFeed::Done() const
 {
-	return m_phase == Phase::Done;
+	return m_done;
 }
 
 void MatrixFeed::Restart()
 {
-	m_phase = Phase::InstancesSetPhase;
+	m_done = false;
 	m_major_index = 0;
 	m_minor_index = 0;
 	m_stride = 1;

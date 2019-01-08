@@ -19,18 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainScene.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MyGame.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainScene.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{03A916A8-3F0C-486E-983D-EE3E9F4BD8EE}</ProjectGuid>
+    <ProjectGuid>{A4C23CAB-AC17-4ADB-A120-E112A9704BB6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My02Test06GeoInstancing</RootNamespace>
+    <RootNamespace>My02Test12LargeGeoInstancing</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>02Test06 - Geo Instancing</ProjectName>
+    <ProjectName>02Test12 - Large Geo Instancing</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -100,6 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,6 +129,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
