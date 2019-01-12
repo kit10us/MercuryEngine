@@ -21,13 +21,15 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_Tube( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
+	using namespace unify;
+
 	float outer = parameters.Get( "majorradius", 0.5f );
 	float inner = parameters.Get( "minorradius", 0.3f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
 	float height = parameters.Get( "height", 1.0f );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
+	Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	Color specular = parameters.Get( "specular", unify::ColorWhite() );
+	V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -43,7 +45,7 @@ void sg::CreateShape_Tube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	BufferSet & set = primitiveList.AddBufferSet();
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 

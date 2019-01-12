@@ -16,7 +16,7 @@ namespace me
 			enum TYPE
 			{
 				Vertex = 0,
-				Object
+				Instance
 			};
 			static TYPE FromString( std::string value );
 			static std::string ToString( TYPE value );

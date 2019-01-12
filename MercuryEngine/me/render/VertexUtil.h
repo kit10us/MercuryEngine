@@ -29,7 +29,7 @@ namespace me
 				return false;
 			}
 
-			return ElementFormat::Convert( elementFound.Format, (unsigned char *)lock.GetItem( vertexIndex ) + elementFound.AlignedByteOffset, ElementFormat::FromType< T >(), &v );
+			return ElementFormat::Convert( elementFound.Format, lock.GetData<unsigned char>() + vd.GetSizeInBytes() * vertexIndex + elementFound.AlignedByteOffset, ElementFormat::FromType< T >(), &v );
 		}
 
 		bool WriteVertex( const VertexDeclaration & vd, unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, const void * vertex );
@@ -57,7 +57,7 @@ namespace me
 				return false;
 			}
 
-			return ElementFormat::Convert( ElementFormat::FromType< T >(), &v, elementFound.Format, (unsigned char *)lock.GetItem( vertexIndex ) + elementFound.AlignedByteOffset );
+			return ElementFormat::Convert( ElementFormat::FromType< T >(), &v, elementFound.Format, (unsigned char *)lock.GetItem< unsigned char >( vertexIndex ) + elementFound.AlignedByteOffset );
 		}
 
 		bool ReadVertex( const VertexDeclaration & vd, unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, void * vertex );

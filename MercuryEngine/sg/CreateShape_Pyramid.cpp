@@ -21,11 +21,13 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_Pyramid( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
-	unify::Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
+	using namespace unify;
+
+	Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
+	Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	Color specular = parameters.Get( "specular", unify::ColorWhite() );
 	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
+	V3< float > center = parameters.Get( "center", V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -66,7 +68,7 @@ void sg::CreateShape_Pyramid( IRenderer * renderer, PrimitiveList & primitiveLis
 
 	// Set the vertices from the TEMP vertices...
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+	DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 

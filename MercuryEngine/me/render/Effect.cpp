@@ -88,21 +88,21 @@ void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * wo
 		
 		if ( bufferIndex == viewRef.buffer )
 		{
-			unsigned char * data = ((unsigned char *)lock.GetData()) + viewRef.offsetInBytes;
+			unsigned char * data = (lock.GetData<unsigned char>()) + viewRef.offsetInBytes;
 			unify::Matrix* matrix = (unify::Matrix*)data;
 			*matrix = renderInfo.GetViewMatrix();
 		}
 		
 		if ( bufferIndex == projRef.buffer )
 		{
-			unsigned char * data = ((unsigned char *)lock.GetData()) + projRef.offsetInBytes;
+			unsigned char * data = (lock.GetData<unsigned char>()) + projRef.offsetInBytes;
 			unify::Matrix* matrix = (unify::Matrix*)data;
 			*matrix = renderInfo.GetProjectionMatrix();
 		}
 
 		if ( world_size != 0 && bufferIndex == worldRef.buffer )
 		{
-			unsigned char * data = ((unsigned char *)lock.GetData()) + worldRef.offsetInBytes;
+			unsigned char * data = (lock.GetData<unsigned char>()) + worldRef.offsetInBytes;
 			unify::Matrix* matrix = (unify::Matrix*)data;
 			*matrix = world[0];
 		}

@@ -21,28 +21,30 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
-	unify::V3< float > inf;
-	unify::V3< float > sup;
+	using namespace unify;
+
+	V3< float > inf;
+	V3< float > sup;
 	if( parameters.Exists( "inf,sup" ) )
 	{
-		inf = parameters.Get< unify::V3< float > >( "inf" );
-		sup = parameters.Get< unify::V3< float > >( "sup" );
+		inf = parameters.Get< V3< float > >( "inf" );
+		sup = parameters.Get< V3< float > >( "sup" );
 	}
 	else
 	{
-		unify::Size3< float > size( parameters.Get( "size3", unify::Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
+		unify::Size3< float > size( parameters.Get( "size3", Size3< float >( 1.0f, 1.0f, 1.0f ) ) );
 		// Divide the dimensions to center the cube
 		size.width *= 0.5f;
 		size.height *= 0.5f;
 		size.depth *= 0.5f;
-		inf = unify::V3< float >( -size.width, -size.height, -size.depth );
-		sup = unify::V3< float >( size.width, size.height, size.depth );
+		inf = V3< float >( -size.width, -size.height, -size.depth );
+		sup = V3< float >( size.width, size.height, size.depth );
 	}
 
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
+	Color diffuse = parameters.Get( "diffuse", ColorWhite() );
+	Color specular = parameters.Get( "specular", ColorWhite() );
 	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
+	V3< float > center = parameters.Get( "center", V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -56,7 +58,7 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	const unsigned int totalTriangles = facesPerSide * numberOfSides;
 
 	char * verticesFinal = new char[totalVertices * vd->GetSizeInBytes( 0 )];
-	unify::DataLock lock( verticesFinal, vd->GetSizeInBytes( 0 ), totalVertices, false, 0 );
+	DataLock lock( verticesFinal, vd->GetSizeInBytes( 0 ), totalVertices, DataLock::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { totalVertices, verticesFinal } }, bufferUsage };
 
 	unsigned short stream = 0;
@@ -68,14 +70,13 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 
-	class V
+	struct V
 	{
-	public:
-		unify::V3< float > pos;
-		unify::V3< float > normal;
-		unify::Color diffuse;
-		unify::Color specular;
-		unify::TexCoords coords;
+		V3< float > pos;
+		V3< float > normal;
+		Color diffuse;
+		Color specular;
+		TexCoords coords;
 	};
 	qjson::Object jsonFormat;
 	jsonFormat.Add( { "Position", "Float3" } );
@@ -92,44 +93,44 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	// Set the TEMP vertices...
 	V vertices[8];
 
-	vertices[0].pos = unify::V3< float >( inf.x, sup.y, sup.z );
+	vertices[0].pos = V3< float >( inf.x, sup.y, sup.z );
 	vertices[0].normal.Normalize( vertices[0].pos );
-	vertices[0].coords = unify::TexCoords( 0.0f, 0.0f );
+	vertices[0].coords = TexCoords( 0.0f, 0.0f );
 	vertices[0].specular = specular;
 
-	vertices[1].pos = unify::V3< float >( sup.x, sup.y, sup.z );
+	vertices[1].pos = V3< float >( sup.x, sup.y, sup.z );
 	vertices[1].normal.Normalize( vertices[1].pos );
-	vertices[1].coords = unify::TexCoords( 0.0f, 1.0f );
+	vertices[1].coords = TexCoords( 0.0f, 1.0f );
 	vertices[1].specular = specular;
 
-	vertices[2].pos = unify::V3< float >( inf.x, sup.y, inf.z );
+	vertices[2].pos = V3< float >( inf.x, sup.y, inf.z );
 	vertices[2].normal.Normalize( vertices[2].pos );
-	vertices[2].coords = unify::TexCoords( 1.0f, 0.0f );
+	vertices[2].coords = TexCoords( 1.0f, 0.0f );
 	vertices[2].specular = specular;
 
-	vertices[3].pos = unify::V3< float >( sup.x, sup.y, inf.z );
+	vertices[3].pos = V3< float >( sup.x, sup.y, inf.z );
 	vertices[3].normal.Normalize( vertices[3].pos );
-	vertices[3].coords = unify::TexCoords( 1.0f, 1.0f );
+	vertices[3].coords = TexCoords( 1.0f, 1.0f );
 	vertices[3].specular = specular;
 
-	vertices[4].pos = unify::V3< float >( inf.x, inf.y, sup.z );
+	vertices[4].pos = V3< float >( inf.x, inf.y, sup.z );
 	vertices[4].normal.Normalize( vertices[4].pos );
-	vertices[4].coords = unify::TexCoords( 0.0f, 0.0f );
+	vertices[4].coords = TexCoords( 0.0f, 0.0f );
 	vertices[4].specular = specular;
 
-	vertices[5].pos = unify::V3< float >( sup.x, inf.y, sup.z );
+	vertices[5].pos = V3< float >( sup.x, inf.y, sup.z );
 	vertices[5].normal.Normalize( vertices[5].pos );
-	vertices[5].coords = unify::TexCoords( 0.0f, 1.0f );
+	vertices[5].coords = TexCoords( 0.0f, 1.0f );
 	vertices[5].specular = specular;
 
-	vertices[6].pos = unify::V3< float >( inf.x, inf.y, inf.z );
+	vertices[6].pos = V3< float >( inf.x, inf.y, inf.z );
 	vertices[6].normal.Normalize( vertices[6].pos );
-	vertices[6].coords = unify::TexCoords( 1.0f, 0.0f );
+	vertices[6].coords = TexCoords( 1.0f, 0.0f );
 	vertices[6].specular = specular;
 
-	vertices[7].pos = unify::V3< float >( sup.x, inf.y, inf.z );
+	vertices[7].pos = V3< float >( sup.x, inf.y, inf.z );
 	vertices[7].normal.Normalize( vertices[7].pos );
-	vertices[7].coords = unify::TexCoords( 1.0f, 1.0f );
+	vertices[7].coords = TexCoords( 1.0f, 1.0f );
 	vertices[7].specular = specular;
 
 	// Translate all points for center.
@@ -140,7 +141,7 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	}
 
 	// Allow per-vertex diffuse...
-	std::vector< unify::Color > diffuses = parameters.Get< std::vector< unify::Color > >( "diffuses", std::vector< unify::Color >() );
+	std::vector< Color > diffuses = parameters.Get< std::vector< Color > >( "diffuses", std::vector< unify::Color >() );
 	if( diffuses.size() == 8 )
 	{
 		vertices[0].diffuse = diffuses[0];
@@ -189,15 +190,15 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 			}
 		}
 
-		WriteVertex( *vd, lock, 16, texE, unify::TexCoords( 0, 0 ) );
-		WriteVertex( *vd, lock, 17, texE, unify::TexCoords( 0, 1 ) );
-		WriteVertex( *vd, lock, 18, texE, unify::TexCoords( 1, 0 ) );
-		WriteVertex( *vd, lock, 19, texE, unify::TexCoords( 1, 1 ) );
+		WriteVertex( *vd, lock, 16, texE, TexCoords( 0, 0 ) );
+		WriteVertex( *vd, lock, 17, texE, TexCoords( 0, 1 ) );
+		WriteVertex( *vd, lock, 18, texE, TexCoords( 1, 0 ) );
+		WriteVertex( *vd, lock, 19, texE, TexCoords( 1, 1 ) );
 
-		WriteVertex( *vd, lock, 20, texE, unify::TexCoords( 0, 0 ) );
-		WriteVertex( *vd, lock, 21, texE, unify::TexCoords( 0, 1 ) );
-		WriteVertex( *vd, lock, 22, texE, unify::TexCoords( 1, 0 ) );
-		WriteVertex( *vd, lock, 23, texE, unify::TexCoords( 1, 1 ) );
+		WriteVertex( *vd, lock, 20, texE, TexCoords( 0, 0 ) );
+		WriteVertex( *vd, lock, 21, texE, TexCoords( 0, 1 ) );
+		WriteVertex( *vd, lock, 22, texE, TexCoords( 1, 0 ) );
+		WriteVertex( *vd, lock, 23, texE, TexCoords( 1, 1 ) );
 	} break;
 
 	case TextureMode::Wrapped:
@@ -210,47 +211,47 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 		float b1 = 0.5f, b2 = 1;
 
 		// Left Side..
-		WriteVertex( *vd, lock, 12, texE, unify::TexCoords( l1, b1 ) );
-		WriteVertex( *vd, lock, 13, texE, unify::TexCoords( l1, b2 ) );
-		WriteVertex( *vd, lock, 14, texE, unify::TexCoords( l2, b1 ) );
-		WriteVertex( *vd, lock, 15, texE, unify::TexCoords( l2, b2 ) );
+		WriteVertex( *vd, lock, 12, texE, TexCoords( l1, b1 ) );
+		WriteVertex( *vd, lock, 13, texE, TexCoords( l1, b2 ) );
+		WriteVertex( *vd, lock, 14, texE, TexCoords( l2, b1 ) );
+		WriteVertex( *vd, lock, 15, texE, TexCoords( l2, b2 ) );
 
 		// Front...
-		WriteVertex( *vd, lock, 0, texE, unify::TexCoords( m1, b1 ) );
-		WriteVertex( *vd, lock, 1, texE, unify::TexCoords( m1, b2 ) );
-		WriteVertex( *vd, lock, 2, texE, unify::TexCoords( m2, b1 ) );
-		WriteVertex( *vd, lock, 3, texE, unify::TexCoords( m2, b2 ) );
+		WriteVertex( *vd, lock, 0, texE, TexCoords( m1, b1 ) );
+		WriteVertex( *vd, lock, 1, texE, TexCoords( m1, b2 ) );
+		WriteVertex( *vd, lock, 2, texE, TexCoords( m2, b1 ) );
+		WriteVertex( *vd, lock, 3, texE, TexCoords( m2, b2 ) );
 
 		// Right Side...
-		WriteVertex( *vd, lock, 4, texE, unify::TexCoords( r1, b1 ) );
-		WriteVertex( *vd, lock, 5, texE, unify::TexCoords( r1, b2 ) );
-		WriteVertex( *vd, lock, 6, texE, unify::TexCoords( r2, b1 ) );
-		WriteVertex( *vd, lock, 7, texE, unify::TexCoords( r2, b2 ) );
+		WriteVertex( *vd, lock, 4, texE, TexCoords( r1, b1 ) );
+		WriteVertex( *vd, lock, 5, texE, TexCoords( r1, b2 ) );
+		WriteVertex( *vd, lock, 6, texE, TexCoords( r2, b1 ) );
+		WriteVertex( *vd, lock, 7, texE, TexCoords( r2, b2 ) );
 
 		// Rear...
-		WriteVertex( *vd, lock, 8, texE, unify::TexCoords( l1, t1 ) );
-		WriteVertex( *vd, lock, 9, texE, unify::TexCoords( l1, t2 ) );
-		WriteVertex( *vd, lock, 10, texE, unify::TexCoords( l2, t1 ) );
-		WriteVertex( *vd, lock, 11, texE, unify::TexCoords( l2, t2 ) );
+		WriteVertex( *vd, lock, 8, texE, TexCoords( l1, t1 ) );
+		WriteVertex( *vd, lock, 9, texE, TexCoords( l1, t2 ) );
+		WriteVertex( *vd, lock, 10, texE, TexCoords( l2, t1 ) );
+		WriteVertex( *vd, lock, 11, texE, TexCoords( l2, t2 ) );
 
 		// Top...
-		WriteVertex( *vd, lock, 16, texE, unify::TexCoords( m1, t1 ) );
-		WriteVertex( *vd, lock, 17, texE, unify::TexCoords( m1, t2 ) );
-		WriteVertex( *vd, lock, 18, texE, unify::TexCoords( m2, t1 ) );
-		WriteVertex( *vd, lock, 19, texE, unify::TexCoords( m2, t2 ) );
+		WriteVertex( *vd, lock, 16, texE, TexCoords( m1, t1 ) );
+		WriteVertex( *vd, lock, 17, texE, TexCoords( m1, t2 ) );
+		WriteVertex( *vd, lock, 18, texE, TexCoords( m2, t1 ) );
+		WriteVertex( *vd, lock, 19, texE, TexCoords( m2, t2 ) );
 
 		// Bottom...
-		WriteVertex( *vd, lock, 20, texE, unify::TexCoords( r1, t1 ) );
-		WriteVertex( *vd, lock, 21, texE, unify::TexCoords( r1, t2 ) );
-		WriteVertex( *vd, lock, 22, texE, unify::TexCoords( r2, t1 ) );
-		WriteVertex( *vd, lock, 23, texE, unify::TexCoords( r2, t2 ) );
+		WriteVertex( *vd, lock, 20, texE, TexCoords( r1, t1 ) );
+		WriteVertex( *vd, lock, 21, texE, TexCoords( r1, t2 ) );
+		WriteVertex( *vd, lock, 22, texE, TexCoords( r2, t1 ) );
+		WriteVertex( *vd, lock, 23, texE, TexCoords( r2, t2 ) );
 	} break;
 	}
 
 	// If we have a faceUV vector...
 	if( parameters.Exists( "faceUV" ) )
 	{
-		std::vector< unify::TexArea > faceUV = parameters.Get< std::vector< unify::TexArea > >( "faceUV" );
+		std::vector< TexArea > faceUV = parameters.Get< std::vector< TexArea > >( "faceUV" );
 
 		// Loop as long as it takes to get 6 faces
 		size_t face = 0;

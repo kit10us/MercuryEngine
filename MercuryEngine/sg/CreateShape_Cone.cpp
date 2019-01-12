@@ -21,17 +21,19 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
+	using namespace unify;
+
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
+	Color diffuse = parameters.Get( "diffuse", ColorWhite() );
+	Color specular = parameters.Get( "specular", ColorWhite() );
 	float radius = parameters.Get( "radius", 1.0f );
 	float height = parameters.Get( "height", 1.0f );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
+	V3< float > center = parameters.Get( "center", V3< float >( 0, 0, 0 ) );
 	int textureMode = parameters.Get( "texturemode", TextureMode::Correct );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 	// TODO: support top and bottom texArea.
-	unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
+	unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", TexArea( TexCoords( 0, 0 ), TexCoords( 1, 1 ) ) );
 	bool caps = parameters.Get( "caps", true );
 
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
@@ -51,7 +53,7 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 	BufferSet & set = primitiveList.AddBufferSet();
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -73,14 +75,13 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
-	class V
+	struct V
 	{
-	public:
-		unify::V3< float > pos;
-		unify::V3< float > normal;
-		unify::Color diffuse;
-		unify::Color specular;
-		unify::TexCoords coords;
+		V3< float > pos;
+		V3< float > normal;
+		Color diffuse;
+		Color specular;
+		TexCoords coords;
 	};
 	qjson::Object jsonFormat;
 	jsonFormat.Add( { "Position", "Float3" } );
@@ -102,30 +103,30 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 	double dRadChange = PI2 / segments;
 	for( unsigned int s = 0; s <= segments; s++ )
 	{
-		pos = unify::V3< float >( sin( rad ) * radius, -height, cos( rad ) * radius );
+		pos = V3< float >( sin( rad ) * radius, -height, cos( rad ) * radius );
 		norm = pos;
 		norm.Normalize();
 		WriteVertex( *vd, lock, (s * 2) + 0, positionE, center );
 		WriteVertex( *vd, lock, (s * 2) + 0, normalE, norm );
-		WriteVertex( *vd, lock, (s * 2) + 0, texE, unify::TexCoords( cChange.u * s, texArea.dr.v ) );
+		WriteVertex( *vd, lock, (s * 2) + 0, texE, TexCoords( cChange.u * s, texArea.dr.v ) );
 		WriteVertex( *vd, lock, (s * 2) + 0, diffuseE, diffuse );
 		WriteVertex( *vd, lock, (s * 2) + 0, specularE, specular );
 		vbParameters.bbox += center;
 
 
-		pos = unify::V3< float >( sin( rad ) * radius, height, cos( rad ) * radius );
+		pos = V3< float >( sin( rad ) * radius, height, cos( rad ) * radius );
 		norm = pos;
 		norm.Normalize();
 		WriteVertex( *vd, lock, (s * 2) + 1, positionE, pos + center );
 		WriteVertex( *vd, lock, (s * 2) + 1, normalE, norm );
-		WriteVertex( *vd, lock, (s * 2) + 1, texE, unify::TexCoords( cChange.u * s, texArea.ul.v ) );
+		WriteVertex( *vd, lock, (s * 2) + 1, texE, TexCoords( cChange.u * s, texArea.ul.v ) );
 		WriteVertex( *vd, lock, (s * 2) + 1, diffuseE, diffuse );
 		WriteVertex( *vd, lock, (s * 2) + 1, specularE, specular );
 		vbParameters.bbox += pos + center;
 
 		if( caps )
 		{
-			pos = unify::V3< float >( sin( rad ) * radius, height, cos( rad ) * radius );
+			pos = V3< float >( sin( rad ) * radius, height, cos( rad ) * radius );
 			norm = pos;
 			norm.Normalize();
 			WriteVertex( *vd, lock, (segments * 2 + 2) + s, positionE, pos + center );
@@ -152,7 +153,7 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 		norm.Normalize();
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, positionE, pos + center );
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, normalE, norm );
-		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, texE, unify::TexCoords( 0.5f, 0.5f ) );
+		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, texE, TexCoords( 0.5f, 0.5f ) );
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, diffuseE, diffuse );
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, specularE, specular );
 		vbParameters.bbox += pos + center;

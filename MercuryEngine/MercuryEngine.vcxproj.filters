@@ -771,6 +771,9 @@
     <ClInclude Include="me\scene\component\ObjectAllocatorComponent.h">
       <Filter>me\scene\component</Filter>
     </ClInclude>
+    <ClInclude Include="me\render\Format.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1258,6 +1261,9 @@
     </ClCompile>
     <ClCompile Include="me\scene\component\ObjectAllocatorComponent.cpp">
       <Filter>me\scene\component</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\Format.cpp">
+      <Filter>me\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

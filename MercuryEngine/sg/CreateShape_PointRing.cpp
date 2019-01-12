@@ -21,12 +21,14 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_PointRing( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
+	using namespace unify;
+
 	float majorRadius = parameters.Get( "majorradius", 0.5f );	// Size radius
 	float minorRadius = parameters.Get( "minorradius", 1.0f );	// Radius of ring
 	unsigned int count = parameters.Get< unsigned int >( "count", 100 );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
+	Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
+	Color specular = parameters.Get( "specular", unify::ColorWhite() );
+	V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -35,13 +37,13 @@ void sg::CreateShape_PointRing( IRenderer * renderer, PrimitiveList & primitiveL
 
 	set.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
 
-	unify::V3< float > vec;
-	unify::V2< float > vPos2;	// Initial position ( by radius1 )
-	unify::V3< float > vPos3;
-	unify::V3< float > norm;
+	V3< float > vec;
+	V2< float > vPos2;	// Initial position ( by radius1 )
+	V3< float > vPos3;
+	V3< float > norm;
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * count];
-	unify::DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, false, 0 );
+	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, DataLock::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 	unsigned short stream = 0;
 

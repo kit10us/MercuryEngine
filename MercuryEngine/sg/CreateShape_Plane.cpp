@@ -21,12 +21,14 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_Plane( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
-	unify::Size< float > size = parameters.Get( "size2", unify::Size< float >( 1.0f, 1.0f ) );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
+	using namespace unify;
+
+	Size< float > size = parameters.Get( "size2", Size< float >( 1.0f, 1.0f ) );
+	Color diffuse = parameters.Get( "diffuse", ColorWhite() );
+	Color specular = parameters.Get( "specular", ColorWhite() );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 1 );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
-	unify::TexArea texArea = parameters.Get( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
+	V3< float > center = parameters.Get( "center", V3< float >( 0, 0, 0 ) );
+	TexArea texArea = parameters.Get( "texarea", TexArea( unify::TexCoords( 0, 0 ), TexCoords( 1, 1 ) ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -45,14 +47,13 @@ void sg::CreateShape_Plane( IRenderer * renderer, PrimitiveList & primitiveList,
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
-	class V
+	struct V
 	{
-	public:
-		unify::V3< float > pos;
-		unify::V3< float > normal;
-		unify::Color diffuse;
-		unify::Color specular;
-		unify::TexCoords coords;
+		V3< float > pos;
+		V3< float > normal;
+		Color diffuse;
+		Color specular;
+		TexCoords coords;
 	};
 	qjson::Object jsonFormat;
 	jsonFormat.Add( { "Position", "Float3" } );
@@ -63,7 +64,7 @@ void sg::CreateShape_Plane( IRenderer * renderer, PrimitiveList & primitiveList,
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 

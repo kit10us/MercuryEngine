@@ -7,6 +7,7 @@
 #include <me/render/TextureLock.h>
 #include <me/render/Filtering.h>
 #include <me/render/SpriteDictionary.h>
+#include <me/render/Format.h>
 #include <rm/IResource.h>
 #include <qxml/Element.h>
 #include <unify/Path.h>
@@ -25,8 +26,13 @@ namespace me
 			TextureParameters( const qxml::Element * element );
 
 			unify::Path source;
+			
+			unify::Size< unsigned int > size; // Ignored if we have a source path.
+			Format::TYPE format;
+			
 			bool renderable;
 			bool lockable;
+
 			Filtering::TYPE min;
 			Filtering::TYPE mag;
 			Filtering::TYPE mip;

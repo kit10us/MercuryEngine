@@ -88,8 +88,9 @@ unify::TimeDelta Animation::ApplyToFrames( unify::TimeDelta elapsedTime, unify::
 		unify::V3< float > scale( InterpretValue< unify::V3< float > >( elapsedTime, scaleKeys, unify::V3< float >( 1.0f, 1.0f, 1.0f ) ) );
 		unify::Quaternion rotation( InterpretValue< unify::Quaternion >( elapsedTime, rotationKeys, unify::QuaternionIdentity() ) );
 		unify::V3< float > translation( InterpretValue< unify::V3< float > >( elapsedTime, translationKeys, unify::V3< float >( 0.0f, 0.0f, 0.0f ) ) );
-		unify::Matrix matrix( rotation, translation ); // TODO: Quaternions
-		frameSetInstance.Transform( boneIndex, matrix );
+		unify::Matrix keyMatrix( rotation, translation );
+		frameSetInstance.Transform( boneIndex, keyMatrix );
 	}
+	frameSetInstance.UpdateLocals();
 	return elapsedTime;
 }

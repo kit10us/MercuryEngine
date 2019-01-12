@@ -83,7 +83,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 					
 					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 
-					unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+					unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLock::ReadWrite, 0 );
 					unify::BBox< float > bbox;
 
 					unsigned short stream = 0;

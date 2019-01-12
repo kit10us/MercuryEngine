@@ -107,7 +107,7 @@ bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Ef
 	// Create vertex chunk...
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * GetVertexCount().Units()] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), GetVertexCount().Units(), false, 0 );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), GetVertexCount().Units(), unify::DataLock::ReadWrite, 0 );
 
 	size_t triangleCount = GetFaceCount().Units() * 2;
 	size_t indexCount = GetFaceCount().Units() * 6;

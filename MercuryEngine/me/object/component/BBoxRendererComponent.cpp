@@ -99,7 +99,7 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 		VertexElement positionE = CommonVertexElement::Position( stream );
 		VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
 
-		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLock::ReadWrite, 0 );
 
 		// All from inf...
 

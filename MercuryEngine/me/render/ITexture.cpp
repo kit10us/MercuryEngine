@@ -9,7 +9,8 @@ using namespace me;
 using namespace render;
 
 TextureParameters::TextureParameters()
-	: renderable( true )
+	: size{}
+	, renderable( true )
 	, lockable( false )
 	, min( Filtering::Linear )
 	, mag( Filtering::Linear )
@@ -50,6 +51,16 @@ TextureParameters::TextureParameters( const qxml::Element * element )
 	{
 		renderable = element->GetAttribute< bool >( "renderable" );
 	}
-
-	source = unify::Path( element->GetAttribute< std::string >( "source" ) );
+	if( element->HasAttributes( "source" ) )
+	{
+		source = unify::Path( element->GetAttribute< std::string >( "source" ) );
+	}
+	if ( element->HasAttributes( "width" ) )
+	{
+		size.width = element->GetAttribute< unsigned int >( "width" );
+	}
+	if (element->HasAttributes( "height" ) )
+	{
+		size.height = element->GetAttribute< unsigned int >( "height" );
+	}
 }

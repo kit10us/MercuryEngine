@@ -99,14 +99,7 @@ void Mesh::Render( const render::Params & params, GeometryInstanceData * instanc
 	}
 	*/
 
-	if( m_skeleton.Empty() )
-	{
-		if( m_renderMesh )
-		{
-			m_primitiveList.Render( params, matrixFeed );
-		}
-	}
-	else
+	if( ! m_skeleton.Empty() )
 	{
 		// Draw skeleton, if we have an effect for it...
 		if( m_skeletonEffect )
@@ -132,11 +125,11 @@ void Mesh::Render( const render::Params & params, GeometryInstanceData * instanc
 		}
 		matrixFeed.Restart();
 		*/
+	}
 
-		if( m_renderMesh )
-		{
-			m_primitiveList.Render( params, matrixFeed );
-		}
+	if( m_renderMesh )
+	{
+		m_primitiveList.Render( params, matrixFeed );
 	}
 }
 

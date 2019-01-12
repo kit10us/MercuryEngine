@@ -14,9 +14,9 @@ SlotClass::TYPE SlotClass::FromString( std::string value )
 	{
 		return SlotClass::Vertex;
 	}
-	else if ( unify::string::StringIs( value, "object" ) )
+	else if ( unify::string::StringIs( value, "instance" ) )
 	{
-		return SlotClass::Object;
+		return SlotClass::Instance;
 	}
 
 	throw unify::Exception( "Unknown Vertex Element slot class string! (" + value + ")" );
@@ -28,8 +28,8 @@ std::string SlotClass::ToString( SlotClass::TYPE value )
 	{
 	case SlotClass::Vertex:
 		return "Vertex";
-	case SlotClass::Object:
-		return "Object";
+	case SlotClass::Instance:
+		return "Instance";
 	default:
 		throw unify::Exception( "Unknown Vertex Element slot class value!" );
 	}

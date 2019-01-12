@@ -132,9 +132,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 		};
 
 		render::MatrixFood_Matrices food( matrices, 2 );
-
 		render::MatrixFeed feed( food, 1 );
-
 		params.renderer->Render( method, params.renderInfo, feed );
 	}
 
@@ -148,32 +146,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 		};
 
 		render::MatrixFood_Matrices food( matrices, 2 );
-
 		render::MatrixFeed feed( food, 1 );
-
 		params.renderer->Render( method, params.renderInfo, feed );
 	}
-
-
-
-	/*
-	unify::Matrix instance1{ Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-	unify::Matrix instance2{ Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-
-	render::MatrixFeed feed[] = {
-	{ MatrixFood_Matrices{ &instance1, 1 }, 1 },
-	{ MatrixFood_Matrices{ &instance2, 1 }, 1 }
-	};
-
-	{
-		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
-		render::MatrixFeed food( MatrixFood_Matrices{ &instance1, 1 }, 1 );
-		params.renderer->Render( method, params.renderInfo, feed[ 0 ] );
-	}
-	{
-		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
-		render::MatrixFeed food( MatrixFood_Matrices{ &instance2, 1 }, 1 );
-		params.renderer->Render( method, params.renderInfo, feed[ 1 ] );	
-	}
-	*/
 }

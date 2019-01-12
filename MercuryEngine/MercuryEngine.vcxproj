@@ -136,6 +136,7 @@
     <ClInclude Include="me\render\Effect.h" />
     <ClInclude Include="me\render\ElementFormat.h" />
     <ClInclude Include="me\render\Filtering.h" />
+    <ClInclude Include="me\render\Format.h" />
     <ClInclude Include="me\render\FrameAndMatrix.h" />
     <ClInclude Include="me\render\Geometry.h" />
     <ClInclude Include="me\render\GeometryCache.h" />
@@ -320,6 +321,7 @@
     <ClCompile Include="me\render\Effect.cpp" />
     <ClCompile Include="me\render\ElementFormat.cpp" />
     <ClCompile Include="me\render\Filtering.cpp" />
+    <ClCompile Include="me\render\Format.cpp" />
     <ClCompile Include="me\render\Geometry.cpp" />
     <ClCompile Include="me\render\GeometryCache.cpp" />
     <ClCompile Include="me\render\GeometryCacheSummation.cpp" />

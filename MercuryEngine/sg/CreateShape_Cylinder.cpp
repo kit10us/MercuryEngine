@@ -21,13 +21,15 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
+	using namespace unify;
+
 	float radius = parameters.Get( "radius", 0.5f );
 	unsigned int segments = parameters.Get< unsigned int >( "segments", 12 );
 	float height = parameters.Get( "height", 1.0f );
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
-	unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexArea( unify::TexCoords( 0, 0 ), unify::TexCoords( 1, 1 ) ) );
+	Color diffuse = parameters.Get( "diffuse", ColorWhite() );
+	Color specular = parameters.Get( "specular", ColorWhite() );
+	V3< float > center = parameters.Get( "center", V3< float >( 0, 0, 0 ) );
+	TexArea texArea = parameters.Get< TexArea >( "texarea", TexArea( unify::TexCoords( 0, 0 ), TexCoords( 1, 1 ) ) );
 	// TODO: support top and bottom texArea.
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
@@ -49,7 +51,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 	BufferSet & set = primitiveList.AddBufferSet();
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
 
 	std::vector< Index32 > indices( indexCount );
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
@@ -71,11 +73,11 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 	
-	unify::V3< float > pos;
-	unify::V3< float > norm;
+	V3< float > pos;
+	V3< float > norm;
 	float rad = 0;
 	float radChange = PI2 / segments;
-	unify::TexCoords cChange;
+	TexCoords cChange;
 	cChange.u = (texArea.dr.u - texArea.ul.u) / segments;
 
 	// Sides...
@@ -88,7 +90,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 		norm.Normalize();
 		WriteVertex( *vd, lock, (s * 2) + 0, positionE, pos + center );
 		WriteVertex( *vd, lock, (s * 2) + 0, normalE, norm );
-		WriteVertex( *vd, lock, (s * 2) + 0, texE, unify::TexCoords( cChange.u * s, texArea.dr.v ) );
+		WriteVertex( *vd, lock, (s * 2) + 0, texE, TexCoords( cChange.u * s, texArea.dr.v ) );
 		WriteVertex( *vd, lock, (s * 2) + 0, diffuseE, diffuse );
 		WriteVertex( *vd, lock, (s * 2) + 0, specularE, specular );
 		vbParameters.bbox += pos + center;
@@ -98,7 +100,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 		norm.Normalize();
 		WriteVertex( *vd, lock, (s * 2) + 1, positionE, pos + center );
 		WriteVertex( *vd, lock, (s * 2) + 1, normalE, norm );
-		WriteVertex( *vd, lock, (s * 2) + 1, texE, unify::TexCoords( cChange.u * s, texArea.ul.v ) );
+		WriteVertex( *vd, lock, (s * 2) + 1, texE, TexCoords( cChange.u * s, texArea.ul.v ) );
 		WriteVertex( *vd, lock, (s * 2) + 1, diffuseE, diffuse );
 		WriteVertex( *vd, lock, (s * 2) + 1, specularE, specular );
 		vbParameters.bbox += pos + center;
@@ -110,7 +112,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 			norm.Normalize();
 			WriteVertex( *vd, lock, (segments * 2 + 2) + s, positionE, pos + center );
 			WriteVertex( *vd, lock, (segments * 2 + 2) + s, normalE, norm );
-			WriteVertex( *vd, lock, (segments * 2 + 2) + s, texE, unify::TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
+			WriteVertex( *vd, lock, (segments * 2 + 2) + s, texE, TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
 			WriteVertex( *vd, lock, (segments * 2 + 2) + s, diffuseE, diffuse );
 			WriteVertex( *vd, lock, (segments * 2 + 2) + s, specularE, specular );
 			vbParameters.bbox += pos + center;
@@ -120,7 +122,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 			norm.Normalize();
 			WriteVertex( *vd, lock, (segments * 2 + 2) + (segments + 2) + s, positionE, pos + center );
 			WriteVertex( *vd, lock, (segments * 2 + 2) + (segments + 2) + s, normalE, norm );
-			WriteVertex( *vd, lock, (segments * 2 + 2) + (segments + 2) + s, texE, unify::TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
+			WriteVertex( *vd, lock, (segments * 2 + 2) + (segments + 2) + s, texE, TexCoords( 0.5f + (float)(sin( rad ) * 0.5f), 0.5f + (float)(cos( rad ) * -0.5f) ) );
 			WriteVertex( *vd, lock, (segments * 2 + 2) + (segments + 2) + s, diffuseE, diffuse );
 			WriteVertex( *vd, lock, (segments * 2 + 2) + (segments + 2) + s, specularE, specular );
 			vbParameters.bbox += pos + center;
@@ -146,7 +148,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 		norm.Normalize();
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, positionE, pos + center );
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, normalE, norm );
-		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, texE, unify::TexCoords( 0.5f, 0.5f ) );
+		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, texE, TexCoords( 0.5f, 0.5f ) );
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, diffuseE, diffuse );
 		WriteVertex( *vd, lock, segments * 2 + 2 + segments + 1, specularE, specular );
 		vbParameters.bbox += pos + center;
@@ -156,7 +158,7 @@ void sg::CreateShape_Cylinder( IRenderer * renderer, PrimitiveList & primitiveLi
 		norm.Normalize();
 		WriteVertex( *vd, lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, positionE, pos + center );
 		WriteVertex( *vd, lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, normalE, norm );
-		WriteVertex( *vd, lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, texE, unify::TexCoords( 0.5f, 0.5f ) );
+		WriteVertex( *vd, lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, texE, TexCoords( 0.5f, 0.5f ) );
 		WriteVertex( *vd, lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, diffuseE, diffuse );
 		WriteVertex( *vd, lock, segments * 2 + 2 + ((segments + 1) * 2) + 1, specularE, specular );
 		vbParameters.bbox += pos + center;

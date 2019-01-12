@@ -21,14 +21,16 @@ const std::string DefaultBufferUsage = "Default";
 
 void sg::CreateShape_DashRing( IRenderer * renderer, PrimitiveList & primitiveList, unify::Parameters & parameters )
 {
+	using namespace unify;
+
 	float radiusOuter = parameters.Get( "majorradius", 1.0f );
 	float radiusInner = parameters.Get( "minorradius", 0.9f );
 	unsigned int count = parameters.Get< unsigned int >( "count", 12 );	// Number of dashes
 	float fSize = parameters.Get( "size1", 0.5f );	// Unit size of visible part of dash (0.0 to 1.0)
 	float definition = parameters.Get( "definition", 4.0f );		// Definition of each dash
-	unify::Color diffuse = parameters.Get( "diffuse", unify::ColorWhite() );
-	unify::Color specular = parameters.Get( "specular", unify::ColorWhite() );
-	unify::V3< float > center = parameters.Get( "center", unify::V3< float >( 0, 0, 0 ) );
+	Color diffuse = parameters.Get( "diffuse", ColorWhite() );
+	Color specular = parameters.Get( "specular", ColorWhite() );
+	V3< float > center = parameters.Get( "center", V3< float >( 0, 0, 0 ) );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
 	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
@@ -47,7 +49,7 @@ void sg::CreateShape_DashRing( IRenderer * renderer, PrimitiveList & primitiveLi
 	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * totalVertices];
-	unify::DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, false, 0 );
+	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, DataLock::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	unsigned short stream = 0;
@@ -58,14 +60,13 @@ void sg::CreateShape_DashRing( IRenderer * renderer, PrimitiveList & primitiveLi
 	VertexElement specularE = CommonVertexElement::Specular( stream );
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
-	class V
+	struct V
 	{
-	public:
-		unify::V3< float > pos;
-		unify::V3< float > normal;
-		unify::Color diffuse;
-		unify::Color specular;
-		unify::TexCoords coords;
+		V3< float > pos;
+		V3< float > normal;
+		Color diffuse;
+		Color specular;
+		TexCoords coords;
 	};
 	qjson::Object jsonFormat;
 	jsonFormat.Add( { "Position", "Float3" } );

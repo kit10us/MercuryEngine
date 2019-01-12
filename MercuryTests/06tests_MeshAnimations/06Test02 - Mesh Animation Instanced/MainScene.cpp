@@ -29,7 +29,7 @@ void MainScene::OnStart()
 	{
 		float x, y, z;
 		unify::Color diffuse;
-		float m0, m1, m2, m3; // Influences
+		float matrix_inlfuence[4];
 	};
 
 	size_t segments = 30;
@@ -81,18 +81,31 @@ void MainScene::OnStart()
 		float y = -10 + 20.0f * ((float)i / (segments) );
 		unsigned char color = (unsigned char )(255.0f * ((float)i / (segments) ));
 		
-		MatrixInfluence infl0( 0, 1.0f );
-		MatrixInfluence infl1( 1, (float)i / (segments) );
-		MatrixInfluence infl2( 2, 0.0f );
+		MatrixInfluence matrix_influence [] {
+			{ 0, 1.0f },
+			{ 1, (float)i / (segments) },
+			{ 2, 0.0f }
+		};
 
-		float result_infl0 = infl0.Result();
-		float result_infl1 = infl1.Result();
-		float result_infl2 = infl2.Result();
+		float result_influence [] =
+		{
+			matrix_influence[0].Result(),
+			matrix_influence[1].Result(),
+			matrix_influence[2].Result()
+		};
 
-  		vbRaw[ i * 4 + 0 ] = { -x,  y, -z, unify::ColorRed( color ),		result_infl0, result_infl1, result_infl2, 0 };
-		vbRaw[ i * 4 + 1 ] = {  x,  y, -z, unify::ColorGreen( color ),	result_infl0, result_infl1, result_infl2, 0 };
-		vbRaw[ i * 4 + 2 ] = {  x,  y, z, unify::ColorBlue( color ),		result_infl0, result_infl1, result_infl2, 0 };
-		vbRaw[ i * 4 + 3 ] = { -x,  y, z, unify::ColorWhite( color ),	result_infl0, result_infl1, result_infl2, 0 };
+  		vbRaw[ i * 4 + 0 ] = { 
+			-x,  y, -z, unify::ColorRed( color ),
+			result_influence[0], result_influence[1], result_influence[2], 0 };
+		vbRaw[ i * 4 + 1 ] = {  
+			x,  y, -z, unify::ColorGreen( color ),
+			result_influence[0], result_influence[1], result_influence[2], 0 };
+		vbRaw[ i * 4 + 2 ] = {  
+			x,  y, z, unify::ColorBlue( color ),
+			result_influence[0], result_influence[1], result_influence[2], 0 };
+		vbRaw[ i * 4 + 3 ] = { 
+			-x,  y, z, unify::ColorWhite( color ),
+			result_influence[0], result_influence[1], result_influence[2], 0 };
 	};
 
 	size_t index = 0;
@@ -130,6 +143,15 @@ void MainScene::OnStart()
 	m_animation->AddRotationKey( 0, RotationKey( 0.5f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
 	m_animation->AddRotationKey( 0, RotationKey( 0.75f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( -180 ) ) ) );
 	m_animation->AddRotationKey( 0, RotationKey( 1.0f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
+
+	// Create bones texture...
+	{
+		me::render::TextureParameters parameters;
+		parameters.lockable = true;
+		parameters.renderable = false;
+		parameters.size = unify::Size< unsigned int >( 512, 512 );
+		m_bones = GetOS()->GetRenderer(0)->ProduceT( parameters );
+	}
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
@@ -157,44 +179,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( scene::RenderGirl renderGirl )
 {
-	// Per-mesh instance constants.
-	class Source : public render::IMatrixSource
-	{
-	private:
-		unify::FrameLite m_frame;
-		unify::Matrix m_matrix;
-	public:
-		Source( unify::FrameLite frame, unify::Matrix matrix )
-			: m_frame{ frame }
-			, m_matrix{ matrix }
-		{
-		}
-
-		size_t Count() const
-		{
-			return 2;
-		}
-
-		unify::Matrix GetMatrix( size_t i ) const
-		{
-			switch ( i )
-			{
-			case 0:
-				//return m_frame.GetMatrix();
-			case 1:
-				//return m_matrix;
-			default:
-				return unify::MatrixIdentity();
-			}
-		}
-
-		void CopyMatrices( unify::Matrix * matrices ) const
-		{
-			matrices[0] = m_frame.GetMatrix();
-			matrices[1] = m_matrix;
-		}
-	};
-
 	// Apply animation...
 	static float progress = 0.0f;
 	unify::FrameSet frameSet;
@@ -210,42 +194,21 @@ void MainScene::OnRender( scene::RenderGirl renderGirl )
 	render::Params params = *renderGirl.GetParams();
 	progress += params.GetDelta().GetSeconds();
 
-	Source sorces_source[] = {
-		//{ { m_q, unify::V3< float >( -10, 0, 0 ) }, unify::MatrixIdentity() /*frameSetInstance1.Local(0)*/ }, 
-		//{ { m_q, unify::V3< float >( 10, 0, 0 ) }, unify::MatrixIdentity() /*frameSetInstance2.Local(0)*/ } 
-		Source{ unify::MatrixTranslate( { 0, 0, 0 } ), unify::MatrixTranslate( { -10, 0, 0 } ) },
-		Source{ unify::MatrixTranslate( { 0, 0, 0 } ), unify::MatrixTranslate( { 10, 0, 0 } ) }
+	unify::Matrix matrices[] =
+	{
+		// First object.
+		unify::MatrixTranslate( { -10, 0, 0 } ), frameSetInstance1.Local( 0 ),
+		
+		// Second object.
+		unify::MatrixTranslate( { 10, 0, 0 } ), frameSetInstance2.Local( 0 )
 	};
 
-	std::vector< render::IMatrixSource * > sources{ &sorces_source[0], &sorces_source[1] };
-
-	/*
-	{
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
-
-	unify::Matrix instance{ Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-	params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
-	}
-	{
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
-
-	unify::Matrix instance{ Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-	params.renderer->Render( method, params.renderInfo, render::MatrixFeed( { &instance, 1 }, 1 ) );
-	}
-	*/
-
-	std::vector< const unify::FrameLite * > frames;
-	unify::FrameLite frame( m_q, unify::V3< float >( 0, 0, 0 ) );
-	frames.push_back( &frame );
-	m_mesh->Render( params, nullptr, render::MatrixFeed( render::MatrixFood_Frames{ &frames[0], frames.size() }, 1 ) );
-
-
-	/*
-	m_mesh->Render( 
-		params, nullptr, render::MatrixFeed( 
-			{ &sources[0], sources.size() }, // food (starting chunk)
-			sources[0]->Count() // stride (from chunk to chunk)
-		) 
+	m_mesh->Render( params, nullptr,
+		render::MatrixFeed(
+			render::MatrixFood_Matrices{ matrices, 4 },
+			2
+		)
 	);
-	*/
+
+
 }
