@@ -42,10 +42,14 @@ namespace me
 		{
 		public:
 			typedef std::shared_ptr< IBuffer > ptr;
+
 			virtual ~IBuffer() {}
 			//virtual void Create( BufferParameters parameters ) = 0;
 			virtual void Destroy() = 0;
-			virtual void Use() const = 0;
+
+			virtual size_t GetBufferCount() const = 0;
+
+			virtual void Use( size_t startBuffer = 0, size_t startSlot = 0 ) const = 0;
 
 			virtual void Lock( size_t bufferIndex, unify::DataLock & lock ) = 0;
 			virtual void LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const = 0;

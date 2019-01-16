@@ -54,7 +54,7 @@ void sg::CreateShape_Sphere( IRenderer * renderer, PrimitiveList & primitiveList
 		set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-		DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
+		DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
 
 		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 
@@ -166,7 +166,7 @@ void sg::CreateShape_Sphere( IRenderer * renderer, PrimitiveList & primitiveList
 		TexCoords coords;
 
 		// Set the vertices...
-		DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
+		DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
 
 		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 

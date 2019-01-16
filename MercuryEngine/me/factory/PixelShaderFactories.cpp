@@ -37,7 +37,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 		}
 		else if ( node.IsTagName( "constants" ) )
 		{
-			parameters.constants.reset( new shader::ConstantBuffer( &node ) );
+			parameters.constantBufferParameters.constantTable.reset( new render::ConstantTable( &node ) );
 		}
 		else if( node.IsTagName( "blend" ) )
 		{

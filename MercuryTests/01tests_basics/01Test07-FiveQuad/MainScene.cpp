@@ -61,7 +61,7 @@ void MainScene::OnStart()
 		auto programmaticTexture = GetOS()->GetRenderer( 0 )->ProduceT( parameters );
 		
 		TextureLock lock;
-		programmaticTexture->LockRect( 0, lock, 0, false );
+		programmaticTexture->LockRect( 0, lock, 0, unify::DataLockAccess::ReadWrite );
 
 		unify::ColorUnit * colorBuffer = reinterpret_cast< unify::ColorUnit * >(lock.pBits);
 		for( unsigned int y = 0; y < lock.uHeight; y++ )
@@ -99,7 +99,7 @@ void MainScene::OnStart()
 		std::shared_ptr< unsigned char > vertices( new unsigned char[ sizeOfBufferInBytes ] );
 
 		// Lock buffer for writing.
-		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLock::ReadWrite, 0 );
+		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 
 		// Vertex elements allow us to write to vertices.

@@ -9,9 +9,6 @@ namespace me
 {
 	namespace render
 	{
-		class IVertexShader;
-		class VertexDeclaration;
-
 		class IVertexConstruct
 		{
 		public:

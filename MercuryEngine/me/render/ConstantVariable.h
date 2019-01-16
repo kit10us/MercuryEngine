@@ -9,7 +9,7 @@
 
 namespace me
 {
-	namespace shader
+	namespace render
 	{
 		struct ConstantVariable
 		{

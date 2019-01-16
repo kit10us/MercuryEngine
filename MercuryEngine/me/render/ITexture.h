@@ -8,11 +8,12 @@
 #include <me/render/Filtering.h>
 #include <me/render/SpriteDictionary.h>
 #include <me/render/Format.h>
-#include <rm/IResource.h>
 #include <qxml/Element.h>
+#include <rm/IResource.h>
 #include <unify/Path.h>
 #include <unify/Size.h>
 #include <unify/Rect.h>
+#include <unify/DataLock.h>
 #include <memory>
 
 namespace me 
@@ -38,7 +39,6 @@ namespace me
 			Filtering::TYPE mip;
 		};
 
-
 		class ITexture : public rm::IResource
 		{
 		public:
@@ -46,20 +46,44 @@ namespace me
 
 			virtual ~ITexture() {}
 
+			/// <summary>
+			/// Get the size of the texture's image.
+			/// </summary>
 			virtual const unify::Size< unsigned int > & ImageSize() const = 0;
 
+			/// <summary>
+			/// Returns true if the texture can be used to rendered.
+			/// </summary>
 			virtual bool GetRenderable() const = 0;
 
+			/// <summary>
+			/// Returns true if the texture can be used to rendered.
+			/// </summary>
 			virtual bool GetLockable() const = 0;
 
-			virtual void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, bool readonly ) = 0;
+			/// <summary>
+			/// Lock a rectangle.
+			/// </summary>
+			virtual void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unify::DataLockAccess::TYPE access ) = 0;
 
+			/// <summary>
+			/// Unlock a rectangle.
+			/// </summary>
 			virtual void UnlockRect( unsigned int level ) = 0;
 
+			/// <summary>
+			/// Get the Sprite Dictionary, used to track image fragments/sprites/fonts.
+			/// <summary>
 			virtual SpriteDictionary & GetSpriteDictionary() = 0;
 
+			/// <summary>
+			/// Get the Sprite Dictionary, used to track image fragments/sprites/fonts.
+			/// <summary>
 			virtual const SpriteDictionary & GetSpriteDictionary() const = 0;
 
+			/// <summary>
+			/// Get the parameters used for creation.
+			/// </summary>
 			virtual const TextureParameters * GetParameters() const = 0;
 		};
 	}

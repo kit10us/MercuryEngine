@@ -58,7 +58,7 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	const unsigned int totalTriangles = facesPerSide * numberOfSides;
 
 	char * verticesFinal = new char[totalVertices * vd->GetSizeInBytes( 0 )];
-	DataLock lock( verticesFinal, vd->GetSizeInBytes( 0 ), totalVertices, DataLock::ReadWrite, 0 );
+	DataLock lock( verticesFinal, vd->GetSizeInBytes( 0 ), totalVertices, DataLockAccess::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { totalVertices, verticesFinal } }, bufferUsage };
 
 	unsigned short stream = 0;

@@ -3,13 +3,9 @@
 
 #pragma once
 
-#include <me/shader/ConstantBuffer.h>
+#include <me/render/IShader.h>
 #include <me/render/VertexDeclaration.h>
-#include <me/Mercury.h>
-#include <rm/IResource.h>
 #include <unify/Path.h>
-#include <unify/DataLock.h>
-#include <vector>
 #include <memory>
 
 namespace me 
@@ -27,26 +23,27 @@ namespace me
 			std::string code;
 			std::string entryPointName;
 			std::string profile;
-			shader::ConstantBuffer::ptr constants;
+			render::ConstantBufferParameters constantBufferParameters;
 			VertexDeclaration::ptr vertexDeclaration;
 			bool trans;
 		};
 
-		class IVertexShader : public rm::IResource
+		class IVertexShader : public render::IShader
 		{
 		public:
 			typedef std::shared_ptr< IVertexShader > ptr;
 
 			virtual ~IVertexShader() {}
+			
+			/// <summary>
+			/// Set our vertex declaration.
+			/// </summary>
+			virtual void SetVertexDeclaration( me::render::VertexDeclaration::ptr vertexDeclaration ) = 0;
 
-			virtual const shader::ConstantBuffer * GetConstants() const = 0;
-			virtual void LockConstants( size_t buffer, unify::DataLock & lock ) = 0;
-			virtual void UnlockConstants( size_t buffer, unify::DataLock & lock ) = 0;
+			/// <summary>
+			/// Get our pixel description.
+			/// </summary>
 			virtual VertexDeclaration::ptr GetVertexDeclaration() const = 0;
-			virtual const void * GetBytecode() const = 0;
-			virtual size_t GetBytecodeLength() const = 0;
-			virtual void Use() = 0;
-			virtual bool IsTrans() const = 0;
 		};
 	}
 }

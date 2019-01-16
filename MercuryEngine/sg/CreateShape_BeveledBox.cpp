@@ -63,7 +63,7 @@ void sg::CreateShape_BeveledBox( IRenderer * renderer, PrimitiveList & primitive
 
 	// Set the vertices from the TEMP vertices...
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLock::ReadWrite, 0 );
+	unify::DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 

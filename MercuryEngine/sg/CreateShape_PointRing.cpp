@@ -43,7 +43,7 @@ void sg::CreateShape_PointRing( IRenderer * renderer, PrimitiveList & primitiveL
 	V3< float > norm;
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * count];
-	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, DataLock::ReadWrite, 0 );
+	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, DataLockAccess::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 	unsigned short stream = 0;
 

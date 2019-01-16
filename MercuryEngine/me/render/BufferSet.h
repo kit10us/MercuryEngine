@@ -26,13 +26,15 @@ namespace me
 
 			BufferSet( const BufferSet & ) = delete;
 
-			IVertexBuffer::ptr BufferSet::AddVertexBuffer( VertexBufferParameters parameters );
-			IVertexBuffer::ptr BufferSet::GetVertexBuffer();
-			const IVertexBuffer::ptr BufferSet::GetVertexBuffer() const;
+			IVertexBuffer::ptr AddVertexBuffer( VertexBufferParameters parameters );
 
-			IIndexBuffer::ptr BufferSet::AddIndexBuffer( IndexBufferParameters parameters );
-			IIndexBuffer::ptr BufferSet::GetIndexBuffer();
-			const IIndexBuffer::ptr BufferSet::GetIndexBuffer() const;
+			size_t GetVertexBufferCount() const;
+			IVertexBuffer::ptr GetVertexBuffer( size_t index );
+			const IVertexBuffer::ptr GetVertexBuffer( size_t index ) const;
+
+			IIndexBuffer::ptr AddIndexBuffer( IndexBufferParameters parameters );
+			IIndexBuffer::ptr GetIndexBuffer();
+			const IIndexBuffer::ptr GetIndexBuffer() const;
 
 			void AddMethod( RenderMethod & method );
 			std::vector< RenderMethod > & GetRenderMethodBuffer();
@@ -49,7 +51,7 @@ namespace me
 		private:
 			IRenderer * m_renderer;
 			bool m_enabled;
-			IVertexBuffer::ptr m_VB;
+			std::vector< IVertexBuffer::ptr > m_vertexBuffers;
 			IIndexBuffer::ptr m_IB;
 			std::vector< RenderMethod > m_RB;
 		};

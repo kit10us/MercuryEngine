@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/render/Display.h>
+#include <me/render/IConstantBuffer.h>
 #include <me/render/IVertexBuffer.h>
 #include <me/render/IIndexBuffer.h>
 #include <me/render/IVertexShader.h>
@@ -29,9 +30,6 @@ namespace me
 
 	namespace render
 	{
-		class VertexDeclaration;
-		class IRenderer;
-
 		class IRendererFactory
 		{
 		public:
@@ -39,7 +37,7 @@ namespace me
 
 			virtual ~IRendererFactory() {}
 
-			virtual IRenderer * Produce( me::os::IOS * os, me::render::Display display, size_t index ) = 0;
+			virtual class IRenderer * Produce( me::os::IOS * os, me::render::Display display, size_t index ) = 0;
 		};
 
 		/// <summary>
@@ -85,12 +83,41 @@ namespace me
 			virtual void* GetHandle() const = 0;
 
 			virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) = 0;
+			virtual void RenderInstances( const RenderMethod & method, const RenderInfo & renderInfo, size_t instances ) = 0;
 
+			/// <summary>
+			/// Create a constant buffer.
+			/// </summary>
+			virtual IConstantBuffer::ptr ProduceConstantBuffer( ConstantBufferParameters parameters ) = 0;
+
+			/// <summary>
+			/// Create a vertex buffer.
+			/// </summary>
 			virtual IVertexBuffer::ptr ProduceVB( VertexBufferParameters parameters ) = 0;
+			
+			/// <summary>
+			/// Create an index buffer.
+			/// </summary>
 			virtual IIndexBuffer::ptr ProduceIB( IndexBufferParameters parameters ) = 0;
+
+			/// <summary>
+			/// Create a vertex shader.
+			/// </summary>
 			virtual IVertexShader::ptr ProduceVS( VertexShaderParameters parameters ) = 0;
+
+			/// <summary>
+			/// Create a pixel shader.
+			/// </summary>
 			virtual IPixelShader::ptr ProducePS( PixelShaderParameters parameters ) = 0;
-			virtual IVertexConstruct::ptr ProduceVC( const VertexDeclaration & vd, const IVertexShader & vs ) = 0;
+
+			/// <summary>
+			/// Create a vertex construct.
+			/// </summary>
+			virtual IVertexConstruct::ptr ProduceVC( const me::render::VertexDeclaration & vd, const IVertexShader & vs ) = 0;
+
+			/// <summary>
+			/// Create a texture.
+			/// </summary>
 			virtual ITexture::ptr ProduceT( TextureParameters parameters ) = 0;
 
 			virtual void UseTextures( std::vector< ITexture::ptr > textures ) = 0;

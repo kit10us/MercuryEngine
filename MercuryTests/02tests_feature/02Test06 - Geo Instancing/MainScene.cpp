@@ -89,8 +89,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	static Angle rotation( AngleInRadians( 0.0f ) );
 	static int axisIndex = 0;
 
-	HRESULT result = S_OK;
-
 	const float width = GetOS()->GetRenderer(0)->GetViewport().GetSize().width;
 	const float height = GetOS()->GetRenderer( 0 )->GetViewport().GetSize().height;
 

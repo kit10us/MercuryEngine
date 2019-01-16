@@ -46,21 +46,27 @@ int Texture_Constructor( lua_State * state )
 
 			if( top >= 3 )
 			{
-				bool renderable = true;
+				TextureParameters parameters;
+				parameters.lockable = true;
 				if( top >= 3 )
 				{
-					renderable = lua_toboolean( state, 3 ) ? true : false;
+					parameters.lockable = lua_toboolean( state, 3 ) ? true : false;
 				}
-
+				
+				parameters.renderable = true;
 				bool readable = true;
 				if( top >= 4 )
 				{
-					readable = lua_toboolean( state, 4 ) ? true : false;
+					parameters.renderable = lua_toboolean( state, 4 ) ? true : false;
 				}
 
-				TextureParameters parameters;
-				parameters.lockable = readable;
-				parameters.renderable = renderable;
+				parameters.format = render::Format::R32G32B32A32_Float;
+				if( top >= 4 )
+				{
+					parameters.format = render::Format::FromString( lua_tostring( state, 5 ) );
+				}
+
+
 				parameters.source = source;
 
 				texture = gameInstance->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );

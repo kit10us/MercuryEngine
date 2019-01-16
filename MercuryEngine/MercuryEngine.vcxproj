@@ -130,8 +130,11 @@
     <ClInclude Include="me\phy\PhySceneComponent.h" />
     <ClInclude Include="me\render\Billboard.h" />
     <ClInclude Include="me\render\Blend.h" />
+    <ClInclude Include="me\render\BufferBinding.h" />
     <ClInclude Include="me\render\BufferSet.h" />
     <ClInclude Include="me\render\BufferUsage.h" />
+    <ClInclude Include="me\render\ConstantTable.h" />
+    <ClInclude Include="me\render\ConstantVariable.h" />
     <ClInclude Include="me\render\Display.h" />
     <ClInclude Include="me\render\Effect.h" />
     <ClInclude Include="me\render\ElementFormat.h" />
@@ -144,10 +147,12 @@
     <ClInclude Include="me\render\GeometryInstanceData.h" />
     <ClInclude Include="me\render\IBuffer.h" />
     <ClInclude Include="me\render\IConstantBuffer.h" />
+    <ClInclude Include="me\render\IDataBuffer.h" />
     <ClInclude Include="me\render\IIndexBuffer.h" />
     <ClInclude Include="me\render\IndexLock.h" />
     <ClInclude Include="me\render\IPixelShader.h" />
     <ClInclude Include="me\render\IRenderer.h" />
+    <ClInclude Include="me\render\IShader.h" />
     <ClInclude Include="me\render\ITexture.h" />
     <ClInclude Include="me\render\IVertexBuffer.h" />
     <ClInclude Include="me\render\IVertexConstruct.h" />
@@ -161,6 +166,7 @@
     <ClInclude Include="me\render\RenderInfo.h" />
     <ClInclude Include="me\render\RenderMethod.h" />
     <ClInclude Include="me\render\RenderParams.h" />
+    <ClInclude Include="me\render\ResourceType.h" />
     <ClInclude Include="me\render\Skeleton.h" />
     <ClInclude Include="me\render\SpriteDictionary.h" />
     <ClInclude Include="me\render\Terra.h" />
@@ -193,8 +199,6 @@
     <ClInclude Include="me\script\IScript.h" />
     <ClInclude Include="me\setup\SetupScript.h" />
     <ClInclude Include="me\setup\SetupScriptFactory.h" />
-    <ClInclude Include="me\shader\ConstantBuffer.h" />
-    <ClInclude Include="me\shader\ConstantVariable.h" />
     <ClInclude Include="me\UpdateParams.h" />
     <ClInclude Include="me\XMLConvert.h" />
     <ClInclude Include="sculpter\exception\SculpterFailedToCreate.h" />
@@ -315,8 +319,11 @@
     <ClCompile Include="me\phy\PhySceneComponent.cpp" />
     <ClCompile Include="me\render\Billboard.cpp" />
     <ClCompile Include="me\render\Blend.cpp" />
+    <ClCompile Include="me\render\BufferBinding.cpp" />
     <ClCompile Include="me\render\BufferSet.cpp" />
     <ClCompile Include="me\render\BufferUsage.cpp" />
+    <ClCompile Include="me\render\ConstantTable.cpp" />
+    <ClCompile Include="me\render\ConstantVariable.cpp" />
     <ClCompile Include="me\render\Display.cpp" />
     <ClCompile Include="me\render\Effect.cpp" />
     <ClCompile Include="me\render\ElementFormat.cpp" />
@@ -336,6 +343,7 @@
     <ClCompile Include="me\render\PrimitiveList.cpp" />
     <ClCompile Include="me\render\RenderInfo.cpp" />
     <ClCompile Include="me\render\RenderMethod.cpp" />
+    <ClCompile Include="me\render\ResourceType.cpp" />
     <ClCompile Include="me\render\Skeleton.cpp" />
     <ClCompile Include="me\render\SpriteDictionary.cpp" />
     <ClCompile Include="me\render\Terra.cpp" />
@@ -361,8 +369,6 @@
     <ClCompile Include="me\script\IScript.cpp" />
     <ClCompile Include="me\setup\SetupScript.cpp" />
     <ClCompile Include="me\setup\SetupScriptFactory.cpp" />
-    <ClCompile Include="me\shader\ConstantBuffer.cpp" />
-    <ClCompile Include="me\shader\ConstantVariable.cpp" />
     <ClCompile Include="me\XMLConvert.cpp" />
     <ClCompile Include="sculpter\Point.cpp" />
     <ClCompile Include="sculpter\PointTable.cpp" />

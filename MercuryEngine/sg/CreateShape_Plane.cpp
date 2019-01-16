@@ -64,7 +64,7 @@ void sg::CreateShape_Plane( IRenderer * renderer, PrimitiveList & primitiveList,
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
+	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 

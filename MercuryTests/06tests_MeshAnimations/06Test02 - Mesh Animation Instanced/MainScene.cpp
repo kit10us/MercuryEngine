@@ -13,6 +13,7 @@ MainScene::MainScene( me::game::Game * gameInstance )
 void MainScene::OnStart()
 {
 	using namespace render;
+	using namespace unify;
 
 	// Load resources...
 	AddResources( unify::Path{ "resources/MeshAnimation.xml" } );
@@ -24,6 +25,8 @@ void MainScene::OnStart()
 
 	// Create mesh...
 	m_mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );
+
+	auto & bs = m_mesh->GetPrimitiveList().AddBufferSet();
 
 	struct Vertex
 	{
@@ -73,89 +76,84 @@ void MainScene::OnStart()
 			return m_index + influence;
 		}
 	};
-
-	for( size_t i = 0; i < segments + 1; ++i )
+	
 	{
-		float x = 1.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
-		float z = 1.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
-		float y = -10 + 20.0f * ((float)i / (segments) );
-		unsigned char color = (unsigned char )(255.0f * ((float)i / (segments) ));
-		
-		MatrixInfluence matrix_influence [] {
-			{ 0, 1.0f },
-			{ 1, (float)i / (segments) },
-			{ 2, 0.0f }
-		};
-
-		float result_influence [] =
+		for( size_t i = 0; i < segments + 1; ++i )
 		{
-			matrix_influence[0].Result(),
-			matrix_influence[1].Result(),
-			matrix_influence[2].Result()
+			float x = 1.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
+			float z = 1.5f * sin(((float)(segments - i) / (segments) ) * 3.14159f * 0.5f);
+			float y = -10 + 20.0f * ((float)i / (segments) );
+			unsigned char color = (unsigned char )(255.0f * ((float)i / (segments) ));
+		
+			MatrixInfluence matrix_influence [] {
+				{ 0, 1.0f },
+				{ 1, (float)i / (segments) },
+				{ 2, 0.0f }
+			};
+
+			float result_influence [] =
+			{
+				matrix_influence[0].Result(),
+				matrix_influence[1].Result(),
+				matrix_influence[2].Result()
+			};
+
+  			vbRaw[ i * 4 + 0 ] = { 
+				-x,  y, -z, unify::ColorRed( color ),
+				result_influence[0], result_influence[1], result_influence[2], 0 };
+			vbRaw[ i * 4 + 1 ] = {  
+				x,  y, -z, unify::ColorGreen( color ),
+				result_influence[0], result_influence[1], result_influence[2], 0 };
+			vbRaw[ i * 4 + 2 ] = {  
+				x,  y, z, unify::ColorBlue( color ),
+				result_influence[0], result_influence[1], result_influence[2], 0 };
+			vbRaw[ i * 4 + 3 ] = { 
+				-x,  y, z, unify::ColorWhite( color ),
+				result_influence[0], result_influence[1], result_influence[2], 0 };
 		};
 
-  		vbRaw[ i * 4 + 0 ] = { 
-			-x,  y, -z, unify::ColorRed( color ),
-			result_influence[0], result_influence[1], result_influence[2], 0 };
-		vbRaw[ i * 4 + 1 ] = {  
-			x,  y, -z, unify::ColorGreen( color ),
-			result_influence[0], result_influence[1], result_influence[2], 0 };
-		vbRaw[ i * 4 + 2 ] = {  
-			x,  y, z, unify::ColorBlue( color ),
-			result_influence[0], result_influence[1], result_influence[2], 0 };
-		vbRaw[ i * 4 + 3 ] = { 
-			-x,  y, z, unify::ColorWhite( color ),
-			result_influence[0], result_influence[1], result_influence[2], 0 };
-	};
+		size_t index = 0;
+		for(  size_t i = 0; i < segments; ++i )
+		{
+			unsigned int base = i * 4;
+			auto AddTriangle = [&] ( auto a, auto b, auto c ) { 
+				ibRaw[ index++ ] = base + a;
+				ibRaw[ index++ ] = base + b;
+				ibRaw[ index++ ] = base + c;
+ 			};
 
-	size_t index = 0;
-	for(  size_t i = 0; i < segments; ++i )
-	{
-		unsigned int base = i * 4;
-		auto AddTriangle = [&] ( auto a, auto b, auto c ) { 
-			ibRaw[ index++ ] = base + a;
-			ibRaw[ index++ ] = base + b;
-			ibRaw[ index++ ] = base + c;
- 		};
+			AddTriangle( 0, 4, 1 );
+			AddTriangle( 4, 5, 1 );
 
-		AddTriangle( 0, 4, 1 );
-		AddTriangle( 4, 5, 1 );
+			AddTriangle( 1, 5, 2 );
+			AddTriangle( 5, 6, 2 );
 
-		AddTriangle( 1, 5, 2 );
-		AddTriangle( 5, 6, 2 );
+			AddTriangle( 2, 6, 3 );
+			AddTriangle( 6, 7, 3 );
 
-		AddTriangle( 2, 6, 3 );
-		AddTriangle( 6, 7, 3 );
+			AddTriangle( 3, 7, 0 );
+			AddTriangle( 7, 4, 0 );
+		}
 
-		AddTriangle( 3, 7, 0 );
-		AddTriangle( 7, 4, 0 );
+		bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 	}
 
-	auto & bs = m_mesh->GetPrimitiveList().AddBufferSet();
-	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 	bs.AddIndexBuffer( { { { numberOfIndices, &ibRaw[0] } } } );
 	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, effect ) );
 
 	// Create animation...
 	using namespace frameanimation;		
 	m_animation.reset( new Animation( "test", 1.0f ) );
-	m_animation->AddRotationKey( 0, RotationKey( 0.25f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 180 ) ) ) );
-	m_animation->AddRotationKey( 0, RotationKey( 0.5f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
-	m_animation->AddRotationKey( 0, RotationKey( 0.75f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( -180 ) ) ) );
-	m_animation->AddRotationKey( 0, RotationKey( 1.0f, unify::Quaternion( unify::V3< float >( 0, 0, 1 ), unify::AngleInDegrees( 0 ) ) ) );
-
-	// Create bones texture...
-	{
-		me::render::TextureParameters parameters;
-		parameters.lockable = true;
-		parameters.renderable = false;
-		parameters.size = unify::Size< unsigned int >( 512, 512 );
-		m_bones = GetOS()->GetRenderer(0)->ProduceT( parameters );
-	}
+	m_animation->AddRotationKey( 0, RotationKey( 0.25f, unify::Quaternion( V3< float >( 0, 0, 1 ), AngleInDegrees( 180 ) ) ) );
+	m_animation->AddRotationKey( 0, RotationKey( 0.5f, unify::Quaternion( V3< float >( 0, 0, 1 ), AngleInDegrees( 0 ) ) ) );
+	m_animation->AddRotationKey( 0, RotationKey( 0.75f, unify::Quaternion( V3< float >( 0, 0, 1 ), AngleInDegrees( -180 ) ) ) );
+	m_animation->AddRotationKey( 0, RotationKey( 1.0f, unify::Quaternion( V3< float >( 0, 0, 1 ), AngleInDegrees( 0 ) ) ) );
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
+	using namespace unify;
+
 	static unify::Angle rotation( unify::AngleInRadians( 0.0f ) );
 	static int axisIndex = 1;
 
@@ -164,28 +162,30 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 	rotation += unify::AngleInDegrees( params.GetDelta().GetSeconds() * 90.0f );
 
-	unify::V3< float > eye( 0.0f, 1.0f, -50.0f );
-	unify::V3< float > at( 0.0f, 0.0f, 0.0f );
-	unify::V3< float > up( 0.0f, 1.0f, 0.0f );
+	V3< float > eye( 0.0f, 1.0f, -50.0f );
+	V3< float > at( 0.0f, 0.0f, 0.0f );
+	V3< float > up( 0.0f, 1.0f, 0.0f );
 
-	unify::V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
+	V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 	
-	m_q = unify::Quaternion( axis, rotation );
-	m_q = unify::QuaternionIdentity();
+	m_q = Quaternion( axis, rotation );
+	m_q = QuaternionIdentity();
 	
-	params.renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
-	params.renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
+	params.renderInfo.SetViewMatrix( MatrixLookAtLH( eye, at, up ) );
+	params.renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
 }
 
 void MainScene::OnRender( scene::RenderGirl renderGirl )
 {
+	using namespace unify;
+
 	// Apply animation...
 	static float progress = 0.0f;
-	unify::FrameSet frameSet;
+	FrameSet frameSet;
 	frameSet.Add( unify::MatrixIdentity(), 0 );
 	
-	unify::FrameSetInstance frameSetInstance1( &frameSet );
-	unify::FrameSetInstance frameSetInstance2( &frameSet );
+	FrameSetInstance frameSetInstance1( &frameSet );
+	FrameSetInstance frameSetInstance2( &frameSet );
 	m_animation->ApplyToFrames( progress, frameSetInstance1 );
 	m_animation->ApplyToFrames( progress, frameSetInstance2 );
 	frameSetInstance1.UpdateLocals();
@@ -194,13 +194,13 @@ void MainScene::OnRender( scene::RenderGirl renderGirl )
 	render::Params params = *renderGirl.GetParams();
 	progress += params.GetDelta().GetSeconds();
 
-	unify::Matrix matrices[] =
+	Matrix matrices[] =
 	{
 		// First object.
-		unify::MatrixTranslate( { -10, 0, 0 } ), frameSetInstance1.Local( 0 ),
+		MatrixTranslate( { -10, 0, 0 } ), frameSetInstance1.Local( 0 ),
 		
 		// Second object.
-		unify::MatrixTranslate( { 10, 0, 0 } ), frameSetInstance2.Local( 0 )
+		MatrixTranslate( { 10, 0, 0 } ), frameSetInstance2.Local( 0 )
 	};
 
 	m_mesh->Render( params, nullptr,
@@ -209,6 +209,5 @@ void MainScene::OnRender( scene::RenderGirl renderGirl )
 			2
 		)
 	);
-
 
 }

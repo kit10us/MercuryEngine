@@ -1,20 +1,19 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/shader/ConstantBuffer.h>
+#include <me/render/ConstantTable.h>
 #include <unify/String.h>
 #include <unify/Matrix.h>
 
 using namespace me;
 using namespace render;
-using namespace shader;
 
-ConstantBuffer::ConstantBuffer()
+ConstantTable::ConstantTable()
 	: m_hasDefaults{ 0 }
 {
 }				 
 
-ConstantBuffer::ConstantBuffer( const qxml::Element * node )
+ConstantTable::ConstantTable( const qxml::Element * node )
 	: m_hasDefaults{ 0 }
 {
 	for ( auto && bufferNode : node->Children( "buffer" ) )
@@ -53,19 +52,19 @@ ConstantBuffer::ConstantBuffer( const qxml::Element * node )
 	}
 }
 
-void ConstantBuffer::AddBuffer( std::string name )
+void ConstantTable::AddBuffer( std::string name )
 {
 	m_variables.push_back( std::vector< ConstantVariable >() );
 	m_name.push_back( name );
 	m_sizeInBytes.push_back( 0 );
 }
 
-size_t ConstantBuffer::BufferCount() const
+size_t ConstantTable::BufferCount() const
 {
 	return m_sizeInBytes.size();
 }
 
-size_t ConstantBuffer::AddVariable( size_t bufferIndex, ConstantVariable variable )
+size_t ConstantTable::AddVariable( size_t bufferIndex, ConstantVariable variable )
 {
 	assert( bufferIndex < m_sizeInBytes.size() );
 
@@ -111,48 +110,48 @@ size_t ConstantBuffer::AddVariable( size_t bufferIndex, ConstantVariable variabl
 	return myIndex;
 }
 
-size_t ConstantBuffer::GetSizeInBytes( size_t bufferIndex ) const
+size_t ConstantTable::GetSizeInBytes( size_t bufferIndex ) const
 {
 	assert( bufferIndex < m_sizeInBytes.size() );
 
 	return m_sizeInBytes[ bufferIndex ];
 }
 
-const std::vector< ConstantVariable > & ConstantBuffer::GetVariables( size_t bufferIndex ) const
+const std::vector< ConstantVariable > & ConstantTable::GetVariables( size_t bufferIndex ) const
 {
 	assert( bufferIndex < m_sizeInBytes.size() );
 
 	return m_variables[ bufferIndex ];
 }
 
-const ConstantVariable & ConstantBuffer::GetVariable( const Reference & reference ) const
+const ConstantVariable & ConstantTable::GetVariable( const Reference & reference ) const
 {
 	return m_variables[reference.buffer][reference.index];
 }
 
-Reference ConstantBuffer::FindDefinition( std::string name ) const
+Reference ConstantTable::FindDefinition( std::string name ) const
 {
 	auto itr = m_map.find( name );
 	if ( itr == m_map.end() ) return Reference();
 	return itr->second;
 }
 
-Reference ConstantBuffer::GetWorld() const
+Reference ConstantTable::GetWorld() const
 {
 	return m_world;
 }
 
-Reference ConstantBuffer::GetView() const
+Reference ConstantTable::GetView() const
 {
 	return m_view;
 }
 
-Reference ConstantBuffer::GetProjection() const
+Reference ConstantTable::GetProjection() const
 {
 	return m_projection;
 }
 
-bool ConstantBuffer::HasDefaults( size_t buffer ) const
+bool ConstantTable::HasDefaults( size_t buffer ) const
 {
 	return (1 << buffer) == (m_hasDefaults & (1 << buffer));
 }

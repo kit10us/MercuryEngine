@@ -49,7 +49,7 @@ void sg::CreateShape_DashRing( IRenderer * renderer, PrimitiveList & primitiveLi
 	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * totalVertices];
-	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, DataLock::ReadWrite, 0 );
+	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, DataLockAccess::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	unsigned short stream = 0;

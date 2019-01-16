@@ -72,17 +72,17 @@ void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * wo
 {
 	unify::DataLock lock;
 
-	const me::shader::ConstantBuffer * constants = m_vertexShader->GetConstants();
+	auto constantTable = m_vertexShader->GetConstantBuffer()->GetTable();
 
-	auto worldRef = constants->GetWorld();
-	auto viewRef = constants->GetView();
-	auto projRef = constants->GetProjection();
+	auto worldRef = constantTable->GetWorld();
+	auto viewRef = constantTable->GetView();
+	auto projRef = constantTable->GetProjection();
 
 	size_t bufferIndex = 0;
-	for( size_t bufferIndex = 0, buffer_count = constants->BufferCount(); bufferIndex < buffer_count; bufferIndex++ )
+	for( size_t bufferIndex = 0, buffer_count = constantTable->BufferCount(); bufferIndex < buffer_count; bufferIndex++ )
 	{
 		unify::DataLock lock;
-		m_vertexShader->LockConstants( bufferIndex, lock );
+		m_vertexShader->GetConstantBuffer()->LockConstants( bufferIndex, lock );
 
 		// Set automatic variables...
 		
@@ -107,7 +107,7 @@ void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * wo
 			*matrix = world[0];
 		}
 
-		m_vertexShader->UnlockConstants( bufferIndex, lock );
+		m_vertexShader->GetConstantBuffer()->UnlockConstants( bufferIndex, lock );
 		bufferIndex++;
 	}
 }
@@ -115,7 +115,6 @@ void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * wo
 void Effect::Use( IRenderer* renderer, const RenderInfo & renderInfo )
 {		   
 	m_pixelShader->Use();
-
 	m_vertexShader->Use();
 
 	renderer->UseTextures( m_textures );

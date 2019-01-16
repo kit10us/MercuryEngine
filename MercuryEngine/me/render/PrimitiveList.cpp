@@ -90,8 +90,11 @@ void PrimitiveList::ComputeBounds( unify::BBox< float > & bbox ) const
 
 	for ( const auto & bs : m_buffers )
 	{
-		const IVertexBuffer::ptr vb = bs->GetVertexBuffer();
-		bbox += vb->GetBBox();
+		for( size_t index {}; index < bs->GetVertexBufferCount(); index++ )
+		{
+			const IVertexBuffer::ptr vb{ bs->GetVertexBuffer( index ) };
+			bbox += vb->GetBBox();
+		}
 	}
 }
 

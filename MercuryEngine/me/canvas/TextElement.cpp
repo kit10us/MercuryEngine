@@ -163,7 +163,7 @@ void TextElement::UpdateLayout( UpdateParams params, unify::Rect< float > parent
 
 		size_t vbSizeInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vbSizeInBytes] );
-		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLock::ReadWrite, 0 );
+		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 		VertexElement positionE = CommonVertexElement::Position( 0 );
 		VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
@@ -225,7 +225,7 @@ void TextElement::Render( const render::Params & params )
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
-	params.renderer->Render( method, params.renderInfo, matrixFeed );
+		params.renderer->Render( method, params.renderInfo, matrixFeed );
 }
 		
 void TextElement::OnSuspend()

@@ -24,13 +24,9 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", "EffectColor.effect" );
+	AddResources( unify::Path( "resources/02Test12 - LargeGeoInstancing.xml" ) );
 
-	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "EffectColorInstanced3D_SC.effect" );
-	
-	//Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced3D", "EffectColorInstanced3D.effect" );
-
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "ColorInstanced_ambient", unify::Path( "ColorInstanced_ambient.effect" ) );
+	Effect::ptr color3DEffect{ new Effect( GetAsset< IVertexShader >( "ColorInstanced_ambient" ), GetAsset< IPixelShader >( "ColorInstanced_ambient" ) ) };
 
 	// Add a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
@@ -60,9 +56,9 @@ void MainScene::OnStart()
 	coneParameters.SetDiffuse( unify::ColorGreen() );
 	Geometry::ptr geo3( sg::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) );
 
-	size_t depth = 30;
-	size_t columns = 30;
-	size_t rows = 30;
+	size_t depth = 3; // 30;
+	size_t columns = 3; // 30;
+	size_t rows = 3; // 30;
 	float spacing = 2.0f;
 	for( size_t d = 0; d < depth; ++d )
 	{

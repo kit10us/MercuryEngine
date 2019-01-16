@@ -19,9 +19,6 @@
     <Filter Include="shape_creation">
       <UniqueIdentifier>{5ac8ef3c-c55a-496f-ba6e-bdcc304a5c26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="me\shader">
-      <UniqueIdentifier>{d61f0b9f-bb5c-4b7a-9dac-edc26a9fa479}</UniqueIdentifier>
-    </Filter>
     <Filter Include="me\input">
       <UniqueIdentifier>{0ace11eb-4903-464d-b70b-6fd4a1b5aabf}</UniqueIdentifier>
     </Filter>
@@ -227,12 +224,6 @@
     </ClInclude>
     <ClInclude Include="me\scene\GrowableObjectStack.h">
       <Filter>me\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="me\shader\ConstantBuffer.h">
-      <Filter>me\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="me\shader\ConstantVariable.h">
-      <Filter>me\shader</Filter>
     </ClInclude>
     <ClInclude Include="me\input\IInputCondition.h">
       <Filter>me\input</Filter>
@@ -516,9 +507,6 @@
     <ClInclude Include="me\render\BufferSet.h">
       <Filter>me\render</Filter>
     </ClInclude>
-    <ClInclude Include="me\render\BufferUsage.h">
-      <Filter>me\render</Filter>
-    </ClInclude>
     <ClInclude Include="me\render\Blend.h">
       <Filter>me\render</Filter>
     </ClInclude>
@@ -774,6 +762,25 @@
     <ClInclude Include="me\render\Format.h">
       <Filter>me\render</Filter>
     </ClInclude>
+    <ClInclude Include="me\render\IDataBuffer.h" />
+    <ClInclude Include="me\render\BufferUsage.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\BufferBinding.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\ConstantTable.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\ConstantVariable.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IShader.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\ResourceType.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -862,12 +869,6 @@
     </ClCompile>
     <ClCompile Include="me\scene\GrowableObjectStack.cpp">
       <Filter>me\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="me\shader\ConstantBuffer.cpp">
-      <Filter>me\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="me\shader\ConstantVariable.cpp">
-      <Filter>me\shader</Filter>
     </ClCompile>
     <ClCompile Include="me\input\InputManager.cpp">
       <Filter>me\input</Filter>
@@ -1088,9 +1089,6 @@
     <ClCompile Include="me\render\MatrixFood.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
-    <ClCompile Include="me\render\BufferUsage.cpp">
-      <Filter>me\render</Filter>
-    </ClCompile>
     <ClCompile Include="me\render\Blend.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
@@ -1263,6 +1261,21 @@
       <Filter>me\scene\component</Filter>
     </ClCompile>
     <ClCompile Include="me\render\Format.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\BufferUsage.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\BufferBinding.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\ConstantTable.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\ConstantVariable.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\ResourceType.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
   </ItemGroup>

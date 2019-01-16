@@ -5,9 +5,8 @@
 
 #include <me/Mercury.h>
 #include <me/render/IBuffer.h>
-#include <unify/BBox.h>
-#include <vector>
-#include <memory>
+#include <me/render/ResourceType.h>
+#include <me/render/ConstantTable.h>
 
 namespace me 
 {
@@ -16,35 +15,33 @@ namespace me
 		struct ConstantBufferParameters
 		{
 			ConstantBufferParameters()
-				: usage( BufferUsage::Default )
 			{
 			}
 
-			ConstantBufferParameters( VertexDeclaration::ptr _vd, std::vector< CountAndSource > countAndSource, me::render::BufferUsage::TYPE _usage = me::render::BufferUsage::Default, unify::BBox< float > _bbox = unify::BBox< float >() )
-				: vertexDeclaration( _vd )
-				, countAndSource{ countAndSource }
-				, usage( _usage )
-				, bbox( _bbox )
-			{
-			}
-
-			VertexDeclaration::ptr vertexDeclaration;
-			std::vector< CountAndSource > countAndSource;
+			ResourceType::TYPE type;
 			BufferUsage::TYPE usage;
-			unify::BBox< float > bbox;
+			render::ConstantTable::ptr constantTable;
 		};
 
-		class IVertexBuffer : public IBuffer
+		class IConstantBuffer
 		{
 		public:
-			typedef std::shared_ptr< IVertexBuffer > ptr;
+			typedef std::shared_ptr< IConstantBuffer > ptr;
 
-			virtual void Create( VertexBufferParameters parameters ) = 0;
+			virtual const me::render::ConstantTable * GetTable() const = 0;
 
-			virtual VertexDeclaration::ptr GetVertexDeclaration() const = 0;
+			virtual void Create( ConstantBufferParameters parameters ) = 0;
+			virtual void Destroy() = 0;
 
-			virtual unify::BBox< float > & GetBBox() = 0;
-			virtual const unify::BBox< float > & GetBBox() const = 0;
+			virtual size_t GetBufferCount() const = 0;
+
+			virtual void Use( size_t startSlot, size_t startBuffer ) = 0;
+
+			virtual void LockConstants( size_t bufferIndex, unify::DataLock & lock ) = 0;
+			virtual void UnlockConstants( size_t buffer, unify::DataLock & lock ) = 0;
+
+			virtual ResourceType::TYPE GetType() const = 0;
+			virtual BufferUsage::TYPE GetUsage() const = 0;
 		};
 	}
 }

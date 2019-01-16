@@ -65,7 +65,7 @@ void sg::CreateShape_PointField( IRenderer * renderer, PrimitiveList & primitive
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * count];
-	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, DataLock::ReadWrite, 0 );
+	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), count, DataLockAccess::ReadWrite, 0 );
 	VertexBufferParameters vbParameters{ vd, { { count, vertices } }, bufferUsage };
 
 	float distance;

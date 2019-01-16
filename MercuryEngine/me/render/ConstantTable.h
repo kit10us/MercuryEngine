@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include <me/shader/ConstantVariable.h>
+#include <me/render/ConstantVariable.h>
 #include <qxml/Element.h>
 #include <memory>
 #include <map>
 
 namespace me
 {
-	namespace shader
+	namespace render
 	{			  
 		struct Reference {
 			Reference() : buffer{ SIZE_MAX }, index{ SIZE_MAX }, offsetInBytes{ SIZE_MAX } {}
@@ -22,13 +22,13 @@ namespace me
 			bool IsSet() const { return index != SIZE_MAX; }
 		};
 
-		class ConstantBuffer
+		class ConstantTable
 		{
 		public:
-			typedef std::shared_ptr< ConstantBuffer > ptr;
+			typedef std::shared_ptr< ConstantTable > ptr;
 
-			ConstantBuffer();
-			ConstantBuffer( const qxml::Element * node );
+			ConstantTable();
+			ConstantTable( const qxml::Element * node );
 
 			/// <summary>
 			/// Add a buffer.
@@ -38,11 +38,9 @@ namespace me
 			size_t BufferCount() const;
 
 			/// <summary>
-			/// Add a variable.
+			/// Add a variable. 
+			/// Returns the index into our variable table.
 			/// </summary>
-			/// <returns>
-			/// Index into our variable table.
-			/// </returns>
 			size_t AddVariable( size_t bufferIndex, ConstantVariable variable );
 
 			size_t GetSizeInBytes( size_t bufferIndex ) const;

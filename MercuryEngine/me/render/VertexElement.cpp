@@ -147,7 +147,7 @@ VertexElement::VertexElement( const qxml::Element & element )
 		}
 		else
 		{
-			throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
+			throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic \"" + name + "\"!" );
 		}
 	}
 	else if ( element.HasAttributes( "SemanticName" ) )
@@ -257,7 +257,7 @@ VertexElement::VertexElement( const qjson::Pair & pair )
 	}
 	else
 	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic!" );
+		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic \"" + name + "\"!" );
 	}
 
 	Format = ElementFormat::FromString( pair.GetValue()->ToString() );

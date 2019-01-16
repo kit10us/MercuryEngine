@@ -68,7 +68,7 @@ void sg::CreateShape_Pyramid( IRenderer * renderer, PrimitiveList & primitiveLis
 
 	// Set the vertices from the TEMP vertices...
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
+	DataLock lock( verticesRaw.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, verticesRaw.get() } }, bufferUsage };
 

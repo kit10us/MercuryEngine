@@ -19,18 +19,23 @@ BufferSet::~BufferSet()
 
 IVertexBuffer::ptr BufferSet::AddVertexBuffer( VertexBufferParameters parameters )
 {
-	m_VB = m_renderer->ProduceVB( parameters );
-	return m_VB;
+	m_vertexBuffers.push_back( m_renderer->ProduceVB( parameters ) );
+	return *m_vertexBuffers.rbegin();
 }
 
-IVertexBuffer::ptr BufferSet::GetVertexBuffer()
+size_t BufferSet::GetVertexBufferCount() const
 {
-	return m_VB;
+	return m_vertexBuffers.size();
 }
 
-const IVertexBuffer::ptr BufferSet::GetVertexBuffer() const
+IVertexBuffer::ptr BufferSet::GetVertexBuffer( size_t index )
 {
-	return m_VB;
+	return m_vertexBuffers[ index ];
+}
+
+const IVertexBuffer::ptr BufferSet::GetVertexBuffer( size_t index ) const
+{
+	return m_vertexBuffers[ index ];
 }
 
 IIndexBuffer::ptr BufferSet::AddIndexBuffer( IndexBufferParameters parameters )
@@ -71,7 +76,7 @@ void BufferSet::ClearMethods()
 
 void BufferSet::Destroy()
 {
-	m_VB.reset();
+	m_vertexBuffers.clear();
 	m_IB.reset();
 	m_RB.clear();
 }
@@ -90,9 +95,13 @@ void BufferSet::Render( const render::Params & params, render::MatrixFeed & matr
 {
 	if ( !m_enabled ) return;
 
-	if( m_VB )
+	size_t index {};
+	const auto end = m_vertexBuffers.end();
+	for ( auto itr = m_vertexBuffers.begin(); itr != end; itr++ )
 	{
-		m_VB->Use();
+		auto vb = *itr;
+		vb->Use( 0, index );
+		index += vb->GetBufferCount();
 	}
 
 	if ( m_IB )

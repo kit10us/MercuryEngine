@@ -12,11 +12,14 @@ class MainScene : public me::scene::Scene
 	std::shared_ptr< me::render::Mesh > m_mesh;
 	unify::Quaternion m_q;
 	me::frameanimation::Animation::ptr m_animation;
-	me::render::ITexture::ptr m_bones;
 public:
 	MainScene( me::game::Game * gameInstance );
 
+public: // me::game::IGame
 	void OnStart() override;
 	void OnUpdate( const me::UpdateParams & params ) override;
 	void OnRender( me::scene::RenderGirl renerGirl ) override;
+
+public:
+	void SyncRenderData();
 };

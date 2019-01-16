@@ -53,7 +53,7 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 	BufferSet & set = primitiveList.AddBufferSet();
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLock::ReadWrite, 0 );
+	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
 
 	VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } }, bufferUsage };
 

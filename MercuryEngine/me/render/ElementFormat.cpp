@@ -20,6 +20,7 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 		return sizeof( float ) * 3;
 	case ElementFormat::Float4:
 		return sizeof( float ) * 4;
+
 	case ElementFormat::Int1:
 		return sizeof( int ) * 1;
 	case ElementFormat::Int2:
@@ -28,6 +29,16 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 		return sizeof( int ) * 3;
 	case ElementFormat::Int4:
 		return sizeof( int ) * 4;
+
+	case ElementFormat::UInt1:
+		return sizeof( unsigned int ) * 1;
+	case ElementFormat::UInt2:
+		return sizeof( unsigned int ) * 2;
+	case ElementFormat::UInt3:
+		return sizeof( unsigned int ) * 3;
+	case ElementFormat::UInt4:
+		return sizeof( unsigned int ) * 4;
+
 	case ElementFormat::Matrix4x4:
 		return sizeof( float ) * 4 * 4;
 	case ElementFormat::ColorUNorm:
@@ -54,6 +65,12 @@ ElementFormat::TYPE ElementFormat::FromString( std::string format )
 	else if( unify::string::StringIs( format, "Int3" ) ) return ElementFormat::Int3;
 	else if( unify::string::StringIs( format, "Int4" ) ) return ElementFormat::Int4;
 
+	else if( unify::string::StringIs( format, "UInt" ) ) return ElementFormat::UInt1;
+	else if( unify::string::StringIs( format, "UInt1" ) ) return ElementFormat::UInt1;
+	else if( unify::string::StringIs( format, "UInt2" ) ) return ElementFormat::UInt2;
+	else if( unify::string::StringIs( format, "UInt3" ) ) return ElementFormat::UInt3;
+	else if( unify::string::StringIs( format, "UInt4" ) ) return ElementFormat::UInt4;
+
 	else if ( unify::string::StringIs( format, "Matrix4x4" ) ) return ElementFormat::Matrix4x4;
 	else if ( unify::string::StringIs( format, "ColorUNorm" ) ) return ElementFormat::ColorUNorm;
 	else if ( unify::string::StringIs( format, "Color" ) ) return ElementFormat::ColorUNorm;
@@ -75,6 +92,7 @@ std::string ElementFormat::ToString( ElementFormat::TYPE format )
 		return "Float3";
 	case ElementFormat::Float4:
 		return "Float4";
+
 	case ElementFormat::Int1:
 		return "Int1";
 	case ElementFormat::Int2:
@@ -83,6 +101,16 @@ std::string ElementFormat::ToString( ElementFormat::TYPE format )
 		return "Int3";
 	case ElementFormat::Int4:
 		return "Int4";
+
+	case ElementFormat::UInt1:
+		return "UInt1";
+	case ElementFormat::UInt2:
+		return "UInt2";
+	case ElementFormat::UInt3:
+		return "UInt3";
+	case ElementFormat::UInt4:
+		return "UInt4";
+
 	case ElementFormat::Matrix4x4:
 		return "Matrix4x4";
 	case ElementFormat::ColorUNorm:
@@ -168,6 +196,35 @@ bool ElementFormat::Convert( TYPE outFormat, void * outRaw, TYPE inFormat, const
 				for( size_t i = 0; i < outCount; i++ )
 				{
 					( (int*)outRaw )[i] = i < inCount ? ( (const int*)inRaw )[i] : 0;
+				}
+			}
+			return true;
+		}
+
+	case ElementFormat::UInt4:
+		inCount++;
+	case ElementFormat::UInt3:
+		inCount++;
+	case ElementFormat::UInt2:
+		inCount++;
+	case ElementFormat::UInt1:
+		inCount++;
+
+		switch( outFormat )
+		{
+		case ElementFormat::UInt4:
+			outCount++;
+		case ElementFormat::UInt3:
+			outCount++;
+		case ElementFormat::UInt2:
+			outCount++;
+		case ElementFormat::UInt1:
+			outCount++;
+
+			{
+				for( size_t i = 0; i < outCount; i++ )
+				{
+					((unsigned int*)outRaw)[i] = i < inCount ? ((const unsigned int*)inRaw)[i] : 0;
 				}
 			}
 			return true;

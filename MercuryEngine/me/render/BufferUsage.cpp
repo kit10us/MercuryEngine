@@ -1,12 +1,9 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/exception/FailedToCreate.h>
-#include <me/exception/FailedToLock.h>
-#include <me/exception/OutOfBounds.h>
+#include <me/exception/Exception.h>
 #include <me/render/BufferUsage.h>
 #include <unify/String.h>
-#include <assert.h>
 
 using namespace me;
 using namespace render;

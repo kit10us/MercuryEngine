@@ -1,12 +1,10 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
-#include <me/shader/ConstantVariable.h>
-#include <unify/String.h>
-#include <unify/Matrix.h>
+#include <me/render/ConstantVariable.h>
 
 using namespace me;
-using namespace shader;
+using namespace render;
 
 ConstantVariable::ConstantVariable()
 	: hasDefault{ false }

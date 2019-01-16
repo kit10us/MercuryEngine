@@ -23,10 +23,17 @@ namespace me
 				Float2,
 				Float3,
 				Float4,
+
 				Int1,
 				Int2,
 				Int3,
 				Int4,
+
+				UInt1,
+				UInt2,
+				UInt3,
+				UInt4,
+
 				Matrix4x4,
 				ColorUNorm,
 				Unknown
@@ -76,6 +83,12 @@ namespace me
 			struct FromType< int >
 			{
 				operator TYPE() { return Int1; }
+			};
+
+			template<>
+			struct FromType< unsigned int >
+			{
+				operator TYPE() { return UInt1; }
 			};
 
 			template<>

@@ -32,7 +32,7 @@ void MainScene::OnStart()
 	std::shared_ptr< unsigned char > vertices( new unsigned char[ sizeOfBufferInBytes ] );
 
 	// Lock buffer for writing.
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLock::ReadWrite, 0 );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 	// Set a depth value to be used with all vertices.
 	float depth = 0.5f;

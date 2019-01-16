@@ -16,6 +16,7 @@ namespace me
 	namespace render
 	{
 		class IRenderer;
+		class IVertexShader;
 
 		/// <summary> 
 		/// Defines the structure of the data in a vertex. 
