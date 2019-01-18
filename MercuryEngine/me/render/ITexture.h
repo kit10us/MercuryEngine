@@ -7,6 +7,7 @@
 #include <me/render/TextureLock.h>
 #include <me/render/Filtering.h>
 #include <me/render/SpriteDictionary.h>
+#include <me/render/BufferUsage.h>
 #include <me/render/Format.h>
 #include <qxml/Element.h>
 #include <rm/IResource.h>
@@ -29,7 +30,9 @@ namespace me
 			unify::Path source;
 			
 			unify::Size< unsigned int > size; // Ignored if we have a source path.
-			Format::TYPE format;
+
+			BufferUsage::TYPE usage;
+			Format::TYPE format;			
 			
 			bool renderable;
 			bool lockable;

@@ -9,7 +9,7 @@ namespace me
 {
 	namespace render
 	{
-		struct ConstantBufferBinding
+		struct BufferBinding
 		{
 			enum TYPE
 			{

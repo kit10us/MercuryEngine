@@ -762,7 +762,6 @@
     <ClInclude Include="me\render\Format.h">
       <Filter>me\render</Filter>
     </ClInclude>
-    <ClInclude Include="me\render\IDataBuffer.h" />
     <ClInclude Include="me\render\BufferUsage.h">
       <Filter>me\render</Filter>
     </ClInclude>

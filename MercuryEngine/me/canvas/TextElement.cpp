@@ -225,7 +225,7 @@ void TextElement::Render( const render::Params & params )
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
-		params.renderer->Render( method, params.renderInfo, matrixFeed );
+	params.renderer->Render( method, params.renderInfo, matrixFeed, method.effect->GetVertexShader()->GetConstantBuffer() );
 }
 		
 void TextElement::OnSuspend()

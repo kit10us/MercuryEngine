@@ -15,6 +15,8 @@ TextureParameters::TextureParameters()
 	, min( Filtering::Linear )
 	, mag( Filtering::Linear )
 	, mip( Filtering::Linear )
+	, format{ me::render::Format::R32G32B32A32_Float }
+	, usage{ me::render::BufferUsage::Dynamic }
 {
 }
 
@@ -25,6 +27,8 @@ TextureParameters::TextureParameters( unify::Path _source, bool _renderable, boo
 	, min( Filtering::Linear )
 	, mag( Filtering::Linear )
 	, mip( Filtering::Linear )
+	, format{ me::render::Format::R32G32B32A32_Float }
+	, usage{ me::render::BufferUsage::Dynamic }
 {
 }
 

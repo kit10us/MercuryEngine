@@ -14,19 +14,24 @@ namespace me
 	{
 		struct ConstantBufferParameters
 		{
-			ConstantBufferParameters()
+			ConstantBufferParameters( ResourceType::TYPE type, BufferUsage::TYPE usage, const ConstantTable & constantTable )
+				: type{ type }
+				, usage{ usage }
+				, constantTable{ constantTable }
 			{
 			}
 
 			ResourceType::TYPE type;
 			BufferUsage::TYPE usage;
-			render::ConstantTable::ptr constantTable;
+			ConstantTable constantTable;
 		};
 
 		class IConstantBuffer
 		{
 		public:
 			typedef std::shared_ptr< IConstantBuffer > ptr;
+
+			virtual ConstantBufferParameters GetParameters() const = 0;
 
 			virtual const me::render::ConstantTable * GetTable() const = 0;
 

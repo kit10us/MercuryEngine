@@ -82,13 +82,8 @@ namespace me
 
 			virtual void* GetHandle() const = 0;
 
-			virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed ) = 0;
+			virtual void Render( const RenderMethod & method, const RenderInfo & renderInfo, MatrixFeed & matrixFeed, me::render::IConstantBuffer * constantBuffer ) = 0;
 			virtual void RenderInstances( const RenderMethod & method, const RenderInfo & renderInfo, size_t instances ) = 0;
-
-			/// <summary>
-			/// Create a constant buffer.
-			/// </summary>
-			virtual IConstantBuffer::ptr ProduceConstantBuffer( ConstantBufferParameters parameters ) = 0;
 
 			/// <summary>
 			/// Create a vertex buffer.

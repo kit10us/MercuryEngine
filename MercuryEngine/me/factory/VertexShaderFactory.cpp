@@ -38,7 +38,7 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 		}
 		else if ( node.IsTagName( "constants" ) )
 		{
-			parameters.constantBufferParameters.constantTable.reset( new render::ConstantTable( &node ) );
+			parameters.constantTable = render::ConstantTable( &node );
 		}
 		else if ( node.IsTagName( "vertexformat" ) )
 		{

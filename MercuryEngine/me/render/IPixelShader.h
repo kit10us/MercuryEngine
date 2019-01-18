@@ -15,7 +15,8 @@ namespace me
 		struct PixelShaderParameters
 		{
 			PixelShaderParameters()
-				: trans{ false }
+				: blendDesc{}
+				, trans{ false }
 			{
 			}
 
@@ -23,7 +24,7 @@ namespace me
 			std::string code;
 			std::string entryPointName;
 			std::string profile;
-			render::ConstantBufferParameters constantBufferParameters;
+			render::ConstantTable constantTable;
 			BlendDesc blendDesc;
 			bool trans;
 		};

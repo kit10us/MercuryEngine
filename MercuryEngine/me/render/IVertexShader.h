@@ -23,7 +23,7 @@ namespace me
 			std::string code;
 			std::string entryPointName;
 			std::string profile;
-			render::ConstantBufferParameters constantBufferParameters;
+			render::ConstantTable constantTable;
 			VertexDeclaration::ptr vertexDeclaration;
 			bool trans;
 		};

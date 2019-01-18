@@ -147,7 +147,6 @@
     <ClInclude Include="me\render\GeometryInstanceData.h" />
     <ClInclude Include="me\render\IBuffer.h" />
     <ClInclude Include="me\render\IConstantBuffer.h" />
-    <ClInclude Include="me\render\IDataBuffer.h" />
     <ClInclude Include="me\render\IIndexBuffer.h" />
     <ClInclude Include="me\render\IndexLock.h" />
     <ClInclude Include="me\render\IPixelShader.h" />

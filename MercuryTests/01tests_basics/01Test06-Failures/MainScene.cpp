@@ -32,7 +32,7 @@ void MainScene::OnStart()
 	std::shared_ptr< unsigned char > vertices( new unsigned char[ sizeOfBufferInBytes ] );
 
 	// Lock buffer for writing.
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, false, 0 );
+	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 	// Set a depth value to be used with all vertices.
 	float depth = 0.5f;
@@ -85,5 +85,5 @@ void MainScene::OnRender( me::scene::RenderGirl renderGirl )
 	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	renderGirl.GetParams()->renderer->Render( method, renderGirl.GetParams()->renderInfo, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ) );
+	renderGirl.GetParams()->renderer->Render( method, renderGirl.GetParams()->renderInfo, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effect->GetVertexShader()->GetConstantBuffer() );
 }

@@ -20,7 +20,12 @@ namespace me
 			typedef std::shared_ptr< IShader > ptr;
 
 			virtual ~IShader() {}
-			
+
+			/// <summary>
+			/// Create a constant buffer.
+			/// </summary>
+			virtual IConstantBuffer::ptr CreateConstantBuffer( BufferUsage::TYPE usage ) const = 0;
+
 			/// <summary>
 			/// Get our constant buffer.
 			/// </summary>

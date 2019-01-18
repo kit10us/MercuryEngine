@@ -131,7 +131,7 @@ void MainScene::OnRender( RenderGirl renderGirl )
 
 		render::MatrixFood_Matrices food( matrices, 2 );
 		render::MatrixFeed feed( food, 1 );
-		params.renderer->Render( method, params.renderInfo, feed );
+		params.renderer->Render( method, params.renderInfo, feed, effectBorg->GetVertexShader()->GetConstantBuffer() );
 	}
 
 	{
@@ -145,6 +145,6 @@ void MainScene::OnRender( RenderGirl renderGirl )
 
 		render::MatrixFood_Matrices food( matrices, 2 );
 		render::MatrixFeed feed( food, 1 );
-		params.renderer->Render( method, params.renderInfo, feed );
+		params.renderer->Render( method, params.renderInfo, feed, effect4->GetVertexShader()->GetConstantBuffer() );
 	}
 }
