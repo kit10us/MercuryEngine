@@ -88,7 +88,7 @@ GeometryComponent::~GeometryComponent()
 void GeometryComponent::SetGeometry( Geometry::ptr geometry )
 {
 	m_geometry = geometry;
-	m_geometryInstanceData.reset( geometry->CreateInstanceData() );
+	m_geometryInstanceData = geometry->CreateInstanceData();
 }
 
 Geometry::ptr GeometryComponent::GetGeometry()

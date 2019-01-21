@@ -32,7 +32,7 @@ namespace me
 			const unify::BBox< float > & ComputeBounds();
 
 		public: // Geometry...
-			GeometryInstanceData * CreateInstanceData() override;
+			GeometryInstanceData::ptr CreateInstanceData() const override;
 
 			void Update( const UpdateParams & params, GeometryInstanceData * instanceData ) override;
 

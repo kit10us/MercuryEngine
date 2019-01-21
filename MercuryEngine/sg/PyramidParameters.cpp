@@ -11,6 +11,11 @@ PyramidParameters::PyramidParameters()
 {
 }
 
+PyramidParameters::PyramidParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( Shape::Pyramid )
+{
+}
+
 unify::Parameters & PyramidParameters::Reset()
 {
     Reset();

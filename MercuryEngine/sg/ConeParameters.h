@@ -9,6 +9,8 @@ namespace sg
     struct ConeParameters : public ShapeBaseParameters
     {
         ConeParameters();
+		ConeParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
 	    ConeParameters & SetSegments( unsigned int segments );
 	    ConeParameters & SetRadius( float radius );

@@ -59,9 +59,9 @@ const unify::BBox< float > & Billboard::ComputeBounds()
 	return m_BBox;
 }
 
-GeometryInstanceData * Billboard::CreateInstanceData()
+GeometryInstanceData::ptr Billboard::CreateInstanceData() const
 {
-	return new BillboardInstanceData();
+	return BillboardInstanceData::ptr {};
 }
 
 void Billboard::Update( const UpdateParams & params, GeometryInstanceData * instanceData )

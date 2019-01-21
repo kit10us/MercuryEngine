@@ -11,6 +11,11 @@ TubeParameters::TubeParameters()
 {
 }
 
+TubeParameters::TubeParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Tube )
+{
+}
+
 unify::Parameters & TubeParameters::Reset()
 {
     Reset();

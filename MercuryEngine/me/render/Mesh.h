@@ -46,7 +46,7 @@ namespace me
 			void SetRenderMesh( bool render );
 
 		public: // Geometry...
-			GeometryInstanceData * CreateInstanceData() override;
+			GeometryInstanceData::ptr CreateInstanceData() const override;
 
 			void Update( const UpdateParams & params, GeometryInstanceData * instanceData ) override;
 

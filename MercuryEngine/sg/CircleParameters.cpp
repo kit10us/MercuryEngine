@@ -11,6 +11,11 @@ CircleParameters::CircleParameters()
 {
 }
 
+CircleParameters::CircleParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Circle )
+{
+}
+
 unify::Parameters & CircleParameters::Reset()
 {
     Reset();

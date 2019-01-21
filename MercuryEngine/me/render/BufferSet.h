@@ -19,7 +19,7 @@ namespace me
 		class BufferSet
 		{
 		public:
-			typedef std::shared_ptr< BufferSet > shared_ptr;
+			typedef std::shared_ptr< BufferSet > ptr;
 
 			BufferSet( me::render::IRenderer * renderer );
 			~BufferSet();
@@ -27,10 +27,8 @@ namespace me
 			BufferSet( const BufferSet & ) = delete;
 
 			IVertexBuffer::ptr AddVertexBuffer( VertexBufferParameters parameters );
-
-			size_t GetVertexBufferCount() const;
-			IVertexBuffer::ptr GetVertexBuffer( size_t index );
-			const IVertexBuffer::ptr GetVertexBuffer( size_t index ) const;
+			IVertexBuffer::ptr GetVertexBuffer();
+			const IVertexBuffer::ptr GetVertexBuffer() const;
 
 			IIndexBuffer::ptr AddIndexBuffer( IndexBufferParameters parameters );
 			IIndexBuffer::ptr GetIndexBuffer();
@@ -51,7 +49,7 @@ namespace me
 		private:
 			IRenderer * m_renderer;
 			bool m_enabled;
-			std::vector< IVertexBuffer::ptr > m_vertexBuffers;
+			IVertexBuffer::ptr m_VB;
 			IIndexBuffer::ptr m_IB;
 			std::vector< RenderMethod > m_RB;
 		};

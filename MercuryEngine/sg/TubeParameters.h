@@ -9,6 +9,8 @@ namespace sg
     struct TubeParameters : public ShapeBaseParameters
     {
         TubeParameters();
+		TubeParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
 	    TubeParameters & SetMajorRadius( float radius );
 	    TubeParameters & SetMinorRadius( float radius );

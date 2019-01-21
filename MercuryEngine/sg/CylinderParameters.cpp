@@ -11,6 +11,11 @@ CylinderParameters::CylinderParameters()
 {
 }
 
+CylinderParameters::CylinderParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Cylinder )
+{
+}
+
 unify::Parameters & CylinderParameters::Reset()
 {
     Reset();

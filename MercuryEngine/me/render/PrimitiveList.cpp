@@ -32,11 +32,16 @@ void PrimitiveList::Render( const render::Params & params, MatrixFeed & matrixFe
 	}
 }
 
-BufferSet & PrimitiveList::AddBufferSet()
+BufferSet & PrimitiveList::AddBufferSet( BufferSet::ptr set )
 {
-	BufferSet::shared_ptr newSet( new BufferSet( m_renderer ) );
+	BufferSet::ptr newSet( new BufferSet( m_renderer ) );
 	m_buffers.push_back( newSet );
 	return *newSet.get();
+}
+
+BufferSet & PrimitiveList::AddBufferSet()
+{
+	return AddBufferSet( BufferSet::ptr{ new BufferSet( m_renderer ) } );
 }
 
 void PrimitiveList::RemoveBufferSet( size_t index )
@@ -90,11 +95,8 @@ void PrimitiveList::ComputeBounds( unify::BBox< float > & bbox ) const
 
 	for ( const auto & bs : m_buffers )
 	{
-		for( size_t index {}; index < bs->GetVertexBufferCount(); index++ )
-		{
-			const IVertexBuffer::ptr vb{ bs->GetVertexBuffer( index ) };
-			bbox += vb->GetBBox();
-		}
+		const IVertexBuffer::ptr vb{ bs->GetVertexBuffer() };
+		bbox += vb->GetBBox();
 	}
 }
 

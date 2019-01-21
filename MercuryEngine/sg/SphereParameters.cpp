@@ -11,6 +11,11 @@ SphereParameters::SphereParameters()
 {
 }
 
+SphereParameters::SphereParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Sphere )
+{
+}
+
 unify::Parameters & SphereParameters::Reset()
 {
     Reset();

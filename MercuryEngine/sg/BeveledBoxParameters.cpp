@@ -11,6 +11,12 @@ BeveledBoxParameters::BeveledBoxParameters()
 {
 }
 
+BeveledBoxParameters::BeveledBoxParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::BeveledBox )
+{
+}
+
+
 unify::Parameters & BeveledBoxParameters::Reset()
 {
     Reset();

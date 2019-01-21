@@ -11,6 +11,11 @@ PointRingParameters::PointRingParameters()
 {
 }
 
+PointRingParameters::PointRingParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::PointRing )
+{
+}
+
 unify::Parameters & PointRingParameters::Reset()
 {
     Reset();

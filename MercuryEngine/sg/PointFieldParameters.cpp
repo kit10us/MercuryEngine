@@ -11,6 +11,11 @@ PointFieldParameters::PointFieldParameters()
 {
 }
 
+PointFieldParameters::PointFieldParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::PointField )
+{
+}
+
 unify::Parameters & PointFieldParameters::Reset()
 {
     Reset();

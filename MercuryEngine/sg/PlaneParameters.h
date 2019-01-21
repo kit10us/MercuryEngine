@@ -10,6 +10,8 @@ namespace sg
     struct PlaneParameters : public ShapeBaseParameters
     {
         PlaneParameters();
+		PlaneParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
 	    PlaneParameters & SetSize( unify::Size< float > size );
 	    PlaneParameters & SetSegments( unsigned int segments );

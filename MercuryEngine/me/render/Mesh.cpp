@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <me/render/Mesh.h>
-#include <me/render/MeshInstanceData.h>
 
 using namespace me;
 using namespace render;
@@ -61,9 +60,9 @@ PrimitiveList & Mesh::GetPrimitiveList()
 	return m_primitiveList;
 }
 
-GeometryInstanceData * Mesh::CreateInstanceData()
+GeometryInstanceData::ptr Mesh::CreateInstanceData() const
 {
-	return new MeshInstanceData( m_primitiveList.GetFrameSet(), m_primitiveList.GetAnimationSet() );
+	return GeometryInstanceData::ptr{ new MeshInstanceData( m_primitiveList.GetFrameSet(), m_primitiveList.GetAnimationSet() ) };
 }
 
 void Mesh::Update( const UpdateParams & params, GeometryInstanceData * instanceData )

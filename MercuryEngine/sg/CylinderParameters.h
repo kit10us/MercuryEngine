@@ -10,6 +10,8 @@ namespace sg
     struct CylinderParameters : public ShapeBaseParameters
     {
         CylinderParameters();
+		CylinderParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
 	    CylinderParameters & SetRadius( float radius );
 	    CylinderParameters & SetSegments( unsigned int segments );

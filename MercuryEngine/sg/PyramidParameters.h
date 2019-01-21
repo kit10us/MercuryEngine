@@ -9,6 +9,8 @@ namespace sg
     struct PyramidParameters : public ShapeBaseParameters
     {
         PyramidParameters();
+		PyramidParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
         PyramidParameters & SetSize( unify::Size3< float > size );
         PyramidParameters & SetDiffusePoints( unify::Color colorOne, unify::Color colorTwo, unify::Color colorThree, unify::Color colorFour, unify::Color colorFive );

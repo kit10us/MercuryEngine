@@ -23,8 +23,10 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	Effect::ptr color3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectColor.effect" ) );
-	Effect::ptr textured3DEffect = GetManager< Effect >()->Add( "color3d", unify::Path( "EffectTextured.effect" ) );
+	AddResources( unify::Path{ "resources/standard.xml" } );
+	
+	Effect::ptr color3DEffect = GetAsset< Effect >( "color3D" );
+	Effect::ptr texture3DEffect = GetAsset< Effect >( "texture3D" );
 
 	// Add an object to act as a camera...
 	Object * camera = GetObjectAllocator()->NewObject( "camera" );
@@ -36,25 +38,26 @@ void MainScene::OnStart()
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, 800 / 600, 1, 1000 ) );
 	camera->AddComponent( object::component::IObjectComponent::ptr( cameraComponent ) );
 
-	auto createObject = [&]( sg::ShapeBaseParameters parameters)->me::object::Object*
+	auto createObject = [&]( sg::ShapeBaseParameters parameters, int depth )->me::object::Object*
 	{
-		const unify::V3< float > startPos{ -2.5f, 2.5f, 0.0f };
-		const int itemsPerRow = 3;
-		const int itemsPerColumn = 3;
+		const unify::V3< float > startPos{ -2.5f, 2.5f, -1.25f + ( 2.5f * depth )  };
+		const int itemsPerRow = 4;
+		const int itemsPerColumn = 4;
 		const int itemsPerPage = itemsPerRow * itemsPerColumn;
 		const unify::V3< float > changePerRow { 0.0f, -2.5f, 0.0f };
 		const unify::V3< float > changePerColumn { 2.5f, 0.0f, 0.0f };
 		const unify::V3< float > changePerPage { 0.0f, 0.0f, 2.5f };
 
-		static int objectIndex = 0;
-		int page = objectIndex / itemsPerPage;
-		int row = (objectIndex % itemsPerPage) / itemsPerRow;
-		int column = (objectIndex % itemsPerPage) % itemsPerRow;
+		static int objectIndex[2] = {};
+		int page = objectIndex[ depth ] / itemsPerPage;
+		int row = (objectIndex[depth] % itemsPerPage) / itemsPerRow;
+		int column = (objectIndex[depth] % itemsPerPage) % itemsPerRow;
 			
-		std::string objectName = "object " + unify::Cast< std::string >( objectIndex++ );
+		std::string objectName = "object " + unify::Cast< std::string >( objectIndex[depth]++ );
 		auto object = GetObjectAllocator()->NewObject( objectName );
 		
-		unify::V3< float > pos = startPos + unify::V3< float >{ (changePerRow * (float)row) + (changePerColumn * (float)column) + (changePerPage * (float)page ) };
+		unify::V3< float > pos = startPos + unify::V3< float >{ 
+			(changePerRow * (float)row) + (changePerColumn * (float)column) + (changePerPage * (float)page ) };
 		object->GetFrame().SetPosition( pos );
 
 		Geometry::ptr meshProg(sg::CreateShape(GetOS()->GetRenderer(0), parameters));
@@ -65,94 +68,105 @@ void MainScene::OnStart()
 	};
 
 	// Create objects...
+	for( int depth = 0; depth < 2; depth++ )
 	{
-		sg::CubeParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetSize(unify::Size3< float >(1, 1, 1));
-		parameters.SetDiffuseFaces(unify::ColorRed(), unify::ColorGreen(), unify::ColorBlue(), unify::ColorYellow(), unify::ColorCyan(), unify::ColorMagenta());
-		auto object = createObject( parameters );
-	}
+		sg::ShapeBaseParameters base;
+		if ( depth == 0 )
+		{
+			base.SetEffect( color3DEffect );
+		}
+		else
+		{
+			base.SetEffect( texture3DEffect );
+		}
+		{
+			sg::CubeParameters parameters{ base };
+			parameters.SetSize(unify::Size3< float >(1, 1, 1));
+			parameters.SetDiffuseFaces(unify::ColorRed(), unify::ColorGreen(), unify::ColorBlue(), unify::ColorYellow(), unify::ColorCyan(), unify::ColorMagenta());
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::PointFieldParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetMajorRadius( 1 );
-		parameters.SetMinorRadius( 0.5f );
-		parameters.SetCount( 1000 );
-		auto object = createObject(parameters);
-	}
+		{
+			sg::PointFieldParameters parameters{ base };
+			parameters.SetMajorRadius( 0.5f );
+			parameters.SetMinorRadius( 0.5f );
+			parameters.SetCount( 1000 );
+			parameters.SetDiffuse( unify::ColorRed() );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::PointRingParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetMajorRadius(1.0f - 0.25f);
-		parameters.SetMinorRadius(0.25f);
-		parameters.SetCount(1000);
-		auto object = createObject(parameters);
-	}
+		{
+			sg::PointRingParameters parameters{ base };
+			parameters.SetMajorRadius( 0.5f );
+			parameters.SetMinorRadius(0.25f);
+			parameters.SetCount(1000);
+			parameters.SetDiffuse( unify::ColorGreen() );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::DashRingParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetMajorRadius(1);
-		parameters.SetMinorRadius(0.9f);
-		parameters.SetSize( 0.5f );
-		parameters.SetCount(12);
-		auto object = createObject(parameters);
-	}
+		{
+			sg::DashRingParameters parameters{ base };
+			parameters.SetMajorRadius(1);
+			parameters.SetMinorRadius(0.9f);
+			parameters.SetSize( 0.5f );
+			parameters.SetCount(12);
+			parameters.SetDiffuse( unify::ColorBlue() );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::PyramidParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetSize( { 1, 1, 1 } );
-		auto object = createObject(parameters);
-	}
+		{
+			sg::PyramidParameters parameters{ base };
+			parameters.SetEffect( color3DEffect );
+			parameters.SetSize( { 1, 1, 1 } );
+			parameters.SetDiffuse( unify::ColorRed( 255 / 2 ) );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::CircleParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetRadius( 1.0f );
-		auto object = createObject(parameters);
-	}
+		{
+			sg::CircleParameters parameters{ base };
+			parameters.SetRadius( 1.0f );
+			parameters.SetDiffuse( unify::ColorGreen( 255 / 2 ) );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::SphereParameters parameters;
-		parameters.SetEffect( color3DEffect );
-		parameters.SetRadius( 0.5f );
-		parameters.SetDiffuse( unify::ColorRed() );
-		auto object = createObject(parameters);
-	}
+		{
+			sg::SphereParameters parameters{ base };
+			parameters.SetRadius( 0.5f );
+			parameters.SetDiffuse( unify::ColorBlue( 255 / 2 ) );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::CylinderParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetRadius(0.25f);
-		parameters.SetHeight(1.0f);
-		auto object = createObject(parameters);
-	}
+		{
+			sg::CylinderParameters parameters{ base };
+			parameters.SetRadius(0.25f);
+			parameters.SetHeight(1.0f);
+			parameters.SetDiffuse( unify::ColorCyan( 255 / 2 ) );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::TubeParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetMajorRadius(0.5f);
-		parameters.SetMinorRadius(0.25f );
-		parameters.SetHeight(1.0f);
-		auto object = createObject(parameters);
-	}
+		{
+			sg::TubeParameters parameters{ base };
+			parameters.SetMajorRadius(0.5f);
+			parameters.SetMinorRadius(0.25f );
+			parameters.SetHeight(1.0f);
+			parameters.SetDiffuse( unify::ColorMagenta( 255 / 2 ) );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::PlaneParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetSize( {1, 1} );
-		auto object = createObject(parameters);
-	}
+		{
+			sg::PlaneParameters parameters{ base };
+			parameters.SetSize( {1, 1} );
+			parameters.SetDiffuse( unify::ColorRed( 255 ) );
+			auto object = createObject( parameters, depth );
+		}
 
-	{
-		sg::ConeParameters parameters;
-		parameters.SetEffect(color3DEffect);
-		parameters.SetRadius( 0.25f );
-		parameters.SetHeight( 1 );
-		auto object = createObject(parameters);
+		{
+			sg::ConeParameters parameters{ base };
+			parameters.SetRadius( 0.25f );
+			parameters.SetHeight( 1 );
+			parameters.SetDiffuse( unify::ColorGreen( 255 ) );
+			auto object = createObject( parameters, depth );
+		}
 	}
 }
 

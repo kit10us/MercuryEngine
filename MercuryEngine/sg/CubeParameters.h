@@ -11,6 +11,8 @@ namespace sg
     struct CubeParameters : public ShapeBaseParameters
     {
         CubeParameters();
+		CubeParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
         CubeParameters & SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation = unify::MatrixIdentity() );
         CubeParameters & SetInf( const unify::V3< float > & inf, unify::Matrix & transformation = unify::MatrixIdentity() );

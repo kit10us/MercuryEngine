@@ -9,6 +9,8 @@ namespace sg
     struct SphereParameters : public ShapeBaseParameters
     {
         SphereParameters();
+		SphereParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
 	    SphereParameters & SetRadius( float radius );
 	    SphereParameters & SetSegments( unsigned int segments );

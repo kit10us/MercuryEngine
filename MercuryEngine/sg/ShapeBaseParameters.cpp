@@ -17,6 +17,13 @@ ShapeBaseParameters::ShapeBaseParameters( Shape::TYPE type )
     Set< Shape::TYPE >( "type", type );
 }
 
+ShapeBaseParameters::ShapeBaseParameters( const ShapeBaseParameters & parameters, Shape::TYPE type )
+{
+	*this = parameters;
+	Set< Shape::TYPE >( "type", type );
+}
+
+
 ShapeBaseParameters & ShapeBaseParameters::SetDiffuse( unify::Color diffuse )
 {
     Set< unify::Color>( "diffuse", diffuse );

@@ -9,6 +9,8 @@ namespace sg
     struct PointFieldParameters : public ShapeBaseParameters
     {
         PointFieldParameters();
+		PointFieldParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
         PointFieldParameters & SetMajorRadius( const float radius );
         PointFieldParameters & SetMinorRadius( const float radius );

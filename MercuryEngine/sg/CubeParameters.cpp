@@ -11,6 +11,11 @@ CubeParameters::CubeParameters()
 {
 }
 
+CubeParameters::CubeParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Cube )
+{
+}
+
 unify::Parameters & CubeParameters::Reset()
 {
     Reset();

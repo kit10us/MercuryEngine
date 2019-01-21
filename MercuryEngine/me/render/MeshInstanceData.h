@@ -3,6 +3,7 @@
 #pragma once
 
 #include <me/render/Geometry.h>
+#include <me/render/IConstantBuffer.h>
 #include <me/frameanimation/FrameAnimationSet.h>
 #include <unify/FrameSetInstance.h>
 
@@ -29,7 +30,7 @@ namespace me
 			virtual void RemoveAllAnimations() = 0;
 		};
 
-		class MeshInstanceData : public GeometryInstanceData, public MeshAnimatorInterface
+		class MeshInstanceData : public GeometryInstanceData
 		{
 		public:
 			MeshInstanceData( const unify::FrameSet & frameSet, const frameanimation::AnimationSet & animationSet );

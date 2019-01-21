@@ -37,7 +37,7 @@ namespace me
 			Geometry();
 			virtual ~Geometry() {}
 
-			virtual GeometryInstanceData * CreateInstanceData();
+			virtual GeometryInstanceData::ptr CreateInstanceData() const;
 
 			virtual void Update( const UpdateParams & params, GeometryInstanceData * instanceData ) = 0;
 			virtual void Render( const Params & params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) = 0;

@@ -9,6 +9,8 @@ namespace sg
     struct CircleParameters : public ShapeBaseParameters
     {
         CircleParameters();
+		CircleParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
 	    CircleParameters & SetSegments( unsigned int segments );
 	    CircleParameters & SetRadius( float radius );

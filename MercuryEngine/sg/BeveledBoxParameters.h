@@ -11,6 +11,8 @@ namespace sg
     struct BeveledBoxParameters : public ShapeBaseParameters
     {
         BeveledBoxParameters();
+		BeveledBoxParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
         BeveledBoxParameters & SetBBox( const unify::BBox< float > & bbox, unify::Matrix & transformation = unify::MatrixIdentity() );
         BeveledBoxParameters & SetInf( const unify::V3< float > & inf, unify::Matrix & transformation = unify::MatrixIdentity() );

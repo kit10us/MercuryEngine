@@ -9,6 +9,8 @@ namespace sg
     struct PointRingParameters : public ShapeBaseParameters
     {
         PointRingParameters();
+		PointRingParameters( const ShapeBaseParameters & parameters );
+
         unify::Parameters & Reset();
         PointRingParameters & SetMajorRadius( const float radius );
         PointRingParameters & SetMinorRadius( const float radius );

@@ -30,6 +30,7 @@ namespace me
 			void Render( const render::Params & params, render::MatrixFeed & matrixFeed ) const;
 
 			BufferSet & AddBufferSet();
+			BufferSet & AddBufferSet( BufferSet::ptr bufferSet );
 			void RemoveBufferSet( size_t i );
 			void RemoveAllBufferSets();
 
@@ -49,7 +50,7 @@ namespace me
 
 		protected:
 			IRenderer * m_renderer;
-			std::vector< BufferSet::shared_ptr > m_buffers;
+			std::vector< BufferSet::ptr > m_buffers;
 			unify::FrameSet m_frameSet;
 			frameanimation::AnimationSet m_animationSet;
 		};

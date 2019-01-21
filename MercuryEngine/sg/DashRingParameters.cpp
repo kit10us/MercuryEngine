@@ -11,6 +11,11 @@ DashRingParameters::DashRingParameters()
 {
 }
 
+DashRingParameters::DashRingParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::DashRing )
+{
+}
+
 unify::Parameters & DashRingParameters::Reset()
 {
     Reset();

@@ -11,6 +11,11 @@ ConeParameters::ConeParameters()
 {
 }
 
+ConeParameters::ConeParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Cone )
+{
+}
+
 unify::Parameters & ConeParameters::Reset()
 {
     Reset();

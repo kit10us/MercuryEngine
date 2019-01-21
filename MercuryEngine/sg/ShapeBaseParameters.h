@@ -16,7 +16,9 @@ namespace sg
     {
         ShapeBaseParameters();
         ShapeBaseParameters( Shape::TYPE type );
-    	ShapeBaseParameters & SetDiffuse( unify::Color diffuse );
+		ShapeBaseParameters( const ShapeBaseParameters & parameters, Shape::TYPE type );
+
+		ShapeBaseParameters & SetDiffuse( unify::Color diffuse );
     	ShapeBaseParameters & SetSpecular( unify::Color specular );
         ShapeBaseParameters & SetCenter( unify::V3< float > center );
 	    ShapeBaseParameters & SetTextureMode( int textureMode );

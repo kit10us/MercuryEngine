@@ -10,9 +10,9 @@ Geometry::Geometry()
 {
 }
 
-GeometryInstanceData * Geometry::CreateInstanceData()
+GeometryInstanceData::ptr Geometry::CreateInstanceData() const
 {
-	return 0;
+	return GeometryInstanceData::ptr {};
 }
 
 unify::BBox< float > & Geometry::GetBBox()

@@ -11,6 +11,11 @@ PlaneParameters::PlaneParameters()
 {
 }
 
+PlaneParameters::PlaneParameters( const ShapeBaseParameters & parameters )
+	: ShapeBaseParameters( parameters, Shape::Plane )
+{
+}
+
 unify::Parameters & PlaneParameters::Reset()
 {
     Reset();
