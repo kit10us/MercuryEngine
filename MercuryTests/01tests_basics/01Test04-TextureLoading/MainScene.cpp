@@ -126,12 +126,12 @@ void MainScene::OnRender( RenderGirl renderGirl )
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-		params.renderer->Render( method, params.renderInfo, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effectBorg->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, effectBorg, method, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effectBorg->GetVertexShader()->GetConstantBuffer() );
 	}
 	{
 		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
 
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-		params.renderer->Render( method, params.renderInfo, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effect4->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, effect4, method, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effect4->GetVertexShader()->GetConstantBuffer() );
 	}
 }

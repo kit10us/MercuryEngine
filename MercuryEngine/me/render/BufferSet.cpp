@@ -103,7 +103,7 @@ void BufferSet::Render( const render::Params & params, render::MatrixFeed & matr
 	// Iterate through methods to render.
 	for( auto && method : m_RB )
 	{
-		params.renderer->Render( method, params.renderInfo, matrixFeed, method.effect->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, method.effect, method, matrixFeed, method.effect->GetVertexShader()->GetConstantBuffer() );
 		matrixFeed.Restart();
 	}
 }

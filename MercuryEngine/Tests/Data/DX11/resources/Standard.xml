@@ -1,0 +1,6 @@
+<xml>
+
+<asset type="effect" name="color3D" source="EffectColor.effect"/>
+<asset type="effect" name="texture3D" source="EffectTexture.effect"/>
+
+</xml>

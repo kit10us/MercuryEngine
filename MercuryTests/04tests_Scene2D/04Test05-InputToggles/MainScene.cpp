@@ -131,5 +131,5 @@ void MainScene::OnRender( RenderGirl renderGirl )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
 
 	unify::Matrix instance{ unify::Matrix( q ) };
-	params.renderer->Render( method, params.renderInfo, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ) );
+	params.renderer->Render( params.renderInfo, effect, method, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), method.effect->GetVertexShader()->GetConstantBuffer() );
 }

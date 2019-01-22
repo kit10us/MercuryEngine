@@ -7,6 +7,7 @@
 #include <me/render/IBuffer.h>
 #include <me/render/ResourceType.h>
 #include <me/render/ConstantTable.h>
+#include <me/render/RenderInfo.h>
 
 namespace me 
 {
@@ -39,6 +40,8 @@ namespace me
 			virtual void Destroy() = 0;
 
 			virtual size_t GetBufferCount() const = 0;
+
+			virtual void Update( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size ) = 0;
 
 			virtual void Use( size_t startSlot, size_t startBuffer ) = 0;
 

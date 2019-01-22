@@ -1,0 +1,8 @@
+<?xml profile="1.0" encoding="iso-8859-1"?>
+<xml>
+  <effect>
+    <pixelshader name="texture_and_color_2d" source="texture_and_color_2d.xml"/>
+    <vertexshader name="texture_and_color_2d" source="texture_and_color_2d.xml"/>
+    <texture name="borgcube" stage="0" source="borgcube.bmp"/>
+  </effect>
+</xml>

@@ -122,6 +122,6 @@ void MainScene::OnRender( RenderGirl renderGirl )
 
 	unify::Matrix instance = unify::Matrix( q );
 	auto cb = effect->GetVertexShader()->CreateConstantBuffer( me::render::BufferUsage::Dynamic );
-	renderGirl.GetParams()->renderer->Render( method, renderGirl.GetParams()->renderInfo, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), cb.get() );
+	renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, effect, method, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), cb.get() );
 
 }
