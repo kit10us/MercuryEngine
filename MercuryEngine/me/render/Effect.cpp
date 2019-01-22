@@ -68,50 +68,6 @@ Effect::ptr Effect::Duplicate()
 	return newEffect;
 }
 
-void Effect::UpdateData( const RenderInfo & renderInfo, const unify::Matrix * world, size_t world_size )
-{
-	unify::DataLock lock;
-
-	auto constantTable = m_vertexShader->GetConstantBuffer()->GetTable();
-
-	auto worldRef = constantTable->GetWorld();
-	auto viewRef = constantTable->GetView();
-	auto projRef = constantTable->GetProjection();
-
-	size_t bufferIndex = 0;
-	for( size_t bufferIndex = 0, buffer_count = constantTable->BufferCount(); bufferIndex < buffer_count; bufferIndex++ )
-	{
-		unify::DataLock lock;
-		m_vertexShader->GetConstantBuffer()->LockConstants( bufferIndex, lock );
-
-		// Set automatic variables...
-		
-		if ( bufferIndex == viewRef.buffer )
-		{
-			unsigned char * data = (lock.GetData<unsigned char>()) + viewRef.offsetInBytes;
-			unify::Matrix* matrix = (unify::Matrix*)data;
-			*matrix = renderInfo.GetViewMatrix();
-		}
-		
-		if ( bufferIndex == projRef.buffer )
-		{
-			unsigned char * data = (lock.GetData<unsigned char>()) + projRef.offsetInBytes;
-			unify::Matrix* matrix = (unify::Matrix*)data;
-			*matrix = renderInfo.GetProjectionMatrix();
-		}
-
-		if ( world_size != 0 && bufferIndex == worldRef.buffer )
-		{
-			unsigned char * data = (lock.GetData<unsigned char>()) + worldRef.offsetInBytes;
-			unify::Matrix* matrix = (unify::Matrix*)data;
-			*matrix = world[0];
-		}
-
-		m_vertexShader->GetConstantBuffer()->UnlockConstants( bufferIndex, lock );
-		bufferIndex++;
-	}
-}
-
 void Effect::Use( IRenderer* renderer, const RenderInfo & renderInfo )
 {		   
 	m_pixelShader->Use();
