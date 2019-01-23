@@ -14,15 +14,16 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
+	AddResources( unify::Path( "resources/Standard.me_res" ) );
+	auto colorEffect = GetAsset< Effect >( "ColorSimple" );
+	auto textureEffect = GetAsset< Effect>( "TextureSimple" );
+	auto textureAndColorEffect = GetAsset< Effect>( "TextureAndColor" );
+	auto programmaticTextureEffect( textureEffect->Duplicate() );
+
 	// Get the display's width and height.
 	const float screenWidth = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().width;
 	const float screenHeight = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;	
 	
-	// Add a color effect.
-	auto colorEffect = GetManager< Effect >()->Add( "color_2d", unify::Path( "EffectColor2D.effect" ) );
-	auto textureEffect = GetManager< Effect>()->Add( "texture_2d", unify::Path( "EffectTexture.effect" ) );
-	auto textureAndColorEffect = GetManager< Effect>()->Add( "texture_and_color_2d", unify::Path( "TextureAndColor2D.effect" ) );
-	auto programmaticTextureEffect( *colorEffect );
 
 	// Calculate vertex count and buffer size.
 	unsigned int vertexCount = 4;
@@ -36,63 +37,37 @@ void MainScene::OnStart()
 			{ 0.0f, screenHeight * 0.5f },	{ screenWidth * 0.5f, screenHeight * 0.5f },
 					{ screenWidth * 0.25f, screenHeight * 0.15f }
 		};
-	
-	// Quad effects.
+
+	// Color transition from different colored corners.
 	m_quads->AddBufferSet(
 		BufferSet::ptr(
 			new BufferSet( GetOS()->GetRenderer( 0 ), colorEffect )
 		) );
 
+	// Programmatic texture.
+	m_quads->AddBufferSet(
+		BufferSet::ptr(
+			new BufferSet( GetOS()->GetRenderer( 0 ), programmaticTextureEffect )
+		) );
+
+	// Solid texture.
 	m_quads->AddBufferSet(
 		BufferSet::ptr(
 			new BufferSet( GetOS()->GetRenderer( 0 ), textureEffect )
 		) );
 
+	// Texture and color.
 	m_quads->AddBufferSet(
 		BufferSet::ptr(
 			new BufferSet( GetOS()->GetRenderer( 0 ), textureAndColorEffect )
 		) );
 
+	// Texture and color with transparency.
 	m_quads->AddBufferSet(
 		BufferSet::ptr(
 			new BufferSet( GetOS()->GetRenderer( 0 ), textureAndColorEffect )
 		) );
 
-	m_quads->AddBufferSet(
-		BufferSet::ptr(
-			new BufferSet( GetOS()->GetRenderer( 0 ), textureAndColorEffect )
-		) );
-
-	/*
-	m_quads = std::vector< Quad >( 5 );
-
-	m_quads[ 0 ].effect = render::Effect::ptr( new render::Effect( *colorEffect ) );			// Per-vertex color.
-	m_quads[ 0 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-	m_quads[ 0 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-
-	m_quads[ 1 ].effect = render::Effect::ptr( new render::Effect( *textureEffect ) );			// Programmatic colored.
-	m_quads[ 1 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-	m_quads[ 1 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-
-	m_quads[ 2 ].effect = render::Effect::ptr( new render::Effect( *textureEffect ) );			// Textured.
-	m_quads[ 2 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-	m_quads[ 2 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-
-	m_quads[ 3 ].effect = render::Effect::ptr( new render::Effect( *textureAndColorEffect ) );	// Textured and colored.
-	m_quads[ 3 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-	m_quads[ 3 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-
-	m_quads[ 4 ].effect = render::Effect::ptr( new render::Effect( *textureAndColorEffect ) );	// Textured, colored, and transparencies.
-	m_quads[ 4 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-	m_quads[ 4 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
-
-	// Quad depth.
-	m_quads[ 0 ].depth = 0.5f;
-	m_quads[ 1 ].depth = 0.5f;
-	m_quads[ 2 ].depth = 0.5f;
-	m_quads[ 3 ].depth = 0.5f;
-	m_quads[ 4 ].depth = 0.25f;
-	*/
 	float quadDepth[] =
 	{
 		0.5f,
@@ -115,17 +90,16 @@ void MainScene::OnStart()
 		programmaticTexture->LockRect( 0, lock, 0, unify::DataLockAccess::ReadWrite );
 
 		unify::ColorUnit * colorBuffer = reinterpret_cast< unify::ColorUnit * >(lock.pBits);
+		unify::ColorUnit color{};
 		for( unsigned int y = 0; y < lock.uHeight; y++ )
 		{
 			for( unsigned int x = 0; x < lock.uWidth; x++ ) 
 			{
-				colorBuffer[ x + y * lock.uWidth ] = 
-					unify::ColorUnitRGBA( 
-						(float)x / (float)lock.uWidth,
-						(float)y / (float)lock.uWidth,
-						(float)x / (float)lock.uWidth * (float)y / (float)lock.uWidth,
-						1.0f
-					);
+				color.component.r = (float)x / (float)lock.uWidth;
+				color.component.g = 1.0f - (float)y / (float)lock.uHeight;
+				color.component.b = (float)x / (float)lock.uWidth * (float)y / (float)lock.uHeight;
+				color.component.a = 1.0f;
+				colorBuffer[ x + y * lock.uWidth ] = color;
 			}
 		}
 

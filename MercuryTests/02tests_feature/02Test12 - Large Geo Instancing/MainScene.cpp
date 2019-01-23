@@ -56,9 +56,9 @@ void MainScene::OnStart()
 	coneParameters.SetDiffuse( unify::ColorGreen() );
 	Geometry::ptr geo3( sg::CreateShape( GetOS()->GetRenderer( 0 ), coneParameters ) );
 
-	size_t depth = 30;
-	size_t columns = 30;
-	size_t rows = 30;
+	size_t depth = 3;
+	size_t columns = 3;
+	size_t rows = 3;
 	float spacing = 2.0f;
 	for( size_t d = 0; d < depth; ++d )
 	{

@@ -15,9 +15,10 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	// Load effect...
-	auto effect = GetManager< Effect>()->Add( "textured3d", unify::Path( "EffectTexture.effect" ) );
-
+	AddResources( unify::Path( "resources/Standard.me_res" ) );
+	auto colorEffect = GetAsset< Effect >( "ColorSimple" );
+	auto textureEffect = GetAsset< Effect>( "TextureSimple" );
+	auto textureAndColorEffect = GetAsset< Effect>( "TextureAndColor" );
 	// Create mesh...
 	mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );
 
@@ -84,8 +85,8 @@ void MainScene::OnStart()
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
 	auto & bs = mesh->GetPrimitiveList().AddBufferSet();
-	bs.SetEffect( effect );
-	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	bs.SetEffect( textureEffect );
+	bs.AddVertexBuffer( { textureEffect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 	bs.AddMethod( RenderMethod::CreateTriangleList( 0, 12 ) );
 }
 

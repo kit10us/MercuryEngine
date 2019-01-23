@@ -11,18 +11,6 @@
 class MainScene : public me::scene::Scene
 {
 	me::render::PrimitiveList::ptr m_quads;
-		/*
-	struct Quad
-	{
-		me::render::Effect::ptr effect;
-		me::render::IConstantBuffer::ptr vertexCB;
-		me::render::IConstantBuffer::ptr pixelCB;
-		me::render::IVertexBuffer::ptr vertexBuffer;
-		float depth;
-	};
-
-	std::vector< Quad > m_quads;
-	*/
 
 public:
 	MainScene( me::game::Game * gameInstance );
