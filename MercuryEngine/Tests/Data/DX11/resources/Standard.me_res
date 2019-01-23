@@ -1,0 +1,7 @@
+<res>
+
+<asset type="effect" name="ColorSimple" source="ColorSimple.effect"/>
+<asset type="effect" name="TextureSimple" source="TextureSimple.effect"/>
+<asset type="effect" name="TextureAndColor" source="TextureAndColor.effect"/>
+
+</res>

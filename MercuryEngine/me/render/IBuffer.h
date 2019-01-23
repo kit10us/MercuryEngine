@@ -38,31 +38,61 @@ namespace me
 			unsigned int bindFlags;
 		};
 
+
+		/// <summary>
+		/// A collection of buffers of a particular buffer instance. For example, if we have a buffer for a texture, this would hold all necessary buffers internally to contribute to the entirty of the texture.
+		/// </summary>
 		class IBuffer
 		{
 		public:
 			typedef std::shared_ptr< IBuffer > ptr;
-
+						
 			virtual ~IBuffer() {}
-			//virtual void Create( BufferParameters parameters ) = 0;
+
+			/// <summary>
+			/// Delete all buffer data, keeping parameters.
+			/// </summary>
 			virtual void Destroy() = 0;
 
+			///
+			/// Get the number of internal buffers.
+			/// </summary>
 			virtual size_t GetBufferCount() const = 0;
 
+			/// <summary>
+			/// Perform and action required to use the buffer, such as setting it as an active render resource.
+			/// </summary>
 			virtual void Use( size_t startBuffer = 0, size_t startSlot = 0 ) const = 0;
 
+			/// <summary>
+			/// Lock a sub-buffer.
+			/// </sumamry>
 			virtual void Lock( size_t bufferIndex, unify::DataLock & lock ) = 0;
+
+			/// <summary>
+			/// Unlock a sub-buffer for read-only access.
+			/// </sumamry>
 			virtual void LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const = 0;
+			
+			/// <summary>
+			/// Unlock a sub-buffer.
+			/// </summary>
 			virtual void Unlock( size_t bufferIndex, unify::DataLock & lock ) = 0;
+
+			/// <summary>
+			/// Unlock a sub-buffer currently locked for read-only access.
+			/// </summary>
 			virtual void UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const = 0;
 
+			/// <summary>
+			/// Returns true of a specific sub-buffer is locked, else false.
+			/// </summary>
 			virtual bool Locked( size_t bufferIndex ) const = 0;
 
+			/// <summary>
+			/// Get a sub-buffers usage.
+			/// </summary>
 			virtual me::render::BufferUsage::TYPE GetUsage( size_t bufferIndex ) const = 0;
-
-			virtual size_t GetStride( size_t bufferIndex ) const = 0;
-			virtual size_t GetSizeInBytes( size_t bufferIndex ) const = 0;
-			virtual size_t GetLength( size_t bufferIndex ) const = 0;
 		};
 	}
 }

@@ -1,11 +1,12 @@
+<?xml profile="1.0" encoding="iso-8859-1"?>
 <xml>
-  <pixelshader name="textured3D">
-    <source>texture3d.hlsl</source>
+  <pixelshader name="TextureAndColor">
+    <source>TextureAndColor.hlsl</source>
     <entry>ps_main</entry>
     <profile>ps_4_0</profile>
   </pixelshader>
-  <vertexshader name="textured3D">
-    <source>texture3d.hlsl</source>
+  <vertexshader name="TextureAndColor">
+    <source>TextureAndColor.hlsl</source>
     <entry>vs_main</entry>
     <profile>vs_4_0</profile>
 	<constants>
@@ -18,6 +19,7 @@
     <vertexformat>
 	  <slot>
 	    <element name="Position" type="Float3"/>
+		<element name="Diffuse" type="Float4"/>
 	    <element name="Tex" type="TexCoord"/>
 	  </slot>
 	</vertexformat>

@@ -42,11 +42,6 @@ namespace me
 			/// Create index buffer.
 			/// </summary>
 			virtual void Create( IndexBufferParameters parameters ) = 0;
-
-			/// <summary>
-			/// Get the stride, the size in byes, of the elements in the buffer.
-			/// </summary>
-			virtual size_t GetStride( size_t bufferIndex ) const = 0;
 		};
 	}
 }

@@ -7,21 +7,6 @@ using namespace me;
 using namespace scene;
 using namespace component;
 
-namespace {
-	std::map< std::string, int, unify::string::CaseInsensitiveLessThanTest > g_ValuesMap
-	{
-		// Name, Index into value.
-		{ "typename", 0 },
-		{ "enabled", 1 },
-	};
-
-	std::vector< std::string > g_ValuesList
-	{
-		{ "typename" },
-		{ "enabled" },
-	};
-}
-
 SceneComponent::SceneComponent( os::IOS * os, std::string typeName )
 	: m_os{ os }
 	, m_typeName{ typeName }

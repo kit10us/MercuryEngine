@@ -354,9 +354,6 @@
     <ClInclude Include="me\action\ToggleAction.h">
       <Filter>me\action</Filter>
     </ClInclude>
-    <ClInclude Include="me\scene\ISceneFactory.h">
-      <Filter>me\scene</Filter>
-    </ClInclude>
     <ClInclude Include="me\object\action\IObjectAction.h">
       <Filter>me\object\action</Filter>
     </ClInclude>

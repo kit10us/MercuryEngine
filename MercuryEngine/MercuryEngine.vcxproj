@@ -186,7 +186,6 @@
     <ClInclude Include="me\scene\IObjectAllocator.h" />
     <ClInclude Include="me\scene\IOctreeNode.h" />
     <ClInclude Include="me\scene\IScene.h" />
-    <ClInclude Include="me\scene\ISceneFactory.h" />
     <ClInclude Include="me\scene\ObjectAllocator.h" />
     <ClInclude Include="me\scene\ObjectStack.h" />
     <ClInclude Include="me\scene\Octree.h" />

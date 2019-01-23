@@ -1,6 +1,0 @@
-<xml>
-
-<asset type="vertexshader" name="ColorInstanced_ambient" source="ColorInstanced_ambient.xml"/>
-<asset type="pixelshader" name="ColorInstanced_ambient" source="ColorInstanced_ambient.xml"/>
-
-</xml>

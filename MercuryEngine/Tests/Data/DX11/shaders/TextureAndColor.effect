@@ -3,5 +3,6 @@
   <effect>
     <pixelshader name="TextureAndColor" source="TextureAndColor.xml"/>
     <vertexshader name="TextureAndColor" source="TextureAndColor.xml"/>
+	<texture name="Test" stage="0" source="heart01.png"/>
   </effect>
 </xml>
