@@ -38,8 +38,9 @@ void sg::CreateShape_Pyramid( IRenderer * renderer, PrimitiveList & primitiveLis
 	size *= 0.5f;
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0 ) );
 
 	unsigned short stream = 0;
 

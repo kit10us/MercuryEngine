@@ -184,7 +184,7 @@ void Image::Render( const render::Params & params )
 
 	m_vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 2, m_effect ) );
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, 2 ) );
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );

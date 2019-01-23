@@ -44,9 +44,10 @@ void sg::CreateShape_DashRing( IRenderer * renderer, PrimitiveList & primitiveLi
 	unsigned int totalTriangles = facesPerSegment * count;
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
 	// Method 1 - Triangle List...
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0 ) );
 
 	char * vertices = new char[vd->GetSizeInBytes( 0 ) * totalVertices];
 	DataLock lock( vertices, vd->GetSizeInBytes( 0 ), totalVertices, DataLockAccess::ReadWrite, 0 );

@@ -17,6 +17,16 @@ BufferSet::~BufferSet()
 {
 }
 
+void BufferSet::SetEffect( Effect::ptr effect )
+{
+	m_effect = effect;
+}
+
+Effect::ptr BufferSet::GetEffect() const
+{
+	return m_effect;
+}
+
 IVertexBuffer::ptr BufferSet::AddVertexBuffer( VertexBufferParameters parameters )
 {
 	m_VB = m_renderer->ProduceVB( parameters );
@@ -103,7 +113,7 @@ void BufferSet::Render( const render::Params & params, render::MatrixFeed & matr
 	// Iterate through methods to render.
 	for( auto && method : m_RB )
 	{
-		params.renderer->Render( params.renderInfo, method.effect, method, matrixFeed, method.effect->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, m_effect, method, matrixFeed, m_effect->GetVertexShader()->GetConstantBuffer() );
 		matrixFeed.Restart();
 	}
 }

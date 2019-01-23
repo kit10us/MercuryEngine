@@ -34,8 +34,9 @@ void sg::CreateShape_PointRing( IRenderer * renderer, PrimitiveList & primitiveL
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
-	set.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
+	set.AddMethod( RenderMethod::CreatePointList( 0, count ) );
 
 	V3< float > vec;
 	V2< float > vPos2;	// Initial position ( by radius1 )

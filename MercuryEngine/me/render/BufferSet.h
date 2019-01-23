@@ -26,6 +26,9 @@ namespace me
 
 			BufferSet( const BufferSet & ) = delete;
 
+			void SetEffect( Effect::ptr effect );
+			Effect::ptr GetEffect() const;
+
 			IVertexBuffer::ptr AddVertexBuffer( VertexBufferParameters parameters );
 			IVertexBuffer::ptr GetVertexBuffer();
 			const IVertexBuffer::ptr GetVertexBuffer() const;
@@ -49,6 +52,7 @@ namespace me
 		private:
 			IRenderer * m_renderer;
 			bool m_enabled;
+			Effect::ptr m_effect;
 			IVertexBuffer::ptr m_VB;
 			IIndexBuffer::ptr m_IB;
 			std::vector< RenderMethod > m_RB;

@@ -51,7 +51,7 @@ RenderMethod::RenderMethod()
 {
 }
 
-RenderMethod::RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::ptr effect, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
+RenderMethod::RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
 : primitiveType( type )
 , startVertex( startVertex )
 , baseVertexIndex( 0 )
@@ -60,14 +60,13 @@ RenderMethod::RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, 
 , startIndex( 0 )
 , primitiveCount( primitiveCount )
 , indexCount( 0 )
-, effect( effect )
 , useIB( useIB )
 , vertexBufferIndex( vertexBufferIndex )
 , indexBufferIndex( indexBufferIndex )
 {
 }
 
-RenderMethod::RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::ptr effect, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
+RenderMethod::RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, bool useIB, size_t vertexBufferIndex, size_t indexBufferIndex )
 : primitiveType( type )
 , startVertex( 0 )
 , baseVertexIndex( baseVertexIndex )
@@ -76,7 +75,6 @@ RenderMethod::RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsig
 , startIndex( startIndex )
 , primitiveCount( primitiveCount )
 , indexCount( 0 )
-, effect( effect )
 , useIB( useIB )
 , vertexBufferIndex( vertexBufferIndex )
 , indexBufferIndex( indexBufferIndex )
@@ -93,7 +91,7 @@ unsigned int RenderMethod::VertexCountInATriangleList( unsigned int triangleCoun
 	return triangleCount * 3;
 }
 
-RenderMethod RenderMethod::CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::ptr effect )
+RenderMethod RenderMethod::CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount )
 {
 	RenderMethod method;
 	method.primitiveType = PrimitiveType::TriangleStrip;
@@ -104,14 +102,13 @@ RenderMethod RenderMethod::CreateTriangleStrip( unsigned int startVertex, unsign
 	method.startIndex = 0;
 	method.primitiveCount = segmentCount;
 	method.indexCount = 0;
-	method.effect = effect;
 	method.useIB = false;
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
 }
 
-RenderMethod RenderMethod::CreateTriangleList( unsigned int startVertex, unsigned int triangleCount, Effect::ptr effect )
+RenderMethod RenderMethod::CreateTriangleList( unsigned int startVertex, unsigned int triangleCount )
 {
 	RenderMethod method;
 	method.primitiveType = PrimitiveType::TriangleList;
@@ -122,14 +119,13 @@ RenderMethod RenderMethod::CreateTriangleList( unsigned int startVertex, unsigne
 	method.startIndex = 0;
 	method.primitiveCount = triangleCount;
 	method.indexCount = 0;
-	method.effect = effect;
 	method.useIB = false;
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
 }
 
-RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::ptr effect )
+RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned int pointCount )
 {
 	RenderMethod method;
 	method.primitiveType = PrimitiveType::PointList;
@@ -140,14 +136,13 @@ RenderMethod RenderMethod::CreatePointList( unsigned int startVertex, unsigned i
 	method.startIndex = 0;
 	method.primitiveCount = pointCount;
 	method.indexCount = 0;
-	method.effect = effect;
 	method.useIB = false;
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
 }
 
-RenderMethod RenderMethod::CreateLineList( unsigned int startVertex, unsigned int lineCount, Effect::ptr effect )
+RenderMethod RenderMethod::CreateLineList( unsigned int startVertex, unsigned int lineCount )
 {
 	RenderMethod method;
 	method.primitiveType = PrimitiveType::LineList;
@@ -158,15 +153,13 @@ RenderMethod RenderMethod::CreateLineList( unsigned int startVertex, unsigned in
 	method.startIndex = 0;
 	method.primitiveCount = lineCount;
 	method.indexCount = 0;
-	method.effect = effect;
 	method.useIB = false;
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
 }
 
-// indexCount, startIndex, baseVertexIndex
-RenderMethod RenderMethod::CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect )
+RenderMethod RenderMethod::CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex )
 {
 	RenderMethod method;
 	method.primitiveType = PrimitiveType::TriangleStrip;
@@ -177,14 +170,13 @@ RenderMethod RenderMethod::CreateTriangleStripIndexed( size_t vertexCount, unsig
 	method.startIndex = startIndex;
 	method.primitiveCount = indexCount - 2;
 	method.indexCount = indexCount;
-	method.effect = effect;
 	method.useIB = true;
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
 }
 
-RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect )
+RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex )
 {
 	RenderMethod method;
 	method.primitiveType = PrimitiveType::TriangleList;
@@ -195,14 +187,8 @@ RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsign
 	method.startIndex = startIndex;
 	method.primitiveCount = indexCount / 3;
 	method.indexCount = indexCount;
-	method.effect = effect;
 	method.useIB = true;
 	method.vertexBufferIndex = 0;
 	method.indexBufferIndex = 0;
 	return method;
 }								   
-
-bool RenderMethod::IsTrans() const
-{
-	return effect->IsTrans();
-}

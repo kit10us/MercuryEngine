@@ -221,11 +221,11 @@ void TextElement::Render( const render::Params & params )
 
 	m_vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2, m_effect ) );
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2 ) );
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
-	params.renderer->Render( params.renderInfo, method.effect, method, matrixFeed, method.effect->GetVertexShader()->GetConstantBuffer() );
+	params.renderer->Render( params.renderInfo, m_effect, method, matrixFeed, m_effect->GetVertexShader()->GetConstantBuffer() );
 }
 		
 void TextElement::OnSuspend()

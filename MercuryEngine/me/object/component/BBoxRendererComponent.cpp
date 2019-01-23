@@ -153,10 +153,11 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 
 		BufferSet & set = mesh->GetPrimitiveList().AddBufferSet();
 		set.ClearMethods();
+		set.SetEffect( m_effect );
 
 		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } } };
 		set.AddVertexBuffer( vbParameters );
-		set.AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount, m_effect ) );
+		set.AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount ) );
 
 		m_geometry.reset( mesh );
 		GetObject()->MakeDirty();

@@ -104,13 +104,7 @@ bool PrimitiveList::IsTrans() const
 {
 	for( const auto & bs : m_buffers )
 	{
-		for( const auto & method : bs->GetRenderMethodBuffer() )
-		{
-			if( method.IsTrans() )
-			{
-				return true;
-			}
-		}
+		return bs->GetEffect()->IsTrans();
 	}
 	return false;
 }

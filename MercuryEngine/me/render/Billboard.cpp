@@ -39,8 +39,9 @@ Billboard::Billboard( IRenderer * renderer, float size, Effect::ptr effect )
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
 	auto & bs = m_primitiveList.AddBufferSet();
+	bs.SetEffect( effect );
 	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
-	bs.AddMethod( RenderMethod::CreateTriangleList( 0, 2, effect ) );
+	bs.AddMethod( RenderMethod::CreateTriangleList( 0, 2 ) );
 }
 
 Billboard::~Billboard()

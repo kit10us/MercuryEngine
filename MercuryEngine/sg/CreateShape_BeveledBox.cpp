@@ -58,8 +58,9 @@ void sg::CreateShape_BeveledBox( IRenderer * renderer, PrimitiveList & primitive
 	size_t vertexCount = totalVertices;
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
-	set.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, effect, true ) );
+	set.AddMethod( RenderMethod( PrimitiveType::TriangleList, 0, 0, totalVertices, 0, totalTriangles, true ) );
 
 	// Set the vertices from the TEMP vertices...
 	std::shared_ptr< unsigned char > verticesRaw( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );

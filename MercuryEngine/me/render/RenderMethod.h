@@ -31,23 +31,22 @@ namespace me
 		class RenderMethod
 		{
 		public: // TODO: Make private.
-			RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, Effect::ptr, bool useIB = false, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
-			RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, Effect::ptr effect, bool useIB = true, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
+			RenderMethod( PrimitiveType::TYPE type, unsigned int startVertex, unsigned int vertexCount, unsigned int primitiveCount, bool useIB = false, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
+			RenderMethod( PrimitiveType::TYPE type, int baseVertexIndex, unsigned int minIndex, unsigned int vertexCount, unsigned int startIndex, unsigned int primitiveCount, bool useIB = true, size_t vertexBufferIndex = 0, size_t indexBufferIndex = 0 );
+
 		public:
 			RenderMethod();
 
-			static RenderMethod CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount, Effect::ptr effect );
-			static RenderMethod CreateTriangleList( unsigned int startVertex, unsigned int triangleCount, Effect::ptr effect );
-			static RenderMethod CreatePointList( unsigned int startVertex, unsigned int pointCount, Effect::ptr effect );
-			static RenderMethod CreateLineList( unsigned int startVertex, unsigned int lineCount, Effect::ptr effect );
+			static RenderMethod CreateTriangleStrip( unsigned int startVertex, unsigned int segmentCount );
+			static RenderMethod CreateTriangleList( unsigned int startVertex, unsigned int triangleCount );
+			static RenderMethod CreatePointList( unsigned int startVertex, unsigned int pointCount );
+			static RenderMethod CreateLineList( unsigned int startVertex, unsigned int lineCount );
 
-			static RenderMethod CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect );
-			static RenderMethod CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex, Effect::ptr effect );
+			static RenderMethod CreateTriangleStripIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex );
+			static RenderMethod CreateTriangleListIndexed( size_t vertexCount, unsigned int indexCount, unsigned int startIndex, unsigned int baseVertexIndex );
 
 			static unsigned int VertexCountInATriangleStrip( unsigned int triangleCount );
 			static unsigned int VertexCountInATriangleList( unsigned int triangleCount );
-
-			bool IsTrans() const;
 
 		public:
 			PrimitiveType::TYPE primitiveType;
@@ -58,7 +57,6 @@ namespace me
 			unsigned int startIndex;
 			unsigned int primitiveCount;
 			unsigned int indexCount;
-			Effect::ptr effect;
 			bool useIB;
 			size_t vertexBufferIndex;
 			size_t indexBufferIndex;

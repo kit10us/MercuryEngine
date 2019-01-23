@@ -43,6 +43,7 @@ void sg::CreateShape_Tube( IRenderer * renderer, PrimitiveList & primitiveList, 
 
 	// a segment is made up of two triangles... segments * 2 = NumTriangles
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
@@ -78,16 +79,16 @@ void sg::CreateShape_Tube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	unsigned int verticesPerSide = segments * 2 + 2;
 
 	// Method 1 - Triangle Strip (Top)
-	set.AddMethod( RenderMethod::CreateTriangleStrip( 0 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 0 * verticesPerSide, trianglesPerSide ) );
 
 	// Method 2 - Triangle Strip (Bottom)
-	set.AddMethod( RenderMethod::CreateTriangleStrip( 1 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 1 * verticesPerSide, trianglesPerSide ) );
 
 	// Method 3 - Triangle Strip (Outside)
-	set.AddMethod( RenderMethod::CreateTriangleStrip( 2 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 2 * verticesPerSide, trianglesPerSide ) );
 
 	// Method 4 - Triangle Strip (Inside)
-	set.AddMethod( RenderMethod::CreateTriangleStrip( 3 * verticesPerSide, trianglesPerSide, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 3 * verticesPerSide, trianglesPerSide ) );
 
 	V vertex;
 	float radiansChange = PI2 / segments;

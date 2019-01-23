@@ -187,8 +187,9 @@ bool Sheet::Create( PrimitiveList & primitiveList, unify::Size< float > size, Ef
 		}
 	}
 
+	set.SetEffect( effect );
 	set.AddVertexBuffer( vbParameters );
 	set.AddIndexBuffer( { { { indexCount, &indices[0] } }, bufferUsage } );
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( 0, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( 0, indexCount, 0, 0 ) );
 	return true;
 }

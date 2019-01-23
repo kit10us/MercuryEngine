@@ -37,9 +37,10 @@ void sg::CreateShape_Circle( IRenderer * renderer, PrimitiveList & primitiveList
 	size_t indexCount = segments * 3;
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
 	// Method 1 - Fan
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0 ) );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vertexCount * vd->GetSizeInBytes( 0 )] );
 	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );

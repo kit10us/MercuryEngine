@@ -147,8 +147,9 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	m_minmax.Clear();
 
 	BufferSet & set = GetPrimitiveList().AddBufferSet();
+	set.SetEffect( effect );
 
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0 ) );
 
 	unify::BBox< float > bbox;
 

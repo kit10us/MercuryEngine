@@ -202,7 +202,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						pt = PrimitiveType::StringToPrimitiveType( methodElement.GetAttribute< std::string >( "type" ) );
 
 						auto effect = effectManager->Find( methodElement.GetAttribute< std::string >( "effect" ) );
-
+						set.SetEffect( effect );
 
 						switch( pt )
 						{
@@ -210,8 +210,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						{
 							int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 							int lineCount = methodElement.GetAttribute< int >( "linecount" );
-							RenderMethod method( RenderMethod::CreateLineList( startVertex, lineCount, effect ) );
-							set.AddMethod( method );
+							set.AddMethod( RenderMethod::CreateLineList( startVertex, lineCount ) );
 							break;
 						}
 						case PrimitiveType::LineStrip:
@@ -221,8 +220,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						{
 							int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 							int pointCount = methodElement.GetAttribute< int >( "pointcount" );
-							RenderMethod method( RenderMethod::CreatePointList( startVertex, pointCount, effect ) );
-							set.AddMethod( method );
+							set.AddMethod( RenderMethod::CreatePointList( startVertex, pointCount ) );
 							break;
 						}
 						case PrimitiveType::TriangleList:
@@ -230,8 +228,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 							{
 								int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 								int triangleCount = methodElement.GetAttribute< int >( "trianglecount" );
-								RenderMethod method( RenderMethod::CreateTriangleList( startVertex, triangleCount, effect ));
-								set.AddMethod( method );
+								set.AddMethod( RenderMethod::CreateTriangleList( startVertex, triangleCount ) );
 							}
 							else
 							{
@@ -239,8 +236,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 								int indices = methodElement.GetAttribute< int >( "indices" );
 								int startIndex = methodElement.GetAttributeElse < int >("startindex", 0);
 								int baseVertexIndex = methodElement.GetAttributeElse< int >( "baseVertexIndex", 0 );
-								RenderMethod method( RenderMethod::CreateTriangleListIndexed( vertices, indices, startIndex, baseVertexIndex, effect ) );
-								set.AddMethod( method );
+								set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertices, indices, startIndex, baseVertexIndex ) );
 							}
 							break;
 						case PrimitiveType::TriangleStrip:
@@ -248,8 +244,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 							{
 								int startVertex = methodElement.GetAttributeElse< int >( "startvertex", 0 );
 								int segmentCount = methodElement.GetAttribute< int >( "segmentcount" );
-								RenderMethod method( RenderMethod::CreateTriangleStrip( startVertex, segmentCount, effect ) );
-								set.AddMethod( method );
+								set.AddMethod( RenderMethod::CreateTriangleStrip( startVertex, segmentCount ) );
 							}
 							else
 							{
@@ -257,8 +252,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 								int indices = methodElement.GetAttribute< int >( "indices" );
 								int startIndex = methodElement.GetAttributeElse < int >( "startindex", 0 );
 								int baseVertexIndex = methodElement.GetAttributeElse< int >( "baseVertexIndex", 0 );
-								RenderMethod method( RenderMethod::CreateTriangleStripIndexed( vertices, indices, startIndex, baseVertexIndex, effect ) );
-								set.AddMethod( method );
+								set.AddMethod( RenderMethod::CreateTriangleStripIndexed( vertices, indices, startIndex, baseVertexIndex ) );
 							}							
 							break;
 						default:

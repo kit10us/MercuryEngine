@@ -34,9 +34,10 @@ void sg::CreateShape_PointField( IRenderer * renderer, PrimitiveList & primitive
 	BufferUsage::TYPE bufferUsage = BufferUsage::FromString( parameters.Get( "bufferusage", DefaultBufferUsage ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
 	// Method 1 - Triangle List...
-	set.AddMethod( RenderMethod::CreatePointList( 0, count, effect ) );
+	set.AddMethod( RenderMethod::CreatePointList( 0, count ) );
 
 	// Randomize the vertices positions...
 	unify::V3< float > vec, norm;

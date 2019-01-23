@@ -51,6 +51,7 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 	}
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 	DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
@@ -60,11 +61,11 @@ void sg::CreateShape_Cone( IRenderer * renderer, PrimitiveList & primitiveList, 
 	std::vector< Index32 > indices( indexCount );
 
 	// Method 1 - Triangle Strip (sides)
-	set.AddMethod( RenderMethod::CreateTriangleStrip( 0, segments * 2, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleStrip( 0, segments * 2 ) );
 
 	if( caps )
 	{
-		set.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, 0, 0, effect ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( segments + 1, segments * 3, 0, 0 ) );
 	}
 
 	unsigned short stream = 0;

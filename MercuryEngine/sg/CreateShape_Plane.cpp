@@ -36,8 +36,9 @@ void sg::CreateShape_Plane( IRenderer * renderer, PrimitiveList & primitiveList,
 	size_t indexCount = 6 * segments * segments;
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0 ) );
 
 	unsigned short stream = 0;
 

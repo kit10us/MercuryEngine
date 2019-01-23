@@ -49,9 +49,10 @@ void sg::CreateShape_Sphere( IRenderer * renderer, PrimitiveList & primitiveList
 		unsigned int indexCount = iNumFaces * 3;			// Three indices to a triangle
 
 		BufferSet & set = primitiveList.AddBufferSet();
+		set.SetEffect( effect );
 
 		// Method 1 - Triangle List...
-		set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0, effect ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( vertexCount, indexCount, 0, 0 ) );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 		DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, DataLockAccess::ReadWrite, 0 );
@@ -147,9 +148,10 @@ void sg::CreateShape_Sphere( IRenderer * renderer, PrimitiveList & primitiveList
 		unsigned int indexCount = (iColumns * (2 * (iRows + 1))) + (((iColumns - 1) * 2));
 
 		BufferSet & set = primitiveList.AddBufferSet();
+		set.SetEffect( effect );
 
 		// Method 1 - Triangle Strip...
-		RenderMethod renderMethod( RenderMethod::CreateTriangleStripIndexed( vertexCount, indexCount, 0, 0, effect ) );
+		RenderMethod renderMethod( RenderMethod::CreateTriangleStripIndexed( vertexCount, indexCount, 0, 0 ) );
 		set.AddMethod( renderMethod );
 
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );

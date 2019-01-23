@@ -87,8 +87,9 @@ void sg::CreateShape_Cube( IRenderer * renderer, PrimitiveList & primitiveList, 
 	VertexDeclaration::ptr vFormat( new VertexDeclaration( jsonFormat ) );
 
 	BufferSet & set = primitiveList.AddBufferSet();
+	set.SetEffect( effect );
 
-	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0, effect ) );
+	set.AddMethod( RenderMethod::CreateTriangleListIndexed( totalVertices, totalIndices, 0, 0 ) );
 
 	// Set the TEMP vertices...
 	V vertices[8];
