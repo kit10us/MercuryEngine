@@ -19,10 +19,12 @@ void MainScene::OnStart()
 	const float height = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;
 
 	// Add a color effect.
-	effect = GetManager< Effect >()->Add( "color2d", unify::Path( "EffectColor2D.effect" ) );
+	m_effect = GetManager< Effect >()->Add( "color2d", unify::Path( "EffectColor2D.effect" ) );
+	m_vertexCB = m_effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_pixelCB = m_effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
 
 	// Get a vertex declaration.
-	auto vd = effect->GetVertexShader()->GetVertexDeclaration();
+	auto vd = m_effect->GetVertexShader()->GetVertexDeclaration();
 
 	// Calculate vertex count and buffer size.
 	unsigned int vertexCount = 4;
@@ -56,9 +58,9 @@ void MainScene::OnStart()
 	WriteVertex( *vd, lock, 3, colorE, unify::ColorUnit( 1, 1, 1, 1 ) );
 
 	// Create a vertex buffer from our temporary buffer...
-	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( 
+	m_vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( 
 	{ 
-		effect->GetVertexShader()->GetVertexDeclaration(), 
+		m_effect->GetVertexShader()->GetVertexDeclaration(), 
 		{ 
 			{ vertexCount, vertices.get() } 
 		}, 
@@ -67,7 +69,7 @@ void MainScene::OnStart()
 
 	// Add a test for an asset that doesn't exist, that we can resume from.
 	{ 
-		effect = GetManager< Effect >()->Add( "invalid", unify::Path( "Invalid.effect" ) );
+		m_effect = GetManager< Effect >()->Add( "invalid", unify::Path( "Invalid.effect" ) );
 	}
 }
 
@@ -80,10 +82,10 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( me::scene::RenderGirl renderGirl )
 {
-	vertexBuffer->Use();
+	m_vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
+	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2 ) );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, effect, method, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effect->GetVertexShader()->GetConstantBuffer() );
+	renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 }

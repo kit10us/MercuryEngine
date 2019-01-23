@@ -19,10 +19,10 @@ void MainScene::OnStart()
 	const float height = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;
 
 	// Add a color effect.
-	effect = GetManager< Effect >()->Add( "color2d", unify::Path( "EffectColor2D.effect" ) );
+	m_set.reset( new BufferSet( GetOS()->GetRenderer( 0 ), GetManager< Effect >()->Add( "color2d", unify::Path( "EffectColor2D.effect" ) ) ) );
 
 	// Get a vertex declaration.
-	auto vd = effect->GetVertexShader()->GetVertexDeclaration();
+	auto vd = m_set->GetEffect()->GetVertexShader()->GetVertexDeclaration();
 
 	// Calculate vertex count and buffer size.
 	unsigned int vertexCount = 4;
@@ -56,9 +56,9 @@ void MainScene::OnStart()
 	WriteVertex( *vd, lock, 3, colorE, unify::ColorUnit( 1, 1, 1, 1 ) );
 
 	// Create a vertex buffer from our temporary buffer...
-	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( 
+	m_set->AddVertexBuffer(
 	{ 
-		effect->GetVertexShader()->GetVertexDeclaration(), 
+		m_set->GetEffect()->GetVertexShader()->GetVertexDeclaration(), 
 		{ 
 			{ vertexCount, vertices.get() } 
 		}, 
@@ -75,10 +75,10 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( me::scene::RenderGirl renderGirl )
 {
-	vertexBuffer->Use();
+	m_set->GetVertexBuffer()->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, effect ) );
+	RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2 ) );
 
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, effect, method, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), method.effect->GetVertexShader()->GetConstantBuffer() );
+	renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, method, m_set.get(), render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 }

@@ -84,8 +84,9 @@ void MainScene::OnStart()
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
 	auto & bs = mesh->GetPrimitiveList().AddBufferSet();
+	bs.SetEffect( effect );
 	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
-	bs.AddMethod( RenderMethod::CreateTriangleList( 0, 12, effect ) );
+	bs.AddMethod( RenderMethod::CreateTriangleList( 0, 12 ) );
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )

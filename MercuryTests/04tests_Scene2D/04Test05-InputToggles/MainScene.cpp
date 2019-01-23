@@ -19,7 +19,11 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	effect = GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) );
+	m_set.reset( 
+		new BufferSet( 
+			GetOS()->GetRenderer( 0 ), 
+			GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectTexture.effect" ) )
+			) );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;
@@ -82,7 +86,7 @@ void MainScene::OnStart()
 		{ -xscalar, -yscalar, zscalar, 0.0f, 1.0f }
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
-	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_set->AddVertexBuffer( { m_set->GetEffect()->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 
 	// Add Canvas component...
 	canvas::CanvasComponent::ptr canvas( new canvas::CanvasComponent( GetGame() ) );
@@ -126,10 +130,9 @@ void MainScene::OnUpdate( const UpdateParams & params )
 void MainScene::OnRender( RenderGirl renderGirl )
 {
 	render::Params params = *renderGirl.GetParams();
-	vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12 ) );
 
 	unify::Matrix instance{ unify::Matrix( q ) };
-	params.renderer->Render( params.renderInfo, effect, method, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), method.effect->GetVertexShader()->GetConstantBuffer() );
+	params.renderer->Render( params.renderInfo, method, m_set.get(), render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 }

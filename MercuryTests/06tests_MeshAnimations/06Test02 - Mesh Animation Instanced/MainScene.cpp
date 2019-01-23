@@ -27,6 +27,7 @@ void MainScene::OnStart()
 	m_mesh.reset( new Mesh( GetOS()->GetRenderer( 0 ) ) );
 
 	auto & bs = m_mesh->GetPrimitiveList().AddBufferSet();
+	bs.SetEffect( effect );
 
 	struct Vertex
 	{
@@ -139,7 +140,7 @@ void MainScene::OnStart()
 	}
 
 	bs.AddIndexBuffer( { { { numberOfIndices, &ibRaw[0] } } } );
-	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, effect ) );
+	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0 ) );
 
 	// Create animation...
 	using namespace frameanimation;		

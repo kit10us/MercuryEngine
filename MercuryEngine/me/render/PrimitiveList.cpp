@@ -34,9 +34,8 @@ void PrimitiveList::Render( const render::Params & params, MatrixFeed & matrixFe
 
 BufferSet & PrimitiveList::AddBufferSet( BufferSet::ptr set )
 {
-	BufferSet::ptr newSet( new BufferSet( m_renderer ) );
-	m_buffers.push_back( newSet );
-	return *newSet.get();
+	m_buffers.push_back( set );
+	return *set;
 }
 
 BufferSet & PrimitiveList::AddBufferSet()

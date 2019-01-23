@@ -13,6 +13,12 @@ BufferSet::BufferSet(me::render::IRenderer * renderer )
 {
 }
 
+BufferSet::BufferSet( me::render::IRenderer * renderer, Effect::ptr effect )
+	: BufferSet( renderer )
+{
+	SetEffect( effect );
+}
+
 BufferSet::~BufferSet()
 {
 }
@@ -20,6 +26,8 @@ BufferSet::~BufferSet()
 void BufferSet::SetEffect( Effect::ptr effect )
 {
 	m_effect = effect;
+	m_vertexCB = effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_pixelCB = effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
 }
 
 Effect::ptr BufferSet::GetEffect() const
@@ -79,6 +87,26 @@ void BufferSet::ClearMethods()
 	m_RB.clear();
 }
 
+IConstantBuffer* BufferSet::GetVertexCB()
+{
+	return m_vertexCB.get();
+}
+
+const IConstantBuffer* BufferSet::GetVertexCB() const
+{
+	return m_vertexCB.get();
+}
+
+IConstantBuffer* BufferSet::GetPixelCB()
+{
+	return m_pixelCB.get();
+}
+
+const IConstantBuffer* BufferSet::GetPixelCB() const
+{
+	return m_pixelCB.get();
+}
+
 void BufferSet::Destroy()
 {
 	m_VB.reset();
@@ -113,7 +141,7 @@ void BufferSet::Render( const render::Params & params, render::MatrixFeed & matr
 	// Iterate through methods to render.
 	for( auto && method : m_RB )
 	{
-		params.renderer->Render( params.renderInfo, m_effect, method, matrixFeed, m_effect->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), matrixFeed );
 		matrixFeed.Restart();
 	}
 }

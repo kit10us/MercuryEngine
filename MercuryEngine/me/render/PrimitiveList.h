@@ -9,6 +9,7 @@
 #include <unify/BBox.h>
 #include <unify/BSphere.h>
 #include <unify/FrameLite.h>
+#include <memory>
 
 namespace me
 {
@@ -20,6 +21,8 @@ namespace me
 		class PrimitiveList
 		{
 		public:
+			typedef std::shared_ptr< PrimitiveList > ptr;
+
 			PrimitiveList( IRenderer * renderer );
 			~PrimitiveList();
 

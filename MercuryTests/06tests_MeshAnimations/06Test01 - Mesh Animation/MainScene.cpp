@@ -114,9 +114,10 @@ void MainScene::OnStart()
 	}
 
 	auto & bs = mesh->GetPrimitiveList().AddBufferSet();
+	bs.SetEffect( effect );
 	bs.AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 	bs.AddIndexBuffer( { { { numberOfIndices, &ibRaw[0] } } } );
-	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0, effect ) );
+	bs.AddMethod( RenderMethod::CreateTriangleListIndexed( numberOfVertices, numberOfIndices, 0, 0 ) );
 
 	// Create animation...
 	using namespace frameanimation;		

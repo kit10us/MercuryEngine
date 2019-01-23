@@ -4,11 +4,7 @@
 #pragma once
 
 #include <me/render/Display.h>
-#include <me/render/IConstantBuffer.h>
-#include <me/render/IVertexBuffer.h>
-#include <me/render/IIndexBuffer.h>
-#include <me/render/IVertexShader.h>
-#include <me/render/IPixelShader.h>
+#include <me/render/BufferSet.h>
 #include <me/render/ITexture.h>
 #include <me/render/RenderInfo.h>
 #include <me/render/Effect.h>
@@ -83,7 +79,15 @@ namespace me
 
 			virtual void* GetHandle() const = 0;
 
-			virtual void Render( const me::render::RenderInfo & renderInfo, me::render::Effect::ptr effect, const me::render::RenderMethod & method, me::render::MatrixFeed & matrixFeed, me::render::IConstantBuffer * constantBuffer ) = 0;
+			/// <summary>
+			/// Render geometry.
+			/// </summary>
+			virtual void Render( const RenderInfo & renderInfo, const RenderMethod & method, Effect::ptr effect, IConstantBuffer * vertexCB, IConstantBuffer * pixelCB, MatrixFeed & matrixFeed ) = 0;
+
+			/// <summary>
+			/// Render geometry.
+			/// </summary>
+			virtual void Render( const RenderInfo & renderInfo, const RenderMethod & method, BufferSet * bufferSet, MatrixFeed & matrixFeed ) = 0;
 
 			/// <summary>
 			/// Create a vertex buffer.

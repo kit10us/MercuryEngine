@@ -13,6 +13,8 @@ using namespace render;
 Image::Image( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: Element( gameInstance, offset, {0, 0}, anchor )
 	, m_effect( effect )
+	, m_vertexCB{ effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
+	, m_pixelCB{ effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
 	, m_changed( true )
 	, m_scale{ scale }
 	, m_shrinkToFit{ true }
@@ -188,7 +190,7 @@ void Image::Render( const render::Params & params )
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
-	params.renderer->Render( params.renderInfo, m_effect, method, matrixFeed, m_effect->GetVertexShader()->GetConstantBuffer() );
+	params.renderer->Render( params.renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), matrixFeed );
 }
 		
 void Image::OnSuspend()

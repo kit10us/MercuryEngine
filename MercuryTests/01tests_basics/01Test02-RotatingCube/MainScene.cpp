@@ -14,7 +14,8 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	effect = GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectColor.effect" ) );
+	auto effect = GetManager< Effect>()->Add( "texture3d", unify::Path( "EffectColor.effect" ) );
+	m_set.reset( new BufferSet( GetOS()->GetRenderer( 0 ), effect ) );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;
@@ -78,7 +79,8 @@ void MainScene::OnStart()
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_set->AddVertexBuffer( { effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_set->AddMethod( RenderMethod( RenderMethod::CreateTriangleList( 0, 12 ) ) );
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
@@ -108,7 +110,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 	unify::Matrix worldMatrixA = unify::MatrixIdentity();
 	worldMatrixA *= unify::MatrixRotationAboutAxis( axis, rotation );
 
-	q = unify::Quaternion( axis, rotation );
+	m_q = unify::Quaternion( axis, rotation );
 
 	params.renderInfo.SetViewMatrix( unify::MatrixLookAtLH( eye, at, up ) );
 	params.renderInfo.SetProjectionMatrix( unify::MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
@@ -116,12 +118,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	vertexBuffer->Use();
-
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect ) );
-
-	unify::Matrix instance = unify::Matrix( q );
-	auto cb = effect->GetVertexShader()->CreateConstantBuffer( me::render::BufferUsage::Dynamic );
-	renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, effect, method, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), cb.get() );
-
+	unify::Matrix instance = unify::Matrix( m_q );
+	m_set->Render( *renderGirl.GetParams(), render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 }

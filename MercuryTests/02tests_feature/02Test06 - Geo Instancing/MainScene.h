@@ -9,10 +9,14 @@
 
 class MainScene : public me::scene::Scene
 {
-	me::render::Effect::ptr effectBorg;
-	me::render::Effect::ptr effect4;
-	me::render::IVertexBuffer::ptr vertexBuffer;
-	unify::Quaternion q;
+	struct {
+		me::render::Effect::ptr effect;
+		me::render::IConstantBuffer::ptr vertexCB;
+		me::render::IConstantBuffer::ptr pixelCB;
+	} m_borg, m_4;
+	
+	me::render::IVertexBuffer::ptr m_vertexBuffer;
+	unify::Quaternion m_q;
 
 public:
 	MainScene( me::game::Game * gameInstance );

@@ -26,16 +26,6 @@ namespace me
 			/// </summary>
 			virtual IConstantBuffer::ptr CreateConstantBuffer( BufferUsage::TYPE usage ) const = 0;
 
-			/// <summary>
-			/// Get our constant buffer.
-			/// </summary>
-			virtual IConstantBuffer * GetConstantBuffer() = 0;
-
-			/// <summary>
-			/// Get our constant buffer.
-			/// </summary>
-			virtual const IConstantBuffer * GetConstantBuffer() const = 0;
-
 			virtual const void * GetBytecode() const = 0;
 			virtual size_t GetBytecodeLength() const = 0;
 			virtual void Use() = 0;

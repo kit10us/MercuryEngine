@@ -6,13 +6,17 @@
 #include <me/scene/Scene.h>
 #include <me/render/Effect.h>
 #include <me/render/IVertexBuffer.h>
+#include <me/render/BufferSet.h>
 #include <unify/Quaternion.h>
 
 class MainScene : public me::scene::Scene
 {
-	me::render::Effect::ptr effect;
-	me::render::IVertexBuffer::ptr vertexBuffer;
-	unify::Quaternion q;
+	me::render::BufferSet::ptr m_set;
+	/*me::render::Effect::ptr m_effect;
+	me::render::IConstantBuffer::ptr
+	me::render::IVertexBuffer::ptr m_vertexBuffer;*/
+
+	unify::Quaternion m_q;
 public:
 	MainScene( me::game::Game * gameInstance );
 

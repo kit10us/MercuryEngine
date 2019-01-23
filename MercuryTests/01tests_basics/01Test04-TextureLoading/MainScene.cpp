@@ -16,8 +16,8 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	effectBorg = GetManager< Effect>()->Add( "borg", unify::Path( "EffectTexture.effect" ) );
-	effect4 = GetManager< Effect>()->Add( "4", unify::Path( "Effect4.effect" ) );
+	m_borg.reset( new BufferSet( GetOS()->GetRenderer( 0 ), GetManager< Effect>()->Add( "borg", unify::Path( "EffectTexture.effect" ) ) ) );
+	m_effect4.reset( new BufferSet( GetOS()->GetRenderer( 0 ), GetManager< Effect>()->Add( "4", unify::Path( "Effect4.effect" ) ) ) );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;
@@ -81,7 +81,11 @@ void MainScene::OnStart()
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effectBorg->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_borg->AddVertexBuffer( { m_borg->GetEffect()->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_borg->AddMethod( RenderMethod::CreateTriangleList( 0, 12 ) );
+
+	m_effect4->AddVertexBuffer( { m_effect4->GetEffect()->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_effect4->AddMethod( RenderMethod::CreateTriangleList( 0, 12 ) );
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
@@ -118,20 +122,13 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	vertexBuffer->Use();
-
-	render::Params params = *renderGirl.GetParams();
-
+	const render::Params params = *renderGirl.GetParams();
 	{
-		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
-
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ) };
-		params.renderer->Render( params.renderInfo, effectBorg, method, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effectBorg->GetVertexShader()->GetConstantBuffer() );
+		m_borg->Render( params, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 	}
 	{
-		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
-
 		unify::Matrix instance { Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) ) };
-		params.renderer->Render( params.renderInfo, effect4, method, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ), effect4->GetVertexShader()->GetConstantBuffer() );
+		m_effect4->Render( params, render::MatrixFeed( MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 	}
 }

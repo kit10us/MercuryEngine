@@ -16,8 +16,13 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	effectBorg = GetManager< Effect>()->Add( "borg", unify::Path( "EffectTexture.effect" ) );
-	effect4 = GetManager< Effect>()->Add( "4", unify::Path( "Effect4.effect" ) );
+	m_borg.effect = GetManager< Effect>()->Add( "borg", unify::Path( "EffectTexture.effect" ) );
+	m_borg.vertexCB = m_borg.effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_borg.pixelCB = m_borg.effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+
+	m_4.effect = GetManager< Effect>()->Add( "4", unify::Path( "Effect4.effect" ) );
+	m_4.vertexCB = m_4.effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_4.pixelCB = m_4.effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
 
 	float xscalar = 10.0f;
 	float yscalar = 10.0f;
@@ -81,7 +86,7 @@ void MainScene::OnStart()
 	};
 	unsigned int numberOfVertices = sizeof( vbRaw ) / sizeof( Vertex );
 
-	vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { effectBorg->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
+	m_vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB( { m_borg.effect->GetVertexShader()->GetVertexDeclaration(), { { numberOfVertices, vbRaw } }, BufferUsage::Default } );
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
@@ -108,7 +113,7 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 	V3< float > axis( (axisIndex == 0) ? 1.0f : 0.0f, (axisIndex == 1) ? 1.0f : 0.0f, (axisIndex == 2) ? 1.0f : 0.0f );
 	
-	q = Quaternion( axis, rotation );
+	m_q = Quaternion( axis, rotation );
 
 	params.renderInfo.SetViewMatrix( MatrixLookAtLH( eye, at, up ) );
 	params.renderInfo.SetProjectionMatrix( MatrixPerspectiveFovLH( 3.1415926535f / 4.0f, width / height, 0.01f, 100.0f ) );
@@ -116,35 +121,35 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( RenderGirl renderGirl )
 {
-	vertexBuffer->Use();
+	m_vertexBuffer->Use();
 
 	render::Params params = *renderGirl.GetParams();
 
 	{
-		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effectBorg ) );
+		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12 ) );
 
 		unify::Matrix matrices[] =
 		{
-			Matrix( q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ),
-			Matrix( q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) )
+			Matrix( m_q ) * MatrixTranslate( V3< float >( -15, 15, 10 ) ),
+			Matrix( m_q ) * MatrixTranslate( V3< float >( 15, 15, 10 ) )
 		};
 
 		render::MatrixFood_Matrices food( matrices, 2 );
 		render::MatrixFeed feed( food, 1 );
-		params.renderer->Render( params.renderInfo, effectBorg, method, feed, effectBorg->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, method, m_borg.effect, m_borg.vertexCB.get(), m_borg.pixelCB.get(), feed );
 	}
 
 	{
-		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12, effect4 ) );
+		RenderMethod method( RenderMethod::CreateTriangleList( 0, 12 ) );
 
 		unify::Matrix matrices[] =
 		{
-			Matrix( q ) * MatrixTranslate( V3< float >( -15, -15, 10 ) ),
-			Matrix( q ) * MatrixTranslate( V3< float >( 15, -15, 10 ) )
+			Matrix( m_q ) * MatrixTranslate( V3< float >( -15, -15, 10 ) ),
+			Matrix( m_q ) * MatrixTranslate( V3< float >( 15, -15, 10 ) )
 		};
 
 		render::MatrixFood_Matrices food( matrices, 2 );
 		render::MatrixFeed feed( food, 1 );
-		params.renderer->Render( params.renderInfo, effect4, method, feed, effect4->GetVertexShader()->GetConstantBuffer() );
+		params.renderer->Render( params.renderInfo, method, m_4.effect, m_4.vertexCB.get(), m_4.pixelCB.get(), feed );
 	}
 }

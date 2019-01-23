@@ -14,8 +14,6 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
-	m_quads = std::vector< Quad >( 5 );
-
 	// Get the display's width and height.
 	const float screenWidth = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().width;
 	const float screenHeight = (float)GetOS()->GetRenderer( 0 )->GetDisplay().GetSize().height;	
@@ -29,6 +27,8 @@ void MainScene::OnStart()
 	// Calculate vertex count and buffer size.
 	unsigned int vertexCount = 4;
 
+	m_quads.reset( new PrimitiveList( GetOS()->GetRenderer( 0 ) ) );
+
 	// Quad positions.
 	std::vector< unify::V2< float > > quadPositions =
 		{ 
@@ -38,11 +38,53 @@ void MainScene::OnStart()
 		};
 	
 	// Quad effects.
+	m_quads->AddBufferSet(
+		BufferSet::ptr(
+			new BufferSet( GetOS()->GetRenderer( 0 ), colorEffect )
+		) );
+
+	m_quads->AddBufferSet(
+		BufferSet::ptr(
+			new BufferSet( GetOS()->GetRenderer( 0 ), textureEffect )
+		) );
+
+	m_quads->AddBufferSet(
+		BufferSet::ptr(
+			new BufferSet( GetOS()->GetRenderer( 0 ), textureAndColorEffect )
+		) );
+
+	m_quads->AddBufferSet(
+		BufferSet::ptr(
+			new BufferSet( GetOS()->GetRenderer( 0 ), textureAndColorEffect )
+		) );
+
+	m_quads->AddBufferSet(
+		BufferSet::ptr(
+			new BufferSet( GetOS()->GetRenderer( 0 ), textureAndColorEffect )
+		) );
+
+	/*
+	m_quads = std::vector< Quad >( 5 );
+
 	m_quads[ 0 ].effect = render::Effect::ptr( new render::Effect( *colorEffect ) );			// Per-vertex color.
+	m_quads[ 0 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_quads[ 0 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+
 	m_quads[ 1 ].effect = render::Effect::ptr( new render::Effect( *textureEffect ) );			// Programmatic colored.
+	m_quads[ 1 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_quads[ 1 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+
 	m_quads[ 2 ].effect = render::Effect::ptr( new render::Effect( *textureEffect ) );			// Textured.
+	m_quads[ 2 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_quads[ 2 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+
 	m_quads[ 3 ].effect = render::Effect::ptr( new render::Effect( *textureAndColorEffect ) );	// Textured and colored.
+	m_quads[ 3 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_quads[ 3 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+
 	m_quads[ 4 ].effect = render::Effect::ptr( new render::Effect( *textureAndColorEffect ) );	// Textured, colored, and transparencies.
+	m_quads[ 4 ].vertexCB = m_quads[0].effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic );
+	m_quads[ 4 ].pixelCB = m_quads[0].effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic );
 
 	// Quad depth.
 	m_quads[ 0 ].depth = 0.5f;
@@ -50,6 +92,15 @@ void MainScene::OnStart()
 	m_quads[ 2 ].depth = 0.5f;
 	m_quads[ 3 ].depth = 0.5f;
 	m_quads[ 4 ].depth = 0.25f;
+	*/
+	float quadDepth[] =
+	{
+		0.5f,
+		0.5f,
+		0.5f,
+		0.5f,
+		0.25f
+	};
 
 	// Programmatic texture.
 	{
@@ -80,18 +131,20 @@ void MainScene::OnStart()
 
 		programmaticTexture->UnlockRect( 0 );
 
-		m_quads[1].effect->SetTexture( 0, programmaticTexture );
+		m_quads->GetBufferSet( 1 ).GetEffect()->SetTexture( 0, programmaticTexture );
 	}
 
-	for ( unsigned int quad = 0; quad < 5; quad++ )
+	for ( unsigned int i = 0; i < 5; i++ )
 	{
 		using namespace unify;
 
+		auto & bs = m_quads->GetBufferSet( i );
+
 		// Get a vertex declarations.
-		auto vd = m_quads[ quad ].effect->GetVertexShader()->GetVertexDeclaration();
+		auto vd = bs.GetEffect()->GetVertexShader()->GetVertexDeclaration();
 
 		// Set a depth value to be used with all vertices.
-		float depth = m_quads[ quad ].depth;
+		float depth = quadDepth[ i ];
 
 		size_t sizeOfBufferInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
 
@@ -111,31 +164,33 @@ void MainScene::OnStart()
 
 		// Write to the vertex buffer elements...
 
-		WriteVertex( *vd, lock, 0, positionE, V3< float >( quadPositions[quad], depth ) );
+		WriteVertex( *vd, lock, 0, positionE, V3< float >( quadPositions[i], depth ) );
 		WriteVertex( *vd, lock, 0, colorE, ColorUnit( 1, 0, 0, 1 ) );
 		WriteVertex( *vd, lock, 0, textureE, TexCoords( 0, 0 ) );
 
-		WriteVertex( *vd, lock, 1, positionE, unify::V3< float >( quadPositions[quad] + unify::V2< float >( screenWidth, 0 ) * 0.5f, depth ) );
+		WriteVertex( *vd, lock, 1, positionE, unify::V3< float >( quadPositions[i] + unify::V2< float >( screenWidth, 0 ) * 0.5f, depth ) );
 		WriteVertex( *vd, lock, 1, colorE, unify::ColorUnit( 0, 1, 0, 1 ) );
 		WriteVertex( *vd, lock, 1, textureE, TexCoords( 1, 0 ) );
 
-		WriteVertex( *vd, lock, 2, positionE, unify::V3< float >( quadPositions[quad] + unify::V2< float >( 0, screenHeight ) * 0.5f, depth ) );
+		WriteVertex( *vd, lock, 2, positionE, unify::V3< float >( quadPositions[i] + unify::V2< float >( 0, screenHeight ) * 0.5f, depth ) );
 		WriteVertex( *vd, lock, 2, colorE, unify::ColorUnit( 0, 0, 1, 1 ) );
 		WriteVertex( *vd, lock, 2, textureE, TexCoords( 0, 1 ) );
 
-		WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( quadPositions[quad] + unify::V2< float >{ screenWidth, screenHeight } * 0.5f, depth ) );
+		WriteVertex( *vd, lock, 3, positionE, unify::V3< float >( quadPositions[i] + unify::V2< float >{ screenWidth, screenHeight } * 0.5f, depth ) );
 		WriteVertex( *vd, lock, 3, colorE, unify::ColorUnit( 1, 1, 1, 1 ) );
 		WriteVertex( *vd, lock, 3, textureE, TexCoords( 1, 1 ) );
 
 		// Create a vertex buffer from our temporary buffer...
-		m_quads[ quad ].vertexBuffer = GetOS()->GetRenderer( 0 )->ProduceVB(
+		bs.AddVertexBuffer( 
 		{ 
-			m_quads[quad].effect->GetVertexShader()->GetVertexDeclaration(),
+			bs.GetEffect()->GetVertexShader()->GetVertexDeclaration(),
 			{ 
 				{ vertexCount, vertices.get() } 
 			}, 
 			BufferUsage::Default 
 		} );
+
+		bs.AddMethod( RenderMethod::CreateTriangleStrip( 0, 2 ) );
 	}
 }
 
@@ -148,13 +203,6 @@ void MainScene::OnUpdate( const UpdateParams & params )
 
 void MainScene::OnRender( me::scene::RenderGirl renderGirl )
 {
-	for ( unsigned int quad = 0; quad < 5; quad++ )
-	{
-		m_quads[ quad ].vertexBuffer->Use();
-
-		RenderMethod method( RenderMethod::CreateTriangleStrip( 0, 2, m_quads[ quad ].effect ) );
-
-		unify::Matrix instance{ unify::MatrixIdentity() };
-		renderGirl.GetParams()->renderer->Render( renderGirl.GetParams()->renderInfo, method.effect, method, render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ), m_quads[ quad ].effect->GetVertexShader()->GetConstantBuffer() );
-	}
+	unify::Matrix instance{ unify::MatrixIdentity() };
+	m_quads->Render( *renderGirl.GetParams(), render::MatrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 ) );
 }

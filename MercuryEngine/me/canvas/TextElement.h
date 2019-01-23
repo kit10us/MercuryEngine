@@ -40,6 +40,8 @@ namespace me
 		private:
 			std::string m_text;
 			render::Effect::ptr m_effect;
+			render::IConstantBuffer::ptr m_vertexCB;
+			render::IConstantBuffer::ptr m_pixelCB;
 			render::IVertexBuffer::ptr m_vertexBuffer;
 			bool m_changed;
 			unify::V2< float > m_scale;

@@ -14,6 +14,8 @@ TextElement::TextElement( me::game::IGame * gameInstance, Effect::ptr effect, st
 	: Element( gameInstance, offset, {0, 0}, anchor )
 	, m_text( text )
 	, m_effect( effect )
+	, m_vertexCB{ effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
+	, m_pixelCB{ effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
 	, m_changed( true )
 	, m_scale{ scale }
 	, m_shrinkToFit{ true }
@@ -225,7 +227,7 @@ void TextElement::Render( const render::Params & params )
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
-	params.renderer->Render( params.renderInfo, m_effect, method, matrixFeed, m_effect->GetVertexShader()->GetConstantBuffer() );
+	params.renderer->Render( params.renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), matrixFeed );
 }
 		
 void TextElement::OnSuspend()

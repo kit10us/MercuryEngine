@@ -35,6 +35,7 @@ void MainScene::OnStart()
 		parameters.min = Filtering::Point;
 		parameters.mag = Filtering::Point;
 		parameters.mip = Filtering::Point;
+		parameters.usage = BufferUsage::Staging;
 		GetManager< ITexture >()->Add( "4", unify::Path( "4.bmp" ), unify::Path(), &parameters );
 	}
 

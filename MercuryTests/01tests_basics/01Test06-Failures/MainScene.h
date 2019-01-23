@@ -9,8 +9,11 @@
 
 class MainScene : public me::scene::Scene
 {
-	me::render::Effect::ptr effect;
-	me::render::IVertexBuffer::ptr vertexBuffer;
+	me::render::Effect::ptr m_effect;
+	me::render::IConstantBuffer::ptr m_vertexCB;
+	me::render::IConstantBuffer::ptr m_pixelCB;
+
+	me::render::IVertexBuffer::ptr m_vertexBuffer;
 
 public:
 	MainScene( me::game::Game * gameInstance );
