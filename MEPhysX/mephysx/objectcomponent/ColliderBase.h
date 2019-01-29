@@ -4,10 +4,10 @@
 #pragma once
 
 #include <MEPhysX.h>
-#include <me/object/ObjectComponent.h>
-#include <me/GeometryCache.h>
+#include <me/object/component/ObjectComponent.h>
+#include <me/render/GeometryCache.h>
 #include <mephysx/GameComponent.h>
-#include <me/IOS.h>
+#include <me/os/IOS.h>
 #include <PxPhysicsAPI.h>
 #include <mephysx/Releaser.h>
 

@@ -145,8 +145,6 @@ void DefaultDebug::DetachAllLogListeners()
 
 ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error )
 {
-	Block( this, "Debug" );
-
 	switch( level )
 	{
 	case me::ErrorLevel::Critical:
@@ -238,6 +236,11 @@ void DefaultDebug::PushBlock( std::string name )
 /// </summary>
 void DefaultDebug::PopBlock( std::string name )
 {
+	if ( m_criticalErrors.size() )
+	{
+		return; // Prevent block changes during a critical failure.
+	}
+
 	if ( (m_blocks.back()) != name )
 	{
 		this->ReportError( ErrorLevel::Critical, "DefaultDebug", "Top of block is not the same as block being popped!" );

@@ -1,9 +1,0 @@
-<shape>
-<type>dashring</type>
-<fvf>XYZ | Diffuse | Tex1</fvf>
-<texture name="borgcube" source="borgcube.bmp"/>
-<majorradius>1</majorradius>
-<minorradius>0.625</minorradius>
-<count>1000</count>
-<diffuse>0,255,0,255</diffuse>
-</shape>

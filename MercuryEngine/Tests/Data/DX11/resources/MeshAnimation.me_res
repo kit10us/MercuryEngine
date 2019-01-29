@@ -1,6 +1,0 @@
-<xml>
-
-<asset type="pixelshader" name="ColorAnimInst3d" source="ColorAnimInst3d.xml"/>
-<asset type="vertexshader" name="ColorAnimInst3d" source="ColorAnimInst3d.xml"/>
-
-</xml>

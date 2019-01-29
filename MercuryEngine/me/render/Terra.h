@@ -72,6 +72,7 @@ namespace me
 				void SetConstant( const float constant );
 				void SetTexArea( const unify::TexArea texArea );
 				void SetEffect( Effect::ptr effect );
+				void SetVertexDeclaration( VertexDeclaration::ptr vd );
 				void SetHeightMap( Terra::TextureOpMap tom );
 				void SetAlphaMap( Terra::TextureOpMap tom );
 				void SetDiffuse( unify::ColorUnit diffuse );

@@ -7,6 +7,7 @@
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/NotImplemented.h>
 #include <me/XMLConvert.h>
+#include <me/debug/Block.h>
 #include <qxml/Document.h>
 
 using namespace me;
@@ -21,30 +22,40 @@ GeometryFactory::GeometryFactory( game::IGame * gameInstance )
 
 Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 {
-	qxml::Document doc( source );
-	auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
-
-	if ( ! geometryElement.HasAttributes( "version" ) )
+	debug::Block block{ this->m_game->GetOS()->Debug(), "GeometryFactory::Produce( " + source.ToString() + ")" };
+	try
 	{
-		return 0;
+		qxml::Document doc( source );
+		auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
+
+		if ( ! geometryElement.HasAttributes( "version" ) )
+		{
+			return 0;
+		}
+
+		Mesh * mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );
+
+		std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
+		if( version == "1.2" )
+		{
+			auto gameInstance = dynamic_cast< game::Game * >(m_game);
+			LoadMesh_1_2( gameInstance, geometryElement, mesh );
+		}
+		else
+		{
+			throw exception::FailedToCreate( "Geometry XML version " + version + " not supported!" );
+		}
+
+		mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
+
+		return Geometry::ptr( mesh );
+	}
+	catch( std::exception ex )
+	{
+		m_game->GetOS()->Debug()->ReportError( me::ErrorLevel::Critical, source.ToString(), ex.what() );
 	}
 
-	Mesh * mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );
-
-	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
-	if( version == "1.2" )
-	{
-		auto gameInstance = dynamic_cast< game::Game * >(m_game);
-		LoadMesh_1_2( gameInstance, geometryElement, mesh );
-	}
-	else
-	{
-		throw exception::FailedToCreate( "Geometry XML version " + version + " not supported!" );
-	}
-
-	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
-
-	return Geometry::ptr( mesh );
+	return Geometry::ptr{};
 }
 
 

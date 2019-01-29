@@ -47,17 +47,35 @@ int Texture_Constructor( lua_State * state )
 			if( top >= 3 )
 			{
 				TextureParameters parameters;
-				parameters.lockable = true;
+				bool lockable = true;
+				bool renderable = true;
+
 				if( top >= 3 )
 				{
-					parameters.lockable = lua_toboolean( state, 3 ) ? true : false;
+					lockable = lua_toboolean( state, 3 ) ? true : false;
 				}
 				
-				parameters.renderable = true;
-				bool readable = true;
 				if( top >= 4 )
 				{
-					parameters.renderable = lua_toboolean( state, 4 ) ? true : false;
+					renderable = lua_toboolean( state, 4 ) ? true : false;
+				}
+
+				if ( lockable )
+				{
+					parameters.lockAccess.cpu = unify::DataLockAccess::ReadWrite;
+				}
+				else
+				{
+					parameters.lockAccess.cpu = unify::DataLockAccess::Readonly;
+				}
+
+				if ( renderable )
+				{
+					parameters.lockAccess.gpu = unify::DataLockAccess::ReadWrite;
+				}
+				else 
+				{
+					parameters.lockAccess.gpu = unify::DataLockAccess::Readonly;
 				}
 
 				parameters.format = render::Format::R32G32B32A32_Float;

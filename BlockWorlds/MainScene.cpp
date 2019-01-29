@@ -13,7 +13,6 @@
 
 using namespace me;
 using namespace scene;
-using namespace object;
 using namespace bw;
 using namespace render;
 
@@ -27,9 +26,9 @@ void MainScene::OnStart()
 	Effect::ptr testEffect = GetManager< Effect >()->Add( "Test", unify::Path( "GrassBlock00.effect" ) );
 
 	// Add a camera...
-	Object * camera = GetObjectAllocator()->NewObject( "camera" );
-	camera->AddComponent( component::IObjectComponent::ptr( new component::CameraComponent() ) );	 
-	auto * cameraComponent = unify::polymorphic_downcast< component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
+	object::Object * camera = GetObjectAllocator()->NewObject( "camera" );
+	camera->AddComponent( object::component::IObjectComponent::ptr( new object::component::CameraComponent() ) );	 
+	auto * cameraComponent = unify::polymorphic_downcast< object::component::CameraComponent * >( camera->GetComponent( "camera" ).get() );
 	cameraComponent->SetProjection( unify::MatrixPerspectiveFovLH( 3.141592653589f / 4.0f, GetOS()->GetRenderer(0)->GetDisplay().GetSize().AspectRatioWH(), 1.0f, 1000.0f ) );
 													  
 	m_world.reset( new World( 100 ) );
@@ -86,7 +85,7 @@ void MainScene::OnStart()
 void MainScene::OnUpdate( const UpdateParams & params )
 {
 	// Use of camera controls to simplify camera movement...
-	Object * camera = FindObject( "camera" );
+	object::Object * camera = FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.renderInfo.GetDelta().GetSeconds() ) );
 	

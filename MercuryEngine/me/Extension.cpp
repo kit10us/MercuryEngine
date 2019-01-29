@@ -30,7 +30,6 @@ Extension::Extension( game::IGame * gameInstance, unify::Path source, const qxml
 	: m_source{ source }
 	, m_moduleHandle{ nullptr }
 {
-	debug::Block block( gameInstance->Debug(), "Extension::Extention" );
 	if (!m_source.Exists())
 	{
 		gameInstance->Debug()->ReportError( me::ErrorLevel::Critical, "Extension::Load", "Failed to find extenion \"" + m_source.ToString() + "\"!" );
@@ -50,15 +49,19 @@ Extension::Extension( game::IGame * gameInstance, unify::Path source, const qxml
 		}
 	}
 
-	LoaderFunction loader = (LoaderFunction)GetProcAddress( (HMODULE)m_moduleHandle, "MELoader" );
-	if (!loader)
+	LoaderFunction loader {};
 	{
-		FreeLibrary( (HMODULE)m_moduleHandle );
-		m_moduleHandle = 0;
-		gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however MELoader not found!" );
-	}
+		debug::Block block( gameInstance->Debug(), "MELoader" );
+		loader = (LoaderFunction)GetProcAddress( (HMODULE)m_moduleHandle, "MELoader" );
 
- 	loader( gameInstance, element );
+		if (!loader)
+		{
+			FreeLibrary( (HMODULE)m_moduleHandle );
+			m_moduleHandle = 0;
+			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however MELoader not found!" );
+		}
+	 	loader( gameInstance, element );
+	}
 }
 							 
 Extension::~Extension()

@@ -1,8 +1,0 @@
-<xml>
-
-<define name="RENDERER">DX11</define>
-<assets>../common/</assets>
-<include>Common.xml</include>
-<StartScene>Main</StartScene>
-
-</xml>

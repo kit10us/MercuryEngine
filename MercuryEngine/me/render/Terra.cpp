@@ -45,6 +45,12 @@ void Terra::Parameters::SetEffect( Effect::ptr effect )
 {
 	Set( "effect", effect ); 
 }
+
+void Terra::Parameters::SetVertexDeclaration( VertexDeclaration::ptr vd )
+{
+	Set( "vd", vd );
+}
+
 void Terra::Parameters::SetHeightMap( Terra::TextureOpMap tom )
 {
 	Set( "heightmap", tom );
@@ -126,14 +132,14 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
     const unify::TexArea texArea = parameters.Get< unify::TexArea >( "texarea", unify::TexAreaFull() );
 	const float constant = parameters.Get< float >( "constant", 0.0f );
 	Effect::ptr effect = parameters.Get< Effect::ptr >( "effect" );
+	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 
 	unify::ColorUnit diffuseUL = parameters.Get< unify::ColorUnit >( "diffuseul", unify::ColorUnitWhite() );
 	unify::ColorUnit diffuseUR = parameters.Get< unify::ColorUnit >( "diffuseur", unify::ColorUnitWhite() );
 	unify::ColorUnit diffuseDL = parameters.Get< unify::ColorUnit >( "diffusedl", unify::ColorUnitWhite() );
 	unify::ColorUnit diffuseDR = parameters.Get< unify::ColorUnit >( "diffusedr", unify::ColorUnitWhite() );
 
-	VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
-		  
+	  
 	const size_t && IndicesPerTriangle = 3;
 	const size_t && TrianglesPerCell = 2;
 	const size_t && IndicesPerCell = IndicesPerTriangle * TrianglesPerCell;
@@ -175,7 +181,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 		unify::TexCoords height_uv;
 
 		TextureLock textlock;
-		heightMap.texture->LockRect( 0, textlock, 0, unify::DataLockAccess::ReadWrite );
+		heightMap.texture->LockRect( 0, textlock, 0, unify::DataLockAccess::Readonly );
 
 		for ( unsigned int c = 0; c < (faces.column + 1); c++ )
 		{
@@ -313,6 +319,8 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	set.AddIndexBuffer( { { { indexCount, &indices[0] } }, BufferUsage::Default } );
 				 
 	ComputeBounds();
+
+	m_parameters = parameters;
 }
 
 bool Terra::ApplyHeightMap( TextureOpMap tom )

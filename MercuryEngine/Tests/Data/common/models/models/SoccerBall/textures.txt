@@ -1,3 +1,0 @@
-<../images/texture0.jpg> <../images/texture0.jpg>
-<../images/texture1.jpg> <../images/texture1.jpg>
-<../images/texture2.jpg> <../images/texture2.jpg>

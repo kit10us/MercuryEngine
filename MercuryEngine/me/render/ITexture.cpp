@@ -10,25 +10,23 @@ using namespace render;
 
 TextureParameters::TextureParameters()
 	: size{}
-	, renderable( true )
-	, lockable( false )
+	, lockAccess{ unify::DataLockAccess::None, unify::DataLockAccess::Readonly }
 	, min( Filtering::Linear )
 	, mag( Filtering::Linear )
 	, mip( Filtering::Linear )
 	, format{ me::render::Format::R32G32B32A32_Float }
-	, usage{ me::render::BufferUsage::Dynamic }
+	, usage{ me::render::BufferUsage::Default }
 {
 }
 
-TextureParameters::TextureParameters( unify::Path _source, bool _renderable, bool _lockable )
+TextureParameters::TextureParameters( unify::Path _source, me::render::TextureLockAccess lockAccess )
 	: source( _source )
-	, renderable( _renderable )
-	, lockable( _lockable )
+	, lockAccess{ lockAccess }
 	, min( Filtering::Linear )
 	, mag( Filtering::Linear )
 	, mip( Filtering::Linear )
 	, format{ me::render::Format::R32G32B32A32_Float }
-	, usage{ me::render::BufferUsage::Dynamic }
+	, usage{ me::render::BufferUsage::Default }
 {
 }
 
@@ -47,13 +45,13 @@ TextureParameters::TextureParameters( const qxml::Element * element )
 	{
 		mip = Filtering::FromString( element->GetAttribute< std::string >( "mip" ) );
 	}
-	if( element->HasAttributes( "lockable" ) )
+	if( element->HasAttributes( "lockaccescpu" ) )
 	{
-		lockable = element->GetAttribute< bool >( "lockable" );
+		lockAccess.cpu = element->GetAttribute< unify::DataLockAccess::TYPE >( "lockaccesscpu" );
 	}
-	if( element->HasAttributes( "renderable" ) )
+	if( element->HasAttributes( "lockaccessgpu" ) )
 	{
-		renderable = element->GetAttribute< bool >( "renderable" );
+		lockAccess.gpu = element->GetAttribute< unify::DataLockAccess::TYPE >( "lockaccessgpu" );
 	}
 	if( element->HasAttributes( "source" ) )
 	{

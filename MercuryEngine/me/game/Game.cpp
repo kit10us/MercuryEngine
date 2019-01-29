@@ -909,15 +909,16 @@ const debug::IDebug * Game::Debug() const
 void Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
 	debug::Block block( Debug(), "Game::AddExtension \"" + path.ToString() + "\"" );
-	Extension * extension {};
-	try
 	{
-		std::shared_ptr< Extension > extension{ new Extension( this, path, element ) };
-		m_extensions.push_back( extension );
+		Extension * extension {};
+		try
+		{
+			std::shared_ptr< Extension > extension{ new Extension( this, path, element ) };
+			m_extensions.push_back( extension );
+		}
+		catch( std::exception ex )
+		{
+			Debug()->ReportError( ErrorLevel::Critical, "Game", "Failed to load extension! \nError:\n" + std::string( ex.what() ) );
+		}
 	}
-	catch( std::exception ex )
-	{
-		Debug()->ReportError( ErrorLevel::Critical, "Game", "Failed to load extension! \nError:\n" + std::string( ex.what() ) );
-	}
-
 }

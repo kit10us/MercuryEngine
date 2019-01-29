@@ -297,16 +297,25 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 
 void Scene::AddResources( unify::Path path )
 {
-	auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
-	qxml::Document doc( realPath );
+	debug::Block block{ GetOS()->Debug(), "Scene::AddResources(" + path.ToString() + ")" };
 
-	for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
+	try
 	{
-		auto type = (*itr).GetAttribute< std::string >( "type" );
-		auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
-		unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
+		auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
+		qxml::Document doc( realPath );
 
-		GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
+		for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
+		{
+			auto type = (*itr).GetAttribute< std::string >( "type" );
+			auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
+			unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
+
+			GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
+		}
+	}
+	catch( std::exception ex )
+	{
+		GetOS()->Debug()->ReportError( me::ErrorLevel::Critical, "Scene::AddResource(" + path.ToString() + ")", ex.what() );
 	}
 }
 

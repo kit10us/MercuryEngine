@@ -21,10 +21,19 @@ namespace me
 {
 	namespace render
 	{
+		struct TextureLockAccess
+		{
+			unify::DataLockAccess ::TYPE cpu;
+			unify::DataLockAccess::TYPE gpu;
+		};
+
 		struct TextureParameters
 		{
 			TextureParameters();
-			TextureParameters( unify::Path _source, bool _renderable = true, bool _lockable = false );
+
+			/// <summary>
+			/// Set the texture parameters for texture creation. Setting both the cpu and gpu to None lets the texture header decide, else these values override the texture header.
+			TextureParameters( unify::Path _source, TextureLockAccess lockAccess = { unify::DataLockAccess::None, unify::DataLockAccess::None } );
 			TextureParameters( const qxml::Element * element );
 
 			unify::Path source;
@@ -33,9 +42,8 @@ namespace me
 
 			BufferUsage::TYPE usage;
 			Format::TYPE format;			
-			
-			bool renderable;
-			bool lockable;
+
+			TextureLockAccess lockAccess;
 
 			Filtering::TYPE min;
 			Filtering::TYPE mag;
@@ -55,14 +63,9 @@ namespace me
 			virtual const unify::Size< unsigned int > & ImageSize() const = 0;
 
 			/// <summary>
-			/// Returns true if the texture can be used to rendered.
+			/// Returns the lock attributes for the texture.
 			/// </summary>
-			virtual bool GetRenderable() const = 0;
-
-			/// <summary>
-			/// Returns true if the texture can be used to rendered.
-			/// </summary>
-			virtual bool GetLockable() const = 0;
+			virtual TextureLockAccess GetLockAccess() const = 0;
 
 			/// <summary>
 			/// Lock a rectangle.

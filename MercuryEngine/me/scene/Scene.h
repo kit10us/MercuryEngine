@@ -86,7 +86,12 @@ namespace me
 			template< typename T >
 			std::shared_ptr< T > GetAsset( std::string name )
 			{
-				return GetManager< T >()->Find( name );
+				auto asset = GetManager< T >()->Find( name );
+				if ( ! asset )
+				{
+					GetOS()->Debug()->ReportError(  me::ErrorLevel::Critical, "Game::GetAsset", "Could not find asset \"" + name + "\"!" );
+				}
+				return asset;
 			}
 
 		private:
