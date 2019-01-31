@@ -2,6 +2,7 @@
 // All Rights Reserved
 
 #include <me/game/Game.h>
+#include <me/render/IRenderer.h>
 #include <me/factory/VertexShaderFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <qxml/Document.h>

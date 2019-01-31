@@ -57,15 +57,26 @@ namespace me
 		public:
 			virtual ~IGame() {}
 
-			virtual os::OSParameters GetOSParameters() const = 0;
-
 			/// <summary>
+			/// Interop feature that sends a chunk of data to a target.
 			/// Feed messages to gameInstance, and it's sub-systems.
 			/// </summary>
 			virtual void * Feed( std::string target, void * data ) = 0;
 
+			/// <summary>
+			/// Perform necessary initialization.
+			/// Returns Setup: false ends the program immediately.
+			/// </summary>
+			virtual void Initialize( os::OSParameters osParameters ) = 0;
+
+			/// <summary>
+			/// Triggers updating, called by lower OS main area.
+			/// </summary>
 			virtual void Tick() = 0;
 
+			/// <summary>
+			/// Triggers drawing, called by lower OS main area.
+			/// </summary>
 			virtual void Draw() = 0;
 
 			virtual void SetOS( me::os::IOS::ptr os ) = 0;

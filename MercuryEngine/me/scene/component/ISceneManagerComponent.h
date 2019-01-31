@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/scene/component/ISceneComponent.h>
-#include <me/scene/IScene.h>
 #include <me/IComponent.h>
 
 namespace me

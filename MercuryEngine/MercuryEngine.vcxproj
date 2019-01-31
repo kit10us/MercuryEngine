@@ -34,8 +34,10 @@
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\debug\Block.h" />
     <ClInclude Include="me\debug\DefaultDebug.h" />
+    <ClInclude Include="me\debug\DefaultErrorHandler.h" />
     <ClInclude Include="me\debug\IDebug.h" />
     <ClInclude Include="me\debug\ILogListener.h" />
+    <ClInclude Include="me\exception\FileNotFound.h" />
     <ClInclude Include="me\game\component\GameComponent.h" />
     <ClInclude Include="me\game\component\IGameComponent.h" />
     <ClInclude Include="me\game\Game.h" />
@@ -126,6 +128,7 @@
     <ClInclude Include="me\object\Object.h" />
     <ClInclude Include="me\os\DefaultOS.h" />
     <ClInclude Include="me\os\IOS.h" />
+    <ClInclude Include="me\os\OSParameters.h" />
     <ClInclude Include="me\phy\Entity.h" />
     <ClInclude Include="me\phy\PhySceneComponent.h" />
     <ClInclude Include="me\render\Billboard.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="me\render\IndexLock.h" />
     <ClInclude Include="me\render\IPixelShader.h" />
     <ClInclude Include="me\render\IRenderer.h" />
+    <ClInclude Include="me\render\IRendererFactory.h" />
     <ClInclude Include="me\render\IShader.h" />
     <ClInclude Include="me\render\ITexture.h" />
     <ClInclude Include="me\render\IVertexBuffer.h" />
@@ -171,6 +175,7 @@
     <ClInclude Include="me\render\Terra.h" />
     <ClInclude Include="me\render\TextureLock.h" />
     <ClInclude Include="me\render\TextureMode.h" />
+    <ClInclude Include="me\render\TextureParameters.h" />
     <ClInclude Include="me\render\VertexDeclaration.h" />
     <ClInclude Include="me\render\VertexElement.h" />
     <ClInclude Include="me\render\VertexUtil.h" />
@@ -258,6 +263,7 @@
     <ClCompile Include="me\canvas\VList.cpp" />
     <ClCompile Include="me\debug\Block.cpp" />
     <ClCompile Include="me\debug\DefaultDebug.cpp" />
+    <ClCompile Include="me\debug\DefaultErrorHandler.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />
@@ -332,7 +338,6 @@
     <ClCompile Include="me\render\GeometryCacheSummation.cpp" />
     <ClCompile Include="me\render\GeometryInstanceData.cpp" />
     <ClCompile Include="me\render\IndexLock.cpp" />
-    <ClCompile Include="me\render\ITexture.cpp" />
     <ClCompile Include="me\render\LOD.cpp" />
     <ClCompile Include="me\render\MatrixFeed.cpp" />
     <ClCompile Include="me\render\MatrixFood.cpp" />
@@ -346,6 +351,7 @@
     <ClCompile Include="me\render\SpriteDictionary.cpp" />
     <ClCompile Include="me\render\Terra.cpp" />
     <ClCompile Include="me\render\TextureMode.cpp" />
+    <ClCompile Include="me\render\TextureParameters.cpp" />
     <ClCompile Include="me\render\VertexDeclaration.cpp" />
     <ClCompile Include="me\render\VertexElement.cpp" />
     <ClCompile Include="me\render\VertexUtil.cpp" />

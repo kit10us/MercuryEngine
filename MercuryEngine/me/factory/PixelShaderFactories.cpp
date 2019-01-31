@@ -4,6 +4,7 @@
 #include <me/factory/PixelShaderFactories.h>
 #include <me/render/Blend.h>
 #include <me/exception/FailedToCreate.h>
+#include <me/render/IRenderer.h>
 #include <qxml/Document.h>
 
 using namespace me;

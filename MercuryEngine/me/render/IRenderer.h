@@ -10,33 +10,12 @@
 #include <me/render/Effect.h>
 #include <me/render/RenderMethod.h>
 #include <me/render/MatrixFeed.h>
-#include <unify/FrameLite.h>
 #include <memory>
 
 namespace me
 {
-	namespace game
-	{
-		class IGame;
-	}
-
-	namespace os
-	{
-		class IOS;
-	}
-
 	namespace render
 	{
-		class IRendererFactory
-		{
-		public:
-			typedef std::shared_ptr< IRendererFactory > ptr;
-
-			virtual ~IRendererFactory() {}
-
-			virtual class IRenderer * Produce( me::os::IOS * os, me::render::Display display, size_t index ) = 0;
-		};
-
 		/// <summary>
 		/// Supports access to the renderer.
 		/// </summary>
@@ -46,8 +25,6 @@ namespace me
 			typedef std::shared_ptr< IRenderer > ptr;
 
 			virtual ~IRenderer() {};
-
-			virtual game::IGame* GetGame() = 0;
 
 			virtual const render::Display & GetDisplay() const = 0;
 

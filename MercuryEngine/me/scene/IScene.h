@@ -21,6 +21,11 @@ namespace me
 		class IGame;
 	}
 
+	namespace os
+	{
+		class IOS;
+	}
+
 	struct HitInstance
 	{
 		object::Object * object;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/debug/IDebug.h>
+#include <me/debug/DefaultErrorHandler.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
@@ -37,6 +38,7 @@ namespace me
 			unify::Path m_logFile;
 			std::vector< std::string > m_logLines;
 			std::list< me::ILogListener* > m_logListeners;
+			IErrorHandler::ptr m_errorHandler;
 
 		public:
 			DefaultDebug();
@@ -46,7 +48,9 @@ namespace me
 			bool IsDebug() override;
 
 			void SetLogFile( unify::Path logFile ) override;
+
 			void SetFailureAsCritical( bool faiureAsCritical ) override;
+			bool GetFailureAsCritical() const override;
 
 			void SetAppendSectionText( std::string text ) override;
 			std::string GetAppendSectionText() const override;
@@ -68,7 +72,9 @@ namespace me
 			void DetachLogListener( me::ILogListener * litener ) override;
 			void DetachAllLogListeners() override;
 
-			ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error ) override;
+			void SetErrorHandler( IErrorHandler::ptr errorHandler ) override;
+
+			ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
 
 			bool HadCriticalError() const override;
 

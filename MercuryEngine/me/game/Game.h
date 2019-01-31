@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/game/IGame.h>
-#include <me/input/IInputCondition.h>
 #include <me/render/Geometry.h>
 #include <me/render/Display.h>
 #include <me/script/IScript.h>
@@ -33,7 +32,6 @@ namespace me
 			unify::Owner::ptr m_inputOwnership;
 			input::InputManager m_inputManager;
 
-			os::OSParameters m_osParameters;
 			std::list< me::game::component::IGameComponent::ptr > m_components;
 			rm::ResourceHub m_resourceHub;
 			render::RenderInfo m_renderInfo;
@@ -57,28 +55,16 @@ namespace me
 			Game( std::string startScene, unify::Path setup = unify::Path( "Setup.xml" ) );
 			virtual ~Game();
 
-			os::OSParameters GetOSParameters() const override;
-
-			/// <summary>
-			/// Interop feature that sends a chunk of data to a target.
-			/// </summary>
-			void * Feed( std::string target, void * data ) override;
-
-			/// <summary>
-			/// Perform necessary initialization.
-			/// Returns Setup: false ends the program immediately.
-			/// </summary>
-			void Initialize( os::OSParameters osParameters );
-
 			/// <summary>
 			/// Optional function to be called on reciept of a drag-and-drop event.
+			/// </summary>
 			virtual void OnDragDrop( const std::vector< unify::Path > & files, const unify::V2< float > & point );
 
-			// Handles updating...
-			virtual void Tick() override;
-
-			// Handles drawing...
-			virtual void Draw() override;
+		public: // me::game::IGame
+			void * Feed( std::string target, void * data ) override;
+			void Initialize( os::OSParameters osParameters ) override;			
+			void Tick() override;
+			void Draw() override;
 
 			virtual const render::RenderInfo & GetRenderInfo() const final;
 

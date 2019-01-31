@@ -163,7 +163,7 @@ void ObjectStack::DirtyObject( object::Object* object )
 
 void ObjectStack::Update( const UpdateParams & params )
 {
-	auto * debug = params.renderer->GetGame()->GetOS()->Debug();
+	auto * debug = m_scene->GetOS()->Debug();
 	debug->DebugTimeStampBegin( "CollectGeometries" );
 
 	if( m_newObjects.size() )

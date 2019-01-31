@@ -777,6 +777,21 @@
     <ClInclude Include="me\render\ResourceType.h">
       <Filter>me\render</Filter>
     </ClInclude>
+    <ClInclude Include="me\render\TextureParameters.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\DefaultErrorHandler.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\exception\FileNotFound.h">
+      <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\os\OSParameters.h">
+      <Filter>me\os</Filter>
+    </ClInclude>
+    <ClInclude Include="me\render\IRendererFactory.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1100,9 +1115,6 @@
     <ClCompile Include="me\render\Effect.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
-    <ClCompile Include="me\render\ITexture.cpp">
-      <Filter>me\render</Filter>
-    </ClCompile>
     <ClCompile Include="me\render\LOD.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
@@ -1273,6 +1285,12 @@
     </ClCompile>
     <ClCompile Include="me\render\ResourceType.cpp">
       <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\TextureParameters.cpp">
+      <Filter>me\render</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\DefaultErrorHandler.cpp">
+      <Filter>me\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,8 +13,6 @@ namespace me
 {
 	namespace render
 	{
-		class IRenderer;
-
 		// Use to track all rendering variables and needs, including current frame.
 		class RenderInfo
 		{

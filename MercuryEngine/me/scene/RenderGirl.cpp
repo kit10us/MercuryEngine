@@ -1,6 +1,7 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
+#include <me/render/IRenderer.h>
 #include <me/scene/RenderGirl.h>
 #include <me/object/component/CameraComponent.h>
 #include <me/render/GeometryCache.h>

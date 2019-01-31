@@ -5,7 +5,6 @@
 
 #include <me/os/IOS.h>
 #include <me/game/IGame.h>
-#include <me/render/IRenderer.h>
 #include <me/render/Display.h>
 #include <rm/AssetPaths.h>
 #include <list>
@@ -30,7 +29,7 @@ namespace me
 		class DefaultOS : public me::os::IOS
 		{
 		public:
-			DefaultOS( me::game::IGame * gameInstance );
+			DefaultOS( me::game::IGame * gameInstance, me::os::OSParameters parameters );
 			virtual ~DefaultOS();
 
 			void CreatePendingDisplays( std::string title );
@@ -52,18 +51,21 @@ namespace me
 			bool GetHasFocus() const override;
 			HINSTANCE GetHInstance() const;
 			HWND GetHandle() const;
+			void SetRenderFactory( me::render::IRendererFactory::ptr renderFactory ) override;
 			void BuildRenderers( std::string title ) override;
 			void Startup() override;
 			void Shutdown() override;
 			unify::Path GetProgramPath() const override;
 			unify::Path GetRunPath() const override;
 			rm::AssetPaths::ptr GetAssetPaths() override;
+			const me::os::OSParameters * GetOSParameters() const override;
 
 		protected:
 			me::game::IGame * m_game;
 			me::debug::IDebug * m_debug;
 			unify::Path m_runPath;
 			rm::AssetPaths::ptr m_assetPaths;
+			me::os::OSParameters m_osParameters;
 		};
 	}
 }

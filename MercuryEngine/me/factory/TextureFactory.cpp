@@ -3,6 +3,7 @@
 
 #include <me/factory/TextureFactory.h>
 #include <me/exception/FailedToCreate.h>
+#include <me/render/IRenderer.h>
 
 using namespace me;
 using namespace render;

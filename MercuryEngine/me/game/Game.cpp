@@ -1,6 +1,7 @@
 // Copyright (c) 2002 - 2018, Evil Quail LLC
 // All Rights Reserved
 
+#include <me/render/IRenderer.h>
 #include <me/os/DefaultOS.h>
 #include <me/game/Game.h>
 #include <me/game/component/GC_ActionFactory.h>
@@ -15,11 +16,6 @@
 #include <me/debug/Block.h>
 #include <me/game/GameLogger.h>
 #include <sg/ShapeFactory.h>
-
-// Temporary...
-#include <me/scene/SceneManager.h>
-#include <me/object/component/CameraComponent.h>
-
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
@@ -28,7 +24,6 @@
 #include <ctime>
 #include <functional>
 #include <map>
-
 
 using namespace me;
 using namespace game;
@@ -57,7 +52,7 @@ Game::Game( unify::Path setup)
 
 Game::Game( std::string startScene, unify::Path setup )
 	: m_title{ "Mercury Engine" }
-	, m_os{ new os::DefaultOS( this ) }
+	//, m_os{ new os::DefaultOS( this ) }
 	, m_startScene{ startScene }
 	, m_setup( setup )
 	, m_isQuitting( false )
@@ -65,11 +60,6 @@ Game::Game( std::string startScene, unify::Path setup )
 	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
 	, m_inputManager( this )
 {
-}
-
-me::os::OSParameters Game::GetOSParameters() const
-{
-	return m_osParameters;
 }
 
 void * Game::Feed( std::string target, void * data )
@@ -92,7 +82,10 @@ void * Game::Feed( std::string target, void * data )
 
 void Game::Initialize( os::OSParameters osParameters )
 {
+	m_os.reset( new os::DefaultOS( this, osParameters ) );
+
 	debug::Block block( Debug(), "Game::Initialize" );
+
 	rm::ILogger::ptr logger( new GameLogger( Debug() ) );
 
 	std::map< std::string, std::string > defines;
@@ -113,9 +106,6 @@ void Game::Initialize( os::OSParameters osParameters )
 
 	m_totalStartupTime = {};
 
-	m_osParameters = osParameters;
-
-
 	// Add setup script manager.
 	{
 		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
@@ -129,13 +119,13 @@ void Game::Initialize( os::OSParameters osParameters )
 	bool inQuote = false;
 	std::string working;
 
-	for( size_t l = 0, r = 0; r <= m_osParameters.cmdLine.length(); ++r )
+	for( size_t l = 0, r = 0; r <= osParameters.cmdLine.length(); ++r )
 	{
-		if( !inQuote && (r == m_osParameters.cmdLine.length() || m_osParameters.cmdLine.at( r ) == ' ') )
+		if( !inQuote && (r == osParameters.cmdLine.length() || osParameters.cmdLine.at( r ) == ' ') )
 		{
 			if( l != r )
 			{
-				working += m_osParameters.cmdLine.substr( l, r - l );
+				working += osParameters.cmdLine.substr( l, r - l );
 			}
 			if( working.empty() == false )
 			{
@@ -144,10 +134,10 @@ void Game::Initialize( os::OSParameters osParameters )
 			}
 			l = r + 1;
 		}
-		else if(m_osParameters.cmdLine.at( r ) == '\"' )
+		else if( osParameters.cmdLine.at( r ) == '\"' )
 		{
 			// Include partial string...
-			working += m_osParameters.cmdLine.substr( l, r - l );
+			working += osParameters.cmdLine.substr( l, r - l );
 			l = r + 1; // One past the double quote.
 			inQuote = !inQuote;
 		}
@@ -284,7 +274,7 @@ void Game::Initialize( os::OSParameters osParameters )
 	assert( GetOS()->GetRenderer( 0 ) );
 
 	// Get the first handle...
-	m_osParameters.hWnd = GetOS()->GetRenderer( 0 )->GetHandle();
+	osParameters.hWnd = GetOS()->GetRenderer( 0 )->GetHandle();
 
 	// Create asset managers...
 	{

@@ -3,6 +3,7 @@
 
 #include <me/debug/DefaultDebug.h>
 #include <me/debug/Block.h>
+#include <me/debug/DefaultErrorHandler.h>
 #include <unify/Exception.h>
 #include <fstream>
 #include <cassert>
@@ -16,6 +17,7 @@ DefaultDebug::DefaultDebug()
 	, m_appendSectionText{ "]" }
 	, m_prependLineText{ " " }
 	, m_appendLineText{ "\n" }
+	, m_errorHandler{ IErrorHandler::ptr{ new DefaultErrorHandler( this ) } }
 	, m_isDebug
 #ifdef _DEBUG
 		{ true }
@@ -51,6 +53,11 @@ void DefaultDebug::SetLogFile( unify::Path logFile )
 void DefaultDebug::SetFailureAsCritical( bool faiureAsCritical )
 {
 	m_failuresAsCritial = faiureAsCritical;
+}
+
+bool DefaultDebug::GetFailureAsCritical() const
+{
+	return m_failuresAsCritial;
 }
 
 void DefaultDebug::SetAppendSectionText( std::string text )
@@ -143,20 +150,23 @@ void DefaultDebug::DetachAllLogListeners()
 	m_logListeners.clear();
 }
 
-ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error )
+void DefaultDebug::SetErrorHandler( IErrorHandler::ptr errorHandler )
+{
+	m_errorHandler = errorHandler;
+}
+
+ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry )
 {
 	switch( level )
 	{
 	case me::ErrorLevel::Critical:
 		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
 		LogLine( "Critical Failure (" + source + "): " + error );
-		throw unify::Exception( "Critical Failure (" + source + "): " + error );
 	case me::ErrorLevel::Failure:
 		LogLine( "Failure (" + source + "): " + error );
 		if( m_failuresAsCritial )
 		{
 			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
-			throw unify::Exception( "Failure (" + source + "): " + error );
 		}
 		break;
 	case me::ErrorLevel::Warning:
@@ -164,7 +174,7 @@ ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string s
 		break;
 	}
 
-	return ReportErrorResult::Continue;
+	return m_errorHandler->ReportError( level, source, error, canContinue, canRetry );
 }
 
 bool DefaultDebug::HadCriticalError() const
@@ -243,7 +253,7 @@ void DefaultDebug::PopBlock( std::string name )
 
 	if ( (m_blocks.back()) != name )
 	{
-		this->ReportError( ErrorLevel::Critical, "DefaultDebug", "Top of block is not the same as block being popped!" );
+		this->ReportError( ErrorLevel::Critical, "DefaultDebug", "Top of block is not the same as block being popped!", false, false );
 	}
 	m_blocks.pop_back();
 }

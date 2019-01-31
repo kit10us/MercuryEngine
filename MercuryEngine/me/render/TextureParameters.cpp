@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <me/render/ITexture.h>
+#include <me/render/TextureParameters.h>
 
 using namespace me;
 using namespace render;

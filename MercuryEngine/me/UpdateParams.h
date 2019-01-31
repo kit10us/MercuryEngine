@@ -4,6 +4,7 @@
 #pragma once
 
 #include <me/render/RenderInfo.h>
+#include <me/render/IRenderer.h>
 
 namespace me
 {

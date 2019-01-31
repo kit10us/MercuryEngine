@@ -18,10 +18,11 @@ using namespace os;
 #undef GetCommandLine
 #endif
 
-DefaultOS::DefaultOS( me::game::IGame * gameInstance )
+DefaultOS::DefaultOS( me::game::IGame * gameInstance, me::os::OSParameters osParameters )
 	: m_game{ gameInstance }
 	, m_debug{ new debug::DefaultDebug{} }
 	, m_assetPaths{ new rm::AssetPaths }
+	, m_osParameters{ osParameters }
 {
 	{
 		char buffer[MAX_PATH];
@@ -110,6 +111,11 @@ HWND DefaultOS::GetHandle() const
 	return 0;
 }
 
+void DefaultOS::SetRenderFactory( me::render::IRendererFactory::ptr renderFactory )
+{
+
+}
+
 void DefaultOS::BuildRenderers( std::string title )
 {
 	title;
@@ -141,4 +147,9 @@ unify::Path DefaultOS::GetProgramPath() const
 unify::Path DefaultOS::GetRunPath() const
 {
 	return m_runPath;
+}
+
+const me::os::OSParameters * DefaultOS::GetOSParameters() const
+{
+	return &m_osParameters;
 }

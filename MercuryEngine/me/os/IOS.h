@@ -4,8 +4,9 @@
 #pragma once
 
 #include <me/debug/IDebug.h>
-#include <me/render/IRenderer.h>
+#include <me/render/IRendererFactory.h>
 #include <me/render/Display.h>
+#include <me/os/OSParameters.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
 #include <rm/AssetPaths.h>
@@ -21,53 +22,13 @@
 
 namespace me
 {
+	namespace game
+	{
+		class IGame;
+	}
+
 	namespace os
 	{
-		namespace win
-		{
-			typedef void* HWnd;
-			typedef void* HInstance;
-			typedef long * LResult;
-			typedef unsigned int * WParam;
-			typedef long LParam;
-			typedef void* WndProc;
-
-			struct OSFood
-			{
-				OSFood( HWnd _handle, unsigned int _message, WParam _wParam, LParam _lParam )
-					: handle{ _handle }
-					, message{ _message }
-					, wParam{ _wParam }
-					, lParam{ _lParam }
-				{
-				}
-
-				HWnd handle;
-				unsigned int message;
-				WParam wParam;
-				LParam lParam;
-			};
-		}
-
-		struct OSParameters
-		{
-			OSParameters()
-				: hWnd{}
-				, hInstance{}
-				, hPrevInstance{}
-				, cmdLine{}
-				, wndProc{}
-			{
-			}
-
-			os::win::HWnd hWnd;
-			os::win::HInstance hInstance;
-			os::win::HInstance hPrevInstance;
-			std::string cmdLine;
-			int nCmdShow;
-			os::win::WndProc wndProc;
-		};
-
 
 		/// <summary>
 		/// Interface for Operating System specific data. This class is for abstraction from OS.
@@ -121,6 +82,11 @@ namespace me
 			virtual bool GetHasFocus() const = 0;
 
 			/// <summary>
+			/// Set the render factory.
+			/// </summary>
+			virtual void SetRenderFactory( me::render::IRendererFactory::ptr renderFactory ) = 0;
+
+			/// <summary>
 			/// Build renderers.
 			/// </summary>
 			virtual void BuildRenderers( std::string title ) = 0;
@@ -149,6 +115,11 @@ namespace me
 			/// Asset path manager.
 			/// </summary>
 			virtual unify::Path GetRunPath() const = 0;
+
+			/// <summary>
+			/// Returns the OS parameters, parameters passed in to the program from the OS.
+			/// </sumamry>
+			virtual const os::OSParameters * GetOSParameters() const = 0;
 		};
 	}
 }

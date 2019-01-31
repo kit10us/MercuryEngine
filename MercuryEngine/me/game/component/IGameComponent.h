@@ -9,6 +9,7 @@
 #include <me/object/action/IObjectAction.h>
 #include <me/UpdateParams.h>
 #include <me/render/RenderParams.h>
+#include <qxml/Element.h>
 #include <string>
 #include <memory>
 

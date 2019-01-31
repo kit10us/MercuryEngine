@@ -5,6 +5,7 @@
 
 #include <me/debug/ILogListener.h>
 #include <unify/Path.h>
+#include <memory>
 #include <list>
 #include <string>
 
@@ -27,11 +28,29 @@ namespace me
 	namespace debug
 	{
 		/// <summary>
+		/// Handlers errors, allowing custom functionality.
+		/// </summary>
+		class IErrorHandler
+		{
+		public:
+			typedef std::shared_ptr< IErrorHandler > ptr;
+
+			~IErrorHandler() {}
+
+			/// <summary>
+			/// Report an error to the error handler.
+			/// </summary>
+			virtual ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue = false, bool canRetry = false ) = 0;
+		};
+	
+		/// <summary>
 		/// Debugging features used to better troubleshoot issues.
 		/// </summary>
 		class IDebug
 		{
 		public:
+			typedef std::shared_ptr< IDebug > ptr;
+
 			virtual ~IDebug() {}
 
 			/// <summary>
@@ -54,6 +73,11 @@ namespace me
 			/// Set failures as critical failures.
 			/// </summary>
 			virtual void SetFailureAsCritical( bool faiureAsCritical ) = 0;
+
+			/// <sumamry>
+			/// Returns true if we want to handle failures as ciritcal.
+			/// </summary>
+			virtual bool GetFailureAsCritical() const = 0;
 
 			/// <summary>
 			/// Set text to append to the end of every section.
@@ -126,9 +150,14 @@ namespace me
 			virtual void DetachAllLogListeners() = 0;
 
 			/// <summary>
+			/// Returns the entire blocks.
+			/// </summary>
+			virtual void SetErrorHandler( IErrorHandler::ptr errorHandler ) = 0;
+
+			/// <summary>
 			/// Report an error.
 			/// </summary>
-			virtual ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error ) = 0;
+			virtual ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue = true, bool canRetry = false ) = 0;
 
 			/// <summary>
 			/// Returns true if we'd had a critical error.
