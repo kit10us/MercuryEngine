@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #pragma once
@@ -50,11 +50,15 @@ namespace me
 			/// </summary>
 			virtual void AfterRender() = 0;
 
+			/// <summary>
+			/// Returns true if the renderer is running at fulscreen.
+			/// </summary>
 			virtual bool IsFullscreen() const = 0;
 
+			/// <summary>
+			/// Returns the index of the renderer.
+			/// </summary>
 			virtual size_t GetIndex() const = 0;
-
-			virtual void* GetHandle() const = 0;
 
 			/// <summary>
 			/// Render geometry.
@@ -96,6 +100,9 @@ namespace me
 			/// </summary>
 			virtual ITexture::ptr ProduceT( TextureParameters parameters ) = 0;
 
+			/// <summary>
+			/// Use a list of textures.
+			/// </summary>
 			virtual void UseTextures( std::vector< ITexture::ptr > textures ) = 0;
 		};
 	}

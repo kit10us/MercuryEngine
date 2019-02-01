@@ -1,8 +1,7 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <me/input/InputDevice.h>
-
 #include <me/input/InputType.h>
 #include <me/action/IAction.h>
 #include <memory>

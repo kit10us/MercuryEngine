@@ -68,7 +68,6 @@
     <ClInclude Include="me\dyna\scale\DS_Add.h" />
     <ClInclude Include="me\dyna\scale\DS_Delta.h" />
     <ClInclude Include="me\exception\DeviceFailure.h" />
-    <ClInclude Include="me\exception\Exception.h" />
     <ClInclude Include="me\exception\FailedToCreate.h" />
     <ClInclude Include="me\exception\FailedToLock.h" />
     <ClInclude Include="me\exception\NotImplemented.h" />
@@ -128,6 +127,7 @@
     <ClInclude Include="me\object\Object.h" />
     <ClInclude Include="me\os\DefaultOS.h" />
     <ClInclude Include="me\os\IOS.h" />
+    <ClInclude Include="me\os\IOSParameters.h" />
     <ClInclude Include="me\os\OSParameters.h" />
     <ClInclude Include="me\phy\Entity.h" />
     <ClInclude Include="me\phy\PhySceneComponent.h" />
@@ -319,6 +319,7 @@
     <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
     <ClCompile Include="me\os\DefaultOS.cpp" />
+    <ClCompile Include="me\os\OSParameters.cpp" />
     <ClCompile Include="me\phy\Entity.cpp" />
     <ClCompile Include="me\phy\PhySceneComponent.cpp" />
     <ClCompile Include="me\render\Billboard.cpp" />

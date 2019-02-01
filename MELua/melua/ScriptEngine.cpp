@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <melua/Util.h>
@@ -52,7 +52,7 @@ ScriptEngine::ScriptEngine( me::game::IGame * game )
 	RegisterLibraries( m_state );
 	
 	// Set path...
-	std::string path = unify::string::StringReplace( os->GetAssetPaths()->GetPaths( os->GetRunPath() ), ";", "?.lua;" );
+	std::string path = unify::string::StringReplace( os->GetAssetPaths()->GetPaths( os->GetOSParameters()->GetRunPath() ), ";", "?.lua;" );
 	if ( path != "" )
 	{
 		path += "?.lua";

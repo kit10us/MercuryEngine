@@ -1,8 +1,7 @@
-// Copyright (c) 2003 - 2011, Evil Quail LLC
+// Copyright (c) 2003 - 2011, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <me/debug/DefaultErrorHandler.h>
-#include <me/exception/Exception.h>
 #include <me/exception/FileNotFound.h>
 
 using namespace me;

@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #pragma once
@@ -6,17 +6,11 @@
 #include <me/debug/DefaultDebug.h>
 #include <me/os/DefaultOS.h>
 #include <me/exception/FailedToCreate.h>
-#include <unify/Exception.h>
 #include <unify/Path.h>
-#include <shellapi.h>
 #include <string>
 
 using namespace me;
 using namespace os;
-
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
 
 DefaultOS::DefaultOS( me::game::IGame * gameInstance, me::os::OSParameters osParameters )
 	: m_game{ gameInstance }
@@ -24,12 +18,6 @@ DefaultOS::DefaultOS( me::game::IGame * gameInstance, me::os::OSParameters osPar
 	, m_assetPaths{ new rm::AssetPaths }
 	, m_osParameters{ osParameters }
 {
-	{
-		char buffer[MAX_PATH];
-		GetCurrentDirectoryA( MAX_PATH, buffer );
-		m_runPath = unify::Path( std::string( buffer ) + "/" );
-	}
-
 }
 
 DefaultOS::~DefaultOS()
@@ -54,16 +42,6 @@ const me::debug::IDebug * DefaultOS::Debug() const
 void * DefaultOS::Feed( std::string target, void * data )
 {
 	return nullptr;
-}
-
-std::string DefaultOS::GetName() const
-{
-	return std::string();
-}
-
-std::vector< std::string > DefaultOS::GetCommandLine() const
-{
-	return std::vector< std::string >();
 }
 
 void DefaultOS::AddDisplay( render::Display display )
@@ -101,16 +79,6 @@ bool DefaultOS::GetHasFocus() const
 	return true;
 }
 
-HINSTANCE DefaultOS::GetHInstance() const
-{
-	return 0;
-}
-
-HWND DefaultOS::GetHandle() const
-{
-	return 0;
-}
-
 void DefaultOS::SetRenderFactory( me::render::IRendererFactory::ptr renderFactory )
 {
 
@@ -129,24 +97,9 @@ void DefaultOS::Shutdown()
 {
 }
 
-LRESULT DefaultOS::WndProc( HWND handle, UINT message, WPARAM wParam, LPARAM lParam )
-{
-	return 0;
-}
-
 rm::AssetPaths::ptr DefaultOS::GetAssetPaths()
 {
 	return m_assetPaths;
-}
-
-unify::Path DefaultOS::GetProgramPath() const
-{
-	return unify::Path();
-}
-
-unify::Path DefaultOS::GetRunPath() const
-{
-	return m_runPath;
 }
 
 const me::os::OSParameters * DefaultOS::GetOSParameters() const

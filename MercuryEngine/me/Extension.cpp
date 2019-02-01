@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <me/Extension.h>
@@ -26,20 +26,30 @@ using namespace me;
 
 typedef bool ( __cdecl *LoaderFunction )( game::IGame *, const qxml::Element * element );
 
-Extension::Extension( game::IGame * gameInstance, unify::Path source, const qxml::Element * element )
-	: m_source{ source }
-	, m_moduleHandle{ nullptr }
+Extension::Extension()
+	: m_moduleHandle{ nullptr }
 {
-	if (!m_source.Exists())
+}
+							 
+Extension::~Extension()
+{
+	FreeLibrary( (HMODULE)m_moduleHandle );
+	m_moduleHandle = 0;
+}
+
+void Extension::Create( game::IGame * gameInstance, unify::Path source, const qxml::Element * element )
+{
+	m_source = source;
+	if( !m_source.Exists() )
 	{
 		gameInstance->Debug()->ReportError( me::ErrorLevel::Critical, "Extension::Load", "Failed to find extenion \"" + m_source.ToString() + "\"!" );
 	}
 
 	m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );
-	if (!m_moduleHandle)
+	if( !m_moduleHandle )
 	{
 		DWORD errorCode = GetLastError();
-		if (errorCode == ERROR_MOD_NOT_FOUND)
+		if( errorCode == ERROR_MOD_NOT_FOUND )
 		{
 			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
 		}
@@ -49,23 +59,17 @@ Extension::Extension( game::IGame * gameInstance, unify::Path source, const qxml
 		}
 	}
 
-	LoaderFunction loader {};
+	LoaderFunction loader{};
 	{
 		debug::Block block( gameInstance->Debug(), "MELoader" );
 		loader = (LoaderFunction)GetProcAddress( (HMODULE)m_moduleHandle, "MELoader" );
 
-		if (!loader)
+		if( !loader )
 		{
 			FreeLibrary( (HMODULE)m_moduleHandle );
 			m_moduleHandle = 0;
 			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however MELoader not found!" );
 		}
-	 	loader( gameInstance, element );
+		loader( gameInstance, element );
 	}
-}
-							 
-Extension::~Extension()
-{
-	FreeLibrary( (HMODULE)m_moduleHandle );
-	m_moduleHandle = 0;
 }

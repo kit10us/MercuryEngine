@@ -1,9 +1,9 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <me/render/ResourceType.h>
-#include <me/exception/Exception.h>
 #include <unify/String.h>
+#include <unify/Exception.h>
 
 using namespace me;
 using namespace render;

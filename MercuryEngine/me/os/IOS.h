@@ -1,4 +1,4 @@
-// Copyright (c) 2003 - 2011, Evil Quail LLC
+// Copyright (c) 2003 - 2011, Kit10 Studios LLC
 // All Rights Reserved
 
 #pragma once
@@ -14,12 +14,6 @@
 #include <string>
 #include <memory>
 
-// TODO: Move this to the places that offend, instead of here, so we can be more portabile (or less ugly, really)
-// Because Windows likes to define...
-#ifdef GetCommandLine
-#undef GetCommandLine
-#endif
-
 namespace me
 {
 	namespace game
@@ -29,7 +23,6 @@ namespace me
 
 	namespace os
 	{
-
 		/// <summary>
 		/// Interface for Operating System specific data. This class is for abstraction from OS.
 		/// </summary>
@@ -46,16 +39,6 @@ namespace me
 			virtual const me::debug::IDebug * Debug() const = 0;
 
 			virtual void * Feed( std::string target, void * data ) = 0;
-
-			/// <summary>
-			/// Get name of our program.
-			/// </summary>
-			virtual std::string GetName() const = 0;
-
-			/// <summary>
-			/// Get a vector of command line arguments, where 0 is the first argument.
-			/// </summary>
-			virtual std::vector< std::string > GetCommandLine() const = 0;
 
 			/// <summary>
 			/// Add a display.
@@ -105,16 +88,6 @@ namespace me
 			/// Asset path manager.
 			/// </summary>
 			virtual rm::AssetPaths::ptr GetAssetPaths() = 0;
-
-			/// <summary>
-			/// Asset path manager.
-			/// </summary>
-			virtual unify::Path GetProgramPath() const = 0;
-
-			/// <summary>
-			/// Asset path manager.
-			/// </summary>
-			virtual unify::Path GetRunPath() const = 0;
 
 			/// <summary>
 			/// Returns the OS parameters, parameters passed in to the program from the OS.

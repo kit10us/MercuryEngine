@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <me/render/IRenderer.h>
@@ -52,7 +52,6 @@ Game::Game( unify::Path setup)
 
 Game::Game( std::string startScene, unify::Path setup )
 	: m_title{ "Mercury Engine" }
-	//, m_os{ new os::DefaultOS( this ) }
 	, m_startScene{ startScene }
 	, m_setup( setup )
 	, m_isQuitting( false )
@@ -119,32 +118,9 @@ void Game::Initialize( os::OSParameters osParameters )
 	bool inQuote = false;
 	std::string working;
 
-	for( size_t l = 0, r = 0; r <= osParameters.cmdLine.length(); ++r )
+	for( size_t i = 0; i < osParameters.GetArgumentCount(); i++ )
 	{
-		if( !inQuote && (r == osParameters.cmdLine.length() || osParameters.cmdLine.at( r ) == ' ') )
-		{
-			if( l != r )
-			{
-				working += osParameters.cmdLine.substr( l, r - l );
-			}
-			if( working.empty() == false )
-			{
-				commandLineVector.push_back( working );
-				working.clear();
-			}
-			l = r + 1;
-		}
-		else if( osParameters.cmdLine.at( r ) == '\"' )
-		{
-			// Include partial string...
-			working += osParameters.cmdLine.substr( l, r - l );
-			l = r + 1; // One past the double quote.
-			inQuote = !inQuote;
-		}
-	}
-
-	for( auto && arg : commandLineVector )
-	{
+		auto arg = osParameters.GetArgument( i );
 		if( unify::Path( arg ).IsExtension( ".xml" ) )
 		{
 			m_setup = unify::Path( arg );
@@ -274,7 +250,7 @@ void Game::Initialize( os::OSParameters osParameters )
 	assert( GetOS()->GetRenderer( 0 ) );
 
 	// Get the first handle...
-	osParameters.hWnd = GetOS()->GetRenderer( 0 )->GetHandle();
+	osParameters.hWnd = GetOS()->GetRenderer( 0 )->GetDisplay().GetHandle();
 
 	// Create asset managers...
 	{
@@ -307,9 +283,8 @@ void Game::Initialize( os::OSParameters osParameters )
 	// Log start of program.
 	auto now = std::chrono::system_clock::now();
 	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	block.LogLine( "name:    " + ((!m_os->GetName().empty()) ? m_os->GetName() : "<unknown>") );
-	block.LogLine( "program: " + m_os->GetProgramPath().ToString() );
-	block.LogLine( "path:    " + m_os->GetRunPath().ToString() );
+	block.LogLine( "program: " + m_os->GetOSParameters()->GetProgramPath().ToString() );
+	block.LogLine( "path:    " + m_os->GetOSParameters()->GetRunPath().ToString() );
 	block.LogLine( "time:    " + std::string( std::ctime( &t ) ) );
 
 	// Our setup...
@@ -903,7 +878,8 @@ void Game::AddExtension( unify::Path path, const qxml::Element * element )
 		Extension * extension {};
 		try
 		{
-			std::shared_ptr< Extension > extension{ new Extension( this, path, element ) };
+			std::shared_ptr< Extension > extension{ new Extension() };
+			extension->Create( this, path, element );
 			m_extensions.push_back( extension );
 		}
 		catch( std::exception ex )

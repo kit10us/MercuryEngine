@@ -1,12 +1,12 @@
-// Copyright (c) 2002 - 2018, Evil Quail LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #pragma once
 
 #include <me/frameanimation/FrameAnimationKey.h>
 #include <unify/FrameSetInstance.h>
-#include <memory>
 #include <unify/TimeDelta.h>
+#include <memory>
 
 namespace me
 {

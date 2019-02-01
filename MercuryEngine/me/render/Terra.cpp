@@ -1,4 +1,4 @@
-// Copyright (c) 2002 - 2010 Evil Quail LLC
+// Copyright (c) 2002 - 2010 Kit10 Studios LLC
 // All Rights Reserved
  
 #include <me/render/Terra.h>

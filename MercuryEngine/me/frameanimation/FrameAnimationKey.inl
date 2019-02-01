@@ -1,3 +1,6 @@
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
+// All Rights Reserved
+
 template< typename T >
 Key<T>::Key( unify::TimeDelta time, const T & value )
 : m_time( time )
