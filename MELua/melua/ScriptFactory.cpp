@@ -21,3 +21,13 @@ me::script::IScript::ptr ScriptFactory::Produce( unify::Path source, void * data
 
 	return me::script::IScript::ptr( script );
 }
+
+me::script::IScript::ptr ScriptFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create script from raw data." );
+}
+
+me::script::IScript::ptr ScriptFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create script from parameters." );
+}

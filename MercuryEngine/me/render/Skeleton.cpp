@@ -3,8 +3,6 @@
 
 #include <me/render/Skeleton.h>
 #include <me/render/Mesh.h>
-#include <sg/ShapeCreators.h>
-#include <sg/SphereParameters.h>
 
 using namespace me;
 using namespace render;
@@ -67,18 +65,6 @@ bool Skeleton::Empty() const
 void Skeleton::Render( const render::Params & params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color )
 {
 	if( Empty() ) return;
-
-	if( ! m_jointGeo )
-	{
-		Mesh * mesh = new Mesh( params.renderer );
-		m_jointGeo.reset( mesh );
-
-		sg::SphereParameters parameters;
-		parameters.SetRadius( size );
-		parameters.SetDiffuse( color );
-		parameters.SetEffect( effect );
-		sg::CreateShape_Sphere( params.renderer, mesh->GetPrimitiveList(), parameters );
-	}
 
 	unify::Matrix matrix;
 	while( matrixFeed.Consume( &matrix, 1 ) )

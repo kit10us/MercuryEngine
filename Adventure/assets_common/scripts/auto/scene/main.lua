@@ -14,10 +14,10 @@ function OnSendCommand( command, extra )
 	print( "-----------------------------------Command got: " .. command );
 end
 
-function BuildCube( position )
-	local object = this:NewObject( MakeObjectName( "cube" ) )
+function BuildBox( position )
+	local object = this:NewObject( MakeObjectName( "box" ) )
 	local effect = Effect( VertexShader( "texture" ), PixelShader( "texture" ), Texture( "articulate" ) );
-	object:AddGeometry( ShapeCube( effect ), MatrixTranslate( V3( 0, 1, 0 ) ) )	
+	object:AddGeometry( ShapeBox( effect ), MatrixTranslate( V3( 0, 1, 0 ) ) )	
 	object:Transform():SetPosition( position )
 	return object
 end
@@ -72,12 +72,12 @@ function OnBeforeStart()
 	pyramid:Transform():SetPosition( V3( 0, 0, 0 ) )
 	
 	-- Create sky castle...
-	BuildCube(   V3( 4 + 0, 28, 0 ) )
-	BuildCube(   V3( 4 + 2, 28, 0 ) )
-	BuildCube(   V3( 4 + 4, 28, 0 ) )
-	BuildCube(   V3( 4 + 4, 28, 2 ) )
-	BuildCube(   V3( 4 + 4, 28, 4 ) )
-	BuildCube(   V3( 4 + 4, 28, 6 ) )
+	BuildBox(   V3( 4 + 0, 28, 0 ) )
+	BuildBox(   V3( 4 + 2, 28, 0 ) )
+	BuildBox(   V3( 4 + 4, 28, 0 ) )
+	BuildBox(   V3( 4 + 4, 28, 2 ) )
+	BuildBox(   V3( 4 + 4, 28, 4 ) )
+	BuildBox(   V3( 4 + 4, 28, 6 ) )
 	
 	local sphere = BuildPortalSphere( V3( 4 + 4, 30, 6 ) )
 	
@@ -88,8 +88,8 @@ function OnBeforeStart()
 
 	-- Create jump objects...
 	
-	local jump1 = BuildCube( V3( 13, 1, 8 ) )	
-	local jump2 = BuildCube( V3( 16, 1, -25 ) )
+	local jump1 = BuildBox( V3( 13, 1, 8 ) )	
+	local jump2 = BuildBox( V3( 16, 1, -25 ) )
 
 	jump1:AddComponent( OAC_OnEnter_SetPosition( V3( 2 ), jump2 ) )
 	jump2:AddComponent( OAC_OnExit_SetPosition( V3( 2 ), pyramid ) )

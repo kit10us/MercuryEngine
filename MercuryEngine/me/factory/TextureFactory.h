@@ -16,6 +16,8 @@ namespace me
 		
 		TextureSourceFactory( game::IGame * gameInstance );
 		render::ITexture::ptr Produce( unify::Path source, void * data ) override;
+		render::ITexture::ptr Produce( void * data ) override;
+		render::ITexture::ptr Produce( unify::Parameters parameters ) override;
 
 	private:
 		game::IGame * m_game;

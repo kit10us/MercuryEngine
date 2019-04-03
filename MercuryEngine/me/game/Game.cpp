@@ -15,7 +15,7 @@
 #include <me/factory/GeometryFactory.h>
 #include <me/debug/Block.h>
 #include <me/game/GameLogger.h>
-#include <sg/ShapeFactory.h>
+#include <me/sculpter/SculpterFactory.h>
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
@@ -108,7 +108,7 @@ void Game::Initialize( os::OSParameters osParameters )
 	// Add setup script manager.
 	{
 		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< script::IScript >()->AddFactory( ".xml", setup::SetupScriptFactory::ptr( new setup::SetupScriptFactory( this ) ) );
+		GetManager< script::IScript >()->AddFactory( ".me_setup", setup::SetupScriptFactory::ptr( new setup::SetupScriptFactory( this ) ) );
 	}
 
 	// Parse the commandline...
@@ -121,7 +121,7 @@ void Game::Initialize( os::OSParameters osParameters )
 	for( size_t i = 0; i < osParameters.GetArgumentCount(); i++ )
 	{
 		auto arg = osParameters.GetArgument( i );
-		if( unify::Path( arg ).IsExtension( ".xml" ) )
+		if( unify::Path( arg ).IsExtension( ".me_setup" ) )
 		{
 			m_setup = unify::Path( arg );
 		}
@@ -262,17 +262,17 @@ void Game::Initialize( os::OSParameters osParameters )
 		GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
 		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< Effect >( "Effect", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< Effect >()->AddFactory( ".effect", EffectFactory::ptr( new EffectFactory( this ) ) );
+		GetManager< Effect >()->AddFactory( "me_effect", EffectFactory::ptr( new EffectFactory( this ) ) );
 
 		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< IPixelShader >( "PixelShader", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< IPixelShader >()->AddFactory( ".xml", PixelShaderFactory::ptr( new PixelShaderFactory( this ) ) );
+		GetManager< IPixelShader >()->AddFactory( ".me_shader", PixelShaderFactory::ptr( new PixelShaderFactory( this ) ) );
 
 		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< IVertexShader >( "VertexShader", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< IVertexShader >()->AddFactory( ".xml", VertexShaderFactory::ptr( new VertexShaderFactory( this ) ) );
+		GetManager< IVertexShader >()->AddFactory( ".me_shader", VertexShaderFactory::ptr( new VertexShaderFactory( this ) ) );
 
 		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< Geometry >( "Geometry", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactory::ptr( new GeometryFactory( this ) ) );
-		GetManager< Geometry >()->AddFactory( ".shape", GeometryFactory::ptr( new sg::ShapeFactory( this ) ) );
+		GetManager< Geometry >()->AddFactory( "me_shape", GeometryFactory::ptr( new sculpter::SculpterFactory( this ) ) );
 	}
 
 	// Add internal components...

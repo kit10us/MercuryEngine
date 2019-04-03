@@ -28,3 +28,13 @@ ITexture::ptr TextureSourceFactory::Produce( unify::Path source, void * data )
 
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );
 }
+
+ITexture::ptr TextureSourceFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create texture from raw data." );
+}
+
+ITexture::ptr TextureSourceFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create texture from parameters." );
+}

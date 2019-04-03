@@ -1,0 +1,5 @@
+<xml>
+<extension source="?EXTENSIONS_PATH?/MESceneAutoLoader.dll">
+	<auto>../assets_common/scripts/auto/</auto>
+</extension>
+</xml>

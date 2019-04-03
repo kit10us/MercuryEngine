@@ -5,7 +5,6 @@
 #include <melua/exports/ExportGeometry.h>
 #include <melua/shape/ExportShapeParameters.h>
 #include <melua/Util.h>
-#include <sg/ShapeCreators.h>
 #include <me/game/Game.h>
 
 using namespace melua;
@@ -50,9 +49,10 @@ int Geometry_Constructor( lua_State * state )
 				}
 			}
 			else if( unify::string::StringIs( type1, "ShapeParameters" ) )
-			{ // 
+			{
+				auto shapeCreator = gameInstance->GetManager< Geometry >()->GetFactory( "me_shape" );
 				ShapeParameters * parameters = CheckShapeParameters( state, 1 );
-				geometry = sg::CreateShape( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters );
+				geometry = shapeCreator->Produce( parameters->parameters );
 				return PushUserType< GeometryProxy >( state, { geometry } );
 			}
 			else
@@ -74,8 +74,10 @@ int Geometry_Constructor( lua_State * state )
 			else if( unify::string::StringIs( type1, "string" ) && unify::string::StringIs( type2, "ShapeParameters" ) )
 			{
 				std::string name = lua_tostring( state, 1 );
+
+				auto shapeCreator = gameInstance->GetManager< Geometry >()->GetFactory( "me_shape" );
 				ShapeParameters * parameters = CheckShapeParameters( state, 2 );
-				geometry = sg::CreateShape( gameInstance->GetOS()->GetRenderer( 0 ), parameters->parameters );
+				geometry = shapeCreator->Produce( parameters->parameters );
 				return PushUserType< GeometryProxy >( state, { geometry } );
 			}
 			else

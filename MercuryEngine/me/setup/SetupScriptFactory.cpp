@@ -19,3 +19,13 @@ me::script::IScript::ptr SetupScriptFactory::Produce( unify::Path source, void *
 
 	return me::script::IScript::ptr( script );
 }
+
+me::script::IScript::ptr SetupScriptFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create a setup script from raw data." );
+}
+
+me::script::IScript::ptr SetupScriptFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create a setup script from parameters." );
+}

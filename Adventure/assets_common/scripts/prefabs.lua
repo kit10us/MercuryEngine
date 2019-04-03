@@ -48,7 +48,7 @@ function BuildHouse( position )
 	local color_ambient = Effect( VertexShader( "color_ambient" ), PixelShader( "color_ambient" ) )
 
 	-- Walls
-	parameters = ShapeParameters( "cube" )
+	parameters = ShapeParameters( "box" )
 	parameters:SetEffect( color_ambient )
 	parameters:SetSize3( Size3( 6, 6, 10 ) )
 	parameters:SetDiffuse( RGB( .2, 0.1, 0.1 ) * White( 2 ) )
@@ -56,7 +56,7 @@ function BuildHouse( position )
 	object:AddGeometry( Geometry( parameters ) )
 
 	-- door
-	parameters = ShapeParameters( "cube" )
+	parameters = ShapeParameters( "box" )
 	parameters:SetEffect( color_ambient )
 	parameters:SetSize3( Size3( 2.6, 5, 1 ) )
 	parameters:SetDiffuse( RGB( 107/255, 88/255, 37/255 ) * White( 2 ) )
@@ -85,7 +85,7 @@ function BuildChest( position )
 	
 	local color_ambient = Effect( VertexShader( "color_ambient" ), PixelShader( "color_ambient" ) )
 
-	parameters = ShapeParameters( "cube" )
+	parameters = ShapeParameters( "box" )
 	parameters:SetEffect( color_ambient )
 	parameters:SetSize3( Size3( 2, 2, 2 ) )
 	parameters:SetDiffuse( RGB( .2, 0.1, 0.1 ) * White( 2 ) )

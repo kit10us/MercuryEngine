@@ -15,6 +15,8 @@ namespace me
 
 		GeometryFactory( game::IGame * gameInstance );
 		render::Geometry::ptr Produce( unify::Path source, void * data ) override;
+		render::Geometry::ptr Produce( void * data ) override;
+		render::Geometry::ptr Produce( unify::Parameters parameters ) override;
 
 	private:
 		game::IGame * m_game;

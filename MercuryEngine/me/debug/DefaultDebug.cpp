@@ -4,6 +4,7 @@
 #include <me/debug/DefaultDebug.h>
 #include <me/debug/Block.h>
 #include <me/debug/DefaultErrorHandler.h>
+#include <me/exception/Handled.h>
 #include <unify/Exception.h>
 #include <fstream>
 #include <cassert>
@@ -175,6 +176,32 @@ ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string s
 	}
 
 	return m_errorHandler->ReportError( level, source, error, canContinue, canRetry );
+}
+
+void DefaultDebug::Try( std::function< void() > func, me::ErrorLevel level, std::string source, bool canContinue, bool canRetry )
+{
+	ReportErrorResult result {};
+	bool failed = false;
+	std::exception exception {};
+	
+	do
+	{
+		try
+		{
+			func();
+		}
+		catch( std::exception & ex )
+		{
+			failed = true;
+			exception = ex;
+			result = ReportError( level, source, ex.what(), canContinue, canRetry );
+		}
+	} while ( failed && result == ReportErrorResult::Retry );
+
+	if ( failed && result == ReportErrorResult::Abort )
+	{
+		throw exception::Handled( exception.what() );
+	}
 }
 
 bool DefaultDebug::HadCriticalError() const

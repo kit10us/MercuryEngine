@@ -58,6 +58,15 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 	return Geometry::ptr{};
 }
 
+Geometry::ptr GeometryFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create Geometry from raw data." );
+}
+
+Geometry::ptr GeometryFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create Geometry from parameters." );
+}
 
 void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElement, Mesh * mesh )
 {

@@ -56,3 +56,13 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data
 	}
 	return renderer->ProduceVS( parameters );
 }
+
+IVertexShader::ptr VertexShaderFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create vertex shader from raw data." );
+}
+
+IVertexShader::ptr VertexShaderFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create vertex shader from parameters." );
+}

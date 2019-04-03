@@ -10,6 +10,7 @@
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
 #include <me/script/IScript.h>
+#include <unify/String.h>
 						   
 namespace me
 {
@@ -51,8 +52,8 @@ namespace me
 			virtual void Shutdown() override;
 
 		public:
-			Game( unify::Path setup = unify::Path( "Setup.xml" ) );
-			Game( std::string startScene, unify::Path setup = unify::Path( "Setup.xml" ) );
+			Game( unify::Path setup );
+			Game( std::string startScene, unify::Path setup );
 			virtual ~Game();
 
 			/// <summary>

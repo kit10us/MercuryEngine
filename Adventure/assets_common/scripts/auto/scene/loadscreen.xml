@@ -1,7 +1,7 @@
 <xml>
 
-<asset type="pixelshader" name="texture" source="texture.xml"/>
-<asset type="vertexshader" name="texture" source="texture.xml"/>
+<asset type="pixelshader" name="texture" source="texture.me_shader"/>
+<asset type="vertexshader" name="texture" source="texture.me_shader"/>
 <asset type="texture" name="loadscreen" source="screen01.jpg"/>
 
 </xml>

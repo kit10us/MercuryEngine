@@ -15,6 +15,8 @@ namespace melua
 	public:
 		ScriptFactory( ScriptEngine * se );
 		me::script::IScript::ptr Produce( unify::Path source, void * data ) override;
+		me::script::IScript::ptr Produce( void * data ) override;
+		me::script::IScript::ptr Produce( unify::Parameters parameters ) override;
 
 	private:
 		ScriptEngine * m_se;

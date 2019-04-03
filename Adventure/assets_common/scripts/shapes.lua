@@ -1,11 +1,11 @@
 require "util"
 
-function ShapeCube( effect )
-	cubeParameters = ShapeParameters( "cube" )
-	cubeParameters:SetEffect( effect )
-	cubeParameters:SetSize3( Size3( 2, 2, 2 ) )
-	cubeParameters:SetDiffuseFaces( Red(), Green(), Blue(), RGB( 1, 1, 0 ), RGB( 0, 1, 1 ), RGB( 1, 0, 1 ) )
-	return Geometry( MakeGeometryName( "cube" ), cubeParameters )
+function ShapeBox( effect )
+	boxParameters = ShapeParameters( "box" )
+	boxParameters:SetEffect( effect )
+	boxParameters:SetSize3( Size3( 2, 2, 2 ) )
+	boxParameters:SetDiffuseFaces( Red(), Green(), Blue(), RGB( 1, 1, 0 ), RGB( 0, 1, 1 ), RGB( 1, 0, 1 ) )
+	return Geometry( MakeGeometryName( "box" ), boxParameters )
 end
 
 function ShapePointfield( effect )

@@ -23,19 +23,28 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 	auto vertexShaderManager = gameInstance->GetManager< IVertexShader >();
 
 	Effect* effect{};
-	try
+
+	qxml::Document doc;
+	const qxml::Element * effectNode {};
+	
+	// Load document.
+	m_game->GetOS()->Debug()->Try( [&]
 	{
-		qxml::Document doc( source );
-		auto & effectNode = *doc.GetRoot()->FindFirstElement( "effect" );
+		doc.Load( source );
+		effectNode = doc.GetRoot()->FindFirstElement( "effect" );
+	}, ErrorLevel::Failure, "EffectFactories", false, true );
 
-		effect = new Effect( source );
+	effect = new Effect( source );
 
-		for ( auto&& child : effectNode.Children() )
+	for ( auto&& child : effectNode->Children() )
+	{
+		//void SetName( std::string sName );
+		//void SetFlags( unsigned int dwFlags );
+
+		// Load textures.
+		if ( child.IsTagName( "texture" ) )
 		{
-			//void SetName( std::string sName );
-			//void SetFlags( unsigned int dwFlags );
-
-			if ( child.IsTagName( "texture" ) )
+			m_game->GetOS()->Debug()->Try( [&]
 			{
 				TextureParameters parameters( &child );
 
@@ -43,29 +52,45 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
 				effect->SetTexture( stage, textureManager->Add( name, parameters.source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
-			}
+			}, ErrorLevel::Failure, "EffectFactories" );
+		}
 
-			//void SetCulling( unsigned int dwValue );
-			//void SetLighting( unsigned int dwValue );
-			else if ( child.IsTagName( "pixelshader" ) )
+		//void SetCulling( unsigned int dwValue );
+		//void SetLighting( unsigned int dwValue );
+
+		// Load pixel shader.
+		else if ( child.IsTagName( "pixelshader" ) )
+		{
+			m_game->GetOS()->Debug()->Try( [&]
 			{
 				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 				effect->SetPixelShader( pixelShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
-			}
-			else if ( child.IsTagName( "vertexshader" ) )
+			}, ErrorLevel::Failure, "EffectFactories" );
+		}
+
+		// Load 
+		else if ( child.IsTagName( "vertexshader" ) )
+		{
+			m_game->GetOS()->Debug()->Try( [&]
 			{
 				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 				effect->SetVertexShader( vertexShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
-			}
-			//void AddFrame( size_t frameIndex, float influence );
+			}, ErrorLevel::Failure, "EffectFactories" );
 		}
-	}
-	catch ( std::exception & ex )
-	{
-		throw me::exception::FailedToCreate( "Failed to create Effect \"" + source.ToString() + "\", due to the following error:\n" + ex.what() );
+		//void AddFrame( size_t frameIndex, float influence );
 	}
 
 	return Effect::ptr( effect );
+}
+
+std::shared_ptr< Effect > EffectFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create effect from raw data." );
+}
+
+std::shared_ptr< Effect > EffectFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create effect from parameters." );
 }

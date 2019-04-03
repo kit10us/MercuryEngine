@@ -1,0 +1,38 @@
+<xml>
+
+<define name="EXTENSIONS_PATH">../../../extensions/?TARGET?</define>
+
+<title>Adventure ?RENDERER? (?TARGET?)</title>
+
+<logfile>log_?RENDERER?_?TARGET?.txt</logfile>
+
+<assets>../?RENDERER?/</assets>
+<assets>../?RENDERER?/shaders/</assets>
+<assets>../assets_common/models/</assets>
+<assets>../assets_common/images/</assets>
+<assets>../assets_common/scripts/</assets>
+
+<failuresAsCritial>true</failuresAsCritial>
+
+<renderer source="?EXTENSIONS_PATH?/MERenderer?RENDERER?.dll">
+	<display fullscreen="false" x="10" y="10" width="800" height="600"/>
+</renderer>
+
+<include>setup/ext_lua.me_setup</include>
+<include>setup/ext_dae.me_setup</include>
+<include>setup/ext_ase.me_setup</include>
+<include>setup/ext_sal.me_setup</include>
+
+<extension source="?EXTENSIONS_PATH?/MEKeyboard.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEGamepad.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEPhy2D.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEPhysics.dll"/>
+<extension source="?EXTENSIONS_PATH?/MEPhysicsLuaExt.dll"/>
+
+<include>setup/ext_MEShapes.me_setup</include>
+<include>setup/ext_editor.me_setup</include>
+<include>setup/ext_inputs.me_setup</include>
+
+<startScene>main</startScene>
+
+</xml>

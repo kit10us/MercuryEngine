@@ -8,6 +8,7 @@
 #include <memory>
 #include <list>
 #include <string>
+#include <functional>
 
 namespace me
 {
@@ -157,8 +158,13 @@ namespace me
 			/// <summary>
 			/// Report an error.
 			/// </summary>
-			virtual ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue = true, bool canRetry = false ) = 0;
+			virtual ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue = false, bool canRetry = false ) = 0;
 
+			/// <summary>
+			/// Try/catch a function allowing us to report the error, continue or retry.
+			/// </summary>
+			virtual void Try( std::function< void() > func, me::ErrorLevel level, std::string source, bool canContinue = false, bool canRetry = false ) = 0;
+				
 			/// <summary>
 			/// Returns true if we'd had a critical error.
 			/// </summary>

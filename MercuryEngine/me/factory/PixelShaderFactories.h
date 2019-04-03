@@ -14,6 +14,8 @@ namespace me
 
 		PixelShaderFactory( game::IGame * gameInstance );
 		render::IPixelShader::ptr Produce( unify::Path source, void * data ) override;
+		render::IPixelShader::ptr Produce( void * data ) override;
+		render::IPixelShader::ptr Produce( unify::Parameters parameters ) override;
 
 	public:
 		game::IGame * m_game;

@@ -1,0 +1,6 @@
+<xml>
+<extension source="?EXTENSIONS_PATH?/MEASELoader.dll">
+	<textureps name="texture_ambient" source="texture_ambient.me_shader"/>
+	<texturevs name="texture_ambient" source="texture_ambient.me_shader"/>
+</extension>
+</xml>

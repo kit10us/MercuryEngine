@@ -12,7 +12,7 @@ class Adventure : public game::Game
 {
 public:
 	Adventure()
-		: Game( unify::Path( "setup.xml" ) )
+		: Game( unify::Path( "setup/setup.me_setup" ) )
 	{
 	}
 

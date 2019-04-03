@@ -5,7 +5,6 @@
 #include <melua/shape/ExportShapeParameters.h>
 #include <melua/exports/ExportGeometry.h>
 #include <melua/exports/ExportEffect.h>
-#include <sg/ShapeCreators.h>
 #include <melua/unify/ExportMatrix.h>
 #include <melua/unify/ExportColor.h>
 #include <melua/unify/ExportSize2.h>
@@ -256,7 +255,7 @@ static const luaL_Reg ShapeParametersFunctions[] =
 int ShapeParameters_Constructor( lua_State * state )
 {
 	std::string type = lua_tostring( state, 1 );
-	return PushShapeParameters( state, unify::Parameters().Set< sg::Shape::TYPE >( "type", sg::Shape::FromString( type ) ) );
+	return PushShapeParameters( state, unify::Parameters().Set< std::string >( "type", type ) );
 }
 
 int ShapeParameters_Destructor( lua_State * state )

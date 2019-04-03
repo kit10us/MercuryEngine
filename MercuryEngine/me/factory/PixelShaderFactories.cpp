@@ -52,3 +52,13 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
 	}
 	return renderer->ProducePS( parameters );
 }
+
+IPixelShader::ptr PixelShaderFactory::Produce( void * data )
+{
+	throw me::exception::FailedToCreate( "Attempted to create pixel shader from raw data." );
+}
+
+IPixelShader::ptr PixelShaderFactory::Produce( unify::Parameters parameters )
+{
+	throw me::exception::FailedToCreate( "Attempted to create pixel shader from raw data." );
+}

@@ -1,7 +1,0 @@
-<xml>
-
-<define name="RENDERER">DX11</define>
-<assets>../assets_common/</assets>
-<include>setup_common.xml</include>
-
-</xml>

@@ -16,6 +16,8 @@ namespace me
 
 		VertexShaderFactory( game::IGame * gameInstance );
 		render::IVertexShader::ptr Produce( unify::Path source, void * data ) override;
+		render::IVertexShader::ptr Produce( void * data ) override;
+		render::IVertexShader::ptr Produce( unify::Parameters parameters ) override;
 
 	private:
 		game::IGame * m_game;

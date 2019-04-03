@@ -16,6 +16,8 @@ namespace me
 
 		EffectFactory( game::IGame * gameInstance );
 		render::Effect::ptr Produce( unify::Path source, void * data ) override;
+		render::Effect::ptr Produce( void * data ) override;
+		render::Effect::ptr Produce( unify::Parameters parameters ) override;
 
 	private:
 		game::IGame * m_game;
