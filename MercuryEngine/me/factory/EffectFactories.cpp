@@ -6,6 +6,7 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <me/exception/FailedToCreate.h>
 #include <me/game/Game.h>
+#include <me/debug/Block.h>
 
 using namespace me;
 using namespace render;
@@ -17,6 +18,8 @@ EffectFactory::EffectFactory( game::IGame * gameInstance )
 	  
 std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * data )
 {
+	debug::Block block{ m_game->GetOS()->Debug(), "EffectFactories::Produce(" + source.ToString() + ")" };
+
 	auto gameInstance = dynamic_cast< game::Game * >(m_game);
 	auto textureManager = gameInstance->GetManager< ITexture >();
 	auto pixelShaderManager = gameInstance->GetManager< IPixelShader >();
@@ -32,7 +35,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 	{
 		doc.Load( source );
 		effectNode = doc.GetRoot()->FindFirstElement( "effect" );
-	}, ErrorLevel::Failure, "EffectFactories", false, true );
+	}, ErrorLevel::Failure, false, true );
 
 	effect = new Effect( source );
 
@@ -52,7 +55,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
 				effect->SetTexture( stage, textureManager->Add( name, parameters.source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
-			}, ErrorLevel::Failure, "EffectFactories" );
+			}, ErrorLevel::Failure  );
 		}
 
 		//void SetCulling( unsigned int dwValue );
@@ -66,7 +69,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 				effect->SetPixelShader( pixelShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
-			}, ErrorLevel::Failure, "EffectFactories" );
+			}, ErrorLevel::Failure, true, true );
 		}
 
 		// Load 
@@ -77,7 +80,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 				effect->SetVertexShader( vertexShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
-			}, ErrorLevel::Failure, "EffectFactories" );
+			}, ErrorLevel::Failure, true, true );
 		}
 		//void AddFrame( size_t frameIndex, float influence );
 	}

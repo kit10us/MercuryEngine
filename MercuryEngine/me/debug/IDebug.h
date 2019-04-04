@@ -14,9 +14,11 @@ namespace me
 {
 	enum class ErrorLevel
 	{
-		Critical, // System is left unstable, we should likely shutdown immediately.
-		Failure, // We have a failure, the module that reported it is likely corrupted.
-		Warning // Error might not be important - state is unknown.
+		Engine,		// We have a failure within the engine itself.
+		Extension,	// We have a failure within an extension.
+		Critical,	// System is left unstable, we should likely shutdown immediately.
+		Failure,	// We have a failure, the module that reported it is likely corrupted.
+		Warning		// Error might not be important - state is unknown.
 	};
 
 	enum class ReportErrorResult
@@ -163,7 +165,7 @@ namespace me
 			/// <summary>
 			/// Try/catch a function allowing us to report the error, continue or retry.
 			/// </summary>
-			virtual void Try( std::function< void() > func, me::ErrorLevel level, std::string source, bool canContinue = false, bool canRetry = false ) = 0;
+			virtual void Try( std::function< void() > func, me::ErrorLevel level, bool canContinue = false, bool canRetry = false ) = 0;
 				
 			/// <summary>
 			/// Returns true if we'd had a critical error.

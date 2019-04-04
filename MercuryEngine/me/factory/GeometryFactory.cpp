@@ -22,8 +22,11 @@ GeometryFactory::GeometryFactory( game::IGame * gameInstance )
 
 Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 {
-	debug::Block block{ this->m_game->GetOS()->Debug(), "GeometryFactory::Produce( " + source.ToString() + ")" };
-	try
+	debug::Block block{ m_game->GetOS()->Debug(), "GeometryFactory::Produce( " + source.ToString() + ")" };
+
+	Mesh * mesh {};
+
+	m_game->GetOS()->Debug()->Try( [&]
 	{
 		qxml::Document doc( source );
 		auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
@@ -33,7 +36,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 			return 0;
 		}
 
-		Mesh * mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );
+		mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );
 
 		std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
 		if( version == "1.2" )
@@ -48,14 +51,9 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 
 		mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 
-		return Geometry::ptr( mesh );
-	}
-	catch( std::exception ex )
-	{
-		m_game->GetOS()->Debug()->ReportError( me::ErrorLevel::Critical, source.ToString(), ex.what() );
-	}
+	}, me::ErrorLevel::Engine, false, false );
 
-	return Geometry::ptr{};
+	return Geometry::ptr( mesh );
 }
 
 Geometry::ptr GeometryFactory::Produce( void * data )

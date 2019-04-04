@@ -20,14 +20,25 @@ ReportErrorResult DefaultErrorHandler::ReportError( me::ErrorLevel level, std::s
 {
 	switch( level )
 	{
+	case me::ErrorLevel::Engine:
+		throw unify::Exception( "Engine Failure (" + source + "): " + error );
+		break;
+
+	case me::ErrorLevel::Extension:
+		throw unify::Exception( "Extension Failure (" + source + "): " + error );
+		break;
+
 	case me::ErrorLevel::Critical:
 		throw unify::Exception( "Critical Failure (" + source + "): " + error );
+		break;
+
 	case me::ErrorLevel::Failure:
 		if( m_debug->GetFailureAsCritical() || ! canContinue )
 		{
 			throw unify::Exception( "Failure (" + source + "): " + error );
 		}
 		break;
+
 	case me::ErrorLevel::Warning:
 		break;
 	}

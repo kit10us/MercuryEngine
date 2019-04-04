@@ -4,6 +4,7 @@
 #include <me/Extension.h>
 #include <me/game/IGame.h>
 #include <me/debug/Block.h>
+#include <me/exception/FileNotFound.h>
 #include <qxml/Document.h>
 
 #define WINDOWS_LEAN_AND_MEAN
@@ -39,37 +40,51 @@ Extension::~Extension()
 
 void Extension::Create( game::IGame * gameInstance, unify::Path source, const qxml::Element * element )
 {
+	debug::Block( gameInstance->GetOS()->Debug(), "Extension::Create( \"" + source.ToString() + "\" )" );
 	m_source = source;
-	if( !m_source.Exists() )
+	gameInstance->GetOS()->Debug()->Try( [&]
 	{
-		gameInstance->Debug()->ReportError( me::ErrorLevel::Critical, "Extension::Load", "Failed to find extenion \"" + m_source.ToString() + "\"!" );
-	}
+		if( !m_source.Exists() )
+		{
+			throw exception::FileNotFound( m_source );
+		}
+	}, ErrorLevel::Extension, false, true );
 
-	m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );
-	if( !m_moduleHandle )
+	gameInstance->GetOS()->Debug()->Try( [&]
 	{
-		DWORD errorCode = GetLastError();
-		if( errorCode == ERROR_MOD_NOT_FOUND )
+		m_moduleHandle = LoadLibraryA( m_source.ToString().c_str() );
+		if( !m_moduleHandle )
 		{
-			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
+			DWORD errorCode = GetLastError();
+			if( errorCode == ERROR_MOD_NOT_FOUND )
+			{
+				throw unify::Exception( "Extension \"" + m_source.ToString() + "\" loaded, however, a failure occured due to likely missing dependency (missing another DLL)!" );
+			}
+			else
+			{
+				throw unify::Exception( "Extension \"" + m_source.ToString() + "\" loaded, however, a failure occured (error code: " + unify::Cast< std::string >( errorCode ) + ")!" );
+			}
 		}
-		else
-		{
-			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however, a failure occured (error code: " + unify::Cast< std::string >( errorCode ) + ")!" );
-		}
-	}
+	}, ErrorLevel::Extension, false, true );
 
 	LoaderFunction loader{};
 	{
 		debug::Block block( gameInstance->Debug(), "MELoader" );
 		loader = (LoaderFunction)GetProcAddress( (HMODULE)m_moduleHandle, "MELoader" );
 
-		if( !loader )
+		gameInstance->Debug()->Try( [&]
+		{ 
+			if( !loader )
+			{
+				FreeLibrary( (HMODULE)m_moduleHandle );
+				m_moduleHandle = 0;
+				throw unify::Exception( "Extension, \"" + m_source.ToString() + "\" loaded, however MELoader not found!" );
+			}
+		}, ErrorLevel::Extension, false, false );
+
+		gameInstance->Debug()->Try( [&]
 		{
-			FreeLibrary( (HMODULE)m_moduleHandle );
-			m_moduleHandle = 0;
-			gameInstance->Debug()->ReportError( ErrorLevel::Critical, "Extension", "Extension, \"" + m_source.ToString() + "\" loaded, however MELoader not found!" );
-		}
-		loader( gameInstance, element );
+			loader( gameInstance, element );
+		}, ErrorLevel::Extension, false, false );
 	}
 }

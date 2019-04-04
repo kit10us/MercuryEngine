@@ -7,6 +7,7 @@
 #include <me/scene/component/ObjectAllocatorComponent.h>
 #include <me/scene/RenderGirl.h>
 #include <me/debug/Block.h>
+#include <me/exception/Handled.h>
 #include <unify/Frustum.h>
 
 using namespace me;
@@ -298,24 +299,23 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 void Scene::AddResources( unify::Path path )
 {
 	debug::Block block{ GetOS()->Debug(), "Scene::AddResources(" + path.ToString() + ")" };
-
-	try
+	
+	qxml::Document doc {};
+	GetOS()->Debug()->Try( [&]
 	{
 		auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
-		qxml::Document doc( realPath );
+		doc.Load( realPath );
+	}, me::ErrorLevel::Failure, true, true );
 
-		for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
+	for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
+	{
+		GetOS()->Debug()->Try( [&]
 		{
 			auto type = (*itr).GetAttribute< std::string >( "type" );
 			auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
-
 			GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
-		}
-	}
-	catch( std::exception ex )
-	{
-		GetOS()->Debug()->ReportError( me::ErrorLevel::Critical, "Scene::AddResource(" + path.ToString() + ")", ex.what() );
+		}, me::ErrorLevel::Failure, true, true );
 	}
 }
 

@@ -103,16 +103,30 @@ bool SceneManager::ChangeScene( std::string name )
 		component->OnSceneStart( m_currentScene.get() );
 	}
 
-	block.LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
-	m_currentScene->Component_OnBeforeStart();	
+	auto debugger = m_game->GetOS()->Debug();
+	
+	debugger->Try( [&]
+	{
+		debug::Block localBlock( block, "Component_OnBeforeStart( \""  + m_currentScene->GetName() + "\")" );
+		localBlock.LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
+		m_currentScene->Component_OnBeforeStart();
+	}, ErrorLevel::Engine, false, false );
 
-	block.LogLine( "OnStart Begin" );
-	m_currentScene->OnStart();
+	debugger->Try( [&]
+	{
+		debug::Block localBlock( block, "OnStart" );
+		block.LogLine( "OnStart Begin" );
+		m_currentScene->OnStart();
+		block.LogLine( "OnStart End" );
+	}, ErrorLevel::Engine, false, false );
 
-	block.LogLine( "OnStart End" );
 
-	m_currentScene->Component_OnAfterStart();
-	block.LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
+	debugger->Try( [&]
+	{
+		debug::Block localBlock( block, "Component_OnAfterStart( \"" + m_currentScene->GetName() + "\")" );
+		m_currentScene->Component_OnAfterStart();
+		block.LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
+	}, ErrorLevel::Engine, false, false );
 
 	return true;
 }

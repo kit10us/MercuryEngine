@@ -5,7 +5,6 @@
 #include <me/os/DefaultOS.h>
 #include <me/game/Game.h>
 #include <me/game/component/GC_ActionFactory.h>
-#include <me/exception/FailedToCreate.h>
 #include <me/scene/SceneManager.h>
 #include <me/setup/SetupScriptFactory.h>
 #include <me/factory/EffectFactories.h>
@@ -19,6 +18,8 @@
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
+#include <me/exception/FailedToCreate.h>
+#include <me/exception/FileNotFound.h>
 
 #include <chrono>
 #include <ctime>
@@ -130,10 +131,14 @@ void Game::Initialize( os::OSParameters osParameters )
 	// Check for OS in setup...
 	if( !m_setup.Empty() )
 	{
-		if( !m_setup.Exists() )
+		Debug()->Try( [&]
 		{
-			Debug()->ReportError( ErrorLevel::Critical, "Game::Initialize", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
-		}
+			if( !m_setup.Exists() )
+			{
+				throw exception::FileNotFound( m_setup );
+			}
+		}, ErrorLevel::Engine, false, true );
+
 
 		// First loader pass
 		debug::Block xmlLoaderBlock( block, "xmlLoader first pass" );
@@ -194,10 +199,13 @@ void Game::Initialize( os::OSParameters osParameters )
 	// Early setup...
 	if ( ! m_setup.Empty() )
 	{
-		if( ! m_setup.Exists() )
+		Debug()->Try( [&]
 		{
-			Debug()->ReportError( ErrorLevel::Critical, "Game::Initialize", "Setup file, \"" + m_setup.ToString() + "\" not found!" );
-		}
+			if( ! m_setup.Exists() )
+			{
+				throw exception::FileNotFound( m_setup );
+			}
+		}, ErrorLevel::Engine, false, true );
 
 		// Second loader pass
 		debug::Block xmlLoaderBlock( block, "xmlLoader second pass" );
@@ -345,15 +353,10 @@ void Game::Initialize( os::OSParameters osParameters )
 
 	{
 		debug::Block startupBlock( block, "Startup" );
-		try
+		Debug()->Try( [&]
 		{
 			Startup();
-		}
-		catch( unify::Exception ex )
-		{
-			block.LogLine( "Startup FAILED" );
-			Debug()->ReportError( ErrorLevel::Critical, "Game", ex.what() );
-		}
+		}, ErrorLevel::Engine, false, false );
 	}
 
 	{
@@ -876,15 +879,11 @@ void Game::AddExtension( unify::Path path, const qxml::Element * element )
 	debug::Block block( Debug(), "Game::AddExtension \"" + path.ToString() + "\"" );
 	{
 		Extension * extension {};
-		try
+		Debug()->Try( [&]
 		{
 			std::shared_ptr< Extension > extension{ new Extension() };
 			extension->Create( this, path, element );
 			m_extensions.push_back( extension );
-		}
-		catch( std::exception ex )
-		{
-			Debug()->ReportError( ErrorLevel::Critical, "Game", "Failed to load extension! \nError:\n" + std::string( ex.what() ) );
-		}
+		}, ErrorLevel::Extension, false, false );
 	}
 }

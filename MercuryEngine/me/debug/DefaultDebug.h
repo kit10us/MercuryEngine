@@ -76,7 +76,7 @@ namespace me
 
 			ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
 
-			void Try( std::function< void() > func, me::ErrorLevel level, std::string source, bool canContinue, bool canRetry ) override;
+			void Try( std::function< void() > func, me::ErrorLevel level, bool canContinue, bool canRetry ) override;
 
 			bool HadCriticalError() const override;
 

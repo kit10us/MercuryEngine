@@ -160,9 +160,21 @@ ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string s
 {
 	switch( level )
 	{
+	case me::ErrorLevel::Engine:
+		m_criticalErrors.push_back( "Engine Failure (" + source + "): " + error );
+		LogLine( "Engine Failure (" + source + "): " + error );
+		break;
+
+	case me::ErrorLevel::Extension:
+		m_criticalErrors.push_back( "Extension Failure (" + source + "): " + error );
+		LogLine( "Extension Failure (" + source + "): " + error );
+		break;
+
 	case me::ErrorLevel::Critical:
 		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
 		LogLine( "Critical Failure (" + source + "): " + error );
+		break;
+
 	case me::ErrorLevel::Failure:
 		LogLine( "Failure (" + source + "): " + error );
 		if( m_failuresAsCritial )
@@ -170,6 +182,7 @@ ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string s
 			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
 		}
 		break;
+
 	case me::ErrorLevel::Warning:
 		LogLine( "Warning (" + source + "): " + error );
 		break;
@@ -178,7 +191,7 @@ ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string s
 	return m_errorHandler->ReportError( level, source, error, canContinue, canRetry );
 }
 
-void DefaultDebug::Try( std::function< void() > func, me::ErrorLevel level, std::string source, bool canContinue, bool canRetry )
+void DefaultDebug::Try( std::function< void() > func, me::ErrorLevel level, bool canContinue, bool canRetry )
 {
 	ReportErrorResult result {};
 	bool failed = false;
@@ -190,11 +203,24 @@ void DefaultDebug::Try( std::function< void() > func, me::ErrorLevel level, std:
 		{
 			func();
 		}
+		catch( me::exception::Handled & )
+		{
+			throw;
+		}
 		catch( std::exception & ex )
 		{
 			failed = true;
 			exception = ex;
-			result = ReportError( level, source, ex.what(), canContinue, canRetry );
+			result = ReportErrorResult::Abort;
+
+			// Try to report the error as the report error handler my throw for an abort.
+			try
+			{
+				result = ReportError( level, GetBlocks( " " ), ex.what(), canContinue, canRetry );
+			}
+			catch( ... )
+			{
+			}
 		}
 	} while ( failed && result == ReportErrorResult::Retry );
 
@@ -280,7 +306,7 @@ void DefaultDebug::PopBlock( std::string name )
 
 	if ( (m_blocks.back()) != name )
 	{
-		this->ReportError( ErrorLevel::Critical, "DefaultDebug", "Top of block is not the same as block being popped!", false, false );
+		this->ReportError( ErrorLevel::Engine, "DefaultDebug", "Top of block is not the same as block being popped!", false, false );
 	}
 	m_blocks.pop_back();
 }
