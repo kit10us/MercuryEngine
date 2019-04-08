@@ -32,7 +32,7 @@ IShapeCreator* SculpterFactory::FindShapeCreator( std::string name ) const
 	return itr->second.get();
 }
 
-Geometry::ptr SculpterFactory::Produce( unify::Path source, void * data )
+Geometry::ptr SculpterFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	game::Game & gameInstance = *m_game;
 
@@ -47,11 +47,6 @@ Geometry::ptr SculpterFactory::Produce( unify::Path source, void * data )
 
 	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 	return Geometry::ptr( mesh );
-}
-
-Geometry::ptr SculpterFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create sculpter from raw data." );
 }
 
 Geometry::ptr SculpterFactory::Produce( unify::Parameters parameters )

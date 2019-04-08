@@ -13,16 +13,11 @@ SetupScriptFactory::SetupScriptFactory( game::Game * game )
 {
 }
 	  
-me::script::IScript::ptr SetupScriptFactory::Produce( unify::Path source, void * data )
+me::script::IScript::ptr SetupScriptFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto script = new SetupScript( m_game, source );
 
 	return me::script::IScript::ptr( script );
-}
-
-me::script::IScript::ptr SetupScriptFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create a setup script from raw data." );
 }
 
 me::script::IScript::ptr SetupScriptFactory::Produce( unify::Parameters parameters )

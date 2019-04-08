@@ -15,51 +15,46 @@ VertexShaderFactory::VertexShaderFactory( game::IGame * gameInstance )
 {
 }
 
-IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, void * data )
+IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
 
 	qxml::Document doc( source );
 	auto && root = *doc.GetRoot()->FindFirstElement( "vertexshader" );
 
-	VertexShaderParameters parameters;
+	VertexShaderParameters vertexParameters;
 	for ( auto && node : root.Children() )
 	{
 		if ( node.IsTagName( "source" ) )
 		{
-			parameters.path = m_game->GetOS()->GetAssetPaths()->FindAsset( unify::Path( node.GetText() ), node.GetDocument()->GetPath().DirectoryOnly() );
+			vertexParameters.path = m_game->GetOS()->GetAssetPaths()->FindAsset( unify::Path( node.GetText() ), node.GetDocument()->GetPath().DirectoryOnly() );
 		}
 		else if ( node.IsTagName( "entry" ) )
 		{
-			parameters.entryPointName = node.GetText();
+			vertexParameters.entryPointName = node.GetText();
 		}
 		else if ( node.IsTagName( "profile" ) )
 		{
-			parameters.profile = node.GetText();
+			vertexParameters.profile = node.GetText();
 		}
 		else if ( node.IsTagName( "constants" ) )
 		{
-			parameters.constantTable = render::ConstantTable( &node );
+			vertexParameters.constantTable = render::ConstantTable( &node );
 		}
 		else if ( node.IsTagName( "vertexformat" ) )
 		{
-			parameters.vertexDeclaration.reset( new VertexDeclaration( &node ) );
+			vertexParameters.vertexDeclaration.reset( new VertexDeclaration( &node ) );
 		}
 		else if( node.IsTagName( "trans" ) )
 		{
-			parameters.trans = unify::Cast< bool >( node.GetText() );
+			vertexParameters.trans = unify::Cast< bool >( node.GetText() );
 		}
 	}
-	if ( parameters.vertexDeclaration == nullptr )
+	if ( vertexParameters.vertexDeclaration == nullptr )
 	{
 		throw exception::FailedToCreate( "Failed to create vertex shader as vertex format is missing!" );
 	}
-	return renderer->ProduceVS( parameters );
-}
-
-IVertexShader::ptr VertexShaderFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create vertex shader from raw data." );
+	return renderer->ProduceVS( vertexParameters );
 }
 
 IVertexShader::ptr VertexShaderFactory::Produce( unify::Parameters parameters )

@@ -15,8 +15,7 @@ namespace me
 		typedef std::shared_ptr< rm::ISourceFactory< me::render::Effect > > ptr;
 
 		EffectFactory( game::IGame * gameInstance );
-		render::Effect::ptr Produce( unify::Path source, void * data ) override;
-		render::Effect::ptr Produce( void * data ) override;
+		render::Effect::ptr Produce( unify::Path source, unify::Parameters parameters ) override;
 		render::Effect::ptr Produce( unify::Parameters parameters ) override;
 
 	private:

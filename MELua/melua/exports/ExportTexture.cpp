@@ -44,9 +44,9 @@ int Texture_Constructor( lua_State * state )
 			std::string name = lua_tostring( state, 1 );
 			unify::Path source( lua_tostring( state, 2 ) );
 
+			unify::Parameters parameters;
 			if( top >= 3 )
 			{
-				TextureParameters parameters;
 				bool lockable = true;
 				bool renderable = true;
 
@@ -62,37 +62,28 @@ int Texture_Constructor( lua_State * state )
 
 				if ( lockable )
 				{
-					parameters.lockAccess.cpu = unify::DataLockAccess::ReadWrite;
+					parameters.Set( "lockaccesscpu", "Readwrite" );
 				}
 				else
 				{
-					parameters.lockAccess.cpu = unify::DataLockAccess::Readonly;
+					parameters.Set( "lockaccesscpu", "Readonly" );
 				}
 
 				if ( renderable )
 				{
-					parameters.lockAccess.gpu = unify::DataLockAccess::ReadWrite;
+					parameters.Set( "lockaccessgpu", "ReadWrite" );
 				}
 				else 
 				{
-					parameters.lockAccess.gpu = unify::DataLockAccess::Readonly;
+					parameters.Set( "lockaccessgpu", "Readonly" );
 				}
 
-				parameters.format = render::Format::R32G32B32A32_Float;
 				if( top >= 4 )
 				{
-					parameters.format = render::Format::FromString( lua_tostring( state, 5 ) );
+					parameters.Set( "format", lua_tostring( state, 5 ) );
 				}
-
-
-				parameters.source = source;
-
-				texture = gameInstance->GetManager< ITexture >()->Add( name, source, unify::Path(), &parameters );
 			}
-			else
-			{
-				texture = gameInstance->GetManager< ITexture >()->Add( name, source );
-			}
+			texture = gameInstance->GetManager< ITexture >()->Add( name, source, unify::Path(), parameters );
 		}
 	}
 	catch( std::exception ex )

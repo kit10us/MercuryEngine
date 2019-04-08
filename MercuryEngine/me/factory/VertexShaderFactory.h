@@ -15,8 +15,7 @@ namespace me
 		typedef std::shared_ptr< rm::ISourceFactory< me::render::IVertexShader > > ptr;
 
 		VertexShaderFactory( game::IGame * gameInstance );
-		render::IVertexShader::ptr Produce( unify::Path source, void * data ) override;
-		render::IVertexShader::ptr Produce( void * data ) override;
+		render::IVertexShader::ptr Produce( unify::Path source, unify::Parameters parameters ) override;
 		render::IVertexShader::ptr Produce( unify::Parameters parameters ) override;
 
 	private:

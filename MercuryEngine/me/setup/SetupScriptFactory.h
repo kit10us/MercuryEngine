@@ -18,8 +18,7 @@ namespace me
 
 			SetupScriptFactory( game::Game * game );
 
-			script::IScript::ptr Produce( unify::Path source, void * data ) override;
-			script::IScript::ptr Produce( void * data ) override;
+			script::IScript::ptr Produce( unify::Path source, unify::Parameters parameters ) override;
 			script::IScript::ptr Produce( unify::Parameters parameters ) override;
 
 		private:

@@ -16,7 +16,7 @@ EffectFactory::EffectFactory( game::IGame * gameInstance )
 {
 }
 	  
-std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * data )
+std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	debug::Block block{ m_game->GetOS()->Debug(), "EffectFactories::Produce(" + source.ToString() + ")" };
 
@@ -49,13 +49,18 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 		{
 			m_game->GetOS()->Debug()->Try( [&]
 			{
-				TextureParameters parameters( &child );
+				unify::Parameters parameters {};
+				{
+					child.AttributesToParameters( parameters,
+					{ { "min" }, { "mag" }, { "mip" }, { "lockaccess.cpu" }, { "lockaccess.gpu" }, { "source" }, { "width" }, { "height" } }
+					);
+				};
 
-				std::string name = child.GetAttributeElse< std::string >( "name", parameters.source.FilenameNoExtension() );
+				std::string name = child.GetAttributeElse< std::string >( "name", unify::Path( parameters.Get< std::string >( "source" ) ).FilenameNoExtension() );
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
-				effect->SetTexture( stage, textureManager->Add( name, parameters.source, child.GetDocument()->GetPath().DirectoryOnly(), &parameters ) );
-			}, ErrorLevel::Failure  );
+				effect->SetTexture( stage, textureManager->Add( name, unify::Path( parameters.Get< std::string >( "source" ) ), child.GetDocument()->GetPath().DirectoryOnly(), parameters ) );
+			}, ErrorLevel::Failure );
 		}
 
 		//void SetCulling( unsigned int dwValue );
@@ -86,11 +91,6 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, void * dat
 	}
 
 	return Effect::ptr( effect );
-}
-
-std::shared_ptr< Effect > EffectFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create effect from raw data." );
 }
 
 std::shared_ptr< Effect > EffectFactory::Produce( unify::Parameters parameters )

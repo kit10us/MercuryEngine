@@ -15,47 +15,47 @@ PixelShaderFactory::PixelShaderFactory( game::IGame * gameInstance )
 {
 }
 
-IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, void * data )
+IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
-	qxml::Document doc( source );
+
+	qxml::Document doc {};
+	m_game->Debug()->Try( [&]
+	{
+		doc.Load( source );
+	}, ErrorLevel::Failure, false, true );
 	auto && root = *doc.GetRoot()->FindFirstElement( "pixelshader" );
 
-	PixelShaderParameters parameters;
+	PixelShaderParameters pixelShaderParameters;
 	for ( auto && node : root.Children() )
 	{
 		if ( node.IsTagName( "source" ) )
 		{
-			parameters.path = m_game->GetOS()->GetAssetPaths()->FindAsset( unify::Path( node.GetText() ), node.GetDocument()->GetPath().DirectoryOnly() );
+			pixelShaderParameters.path = m_game->GetOS()->GetAssetPaths()->FindAsset( unify::Path( node.GetText() ), node.GetDocument()->GetPath().DirectoryOnly() );
 		}
 		else if ( node.IsTagName( "entry" ) )
 		{
-			parameters.entryPointName = node.GetText();
+			pixelShaderParameters.entryPointName = node.GetText();
 		}
 		else if ( node.IsTagName( "profile" ) )
 		{
-			parameters.profile = node.GetText();
+			pixelShaderParameters.profile = node.GetText();
 		}
 		else if ( node.IsTagName( "constants" ) )
 		{
-			parameters.constantTable = render::ConstantTable( &node );
+			pixelShaderParameters.constantTable = render::ConstantTable( &node );
 		}
 		else if( node.IsTagName( "blend" ) )
 		{
-			parameters.trans = true;
-			parameters.blendDesc = BlendDesc( &node );
+			pixelShaderParameters.trans = true;
+			pixelShaderParameters.blendDesc = BlendDesc( &node );
 		}
 		else if( node.IsTagName( "trans" ) )
 		{
-			parameters.trans = unify::Cast< bool >( node.GetText() );
+			pixelShaderParameters.trans = unify::Cast< bool >( node.GetText() );
 		}
 	}
-	return renderer->ProducePS( parameters );
-}
-
-IPixelShader::ptr PixelShaderFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create pixel shader from raw data." );
+	return renderer->ProducePS( pixelShaderParameters );
 }
 
 IPixelShader::ptr PixelShaderFactory::Produce( unify::Parameters parameters )

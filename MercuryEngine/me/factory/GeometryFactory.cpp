@@ -20,7 +20,7 @@ GeometryFactory::GeometryFactory( game::IGame * gameInstance )
 {
 }
 
-Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
+Geometry::ptr GeometryFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	debug::Block block{ m_game->GetOS()->Debug(), "GeometryFactory::Produce( " + source.ToString() + ")" };
 
@@ -54,11 +54,6 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, void * data )
 	}, me::ErrorLevel::Engine, false, false );
 
 	return Geometry::ptr( mesh );
-}
-
-Geometry::ptr GeometryFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create Geometry from raw data." );
 }
 
 Geometry::ptr GeometryFactory::Produce( unify::Parameters parameters )

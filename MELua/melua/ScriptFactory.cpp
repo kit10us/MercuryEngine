@@ -13,18 +13,13 @@ ScriptFactory::ScriptFactory( ScriptEngine * se )
 {
 }
 	  
-me::script::IScript::ptr ScriptFactory::Produce( unify::Path source, void * data )
+me::script::IScript::ptr ScriptFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto game = dynamic_cast< me::game::Game* >( m_se->GetGame() );
 
 	auto script = new Script( m_se->GetState(), source );
 
 	return me::script::IScript::ptr( script );
-}
-
-me::script::IScript::ptr ScriptFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create script from raw data." );
 }
 
 me::script::IScript::ptr ScriptFactory::Produce( unify::Parameters parameters )

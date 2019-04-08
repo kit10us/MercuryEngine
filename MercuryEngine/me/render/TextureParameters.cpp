@@ -30,39 +30,43 @@ TextureParameters::TextureParameters( unify::Path _source, me::render::TextureLo
 {
 }
 
-TextureParameters::TextureParameters( const qxml::Element * element )
+TextureParameters::TextureParameters( unify::Parameters parameters )
 	: TextureParameters{}
 {
-	if( element->HasAttributes( "min" ) )
+	if( parameters.Exists( "min" ) )
 	{
-		min = Filtering::FromString( element->GetAttribute< std::string >( "min" ) );
+		min = Filtering::FromString( parameters.Get< std::string >( "min" ) );
 	}
-	if( element->HasAttributes( "mag" ) )
+	if( parameters.Exists( "mag" ) )
 	{
-		mag = Filtering::FromString( element->GetAttribute< std::string >( "mag" ) );
+		mag = Filtering::FromString( parameters.Get< std::string >( "mag" ) );
 	}
-	if( element->HasAttributes( "mip" ) )
+	if( parameters.Exists( "mip" ) )
 	{
-		mip = Filtering::FromString( element->GetAttribute< std::string >( "mip" ) );
+		mip = Filtering::FromString( parameters.Get< std::string >( "mip" ) );
 	}
-	if( element->HasAttributes( "lockaccescpu" ) )
+	if( parameters.Exists( "lockaccess.cpu" ) )
 	{
-		lockAccess.cpu = element->GetAttribute< unify::DataLockAccess::TYPE >( "lockaccesscpu" );
+		lockAccess.cpu = unify::DataLockAccess::FromString( parameters.Get< std::string >( "lockaccess.cpu" ) );
 	}
-	if( element->HasAttributes( "lockaccessgpu" ) )
+	if( parameters.Exists( "lockaccess.gpu" ) )
 	{
-		lockAccess.gpu = element->GetAttribute< unify::DataLockAccess::TYPE >( "lockaccessgpu" );
+		lockAccess.gpu = unify::DataLockAccess::FromString( parameters.Get< std::string >( "lockaccess.gpu" ) );
 	}
-	if( element->HasAttributes( "source" ) )
+	if( parameters.Exists( "source" ) )
 	{
-		source = unify::Path( element->GetAttribute< std::string >( "source" ) );
+		source = unify::Path( parameters.Get< std::string >( "source" ) );
 	}
-	if ( element->HasAttributes( "width" ) )
+	if( parameters.Exists( "width" ) )
 	{
-		size.width = element->GetAttribute< unsigned int >( "width" );
+		size.width = parameters.Get< unsigned int >( "width" );
 	}
-	if (element->HasAttributes( "height" ) )
+	if( parameters.Exists( "height" ) )
 	{
-		size.height = element->GetAttribute< unsigned int >( "height" );
+		size.height = parameters.Get< unsigned int >( "height" );
+	}
+	if( parameters.Exists( "format" ) )
+	{
+		format = render::Format::FromString( parameters.Get< std::string >( "format" ) );
 	}
 }

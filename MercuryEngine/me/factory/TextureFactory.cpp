@@ -13,25 +13,15 @@ TextureSourceFactory::TextureSourceFactory( game::IGame * gameInstance )
 {
 }
 
-ITexture::ptr TextureSourceFactory::Produce( unify::Path source, void * data )
+ITexture::ptr TextureSourceFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	if( !source.Empty() )
 	{
-		TextureParameters parameters;
-		if ( data )
-		{
-			parameters = *(TextureParameters*)data;
-		}
-		parameters.source = source;
+		parameters.Set< std::string >( "source", source.ToString() );
 		return m_game->GetOS()->GetRenderer(0)->ProduceT( parameters );
 	}
 
 	throw exception::FailedToCreate( "No valid factory option provided for texture!" );
-}
-
-ITexture::ptr TextureSourceFactory::Produce( void * data )
-{
-	throw me::exception::FailedToCreate( "Attempted to create texture from raw data." );
 }
 
 ITexture::ptr TextureSourceFactory::Produce( unify::Parameters parameters )
