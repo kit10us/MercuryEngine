@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/os/IOS.h>
-#include <me/Extension.h>
+#include <me/os/IExtension.h>
 #include <me/input/InputManager.h>
 #include <me/render/RenderInfo.h>
 #include <me/render/RenderParams.h>
@@ -67,7 +67,7 @@ namespace me
 			/// Perform necessary initialization.
 			/// Returns Setup: false ends the program immediately.
 			/// </summary>
-			virtual void Initialize( os::OSParameters osParameters ) = 0;
+			virtual void Initialize( me::os::IOS::ptr os ) = 0;
 
 			/// <summary>
 			/// Triggers updating, called by lower OS main area.

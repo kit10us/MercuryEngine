@@ -5,19 +5,22 @@
 
 #include <qxml/Element.h>
 #include <unify/Path.h>
+#include <memory>
 
 namespace me
 {
 	namespace game
 	{
 		class IGame;
+	}
 
+	namespace os
+	{
 		class IExtension
 		{
 		public:
+			typedef std::shared_ptr< IExtension > ptr;
 			virtual ~IExtension(){}
-
-			virtual void Create( game::IGame * gameInstance, unify::Path source, const qxml::Element * element ) = 0;
 		};
 	}
 }

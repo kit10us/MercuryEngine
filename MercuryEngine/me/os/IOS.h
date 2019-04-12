@@ -3,10 +3,11 @@
 
 #pragma once
 
-#include <me/debug/IDebug.h>
 #include <me/render/IRendererFactory.h>
 #include <me/render/Display.h>
+#include <me/os/IExtension.h>
 #include <me/os/OSParameters.h>
+#include <me/debug/IDebug.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
 #include <rm/AssetPaths.h>
@@ -33,11 +34,25 @@ namespace me
 
 			virtual ~IOS() { }
 
+			/// <summary>
+			/// Get the game instance.
+			/// </summary>
 			virtual game::IGame * GetGame() = 0;
 
+			/// <summary>
+			/// Get the debug interaface.
+			/// </summary>
 			virtual me::debug::IDebug * Debug() = 0;
+
+			/// <summary>
+			/// Get the debug interaface.
+			/// </summary>
 			virtual const me::debug::IDebug * Debug() const = 0;
 
+			/// <summary>
+			/// Feed data to the os. This allows interacing with the operating system without
+			/// direct dependencies.
+			/// </summary>
 			virtual void * Feed( std::string target, void * data ) = 0;
 
 			/// <summary>
@@ -45,6 +60,9 @@ namespace me
 			/// </summary>	  
 			virtual void AddDisplay( render::Display display ) = 0;
 
+			/// <summary>
+			/// Returns the number of renderers.
+			/// </summary>
 			virtual int RendererCount() const = 0;
 
 			/// <summary>
@@ -75,16 +93,6 @@ namespace me
 			virtual void BuildRenderers( std::string title ) = 0;
 
 			/// <summary>
-			/// Startup and initalize Operating System specific dependencies.
-			/// </summary>
-			virtual void Startup() = 0;
-
-			/// <summary>
-			/// Cleanup up and unitialize Operating System specific dependencies.
-			/// </summary>
-			virtual void Shutdown() = 0;
-
-			/// <summary>
 			/// Asset path manager.
 			/// </summary>
 			virtual rm::AssetPaths::ptr GetAssetPaths() = 0;
@@ -93,6 +101,21 @@ namespace me
 			/// Returns the OS parameters, parameters passed in to the program from the OS.
 			/// </sumamry>
 			virtual const os::OSParameters * GetOSParameters() const = 0;
+
+			/// <summary>
+			/// Create an extension.
+			/// </summary>
+			virtual me::os::IExtension::ptr CreateExtension( unify::Path source, const qxml::Element * element ) = 0;
+
+			/// <summary>
+			/// Startup and initalize Operating System specific dependencies.
+			/// </summary>
+			virtual void Startup() = 0;
+
+			/// <summary>
+			/// Cleanup up and unitialize Operating System specific dependencies.
+			/// </summary>
+			virtual void Shutdown() = 0;
 		};
 	}
 }

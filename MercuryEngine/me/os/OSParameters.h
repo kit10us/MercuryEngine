@@ -44,12 +44,13 @@ namespace me
 		public:
 			OSParameters( unify::Path programPath, unify::Path runPath, std::vector< std::string > arguments );
 
-			os::win::HWnd hWnd;
+			os::win::HWnd handle;
 			os::win::HInstance hInstance;
 			os::win::HInstance hPrevInstance;
 			std::string cmdLine;
 			int nCmdShow;
 			os::win::WndProc wndProc;
+			os::win::HWnd parentHandle;
 
 		public: // me::os::IOSParameters
 			unify::Path GetProgramPath() const override;

@@ -78,7 +78,6 @@
     <ClInclude Include="me\exception\Startup.h" />
     <ClInclude Include="me\exception\UnsupportedValue.h" />
     <ClInclude Include="me\exception\Update.h" />
-    <ClInclude Include="me\Extension.h" />
     <ClInclude Include="me\factory\EffectFactories.h" />
     <ClInclude Include="me\factory\GeometryFactory.h" />
     <ClInclude Include="me\factory\PixelShaderFactories.h" />
@@ -126,7 +125,7 @@
     <ClInclude Include="me\object\component\TagsComponent.h" />
     <ClInclude Include="me\object\FinalCamera.h" />
     <ClInclude Include="me\object\Object.h" />
-    <ClInclude Include="me\os\DefaultOS.h" />
+    <ClInclude Include="me\os\IExtension.h" />
     <ClInclude Include="me\os\IOS.h" />
     <ClInclude Include="me\os\IOSParameters.h" />
     <ClInclude Include="me\os\OSParameters.h" />
@@ -258,7 +257,6 @@
     <ClCompile Include="me\dyna\scale\DS_Absolute.cpp" />
     <ClCompile Include="me\dyna\scale\DS_Add.cpp" />
     <ClCompile Include="me\dyna\scale\DS_Delta.cpp" />
-    <ClCompile Include="me\Extension.cpp" />
     <ClCompile Include="me\factory\EffectFactories.cpp" />
     <ClCompile Include="me\factory\GeometryFactory.cpp" />
     <ClCompile Include="me\factory\PixelShaderFactories.cpp" />
@@ -295,7 +293,6 @@
     <ClCompile Include="me\object\component\ObjectComponent.cpp" />
     <ClCompile Include="me\object\component\TagsComponent.cpp" />
     <ClCompile Include="me\object\Object.cpp" />
-    <ClCompile Include="me\os\DefaultOS.cpp" />
     <ClCompile Include="me\os\OSParameters.cpp" />
     <ClCompile Include="me\phy\Entity.cpp" />
     <ClCompile Include="me\phy\PhySceneComponent.cpp" />

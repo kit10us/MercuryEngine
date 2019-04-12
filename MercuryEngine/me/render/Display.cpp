@@ -6,7 +6,7 @@
 using namespace me;
 using namespace render;
 
-Display Display::CreateWindowedDirectXDisplay( unify::Size< float > size, unify::V2< float > position, void* handle, void* parent )
+Display Display::CreateWindowedDisplay( unify::Size< float > size, unify::V2< float > position, void* handle, void* parent )
 {
 	Display display;
 	display.m_handle = handle;
@@ -17,7 +17,7 @@ Display Display::CreateWindowedDirectXDisplay( unify::Size< float > size, unify:
 	return display;
 }
 
-Display Display::CreateFullscreenDirectXDisplay( unify::Size< float > size, void* handle )
+Display Display::CreateFullscreenDisplay( unify::Size< float > size, void* handle )
 {
 	Display display;
 	display.m_handle = handle;

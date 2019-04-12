@@ -15,8 +15,8 @@ namespace me
 		{
 		public:
 			Display();
-			static Display CreateWindowedDirectXDisplay( unify::Size< float > size, unify::V2< float > position = unify::V2< float >( 0.0f, 0.0f ), void* handle = 0, void* parent = 0 );
-			static Display CreateFullscreenDirectXDisplay( unify::Size< float > size, void* handle = 0 );
+			static Display CreateWindowedDisplay( unify::Size< float > size, unify::V2< float > position = unify::V2< float >( 0.0f, 0.0f ), void* handle = 0, void* parent = 0 );
+			static Display CreateFullscreenDisplay( unify::Size< float > size, void* handle = 0 );
 
 			bool IsFullscreen() const;
 

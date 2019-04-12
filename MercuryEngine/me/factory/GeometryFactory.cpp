@@ -33,7 +33,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, unify::Parameters pa
 
 		if ( ! geometryElement.HasAttributes( "version" ) )
 		{
-			return 0;
+			return;
 		}
 
 		mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );

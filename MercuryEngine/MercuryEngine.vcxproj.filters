@@ -477,9 +477,6 @@
     <ClInclude Include="me\render\MeshInstanceData.h">
       <Filter>me\render</Filter>
     </ClInclude>
-    <ClInclude Include="me\Extension.h">
-      <Filter>me</Filter>
-    </ClInclude>
     <ClInclude Include="me\Instancing.h">
       <Filter>me</Filter>
     </ClInclude>
@@ -553,9 +550,6 @@
       <Filter>me\render</Filter>
     </ClInclude>
     <ClInclude Include="me\os\IOS.h">
-      <Filter>me\os</Filter>
-    </ClInclude>
-    <ClInclude Include="me\os\DefaultOS.h">
       <Filter>me\os</Filter>
     </ClInclude>
     <ClInclude Include="me\canvas\ListItem.h">
@@ -710,6 +704,9 @@
     </ClInclude>
     <ClInclude Include="me\exception\Handled.h">
       <Filter>me\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="me\os\IExtension.h">
+      <Filter>me\os</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -983,9 +980,6 @@
     <ClCompile Include="me\render\PrimitiveList.cpp">
       <Filter>me\render</Filter>
     </ClCompile>
-    <ClCompile Include="me\Extension.cpp">
-      <Filter>me</Filter>
-    </ClCompile>
     <ClCompile Include="me\Instancing.cpp">
       <Filter>me</Filter>
     </ClCompile>
@@ -1030,9 +1024,6 @@
     </ClCompile>
     <ClCompile Include="me\render\Billboard.cpp">
       <Filter>me\render</Filter>
-    </ClCompile>
-    <ClCompile Include="me\os\DefaultOS.cpp">
-      <Filter>me\os</Filter>
     </ClCompile>
     <ClCompile Include="me\canvas\ListItem.cpp">
       <Filter>me\canvas</Filter>

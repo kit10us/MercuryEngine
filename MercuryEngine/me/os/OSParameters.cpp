@@ -11,11 +11,12 @@ OSParameters::OSParameters( unify::Path runPath, unify::Path programPath, std::v
 	: m_programPath{ programPath }
 	, m_runPath{ runPath }
 	, m_arguments{ arguments }
-	, hWnd{}
+	, handle{}
 	, hInstance{}
 	, hPrevInstance{}
 	, nCmdShow{}
 	, wndProc{}
+	, parentHandle{}
 {
 }
 

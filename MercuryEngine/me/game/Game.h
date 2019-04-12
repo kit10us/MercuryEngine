@@ -37,7 +37,7 @@ namespace me
 			rm::ResourceHub m_resourceHub;
 			render::RenderInfo m_renderInfo;
 
-			std::list< std::shared_ptr< Extension > > m_extensions;
+			std::list< os::IExtension::ptr > m_extensions;
 			std::weak_ptr< UpdateLock > m_exclusiveLock;
 			std::list< std::weak_ptr< UpdateLock > > m_locks;
 
@@ -63,7 +63,7 @@ namespace me
 
 		public: // me::game::IGame
 			void * Feed( std::string target, void * data ) override;
-			void Initialize( os::OSParameters osParameters ) override;			
+			void Initialize( os::IOS::ptr os ) override;			
 			void Tick() override;
 			void Draw() override;
 

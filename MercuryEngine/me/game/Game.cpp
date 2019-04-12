@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <me/render/IRenderer.h>
-#include <me/os/DefaultOS.h>
 #include <me/game/Game.h>
 #include <me/game/component/GC_ActionFactory.h>
 #include <me/scene/SceneManager.h>
@@ -80,9 +79,9 @@ void * Game::Feed( std::string target, void * data )
 	return 0;
 }
 
-void Game::Initialize( os::OSParameters osParameters )
+void Game::Initialize( os::IOS::ptr os )
 {
-	m_os.reset( new os::DefaultOS( this, osParameters ) );
+	m_os = os;
 
 	debug::Block block( Debug(), "Game::Initialize" );
 
@@ -119,9 +118,9 @@ void Game::Initialize( os::OSParameters osParameters )
 	bool inQuote = false;
 	std::string working;
 
-	for( size_t i = 0; i < osParameters.GetArgumentCount(); i++ )
+	for( size_t i = 0; i < GetOS()->GetOSParameters()->GetArgumentCount(); i++ )
 	{
-		auto arg = osParameters.GetArgument( i );
+		auto arg = GetOS()->GetOSParameters()->GetArgument( i );
 		if( unify::Path( arg ).IsExtension( ".me_setup" ) )
 		{
 			m_setup = unify::Path( arg );
@@ -256,9 +255,6 @@ void Game::Initialize( os::OSParameters osParameters )
 	// Creates displays...
 	GetOS()->BuildRenderers( m_title );
 	assert( GetOS()->GetRenderer( 0 ) );
-
-	// Get the first handle...
-	osParameters.hWnd = GetOS()->GetRenderer( 0 )->GetDisplay().GetHandle();
 
 	// Create asset managers...
 	{
@@ -878,11 +874,11 @@ void Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
 	debug::Block block( Debug(), "Game::AddExtension \"" + path.ToString() + "\"" );
 	{
-		Extension * extension {};
 		Debug()->Try( [&]
 		{
-			std::shared_ptr< Extension > extension{ new Extension() };
-			extension->Create( this, path, element );
+			os::IExtension::ptr extension { GetOS()->CreateExtension( path, element ) 
+			};
+
 			m_extensions.push_back( extension );
 		}, ErrorLevel::Extension, false, false );
 	}
