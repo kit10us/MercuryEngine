@@ -53,21 +53,12 @@ namespace melua
 	
 	template< typename T >
 	int Push( lua_State * L, T value );
-
-	template< typename T >
-	int Push( lua_State * L, T value, int args_increment ) 
-	{
-		args_increment++;
-		Push< T >( L, value );
-		return args_increment;
-	}
-
+	
 	template< typename T, typename... Args >
-	int Push( lua_State * L, T value, Args ... args, int args_increment = 0 )
+	int Push( lua_State * L, T value, Args ... args, int args_increment )
 	{
 		args_increment++;
 		return Push< T >( L, value, Args, args_count++ );
-		return 
 	}
 
 

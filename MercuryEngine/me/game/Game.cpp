@@ -81,15 +81,16 @@ void * Game::Feed( std::string target, void * data )
 
 void Game::Initialize( os::IOS::ptr os )
 {
-	m_os = os;
+	m_os = os; // This has to be first as it validates Debug().
 
 	debug::Block block( Debug(), "Game::Initialize" );
 
 	rm::ILogger::ptr logger( new GameLogger( Debug() ) );
 
+	// Definitions used for replacements in configuration files.
 	std::map< std::string, std::string > defines;
-	defines[ "TARGET" ] = Debug()->IsDebug() ? "Debug" : "Release";
-	
+
+	// Function used to replace using our defines map.
 	auto ReplaceDefines = [&]( std::string in )->std::string
 	{
 		std::string temp = in;
@@ -100,16 +101,18 @@ void Game::Initialize( os::IOS::ptr os )
 		return temp;
 	};
 
+	// Add general defines.
+	defines["TARGET"] = Debug()->IsDebug() ? "Debug" : "Release";
+
+	// Create time stamp so we can track how long ingine initialization takes.
 	using namespace std::chrono;
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 
 	m_totalStartupTime = {};
 
-	// Add setup script manager.
-	{
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
-		GetManager< script::IScript >()->AddFactory( ".me_setup", setup::SetupScriptFactory::ptr( new setup::SetupScriptFactory( this ) ) );
-	}
+	block.LogLine( "Add script manager." );
+	GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
+	GetManager< script::IScript >()->AddFactory( ".me_setup", setup::SetupScriptFactory::ptr( new setup::SetupScriptFactory( this ) ) );
 
 	// Parse the commandline...
 	std::vector< std::string > commandLineVector;
@@ -138,9 +141,8 @@ void Game::Initialize( os::IOS::ptr os )
 			}
 		}, ErrorLevel::Engine, false, true );
 
-
 		// First loader pass
-		debug::Block xmlLoaderBlock( block, "xmlLoader first pass" );
+		debug::Block xmlLoaderBlock( block, "XMLLoaderFirstPass" );
 		auto scriptManager = GetManager< script::IScript >();
 		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 		{

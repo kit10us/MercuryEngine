@@ -86,8 +86,19 @@ namespace me
 
 			const std::vector< std::string > & GetLogLines() const override;
 
+			/// <summary>
+			/// Push a block, a mechanism to track where we are in our code.
+			/// </summary>
 			void PushBlock( std::string name ) override;
+
+			/// <summary>
+			/// Pop a block, a mechanism to track where we are in our code.
+			/// </summary>
 			void PopBlock( std::string name ) override;
+
+			/// <summary>
+			/// Get the blocks as a string for displaying.
+			/// </summary>
 			std::string GetBlocks( std::string newline ) const override;
 
 		};

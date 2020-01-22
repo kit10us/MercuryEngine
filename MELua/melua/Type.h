@@ -5,7 +5,7 @@
 
 #include <MELuaDLL.h>
 #include <lua.hpp>
-#include <string.h>
+#include <string>
 #include <list>
 
 namespace melua

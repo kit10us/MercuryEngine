@@ -49,9 +49,8 @@
 output/
 lib/
 intermediate/
+MercuryEngine/.vs
 
-## FORCED INCLUSIONS (our exclude exceptions)
-!DXI/tests_data/*
 /DXI/tests_data/*.DLL
 /MercuryTests/test_dataDX11/log.txt
 /MercuryTests/test_dataDX9/log.txt
@@ -88,3 +87,6 @@ external
 /Adventure/DX11/log_DX11_Release.txt
 /MercuryTests/DX11/log_Debug_DX11.txt
 /MercuryTests/01tests_basics/01Test06-Failures/Debug/*.idb
+
+## FORCED INCLUSIONS (our exclude exceptions)
+!DXI/tests_data/*

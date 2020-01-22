@@ -44,7 +44,7 @@ bool DefaultDebug::IsDebug()
 
 void DefaultDebug::SetLogFile( unify::Path logFile )
 {
-	Block( this, "DefaultDebug" );
+	Block block( this, "DefaultDebug" );
 
 	logFile.Rename( m_logFile );
 	m_logFile = logFile;
@@ -117,25 +117,38 @@ bool DefaultDebug::Assert( bool assertion ) const
 
 void DefaultDebug::LogSectionLine( std::string section, std::string line )
 {
-	m_logLines.push_back( ( ! section.empty() ? (  m_prependSectionText + section + m_appendSectionText ) : std::string{} )  + ( m_prependLineText + line + GetAppendLineText() ) );
+	std::string text = (!section.empty() ? (m_prependSectionText + section + m_appendSectionText) : std::string{}) + (m_prependLineText + line + GetAppendLineText());
+
+	m_logLines.push_back( text );
+
+	for (auto logger : m_logListeners)
+	{
+		logger->Log( text );
+	}
 }
 
 void DefaultDebug::LogLine( std::string line )
 {
-	LogSectionLine( GetBlocks( " " ), line );
+	LogSectionLine( GetBlocks( "" ), line );
 }
 
 void DefaultDebug::AttachLogListener( me::ILogListener* listener )
 {
 	using namespace std;
 
-	if( m_logFile.Empty() ) return;
+	// First message to logger is to confirm it is attached.
+	// The message is only for the newly attached logger.
+	listener->Log( "LOGGER ATTACHED" );
 
-	string line;
-	ifstream in( m_logFile.ToString() );
-	while( getline( in, line ) )
+	// If we have an existing log, push that log to our new listener.
+	if ( !m_logFile.Empty() )
 	{
-		listener->Log( line );
+		string line;
+		ifstream in( m_logFile.ToString() );
+		while ( getline( in, line ) )
+		{
+			listener->Log( line );
+		}
 	}
 
 	m_logListeners.push_back( listener );
@@ -284,19 +297,12 @@ const std::vector< std::string > & DefaultDebug::GetLogLines() const
 	return m_logLines;
 }
 
-
-/// <summary>
-/// Push a block, a mechanism to track where we are in our code.
-/// </summary>
 void DefaultDebug::PushBlock( std::string name )
 {
+	LogSectionLine( GetBlocks( "::" ) + ">>" + name, "" );
 	m_blocks.push_back( name );
-	LogSectionLine( "", "Entering " + name + " block" );
 }
 
-/// <summary>
-/// Pop a block, a mechanism to track where we are in our code.
-/// </summary>
 void DefaultDebug::PopBlock( std::string name )
 {
 	if ( m_criticalErrors.size() )
@@ -311,15 +317,12 @@ void DefaultDebug::PopBlock( std::string name )
 	m_blocks.pop_back();
 }
 
-/// <summary>
-/// Pop a block, a mechanism to track where we are in our code.
-/// </summary>
 std::string DefaultDebug::GetBlocks( std::string newline ) const
 {
-	std::string blocks{};
-	for( auto itr = m_blocks.begin(); itr != m_blocks.end(); ++itr )
+	std::string blocksText{};
+	for( auto block : m_blocks )
 	{
-		blocks += *itr + newline; 
+		blocksText += block + newline;
 	}
-	return blocks;
+	return blocksText;
 }

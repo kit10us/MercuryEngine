@@ -19,7 +19,7 @@ namespace me
 			m_component = component;
 		}
 
-		bool operator==( const ComponentInstance & ch )
+		bool operator==(const ComponentInstance& ch) const
 		{
 			return m_component == ch.m_component;
 		}
