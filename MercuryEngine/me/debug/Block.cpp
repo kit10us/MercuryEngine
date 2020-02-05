@@ -13,25 +13,17 @@ Block::Block( IDebug * debug, std::string name )
 	: m_debug{ debug }
 	, m_name{ name }
 {
-	m_debug->PushBlock( m_name );
-}
-
-Block::Block( const Block & parent, std::string name )
-	: m_debug{ parent.m_debug }
-	, m_parent{ parent.GetResolvedName() }
-	, m_name{ name }
-{
-	m_debug->PushBlock( GetResolvedName() );
+	m_debug->PushBlock( this );
 }
 
 Block::~Block()
 {
-	m_debug->PopBlock( GetResolvedName() );
+	m_debug->PopBlock( this );
 }
 
-std::string Block::GetResolvedName() const
+std::string Block::GetName() const
 {
-	return (! m_parent.empty() ? "::" : "") + m_name;
+	return m_name;
 }
 
 void Block::LogLine( std::string line )

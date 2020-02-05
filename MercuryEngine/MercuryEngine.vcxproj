@@ -35,6 +35,7 @@
     <ClInclude Include="me\debug\Block.h" />
     <ClInclude Include="me\debug\DefaultDebug.h" />
     <ClInclude Include="me\debug\DefaultErrorHandler.h" />
+    <ClInclude Include="me\debug\FileLoggerListener.h" />
     <ClInclude Include="me\debug\IDebug.h" />
     <ClInclude Include="me\debug\ILogListener.h" />
     <ClInclude Include="me\exception\FileNotFound.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="me\debug\Block.cpp" />
     <ClCompile Include="me\debug\DefaultDebug.cpp" />
     <ClCompile Include="me\debug\DefaultErrorHandler.cpp" />
+    <ClCompile Include="me\debug\FileLoggerListener.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />

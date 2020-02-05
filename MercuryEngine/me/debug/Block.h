@@ -18,18 +18,16 @@ namespace me
 		class Block
 		{
 			IDebug * m_debug;
-			std::string m_parent;
 			std::string m_name;
 
 		public:
 			Block( IDebug * debug, std::string name );
-			Block( const Block & parent, std::string name );
 			~Block();
 
 			/// <summary>
-			/// Gets the name of this block with the parents name as well.
+			/// Gets the name of this block.
 			/// </summary>
-			std::string GetResolvedName() const;
+			std::string GetName() const;
 
 			/// <summary>
 			/// Log a line in this block.

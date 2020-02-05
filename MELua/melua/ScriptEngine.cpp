@@ -371,10 +371,12 @@ bool ScriptEngine::AssertTop( int top )
 
 void ScriptEngine::LogTypes()
 {
-	debug::Block block( GetGame()->Debug(), "MELua::ScriptEngine::LogTypes" );
+	auto debug = GetGame()->Debug();
+	
+	debug::Block block( debug, "MELua::ScriptEngine::LogTypes" );
 	for( auto & type : m_types )
 	{
-		debug::Block typeBlock( block, type.first );
+		debug::Block typeBlock( debug, type.first );
 		for( auto && function : type.second )
 		{
 			typeBlock.LogLine( function );

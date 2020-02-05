@@ -30,6 +30,8 @@ namespace me
 
 	namespace debug
 	{
+		class Block;
+
 		/// <summary>
 		/// Handlers errors, allowing custom functionality.
 		/// </summary>
@@ -195,17 +197,24 @@ namespace me
 			/// <summary>
 			/// Push a block, a mechanism to track where we are in our code.
 			/// </summary>
-			virtual void PushBlock( std::string name ) = 0;
+			virtual void PushBlock( Block* block ) = 0;
 
 			/// <summary>
 			/// Pop a block, a mechanism to track where we are in our code.
+			/// It's important to pop the same block that is on top. If you attempt to 
+			/// pop a block other than the top, then this generates and error
 			/// </summary>
-			virtual void PopBlock( std::string name ) = 0;
+			virtual void PopBlock( Block* block ) = 0;
 
 			/// <summary>
-			/// Returns the entire blocks.
+			/// Returns the top block, or nullptr.
 			/// </summary>
-			virtual std::string GetBlocks( std::string newline ) const = 0;
+			virtual const Block* GetTopBlock() const = 0;
+
+			/// <summary>
+			/// Returns the text for the blocks.
+			/// </summary>
+			virtual std::string GetBlocksText() const = 0;
 		};
 	}
 }

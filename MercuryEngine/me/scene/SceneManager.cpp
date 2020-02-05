@@ -73,7 +73,9 @@ std::string SceneManager::GetPreviousSceneName()
 
 bool SceneManager::ChangeScene( std::string name )
 {
-	debug::Block block( GetGame()->Debug(), "Scene::ChangeScene" );
+	auto debug = GetGame()->Debug();
+	debug::Block sceneManagerBlock( debug, "Scene" );
+	debug::Block block( debug, "ChangeScene" );
 
 	IScene::ptr newScene = m_scenes.GetValue( name );
 	
@@ -103,27 +105,26 @@ bool SceneManager::ChangeScene( std::string name )
 		component->OnSceneStart( m_currentScene.get() );
 	}
 
-	auto debugger = m_game->GetOS()->Debug();
 	
-	debugger->Try( [&]
+	debug->Try( [&]
 	{
-		debug::Block localBlock( block, "Component_OnBeforeStart( \""  + m_currentScene->GetName() + "\")" );
+		debug::Block localBlock( debug, "Component_OnBeforeStart( \""  + m_currentScene->GetName() + "\")" );
 		localBlock.LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
 		m_currentScene->Component_OnBeforeStart();
 	}, ErrorLevel::Engine, false, false );
 
-	debugger->Try( [&]
+	debug->Try( [&]
 	{
-		debug::Block localBlock( block, "OnStart" );
+		debug::Block localBlock( debug, "OnStart" );
 		block.LogLine( "OnStart Begin" );
 		m_currentScene->OnStart();
 		block.LogLine( "OnStart End" );
 	}, ErrorLevel::Engine, false, false );
 
 
-	debugger->Try( [&]
+	debug->Try( [&]
 	{
-		debug::Block localBlock( block, "Component_OnAfterStart( \"" + m_currentScene->GetName() + "\")" );
+		debug::Block localBlock( debug, "Component_OnAfterStart( \"" + m_currentScene->GetName() + "\")" );
 		m_currentScene->Component_OnAfterStart();
 		block.LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
 	}, ErrorLevel::Engine, false, false );
@@ -223,7 +224,7 @@ void SceneManager::OnLateUpdate( const UpdateParams & params )
 
 void SceneManager::OnRender( const render::Params & params )
 {
-	auto * debug = GetGame()->GetOS()->Debug();
+	auto debug = GetGame()->Debug();
 	debug->DebugTimeStampBegin( "Render" );
 	
 	if ( m_enabled == false )

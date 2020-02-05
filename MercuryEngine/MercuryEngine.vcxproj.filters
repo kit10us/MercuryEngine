@@ -708,6 +708,9 @@
     <ClInclude Include="me\os\IExtension.h">
       <Filter>me\os</Filter>
     </ClInclude>
+    <ClInclude Include="me\debug\FileLoggerListener.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1126,6 +1129,9 @@
     </ClCompile>
     <ClCompile Include="me\sculpter\SculpterFactory.cpp">
       <Filter>me\sculpter</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\FileLoggerListener.cpp">
+      <Filter>me\debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,6 @@
 #include <me/factory/VertexShaderFactory.h>
 #include <me/canvas/CanvasComponent.h>
 #include <me/canvas/FPS.h>
-#include <sg/ShapeCreators.h>
 
 using namespace me;
 using namespace scene;
@@ -23,6 +22,7 @@ MainScene::MainScene( me::game::Game * gameInstance )
 
 void MainScene::OnStart()
 {
+	/*
 	Effect::ptr testEffect = GetManager< Effect >()->Add( "Test", unify::Path( "GrassBlock00.effect" ) );
 
 	// Add a camera...
@@ -80,14 +80,17 @@ void MainScene::OnStart()
 
 	Effect::ptr font2 = GetManager< Effect>()->Add( "font2", unify::Path( "font2.effect" ) );
 	canvas->GetLayer()->AddElement( canvas::IElement::ptr( new canvas::FPS( GetGame(), font2 ) ) );
+	*/
 }
 
 void MainScene::OnUpdate( const UpdateParams & params )
 {
+	/*
 	// Use of camera controls to simplify camera movement...
 	object::Object * camera = FindObject( "camera" );
 	
 	camera->GetFrame().Orbit( unify::V3< float >( 0, 0, 0 ), unify::V2< float >( 1, 0 ), unify::AngleInRadians( params.renderInfo.GetDelta().GetSeconds() ) );
 	
 	camera->GetFrame().LookAt( unify::V3< float >( 0, 0, 0 ), unify::V3< float >( 0, 1, 0 ) );
+	*/
 }

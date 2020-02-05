@@ -6,7 +6,6 @@
 #include <me/debug/DefaultErrorHandler.h>
 #include <me/exception/Handled.h>
 #include <unify/Exception.h>
-#include <fstream>
 #include <cassert>
 
 using namespace me;
@@ -25,11 +24,16 @@ DefaultDebug::DefaultDebug()
 #else
 		{ false }
 #endif
+	, m_fileLogger{ new FileLoggerListener{ unify::Path{ "default.log" } } }
 {
+	AttachLogListener( m_fileLogger );
 }
 
 DefaultDebug::~DefaultDebug()
 {
+	DetachLogListener( m_fileLogger );
+	delete m_fileLogger;
+	m_fileLogger = {};
 }
 
 void DefaultDebug::SetDebug( bool debug )
@@ -44,11 +48,10 @@ bool DefaultDebug::IsDebug()
 
 void DefaultDebug::SetLogFile( unify::Path logFile )
 {
-	Block block( this, "DefaultDebug" );
-
-	logFile.Rename( m_logFile );
-	m_logFile = logFile;
-	LogLine( "Log file: " + m_logFile.ToString() );
+	Block defaultDebugBlock( this, "DefaultDebug" );
+	Block block( this, "SetLogFile" );
+	m_fileLogger->SetLogFile( logFile );
+	LogLine( "changed to: " + logFile.ToString() );
 }
 
 void DefaultDebug::SetFailureAsCritical( bool faiureAsCritical )
@@ -129,7 +132,7 @@ void DefaultDebug::LogSectionLine( std::string section, std::string line )
 
 void DefaultDebug::LogLine( std::string line )
 {
-	LogSectionLine( GetBlocks( "" ), line );
+	LogSectionLine( GetBlocksText(), line );
 }
 
 void DefaultDebug::AttachLogListener( me::ILogListener* listener )
@@ -138,17 +141,12 @@ void DefaultDebug::AttachLogListener( me::ILogListener* listener )
 
 	// First message to logger is to confirm it is attached.
 	// The message is only for the newly attached logger.
-	listener->Log( "LOGGER ATTACHED" );
+	listener->Log( "THIS LOGGER ATTACHED\r\n" );
 
-	// If we have an existing log, push that log to our new listener.
-	if ( !m_logFile.Empty() )
+	// Log existing text lines.
+	for (auto text : m_logLines)
 	{
-		string line;
-		ifstream in( m_logFile.ToString() );
-		while ( getline( in, line ) )
-		{
-			listener->Log( line );
-		}
+		listener->Log( text );
 	}
 
 	m_logListeners.push_back( listener );
@@ -229,7 +227,7 @@ void DefaultDebug::Try( std::function< void() > func, me::ErrorLevel level, bool
 			// Try to report the error as the report error handler my throw for an abort.
 			try
 			{
-				result = ReportError( level, GetBlocks( " " ), ex.what(), canContinue, canRetry );
+				result = ReportError( level, GetBlocksText(), ex.what(), canContinue, canRetry );
 			}
 			catch( ... )
 			{
@@ -297,32 +295,43 @@ const std::vector< std::string > & DefaultDebug::GetLogLines() const
 	return m_logLines;
 }
 
-void DefaultDebug::PushBlock( std::string name )
+void DefaultDebug::PushBlock( Block* block )
 {
-	LogSectionLine( GetBlocks( "::" ) + ">>" + name, "" );
-	m_blocks.push_back( name );
+	LogSectionLine( GetBlocksText() + ">>" + block->GetName(), "" );
+	m_blocks.push_back( block );
 }
 
-void DefaultDebug::PopBlock( std::string name )
+void DefaultDebug::PopBlock( Block* block )
 {
 	if ( m_criticalErrors.size() )
 	{
 		return; // Prevent block changes during a critical failure.
 	}
 
-	if ( (m_blocks.back()) != name )
+	if ( (m_blocks.back()) != block )
 	{
 		this->ReportError( ErrorLevel::Engine, "DefaultDebug", "Top of block is not the same as block being popped!", false, false );
 	}
 	m_blocks.pop_back();
 }
 
-std::string DefaultDebug::GetBlocks( std::string newline ) const
+const Block* DefaultDebug::GetTopBlock() const
 {
-	std::string blocksText{};
-	for( auto block : m_blocks )
+	Block* top = m_blocks.empty() ? nullptr : m_blocks.back();
+	return top;
+}
+
+std::string DefaultDebug::GetBlocksText() const
+{
+	std::string text;
+	for ( auto block = m_blocks.begin(); block != m_blocks.end(); block++ )
 	{
-		blocksText += block + newline;
+		if (!text.empty())
+		{
+			text += "::";
+		}
+		text += (*block)->GetName();
 	}
-	return blocksText;
+
+	return text;
 }

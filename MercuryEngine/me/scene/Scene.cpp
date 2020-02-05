@@ -36,11 +36,13 @@ unify::Owner::ptr Scene::GetOwnership()
 
 void Scene::Component_OnBeforeStart()
 {
-	debug::Block block( GetGame()->Debug(), "Scene::OnBeforeStart" );
+	auto debug = GetGame()->Debug();
+
+	debug::Block block( debug, "Scene::OnBeforeStart" );
 
 	for( auto && component : m_components )
 	{
-		debug::Block onBeforStartBlock( block, "Component \"" + component->GetTypeName() );
+		debug::Block onBeforStartBlock(debug, "Component \"" + component->GetTypeName() );
 		if( component->IsEnabled() )
 		{
 			onBeforStartBlock.LogLine( "enabled" );

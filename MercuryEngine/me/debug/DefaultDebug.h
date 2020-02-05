@@ -5,6 +5,7 @@
 
 #include <me/debug/IDebug.h>
 #include <me/debug/DefaultErrorHandler.h>
+#include <me/debug/FileLoggerListener.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
@@ -32,13 +33,13 @@ namespace me
 
 			std::list< std::string > m_criticalErrors;
 			std::map< std::string, TimeStartEnd > m_timeStamps;
-			std::list< std::string > m_blocks;
+			std::vector< Block* > m_blocks;
 
 		protected:
-			unify::Path m_logFile;
 			std::vector< std::string > m_logLines;
 			std::list< me::ILogListener* > m_logListeners;
 			IErrorHandler::ptr m_errorHandler;
+			FileLoggerListener* m_fileLogger;
 
 		public:
 			DefaultDebug();
@@ -86,21 +87,13 @@ namespace me
 
 			const std::vector< std::string > & GetLogLines() const override;
 
-			/// <summary>
-			/// Push a block, a mechanism to track where we are in our code.
-			/// </summary>
-			void PushBlock( std::string name ) override;
+			void PushBlock( Block* block ) override;
 
-			/// <summary>
-			/// Pop a block, a mechanism to track where we are in our code.
-			/// </summary>
-			void PopBlock( std::string name ) override;
+			void PopBlock( Block* block ) override;
 
-			/// <summary>
-			/// Get the blocks as a string for displaying.
-			/// </summary>
-			std::string GetBlocks( std::string newline ) const override;
+			const Block* GetTopBlock() const override;
 
+			std::string GetBlocksText() const override;
 		};
 	}
 }
