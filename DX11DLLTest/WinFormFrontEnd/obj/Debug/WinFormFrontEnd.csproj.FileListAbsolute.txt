@@ -1,9 +1,0 @@
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\bin\Debug\WinFormFrontEnd.exe.config
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\bin\Debug\WinFormFrontEnd.exe
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\bin\Debug\WinFormFrontEnd.pdb
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\obj\Debug\WinFormFrontEnd.csprojResolveAssemblyReference.cache
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\obj\Debug\WinFormFrontEnd.Form1.resources
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\obj\Debug\WinFormFrontEnd.Properties.Resources.resources
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\obj\Debug\WinFormFrontEnd.csproj.GenerateResource.Cache
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\obj\Debug\WinFormFrontEnd.exe
-E:\dev\ws\DX11DLLTest\WinFormFrontEnd\obj\Debug\WinFormFrontEnd.pdb

@@ -1,7 +1,0 @@
-<?xml profile="1.0" encoding="iso-8859-1"?>
-<xml>
-  <effect name="Mickey_Mouse_D_tga">
-    <vertexshader name="texture_ambient" source="shaders/Texture_Ambient.xml"/>
-    <pixelshader name="texture_ambient" source="shaders/Texture_Ambient.xml"/>
-  </effect>
-</xml>
