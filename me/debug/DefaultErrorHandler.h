@@ -11,7 +11,7 @@ namespace me
 	{
 		class DefaultErrorHandler : public IErrorHandler
 		{
-			IDebug::ptr m_debug;
+			IDebug * m_debug;
 		public:
 			DefaultErrorHandler( IDebug* debug );
 			~DefaultErrorHandler();

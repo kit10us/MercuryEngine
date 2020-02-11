@@ -224,7 +224,7 @@ void ObjectStack::CollectRendering( render::Params params, const FinalCamera & c
 			}
 			else
 			{
-				int x( 0 ); x;
+				int x( 0 ); x; // Break here to TS.
 			}
 		}
 		m_resetCache = false;

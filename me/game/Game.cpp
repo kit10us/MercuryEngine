@@ -742,37 +742,39 @@ Game::~Game()
 void Game::Private_Shutdown()
 {
 	auto debug = Debug();
-	debug::Block block( debug, "Game::Private_Shutdown" );
-	block.LogLine( "Shutting down" );
-
-	block.LogLine( "OnDetach begin" );
-	for (auto&& component : m_components)
 	{
-		try
+		debug::Block block( debug, "Game::Private_Shutdown" );
+		block.LogLine( "Shutting down" );
+
+		block.LogLine( "OnDetach begin" );
+		for (auto&& component : m_components)
 		{
-			block.LogLine( "Detaching " + component->GetTypeName() );
-			component->OnDetach( this );
+			try
+			{
+				block.LogLine( "Detaching " + component->GetTypeName() );
+				component->OnDetach( this );
+			}
+			catch (...)
+			{
+			}
 		}
-		catch (...)
-		{
-		}
+
+		block.LogLine( "OnDetach done" );
+
+		Shutdown();
+
+		m_resourceHub.Clear();
+
+		m_inputManager.Clear();
+
+		m_components.clear();
+
+		auto now = std::chrono::system_clock::now();
+		std::time_t t = std::chrono::system_clock::to_time_t( now );
+		const RenderInfo& renderInfo = GetRenderInfo();
+		block.LogLine( "time: " + std::string( std::ctime( &t ) ) );
+		block.LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 	}
-
-	block.LogLine( "OnDetach done" );
-
-	Shutdown();
-
-	m_resourceHub.Clear();
-
-	m_inputManager.Clear();
-
-	m_components.clear();
-
-	auto now = std::chrono::system_clock::now();
-	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	const RenderInfo & renderInfo = GetRenderInfo();
-	block.LogLine( "time: " + std::string( std::ctime( &t ) ) );
-	block.LogLine( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 
 	if( m_os )
 	{

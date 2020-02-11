@@ -164,7 +164,10 @@ void DefaultDebug::DetachAllLogListeners()
 
 void DefaultDebug::SetErrorHandler( IErrorHandler::ptr errorHandler )
 {
-	m_errorHandler = errorHandler;
+	{
+		m_errorHandler = errorHandler;
+	}
+	int i; i = 0;
 }
 
 ReportErrorResult DefaultDebug::ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry )
