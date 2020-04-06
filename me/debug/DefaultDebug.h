@@ -6,6 +6,7 @@
 #include <me/debug/IDebug.h>
 #include <me/debug/DefaultErrorHandler.h>
 #include <me/debug/FileLoggerListener.h>
+#include <me/debug/Logger.h>
 #include <unify/Path.h>
 #include <list>
 #include <string>
@@ -26,20 +27,14 @@ namespace me
 
 			bool m_failuresAsCritial;
 			bool m_isDebug;
-			std::string m_prependSectionText;
-			std::string m_appendSectionText;
-			std::string m_prependLineText;
-			std::string m_appendLineText;
 
 			std::list< std::string > m_criticalErrors;
 			std::map< std::string, TimeStartEnd > m_timeStamps;
-			std::vector< Block* > m_blocks;
 
 		protected:
-			std::vector< std::string > m_logLines;
-			std::list< me::ILogListener* > m_logListeners;
+			Logger m_logger;
 			IErrorHandler::ptr m_errorHandler;
-			FileLoggerListener* m_fileLogger;
+			std::shared_ptr< FileLoggerListener > m_fileLogger;
 
 		public:
 			DefaultDebug();
@@ -48,36 +43,19 @@ namespace me
 			void SetDebug( bool debug ) override;
 			bool IsDebug() override;
 
-			void SetLogFile( unify::Path logFile ) override;
+			void SetLogPath( unify::Path path ) override;
 
 			void SetFailureAsCritical( bool faiureAsCritical ) override;
+
 			bool GetFailureAsCritical() const override;
-
-			void SetAppendSectionText( std::string text ) override;
-			std::string GetAppendSectionText() const override;
-
-			void SetPrependSectionText( std::string text ) override;
-			std::string GetPrependSectionText() const override;
-
-			void SetAppendLineText( std::string text ) override;
-			std::string GetAppendLineText() const override;
-
-			void SetPrependLineText( std::string text ) override;
-			std::string GetPrependLineText() const override;
 
 			bool Assert( bool assertion ) const override;
 
-			void LogSectionLine( std::string section, std::string line ) override;
-			void LogLine( std::string line ) override;
-			void AttachLogListener( me::ILogListener * listener ) override;
-			void DetachLogListener( me::ILogListener * litener ) override;
-			void DetachAllLogListeners() override;
-
 			void SetErrorHandler( IErrorHandler::ptr errorHandler ) override;
 
-			ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
+			ReportErrorResult ReportError( ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
 
-			void Try( std::function< void() > func, me::ErrorLevel level, bool canContinue, bool canRetry ) override;
+			void Try( std::function< void() > func, ErrorLevel level, bool canContinue, bool canRetry ) override;
 
 			bool HadCriticalError() const override;
 
@@ -85,15 +63,8 @@ namespace me
 			void DebugTimeStampEnd( std::string name )	 override;
 			float DebugGetTimeStamp( std::string name )	 override;
 
-			const std::vector< std::string > & GetLogLines() const override;
-
-			void PushBlock( Block* block ) override;
-
-			void PopBlock( Block* block ) override;
-
-			const Block* GetTopBlock() const override;
-
-			std::string GetBlocksText() const override;
+			kit::ILogger* GetLogger() override;
+			kit::IBlock::ptr MakeBlock( std::string name ) override;
 		};
 	}
 }

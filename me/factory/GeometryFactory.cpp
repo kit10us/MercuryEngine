@@ -7,7 +7,6 @@
 #include <me/exception/FailedToCreate.h>
 #include <me/exception/NotImplemented.h>
 #include <me/XMLConvert.h>
-#include <me/debug/Block.h>
 #include <qxml/Document.h>
 
 using namespace me;
@@ -22,11 +21,12 @@ GeometryFactory::GeometryFactory( game::IGame * gameInstance )
 
 Geometry::ptr GeometryFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
-	debug::Block block{ m_game->GetOS()->Debug(), "GeometryFactory::Produce( " + source.ToString() + ")" };
+	auto debug = m_game->GetOS()->Debug();
+	auto block{ debug->MakeBlock( "GeometryFactory::Produce( " + source.ToString() + ")" ) };
 
 	Mesh * mesh {};
 
-	m_game->GetOS()->Debug()->Try( [&]
+	debug->Try( [&]
 	{
 		qxml::Document doc( source );
 		auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
@@ -51,7 +51,7 @@ Geometry::ptr GeometryFactory::Produce( unify::Path source, unify::Parameters pa
 
 		mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 
-	}, me::ErrorLevel::Engine, false, false );
+	}, debug::ErrorLevel::Engine, false, false );
 
 	return Geometry::ptr( mesh );
 }

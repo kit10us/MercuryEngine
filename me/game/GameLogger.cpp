@@ -12,5 +12,5 @@ GameLogger::GameLogger( debug::IDebug * debug ) : m_debug( debug )
 
 void GameLogger::WriteLine( std::string section, std::string text )
 {
-	m_debug->LogSectionLine( section, text );
+	m_debug->GetLogger()->Log( section + "::" + text );
 }

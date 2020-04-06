@@ -17,6 +17,12 @@ namespace me
 	{
 		class Scene : public IScene
 		{
+			game::Game* m_game;
+			std::string m_name;
+			unify::Owner::ptr m_ownership;
+			std::list< component::ISceneComponent::ptr > m_components;
+			IObjectAllocator* m_objectAllocator;
+			SceneManager* m_sceneManager;
 		public:
 			Scene(game::Game * gameInstance, std::string name);
 			virtual ~Scene();
@@ -85,18 +91,11 @@ namespace me
 				auto asset = GetManager< T >()->Find( name );
 				if ( ! asset )
 				{
-					GetOS()->Debug()->ReportError(  me::ErrorLevel::Critical, "Game::GetAsset", "Could not find asset \"" + name + "\"!" );
+					GetOS()->Debug()->ReportError(  debug::ErrorLevel::Critical, "Game::GetAsset", "Could not find asset \"" + name + "\"!" );
 				}
 				return asset;
 			}
 
-		private:
-			game::Game * m_game;
-			std::string m_name;	 
-			unify::Owner::ptr m_ownership;
-			std::list< component::ISceneComponent::ptr > m_components;
-			IObjectAllocator* m_objectAllocator;		   
-			SceneManager* m_sceneManager;
 		};
 	}
 }

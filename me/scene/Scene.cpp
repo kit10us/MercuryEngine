@@ -6,7 +6,6 @@
 #include <me/object/component/CameraComponent.h>
 #include <me/scene/component/ObjectAllocatorComponent.h>
 #include <me/scene/RenderGirl.h>
-#include <me/debug/Block.h>
 #include <me/exception/Handled.h>
 #include <unify/Frustum.h>
 
@@ -37,39 +36,39 @@ unify::Owner::ptr Scene::GetOwnership()
 void Scene::Component_OnBeforeStart()
 {
 	auto debug = GetGame()->Debug();
-
-	debug::Block block( debug, "Scene::OnBeforeStart" );
+	auto block( debug->MakeBlock( "Scene::OnBeforeStart" ) );
 
 	for( auto && component : m_components )
 	{
-		debug::Block onBeforStartBlock(debug, "Component \"" + component->GetTypeName() );
+		auto onBeforStartBlock( debug->MakeBlock( "Component \"" + component->GetTypeName() ) );
 		if( component->IsEnabled() )
 		{
-			onBeforStartBlock.LogLine( "enabled" );
+			onBeforStartBlock->Log( "enabled" );
 			component->OnBeforeStart();
 		}
 		else
 		{
-			onBeforStartBlock.LogLine( "disabled, skipping" );
+			onBeforStartBlock->Log( "disabled, skipping" );
 		}
 	}
 }
 
 void Scene::Component_OnAfterStart()
 {
-	debug::Block block( GetGame()->Debug(), "Scene::OnAfterStart" );
+	auto debug = GetGame()->Debug();
+	auto block( debug->MakeBlock( "Scene::OnAfterStart" ) );
 
 	for ( auto && component : m_components )
 	{
 		if (component->IsEnabled())
 		{
-			block.LogLine( "Component \"" + component->GetTypeName() + "\" OnAfterStart Begin" );
+			block->Log( "Component \"" + component->GetTypeName() + "\" OnAfterStart Begin" );
 			component->OnAfterStart();
-			block.LogLine( "Component \"" + component->GetTypeName() + "\" OnAfterStart Done" );
+			block->Log( "Component \"" + component->GetTypeName() + "\" OnAfterStart Done" );
 		}
 		else
 		{
-			block.LogLine( "Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)" );
+			block->Log( "Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)" );
 		}
 	}
 }
@@ -130,13 +129,13 @@ void Scene::Component_OnRender( RenderGirl renderGirl )
 
 void Scene::Component_OnSuspend()
 {
-	for ( auto && component : m_components )
+	for ( auto&& component : m_components )
 	{
 		if ( component->IsEnabled() )
 		{
 			component->OnSuspend();
 		}
-	}	
+	}
 }
 
 void Scene::Component_OnResume()
@@ -300,24 +299,25 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 
 void Scene::AddResources( unify::Path path )
 {
-	debug::Block block{ GetOS()->Debug(), "Scene::AddResources(" + path.ToString() + ")" };
+	auto debug = GetOS()->Debug();
+	auto block = debug->MakeBlock( "Scene::AddResources(" + path.ToString() + ")" );
 	
 	qxml::Document doc {};
-	GetOS()->Debug()->Try( [&]
+	debug->Try( [&]
 	{
 		auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
 		doc.Load( realPath );
-	}, me::ErrorLevel::Failure, true, true );
+	}, debug::ErrorLevel::Failure, true, true );
 
 	for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
 	{
-		GetOS()->Debug()->Try( [&]
+		debug->Try( [&]
 		{
 			auto type = (*itr).GetAttribute< std::string >( "type" );
 			auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
 			unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
 			GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
-		}, me::ErrorLevel::Failure, true, true );
+		}, debug::ErrorLevel::Failure, true, true );
 	}
 }
 

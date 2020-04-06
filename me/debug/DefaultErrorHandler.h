@@ -19,7 +19,7 @@ namespace me
 			/// <summary>
 			/// Report an error to the error handler.
 			/// </summary>
-			ReportErrorResult ReportError( me::ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
+			ReportErrorResult ReportError( ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
 		};
 	}
 }

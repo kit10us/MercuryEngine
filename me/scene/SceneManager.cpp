@@ -5,7 +5,7 @@
 #include <me/scene/Scene.h>
 #include <me/exception/NotImplemented.h>
 #include <me/exception/FailedToCreate.h>
-#include <me/debug/Block.h>
+
 #include <qxml/Document.h>
 
 using namespace me;
@@ -74,8 +74,8 @@ std::string SceneManager::GetPreviousSceneName()
 bool SceneManager::ChangeScene( std::string name )
 {
 	auto debug = GetGame()->Debug();
-	debug::Block sceneManagerBlock( debug, "Scene" );
-	debug::Block block( debug, "ChangeScene" );
+	auto sceneManagerBlock{ debug->MakeBlock( "Scene" ) };
+	auto block = debug->MakeBlock( "ChangeScene" );
 
 	IScene::ptr newScene = m_scenes.GetValue( name );
 	
@@ -108,26 +108,26 @@ bool SceneManager::ChangeScene( std::string name )
 	
 	debug->Try( [&]
 	{
-		debug::Block localBlock( debug, "Component_OnBeforeStart( \""  + m_currentScene->GetName() + "\")" );
-		localBlock.LogLine( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
+		auto localBlock{ debug->MakeBlock( "Component_OnBeforeStart( \"" + m_currentScene->GetName() + "\")" ) };
+		localBlock->Log( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
 		m_currentScene->Component_OnBeforeStart();
-	}, ErrorLevel::Engine, false, false );
+	}, debug::ErrorLevel::Engine, false, false );
 
 	debug->Try( [&]
 	{
-		debug::Block localBlock( debug, "OnStart" );
-		block.LogLine( "OnStart Begin" );
+		auto localBlock{ debug->MakeBlock( "OnStart" ) };
+		block->Log( "OnStart Begin" );
 		m_currentScene->OnStart();
-		block.LogLine( "OnStart End" );
-	}, ErrorLevel::Engine, false, false );
+		block->Log( "OnStart End" );
+	}, debug::ErrorLevel::Engine, false, false );
 
 
 	debug->Try( [&]
 	{
-		debug::Block localBlock( debug, "Component_OnAfterStart( \"" + m_currentScene->GetName() + "\")" );
+		auto localBlock{ debug->MakeBlock( "Component_OnAfterStart( \"" + m_currentScene->GetName() + "\")" ) };
 		m_currentScene->Component_OnAfterStart();
-		block.LogLine( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
-	}, ErrorLevel::Engine, false, false );
+		block->Log( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
+	}, debug::ErrorLevel::Engine, false, false );
 
 	return true;
 }

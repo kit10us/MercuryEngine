@@ -33,11 +33,13 @@
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\debug\Block.h" />
+    <ClInclude Include="me\debug\BlockPopper.h" />
     <ClInclude Include="me\debug\DefaultDebug.h" />
     <ClInclude Include="me\debug\DefaultErrorHandler.h" />
     <ClInclude Include="me\debug\FileLoggerListener.h" />
     <ClInclude Include="me\debug\IDebug.h" />
-    <ClInclude Include="me\debug\ILogListener.h" />
+    <ClInclude Include="me\debug\IErrorHandler.h" />
+    <ClInclude Include="me\debug\Logger.h" />
     <ClInclude Include="me\exception\FileNotFound.h" />
     <ClInclude Include="me\exception\Handled.h" />
     <ClInclude Include="me\game\component\GameComponent.h" />
@@ -242,6 +244,7 @@
     <ClCompile Include="me\debug\DefaultDebug.cpp" />
     <ClCompile Include="me\debug\DefaultErrorHandler.cpp" />
     <ClCompile Include="me\debug\FileLoggerListener.cpp" />
+    <ClCompile Include="me\debug\Logger.cpp" />
     <ClCompile Include="me\dyna\color\DC_Delta.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Absolute.cpp" />
     <ClCompile Include="me\dyna\delta\DD_Add.cpp" />
@@ -392,18 +395,20 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="MEDependents.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="MEDependents.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
-    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
-    <IntDir>..\intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)lib\$(DefaultPlatformToolset)_$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(DefaultPlatformToolset)_$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -412,7 +417,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;../unify;../qjson;../qxml;../ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
@@ -429,7 +434,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;../unify;../qjson;../qxml;../ResourceManager;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>

@@ -3,37 +3,32 @@
 
 #pragma once
 
-#include <string>
+#include <kit/IBlock.h>
+#include <kit/ILogger.h>
 
 namespace me
 {
 	namespace debug
 	{
-		// Forward declarations.
-		class IDebug;
-
-		/// <summary>
-		/// Used to create a debug block that auto pops, when we pop the strack frame.
-		/// </summary>
-		class Block
+		class Block : public kit::IBlock
 		{
-			IDebug * m_debug;
+			kit::ILogger* m_logger;
 			std::string m_name;
 
 		public:
-			Block( IDebug * debug, std::string name );
-			~Block();
+			Block( kit::ILogger* logger, std::string name );
+			~Block() override;
 
 			/// <summary>
 			/// Gets the name of this block.
 			/// </summary>
-			std::string GetName() const;
+			std::string GetName() const override;
 
 			/// <summary>
 			/// Log a line in this block.
 			/// Ultimately just a pass-through to the debugger logger.
 			/// </summary>
-			void LogLine( std::string line );
+			void Log( std::string line ) override;
 		};
 	}
 }

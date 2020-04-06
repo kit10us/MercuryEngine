@@ -3,22 +3,28 @@
 
 #pragma once
 
-#include <me/debug/ILogListener.h>
+#include <kit/ILogListener.h>
+#include <kit/ILogger.h>
 #include <unify/Path.h>
+#include <fstream>
 
 namespace me
 {
 	namespace debug
 	{
-		class FileLoggerListener : public ILogListener
+		class FileLoggerListener : public kit::ILogListener
 		{
 		private:
-			unify::Path m_logFile;
-		public:
-			FileLoggerListener( unify::Path logFile );
+			unify::Path m_path;
+			std::ofstream m_stream;
 
-			void SetLogFile( unify::Path logFile );
-			void Log( std::string text ) override;
+		public:
+			FileLoggerListener( unify::Path path );
+			~FileLoggerListener();
+
+			void LogEvent( const kit::LogEvent* event ) override;
+
+			void SetLogPath( unify::Path path );
 		};
 	}
 }

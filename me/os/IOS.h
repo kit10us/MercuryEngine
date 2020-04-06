@@ -8,9 +8,9 @@
 #include <me/os/IExtension.h>
 #include <me/os/OSParameters.h>
 #include <me/debug/IDebug.h>
+#include <rm/AssetPaths.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
-#include <rm/AssetPaths.h>
 #include <vector>
 #include <string>
 #include <memory>

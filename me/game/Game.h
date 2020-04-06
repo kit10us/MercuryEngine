@@ -125,9 +125,16 @@ namespace me
 			const me::debug::IDebug * Debug() const override;
 
 		protected:
+			/// <summary>
+			/// Executed upon the shutdown of our game.
+			/// </summary>
 			void Private_Shutdown();
 
 		private:
+			/// <summary>
+			/// Add a game extension.
+			/// Game extensions extend the features of various game components and events.
+			/// </summary>
 			void AddExtension( unify::Path path, const qxml::Element * element );
 		};
 	}

@@ -23,7 +23,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, unify::Parame
 	m_game->Debug()->Try( [&]
 	{
 		doc.Load( source );
-	}, ErrorLevel::Failure, false, true );
+	}, debug::ErrorLevel::Failure, false, true );
 	auto && root = *doc.GetRoot()->FindFirstElement( "pixelshader" );
 
 	PixelShaderParameters pixelShaderParameters;

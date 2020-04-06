@@ -579,12 +579,6 @@
     <ClInclude Include="me\debug\IDebug.h">
       <Filter>me\debug</Filter>
     </ClInclude>
-    <ClInclude Include="me\debug\ILogListener.h">
-      <Filter>me\debug</Filter>
-    </ClInclude>
-    <ClInclude Include="me\debug\Block.h">
-      <Filter>me\debug</Filter>
-    </ClInclude>
     <ClInclude Include="me\setup\SetupScriptFactory.h">
       <Filter>me\setup</Filter>
     </ClInclude>
@@ -709,6 +703,18 @@
       <Filter>me\os</Filter>
     </ClInclude>
     <ClInclude Include="me\debug\FileLoggerListener.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\Logger.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\Block.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\BlockPopper.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\debug\IErrorHandler.h">
       <Filter>me\debug</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1040,9 +1046,6 @@
     <ClCompile Include="me\debug\DefaultDebug.cpp">
       <Filter>me\debug</Filter>
     </ClCompile>
-    <ClCompile Include="me\debug\Block.cpp">
-      <Filter>me\debug</Filter>
-    </ClCompile>
     <ClCompile Include="me\setup\SetupScriptFactory.cpp">
       <Filter>me\setup</Filter>
     </ClCompile>
@@ -1131,6 +1134,12 @@
       <Filter>me\sculpter</Filter>
     </ClCompile>
     <ClCompile Include="me\debug\FileLoggerListener.cpp">
+      <Filter>me\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\Logger.cpp">
+      <Filter>me\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\Block.cpp">
       <Filter>me\debug</Filter>
     </ClCompile>
   </ItemGroup>
