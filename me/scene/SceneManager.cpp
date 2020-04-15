@@ -36,6 +36,13 @@ void SceneManager::Destroy()
     m_scenes.Clear();
 }
 
+void SceneManager::OnAttach( game::IGame* gameInstance )
+{
+	GameComponent::OnAttach( gameInstance );
+	m_block = gameInstance->Debug()->GetLogger()->CreateBlock( "SceneManager" );
+}
+
+
 size_t SceneManager::GetSceneCount() const
 {
 	return m_scenes.Count();
@@ -74,60 +81,55 @@ std::string SceneManager::GetPreviousSceneName()
 bool SceneManager::ChangeScene( std::string name )
 {
 	auto debug = GetGame()->Debug();
-	auto sceneManagerBlock{ debug->MakeBlock( "Scene" ) };
-	auto block = debug->MakeBlock( "ChangeScene" );
-
-	IScene::ptr newScene = m_scenes.GetValue( name );
-	
-	// Leave current scene...
-	if ( m_currentScene )
-	{
-		m_currentScene->OnEnd();
-		m_currentScene->Component_OnEnd();
-
-		// Let all components mess with the scene before we destroy it...
-		for (auto component : m_components)
+	m_block->SubBlock( "ChangeScene" )->Exec( [&]( auto block )
 		{
-			component->OnSceneEnd( m_currentScene.get());
-		}
+			IScene::ptr newScene = m_scenes.GetValue( name );
 
-		m_previousSceneName = m_currentScene->GetName();
+			// Leave current scene...
+			if ( m_currentScene )
+			{
+				m_currentScene->OnEnd();
+				m_currentScene->Component_OnEnd();
 
-		m_currentScene.reset();
-	}
-	
-	// Create new scene...
-	m_currentScene = newScene;
+				// Let all components mess with the scene before we destroy it...
+				for ( auto component : m_components )
+				{
+					component->OnSceneEnd( m_currentScene.get() );
+				}
 
-	// Let all components mess with the scene first...
-	for (auto component : m_components)
-	{
-		component->OnSceneStart( m_currentScene.get() );
-	}
+				m_previousSceneName = m_currentScene->GetName();
 
-	
-	debug->Try( [&]
-	{
-		auto localBlock{ debug->MakeBlock( "Component_OnBeforeStart( \"" + m_currentScene->GetName() + "\")" ) };
-		localBlock->Log( "Starting scene \"" + m_currentScene->GetName() + "\" Begin" );
-		m_currentScene->Component_OnBeforeStart();
-	}, debug::ErrorLevel::Engine, false, false );
+				m_currentScene.reset();
+			}
 
-	debug->Try( [&]
-	{
-		auto localBlock{ debug->MakeBlock( "OnStart" ) };
-		block->Log( "OnStart Begin" );
-		m_currentScene->OnStart();
-		block->Log( "OnStart End" );
-	}, debug::ErrorLevel::Engine, false, false );
+			// Create new scene...
+			m_currentScene = newScene;
+
+			// Let all components mess with the scene first...
+			for ( auto component : m_components )
+			{
+				component->OnSceneStart( m_currentScene.get() );
+			}
 
 
-	debug->Try( [&]
-	{
-		auto localBlock{ debug->MakeBlock( "Component_OnAfterStart( \"" + m_currentScene->GetName() + "\")" ) };
-		m_currentScene->Component_OnAfterStart();
-		block->Log( "Start scene \"" + m_currentScene->GetName() + "\" Done" );
-	}, debug::ErrorLevel::Engine, false, false );
+			debug->Try( [&]
+				{
+					m_currentScene->Component_OnBeforeStart();
+				}, debug::ErrorLevel::Engine, false, false );
+
+			debug->Try( [&]
+				{
+					block->Log( "OnStart being." );
+					m_currentScene->OnStart();
+					block->Log( "OnStart end." );
+				}, debug::ErrorLevel::Engine, false, false );
+
+
+			debug->Try( [&]
+				{
+					m_currentScene->Component_OnAfterStart();
+				}, debug::ErrorLevel::Engine, false, false );
+		} );
 
 	return true;
 }

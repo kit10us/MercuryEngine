@@ -4,8 +4,8 @@
 #pragma once
 
 #include <me/debug/IErrorHandler.h>
-#include <kit/ILogger.h>
-#include <kit/IBlock.h>
+#include <kit/debug/ILogger.h>
+#include <kit/debug/IBlock.h>
 #include <unify/Path.h>
 #include <memory>
 #include <list>
@@ -43,14 +43,14 @@ namespace me
 			virtual void SetLogPath( unify::Path path ) = 0;
 
 			/// <summary>
-			/// Set failures as critical failures.
+			/// Set if an ErrorLevel should be handled as critical (non-resolvable).
 			/// </summary>
-			virtual void SetFailureAsCritical( bool faiureAsCritical ) = 0;
+			virtual void SetErrorAsCritical( ErrorLevel level, bool isCritical ) = 0;
 
 			/// <sumamry>
-			/// Returns true if we want to handle failures as ciritcal.
+			/// Returns true if we want to handle an ErrorLevel as critical .
 			/// </summary>
-			virtual bool GetFailureAsCritical() const = 0;
+			virtual bool GetErrorAsCritical( ErrorLevel level ) const = 0;
 
 			/// <summary>
 			/// Assert.
@@ -65,7 +65,7 @@ namespace me
 			/// <summary>
 			/// Report an error.
 			/// </summary>
-			virtual ReportErrorResult ReportError( ErrorLevel level, std::string source, std::string error, bool canContinue = false, bool canRetry = false ) = 0;
+			virtual ReportErrorResult ReportError( ErrorLevel level, std::string error, bool canContinue = false, bool canRetry = false ) = 0;
 
 			/// <summary>
 			/// Try/catch a function allowing us to report the error, continue or retry.
@@ -95,12 +95,7 @@ namespace me
 			/// <summary>
 			/// Get the logger.
 			/// </summary>
-			virtual kit::ILogger* GetLogger() = 0;
-
-			/// <summary>
-			/// Short form to create a logger block.
-			/// </summary>
-			virtual kit::IBlock::ptr MakeBlock( std::string name ) = 0;
+			virtual kit::debug::ILogger* GetLogger() = 0;
 		};
 	}
 }

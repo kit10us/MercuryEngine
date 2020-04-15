@@ -6,31 +6,30 @@
 #include <vector>
 #include <list>
 #include <string>
-#include <kit/ILogger.h>
-#include <kit/IBlock.h>
+#include <kit/debug/ILogger.h>
+#include <kit/debug/IBlock.h>
 
 namespace me
 {
 	namespace debug
 	{
-		class Logger : public kit::ILogger
+		class Logger : public kit::debug::ILogger
 		{
-			std::list<kit::ILogListener::ptr> m_listeners;
-			std::list<kit::IBlock*> m_blocks;
-			std::vector< kit::LogEvent > m_events;
+			std::list<kit::debug::ILogListener::ptr> m_listeners;
+			std::list<kit::debug::IBlock*> m_blocks;
+			std::vector< kit::debug::LogEvent > m_events;
+
+			// We create a shared bool that allows those dependant on our existance to check if we are alive/valid.
+			std::shared_ptr< bool > m_alive;
 
 		public:
 			Logger();
 			~Logger() override;
 
-			void AttachListener( kit::ILogListener::ptr logListener ) override;
-			void DetachListener( kit::ILogListener::ptr logListener ) override;
+			void AttachListener( kit::debug::ILogListener::ptr logListener ) override;
+			void DetachListener( kit::debug::ILogListener::ptr logListener ) override;
 			void Log( std::string text ) override;
-			kit::IBlock::ptr MakeBlock( std::string name ) override;
-			void BlockLog( std::string text ) override;
-			void PushBlock( kit::IBlock* block ) override;
-			void PopBlock( kit::IBlock* block ) override;
-			std::string GetBlockText() const override;
+			kit::debug::IBlock::ptr CreateBlock( std::string name ) override;
 		};
 	}
 }

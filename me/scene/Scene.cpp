@@ -17,6 +17,7 @@ Scene::Scene( game::Game * gameInstance, std::string name )
 , m_name{ name }
 , m_ownership{ unify::Owner::Create( name ) }
 , m_sceneManager{}
+, m_block{ gameInstance->Debug()->GetLogger()->CreateBlock( "Scene \"" + name + "\")" ) }
 {
 	auto objectAllocatorComponent = new component::ObjectAllocatorComponent( gameInstance->GetOS() );
 	AddComponent( component::ISceneComponent::ptr( objectAllocatorComponent ) );
@@ -35,42 +36,43 @@ unify::Owner::ptr Scene::GetOwnership()
 
 void Scene::Component_OnBeforeStart()
 {
-	auto debug = GetGame()->Debug();
-	auto block( debug->MakeBlock( "Scene::OnBeforeStart" ) );
+	m_block->SubBlock( "Component_OnBeforeStart" )->Exec( [&]( auto block )
+		{
 
-	for( auto && component : m_components )
-	{
-		auto onBeforStartBlock( debug->MakeBlock( "Component \"" + component->GetTypeName() ) );
-		if( component->IsEnabled() )
-		{
-			onBeforStartBlock->Log( "enabled" );
-			component->OnBeforeStart();
-		}
-		else
-		{
-			onBeforStartBlock->Log( "disabled, skipping" );
-		}
-	}
+			for ( auto&& component : m_components )
+			{
+				block->Log(
+					"Component \"" + component->GetTypeName() + "\" is " +
+					(component->IsEnabled() ? "enabled, executing..." : "disabled, skipping.")
+				);
+
+				if ( component->IsEnabled() )
+				{
+					component->OnBeforeStart();
+					block->Log( "Done." );
+				}
+			}
+		} );
 }
 
 void Scene::Component_OnAfterStart()
 {
-	auto debug = GetGame()->Debug();
-	auto block( debug->MakeBlock( "Scene::OnAfterStart" ) );
+	m_block->SubBlock( "Component_OnAfterStart" )->Exec( [&]( auto block )
+		{
+			for ( auto&& component : m_components )
+			{
+				block->Log(
+					"Component \"" + component->GetTypeName() + "\" is " +
+					(component->IsEnabled() ? "enabled, executing..." : "disabled, skipping.")
+				);
 
-	for ( auto && component : m_components )
-	{
-		if (component->IsEnabled())
-		{
-			block->Log( "Component \"" + component->GetTypeName() + "\" OnAfterStart Begin" );
-			component->OnAfterStart();
-			block->Log( "Component \"" + component->GetTypeName() + "\" OnAfterStart Done" );
-		}
-		else
-		{
-			block->Log( "Component \"" + component->GetTypeName() + "\" OnAfterStart Skipped (not enabled)" );
-		}
-	}
+				if ( component->IsEnabled() )
+				{
+					component->OnAfterStart();
+					block->Log( "Done." );
+				}
+			}
+		} );
 }
 
 void Scene::Component_OnEarlyUpdate( const UpdateParams & params )
@@ -97,7 +99,6 @@ void Scene::Component_OnUpdate( const UpdateParams & params )
 
 void Scene::Component_OnLateUpdate( const UpdateParams & params )
 {
-
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
@@ -299,26 +300,27 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 
 void Scene::AddResources( unify::Path path )
 {
-	auto debug = GetOS()->Debug();
-	auto block = debug->MakeBlock( "Scene::AddResources(" + path.ToString() + ")" );
-	
-	qxml::Document doc {};
-	debug->Try( [&]
-	{
-		auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
-		doc.Load( realPath );
-	}, debug::ErrorLevel::Failure, true, true );
-
-	for (auto & itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr)
-	{
-		debug->Try( [&]
+	auto debug = m_game->Debug();
+	m_block->SubBlock( "AddResources(" + path.ToString() + ")" )->Exec( [&]( auto block )
 		{
-			auto type = (*itr).GetAttribute< std::string >( "type" );
-			auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
-			unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
-			GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
-		}, debug::ErrorLevel::Failure, true, true );
-	}
+			qxml::Document doc{};
+			debug->Try( [&]
+				{
+					auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
+					doc.Load( realPath );
+				}, debug::ErrorLevel::Failure, true, true );
+
+			for ( auto& itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr )
+			{
+				debug->Try( [&]
+					{
+						auto type = (*itr).GetAttribute< std::string >( "type" );
+						auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
+						unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
+						GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
+					}, debug::ErrorLevel::Failure, true, true );
+			}
+		} );
 }
 
 SceneManager* Scene::GetSceneManager()

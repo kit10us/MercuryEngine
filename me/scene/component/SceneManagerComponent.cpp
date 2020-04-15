@@ -29,13 +29,14 @@ void SceneManagerComponent::AddInterface(std::string name, me::IThing* ptr)
 
 ISceneComponent::ptr SceneManagerComponent::CreateSceneComponent( std::string type )
 {
-	GetSceneManager()->GetGame()->Debug()->ReportError( debug::ErrorLevel::Failure, "SceneManagerComponent::CreateSceneComponent", "Scene component type \"" + type + "\" not found!" );
+	GetSceneManager()->GetGame()->Debug()->ReportError( debug::ErrorLevel::Failure, "Scene component type \"" + type + "\" not found!" );
 	return {};
 }
 
 void SceneManagerComponent::OnAttach( SceneManager * sceneManager )
 {
 	m_sceneManager = sceneManager;
+	m_block = m_sceneManager->GetGame()->Debug()->GetLogger()->CreateBlock( "SceneManagerComponent \"" + GetTypeName() + "\"" );
 }
 
 void SceneManagerComponent::OnDetach( SceneManager * sceneManager )

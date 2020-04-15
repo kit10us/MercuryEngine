@@ -33,9 +33,9 @@
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\debug\Block.h" />
-    <ClInclude Include="me\debug\BlockPopper.h" />
     <ClInclude Include="me\debug\DefaultDebug.h" />
     <ClInclude Include="me\debug\DefaultErrorHandler.h" />
+    <ClInclude Include="me\debug\ErrorLevel.h" />
     <ClInclude Include="me\debug\FileLoggerListener.h" />
     <ClInclude Include="me\debug\IDebug.h" />
     <ClInclude Include="me\debug\IErrorHandler.h" />
@@ -419,6 +419,7 @@
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -436,6 +437,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -16,32 +16,14 @@ DefaultErrorHandler::~DefaultErrorHandler()
 {
 }
 
-ReportErrorResult DefaultErrorHandler::ReportError( ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry )
+ReportErrorResult DefaultErrorHandler::ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry )
 {
-	switch( level )
+	if ( m_debug->GetErrorAsCritical( level ) )
 	{
-	case ErrorLevel::Engine:
-		throw unify::Exception( "Engine Failure (" + source + "): " + error );
-		break;
-
-	case ErrorLevel::Extension:
-		throw unify::Exception( "Extension Failure (" + source + "): " + error );
-		break;
-
-	case ErrorLevel::Critical:
-		throw unify::Exception( "Critical Failure (" + source + "): " + error );
-		break;
-
-	case ErrorLevel::Failure:
-		if( m_debug->GetFailureAsCritical() || ! canContinue )
-		{
-			throw unify::Exception( "Failure (" + source + "): " + error );
-		}
-		break;
-
-	case ErrorLevel::Warning:
-		break;
+		throw unify::Exception( ErrorLevelToString( level ) + ": " + error );
 	}
-	
-	return ReportErrorResult::Continue;
+	else
+	{
+		return ReportErrorResult::Continue;
+	}
 }

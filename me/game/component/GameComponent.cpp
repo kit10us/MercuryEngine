@@ -3,6 +3,7 @@
 
 #include <me/game/component/GameComponent.h>
 #include <me/interop/ReferenceCast.h>
+#include <me/game/IGame.h>
 
 using namespace me;
 using namespace game;
@@ -43,6 +44,7 @@ void GameComponent::AddInterface( std::string name, me::IThing* ptr )
 void GameComponent::OnAttach( game::IGame * gameInstance )
 {
 	m_game = gameInstance;
+	m_block = gameInstance->Debug()->GetLogger()->CreateBlock( "GameComponent \"" + GetTypeName() + "\"" );
 }
 
 void GameComponent::OnDetach( game::IGame * gameInstance ) 

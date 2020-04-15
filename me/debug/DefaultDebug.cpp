@@ -11,7 +11,7 @@ using namespace me;
 using namespace debug;
 
 DefaultDebug::DefaultDebug()
-	: m_failuresAsCritial{ true }
+	: m_errorAsCritical{ true, true, true, true, false }
 	, m_errorHandler{ IErrorHandler::ptr{ new DefaultErrorHandler( this ) } }
 	, m_isDebug
 #ifdef _DEBUG
@@ -42,17 +42,17 @@ bool DefaultDebug::IsDebug()
 void DefaultDebug::SetLogPath( unify::Path path )
 {
 	m_fileLogger->SetLogPath( path );
-	GetLogger()->Log( "Change file logger path to : " + path.ToString() );
+	GetLogger()->Log( "Change file logger path to \"" + path.ToString() + "\"." );
 }
 
-void DefaultDebug::SetFailureAsCritical( bool faiureAsCritical )
+void DefaultDebug::SetErrorAsCritical( ErrorLevel level, bool isCritical )
 {
-	m_failuresAsCritial = faiureAsCritical;
+	m_errorAsCritical[(size_t)level] = isCritical;
 }
 
-bool DefaultDebug::GetFailureAsCritical() const
+bool DefaultDebug::GetErrorAsCritical( ErrorLevel level ) const
 {
-	return m_failuresAsCritial;
+	return m_errorAsCritical[(size_t)level];
 }
 
 bool DefaultDebug::Assert( bool assertion ) const
@@ -77,39 +77,49 @@ void DefaultDebug::SetErrorHandler( IErrorHandler::ptr errorHandler )
 	int i; i = 0;
 }
 
-ReportErrorResult DefaultDebug::ReportError( ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry )
+ReportErrorResult DefaultDebug::ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry )
 {
-	switch( level )
+	bool isCritical;
+	switch ( level )
 	{
-	case ErrorLevel::Engine:
-		m_criticalErrors.push_back( "Engine Failure (" + source + "): " + error );
-		GetLogger()->Log( "Engine Failure (" + source + "): " + error );
+		using enum me::debug::ErrorLevel;
+	case Engine:
+		m_criticalErrors.push_back( "Engine Failure: \"" + error + "\"" );
+		GetLogger()->Log( "Engine Failure! \"" + error + "\"" );
 		break;
 
 	case ErrorLevel::Extension:
-		m_criticalErrors.push_back( "Extension Failure (" + source + "): " + error );
-		GetLogger()->Log( "Extension Failure (" + source + "): " + error );
+		m_criticalErrors.push_back( "Extension Failure: \"" + error + "\"" );
+		GetLogger()->Log( "Extension Failure: \"" + error + "\"" );
 		break;
 
 	case ErrorLevel::Critical:
-		m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
-		GetLogger()->Log( "Critical Failure (" + source + "): " + error );
-		break;
-
-	case ErrorLevel::Failure:
-		GetLogger()->Log( "Failure (" + source + "): " + error );
-		if( m_failuresAsCritial )
+		GetLogger()->Log( "Critical Failure: \"" + error + "\"" );
 		{
-			m_criticalErrors.push_back( "Critical Failure (" + source + "): " + error );
+			m_criticalErrors.push_back( "Critical Failure: \"" + error + "\"" );
 		}
 		break;
 
+	case ErrorLevel::Failure:
+		GetLogger()->Log( "General Failure: \"" + error + "\"" );
+		isCritical = m_failuresAsCritial;
+		break;
+
 	case ErrorLevel::Warning:
-		GetLogger()->Log( "Warning (" + source + "): " + error );
+		isCritical = m_warningAsCritical;
+		GetLogger()->Log( "Warning: " + error );
 		break;
 	}
 
-	return m_errorHandler->ReportError( level, source, error, canContinue, canRetry );
+	std::string errorText = ErrorLevelToString( level ) + ": \"" + error + "\"";
+	GetLogger()->Log( errorText );
+
+	if ( isCritical )
+	{
+		m_criticalErrors.push_back( errorText );
+	}
+
+	return m_errorHandler->ReportError( level, error, canContinue, canRetry );
 }
 
 void DefaultDebug::Try( std::function< void() > func, ErrorLevel level, bool canContinue, bool canRetry )
@@ -137,7 +147,7 @@ void DefaultDebug::Try( std::function< void() > func, ErrorLevel level, bool can
 			// Try to report the error as the report error handler my throw for an abort.
 			try
 			{
-				result = ReportError( level, GetLogger()->GetBlockText(), ex.what(), canContinue, canRetry );
+				result = ReportError( level, ex.what(), canContinue, canRetry );
 			}
 			catch( ... )
 			{
@@ -200,12 +210,7 @@ float DefaultDebug::DebugGetTimeStamp( std::string name )
 	return durationS.count();
 }
 
-kit::ILogger* DefaultDebug::GetLogger()
+kit::debug::ILogger* DefaultDebug::GetLogger()
 {
 	return &m_logger;
-}
-
-kit::IBlock::ptr DefaultDebug::MakeBlock( std::string name )
-{
-	return GetLogger()->MakeBlock( name );
 }

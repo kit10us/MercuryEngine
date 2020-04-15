@@ -14,10 +14,17 @@ namespace me
 		{
 			class SceneManagerComponent : public ISceneManagerComponent
 			{
-			protected:
-				SceneManagerComponent(std::string typeName );
+				std::string m_typeName;
+				bool m_enabled;
+				interop::Interop m_values;
+				std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanTest > m_interfaceMap;
+				SceneManager* m_sceneManager;
 
-				void AddInterface(std::string name, me::IThing* ptr);
+			protected:
+				kit::debug::IBlock::ptr m_block;
+
+				SceneManagerComponent(std::string typeName );
+				void AddInterface(std::string name, me::IThing* ptr) override;
 
 			public: // ISceneManagerComponent...
 				ISceneComponent::ptr CreateSceneComponent( std::string type ) override;
@@ -38,13 +45,6 @@ namespace me
 				std::string GetTypeName() const override;
 				me::IThing* QueryInterface(std::string name) override;
 				std::string GetWhat() const override;
-
-			private:
-				std::string m_typeName;
-				bool m_enabled;
-				interop::Interop m_values;
-				std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanTest > m_interfaceMap;
-				SceneManager * m_sceneManager;
 			};
 		}
 	}

@@ -26,7 +26,7 @@ namespace me
 				const IScene* GetScene() const;
 
 			protected:
-				void AddInterface( std::string name, me::IThing* ptr );
+				void AddInterface( std::string name, me::IThing* ptr ) override;
 
 			public: // ISceneComponent...
 				void OnAttach( me::scene::IScene * scene ) override;

@@ -25,7 +25,10 @@ namespace me
 				std::chrono::high_resolution_clock::time_point end;
 			};
 
-			bool m_failuresAsCritial;
+			bool m_errorAsCritical[ErrorLevelCount];
+
+			bool m_failuresAsCritial = true;
+			bool m_warningAsCritical = false;
 			bool m_isDebug;
 
 			std::list< std::string > m_criticalErrors;
@@ -45,15 +48,15 @@ namespace me
 
 			void SetLogPath( unify::Path path ) override;
 
-			void SetFailureAsCritical( bool faiureAsCritical ) override;
+			void SetErrorAsCritical( ErrorLevel level, bool isCritical ) override;
 
-			bool GetFailureAsCritical() const override;
+			bool GetErrorAsCritical( ErrorLevel level ) const override;
 
 			bool Assert( bool assertion ) const override;
 
 			void SetErrorHandler( IErrorHandler::ptr errorHandler ) override;
 
-			ReportErrorResult ReportError( ErrorLevel level, std::string source, std::string error, bool canContinue, bool canRetry ) override;
+			ReportErrorResult ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry ) override;
 
 			void Try( std::function< void() > func, ErrorLevel level, bool canContinue, bool canRetry ) override;
 
@@ -63,8 +66,7 @@ namespace me
 			void DebugTimeStampEnd( std::string name )	 override;
 			float DebugGetTimeStamp( std::string name )	 override;
 
-			kit::ILogger* GetLogger() override;
-			kit::IBlock::ptr MakeBlock( std::string name ) override;
+			kit::debug::ILogger* GetLogger() override;
 		};
 	}
 }

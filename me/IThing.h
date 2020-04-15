@@ -8,13 +8,18 @@
 
 namespace me
 {
+	/// <summary>
+	/// An abstract base type that can be upcasted into more concrete types.
+	/// </summary>
 	class IThing
 	{
-	public:
-		///////////////////////////////////
-		/// Identity functions...
-		///////////////////////////////////
+	protected:
+		/// <summary>
+		/// Adds an interface.
+		/// </summary>
+		virtual void AddInterface( std::string name, me::IThing* ptr ) = 0;
 
+	public:
 		/// <summary>
 		/// Returns the type of the component.
 		/// </summary>
@@ -25,12 +30,14 @@ namespace me
 		/// </summary>
 		virtual std::string GetWhat() const = 0;
 
-		///////////////////////////////////
-		/// Interface functions...
-		///////////////////////////////////
-
+		/// <summary>
+		/// Returns an interface.
+		/// </summary>
 		virtual IThing* QueryInterface( std::string name ) = 0;
 
+		/// <summary>
+		/// Returns an interface as a specific interface type.
+		/// </summary>
 		template< typename T >
 		T* QueryInterfaceT( std::string name )
 		{

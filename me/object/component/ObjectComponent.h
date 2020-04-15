@@ -23,7 +23,7 @@ namespace me
 
 
 			protected:
-				void AddInterface( std::string name, me::IThing* ptr );
+				void AddInterface( std::string name, me::IThing* ptr ) override;
 
 			public:	 // IObjectComponent...
 				void SetAlias( std::string alias ) override;

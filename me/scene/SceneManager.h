@@ -49,6 +49,7 @@ namespace me
 			size_t SceneManager::GetRenderCount() const;
 
 		public: // IGameCompnent...
+			void OnAttach( game::IGame* gameInstance ) override;
 			void OnEarlyUpdate( const UpdateParams & params ) override;
 			void OnUpdate( const UpdateParams & params ) override;
 			void OnLateUpdate( const UpdateParams & params ) override;
@@ -60,6 +61,7 @@ namespace me
 			std::string GetWhat() const;
 
 		private:
+			kit::debug::IBlock::ptr m_block;
 			unify::Lookup< std::string, IScene::ptr > m_scenes;
 			IScene::ptr m_currentScene;
 			std::string m_previousSceneName;

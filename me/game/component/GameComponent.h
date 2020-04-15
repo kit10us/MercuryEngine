@@ -13,12 +13,17 @@ namespace me
 		{
 			class GameComponent : public IGameComponent
 			{
+			protected:
+				IGame* m_game;
+				std::string m_typeName;
+				bool m_enabled;
+				interop::Interop m_values;
+				std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanTest > m_interfaceMap;
+				kit::debug::IBlock::ptr m_block;
+
 			public:
 				GameComponent( std::string type );
 				~GameComponent();
-
-			protected:
-				void AddInterface( std::string name, me::IThing* ptr );
 
 			public:	 // IGameComponent...
 				IGame * GetGame() override;
@@ -49,17 +54,14 @@ namespace me
 				interop::Interop * GetLookup() override;
 				const interop::Interop * GetLookup() const override;
 
+
+			protected: // me::IThing...
+				void AddInterface( std::string name, me::IThing* ptr ) override;
+
 			public: // me::IThing...
 				std::string GetTypeName() const override;
 				me::IThing* QueryInterface( std::string name ) override;
 				std::string GetWhat() const override;
-
-			protected:
-				IGame * m_game;
-				std::string m_typeName;
-				bool m_enabled;
-				interop::Interop m_values;
-				std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanTest > m_interfaceMap;
 			};
 		}
 	}

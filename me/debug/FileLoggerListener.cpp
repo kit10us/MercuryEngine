@@ -21,12 +21,17 @@ void FileLoggerListener::SetLogPath( unify::Path path )
 	if ( m_stream.is_open() )
 	{
 		m_stream.close();
+		m_path.Rename( path );
 	}
-	m_path.Rename( path );
+	else
+	{
+		path.Delete();
+	}
+
 	m_path = path;
 }
 
-void FileLoggerListener::LogEvent( const kit::LogEvent* event )
+void FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 {
 	using namespace std;
 	if ( !m_stream.is_open() )

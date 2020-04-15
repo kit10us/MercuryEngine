@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <kit/ILogListener.h>
-#include <kit/ILogger.h>
+#include <kit/debug/ILogListener.h>
+#include <kit/debug/ILogger.h>
 #include <unify/Path.h>
 #include <fstream>
 
@@ -12,7 +12,7 @@ namespace me
 {
 	namespace debug
 	{
-		class FileLoggerListener : public kit::ILogListener
+		class FileLoggerListener : public kit::debug::ILogListener
 		{
 		private:
 			unify::Path m_path;
@@ -22,7 +22,7 @@ namespace me
 			FileLoggerListener( unify::Path path );
 			~FileLoggerListener();
 
-			void LogEvent( const kit::LogEvent* event ) override;
+			void LogEvent( const kit::debug::LogEvent* event ) override;
 
 			void SetLogPath( unify::Path path );
 		};

@@ -22,7 +22,11 @@ namespace me
 			unify::Owner::ptr m_ownership;
 			std::list< component::ISceneComponent::ptr > m_components;
 			IObjectAllocator* m_objectAllocator;
-			SceneManager* m_sceneManager;
+			SceneManager* m_sceneManager;			
+
+		protected:
+			kit::debug::IBlock::ptr m_block;
+
 		public:
 			Scene(game::Game * gameInstance, std::string name);
 			virtual ~Scene();
@@ -91,7 +95,7 @@ namespace me
 				auto asset = GetManager< T >()->Find( name );
 				if ( ! asset )
 				{
-					GetOS()->Debug()->ReportError(  debug::ErrorLevel::Critical, "Game::GetAsset", "Could not find asset \"" + name + "\"!" );
+					GetOS()->Debug()->ReportError(  debug::ErrorLevel::Critical, "Could not find asset \"" + name + "\"!" );
 				}
 				return asset;
 			}

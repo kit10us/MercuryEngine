@@ -19,7 +19,7 @@ namespace me
 			me::IThing* QueryInterface( std::string name ) override;
 
 		protected:
-			void AddInterface( std::string name, me::IThing* ptr );
+			void AddInterface( std::string name, me::IThing* ptr ) override;
 
 		private:
 			std::map< std::string, me::IThing* > m_interfaces;

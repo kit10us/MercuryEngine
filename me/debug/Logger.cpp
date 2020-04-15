@@ -3,8 +3,6 @@
 
 #include <me/debug/Logger.h>
 #include <me/debug/Block.h>
-#include <me/debug/BlockPopper.h>
-#include <kit/ILogListener.h>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
@@ -14,22 +12,24 @@ using namespace me;
 using namespace debug;
 
 Logger::Logger()
+	: m_alive{ new bool{ true } }
 {
 }
 
 Logger::~Logger()
 {
-	m_blocks.clear();
+	Log( "LOGGER RELEASED" );
 	m_listeners.clear();
+	*m_alive = false;
 }
 
-void Logger::AttachListener( kit::ILogListener::ptr logListener )
+void Logger::AttachListener( kit::debug::ILogListener::ptr logListener )
 {
 	using namespace std;
 
 	// First message to logger is to confirm it is attached.
 	// The message is only for the newly attached logger.
-	const auto event{ kit::LogEvent{ "LOG LISTENER ATTACHED" } };
+	const auto event{ kit::debug::LogEvent{ "LOG LISTENER ATTACHED" } };
 	logListener->LogEvent( &event );
 
 	// Log existing text lines to the new listener.
@@ -42,9 +42,9 @@ void Logger::AttachListener( kit::ILogListener::ptr logListener )
 
 }
 
-void Logger::DetachListener( kit::ILogListener::ptr logListener )
+void Logger::DetachListener( kit::debug::ILogListener::ptr logListener )
 {
-	const auto event{ kit::LogEvent{ "LOG LISTENER DETACHED" } };
+	const auto event{ kit::debug::LogEvent{ "LOG LISTENER DETACHED" } };
     logListener->LogEvent( &event );
     m_listeners.remove( logListener );
 }
@@ -59,7 +59,7 @@ void Logger::Log( std::string text )
 	// Push event into history.
 	std::stringstream ss;
 	ss << put_time( std::localtime(&t), "%F %T" );
-	m_events.push_back( { kit::LogEvent{ "[" + ss.str() + "] " + text } } );
+	m_events.push_back( { kit::debug::LogEvent{ "" + ss.str() + ": " + text } } );
 	
 	// Inform listeners of log event.
 	for ( auto listener : m_listeners )
@@ -68,53 +68,7 @@ void Logger::Log( std::string text )
     }
 }
 
-kit::IBlock::ptr Logger::MakeBlock( std::string name )
+kit::debug::IBlock::ptr Logger::CreateBlock( std::string name )
 {
-	kit::IBlock::ptr block{ new me::debug::Block( this, name ), BlockPopper( this ) };
-	PushBlock( block.get() );
-	return block;
-}
-
-void Logger::BlockLog( std::string text )
-{
-	Log( "[" + GetBlockText() + "] " + text );
-}
-
-void Logger::PushBlock( kit::IBlock* block )
-{
-	m_blocks.push_back( block );
-	Log( GetBlockText() + " >> " + block->GetName() );
-}
-
-void Logger::PopBlock( kit::IBlock* block )
-{
-	
-	//if ( m_criticalErrors.size() )
-	//{
-	//	return; // Prevent block changes during a critical failure.
-	//}
-
-	//if ( (m_blocks.back()) != block )
-	//{
-	//	this->ReportError( ErrorLevel::Engine, "DefaultDebug", "Top of block is not the same as block being popped!", false, false );
-	//}
-	
-	Log( GetBlockText() + "<<" + block->GetName() );
-	m_blocks.remove( block );
-	delete block;
-}
-
-std::string Logger::GetBlockText() const
-{
-	std::string text;
-	for ( auto block = m_blocks.begin(); block != m_blocks.end(); block++ )
-	{
-		if ( !text.empty() )
-		{
-			text += "::";
-		}
-		text += (*block)->GetName();
-	}
-
-	return text;
+	return kit::debug::IBlock::ptr{ new me::debug::Block( this, name, m_alive ) };
 }

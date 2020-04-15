@@ -21,11 +21,29 @@
 #include <chrono>
 #include <ctime>
 #include <functional>
-#include <map>
+//#include <map>
 
 using namespace me;
 using namespace game;
 using namespace render;
+
+Game::Game( unify::Path setup )
+	: Game( "Main", setup )
+{
+}
+
+Game::Game( std::string startScene, unify::Path setup )
+	: m_gameBlock{}
+	, m_title{ "Mercury Engine" }
+	, m_startScene{ startScene }
+	, m_setup( setup )
+	, m_isQuitting( false )
+	, m_totalStartupTime{}
+	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
+	, m_inputManager( this )
+{
+
+}
 
 bool Game::Setup( os::IOS * os )
 {
@@ -41,22 +59,6 @@ void Game::Startup()
 void Game::Shutdown()
 {
 	// STUBBED - Provided by user.
-}
-
-Game::Game( unify::Path setup)
-	: Game( "Main", setup )
-{
-}
-
-Game::Game( std::string startScene, unify::Path setup )
-	: m_title{ "Mercury Engine" }
-	, m_startScene{ startScene }
-	, m_setup( setup )
-	, m_isQuitting( false )
-	, m_totalStartupTime{}
-	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
-	, m_inputManager( this )
-{
 }
 
 void * Game::Feed( std::string target, void * data )
@@ -82,9 +84,12 @@ void Game::Initialize( os::IOS::ptr os )
 	m_os = os; // This has to be first as it validates Debug().
 	auto debug = Debug();
 
-	debug->SetLogPath( os->GetOSParameters()->GetRunPath() + unify::Path( "default.log" ) );
+	// Create Game scope block for debug logging.
+	m_gameBlock = debug->GetLogger()->CreateBlock( "Game" );
 
-	auto block( debug->MakeBlock( "Game::Initialize" ) );
+	debug->SetLogPath( os->GetOSParameters()->GetRunPath() + unify::Path( "default.log" ) );
+	
+	auto block{ m_gameBlock->SubBlock( "Initialize" ) };
 
 	rm::ILogger::ptr logger( new GameLogger( Debug() ) );
 
@@ -142,31 +147,31 @@ void Game::Initialize( os::IOS::ptr os )
 			}
 		}, debug::ErrorLevel::Engine, false, true );
 
-		{ // First loader pass
-			auto xmlLoaderBlock( debug->MakeBlock( "XMLLoaderFirstPass" ) );
+		// First loader pass
+		block->SubBlock( "XMLLoaderFirstPass" )->Exec( [&]( auto block ) {
 			auto scriptManager = GetManager< script::IScript >();
 			std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 			{
-				xmlLoaderBlock->Log( "loading \"" + source.ToString() + "\"" );
+				block->Log( "loading \"" + source.ToString() + "\"" );
 
 				auto script = scriptManager->Add( source.ToString(), source );
 
 				qxml::Document doc( unify::Path{ script->GetSource() } );
 
 				qxml::Element* setup = doc.GetRoot();
-				if (setup)
+				if ( setup )
 				{
-					for (auto&& node : setup->Children())
+					for ( auto&& node : setup->Children() )
 					{
-						if (node.IsTagName( "include" ))
+						if ( node.IsTagName( "include" ) )
 						{
 							xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
 						}
-						else if (node.IsTagName( "define" ))
+						else if ( node.IsTagName( "define" ) )
 						{
 							defines[ReplaceDefines( node.GetAttribute< std::string >( "name" ) )] = ReplaceDefines( node.GetText() );
 						}
-						else if (node.IsTagName( "renderer" ))
+						else if ( node.IsTagName( "renderer" ) )
 						{
 							unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
 							unify::Path pathDiscovery{
@@ -174,7 +179,7 @@ void Game::Initialize( os::IOS::ptr os )
 							};
 							AddExtension( path, &node );
 						}
-						else if (node.IsTagName( "assets" ))
+						else if ( node.IsTagName( "assets" ) )
 						{
 							GetOS()->GetAssetPaths()->AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
 						}
@@ -185,7 +190,7 @@ void Game::Initialize( os::IOS::ptr os )
 			};
 
 			xmlLoader( m_setup );
-		}
+			} );
 	}
 
 	if ( ! m_os )
@@ -211,49 +216,50 @@ void Game::Initialize( os::IOS::ptr os )
 		}, debug::ErrorLevel::Engine, false, true );
 
 		// Second loader pass
-		auto xmlLoaderBlock( debug->MakeBlock( "xmlLoader(second pass)" ) );
-		auto scriptManager = GetManager< script::IScript >();
-		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
-		{
-			xmlLoaderBlock->Log( "loading \"" + source.ToString() + "\"" );
-
-			auto script = scriptManager->Add( source.ToString(), source );
-
-			qxml::Document doc( unify::Path{ script->GetSource() } );
-
-			qxml::Element * setup = doc.GetRoot();
-			if( setup )
+		block->SubBlock( "xmlLoader second pass" )->Exec( [&]( auto block ) {
+			auto scriptManager = GetManager< script::IScript >();
+			std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 			{
-				for( auto && node : setup->Children() )
-				{		
-					if ( node.IsTagName( "startScene" ) )
-					{
-						m_startScene = ReplaceDefines( node.GetText() );
-					}
-					else if ( node.IsTagName( "include" ) )
-					{
-						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
-					}
-					else if ( node.IsTagName( "title" ) )
-					{
-						m_title = ReplaceDefines( node.GetText() );
-					}
-					else if( node.IsTagName( "logfile" ) )
-					{
-						unify::Path logFile( ReplaceDefines( node.GetText() ) );
-						logFile.Delete();
-						debug->SetLogPath( GetOS()->GetOSParameters()->GetRunPath() + logFile );
-					}
-					else if ( node.IsTagName( "failuresAsCritical" ) )
-					{
-						debug->SetFailureAsCritical( unify::Cast< bool >( ReplaceDefines( node.GetText() ) ) );
-					}
+				block->Log( "loading \"" + source.ToString() + "\"" );
 
-					// "inputs" handle further on
+				auto script = scriptManager->Add( source.ToString(), source );
+
+				qxml::Document doc( unify::Path{ script->GetSource() } );
+
+				qxml::Element* setup = doc.GetRoot();
+				if ( setup )
+				{
+					for ( auto&& node : setup->Children() )
+					{
+						if ( node.IsTagName( "startScene" ) )
+						{
+							m_startScene = ReplaceDefines( node.GetText() );
+						}
+						else if ( node.IsTagName( "include" ) )
+						{
+							xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						}
+						else if ( node.IsTagName( "title" ) )
+						{
+							m_title = ReplaceDefines( node.GetText() );
+						}
+						else if ( node.IsTagName( "logfile" ) )
+						{
+							unify::Path logFile( ReplaceDefines( node.GetText() ) );
+							logFile.Delete();
+							debug->SetLogPath( GetOS()->GetOSParameters()->GetRunPath() + logFile );
+						}
+						else if ( node.IsTagName( "failuresAsCritical" ) )
+						{
+							debug->SetErrorAsCritical( debug::ErrorLevel::Failure, unify::Cast< bool >( ReplaceDefines( node.GetText() ) ) );
+						}
+
+						// "inputs" handle further on
+					}
 				}
-			}
-		};
-		xmlLoader( m_setup );	
+			};
+			xmlLoader( m_setup );
+		} );
 	}
 
 	// Creates displays...
@@ -342,31 +348,28 @@ void Game::Initialize( os::IOS::ptr os )
 
 	m_os->Startup();
 	
+	block->Log( "Interate components' \"OnBeforeStartup\"" );
+	for ( auto&& component : m_components )
 	{
-		auto onBeforeStartBlock( debug->MakeBlock( "Game Components OnBeforeStartup" ) );
-		for( auto && component : m_components )
-		{
-			auto onBeforeStartComponentBlock( debug->MakeBlock( component->GetTypeName() ) );
-			component->OnBeforeStartup();
-		}
+		block->Log( component->GetTypeName() + "..." );
+		component->OnBeforeStartup();
 	}
+	block->Log( "Done." );
 
-	{
-		auto startupBlock( debug->MakeBlock( "Startup" ) );
+	block->SubBlock( "Startup" )->Exec( [&]( auto block ) {
 		debug->Try( [&]
-		{
-			Startup();
-		}, debug::ErrorLevel::Engine, false, false );
-	}
+			{
+				Startup();
+			}, debug::ErrorLevel::Engine, false, false );
+	} );
 
+	block->Log( "iterate components' OnAfterStart" );
+	for ( auto&& component : m_components )
 	{
-		auto onAfterStartupBlock( debug->MakeBlock( "OnAfterStartup" ) );
-		for( auto && component : m_components )
-		{
-			auto componentBlock( debug->MakeBlock( component->GetTypeName() ) );
-			component->OnAfterStartup();
-		}
+		block->Log( component->GetTypeName() + "..." );
+		component->OnAfterStartup();
 	}
+	block->Log( "Done." );
 
 	// Basic motivations...
 	if ( GetInputManager() )
@@ -379,6 +382,7 @@ void Game::Initialize( os::IOS::ptr os )
 			keyboard->AddEvent(m_inputOwnership, condition, action);
 		}
 	}	
+
 	high_resolution_clock::time_point currentTime = high_resolution_clock::now();
 	duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
@@ -386,20 +390,18 @@ void Game::Initialize( os::IOS::ptr os )
 
 	block->Log( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s" );
 
-	block->Log( "Adding user specified scenes." );
+	block->Log( "adding user specified scenes." );
 	auto sceneManager = GetComponentT< scene::SceneManager >();
 	AddScenes( sceneManager );
 
+	block->Log( "Changing starting scene." );
+	if ( ! m_startScene.empty() )
 	{
-		block->Log( "Changing starting scene." );
-		if ( ! m_startScene.empty() )
-		{
-			sceneManager->ChangeScene( m_startScene );
-		}
-		else
-		{
-			block->Log( "No start scene specified." );
-		}
+		sceneManager->ChangeScene( m_startScene );
+	}
+	else
+	{
+		block->Log( "No start scene specified." );
 	}
 }
 
@@ -737,25 +739,20 @@ Game::~Game()
 
 void Game::Private_Shutdown()
 {
-	auto debug = Debug();
-	{
-		auto block{ debug->MakeBlock( "Game::Private_Shutdown" ) };
-		block->Log( "Shutting down" );
-
-		block->Log( "OnDetach begin" );
-		for (auto&& component : m_components)
+	m_gameBlock->SubBlock( "Private_Shutdown" )->Exec( [&]( auto block ) {
+		block->Log( "Iterating components' OnDetach" );
+		for ( auto&& component : m_components )
 		{
 			try
 			{
-				block->Log( "Detaching " + component->GetTypeName() );
+				block->Log( component->GetTypeName() + "..." );
 				component->OnDetach( this );
 			}
-			catch (...)
+			catch ( ... )
 			{
 			}
-		}
-
-		block->Log( "OnDetach done" );
+		}	
+		block->Log( "Done." );
 
 		Shutdown();
 
@@ -770,16 +767,18 @@ void Game::Private_Shutdown()
 		const RenderInfo& renderInfo = GetRenderInfo();
 		block->Log( "time: " + std::string( std::ctime( &t ) ) );
 		block->Log( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
-	}
 
-	if( m_os )
-	{
-		// TODO: Verify if this is still needed
-		//debug->DetachAllLogListeners();
+		block->Log( "Finalizing shuting down, longer unavailable." );
+	} );
 
-		m_os->Shutdown();
-	}
-	m_os.reset();
+		if( m_os )
+		{
+			// TODO: Verify if this is still needed
+			//debug->DetachAllLogListeners();
+
+			m_os->Shutdown();
+		}
+		m_os.reset();
 
 	// Remove extensions...
 	m_extensions.clear();
@@ -878,14 +877,13 @@ const debug::IDebug * Game::Debug() const
 
 void Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
-	auto block{ Debug()->MakeBlock( "Game::AddExtension \"" + path.ToString() + "\"" ) };
-	{
+	m_gameBlock->SubBlock( "AddExtension" )->Exec( [&]( auto block ) {
+		block->Log( "Extension \"" + path.ToString() + "\"" );
 		Debug()->Try( [&]
-		{
-			os::IExtension::ptr extension { GetOS()->CreateExtension( path, element ) 
-			};
+			{
+				os::IExtension::ptr extension{ GetOS()->CreateExtension( path, element ) };
 
-			m_extensions.push_back( extension );
-		}, debug::ErrorLevel::Extension, false, false );
-	}
+				m_extensions.push_back( extension );
+			}, debug::ErrorLevel::Extension, false, false );
+	} );
 }

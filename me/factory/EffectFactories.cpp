@@ -18,7 +18,7 @@ EffectFactory::EffectFactory( game::IGame * gameInstance )
 std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto debug = m_game->GetOS()->Debug();
-	auto block{ debug->MakeBlock( "EffectFactories::Produce(" + source.ToString() + ")" ) };
+	auto block{ debug->GetLogger()->CreateBlock( "EffectFactories::Produce(" + source.ToString() + ")" ) };
 
 	auto gameInstance = dynamic_cast< game::Game * >(m_game);
 	auto textureManager = gameInstance->GetManager< ITexture >();

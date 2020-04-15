@@ -22,7 +22,7 @@ GeometryFactory::GeometryFactory( game::IGame * gameInstance )
 Geometry::ptr GeometryFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto debug = m_game->GetOS()->Debug();
-	auto block{ debug->MakeBlock( "GeometryFactory::Produce( " + source.ToString() + ")" ) };
+	auto block{ debug->GetLogger()->CreateBlock( "GeometryFactory::Produce( " + source.ToString() + ")" ) };
 
 	Mesh * mesh {};
 

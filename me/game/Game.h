@@ -10,6 +10,7 @@
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
 #include <me/script/IScript.h>
+#include <me/debug/block.h>
 #include <unify/String.h>
 						   
 namespace me
@@ -44,6 +45,8 @@ namespace me
 			std::vector< std::list< CommandListenerSet > > m_commandListeners;
 			std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanTest> m_commandMap;
 			std::vector< std::string > m_commandList;
+
+			std::shared_ptr< kit::debug::IBlock > m_gameBlock;
 
 		protected: // User overrides...
 			virtual bool Setup( os::IOS * os ) override;

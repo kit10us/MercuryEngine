@@ -711,10 +711,10 @@
     <ClInclude Include="me\debug\Block.h">
       <Filter>me\debug</Filter>
     </ClInclude>
-    <ClInclude Include="me\debug\BlockPopper.h">
+    <ClInclude Include="me\debug\IErrorHandler.h">
       <Filter>me\debug</Filter>
     </ClInclude>
-    <ClInclude Include="me\debug\IErrorHandler.h">
+    <ClInclude Include="me\debug\ErrorLevel.h">
       <Filter>me\debug</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,32 +3,29 @@
 
 #pragma once
 
-#include <kit/IBlock.h>
-#include <kit/ILogger.h>
+#include <kit/debug/IBlock.h>
+#include <kit/debug/ILogger.h>
 
 namespace me
 {
 	namespace debug
 	{
-		class Block : public kit::IBlock
+		class Block : public kit::debug::IBlock
 		{
-			kit::ILogger* m_logger;
+			kit::debug::ILogger* m_logger;
+			kit::debug::IBlock* m_parent;
 			std::string m_name;
+			std::shared_ptr< bool > m_loggerIsAlive;
 
 		public:
-			Block( kit::ILogger* logger, std::string name );
+			Block( kit::debug::ILogger* logger, std::string name, std::shared_ptr< bool > loggerIsAlive );
 			~Block() override;
 
-			/// <summary>
-			/// Gets the name of this block.
-			/// </summary>
+			void SetParent( kit::debug::IBlock* parent ) override;
 			std::string GetName() const override;
-
-			/// <summary>
-			/// Log a line in this block.
-			/// Ultimately just a pass-through to the debugger logger.
-			/// </summary>
 			void Log( std::string line ) override;
+			kit::debug::IBlock::ptr SubBlock( std::string name ) override;
+			void Exec( std::function< void( IBlock* )> functionBlock ) override;
 		};
 	}
 }
