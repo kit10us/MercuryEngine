@@ -3,8 +3,7 @@
 
 #include <me/action/SendCommand.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 SendCommand::SendCommand( game::IGame * gameInstance, size_t id, std::string extra )
 	: m_game{ gameInstance }

@@ -8,38 +8,38 @@
 #include <me/canvas/Layer.h>
 #include <me/game/IGame.h>
 
-namespace me
+namespace me::canvas
 {
-	namespace canvas
+	/// <sumamry>
+	/// Provides Mercury Canvas support to scenes via a scene component.
+	/// It contains a Canvas layer, which is the root most node for canvises.
+	/// </summary>
+	class CanvasComponent : public scene::component::SceneComponent
 	{
-		class CanvasComponent : public scene::component::SceneComponent
-		{
-		public:
-			typedef std::shared_ptr< canvas::CanvasComponent > ptr;
+		game::IGame* m_game;
+		unify::V2< float > m_position;
+		unify::Size< float > m_size;
+		unify::Matrix m_projection;
+		Layer::ptr m_layer;
 
-			static char* Name();
+	public:
+		typedef std::shared_ptr< CanvasComponent > ptr;
 
-			CanvasComponent( game::IGame * gameInstance );	  
+		static char* Name();
 
-			Layer * GetLayer();
+		CanvasComponent( game::IGame * gameInstance );	  
 
-		public: // ISceneComponent...
-			void OnAttach( scene::IScene * scene ) override;
-			void OnDetach( scene::IScene * scene ) override;
-			void OnUpdate( const UpdateParams & params ) override;
-			void OnRender( scene::RenderGirl & renderGirl ) override;
-			void OnSuspend() override;											
-			void OnResume() override;
+		Layer * GetLayer();
 
-		public: //IComponent...
-			std::string GetWhat() const override;
+	public: // ISceneComponent...
+		void OnAttach( scene::IScene * scene ) override;
+		void OnDetach( scene::IScene * scene ) override;
+		void OnUpdate( const UpdateParams & params ) override;
+		void OnRender( scene::RenderGirl & renderGirl ) override;
+		void OnSuspend() override;											
+		void OnResume() override;
 
-		private:
-			game::IGame * m_game;
-			unify::V2< float > m_position;
-			unify::Size< float > m_size;
-			unify::Matrix m_projection;
-			Layer::ptr m_layer;
-		};
-	}
+	public: //IComponent...
+		std::string GetWhat() const override;
+	};
 }

@@ -5,28 +5,21 @@
 
 #include <me/dyna/IDynaPosition.h>
 
-namespace me
+namespace me::dyna::position
 {
-	namespace dyna
+	/// <summary>
+	/// Dampens the change to a IDynaPosition.
+	/// </summary>
+	class Dampen : public IDynaPosition
 	{
-		namespace position
-		{
-			/// <summary>
-			/// Dampens the change to a IDynaPosition.
-			/// </summary>
-			class Dampen : public IDynaPosition
-			{
-			public:
-				Dampen( IDynaPosition::ptr position, float rate );
+		IDynaPosition::ptr m_target;
+		unify::V3< float > m_current;
+		unify::V3< float > m_acceleration;
+		float m_rate;
 
-				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
+	public:
+		Dampen( IDynaPosition::ptr position, float rate );
 
-			private:
-				IDynaPosition::ptr m_target;
-				unify::V3< float > m_current;
-				unify::V3< float > m_acceleration;
-				float m_rate;
-			};
-		}
-	}
+		Result GetPosition( unify::V3< float >& out, unify::TimeDelta delta ) override;
+	};
 }

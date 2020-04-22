@@ -8,7 +8,9 @@
 
 namespace me::debug
 {
-
+	/// <summary>
+	/// Error levels, which convey the severity and area of failure.
+	/// </summary>
 	enum class ErrorLevel
 	{
 		Engine,		// We have a failure within the engine itself.
@@ -18,7 +20,7 @@ namespace me::debug
 		Warning		// Error might not be important - state is unknown.
 	};
 
-	const size_t ErrorLevelCount = 5;
+	const size_t ErrorLevelCount{ 5 };
 
 	static std::string ErrorLevelToString( ErrorLevel level )
 	{

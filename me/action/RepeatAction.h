@@ -5,24 +5,20 @@
 
 #include <me/action/IAction.h>
 
-namespace me
+namespace me::action
 {
-	namespace action
+	/// <summary>
+	/// Repeats an action n times.
+	/// </summary>
+	class RepeatAction : public IAction
 	{
-		/// <summary>
-		/// Repeats an action n times.
-		/// </summary>
-		class RepeatAction : public IAction
-		{
-		public:
-			RepeatAction( IAction::ptr action, size_t times );
+		IAction::ptr m_action;
+		size_t m_times;
 
-		public: // IAction...
-			bool Perform() override;
+	public:
+		RepeatAction( IAction::ptr action, size_t times );
 
-		private:
-			IAction::ptr m_action;
-			size_t m_times;
-		};
-	}
+	public: // IAction...
+		bool Perform() override;
+	};
 }

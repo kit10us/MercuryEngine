@@ -5,25 +5,18 @@
 
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::delta
 {
-	namespace dyna
+	/// <summary>
+	/// A IDynaDelta that's an absolute value.
+	/// </summary>
+	class Absolute : public IDynaDelta
 	{
-		namespace delta
-		{
-			/// <summary>
-			/// A IDynaDelta that's an absolute value.
-			/// </summary>
-			class Absolute : public IDynaDelta
-			{
-			public:
-				Absolute( unify::TimeDelta delta );
+		unify::TimeDelta m_delta;
+	public:
+		Absolute( unify::TimeDelta delta );
 
-				Result GetDelta( unify::TimeDelta & delta ) override;
-
-			private:
-				unify::TimeDelta m_delta;
-			};
-		}
-	}
+	public: // me::dyna::delta...
+		Result GetDelta( unify::TimeDelta & delta ) override;
+	};
 }

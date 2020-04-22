@@ -8,23 +8,27 @@
 #include <unify/Path.h>
 #include <fstream>
 
-namespace me
+namespace me::debug
 {
-	namespace debug
+	/// <summary>
+	/// Writes log to a file.
+	/// </summary>
+	class FileLoggerListener : public kit::debug::ILogListener
 	{
-		class FileLoggerListener : public kit::debug::ILogListener
-		{
-		private:
-			unify::Path m_path;
-			std::ofstream m_stream;
+	private:
+		unify::Path m_path{};
+		std::ofstream m_stream{};
 
-		public:
-			FileLoggerListener( unify::Path path );
-			~FileLoggerListener();
+	public:
+		FileLoggerListener( unify::Path path );
+		~FileLoggerListener();
 
-			void LogEvent( const kit::debug::LogEvent* event ) override;
-
-			void SetLogPath( unify::Path path );
-		};
-	}
+		/// <summary>
+		/// Set the path to the log file to be written to.
+		/// </summary>
+		void SetLogPath( unify::Path path );
+		
+	public: // kit::debug::ILogListener...
+		void LogEvent( const kit::debug::LogEvent* event ) override;
+	};
 }

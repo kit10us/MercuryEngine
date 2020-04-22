@@ -4,14 +4,17 @@
 #include "me/canvas/VList.h"
 #include "me/canvas/TextElement.h"
 
-using namespace me;
-using namespace canvas;
+using namespace me::game;
+using namespace me::canvas;
 
-VList::VList( game::IGame * gameInstance, size_t count, unify::Size< float > size, Anchor anchor, unify::V2< float > offset )
+VList::VList( IGame * gameInstance, size_t count, unify::Size< float > size, Anchor anchor, unify::V2< float > offset )
 	: Element( gameInstance, offset, { 0, 0 }, anchor )
-	, m_count{ count }
+	, m_changed{ true }
+	, m_rc{}
 	, m_size{ size }
-	, m_changed( true )
+	, m_count{ count }
+	, m_items{}
+	, m_selected{}
 {
 }
 

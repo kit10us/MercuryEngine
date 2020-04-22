@@ -5,17 +5,17 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// Failed during the startup process.
+	/// </summary>
+	class Startup : public unify::Exception
 	{
-		class Startup : public unify::Exception 
+	public:
+		Startup( std::string error )
+			: unify::Exception( error )
 		{
-		public:
-			Startup( std::string error )
-				: unify::Exception( error )
-			{
-			}
-		};
-	} // namespace exception
-} // namespace dxi
+		}
+	};
+}

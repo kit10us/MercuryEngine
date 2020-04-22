@@ -5,21 +5,22 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// A value was used that is not supported.
+	/// </summary>
+	class UnsupportedValue : public unify::Exception
 	{
-		class UnsupportedValue : public unify::Exception
+	public:
+		UnsupportedValue( std::string type, std::string value )
+			: unify::Exception( "Unsupported value \"" + value + "\" of type " + type + "!" )
 		{
-		public:
-			UnsupportedValue( std::string type, std::string value )
-				: unify::Exception( "Unsupported value \"" + value + "\" of type " + type + "!" )
-			{
-			}
-			UnsupportedValue( std::string value )
-				: unify::Exception( "Unsupported value \"" + value + "\"!" )
-			{
-			}
-		};
-	}
+		}
+
+		UnsupportedValue( std::string value )
+			: unify::Exception( "Unsupported value \"" + value + "\"!" )
+		{
+		}
+	};
 }

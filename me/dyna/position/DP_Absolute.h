@@ -5,25 +5,17 @@
 
 #include <me/dyna/IDynaPosition.h>
 
-namespace me
+namespace me::dyna::position
 {
-	namespace dyna
+	/// <summary>
+	/// An absolute position.
+	/// </summary>
+	class Absolute : public IDynaPosition
 	{
-		namespace position
-		{
-			/// <summary>
-			/// An absolute position.
-			/// </summary>
-			class Absolute : public IDynaPosition
-			{
-			public:
-				Absolute(unify::V3< float > v3);
+		unify::V3< float > m_v3;
+	public:
+		Absolute(unify::V3< float > v3);
 
-				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
-
-			private:
-				unify::V3< float > m_v3;
-			};
-		}
-	}
+		Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
+	};
 }

@@ -6,23 +6,20 @@
 #include <me/action/IAction.h>
 #include <me/game/IGame.h>
 
-namespace me
+namespace me::action
 {
-	namespace action
+	/// <summary>
+	/// Quits out of the game.
+	/// </summary>
+	class QuitGame : public IAction
 	{
-		/// <summary>
-		/// Quits out of the game.
-		/// </summary>
-		class QuitGame : public IAction
-		{
-		public:
-			QuitGame( game::IGame * gameInstance );
+		game::IGame* m_game;
 
-		public: // IAction...
-			bool Perform() override;
+	public:
+		QuitGame( game::IGame * gameInstance );
 
-		private:
-			game::IGame * m_game;
-		};
-	}
+	public: // IAction...
+		bool Perform() override;
+
+	};
 }

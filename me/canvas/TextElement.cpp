@@ -6,16 +6,17 @@
 #include <me/render/VertexUtil.h>
 #include <algorithm>
 
-using namespace me;
-using namespace canvas;
-using namespace render;
+using namespace me::game;
+using namespace me::canvas;
+using namespace me::render;
 
-TextElement::TextElement( me::game::IGame * gameInstance, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+TextElement::TextElement( IGame * gameInstance, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: Element( gameInstance, offset, {0, 0}, anchor )
 	, m_text( text )
 	, m_effect( effect )
 	, m_vertexCB{ effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
 	, m_pixelCB{ effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
+	, m_vertexBuffer{}
 	, m_changed( true )
 	, m_scale{ scale }
 	, m_shrinkToFit{ true }
@@ -24,7 +25,10 @@ TextElement::TextElement( me::game::IGame * gameInstance, Effect::ptr effect, st
 		
 unify::Size< float > TextElement::GetContentSize() const
 {
-	if ( m_text.empty() || ! IsEnabled() ) return { 0, 0 };
+	if ( m_text.empty() || !IsEnabled() )
+	{
+		return { 0, 0 };
+	}
 	
 	unify::Size< unsigned int > imageSize( m_effect->GetTexture(0)->ImageSize() );
 

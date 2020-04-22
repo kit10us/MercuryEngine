@@ -7,45 +7,50 @@
 #include <me/render/Effect.h>
 #include <me/game/IGame.h>
 
-namespace me
+namespace me::canvas
 {
-	namespace canvas
+	/// <summary>
+	/// A canvas text element.
+	/// </summary>
+	class TextElement : public Element
 	{
-		class TextElement : public Element
-		{
-		public:
-			TextElement( me::game::IGame * gameInstance, render::Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+		std::string m_text;
+		render::Effect::ptr m_effect;
+		render::IConstantBuffer::ptr m_vertexCB;
+		render::IConstantBuffer::ptr m_pixelCB;
+		render::IVertexBuffer::ptr m_vertexBuffer;
+		bool m_changed;
+		unify::V2< float > m_scale;
+		bool m_shrinkToFit;
 
-			/// <summary>
-			/// Returns the size of the text. Include scaling.
-			/// </summary>
-			unify::Size< float > GetContentSize() const override;
+	public:
+		TextElement( me::game::IGame * gameInstance, render::Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+
+		/// <summary>
+		/// Returns the size of the text, include scaling.
+		/// </summary>
+		unify::Size< float > GetContentSize() const override;
 		
-			void SetText( std::string text );
+		/// <summary>
+		/// Set the text.
+		/// </summary>
+		void SetText( std::string text );
 
-			void SetScale( unify::V2< float > scale );
+		/// <summary>
+		/// Set the scale.
+		/// </summary>
+		void SetScale( unify::V2< float > scale );
 			
-			unify::V2< float > GetScale() const;
+		/// <summary>
+		/// Returns the scale.
+		/// </summary>
+		unify::V2< float > GetScale() const;
 
-			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
-
-			void Update( const UpdateParams & params ) override;
-		
-			void Render( const render::Params & params ) override;
-		
-			void OnSuspend() override;
-		
-			void OnResume() override;
-
-		private:
-			std::string m_text;
-			render::Effect::ptr m_effect;
-			render::IConstantBuffer::ptr m_vertexCB;
-			render::IConstantBuffer::ptr m_pixelCB;
-			render::IVertexBuffer::ptr m_vertexBuffer;
-			bool m_changed;
-			unify::V2< float > m_scale;
-			bool m_shrinkToFit;
-		};
-	}
+	public: // me::canvas::Element...
+		void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
+		void Update( const UpdateParams & params ) override;
+		void Render( const render::Params & params ) override;
+		void OnSuspend() override;
+		void OnResume() override;
+	};
 }

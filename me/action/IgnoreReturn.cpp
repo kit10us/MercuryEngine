@@ -3,8 +3,7 @@
 
 #include <me/action/IgnoreReturn.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 IgnoreReturn::IgnoreReturn( IAction::ptr action )
 	: m_action{ action }

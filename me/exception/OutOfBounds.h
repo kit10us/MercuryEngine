@@ -5,17 +5,18 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// There was an attempt to access an element of a set that
+	/// is outside of the set's bounds.
+	/// </summary>
+	class OutOfBounds : public unify::Exception
 	{
-		class OutOfBounds : public unify::Exception 
+	public:
+		OutOfBounds( std::string error )
+			: unify::Exception( error )
 		{
-		public:
-			OutOfBounds( std::string error )
-				: unify::Exception( error )
-			{
-			}
-		};
-	}
+		}
+	};
 }

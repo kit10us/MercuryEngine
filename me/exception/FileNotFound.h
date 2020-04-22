@@ -6,24 +6,28 @@
 #include <unify/Exception.h>
 #include <unify/Path.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// An attempt to access a file has failed due to
+	/// the file appearing to not exist.
+	/// </summary>
+	class FileNotFound : public unify::Exception
 	{
-		class FileNotFound : public unify::Exception
+		unify::Path m_path;
+	public:
+		FileNotFound( unify::Path path )
+			: unify::Exception( "File \"" + path.ToString() + "\" not found!" )
+			, m_path{ path }
 		{
-			unify::Path m_path;
-		public:
-			FileNotFound( unify::Path path )
-				: unify::Exception( "File \"" + path.ToString() + "\" not found!" )
-				, m_path{ path }
-			{
-			}
-			
-			unify::Path GetPath() const
-			{
-				return m_path;
-			}
-		};
-	} 
+		}
+
+		/// <summary>
+		/// Returns the path of the file that was not found.
+		/// </summary>
+		unify::Path GetPath() const
+		{
+			return m_path;
+		}
+	};
 }

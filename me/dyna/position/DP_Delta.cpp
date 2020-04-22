@@ -3,9 +3,8 @@
 
 #include <me/dyna/position/DP_Delta.h>
 
-using namespace me;
-using namespace dyna;
-using namespace position;
+using namespace me::dyna;
+using namespace me::dyna::position;
 
 Delta::Delta( IDynaPosition::ptr position, IDynaDelta::ptr delta )
 	: m_position{ position }

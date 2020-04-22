@@ -8,17 +8,21 @@
 #include <unify/TimeDelta.h>
 #include <memory>
 
-namespace me
+namespace me::dyna
 {
-	namespace dyna
+	/// <summary>
+	/// Given a delta, this performs a function of the delta resulting
+	/// in a vector representing scale.
+	/// </summary>
+	class IDynaScale
 	{
-		class IDynaScale
-		{
-		public:
-			typedef std::shared_ptr< IDynaScale > ptr;
-			~IDynaScale() {}
+	public:
+		typedef std::shared_ptr< IDynaScale > ptr;
+		virtual ~IDynaScale() {}
 
-			virtual Result GetScale( unify::V3< float > & out, unify::TimeDelta delta ) = 0;
-		};
-	}
+		/// <summary>
+		/// Returns vector representing scaling.
+		/// </summary>
+		virtual Result GetScale( unify::V3< float >& out, unify::TimeDelta delta ) = 0;
+	};
 }

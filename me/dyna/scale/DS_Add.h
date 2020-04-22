@@ -5,26 +5,19 @@
 
 #include <me/dyna/IDynaScale.h>
 
-namespace me
+namespace me::dyna::scale
 {
-	namespace dyna
+	/// <summary>
+	/// Adds a scale to another position.
+	/// </summary>
+	class Add : public IDynaScale
 	{
-		namespace scale
-		{
-			/// <summary>
-			/// Adds a scale to another position.
-			/// </summary>
-			class Add : public IDynaScale
-			{
-			public:
-				Add( IDynaScale::ptr scaleA, IDynaScale ::ptr scaleB );
+		IDynaScale::ptr m_scaleA;
+		IDynaScale::ptr m_scaleB;
 
-				Result GetScale(unify::V3< float > & out, unify::TimeDelta delta) override;
+	public:
+		Add( IDynaScale::ptr scaleA, IDynaScale::ptr scaleB );
 
-			private:
-				IDynaScale::ptr m_scaleA;
-				IDynaScale::ptr m_scaleB;
-			};
-		}
-	}
+		Result GetScale( unify::V3< float >& out, unify::TimeDelta delta ) override;
+	};
 }

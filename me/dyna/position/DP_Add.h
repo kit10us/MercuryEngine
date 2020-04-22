@@ -5,26 +5,19 @@
 
 #include <me/dyna/IDynaPosition.h>
 
-namespace me
+namespace me::dyna::position
 {
-	namespace dyna
+	/// <summary>
+	/// Adds a position to another position.
+	/// </summary>
+	class Add : public IDynaPosition
 	{
-		namespace position
-		{
-			/// <summary>
-			/// Adds a position to another position.
-			/// </summary>
-			class Add : public IDynaPosition
-			{
-			public:
-				Add( IDynaPosition::ptr positionA, IDynaPosition::ptr positionB );
+		IDynaPosition::ptr m_positionA;
+		IDynaPosition::ptr m_positionB;
 
-				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
+	public:
+		Add( IDynaPosition::ptr positionA, IDynaPosition::ptr positionB );
 
-			private:
-				IDynaPosition::ptr m_positionA;
-				IDynaPosition::ptr m_positionB;
-			};
-		}
-	}
+		Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
+	};
 }

@@ -4,8 +4,7 @@
 #include <me/action/RestartScene.h>
 #include <me/scene/SceneManager.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 RestartScene::RestartScene( game::IGame * gameInstance )
 	: m_game{ gameInstance }

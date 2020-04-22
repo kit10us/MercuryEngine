@@ -5,25 +5,18 @@
 
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::delta
 {
-	namespace dyna
+	/// <summary>
+	/// Adds a scale to another position.
+	/// </summary>
+	class Add : public IDynaDelta
 	{
-		namespace delta
-		{
-			/// <summary>
-			/// Adds a scale to another position.
-			/// </summary>
-			class Add : public IDynaDelta
-			{
-			public:
-				Add( IDynaDelta::ptr deltaA );
+		IDynaDelta::ptr m_deltaA;
+	public:
+		Add( IDynaDelta::ptr deltaA );
 
-				Result GetDelta( unify::TimeDelta & delta) override;
-
-			private:
-				IDynaDelta::ptr m_deltaA;
-			};
-		}
-	}
+	public: // me::dyna::IDynaDelta...
+		Result GetDelta( unify::TimeDelta & delta) override;
+	};
 }

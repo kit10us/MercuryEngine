@@ -3,21 +3,15 @@
 
 #include <me/dyna/delta/DD_Mul.h>
 
-using namespace me;
-using namespace dyna;
-using namespace delta;
+using namespace me::dyna::delta;
+using namespace me::dyna;
 
-Mul::Mul( IDynaDelta ::ptr deltaA )
+Mul::Mul( IDynaDelta::ptr deltaA )
 	: m_deltaA{ deltaA }
 {
 }
 
 Result Mul::GetDelta( unify::TimeDelta & delta)
 {
-	if ( m_deltaA )
-	{
-		return m_deltaA->GetDelta(delta);
-	}
-
-	return Result::Failure;
+	return m_deltaA ? m_deltaA->GetDelta(delta) : Result::Failure;
 }

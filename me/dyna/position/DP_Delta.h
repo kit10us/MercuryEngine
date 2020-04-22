@@ -6,26 +6,20 @@
 #include <me/dyna/IDynaPosition.h>
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::position
 {
-	namespace dyna
+	/// <summary>
+	/// Applies a IDynaDelta to a IDynaPosition
+	/// </summary>
+	class Delta : public IDynaPosition
 	{
-		namespace position
-		{
-			/// <summary>
-			/// Applies a IDynaDelta to a IDynaPosition
-			/// </summary>
-			class Delta : public IDynaPosition
-			{
-			public:
-				Delta( IDynaPosition::ptr rotaiton, IDynaDelta::ptr delta );
+	public:
+		IDynaPosition::ptr m_position;
+		IDynaDelta::ptr m_delta;
 
-				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
+		Delta( IDynaPosition::ptr rotaiton, IDynaDelta::ptr delta );
 
-			private:
-				IDynaPosition::ptr m_position;
-				IDynaDelta::ptr m_delta;
-			};
-		}
-	}
+		Result GetPosition( unify::V3< float >& out, unify::TimeDelta delta ) override;
+	};
 }
+

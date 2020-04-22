@@ -3,8 +3,7 @@
 
 #include <me/action/ToggleAction.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 ToggleAction::ToggleAction( std::initializer_list< IAction::ptr > actions )
 	: m_actions{ actions }

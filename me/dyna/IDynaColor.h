@@ -8,17 +8,20 @@
 #include <unify/TimeDelta.h>
 #include <memory>
 
-namespace me
+namespace me::dyna
 {
-	namespace dyna
+	/// <summary>
+	/// Returns a color at a given time.
+	/// </summary>
+	class IDynaColor
 	{
-		class IDynaColor
-		{
-		public:
-			typedef std::shared_ptr< IDynaColor > ptr;
-			~IDynaColor() {}
+	public:
+		typedef std::shared_ptr< IDynaColor > ptr;
+		virtual ~IDynaColor() {}
 
-			virtual Result GetColor( unify::ColorUnit & out, unify::TimeDelta delta ) = 0;
-		};
-	}
+		/// <summary>
+		/// Returns the color at a given time.
+		/// </summary>
+		virtual Result GetColor( unify::ColorUnit& out, unify::TimeDelta delta ) = 0;
+	};
 }

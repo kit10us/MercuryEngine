@@ -3,9 +3,8 @@
 
 #include <me/dyna/color/DC_Delta.h>
 
-using namespace me;
-using namespace dyna;
-using namespace color;
+using namespace me::dyna;
+using namespace me::dyna::color;
 
 Delta::Delta( IDynaColor::ptr color, IDynaDelta::ptr delta )
 	: m_color{ color }

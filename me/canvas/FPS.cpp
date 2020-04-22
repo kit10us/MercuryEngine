@@ -4,11 +4,11 @@
 #include <me/canvas/FPS.h>
 #include <me/exception/FailedToCreate.h>
 
-using namespace me;
-using namespace canvas;
-using namespace render;
+using namespace me::game;
+using namespace me::canvas;
+using namespace me::render;
 
-FPS::FPS( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
+FPS::FPS( IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: TextElement( gameInstance, effect, std::string(), anchor, scale, offset )
 	, m_updateRate{ unify::TimeDeltaInSeconds( 0.25f ) }
 	, m_timeTillUpdate{ unify::TimeDelta() }

@@ -3,9 +3,8 @@
 
 #include <me/dyna/rotation/DR_Add.h>
 
-using namespace me;
-using namespace dyna;
-using namespace rotation;
+using namespace me::dyna;
+using namespace me::dyna::rotation;
 
 Add::Add( IDynaRotation::ptr rotationA, IDynaRotation::ptr rotationB )
 	: m_rotationA{ rotationA }

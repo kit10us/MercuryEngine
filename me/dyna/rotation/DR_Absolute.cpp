@@ -3,9 +3,8 @@
 
 #include <me/dyna/rotation/DR_Absolute.h>
 
-using namespace me;
-using namespace dyna;
-using namespace rotation;
+using namespace me::dyna;
+using namespace me::dyna::rotation;
 
 Absolute::Absolute(unify::Quaternion q)
 	: m_q{ q }

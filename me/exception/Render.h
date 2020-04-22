@@ -5,17 +5,17 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// There was a failure during the rendering process.
+	/// </summary>
+	class Render : public unify::Exception
 	{
-		class Render : public unify::Exception 
+	public:
+		Render( std::string error )
+			: unify::Exception( error )
 		{
-		public:
-			Render( std::string error )
-				: unify::Exception( error )
-			{
-			}
-		};
-	}
+		}
+	};
 }

@@ -3,8 +3,7 @@
 
 #include <me/action/QuitGame.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 QuitGame::QuitGame( game::IGame * gameInstance )
 	: m_game{ gameInstance }

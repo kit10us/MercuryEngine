@@ -5,25 +5,19 @@
 
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::delta
 {
-	namespace dyna
+	/// <summary>
+	/// Mulliplies a delta against a IDynaDeta.
+	/// </summary>
+	class Mul : public IDynaDelta
 	{
-		namespace delta
-		{
-			/// <summary>
-			/// Mulliplies a delta against a IDynaDeta.
-			/// </summary>
-			class Mul : public IDynaDelta
-			{
-			public:
-				Mul( IDynaDelta::ptr deltaA );
+		IDynaDelta::ptr m_deltaA;
 
-				Result GetDelta( unify::TimeDelta & delta ) override;
+	public:
+		Mul( IDynaDelta::ptr deltaA );
 
-			private:
-				IDynaDelta::ptr m_deltaA;
-			};
-		}
-	}
+	public: // me::dyna::delta::IDynaDelta...
+		Result GetDelta( unify::TimeDelta & delta ) override;
+	};
 }

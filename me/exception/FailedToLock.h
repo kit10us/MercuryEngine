@@ -5,17 +5,18 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// A failure in attempting to lock a resource for
+	/// access.
+	/// </summary>
+	class FailedToLock : public unify::Exception
 	{
-		class FailedToLock : public unify::Exception 
+	public:
+		FailedToLock( std::string error )
+			: unify::Exception( error )
 		{
-		public:
-			FailedToLock( std::string error )
-				: unify::Exception( error )
-			{
-			}
-		};
-	}
+		}
+	};
 }

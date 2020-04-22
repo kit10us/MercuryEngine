@@ -3,21 +3,22 @@
 
 #include <me/canvas/CanvasComponent.h>
 
-using namespace me;
-using namespace canvas;
-using namespace scene;
-using namespace render;
+using namespace me::canvas;
+using namespace me::scene;
+using namespace me::render;
 
-char * CanvasComponent::Name()
+char* CanvasComponent::Name()
 {
 	return "CanvasComponent";
 }
 
-CanvasComponent::CanvasComponent( game::IGame * gameInstance )
+CanvasComponent::CanvasComponent( game::IGame* gameInstance )
 	: SceneComponent( gameInstance->GetOS(), Name() )
 	, m_game( gameInstance )
-	, m_position( 0, 0 )
-	, m_size( 0, 0 )
+	, m_position{ 0, 0 }
+	, m_size{ 0, 0 }
+	, m_projection{}
+	, m_layer{}
 {
 }
 

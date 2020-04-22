@@ -12,12 +12,18 @@ namespace me
 {
 	namespace dyna
 	{
+		/// <summary>
+		/// Given an input delta, this produces a function of a delta.
+		/// </summary>
 		class IDynaRotation
 		{
 		public:
 			typedef std::shared_ptr< IDynaRotation > ptr;
-			~IDynaRotation() {}
+			virtual ~IDynaRotation() {}
 
+			/// <summary>
+			/// Returns a quaternion result from a function of a delta.
+			/// </summary>
 			virtual Result GetRotation( unify::Quaternion & out, unify::TimeDelta delta ) = 0;
 		};
 	}

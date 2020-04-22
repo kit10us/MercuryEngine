@@ -4,14 +4,17 @@
 #include <me/canvas/Element.h>
 
 using namespace me;
-using namespace canvas;
+using namespace me::canvas;
 
 Element::Element( game::IGame * gameInstance, unify::V2< float > offset, unify::Size< float > size, Anchor anchor )
 	: m_game{ gameInstance }
+	, m_name{}
 	, m_enabled{ true }
 	, m_anchor{ anchor }
 	, m_offset{ offset }
 	, m_size{ size }
+	, m_actualPosition{}
+	, m_actualSize{}
 {
 }
 

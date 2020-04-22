@@ -6,26 +6,19 @@
 #include <me/dyna/IDynaRotation.h>
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::rotation
 {
-	namespace dyna
+	/// <summary>
+	/// Applies a IDynaDelta to a IDynaRotation
+	/// </summary>
+	class Delta : public IDynaRotation
 	{
-		namespace rotation
-		{
-			/// <summary>
-			/// Applies a IDynaDelta to a IDynaRotation
-			/// </summary>
-			class Delta : public IDynaRotation
-			{
-			public:
-				Delta( IDynaRotation::ptr rotaiton, IDynaDelta::ptr delta );
+		IDynaRotation::ptr m_rotation;
+		IDynaDelta::ptr m_delta;
 
-				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
+	public:
+		Delta( IDynaRotation::ptr rotaiton, IDynaDelta::ptr delta );
 
-			private:
-				IDynaRotation::ptr m_rotation;
-				IDynaDelta::ptr m_delta;
-			};
-		}
-	}
+		Result GetRotation( unify::Quaternion& out, unify::TimeDelta delta ) override;
+	};
 }

@@ -3,9 +3,8 @@
 
 #include <me/dyna/delta/DD_Add.h>
 
-using namespace me;
-using namespace dyna;
-using namespace delta;
+using namespace me::dyna::delta;
+using namespace me::dyna;
 
 Add::Add( IDynaDelta::ptr deltaA )
 	: m_deltaA{ deltaA }
@@ -14,10 +13,5 @@ Add::Add( IDynaDelta::ptr deltaA )
 
 Result Add::GetDelta( unify::TimeDelta & delta)
 {
-	if ( m_deltaA )
-	{
-		return m_deltaA->GetDelta(delta);
-	}
-
-	return Result::Failure;
+	return m_deltaA ? m_deltaA->GetDelta(delta) : Result::Failure;
 }

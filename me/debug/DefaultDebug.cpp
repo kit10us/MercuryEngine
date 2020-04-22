@@ -7,20 +7,10 @@
 #include <unify/Exception.h>
 #include <cassert>
 
-using namespace me;
-using namespace debug;
+using namespace me::debug;
 
 DefaultDebug::DefaultDebug()
-	: m_errorAsCritical{ true, true, true, true, false }
-	, m_errorHandler{ IErrorHandler::ptr{ new DefaultErrorHandler( this ) } }
-	, m_isDebug
-#ifdef _DEBUG
-		{ true }
-#else
-		{ false }
-#endif
-{
-	m_fileLogger.reset( new FileLoggerListener{ unify::Path{ "default.log" } } );
+{	m_fileLogger.reset( new FileLoggerListener{ unify::Path{ "default.log" } } );
 	m_logger.AttachListener( m_fileLogger );
 }
 

@@ -3,14 +3,11 @@
 
 #pragma once
 
-namespace me
+namespace me::dyna
 {
-	namespace dyna
+	enum class Result
 	{
-		enum class Result
-		{
-			Success,
-			Failure
-		};
-	}
+		Success,
+		Failure
+	};
 }

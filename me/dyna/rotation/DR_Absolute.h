@@ -5,25 +5,18 @@
 
 #include <me/dyna/IDynaRotation.h>
 
-namespace me
+namespace me::dyna::rotation
 {
-	namespace dyna
+	/// <summary>
+	/// An absolute rotation.
+	/// </summary>
+	class Absolute : public IDynaRotation
 	{
-		namespace rotation
-		{
-			/// <summary>
-			/// An absolute rotation.
-			/// </summary>
-			class Absolute : public IDynaRotation
-			{
-			public:
-				Absolute(unify::Quaternion q);
+		unify::Quaternion m_q;
 
-				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
+	public:
+		Absolute( unify::Quaternion q );
 
-			private:
-				unify::Quaternion m_q;
-			};
-		}
-	}
+		Result GetRotation( unify::Quaternion& out, unify::TimeDelta delta ) override;
+	};
 }

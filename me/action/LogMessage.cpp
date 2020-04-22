@@ -3,8 +3,7 @@
 
 #include <me/action/LogMessage.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 LogMessage::LogMessage( game::IGame * gameInstance, std::string section, std::string message )
 	: m_game{ gameInstance }

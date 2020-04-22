@@ -5,17 +5,18 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// A failure during the creation process of something, where
+	/// the creation was incomplete.
+	/// </summary>
+	class FailedToCreate : public unify::Exception
 	{
-		class FailedToCreate : public unify::Exception 
+	public:
+		FailedToCreate( std::string error )
+			: unify::Exception( error.c_str() )
 		{
-		public:
-			FailedToCreate( std::string error )
-				: unify::Exception( error.c_str() )
-			{
-			}
-		};
-	}
+		}
+	};
 }

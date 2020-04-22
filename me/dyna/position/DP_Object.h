@@ -6,25 +6,18 @@
 #include <me/dyna/IDynaPosition.h>
 #include <me/object/Object.h>
 
-namespace me
+namespace me::dyna::position
 {
-	namespace dyna
+	/// <summary>
+	/// An Object's position.
+	/// </summary>
+	class Object : public IDynaPosition
 	{
-		namespace position
-		{
-			/// <summary>
-			/// An Object's position.
-			/// </summary>
-			class Object : public IDynaPosition
-			{
-			public:
-				Object( object::Object * object );
+		object::Object* m_object;
 
-				Result GetPosition(unify::V3< float > & out, unify::TimeDelta delta) override;
+	public:
+		Object( object::Object* object );
 
-			private:
-				object::Object * m_object;
-			};
-		}
-	}
+		Result GetPosition( unify::V3< float >& out, unify::TimeDelta delta ) override;
+	};
 }

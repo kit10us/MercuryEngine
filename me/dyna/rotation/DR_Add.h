@@ -5,26 +5,19 @@
 
 #include <me/dyna/IDynaRotation.h>
 
-namespace me
+namespace me::dyna::rotation
 {
-	namespace dyna
+	/// <summary>
+	/// Adds a scale to another rotation.
+	/// </summary>
+	class Add : public IDynaRotation
 	{
-		namespace rotation
-		{
-			/// <summary>
-			/// Adds a scale to another rotation.
-			/// </summary>
-			class Add : public IDynaRotation
-			{
-			public:
-				Add( IDynaRotation::ptr rotationA, IDynaRotation ::ptr rotationB );
+		IDynaRotation::ptr m_rotationA;
+		IDynaRotation::ptr m_rotationB;
 
-				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
+	public:
+		Add( IDynaRotation::ptr rotationA, IDynaRotation::ptr rotationB );
 
-			private:
-				IDynaRotation::ptr m_rotationA;
-				IDynaRotation::ptr m_rotationB;
-			};
-		}
-	}
+		Result GetRotation( unify::Quaternion& out, unify::TimeDelta delta ) override;
+	};
 }

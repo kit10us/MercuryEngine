@@ -6,23 +6,19 @@
 #include <me/action/IAction.h>
 #include <me/game/IGame.h>
 
-namespace me
+namespace me::action
 {
-	namespace action
+	/// <summary>
+	/// Restarts the current scene.
+	/// </summary>
+	class RestartScene : public IAction
 	{
-		/// <summary>
-		/// Restarts the current scene.
-		/// </summary>
-		class RestartScene : public IAction
-		{
-		public:
-			RestartScene( game::IGame * gameInstance );
+		game::IGame* m_game;
 
-		public: // IAction...
-			bool Perform() override;
+	public:
+		RestartScene( game::IGame * gameInstance );
 
-		private:
-			game::IGame * m_game;
-		};
-	}
+	public: // IAction...
+		bool Perform() override;
+	};
 }

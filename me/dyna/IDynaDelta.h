@@ -7,17 +7,25 @@
 #include <unify/TimeDelta.h>
 #include <memory>
 
-namespace me
+namespace me::dyna
 {
-	namespace dyna
+	/// <summary>
+	/// Produces a variable delta from a uniform linear delta.
+	/// For example, if can take a unform delta, then
+	/// output a different delta, which could be used
+	/// to produce effects such as curves, binary snap-to
+	/// changes, and such.
+	/// </summary>
+	class IDynaDelta
 	{
-		class IDynaDelta
-		{
-		public:
-			typedef std::shared_ptr< IDynaDelta > ptr;
-			~IDynaDelta() {}
+	public:
+		typedef std::shared_ptr< IDynaDelta > ptr;
+		virtual ~IDynaDelta() {}
 
-			virtual Result GetDelta( unify::TimeDelta & delta ) = 0;
-		};
-	}
+		/// <summary>
+		/// Returns a delta result from a function of an
+		/// input delta.
+		/// </summary>
+		virtual Result GetDelta( unify::TimeDelta& delta ) = 0;
+	};
 }

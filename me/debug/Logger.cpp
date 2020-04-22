@@ -8,8 +8,7 @@
 #include <iomanip>
 #include <sstream>
 
-using namespace me;
-using namespace debug;
+using namespace me::debug;
 
 Logger::Logger()
 	: m_alive{ new bool{ true } }

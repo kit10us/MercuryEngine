@@ -8,31 +8,31 @@
 #include <memory>
 #include <string>
 
-namespace me
+namespace me::debug
 {
-	namespace debug
+	/// <summary>
+	/// Conveys the result of how an error was handled.
+	/// </summary>
+	enum class ReportErrorResult
 	{
-		enum class ReportErrorResult
-		{
-			Continue,
-			Retry,
-			Abort
-		};
+		Continue,
+		Retry,
+		Abort
+	};
+
+	/// <summary>
+	/// Handlers errors, allowing custom functionality.
+	/// </summary>
+	class IErrorHandler
+	{
+	public:
+		typedef std::shared_ptr< IErrorHandler > ptr;
+
+		~IErrorHandler() {}
 
 		/// <summary>
-		/// Handlers errors, allowing custom functionality.
+		/// Report an error to the error handler.
 		/// </summary>
-		class IErrorHandler
-		{
-		public:
-			typedef std::shared_ptr< IErrorHandler > ptr;
-
-			~IErrorHandler() {}
-
-			/// <summary>
-			/// Report an error to the error handler.
-			/// </summary>
-			virtual ReportErrorResult ReportError( ErrorLevel level, std::string error, bool canContinue = false, bool canRetry = false ) = 0;
-		};
-	}
+		virtual ReportErrorResult ReportError( ErrorLevel level, std::string error, bool canContinue = false, bool canRetry = false ) = 0;
+	};
 }

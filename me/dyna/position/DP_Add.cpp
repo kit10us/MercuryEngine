@@ -3,9 +3,8 @@
 
 #include <me/dyna/position/DP_Add.h>
 
-using namespace me;
-using namespace dyna;
-using namespace position;
+using namespace me::dyna;
+using namespace me::dyna::position;
 
 Add::Add( IDynaPosition::ptr positionA, IDynaPosition::ptr positionB )
 	: m_positionA{ positionA }

@@ -3,75 +3,40 @@
 
 #pragma once
 
+#include <me/canvas/SizeTo.h>
 #include <me/canvas/Element.h>
 #include <me/render/Effect.h>
 
-namespace me
+namespace me::canvas
 {
-	namespace canvas
+	/// <summary>
+	/// Create a simple menu system.
+	/// </summary>
+	class Grid : public Element
 	{
-		struct SizeTo
-		{
-			enum Type {			
-				Pixels,
-				Percent,
-				Weighted
-			};
+	public:
+		Grid( game::IGame * gameInstance, unify::RowColumn< size_t > rc, unify::Size< float > size, Anchor anchor = Anchor::Center, unify::V2< float > offset = { 0, 0 } );
 
-			SizeTo( Type type, float value )
-				: type{ type }
-				, value{ value }
-			{
-			}
+		unify::Size< float > GetContentSize() const;
 
-			Type type;
-			float value;
+		void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea );
 
-			float GetSize( float parentSize, size_t totalWeight ) const
-			{
-				switch( type )
-				{
-				case Pixels:
-					return value;
-				case Percent:
-					return parentSize * value;
-				case Weighted:
-					return (float)totalWeight / value * parentSize;
-				}
+		void Update( const UpdateParams & params );
 
-			}
-			
-		};
+		void Render( const render::Params & params );
 
-		/// <summary>
-		/// Create a simple menu system.
-		/// </summary>
-		class Grid : public Element
-		{
-		public:
-			Grid( game::IGame * gameInstance, unify::RowColumn< size_t > rc, unify::Size< float > size, Anchor anchor = Anchor::Center, unify::V2< float > offset = { 0, 0 } );
+		void OnSuspend();
 
-			unify::Size< float > GetContentSize() const;
+		void OnResume();
 
-			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea );
+		void AddItem( IElement::ptr item );
 
-			void Update( const UpdateParams & params );
-
-			void Render( const render::Params & params );
-
-			void OnSuspend();
-
-			void OnResume();
-
-			void AddItem( IElement::ptr item );
-
-		private:
-			bool m_changed;
-			unify::RowColumn< size_t > m_rc;
-			unify::Size< float > m_size;
-			std::vector< size_t > m_weightRows;
-			std::vector< size_t > m_weightColumns;
-			std::vector< std::vector< IElement::ptr > > m_items;
-		};
-	}
+	private:
+		bool m_changed;
+		unify::RowColumn< size_t > m_rc;
+		unify::Size< float > m_size;
+		std::vector< size_t > m_weightRows;
+		std::vector< size_t > m_weightColumns;
+		std::vector< std::vector< IElement::ptr > > m_items;
+	};
 }

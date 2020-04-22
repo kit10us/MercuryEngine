@@ -15,15 +15,14 @@ namespace me
 		/// </summary>
 		class ObjectAction : public IAction
 		{
+			object::Object* m_object;
+			object::action::IObjectAction::ptr m_action;
+
 		public:
 			ObjectAction( object::Object* object, object::action::IObjectAction::ptr action );
 
 		public: // IAction...
 			bool Perform() override;
-
-		private:
-			object::Object* m_object;
-			object::action::IObjectAction::ptr m_action;
 		};
 	}
 }

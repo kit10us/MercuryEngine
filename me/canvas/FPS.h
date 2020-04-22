@@ -4,20 +4,21 @@
 #pragma once
 
 #include <me/canvas/TextElement.h>
+#include <unify/TimeDelta.h>
 
-namespace me
+namespace me::canvas
 {
-	namespace canvas
+	/// <summary>
+	/// A text element that displays the frames per second.
+	/// </summary>
+	class FPS : public TextElement
 	{
-		class FPS : public TextElement
-		{
-		public:
-			FPS( me::game::IGame * gameInstance, render::Effect::ptr effect, Anchor anchor = Anchor::TopRight, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+		unify::TimeDelta m_updateRate;
+		unify::TimeDelta m_timeTillUpdate;
+
+	public:
+		FPS( me::game::IGame * gameInstance, render::Effect::ptr effect, Anchor anchor = Anchor::TopRight, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 		
-			void Update( const UpdateParams & params ) override;
-		private:
-			unify::TimeDelta m_updateRate;
-			unify::TimeDelta m_timeTillUpdate;
-		};
-	}
+		void Update( const UpdateParams & params ) override;
+	};
 }

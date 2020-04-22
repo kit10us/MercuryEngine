@@ -3,9 +3,8 @@
 
 #include <me/dyna/position/DP_Absolute.h>
 
-using namespace me;
-using namespace dyna;
-using namespace position;
+using namespace me::dyna;
+using namespace me::dyna::position;
 
 Absolute::Absolute(unify::V3< float > v3)
 	: m_v3{ v3 }

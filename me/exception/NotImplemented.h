@@ -5,17 +5,18 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// There was an attempt to access a feature that has
+	/// not been fully implemented.
+	/// </summary>
+	class NotImplemented : public unify::Exception
 	{
-		class NotImplemented : public unify::Exception
+	public:
+		NotImplemented( std::string what = std::string() )
+			: Exception( std::string( "Not implemented: " ) + what )
 		{
-		public:
-			NotImplemented( std::string what = std::string() )
-				: Exception( std::string( "Not implemented: " ) + what )
-			{
-			}
-		};
-	}
+		}
+	};
 }

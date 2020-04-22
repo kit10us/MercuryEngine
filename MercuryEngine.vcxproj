@@ -30,6 +30,7 @@
     <ClInclude Include="me\canvas\Image.h" />
     <ClInclude Include="me\canvas\Layer.h" />
     <ClInclude Include="me\canvas\ListItem.h" />
+    <ClInclude Include="me\canvas\SizeTo.h" />
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\debug\Block.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="me\canvas\Image.cpp" />
     <ClCompile Include="me\canvas\Layer.cpp" />
     <ClCompile Include="me\canvas\ListItem.cpp" />
+    <ClCompile Include="me\canvas\SizeTo.cpp" />
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
     <ClCompile Include="me\debug\Block.cpp" />

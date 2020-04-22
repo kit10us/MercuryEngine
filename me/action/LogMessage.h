@@ -7,25 +7,21 @@
 #include <me/game/IGame.h>
 #include <string>
 
-namespace me
+namespace me::action
 {
-	namespace action
+	/// <summary>
+	/// Writes a message to the log. Used for debugging.
+	/// </summary>
+	class LogMessage : public IAction
 	{
-		/// <summary>
-		/// Writes a message to the log. Used for debugging.
-		/// </summary>
-		class LogMessage : public IAction
-		{
-		public:
-			LogMessage( game::IGame * gameInstance, std::string section, std::string message );
+		game::IGame* m_game;
+		std::string m_section;
+		std::string m_message;
 
-		public: // IAction...
-			bool Perform() override;
+	public:
+		LogMessage( game::IGame * gameInstance, std::string section, std::string message );
 
-		private:
-			game::IGame * m_game;
-			std::string m_section;
-			std::string m_message;
-		};
-	}
+	public: // IAction...
+		bool Perform() override;
+	};
 }

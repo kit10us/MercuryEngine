@@ -4,9 +4,8 @@
 #include <me/dyna/position/DP_Dampen.h>
 #include <algorithm>
 
-using namespace me;
-using namespace dyna;
-using namespace position;
+using namespace me::dyna;
+using namespace me::dyna::position;
 
 Dampen::Dampen( IDynaPosition::ptr position, float rate )
 	: m_target{ position }

@@ -3,10 +3,10 @@
 
 #include <me/action/ActionList.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 ActionList::ActionList()
+	: m_actions{}
 {
 }
 

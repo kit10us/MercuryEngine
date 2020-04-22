@@ -5,26 +5,19 @@
 
 #include <me/dyna/IDynaRotation.h>
 
-namespace me
+namespace me::dyna::rotation
 {
-	namespace dyna
+	/// <summary>
+	/// Multiplies a scale to another rotation.
+	/// </summary>
+	class Mul : public IDynaRotation
 	{
-		namespace rotation
-		{
-			/// <summary>
-			/// Multiplies a scale to another rotation.
-			/// </summary>
-			class Mul : public IDynaRotation
-			{
-			public:
-				Mul( IDynaRotation::ptr rotationA, IDynaRotation ::ptr rotationB );
+		IDynaRotation::ptr m_rotationA;
+		IDynaRotation::ptr m_rotationB;
 
-				Result GetRotation(unify::Quaternion & out, unify::TimeDelta delta) override;
+	public:
+		Mul( IDynaRotation::ptr rotationA, IDynaRotation::ptr rotationB );
 
-			private:
-				IDynaRotation::ptr m_rotationA;
-				IDynaRotation::ptr m_rotationB;
-			};
-		}
-	}
+		Result GetRotation( unify::Quaternion& out, unify::TimeDelta delta ) override;
+	};
 }

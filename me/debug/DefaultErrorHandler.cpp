@@ -4,8 +4,7 @@
 #include <me/debug/DefaultErrorHandler.h>
 #include <me/exception/FileNotFound.h>
 
-using namespace me;
-using namespace debug;
+using namespace me::debug;
 
 DefaultErrorHandler::DefaultErrorHandler( IDebug* debug )
 	: m_debug{ debug }

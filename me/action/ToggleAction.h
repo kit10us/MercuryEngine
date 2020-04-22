@@ -6,24 +6,20 @@
 #include <me/action/IAction.h>
 #include <vector>
 
-namespace me
+namespace me::action
 {
-	namespace action
+	/// <summary>
+	/// Performs an action from a set, moving to the next action in the set every time.
+	/// </summary>
+	class ToggleAction : public IAction
 	{
-		/// <summary>
-		/// Performs an action from a set, moving to the next action in the set every time.
-		/// </summary>
-		class ToggleAction : public IAction
-		{
-		public:
-			ToggleAction( std::initializer_list< IAction::ptr > actions );
+		std::vector< IAction::ptr > m_actions;
+		size_t m_next;
 
-		public: // IAction...
-			bool Perform() override;
+	public:
+		ToggleAction( std::initializer_list< IAction::ptr > actions );
 
-		private:
-			std::vector< IAction::ptr > m_actions;
-			size_t m_next;
-		};
-	}
+	public: // IAction...
+		bool Perform() override;
+	};
 }

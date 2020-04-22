@@ -5,21 +5,18 @@
 
 #include <me/debug/IDebug.h>
 
-namespace me
+namespace me::debug
 {
-	namespace debug
+	class DefaultErrorHandler : public IErrorHandler
 	{
-		class DefaultErrorHandler : public IErrorHandler
-		{
-			IDebug * m_debug;
-		public:
-			DefaultErrorHandler( IDebug* debug );
-			~DefaultErrorHandler();
+		IDebug * m_debug;
+	public:
+		DefaultErrorHandler( IDebug* debug );
+		~DefaultErrorHandler();
 
-			/// <summary>
-			/// Report an error to the error handler.
-			/// </summary>
-			ReportErrorResult ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry ) override;
-		};
-	}
+		/// <summary>
+		/// Report an error to the error handler.
+		/// </summary>
+		ReportErrorResult ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry ) override;
+	};
 }

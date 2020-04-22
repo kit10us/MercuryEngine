@@ -5,24 +5,21 @@
 
 #include <memory>
 
-namespace me
+namespace me::action
 {
-	namespace action
+	/// <summary>
+	/// Does something; can be used with other objects as an interchangable action to have due to some sort of event.
+	/// </summary>
+	class IAction
 	{
+	public:
+		typedef std::shared_ptr< IAction > ptr;
+
+		virtual ~IAction() {}
+
 		/// <summary>
-		/// Does something; can be used with other objects as an interchangable action to have due to some sort of event.
+		/// Perform the action.	Returns true on success.
 		/// </summary>
-		class IAction
-		{
-		public:
-			typedef std::shared_ptr< IAction > ptr;
-
-			virtual ~IAction() {}
-
-			/// <summary>
-			/// Perform the action.	Returns true on success.
-			/// </summary>
-			virtual bool Perform() = 0;
-		};
-	}
+		virtual bool Perform() = 0;
+	};
 }

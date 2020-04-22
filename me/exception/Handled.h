@@ -5,17 +5,19 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// An exception occured that has already been dealt with
+	/// in such a way that there is no further need to respond
+	/// to the specificity of the originating exception.
+	/// </summary>
+	class Handled : public unify::Exception
 	{
-		class Handled : public unify::Exception
+	public:
+		Handled( std::string what )
+			: Exception( what )
 		{
-		public:
-			Handled( std::string what )
-				: Exception( what )
-			{
-			}
-		};
-	}
+		}
+	};
 }

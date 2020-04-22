@@ -3,9 +3,8 @@
 
 #include <me/dyna/scale/DS_Add.h>
 
-using namespace me;
-using namespace dyna;
-using namespace scale;
+using namespace me::dyna;
+using namespace me::dyna::scale;
 
 Add::Add( IDynaScale::ptr scaleA, IDynaScale::ptr scaleB )
 	: m_scaleA{ scaleA }

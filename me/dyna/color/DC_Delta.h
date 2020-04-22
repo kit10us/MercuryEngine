@@ -6,26 +6,20 @@
 #include <me/dyna/IDynaColor.h>
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::color
 {
-	namespace dyna
+	/// <summary>
+	/// Applies a IDynaDelta to a IDynaColor
+	/// </summary>
+	class Delta : public IDynaColor
 	{
-		namespace color
-		{
-			/// <summary>
-			/// Applies a IDynaDelta to a IDynaColor
-			/// </summary>
-			class Delta : public IDynaColor
-			{
-			public:
-				Delta( IDynaColor::ptr rotaiton, IDynaDelta::ptr delta );
+		IDynaColor::ptr m_color;
+		IDynaDelta::ptr m_delta;
 
-				Result GetColor(unify::ColorUnit & out, unify::TimeDelta delta) override;
+	public:
+		Delta( IDynaColor::ptr rotaiton, IDynaDelta::ptr delta );
 
-			private:
-				IDynaColor::ptr m_color;
-				IDynaDelta::ptr m_delta;
-			};
-		}
-	}
+	public: // me::dyna::color::IDynaColor...
+		Result GetColor(unify::ColorUnit & out, unify::TimeDelta delta) override;
+	};
 }

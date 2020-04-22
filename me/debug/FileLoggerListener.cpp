@@ -3,11 +3,9 @@
 
 #include <me/debug/FileLoggerListener.h>
 
-using namespace me;
-using namespace debug;
+using namespace me::debug;
 
 FileLoggerListener::FileLoggerListener( unify::Path path )
-	: m_path{}
 {
 	SetLogPath( path );
 }

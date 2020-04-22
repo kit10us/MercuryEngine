@@ -6,26 +6,20 @@
 #include <me/dyna/IDynaScale.h>
 #include <me/dyna/IDynaDelta.h>
 
-namespace me
+namespace me::dyna::scale
 {
-	namespace dyna
+	/// <summary>
+	/// Applies a IDynaDelta to a IDynaScale
+	/// </summary>
+	class Delta : public IDynaScale
 	{
-		namespace scale
-		{
-			/// <summary>
-			/// Applies a IDynaDelta to a IDynaScale
-			/// </summary>
-			class Delta : public IDynaScale
-			{
-			public:
-				Delta( IDynaScale::ptr scale, IDynaDelta::ptr delta );
+	public:
+		Delta( IDynaScale::ptr scale, IDynaDelta::ptr delta );
 
-				Result GetScale(unify::V3< float > & out, unify::TimeDelta delta) override;
+		Result GetScale( unify::V3< float >& out, unify::TimeDelta delta ) override;
 
-			private:
-				IDynaScale::ptr m_scale;
-				IDynaDelta::ptr m_delta;
-			};
-		}
-	}
+	private:
+		IDynaScale::ptr m_scale;
+		IDynaDelta::ptr m_delta;
+	};
 }

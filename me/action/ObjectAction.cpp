@@ -3,8 +3,7 @@
 
 #include <me/action/ObjectAction.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 ObjectAction::ObjectAction( object::Object* object, object::action::IObjectAction::ptr action )
 	: m_object{ object }

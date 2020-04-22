@@ -5,25 +5,18 @@
 
 #include <me/dyna/IDynaScale.h>
 
-namespace me
+namespace me::dyna::scale
 {
-	namespace dyna
+	/// <summary>
+	/// An absolute scale.
+	/// </summary>
+	class Absolute : public IDynaScale
 	{
-		namespace scale
-		{
-			/// <summary>
-			/// An absolute scale.
-			/// </summary>
-			class Absolute : public IDynaScale
-			{
-			public:
-				Absolute(unify::V3< float > v3);
+		unify::V3< float > m_v3;
 
-				Result GetScale(unify::V3< float > & out, unify::TimeDelta delta) override;
+	public:
+		Absolute( unify::V3< float > v3 );
 
-			private:
-				unify::V3< float > m_v3;
-			};
-		}
-	}
+		Result GetScale( unify::V3< float >& out, unify::TimeDelta delta ) override;
+	};
 }

@@ -5,17 +5,17 @@
 
 #include <unify/Exception.h>
 
-namespace me
+namespace me::exception
 {
-	namespace exception
+	/// <summary>
+	/// Failed during the update process.
+	/// </summary>
+	class Update : public unify::Exception
 	{
-		class Update : public unify::Exception 
+	public:
+		Update( std::string error )
+			: unify::Exception( error )
 		{
-		public:
-			Update( std::string error )
-				: unify::Exception( error )
-			{
-			}
-		};
-	}
+		}
+	};
 }

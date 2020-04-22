@@ -3,9 +3,8 @@
 
 #include <me/dyna/delta/DD_Absolute.h>
 
-using namespace me;
-using namespace dyna;
-using namespace delta;
+using namespace me::dyna::delta;
+using namespace me::dyna;
 
 Absolute::Absolute( unify::TimeDelta delta )
 	: m_delta{ delta }

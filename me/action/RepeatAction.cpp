@@ -3,8 +3,7 @@
 
 #include <me/action/RepeatAction.h>
 
-using namespace me;
-using namespace action;
+using namespace me::action;
 
 RepeatAction::RepeatAction( IAction::ptr action, size_t times )
 	: m_action{ action }

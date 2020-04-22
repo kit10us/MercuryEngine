@@ -6,8 +6,7 @@
 #include <me/debug/Block.h>
 #include <unify/Exception.h>
 
-using namespace me;
-using namespace debug;
+using namespace me::debug;
 
 Block::Block( kit::debug::ILogger* logger, std::string name, std::shared_ptr< bool > loggerIsAlive )
 	: m_logger{ logger }
