@@ -6,37 +6,37 @@
 #include <me/interop/IValue.h>
 #include <memory>
 
-namespace me
+namespace me::interop
 {
-	namespace interop
+	template< typename Thing >
+	using Getter = std::function< std::string( Thing thing ) >;
+
+	template< typename Thing >
+	using Setter = std::function< void( Thing thing, std::string ) >;
+
+	template< typename Thing >
+	class MyThing : public IValue
 	{
-		template< typename Thing >
-		using Getter = std::function< std::string( Thing thing ) >;
+		Thing m_thing;
+		Getter< Thing > m_getThing;
+		Setter< Thing > m_setThing;
 
-		template< typename Thing >
-		using Setter = std::function< void( Thing thing, std::string ) >;
+	public:
+		MyThing( Thing thing,
+			std::function< std::string( Thing thing ) > getThing,
+			std::function< void( Thing thing, std::string ) > setThing = nullptr );
 
-		template< typename Thing >
-		class MyThing : public IValue
-		{
-			Thing m_thing;
-			Getter< Thing > m_getThing;
-			Setter< Thing > m_setThing;
+	public: // me::interop::IValue
+		bool IsReadable() const override;
 
-		public:
-			MyThing( Thing thing, 
-				std::function< std::string( Thing thing ) > getThing, 
-				std::function< void( Thing thing, std::string ) > setThing = nullptr );
+		bool IsWriteable() const override;
 
-			bool IsWriteable() const override;
+		void Set( std::string value ) override;
 
-			void Set( std::string value );
+		std::string Get() const override;
 
-			std::string Get() const;
+		std::string ToString() const override;
+	};
 
-			std::string ToString() const;
-		};
-
-		#include <me/interop/MyThing.inl>
-	}
+	#include <me/interop/MyThing.inl>
 }

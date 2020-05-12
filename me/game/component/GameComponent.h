@@ -13,7 +13,6 @@ namespace me
 		{
 			class GameComponent : public IGameComponent
 			{
-			protected:
 				IGame* m_game;
 				std::string m_typeName;
 				bool m_enabled;
@@ -22,38 +21,37 @@ namespace me
 				kit::debug::IBlock::ptr m_block;
 
 			public:
-				GameComponent( std::string type );
+				GameComponent( std::string name );
 				~GameComponent();
+
+			protected:
+
+				/// <summary>
+				/// Returns the debug script block for this game component.
+				/// </summary>
+				kit::debug::IBlock* GetBlock();
 
 			public:	 // IGameComponent...
 				IGame * GetGame() override;
 				const IGame * GetGame() const override;
 				void OnAttach( game::IGame * gameInstance ) override;
-
 				void OnBeforeStartup() override;
 				void OnAfterStartup() override;
-
 				void OnEarlyUpdate( const UpdateParams & params ) override;
 				void OnUpdate( const UpdateParams & params ) override;
 				void OnLateUpdate( const UpdateParams & params ) override;
-
 				void OnRender( const render::Params & params ) override;
 				void OnDetach( game::IGame * gameInstance ) override;
-
 				action::IAction::ptr CreateAction( const qxml::Element * element ) override;
 				object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) override;
 				input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) override;
-
 				std::string SendCommand( size_t id, std::string extra ) override;
 
-			public:	// IComponent...
-				bool GameComponent::IsEnabled() const;
-
-				void GameComponent::SetEnabled( bool enabled );
-
+			public:	// me::IComponent...
+				bool GameComponent::IsEnabled() const override;
+				void GameComponent::SetEnabled( bool enabled ) override;
 				interop::Interop * GetLookup() override;
 				const interop::Interop * GetLookup() const override;
-
 
 			protected: // me::IThing...
 				void AddInterface( std::string name, me::IThing* ptr ) override;

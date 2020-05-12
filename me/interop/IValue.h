@@ -11,22 +11,39 @@
 #include <list>
 #include <functional>
 
-namespace me
+namespace me::interop
 {
-	namespace interop
+	class IValue
 	{
-		class IValue
-		{
-		public:
-			typedef std::shared_ptr< IValue > ptr;
-			typedef std::shared_ptr< const IValue > const_ptr;
+	public:
+		typedef std::shared_ptr< IValue > ptr;
+		typedef std::shared_ptr< const IValue > const_ptr;
 
-			virtual ~IValue() {}
+		virtual ~IValue() {}
 
-			virtual bool IsWriteable() const = 0;
-			virtual void Set( std::string value ) = 0;
-			virtual std::string Get() const = 0;
-			virtual std::string ToString() const = 0;
-		};
-	}
+		/// <summary>
+		/// Returns true if the value is readable.
+		/// </summary>
+		virtual bool IsReadable() const = 0;
+
+		/// <summary>
+		/// Returns true if the value is modifiable.
+		/// </summary>
+		virtual bool IsWriteable() const = 0;
+
+		/// <summary>
+		/// Set the value.
+		/// </summary>
+		virtual void Set( std::string value ) = 0;
+
+		/// <summary>
+		/// Get the value.
+		/// </summary>
+		virtual std::string Get() const = 0;
+
+		/// <summary>
+		/// Return the value as a string.
+		/// </summary>
+		virtual std::string ToString() const = 0;
+	};
 }

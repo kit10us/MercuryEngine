@@ -11,6 +11,12 @@ MyThing< Thing >::MyThing( Thing thing, Getter< Thing > getThing, Setter< Thing 
 }
 
 template< typename Thing >
+bool MyThing< Thing >::IsReadable() const
+{
+	return m_getThing != nullptr;
+}
+
+template< typename Thing >
 bool MyThing< Thing >::IsWriteable() const
 {
 	return m_setThing != nullptr;

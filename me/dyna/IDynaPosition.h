@@ -16,7 +16,7 @@ namespace me
 		{
 		public:
 			typedef std::shared_ptr< IDynaPosition > ptr;
-			~IDynaPosition() {}
+			virtual ~IDynaPosition() {}
 
 			virtual Result GetPosition( unify::V3< float > & out, unify::TimeDelta delta ) = 0;
 		};

@@ -11,52 +11,53 @@
 #include <list>
 #include <functional>
 
-namespace me
+namespace me::interop
 {
-	namespace interop
+	/// <summary>
+	/// A IValue which enables access to a variable by reference.
+	/// </summary>
+	template< typename T >
+	class ReferenceCast : public IValue
 	{
-		template< typename T >
-		class ReferenceCast : public IValue
+		bool m_isWriteable;
+		bool m_isReadable;
+		T& m_reference;
+	public:
+		ReferenceCast( T& reference, bool isWriteable = true, bool isReadable = true )
+			: m_reference{ reference }
+			, m_isWriteable{ isWriteable }
+			, m_isReadable{ isReadable }
 		{
-			bool m_isWriteable;
-			bool m_isReadable;
-			T & m_reference;
-		public:
-			ReferenceCast( T & reference, bool isWriteable = true, bool isReadable = true )
-				: m_reference{ reference }
-				, m_isWriteable{ isWriteable }
-				, m_isReadable{ isReadable }
-			{
-			}
+		}
 
-			~ReferenceCast()
-			{
-			}
+		~ReferenceCast()
+		{
+		}
 
-			bool IsWriteable() const
-			{
-				return m_isWriteable;
-			}
+	public: // me::interop::IValue...
+		bool IsWriteable() const override
+		{
+			return m_isWriteable;
+		}
 
-			bool IsReadable() const
-			{
-				return m_isReadable;
-			}
+		bool IsReadable() const override
+		{
+			return m_isReadable;
+		}
 
-			void Set( std::string value )
-			{
-				m_reference = unify::Cast< T >( value );
-			}
+		void Set( std::string value ) override
+		{
+			m_reference = unify::Cast< T >( value );
+		}
 
-			std::string Get() const override
-			{
-				return unify::Cast< std::string, T >( m_reference );
-			}
+		std::string Get() const override
+		{
+			return unify::Cast< std::string, T >( m_reference );
+		}
 
-			std::string ToString() const override
-			{
-				return Get();
-			}
-		};
-	}
+		std::string ToString() const override
+		{
+			return Get();
+		}
+	};
 }

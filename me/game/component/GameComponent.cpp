@@ -26,6 +26,11 @@ GameComponent::~GameComponent()
 {
 }
 
+kit::debug::IBlock* GameComponent::GetBlock()
+{
+	return m_block.get();
+}
+
 IGame * GameComponent::GetGame()
 {
 	return m_game;

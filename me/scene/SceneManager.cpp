@@ -195,7 +195,7 @@ size_t SceneManager::GetRenderCount() const
 
 void SceneManager::OnEarlyUpdate( const UpdateParams & params )
 {
-	if( m_enabled == false || !m_currentScene )
+	if( IsEnabled() == false || !m_currentScene )
 	{
 		return;
 	}
@@ -205,7 +205,7 @@ void SceneManager::OnEarlyUpdate( const UpdateParams & params )
 
 void SceneManager::OnUpdate( const UpdateParams & params ) 
 {
-	if ( m_enabled == false || ! m_currentScene )
+	if ( IsEnabled() == false || ! m_currentScene )
 	{
 		return;
 	}
@@ -216,7 +216,7 @@ void SceneManager::OnUpdate( const UpdateParams & params )
 
 void SceneManager::OnLateUpdate( const UpdateParams & params )
 {
-	if( m_enabled == false || !m_currentScene )
+	if( IsEnabled() == false || !m_currentScene )
 	{
 		return;
 	}
@@ -229,7 +229,7 @@ void SceneManager::OnRender( const render::Params & params )
 	auto debug = GetGame()->Debug();
 	debug->DebugTimeStampBegin( "Render" );
 	
-	if ( m_enabled == false )
+	if ( IsEnabled() == false )
 	{
 		return;
 	}

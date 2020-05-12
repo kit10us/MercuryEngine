@@ -29,7 +29,7 @@ namespace me
 	namespace game
 	{
 		/// <summary>
-		/// A gameInstance, inheriting from this class, enables support of the necessary major game events.
+		/// Interface the provides game features used throughout the entire lifetime of the game.
 		/// </summary>
 		class IGame
 		{

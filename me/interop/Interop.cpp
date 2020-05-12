@@ -6,17 +6,16 @@
 #include <me/interop/CastValue.h>
 #include <me/interop/Interop.h>
 
-using namespace me;
-using namespace interop;
-
-size_t Interop::Add( std::string key, std::string init )
-{
-	return m_lookup.Add( key, IValue::ptr{ new CastValue< std::string >( init ) } );
-}
+using namespace me::interop;
 
 size_t Interop::Add( std::string key, IValue::ptr value )
 {
 	return m_lookup.Add( key, value ); 
+}
+
+size_t Interop::Add( std::string key, std::string init )
+{
+	return Add( key, IValue::ptr{ new CastValue< std::string >( init ) } );
 }
 		
 size_t Interop::Count() const
@@ -104,22 +103,22 @@ bool Interop::iterator::iterator::operator!=( const iterator & itr ) const
 	return m_itr != itr.m_itr;
 }
 
-unify::KeyValuePair< std::string, interop::IValue::ptr > & Interop::iterator::iterator::operator*()
+unify::KeyValuePair< std::string, IValue::ptr > & Interop::iterator::iterator::operator*()
 {
 	return m_itr.operator*();
 }
 
-const unify::KeyValuePair< std::string, interop::IValue::ptr > & Interop::iterator::iterator::operator*() const
+const unify::KeyValuePair< std::string, IValue::ptr > & Interop::iterator::iterator::operator*() const
 {
 	return m_itr.operator*();
 }
 
-unify::KeyValuePair< std::string, interop::IValue::ptr > * Interop::iterator::iterator::operator->()
+unify::KeyValuePair< std::string, IValue::ptr > * Interop::iterator::iterator::operator->()
 {
 	return m_itr.operator->();
 }
 
-const unify::KeyValuePair< std::string, interop::IValue::ptr > * Interop::iterator::iterator::operator->() const
+const unify::KeyValuePair< std::string, IValue::ptr > * Interop::iterator::iterator::operator->() const
 {
 	return m_itr.operator->();
 }
