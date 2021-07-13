@@ -222,7 +222,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 					((unsigned char*)textlock.pBits) + ( v * textlock.uStride + (h * textlock.bpp))
 						);
 
-				unify::ColorUnit result( heightMap.colorOp * pixel );
+				unify::ColorUnit result(heightMap.colorOp * unify::ColorUnit{ pixel });
 
 				// Perform modification to vertex...
 				float sum = result.SumComponents();

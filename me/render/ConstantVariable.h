@@ -18,7 +18,7 @@ namespace me
 
 			std::string name;
 			render::ElementFormat::TYPE type;
-			std::vector< float > default;
+			std::vector< float > defaultValue;
 			bool hasDefault;
 			size_t count;
 			size_t offsetInBytes;

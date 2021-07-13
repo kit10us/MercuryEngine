@@ -35,7 +35,7 @@ const T & Key<T>::Value() const
 template< typename T >
 void me::frameanimation::FindLeftRight( unify::TimeDelta time, const typename Key< T >::list & timeline, typename Key< T >::list::const_iterator & leftItr, typename Key< T >::list::const_iterator & rightItr )
 {
-	std::list< Key< T > >::const_iterator end = timeline.end();
+	typename std::list< Key< T > >::const_iterator end = timeline.end();
 	for( rightItr = timeline.begin(), leftItr = end; rightItr != end && (*rightItr) < time; ++rightItr )
 	{
 		leftItr = rightItr;
@@ -50,8 +50,8 @@ T me::frameanimation::InterpretValue( unify::TimeDelta time, const typename Key<
 		return defaultValue;
 	}
 
-	Key< T >::list::const_iterator leftItr;
-	Key< T >::list::const_iterator rightItr;
+	typename Key< T >::list::const_iterator leftItr;
+	typename Key< T >::list::const_iterator rightItr;
 	FindLeftRight< T >( time, timeline, leftItr, rightItr );
 
 	// If our time is passed the last element, return the last element.

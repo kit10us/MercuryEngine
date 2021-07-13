@@ -28,7 +28,7 @@ using namespace me;
 using namespace game;
 using namespace component;
 
-char* ActionFactory::Name()
+const char* ActionFactory::Name()
 {
 	return "ActionFactory";
 }

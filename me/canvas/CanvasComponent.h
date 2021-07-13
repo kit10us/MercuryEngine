@@ -25,7 +25,7 @@ namespace me::canvas
 	public:
 		typedef std::shared_ptr< CanvasComponent > ptr;
 
-		static char* Name();
+		static const char* Name();
 
 		CanvasComponent( game::IGame * gameInstance );	  
 

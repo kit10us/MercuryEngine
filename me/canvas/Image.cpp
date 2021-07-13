@@ -189,7 +189,7 @@ void Image::Render( const render::Params & params )
 	RenderMethod method( RenderMethod::CreateTriangleList( 0, 2 ) );
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
-	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
+	render::MatrixFeed matrixFeed{ render::MatrixFood_Matrices{ &instance, 1 }, 1 };
 	params.renderer->Render( params.renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), matrixFeed );
 }
 		

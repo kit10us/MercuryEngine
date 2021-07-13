@@ -310,7 +310,7 @@ void Scene::AddResources( unify::Path path )
 					doc.Load( realPath );
 				}, debug::ErrorLevel::Failure, true, true );
 
-			for ( auto& itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr )
+			for ( auto itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr )
 			{
 				debug->Try( [&]
 					{

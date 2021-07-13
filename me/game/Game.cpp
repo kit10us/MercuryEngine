@@ -667,14 +667,14 @@ UpdateLock::ptr Game::LockUpdate( bool exclusive )
 {
 	if ( !m_exclusiveLock.expired() )
 	{
-		return false;
+		return {};
 	}
 
 	if ( exclusive )
 	{
 		if ( !m_locks.empty() )
 		{
-			return false;
+			return {};
 		}
 
 		UpdateLock::ptr lock( new UpdateLock() );
@@ -837,7 +837,7 @@ std::string Game::SendCommand( size_t id, std::string extra )
 
 	auto & commandListenerSetList = m_commandListeners[ id ];
 	std::string lastResult;
-	for( auto & itr = commandListenerSetList.begin(); itr != commandListenerSetList.end(); )
+	for( auto itr = commandListenerSetList.begin(); itr != commandListenerSetList.end(); )
 	{
 		// Check if the owner is expired, if so, remove it.
 		if( itr->owner.expired() )

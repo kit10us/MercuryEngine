@@ -67,7 +67,7 @@ const IIndexBuffer::ptr BufferSet::GetIndexBuffer() const
 	return m_IB;
 }
 
-void BufferSet::AddMethod( RenderMethod & method )
+void BufferSet::AddMethod( RenderMethod method )
 {
 	m_RB.push_back( method );
 }

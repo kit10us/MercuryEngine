@@ -12,7 +12,7 @@ using namespace me;
 using namespace scene;
 
 
-char* SceneManager::Name()
+const char* SceneManager::Name()
 {
 	return "SceneManager";
 }

@@ -46,7 +46,7 @@ namespace me
 			IIndexBuffer::ptr GetIndexBuffer();
 			const IIndexBuffer::ptr GetIndexBuffer() const;
 
-			void AddMethod( RenderMethod & method );
+			void AddMethod( RenderMethod method );
 			std::vector< RenderMethod > & GetRenderMethodBuffer();
 			const std::vector< RenderMethod > & GetRenderMethodBuffer() const;
 			void ClearMethods();

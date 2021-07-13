@@ -7,7 +7,7 @@ using namespace me::canvas;
 using namespace me::scene;
 using namespace me::render;
 
-char* CanvasComponent::Name()
+const char* CanvasComponent::Name()
 {
 	return "CanvasComponent";
 }

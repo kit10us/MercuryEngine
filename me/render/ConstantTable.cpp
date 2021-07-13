@@ -27,17 +27,17 @@ ConstantTable::ConstantTable( const qxml::Element * node )
 
 			ConstantVariable variable( name, type, count );
 
-			auto && default = elementNode.GetElement( "default" );
-			if ( default != nullptr )
+			auto && default_value = elementNode.GetElement( "default" );
+			if (default_value != nullptr )
 			{
-				std::string text = default->GetText();
+				std::string text = default_value->GetText();
 				size_t left = 0;
 				size_t right = 0;
 				do
 				{
 					right = text.find( ',', left );
 					std::string value = text.substr( left, right - left );
-					variable.default.push_back( unify::Cast< float >( value ) );
+					variable.defaultValue.push_back( unify::Cast< float >( value ) );
 					left = right + 1;
 				} while ( right != std::string::npos );
 				variable.hasDefault = true;

@@ -14,7 +14,7 @@ namespace me
 			class ActionFactory : public GameComponent
 			{
 			public:
-				static char* Name();
+				static const char* Name();
 
 				ActionFactory();
 				~ActionFactory();

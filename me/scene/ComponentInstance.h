@@ -39,11 +39,6 @@ namespace me
 			m_started = started;
 		}
 
-		bool IsInitialized() const 
-		{ 
-			return m_initialized; 
-		}
-
 		bool IsStarted() const
 		{
 			return m_started;

@@ -26,7 +26,7 @@ namespace me::scene
 	public:
 		typedef std::shared_ptr< SceneManager > shared_ptr;
 
-		static char* Name();
+		static const char* Name();
 
 		SceneManager();
 		virtual ~SceneManager();
@@ -56,7 +56,7 @@ namespace me::scene
 		/// <summary>
 		/// Returns the number of objects rendered.
 		/// </summary>
-		size_t SceneManager::GetRenderCount() const;
+		size_t GetRenderCount() const;
 
 	public: // IGameCompnent...
 		void OnAttach( game::IGame* gameInstance ) override;
