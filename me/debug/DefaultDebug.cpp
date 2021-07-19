@@ -69,7 +69,7 @@ void DefaultDebug::SetErrorHandler( IErrorHandler::ptr errorHandler )
 
 ReportErrorResult DefaultDebug::ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry )
 {
-	bool isCritical;
+	bool isCritical{};
 	switch ( level )
 	{
 		using enum me::debug::ErrorLevel;
@@ -104,7 +104,7 @@ ReportErrorResult DefaultDebug::ReportError( ErrorLevel level, std::string error
 	std::string errorText = ErrorLevelToString( level ) + ": \"" + error + "\"";
 	GetLogger()->Log( errorText );
 
-	if ( isCritical )
+	if ( isCritical == true )
 	{
 		m_criticalErrors.push_back( errorText );
 	}
