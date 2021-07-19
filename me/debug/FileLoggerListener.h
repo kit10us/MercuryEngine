@@ -27,6 +27,8 @@ namespace me::debug
 		/// Set the path to the log file to be written to.
 		/// </summary>
 		void SetLogPath( unify::Path path );
+
+		unify::Path GetLogPath() const;
 		
 	public: // kit::debug::ILogListener...
 		void LogEvent( const kit::debug::LogEvent* event ) override;

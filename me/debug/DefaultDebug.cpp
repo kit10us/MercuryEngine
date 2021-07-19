@@ -35,6 +35,11 @@ void DefaultDebug::SetLogPath( unify::Path path )
 	GetLogger()->Log( "Change file logger path to \"" + path.ToString() + "\"." );
 }
 
+unify::Path DefaultDebug::GetLogPath() const
+{
+	return m_fileLogger->GetLogPath();
+}
+
 void DefaultDebug::SetErrorAsCritical( ErrorLevel level, bool isCritical )
 {
 	m_errorAsCritical[(size_t)level] = isCritical;

@@ -21,7 +21,6 @@
 #include <chrono>
 #include <ctime>
 #include <functional>
-//#include <map>
 
 using namespace me;
 using namespace game;
@@ -403,6 +402,7 @@ void Game::Initialize( os::IOS::ptr os )
 	{
 		block->Log( "No start scene specified." );
 	}
+	block->Log(debug->GetLogPath().ToXPath());
 }
 
 void Game::AddScenes( scene::SceneManager * sceneManager )

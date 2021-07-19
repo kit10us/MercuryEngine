@@ -56,6 +56,8 @@ namespace me::debug
 
 		void SetLogPath( unify::Path path ) override;
 
+		unify::Path GetLogPath() const override;
+
 		void SetErrorAsCritical( ErrorLevel level, bool isCritical ) override;
 
 		bool GetErrorAsCritical( ErrorLevel level ) const override;

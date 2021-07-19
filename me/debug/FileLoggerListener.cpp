@@ -29,6 +29,11 @@ void FileLoggerListener::SetLogPath( unify::Path path )
 	m_path = path;
 }
 
+unify::Path FileLoggerListener::GetLogPath() const
+{
+	return m_path;
+}
+
 void FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 {
 	using namespace std;

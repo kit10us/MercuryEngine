@@ -10,6 +10,7 @@
 #include <memory>
 #include <list>
 #include <functional>
+#include <me/interop/IValue.h>
 
 namespace me::interop
 {

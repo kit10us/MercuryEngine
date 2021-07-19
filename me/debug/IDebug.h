@@ -40,6 +40,8 @@ namespace me::debug
 		/// </summary>
 		virtual void SetLogPath( unify::Path path ) = 0;
 
+		virtual unify::Path GetLogPath() const = 0;
+
 		/// <summary>
 		/// Set if an ErrorLevel should be handled as critical (non-resolvable).
 		/// </summary>
