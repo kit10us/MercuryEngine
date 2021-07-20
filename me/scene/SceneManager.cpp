@@ -1,6 +1,7 @@
 // Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
+#include <chrono>
 #include <me/scene/SceneManager.h>
 #include <me/scene/Scene.h>
 #include <me/exception/NotImplemented.h>
@@ -81,7 +82,7 @@ std::string SceneManager::GetPreviousSceneName()
 bool SceneManager::ChangeScene( std::string name )
 {
 	auto debug = GetGame()->Debug();
-	m_block->SubBlock( "ChangeScene" )->Exec( [&]( auto block )
+	m_block->SubBlock( "ChangeScene" )->Exec( [&]( auto block)
 		{
 			IScene::ptr newScene = m_scenes.GetValue( name );
 
@@ -129,7 +130,9 @@ bool SceneManager::ChangeScene( std::string name )
 				{
 					m_currentScene->Component_OnAfterStart();
 				}, debug::ErrorLevel::Engine, false, false );
-		} );
+		}, true );
+
+
 
 	return true;
 }

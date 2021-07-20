@@ -6,6 +6,7 @@
 #include <me/debug/IDebug.h>
 #include <me/debug/DefaultErrorHandler.h>
 #include <me/debug/FileLoggerListener.h>
+#include <me/debug/CSVLoggerListener.h>
 #include <me/debug/Logger.h>
 #include <unify/Path.h>
 #include <list>
@@ -41,22 +42,23 @@ namespace me::debug
 
 	protected:
 		Logger m_logger{};
+
 		IErrorHandler::ptr m_errorHandler{ IErrorHandler::ptr{ new DefaultErrorHandler( this ) } };
-		std::shared_ptr< FileLoggerListener > m_fileLogger{
-			new FileLoggerListener{ unify::Path{ "default.log" } }
-		};
+		
+		std::shared_ptr< FileLoggerListener > m_fileLogger;
+		std::shared_ptr< CSVLoggerListener > m_csvLogger;
 
 	public:
-		DefaultDebug();
+		DefaultDebug(unify::Path directory, unify::Path filename);
 		virtual ~DefaultDebug();
 
 	public: // me::debug::IDebug...
 		void SetDebug( bool debug ) override;
 		bool IsDebug() override;
 
-		void SetLogPath( unify::Path path ) override;
+		void SetLogDirectory(unify::Path directory) override;
 
-		unify::Path GetLogPath() const override;
+		void SetLogFilename(unify::Path filename) override;
 
 		void SetErrorAsCritical( ErrorLevel level, bool isCritical ) override;
 

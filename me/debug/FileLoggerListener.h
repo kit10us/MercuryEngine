@@ -16,20 +16,51 @@ namespace me::debug
 	class FileLoggerListener : public kit::debug::ILogListener
 	{
 	private:
-		unify::Path m_path{};
+		std::string m_extension;
+		unify::Path m_logDirectory;
+		unify::Path m_logFilename;
 		std::ofstream m_stream{};
 
+		/// <summary>
+		/// Open the log file.
+		/// </summary>
+		void OpenLogFile();
+
+		/// <summary>
+		/// Close the log file.
+		/// </summary>
+		void CloseLogFile();
+
+	protected:
+		std::ofstream & GetOFStream();
+		virtual std::string GetExtension() const;
+
 	public:
-		FileLoggerListener( unify::Path path );
+		FileLoggerListener( unify::Path directory, unify::Path filename, std::string extension = ".log");
 		~FileLoggerListener();
 
 		/// <summary>
-		/// Set the path to the log file to be written to.
+		/// Set the directory for the log file.
 		/// </summary>
-		void SetLogPath( unify::Path path );
+		void SetLogDirectory( unify::Path directory );
 
-		unify::Path GetLogPath() const;
+		/// <summary>
+		/// Set the directory for the log file.
+		/// </summary>
+		void SetLogFilename(unify::Path directory);
+
+		/// <summary>
+		/// Get the log directory.
+		/// </summary>
+		unify::Path GetLogDirectory() const;
+
+		/// <summary>
+		/// Get the log directory.
+		/// </summary>
+		unify::Path GetLogFilename() const;
 		
+		unify::Path GetPath() const override;
+
 	public: // kit::debug::ILogListener...
 		void LogEvent( const kit::debug::LogEvent* event ) override;
 	};

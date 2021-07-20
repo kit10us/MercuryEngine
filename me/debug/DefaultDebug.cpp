@@ -9,14 +9,16 @@
 
 using namespace me::debug;
 
-DefaultDebug::DefaultDebug()
-{	m_fileLogger.reset( new FileLoggerListener{ unify::Path{ "default.log" } } );
+DefaultDebug::DefaultDebug(unify::Path logPath, unify::Path filename )
+	: m_fileLogger{ new FileLoggerListener{ logPath, filename } }
+	, m_csvLogger{ new CSVLoggerListener{ logPath, filename } }
+{
 	m_logger.AttachListener( m_fileLogger );
+	m_logger.AttachListener(m_csvLogger);
 }
 
 DefaultDebug::~DefaultDebug()
 {
-	m_fileLogger.reset();
 }
 
 void DefaultDebug::SetDebug( bool debug )
@@ -29,15 +31,16 @@ bool DefaultDebug::IsDebug()
 	return m_isDebug;
 }
 
-void DefaultDebug::SetLogPath( unify::Path path )
+void DefaultDebug::SetLogDirectory( unify::Path directory )
 {
-	m_fileLogger->SetLogPath( path );
-	GetLogger()->Log( "Change file logger path to \"" + path.ToString() + "\"." );
+	m_fileLogger->SetLogDirectory( directory );
+	m_csvLogger->SetLogDirectory(directory);
 }
 
-unify::Path DefaultDebug::GetLogPath() const
+void DefaultDebug::SetLogFilename(unify::Path filename)
 {
-	return m_fileLogger->GetLogPath();
+	m_fileLogger->SetLogFilename( filename );
+	m_csvLogger->SetLogFilename(filename);
 }
 
 void DefaultDebug::SetErrorAsCritical( ErrorLevel level, bool isCritical )

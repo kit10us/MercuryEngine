@@ -30,7 +30,10 @@ namespace me::debug
 	public: // kit::debug::ILogger...
 		void AttachListener( kit::debug::ILogListener::ptr logListener ) override;
 		void DetachListener( kit::debug::ILogListener::ptr logListener ) override;
-		void Log( std::string text ) override;
+		std::list<kit::debug::ILogListener::ptr> GetListeners() override;
+		
+		void Log(std::string text, std::string catagory = {}, std::string location = {}) override;
+
 		kit::debug::IBlock::ptr CreateBlock( std::string name ) override;
 	};
 }

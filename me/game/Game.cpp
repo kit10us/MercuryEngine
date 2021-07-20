@@ -86,8 +86,6 @@ void Game::Initialize( os::IOS::ptr os )
 	// Create Game scope block for debug logging.
 	m_gameBlock = debug->GetLogger()->CreateBlock( "Game" );
 
-	debug->SetLogPath( os->GetOSParameters()->GetRunPath() + unify::Path( "default.log" ) );
-	
 	auto block{ m_gameBlock->SubBlock( "Initialize" ) };
 
 	rm::ILogger::ptr logger( new GameLogger( Debug() ) );
@@ -219,7 +217,7 @@ void Game::Initialize( os::IOS::ptr os )
 			auto scriptManager = GetManager< script::IScript >();
 			std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
 			{
-				block->Log( "loading \"" + source.ToString() + "\"" );
+				block->Log( "loading \"" + source.ToString() + "\"", "XML Loader");
 
 				auto script = scriptManager->Add( source.ToString(), source );
 
@@ -244,9 +242,8 @@ void Game::Initialize( os::IOS::ptr os )
 						}
 						else if ( node.IsTagName( "logfile" ) )
 						{
-							unify::Path logFile( ReplaceDefines( node.GetText() ) );
-							logFile.Delete();
-							debug->SetLogPath( GetOS()->GetOSParameters()->GetRunPath() + logFile );
+							unify::Path logFilename( ReplaceDefines( node.GetText() ) );
+							debug->SetLogFilename(logFilename);
 						}
 						else if ( node.IsTagName( "failuresAsCritical" ) )
 						{
@@ -294,11 +291,8 @@ void Game::Initialize( os::IOS::ptr os )
 	
 
 	// Log start of program.
-	auto now = std::chrono::system_clock::now();
-	std::time_t t = std::chrono::system_clock::to_time_t( now );
-	block->Log( "program: " + m_os->GetOSParameters()->GetProgramPath().ToString() );
-	block->Log( "path:    " + m_os->GetOSParameters()->GetRunPath().ToString() );
-	block->Log( "time:    " + std::string( std::ctime( &t ) ) );
+	block->Log( "program: " + m_os->GetOSParameters()->GetProgramPath().ToString(), "OS" );
+	block->Log( "path:    " + m_os->GetOSParameters()->GetRunPath().ToString(), "OS" );
 
 	// Our setup...
 	if( m_setup.Exists() )
@@ -309,7 +303,7 @@ void Game::Initialize( os::IOS::ptr os )
 			unify::Path pathDiscovery( GetOS()->GetAssetPaths()->FindAsset( source ) );
 			qxml::Document doc( pathDiscovery );
 
-			block->Log( "Loading setup \"" + source.ToString() + "\"..." );
+			block->Log( "Loading setup \"" + source.ToString() + "\"...", "XML Loader" );
 
 			qxml::Element * setup = doc.GetRoot();
 			if( setup )
@@ -331,7 +325,7 @@ void Game::Initialize( os::IOS::ptr os )
 					else if (node.IsTagName("inputs"))
 					{
 						size_t failures = GetInputManager()->AddInputActions(m_inputOwnership, &node, true );
-						block->Log( "Add input actions (failures = " + unify::Cast< std::string >(failures) + ")" );
+						block->Log( "Add input actions (failures = " + unify::Cast< std::string >(failures) + ")", "XML Loader");
 					}
 				}
 			}
@@ -339,18 +333,18 @@ void Game::Initialize( os::IOS::ptr os )
 		xmlLoader( m_setup );
 	}
 
-	block->Log( "GameComponent summary..." );
+	block->Log( "GameComponent summary...", "Components" );
 	for( int i = 0; i < GetComponentCount(); i++ )
 	{
-		block->Log( GetComponent( i )->GetTypeName() );
+		block->Log( GetComponent( i )->GetTypeName(), "Components" );
 	}
 
 	m_os->Startup();
 	
-	block->Log( "Interate components' \"OnBeforeStartup\"" );
+	block->Log( "Interate components' \"OnBeforeStartup\"", "Components" );
 	for ( auto&& component : m_components )
 	{
-		block->Log( component->GetTypeName() + "..." );
+		block->Log( component->GetTypeName() + "...", "Components" );
 		component->OnBeforeStartup();
 	}
 	block->Log( "Done." );
@@ -362,13 +356,13 @@ void Game::Initialize( os::IOS::ptr os )
 			}, debug::ErrorLevel::Engine, false, false );
 	} );
 
-	block->Log( "iterate components' OnAfterStart" );
+	block->Log( "iterate components' OnAfterStart", "Components" );
 	for ( auto&& component : m_components )
 	{
 		block->Log( component->GetTypeName() + "..." );
 		component->OnAfterStartup();
 	}
-	block->Log( "Done." );
+	block->Log( "Done.", "Components" );
 
 	// Basic motivations...
 	if ( GetInputManager() )
@@ -387,22 +381,28 @@ void Game::Initialize( os::IOS::ptr os )
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
 	m_totalStartupTime = micro * 0.000001f;
 
-	block->Log( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s" );
+	block->Log( "total startup time: " + unify::Cast< std::string >( m_totalStartupTime ) + "s", "Stats" );
 
-	block->Log( "adding user specified scenes." );
+	block->Log( "adding user specified scenes.", "Scene Management" );
 	auto sceneManager = GetComponentT< scene::SceneManager >();
 	AddScenes( sceneManager );
 
-	block->Log( "Changing starting scene." );
+	block->Log( "Changing starting scene.", "Scene Management" );
 	if ( ! m_startScene.empty() )
 	{
 		sceneManager->ChangeScene( m_startScene );
 	}
 	else
 	{
-		block->Log( "No start scene specified." );
+		block->Log( "No start scene specified.", "Scene Management" );
 	}
-	block->Log(debug->GetLogPath().ToXPath());
+
+	// Log the log file positions.
+	auto logListeners = debug->GetLogger()->GetListeners();
+	for (auto listener : logListeners)
+	{
+		block->Log(listener->GetPath().ToXPath());
+	}
 }
 
 void Game::AddScenes( scene::SceneManager * sceneManager )

@@ -26,15 +26,14 @@ void Logger::AttachListener( kit::debug::ILogListener::ptr logListener )
 {
 	using namespace std;
 
-	// First message to logger is to confirm it is attached.
-	// The message is only for the newly attached logger.
-	const auto event{ kit::debug::LogEvent{ "LOG LISTENER ATTACHED" } };
-	logListener->LogEvent( &event );
+
+	// Add time stamp to log text.
+	using namespace std;
 
 	// Log existing text lines to the new listener.
 	for ( auto event : m_events )
 	{
-		logListener->LogEvent( &event  );
+		logListener->LogEvent( &event );
 	}
 
 	m_listeners.push_back( logListener );
@@ -43,12 +42,18 @@ void Logger::AttachListener( kit::debug::ILogListener::ptr logListener )
 
 void Logger::DetachListener( kit::debug::ILogListener::ptr logListener )
 {
-	const auto event{ kit::debug::LogEvent{ "LOG LISTENER DETACHED" } };
-    logListener->LogEvent( &event );
+	// Add time stamp to log text.
+	using namespace std;
+
     m_listeners.remove( logListener );
 }
 
-void Logger::Log( std::string text )
+std::list<kit::debug::ILogListener::ptr> Logger::GetListeners()
+{
+	return m_listeners;
+}
+
+void Logger::Log(std::string text, std::string catagory, std::string location)
 {
 	// Add time stamp to log text.
 	using namespace std;
@@ -56,9 +61,13 @@ void Logger::Log( std::string text )
 	auto t = chrono::system_clock::to_time_t( currentTime );
 
 	// Push event into history.
-	std::stringstream ss;
-	ss << put_time( std::localtime(&t), "%F %T" );
-	m_events.push_back( { kit::debug::LogEvent{ "" + ss.str() + ": " + text } } );
+	kit::debug::LogEvent logEvent{};
+	logEvent.text = text;
+	logEvent.time = currentTime;
+	logEvent.catagory = catagory;
+	logEvent.location = location;
+	
+	m_events.push_back( logEvent );
 	
 	// Inform listeners of log event.
 	for ( auto listener : m_listeners )

@@ -36,11 +36,14 @@ namespace me::debug
 		virtual bool IsDebug() = 0;
 
 		/// <summary>
-		/// Set the log file. Previous log file is renamed to this log file.
+		/// Set the log directory.
 		/// </summary>
-		virtual void SetLogPath( unify::Path path ) = 0;
+		virtual void SetLogDirectory( unify::Path directory ) = 0;
 
-		virtual unify::Path GetLogPath() const = 0;
+		/// <summary>
+		/// Set the log filename.
+		/// </summary>
+		virtual void SetLogFilename(unify::Path filename) = 0;
 
 		/// <summary>
 		/// Set if an ErrorLevel should be handled as critical (non-resolvable).

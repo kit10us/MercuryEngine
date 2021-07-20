@@ -22,8 +22,8 @@ namespace me::debug
 	public: // kit::debug::IBlock...
 		void SetParent( kit::debug::IBlock* parent ) override;
 		std::string GetName() const override;
-		void Log( std::string line ) override;
+		void Log(std::string text, std::string catagory) override;
 		kit::debug::IBlock::ptr SubBlock( std::string name ) override;
-		void Exec( std::function< void( IBlock* )> functionBlock ) override;
+		void Exec( std::function< void( IBlock* )> functionBlock, bool timed ) override;
 	};
 }

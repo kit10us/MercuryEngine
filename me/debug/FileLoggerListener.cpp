@@ -5,53 +5,134 @@
 
 using namespace me::debug;
 
-FileLoggerListener::FileLoggerListener( unify::Path path )
+FileLoggerListener::FileLoggerListener( unify::Path directory, unify::Path filename, std::string extension )
+	: m_extension{ extension }
+	, m_logFilename{ unify::Path{ filename.ToString() + extension } }
+	, m_logDirectory{ directory }
 {
-	SetLogPath( path );
+	OpenLogFile();
 }
 
 FileLoggerListener::~FileLoggerListener()
 {
+	CloseLogFile();
 }
 
-void FileLoggerListener::SetLogPath( unify::Path path )
+void FileLoggerListener::OpenLogFile()
 {
-	if ( m_stream.is_open() )
+	using namespace std;
+
+	m_stream.open(GetPath().ToString(), ofstream::out | ofstream::app);
+	if (m_stream.is_open() == false)
+	{
+		throw std::exception("Failed to open file logger!");
+	}
+}
+
+void FileLoggerListener::CloseLogFile()
+{
+	if (m_stream.is_open())
 	{
 		m_stream.close();
-		m_path.Rename( path );
 	}
-	else
-	{
-		path.Delete();
-	}
-
-	m_path = path;
 }
 
-unify::Path FileLoggerListener::GetLogPath() const
+std::ofstream & FileLoggerListener::GetOFStream()
 {
-	return m_path;
+	return m_stream;
+}
+
+std::string FileLoggerListener::GetExtension() const
+{
+	return m_extension;
+}
+
+void FileLoggerListener::SetLogDirectory(unify::Path directory)
+{
+	CloseLogFile();
+
+	auto oldPath = GetPath();
+
+	m_logDirectory = directory;
+
+	auto newPath = GetPath();
+	newPath.Delete();
+
+	oldPath.Rename(newPath);
+
+	OpenLogFile();
+}
+
+void FileLoggerListener::SetLogFilename(unify::Path filename)
+{
+	CloseLogFile();
+
+	auto oldPath = GetPath();
+
+	m_logFilename = filename;
+	m_logFilename.ChangeExtension(GetExtension());
+
+	auto newPath = GetPath();
+	newPath.Delete();
+
+	oldPath.Rename(newPath);
+
+	OpenLogFile();
+}
+
+unify::Path FileLoggerListener::GetLogDirectory() const
+{
+	return m_logDirectory;
+}
+
+unify::Path FileLoggerListener::GetLogFilename() const
+{
+	return m_logFilename;
+}
+
+unify::Path FileLoggerListener::GetPath() const
+{
+	unify::Path fullFilename{ m_logDirectory };
+	fullFilename += m_logFilename;
+	return fullFilename;
 }
 
 void FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 {
 	using namespace std;
-	if ( !m_stream.is_open() )
+	
+	auto t = chrono::system_clock::to_time_t(event->time);
+
+	// Push event into history.
+	std::stringstream date;
+	date << put_time(std::localtime(&t), "%F");
+
+	std::stringstream time;
+	time << put_time(std::localtime(&t), "%T");
+
+	auto & stream = GetOFStream();
+
+	stream << date.str() << " " << time.str() << ": ";
+	
+	if (event->catagory.empty() == false)
 	{
-		m_stream.open( m_path.ToString(), ofstream::out | ofstream::app );
+		stream << "[" << event->catagory << "] ";
 	}
-
-	if ( !m_stream.is_open() )
+	else
 	{
-		throw std::exception( "File logger stream is not open!" );
+		stream << "[General] ";
 	}
+	
+	if (event->location.empty() == false)
+	{
+		stream << event->location << ": ";
+	}
+	
+	stream <<  event->text << endl;
 
+	stream.flush();
 
-	m_stream << event->text << endl;
-	m_stream.flush();
-
-	if ( m_stream.fail() )
+	if ( stream.fail() )
 	{
 		throw std::exception( "Failed to write to file logger!" );
 	}

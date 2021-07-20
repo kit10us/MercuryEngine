@@ -34,6 +34,7 @@
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\debug\Block.h" />
+    <ClInclude Include="me\debug\CSVLoggerListener.h" />
     <ClInclude Include="me\debug\DefaultDebug.h" />
     <ClInclude Include="me\debug\DefaultErrorHandler.h" />
     <ClInclude Include="me\debug\ErrorLevel.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
     <ClCompile Include="me\debug\Block.cpp" />
+    <ClCompile Include="me\debug\CSVLoggerListener.cpp" />
     <ClCompile Include="me\debug\DefaultDebug.cpp" />
     <ClCompile Include="me\debug\DefaultErrorHandler.cpp" />
     <ClCompile Include="me\debug\FileLoggerListener.cpp" />
