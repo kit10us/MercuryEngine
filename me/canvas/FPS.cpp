@@ -27,7 +27,10 @@ FPS::FPS( IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< fl
 void FPS::Update( const UpdateParams & params )
 {
 	m_timeTillUpdate -= params.renderInfo.GetDelta();
-	if ( m_timeTillUpdate > unify::TimeDelta() ) return;
+	if (m_timeTillUpdate > unify::TimeDelta())
+	{
+		return;
+	}
 	
 	m_timeTillUpdate = m_updateRate;
 

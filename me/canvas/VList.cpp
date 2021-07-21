@@ -20,7 +20,10 @@ VList::VList( IGame * gameInstance, size_t count, unify::Size< float > size, Anc
 
 unify::Size< float > VList::GetContentSize() const
 {
-	if( ! IsEnabled() ) return{ 0, 0 };
+	if (!IsEnabled())
+	{
+		return{ 0, 0 };
+	}
 	
 	return{ 100, 160 }; // TODO:
 }

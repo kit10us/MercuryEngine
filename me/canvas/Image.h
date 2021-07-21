@@ -7,39 +7,39 @@
 #include <me/render/Effect.h>
 #include <me/game/IGame.h>
 
-namespace me
+namespace me::canvas
 {
-	namespace canvas
+	class Image : public Element
 	{
-		class Image : public Element
-		{
-		public:
-			Image( me::game::IGame * gameInstance, render::Effect::ptr effect, Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
+		render::Effect::ptr m_effect;
+		render::IConstantBuffer::ptr m_vertexCB;
+		render::IConstantBuffer::ptr m_pixelCB;
+		render::IVertexBuffer::ptr m_vertexBuffer;
+		bool m_changed;
+		unify::V2< float > m_scale;
+		bool m_shrinkToFit;
 
-			unify::Size< float > GetContentSize() const override;
-		
-			void SetScale( unify::V2< float > scale );
-			
-			unify::V2< float > GetScale() const;
+	public:
+		Image(me::game::IGame* gameInstance, render::Effect::ptr effect, Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = { 0, 0 });
 
-			void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
+	public:
+		/// <summary>
+		/// Set the scale of the image.
+		/// </summary>
+		void SetScale(unify::V2< float > scale);
 
-			void Update( const UpdateParams & params ) override;
-		
-			void Render( const render::Params & params ) override;
-		
-			void OnSuspend() override;
-		
-			void OnResume() override;
+		/// <summary>
+		/// Returns the scale of the image.
+		/// </summary>
+		unify::V2< float > GetScale() const;
 
-		private:
-			render::Effect::ptr m_effect;
-			render::IConstantBuffer::ptr m_vertexCB;
-			render::IConstantBuffer::ptr m_pixelCB;
-			render::IVertexBuffer::ptr m_vertexBuffer;
-			bool m_changed;
-			unify::V2< float > m_scale;
-			bool m_shrinkToFit;
-		};
-	}
+	public: // IElement...
+		unify::Size< float > GetContentSize() const override;
+		void UpdateLayout(UpdateParams params, unify::Rect< float > parentArea) override;
+		void Update(const UpdateParams& params) override;
+		void Render(const render::Params& params) override;
+		void OnSuspend() override;
+		void OnResume() override;
+
+	};
 }

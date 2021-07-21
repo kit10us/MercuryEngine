@@ -12,7 +12,7 @@ namespace me::canvas
 {
 	/// <sumamry>
 	/// Provides Mercury Canvas support to scenes via a scene component.
-	/// It contains a Canvas layer, which is the root most node for canvises.
+	/// It contains a Canvas layer, which is the root most node for canvices.
 	/// </summary>
 	class CanvasComponent : public scene::component::SceneComponent
 	{
@@ -29,6 +29,9 @@ namespace me::canvas
 
 		CanvasComponent( game::IGame * gameInstance );	  
 
+		/// <summary>
+		/// Get the the Canvaces root layer.
+		/// </summary>
 		Layer * GetLayer();
 
 	public: // ISceneComponent...

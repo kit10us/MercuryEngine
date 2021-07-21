@@ -20,13 +20,8 @@ Image::Image( me::game::IGame * gameInstance, Effect::ptr effect, Anchor anchor,
 	, m_shrinkToFit{ true }
 {
 }
-		
-unify::Size< float > Image::GetContentSize() const
-{
-	return m_effect->LargestTextureSizes();
-}
 
-void Image::SetScale( unify::V2< float > scale )
+void Image::SetScale(unify::V2< float > scale)
 {
 	m_scale = scale;
 }
@@ -35,7 +30,7 @@ unify::V2< float > Image::GetScale() const
 {
 	return m_scale;
 }
-
+		
 void Image::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 {
 	if ( ! IsEnabled() ) return;
@@ -182,7 +177,10 @@ void Image::Update( const UpdateParams & params )
 		
 void Image::Render( const render::Params & params )
 {
-	if ( ! IsEnabled() ) return;
+	if (!IsEnabled())
+	{
+		return;
+	}
 
 	m_vertexBuffer->Use();
 
@@ -199,4 +197,9 @@ void Image::OnSuspend()
 		
 void Image::OnResume()
 {
+}
+
+unify::Size< float > Image::GetContentSize() const
+{
+	return m_effect->LargestTextureSizes();
 }

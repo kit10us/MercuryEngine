@@ -5,15 +5,15 @@
 
 #include <me/canvas/IElement.h>
 
-namespace me
-{
-	namespace canvas
+namespace me::canvas
 	{
 		/// <summary>
 		/// Used to represent an item in an Canvas list.
 		/// </summary>
 		class ListItem
 		{
+			IElement::ptr m_item;
+			std::string m_tag;
 		public:
 			ListItem( IElement::ptr item, std::string tag = std::string() );
 
@@ -31,10 +31,5 @@ namespace me
 			/// Get tag for this list item.
 			/// </summary>
 			std::string GetTag() const;
-
-		private:
-			IElement::ptr m_item;
-			std::string m_tag;
 		};
 	}
-}

@@ -7,7 +7,7 @@ using namespace me::action;
 
 ToggleAction::ToggleAction( std::initializer_list< IAction::ptr > actions )
 	: m_actions{ actions }
-	, m_next{ 0 }
+	, m_next{}
 {
 }
 

@@ -59,7 +59,7 @@ void CanvasComponent::OnRender( RenderGirl & renderGirl )
 	myRenderInfo.SetViewMatrix( unify::MatrixIdentity() );
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
-	m_layer->Render( render::Params{ params.renderer, myRenderInfo } );
+	m_layer->Render( { params.renderer, myRenderInfo } );
 }
 
 void CanvasComponent::OnSuspend()

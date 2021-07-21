@@ -43,7 +43,6 @@ game::IGame * Element::GetGame()
 	return m_game;
 }
 
-
 void Element::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 {
 	switch( m_anchor )

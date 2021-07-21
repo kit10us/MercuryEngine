@@ -26,10 +26,6 @@ namespace me::canvas
 	public:
 		TextElement( me::game::IGame * gameInstance, render::Effect::ptr effect, std::string text = std::string(), Anchor anchor = Anchor::Center, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 
-		/// <summary>
-		/// Returns the size of the text, include scaling.
-		/// </summary>
-		unify::Size< float > GetContentSize() const override;
 		
 		/// <summary>
 		/// Set the text.
@@ -47,6 +43,7 @@ namespace me::canvas
 		unify::V2< float > GetScale() const;
 
 	public: // me::canvas::Element...
+		unify::Size< float > GetContentSize() const override;
 		void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
 		void Update( const UpdateParams & params ) override;
 		void Render( const render::Params & params ) override;

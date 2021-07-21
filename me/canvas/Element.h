@@ -28,6 +28,7 @@ namespace me::canvas
 	public:
 		Element( game::IGame * gameInstance, unify::V2< float > offset = { 0, 0 }, unify::Size< float > size = { 0, 0 }, Anchor anchor = Anchor::Center );
 
+	public: // IElement...
 		void SetName( std::string name ) override;
 		std::string GetName() const override;
 

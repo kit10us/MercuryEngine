@@ -28,7 +28,7 @@ namespace me::canvas
 		/// </summary>
 		void AddItem( IElement::ptr item, std::string name = {}, std::string tag = {} );
 
-	public: // me::canvas::Element...
+	public: // Element...
 		unify::Size< float > GetContentSize() const override;
 		void UpdateLayout( UpdateParams params, unify::Rect< float > parentArea ) override;
 		void Update( const UpdateParams & params ) override;

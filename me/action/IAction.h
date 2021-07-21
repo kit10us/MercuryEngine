@@ -15,7 +15,7 @@ namespace me::action
 	public:
 		typedef std::shared_ptr< IAction > ptr;
 
-		virtual ~IAction() {}
+		virtual ~IAction() = default;
 
 		/// <summary>
 		/// Perform the action.	Returns true on success.

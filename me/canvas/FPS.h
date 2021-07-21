@@ -19,6 +19,7 @@ namespace me::canvas
 	public:
 		FPS( me::game::IGame * gameInstance, render::Effect::ptr effect, Anchor anchor = Anchor::TopRight, unify::V2< float > scale = { 1, 1 }, unify::V2< float > offset = {0, 0} );
 		
+	public: // IElement...
 		void Update( const UpdateParams & params ) override;
 	};
 }

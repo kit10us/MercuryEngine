@@ -11,13 +11,24 @@ Grid::Grid( game::IGame * gameInstance, unify::RowColumn< size_t > rc, unify::Si
 	: Element( gameInstance, offset, { 0, 0 }, anchor )
 	, m_rc{ rc }
 	, m_size{ size }
-	, m_changed( true )
+	, m_changed{ true }
 {
+}
+
+void Grid::AddItem(IElement::ptr item)
+{
+	/*
+	m_items.push_back( item );
+	m_changed = true;
+	*/
 }
 
 unify::Size< float > Grid::GetContentSize() const
 {
-	if( ! IsEnabled() ) return{ 0, 0 };
+	if (!IsEnabled())
+	{
+		return{ 0, 0 };
+	}
 	
 	return{ 100, 160 }; // TODO:
 }
@@ -84,12 +95,4 @@ void Grid::OnSuspend()
 
 void Grid::OnResume()
 {
-}
-
-void Grid::AddItem( IElement::ptr item )
-{
-	/*
-	m_items.push_back( item );
-	m_changed = true;
-	*/
 }
