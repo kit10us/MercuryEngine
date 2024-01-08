@@ -106,6 +106,8 @@ void Game::Initialize( os::IOS::ptr os )
 
 	// Add general defines.
 	defines["TARGET"] = debug->IsDebug() ? "Debug" : "Release";
+	defines["OS"] = os->GetEnvironment().lock()->GetName();
+	defines["PLATFORM"] = os->GetEnvironment().lock()->GetPlatform();
 
 	// Create time stamp so we can track how long ingine initialization takes.
 	using namespace std::chrono;
@@ -320,7 +322,11 @@ void Game::Initialize( os::IOS::ptr os )
 						unify::Path pathDiscovery{
 							GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
 						};
-						AddExtension( path, &node );
+						if (pathDiscovery.Empty())
+						{
+							Debug()->ReportError(me::debug::ErrorLevel::Critical, "Asset \"" + path.ToString() + "\" not found!");
+						}
+						AddExtension( pathDiscovery, &node );
 					}
 					else if (node.IsTagName("inputs"))
 					{
@@ -489,7 +495,7 @@ void Game::Tick()
 
 void Game::Draw()
 {
-	for( int index = 0; index < GetOS()->RendererCount(); ++index )
+	for( size_t index = 0; index < GetOS()->RendererCount(); ++index )
 	{
 		IRenderer * renderer = m_os->GetRenderer( index );
 		renderer->BeforeRender();
@@ -768,7 +774,7 @@ void Game::Private_Shutdown()
 		block->Log( "time: " + std::string( std::ctime( &t ) ) );
 		block->Log( "frames: " + unify::Cast< std::string >( renderInfo.FrameID() ) + ", total delta: " + unify::Cast< std::string >( renderInfo.GetTotalDelta() ) + "s,  average fps:" + unify::Cast< std::string >( renderInfo.GetFPS() ) );
 
-		block->Log( "Finalizing shuting down, longer unavailable." );
+		block->Log( "Finalizing shuting down, logger unavailable." );
 	} );
 
 		if( m_os )

@@ -13,8 +13,8 @@ namespace me
 		class IndexLock : public unify::DataLock
 		{
 		public:
-			void SetIndex( unsigned int index, unsigned int );
-			unsigned int GetIndex( unsigned int index );
+			void SetIndex( size_t index, size_t value );
+			size_t GetIndex( size_t index );
 		};
 	}
 } 

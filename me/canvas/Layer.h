@@ -14,7 +14,7 @@ namespace me::canvas
 	class Layer : public canvas::Element
 	{
 		std::list< IElement::ptr > m_elements;
-		std::map< std::string, IElement::ptr, unify::string::CaseInsensitiveLessThanTest > m_elementMap;
+		std::map< std::string, IElement::ptr, unify::string::CaseInsensitiveLessThanEqualTest > m_elementMap;
 
 	public:
 		typedef std::shared_ptr< canvas::Layer > ptr;

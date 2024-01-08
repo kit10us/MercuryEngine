@@ -166,7 +166,7 @@ RenderMethod RenderMethod::CreateTriangleStripIndexed( size_t vertexCount, unsig
 	method.startVertex = 0;
 	method.baseVertexIndex = baseVertexIndex;
 	method.minIndex = 0;
-	method.vertexCount = vertexCount;
+	method.vertexCount = (unsigned int)vertexCount;
 	method.startIndex = startIndex;
 	method.primitiveCount = indexCount - 2;
 	method.indexCount = indexCount;
@@ -183,7 +183,7 @@ RenderMethod RenderMethod::CreateTriangleListIndexed( size_t vertexCount, unsign
 	method.startVertex = 0;
 	method.baseVertexIndex = baseVertexIndex;
 	method.minIndex = 0;
-	method.vertexCount = vertexCount;
+	method.vertexCount = (unsigned int)vertexCount;
 	method.startIndex = startIndex;
 	method.primitiveCount = indexCount / 3;
 	method.indexCount = indexCount;

@@ -16,7 +16,7 @@ namespace me::scene::component
 		std::string m_typeName;
 		bool m_enabled;
 		interop::Interop m_values;
-		std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanTest > m_interfaceMap;
+		std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanEqualTest > m_interfaceMap;
 		SceneManager* m_sceneManager;
 
 	protected:

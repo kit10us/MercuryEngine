@@ -29,7 +29,7 @@ VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 		m_instances.push_back( slot.GetAttributeElse( "instances", 0 ) );
 		if ( m_instancing.back() != Instancing::None )
 		{
-			m_instanceingSlot = m_numberOfSlots - 1;
+			m_instanceingSlot = (int)m_numberOfSlots - 1;
 		}
 		
 		SlotClass::TYPE	slotClass = SlotClass::FromString( slot.GetAttributeElse< std::string >( "class", "vertex" ) );
@@ -38,10 +38,10 @@ VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 		for ( auto && element : slot.Children( "element" ) )
 		{
 			VertexElement vertexElement( element );
-			vertexElement.InputSlot = m_numberOfSlots - 1;
-			vertexElement.AlignedByteOffset = m_sizeInBytes[ vertexElement.InputSlot ];
+			vertexElement.InputSlot = (unsigned int)m_numberOfSlots - 1;
+			vertexElement.AlignedByteOffset = (unsigned int)m_sizeInBytes[ vertexElement.InputSlot ];
 			vertexElement.SlotClass = slotClass;
-			vertexElement.InstanceDataStepRate = instanceDataStepRate;
+			vertexElement.InstanceDataStepRate = (unsigned int)instanceDataStepRate;
 
 			std::string name = vertexElement.SemanticName;	  
 			m_elementMap[name] = { m_numberOfSlots - 1, m_allElements.size() }; // The next index is size, so this is what we will reference from our map.
@@ -76,7 +76,7 @@ VertexDeclaration::VertexDeclaration( const qjson::Object json )
 				m_elements.resize( m_numberOfSlots, std::vector< VertexElement >() );
 			}
 	
-			element.AlignedByteOffset = m_sizeInBytes[ element.InputSlot ];
+			element.AlignedByteOffset = (unsigned int)m_sizeInBytes[ element.InputSlot ];
 			
 			m_elementMap[name] = { element.InputSlot, m_allElements.size() }; // The next index is size, so this is what we will reference from our map.
 			m_allElements.push_back( element );

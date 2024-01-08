@@ -99,7 +99,7 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 		VertexElement positionE = CommonVertexElement::Position( stream );
 		VertexElement diffuseE = CommonVertexElement::Diffuse( stream );
 
-		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
+		unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 		// All from inf...
 
@@ -157,7 +157,7 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 
 		VertexBufferParameters vbParameters{ vd, { { vertexCount, vertices.get() } } };
 		set.AddVertexBuffer( vbParameters );
-		set.AddMethod( RenderMethod::CreateLineList( 0, lineSegmentCount ) );
+		set.AddMethod( RenderMethod::CreateLineList( 0, (unsigned int)lineSegmentCount ) );
 
 		m_geometry.reset( mesh );
 		GetObject()->MakeDirty();

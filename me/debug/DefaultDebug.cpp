@@ -78,38 +78,27 @@ void DefaultDebug::SetErrorHandler( IErrorHandler::ptr errorHandler )
 ReportErrorResult DefaultDebug::ReportError( ErrorLevel level, std::string error, bool canContinue, bool canRetry )
 {
 	bool isCritical{};
+	std::string errorText{};
 	switch ( level )
 	{
 		using enum me::debug::ErrorLevel;
 	case Engine:
-		m_criticalErrors.push_back( "Engine Failure: \"" + error + "\"" );
-		GetLogger()->Log( "Engine Failure! \"" + error + "\"" );
-		break;
-
-	case ErrorLevel::Extension:
-		m_criticalErrors.push_back( "Extension Failure: \"" + error + "\"" );
-		GetLogger()->Log( "Extension Failure: \"" + error + "\"" );
-		break;
-
-	case ErrorLevel::Critical:
-		GetLogger()->Log( "Critical Failure: \"" + error + "\"" );
-		{
-			m_criticalErrors.push_back( "Critical Failure: \"" + error + "\"" );
-		}
+	case Extension:
+	case Critical:
+		errorText = ErrorLevelToString(level) + " failure: \"" + error + "\"";
+		isCritical = true;
 		break;
 
 	case ErrorLevel::Failure:
-		GetLogger()->Log( "General Failure: \"" + error + "\"" );
+		errorText = ErrorLevelToString(level) + " failure: \"" + error + "\"";
 		isCritical = m_failuresAsCritial;
 		break;
 
 	case ErrorLevel::Warning:
-		isCritical = m_warningAsCritical;
-		GetLogger()->Log( "Warning: " + error );
+		errorText = ErrorLevelToString(level) + ": \"" + error + "\"";
 		break;
 	}
 
-	std::string errorText = ErrorLevelToString( level ) + ": \"" + error + "\"";
 	GetLogger()->Log( errorText );
 
 	if ( isCritical == true )

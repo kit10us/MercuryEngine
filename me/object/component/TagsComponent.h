@@ -46,7 +46,7 @@ namespace me
 
 			private:
 				std::vector< std::string > m_tagValues; // Index is mapped.
-				std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanTest > m_tagLookup;
+				std::map< std::string, size_t, unify::string::CaseInsensitiveLessThanEqualTest > m_tagLookup;
 			};
 		}
     }

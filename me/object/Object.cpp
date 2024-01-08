@@ -79,14 +79,14 @@ void Object::RemoveComponent( component::IObjectComponent::ptr component )
 	component->OnDetach( this );
 }
 
-component::IObjectComponent::ptr Object::GetComponent( int index )
+component::IObjectComponent::ptr Object::GetComponent( size_t index )
 {
-	if ( index > (int)m_components.size() )
+	if ( index > m_components.size() )
 	{
 		return nullptr;
 	}
 
-	int i = 0;
+	size_t i {};
 	for( auto component : m_components )
 	{
 		if( index == i ) return component.Component();

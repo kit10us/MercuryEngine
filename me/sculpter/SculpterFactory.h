@@ -27,7 +27,7 @@ namespace me
 
 		private:
 			me::game::Game *m_game;
-			std::map< std::string, IShapeCreator::ptr, unify::string::CaseInsensitiveLessThanTest > m_creators;
+			std::map< std::string, IShapeCreator::ptr, unify::string::CaseInsensitiveLessThanEqualTest > m_creators;
 		};
 	}
 }

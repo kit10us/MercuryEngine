@@ -51,7 +51,7 @@ void CSVLoggerListener::LogEvent(const kit::debug::LogEvent* event)
 
 	stream << date.str() << ",";
 	stream << time.str() << ",";
-	stream << "\"" << event->catagory << "\",";
+	stream << "\"" << event->category << "\",";
 	stream << "\"" << event->location << "\",";
 	stream << "\"" << formattedText << "\"" << endl;
 

@@ -116,7 +116,7 @@ std::string ElementFormat::ToString( ElementFormat::TYPE format )
 	case ElementFormat::ColorUNorm:
 		return "ColorUNorm";
 	case ElementFormat::Unknown:
-		return 0;
+		return {};
 	default:
 		throw unify::Exception( "Vertex declaration type not support!" );
 	}

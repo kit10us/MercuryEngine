@@ -104,7 +104,7 @@ size_t ConstantTable::AddVariable( size_t bufferIndex, ConstantVariable variable
 
 	if ( variable.hasDefault )
 	{
-		m_hasDefaults |= 1 << bufferIndex;
+		m_hasDefaults |= (size_t)1 << bufferIndex;
 	}			  
 
 	return myIndex;
@@ -153,5 +153,5 @@ Reference ConstantTable::GetProjection() const
 
 bool ConstantTable::HasDefaults( size_t buffer ) const
 {
-	return (1 << buffer) == (m_hasDefaults & (1 << buffer));
+	return ((size_t)1 << buffer) == (m_hasDefaults & ((size_t)1 << buffer));
 }

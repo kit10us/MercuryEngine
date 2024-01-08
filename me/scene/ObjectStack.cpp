@@ -85,7 +85,7 @@ bool ObjectStack::DestroyObject( Object * object )
 	if( itr != m_oldObjects.end() )
 	{
 		// Find our object index by subtracting our pointer from the first item.
-		int objectIndex = object - (Object*)&m_objects[0];
+		int objectIndex = (int)(object - (Object*)&m_objects[0]);
 
 		object->SetAlive( false );
 		object->ClearComponents();

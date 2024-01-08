@@ -15,7 +15,7 @@ namespace me
 			typedef void* HInstance;
 			typedef long * LResult;
 			typedef unsigned int * WParam;
-			typedef long LParam;
+			typedef void* LParam;
 			typedef void* WndProc;
 
 			struct OSFood

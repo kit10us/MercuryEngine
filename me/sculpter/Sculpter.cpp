@@ -74,7 +74,7 @@ bool Sculpter::Build( me::render::PrimitiveList & primitiveList, me::render::Eff
 		// Create vertex chunk...
 		VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * sheet->stats.totalVertices] );
-		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), sheet->stats.totalVertices, unify::DataLockAccess::ReadWrite, 0 );
+		unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)sheet->stats.totalVertices, unify::DataLockAccess::ReadWrite, 0 );
 
 		size_t triangleCount = sheet->stats.totalTriangles;
 		size_t indexCount = sheet->stats.totalIndices;
@@ -102,7 +102,7 @@ bool Sculpter::Build( me::render::PrimitiveList & primitiveList, me::render::Eff
 		set.SetEffect( effect );
 		set.AddVertexBuffer( vbParameters );
 		set.AddIndexBuffer( { { { sheet->stats.totalIndices, &indices[0] } }, bufferUsage } );
-		set.AddMethod( RenderMethod::CreateTriangleListIndexed( sheet->stats.totalVertices, indexCount, 0, 0 ) );
+		set.AddMethod( RenderMethod::CreateTriangleListIndexed( sheet->stats.totalVertices, (unsigned int)indexCount, 0, 0 ) );
 	}
 	return true;
 }

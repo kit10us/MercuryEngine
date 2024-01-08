@@ -723,6 +723,9 @@
     <ClInclude Include="me\debug\CSVLoggerListener.h">
       <Filter>me\debug</Filter>
     </ClInclude>
+    <ClInclude Include="me\os\IEnvironment.h">
+      <Filter>me\os</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">

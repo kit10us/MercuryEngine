@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/render/IIndexBuffer.h>
 #include <vector>
 
 namespace me
@@ -13,8 +14,8 @@ namespace me
 		{
 			FaceOutput();
 
-			size_t index;
-			std::vector< size_t > indices;
+			render::Index32 index;
+			std::vector< me::render::Index32 > indices;
 		};
 	}
 }

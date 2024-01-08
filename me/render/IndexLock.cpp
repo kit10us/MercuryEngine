@@ -6,14 +6,14 @@
 using namespace me;
 using namespace render;
 
-void IndexLock::SetIndex( unsigned int index, unsigned int value )
+void IndexLock::SetIndex( size_t index, size_t value )
 {
 	memcpy( (unsigned char*)m_data + index * m_stride, &value, m_stride );
 }
 
-unsigned int IndexLock::GetIndex( unsigned int index )
+size_t IndexLock::GetIndex( size_t index )
 {
-	unsigned int value = 0;
-	memset( &value, (int)((unsigned char*)m_data + index * m_stride), m_stride );
+	size_t value = 0;
+	memset( (unsigned char*)&value, int((intptr_t)m_data) + (int)(index * m_stride), m_stride );
 	return value;
 }

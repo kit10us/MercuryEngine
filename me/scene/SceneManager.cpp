@@ -59,7 +59,7 @@ void SceneManager::AddScene( IScene::ptr scene )
 	m_scenes.Add( scene->GetName(), scene );
 }
 
-int SceneManager::FindSceneIndex( std::string name )
+size_t SceneManager::FindSceneIndex( std::string name )
 {
 	return m_scenes.Find( name );
 }

@@ -169,7 +169,7 @@ void TextElement::UpdateLayout( UpdateParams params, unify::Rect< float > parent
 
 		size_t vbSizeInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vbSizeInBytes] );
-		unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
+		unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 		VertexElement positionE = CommonVertexElement::Position( 0 );
 		VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );
@@ -227,7 +227,7 @@ void TextElement::Render( const render::Params & params )
 
 	m_vertexBuffer->Use();
 
-	RenderMethod method( RenderMethod::CreateTriangleList( 0, m_text.length() * 2 ) );
+	RenderMethod method( RenderMethod::CreateTriangleList( 0, (unsigned int)m_text.length() * 2 ) );
 	
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );

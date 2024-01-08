@@ -169,7 +169,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
+	unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
 
 	// Build depth buffer...	
 	bool hasHeightHap = false;
@@ -306,7 +306,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 			unsigned int v2 = v0 + (faces.row + 1 );
 			unsigned int v3 = v2 + 1;
 
-			unsigned int firstIndex = IndicesPerRow * c + r * IndicesPerCell;
+			unsigned int firstIndex = (unsigned int)(IndicesPerRow * c + r * IndicesPerCell);
 			indices[firstIndex + 0] = v0;
 			indices[firstIndex + 1] = v1;
 			indices[firstIndex + 2] = v2;

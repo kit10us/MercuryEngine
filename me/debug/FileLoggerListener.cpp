@@ -114,9 +114,9 @@ void FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 
 	stream << date.str() << " " << time.str() << ": ";
 	
-	if (event->catagory.empty() == false)
+	if (event->category.empty() == false)
 	{
-		stream << "[" << event->catagory << "] ";
+		stream << "[" << event->category << "] ";
 	}
 	else
 	{

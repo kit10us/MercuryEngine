@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <me/os/IEnvironment.h>
 #include <me/render/IRendererFactory.h>
 #include <me/render/Display.h>
 #include <me/os/IExtension.h>
@@ -34,6 +35,8 @@ namespace me
 
 			virtual ~IOS() { }
 
+			virtual IEnvironment::weak_ptr GetEnvironment() const = 0;
+
 			/// <summary>
 			/// Get the game instance.
 			/// </summary>
@@ -63,12 +66,12 @@ namespace me
 			/// <summary>
 			/// Returns the number of renderers.
 			/// </summary>
-			virtual int RendererCount() const = 0;
+			virtual size_t RendererCount() const = 0;
 
 			/// <summary>
 			/// Get the system Renderer interface.
 			/// </summary>
-			virtual render::IRenderer * GetRenderer( int index ) const = 0;
+			virtual render::IRenderer * GetRenderer( size_t index ) const = 0;
 
 			/// <summary>
 			/// Set if we have focus. This is dependant on the OS, focus means the user's input

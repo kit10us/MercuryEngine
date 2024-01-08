@@ -45,7 +45,7 @@ namespace me::game
 		std::list< std::weak_ptr< UpdateLock > > m_locks;
 
 		std::vector< std::list< CommandListenerSet > > m_commandListeners;
-		std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanTest> m_commandMap;
+		std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanEqualTest> m_commandMap;
 		std::vector< std::string > m_commandList;
 
 		std::shared_ptr< kit::debug::IBlock > m_gameBlock;

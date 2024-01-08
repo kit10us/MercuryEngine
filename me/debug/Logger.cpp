@@ -53,7 +53,7 @@ std::list<kit::debug::ILogListener::ptr> Logger::GetListeners()
 	return m_listeners;
 }
 
-void Logger::Log(std::string text, std::string catagory, std::string location)
+void Logger::Log(std::string text, std::string category, std::string location)
 {
 	// Add time stamp to log text.
 	using namespace std;
@@ -64,7 +64,7 @@ void Logger::Log(std::string text, std::string catagory, std::string location)
 	kit::debug::LogEvent logEvent{};
 	logEvent.text = text;
 	logEvent.time = currentTime;
-	logEvent.catagory = catagory;
+	logEvent.category = category;
 	logEvent.location = location;
 	
 	m_events.push_back( logEvent );

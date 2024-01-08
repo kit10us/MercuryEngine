@@ -63,7 +63,7 @@ namespace me
 				bool m_update;
 				bool m_render;
 				interop::Interop m_values;
-				std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanTest > m_interfaceMap;
+				std::map< std::string, me::IThing*, unify::string::CaseInsensitiveLessThanEqualTest > m_interfaceMap;
 			};
 		}
 	}
