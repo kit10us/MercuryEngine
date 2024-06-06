@@ -41,6 +41,7 @@
 *.cache
 *.db
 *.opendb
+/.vs/
 
 # Local Temporary files (suck as backup files)
 *.bak

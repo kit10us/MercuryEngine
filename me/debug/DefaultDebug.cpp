@@ -81,10 +81,9 @@ ReportErrorResult DefaultDebug::ReportError( ErrorLevel level, std::string error
 	std::string errorText{};
 	switch ( level )
 	{
-		using enum me::debug::ErrorLevel;
-	case Engine:
-	case Extension:
-	case Critical:
+	case ErrorLevel::Engine:
+	case ErrorLevel::Extension:
+	case ErrorLevel::Critical:
 		errorText = ErrorLevelToString(level) + " failure: \"" + error + "\"";
 		isCritical = true;
 		break;

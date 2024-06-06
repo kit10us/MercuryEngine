@@ -2,6 +2,8 @@
 // All Rights Reserved
 
 #include <me/debug/FileLoggerListener.h>
+#include <iomanip>
+#include <sstream>
 
 using namespace me::debug;
 

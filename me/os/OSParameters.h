@@ -57,6 +57,7 @@ namespace me
 			unify::Path GetRunPath() const override;
 			size_t GetArgumentCount() const override;
 			std::string GetArgument( size_t i ) const override;
+			const std::vector<std::string> & Arguments() const;
 		};
 	}
 }

@@ -95,5 +95,8 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 
 std::shared_ptr< Effect > EffectFactory::Produce( unify::Parameters parameters )
 {
-	throw me::exception::FailedToCreate( "Attempted to create effect from parameters." );
+	m_game->Debug()->ReportError( debug::ErrorLevel::Engine,
+		"Attempted to create effect from parameters." 
+	);
+	return {};
 }

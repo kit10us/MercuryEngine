@@ -166,7 +166,7 @@ namespace me
 			/// <summary>
 			///
 			/// </summary>
-			virtual component::ISceneComponent* GetComponent( int index ) = 0;
+			virtual component::ISceneComponent* GetComponent( size_t index ) = 0;
 
 			/// <summary>
 			///

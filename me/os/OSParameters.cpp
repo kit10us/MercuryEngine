@@ -40,3 +40,8 @@ std::string OSParameters::GetArgument( size_t i ) const
 	assert( i < m_arguments.size() );
 	return m_arguments[ i ];
 }
+
+const std::vector<std::string> & OSParameters::Arguments() const
+{
+	return m_arguments;
+}

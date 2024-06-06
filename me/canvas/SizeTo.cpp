@@ -16,12 +16,11 @@ float SizeTo::GetSize( float parentSize, size_t totalWeight ) const
 {
 	switch ( type )
 	{
-		using enum Type;
-	case Pixels:
+	case Type::Pixels:
 		return value;
-	case Percent:
+	case Type::Percent:
 		return parentSize * value;
-	case Weighted:
+	case Type::Weighted:
 		return (float)totalWeight / value * parentSize;
 	default:
 		throw unify::Exception( "Invalied canvas SizeTo type!" );

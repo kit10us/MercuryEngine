@@ -159,11 +159,11 @@ void SceneManager::RemoveComponent( component::ISceneManagerComponent::ptr compo
 	component->OnDetach( this );
 }
 
-component::ISceneManagerComponent* SceneManager::GetComponent(int index)
+component::ISceneManagerComponent* SceneManager::GetComponent(size_t index)
 {
-	if (index > (int)m_components.size()) return nullptr;
+	if (index > m_components.size()) return nullptr;
 
-	int i = 0;
+	size_t i = 0;
 	for (auto component : m_components)
 	{
 		if (index == i) return component.get();

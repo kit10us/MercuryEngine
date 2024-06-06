@@ -21,7 +21,9 @@ void Layer::AddElement( IElement::ptr element, std::string name )
 {
 	if( name.empty() )
 	{
-		throw unify::Exception( "Attempted to add an element to a Layer with an invalid name!" );
+		GetGame()->Debug()->ReportError(debug::ErrorLevel::Engine,
+			"Attempted to add an element to a Layer with an invalid name!" 
+		);
 	}
 
 	AddElement( element );

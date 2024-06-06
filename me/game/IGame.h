@@ -121,7 +121,7 @@ namespace me
 			virtual int GetComponentCount() const = 0;
 			virtual void AddComponent( component::IGameComponent::ptr component ) = 0;
 			virtual void RemoveComponent( component::IGameComponent::ptr component ) = 0;
-			virtual component::IGameComponent::ptr GetComponent( int index ) = 0;
+			virtual component::IGameComponent::ptr GetComponent( size_t index ) = 0;
 			virtual component::IGameComponent::ptr GetComponent( std::string name ) = 0;
 			virtual int FindComponent( std::string name ) const = 0;
 

@@ -19,7 +19,7 @@ namespace me
 			virtual unify::Path GetRunPath() const = 0;
 			virtual size_t GetArgumentCount() const = 0;
 			virtual std::string GetArgument( size_t i ) const = 0;
-
+			virtual const std::vector<std::string>& Arguments() const = 0;
 		};
 	}
 }

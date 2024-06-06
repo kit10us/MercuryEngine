@@ -69,7 +69,7 @@ namespace me
 			int GetComponentCount() const;
 			void AddComponent( component::ISceneComponent::ptr component );
 			void RemoveComponent( component::ISceneComponent::ptr component );
-			component::ISceneComponent* GetComponent( int index );
+			component::ISceneComponent* GetComponent( size_t index );
 			component::ISceneComponent* GetComponent( std::string typeName );
 			int FindComponent( std::string typeName ) const;
 

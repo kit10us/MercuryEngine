@@ -26,16 +26,15 @@ namespace me::debug
 	{
 		switch ( level )
 		{
-			using enum ErrorLevel;
-		case Engine:
+		case ErrorLevel::Engine:
 			return "Engine";
-		case Extension:
+		case ErrorLevel::Extension:
 			return "Extension";
-		case Critical:
+		case ErrorLevel::Critical:
 			return "Critical";
-		case Failure:
+		case ErrorLevel::Failure:
 			return "Failure";
-		case Warning:
+		case ErrorLevel::Warning:
 			return "Warning";
 		default:
 			throw unify::Exception( "Invalid error level!" );

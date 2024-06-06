@@ -49,7 +49,7 @@ namespace me::scene
 		int GetComponentCount() const;
 		void AddComponent( component::ISceneManagerComponent::ptr component );
 		void RemoveComponent( component::ISceneManagerComponent::ptr component );
-		component::ISceneManagerComponent* GetComponent( int index );
+		component::ISceneManagerComponent* GetComponent( size_t index );
 		component::ISceneManagerComponent* GetComponent( std::string typeName );
 		int FindComponent( std::string typeName ) const;
 

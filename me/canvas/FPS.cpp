@@ -17,7 +17,7 @@ FPS::FPS( IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< fl
 		|| !effect->GetTexture( 0 )->GetSpriteDictionary().HasAscii( '.' )
 		|| !effect->GetTexture( 0 )->GetSpriteDictionary().HasAsciiNumeric() )
 	{
-		throw me::exception::FailedToCreate(
+		gameInstance->Debug()->ReportError(debug::ErrorLevel::Engine,
 			"Specified font, \"" + effect->GetTexture( 0 )->GetParameters()->source.ToString()
 			+ "\", is missing too many characters to be used with FPS Canvas element! (requires '=', '.', and 0 to 9)" 
 		);

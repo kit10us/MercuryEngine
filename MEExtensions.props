@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <MercuryEngine>$(MSBuildStartupDirectory)\MercuryEngine</MercuryEngine>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IntDir>$(ProjectDir)..\intermediate\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(ProjectDir)..\extensions\$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(MercuryEngine)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(Platform)/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\unify;$(ProjectDir)..\qxml;$(ProjectDir)..\QJson;$(ProjectDir)..\kitlogger;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\MercuryEngine;$(ProjectDir)..\packages;$(ProjectDir)..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="MercuryEngine">
+      <Value>$(MercuryEngine)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

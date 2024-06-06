@@ -1,4 +1,5 @@
 // Copyright (c) 2002 - 2018, Kit10 Studios LLC
+// Copyright (c) 2002 - 2018, Kit10 Studios LLC
 // All Rights Reserved
 
 #include <me/render/IRenderer.h>
@@ -105,9 +106,14 @@ void Game::Initialize( os::IOS::ptr os )
 	};
 
 	// Add general defines.
-	defines["TARGET"] = debug->IsDebug() ? "Debug" : "Release";
+	defines["TARGET"] = debug->IsDebug() ? "DebugWindows" : "ReleaseWindows"; // SAS TODO: Move functionality to platform library.
 	defines["OS"] = os->GetEnvironment().lock()->GetName();
 	defines["PLATFORM"] = os->GetEnvironment().lock()->GetPlatform();
+
+	for (auto define : defines)
+	{
+		Debug()->GetLogger()->Log("** " + define.first + ": " + define.second);
+	}
 
 	// Create time stamp so we can track how long ingine initialization takes.
 	using namespace std::chrono;
@@ -126,12 +132,46 @@ void Game::Initialize( os::IOS::ptr os )
 	bool inQuote = false;
 	std::string working;
 
+	// SAS TODO: Switching to enumarion for args so I can skip args where I need followup args.
+	/*
 	for( size_t i = 0; i < GetOS()->GetOSParameters()->GetArgumentCount(); i++ )
 	{
 		auto arg = GetOS()->GetOSParameters()->GetArgument( i );
 		if( unify::Path( arg ).IsExtension( ".me_setup" ) )
 		{
 			m_setup = unify::Path( arg );
+		}
+	}
+	*/
+	auto arguments = GetOS()->GetOSParameters()->Arguments();
+	for (auto arg = arguments.begin(); arg != arguments.end(); arg++)
+	{
+		// Check for a setup script.
+		// Can have multiple.
+		if (unify::Path(*arg).IsExtension(".me_setup"))
+		{
+			m_setup = unify::Path(*arg);
+		}
+
+		// Define a script variable.
+		// format: -define name=value
+		// We just skip malformed defines
+		else if (unify::string::StringIs(*arg, "-define"))
+		{
+			arg++;
+			if (arg == arguments.end())
+			{
+				continue;
+			}
+
+			auto split = unify::string::Split<std::string>(*arg, '=');
+			std::string name = split[0];
+			std::string value{};
+			if (split.size() > 1)
+			{
+				value = split[1];
+			}
+			defines[name] = value;
 		}
 	}
 
@@ -636,11 +676,11 @@ void Game::RemoveComponent( component::IGameComponent::ptr component )
 	component->OnDetach( this );
 }
 
-component::IGameComponent::ptr Game::GetComponent( int index )
+component::IGameComponent::ptr Game::GetComponent( size_t index )
 {
-	if ( index > (int)m_components.size() ) return component::IGameComponent::ptr();
+	if ( index > m_components.size() ) return component::IGameComponent::ptr();
 
-	int i = 0;
+	size_t i = 0;
 	for ( auto component : m_components )
 	{
 		if ( index == i ) return component;
