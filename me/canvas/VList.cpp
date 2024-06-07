@@ -97,5 +97,6 @@ IElement::ptr VList::FindItem( std::string name )
 			return item.GetItem();
 		}
 	}
-	throw unify::Exception( "Item not found within VList!" );
+	
+	return {};
 }

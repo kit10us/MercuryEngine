@@ -8,6 +8,9 @@
 
 namespace me::debug
 {
+	/// <summary>
+	/// Used to log code block entrance and exit.
+	/// </summary>
 	class Block : public kit::debug::IBlock
 	{
 		kit::debug::ILogger* m_logger;

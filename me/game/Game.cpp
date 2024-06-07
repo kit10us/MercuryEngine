@@ -16,8 +16,6 @@
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
-#include <me/exception/FailedToCreate.h>
-#include <me/exception/FileNotFound.h>
 #include <chrono>
 #include <ctime>
 #include <functional>
@@ -177,13 +175,10 @@ void Game::Initialize( os::IOS::ptr os )
 	// Check for OS in setup...
 	if( !m_setup.Empty() )
 	{
-		debug->Try( [&]
+		if( !m_setup.Exists() )
 		{
-			if( !m_setup.Exists() )
-			{
-				throw exception::FileNotFound( m_setup );
-			}
-		}, debug::ErrorLevel::Engine, false, true );
+			Debug()->ReportError(debug::ErrorLevel::Engine, "File not found " + m_setup.ToString() );
+		}
 
 		// First loader pass
 		block->SubBlock( "XMLLoaderFirstPass" )->Exec( [&]( auto block ) {
@@ -233,25 +228,22 @@ void Game::Initialize( os::IOS::ptr os )
 
 	if ( ! m_os )
 	{
-		throw me::exception::FailedToCreate( "No renderer specified, or invalid renderer!" );
+		Debug()->ReportError(debug::ErrorLevel::Engine, "No renderer specified, or invalid renderer!");
 	}
 					  	
 	// User setup...
 	if ( ! Setup( GetOS() ) )
 	{
-		throw me::exception::FailedToCreate( "Failure attempting to setup with OS configuration!" );
+		Debug()->ReportError(debug::ErrorLevel::Engine, "Failure attempting to setup with OS configuration!" );
 	}
 
 	// Early setup...
 	if ( ! m_setup.Empty() )
 	{
-		debug->Try( [&]
+		if( ! m_setup.Exists() )
 		{
-			if( ! m_setup.Exists() )
-			{
-				throw exception::FileNotFound( m_setup );
-			}
-		}, debug::ErrorLevel::Engine, false, true );
+			Debug()->ReportError(debug::ErrorLevel::Engine, "File not found " + m_setup.ToString());
+		}
 
 		// Second loader pass
 		block->SubBlock( "xmlLoader second pass" )->Exec( [&]( auto block ) {
@@ -394,12 +386,10 @@ void Game::Initialize( os::IOS::ptr os )
 	}
 	block->Log( "Done." );
 
-	block->SubBlock( "Startup" )->Exec( [&]( auto block ) {
-		debug->Try( [&]
-			{
-				Startup();
-			}, debug::ErrorLevel::Engine, false, false );
-	} );
+	{
+		block->SubBlock("Startup");
+		Startup();
+	}
 
 	block->Log( "iterate components' OnAfterStart", "Components" );
 	for ( auto&& component : m_components )
@@ -922,13 +912,8 @@ const debug::IDebug * Game::Debug() const
 
 void Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
-	m_gameBlock->SubBlock( "AddExtension" )->Exec( [&]( auto block ) {
-		block->Log( "Extension \"" + path.ToString() + "\"" );
-		Debug()->Try( [&]
-			{
-				os::IExtension::ptr extension{ GetOS()->CreateExtension( path, element ) };
-
-				m_extensions.push_back( extension );
-			}, debug::ErrorLevel::Extension, false, false );
-	} );
+	auto block = m_gameBlock->SubBlock("AddExtension");
+	block->Log( "Extension \"" + path.ToString() + "\"" );
+	os::IExtension::ptr extension{ GetOS()->CreateExtension( path, element ) };
+	m_extensions.push_back( extension );
 }

@@ -19,7 +19,6 @@ namespace me::debug
 		void LogCSVHeader();
 		
 	public: // kit::debug::ILogListener...
-		void LogEvent( const kit::debug::LogEvent* event ) override;
-	
+		bool LogEvent( const kit::debug::LogEvent* event ) override;
 	};
 }

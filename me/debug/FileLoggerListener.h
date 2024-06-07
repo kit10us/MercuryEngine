@@ -62,6 +62,6 @@ namespace me::debug
 		unify::Path GetPath() const override;
 
 	public: // kit::debug::ILogListener...
-		void LogEvent( const kit::debug::LogEvent* event ) override;
+		bool LogEvent( const kit::debug::LogEvent* event ) override;
 	};
 }

@@ -99,7 +99,7 @@ unify::Path FileLoggerListener::GetPath() const
 	return fullFilename;
 }
 
-void FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
+bool FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 {
 	using namespace std;
 	
@@ -134,8 +134,6 @@ void FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 
 	stream.flush();
 
-	if ( stream.fail() )
-	{
-		throw std::exception( "Failed to write to file logger!" );
-	}
+	// throw std::exception("Failed to write to file logger!");
+	return stream.fail() != true;
 }

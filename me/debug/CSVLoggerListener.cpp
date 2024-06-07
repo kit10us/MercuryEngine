@@ -23,7 +23,7 @@ void CSVLoggerListener::LogCSVHeader()
 	stream << "date,time,category,location,text\n";
 }
 
-void CSVLoggerListener::LogEvent(const kit::debug::LogEvent* event)
+bool CSVLoggerListener::LogEvent(const kit::debug::LogEvent* event)
 {
 	using namespace std;
 
@@ -59,9 +59,7 @@ void CSVLoggerListener::LogEvent(const kit::debug::LogEvent* event)
 
 	stream.flush();
 
-	if ( stream.fail() )
-	{
-		throw std::exception( "Failed to write to CSV logger!" );
-	}
+	// throw std::exception( "Failed to write to CSV logger!" );
+	return stream.fail() != true;
 }
 

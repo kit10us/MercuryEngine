@@ -48,7 +48,8 @@ kit::debug::IBlock::ptr Block::SubBlock( std::string name )
 {
 	if ( *m_loggerIsAlive != true )
 	{
-		throw unify::Exception( "Attempted to create sub-block where logger is null!" );
+		// throw unify::Exception( "Attempted to create sub-block where logger is null!" );
+		return {};
 	}
 
 	auto block{ m_logger->CreateBlock( name ) };
