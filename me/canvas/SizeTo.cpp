@@ -23,4 +23,5 @@ float SizeTo::GetSize( float parentSize, size_t totalWeight ) const
 	case Type::Weighted:
 		return (float)totalWeight / value * parentSize;
 	}
+	return {};
 }

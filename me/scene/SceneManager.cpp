@@ -64,7 +64,7 @@ size_t SceneManager::FindSceneIndex( std::string name )
 	return m_scenes.Find( name );
 }
 													  
-std::string SceneManager::GetSceneName( int index )
+std::string SceneManager::GetSceneName(size_t index)
 {
 	return m_scenes.GetName( index );
 }

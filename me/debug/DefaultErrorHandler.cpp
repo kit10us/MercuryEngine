@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/debug/DefaultErrorHandler.h>
-#include <me/exception/FileNotFound.h>
+#include <port/Debug.h>
 
 using namespace me::debug;
 
@@ -19,7 +19,9 @@ ReportErrorResult DefaultErrorHandler::ReportError( ErrorLevel level, std::strin
 {
 	if ( m_debug->GetErrorAsCritical( level ) )
 	{
-		throw unify::Exception( ErrorLevelToString( level ) + ": " + error );
+		port::DebugLogMessage(ErrorLevelToString(level) + ": " + error);
+		port::DebugBreak();
+		return ReportErrorResult::Abort;
 	}
 	else
 	{

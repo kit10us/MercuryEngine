@@ -37,7 +37,7 @@ namespace me::scene
 		void AddScene( IScene::ptr scene );
 
 		size_t FindSceneIndex( std::string name );
-		std::string GetSceneName( int index );
+		std::string GetSceneName(size_t index);
 
 		IScene* GetCurrentScene();
 		std::string GetPreviousSceneName();
