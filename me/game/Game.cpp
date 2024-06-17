@@ -187,9 +187,15 @@ void Game::Initialize( os::IOS::ptr os )
 			{
 				block->Log( "loading \"" + source.ToString() + "\"" );
 
-				auto script = scriptManager->Add( source.ToString(), source );
+				auto script = scriptManager->Add( source.ToString(), source);
+				script.OnFailure(
+					[&](std::string message)
+					{
+						Debug()->ReportError(debug::ErrorLevel::Engine, message);
+					}
+				);
 
-				qxml::Document doc( unify::Path{ script->GetSource() } );
+				qxml::Document doc( unify::Path{ script()->GetSource() } );
 
 				qxml::Element* setup = doc.GetRoot();
 				if ( setup )
@@ -253,8 +259,14 @@ void Game::Initialize( os::IOS::ptr os )
 				block->Log( "loading \"" + source.ToString() + "\"", "XML Loader");
 
 				auto script = scriptManager->Add( source.ToString(), source );
+				script.OnFailure(
+					[&](std::string message)
+					{
+						Debug()->ReportError(debug::ErrorLevel::Engine, message);
+					}
+				);
 
-				qxml::Document doc( unify::Path{ script->GetSource() } );
+				qxml::Document doc( unify::Path{ script()->GetSource() } );
 
 				qxml::Element* setup = doc.GetRoot();
 				if ( setup )
@@ -363,6 +375,19 @@ void Game::Initialize( os::IOS::ptr os )
 					{
 						size_t failures = GetInputManager()->AddInputActions(m_inputOwnership, &node, true );
 						block->Log( "Add input actions (failures = " + unify::Cast< std::string >(failures) + ")", "XML Loader");
+					}
+					else if (node.IsTagName("asset"))
+					{
+						auto type = node.GetAttribute("type")->GetString();
+						auto name = node.GetAttribute("name")->GetString();
+						auto path = node.GetAttribute("source")->GetString();
+
+						GetResourceHub().Load(type, name, unify::Path(ReplaceDefines(path))).Else(
+							[&]
+							{
+								Debug()->ReportError(debug::ErrorLevel::Engine, "Failure to load asset type: " + type + ", name: " + name + ", path: " + path + ".");
+							}
+						);
 					}
 				}
 			}

@@ -13,14 +13,20 @@ using namespace me::render;
 TextElement::TextElement( IGame * gameInstance, Effect::ptr effect, std::string text, Anchor anchor, unify::V2< float > scale, unify::V2< float > offset )
 	: Element( gameInstance, offset, {0, 0}, anchor )
 	, m_text( text )
-	, m_effect( effect )
-	, m_vertexCB{ effect->GetVertexShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
-	, m_pixelCB{ effect->GetPixelShader()->CreateConstantBuffer( BufferUsage::Dynamic ) }
 	, m_vertexBuffer{}
 	, m_changed( true )
 	, m_scale{ scale }
 	, m_shrinkToFit{ true }
 {
+	if (!effect)
+	{
+		gameInstance->Debug()->ReportError(debug::ErrorLevel::Failure, "TextElement's effect is invalid");
+	}
+
+	m_effect = effect;
+	m_vertexCB = { effect->GetVertexShader()->CreateConstantBuffer(BufferUsage::Dynamic) };
+	m_pixelCB = { effect->GetPixelShader()->CreateConstantBuffer(BufferUsage::Dynamic) };
+
 }
 		
 unify::Size< float > TextElement::GetContentSize() const

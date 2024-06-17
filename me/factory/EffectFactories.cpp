@@ -59,7 +59,14 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 				std::string name = child.GetAttributeElse< std::string >( "name", unify::Path( parameters.Get< std::string >( "source" ) ).FilenameNoExtension() );
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
-				effect->SetTexture( stage, textureManager->Add( name, unify::Path( parameters.Get< std::string >( "source" ) ), child.GetDocument()->GetPath().DirectoryOnly(), parameters ) );
+				auto texture = textureManager->Add(name, unify::Path(parameters.Get< std::string >("source")), child.GetDocument()->GetPath().DirectoryOnly(), parameters);
+				texture.OnFailure(
+					[&](std::string message) 
+					{ 
+						debug->ReportError(debug::ErrorLevel::Failure, message); 
+					}
+				);
+				effect->SetTexture( stage, texture.Value() );
 			}, debug::ErrorLevel::Failure );
 		}
 
@@ -69,23 +76,32 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 		// Load pixel shader.
 		else if ( child.IsTagName( "pixelshader" ) )
 		{
-			m_game->GetOS()->Debug()->Try( [&]
-			{
-				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
-				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
-				effect->SetPixelShader( pixelShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
-			}, debug::ErrorLevel::Failure, true, true );
+			auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
+			unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
+			auto shader = pixelShaderManager->Add(child.GetAttributeElse< std::string >("name", path.FilenameNoExtension()), source);
+			shader.OnFailure(
+				[&](std::string message)
+				{
+					debug->ReportError(debug::ErrorLevel::Failure, message);
+				}
+			);
+
+			effect->SetPixelShader(shader());
 		}
 
 		// Load 
 		else if ( child.IsTagName( "vertexshader" ) )
 		{
-			m_game->GetOS()->Debug()->Try( [&]
-			{
-				auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
-				unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
-				effect->SetVertexShader( vertexShaderManager->Add( child.GetAttributeElse< std::string >( "name", path.FilenameNoExtension() ), source ) );
-			}, debug::ErrorLevel::Failure, true, true );
+			auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
+			unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
+			auto shader = vertexShaderManager->Add(child.GetAttributeElse< std::string >("name", path.FilenameNoExtension()), source);
+			shader.OnFailure(
+				[&](std::string message)
+				{
+					debug->ReportError(debug::ErrorLevel::Failure, message);
+				}
+			);
+			effect->SetVertexShader(shader());
 		}
 		//void AddFrame( size_t frameIndex, float influence );
 	}
