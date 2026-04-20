@@ -10,7 +10,7 @@ using namespace render;
 
 TextureParameters::TextureParameters()
 	: size{}
-	, lockAccess{ unify::DataLockAccess::None, unify::DataLockAccess::Readonly }
+	, lockAccess{ util::DataLockAccess::None, util::DataLockAccess::Readonly }
 	, min( Filtering::Linear )
 	, mag( Filtering::Linear )
 	, mip( Filtering::Linear )
@@ -47,11 +47,11 @@ TextureParameters::TextureParameters( unify::Parameters parameters )
 	}
 	if( parameters.Exists( "lockaccess.cpu" ) )
 	{
-		lockAccess.cpu = unify::DataLockAccess::FromString( parameters.Get< std::string >( "lockaccess.cpu" ) );
+		lockAccess.cpu = Cast<util::DataLockAccess::TYPE>( parameters.Get< std::string >( "lockaccess.cpu" ) );
 	}
 	if( parameters.Exists( "lockaccess.gpu" ) )
 	{
-		lockAccess.gpu = unify::DataLockAccess::FromString( parameters.Get< std::string >( "lockaccess.gpu" ) );
+		lockAccess.gpu = Cast<util::DataLockAccess::TYPE>( parameters.Get< std::string >( "lockaccess.gpu" ) );
 	}
 	if( parameters.Exists( "source" ) )
 	{

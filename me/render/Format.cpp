@@ -9,7 +9,7 @@ using namespace render;
 
 Format::TYPE Format::FromString( std::string format )
 {
-	using unify::string::StringIs;
+	using unify::String::StringIs;
 
 	if ( StringIs( format, "Unknown" ) ) { return Format::Unknown; }
 	else if ( StringIs( format, "R32G32B32A32_Typeless" ) ) { return Format::R32G32B32A32_Typeless; }

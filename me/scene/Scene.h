@@ -76,7 +76,7 @@ namespace me
 			IObjectAllocator * GetObjectAllocator();
 			
 			object::Object * FindObject( std::string name ) override;	
-			std::list< HitInstance > FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const override;
+			std::list< HitInstance > FindObjectsWithinRay( unify::Ray<float> ray, float withinDistance ) const override;
 			std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const override;
 
 			void AddResources( unify::Path path ) override;

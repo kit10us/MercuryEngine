@@ -4,17 +4,14 @@
 #pragma once
 
 #include <unify/unify.h>
-#include <unify/DataLock.h>
+#include <me/util/DataLock.h>
 
-namespace me
+namespace me::render
 {
-	namespace render
+	class IndexLock : public util::DataLock
 	{
-		class IndexLock : public unify::DataLock
-		{
-		public:
-			void SetIndex( size_t index, size_t value );
-			size_t GetIndex( size_t index );
-		};
-	}
+	public:
+		void SetIndex( size_t index, size_t value );
+		size_t GetIndex( size_t index );
+	};
 } 

@@ -74,7 +74,7 @@ bool Sculpter::Build( me::render::PrimitiveList & primitiveList, me::render::Eff
 		// Create vertex chunk...
 		VertexDeclaration::ptr vd = effect->GetVertexShader()->GetVertexDeclaration();
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * sheet->stats.totalVertices] );
-		unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)sheet->stats.totalVertices, unify::DataLockAccess::ReadWrite, 0 );
+		util::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)sheet->stats.totalVertices, util::DataLockAccess::ReadWrite, 0 );
 
 		size_t triangleCount = sheet->stats.totalTriangles;
 		size_t indexCount = sheet->stats.totalIndices;

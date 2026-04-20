@@ -57,10 +57,20 @@ void LOD::Render( const render::Params & params, GeometryInstanceData * instance
 const unify::BBox< float > & LOD::ComputeBounds()
 {
 	// Merge all bouns into our bounds...
-	m_BBox.Clear();
-	for( std::list< LODNode >::iterator itr = m_list.begin(); itr != m_list.end(); ++itr )
+	bool first{true};
+	m_BBox = {};
+
+	for (std::list< LODNode >::iterator itr = m_list.begin(); itr != m_list.end(); ++itr)
 	{
-		m_BBox +=itr->GetGeometry()->GetBBox();
+		if (first)
+		{
+			m_BBox = itr->GetGeometry()->GetBBox();
+			first = false;
+		}
+		else
+		{
+			m_BBox += itr->GetGeometry()->GetBBox();
+		}
 	}
 
 	return m_BBox;

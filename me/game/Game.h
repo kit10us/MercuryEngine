@@ -7,11 +7,13 @@
 #include <me/render/Geometry.h>
 #include <me/render/Display.h>
 #include <me/script/IScript.h>
-#include <me/render/ITexture.h>
+#include <me/script/MshScripter.h>
 #include <me/render/ITexture.h>
 #include <me/render/Effect.h>
 #include <me/script/IScript.h>
 #include <me/debug/block.h>
+#include <io/IDocument.h>
+
 #include <unify/String.h>
 
 namespace me::game
@@ -31,6 +33,7 @@ namespace me::game
 		os::IOS::ptr m_os;
 		std::string m_startScene;
 		unify::Path m_setup;
+		unify::Path m_autoLoadExtensions;
 		bool m_isQuitting;
 		float m_totalStartupTime;
 		unify::Owner::ptr m_inputOwnership;
@@ -45,16 +48,21 @@ namespace me::game
 		std::list< std::weak_ptr< UpdateLock > > m_locks;
 
 		std::vector< std::list< CommandListenerSet > > m_commandListeners;
-		std::map< std::string /* command */, size_t /* command ID */, unify::string::CaseInsensitiveLessThanEqualTest> m_commandMap;
+		std::map< std::string /* command */, size_t /* command ID */, unify::String::CaseInsensitiveLessThanEqualTest> m_commandMap;
 		std::vector< std::string > m_commandList;
 
 		std::shared_ptr< kit::debug::IBlock > m_gameBlock;
 
-	protected: // User overrides...
-		virtual bool Setup( os::IOS* os ) override;
-		virtual void AddScenes( scene::SceneManager* sceneManager ) override;
-		virtual void Startup() override;
-		virtual void Shutdown() override;
+		script::MshScripter m_mshScripter;
+
+	protected: // me::game::IGame user overrides...
+		bool Setup( os::IOS* os ) override;
+		void AddScenes( scene::SceneManager* sceneManager ) override;
+		void Startup() override;
+		void Shutdown() override;
+
+		script::MshScripter& GetScripter() override;
+		const script::MshScripter& GetScripter() const override;
 
 	public:
 		Game( unify::Path setup );
@@ -69,6 +77,12 @@ namespace me::game
 	public: // me::game::IGame
 		void* Feed( std::string target, void* data ) override;
 		void Initialize( os::IOS::ptr os ) override;
+
+		/// <summary>
+		/// Called to automatically load extensions from the "auto\" directory.
+		/// </summary>
+		void AutoLoadExtensions();
+
 		void Tick() override;
 		void Draw() override;
 
@@ -81,6 +95,7 @@ namespace me::game
 		template< typename T >
 		rm::ResourceManager< T >* GetManager();
 
+		template<> rm::ResourceManager< io::IDocument >* GetManager();
 		template<> rm::ResourceManager< script::IScript >* GetManager();
 		template<> rm::ResourceManager< render::ITexture >* GetManager();
 		template<> rm::ResourceManager< render::Effect >* GetManager();

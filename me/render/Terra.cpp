@@ -4,6 +4,7 @@
 #include <me/render/Terra.h>
 #include <me/render/VertexUtil.h>
 #include <unify/Math.h>
+#include <unify/Colors.h>
 
 using namespace me;
 using namespace render;
@@ -169,7 +170,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 	VertexElement texE = CommonVertexElement::TexCoords( stream );
 
 	std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
-	unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), vertexCount, unify::DataLockAccess::ReadWrite, 0 );
+	util::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), vertexCount, util::DataLockAccess::ReadWrite, 0 );
 
 	// Build depth buffer...	
 	bool hasHeightHap = false;
@@ -181,7 +182,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 		unify::TexCoords height_uv;
 
 		TextureLock textlock;
-		heightMap.texture->LockRect( 0, textlock, 0, unify::DataLockAccess::Readonly );
+		heightMap.texture->LockRect( 0, textlock, 0, util::DataLockAccess::Readonly );
 
 		for ( unsigned int c = 0; c < (faces.column + 1); c++ )
 		{
@@ -222,7 +223,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 					((unsigned char*)textlock.pBits) + ( v * textlock.uStride + (h * textlock.bpp))
 						);
 
-				unify::ColorUnit result(heightMap.colorOp * unify::ColorUnit{ pixel });
+				unify::ColorUnit result(heightMap.colorOp * unify::Cast<unify::ColorUnit>(pixel));
 
 				// Perform modification to vertex...
 				float sum = result.SumComponents();
@@ -281,7 +282,7 @@ void Terra::CreateFromParameters( unify::Parameters & parameters )
 			unify::ColorUnit cb( unify::Lerp( diffuseDL, diffuseDR, v ) );
 			unify::ColorUnit cc( (ca + cb) / 2.0f );
 									   
-			unify::Color diffuse( cc );
+			unify::Color diffuse( unify::Cast<unify::Color>(cc) );
 									   
 			WriteVertex( *vd, lock, vertex, positionE, vPos );
 			WriteVertex( *vd, lock, vertex, normalE, vNormal );
@@ -332,7 +333,7 @@ bool Terra::ApplyHeightMap( TextureOpMap tom )
 	TextureLock textlock;
 	tom.texture->LockRect( 0, textlock, 0, true );
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -414,7 +415,7 @@ bool Terra::ApplyAlphaMap( TextureOpMap tom )
 	TextureLock textlock;
 	tom.texture->LockRect( 0, textlock, 0, true );
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -497,7 +498,7 @@ bool Terra::ApplyTextureMap( unsigned int dwMember, const unify::TexArea * pTexA
 	assert( 0 );
 
 	/*
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -538,7 +539,7 @@ bool Terra::Smooth( unsigned int uFlags )
 		return false;
 	}
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -623,7 +624,7 @@ bool Terra::ApplyTransparent( unsigned int uFlags, float fValue, float fToleranc
 	// Vertex rows and columns...
 	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -678,7 +679,7 @@ bool Terra::MakeWrappable( unsigned int uFlags )
 	// Vertex rows and columns...
 	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -761,7 +762,7 @@ bool Terra::FixSide( unsigned int uFlags, float fToDepth )
 	// Vertex rows and columns...
 	unify::RowColumn< unsigned int > rc( m_pointCount.row , m_pointCount.column );
 	
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -823,7 +824,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 	// Vertex rows and columns...
 	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -831,7 +832,7 @@ bool Terra::AlignSide( unsigned int uFlags, Terra * pTerraIn )
 
 	VertexElement positionE = CommonVertexElement::Position();
 
-	unify::DataLock lockIn;
+	util::DataLock lockIn;
 	BufferSet & setIn = pTerraIn->m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	setIn.GetVertexBuffer().Lock( lockIn );
 
@@ -897,7 +898,7 @@ bool Terra::NormalSide( unsigned int uFlags, const unify::V3< float > & normal )
 	// Vertex rows and columns...
 	unify::RowColumn< unsigned int > rc( m_pointCount.row, m_pointCount.column );
 
-	unify::DataLock lock;
+	util::DataLock lock;
 	BufferSet & set = m_primitiveList.GetBufferSet( 0 ); // TODO: hard coded (perhaps I could even move this to a function of PL, like take a sudo-shader function?).
 	set.GetVertexBuffer().Lock( lock );
 
@@ -963,7 +964,7 @@ bool Terra::RenderNormals()
 	
 	unsigned int dwNumNormals = m_primitiveList.GetNumVertices();
 			
-	unify::DataLock lock;
+	util::DataLock lock;
 	m_primitiveList.GetVertexBuffer().Lock( lock );
 
 	// Create new normals...

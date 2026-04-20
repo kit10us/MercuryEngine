@@ -3,10 +3,12 @@
 
 #pragma once
 
+#include <me/stats/Rate.h>
 #include <unify/Unify.h>
 #include <unify/Matrix.h>
 #include <unify/FrameSet.h>
 #include <unify/TimeDelta.h>
+#include <unify/Rate.h>
 #include <bitset>
 
 namespace me
@@ -39,6 +41,8 @@ namespace me
 
 			float GetFPS() const;
 
+			unify::RateCapture CaptureFPS() const;
+
 			void SetViewMatrix( const unify::Matrix & matrix );
 			const unify::Matrix & GetViewMatrix() const;
 
@@ -53,6 +57,7 @@ namespace me
 			unsigned int m_frameID;
 			unify::TimeDelta m_delta;
 			unify::TimeDelta m_totalDelta;
+			mutable unify::Rate< 10000 > m_fps;
 			unsigned int m_deltaCount;
 			unify::Matrix m_view;
 			unify::Matrix m_projection;

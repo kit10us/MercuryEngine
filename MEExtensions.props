@@ -11,10 +11,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(Platform)/$(Configuration);$(ProjectDir)..\unify\lib\$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)../lib/$(Platform)/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MercuryEngine.lib;qxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\unify;$(ProjectDir)..\qxml;$(ProjectDir)..\QJson;$(ProjectDir)..\kitlogger;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\MercuryEngine;$(ProjectDir)..\packages;$(ProjectDir)..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\unify;$(ProjectDir)..\qxml;$(ProjectDir)..\QJson;$(ProjectDir)..\kitlogger;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\MercuryEngine;$(ProjectDir)..\packages;$(ProjectDir)..\Portability;$(ProjectDir)..\interop;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>PORT_WINDOWS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

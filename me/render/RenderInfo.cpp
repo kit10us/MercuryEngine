@@ -14,6 +14,7 @@ RenderInfo::RenderInfo()
 , m_frameSetInstance( 0 )
 , m_delta{}
 , m_totalDelta{}
+, m_fps{}
 , m_deltaCount{}
 {
 }
@@ -26,6 +27,7 @@ RenderInfo::RenderInfo( const RenderInfo & info )
 , m_frameSetInstance( info.m_frameSetInstance )
 , m_delta{ info.m_delta }
 , m_totalDelta{ info.m_totalDelta}
+, m_fps{ info.m_fps }
 , m_deltaCount{ info.m_deltaCount }
 {
 }
@@ -50,6 +52,7 @@ RenderInfo & RenderInfo::operator=( const RenderInfo & info )
 	m_frameID = info.m_frameID;
 	m_view = info.m_view;
 	m_projection = info.m_projection;
+	m_fps = info.m_fps;
 	return *this;
 }
 
@@ -73,6 +76,7 @@ void RenderInfo::SetDelta( unify::TimeDelta delta )
 	m_delta = delta;
 	m_totalDelta += delta;
 	m_deltaCount++;
+	m_fps.Mark();
 }
 
 unify::TimeDelta RenderInfo::GetTotalDelta() const
@@ -93,6 +97,11 @@ unify::TimeDelta RenderInfo::GetAverageDelta() const
 float RenderInfo::GetFPS() const
 {
 	return 1.0f / GetAverageDelta().GetSeconds();
+}
+
+unify::RateCapture RenderInfo::CaptureFPS() const
+{
+	return m_fps.Capture();
 }
 
 void RenderInfo::SetViewMatrix( const unify::Matrix & matrix )

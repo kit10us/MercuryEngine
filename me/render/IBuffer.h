@@ -4,7 +4,7 @@
 #pragma once
 
 #include <me/render/BufferUsage.h>
-#include <me/render/IndexLock.h>
+#include <me/util/DataLock.h>
 #include <unify/unify.h>
 #include <unify/Flags.h>
 #include <memory>
@@ -67,22 +67,22 @@ namespace me
 			/// <summary>
 			/// Lock a sub-buffer.
 			/// </sumamry>
-			virtual void Lock( size_t bufferIndex, unify::DataLock & lock ) = 0;
+			virtual void Lock( size_t bufferIndex, util::DataLock & lock ) = 0;
 
 			/// <summary>
 			/// Unlock a sub-buffer for read-only access.
 			/// </sumamry>
-			virtual void LockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const = 0;
+			virtual void LockReadOnly( size_t bufferIndex, util::DataLock & lock ) const = 0;
 			
 			/// <summary>
 			/// Unlock a sub-buffer.
 			/// </summary>
-			virtual void Unlock( size_t bufferIndex, unify::DataLock & lock ) = 0;
+			virtual void Unlock( size_t bufferIndex, util::DataLock & lock ) = 0;
 
 			/// <summary>
 			/// Unlock a sub-buffer currently locked for read-only access.
 			/// </summary>
-			virtual void UnlockReadOnly( size_t bufferIndex, unify::DataLock & lock ) const = 0;
+			virtual void UnlockReadOnly( size_t bufferIndex, util::DataLock & lock ) const = 0;
 
 			/// <summary>
 			/// Returns true of a specific sub-buffer is locked, else false.

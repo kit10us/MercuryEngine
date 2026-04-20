@@ -6,9 +6,6 @@
 #include <me/render/ITexture.h>
 #include <me/render/IPixelShader.h>
 #include <me/render/IVertexShader.h>
-#include <me/render/VertexDeclaration.h>
-#include <me/render/IVertexBuffer.h>
-#include <unify/Matrix.h>
 #include <unify/Frame.h>
 
 namespace me

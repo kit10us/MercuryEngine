@@ -47,7 +47,7 @@ namespace me::interop
 
 		void Set( std::string value ) override
 		{
-			m_reference = unify::Cast< T >( value );
+			m_reference = unify::Cast< T, std::string >( value );
 		}
 
 		std::string Get() const override

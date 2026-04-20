@@ -88,6 +88,12 @@
     <Filter Include="me\sculpter">
       <UniqueIdentifier>{cdb8dfc3-61f7-4d4a-872e-3a274f2d00b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\stats">
+      <UniqueIdentifier>{977c094c-faef-4f2d-8133-568dd5df3268}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="me\util">
+      <UniqueIdentifier>{e8a6f52e-5c08-4c7b-8c3f-4274e8057a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -726,6 +732,18 @@
     <ClInclude Include="me\os\IEnvironment.h">
       <Filter>me\os</Filter>
     </ClInclude>
+    <ClInclude Include="me\stats\Rate.h">
+      <Filter>me\stats</Filter>
+    </ClInclude>
+    <ClInclude Include="me\util\DataLock.h">
+      <Filter>me\util</Filter>
+    </ClInclude>
+    <ClInclude Include="me\util\Cast.h">
+      <Filter>me\util</Filter>
+    </ClInclude>
+    <ClInclude Include="me\script\MshScripter.h">
+      <Filter>me\script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1157,6 +1175,12 @@
     <ClCompile Include="me\debug\CSVLoggerListener.cpp">
       <Filter>me\debug</Filter>
     </ClCompile>
+    <ClCompile Include="me\util\DataLock.cpp">
+      <Filter>me\util</Filter>
+    </ClCompile>
+    <ClCompile Include="me\script\MshScripter.cpp">
+      <Filter>me\script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="me\frameanimation\FrameAnimationKey.inl">
@@ -1164,6 +1188,9 @@
     </None>
     <None Include="me\interop\MyThing.inl">
       <Filter>me\interop</Filter>
+    </None>
+    <None Include="me\script\MshScripter.inl">
+      <Filter>me\script</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -175,7 +175,7 @@ void TextElement::UpdateLayout( UpdateParams params, unify::Rect< float > parent
 
 		size_t vbSizeInBytes = vd->GetSizeInBytes( 0 ) * vertexCount;
 		std::shared_ptr< unsigned char > vertices( new unsigned char[vbSizeInBytes] );
-		unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)vertexCount, unify::DataLockAccess::ReadWrite, 0 );
+		util::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)vertexCount, util::DataLockAccess::ReadWrite, 0 );
 
 		VertexElement positionE = CommonVertexElement::Position( 0 );
 		VertexElement texcoordsE = CommonVertexElement::TexCoords( 0 );

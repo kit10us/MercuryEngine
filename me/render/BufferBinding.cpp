@@ -10,43 +10,43 @@ using namespace render;
 
 BufferBinding::TYPE BufferBinding::FromString( std::string usage )
 {
-	if ( unify::string::StringIs( usage, "VertexBuffer" ) )
+	if ( unify::String::StringIs( usage, "VertexBuffer" ) )
 	{
 		return VertexBuffer;
 	}
-	else if ( unify::string::StringIs( usage, "IndexBuffer" ) )
+	else if ( unify::String::StringIs( usage, "IndexBuffer" ) )
 	{
 		return IndexBuffer;
 	}
-	else if ( unify::string::StringIs( usage, "ConstantBuffer" ) )
+	else if ( unify::String::StringIs( usage, "ConstantBuffer" ) )
 	{
 		return ConstantBuffer;
 	}
-	else if ( unify::string::StringIs( usage, "ShaderResource" ) ) 
+	else if ( unify::String::StringIs( usage, "ShaderResource" ) ) 
 	{
 		return ShaderResource;
 	}
-	else if( unify::string::StringIs( usage, "StreamOutput" ) )
+	else if( unify::String::StringIs( usage, "StreamOutput" ) )
 	{
 		return ShaderResource;
 	}
-	else if( unify::string::StringIs( usage, "RenderTarget" ) )
+	else if( unify::String::StringIs( usage, "RenderTarget" ) )
 	{
 		return ShaderResource;
 	}
-	else if( unify::string::StringIs( usage, "DepthStencil" ) )
+	else if( unify::String::StringIs( usage, "DepthStencil" ) )
 	{
 		return ShaderResource;
 	}
-	else if( unify::string::StringIs( usage, "UnorderedAccess" ) )
+	else if( unify::String::StringIs( usage, "UnorderedAccess" ) )
 	{
 		return ShaderResource;
 	}
-	else if( unify::string::StringIs( usage, "Decoder" ) )
+	else if( unify::String::StringIs( usage, "Decoder" ) )
 	{
 		return ShaderResource;
 	}
-	else if( unify::string::StringIs( usage, "VideoEncoder" ) )
+	else if( unify::String::StringIs( usage, "VideoEncoder" ) )
 	{
 		return ShaderResource;
 	}

@@ -8,7 +8,6 @@
 #include <me/Instancing.h>
 #include <unify/unify.h>
 #include <unify/String.h>
-#include <unify/DataLock.h>
 #include <map>
 
 namespace me
@@ -76,7 +75,7 @@ namespace me
 			struct BufferItem {
 				size_t buffer, item;
 			};
-			typedef std::map< std::string, BufferItem, unify::string::CaseInsensitiveLessThanEqualTest > ElementMap;
+			typedef std::map< std::string, BufferItem, unify::String::CaseInsensitiveLessThanEqualTest > ElementMap;
 
 			size_t m_numberOfSlots;
 			std::vector< VertexElement > m_allElements;

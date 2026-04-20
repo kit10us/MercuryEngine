@@ -87,11 +87,11 @@ object::action::IObjectAction::ptr ActionFactory::CreateObjectAction( const qxml
 		dyna::IDynaPosition::ptr position;
 
 		auto type = element->GetAttributeElse< std::string >( "type", "absolute" );
-		if( unify::string::StringIs( type, "absolute" ) )
+		if( unify::String::StringIs( type, "absolute" ) )
 		{
-			position.reset( new dyna::position::Absolute( unify::V3< float >( element->GetText() ) ) );
+			position.reset( new dyna::position::Absolute( unify::V3FromString< float>( element->GetText() ) ) );
 		}
-		else if( unify::string::StringIs( type, "object" ) )
+		else if( unify::String::StringIs( type, "object" ) )
 		{
 			auto sceneManager = GetGame()->GetComponentT< scene::SceneManager >();
 			if( sceneManager )

@@ -14,9 +14,13 @@
 #include <me/game/component/IGameComponent.h>
 #include <me/UpdateParams.h>
 #include <me/ICommandListener.h>
+#include <me/script/MshScripter.h>
+
 #include <rm/ResourceManager.h>
 #include <rm/ResourceHub.h>
+
 #include <unify/TimeDelta.h>
+
 #include <memory>
 
 namespace me
@@ -33,7 +37,7 @@ namespace me
 		/// </summary>
 		class IGame
 		{
-		protected:
+		protected: // Protected pure virtuals
 			/// <summary>
 			/// Add scenes to the scene manager.
 			/// </summary>
@@ -56,6 +60,16 @@ namespace me
 
 		public:
 			virtual ~IGame() {}
+
+			/// <summary>
+			/// Provides access to the MshScripter.
+			/// </summary>
+			virtual script::MshScripter& GetScripter() = 0;
+
+			/// <summary>
+			/// Provides const access to the MshScripter.
+			/// </summary>
+			virtual const script::MshScripter& GetScripter() const = 0;
 
 			/// <summary>
 			/// Interop feature that sends a chunk of data to a target.

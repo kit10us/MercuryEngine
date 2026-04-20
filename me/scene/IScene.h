@@ -191,7 +191,7 @@ namespace me
 			/// <summary>
 			///
 			/// </summary>
-			virtual std::list< HitInstance > FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const = 0;
+			virtual std::list< HitInstance > FindObjectsWithinRay( unify::Ray<float> ray, float withinDistance ) const = 0;
 
 			/// <summary>
 			///

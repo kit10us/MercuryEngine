@@ -34,15 +34,22 @@ void FPS::Update( const UpdateParams & params )
 	
 	m_timeTillUpdate = m_updateRate;
 
-	std::string average = unify::Cast< std::string >( params.renderInfo.GetFPS() );
-	size_t p = average.find( '.' );
-	average = average.substr( 0, p < 3 ? 5 : p + 2 );
+	std::string output{};
 
-	std::string instant = unify::Cast< std::string >( 1.0f / params.renderInfo.GetDelta().GetSeconds() );
-	p = instant.find( '.' );
-	instant = instant.substr( 0, p < 3 ? 5 : p + 2 );
+	const auto capture = params.renderInfo.CaptureFPS();
+	{
+		std::string average = unify::Cast< std::string >(1.0f / capture.average);
+		size_t p = average.find('.');
+		output += average.substr(0, p < 3 ? 5 : p + 2);
+	}
 
-	SetText( instant + "/" + average );
+	{
+		std::string median = unify::Cast< std::string >(1.0f / capture.median);
+		size_t p = median.find('.');
+		output += "/" + median.substr(0, p < 3 ? 5 : p + 2);
+	}
+	SetText(output);
+
 	TextElement::Update( params );
 }
 		

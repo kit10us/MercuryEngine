@@ -224,7 +224,7 @@ int Scene::FindComponent( std::string typeName ) const
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( unify::string::StringIs( component->GetTypeName(), typeName ) ) return i;
+		if ( unify::String::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;
@@ -240,7 +240,7 @@ object::Object * Scene::FindObject( std::string name )
 	return m_objectAllocator->FindObject( name );
 }
 
-std::list< HitInstance > Scene::FindObjectsWithinRay( unify::Ray ray, float withinDistance ) const
+std::list< HitInstance > Scene::FindObjectsWithinRay( unify::Ray<float> ray, float withinDistance ) const
 {
 	std::list< HitInstance > instances;
 
@@ -249,13 +249,13 @@ std::list< HitInstance > Scene::FindObjectsWithinRay( unify::Ray ray, float with
 
 	for( auto * object : objects )
 	{
-		float distance = ray.origin.DistanceTo( object->GetPosition() );
+		float distance = ray.origin.Distance( object->GetPosition() );
 		if( distance > withinDistance )
 		{
 			continue;
 		}
 
-		unify::Ray rayXformed = object->GetFrame().GetMatrix().Inverse().TransformRay( ray );
+		unify::Ray<float> rayXformed = object->GetFrame().GetMatrix().Inverse().TransformRay( ray );
 
 		float d{ float() };
 		if ( object->Intersects( rayXformed, d ) )
@@ -287,9 +287,9 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 			auto Ra = sphere.GetRadius();
 			auto Rb = objectSphere.GetRadius();
 			auto Rt = Ra + Rb;
-			auto D = sphere.GetCenter().DistanceTo( objectSphere.GetCenter() );
+			auto D = sphere.GetCenter().Distance( objectSphere.GetCenter() );
 
-			float distance = sphere.GetCenter().DistanceTo( objectSphere.GetCenter() );
+			float distance = sphere.GetCenter().Distance( objectSphere.GetCenter() );
 			instances.push_back( { object, distance } );
 		}
 	}

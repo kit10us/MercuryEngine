@@ -10,7 +10,7 @@
 #include <me/render/Format.h>
 #include <rm/IResource.h>
 #include <qxml/Element.h>
-#include <unify/DataLock.h>
+#include <me/util/DataLock.h>
 #include <unify/Path.h>
 #include <unify/Size.h>
 #include <unify/Rect.h>
@@ -47,7 +47,7 @@ namespace me
 			/// <summary>
 			/// Lock resource.
 			/// </summary>
-			virtual void Lock( unsigned int level, unify::DataLock & lock, unify::DataLockAccess::TYPE type ) = 0;
+			virtual void Lock( unsigned int level, util::DataLock & lock, util::DataLockAccess::TYPE type ) = 0;
 
 			/// <summary>
 			/// Unlock resource.

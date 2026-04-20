@@ -47,7 +47,7 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, unify::Para
 		}
 		else if( node.IsTagName( "trans" ) )
 		{
-			vertexParameters.trans = unify::Cast< bool >( node.GetText() );
+			vertexParameters.trans = unify::Cast< bool, std::string >( node.GetText() );
 		}
 	}
 	if ( vertexParameters.vertexDeclaration == nullptr )

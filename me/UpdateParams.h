@@ -6,6 +6,11 @@
 #include <me/render/RenderInfo.h>
 #include <me/render/IRenderer.h>
 
+namespace me::renderer
+{
+	class IRenderer;
+}
+
 namespace me
 {
 	struct UpdateParams

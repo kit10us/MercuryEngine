@@ -24,15 +24,15 @@ std::string Instancing::ToString( Instancing::TYPE value )
 
 Instancing::TYPE Instancing::FromString( std::string value )
 {
-	if ( unify::string::StringIs( value, "None" ) )
+	if ( unify::String::StringIs( value, "None" ) )
 	{
 		return Instancing::None;
 	}
-	else if ( unify::string::StringIs( value, "QP" ) )
+	else if ( unify::String::StringIs( value, "QP" ) )
 	{
 		return Instancing::QP;
 	}
-	else if ( unify::string::StringIs( value, "Matrix" ) )
+	else if ( unify::String::StringIs( value, "Matrix" ) )
 	{
 		return Instancing::Matrix;
 	}

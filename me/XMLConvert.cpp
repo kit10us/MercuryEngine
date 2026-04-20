@@ -14,9 +14,9 @@ bool me::XMLConvert( const qxml::Element * element, unify::V3< float > & v3, std
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix ) )
 	{
-		v3.x = unify::Cast< float >( element->GetElement( "x" + postFix )->GetText() );
-		v3.y = unify::Cast< float >( element->GetElement( "y" + postFix )->GetText() );
-		v3.z = unify::Cast< float >( element->GetElement( "z" + postFix )->GetText() );
+		v3.x = unify::Cast< float, std::string >( element->GetElement( "x" + postFix )->GetText() );
+		v3.y = unify::Cast< float, std::string  >( element->GetElement( "y" + postFix )->GetText() );
+		v3.z = unify::Cast< float, std::string  >( element->GetElement( "z" + postFix )->GetText() );
 	}
 	else
 	{
@@ -37,9 +37,9 @@ bool me::XMLConvert( const qxml::Element * element, unify::Quaternion & q, std::
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix ) )
 	{
 		unify::V3< float > v;
-		v.x = unify::Cast< float >( element->GetElement( "x" + postFix )->GetText() );
-		v.y = unify::Cast< float >( element->GetElement( "y" + postFix )->GetText() );
-		v.z = unify::Cast< float >( element->GetElement( "z" + postFix )->GetText() );
+		v.x = unify::Cast< float, std::string  >( element->GetElement( "x" + postFix )->GetText() );
+		v.y = unify::Cast< float, std::string  >( element->GetElement( "y" + postFix )->GetText() );
+		v.z = unify::Cast< float, std::string  >( element->GetElement( "z" + postFix )->GetText() );
 		unify::Angle rotation( unify::AngleInRadians( element->GetAttribute( "rotation" + postFix )->Get< float >() ) );
 		q = unify::Quaternion( v, rotation );
 	}
@@ -54,10 +54,10 @@ bool me::XMLConvert( const qxml::Element * element, unify::Quaternion & q, std::
 	}
 	else if( element->HasElements( "x" + postFix + ",y" + postFix + ",z" + postFix + ",rotation" + postFix + ",w" + postFix ) )
 	{
-		q.x = ( unify::Cast< float >( element->GetElement( "x" + postFix )->GetText() ) );
-		q.y = ( unify::Cast< float >( element->GetElement( "y" + postFix )->GetText() ) );
-		q.z = ( unify::Cast< float >( element->GetElement( "z" + postFix )->GetText() ) );
-		q.w = ( unify::Cast< float >( element->GetElement( "w" + postFix )->GetText() ) );
+		q.x = ( unify::Cast< float, std::string  >( element->GetElement( "x" + postFix )->GetText() ) );
+		q.y = ( unify::Cast< float, std::string  >( element->GetElement( "y" + postFix )->GetText() ) );
+		q.z = ( unify::Cast< float, std::string  >( element->GetElement( "z" + postFix )->GetText() ) );
+		q.w = ( unify::Cast< float, std::string  >( element->GetElement( "w" + postFix )->GetText() ) );
 	}
 	else
 	{
@@ -115,8 +115,8 @@ bool me::XMLConvert( const qxml::Element * element, unify::TexCoords & texCoords
 	}
 	else if( element->HasElements( "u" + postFix + ",v" + postFix ) )
 	{
-		texCoords.u = unify::Cast< float >( element->GetElement( "u" + postFix )->GetText() );
-		texCoords.v = unify::Cast< float >( element->GetElement( "v" + postFix )->GetText() );
+		texCoords.u = unify::Cast< float, std::string  >( element->GetElement( "u" + postFix )->GetText() );
+		texCoords.v = unify::Cast< float, std::string  >( element->GetElement( "v" + postFix )->GetText() );
 	}
 	else
 	{
@@ -139,12 +139,12 @@ bool me::XMLConvert( const qxml::Element * element, unify::ColorUnit & color, st
 	}
 	else if( element->HasElements( "red" + postFix + ",green" + postFix + ",blue" + postFix ) )
 	{
-		color.SetRed( unify::Cast< float >( element->GetElement( "red" + postFix )->GetText() ) );
-		color.SetGreen( unify::Cast< float >( element->GetElement( "green" + postFix )->GetText() ) );
-		color.SetBlue( unify::Cast< float >( element->GetElement( "blue" + postFix )->GetText() ) );
+		color.SetRed( unify::Cast< float, std::string  >( element->GetElement( "red" + postFix )->GetText() ) );
+		color.SetGreen( unify::Cast< float, std::string  >( element->GetElement( "green" + postFix )->GetText() ) );
+		color.SetBlue( unify::Cast< float, std::string  >( element->GetElement( "blue" + postFix )->GetText() ) );
 		if( element->HasElements( "alpha" + postFix ) )
 		{
-			color.SetAlpha( unify::Cast< float >( element->GetElement( "alpha" + postFix )->GetText() ) );
+			color.SetAlpha( unify::Cast< float, std::string  >( element->GetElement( "alpha" + postFix )->GetText() ) );
 		}
 	}
 	else

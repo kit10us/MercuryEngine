@@ -16,6 +16,9 @@
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
+
+#include <io/IDocument.h>
+
 #include <chrono>
 #include <ctime>
 #include <functional>
@@ -34,6 +37,7 @@ Game::Game( std::string startScene, unify::Path setup )
 	, m_title{ "Mercury Engine" }
 	, m_startScene{ startScene }
 	, m_setup( setup )
+	, m_autoLoadExtensions{ "auto/" }
 	, m_isQuitting( false )
 	, m_totalStartupTime{}
 	, m_inputOwnership{ unify::Owner::Create( "Game" ) }
@@ -58,16 +62,26 @@ void Game::Shutdown()
 	// STUBBED - Provided by user.
 }
 
+script::MshScripter& Game::GetScripter()
+{
+	return m_mshScripter;
+}
+
+const script::MshScripter& Game::GetScripter() const
+{
+	return m_mshScripter;
+}
+
 void * Game::Feed( std::string target, void * data )
 {
-	if ( unify::string::StringIs( target, "OS" ) )
+	if ( unify::String::StringIs( target, "OS" ) )
 	{
 		return m_os->Feed( target, data );
 	}
-	else if ( unify::string::StringIs( target, "COMMAND" ) )
+	else if ( unify::String::StringIs( target, "COMMAND" ) )
 	{
 		char * command = (char *)data;
-		if ( unify::string::StringIs( command, "QUIT" ) )
+		if ( unify::String::StringIs( command, "QUIT" ) )
 		{
 			Quit();
 		}
@@ -97,7 +111,7 @@ void Game::Initialize( os::IOS::ptr os )
 		std::string temp = in;
 		for( auto itr = defines.begin(); itr != defines.end(); ++itr )
 		{
-			temp = unify::string::StringReplace( temp, "?" + itr->first + "?", itr->second );
+			temp = unify::String::StringReplace( temp, "?" + itr->first + "?", itr->second );
 		}
 		return temp;
 	};
@@ -112,15 +126,33 @@ void Game::Initialize( os::IOS::ptr os )
 		Debug()->GetLogger()->Log("** " + define.first + ": " + define.second);
 	}
 
+	std::filesystem::path currentPath = std::filesystem::current_path();
+	Debug()->GetLogger()->Log("** Current path: " + currentPath.string());
+
 	// Create time stamp so we can track how long ingine initialization takes.
 	using namespace std::chrono;
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 
-	m_totalStartupTime = {};
+	// Add resource managers.
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< io::IDocument>("Document", GetOS()->GetAssetPaths(), logger)));
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< script::IScript >("Script", GetOS()->GetAssetPaths(), logger)));
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< ITexture >("Texture", GetOS()->GetAssetPaths(), logger)));
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< Effect >("Effect", GetOS()->GetAssetPaths(), logger)));
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< IPixelShader >("PixelShader", GetOS()->GetAssetPaths(), logger)));
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< IVertexShader >("VertexShader", GetOS()->GetAssetPaths(), logger)));
+	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< Geometry >("Geometry", GetOS()->GetAssetPaths(), logger)));
 
-	block->Log( "Add script manager." );
-	GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< script::IScript >( "Script", GetOS()->GetAssetPaths(), logger ) ) );
-	GetManager< script::IScript >()->AddFactory( ".me_setup", setup::SetupScriptFactory::ptr( new setup::SetupScriptFactory( this ) ) );
+
+	AutoLoadExtensions();
+
+	{
+		auto localBlock = debug->GetLogger()->CreateBlock("Add script manager.");
+		GetManager< script::IScript >()->AddFactory(".me_setup", setup::SetupScriptFactory::ptr(new setup::SetupScriptFactory(this)));
+		//GetManager< script::IScript >()->AddFactory(".me_setup", setup::SetupScriptFactory::ptr(new setup::SetupScriptFactory(this)));
+	}
+
+
+	m_totalStartupTime = {};
 
 	// Parse the commandline...
 	std::vector< std::string > commandLineVector;
@@ -140,6 +172,11 @@ void Game::Initialize( os::IOS::ptr os )
 		}
 	}
 	*/
+
+	std::vector<std::string> pre_scripts;
+	std::vector<std::string> post_scripts;
+
+
 	auto arguments = GetOS()->GetOSParameters()->Arguments();
 	for (auto arg = arguments.begin(); arg != arguments.end(); arg++)
 	{
@@ -153,7 +190,7 @@ void Game::Initialize( os::IOS::ptr os )
 		// Define a script variable.
 		// format: -define name=value
 		// We just skip malformed defines
-		else if (unify::string::StringIs(*arg, "-define"))
+		else if (unify::String::StringIs(*arg, "-define"))
 		{
 			arg++;
 			if (arg == arguments.end())
@@ -161,7 +198,7 @@ void Game::Initialize( os::IOS::ptr os )
 				continue;
 			}
 
-			auto split = unify::string::Split<std::string>(*arg, '=');
+			auto split = unify::String::Split<std::string>(*arg, '=');
 			std::string name = split[0];
 			std::string value{};
 			if (split.size() > 1)
@@ -195,35 +232,80 @@ void Game::Initialize( os::IOS::ptr os )
 					}
 				);
 
-				qxml::Document doc( unify::Path{ script()->GetSource() } );
-
-				qxml::Element* setup = doc.GetRoot();
-				if ( setup )
+				/*
 				{
-					for ( auto&& node : setup->Children() )
+					auto path = unify::Path{ script()->GetSource() };
+					auto document = GetManager<io::IDocument>()->Add(path.FilenameNoExtension(), path)();
+					io::INode::ptr setup{ document->Root() };
+					if (setup)
 					{
-						if ( node.IsTagName( "include" ) )
+						auto children = setup->Children();
+						for (auto node : setup->Children())
 						{
-							xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+							auto element = node;
+							const io::INode* node_ptr = node.get();
+							if (node_ptr->IsMatch("include"))
+							{
+								Debug()->GetLogger()->Log("matched include");
+								xmlLoader(unify::Path(ReplaceDefines(element->Text())));
+							}
+							else if (node_ptr->IsMatch("define"))
+							{
+								Debug()->GetLogger()->Log("matched define");
+								io::INode::list attributes = element->Attributes("name");
+								std::string name = attributes.begin()->get()->Value<std::string>();
+								defines[ReplaceDefines(name)] = ReplaceDefines(element->Text());
+							}
+							else if (element->IsMatch("renderer"))
+							{
+								Debug()->GetLogger()->Log("matched renderer");
+								
+								//unify::Path path{ ReplaceDefines(node.GetAttribute< std::string >("source")) };
+								//unify::Path pathDiscovery{
+								//	GetOS()->GetAssetPaths()->FindAsset(path, node.GetDocument()->GetPath().DirectoryOnly())
+								//};
+								//AddExtension(path, &node);
+							}
+							else if (element->IsMatch("assets"))
+							{
+								Debug()->GetLogger()->Log("matched assets");
+								//GetOS()->GetAssetPaths()->AddSource(unify::Path(ReplaceDefines(node.Text())));
+							}
 						}
-						else if ( node.IsTagName( "define" ) )
-						{
-							defines[ReplaceDefines( node.GetAttribute< std::string >( "name" ) )] = ReplaceDefines( node.GetText() );
-						}
-						else if ( node.IsTagName( "renderer" ) )
-						{
-							unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
-							unify::Path pathDiscovery{
-								GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
-							};
-							AddExtension( path, &node );
-						}
-						else if ( node.IsTagName( "assets" ) )
-						{
-							GetOS()->GetAssetPaths()->AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
-						}
+					}
+				}
+				*/
 
-						// "inputs" handle further on
+				{
+					qxml::Document doc(unify::Path{ script()->GetSource() });
+					qxml::Element * setup = doc.GetRoot();
+					if (setup)
+					{
+						for (auto&& node : setup->Children())
+						{
+							if (node.IsTagName("include"))
+							{
+								xmlLoader(unify::Path(ReplaceDefines(node.GetText())));
+							}
+							else if (node.IsTagName("define"))
+							{
+								defines[ReplaceDefines(node.GetAttribute< std::string >("name"))] = ReplaceDefines(node.GetText());
+							}
+							else if (node.IsTagName("renderer"))
+							{
+								unify::Path path{ ReplaceDefines(node.GetAttribute< std::string >("source")) };
+								unify::Path pathDiscovery{
+									GetOS()->GetAssetPaths()->FindAsset(path, node.GetDocument()->GetPath().DirectoryOnly())
+								};
+								AddExtension(path, &node);
+							}
+							else if (node.IsTagName("assets"))
+							{
+								GetOS()->GetAssetPaths()->AddSource(unify::Path(ReplaceDefines(node.GetText())));
+							}
+
+							// "inputs" handle further on
+						}
 					}
 				}
 			};
@@ -292,7 +374,7 @@ void Game::Initialize( os::IOS::ptr os )
 						}
 						else if ( node.IsTagName( "failuresAsCritical" ) )
 						{
-							debug->SetErrorAsCritical( debug::ErrorLevel::Failure, unify::Cast< bool >( ReplaceDefines( node.GetText() ) ) );
+							debug->SetErrorAsCritical( debug::ErrorLevel::Failure, unify::Cast< bool, std::string >( ReplaceDefines( node.GetText() ) ) );
 						}
 
 						// "inputs" handle further on
@@ -309,23 +391,18 @@ void Game::Initialize( os::IOS::ptr os )
 
 	// Create asset managers...
 	{
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< ITexture >( "Texture", GetOS()->GetAssetPaths(), logger ) ) );
 		TextureSourceFactory::ptr textureFactoryPtr( new TextureSourceFactory( this ) );
 		GetManager< ITexture >()->AddFactory( ".dds", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".png", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".bmp", textureFactoryPtr );
 		GetManager< ITexture >()->AddFactory( ".jpg", textureFactoryPtr );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< Effect >( "Effect", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Effect >()->AddFactory( "me_effect", EffectFactory::ptr( new EffectFactory( this ) ) );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< IPixelShader >( "PixelShader", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< IPixelShader >()->AddFactory( ".me_shader", PixelShaderFactory::ptr( new PixelShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< IVertexShader >( "VertexShader", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< IVertexShader >()->AddFactory( ".me_shader", VertexShaderFactory::ptr( new VertexShaderFactory( this ) ) );
 
-		GetResourceHub().AddManager( rm::IResourceManagerRaw::ptr( new rm::ResourceManager< Geometry >( "Geometry", GetOS()->GetAssetPaths(), logger ) ) );
 		GetManager< Geometry >()->AddFactory( ".xml", GeometryFactory::ptr( new GeometryFactory( this ) ) );
 		GetManager< Geometry >()->AddFactory( "me_shape", GeometryFactory::ptr( new sculpter::SculpterFactory( this ) ) );
 	}
@@ -465,6 +542,37 @@ void Game::Initialize( os::IOS::ptr os )
 	}
 }
 
+void Game::AutoLoadExtensions()
+{
+	auto block = Debug()->GetLogger()->CreateBlock("AutoLoadExtensions");
+
+	auto IsExtension = [](unify::Path path) -> bool
+		{
+			std::string extension{};
+			
+#if defined(PORT_WINDOWS)
+			extension = ".dll";
+#endif
+			return unify::String::StringIs(path.ExtensionOnly(), extension);
+		};
+
+
+	if (m_autoLoadExtensions.Exists() == false)
+	{
+		Debug()->GetLogger()->Log("No auto load extension directory found.");
+		return;
+	}
+
+	auto files = m_autoLoadExtensions.Files();
+	for (auto const& path : m_autoLoadExtensions.Files())
+	{
+		if (IsExtension(path))
+		{
+			AddExtension(path, nullptr);
+		}
+	}
+}
+
 void Game::AddScenes( scene::SceneManager * sceneManager )
 {
 	// STUBBED
@@ -589,6 +697,14 @@ os::IOS * Game::GetOS()
 const os::IOS * Game::GetOS() const
 {
 	return m_os.get();
+}
+
+template<>
+rm::ResourceManager< io::IDocument >* Game::GetManager()
+{
+	auto rm = GetResourceHub().GetManager< io::IDocument >("document");
+	auto manager = unify::polymorphic_downcast< rm::ResourceManager< io::IDocument > * >(rm);
+	return manager;
 }
 
 template<>
@@ -717,7 +833,7 @@ int Game::FindComponent( std::string typeName ) const
 	int i = 0;
 	for ( auto component : m_components )
 	{
-		if ( unify::string::StringIs( component->GetTypeName(), typeName ) ) return i;
+		if ( unify::String::StringIs( component->GetTypeName(), typeName ) ) return i;
 		++i;
 	}
 	return -1;

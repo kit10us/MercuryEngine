@@ -14,7 +14,7 @@
 #include <unify/Path.h>
 #include <unify/Size.h>
 #include <unify/Rect.h>
-#include <unify/DataLock.h>
+#include <me/util/DataLock.h>
 #include <memory>
 
 namespace me 
@@ -23,13 +23,13 @@ namespace me
 	{
 		struct TextureLockAccess
 		{
-			TextureLockAccess( unify::DataLockAccess::TYPE cpu,	unify::DataLockAccess::TYPE gpu )
+			TextureLockAccess( util::DataLockAccess::TYPE cpu, util::DataLockAccess::TYPE gpu )
 				: cpu{ cpu }
 				, gpu{ gpu }
 			{
 			}
-			unify::DataLockAccess::TYPE cpu;
-			unify::DataLockAccess::TYPE gpu;
+			util::DataLockAccess::TYPE cpu;
+			util::DataLockAccess::TYPE gpu;
 		};
 
 		struct TextureParameters
@@ -38,7 +38,7 @@ namespace me
 
 			/// <summary>
 			/// Set the texture parameters for texture creation. Setting both the cpu and gpu to None lets the texture header decide, else these values override the texture header.
-			TextureParameters( unify::Path _source, TextureLockAccess lockAccess = { unify::DataLockAccess::None, unify::DataLockAccess::None } );
+			TextureParameters( unify::Path _source, TextureLockAccess lockAccess = { util::DataLockAccess::None, util::DataLockAccess::None } );
 			TextureParameters( unify::Parameters parameters );
 
 			unify::Path source;

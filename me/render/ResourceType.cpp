@@ -10,23 +10,23 @@ using namespace render;
 
 ResourceType::TYPE ResourceType::FromString( std::string usage )
 {
-	if ( unify::string::StringIs( usage, "PixelShader" ) )
+	if ( unify::String::StringIs( usage, "PixelShader" ) )
 	{
 		return PixelShader;
 	}
-	else if ( unify::string::StringIs( usage, "VertexShader" ) )
+	else if ( unify::String::StringIs( usage, "VertexShader" ) )
 	{
 		return VertexShader;
 	}
-	else if ( unify::string::StringIs( usage, "ComputeShader" ) )
+	else if ( unify::String::StringIs( usage, "ComputeShader" ) )
 	{
 		return ComputeShader;
 	}
-	else if ( unify::string::StringIs( usage, "DomainShader" ) ) 
+	else if ( unify::String::StringIs( usage, "DomainShader" ) ) 
 	{
 		return DomainShader;
 	}
-	else if( unify::string::StringIs( usage, "GeometryShader" ) )
+	else if( unify::String::StringIs( usage, "GeometryShader" ) )
 	{
 		return GeometryShader;
 	}

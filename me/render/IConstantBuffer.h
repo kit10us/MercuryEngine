@@ -8,6 +8,7 @@
 #include <me/render/ResourceType.h>
 #include <me/render/ConstantTable.h>
 #include <me/render/RenderInfo.h>
+#include <me/util/DataLock.h>
 
 namespace me 
 {
@@ -45,8 +46,8 @@ namespace me
 
 			virtual void Use( size_t startSlot, size_t startBuffer ) = 0;
 
-			virtual void LockConstants( size_t bufferIndex, unify::DataLock & lock ) = 0;
-			virtual void UnlockConstants( size_t buffer, unify::DataLock & lock ) = 0;
+			virtual void LockConstants( size_t bufferIndex, util::DataLock & lock ) = 0;
+			virtual void UnlockConstants( size_t buffer, util::DataLock & lock ) = 0;
 
 			virtual ResourceType::TYPE GetType() const = 0;
 			virtual BufferUsage::TYPE GetUsage() const = 0;

@@ -8,11 +8,11 @@ using namespace render;
 
 TextureMode::TYPE TextureMode::FromString( std::string mode )
 {
-	if( unify::string::StringIs( mode, "CORRECT" ) )
+	if( unify::String::StringIs( mode, "CORRECT" ) )
 	{
 		return Correct;
 	}
-	else if( unify::string::StringIs( mode, "WRAPPED" ) )
+	else if( unify::String::StringIs( mode, "WRAPPED" ) )
 	{
 		return Wrapped;
 	}

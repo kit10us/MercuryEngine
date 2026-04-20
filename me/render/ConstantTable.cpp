@@ -37,7 +37,7 @@ ConstantTable::ConstantTable( const qxml::Element * node )
 				{
 					right = text.find( ',', left );
 					std::string value = text.substr( left, right - left );
-					variable.defaultValue.push_back( unify::Cast< float >( value ) );
+					variable.defaultValue.push_back( unify::Cast< float, std::string >( value ) );
 					left = right + 1;
 				} while ( right != std::string::npos );
 				variable.hasDefault = true;
@@ -80,21 +80,21 @@ size_t ConstantTable::AddVariable( size_t bufferIndex, ConstantVariable variable
 	m_map[variable.name].buffer = bufferIndex;
 	m_map[variable.name].index = myIndex;
 
-	if ( unify::string::StringIs( variable.name, "world" ) || unify::string::StringIs( variable.name, "worldmatrix" ) )
+	if ( unify::String::StringIs( variable.name, "world" ) || unify::String::StringIs( variable.name, "worldmatrix" ) )
 	{
 		if ( !m_world.IsSet() )
 		{
 			m_world = myReference;
 		}
 	}
-	else if ( unify::string::StringIs( variable.name, "view" ) || unify::string::StringIs( variable.name, "viewmatrix" ) )
+	else if ( unify::String::StringIs( variable.name, "view" ) || unify::String::StringIs( variable.name, "viewmatrix" ) )
 	{
 		if ( !m_view.IsSet() )
 		{
 			m_view = myReference;
 		}
 	}
-	else if ( unify::string::StringIs( variable.name, "projection" ) || unify::string::StringIs( variable.name, "projectionmatrix" ) )
+	else if ( unify::String::StringIs( variable.name, "projection" ) || unify::String::StringIs( variable.name, "projectionmatrix" ) )
 	{
 		if ( !m_projection.IsSet() )
 		{

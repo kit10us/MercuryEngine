@@ -116,9 +116,12 @@ void DefaultDebug::Try( std::function< void() > func, ErrorLevel level, bool can
 	
 	do
 	{
+		/*
 		try
 		{
+		*/
 			func();
+			/*
 		}
 		catch( me::exception::Handled & )
 		{
@@ -139,6 +142,7 @@ void DefaultDebug::Try( std::function< void() > func, ErrorLevel level, bool can
 			{
 			}
 		}
+		*/
 	} while ( failed && result == ReportErrorResult::Retry );
 
 	if ( failed && result == ReportErrorResult::Abort )

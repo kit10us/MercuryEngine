@@ -11,23 +11,23 @@ using namespace render;
 
 PrimitiveType::TYPE PrimitiveType::StringToPrimitiveType( std::string type )
 {
-	if( unify::string::StringIs( type, "POINTLIST" ) )
+	if( unify::String::StringIs( type, "POINTLIST" ) )
 	{
 		return PrimitiveType::PointList;
 	}
-	else if( unify::string::StringIs( type, "LINELIST" ) )
+	else if( unify::String::StringIs( type, "LINELIST" ) )
 	{
 		return PrimitiveType::LineList;
 	}
-	else if( unify::string::StringIs( type, "LINESTRIP" ) )
+	else if( unify::String::StringIs( type, "LINESTRIP" ) )
 	{
 		return PrimitiveType::LineStrip;
 	}
-	else if( unify::string::StringIs( type, "TRIANGLELIST" ) )
+	else if( unify::String::StringIs( type, "TRIANGLELIST" ) )
 	{
 		return PrimitiveType::TriangleList;
 	}
-	else if( unify::string::StringIs( type, "TRIANGLESTRIP" ) )
+	else if( unify::String::StringIs( type, "TRIANGLESTRIP" ) )
 	{
 		return PrimitiveType::TriangleStrip;
 	}

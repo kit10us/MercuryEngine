@@ -107,13 +107,13 @@ int Object::FindComponent( std::string typeName, std::string alias ) const
 	int i = 0;
 	for( auto && component : m_components )
 	{
-		if( unify::string::StringIs( component.Component()->GetTypeName(), typeName ) )
+		if( unify::String::StringIs( component.Component()->GetTypeName(), typeName ) )
 		{
 			if( alias.empty() )
 			{
 				return i;
 			}
-			else if( unify::string::StringIs( component.Component()->GetAlias(), alias ) )
+			else if( unify::String::StringIs( component.Component()->GetAlias(), alias ) )
 			{
 				return i;
 			}
@@ -186,24 +186,41 @@ unify::BSphere< float > Object::GetBSphere() const
 	return GetBBox().MakeBSphere();
 }
 
-bool Object::Intersects( unify::Ray ray ) const
+bool Object::Intersects( unify::Ray<float> ray ) const
 {
-	return GetBBox().Intersects( ray );
+	return GetBBox().Intersects( ray ).has_value();
 }
 
-bool Object::Intersects( unify::Ray ray, float distanceBegin, float distanceEnd ) const
+bool Object::Intersects( unify::Ray<float> ray, float distanceBegin, float distanceEnd ) const
 {
 	return GetBBox().Intersects( ray, distanceBegin, distanceEnd );
 }
 
-bool Object::Intersects( unify::Ray ray, unify::V3< float > & hitPoint ) const
+bool Object::Intersects( unify::Ray<float> ray, unify::V3< float > & hitPoint ) const
 {
-	return GetBBox().Intersects( ray, hitPoint );
+	auto result = GetBBox().Intersects(ray);
+	if (!result)
+	{
+		return false;
+	}
+	else
+	{
+		hitPoint = (*result).point;
+		return true;
+	}
 }
 
-bool Object::Intersects( unify::Ray ray, float & distance ) const
+bool Object::Intersects( unify::Ray<float> ray, float & distance ) const
 {
-	return GetBBox().Intersects( ray, distance );
+	auto result = GetBBox().Intersects(ray);
+	if (!result)
+	{
+		return false;
+	}
+	else
+	{
+		return (*result).distance;
+	}
 }
 
 void Object::Initialize( component::IObjectComponent::cache & updateables, CameraCache & cameras, UpdateParams params )

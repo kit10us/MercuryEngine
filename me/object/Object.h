@@ -49,7 +49,7 @@ namespace me
 			/// <summary>
 			/// Returns all tags and their values.
 			/// </summary>
-			std::map< std::string, std::string, unify::string::CaseInsensitiveLessThanEqualTest > GetTags() const;
+			std::map< std::string, std::string, unify::String::CaseInsensitiveLessThanEqualTest > GetTags() const;
 			
 			int GetComponentCount() const;
 			void AddComponent( component::IObjectComponent::ptr component );
@@ -84,10 +84,10 @@ namespace me
 			/// </summary>
 			unify::BSphere< float > GetBSphere() const;
 
-			bool Intersects( unify::Ray ray ) const;
-			bool Intersects( unify::Ray ray, float distanceBegin, float distanceEnd ) const;
-			bool Intersects( unify::Ray ray, unify::V3< float > & hitPoint ) const;
-			bool Intersects( unify::Ray ray, float & distance ) const;
+			bool Intersects( unify::Ray<float> ray ) const;
+			bool Intersects( unify::Ray<float> ray, float distanceBegin, float distanceEnd ) const;
+			bool Intersects( unify::Ray<float> ray, unify::V3< float > & hitPoint ) const;
+			bool Intersects( unify::Ray<float> ray, float & distance ) const;
 
 			/// <summary>
 			/// Initialize object and it's components.

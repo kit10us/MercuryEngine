@@ -230,6 +230,7 @@
     <ClInclude Include="me\scene\Scene.h" />
     <ClInclude Include="me\scene\SceneManager.h" />
     <ClInclude Include="me\script\IScript.h" />
+    <ClInclude Include="me\script\MshScripter.h" />
     <ClInclude Include="me\sculpter\FaceInput.h" />
     <ClInclude Include="me\sculpter\FaceOutput.h" />
     <ClInclude Include="me\sculpter\IFaceBuilder.h" />
@@ -245,7 +246,10 @@
     <ClInclude Include="me\sculpter\VertexOutput.h" />
     <ClInclude Include="me\setup\SetupScript.h" />
     <ClInclude Include="me\setup\SetupScriptFactory.h" />
+    <ClInclude Include="me\stats\Rate.h" />
     <ClInclude Include="me\UpdateParams.h" />
+    <ClInclude Include="me\util\Cast.h" />
+    <ClInclude Include="me\util\DataLock.h" />
     <ClInclude Include="me\XMLConvert.h" />
   </ItemGroup>
   <ItemGroup>
@@ -380,6 +384,7 @@
     <ClCompile Include="me\scene\Scene.cpp" />
     <ClCompile Include="me\scene\SceneManager.cpp" />
     <ClCompile Include="me\script\IScript.cpp" />
+    <ClCompile Include="me\script\MshScripter.cpp" />
     <ClCompile Include="me\sculpter\FaceInput.cpp" />
     <ClCompile Include="me\sculpter\FaceOutput.cpp" />
     <ClCompile Include="me\sculpter\Sculpter.cpp" />
@@ -391,11 +396,13 @@
     <ClCompile Include="me\sculpter\VertexOutput.cpp" />
     <ClCompile Include="me\setup\SetupScript.cpp" />
     <ClCompile Include="me\setup\SetupScriptFactory.cpp" />
+    <ClCompile Include="me\util\DataLock.cpp" />
     <ClCompile Include="me\XMLConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="me\frameanimation\FrameAnimationKey.inl" />
     <None Include="me\interop\MyThing.inl" />
+    <None Include="me\script\MshScripter.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0E2AF65A-1CD1-4D9C-A142-CF2F4892AFF1}</ProjectGuid>
@@ -525,7 +532,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -541,7 +548,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>PORT_WINDOWS;PORT_WIN32;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -557,7 +564,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;$(ProjectDir)..\Portability;$(ProjectDir)..\interop;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -573,7 +580,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>PORT_WINDOWS;PORT_X64;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;..\interop;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -591,7 +598,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -610,7 +617,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>PORT_WINDOWS;PORT_WIN32;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -629,7 +636,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -648,7 +655,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>PORT_WINDOWS;PORT_X64;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(ProjectDir)..\Unify;$(ProjectDir)..\kitlogger;$(ProjectDir)..\qjson;$(ProjectDir)..\qxml;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\interop;..\Portability;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>

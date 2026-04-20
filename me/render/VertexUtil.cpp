@@ -6,7 +6,7 @@
 using namespace me;
 using namespace render;
 
-bool me::render::WriteVertex( const VertexDeclaration & vd, unify::DataLock & lock, size_t vertexIndex, const me::render::VertexDeclaration & inVD, const void * vertex )
+bool me::render::WriteVertex( const VertexDeclaration & vd, util::DataLock & lock, size_t vertexIndex, const me::render::VertexDeclaration & inVD, const void * vertex )
 {
 	size_t result = 0;
 	size_t slot = 0;
@@ -63,7 +63,7 @@ bool me::render::WriteVertex( const VertexDeclaration & vd, unify::DataLock & lo
 	return result != 0;
 }
 
-bool me::render::WriteVertex( const VertexDeclaration & vd, unify::DataLock & lock, std::initializer_list< size_t > vertexIndices, const VertexDeclaration & inVD, const void * vertex )
+bool me::render::WriteVertex( const VertexDeclaration & vd, util::DataLock & lock, std::initializer_list< size_t > vertexIndices, const VertexDeclaration & inVD, const void * vertex )
 {
 	size_t result = 0;
 	for( auto i : vertexIndices )
@@ -73,7 +73,7 @@ bool me::render::WriteVertex( const VertexDeclaration & vd, unify::DataLock & lo
 	return result != 0;
 }
 
-bool me::render::ReadVertex( const VertexDeclaration & vd, unify::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, void * vertex )
+bool me::render::ReadVertex( const VertexDeclaration & vd, util::DataLock & lock, size_t vertexIndex, const VertexDeclaration & inVD, void * vertex )
 {
 	size_t result = 0;
 	for( auto e : inVD.Elements() )

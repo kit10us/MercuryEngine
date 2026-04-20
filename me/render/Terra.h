@@ -17,7 +17,7 @@
 #include <unify/RowColumn.h>
 #include <unify/TexArea.h>
 #include <unify/Parameters.h>
-#include <unify/ColorUnit.h>
+#include <unify/Colors.h>
 #include <unify/Range.h>
 
 namespace me

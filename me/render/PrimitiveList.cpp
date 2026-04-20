@@ -90,12 +90,22 @@ const frameanimation::AnimationSet & PrimitiveList::GetAnimationSet() const
 
 void PrimitiveList::ComputeBounds( unify::BBox< float > & bbox ) const
 {
-	bbox.Clear();
+	// Ensure we don't assume we only track inclusive bboxes.
+	bool first{ true };
+	bbox = {};
 
 	for ( const auto & bs : m_buffers )
 	{
 		const IVertexBuffer::ptr vb{ bs->GetVertexBuffer() };
-		bbox += vb->GetBBox();
+		if (first)
+		{
+			bbox = vb->GetBBox();
+			first = false;
+		}
+		else
+		{
+			bbox += vb->GetBBox();
+		}
 	}
 }
 

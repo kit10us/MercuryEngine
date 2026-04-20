@@ -52,7 +52,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, unify::Parame
 		}
 		else if( node.IsTagName( "trans" ) )
 		{
-			pixelShaderParameters.trans = unify::Cast< bool >( node.GetText() );
+			pixelShaderParameters.trans = unify::Cast< bool, std::string >( node.GetText() );
 		}
 	}
 	return renderer->ProducePS( pixelShaderParameters );

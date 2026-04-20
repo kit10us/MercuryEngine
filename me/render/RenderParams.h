@@ -4,6 +4,12 @@
 #pragma once
 
 #include <me/render/RenderInfo.h>
+#include <unify/TimeDelta.h>
+
+namespace me::render
+{
+	class IRenderer;
+}
 
 namespace me
 {
@@ -11,7 +17,7 @@ namespace me
 	{
 		struct Params
 		{
-			class IRenderer * renderer;
+			IRenderer * renderer;
 			RenderInfo renderInfo;
 			unify::TimeDelta GetDelta() const { return renderInfo.GetDelta(); };
 		};

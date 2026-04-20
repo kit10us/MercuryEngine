@@ -7,7 +7,7 @@
 #include <me/object/component/GeometryComponent.h>
 #include <me/render/Effect.h>
 #include <me/render/PrimitiveList.h>
-#include <unify/Color.h>
+#include <unify/Colors.h>
 
 namespace me
 {

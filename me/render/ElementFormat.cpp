@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/render/ElementFormat.h>
-#include <unify/ColorUnit.h>
+#include <unify/Colors.h>
 #include <unify/Matrix.h>
 
 using namespace me;
@@ -52,28 +52,28 @@ size_t ElementFormat::SizeOf( ElementFormat::TYPE format )
 
 ElementFormat::TYPE ElementFormat::FromString( std::string format )
 {
-	if ( unify::string::StringIs( format, "Float" ) ) return ElementFormat::Float1;
-	else if( unify::string::StringIs( format, "Float1" ) ) return ElementFormat::Float1;
-	else if ( unify::string::StringIs( format, "Float2" ) ) return ElementFormat::Float2;
-	else if ( unify::string::StringIs( format, "TexCoord" ) ) return ElementFormat::Float2;
-	else if ( unify::string::StringIs( format, "Float3" ) ) return ElementFormat::Float3;
-	else if ( unify::string::StringIs( format, "Float4" ) ) return ElementFormat::Float4;
+	if ( unify::String::StringIs( format, "Float" ) ) return ElementFormat::Float1;
+	else if( unify::String::StringIs( format, "Float1" ) ) return ElementFormat::Float1;
+	else if ( unify::String::StringIs( format, "Float2" ) ) return ElementFormat::Float2;
+	else if ( unify::String::StringIs( format, "TexCoord" ) ) return ElementFormat::Float2;
+	else if ( unify::String::StringIs( format, "Float3" ) ) return ElementFormat::Float3;
+	else if ( unify::String::StringIs( format, "Float4" ) ) return ElementFormat::Float4;
 
-	else if( unify::string::StringIs( format, "Int" ) ) return ElementFormat::Int1;
-	else if( unify::string::StringIs( format, "Int1" ) ) return ElementFormat::Int1;
-	else if( unify::string::StringIs( format, "Int2" ) ) return ElementFormat::Int2;
-	else if( unify::string::StringIs( format, "Int3" ) ) return ElementFormat::Int3;
-	else if( unify::string::StringIs( format, "Int4" ) ) return ElementFormat::Int4;
+	else if( unify::String::StringIs( format, "Int" ) ) return ElementFormat::Int1;
+	else if( unify::String::StringIs( format, "Int1" ) ) return ElementFormat::Int1;
+	else if( unify::String::StringIs( format, "Int2" ) ) return ElementFormat::Int2;
+	else if( unify::String::StringIs( format, "Int3" ) ) return ElementFormat::Int3;
+	else if( unify::String::StringIs( format, "Int4" ) ) return ElementFormat::Int4;
 
-	else if( unify::string::StringIs( format, "UInt" ) ) return ElementFormat::UInt1;
-	else if( unify::string::StringIs( format, "UInt1" ) ) return ElementFormat::UInt1;
-	else if( unify::string::StringIs( format, "UInt2" ) ) return ElementFormat::UInt2;
-	else if( unify::string::StringIs( format, "UInt3" ) ) return ElementFormat::UInt3;
-	else if( unify::string::StringIs( format, "UInt4" ) ) return ElementFormat::UInt4;
+	else if( unify::String::StringIs( format, "UInt" ) ) return ElementFormat::UInt1;
+	else if( unify::String::StringIs( format, "UInt1" ) ) return ElementFormat::UInt1;
+	else if( unify::String::StringIs( format, "UInt2" ) ) return ElementFormat::UInt2;
+	else if( unify::String::StringIs( format, "UInt3" ) ) return ElementFormat::UInt3;
+	else if( unify::String::StringIs( format, "UInt4" ) ) return ElementFormat::UInt4;
 
-	else if ( unify::string::StringIs( format, "Matrix4x4" ) ) return ElementFormat::Matrix4x4;
-	else if ( unify::string::StringIs( format, "ColorUNorm" ) ) return ElementFormat::ColorUNorm;
-	else if ( unify::string::StringIs( format, "Color" ) ) return ElementFormat::ColorUNorm;
+	else if ( unify::String::StringIs( format, "Matrix4x4" ) ) return ElementFormat::Matrix4x4;
+	else if ( unify::String::StringIs( format, "ColorUNorm" ) ) return ElementFormat::ColorUNorm;
+	else if ( unify::String::StringIs( format, "Color" ) ) return ElementFormat::ColorUNorm;
 	else
 	{
 		throw unify::Exception( "Conversion of " + format + " not found!" );
@@ -165,7 +165,7 @@ bool ElementFormat::Convert( TYPE outFormat, void * outRaw, TYPE inFormat, const
 				cu.linear[i] = i < inCount ? ((const float*)inRaw)[i] : 0.0f;
 			}
 
-			*((unify::Color*)outRaw) = cu;
+			*((unify::Color*)outRaw) = unify::Cast<unify::Color>(cu);
 			return true;
 		}
 		default:
@@ -237,7 +237,7 @@ bool ElementFormat::Convert( TYPE outFormat, void * outRaw, TYPE inFormat, const
 		{
 		case ElementFormat::Float3:
 		{
-			const unify::ColorUnit cu( c );
+			const unify::ColorUnit cu( unify::Cast<unify::ColorUnit>(c) );
 			unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>(outRaw);
 			destItem->x = cu.component.r;
 			destItem->y = cu.component.g;
@@ -246,7 +246,7 @@ bool ElementFormat::Convert( TYPE outFormat, void * outRaw, TYPE inFormat, const
 		}
 		case ElementFormat::Float4:
 		{
-			const unify::ColorUnit cu( c );
+			const unify::ColorUnit cu( unify::Cast<unify::ColorUnit>(c) );
 			unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>(outRaw);
 			destItem->x = cu.component.r;
 			destItem->y = cu.component.g;

@@ -6,7 +6,7 @@
 #include <qxml/Document.h>
 #include <unify/Frame.h>
 #include <unify/TexCoords.h>
-#include <unify/ColorUnit.h>
+#include <unify/Colors.h>
 
 namespace me
 {

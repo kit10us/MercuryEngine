@@ -4,7 +4,7 @@
 #include <me/render/VertexDeclaration.h>
 #include <me/render/IRenderer.h>
 #include <me/render/IVertexShader.h>
-#include <unify/ColorUnit.h>
+#include <unify/Colors.h>
 #include <algorithm>
 
 using namespace me;
@@ -159,7 +159,7 @@ bool VertexDeclaration::GetElement( VertexElement toFind, VertexElement & elemen
 	{
 		for ( auto && element : buffer )
 		{
-			if ( unify::string::StringIs( element.SemanticName, toFind.SemanticName ) && element.SemanticIndex == toFind.SemanticIndex && element.InputSlot == toFind.InputSlot )
+			if ( unify::String::StringIs( element.SemanticName, toFind.SemanticName ) && element.SemanticIndex == toFind.SemanticIndex && element.InputSlot == toFind.InputSlot )
 			{
 				elementOut = element;
 				return true;

@@ -8,6 +8,9 @@
 #include <me/exception/NotImplemented.h>
 #include <me/XMLConvert.h>
 #include <qxml/Document.h>
+#include <unify/V3.h>
+
+#include <algorithm>
 
 using namespace me;
 using namespace render;
@@ -96,7 +99,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 					
 					std::shared_ptr< unsigned char > vertices( new unsigned char[vd->GetSizeInBytes( 0 ) * vertexCount] );
 
-					unify::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)vertexCount, unify::DataLockAccess::ReadWrite, 0 );
+					util::DataLock lock( vertices.get(), (unsigned int)vd->GetSizeInBytes( 0 ), (unsigned int)vertexCount, util::DataLockAccess::ReadWrite, 0 );
 					unify::BBox< float > bbox;
 
 					unsigned short stream = 0;
@@ -136,7 +139,8 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						}
 						if( vertex.HasAttributes( "normal" ) )
 						{
-							normal = unify::V3< float >( vertex.GetAttribute< std::string >( "normal" ) );
+							//normal = unify::Cast< unify::V3<float> >( vertex.GetAttribute< std::string >( "normal" ) );
+							normal = unify::V3FromString<float>(vertex.GetAttribute< std::string >("normal"));
 						}
 						if( vertex.HasAttributes( "nx" ) || vertex.HasAttributes( "ny" ) || vertex.HasAttributes( "nz" ) || vertex.HasAttributes( "normal" ) )
 						{
@@ -184,7 +188,12 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						unify::ColorUnit diffuseUnit;
 						if( XMLConvert( &vertex, diffuseUnit ) )
 						{
-							unify::Color diffuse( diffuseUnit );
+							unify::Color diffuse(
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.r * 255.f, 1.0f)),
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.g * 255.f, 1.0f)),
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.b * 255.f, 1.0f)),
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.a * 25.f, 1.0f))
+							);
 							WriteVertex( *vd, lock, index, diffuseE, diffuse );
 						}
 					}
@@ -194,14 +203,14 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 				}	 
 				else if( buffersetChild.IsTagName( "indexlist" ) )
 				{
-					unsigned int numIndices = unify::string::ListPartCount( buffersetChild.GetText(), {','} );
+					unsigned int numIndices = unify::String::ListPartCount( buffersetChild.GetText(), {','} );
 
 					std::vector< Index32 > indices( numIndices );
 
 					// Load indices...
 					for( unsigned int u = 0; u < numIndices; u++ )
 					{
-						indices[u] = (Index32)unify::Cast< int >( unify::string::ListPart( buffersetChild.GetText(), {','}, u ) );
+						indices[u] = (Index32)unify::Cast< int, std::string >( unify::String::ListPart( buffersetChild.GetText(), {','}, u ) );
 					}
 
 					set.AddIndexBuffer( { { { numIndices, &indices[0] } }, BufferUsage::Default } );

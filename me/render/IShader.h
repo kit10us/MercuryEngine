@@ -4,7 +4,6 @@
 #pragma once
 
 #include <me/render/IConstantBuffer.h>
-#include <me/render/VertexDeclaration.h>
 #include <me/Mercury.h>
 #include <rm/IResource.h>
 #include <unify/Path.h>

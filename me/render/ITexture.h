@@ -15,7 +15,7 @@
 #include <unify/Path.h>
 #include <unify/Size.h>
 #include <unify/Rect.h>
-#include <unify/DataLock.h>
+#include <me/util/DataLock.h>
 #include <memory>
 
 namespace me 
@@ -42,7 +42,7 @@ namespace me
 			/// <summary>
 			/// Lock a rectangle.
 			/// </summary>
-			virtual void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, unify::DataLockAccess::TYPE access ) = 0;
+			virtual void LockRect( unsigned int level, TextureLock & lock, const unify::Rect< long > * rect, util::DataLockAccess::TYPE access ) = 0;
 
 			/// <summary>
 			/// Unlock a rectangle.
