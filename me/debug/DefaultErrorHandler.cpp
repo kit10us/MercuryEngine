@@ -2,7 +2,7 @@
 // All Rights Reserved
 
 #include <me/debug/DefaultErrorHandler.h>
-#include <port/Debug.h>
+//#include <port/Debug.h>
 
 using namespace me::debug;
 
@@ -19,8 +19,7 @@ ReportErrorResult DefaultErrorHandler::ReportError( ErrorLevel level, std::strin
 {
 	if ( m_debug->GetErrorAsCritical( level ) )
 	{
-		port::DebugLogMessage(ErrorLevelToString(level) + ": " + error);
-		port::DebugBreak();
+		m_debug->GetLogger()->Log(ErrorLevelToString(level) + ": " + error);
 		return ReportErrorResult::Abort;
 	}
 	else

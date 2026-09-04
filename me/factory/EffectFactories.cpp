@@ -60,13 +60,12 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 				unsigned char stage = child.GetAttributeElse< unsigned char >( "stage", 0 );
 
 				auto texture = textureManager->Add(name, unify::Path(parameters.Get< std::string >("source")), child.GetDocument()->GetPath().DirectoryOnly(), parameters);
-				texture.OnFailure(
-					[&](std::string message) 
-					{ 
-						debug->ReportError(debug::ErrorLevel::Failure, message); 
-					}
-				);
-				effect->SetTexture( stage, texture.Value() );
+				if (!texture)
+				{
+					debug->ReportError(debug::ErrorLevel::Failure, "Failed to add resource \"" + name + "\"!");
+				}
+
+				effect->SetTexture( stage, texture );
 			}, debug::ErrorLevel::Failure );
 		}
 
@@ -79,14 +78,16 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 			auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 			unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 			auto shader = pixelShaderManager->Add(child.GetAttributeElse< std::string >("name", path.FilenameNoExtension()), source);
+			/*
 			shader.OnFailure(
 				[&](std::string message)
 				{
 					debug->ReportError(debug::ErrorLevel::Failure, message);
 				}
 			);
+			*/
 
-			effect->SetPixelShader(shader());
+			effect->SetPixelShader(shader);
 		}
 
 		// Load 
@@ -95,13 +96,15 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 			auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 			unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 			auto shader = vertexShaderManager->Add(child.GetAttributeElse< std::string >("name", path.FilenameNoExtension()), source);
+			/*
 			shader.OnFailure(
 				[&](std::string message)
 				{
 					debug->ReportError(debug::ErrorLevel::Failure, message);
 				}
 			);
-			effect->SetVertexShader(shader());
+			*/
+			effect->SetVertexShader(shader);
 		}
 		//void AddFrame( size_t frameIndex, float influence );
 	}

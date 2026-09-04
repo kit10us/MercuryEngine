@@ -295,7 +295,7 @@ namespace me::util
 	{
 		if (index >= m_count)
 		{
-			throw unify::Exception("Attempted to access index out of range! (" + unify::Cast< std::string >(index) + " to " + unify::Cast< std::string >(m_count) + ")");
+			throw unify::Exception("Attempted to access index out of range! (" + *unify::ToString(index) + " to " + *unify::ToString(m_count) + ")");
 		}
 
 		if (!DataLockAccess::ReadAccess(m_type) || !DataLockAccess::WriteAccess(m_type))
@@ -311,7 +311,7 @@ namespace me::util
 	{
 		if (index >= m_count)
 		{
-			throw unify::Exception("Attempted to access index out of range! (" + unify::Cast< std::string >(index) + " to " + unify::Cast< std::string >(m_count) + ")");
+			throw unify::Exception("Attempted to access index out of range! (" + *unify::ToString(index) + " to " + *unify::ToString(m_count) + ")");
 		}
 
 		if (!DataLockAccess::ReadAccess(m_type))

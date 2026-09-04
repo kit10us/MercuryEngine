@@ -13,3 +13,8 @@ IScript::IScript()
 IScript::~IScript() 
 {
 }
+
+void IScript::SetOnFailure(std::function< void(IScript*, std::string message) > onFailure)
+{
+	m_onFailure = onFailure;
+}

@@ -47,12 +47,12 @@ namespace me::interop
 
 		void Set( std::string value ) override
 		{
-			m_reference = unify::Cast< T, std::string >( value );
+			m_reference = *unify::FromString<T>( value );
 		}
 
 		std::string Get() const override
 		{
-			return unify::Cast< std::string, T >( m_reference );
+			return *unify::ToString< T >( m_reference );
 		}
 
 		std::string ToString() const override

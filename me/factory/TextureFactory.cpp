@@ -15,7 +15,7 @@ TextureSourceFactory::TextureSourceFactory( game::IGame * gameInstance )
 
 ITexture::ptr TextureSourceFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
-	if( !source.Empty() )
+	if( !source.IsEmpty() )
 	{
 		parameters.Set< std::string >( "source", source.ToString() );
 		return m_game->GetOS()->GetRenderer(0)->ProduceT( parameters );

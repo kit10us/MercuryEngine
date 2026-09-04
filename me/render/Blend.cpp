@@ -28,7 +28,7 @@ BlendDesc::BlendDesc( const qxml::Element * element )
 	: BlendDesc()
 {
 	std::string casted = element->GetAttributeElse< std::string >( "enable", "true" );
-	enable = unify::Cast< bool >( casted );
+	enable = *unify::FromString< bool >( casted );
 
 	if( element->HasElements( "src" ) )
 	{

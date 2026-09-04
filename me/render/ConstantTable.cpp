@@ -37,7 +37,7 @@ ConstantTable::ConstantTable( const qxml::Element * node )
 				{
 					right = text.find( ',', left );
 					std::string value = text.substr( left, right - left );
-					variable.defaultValue.push_back( unify::Cast< float, std::string >( value ) );
+					variable.defaultValue.push_back( *unify::FromString< float >( value ) );
 					left = right + 1;
 				} while ( right != std::string::npos );
 				variable.hasDefault = true;

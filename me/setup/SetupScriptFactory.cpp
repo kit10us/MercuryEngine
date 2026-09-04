@@ -13,14 +13,14 @@ SetupScriptFactory::SetupScriptFactory( game::Game * game )
 {
 }
 	  
-me::script::IScript::ptr SetupScriptFactory::Produce( unify::Path source, unify::Parameters parameters )
+std::shared_ptr<me::script::IScript> SetupScriptFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
-	auto script = new SetupScript( m_game, source );
+	auto script = std::make_shared<SetupScript>( m_game, source );
 
-	return me::script::IScript::ptr( script );
+	return script;
 }
 
-me::script::IScript::ptr SetupScriptFactory::Produce( unify::Parameters parameters )
+std::shared_ptr<me::script::IScript> SetupScriptFactory::Produce( unify::Parameters parameters )
 {
 	throw me::exception::FailedToCreate( "Attempted to create a setup script from parameters." );
 }

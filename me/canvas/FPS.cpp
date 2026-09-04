@@ -38,13 +38,13 @@ void FPS::Update( const UpdateParams & params )
 
 	const auto capture = params.renderInfo.CaptureFPS();
 	{
-		std::string average = unify::Cast< std::string >(1.0f / capture.average);
+		std::string average = *unify::ToString(1.0f / capture.average);
 		size_t p = average.find('.');
 		output += average.substr(0, p < 3 ? 5 : p + 2);
 	}
 
 	{
-		std::string median = unify::Cast< std::string >(1.0f / capture.median);
+		std::string median = *unify::ToString(1.0f / capture.median);
 		size_t p = median.find('.');
 		output += "/" + median.substr(0, p < 3 ? 5 : p + 2);
 	}

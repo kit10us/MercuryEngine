@@ -79,7 +79,7 @@ void Block::Exec( std::function< void( IBlock* )> functionBlock, bool timed )
 		duration< float > elapsed_d = duration_cast<duration< float >>(currentTime - lastTime);
 		auto micro = duration_cast<microseconds>(currentTime - lastTime).count();
 		float duration = micro * 0.000001f;
-		Log("End timer at " + unify::Cast< std::string >(duration) + "s", "Stats");
+		Log("End timer at " + *unify::ToString(duration) + "s", "Stats");
 	}
 }
 

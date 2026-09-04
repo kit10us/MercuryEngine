@@ -239,19 +239,19 @@ bool ElementFormat::Convert( TYPE outFormat, void * outRaw, TYPE inFormat, const
 		{
 			const unify::ColorUnit cu( unify::Cast<unify::ColorUnit>(c) );
 			unify::V3< float > * destItem = reinterpret_cast<unify::V3< float > *>(outRaw);
-			destItem->x = cu.component.r;
-			destItem->y = cu.component.g;
-			destItem->z = cu.component.b;
+			destItem->x = cu.r;
+			destItem->y = cu.g;
+			destItem->z = cu.b;
 			return true;
 		}
 		case ElementFormat::Float4:
 		{
 			const unify::ColorUnit cu( unify::Cast<unify::ColorUnit>(c) );
 			unify::V4< float > * destItem = reinterpret_cast<unify::V4< float > *>(outRaw);
-			destItem->x = cu.component.r;
-			destItem->y = cu.component.g;
-			destItem->z = cu.component.b;
-			destItem->w = cu.component.a;
+			destItem->x = cu.r;
+			destItem->y = cu.g;
+			destItem->z = cu.b;
+			destItem->w = cu.a;
 			return true;
 		}
 		case ElementFormat::ColorUNorm:

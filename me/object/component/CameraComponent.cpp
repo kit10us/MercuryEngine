@@ -27,7 +27,7 @@ CameraComponent::~CameraComponent()
 
 std::string CameraComponent::GetWhat() const
 {
-	return std::string( "render " ) + unify::Cast< std::string >( m_render );
+	return std::string( "render " ) + *unify::ToString( m_render );
 }
 
 int CameraComponent::GetRenderer() const

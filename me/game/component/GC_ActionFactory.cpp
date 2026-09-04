@@ -89,7 +89,11 @@ object::action::IObjectAction::ptr ActionFactory::CreateObjectAction( const qxml
 		auto type = element->GetAttributeElse< std::string >( "type", "absolute" );
 		if( unify::String::StringIs( type, "absolute" ) )
 		{
-			position.reset( new dyna::position::Absolute( unify::V3FromString< float>( element->GetText() ) ) );
+			auto v3 = unify::V3FromString< float>( element->GetText() );
+			if (v3)
+			{
+				position.reset( new dyna::position::Absolute( *v3 ) );
+			}
 		}
 		else if( unify::String::StringIs( type, "object" ) )
 		{

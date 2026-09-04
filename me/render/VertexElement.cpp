@@ -92,13 +92,13 @@ VertexElement::VertexElement( const qxml::Element & element )
 		{
 			SemanticName = "TEXCOORD";
 			std::string n = name.substr( strlen( "TEXCOORD" ) );
-			SemanticIndex = unify::Cast< unsigned char, std::string >( n );
+			SemanticIndex = *unify::FromString<unsigned char>( n );
 		}
 		else if ( unify::String::BeginsWith( name, "TEX" ) )
 		{
 			SemanticName = "TEXCOORD";
 			std::string n = name.substr( strlen( "TEX" ) );
-			SemanticIndex = unify::Cast< unsigned char, std::string >( n );
+			SemanticIndex = *unify::FromString<unsigned char>( n );
 		}
 		else if ( unify::String::StringIs( name, "TANGENT" ) )
 		{
@@ -202,13 +202,13 @@ VertexElement::VertexElement( const qjson::Pair & pair )
 	{
 		SemanticName = "TEXCOORD";
 		std::string n = name.substr( strlen( "TEXCOORD" ) );
-		SemanticIndex = unify::Cast< unsigned char >( n );
+		SemanticIndex = *unify::FromString< unsigned char >( n );
 	}
 	else if ( unify::String::BeginsWith( name, "TEX" ) )
 	{
 		SemanticName = "TEXCOORD";
 		std::string n = name.substr( strlen( "TEX" ) );
-		SemanticIndex = unify::Cast< unsigned char >( n );
+		SemanticIndex = *unify::FromString< unsigned char >( n );
 	}
 	else if ( unify::String::StringIs( name, "TANGENT" ) )
 	{

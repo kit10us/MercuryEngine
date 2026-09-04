@@ -140,7 +140,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						if( vertex.HasAttributes( "normal" ) )
 						{
 							//normal = unify::Cast< unify::V3<float> >( vertex.GetAttribute< std::string >( "normal" ) );
-							normal = unify::V3FromString<float>(vertex.GetAttribute< std::string >("normal"));
+							normal = *unify::V3FromString<float>(vertex.GetAttribute< std::string >("normal"));
 						}
 						if( vertex.HasAttributes( "nx" ) || vertex.HasAttributes( "ny" ) || vertex.HasAttributes( "nz" ) || vertex.HasAttributes( "normal" ) )
 						{
@@ -189,10 +189,10 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 						if( XMLConvert( &vertex, diffuseUnit ) )
 						{
 							unify::Color diffuse(
-								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.r * 255.f, 1.0f)),
-								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.g * 255.f, 1.0f)),
-								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.b * 255.f, 1.0f)),
-								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.component.a * 25.f, 1.0f))
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.r * 255.f, 1.0f)),
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.g * 255.f, 1.0f)),
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.b * 255.f, 1.0f)),
+								static_cast<unify::Color::Component>(std::clamp<float>(0.0f, diffuseUnit.a * 25.f, 1.0f))
 							);
 							WriteVertex( *vd, lock, index, diffuseE, diffuse );
 						}
@@ -210,7 +210,7 @@ void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElem
 					// Load indices...
 					for( unsigned int u = 0; u < numIndices; u++ )
 					{
-						indices[u] = (Index32)unify::Cast< int, std::string >( unify::String::ListPart( buffersetChild.GetText(), {','}, u ) );
+						indices[u] = (Index32)*unify::FromString<int>( unify::String::ListPart( buffersetChild.GetText(), {','}, u ) );
 					}
 
 					set.AddIndexBuffer( { { { numIndices, &indices[0] } }, BufferUsage::Default } );

@@ -44,12 +44,12 @@ namespace me::interop
 
 		void Set( std::string value )
 		{
-			m_value = unify::Cast< T >( value );
+			m_value = *unify::FromString< T >( value );
 		}
 
 		std::string Get() const override
 		{
-			return unify::Cast< std::string >( m_value );
+			return *unify::ToString( m_value );
 		}
 
 		std::string ToString() const override
