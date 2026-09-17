@@ -15,7 +15,7 @@ PixelShaderFactory::PixelShaderFactory( game::IGame * gameInstance )
 {
 }
 
-IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, unify::Parameters parameters )
+unify::Result<IPixelShader::ptr> PixelShaderFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
 
@@ -58,7 +58,7 @@ IPixelShader::ptr PixelShaderFactory::Produce( unify::Path source, unify::Parame
 	return renderer->ProducePS( pixelShaderParameters );
 }
 
-IPixelShader::ptr PixelShaderFactory::Produce( unify::Parameters parameters )
+unify::Result<IPixelShader::ptr> PixelShaderFactory::Produce( unify::Parameters parameters )
 {
-	throw me::exception::FailedToCreate( "Attempted to create pixel shader from raw data." );
+	return unify::Failure{ "Attempted to create pixel shader from raw data." };
 }

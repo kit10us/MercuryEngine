@@ -16,6 +16,8 @@ TextureMode::TYPE TextureMode::FromString( std::string mode )
 	{
 		return Wrapped;
 	}
-	assert( 0 );
-	throw 0;
+	else
+	{
+		throw 0; // Should never get here. Throw for uncaught exception.
+	}
 }

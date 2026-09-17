@@ -15,7 +15,7 @@ EffectFactory::EffectFactory( game::IGame * gameInstance )
 {
 }
 	  
-std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Parameters parameters )
+unify::Result<std::shared_ptr< Effect >> EffectFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto debug = m_game->GetOS()->Debug();
 	auto block{ debug->GetLogger()->CreateBlock( "EffectFactories::Produce(" + source.ToString() + ")" ) };
@@ -65,7 +65,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 					debug->ReportError(debug::ErrorLevel::Failure, "Failed to add resource \"" + name + "\"!");
 				}
 
-				effect->SetTexture( stage, texture );
+				effect->SetTexture( stage, *texture );
 			}, debug::ErrorLevel::Failure );
 		}
 
@@ -87,7 +87,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 			);
 			*/
 
-			effect->SetPixelShader(shader);
+			effect->SetPixelShader(*shader);
 		}
 
 		// Load 
@@ -96,6 +96,10 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 			auto path = unify::Path( child.GetAttribute< std::string >( "source" ) );
 			unify::Path source = m_game->GetOS()->GetAssetPaths()->FindAsset( path, doc.GetPath().DirectoryOnly() );
 			auto shader = vertexShaderManager->Add(child.GetAttributeElse< std::string >("name", path.FilenameNoExtension()), source);
+			if (!shader)
+			{
+				return unify::Failure{shader.Message()};
+			}
 			/*
 			shader.OnFailure(
 				[&](std::string message)
@@ -104,7 +108,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 				}
 			);
 			*/
-			effect->SetVertexShader(shader);
+			effect->SetVertexShader(*shader);
 		}
 		//void AddFrame( size_t frameIndex, float influence );
 	}
@@ -112,10 +116,7 @@ std::shared_ptr< Effect > EffectFactory::Produce( unify::Path source, unify::Par
 	return Effect::ptr( effect );
 }
 
-std::shared_ptr< Effect > EffectFactory::Produce( unify::Parameters parameters )
+unify::Result<std::shared_ptr< Effect >> EffectFactory::Produce( unify::Parameters parameters )
 {
-	m_game->Debug()->ReportError( debug::ErrorLevel::Engine,
-		"Attempted to create effect from parameters." 
-	);
-	return {};
+	return unify::Failure{"Attempted to create effect from parameters."};
 }

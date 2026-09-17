@@ -6,6 +6,7 @@
 #include <me/render/ElementFormat.h>
 #include <qxml/Element.h>
 #include <qjson/QJson.h>
+#include <unify/Result.h>
 
 namespace me
 {
@@ -33,8 +34,8 @@ namespace me
 			unsigned int			InstanceDataStepRate;
 
 			VertexElement();
-			VertexElement( const qxml::Element & element );
-			VertexElement( const qjson::Pair & pair );
+			unify::Result<>Create( const qxml::Element & element );
+			unify::Result<>Create( const qjson::Pair & pair );
 			size_t SizeOf() const;
 		};
 

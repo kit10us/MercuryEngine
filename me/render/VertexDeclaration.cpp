@@ -17,8 +17,7 @@ VertexDeclaration::VertexDeclaration()
 {
 }
 
-VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
-	: VertexDeclaration()
+unify::Result<> VertexDeclaration::Create( const qxml::Element * xml )
 {
 	for( auto && slot : xml->Children( "slot" ) )
 	{
@@ -37,7 +36,13 @@ VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 
 		for ( auto && element : slot.Children( "element" ) )
 		{
-			VertexElement vertexElement( element );
+			VertexElement vertexElement;
+			auto result = vertexElement.Create( element );
+			if (!result)
+			{
+				return result;
+			}
+
 			vertexElement.InputSlot = (unsigned int)m_numberOfSlots - 1;
 			vertexElement.AlignedByteOffset = (unsigned int)m_sizeInBytes[ vertexElement.InputSlot ];
 			vertexElement.SlotClass = slotClass;
@@ -51,21 +56,28 @@ VertexDeclaration::VertexDeclaration( const qxml::Element * xml )
 			m_sizeInBytes[ vertexElement.InputSlot ] += vertexElement.SizeOf();
 		}
 	}
+
+	return unify::Success{};
 }
 
-VertexDeclaration::VertexDeclaration( const qjson::Object json )
-	: VertexDeclaration()
+unify::Result<> VertexDeclaration::Create( const qjson::Object& json )
 {
 	for ( auto itr : json )
 	{
+		// Expect the json object to be an object
 		const qjson::Object * member = dynamic_cast< const qjson::Object * >(itr.GetValue().get());
 		if ( member != nullptr )
 		{
-			assert( 0 ); //TODO: What?	
+			return unify::Failure{"VertexDeclaration::Create: invalid JSON (" + itr.GetValue()->ToString() + ")"};
 		}
 		else // Simple string as type.
 		{
-			VertexElement element( itr );
+			VertexElement element;
+			auto result = element.Create( itr );
+			if (!result)
+			{
+				return result;
+			}
 	
 			std::string name = itr.GetName();
 
@@ -84,7 +96,9 @@ VertexDeclaration::VertexDeclaration( const qjson::Object json )
 	
 			m_sizeInBytes[ element.InputSlot ] += element.SizeOf();
 		}
-	}	
+	}
+
+	return unify::Success{};
 }
 
 VertexDeclaration::~VertexDeclaration()

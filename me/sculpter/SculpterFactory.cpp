@@ -32,7 +32,7 @@ IShapeCreator* SculpterFactory::FindShapeCreator( std::string name ) const
 	return itr->second.get();
 }
 
-Geometry::ptr SculpterFactory::Produce( unify::Path source, unify::Parameters parameters )
+unify::Result<Geometry::ptr> SculpterFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	game::Game & gameInstance = *m_game;
 
@@ -49,7 +49,7 @@ Geometry::ptr SculpterFactory::Produce( unify::Path source, unify::Parameters pa
 	return Geometry::ptr( mesh );
 }
 
-Geometry::ptr SculpterFactory::Produce( unify::Parameters parameters )
+unify::Result<Geometry::ptr> SculpterFactory::Produce( unify::Parameters parameters )
 {
 	game::Game & gameInstance = *m_game;
 
@@ -67,7 +67,7 @@ Geometry::ptr SculpterFactory::Produce( unify::Parameters parameters )
 
 	if( creator == nullptr )
 	{
-		throw me::exception::FailedToCreate( "Could not find shape creator for type \"" + type + "\"." );
+		return unify::Failure{ "Could not find shape creator for type \"" + type + "\"." };
 	}
 	creator->Create( primitiveList, parameters );
 

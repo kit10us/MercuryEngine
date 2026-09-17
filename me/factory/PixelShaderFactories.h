@@ -13,8 +13,8 @@ namespace me
 		typedef std::shared_ptr< rm::ISourceFactory< me::render::IPixelShader > > ptr;
 
 		PixelShaderFactory( game::IGame * gameInstance );
-		render::IPixelShader::ptr Produce( unify::Path source, unify::Parameters parameters ) override;
-		render::IPixelShader::ptr Produce( unify::Parameters parameters ) override;
+		unify::Result<render::IPixelShader::ptr> Produce( unify::Path source, unify::Parameters parameters ) override;
+		unify::Result<render::IPixelShader::ptr> Produce( unify::Parameters parameters ) override;
 
 	public:
 		game::IGame * m_game;

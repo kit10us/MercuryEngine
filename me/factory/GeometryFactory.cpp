@@ -22,46 +22,42 @@ GeometryFactory::GeometryFactory( game::IGame * gameInstance )
 {
 }
 
-Geometry::ptr GeometryFactory::Produce( unify::Path source, unify::Parameters parameters )
+unify::Result<Geometry::ptr> GeometryFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto debug = m_game->GetOS()->Debug();
 	auto block{ debug->GetLogger()->CreateBlock( "GeometryFactory::Produce( " + source.ToString() + ")" ) };
 
 	Mesh * mesh {};
 
-	debug->Try( [&]
+	qxml::Document doc( source );
+	auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
+
+	if ( ! geometryElement.HasAttributes( "version" ) )
 	{
-		qxml::Document doc( source );
-		auto & geometryElement = *doc.GetRoot()->FindFirstElement( "geometry" );
+		return {};
+	}
 
-		if ( ! geometryElement.HasAttributes( "version" ) )
-		{
-			return;
-		}
+	mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );
 
-		mesh = new Mesh( source.ToString(), m_game->GetOS()->GetRenderer(0) );
+	std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
+	if( version == "1.2" )
+	{
+		auto gameInstance = dynamic_cast< game::Game * >(m_game);
+		LoadMesh_1_2( gameInstance, geometryElement, mesh );
+	}
+	else
+	{
+		return unify::Failure{ "Geometry XML version " + version + " not supported!" };
+	}
 
-		std::string version{ geometryElement.GetAttribute< std::string >( "version" ) };
-		if( version == "1.2" )
-		{
-			auto gameInstance = dynamic_cast< game::Game * >(m_game);
-			LoadMesh_1_2( gameInstance, geometryElement, mesh );
-		}
-		else
-		{
-			throw exception::FailedToCreate( "Geometry XML version " + version + " not supported!" );
-		}
-
-		mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
-
-	}, debug::ErrorLevel::Engine, false, false );
+	mesh->GetPrimitiveList().ComputeBounds( mesh->GetBBox() );
 
 	return Geometry::ptr( mesh );
 }
 
-Geometry::ptr GeometryFactory::Produce( unify::Parameters parameters )
+unify::Result<Geometry::ptr> GeometryFactory::Produce( unify::Parameters parameters )
 {
-	throw me::exception::FailedToCreate( "Attempted to create Geometry from parameters." );
+	return unify::Failure{ "Attempted to create Geometry from parameters." };
 }
 
 void LoadMesh_1_2( game::Game * gameInstance, const qxml::Element & geometryElement, Mesh * mesh )

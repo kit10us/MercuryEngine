@@ -96,7 +96,7 @@ unify::TimeDelta RenderInfo::GetAverageDelta() const
 
 float RenderInfo::GetFPS() const
 {
-	return 1.0f / GetAverageDelta().GetSeconds();
+	return 1.0f / GetAverageDelta().AsSeconds();
 }
 
 unify::RateCapture RenderInfo::CaptureFPS() const

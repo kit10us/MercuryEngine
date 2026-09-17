@@ -15,7 +15,7 @@ VertexShaderFactory::VertexShaderFactory( game::IGame * gameInstance )
 {
 }
 
-IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, unify::Parameters parameters )
+unify::Result<IVertexShader::ptr> VertexShaderFactory::Produce( unify::Path source, unify::Parameters parameters )
 {
 	auto renderer = m_game->GetOS()->GetRenderer( 0 );
 
@@ -43,7 +43,13 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, unify::Para
 		}
 		else if ( node.IsTagName( "vertexformat" ) )
 		{
-			vertexParameters.vertexDeclaration.reset( new VertexDeclaration( &node ) );
+			auto vd = std::make_shared<VertexDeclaration>();
+			auto result = vd->Create(&node);
+			if (!result)
+			{
+				return unify::Failure{result.Message()};
+			}
+			vertexParameters.vertexDeclaration = vd;
 		}
 		else if( node.IsTagName( "trans" ) )
 		{
@@ -52,12 +58,12 @@ IVertexShader::ptr VertexShaderFactory::Produce( unify::Path source, unify::Para
 	}
 	if ( vertexParameters.vertexDeclaration == nullptr )
 	{
-		throw exception::FailedToCreate( "Failed to create vertex shader as vertex format is missing!" );
+		return unify::Failure{ "Failed to create vertex shader as vertex format is missing!" };
 	}
 	return renderer->ProduceVS( vertexParameters );
 }
 
-IVertexShader::ptr VertexShaderFactory::Produce( unify::Parameters parameters )
+unify::Result<IVertexShader::ptr> VertexShaderFactory::Produce( unify::Parameters parameters )
 {
-	throw me::exception::FailedToCreate( "Attempted to create vertex shader from parameters." );
+	return unify::Failure{ "Attempted to create vertex shader from parameters." };
 }

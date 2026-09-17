@@ -47,8 +47,7 @@ VertexElement::VertexElement()
 {
 }
 
-VertexElement::VertexElement( const qxml::Element & element )
-	: VertexElement()
+unify::Result<> VertexElement::Create( const qxml::Element & element )
 {
 	InputSlot = 0;
 	if ( element.HasAttributes( "stream" ) )
@@ -92,13 +91,32 @@ VertexElement::VertexElement( const qxml::Element & element )
 		{
 			SemanticName = "TEXCOORD";
 			std::string n = name.substr( strlen( "TEXCOORD" ) );
-			SemanticIndex = *unify::FromString<unsigned char>( n );
+			auto result = unify::FromString<unsigned char>( n );
+			if (!result)
+			{
+				// When no index is specified, we will default to 0.
+				SemanticIndex = 0;
+			}
+			else
+			{
+				SemanticIndex = *result;
+			}
 		}
 		else if ( unify::String::BeginsWith( name, "TEX" ) )
 		{
 			SemanticName = "TEXCOORD";
 			std::string n = name.substr( strlen( "TEX" ) );
-			SemanticIndex = *unify::FromString<unsigned char>( n );
+			auto result = unify::FromString<unsigned char>( n );
+
+			if (!result)
+			{
+				// When no index is specified, we will default to 0.
+				SemanticIndex = 0;
+			}
+			else
+			{
+				SemanticIndex = *result;
+			}
 		}
 		else if ( unify::String::StringIs( name, "TANGENT" ) )
 		{
@@ -166,13 +184,17 @@ VertexElement::VertexElement( const qxml::Element & element )
 	}
 
 	AlignedByteOffset = 0; // Because we don't know here.
+	return {};
 }
 
-VertexElement::VertexElement( const qjson::Pair & pair )
+unify::Result<> VertexElement::Create( const qjson::Pair & pair )
 {
 	InputSlot = 0;
 
 	std::string name = pair.GetName();
+
+	// Case insensitive.
+	std::transform(name.begin(), name.end(), name.begin(), ::toupper);
 	if ( unify::String::StringIs( name, "POSITION" ) )
 	{
 		SemanticName = "POSITION";
@@ -202,7 +224,21 @@ VertexElement::VertexElement( const qjson::Pair & pair )
 	{
 		SemanticName = "TEXCOORD";
 		std::string n = name.substr( strlen( "TEXCOORD" ) );
-		SemanticIndex = *unify::FromString< unsigned char >( n );
+		
+		// Without a index, we default to 0.
+		if (name == "TEXCOORD")
+		{
+			SemanticIndex = 0;
+		}
+		else
+		{
+			auto result = unify::FromString< unsigned char >( n );
+			if (!result)
+			{
+				return unify::Failure{"VertexElement semantic index format invalid: " + name };
+			}
+			SemanticIndex = *result;
+		}
 	}
 	else if ( unify::String::BeginsWith( name, "TEX" ) )
 	{
@@ -257,10 +293,11 @@ VertexElement::VertexElement( const qjson::Pair & pair )
 	}
 	else
 	{
-		throw unify::Exception( "Failed to convert string Vertex Declaration usage/semantic \"" + name + "\"!" );
+		return unify::Failure{ "Failed to convert string Vertex Declaration usage/semantic \"" + name + "\"!" };
 	}
 
 	Format = ElementFormat::FromString( pair.GetValue()->ToString() );
+	return unify::Success{};
 }
 
 size_t VertexElement::SizeOf() const

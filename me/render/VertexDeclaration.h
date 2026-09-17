@@ -26,8 +26,8 @@ namespace me
 			typedef std::shared_ptr< VertexDeclaration > ptr;
 
 			VertexDeclaration();
-			VertexDeclaration( const qxml::Element * xml );
-			VertexDeclaration( const qjson::Object json );
+			unify::Result<> Create( const qxml::Element* xml );
+			unify::Result<> Create( const qjson::Object& json );
 
 			~VertexDeclaration();
 

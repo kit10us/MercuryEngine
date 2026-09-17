@@ -14,12 +14,15 @@ namespace me
 		class SetupScriptFactory : public rm::ISourceFactory< me::script::IScript >
 		{
 		public:
-			using ptr = std::shared_ptr< rm::ISourceFactory< me::script::IScript > >;
+			using ptr = std::shared_ptr< me::script::IScript>;
 
 			SetupScriptFactory( game::Game * game );
 
-			std::shared_ptr<script::IScript> Produce( unify::Path source, unify::Parameters parameters ) override;
-			std::shared_ptr<script::IScript> Produce( unify::Parameters parameters ) override;
+			//unify::Result<std::shared_ptr< T >> Produce( unify::Path path, unify::Parameters parameters = {} ) = 0;
+			unify::Result<std::shared_ptr<script::IScript>> Produce( unify::Path source, unify::Parameters parameters ) override;
+			
+			//unify::Result<std::shared_ptr< T >> Produce( unify::Parameters parameters ) = 0;
+			unify::Result<std::shared_ptr<script::IScript>> Produce( unify::Parameters parameters ) override;
 
 		private:
 			game::Game * m_game;

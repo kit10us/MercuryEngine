@@ -22,8 +22,8 @@ namespace me
 			IShapeCreator* FindShapeCreator( std::string name ) const;
 
 		public: // rm::ISourceFactory
-			me::render::Geometry::ptr Produce( unify::Path source, unify::Parameters parameters ) override;
-			me::render::Geometry::ptr Produce( unify::Parameters parameters ) override;
+			unify::Result<me::render::Geometry::ptr> Produce( unify::Path source, unify::Parameters parameters ) override;
+			unify::Result<me::render::Geometry::ptr> Produce( unify::Parameters parameters ) override;
 
 		private:
 			me::game::Game *m_game;

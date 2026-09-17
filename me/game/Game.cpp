@@ -16,9 +16,6 @@
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
-
-#include <io/IDocument.h>
-
 #include <chrono>
 #include <ctime>
 #include <functional>
@@ -103,7 +100,7 @@ void Game::Initialize( os::IOS::ptr os )
 	rm::ILogger::ptr logger( new GameLogger( Debug() ) );
 
 	// Definitions used for replacements in configuration files.
-	std::map< std::string, std::string > defines;
+	std::map< std::string, std::string > defines; // SAS TODO: Shouldn't this belong for the long term?
 
 	// Function used to replace using our defines map.
 	auto ReplaceDefines = [&]( std::string in )->std::string
@@ -117,7 +114,7 @@ void Game::Initialize( os::IOS::ptr os )
 	};
 
 	// Add general defines.
-	defines["TARGET"] = debug->IsDebug() ? "DebugWindows" : "ReleaseWindows"; // SAS TODO: Move functionality to platform library.
+	defines["TARGET"] = debug->IsDebug() ? "Debug" : "Release"; // SAS TODO: Move functionality to platform library.
 	defines["OS"] = os->GetEnvironment().lock()->GetName();
 	defines["PLATFORM"] = os->GetEnvironment().lock()->GetPlatform();
 
@@ -134,7 +131,7 @@ void Game::Initialize( os::IOS::ptr os )
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 
 	// Add resource managers.
-	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< io::IDocument>("Document", GetOS()->GetAssetPaths(), logger)));
+	//GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< io::IDocument>("Document", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< script::IScript >("Script", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< ITexture >("Texture", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< Effect >("Effect", GetOS()->GetAssetPaths(), logger)));
@@ -147,7 +144,8 @@ void Game::Initialize( os::IOS::ptr os )
 
 	{
 		auto localBlock = debug->GetLogger()->CreateBlock("Add script manager.");
-		GetManager< script::IScript >()->AddFactory(".me_setup", setup::SetupScriptFactory::ptr(new setup::SetupScriptFactory(this)));
+		auto script_factory = std::make_shared<setup::SetupScriptFactory>(this);
+		GetManager< script::IScript >()->AddFactory(".me_setup", script_factory);
 		//GetManager< script::IScript >()->AddFactory(".me_setup", setup::SetupScriptFactory::ptr(new setup::SetupScriptFactory(this)));
 	}
 
@@ -198,7 +196,7 @@ void Game::Initialize( os::IOS::ptr os )
 				continue;
 			}
 
-			auto split = unify::String::Split<std::string>(*arg, '=');
+			auto split = unify::Split<std::string>(*arg, '=');
 			std::string name = split[0];
 			std::string value{};
 			if (split.size() > 1)
@@ -227,84 +225,45 @@ void Game::Initialize( os::IOS::ptr os )
 				auto script = scriptManager->Add( source.ToString(), source);
 				if (!script)
 				{
-					Debug()->ReportError(debug::ErrorLevel::Engine, "Failed to load script \"" + source.ToString() + "\".");
+					throw 0;
 				}
 
-				/*
-				{
-					auto path = unify::Path{ script()->GetSource() };
-					auto document = GetManager<io::IDocument>()->Add(path.FilenameNoExtension(), path)();
-					io::INode::ptr setup{ document->Root() };
-					if (setup)
+				(*script)->SetOnFailure(
+					[&](script::IScript* script, std::string message)
 					{
-						auto children = setup->Children();
-						for (auto node : setup->Children())
-						{
-							auto element = node;
-							const io::INode* node_ptr = node.get();
-							if (node_ptr->IsMatch("include"))
-							{
-								Debug()->GetLogger()->Log("matched include");
-								xmlLoader(unify::Path(ReplaceDefines(element->Text())));
-							}
-							else if (node_ptr->IsMatch("define"))
-							{
-								Debug()->GetLogger()->Log("matched define");
-								io::INode::list attributes = element->Attributes("name");
-								std::string name = attributes.begin()->get()->Value<std::string>();
-								defines[ReplaceDefines(name)] = ReplaceDefines(element->Text());
-							}
-							else if (element->IsMatch("renderer"))
-							{
-								Debug()->GetLogger()->Log("matched renderer");
-								
-								//unify::Path path{ ReplaceDefines(node.GetAttribute< std::string >("source")) };
-								//unify::Path pathDiscovery{
-								//	GetOS()->GetAssetPaths()->FindAsset(path, node.GetDocument()->GetPath().DirectoryOnly())
-								//};
-								//AddExtension(path, &node);
-							}
-							else if (element->IsMatch("assets"))
-							{
-								Debug()->GetLogger()->Log("matched assets");
-								//GetOS()->GetAssetPaths()->AddSource(unify::Path(ReplaceDefines(node.Text())));
-							}
-						}
+						Debug()->ReportError(debug::ErrorLevel::Engine, message);
 					}
-				}
-				*/
+				);
 
+				qxml::Document doc( unify::Path{ (*script)->GetSource() } );
+
+				qxml::Element* setup = doc.GetRoot();
+				if ( setup )
 				{
-					auto path = unify::Path::MakeFile(script->GetSource());
-					qxml::Document doc(path);
-					qxml::Element * setup = doc.GetRoot();
-					if (setup)
+					for ( auto&& node : setup->Children() )
 					{
-						for (auto&& node : setup->Children())
+						if ( node.IsTagName( "include" ) )
 						{
-							if (node.IsTagName("include"))
-							{
-								xmlLoader(unify::Path(ReplaceDefines(node.GetText())));
-							}
-							else if (node.IsTagName("define"))
-							{
-								defines[ReplaceDefines(node.GetAttribute< std::string >("name"))] = ReplaceDefines(node.GetText());
-							}
-							else if (node.IsTagName("renderer"))
-							{
-								unify::Path path{ ReplaceDefines(node.GetAttribute< std::string >("source")) };
-								unify::Path pathDiscovery{
-									GetOS()->GetAssetPaths()->FindAsset(path, node.GetDocument()->GetPath().DirectoryOnly())
-								};
-								AddExtension(path, &node);
-							}
-							else if (node.IsTagName("assets"))
-							{
-								GetOS()->GetAssetPaths()->AddSource(unify::Path(ReplaceDefines(node.GetText())));
-							}
-
-							// "inputs" handle further on
+							xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
 						}
+						else if ( node.IsTagName( "define" ) )
+						{
+							defines[ReplaceDefines( node.GetAttribute< std::string >( "name" ) )] = ReplaceDefines( node.GetText() );
+						}
+						else if ( node.IsTagName( "renderer" ) )
+						{
+							unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
+							unify::Path pathDiscovery{
+								GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
+							};
+							AddExtension( path, &node );
+						}
+						else if ( node.IsTagName( "assets" ) )
+						{
+							GetOS()->GetAssetPaths()->AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						}
+
+						// "inputs" handle further on
 					}
 				}
 			};
@@ -340,12 +299,14 @@ void Game::Initialize( os::IOS::ptr os )
 				block->Log( "loading \"" + source.ToString() + "\"", "XML Loader");
 
 				auto script = scriptManager->Add( source.ToString(), source );
-				if (!script)
-				{
-					Debug()->ReportError(debug::ErrorLevel::Engine, "Failed to load script \"" + source.ToString() + "\".  ");
-				}
+				(*script)->SetOnFailure(
+					[&](script::IScript* script, std::string message)
+					{
+						Debug()->ReportError(debug::ErrorLevel::Engine, message);
+					}
+				);
 
-				qxml::Document doc( unify::Path{ script->GetSource() } );
+				qxml::Document doc( unify::Path{ (*script)->GetSource() } );
 
 				qxml::Element* setup = doc.GetRoot();
 				if ( setup )
@@ -374,7 +335,7 @@ void Game::Initialize( os::IOS::ptr os )
 							auto failuresAsCritical = unify::FromString<bool>(ReplaceDefines(node.GetText()));
 							debug->SetErrorAsCritical( debug::ErrorLevel::Failure, *failuresAsCritical );
 						}
-
+  
 						// "inputs" handle further on
 					}
 				}
@@ -699,6 +660,7 @@ const os::IOS * Game::GetOS() const
 	return m_os.get();
 }
 
+/*
 template<>
 rm::ResourceManager< io::IDocument >* Game::GetManager()
 {
@@ -706,6 +668,7 @@ rm::ResourceManager< io::IDocument >* Game::GetManager()
 	auto manager = unify::polymorphic_downcast< rm::ResourceManager< io::IDocument > * >(rm);
 	return manager;
 }
+*/
 
 template<>
 rm::ResourceManager< script::IScript > * Game::GetManager()
