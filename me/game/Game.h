@@ -58,7 +58,7 @@ namespace me::game
 	protected: // me::game::IGame user overrides...
 		bool Setup( os::IOS* os ) override;
 		void AddScenes( scene::SceneManager* sceneManager ) override;
-		void Startup() override;
+		unify::Result<> Startup() override;
 		void Shutdown() override;
 
 		script::MshScripter& GetScripter() override;
@@ -76,7 +76,7 @@ namespace me::game
 
 	public: // me::game::IGame
 		void* Feed( std::string target, void* data ) override;
-		void Initialize( os::IOS::ptr os ) override;
+		unify::Result<> Initialize( os::IOS::ptr os ) override;
 
 		/// <summary>
 		/// Called to automatically load extensions from the "auto\" directory.

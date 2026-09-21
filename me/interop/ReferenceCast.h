@@ -52,7 +52,7 @@ namespace me::interop
 
 		std::string Get() const override
 		{
-			return *unify::ToString< T >( m_reference );
+			return unify::ToString< T >( m_reference );
 		}
 
 		std::string ToString() const override

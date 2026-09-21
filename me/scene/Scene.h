@@ -34,12 +34,13 @@ namespace me
 			unify::Owner::ptr GetOwnership() override;
 
 		public: // Events...
-			void Component_OnBeforeStart();
-			void Component_OnAfterStart();
 
-			void Component_OnEarlyUpdate( const UpdateParams & params ) override;
+			void Component_BeforeOnStart();
+			void Component_AfterOnStart();
+
+			void Component_BeforeOnUpdate( const UpdateParams & params ) override;
 			void Component_OnUpdate( const UpdateParams & params ) override;
-			void Component_OnLateUpdate( const UpdateParams & params ) override;
+			void Component_AfterOnUpdate( const UpdateParams & params ) override;
 
 			void Component_OnRender( RenderGirl renderGirl ) override;
 			void Component_OnSuspend() override;

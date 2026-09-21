@@ -79,67 +79,62 @@ std::string SceneManager::GetPreviousSceneName()
 	return m_previousSceneName;
 }
 
-bool SceneManager::ChangeScene( std::string name )
+unify::Result<> SceneManager::ChangeScene( std::string name )
 {
 	auto debug = GetGame()->Debug();
-	m_block->SubBlock( "ChangeScene" )->Exec( [&]( auto block)
+	IScene::ptr newScene = m_scenes.GetValue( name );
+
+	// Leave current scene...
+	if ( m_currentScene )
+	{
+		m_currentScene->OnEnd();
+		m_currentScene->Component_OnEnd();
+
+		// Let all components mess with the scene before we destroy it...
+		for ( auto component : m_components )
 		{
-			IScene::ptr newScene = m_scenes.GetValue( name );
-
-			// Leave current scene...
-			if ( m_currentScene )
+			auto result = component->OnSceneEnd( m_currentScene.get() );
+			if (!result)
 			{
-				m_currentScene->OnEnd();
-				m_currentScene->Component_OnEnd();
-
-				// Let all components mess with the scene before we destroy it...
-				for ( auto component : m_components )
-				{
-					component->OnSceneEnd( m_currentScene.get() );
-				}
-
-				m_previousSceneName = m_currentScene->GetName();
-
-				m_currentScene.reset();
+				debug->ReportError(me::debug::ErrorLevel::Critical, "Component \"" + component->GetWhat() + "\" failed to on OnSceneEnd!");
+				return unify::Failure{"Component \"" + component->GetWhat() + "\" failed to on OnSceneEnd!"};
 			}
+		}
 
-			// Create new scene...
-			m_currentScene = newScene;
+		m_previousSceneName = m_currentScene->GetName();
 
-			// Let all components mess with the scene first...
-			for ( auto component : m_components )
-			{
-				component->OnSceneStart( m_currentScene.get() );
-			}
+		m_currentScene.reset();
+	}
 
+	// Create new scene...
+	m_currentScene = newScene;
 
-			debug->Try( [&]
-				{
-					m_currentScene->Component_OnBeforeStart();
-				}, debug::ErrorLevel::Engine, false, false );
-
-			debug->Try( [&]
-				{
-					block->Log( "OnStart being." );
-					m_currentScene->OnStart();
-					block->Log( "OnStart end." );
-				}, debug::ErrorLevel::Engine, false, false );
+	// Let all components mess with the scene first...
+	for ( auto component : m_components )
+	{
+		auto result = component->OnSceneStart( m_currentScene.get() );
+		if (!result)
+		{
+			debug->ReportError(me::debug::ErrorLevel::Critical, "Component \"" + component->GetWhat() + "\" failed on OnSceneStart!");
+			return unify::Failure{"Component \"" + component->GetWhat() + "\" failed on OnSceneStart!"};
+		}
+	}
 
 
-			debug->Try( [&]
-				{
-					m_currentScene->Component_OnAfterStart();
-				}, debug::ErrorLevel::Engine, false, false );
-		}, true );
+	m_currentScene->Component_BeforeOnStart();
 
+	debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart begin" );
+	m_currentScene->OnStart();
+	debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart end" );
 
+	m_currentScene->Component_AfterOnStart();
 
-	return true;
+	return {};
 }
 
-void SceneManager::RestartScene()
+unify::Result<> SceneManager::RestartScene()
 {
-	ChangeScene(m_currentScene->GetName());
+	return ChangeScene(m_currentScene->GetName());
 }
 
 int SceneManager::GetComponentCount() const
@@ -196,14 +191,14 @@ size_t SceneManager::GetRenderCount() const
 	return m_renderCount;
 }
 
-void SceneManager::OnEarlyUpdate( const UpdateParams & params )
+void SceneManager::EarlyOnUpdate( const UpdateParams & params )
 {
 	if( IsEnabled() == false || !m_currentScene )
 	{
 		return;
 	}
 
-	m_currentScene->Component_OnEarlyUpdate( params );
+	m_currentScene->Component_BeforeOnUpdate( params );
 }
 
 void SceneManager::OnUpdate( const UpdateParams & params ) 
@@ -217,14 +212,14 @@ void SceneManager::OnUpdate( const UpdateParams & params )
 	m_currentScene->OnUpdate( params );
 }
 
-void SceneManager::OnLateUpdate( const UpdateParams & params )
+void SceneManager::LateOnUpdate( const UpdateParams & params )
 {
 	if( IsEnabled() == false || !m_currentScene )
 	{
 		return;
 	}
 
-	m_currentScene->Component_OnLateUpdate( params );
+	m_currentScene->Component_AfterOnUpdate( params );
 }
 
 void SceneManager::OnRender( const render::Params & params )

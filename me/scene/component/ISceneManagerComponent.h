@@ -5,6 +5,7 @@
 
 #include <me/scene/component/ISceneComponent.h>
 #include <me/IComponent.h>
+#include <unify/Result.h>
 
 namespace me
 {
@@ -31,11 +32,31 @@ namespace me
 				/// </summary>
 				virtual ISceneComponent::ptr CreateSceneComponent( std::string type ) = 0;
 
-				virtual void OnAttach( SceneManager * sceneManager ) = 0;
-				virtual void OnDetach( SceneManager * sceneManager ) = 0;
-				virtual void OnSceneStart( IScene * scene ) = 0;
-				virtual void OnSceneEnd( IScene * from ) = 0;
+				/// <summary>
+				/// Attach to the SceneManager.
+				/// </summary>
+				virtual unify::Result<> OnAttach( SceneManager * sceneManager ) = 0;
+				
+				/// <summary>
+				/// Detach from the SceneManager.
+				/// </summary>
+				virtual unify::Result<> OnDetach( SceneManager * sceneManager ) = 0;
+				
+				/// <summary>
+				/// Triggered before a Scene begins.
+				/// </summary>
+				virtual unify::Result<> OnSceneStart( IScene * scene ) = 0;
 
+				/// <summary>
+				/// Triggered adfter a Scene ends.
+				/// </summary>
+				/// <param name="from"></param>
+				/// <returns></returns>
+				virtual unify::Result<> OnSceneEnd( IScene * from ) = 0;
+
+				/// <summary>
+				/// If currently attached, returns the scene manager.
+				/// </summary>
 				virtual SceneManager * GetSceneManager() = 0;
 			};
 		}

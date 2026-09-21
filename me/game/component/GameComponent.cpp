@@ -77,15 +77,15 @@ input::IInputAction::ptr CreateInputAction( const qxml::Element * element )
 	return input::IInputAction::ptr();
 }
 
-void GameComponent::OnBeforeStartup()
+void GameComponent::BeforeOnStartup()
 {
 }
 
-void GameComponent::OnAfterStartup() 
+void GameComponent::AfterOnStartup() 
 {
 }
 
-void GameComponent::OnEarlyUpdate( const UpdateParams & params )
+void GameComponent::EarlyOnUpdate( const UpdateParams & params )
 {
 }
 
@@ -93,7 +93,7 @@ void GameComponent::OnUpdate( const UpdateParams & params )
 {
 }
 
-void GameComponent::OnLateUpdate( const UpdateParams & params )
+void GameComponent::LateOnUpdate( const UpdateParams & params )
 {
 }
 

@@ -49,17 +49,17 @@ namespace me
 				/// <summary>
 				/// Called before our game's Startup.
 				/// </summary>
-				virtual void OnBeforeStartup() = 0;
+				virtual void BeforeOnStartup() = 0;
 
 				/// <summary>
 				///  Called after our game's Startup.
 				/// </summary>
-				virtual void OnAfterStartup() = 0;
+				virtual void AfterOnStartup() = 0;
 
 				/// <summary>
 				/// Called before OnUpdate.
 				/// </summary>
-				virtual void OnEarlyUpdate( const UpdateParams & params ) = 0;
+				virtual void EarlyOnUpdate( const UpdateParams & params ) = 0;
 
 				/// <summary>
 				/// Called during game updating.
@@ -69,7 +69,7 @@ namespace me
 				/// <summary>
 				/// Called after on OnUpdate.
 				/// </summary>
-				virtual void OnLateUpdate( const UpdateParams & params ) = 0;
+				virtual void LateOnUpdate( const UpdateParams & params ) = 0;
 
 				/// <summary>
 				/// Called during game rendering.

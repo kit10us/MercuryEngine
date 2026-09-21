@@ -49,9 +49,10 @@ bool Game::Setup( os::IOS * os )
 	return true;
 }
 
-void Game::Startup()
+unify::Result<> Game::Startup()
 {
 	// STUBBED - optional for derived game class.
+	return unify::Success{};
 }
 
 void Game::Shutdown()
@@ -87,7 +88,7 @@ void * Game::Feed( std::string target, void * data )
 	return 0;
 }
 
-void Game::Initialize( os::IOS::ptr os )
+unify::Result<> Game::Initialize( os::IOS::ptr os )
 {
 	m_os = os; // This has to be first as it validates Debug().
 	auto debug = Debug();
@@ -131,7 +132,6 @@ void Game::Initialize( os::IOS::ptr os )
 	high_resolution_clock::time_point lastTime = high_resolution_clock::now();
 
 	// Add resource managers.
-	//GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< io::IDocument>("Document", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< script::IScript >("Script", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< ITexture >("Texture", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< Effect >("Effect", GetOS()->GetAssetPaths(), logger)));
@@ -139,14 +139,12 @@ void Game::Initialize( os::IOS::ptr os )
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< IVertexShader >("VertexShader", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< Geometry >("Geometry", GetOS()->GetAssetPaths(), logger)));
 
-
 	AutoLoadExtensions();
 
 	{
 		auto localBlock = debug->GetLogger()->CreateBlock("Add script manager.");
 		auto script_factory = std::make_shared<setup::SetupScriptFactory>(this);
 		GetManager< script::IScript >()->AddFactory(".me_setup", script_factory);
-		//GetManager< script::IScript >()->AddFactory(".me_setup", setup::SetupScriptFactory::ptr(new setup::SetupScriptFactory(this)));
 	}
 
 
@@ -212,22 +210,23 @@ void Game::Initialize( os::IOS::ptr os )
 	{
 		if( !m_setup.Exists() )
 		{
-			Debug()->ReportError(debug::ErrorLevel::Engine, "File not found " + m_setup.ToString() );
+			return unify::Failure{"Setup file not found \"" + m_setup.ToString() + "\"!" };
 		}
 
 		// First loader pass
 		block->SubBlock( "XMLLoaderFirstPass" )->Exec( [&]( auto block ) {
 			auto scriptManager = GetManager< script::IScript >();
-			std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
+			std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
 			{
 				block->Log( "loading \"" + source.ToString() + "\"" );
 
 				auto script = scriptManager->Add( source.ToString(), source);
 				if (!script)
 				{
-					throw 0;
+					return unify::Result<>(unify::Failure("Failed to add script \"" + source.ToString() + "\"!"));
 				}
 
+				// Set the failure callback.
 				(*script)->SetOnFailure(
 					[&](script::IScript* script, std::string message)
 					{
@@ -266,10 +265,16 @@ void Game::Initialize( os::IOS::ptr os )
 						// "inputs" handle further on
 					}
 				}
+				return unify::Result<>(unify::Success{});
 			};
 
-			xmlLoader( m_setup );
-			} );
+			auto result = xmlLoader( m_setup );
+			if (!result)
+			{
+				return result;
+			}
+			return unify::Result<>(unify::Success{});
+		} );
 	}
 
 	if ( ! m_os )
@@ -315,7 +320,7 @@ void Game::Initialize( os::IOS::ptr os )
 					{
 						if ( node.IsTagName( "startScene" ) )
 						{
-							m_startScene = ReplaceDefines( node.GetText() );
+							  m_startScene = ReplaceDefines( node.GetText() );
 						}
 						else if ( node.IsTagName( "include" ) )
 						{
@@ -410,7 +415,7 @@ void Game::Initialize( os::IOS::ptr os )
 					else if (node.IsTagName("inputs"))
 					{
 						size_t failures = GetInputManager()->AddInputActions(m_inputOwnership, &node, true );
-						block->Log( "Add input actions (failures = " + *unify::ToString<size_t>(failures) + ")", "XML Loader");
+						block->Log( "Add input actions (failures = " + unify::ToString<size_t>(failures) + ")", "XML Loader");
 					}
 					else if (node.IsTagName("asset"))
 					{
@@ -439,13 +444,19 @@ void Game::Initialize( os::IOS::ptr os )
 		block->Log( GetComponent( i )->GetTypeName(), "Components" );
 	}
 
-	m_os->Startup();
+	{
+		auto result = m_os->Startup();
+		if (!result)
+		{
+			return result;
+		}
+	}
 	
 	block->Log( "Interate components' \"OnBeforeStartup\"", "Components" );
 	for ( auto&& component : m_components )
 	{
 		block->Log( component->GetTypeName() + "...", "Components" );
-		component->OnBeforeStartup();
+		component->BeforeOnStartup();
 	}
 	block->Log( "Done." );
 
@@ -458,7 +469,7 @@ void Game::Initialize( os::IOS::ptr os )
 	for ( auto&& component : m_components )
 	{
 		block->Log( component->GetTypeName() + "..." );
-		component->OnAfterStartup();
+		component->AfterOnStartup();
 	}
 	block->Log( "Done.", "Components" );
 
@@ -479,7 +490,7 @@ void Game::Initialize( os::IOS::ptr os )
 	auto micro = duration_cast< microseconds >(currentTime - lastTime).count();
 	m_totalStartupTime = micro * 0.000001f;
 
-	block->Log( "total startup time: " + *unify::ToString< float >( m_totalStartupTime ) + "s", "Stats" );
+	block->Log( "total startup time: " + unify::ToString< float >( m_totalStartupTime ) + "s", "Stats" );
 
 	block->Log( "adding user specified scenes.", "Scene Management" );
 	auto sceneManager = GetComponentT< scene::SceneManager >();
@@ -488,7 +499,7 @@ void Game::Initialize( os::IOS::ptr os )
 	block->Log( "Changing starting scene.", "Scene Management" );
 	if ( ! m_startScene.empty() )
 	{
-		sceneManager->ChangeScene( m_startScene );
+		auto result = sceneManager->ChangeScene( m_startScene );
 	}
 	else
 	{
@@ -501,6 +512,8 @@ void Game::Initialize( os::IOS::ptr os )
 	{
 		block->Log(listener->GetPath().ToXPath());
 	}
+
+	return unify::Success{};
 }
 
 void Game::AutoLoadExtensions()
@@ -590,7 +603,7 @@ void Game::Tick()
 			continue;
 		}
 
-		component->OnEarlyUpdate( params );
+		component->EarlyOnUpdate( params );
 	}
 
 	m_inputManager.Update( params );
@@ -612,7 +625,7 @@ void Game::Tick()
 			continue;
 		}
 
-		component->OnLateUpdate( params );
+		component->LateOnUpdate( params );
 	}
 }
 
@@ -904,12 +917,12 @@ void Game::Private_Shutdown()
 		auto now = std::chrono::system_clock::now();
 		std::time_t t = std::chrono::system_clock::to_time_t( now );
 		const RenderInfo& renderInfo = GetRenderInfo();
+		block->Log("time: " + std::string( std::ctime( &t ) ));
+
 		block->Log( 
-			"time: " + std::string( std::ctime( &t ) ) 
-		);
-		block->Log( 
-			"frames: " + *unify::ToString<>( renderInfo.FrameID() ) + 
-			", total delta: " + *unify::ToString( renderInfo.GetTotalDelta() ) + "s,  average fps:" + *unify::ToString( renderInfo.GetFPS() ) 
+		"frames: " + unify::ToString<>( renderInfo.FrameID() ) + 
+		", total delta: " + unify::ToString( renderInfo.GetTotalDelta() ) + 
+		",  average fps:" + unify::ToString( renderInfo.GetFPS() )
 		);
 
 		block->Log( "Finalizing shuting down, logger unavailable." );

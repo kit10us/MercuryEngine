@@ -42,9 +42,9 @@ namespace me::scene
 		IScene* GetCurrentScene();
 		std::string GetPreviousSceneName();
 
-		bool ChangeScene( std::string name );
+		unify::Result<> ChangeScene( std::string name );
 
-		void RestartScene();
+		unify::Result<> RestartScene();
 
 		int GetComponentCount() const;
 		void AddComponent( component::ISceneManagerComponent::ptr component );
@@ -60,9 +60,9 @@ namespace me::scene
 
 	public: // IGameCompnent...
 		void OnAttach( game::IGame* gameInstance ) override;
-		void OnEarlyUpdate( const UpdateParams& params ) override;
+		void EarlyOnUpdate( const UpdateParams& params ) override;
 		void OnUpdate( const UpdateParams& params ) override;
-		void OnLateUpdate( const UpdateParams& params ) override;
+		void LateOnUpdate( const UpdateParams& params ) override;
 		void OnRender( const render::Params& params ) override;
 
 		std::string SendCommand( size_t id, std::string extra ) override;

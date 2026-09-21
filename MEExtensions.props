@@ -15,7 +15,7 @@
       <AdditionalDependencies>MercuryEngine.lib;qxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;$(ProjectDir)..\unify;$(ProjectDir)..\qxml;$(ProjectDir)..\QJson;$(ProjectDir)..\kitlogger;$(ProjectDir)..\ResourceManager;$(ProjectDir)..\MercuryEngine;$(ProjectDir)..\packages;$(ProjectDir)..\Portability;$(ProjectDir)..\interop;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(SolutionDir)unify;$(SolutionDir)qxml;$(SolutionDir)QJson;$(SolutionDir)kitlogger;$(SolutionDir)ResourceManager;$(SolutionDir)MercuryEngine;$(SolutionDir)packages;$(SolutionDir)Portability;$(SolutionDir)interop;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>PORT_WINDOWS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

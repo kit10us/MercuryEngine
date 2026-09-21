@@ -34,9 +34,9 @@ unify::Owner::ptr Scene::GetOwnership()
 	return m_ownership;
 }
 
-void Scene::Component_OnBeforeStart()
+void Scene::Component_BeforeOnStart()
 {
-	m_block->SubBlock( "Component_OnBeforeStart" )->Exec( [&]( auto block )
+	m_block->SubBlock( "Component_BeforeOnStart" )->Exec( [&]( auto block )
 		{
 
 			for ( auto&& component : m_components )
@@ -48,16 +48,15 @@ void Scene::Component_OnBeforeStart()
 
 				if ( component->IsEnabled() )
 				{
-					component->OnBeforeStart();
-					block->Log( "Done." );
+					component->BeforeOnStart();
 				}
 			}
 		} );
 }
 
-void Scene::Component_OnAfterStart()
+void Scene::Component_AfterOnStart()
 {
-	m_block->SubBlock( "Component_OnAfterStart" )->Exec( [&]( auto block )
+	m_block->SubBlock( "Component_AfterOnStart" )->Exec( [&]( auto block )
 		{
 			for ( auto&& component : m_components )
 			{
@@ -68,20 +67,20 @@ void Scene::Component_OnAfterStart()
 
 				if ( component->IsEnabled() )
 				{
-					component->OnAfterStart();
+					component->AfterOnStart();
 					block->Log( "Done." );
 				}
 			}
 		} );
 }
 
-void Scene::Component_OnEarlyUpdate( const UpdateParams & params )
+void Scene::Component_BeforeOnUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnEarlyUpdate( params );
+			component->BeforeOnUpdate( params );
 		}
 	}
 }
@@ -97,13 +96,13 @@ void Scene::Component_OnUpdate( const UpdateParams & params )
 	}
 }
 
-void Scene::Component_OnLateUpdate( const UpdateParams & params )
+void Scene::Component_AfterOnUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnLateUpdate( params );
+			component->AfterOnUpdate( params );
 		}
 	}
 }

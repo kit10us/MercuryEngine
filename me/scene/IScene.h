@@ -44,17 +44,17 @@ namespace me
 			/// <summary>
 			/// This is peformed immediately before the user's OnStart.
 			/// </summary>
-			virtual void Component_OnBeforeStart() = 0;
+			virtual void Component_BeforeOnStart() = 0;
 
 			/// <summary>
 			/// This is peformed immediately after the user's OnStart.
 			/// </summary>
-			virtual void Component_OnAfterStart() = 0;
+			virtual void Component_AfterOnStart() = 0;
 
 			/// <summary>
-			///
+			/// This is performed immediately before updates.
 			/// </summary>
-			virtual void Component_OnEarlyUpdate( const UpdateParams & params ) = 0;
+			virtual void Component_BeforeOnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			///
@@ -64,7 +64,7 @@ namespace me
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_OnLateUpdate( const UpdateParams & params ) = 0;
+			virtual void Component_AfterOnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			///

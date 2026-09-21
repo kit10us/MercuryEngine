@@ -31,12 +31,12 @@ namespace me
 			public: // ISceneComponent...
 				void OnAttach( me::scene::IScene * scene ) override;
 				void OnDetach( me::scene::IScene * scene ) override;
-				void OnBeforeStart() override;
-				void OnAfterStart() override;
+				void BeforeOnStart() override;
+				void AfterOnStart() override;
 			
-				void OnEarlyUpdate( const UpdateParams & params ) override;
+				void BeforeOnUpdate( const UpdateParams & params ) override;
 				void OnUpdate( const UpdateParams & params ) override;
-				void OnLateUpdate( const UpdateParams & params ) override;
+				void AfterOnUpdate( const UpdateParams & params ) override;
 
 				void CollectCameras( RenderGirl & renderGirl ) override;
 				void OnRender( RenderGirl & renderGirl ) override;

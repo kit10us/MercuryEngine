@@ -27,10 +27,10 @@ namespace me::scene::component
 
 	public: // me::scene::component::ISceneManagerComponent...
 		ISceneComponent::ptr CreateSceneComponent( std::string type ) override;
-		void OnAttach( SceneManager* sceneManager ) override;
-		void OnDetach( SceneManager* sceneManager ) override;
-		void OnSceneStart( IScene* scene ) override;
-		void OnSceneEnd( IScene* scene ) override;
+		unify::Result<> OnAttach( SceneManager* sceneManager ) override;
+		unify::Result<> OnDetach( SceneManager* sceneManager ) override;
+		unify::Result<> OnSceneStart( IScene* scene ) override;
+		unify::Result<> OnSceneEnd( IScene* scene ) override;
 		SceneManager* GetSceneManager() override;
 
 	public:	// me::IComponent...

@@ -58,15 +58,15 @@ void SceneComponent::OnDetach( IScene * scene )
 	m_scene = nullptr;
 }
 
-void SceneComponent::OnBeforeStart() 
+void SceneComponent::BeforeOnStart() 
 {
 }
 
-void SceneComponent::OnAfterStart() 
+void SceneComponent::AfterOnStart() 
 {
 }
 
-void SceneComponent::OnEarlyUpdate( const UpdateParams & params )
+void SceneComponent::BeforeOnUpdate( const UpdateParams & params )
 {
 }
 
@@ -74,7 +74,7 @@ void SceneComponent::OnUpdate( const UpdateParams & params )
 {
 }
 
-void SceneComponent::OnLateUpdate( const UpdateParams & params )
+void SceneComponent::AfterOnUpdate( const UpdateParams & params )
 {
 }
 

@@ -33,23 +33,27 @@ ISceneComponent::ptr SceneManagerComponent::CreateSceneComponent( std::string ty
 	return {};
 }
 
-void SceneManagerComponent::OnAttach( SceneManager * sceneManager )
+unify::Result<> SceneManagerComponent::OnAttach( SceneManager * sceneManager )
 {
 	m_sceneManager = sceneManager;
 	m_block = m_sceneManager->GetGame()->Debug()->GetLogger()->CreateBlock( "SceneManagerComponent \"" + GetTypeName() + "\"" );
+	return {};
 }
 
-void SceneManagerComponent::OnDetach( SceneManager * sceneManager )
+unify::Result<> SceneManagerComponent::OnDetach( SceneManager * sceneManager )
 {
-	m_sceneManager = 0;
+	m_sceneManager = nullptr;
+	return {};
 }
 
-void SceneManagerComponent::OnSceneStart( IScene * scene )
+unify::Result<> SceneManagerComponent::OnSceneStart( IScene * scene )
 {
+	return {};
 }
 
-void SceneManagerComponent::OnSceneEnd( IScene * from )
+unify::Result<> SceneManagerComponent::OnSceneEnd( IScene * from )
 {
+	return {};
 }
 
 SceneManager * SceneManagerComponent::GetSceneManager()

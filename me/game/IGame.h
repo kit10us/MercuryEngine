@@ -51,7 +51,7 @@ namespace me
 			/// <summary>
 			/// Startup is called to load assets and create game objects before Updating and Rendering. It is called once.
 			/// </summary>
-			virtual void Startup() = 0;
+			virtual unify::Result<> Startup() = 0;
 
 			/// <summary>
 			/// Called once when engine is shutting down, to allow user to release assets that require manual release/destroy.
@@ -81,7 +81,7 @@ namespace me
 			/// Perform necessary initialization.
 			/// Returns Setup: false ends the program immediately.
 			/// </summary>
-			virtual void Initialize( me::os::IOS::ptr os ) = 0;
+			virtual unify::Result<> Initialize( me::os::IOS::ptr os ) = 0;
 
 			/// <summary>
 			/// Triggers updating, called by lower OS main area.

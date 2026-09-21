@@ -24,7 +24,7 @@ void GeometryCacheSummation::Render( const render::Params & params )
 		render::MatrixFood_InstancesSet food( &pair.second[0], pair.second.size() );
 		render::MatrixFeed feed( food, 1 );
 		pair.first->Render( params, 0, feed );
-	}
+ 	}
 }
 
 void GeometryCacheSummation::Reset()

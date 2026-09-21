@@ -35,11 +35,11 @@ namespace me
 				IGame * GetGame() override;
 				const IGame * GetGame() const override;
 				void OnAttach( game::IGame * gameInstance ) override;
-				void OnBeforeStartup() override;
-				void OnAfterStartup() override;
-				void OnEarlyUpdate( const UpdateParams & params ) override;
+				void BeforeOnStartup() override;
+				void AfterOnStartup() override;
+				void EarlyOnUpdate( const UpdateParams & params ) override;
 				void OnUpdate( const UpdateParams & params ) override;
-				void OnLateUpdate( const UpdateParams & params ) override;
+				void LateOnUpdate( const UpdateParams & params ) override;
 				void OnRender( const render::Params & params ) override;
 				void OnDetach( game::IGame * gameInstance ) override;
 				action::IAction::ptr CreateAction( const qxml::Element * element ) override;

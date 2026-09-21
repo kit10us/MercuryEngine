@@ -49,7 +49,7 @@ namespace me::interop
 
 		std::string Get() const override
 		{
-			return *unify::ToString( m_value );
+			return unify::ToString( m_value );
 		}
 
 		std::string ToString() const override

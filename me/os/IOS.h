@@ -12,6 +12,7 @@
 #include <rm/AssetPaths.h>
 #include <unify/unify.h>
 #include <unify/Size.h>
+#include <unify/Result.h>
 #include <vector>
 #include <string>
 #include <memory>
@@ -113,7 +114,7 @@ namespace me
 			/// <summary>
 			/// Startup and initalize Operating System specific dependencies.
 			/// </summary>
-			virtual void Startup() = 0;
+			virtual unify::Result<> Startup() = 0;
 
 			/// <summary>
 			/// Cleanup up and unitialize Operating System specific dependencies.
