@@ -139,7 +139,13 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< IVertexShader >("VertexShader", GetOS()->GetAssetPaths(), logger)));
 	GetResourceHub().AddManager(rm::IResourceManagerRaw::ptr(new rm::ResourceManager< Geometry >("Geometry", GetOS()->GetAssetPaths(), logger)));
 
-	AutoLoadExtensions();
+	{
+		auto result = AutoLoadExtensions();
+		if (!result)
+		{
+			return result;
+		}
+	}
 
 	{
 		auto localBlock = debug->GetLogger()->CreateBlock("Add script manager.");
@@ -214,67 +220,68 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 		}
 
 		// First loader pass
-		block->SubBlock( "XMLLoaderFirstPass" )->Exec( [&]( auto block ) {
-			auto scriptManager = GetManager< script::IScript >();
-			std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
+		auto scriptManager = GetManager< script::IScript >();
+		std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
+		{
+			block->Log( "loading \"" + source.ToString() + "\"" );
+
+			auto script = scriptManager->Add( source.ToString(), source);
+			if (!script)
 			{
-				block->Log( "loading \"" + source.ToString() + "\"" );
-
-				auto script = scriptManager->Add( source.ToString(), source);
-				if (!script)
-				{
-					return unify::Result<>(unify::Failure("Failed to add script \"" + source.ToString() + "\"!"));
-				}
-
-				// Set the failure callback.
-				(*script)->SetOnFailure(
-					[&](script::IScript* script, std::string message)
-					{
-						Debug()->ReportError(debug::ErrorLevel::Engine, message);
-					}
-				);
-
-				qxml::Document doc( unify::Path{ (*script)->GetSource() } );
-
-				qxml::Element* setup = doc.GetRoot();
-				if ( setup )
-				{
-					for ( auto&& node : setup->Children() )
-					{
-						if ( node.IsTagName( "include" ) )
-						{
-							xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
-						}
-						else if ( node.IsTagName( "define" ) )
-						{
-							defines[ReplaceDefines( node.GetAttribute< std::string >( "name" ) )] = ReplaceDefines( node.GetText() );
-						}
-						else if ( node.IsTagName( "renderer" ) )
-						{
-							unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
-							unify::Path pathDiscovery{
-								GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
-							};
-							AddExtension( path, &node );
-						}
-						else if ( node.IsTagName( "assets" ) )
-						{
-							GetOS()->GetAssetPaths()->AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
-						}
-
-						// "inputs" handle further on
-					}
-				}
-				return unify::Result<>(unify::Success{});
-			};
-
-			auto result = xmlLoader( m_setup );
-			if (!result)
-			{
-				return result;
+				return unify::Result<>(unify::Failure("Failed to add script \"" + source.ToString() + "\"!"));
 			}
-			return unify::Result<>(unify::Success{});
-		} );
+
+			// Set the failure callback.
+			(*script)->SetOnFailure(
+				[&](script::IScript* script, std::string message)
+				{
+					Debug()->ReportError(debug::ErrorLevel::Engine, message);
+				}
+			);
+
+			qxml::Document doc( unify::Path{ (*script)->GetSource() } );
+
+			qxml::Element* setup = doc.GetRoot();
+			if ( setup )
+			{
+				for ( auto&& node : setup->Children() )
+				{
+					if ( node.IsTagName( "include" ) )
+					{
+						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+					}
+					else if ( node.IsTagName( "define" ) )
+					{
+						defines[ReplaceDefines( node.GetAttribute< std::string >( "name" ) )] = ReplaceDefines( node.GetText() );
+					}
+					else if ( node.IsTagName( "renderer" ) )
+					{
+						unify::Path path{ ReplaceDefines( node.GetAttribute< std::string >( "source" ) ) };
+						unify::Path pathDiscovery{
+							GetOS()->GetAssetPaths()->FindAsset( path, node.GetDocument()->GetPath().DirectoryOnly() )
+						};
+						auto result = AddExtension( path, &node );
+						if (!result)
+						{
+							return result;
+						}
+					}
+					else if ( node.IsTagName( "assets" ) )
+					{
+						GetOS()->GetAssetPaths()->AddSource( unify::Path( ReplaceDefines( node.GetText() ) ) );
+					}
+
+					// "inputs" handle further on
+				}
+			}
+			return {};
+		};
+
+		auto result = xmlLoader( m_setup );
+		if (!result)
+		{
+			return result;
+		}
 	}
 
 	if ( ! m_os )
@@ -297,56 +304,67 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 		}
 
 		// Second loader pass
-		block->SubBlock( "xmlLoader second pass" )->Exec( [&]( auto block ) {
-			auto scriptManager = GetManager< script::IScript >();
-			std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
+		auto scriptManager = GetManager< script::IScript >();
+		std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
+		{
+			block->Log( "loading \"" + source.ToString() + "\"", "XML Loader");
+
+			auto script = scriptManager->Add( source.ToString(), source );
+			if (!script)
 			{
-				block->Log( "loading \"" + source.ToString() + "\"", "XML Loader");
-
-				auto script = scriptManager->Add( source.ToString(), source );
-				(*script)->SetOnFailure(
-					[&](script::IScript* script, std::string message)
-					{
-						Debug()->ReportError(debug::ErrorLevel::Engine, message);
-					}
-				);
-
-				qxml::Document doc( unify::Path{ (*script)->GetSource() } );
-
-				qxml::Element* setup = doc.GetRoot();
-				if ( setup )
+				return unify::Failure{script.Message()};
+			}
+			(*script)->SetOnFailure(
+				[&](script::IScript* script, std::string message)
 				{
-					for ( auto&& node : setup->Children() )
-					{
-						if ( node.IsTagName( "startScene" ) )
-						{
-							  m_startScene = ReplaceDefines( node.GetText() );
-						}
-						else if ( node.IsTagName( "include" ) )
-						{
-							xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
-						}
-						else if ( node.IsTagName( "title" ) )
-						{
-							m_title = ReplaceDefines( node.GetText() );
-						}
-						else if ( node.IsTagName( "logfile" ) )
-						{
-							unify::Path logFilename( ReplaceDefines( node.GetText() ) );
-							debug->SetLogFilename(logFilename);
-						}
-						else if ( node.IsTagName( "failuresAsCritical" ) )
-						{
-							auto failuresAsCritical = unify::FromString<bool>(ReplaceDefines(node.GetText()));
-							debug->SetErrorAsCritical( debug::ErrorLevel::Failure, *failuresAsCritical );
-						}
-  
-						// "inputs" handle further on
-					}
+					Debug()->ReportError(debug::ErrorLevel::Engine, message);
 				}
-			};
-			xmlLoader( m_setup );
-		} );
+			);
+
+			qxml::Document doc( unify::Path{ (*script)->GetSource() } );
+
+			qxml::Element* setup = doc.GetRoot();
+			if ( setup )
+			{
+				for ( auto&& node : setup->Children() )
+				{
+					if ( node.IsTagName( "startScene" ) )
+					{
+							m_startScene = ReplaceDefines( node.GetText() );
+					}
+					else if ( node.IsTagName( "include" ) )
+					{
+						auto result = xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						if (!result)
+						{
+							return result;
+						}
+					}
+					else if ( node.IsTagName( "title" ) )
+					{
+						m_title = ReplaceDefines( node.GetText() );
+					}
+					else if ( node.IsTagName( "logfile" ) )
+					{
+						unify::Path logFilename( ReplaceDefines( node.GetText() ) );
+						debug->SetLogFilename(logFilename);
+					}
+					else if ( node.IsTagName( "failuresAsCritical" ) )
+					{
+						auto failuresAsCritical = unify::FromString<bool>(ReplaceDefines(node.GetText()));
+						debug->SetErrorAsCritical( debug::ErrorLevel::Failure, *failuresAsCritical );
+					}
+  
+					// "inputs" handle further on
+				}
+			}
+			return {};
+		};
+		auto result = xmlLoader( m_setup );
+		if (!result)
+		{
+			return result;
+		}
 	}
 
 	// Creates displays...
@@ -384,7 +402,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	if( m_setup.Exists() )
 	{
 		// Third and final loader pass.
-		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
+		std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
 		{
 			unify::Path pathDiscovery( GetOS()->GetAssetPaths()->FindAsset( source ) );
 			qxml::Document doc( pathDiscovery );
@@ -410,7 +428,11 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 						{
 							return unify::Failure{"Asset \"" + path.ToString() + "\" not found!"};
 						}
-						AddExtension( pathDiscovery, &node );
+						auto result = AddExtension( pathDiscovery, &node );
+						if (!result)
+						{
+							return result;
+						}
 					}
 					else if (node.IsTagName("inputs"))
 					{
@@ -436,7 +458,12 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 			}
 			return {};
 		};
-		xmlLoader( m_setup );
+		
+		auto result = xmlLoader( m_setup );
+		if (!result)
+		{
+			return result;
+		}
 	}
 
 	block->Log( "GameComponent summary...", "Components" );
@@ -457,7 +484,11 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	for ( auto&& component : m_components )
 	{
 		block->Log( component->GetTypeName() + "...", "Components" );
-		component->BeforeOnStartup();
+		auto result = component->BeforeOnStartup();
+		if (!result)
+		{
+			return result;
+		}
 	}
 	block->Log( "Done." );
 
@@ -470,7 +501,11 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	for ( auto&& component : m_components )
 	{
 		block->Log( component->GetTypeName() + "..." );
-		component->AfterOnStartup();
+		auto result = component->AfterOnStartup();
+		if (!result)
+		{
+			return result;
+		}
 	}
 	block->Log( "Done.", "Components" );
 
@@ -501,6 +536,10 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	if ( ! m_startScene.empty() )
 	{
 		auto result = sceneManager->ChangeScene( m_startScene );
+		if (!result)
+		{
+			return result;
+		}
 	}
 	else
 	{
@@ -517,7 +556,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	return unify::Success{};
 }
 
-void Game::AutoLoadExtensions()
+unify::Result<> Game::AutoLoadExtensions()
 {
 	auto block = Debug()->GetLogger()->CreateBlock("AutoLoadExtensions");
 
@@ -535,7 +574,7 @@ void Game::AutoLoadExtensions()
 	if (m_autoLoadExtensions.Exists() == false)
 	{
 		Debug()->GetLogger()->Log("No auto load extension directory found.");
-		return;
+		return {};
 	}
 
 	auto files = m_autoLoadExtensions.Files();
@@ -543,9 +582,11 @@ void Game::AutoLoadExtensions()
 	{
 		if (IsExtension(path))
 		{
-			AddExtension(path, nullptr);
+			auto result = AddExtension(path, nullptr);
+			return result;
 		}
 	}
+	return {};
 }
 
 void Game::AddScenes( scene::SceneManager * sceneManager )
@@ -1042,10 +1083,15 @@ const debug::IDebug * Game::Debug() const
 	return GetOS() ? GetOS()->Debug() : nullptr;
 }
 
-void Game::AddExtension( unify::Path path, const qxml::Element * element )
+unify::Result<> Game::AddExtension( unify::Path path, const qxml::Element * element )
 {
 	auto block = m_gameBlock->SubBlock("AddExtension");
 	block->Log( "Extension \"" + path.ToString() + "\"" );
-	os::IExtension::ptr extension{ GetOS()->CreateExtension( path, element ) };
-	m_extensions.push_back( extension );
+	auto extension{ GetOS()->CreateExtension( path, element ) };
+	if (!extension)
+	{
+		return unify::Failure{extension.Message()};
+	}
+	m_extensions.push_back( *extension );
+	return {};
 }

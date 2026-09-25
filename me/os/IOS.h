@@ -109,7 +109,7 @@ namespace me
 			/// <summary>
 			/// Create an extension.
 			/// </summary>
-			virtual me::os::IExtension::ptr CreateExtension( unify::Path source, const qxml::Element * element ) = 0;
+			virtual unify::Result<me::os::IExtension::ptr> CreateExtension( unify::Path source, const qxml::Element * element ) = 0;
 
 			/// <summary>
 			/// Startup and initalize Operating System specific dependencies.

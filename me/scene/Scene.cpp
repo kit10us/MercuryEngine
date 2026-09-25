@@ -348,29 +348,31 @@ std::list< HitInstance > Scene::FindObjectsWithinSphere( unify::BSphere< float >
 	return instances;
 }
 
-void Scene::AddResources( unify::Path path )
+unify::Result<> Scene::AddResources( unify::Path path )
 {
-	auto debug = m_game->Debug();
-	m_block->SubBlock( "AddResources(" + path.ToString() + ")" )->Exec( [&]( auto block )
-		{
-			qxml::Document doc{};
-			debug->Try( [&]
-				{
-					auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
-					doc.Load( realPath );
-				}, debug::ErrorLevel::Failure, true, true );
+	qxml::Document doc{};
+	auto realPath = GetOS()->GetAssetPaths()->FindAsset( path );
+	if (realPath.IsEmpty())
+	{
+		return unify::Failure{"Resource not found! (" + path.ToString() + ")"};
+	}
 
-			for ( auto itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr )
-			{
-				debug->Try( [&]
-					{
-						auto type = (*itr).GetAttribute< std::string >( "type" );
-						auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
-						unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
-						GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
-					}, debug::ErrorLevel::Failure, true, true );
-			}
-		} );
+	{
+		auto result = doc.Load( realPath );
+		if (!result)
+		{
+			return result;
+		}
+	}
+
+	for ( auto itr = doc.GetRoot()->Children( "asset" ).begin(); itr != doc.GetRoot()->Children().end(); ++itr )
+	{
+		auto type = (*itr).GetAttribute< std::string >( "type" );
+		auto name = (*itr).GetAttributeElse< std::string >( "name", std::string() );
+		unify::Path source{ (*itr).GetAttribute< std::string >( "source" ) };
+		GetGame()->GetResourceHub().GetManagerRaw( type )->AddResource( name, source );
+	}
+	return {};
 }
 
 SceneManager* Scene::GetSceneManager()

@@ -88,8 +88,20 @@ unify::Result<> SceneManager::ChangeScene( std::string name )
 	// Leave current scene...
 	if ( m_currentScene )
 	{
-		m_currentScene->OnEnd();
-		m_currentScene->Component_OnEnd();
+		{
+			auto result = m_currentScene->OnEnd();
+			if (!result)
+			{
+				return result;
+			}
+		}
+		{
+			auto result = m_currentScene->Component_OnEnd();
+			if (!result)
+			{
+				return result;
+			}
+		}
 
 		// Let all components mess with the scene before we destroy it...
 		for ( auto component : m_components )
@@ -122,7 +134,13 @@ unify::Result<> SceneManager::ChangeScene( std::string name )
 	}
 
 
-	m_currentScene->Component_BeforeOnStart();
+	{
+		auto result = m_currentScene->Component_BeforeOnStart();
+		if (!result)
+		{
+			return result;
+		}
+	}
 
 	{
 		debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart begin" );
@@ -134,7 +152,13 @@ unify::Result<> SceneManager::ChangeScene( std::string name )
 		debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart end" );
 	}
 
-	m_currentScene->Component_AfterOnStart();
+	{
+		auto result = m_currentScene->Component_AfterOnStart();
+		if (!result)
+		{
+			return result;
+		}
+	}
 
 	return {};
 }
@@ -216,7 +240,12 @@ unify::Result<> SceneManager::EarlyOnUpdate( const UpdateParams & params )
 		return {}; // Not a failure.
 	}
 
-	m_currentScene->Component_BeforeOnUpdate( params );
+	auto result = m_currentScene->Component_BeforeOnUpdate( params );
+	if (!result)
+	{
+		return result;
+	}
+
 	return {};
 }
 
@@ -227,8 +256,20 @@ unify::Result<> SceneManager::OnUpdate( const UpdateParams & params )
 		return {}; // Not a failure.
 	}
 
-	m_currentScene->Component_OnUpdate( params );
-	m_currentScene->OnUpdate( params );
+	{
+		auto result = m_currentScene->Component_OnUpdate( params );
+		if (!result)
+		{
+			return result;
+		}
+	}
+	{
+		auto result = m_currentScene->OnUpdate( params );
+		if (!result)
+		{
+			return result;
+		}
+	}
 
 	return {};
 }
@@ -240,7 +281,12 @@ unify::Result<> SceneManager::LateOnUpdate( const UpdateParams & params )
 		return {}; // Not a failure.
 	}
 
-	m_currentScene->Component_AfterOnUpdate( params );
+	auto result = m_currentScene->Component_AfterOnUpdate( params );
+	if (!result)
+	{
+		return result;
+	}
+
 	return {};
 }
 
@@ -257,11 +303,20 @@ unify::Result<> SceneManager::OnRender( const render::Params & params )
 	RenderGirl renderGirl;
 	renderGirl.Begin( &params );
 
-	m_currentScene->Component_OnRender( renderGirl );
-	auto result = m_currentScene->OnRender( renderGirl );
-	if (!result)
 	{
-		return result;
+		auto result = m_currentScene->Component_OnRender( renderGirl );
+		if (!result)
+		{
+			return result;
+		}
+	}
+
+	{
+		auto result = m_currentScene->OnRender( renderGirl );
+		if (!result)
+		{
+			return result;
+		}
 	}
 
 	m_renderCount = renderGirl.End();

@@ -202,7 +202,7 @@ namespace me
 			/// <summary>
 			/// Loads a resource file connected to the scene.
 			/// </summary>
-			virtual void AddResources( unify::Path path ) = 0;
+			virtual unify::Result<> AddResources( unify::Path path ) = 0;
 
 			/// <summary>
 			///

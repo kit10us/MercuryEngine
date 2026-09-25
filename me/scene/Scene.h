@@ -80,7 +80,7 @@ namespace me
 			std::list< HitInstance > FindObjectsWithinRay( unify::Ray<float> ray, float withinDistance ) const override;
 			std::list< HitInstance > FindObjectsWithinSphere( unify::BSphere< float > sphere ) const override;
 
-			void AddResources( unify::Path path ) override;
+			unify::Result<> AddResources( unify::Path path ) override;
 
 			SceneManager* GetSceneManager();
 

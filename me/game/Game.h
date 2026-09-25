@@ -81,7 +81,7 @@ namespace me::game
 		/// <summary>
 		/// Called to automatically load extensions from the "auto\" directory.
 		/// </summary>
-		void AutoLoadExtensions();
+		unify::Result<> AutoLoadExtensions();
 
 		void Tick() override;
 		void Draw() override;
@@ -155,7 +155,7 @@ namespace me::game
 		/// Add a game extension.
 		/// Game extensions extend the features of various game components and events.
 		/// </summary>
-		void AddExtension( unify::Path path, const qxml::Element* element );
+		unify::Result<> AddExtension( unify::Path path, const qxml::Element* element );
 	};
 }
 
