@@ -109,38 +109,60 @@ void Layer::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	}
 }
 
-void Layer::Update( const UpdateParams & params )
+unify::Result<> Layer::Update( const UpdateParams & params )
 {
-	if ( ! IsEnabled() ) return;
+	if ( ! IsEnabled() )
+	{
+		return {};
+	}
 
 	for( auto && element : m_elements )
 	{
-		element->Update( params );
+		auto result = element->Update( params );
+		if (!result)
+		{
+			return result;
+		}
 	}
+	return {};
 }
 
-void Layer::Render( const render::Params & params )
+unify::Result<> Layer::Render( const render::Params & params )
 {
-	if ( ! IsEnabled() ) return;
+	if ( ! IsEnabled() )
+	{
+		return {};
+	}
 
 	for( auto && element : m_elements )
 	{
-		element->Render( params );
+		auto result = element->Render( params );
 	}
+	return {};
 }
 
-void Layer::OnSuspend()
+unify::Result<> Layer::OnSuspend()
 {
 	for( auto && element : m_elements )
 	{
-		element->OnSuspend();
+		auto result = element->OnSuspend();
+		if (!result)
+		{
+			return result;
+		}
 	}
+	return {};
 }
 
-void Layer::OnResume()
+unify::Result<> Layer::OnResume()
 {
 	for( auto && element : m_elements )
 	{
-		element->OnResume();
+		auto result = element->OnResume();
+		if (!result)
+		{
+			return result;
+		}
 	}
+	return {};
 }

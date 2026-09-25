@@ -35,25 +35,25 @@ namespace me
 
 		public: // Events...
 
-			void Component_BeforeOnStart();
-			void Component_AfterOnStart();
+			unify::Result<> Component_BeforeOnStart();
+			unify::Result<> Component_AfterOnStart();
 
-			void Component_BeforeOnUpdate( const UpdateParams & params ) override;
-			void Component_OnUpdate( const UpdateParams & params ) override;
-			void Component_AfterOnUpdate( const UpdateParams & params ) override;
+			unify::Result<> Component_BeforeOnUpdate( const UpdateParams & params ) override;
+			unify::Result<> Component_OnUpdate( const UpdateParams & params ) override;
+			unify::Result<> Component_AfterOnUpdate( const UpdateParams & params ) override;
 
-			void Component_OnRender( RenderGirl renderGirl ) override;
-			void Component_OnSuspend() override;
-			void Component_OnResume() override;
-			void Component_OnEnd() override;
+			unify::Result<> Component_OnRender( RenderGirl renderGirl ) override;
+			unify::Result<> Component_OnSuspend() override;
+			unify::Result<> Component_OnResume() override;
+			unify::Result<> Component_OnEnd() override;
 
 			// User defined events...
-			void OnStart() override {}
-			void OnUpdate( const UpdateParams & params ) override {}
-			void OnRender( RenderGirl renderGirl ) override {}
-			void OnSuspend() override {}
-			void OnResume() override {}
-			void OnEnd() override {}
+			unify::Result<> OnStart() override {return {};}
+			unify::Result<> OnUpdate( const UpdateParams & params ) override {return{};}
+			unify::Result<> OnRender( RenderGirl renderGirl ) override {return {};}
+			unify::Result<> OnSuspend() override {return {};}
+			unify::Result<> OnResume() override {return {};}
+			unify::Result<> OnEnd() override {return {};}
 			
 			std::string SendCommand( size_t id, std::string extra ) override { return std::string();  }
 
@@ -68,7 +68,7 @@ namespace me
 			size_t ObjectCount() const;
 
 			int GetComponentCount() const;
-			void AddComponent( component::ISceneComponent::ptr component );
+			unify::Result<> AddComponent( component::ISceneComponent::ptr component ) override;
 			void RemoveComponent( component::ISceneComponent::ptr component );
 			component::ISceneComponent* GetComponent( size_t index );
 			component::ISceneComponent* GetComponent( std::string typeName );

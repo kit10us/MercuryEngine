@@ -24,7 +24,7 @@ namespace me
 				ObjectActionComponent( action::IObjectAction::ptr action );
 				virtual ~ObjectActionComponent();
 
-				void OnUpdate( const UpdateParams & params ) override;
+				unify::Result<> OnUpdate( const UpdateParams & params ) override;
 
 			public: // IObjectComponent...
 				IObjectComponent::ptr Duplicate() override;

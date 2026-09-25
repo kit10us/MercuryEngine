@@ -44,42 +44,42 @@ namespace me
 				/// <summary>
 				/// Called first, upon being attached to the game.
 				/// </summary>
-				virtual void OnAttach( game::IGame * gameInstance ) = 0;
+				virtual unify::Result<> OnAttach( game::IGame * gameInstance ) = 0;
 
 				/// <summary>
 				/// Called before our game's Startup.
 				/// </summary>
-				virtual void BeforeOnStartup() = 0;
+				virtual unify::Result<> BeforeOnStartup() = 0;
 
 				/// <summary>
 				///  Called after our game's Startup.
 				/// </summary>
-				virtual void AfterOnStartup() = 0;
+				virtual unify::Result<> AfterOnStartup() = 0;
 
 				/// <summary>
 				/// Called before OnUpdate.
 				/// </summary>
-				virtual void EarlyOnUpdate( const UpdateParams & params ) = 0;
+				virtual unify::Result<> EarlyOnUpdate( const UpdateParams & params ) = 0;
 
 				/// <summary>
 				/// Called during game updating.
 				/// </summary>
-				virtual void OnUpdate( const UpdateParams & params ) = 0;
+				virtual unify::Result<> OnUpdate( const UpdateParams & params ) = 0;
 
 				/// <summary>
 				/// Called after on OnUpdate.
 				/// </summary>
-				virtual void LateOnUpdate( const UpdateParams & params ) = 0;
+				virtual unify::Result<> LateOnUpdate( const UpdateParams & params ) = 0;
 
 				/// <summary>
 				/// Called during game rendering.
 				/// </summary>
-				virtual void OnRender( const render::Params & params ) = 0;
+				virtual unify::Result<> OnRender( const render::Params & params ) = 0;
 
 				/// <summary>
 				/// Called last, to detach from the game.
 				/// </summary>
-				virtual void OnDetach( game::IGame * gameInstance ) = 0;
+				virtual unify::Result<> OnDetach( game::IGame * gameInstance ) = 0;
 
 				/// <summary>
 				/// Create an Action from an XML node.

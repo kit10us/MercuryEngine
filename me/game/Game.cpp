@@ -279,13 +279,13 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 
 	if ( ! m_os )
 	{
-		Debug()->ReportError(debug::ErrorLevel::Engine, "No renderer specified, or invalid renderer!");
+		return unify::Failure{"No renderer specified, or invalid renderer!"};
 	}
 					  	
 	// User setup...
 	if ( ! Setup( GetOS() ) )
 	{
-		Debug()->ReportError(debug::ErrorLevel::Engine, "Failure attempting to setup with OS configuration!" );
+		return unify::Failure{"Failure attempting to setup with OS configuration!"};
 	}
 
 	// Early setup...
@@ -293,7 +293,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	{
 		if( ! m_setup.Exists() )
 		{
-			Debug()->ReportError(debug::ErrorLevel::Engine, "File not found " + m_setup.ToString());
+			return unify::Failure{"File not found " + m_setup.ToString()};
 		}
 
 		// Second loader pass
@@ -384,7 +384,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	if( m_setup.Exists() )
 	{
 		// Third and final loader pass.
-		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source )
+		std::function< void( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
 		{
 			unify::Path pathDiscovery( GetOS()->GetAssetPaths()->FindAsset( source ) );
 			qxml::Document doc( pathDiscovery );
@@ -408,7 +408,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 						};
 						if (pathDiscovery.IsEmpty())
 						{
-							Debug()->ReportError(me::debug::ErrorLevel::Critical, "Asset \"" + path.ToString() + "\" not found!");
+							return unify::Failure{"Asset \"" + path.ToString() + "\" not found!"};
 						}
 						AddExtension( pathDiscovery, &node );
 					}
@@ -434,6 +434,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 					}
 				}
 			}
+			return {};
 		};
 		xmlLoader( m_setup );
 	}
@@ -763,23 +764,31 @@ int Game::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void Game::AddComponent( component::IGameComponent::ptr component )
+unify::Result<> Game::AddComponent( component::IGameComponent::ptr component )
 {
 	try
 	{
 		component->OnAttach( this );
+		/*auto result = component->OnAttach( this );
+		if (!result)
+		{
+			return result;
+		}
+		*/                                                                                                                                                                        
 	}
 	catch ( ... )
 	{
 		throw;
 	}
 	m_components.push_back( component );
+	return {};
 }
 
 void Game::RemoveComponent( component::IGameComponent::ptr component )
 {
 	m_components.remove( component );
-	component->OnDetach( this );
+	auto result = component->OnDetach( this );
+	// result not handled.
 }
 
 component::IGameComponent::ptr Game::GetComponent( size_t index )
@@ -898,7 +907,8 @@ void Game::Private_Shutdown()
 			try
 			{
 				block->Log( component->GetTypeName() + "..." );
-				component->OnDetach( this );
+				auto result = component->OnDetach( this );
+				// result not handled. We are already shutting down.
 			}
 			catch ( ... )
 			{

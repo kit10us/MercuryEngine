@@ -133,7 +133,7 @@ namespace me
 			virtual const input::InputManager * GetInputManager() const = 0;
 
 			virtual int GetComponentCount() const = 0;
-			virtual void AddComponent( component::IGameComponent::ptr component ) = 0;
+			virtual unify::Result<> AddComponent( component::IGameComponent::ptr component ) = 0;
 			virtual void RemoveComponent( component::IGameComponent::ptr component ) = 0;
 			virtual component::IGameComponent::ptr GetComponent( size_t index ) = 0;
 			virtual component::IGameComponent::ptr GetComponent( std::string name ) = 0;

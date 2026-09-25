@@ -31,10 +31,10 @@ namespace me::canvas
 	public: // IElement...
 		unify::Size< float > GetContentSize() const override;
 		void UpdateLayout(UpdateParams params, unify::Rect< float > parentArea) override;
-		void Update(const UpdateParams& params) override;
-		void Render(const render::Params& params) override;
-		void OnSuspend() override;
-		void OnResume() override;
+		unify::Result<> Update(const UpdateParams& params) override;
+		unify::Result<> Render(const render::Params& params) override;
+		unify::Result<> OnSuspend() override;
+		unify::Result<> OnResume() override;
 
 	};
 }

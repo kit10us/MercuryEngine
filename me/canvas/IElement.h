@@ -66,22 +66,22 @@ namespace me
 			/// <summary>
 			/// Updates the element. What this actually does is element type specific.
 			/// </summary>
-			virtual void Update( const UpdateParams & params ) = 0;
+			virtual unify::Result<> Update( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			/// Renders the element.
 			/// </summary>
-			virtual void Render( const render::Params & params ) = 0;
+			virtual unify::Result<> Render( const render::Params & params ) = 0;
 
 			/// <summary>
 			/// Performed on suspending the element.
 			/// </summary>
-			virtual void OnSuspend() = 0;
+			virtual unify::Result<> OnSuspend() = 0;
 
 			/// <summary>
 			/// Performed on the element resuming after having been suspended.
 			/// </summary>
-			virtual void OnResume() = 0;
+			virtual unify::Result<> OnResume() = 0;
 		};
 	}
 }

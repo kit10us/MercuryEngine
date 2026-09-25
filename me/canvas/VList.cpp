@@ -51,33 +51,52 @@ void VList::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	}
 }
 
-void VList::Update( const UpdateParams & params )
+unify::Result<> VList::Update( const UpdateParams & params )
 {
-	if( !IsEnabled() ) return;
+	if( !IsEnabled() || m_items.empty() )
+	{
+		return {};
+	}
 
 	for( auto && item : m_items )
 	{
-		item.GetItem()->Update( params );
+		auto result = item.GetItem()->Update( params );
+		if (!result)
+		{
+			return result;
+		}
 	}
+
+	return {};
 }
 
-void VList::Render( const render::Params & params )
+unify::Result<> VList::Render( const render::Params & params )
 {
-	if( !IsEnabled() ) return;
-	if( m_items.empty() ) return;
+	if( !IsEnabled() || m_items.empty() )
+	{
+		return {};
+	}
 
 	for( auto && item : m_items )
 	{
-		item.GetItem()->Render( params );
+		auto result = item.GetItem()->Render( params );
+		if (!result)
+		{
+			return result;
+		}
 	}
+
+	return {};
 }
 
-void VList::OnSuspend()
+unify::Result<> VList::OnSuspend()
 {
+	return {};
 }
 
-void VList::OnResume()
+unify::Result<> VList::OnResume()
 {
+	return {};
 }
 
 void VList::AddItem( IElement::ptr item, std::string name, std::string tag )

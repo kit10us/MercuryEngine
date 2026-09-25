@@ -17,25 +17,34 @@ ObjectAllocatorComponent::~ObjectAllocatorComponent()
 {
 }
 
-void ObjectAllocatorComponent::OnAttach( IScene * scene )
+unify::Result<> ObjectAllocatorComponent::OnAttach( IScene * scene )
 {
 	SceneComponent::OnAttach( scene );
 
 	auto stack = new GrowableObjectStack( scene, 2500 );
 	m_objectStack.reset( stack );
 	AddInterface( "IObjectAllocator", stack );
+
+	return {};
 }
 
-void ObjectAllocatorComponent::OnDetach( IScene * scene ) 
+unify::Result<> ObjectAllocatorComponent::OnDetach( IScene * scene ) 
 {
 	m_objectStack.reset();
 
-	SceneComponent::OnDetach( scene );
+	auto result = SceneComponent::OnDetach( scene );
+	if (!result)
+	{
+		return result;
+	}
+
+	return {};
 }
 
-void ObjectAllocatorComponent::OnUpdate( const UpdateParams & params ) 
+unify::Result<> ObjectAllocatorComponent::OnUpdate( const UpdateParams & params ) 
 {
 	m_objectStack->Update( params );
+	return {};
 }
 
 void ObjectAllocatorComponent::CollectCameras( RenderGirl & renderGirl )
@@ -43,12 +52,13 @@ void ObjectAllocatorComponent::CollectCameras( RenderGirl & renderGirl )
 	m_objectStack->CollectCameras( renderGirl );
 }
 
-void ObjectAllocatorComponent::OnRender( RenderGirl & renderGirl ) 
+unify::Result<> ObjectAllocatorComponent::OnRender( RenderGirl & renderGirl ) 
 {
 	renderGirl.Render( m_objectStack.get() );
+	return {};
 }
 
-void ObjectAllocatorComponent::OnSuspend() 
+unify::Result<> ObjectAllocatorComponent::OnSuspend() 
 {
 	std::vector< object::Object * > objects;
 	m_objectStack->CollectObjects( objects );
@@ -56,9 +66,10 @@ void ObjectAllocatorComponent::OnSuspend()
 	{
 		object->OnSuspend();
 	}
+	return {};
 }
 
-void ObjectAllocatorComponent::OnResume()
+unify::Result<> ObjectAllocatorComponent::OnResume()
 {
 	std::vector< object::Object * > objects;
 	m_objectStack->CollectObjects( objects );
@@ -66,6 +77,7 @@ void ObjectAllocatorComponent::OnResume()
 	{
 		object->OnResume();
 	}
+	return {};
 }
 
 std::string ObjectAllocatorComponent::GetWhat() const

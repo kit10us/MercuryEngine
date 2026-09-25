@@ -47,10 +47,12 @@ namespace me::scene
 		unify::Result<> RestartScene();
 
 		int GetComponentCount() const;
-		void AddComponent( component::ISceneManagerComponent::ptr component );
-		void RemoveComponent( component::ISceneManagerComponent::ptr component );
+		unify::Result<> AddComponent( component::ISceneManagerComponent::ptr component );
+		unify::Result<> RemoveComponent( component::ISceneManagerComponent::ptr component );
+		
 		component::ISceneManagerComponent* GetComponent( size_t index );
 		component::ISceneManagerComponent* GetComponent( std::string typeName );
+		
 		int FindComponent( std::string typeName ) const;
 
 		/// <summary>
@@ -59,11 +61,11 @@ namespace me::scene
 		size_t GetRenderCount() const;
 
 	public: // IGameCompnent...
-		void OnAttach( game::IGame* gameInstance ) override;
-		void EarlyOnUpdate( const UpdateParams& params ) override;
-		void OnUpdate( const UpdateParams& params ) override;
-		void LateOnUpdate( const UpdateParams& params ) override;
-		void OnRender( const render::Params& params ) override;
+		unify::Result<> OnAttach( game::IGame* gameInstance ) override;
+		unify::Result<> EarlyOnUpdate( const UpdateParams& params ) override;
+		unify::Result<> OnUpdate( const UpdateParams& params ) override;
+		unify::Result<> LateOnUpdate( const UpdateParams& params ) override;
+		unify::Result<> OnRender( const render::Params& params ) override;
 
 		std::string SendCommand( size_t id, std::string extra ) override;
 

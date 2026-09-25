@@ -38,10 +38,10 @@ void Object::CopyFrom( std::string name, Object & objectFrom )
 {
 	m_name = name;
 	m_enabled = objectFrom.m_enabled;
-	m_frame = objectFrom.m_frame;
+	//m_frame = objectFrom.m_frame;
 	m_frame = objectFrom.GetFrame();
 
-	for( auto component : objectFrom.m_components )
+	for( auto&& component : objectFrom.m_components )
 	{
 		AddComponent( component::IObjectComponent::ptr( component.Component()->Duplicate() ) );
 	}
@@ -67,9 +67,13 @@ int Object::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void Object::AddComponent( component::IObjectComponent::ptr component )
+unify::Result<> Object::AddComponent( component::IObjectComponent::ptr component )
 {
-	component->OnAttach( this );
+	auto result = component->OnAttach( this );
+	if (!result)
+	{
+		return result;
+	}
 	m_components.push_back( ComponentInstance< component::IObjectComponent::ptr >( component ) );
 }
 

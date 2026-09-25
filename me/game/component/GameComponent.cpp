@@ -46,15 +46,17 @@ void GameComponent::AddInterface( std::string name, me::IThing* ptr )
 	m_interfaceMap[ name ] = ptr;
 }
 
-void GameComponent::OnAttach( game::IGame * gameInstance )
+unify::Result<> GameComponent::OnAttach( game::IGame * gameInstance )
 {
 	m_game = gameInstance;
 	m_block = gameInstance->Debug()->GetLogger()->CreateBlock( "GameComponent \"" + GetTypeName() + "\"" );
+	return {};
 }
 
-void GameComponent::OnDetach( game::IGame * gameInstance ) 
+unify::Result<> GameComponent::OnDetach( game::IGame * gameInstance ) 
 {
-	m_game = 0;
+	m_game = nullptr;
+	return {};
 }
 
 action::IAction::ptr GameComponent::CreateAction(const qxml::Element * element)
@@ -77,28 +79,34 @@ input::IInputAction::ptr CreateInputAction( const qxml::Element * element )
 	return input::IInputAction::ptr();
 }
 
-void GameComponent::BeforeOnStartup()
+unify::Result<> GameComponent::BeforeOnStartup()
 {
+	return {};
 }
 
-void GameComponent::AfterOnStartup() 
+unify::Result<> GameComponent::AfterOnStartup() 
 {
+	return {};
 }
 
-void GameComponent::EarlyOnUpdate( const UpdateParams & params )
+unify::Result<> GameComponent::EarlyOnUpdate( const UpdateParams & params )
 {
+	return {};
 }
 
-void GameComponent::OnUpdate( const UpdateParams & params ) 
+unify::Result<> GameComponent::OnUpdate( const UpdateParams & params ) 
 {
+	return {};
 }
 
-void GameComponent::LateOnUpdate( const UpdateParams & params )
+unify::Result<> GameComponent::LateOnUpdate( const UpdateParams & params )
 {
+	return {};
 }
 
-void GameComponent::OnRender( const render::Params & params )
+unify::Result<> GameComponent::OnRender( const render::Params & params )
 {
+	return {};
 }
 
 std::string GameComponent::SendCommand( size_t id, std::string extra )

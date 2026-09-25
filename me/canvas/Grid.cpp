@@ -65,21 +65,32 @@ void Grid::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	*/
 }
 
-void Grid::Update( const UpdateParams & params )
+unify::Result<> Grid::Update( const UpdateParams & params )
 {
-	if( !IsEnabled() ) return;
+	if( !IsEnabled() )
+	{
+		return {};
+	}
 	/*
 	for( auto && item : m_items )
 	{
 		item->Update( params );
 	}
 	*/
+	return {};
 }
 
-void Grid::Render( const render::Params & params )
+unify::Result<> Grid::Render( const render::Params & params )
 {
-	if( !IsEnabled() ) return;
-	if( m_items.empty() ) return;
+	if( !IsEnabled() ) 
+	{
+		return {};
+	}
+	
+	if( m_items.empty() ) 
+	{
+		return {};
+	}
 
 	/*
 	for( auto && item : m_items )
@@ -87,12 +98,15 @@ void Grid::Render( const render::Params & params )
 		item->Render( params );
 	}
 	*/
+	return {};
 }
 
-void Grid::OnSuspend()
+unify::Result<> Grid::OnSuspend()
 {
+	return {};
 }
 
-void Grid::OnResume()
+unify::Result<> Grid::OnResume()
 {
+	return {};
 }

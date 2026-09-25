@@ -91,24 +91,28 @@ bool ObjectComponent::Renderable() const
 	return m_render;
 }
 
-void ObjectComponent::OnAttach( Object * object )
+unify::Result<> ObjectComponent::OnAttach( Object * object )
 {
 	m_object = object;
+	return {};
 }
 
-void ObjectComponent::OnDetach( Object * object )
+unify::Result<> ObjectComponent::OnDetach( Object * object )
 {
 	m_object = nullptr;
+	return {};
 }
 
-void ObjectComponent::OnStart()
+unify::Result<> ObjectComponent::OnStart()
 {
 	// STUBBED
+	return {};
 }
 
-void ObjectComponent::OnUpdate( const UpdateParams & params )
+unify::Result<> ObjectComponent::OnUpdate( const UpdateParams & params )
 {
 	// STUBBED
+	return {};
 }
 
 void ObjectComponent::CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame )
@@ -116,14 +120,16 @@ void ObjectComponent::CollectGeometry( render::GeometryCache & solids, render::G
 	// STUBBED
 }
 
-void ObjectComponent::OnSuspend()
+unify::Result<> ObjectComponent::OnSuspend()
 {
 	// STUBBED
+	return {};
 }
 
-void ObjectComponent::OnResume()
+unify::Result<> ObjectComponent::OnResume()
 {
 	// STUBBED
+	return {};
 }
 
 bool ObjectComponent::IsEnabled() const

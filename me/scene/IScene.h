@@ -7,6 +7,7 @@
 #include <me/render/Viewport.h>
 #include <unify/Owner.h>
 #include <unify/Range.h>
+#include <unify/Result.h>
 #include <list>
 #include <memory>
 
@@ -44,77 +45,77 @@ namespace me
 			/// <summary>
 			/// This is peformed immediately before the user's OnStart.
 			/// </summary>
-			virtual void Component_BeforeOnStart() = 0;
+			virtual unify::Result<> Component_BeforeOnStart() = 0;
 
 			/// <summary>
 			/// This is peformed immediately after the user's OnStart.
 			/// </summary>
-			virtual void Component_AfterOnStart() = 0;
+			virtual unify::Result<> Component_AfterOnStart() = 0;
 
 			/// <summary>
 			/// This is performed immediately before updates.
 			/// </summary>
-			virtual void Component_BeforeOnUpdate( const UpdateParams & params ) = 0;
+			virtual unify::Result<> Component_BeforeOnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_OnUpdate( const UpdateParams & params ) = 0;
+			virtual unify::Result<> Component_OnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_AfterOnUpdate( const UpdateParams & params ) = 0;
+			virtual unify::Result<> Component_AfterOnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_OnRender( RenderGirl renderGirl ) = 0;
+			virtual unify::Result<> Component_OnRender( RenderGirl renderGirl ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_OnSuspend() = 0;
+			virtual unify::Result<> Component_OnSuspend() = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_OnResume() = 0;
+			virtual unify::Result<> Component_OnResume() = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void Component_OnEnd() = 0;
+			virtual unify::Result<> Component_OnEnd() = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void OnStart() = 0;			
+			virtual unify::Result<> OnStart() = 0;			
 
 			/// <summary>
 			/// User defined scene updates. Interval updates (lower resolution) can be facilitated by modulus for 0 and the FrameId, for example, every 60 ticks would be FrameID % 60 == 0.
 			/// </summary>
-			virtual void OnUpdate( const UpdateParams & params ) = 0;
+			virtual unify::Result<> OnUpdate( const UpdateParams & params ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void OnRender( RenderGirl renderGirl ) = 0;
+			virtual unify::Result<> OnRender( RenderGirl renderGirl ) = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void OnSuspend() = 0;
+			virtual unify::Result<> OnSuspend() = 0;
 
 			/// <summary>
 			///
 			/// </summary>
-			virtual void OnResume() = 0;
+			virtual unify::Result<> OnResume() = 0;
 		
 			/// <summary>
 			///
 			/// </summary>
-			virtual void OnEnd() = 0;
+			virtual unify::Result<> OnEnd() = 0;
 
 			/// <summary>
 			///
@@ -156,7 +157,7 @@ namespace me
 			/// <summary>
 			///
 			/// </summary>
-			virtual void AddComponent( component::ISceneComponent::ptr component ) = 0;
+			virtual unify::Result<> AddComponent( component::ISceneComponent::ptr component ) = 0;
 
 			/// <summary>
 			///

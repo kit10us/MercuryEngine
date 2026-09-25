@@ -111,13 +111,15 @@ unify::Matrix GeometryComponent::GetMatrix() const
 	return *m_geometryInstanceData->GetMatrix();
 }
 
-void GeometryComponent::OnStart()
+unify::Result<> GeometryComponent::OnStart()
 {
+	return {};
 }
 
-void GeometryComponent::OnUpdate( const UpdateParams & params )
+unify::Result<> GeometryComponent::OnUpdate( const UpdateParams & params )
 {
 	m_geometry->Update( params, m_geometryInstanceData.get() );
+	return {};
 }
 
 void GeometryComponent::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame )
@@ -145,7 +147,10 @@ void GeometryComponent::GetBBox( unify::BBox< float > & bbox, const unify::Matri
 
 IObjectComponent::ptr GeometryComponent::Duplicate()
 {
-	auto duplicate = new GeometryComponent( *this );
+	// Create a new geometry component with this component's data.
+	auto duplicate = new GeometryComponent();
+	duplicate->m_geometry = m_geometry;
+	duplicate->m_geometryInstanceData = m_geometryInstanceData;
 	return IObjectComponent::ptr( duplicate );
 }
 

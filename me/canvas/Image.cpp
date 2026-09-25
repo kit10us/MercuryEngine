@@ -171,15 +171,16 @@ void Image::UpdateLayout( UpdateParams params, unify::Rect< float > parentArea )
 	}
 }
 
-void Image::Update( const UpdateParams & params )
+unify::Result<> Image::Update( const UpdateParams & params )
 {
+	return {};
 }
 		
-void Image::Render( const render::Params & params )
+unify::Result<> Image::Render( const render::Params & params )
 {
 	if (!IsEnabled())
 	{
-		return;
+		return {};
 	}
 
 	m_vertexBuffer->Use();
@@ -189,14 +190,18 @@ void Image::Render( const render::Params & params )
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed{ render::MatrixFood_Matrices{ &instance, 1 }, 1 };
 	params.renderer->Render( params.renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), matrixFeed );
+
+	return {};
 }
 		
-void Image::OnSuspend()
+unify::Result<> Image::OnSuspend()
 {
+	return {};
 }
 		
-void Image::OnResume()
+unify::Result<> Image::OnResume()
 {
+	return {};
 }
 
 unify::Size< float > Image::GetContentSize() const

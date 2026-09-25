@@ -115,7 +115,7 @@ namespace me::game
 		const me::input::InputManager* GetInputManager() const;
 
 		int GetComponentCount() const override;
-		void AddComponent( game::component::IGameComponent::ptr component ) override;
+		unify::Result<> AddComponent( game::component::IGameComponent::ptr component ) override;
 		void RemoveComponent( game::component::IGameComponent::ptr component ) override;
 		game::component::IGameComponent::ptr GetComponent( size_t index ) override;
 		game::component::IGameComponent::ptr GetComponent( std::string typeName ) override;

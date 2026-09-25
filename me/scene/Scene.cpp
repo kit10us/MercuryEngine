@@ -34,7 +34,7 @@ unify::Owner::ptr Scene::GetOwnership()
 	return m_ownership;
 }
 
-void Scene::Component_BeforeOnStart()
+unify::Result<> Scene::Component_BeforeOnStart()
 {
 	m_block->SubBlock( "Component_BeforeOnStart" )->Exec( [&]( auto block )
 		{
@@ -48,13 +48,20 @@ void Scene::Component_BeforeOnStart()
 
 				if ( component->IsEnabled() )
 				{
-					component->BeforeOnStart();
+					auto result = component->BeforeOnStart();
+					{
+						if (!result)
+						{
+							return result;
+						}
+					}
 				}
 			}
 		} );
+	return {};
 }
 
-void Scene::Component_AfterOnStart()
+unify::Result<> Scene::Component_AfterOnStart()
 {
 	m_block->SubBlock( "Component_AfterOnStart" )->Exec( [&]( auto block )
 		{
@@ -67,47 +74,66 @@ void Scene::Component_AfterOnStart()
 
 				if ( component->IsEnabled() )
 				{
-					component->AfterOnStart();
-					block->Log( "Done." );
+					auto result = component->AfterOnStart();
+					if (!result)
+					{
+						return result;
+					}
 				}
 			}
 		} );
+	return {};
 }
 
-void Scene::Component_BeforeOnUpdate( const UpdateParams & params )
+unify::Result<> Scene::Component_BeforeOnUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->BeforeOnUpdate( params );
+			auto result = component->BeforeOnUpdate( params );
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
-void Scene::Component_OnUpdate( const UpdateParams & params )
+unify::Result<> Scene::Component_OnUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
 		if ( component->IsEnabled( ) )
 		{
-			component->OnUpdate( params );
+			auto result = component->OnUpdate( params );
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
-void Scene::Component_AfterOnUpdate( const UpdateParams & params )
+unify::Result<> Scene::Component_AfterOnUpdate( const UpdateParams & params )
 {
 	for( auto && component : m_components )
 	{
 		if( component->IsEnabled() )
 		{
-			component->AfterOnUpdate( params );
+			auto result = component->AfterOnUpdate( params );
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
-void Scene::Component_OnRender( RenderGirl renderGirl )
+unify::Result<> Scene::Component_OnRender( RenderGirl renderGirl )
 {
 	// Collect cameras...
 	for( auto && component : m_components )
@@ -122,42 +148,62 @@ void Scene::Component_OnRender( RenderGirl renderGirl )
 	{
 		if( component->IsEnabled() )
 		{
-			component->OnRender( renderGirl );
+			auto result = component->OnRender( renderGirl );
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
-void Scene::Component_OnSuspend()
+unify::Result<> Scene::Component_OnSuspend()
 {
 	for ( auto&& component : m_components )
 	{
 		if ( component->IsEnabled() )
 		{
-			component->OnSuspend();
+			auto result = component->OnSuspend();
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
-void Scene::Component_OnResume()
+unify::Result<> Scene::Component_OnResume()
 {
 	for ( auto && component : m_components )
 	{
 		if ( component->IsEnabled() )
 		{
-			component->OnResume();
+			auto result = component->OnResume();
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
-void Scene::Component_OnEnd()
+unify::Result<> Scene::Component_OnEnd()
 {
 	for (auto && component : m_components)
 	{
 		if (component->IsEnabled())
 		{
-			component->OnEnd();
+			auto result = component->OnEnd();
+			if (!result)
+			{
+				return result;
+			}
 		}
 	}
+	return {};
 }
 
 game::IGame *Scene::GetGame()
@@ -185,10 +231,15 @@ int Scene::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void Scene::AddComponent( component::ISceneComponent::ptr component )
+unify::Result<> Scene::AddComponent( component::ISceneComponent::ptr component )
 {
-	component->OnAttach( this );
+	auto result = component->OnAttach( this );
+	if (!result)
+	{
+		return result;
+	}
 	m_components.push_back( component );
+	return {};
 }
 
 void Scene::RemoveComponent( component::ISceneComponent::ptr component )

@@ -52,22 +52,22 @@ namespace me
 				/// <summary>
 				/// Called once, when we are first attached to an object.
 				/// </summary>
-				virtual void OnAttach( Object * object ) = 0;
+				virtual unify::Result<> OnAttach( Object * object ) = 0;
 
 				/// <summary>
 				/// Called once, when we are detached from an object.
 				/// </summary>
-				virtual void OnDetach( Object * objecct ) = 0;
+				virtual unify::Result<> OnDetach( Object * objecct ) = 0;
 
 				/// <summary>
 				/// called once, when enabled, only immediatly before the first OnUpdate.
 				/// </summary>
-				virtual void OnStart() = 0;
+				virtual unify::Result<> OnStart() = 0;
 
 				/// <summary>
 				/// Called every game update cycle.
 				/// </summary>
-				virtual void OnUpdate( const UpdateParams & params ) = 0;
+				virtual unify::Result<> OnUpdate( const UpdateParams & params ) = 0;
 
 				/// <summary>
 				/// Called during rendering.
@@ -77,12 +77,12 @@ namespace me
 				/// <summary>
 				/// Called when we get a suspend request. One more Render is called to allow updating based on becoming suspend (suspended graphics).
 				/// </summary>
-				virtual void OnSuspend() = 0;
+				virtual unify::Result<> OnSuspend() = 0;
 
 				/// <summary>
 				/// Called when resuming from suspending.
 				/// </summary>
-				virtual void OnResume() = 0;
+				virtual unify::Result<> OnResume() = 0;
 
 				/// <summary>
 				/// Duplicate component.

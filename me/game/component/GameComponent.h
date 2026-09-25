@@ -34,14 +34,16 @@ namespace me
 			public:	 // IGameComponent...
 				IGame * GetGame() override;
 				const IGame * GetGame() const override;
-				void OnAttach( game::IGame * gameInstance ) override;
-				void BeforeOnStartup() override;
-				void AfterOnStartup() override;
-				void EarlyOnUpdate( const UpdateParams & params ) override;
-				void OnUpdate( const UpdateParams & params ) override;
-				void LateOnUpdate( const UpdateParams & params ) override;
-				void OnRender( const render::Params & params ) override;
-				void OnDetach( game::IGame * gameInstance ) override;
+				unify::Result<> OnAttach( game::IGame * gameInstance ) override;
+				unify::Result<> BeforeOnStartup() override;
+				unify::Result<> AfterOnStartup() override;
+				unify::Result<> EarlyOnUpdate( const UpdateParams & params ) override;
+
+				unify::Result<> OnUpdate( const UpdateParams & params ) override;
+				unify::Result<> LateOnUpdate( const UpdateParams & params ) override;
+				unify::Result<> OnRender( const render::Params & params ) override;
+				unify::Result<> OnDetach( game::IGame * gameInstance ) override;
+				
 				action::IAction::ptr CreateAction( const qxml::Element * element ) override;
 				object::action::IObjectAction::ptr CreateObjectAction( const qxml::Element * element ) override;
 				input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) override;

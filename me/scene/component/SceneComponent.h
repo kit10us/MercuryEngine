@@ -29,20 +29,20 @@ namespace me
 				void AddInterface( std::string name, me::IThing* ptr ) override;
 
 			public: // ISceneComponent...
-				void OnAttach( me::scene::IScene * scene ) override;
-				void OnDetach( me::scene::IScene * scene ) override;
-				void BeforeOnStart() override;
-				void AfterOnStart() override;
+				unify::Result<> OnAttach( me::scene::IScene * scene ) override;
+				unify::Result<> OnDetach( me::scene::IScene * scene ) override;
+				unify::Result<> BeforeOnStart() override;
+				unify::Result<> AfterOnStart() override;
 			
-				void BeforeOnUpdate( const UpdateParams & params ) override;
-				void OnUpdate( const UpdateParams & params ) override;
-				void AfterOnUpdate( const UpdateParams & params ) override;
+				unify::Result<> BeforeOnUpdate( const UpdateParams & params ) override;
+				unify::Result<> OnUpdate( const UpdateParams & params ) override;
+				unify::Result<> AfterOnUpdate( const UpdateParams & params ) override;
 
 				void CollectCameras( RenderGirl & renderGirl ) override;
-				void OnRender( RenderGirl & renderGirl ) override;
-				void OnSuspend() override;
-				void OnResume() override;
-				void OnEnd() override;
+				unify::Result<> OnRender( RenderGirl & renderGirl ) override;
+				unify::Result<> OnSuspend() override;
+				unify::Result<> OnResume() override;
+				unify::Result<> OnEnd() override;
 
 			public:	// IComponent...
 				bool IsEnabled() const override;

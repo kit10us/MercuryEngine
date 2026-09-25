@@ -52,7 +52,7 @@ namespace me
 			std::map< std::string, std::string, unify::String::CaseInsensitiveLessThanEqualTest > GetTags() const;
 			
 			int GetComponentCount() const;
-			void AddComponent( component::IObjectComponent::ptr component );
+			unify::Result<> AddComponent( component::IObjectComponent::ptr component );
 			void RemoveComponent( component::IObjectComponent::ptr component );
 			component::IObjectComponent::ptr GetComponent( size_t index );
 			component::IObjectComponent::ptr GetComponent( std::string typeName, std::string alias = std::string() );

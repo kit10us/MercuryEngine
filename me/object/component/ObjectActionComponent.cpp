@@ -23,17 +23,19 @@ ObjectActionComponent::~ObjectActionComponent()
 {
 }
 
-void ObjectActionComponent::OnUpdate( const UpdateParams & params)
+unify::Result<> ObjectActionComponent::OnUpdate( const UpdateParams & params)
 {
 	if (m_stopped)
 	{
-		return;
+		return {};
 	}
 
 	if (m_action)
 	{
 		m_stopped = !m_action->Perform( GetObject(), params.GetDelta());
 	}
+	
+	return {};
 }
 
 IObjectComponent::ptr ObjectActionComponent::Duplicate()

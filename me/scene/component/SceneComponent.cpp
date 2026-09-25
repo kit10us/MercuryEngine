@@ -48,54 +48,65 @@ void SceneComponent::AddInterface( std::string name, IThing* ptr )
 	m_interfaceMap[ name ] = ptr;
 }
 
-void SceneComponent::OnAttach( IScene * scene )
+unify::Result<> SceneComponent::OnAttach( IScene * scene )
 {
 	m_scene = scene;
+	return {};
 }
 
-void SceneComponent::OnDetach( IScene * scene ) 
+unify::Result<> SceneComponent::OnDetach( IScene * scene ) 
 {
 	m_scene = nullptr;
+	return {};
 }
 
-void SceneComponent::BeforeOnStart() 
+unify::Result<> SceneComponent::BeforeOnStart() 
 {
+	return {};
 }
 
-void SceneComponent::AfterOnStart() 
+unify::Result<> SceneComponent::AfterOnStart() 
 {
+	return {};
 }
 
-void SceneComponent::BeforeOnUpdate( const UpdateParams & params )
+unify::Result<> SceneComponent::BeforeOnUpdate( const UpdateParams & params )
 {
+	return {};
 }
 
-void SceneComponent::OnUpdate( const UpdateParams & params ) 
+unify::Result<> SceneComponent::OnUpdate( const UpdateParams & params ) 
 {
+	return {};
 }
 
-void SceneComponent::AfterOnUpdate( const UpdateParams & params )
+unify::Result<> SceneComponent::AfterOnUpdate( const UpdateParams & params )
 {
+	return {};
 }
 
 void SceneComponent::CollectCameras( RenderGirl & renderGirl )
 {
 }
 
-void SceneComponent::OnRender( RenderGirl & renderGirl ) 
+unify::Result<> SceneComponent::OnRender( RenderGirl & renderGirl ) 
 {
+	return {};
 }
 
-void SceneComponent::OnSuspend() 
+unify::Result<> SceneComponent::OnSuspend() 
 {
+	return {};
 }
 
-void SceneComponent::OnResume()
+unify::Result<> SceneComponent::OnResume()
 {
+	return {};
 }
 
-void SceneComponent::OnEnd()
+unify::Result<> SceneComponent::OnEnd()
 {
+	return {};
 }
 
 bool SceneComponent::IsEnabled() const

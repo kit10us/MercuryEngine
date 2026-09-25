@@ -39,8 +39,8 @@ namespace me
 				/// </summary>
 				const render::Geometry::ptr GetGeometry() const;
 
-				void OnStart() override;
-				void OnUpdate( const UpdateParams & params ) override;
+				unify::Result<> OnStart() override;
+				unify::Result<> OnUpdate( const UpdateParams & params ) override;
 
 				void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * transform ) override;
 

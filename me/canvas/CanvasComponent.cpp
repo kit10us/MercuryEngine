@@ -22,18 +22,28 @@ CanvasComponent::CanvasComponent( game::IGame* gameInstance )
 {
 }
 
-void CanvasComponent::OnAttach( IScene * scene )
+unify::Result<> CanvasComponent::OnAttach( IScene * scene )
 {
-	SceneComponent::OnAttach( scene );
+	auto result = SceneComponent::OnAttach( scene );
+	if (!result)
+	{
+		return result;
+	}
 	m_layer.reset( new Layer( m_game, {0,0}, {100,100}, Anchor::StretchFull ) );
+	return {};
 }
 
-void CanvasComponent::OnDetach( IScene * scene )
+unify::Result<> CanvasComponent::OnDetach( IScene * scene )
 {
-	SceneComponent::OnDetach( scene );
+	auto result = SceneComponent::OnDetach( scene );
+	if (!result)
+	{
+		return result;
+	}
+	return {};
 }
 		
-void CanvasComponent::OnUpdate( const UpdateParams & params )
+unify::Result<> CanvasComponent::OnUpdate( const UpdateParams & params )
 {
 	RenderInfo myRenderInfo( params.renderInfo );
 
@@ -45,9 +55,9 @@ void CanvasComponent::OnUpdate( const UpdateParams & params )
 
 	m_layer->Update( UpdateParams{ params.renderer, myRenderInfo } );
 	m_layer->UpdateLayout( UpdateParams{ params.renderer, myRenderInfo }, { { 0, 0 }, m_size } );
+	return {};
 }
-
-void CanvasComponent::OnRender( RenderGirl & renderGirl )
+unify::Result<> CanvasComponent::OnRender( RenderGirl & renderGirl )
 {
 	const render::Params & params = *renderGirl.GetParams();
 
@@ -60,16 +70,24 @@ void CanvasComponent::OnRender( RenderGirl & renderGirl )
 	myRenderInfo.SetProjectionMatrix( m_projection );
 
 	m_layer->Render( { params.renderer, myRenderInfo } );
+	return {};
 }
 
-void CanvasComponent::OnSuspend()
+unify::Result<> CanvasComponent::OnSuspend()
 {
-	m_layer->OnSuspend();
+	auto result = m_layer->OnSuspend();
+	if (!result)
+	{
+		return result;
+	}
+
+	return {};
 }
 
-void CanvasComponent::OnResume()
+unify::Result<> CanvasComponent::OnResume()
 {
-	m_layer->OnResume();
+	auto result = m_layer->OnResume();
+	return {};
 }
 
 Layer * CanvasComponent::GetLayer()

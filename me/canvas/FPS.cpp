@@ -24,12 +24,12 @@ FPS::FPS( IGame * gameInstance, Effect::ptr effect, Anchor anchor, unify::V2< fl
 	}
 }
 		
-void FPS::Update( const UpdateParams & params )
+unify::Result<> FPS::Update( const UpdateParams & params )
 {
 	m_timeTillUpdate -= params.renderInfo.GetDelta();
 	if (m_timeTillUpdate > unify::TimeDelta())
 	{
-		return;
+		return {};
 	}
 	
 	m_timeTillUpdate = m_updateRate;
@@ -50,6 +50,11 @@ void FPS::Update( const UpdateParams & params )
 	}
 	SetText(output);
 
-	TextElement::Update( params );
+	auto result = TextElement::Update( params );
+	if (!result)
+	{
+		return result;
+	}
+	return {};
 }
 		

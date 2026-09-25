@@ -45,19 +45,23 @@ void BBoxRendererComponent::SetPadding( float padding )
 {
 	m_padding = padding;
 }
-void BBoxRendererComponent::OnAttach( Object * object )
+
+unify::Result<> BBoxRendererComponent::OnAttach( Object * object )
 {
-	ObjectComponent::OnAttach( object );
+	auto result = ObjectComponent::OnAttach( object );
+	return result;
 }
 
-void BBoxRendererComponent::OnDetach( Object * object )
+unify::Result<> BBoxRendererComponent::OnDetach( Object * object )
 {
-	ObjectComponent::OnDetach( object );
+	auto result = ObjectComponent::OnDetach( object );
 
 	m_geomertries.clear();
+
+	return result;
 }
 
-void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
+unify::Result<> BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 {
 	// If there is a change in the object's components, check for new geometry...
 	if( m_componentsChecked < GetObject()->GetComponentCount() )
@@ -162,6 +166,8 @@ void BBoxRendererComponent::OnUpdate( const UpdateParams & params )
 		m_geometry.reset( mesh );
 		GetObject()->MakeDirty();
 	}
+
+	return {};
 }
 
 void BBoxRendererComponent::CollectGeometry( GeometryCache & solids, GeometryCache & trans, const unify::FrameLite * frame )

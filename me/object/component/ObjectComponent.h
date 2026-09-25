@@ -35,13 +35,16 @@ namespace me
 				void GetBBox( unify::BBox< float > & bbox, const unify::Matrix & matrix ) const override;
 				bool Updateable() const override;
 				bool Renderable() const override;
-				void OnAttach( Object * object ) override;
-				void OnDetach( Object * object ) override;
-				void OnStart() override;
-				void OnUpdate( const UpdateParams & params ) override;
+				
+				unify::Result<> OnAttach( Object * object ) override;
+				unify::Result<> OnDetach( Object * object ) override;
+				unify::Result<> OnStart() override;
+				unify::Result<> OnUpdate( const UpdateParams & params ) override;
+				
 				void CollectGeometry( render::GeometryCache & solids, render::GeometryCache & trans, const unify::FrameLite * frame ) override;
-				void OnSuspend() override;
-				void OnResume() override;
+				
+				unify::Result<> OnSuspend() override;
+				unify::Result<> OnResume() override;
 
 			public:	// IComponent...
 				bool IsEnabled() const override;

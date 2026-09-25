@@ -222,14 +222,17 @@ void TextElement::UpdateLayout( UpdateParams params, unify::Rect< float > parent
 	}
 }
 
-void TextElement::Update( const UpdateParams & params )
+unify::Result<> TextElement::Update( const UpdateParams & params )
 {
+	return {};
 }
 		
-void TextElement::Render( const render::Params & params )
+unify::Result<> TextElement::Render( const render::Params & params )
 {
-	if ( m_text.empty() ) return;
-	if ( ! IsEnabled() ) return;
+	if ( ! IsEnabled() || m_text.empty() ) 
+	{
+		return {};;
+	}
 
 	m_vertexBuffer->Use();
 
@@ -238,12 +241,15 @@ void TextElement::Render( const render::Params & params )
 	unify::Matrix instance{ unify::MatrixIdentity() };
 	render::MatrixFeed matrixFeed( render::MatrixFood_Matrices{ &instance, 1 }, 1 );
 	params.renderer->Render( params.renderInfo, method, m_effect, m_vertexCB.get(), m_pixelCB.get(), matrixFeed );
+	return {};
 }
 		
-void TextElement::OnSuspend()
+unify::Result<> TextElement::OnSuspend()
 {
+	return {};
 }
 		
-void TextElement::OnResume()
+unify::Result<> TextElement::OnResume()
 {
+	return {};
 }

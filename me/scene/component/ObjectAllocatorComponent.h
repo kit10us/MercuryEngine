@@ -19,15 +19,15 @@ namespace me
 				~ObjectAllocatorComponent();
 
 			public: // ISceneComponent...
-				void OnAttach( IScene * scene ) override;
-				void OnDetach( IScene * scene ) override;
-				void OnUpdate( const UpdateParams & params ) override;
+				unify::Result<> OnAttach( IScene * scene ) override;
+				unify::Result<> OnDetach( IScene * scene ) override;
+				unify::Result<> OnUpdate( const UpdateParams & params ) override;
 			
 				void CollectCameras( RenderGirl & renderGirl ) override;
-				void OnRender( RenderGirl & renderGirl ) override;
+				unify::Result<> OnRender( RenderGirl & renderGirl ) override;
 			
-				void OnSuspend() override;
-				void OnResume() override;
+				unify::Result<> OnSuspend() override;
+				unify::Result<> OnResume() override;
 
 			public:	// IComponent...
 				std::string GetWhat() const override;

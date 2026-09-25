@@ -37,10 +37,11 @@ void SceneManager::Destroy()
     m_scenes.Clear();
 }
 
-void SceneManager::OnAttach( game::IGame* gameInstance )
+unify::Result<> SceneManager::OnAttach( game::IGame* gameInstance )
 {
 	GameComponent::OnAttach( gameInstance );
 	m_block = gameInstance->Debug()->GetLogger()->CreateBlock( "SceneManager" );
+	return {};
 }
 
 
@@ -123,9 +124,15 @@ unify::Result<> SceneManager::ChangeScene( std::string name )
 
 	m_currentScene->Component_BeforeOnStart();
 
-	debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart begin" );
-	m_currentScene->OnStart();
-	debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart end" );
+	{
+		debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart begin" );
+		auto result = m_currentScene->OnStart();
+		if (!result)
+		{
+			return result;
+		}
+		debug->GetLogger()->Log( "Scene \"" + m_currentScene->GetName() + "\" OnStart end" );
+	}
 
 	m_currentScene->Component_AfterOnStart();
 
@@ -142,16 +149,27 @@ int SceneManager::GetComponentCount() const
 	return (int)m_components.size();
 }
 
-void SceneManager::AddComponent( component::ISceneManagerComponent::ptr component )
+unify::Result<> SceneManager::AddComponent( component::ISceneManagerComponent::ptr component )
 {
-	component->OnAttach(this);
+	auto result = component->OnAttach(this);
+	if (!result)
+	{
+		return result;
+	}
 	m_components.push_back(component);
+
+	return {};
 }
 
-void SceneManager::RemoveComponent( component::ISceneManagerComponent::ptr component )
+unify::Result<> SceneManager::RemoveComponent( component::ISceneManagerComponent::ptr component )
 {
 	m_components.remove( component );
-	component->OnDetach( this );
+	auto result = component->OnDetach( this );
+	if (!result)
+	{
+		return result;
+	}
+	return {};
 }
 
 component::ISceneManagerComponent* SceneManager::GetComponent(size_t index)
@@ -191,61 +209,65 @@ size_t SceneManager::GetRenderCount() const
 	return m_renderCount;
 }
 
-void SceneManager::EarlyOnUpdate( const UpdateParams & params )
+unify::Result<> SceneManager::EarlyOnUpdate( const UpdateParams & params )
 {
 	if( IsEnabled() == false || !m_currentScene )
 	{
-		return;
+		return {}; // Not a failure.
 	}
 
 	m_currentScene->Component_BeforeOnUpdate( params );
+	return {};
 }
 
-void SceneManager::OnUpdate( const UpdateParams & params ) 
+unify::Result<> SceneManager::OnUpdate( const UpdateParams & params ) 
 {
 	if ( IsEnabled() == false || ! m_currentScene )
 	{
-		return;
+		return {}; // Not a failure.
 	}
 
 	m_currentScene->Component_OnUpdate( params );
 	m_currentScene->OnUpdate( params );
+
+	return {};
 }
 
-void SceneManager::LateOnUpdate( const UpdateParams & params )
+unify::Result<> SceneManager::LateOnUpdate( const UpdateParams & params )
 {
 	if( IsEnabled() == false || !m_currentScene )
 	{
-		return;
+		return {}; // Not a failure.
 	}
 
 	m_currentScene->Component_AfterOnUpdate( params );
+	return {};
 }
 
-void SceneManager::OnRender( const render::Params & params )
+unify::Result<> SceneManager::OnRender( const render::Params & params )
 {
 	auto debug = GetGame()->Debug();
 	debug->DebugTimeStampBegin( "Render" );
 	
-	if ( IsEnabled() == false )
+	if ( IsEnabled() == false || !m_currentScene )
 	{
-		return;
-	}
-
-	if ( !m_currentScene )
-	{
-		return;
+		return {}; // Not a failure.
 	}
 
 	RenderGirl renderGirl;
 	renderGirl.Begin( &params );
 
 	m_currentScene->Component_OnRender( renderGirl );
-	m_currentScene->OnRender( renderGirl );
+	auto result = m_currentScene->OnRender( renderGirl );
+	if (!result)
+	{
+		return result;
+	}
 
 	m_renderCount = renderGirl.End();
 
 	debug->DebugTimeStampEnd( "Render" );
+	return {};
 }
 
 std::string SceneManager::SendCommand( size_t id, std::string extra )

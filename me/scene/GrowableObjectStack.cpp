@@ -41,7 +41,10 @@ Object * GrowableObjectStack::NewObject( std::string name )
 {
 	for( auto && stack : m_stacks )
 	{
-		if ( stack->Available() ) return stack->NewObject( name );
+		if ( stack->Available() )
+		{
+			return stack->NewObject( name );
+		}
 	} 
 
 	// Need to grow...

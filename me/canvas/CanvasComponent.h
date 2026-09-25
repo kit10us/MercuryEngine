@@ -35,12 +35,12 @@ namespace me::canvas
 		Layer * GetLayer();
 
 	public: // ISceneComponent...
-		void OnAttach( scene::IScene * scene ) override;
-		void OnDetach( scene::IScene * scene ) override;
-		void OnUpdate( const UpdateParams & params ) override;
-		void OnRender( scene::RenderGirl & renderGirl ) override;
-		void OnSuspend() override;											
-		void OnResume() override;
+		unify::Result<> OnAttach( scene::IScene * scene ) override;
+		unify::Result<> OnDetach( scene::IScene * scene ) override;
+		unify::Result<> OnUpdate( const UpdateParams & params ) override;
+		unify::Result<> OnRender( scene::RenderGirl & renderGirl ) override;
+		unify::Result<> OnSuspend() override;											
+		unify::Result<> OnResume() override;
 
 	public: //IComponent...
 		std::string GetWhat() const override;
