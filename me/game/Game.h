@@ -133,9 +133,9 @@ namespace me::game
 
 		void AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener ) override;
 
-		size_t Command( std::string command ) override;
+		CommandId FindCommandId( std::string command ) override;
 
-		std::string Command( size_t id ) override;
+		std::string FindCommandName( CommandId id ) override;
 
 		std::string SendCommand( std::string command, std::string extra ) override;
 

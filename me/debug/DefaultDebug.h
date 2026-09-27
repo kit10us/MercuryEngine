@@ -27,6 +27,18 @@ namespace me::debug
 			std::chrono::high_resolution_clock::time_point end;
 		};
 
+	public:
+		DefaultDebug() = default;
+
+		/// <summary>
+		/// Create loggers.
+		/// </summary>
+		/// <param name="logPath"></param>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		bool Create(unify::Path logPath, unify::Path filename);
+
+	private:
 		bool m_errorAsCritical[ErrorLevelCount]{ true, true, true, true, false };
 		bool m_failuresAsCritial{ true };
 		bool m_warningAsCritical{ false };

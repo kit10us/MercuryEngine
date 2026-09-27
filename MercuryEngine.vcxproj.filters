@@ -94,6 +94,9 @@
     <Filter Include="me\util">
       <UniqueIdentifier>{e8a6f52e-5c08-4c7b-8c3f-4274e8057a2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="me\buffer">
+      <UniqueIdentifier>{c73b7b2f-0b13-4af2-8f29-cc7cb140b2c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="me\exception\FailedToCreate.h">
@@ -744,6 +747,36 @@
     <ClInclude Include="me\script\MshScripter.h">
       <Filter>me\script</Filter>
     </ClInclude>
+    <ClInclude Include="me\debug\BufferLogger.h">
+      <Filter>me\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\IBuffer.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\IDecoder.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\IEncoder.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\PingPongBuffer.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\RangeBuffer.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\StaticBuffer.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\BufferLock.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\DynamicBuffer.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="me\buffer\FillBuffer.h">
+      <Filter>me\buffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1180,6 +1213,24 @@
     </ClCompile>
     <ClCompile Include="me\script\MshScripter.cpp">
       <Filter>me\script</Filter>
+    </ClCompile>
+    <ClCompile Include="me\debug\BufferLogger.cpp">
+      <Filter>me\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="me\buffer\RangeBuffer.cpp">
+      <Filter>me\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="me\buffer\StaticBuffer.cpp">
+      <Filter>me\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="me\buffer\BufferLock.cpp">
+      <Filter>me\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="me\buffer\DynamicBuffer.cpp">
+      <Filter>me\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="me\buffer\FillBuffer.cpp">
+      <Filter>me\buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

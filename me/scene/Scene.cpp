@@ -36,7 +36,7 @@ unify::Owner::ptr Scene::GetOwnership()
 
 unify::Result<> Scene::Component_BeforeOnStart()
 {
-	m_block->SubBlock( "Component_BeforeOnStart" )->Exec( [&]( auto block )
+	m_block->SubBlock( "Component_BeforeOnStart" )->Exec( [&]( auto block ) -> unify::Result<>
 		{
 
 			for ( auto&& component : m_components )
@@ -57,13 +57,14 @@ unify::Result<> Scene::Component_BeforeOnStart()
 					}
 				}
 			}
+			return {};
 		} );
 	return {};
 }
 
 unify::Result<> Scene::Component_AfterOnStart()
 {
-	m_block->SubBlock( "Component_AfterOnStart" )->Exec( [&]( auto block )
+	m_block->SubBlock( "Component_AfterOnStart" )->Exec( [&]( auto block ) -> unify::Result<>
 		{
 			for ( auto&& component : m_components )
 			{
@@ -81,6 +82,7 @@ unify::Result<> Scene::Component_AfterOnStart()
 					}
 				}
 			}
+			return{};
 		} );
 	return {};
 }

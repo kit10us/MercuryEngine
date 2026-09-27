@@ -2,7 +2,6 @@
 // All Rights Reserved
 
 #include <me/debug/FileLoggerListener.h>
-#include <filesystem>
 #include <iomanip>
 #include <sstream>
 
@@ -24,12 +23,6 @@ FileLoggerListener::~FileLoggerListener()
 void FileLoggerListener::OpenLogFile()
 {
 	using namespace std;
-
-	auto log_dir = GetPath().DirectoryOnly();
-	if (!log_dir.Exists())
-	{
-		std::filesystem::create_directories(std::filesystem::path(log_dir.ToFilePath()));
-	}
 
 	m_stream.open(GetPath().ToString(), ofstream::out | ofstream::app);
 	if (m_stream.is_open() == false)

@@ -45,6 +45,15 @@
     <ClInclude Include="me\action\RestartScene.h" />
     <ClInclude Include="me\action\SendCommand.h" />
     <ClInclude Include="me\action\ToggleAction.h" />
+    <ClInclude Include="me\buffer\BufferLock.h" />
+    <ClInclude Include="me\buffer\DynamicBuffer.h" />
+    <ClInclude Include="me\buffer\FillBuffer.h" />
+    <ClInclude Include="me\buffer\IBuffer.h" />
+    <ClInclude Include="me\buffer\IDecoder.h" />
+    <ClInclude Include="me\buffer\IEncoder.h" />
+    <ClInclude Include="me\buffer\PingPongBuffer.h" />
+    <ClInclude Include="me\buffer\RangeBuffer.h" />
+    <ClInclude Include="me\buffer\StaticBuffer.h" />
     <ClInclude Include="me\canvas\Anchor.h" />
     <ClInclude Include="me\canvas\CanvasComponent.h" />
     <ClInclude Include="me\canvas\Element.h" />
@@ -58,6 +67,7 @@
     <ClInclude Include="me\canvas\TextElement.h" />
     <ClInclude Include="me\canvas\VList.h" />
     <ClInclude Include="me\debug\Block.h" />
+    <ClInclude Include="me\debug\BufferLogger.h" />
     <ClInclude Include="me\debug\CSVLoggerListener.h" />
     <ClInclude Include="me\debug\DefaultDebug.h" />
     <ClInclude Include="me\debug\DefaultErrorHandler.h" />
@@ -262,6 +272,11 @@
     <ClCompile Include="me\action\RestartScene.cpp" />
     <ClCompile Include="me\action\SendCommand.cpp" />
     <ClCompile Include="me\action\ToggleAction.cpp" />
+    <ClCompile Include="me\buffer\BufferLock.cpp" />
+    <ClCompile Include="me\buffer\DynamicBuffer.cpp" />
+    <ClCompile Include="me\buffer\FillBuffer.cpp" />
+    <ClCompile Include="me\buffer\RangeBuffer.cpp" />
+    <ClCompile Include="me\buffer\StaticBuffer.cpp" />
     <ClCompile Include="me\canvas\CanvasComponent.cpp" />
     <ClCompile Include="me\canvas\Element.cpp" />
     <ClCompile Include="me\canvas\FPS.cpp" />
@@ -273,6 +288,7 @@
     <ClCompile Include="me\canvas\TextElement.cpp" />
     <ClCompile Include="me\canvas\VList.cpp" />
     <ClCompile Include="me\debug\Block.cpp" />
+    <ClCompile Include="me\debug\BufferLogger.cpp" />
     <ClCompile Include="me\debug\CSVLoggerListener.cpp" />
     <ClCompile Include="me\debug\DefaultDebug.cpp" />
     <ClCompile Include="me\debug\DefaultErrorHandler.cpp" />

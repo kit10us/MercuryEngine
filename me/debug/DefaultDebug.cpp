@@ -9,16 +9,19 @@
 
 using namespace me::debug;
 
-DefaultDebug::DefaultDebug(unify::Path logPath, unify::Path filename )
-	: m_fileLogger{ new FileLoggerListener{ logPath, filename } }
-	, m_csvLogger{ new CSVLoggerListener{ logPath, filename } }
-{
-	m_logger.AttachListener( m_fileLogger );
-	m_logger.AttachListener(m_csvLogger);
-}
-
 DefaultDebug::~DefaultDebug()
 {
+	m_logger.DetachListener( m_fileLogger );
+	m_logger.DetachListener(m_csvLogger);
+}
+
+bool DefaultDebug::Create(unify::Path logPath, unify::Path filename)
+{
+	m_fileLogger = std::make_shared<FileLoggerListener>( logPath, filename);
+	m_csvLogger = std::make_shared<CSVLoggerListener>( logPath, filename );
+	m_logger.AttachListener( m_fileLogger );
+	m_logger.AttachListener(m_csvLogger);
+	return true;
 }
 
 void DefaultDebug::SetDebug( bool debug )

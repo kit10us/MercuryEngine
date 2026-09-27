@@ -63,7 +63,7 @@ action::IAction::ptr ActionFactory::CreateAction( const qxml::Element * element 
 	}
 	else if( element->IsTagName( "SendCommand" ) )
 	{
-		return action::IAction::ptr( new action::SendCommand( GetGame(), GetGame()->Command( element->GetAttribute( "command" )->GetString() ), element->GetText() ) );
+		return action::IAction::ptr( new action::SendCommand( GetGame(), GetGame()->FindCommandId( element->GetAttribute( "command" )->GetString() ), element->GetText() ) );
 	}
 	return action::IAction::ptr();
 }

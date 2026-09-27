@@ -219,6 +219,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 			return unify::Failure{"Setup file not found \"" + m_setup.ToString() + "\"!" };
 		}
 
+		// Loader passes are determined by the state of the game engine for when they occur.
 		// First loader pass
 		auto scriptManager = GetManager< script::IScript >();
 		std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
@@ -994,19 +995,31 @@ void Game::Private_Shutdown()
 
 void Game::AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener )
 {
-	size_t id = Command( command );
+	// Find the ID of the command so we can subscribe to it.
+	size_t id = FindCommandId( command );
+
 	m_commandListeners[id].push_back( CommandListenerSet{ owner, listener } );
 }
 
-size_t Game::Command( std::string command )
+CommandId Game::FindCommandId( std::string command )
 {
 	size_t id = 0;
+
+	// Find the command.
 	auto itr = m_commandMap.find( command );
+
 	if( itr == m_commandMap.end() )
-	{
+	{ // If the command doesn't exist, then add a new one.
+		// Find the next available command listener ID.
 		id = m_commandListeners.size();
+		
+		// Add the command to our command list.
 		m_commandList.push_back( command );
+
+		// Command map translates our command to the new ID.
 		m_commandMap[command] = id;
+
+		// Create a new command listener list and add it to the command listeners,
 		m_commandListeners.push_back( std::list< CommandListenerSet >() );
 	}
 	else
@@ -1017,7 +1030,7 @@ size_t Game::Command( std::string command )
 	return id;
 }
 
-std::string Game::Command( size_t id )
+std::string Game::FindCommandName( CommandId id )
 {
 	if( id >= m_commandList.size() )
 	{
@@ -1029,9 +1042,15 @@ std::string Game::Command( size_t id )
 	}
 }
 
-std::string Game::SendCommand( std::string command, std::string extra )
+std::string Game::SendCommand( std::string command_name, std::string extra )
 {
-	return SendCommand( Command( command ), extra );
+	// Find the ID for the command.
+	auto command_id = FindCommandId( command_name );
+
+	Debug()->GetLogger()->Log("Command: " + command_name + "(" + extra + ")");
+
+	// Send the command via its ID.
+	return SendCommand( command_id, extra );
 }
 
 std::string Game::SendCommand( size_t id, std::string extra )

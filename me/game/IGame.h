@@ -30,6 +30,8 @@ namespace me
 		typedef std::shared_ptr< UpdateLock > ptr;
 	};
 
+	using CommandId = size_t;
+
 	namespace game
 	{
 		/// <summary>
@@ -132,6 +134,9 @@ namespace me
 			virtual input::InputManager * GetInputManager() = 0;
 			virtual const input::InputManager * GetInputManager() const = 0;
 
+			/// <summary>
+			/// Component management functionality.
+			/// </summary>
 			virtual int GetComponentCount() const = 0;
 			virtual unify::Result<> AddComponent( component::IGameComponent::ptr component ) = 0;
 			virtual void RemoveComponent( component::IGameComponent::ptr component ) = 0;
@@ -171,28 +176,30 @@ namespace me
 			virtual input::IInputAction::ptr CreateInputAction( const qxml::Element * element ) = 0;
 
 			/// <summary>
-			/// Add a command listener
+			/// Add a command listener.
 			/// </summary>
 			virtual void AddCommandListener( unify::Owner::weak_ptr owner, std::string command, ICommandListener::ptr listener ) = 0;
 
 			/// <summmary>
-			/// Fetch the ID for a corresponding command. If a command doesn't already exist, it's created.
+			/// Fetch the ID for a corresponding command. If a command doesn't already exist, it's created (commands never fail).
 			/// </summary>
-			virtual size_t Command( std::string command ) = 0;
+			virtual CommandId FindCommandId( std::string command ) = 0;
 
 			/// <summmary>
 			/// Fetch the name from an ID for a corresponding command. Returns an empty string if not found.
 			/// </summary>
-			virtual std::string Command( size_t id ) = 0;
+			virtual std::string FindCommandName( CommandId id ) = 0;
 
 			/// <summary>
 			/// Send a command with extra information, and return a string result.
 			/// Strings are used to best support cross DLL, and scripting support. 
+			/// </summary>
 			virtual std::string SendCommand( std::string command, std::string extra ) = 0;
 
 			/// <summary>
 			/// Send a command with extra information, and return a string result.
-			/// Strings are used to best support cross DLL, and scripting support. 
+			/// Strings are used to best support cross DLL, and scripting support.
+			/// </summary>
 			virtual std::string SendCommand( size_t id, std::string extra ) = 0;
 
 			template< typename T >
