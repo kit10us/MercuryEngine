@@ -31,6 +31,7 @@ Game::Game( unify::Path setup )
 
 Game::Game( std::string startScene, unify::Path setup )
 	: m_gameBlock{}
+	, m_startup_time {std::chrono::system_clock::now()}
 	, m_title{ "Mercury Engine" }
 	, m_startScene{ startScene }
 	, m_setup( setup )
@@ -118,6 +119,19 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	defines["TARGET"] = debug->IsDebug() ? "Debug" : "Release"; // SAS TODO: Move functionality to platform library.
 	defines["OS"] = os->GetEnvironment().lock()->GetName();
 	defines["PLATFORM"] = os->GetEnvironment().lock()->GetPlatform();
+
+	{
+		auto t = std::chrono::system_clock::to_time_t(m_startup_time);
+
+		auto duration = m_startup_time.time_since_epoch();
+		auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+		auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration - seconds);
+
+		std::stringstream date;
+		date << std::put_time(std::localtime(&t), "%F_%H.%M.%S.") << std::setfill('0') << std::setw(3) << milliseconds.count();
+		Debug()->GetLogger()->Log(date.str());
+		defines["STARTUP"] = date.str();
+	}
 
 	for (auto define : defines)
 	{

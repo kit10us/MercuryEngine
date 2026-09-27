@@ -58,7 +58,6 @@ void Logger::Log(std::string text, std::string category, std::string location)
 	// Add time stamp to log text.
 	using namespace std;
 	auto currentTime = chrono::system_clock::now();
-	auto t = chrono::system_clock::to_time_t( currentTime );
 
 	// Push event into history.
 	kit::debug::LogEvent logEvent{};

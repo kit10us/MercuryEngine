@@ -110,18 +110,18 @@ bool FileLoggerListener::LogEvent( const kit::debug::LogEvent* event )
 {
 	using namespace std;
 	
-	auto t = chrono::system_clock::to_time_t(event->time);
-
 	// Push event into history.
-	std::stringstream date;
-	date << put_time(std::localtime(&t), "%F");
+	auto t = chrono::system_clock::to_time_t(event->time);
+	auto duration = event->time.time_since_epoch();
+	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration);
+	auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration - seconds);
 
 	std::stringstream time;
-	time << put_time(std::localtime(&t), "%T");
-
+	time << std::put_time(std::localtime(&t), "%F %H:%M:%S:") << std::setfill('0') << std::setw(3) << milliseconds.count();
+	
 	auto & stream = GetOFStream();
 
-	stream << date.str() << " " << time.str() << ": ";
+	stream << time.str() << ": ";
 	
 	if (event->category.empty() == false)
 	{

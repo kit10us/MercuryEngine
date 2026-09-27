@@ -16,6 +16,8 @@
 
 #include <unify/String.h>
 
+#include <chrono>
+
 namespace me::game
 {
 	/// <summary>
@@ -28,6 +30,10 @@ namespace me::game
 			unify::Owner::weak_ptr owner;
 			ICommandListener::ptr listener;
 		};
+		
+		std::chrono::system_clock::time_point m_startup_time;
+
+		std::shared_ptr< kit::debug::IBlock > m_gameBlock;
 
 		std::string m_title;
 		os::IOS::ptr m_os;
@@ -51,7 +57,6 @@ namespace me::game
 		std::map< std::string /* command */, size_t /* command ID */, unify::String::CaseInsensitiveLessThanEqualTest> m_commandMap;
 		std::vector< std::string > m_commandList;
 
-		std::shared_ptr< kit::debug::IBlock > m_gameBlock;
 
 		script::MshScripter m_mshScripter;
 
