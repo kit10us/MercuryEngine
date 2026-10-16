@@ -11,8 +11,6 @@ namespace me
 	{
 		class MatrixFeed
 		{
-			const MatrixFoodBase * m_food;
-
 		public:
 			MatrixFeed( const MatrixFoodBase & food, size_t stride );
 
@@ -38,6 +36,7 @@ namespace me
 			void Restart();
 
 		private:
+			const MatrixFoodBase * m_food;
 			bool m_done;
 			size_t m_stride;
 			size_t m_major_index;

@@ -15,10 +15,24 @@ namespace me
 {
 	namespace render
 	{
+		/// <summary>
+		/// Information used during rendering.
+		/// </summary>
 		struct Params
 		{
+			/// <summary>
+			/// The active renderer.
+			/// </summary>
 			IRenderer * renderer;
+
+			/// <summary>
+			/// Rendering setup information.
+			/// </summary>
 			RenderInfo renderInfo;
+
+			/// <summary>
+			/// Frame delta for animations.
+			/// </summary>
 			unify::TimeDelta GetDelta() const { return renderInfo.GetDelta(); };
 		};
 	}

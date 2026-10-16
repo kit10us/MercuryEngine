@@ -777,6 +777,9 @@
     <ClInclude Include="me\buffer\FillBuffer.h">
       <Filter>me\buffer</Filter>
     </ClInclude>
+    <ClInclude Include="me\render\SkeletalGeometry.h">
+      <Filter>me\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="me\frameanimation\FrameAnimationKey.cpp">
@@ -1231,6 +1234,9 @@
     </ClCompile>
     <ClCompile Include="me\buffer\FillBuffer.cpp">
       <Filter>me\buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="me\render\SkeletalGeometry.cpp">
+      <Filter>me\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

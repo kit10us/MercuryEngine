@@ -12,7 +12,14 @@ namespace me
 {
 	namespace script
 	{
+		/// <summary>
+		/// Function callback for failures.
+		/// </summary>
 		using OnFailure = std::function< void(class IScript*/*script*/, std::string /*message*/) >;
+
+		/// <summary>
+		/// Standardized script resource.
+		/// </summary>
 		class IScript : public rm::IResource
 		{
 		public:

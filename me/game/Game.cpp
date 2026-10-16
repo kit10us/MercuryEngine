@@ -16,9 +16,11 @@
 #include <me/input/ButtonPressedCondition.h>
 #include <me/input/action/IA_Action.h>
 #include <me/action/QuitGame.h>
+
 #include <chrono>
 #include <ctime>
 #include <functional>
+#include <unordered_set>
 
 using namespace me;
 using namespace game;
@@ -230,22 +232,33 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 	{
 		if( !m_setup.Exists() )
 		{
-			return unify::Failure{"Setup file not found \"" + m_setup.ToString() + "\"!" };
+			return unify::Failure{"Setup file not found \"" + m_setup.ToString() + "\"." };
 		}
 
 		// Loader passes are determined by the state of the game engine for when they occur.
+		std::unordered_set<std::string> includes;
+
 		// First loader pass
 		auto scriptManager = GetManager< script::IScript >();
-		std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
+		std::function< unify::Result<>( unify::Path ) > xml_loader_first = [&]( unify::Path source ) -> unify::Result<>
 		{
-			block->Log( "loading \"" + source.ToString() + "\"" );
+			block->Log( "First-pass loading \"" + source.ToString() + "\"" );
+
+			if (includes.count(source.ToString()))
+			{
+				block->Log(" ** Skipped as already included **");
+				return {};
+			}
+
+			// Add include into our inclusion list.
+			includes.insert(source.ToString());	
 
 			auto script = scriptManager->Add( source.ToString(), source);
 			if (!script)
 			{
 				return unify::Result<>(unify::Failure("Failed to add script \"" + source.ToString() + "\"!"));
 			}
-
+		
 			// Set the failure callback.
 			(*script)->SetOnFailure(
 				[&](script::IScript* script, std::string message)
@@ -263,7 +276,11 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 				{
 					if ( node.IsTagName( "include" ) )
 					{
-						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						auto loader_result = xml_loader_first( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						if (!loader_result)
+						{
+							return loader_result;
+						}
 					}
 					else if ( node.IsTagName( "define" ) )
 					{
@@ -292,7 +309,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 			return {};
 		};
 
-		auto result = xmlLoader( m_setup );
+		auto result = xml_loader_first( m_setup );
 		if (!result)
 		{
 			return result;
@@ -318,11 +335,24 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 			return unify::Failure{"File not found " + m_setup.ToString()};
 		}
 
+		// Loader passes are determined by the state of the game engine for when they occur.
+		std::unordered_set<std::string> includes;
+
 		// Second loader pass
 		auto scriptManager = GetManager< script::IScript >();
-		std::function< unify::Result<>( unify::Path ) > xmlLoader = [&]( unify::Path source ) -> unify::Result<>
+		std::function< unify::Result<>( unify::Path ) > xml_loader_second = [&]( unify::Path source ) -> unify::Result<>
 		{
-			block->Log( "loading \"" + source.ToString() + "\"", "XML Loader");
+			block->Log( "Second-pass loading \"" + source.ToString() + "\"" );
+
+			if (includes.count(source.ToString()))
+			{
+				block->Log(" ** Skipped as already included **");
+				return {};
+			}
+
+			// Add include into our inclusion list.
+			includes.insert(source.ToString());	
+
 
 			auto script = scriptManager->Add( source.ToString(), source );
 			if (!script)
@@ -349,10 +379,10 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 					}
 					else if ( node.IsTagName( "include" ) )
 					{
-						auto result = xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
-						if (!result)
+						auto loader_result = xml_loader_second( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						if (!loader_result)
 						{
-							return result;
+							return loader_result;
 						}
 					}
 					else if ( node.IsTagName( "title" ) )
@@ -375,7 +405,7 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 			}
 			return {};
 		};
-		auto result = xmlLoader( m_setup );
+		auto result = xml_loader_second( m_setup );
 		if (!result)
 		{
 			return result;
@@ -431,7 +461,11 @@ unify::Result<> Game::Initialize( os::IOS::ptr os )
 				{
 					if ( node.IsTagName( "include" ) )
 					{
-						xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						auto loader_result = xmlLoader( unify::Path( ReplaceDefines( node.GetText() ) ) );
+						if (!loader_result)
+						{
+							return loader_result;
+						}
 					}
 					else if( node.IsTagName( "extension" ) )
 					{

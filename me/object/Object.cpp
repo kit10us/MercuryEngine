@@ -75,6 +75,7 @@ unify::Result<> Object::AddComponent( component::IObjectComponent::ptr component
 		return result;
 	}
 	m_components.push_back( ComponentInstance< component::IObjectComponent::ptr >( component ) );
+	return {};
 }
 
 void Object::RemoveComponent( component::IObjectComponent::ptr component )

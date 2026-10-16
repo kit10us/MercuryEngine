@@ -6,10 +6,6 @@
 using namespace me;
 using namespace render;
 
-Geometry::Geometry()
-{
-}
-
 GeometryInstanceData::ptr Geometry::CreateInstanceData() const
 {
 	return GeometryInstanceData::ptr {};

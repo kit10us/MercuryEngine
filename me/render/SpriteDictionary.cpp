@@ -17,6 +17,7 @@ SpriteDictionary::SpriteDictionary()
 	, m_asciiLowercase( false )
 	, m_asciiUppercase( false )
 	, m_asciiNull( unify::TexAreaZero() )
+	, m_major_size {}
 {
 }
 
@@ -43,7 +44,7 @@ void SpriteDictionary::LoadDictionary( unify::Path source )
 		{
 			std::string name = node.GetAttributeElse< std::string >( "name", "" );
 			unify::TexCoords arrayUL( node.GetAttributeElse< float >( "ulu", 0 ), node.GetAttributeElse< float >( "ulv", 0 ) );
-			unify::Size< float > size;
+			unify::Size< float > size {};
 			unify::RowColumn< unsigned int > arrayRC{ qxml::AttributeCast< unify::RowColumn< unsigned int >, unsigned int >( node, "r", "c" ) };
 			assert( arrayRC.row && arrayRC.column );
 						
@@ -56,6 +57,9 @@ void SpriteDictionary::LoadDictionary( unify::Path source )
 			{
 				size = unify::Size< float >( (1 - arrayUL.u) / arrayRC.column, (1 - arrayUL.v) / arrayRC.column );
 			}
+
+			m_major_size.width = std::max(m_major_size.width, size.width);
+			m_major_size.height = std::max(m_major_size.height, size.height);
 
 			if ( !name.empty() )
 			{
@@ -130,6 +134,9 @@ void SpriteDictionary::LoadDictionary( unify::Path source )
 				char ascii = name[ 0 ];
 				m_ascii[ ascii ] = area;
 			}
+
+			m_major_size.width = std::max(m_major_size.width, area.Width());
+			m_major_size.height = std::max(m_major_size.height, area.Height());
 		}
 	}
 
@@ -254,4 +261,9 @@ unify::TexArea SpriteDictionary::GetAscii( char ascii ) const
 	if ( itr == m_ascii.end() ) return m_asciiNull;
 
 	return itr->second;
+}
+
+unify::Size<float> SpriteDictionary::GetMajorSize() const
+{
+	return m_major_size;
 }

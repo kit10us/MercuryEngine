@@ -25,7 +25,8 @@ namespace me
 		class ITexture : public rm::IResource
 		{
 		public:
-			typedef std::shared_ptr< ITexture > ptr;
+			using ptr = std::shared_ptr< ITexture >;
+			using weak_ptr = std::weak_ptr<ITexture>;
 
 			virtual ~ITexture() {}
 

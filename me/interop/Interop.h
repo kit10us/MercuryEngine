@@ -10,7 +10,7 @@
 namespace me::interop
 {
 	/// <summary>
-	/// Provides access of variables specific to the Interp's owner,
+	/// Provides access of variables specific to the Interop's owner,
 	/// especially for runtime access, such as scripts or runtime tools.
 	/// Variables can be accessed via a key or an index.
 	/// </summary>

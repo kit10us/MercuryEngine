@@ -34,12 +34,31 @@ namespace me
 		public:
 			typedef std::shared_ptr< Geometry > ptr;
 
-			Geometry();
-			virtual ~Geometry() {}
+			Geometry() = default;
+			virtual ~Geometry() = default;
 
+			/// <summary>
+			/// Enables sharing of geometry amongst multiple objects/owners.
+			/// We push the specific geometry instance's state into a custom GeometryInstanceData class.
+			/// The final GeometryInstanceData is expected to be customized per entity.
+			/// </summary>
+			/// <returns></returns>
 			virtual GeometryInstanceData::ptr CreateInstanceData() const;
 
+			/// <summary>
+			/// Update our geometry instance. This means updating the owning object's instance data,
+			/// the geometry is expected to remain non-instanced.
+			/// </summary>
+			/// <param name="params">update parameters</param>
+			/// <param name="instanceData">instance data</param>
 			virtual void Update( const UpdateParams & params, GeometryInstanceData * instanceData ) = 0;
+			
+			/// <summary>
+			/// Render the geometry. Geometry state per object instance is expected to be owned by instance data.
+			/// </summary>
+			/// <param name="params">render parameters</param>
+			/// <param name="instanceData">the owning object instance data</param>
+			/// <param name="matrixFeed"></param>
 			virtual void Render( const Params & params, GeometryInstanceData * instanceData, render::MatrixFeed & matrixFeed ) = 0;
 
 			unify::BBox< float > & GetBBox();
@@ -49,7 +68,6 @@ namespace me
 
 		public: // rm::IResource
 			std::string GetSource() const override {return "";}
-
 
 		protected:
 			unify::BBox< float > m_BBox;

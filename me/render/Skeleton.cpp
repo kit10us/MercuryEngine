@@ -57,6 +57,11 @@ const unify::Matrix * Skeleton::FindJoint( std::string name ) const
 	return nullptr;
 }
 
+void Skeleton::SetJointGeo(Geometry::ptr join_geo)
+{
+	m_jointGeo = join_geo;
+}
+
 bool Skeleton::Empty() const
 {
 	return m_jointMatrix.empty();
@@ -64,7 +69,7 @@ bool Skeleton::Empty() const
 
 void Skeleton::Render( const render::Params & params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color )
 {
-	if( Empty() ) return;
+	if( Empty() || !m_jointGeo ) return;
 
 	unify::Matrix matrix;
 	while( matrixFeed.Consume( &matrix, 1 ) )

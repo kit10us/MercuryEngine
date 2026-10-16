@@ -39,6 +39,11 @@ namespace me
 			size_t FindJointIndex( std::string name ) const;
 			const unify::Matrix * FindJoint( std::string name ) const;
 
+			/// <summary>
+			/// Typically for debugging, set the geometry so we can visualize the joints.
+			/// </summary>
+			void SetJointGeo(Geometry::ptr join_geo);
+
 			bool Empty() const;
 
 			void Render( const render::Params & params, render::MatrixFeed & matrixFeed, Effect::ptr effect, float size, unify::Color color );

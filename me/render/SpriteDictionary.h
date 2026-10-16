@@ -65,6 +65,11 @@ namespace me
 			/// </summary>
 			unify::TexArea GetAscii( char ascii ) const;
 
+			/// <summary>
+			/// Gives the largest area of all characters.
+			/// </summary>
+			unify::Size<float> GetMajorSize() const;
+
 		private:
 			SpriteArrayMap m_spriteArrayMap;
 			SpriteMasterList m_spriteMasterList;
@@ -73,6 +78,7 @@ namespace me
 			bool m_asciiNumeric;
 			bool m_asciiLowercase;
 			bool m_asciiUppercase;
+			unify::Size< float > m_major_size;
 		};
 	}
 }

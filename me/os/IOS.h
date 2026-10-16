@@ -54,7 +54,7 @@ namespace me
 			virtual const me::debug::IDebug * Debug() const = 0;
 
 			/// <summary>
-			/// Feed data to the os. This allows interacing with the operating system without
+			/// Feed data to the os. This allows interfacing with the operating system without
 			/// direct dependencies.
 			/// </summary>
 			virtual void * Feed( std::string target, void * data ) = 0;

@@ -210,6 +210,7 @@
     <ClInclude Include="me\render\RenderMethod.h" />
     <ClInclude Include="me\render\RenderParams.h" />
     <ClInclude Include="me\render\ResourceType.h" />
+    <ClInclude Include="me\render\SkeletalGeometry.h" />
     <ClInclude Include="me\render\Skeleton.h" />
     <ClInclude Include="me\render\SpriteDictionary.h" />
     <ClInclude Include="me\render\Terra.h" />
@@ -376,6 +377,7 @@
     <ClCompile Include="me\render\RenderInfo.cpp" />
     <ClCompile Include="me\render\RenderMethod.cpp" />
     <ClCompile Include="me\render\ResourceType.cpp" />
+    <ClCompile Include="me\render\SkeletalGeometry.cpp" />
     <ClCompile Include="me\render\Skeleton.cpp" />
     <ClCompile Include="me\render\SpriteDictionary.cpp" />
     <ClCompile Include="me\render\Terra.cpp" />
